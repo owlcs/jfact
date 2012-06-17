@@ -1,0 +1,113 @@
+<project default="distribution">
+
+	<!--Ant script to build JFact
+    This file is part of the JFact DL reasoner
+    Copyright 2011 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
+    This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
+    This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
+    You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
+    -->
+
+	<!-- The version being built - this is used to name
+          the zip file produced by the build.  For release builds this
+          should be of the format <major>.<minor>.<revision>.  Note that the svn
+            revision number will automatically be appended to this build number! -->
+	<property name="version" value="0.9.1" />
+
+	<!-- The directory that contains the jar file dependencies for
+         the class path and building a release -->
+	<property name="libdir" value="./lib" />
+
+	<!-- The directory where intermediate build products will be placed -->
+	<property name="builddir" value="build" />
+
+	<!-- A directory into which class files will be placed during the build answer-->
+	<property name="classesdir" value="${builddir}/classes" />
+
+	<!-- The directory where the javadoc will be generated to-->
+	<property name="javadocdir" value="${builddir}/javadoc" />
+
+
+	<!-- The name of the jar file which contains the class files-->
+	<property name="bin-name" value="jfact.jar" />
+
+	<!-- The name of the jar file that contains the gathered source files-->
+	<property name="src-name" value="jfact_src.jar" />
+
+	<property name="sourcepath" value="src/**/*.java" />
+
+
+	<!-- For the classpath, we just use all of the libraries in the
+         lib directory -->
+	<path id="classpath">
+		<fileset dir="${libdir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+
+	<!-- Deletes all build products-->
+	<target name="clean">
+		<delete dir="${builddir}" />
+	</target>
+
+	<!-- Compiles the source into a directory called classes inside
+         the build directory -->
+	<target name="compile">
+		<mkdir dir="${classesdir}" />
+		<javac srcdir="." destdir="${classesdir}" debug="on" target="1.6" source="1.6" compiler="javac1.6" fork="yes">
+			<classpath refid="classpath" />
+			<include name="${sourcepath}" />
+		</javac>
+	</target>
+
+	<!-- Creates a jar containing the binary code -->
+	<target name="binjar" depends="compile">
+		<!-- Get the SVN revision number -->
+		<exec executable="svn" output="build/svn.properties">
+			<arg value="info" />
+		</exec>
+		<property prefix="svn" file="build/svn.properties" />
+		<jar basedir="${classesdir}" destfile="${builddir}/${bin-name}">
+			<manifest>
+				<attribute name="Title" value="JFact" />
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Implementation-Version" value="${version}.${svn.Revision}" />
+			</manifest>
+		</jar>
+	</target>
+
+
+	<!-- Creates a jar containing the source code -->
+	<target name="srcjar">
+		<jar destfile="${builddir}/${src-name}">
+			<manifest>
+				<attribute name="title" value="JFact source" />
+				<attribute name="built-by" value="${user.name}" />
+				<attribute name="version" value="${version}" />
+			</manifest>
+			<fileset dir="src" />
+		</jar>
+	</target>
+
+	<!-- Creates a zip file containing the jar file containing the
+         class files, a jar file containing the source, a lib directory containing
+         the dependencies for the distribution. -->
+	<target name="distribution" depends="clean, binjar, srcjar">
+		<property name="distdir" value="${builddir}/dist" />
+		<mkdir dir="${distdir}" />
+		<copy todir="${distdir}/lib">
+			<fileset dir="${libdir}" />
+		</copy>
+		<copy todir="${distdir}">
+			<fileset file="${builddir}/${bin-name}" />
+			<fileset file="${builddir}/${src-name}" />
+			<fileset file="build.xml" />
+			<fileset file="${src-name}" />
+		</copy>
+		<zip destfile="${builddir}/jfact-${version}.zip">
+			<fileset dir="${distdir}" />
+		</zip>
+	</target>
+
+</project>
