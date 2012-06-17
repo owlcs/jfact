@@ -203,9 +203,9 @@ public final class DataTypeSituation<R extends Comparable<R>> {
 				return true;
 			}
 			if (obj instanceof DepInterval) {
-				return (this.e == null ? ((DepInterval) obj).e == null : this.e
-						.equals(((DepInterval) obj).e)) && this.locDep == null ? ((DepInterval) obj).locDep == null
-						: this.locDep.equals(((DepInterval) obj).locDep);
+				return (this.e == null ? ((DepInterval<?>) obj).e == null : this.e
+						.equals(((DepInterval<?>) obj).e)) && this.locDep == null ? ((DepInterval<?>) obj).locDep == null
+						: this.locDep.equals(((DepInterval<?>) obj).locDep);
 			}
 			return false;
 		}

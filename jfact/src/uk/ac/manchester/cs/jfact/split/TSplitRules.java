@@ -51,9 +51,9 @@ public class TSplitRules {
 
 		/// init c'tor
 		TSplitRule(final Set<NamedEntity> es, final Set<NamedEntity> is, final int p) {
-			eqSig = new HashSet<NamedEntity>(es);
-			impSig = new HashSet<NamedEntity>(is);
-			bpSplit = p;
+			this.eqSig = new HashSet<NamedEntity>(es);
+			this.impSig = new HashSet<NamedEntity>(is);
+			this.bpSplit = p;
 		}
 
 		/// copy c'tor
@@ -64,12 +64,13 @@ public class TSplitRules {
 		// access methods
 		/// get bipolar pointer of the rule
 		public int bp() {
-			return bpSplit;
+			return this.bpSplit;
 		}
 
 		/// check whether signatures of a rule are related to current signature in such a way that allows rule to fire
 		public boolean canFire(final Set<NamedEntity> CurrentSig) {
-			return CurrentSig.containsAll(eqSig) && intersectsWith(impSig, CurrentSig);
+			return CurrentSig.containsAll(this.eqSig)
+					&& this.intersectsWith(this.impSig, CurrentSig);
 		}
 
 		/// calculates dep-set for a rule that can fire, write it to DEP.
@@ -77,11 +78,11 @@ public class TSplitRules {
 				final Map<NamedEntity, DepSet> SigDep) {
 			DepSet dep = DepSet.create();
 			// eqSig is contained in current, so need all
-			for (NamedEntity p : eqSig) {
+			for (NamedEntity p : this.eqSig) {
 				dep = DepSet.plus(dep, SigDep.get(p));
 			}
 			// impSig has partial intersect with current; 1st common entity is fine
-			for (NamedEntity p : impSig) {
+			for (NamedEntity p : this.impSig) {
 				if (CurrentSig.contains(p)) {
 					dep = DepSet.plus(dep, SigDep.get(p));
 					break;
@@ -109,13 +110,13 @@ public class TSplitRules {
 	List<NamedEntity> EntityMap = new ArrayList<NamedEntity>();
 
 	public List<TSplitRule> getRules() {
-		return Base;
+		return this.Base;
 	}
 
 	/// add new split rule
 	void addSplitRule(final Set<NamedEntity> eqSig, final Set<NamedEntity> impSig,
 			final int bp) {
-		Base.add(new TSplitRule(eqSig, impSig, bp));
+		this.Base.add(new TSplitRule(eqSig, impSig, bp));
 	}
 
 	/// calculate single entity based on a named entry ENTRY and possible signature
@@ -125,34 +126,34 @@ public class TSplitRules {
 		}
 		NamedEntity ret = entry.getEntity();
 		// now keep only known signature concepts
-		return PossibleSignature.contains(ret) ? ret : null;
+		return this.PossibleSignature.contains(ret) ? ret : null;
 	}
 
 	/// create all the split rules by given split set SPLITS
 	public void createSplitRules(final TSplitVars Splits) {
 		for (TSplitVar p : Splits.getEntries()) {
-			initSplit(p);
+			this.initSplit(p);
 		}
 	}
 
 	/// ensure that Map has the same size as DAG, so there would be no access violation
 	public void ensureDagSize(final int dagSize) {
-		Helper.resize(EntityMap, dagSize);
+		Helper.resize(this.EntityMap, dagSize);
 	}
 
 	/// @return named entity corresponding to a given bp
 	public NamedEntity getEntity(final int bp) {
-		return EntityMap.get(bp > 0 ? bp : -bp);
+		return this.EntityMap.get(bp > 0 ? bp : -bp);
 	}
 
 	/// init entity map using given DAG. note that this should be done AFTER rule splits are created!
 	public void initEntityMap(final DLDag Dag) {
 		int size = Dag.size();
-		Helper.resize(EntityMap, size);
-		EntityMap.set(0, null);
-		EntityMap.set(1, null);
+		Helper.resize(this.EntityMap, size);
+		this.EntityMap.set(0, null);
+		this.EntityMap.set(1, null);
 		for (int i = 2; i < size - 1; ++i) {
-			EntityMap.set(i, getSingleEntity(Dag.get(i).getConcept()));
+			this.EntityMap.set(i, this.getSingleEntity(Dag.get(i).getConcept()));
 		}
 	}
 
@@ -168,7 +169,7 @@ public class TSplitRules {
 		}
 		//	std::cout << "done\n";
 		// register all elements in the set in PossibleSignature
-		PossibleSignature.addAll(set);
+		this.PossibleSignature.addAll(set);
 		return set;
 	}
 
@@ -176,26 +177,26 @@ public class TSplitRules {
 	void initSplit(final TSplitVar split) {
 		//	std::cout << "Processing split for " << split.oldName.getName() << ":\n";
 		Entry p = split.getEntries().get(0);
-		Set<NamedEntity> impSet = buildSet(p.sig, p.name);
+		Set<NamedEntity> impSet = this.buildSet(p.sig, p.name);
 		int bp = split.C.getpBody() + 1; // choose-rule stays next to a split-definition of C
 		for (int i = 1; i < split.getEntries().size(); i++) {
 			p = split.getEntries().get(i);
 			if (p.Module.size() == 1) {
-				addSplitRule(buildSet(p.sig, p.name), impSet, bp);
+				this.addSplitRule(this.buildSet(p.sig, p.name), impSet, bp);
 			} else {
 				// make set of all the seed signatures of for p.Module
 				Set<TSignature> Out = new HashSet<TSignature>();
 				// prepare vector of available entities
-				List<NamedEntity> Allowed = new ArrayList();
+				List<NamedEntity> Allowed = new ArrayList<NamedEntity>();
 				//			std::cout << "\n\n\nMaking split for module with " << p.name.getName();
 				List<Axiom> Module = new ArrayList<Axiom>(p.Module);
 				// prepare signature for the process
 				TSignature sig = p.sig;
-				prepareStartSig(Module, sig, Allowed);
+				this.prepareStartSig(Module, sig, Allowed);
 				// build all the seed sigs for p.sig
-				BuildAllSeedSigs(Allowed, sig, Module, Out);
+				this.BuildAllSeedSigs(Allowed, sig, Module, Out);
 				for (TSignature q : Out) {
-					addSplitRule(buildSet(q, p.name), impSet, bp);
+					this.addSplitRule(this.buildSet(q, p.name), impSet, bp);
 				}
 			}
 		}
@@ -281,7 +282,7 @@ public class TSplitRules {
 		sig = StartSig;
 		for (NamedEntity p : RecAllowed) {
 			sig.remove(p);
-			BuildAllSeedSigs(RecAllowed, sig, Module, Out);
+			this.BuildAllSeedSigs(RecAllowed, sig, Module, Out);
 			sig.add(p);
 		}
 	}

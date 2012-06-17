@@ -204,11 +204,11 @@ public class JUnitRunner {
 	}
 
 	public String logTroubles(final OWLOntology o, final boolean expected,
-			final boolean actual, final OWLAxiom ax, final TestClasses c,
+			final boolean actual, final OWLAxiom ax, final TestClasses testclass,
 			final OWLAxiom axiom) {
 		StringBuilder b = new StringBuilder();
 		b.append("JUnitRunner.logTroubles() \t");
-		b.append(c);
+		b.append(testclass);
 		b.append("\t");
 		b.append(testId);
 		b.append("\n ======================================\n");

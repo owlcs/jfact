@@ -361,20 +361,20 @@ public class ELFReasoner {
 	//rule that checks whether for R(C,D) S(D) contains \bot
 	class RBotRule extends TELFRule {
 		/// remember the Bottom concept
-		TELFConcept CBot;
+		TELFConcept ConceptBot;
 
 		/// init c'tor: remember E
 		RBotRule(final ELFReasoner ER, final TELFConcept bot) {
 			super(ER);
-			this.CBot = bot;
+			this.ConceptBot = bot;
 		}
 
 		/// apply a method with a given new pair (C,D)
 		@Override
 		void apply(final TELFConcept addedC, final TELFConcept addedD) {
 			// it seems like every other pair is already processed, either via that rule or via add(\bot)
-			if (addedD.hasSuper(this.CBot) && !addedC.hasSuper(this.CBot)) {
-				this.ER.addAction(new ELFAction(addedC, this.CBot));
+			if (addedD.hasSuper(this.ConceptBot) && !addedC.hasSuper(this.ConceptBot)) {
+				this.ER.addAction(new ELFAction(addedC, this.ConceptBot));
 			}
 		}
 	}

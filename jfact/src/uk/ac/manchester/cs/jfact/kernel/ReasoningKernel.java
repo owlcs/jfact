@@ -110,7 +110,7 @@ public final class ReasoningKernel {
 	private AtomicBoolean interrupted;
 
 	public void setInterruptedSwitch(final AtomicBoolean b) {
-		interrupted = b;
+		this.interrupted = b;
 	}
 
 	// reasoning cache
@@ -154,52 +154,52 @@ public final class ReasoningKernel {
 	//-----------------------------------------------------------------------------
 	/// clear query cache
 	void clearQueryCache() {
-		cachedQuery = null; //deleteTree(cachedQueryTree);
-		cachedQueryTree = null;
+		this.cachedQuery = null; //deleteTree(cachedQueryTree);
+		this.cachedQueryTree = null;
 	}
 
 	/// set query cache value to QUERY
 	void setQueryCache(final ConceptExpression query) {
-		clearQueryCache();
-		cachedQuery = query;
+		this.clearQueryCache();
+		this.cachedQuery = query;
 	}
 
 	/// set query cache value to QUERY
 	void setQueryCache(final DLTree query) {
-		clearQueryCache();
-		cachedQueryTree = query;
+		this.clearQueryCache();
+		this.cachedQueryTree = query;
 	}
 
 	/// choose whether TExpr cache should be ignored
 	public void setIgnoreExprCache(final boolean value) {
-		ignoreExprCache = value;
+		this.ignoreExprCache = value;
 	}
 
 	/// check whether query cache is the same as QUERY
 	boolean checkQueryCache(final ConceptExpression query) {
-		return ignoreExprCache ? false : cachedQuery == query;
+		return this.ignoreExprCache ? false : this.cachedQuery == query;
 	}
 
 	/// check whether query cache is the same as QUERY
 	boolean checkQueryCache(final DLTree query) {
-		return equalTrees(cachedQueryTree, query);
+		return equalTrees(this.cachedQueryTree, query);
 	}
 
 	/** get status of the KB */
 	private KBStatus getStatus() {
-		if (pTBox == null) {
+		if (this.pTBox == null) {
 			return kbEmpty;
 		}
 		// if the ontology is changed, it needs to be reclassified
-		if (ontology.isChanged()) {
+		if (this.ontology.isChanged()) {
 			return kbLoading;
 		}
-		return pTBox.getStatus();
+		return this.pTBox.getStatus();
 	}
 
 	/** get DLTree corresponding to an expression EXPR */
 	private DLTree e(final Expression expr) {
-		return expr.accept(pET);
+		return expr.accept(this.pET);
 	}
 
 	/// get fresh filled depending of a type of R
@@ -209,62 +209,62 @@ public final class ReasoningKernel {
 			t.setLiteral(DatatypeFactory.LITERAL.buildLiteral("freshliteral"));
 			return DLTreeFactory.wrap(t);
 		} else {
-			return getTBox().getFreshConcept();
+			return this.getTBox().getFreshConcept();
 		}
 	}
 
 	/// get role expression based on the R
 	RoleExpression Role(final Role R) {
 		if (R.isDataRole()) {
-			return getExpressionManager().dataRole(R.getName());
+			return this.getExpressionManager().dataRole(R.getName());
 		} else {
-			return getExpressionManager().objectRole(R.getName());
+			return this.getExpressionManager().objectRole(R.getName());
 		}
 	}
 
 	/** clear cache and flags */
 	private void initCacheAndFlags() {
-		cacheLevel = csEmpty;
-		clearQueryCache();
-		cachedConcept = null;
-		cachedVertex = null;
-		reasoningFailed = false;
-		needTracing = false;
+		this.cacheLevel = csEmpty;
+		this.clearQueryCache();
+		this.cachedConcept = null;
+		this.cachedVertex = null;
+		this.reasoningFailed = false;
+		this.needTracing = false;
 	}
 
 	public void needTracing() {
-		needTracing = true;
+		this.needTracing = true;
 	}
 
 	/** @return the trace-set of the last reasoning operation */
 	public List<Axiom> getTrace() {
-		List<Axiom> toReturn = new ArrayList<Axiom>(traceVec);
-		traceVec.clear();
+		List<Axiom> toReturn = new ArrayList<Axiom>(this.traceVec);
+		this.traceVec.clear();
 		return toReturn;
 	}
 
 	/// set the signature of the expression translator
 	public void setSignature(final TSignature sig) {
-		if (pET != null) {
-			pET.setSignature(sig);
+		if (this.pET != null) {
+			this.pET.setSignature(sig);
 		}
 	}
 
 	/// get RW access to the ontology
 	Ontology getOntology() {
-		return ontology;
+		return this.ontology;
 	}
 
 	/** axiom C = C1 or ... or Cn; C1 != ... != Cn */
 	public Axiom disjointUnion(final OWLAxiom ax, final ConceptExpression C,
 			final List<Expression> l) {
-		return ontology.add(new AxiomDisjointUnion(ax, C, l));
+		return this.ontology.add(new AxiomDisjointUnion(ax, C, l));
 	}
 
 	/** get related cache for an individual I */
 	private List<Individual> getRelated(final Individual I, final Role R) {
 		if (!I.hasRelatedCache(R)) {
-			I.setRelatedCache(R, buildRelatedCache(I, R));
+			I.setRelatedCache(R, this.buildRelatedCache(I, R));
 		}
 		return I.getRelatedCache(R);
 	}
@@ -281,13 +281,13 @@ public final class ReasoningKernel {
 			return false;
 		}
 		this.setUpCache(C, csSat);
-		return getTBox().isSatisfiable(cachedConcept);
+		return this.getTBox().isSatisfiable(this.cachedConcept);
 	}
 
 	/// @return true iff C is satisfiable
 	boolean checkSat(final ConceptExpression C) {
 		this.setUpCache(C, csSat);
-		return getTBox().isSatisfiable(cachedConcept);
+		return this.getTBox().isSatisfiable(this.cachedConcept);
 	}
 
 	/// helper; @return true iff C is either named concept of Top/Bot
@@ -303,29 +303,31 @@ public final class ReasoningKernel {
 	/// @return true iff C [= D holds
 	boolean checkSub(final ConceptExpression C, final ConceptExpression D) {
 		if (this.isNameOrConst(D) && this.isNameOrConst(C)) {
-			return this.checkSub(getTBox().getCI(e(C)), getTBox().getCI(e(D)));
+			return this.checkSub(this.getTBox().getCI(this.e(C)),
+					this.getTBox().getCI(this.e(D)));
 		}
-		return !checkSat(getExpressionManager().and(C, getExpressionManager().not(D)));
+		return !this.checkSat(this.getExpressionManager().and(C,
+				this.getExpressionManager().not(D)));
 	}
 
 	public TModularizer getModExtractor(final boolean useSemantic) {
 		boolean needInit = false;
 		// check whether we need init
-		if (useSemantic && ModSem == null) {
-			ModSem = new TModularizer(new SemanticLocalityChecker(this, null));
+		if (useSemantic && this.ModSem == null) {
+			this.ModSem = new TModularizer(new SemanticLocalityChecker(this, null));
 			needInit = true;
 		}
-		if (!useSemantic && ModSyn == null) {
-			ModSyn = new TModularizer(new SyntacticLocalityChecker(null));
+		if (!useSemantic && this.ModSyn == null) {
+			this.ModSyn = new TModularizer(new SyntacticLocalityChecker(null));
 			needInit = true;
 		}
 		// init if necessary
-		TModularizer Mod = useSemantic ? ModSem : ModSyn;
+		TModularizer Mod = useSemantic ? this.ModSem : this.ModSyn;
 		if (needInit) {
 			SigIndex SI = new SigIndex();
-			SI.processRange(getOntology().getAxioms());
+			SI.processRange(this.getOntology().getAxioms());
 			Mod.setSigIndex(SI);
-			Mod.preprocessOntology(getOntology().getAxioms());
+			Mod.preprocessOntology(this.getOntology().getAxioms());
 		}
 		return Mod;
 	}
@@ -341,8 +343,8 @@ public final class ReasoningKernel {
 				Sig.add((NamedEntity) q);
 			}
 		}
-		TModularizer Mod = getModExtractor(useSemantic);
-		Mod.extract(getOntology().getAxioms(), Sig, type);
+		TModularizer Mod = this.getModExtractor(useSemantic);
+		Mod.extract(this.getOntology().getAxioms(), Sig, type);
 		return Mod.getModule();
 	}
 
@@ -358,15 +360,15 @@ public final class ReasoningKernel {
 			}
 		}
 		// do check
-		LocalityChecker LC = getModExtractor(useSemantic).getLocalityChecker();
+		LocalityChecker LC = this.getModExtractor(useSemantic).getLocalityChecker();
 		LC.setSignatureValue(Sig);
-		Result.clear();
-		for (Axiom p : getOntology().getAxioms()) {
+		this.Result.clear();
+		for (Axiom p : this.getOntology().getAxioms()) {
 			if (!LC.local(p)) {
-				Result.add(p);
+				this.Result.add(p);
 			}
 		}
-		return Result;
+		return this.Result;
 	}
 
 	/** @return true iff C [= D holds */
@@ -378,13 +380,14 @@ public final class ReasoningKernel {
 				return C == D; // 2 fresh concepts subsumes one another iff they are the same
 			} else {
 				// C is known
-				return !getTBox().isSatisfiable(C); // C [= D iff C=\bottom
+				return !this.getTBox().isSatisfiable(C); // C [= D iff C=\bottom
 			}
 		} else {
 			// D is known
 			if (C.getpName() == 0) {
 				// C [= D iff D = \top, or ~D = \bottom
-				return !checkSatTree(DLTreeFactory.createSNFNot(getTBox().getTree(C)));
+				return !this.checkSatTree(DLTreeFactory.createSNFNot(this.getTBox()
+						.getTree(C)));
 			}
 		}
 		// here C and D are known (not fresh)
@@ -392,13 +395,13 @@ public final class ReasoningKernel {
 		if (D.isTop() || C.isBottom()) {
 			return true;
 		}
-		if (getStatus().ordinal() < kbClassified.ordinal()) {
+		if (this.getStatus().ordinal() < kbClassified.ordinal()) {
 			// unclassified => do via SAT test
-			return getTBox().isSubHolds(C, D);
+			return this.getTBox().isSubHolds(C, D);
 		}
 		// classified => do the taxonomy traversal
 		SupConceptActor actor = new SupConceptActor(D);
-		Taxonomy tax = getCTaxonomy();
+		Taxonomy tax = this.getCTaxonomy();
 		if (tax.getRelativesInfo(C.getTaxVertex(), actor, true, false, true)) {
 			return false;
 		} else {
@@ -417,79 +420,79 @@ public final class ReasoningKernel {
 	// get access to internal structures
 	/** @throw an exception if no TBox found */
 	private void checkTBox() {
-		if (pTBox == null) {
+		if (this.pTBox == null) {
 			throw new ReasonerInternalException("KB Not Initialised");
 		}
 	}
 
 	/** get RW access to TBox */
 	private TBox getTBox() {
-		checkTBox();
-		return pTBox;
+		this.checkTBox();
+		return this.pTBox;
 	}
 
 	/** clear TBox and related structures; keep ontology in place */
 	private void clearTBox() {
-		pTBox = null;
-		pET = null;
+		this.pTBox = null;
+		this.pET = null;
 		//D2I = null;
 	}
 
 	/** get RW access to Object RoleMaster from TBox */
 	private RoleMaster getORM() {
-		return getTBox().getORM();
+		return this.getTBox().getORM();
 	}
 
 	/** get RW access to Data RoleMaster from TBox */
 	private RoleMaster getDRM() {
-		return getTBox().getDRM();
+		return this.getTBox().getDRM();
 	}
 
 	/** get access to the concept hierarchy */
 	private Taxonomy getCTaxonomy() {
-		if (!isKBClassified()) {
+		if (!this.isKBClassified()) {
 			throw new ReasonerInternalException(
 					"No access to concept taxonomy: ontology not classified");
 		}
-		return getTBox().getTaxonomy();
+		return this.getTBox().getTaxonomy();
 	}
 
 	/** get access to the object role hierarchy */
 	private Taxonomy getORTaxonomy() {
-		if (!isKBPreprocessed()) {
+		if (!this.isKBPreprocessed()) {
 			throw new ReasonerInternalException(
 					"No access to the object role taxonomy: ontology not preprocessed");
 		}
-		return getORM().getTaxonomy();
+		return this.getORM().getTaxonomy();
 	}
 
 	/** get access to the data role hierarchy */
 	private Taxonomy getDRTaxonomy() {
-		if (!isKBPreprocessed()) {
+		if (!this.isKBPreprocessed()) {
 			throw new ReasonerInternalException(
 					"No access to the data role taxonomy: ontology not preprocessed");
 		}
-		return getDRM().getTaxonomy();
+		return this.getDRM().getTaxonomy();
 	}
 
 	// transformation methods
 	/** get individual by the TIndividualExpr */
 	private Individual getIndividual(final IndividualExpression i, final String reason) {
-		DLTree I = e(i);
+		DLTree I = this.e(i);
 		if (I == null) {
 			throw new ReasonerInternalException(reason);
 		}
-		return (Individual) getTBox().getCI(I);
+		return (Individual) this.getTBox().getCI(I);
 	}
 
 	/** get role by the TRoleExpr */
 	private Role getRole(final RoleExpression r, final String reason) {
-		return Role.resolveRole(e(r));
+		return Role.resolveRole(this.e(r));
 	}
 
 	/** get taxonomy of the property wrt it's name */
 	private Taxonomy getTaxonomy(final Role R) {
-		return R.isDataRole() ? getDRTaxonomy() : getORTaxonomy();
+		return R.isDataRole() ? this.getDRTaxonomy() : this.getORTaxonomy();
 	}
 
 	/** get taxonomy vertext of the property wrt it's name */
@@ -498,33 +501,33 @@ public final class ReasoningKernel {
 	}
 
 	private JFactReasonerConfiguration getOptions() {
-		return kernelOptions;
+		return this.kernelOptions;
 	}
 
 	/** return classification status of KB */
 	public boolean isKBPreprocessed() {
-		return getStatus().ordinal() >= kbCChecked.ordinal();
+		return this.getStatus().ordinal() >= kbCChecked.ordinal();
 	}
 
 	/** return classification status of KB */
 	public boolean isKBClassified() {
-		return getStatus().ordinal() >= kbClassified.ordinal();
+		return this.getStatus().ordinal() >= kbClassified.ordinal();
 	}
 
 	/** return realistion status of KB */
 	public boolean isKBRealised() {
-		return getStatus().ordinal() >= kbRealised.ordinal();
+		return this.getStatus().ordinal() >= kbRealised.ordinal();
 	}
 
 	/** set top/bottom role names to use them in the related output */
 	public void setTopBottomRoleNames(final String topO, final String botO,
 			final String topD, final String botD) {
-		topORoleName = topO;
-		botORoleName = botO;
-		topDRoleName = topD;
-		botDRoleName = botD;
-		ontology.getExpressionManager().setTopBottomRoles(topORoleName, botORoleName,
-				topDRoleName, botDRoleName);
+		this.topORoleName = topO;
+		this.botORoleName = botO;
+		this.topDRoleName = topD;
+		this.botDRoleName = botD;
+		this.ontology.getExpressionManager().setTopBottomRoles(this.topORoleName,
+				this.botORoleName, this.topDRoleName, this.botDRoleName);
 	}
 
 	/**
@@ -532,8 +535,8 @@ public final class ReasoningKernel {
 	 * TBox
 	 */
 	public void writeReasoningResult(final LogAdapter o, final long time) {
-		getTBox().clearQueryConcept(); // get rid of the query leftovers
-		getTBox().writeReasoningResult(time);
+		this.getTBox().clearQueryConcept(); // get rid of the query leftovers
+		this.getTBox().writeReasoningResult(time);
 	}
 
 	// helper methods to query properties of roles
@@ -541,10 +544,12 @@ public final class ReasoningKernel {
 	private boolean checkFunctionality(final Role R) {
 		// R is transitive iff \ER.C and \ER.\not C is unsatisfiable
 		DLTree tmp = DLTreeFactory.createSNFExists(DLTreeFactory.createRole(R).copy(),
-				DLTreeFactory.createSNFNot(getFreshFiller(R)));
-		tmp = DLTreeFactory.createSNFAnd(tmp, DLTreeFactory.createSNFExists(
-				DLTreeFactory.createRole(R), getFreshFiller(R)));
-		return !checkSatTree(tmp);
+				DLTreeFactory.createSNFNot(this.getFreshFiller(R)));
+		tmp = DLTreeFactory.createSNFAnd(
+				tmp,
+				DLTreeFactory.createSNFExists(DLTreeFactory.createRole(R),
+						this.getFreshFiller(R)));
+		return !this.checkSatTree(tmp);
 	}
 
 	/** @return true if R is functional; set the value for R if necessary */
@@ -552,7 +557,7 @@ public final class ReasoningKernel {
 		if (!R.isFunctionalityKnown()) {
 			//			DLTreeFactory.buildTree(new Lexeme(R
 			//					.isDataRole() ? Token.DNAME : Token.RNAME,
-			R.setFunctional(checkFunctionality(R));
+			R.setFunctional(this.checkFunctionality(R));
 		}
 		return R.isFunctional();
 	}
@@ -561,30 +566,30 @@ public final class ReasoningKernel {
 	private boolean checkTransitivity(final DLTree R) {
 		// R is transitive iff \ER.\ER.C and \AR.\not C is unsatisfiable
 		DLTree tmp = DLTreeFactory.createSNFExists(R.copy(),
-				DLTreeFactory.createSNFNot(getTBox().getFreshConcept()));
+				DLTreeFactory.createSNFNot(this.getTBox().getFreshConcept()));
 		tmp = DLTreeFactory.createSNFExists(R.copy(), tmp);
 		tmp = DLTreeFactory.createSNFAnd(tmp,
-				DLTreeFactory.createSNFForall(R, getTBox().getFreshConcept()));
-		return !checkSatTree(tmp);
+				DLTreeFactory.createSNFForall(R, this.getTBox().getFreshConcept()));
+		return !this.checkSatTree(tmp);
 	}
 
 	/** @return true if R is symmetric wrt ontology */
 	private boolean checkSymmetry(final DLTree R) {
 		// R is symmetric iff C and \ER.\AR.(not C) is unsatisfiable
 		DLTree tmp = DLTreeFactory.createSNFForall(R.copy(),
-				DLTreeFactory.createSNFNot(getTBox().getFreshConcept()));
-		tmp = DLTreeFactory.createSNFAnd(getTBox().getFreshConcept(),
+				DLTreeFactory.createSNFNot(this.getTBox().getFreshConcept()));
+		tmp = DLTreeFactory.createSNFAnd(this.getTBox().getFreshConcept(),
 				DLTreeFactory.createSNFExists(R, tmp));
-		return !checkSatTree(tmp);
+		return !this.checkSatTree(tmp);
 	}
 
 	/** @return true if R is reflexive wrt ontology */
 	private boolean checkReflexivity(final DLTree R) {
 		// R is reflexive iff C and \AR.(not C) is unsatisfiable
 		DLTree tmp = DLTreeFactory.createSNFForall(R,
-				DLTreeFactory.createSNFNot(getTBox().getFreshConcept()));
-		tmp = DLTreeFactory.createSNFAnd(getTBox().getFreshConcept(), tmp);
-		return !checkSatTree(tmp);
+				DLTreeFactory.createSNFNot(this.getTBox().getFreshConcept()));
+		tmp = DLTreeFactory.createSNFAnd(this.getTBox().getFreshConcept(), tmp);
+		return !this.checkSatTree(tmp);
 	}
 
 	/** @return true if R [= S wrt ontology */
@@ -603,220 +608,221 @@ public final class ReasoningKernel {
 		}
 		// R [= S iff \ER.C and \AS.(not C) is unsatisfiable
 		DLTree tmp = DLTreeFactory.createSNFForall(DLTreeFactory.createRole(S),
-				DLTreeFactory.createSNFNot(getFreshFiller(S)));
-		tmp = DLTreeFactory.createSNFAnd(DLTreeFactory.createSNFExists(
-				DLTreeFactory.createRole(R), getFreshFiller(R)), tmp);
-		return !checkSatTree(tmp);
+				DLTreeFactory.createSNFNot(this.getFreshFiller(S)));
+		tmp = DLTreeFactory.createSNFAnd(
+				DLTreeFactory.createSNFExists(DLTreeFactory.createRole(R),
+						this.getFreshFiller(R)), tmp);
+		return !this.checkSatTree(tmp);
 	}
 
 	/** get access to an expression manager */
 	public ExpressionManager getExpressionManager() {
-		return ontology.getExpressionManager();
+		return this.ontology.getExpressionManager();
 	}
 
 	/** create new KB */
 	private boolean newKB() {
-		if (pTBox != null) {
+		if (this.pTBox != null) {
 			return true;
 		}
-		pTBox = new TBox(datatypeFactory, getOptions(), topORoleName, botORoleName,
-				topDRoleName, botDRoleName, interrupted);
-		pET = new ExpressionTranslator(pTBox);
-		initCacheAndFlags();
+		this.pTBox = new TBox(this.datatypeFactory, this.getOptions(), this.topORoleName,
+				this.botORoleName, this.topDRoleName, this.botDRoleName, this.interrupted);
+		this.pET = new ExpressionTranslator(this.pTBox);
+		this.initCacheAndFlags();
 		return false;
 	}
 
 	/** delete existed KB */
 	private boolean releaseKB() {
-		clearTBox();
-		ontology.clear();
+		this.clearTBox();
+		this.ontology.clear();
 		return false;
 	}
 
 	/** reset current KB */
 	public boolean clearKB() {
-		if (pTBox == null) {
+		if (this.pTBox == null) {
 			return true;
 		}
-		return releaseKB() || newKB();
+		return this.releaseKB() || this.newKB();
 	}
 
 	//	TELLS interface
 	// Declaration axioms
 	/** axiom declare(x) */
 	public Axiom declare(final OWLAxiom ax, final Expression C) {
-		return ontology.add(new AxiomDeclaration(ax, C));
+		return this.ontology.add(new AxiomDeclaration(ax, C));
 	}
 
 	// Concept axioms
 	/** axiom C [= D */
 	public Axiom impliesConcepts(final OWLAxiom ax, final ConceptExpression C,
 			final ConceptExpression D) {
-		return ontology.add(new AxiomConceptInclusion(ax, C, D));
+		return this.ontology.add(new AxiomConceptInclusion(ax, C, D));
 	}
 
 	/** axiom C1 = ... = Cn */
 	public Axiom equalConcepts(final OWLAxiom ax, final List<Expression> l) {
-		return ontology.add(new AxiomEquivalentConcepts(ax, l));
+		return this.ontology.add(new AxiomEquivalentConcepts(ax, l));
 	}
 
 	/** axiom C1 != ... != Cn */
 	public Axiom disjointConcepts(final OWLAxiom ax, final List<Expression> l) {
-		return ontology.add(new AxiomDisjointConcepts(ax, l));
+		return this.ontology.add(new AxiomDisjointConcepts(ax, l));
 	}
 
 	// Role axioms
 	/** R = Inverse(S) */
 	public Axiom setInverseRoles(final OWLAxiom ax, final ObjectRoleExpression R,
 			final ObjectRoleExpression S) {
-		return ontology.add(new AxiomRoleInverse(ax, R, S));
+		return this.ontology.add(new AxiomRoleInverse(ax, R, S));
 	}
 
 	/** axiom (R [= S) */
 	public Axiom impliesORoles(final OWLAxiom ax, final ObjectRoleComplexExpression R,
 			final ObjectRoleExpression S) {
-		return ontology.add(new AxiomORoleSubsumption(ax, R, S));
+		return this.ontology.add(new AxiomORoleSubsumption(ax, R, S));
 	}
 
 	/** axiom (R [= S) */
 	public Axiom impliesDRoles(final OWLAxiom ax, final DataRoleExpression R,
 			final DataRoleExpression S) {
-		return ontology.add(new AxiomDRoleSubsumption(ax, R, S));
+		return this.ontology.add(new AxiomDRoleSubsumption(ax, R, S));
 	}
 
 	/** axiom R1 = R2 = ... */
 	public Axiom equalORoles(final OWLAxiom ax, final List<Expression> l) {
-		return ontology.add(new AxiomEquivalentORoles(ax, l));
+		return this.ontology.add(new AxiomEquivalentORoles(ax, l));
 	}
 
 	/** axiom R1 = R2 = ... */
 	public Axiom equalDRoles(final OWLAxiom ax, final List<Expression> l) {
-		return ontology.add(new AxiomEquivalentDRoles(ax, l));
+		return this.ontology.add(new AxiomEquivalentDRoles(ax, l));
 	}
 
 	/** axiom R1 != R2 != ... */
 	public Axiom disjointORoles(final OWLAxiom ax, final List<Expression> l) {
-		return ontology.add(new AxiomDisjointORoles(ax, l));
+		return this.ontology.add(new AxiomDisjointORoles(ax, l));
 	}
 
 	/** axiom R1 != R2 != ... */
 	public Axiom disjointDRoles(final OWLAxiom ax, final List<Expression> l) {
-		return ontology.add(new AxiomDisjointDRoles(ax, l));
+		return this.ontology.add(new AxiomDisjointDRoles(ax, l));
 	}
 
 	/** Domain (R C) */
 	public Axiom setODomain(final OWLAxiom ax, final ObjectRoleExpression R,
 			final ConceptExpression C) {
-		return ontology.add(new AxiomORoleDomain(ax, R, C));
+		return this.ontology.add(new AxiomORoleDomain(ax, R, C));
 	}
 
 	/** Domain (R C) */
 	public Axiom setDDomain(final OWLAxiom ax, final DataRoleExpression R,
 			final ConceptExpression C) {
-		return ontology.add(new AxiomDRoleDomain(ax, R, C));
+		return this.ontology.add(new AxiomDRoleDomain(ax, R, C));
 	}
 
 	/** Range (R C) */
 	public Axiom setORange(final OWLAxiom ax, final ObjectRoleExpression R,
 			final ConceptExpression C) {
-		return ontology.add(new AxiomORoleRange(ax, R, C));
+		return this.ontology.add(new AxiomORoleRange(ax, R, C));
 	}
 
 	/** Range (R E) */
 	public Axiom setDRange(final OWLAxiom ax, final DataRoleExpression R,
 			final DataExpression E) {
-		return ontology.add(new AxiomDRoleRange(ax, R, E));
+		return this.ontology.add(new AxiomDRoleRange(ax, R, E));
 	}
 
 	/** Transitive (R) */
 	public Axiom setTransitive(final OWLAxiom ax, final ObjectRoleExpression R) {
-		return ontology.add(new AxiomRoleTransitive(ax, R));
+		return this.ontology.add(new AxiomRoleTransitive(ax, R));
 	}
 
 	/** Reflexive (R) */
 	public Axiom setReflexive(final OWLAxiom ax, final ObjectRoleExpression R) {
-		return ontology.add(new AxiomRoleReflexive(ax, R));
+		return this.ontology.add(new AxiomRoleReflexive(ax, R));
 	}
 
 	/** Irreflexive (R): Domain(R) = \neg ER.Self */
 	public Axiom setIrreflexive(final OWLAxiom ax, final ObjectRoleExpression R) {
-		return ontology.add(new AxiomRoleIrreflexive(ax, R));
+		return this.ontology.add(new AxiomRoleIrreflexive(ax, R));
 	}
 
 	/** Symmetric (R): R [= R^- */
 	public Axiom setSymmetric(final OWLAxiom ax, final ObjectRoleExpression R) {
-		return ontology.add(new AxiomRoleSymmetric(ax, R));
+		return this.ontology.add(new AxiomRoleSymmetric(ax, R));
 	}
 
 	/** AntySymmetric (R): disjoint(R,R^-) */
 	public Axiom setAsymmetric(final OWLAxiom ax, final ObjectRoleExpression R) {
-		return ontology.add(new AxiomRoleAsymmetric(ax, R));
+		return this.ontology.add(new AxiomRoleAsymmetric(ax, R));
 	}
 
 	/** Functional (R) */
 	public Axiom setOFunctional(final OWLAxiom ax, final ObjectRoleExpression R) {
-		return ontology.add(new AxiomORoleFunctional(ax, R));
+		return this.ontology.add(new AxiomORoleFunctional(ax, R));
 	}
 
 	/** Functional (R) */
 	public Axiom setDFunctional(final OWLAxiom ax, final DataRoleExpression R) {
-		return ontology.add(new AxiomDRoleFunctional(ax, R));
+		return this.ontology.add(new AxiomDRoleFunctional(ax, R));
 	}
 
 	/** InverseFunctional (R) */
 	public Axiom setInverseFunctional(final OWLAxiom ax, final ObjectRoleExpression R) {
-		return ontology.add(new AxiomRoleInverseFunctional(ax, R));
+		return this.ontology.add(new AxiomRoleInverseFunctional(ax, R));
 	}
 
 	// Individual axioms
 	/** axiom I e C */
 	public Axiom instanceOf(final OWLAxiom ax, final IndividualExpression I,
 			final ConceptExpression C) {
-		return ontology.add(new AxiomInstanceOf(ax, I, C));
+		return this.ontology.add(new AxiomInstanceOf(ax, I, C));
 	}
 
 	/** axiom <I,J>:R */
 	public Axiom relatedTo(final OWLAxiom ax, final IndividualExpression I,
 			final ObjectRoleExpression R, final IndividualExpression J) {
-		return ontology.add(new AxiomRelatedTo(ax, I, R, J));
+		return this.ontology.add(new AxiomRelatedTo(ax, I, R, J));
 	}
 
 	/** axiom <I,J>:\neg R */
 	public Axiom relatedToNot(final OWLAxiom ax, final IndividualExpression I,
 			final ObjectRoleExpression R, final IndividualExpression J) {
-		return ontology.add(new AxiomRelatedToNot(ax, I, R, J));
+		return this.ontology.add(new AxiomRelatedToNot(ax, I, R, J));
 	}
 
 	/** axiom (value I A V) */
 	public Axiom valueOf(final OWLAxiom ax, final IndividualExpression I,
 			final DataRoleExpression A, final Literal<?> V) {
-		return ontology.add(new AxiomValueOf(ax, I, A, V));
+		return this.ontology.add(new AxiomValueOf(ax, I, A, V));
 	}
 
 	/** axiom <I,V>:\neg A */
 	public Axiom valueOfNot(final OWLAxiom ax, final IndividualExpression I,
 			final DataRoleExpression A, final Literal<?> V) {
-		return ontology.add(new AxiomValueOfNot(ax, I, A, V));
+		return this.ontology.add(new AxiomValueOfNot(ax, I, A, V));
 	}
 
 	/** same individuals */
 	public Axiom processSame(final OWLAxiom ax, final List<Expression> l) {
-		return ontology.add(new AxiomSameIndividuals(ax, l));
+		return this.ontology.add(new AxiomSameIndividuals(ax, l));
 	}
 
 	/** different individuals */
 	public Axiom processDifferent(final OWLAxiom ax, final List<Expression> l) {
-		return ontology.add(new AxiomDifferentIndividuals(ax, l));
+		return this.ontology.add(new AxiomDifferentIndividuals(ax, l));
 	}
 
 	/** let all concept expressions in the ArgQueue to be fairness constraints */
 	public Axiom setFairnessConstraint(final OWLAxiom ax, final List<Expression> l) {
-		return ontology.add(new AxiomFairnessConstraint(ax, l));
+		return this.ontology.add(new AxiomFairnessConstraint(ax, l));
 	}
 
 	/** retract an axiom */
 	public void retract(final Axiom axiom) {
-		ontology.retract(axiom);
+		this.ontology.retract(axiom);
 	}
 
 	//* ASK part
@@ -828,35 +834,35 @@ public final class ReasoningKernel {
 	 */
 	/** return consistency status of KB */
 	public boolean isKBConsistent() {
-		if (getStatus().ordinal() <= kbLoading.ordinal()) {
-			processKB(kbCChecked);
+		if (this.getStatus().ordinal() <= kbLoading.ordinal()) {
+			this.processKB(kbCChecked);
 		}
-		return getTBox().isConsistent();
+		return this.getTBox().isConsistent();
 	}
 
 	/** ensure that KB is preprocessed/consistence checked */
 	private void preprocessKB() {
-		if (!isKBConsistent()) {
+		if (!this.isKBConsistent()) {
 			throw new InconsistentOntologyException();
 		}
 	}
 
 	/** ensure that KB is classified */
 	public void classifyKB() {
-		if (!isKBClassified()) {
-			processKB(kbClassified);
+		if (!this.isKBClassified()) {
+			this.processKB(kbClassified);
 		}
-		if (!isKBConsistent()) {
+		if (!this.isKBConsistent()) {
 			throw new InconsistentOntologyException();
 		}
 	}
 
 	/** ensure that KB is realised */
 	public void realiseKB() {
-		if (!isKBRealised()) {
-			processKB(kbRealised);
+		if (!this.isKBRealised()) {
+			this.processKB(kbRealised);
 		}
-		if (!isKBConsistent()) {
+		if (!this.isKBConsistent()) {
 			throw new InconsistentOntologyException();
 		}
 	}
@@ -864,34 +870,34 @@ public final class ReasoningKernel {
 	// role info retrieval
 	/** @return true iff object role is functional */
 	public boolean isFunctional(final ObjectRoleExpression R) {
-		preprocessKB(); // ensure KB is ready to answer the query
-		Role r = getRole(R, "Role expression expected in isFunctional()");
+		this.preprocessKB(); // ensure KB is ready to answer the query
+		Role r = this.getRole(R, "Role expression expected in isFunctional()");
 		if (r.isTop()) {
 			return true; // universal role is symmetric
 		}
 		if (r.isBottom()) {
 			return true; // empty role is symmetric
 		}
-		return getFunctionality(r);
+		return this.getFunctionality(r);
 	}
 
 	/** @return true iff data role is functional */
 	public boolean isFunctional(final DataRoleExpression R) {
-		preprocessKB(); // ensure KB is ready to answer the query
-		Role r = getRole(R, "Role expression expected in isFunctional()");
+		this.preprocessKB(); // ensure KB is ready to answer the query
+		Role r = this.getRole(R, "Role expression expected in isFunctional()");
 		if (r.isTop()) {
 			return true; // universal role is symmetric
 		}
 		if (r.isBottom()) {
 			return true; // empty role is symmetric
 		}
-		return getFunctionality(r);
+		return this.getFunctionality(r);
 	}
 
 	/** @return true iff role is inverse-functional */
 	public boolean isInverseFunctional(final ObjectRoleExpression R) {
-		preprocessKB(); // ensure KB is ready to answer the query
-		Role r = getRole(R, "Role expression expected in isInverseFunctional()")
+		this.preprocessKB(); // ensure KB is ready to answer the query
+		Role r = this.getRole(R, "Role expression expected in isInverseFunctional()")
 				.inverse();
 		if (r.isTop()) {
 			return true; // universal role is symmetric
@@ -899,13 +905,13 @@ public final class ReasoningKernel {
 		if (r.isBottom()) {
 			return true; // empty role is symmetric
 		}
-		return getFunctionality(r);
+		return this.getFunctionality(r);
 	}
 
 	/** @return true iff role is transitive */
 	public boolean isTransitive(final ObjectRoleExpression R) {
-		preprocessKB(); // ensure KB is ready to answer the query
-		Role r = getRole(R, "Role expression expected in isTransitive()");
+		this.preprocessKB(); // ensure KB is ready to answer the query
+		Role r = this.getRole(R, "Role expression expected in isTransitive()");
 		if (r.isTop()) {
 			return true; // universal role is symmetric
 		}
@@ -913,15 +919,15 @@ public final class ReasoningKernel {
 			return true; // empty role is symmetric
 		}
 		if (!r.isTransitivityKnown()) {
-			r.setTransitive(checkTransitivity(e(R)));
+			r.setTransitive(this.checkTransitivity(this.e(R)));
 		}
 		return r.isTransitive();
 	}
 
 	/** @return true iff role is symmetric */
 	public boolean isSymmetric(final ObjectRoleExpression R) {
-		preprocessKB(); // ensure KB is ready to answer the query
-		Role r = getRole(R, "Role expression expected in isSymmetric()");
+		this.preprocessKB(); // ensure KB is ready to answer the query
+		Role r = this.getRole(R, "Role expression expected in isSymmetric()");
 		if (r.isTop()) {
 			return true; // universal role is symmetric
 		}
@@ -929,15 +935,15 @@ public final class ReasoningKernel {
 			return true; // empty role is symmetric
 		}
 		if (!r.isSymmetryKnown()) {
-			r.setSymmetric(checkSymmetry(e(R)));
+			r.setSymmetric(this.checkSymmetry(this.e(R)));
 		}
 		return r.isSymmetric();
 	}
 
 	/** @return true iff role is asymmetric */
 	public boolean isAsymmetric(final ObjectRoleExpression R) {
-		preprocessKB(); // ensure KB is ready to answer the query
-		Role r = getRole(R, "Role expression expected in isAsymmetric()");
+		this.preprocessKB(); // ensure KB is ready to answer the query
+		Role r = this.getRole(R, "Role expression expected in isAsymmetric()");
 		if (r.isTop()) {
 			return true; // universal role is symmetric
 		}
@@ -945,15 +951,15 @@ public final class ReasoningKernel {
 			return true; // empty role is symmetric
 		}
 		if (!r.isAsymmetryKnown()) {
-			r.setAsymmetric(getTBox().isDisjointRoles(r, r.inverse()));
+			r.setAsymmetric(this.getTBox().isDisjointRoles(r, r.inverse()));
 		}
 		return r.isAsymmetric();
 	}
 
 	/** @return true iff role is reflexive */
 	public boolean isReflexive(final ObjectRoleExpression R) {
-		preprocessKB(); // ensure KB is ready to answer the query
-		Role r = getRole(R, "Role expression expected in isReflexive()");
+		this.preprocessKB(); // ensure KB is ready to answer the query
+		Role r = this.getRole(R, "Role expression expected in isReflexive()");
 		if (r.isTop()) {
 			return true; // universal role is symmetric
 		}
@@ -961,15 +967,15 @@ public final class ReasoningKernel {
 			return true; // empty role is symmetric
 		}
 		if (!r.isReflexivityKnown()) {
-			r.setReflexive(checkReflexivity(e(R)));
+			r.setReflexive(this.checkReflexivity(this.e(R)));
 		}
 		return r.isReflexive();
 	}
 
 	/** @return true iff role is irreflexive */
 	public boolean isIrreflexive(final ObjectRoleExpression R) {
-		preprocessKB(); // ensure KB is ready to answer the query
-		Role r = getRole(R, "Role expression expected in isIrreflexive()");
+		this.preprocessKB(); // ensure KB is ready to answer the query
+		Role r = this.getRole(R, "Role expression expected in isIrreflexive()");
 		if (r.isTop()) {
 			return true; // universal role is symmetric
 		}
@@ -977,7 +983,7 @@ public final class ReasoningKernel {
 			return true; // empty role is symmetric
 		}
 		if (!r.isIrreflexivityKnown()) {
-			r.setIrreflexive(getTBox().isIrreflexive(r));
+			r.setIrreflexive(this.getTBox().isIrreflexive(r));
 		}
 		return r.isIrreflexive();
 	}
@@ -985,50 +991,50 @@ public final class ReasoningKernel {
 	/** @return true iff two roles are disjoint */
 	public boolean isDisjointRoles(final ObjectRoleExpression R,
 			final ObjectRoleExpression S) {
-		preprocessKB(); // ensure KB is ready to answer the query
-		Role r = getRole(R, "Role expression expected in isDisjointRoles()");
-		Role s = getRole(S, "Role expression expected in isDisjointRoles()");
+		this.preprocessKB(); // ensure KB is ready to answer the query
+		Role r = this.getRole(R, "Role expression expected in isDisjointRoles()");
+		Role s = this.getRole(S, "Role expression expected in isDisjointRoles()");
 		if (r.isTop() || s.isTop()) {
 			return false; // universal role is not disjoint with anything
 		}
 		if (r.isBottom() || s.isBottom()) {
 			return true; // empty role is disjoint with everything
 		}
-		return getTBox().isDisjointRoles(r, s);
+		return this.getTBox().isDisjointRoles(r, s);
 	}
 
 	/** @return true iff two roles are disjoint */
 	public boolean isDisjointRoles(final DataRoleExpression R, final DataRoleExpression S) {
-		preprocessKB(); // ensure KB is ready to answer the query
-		Role r = getRole(R, "Role expression expected in isDisjointRoles()");
-		Role s = getRole(S, "Role expression expected in isDisjointRoles()");
+		this.preprocessKB(); // ensure KB is ready to answer the query
+		Role r = this.getRole(R, "Role expression expected in isDisjointRoles()");
+		Role s = this.getRole(S, "Role expression expected in isDisjointRoles()");
 		if (r.isTop() || s.isTop()) {
 			return false; // universal role is not disjoint with anything
 		}
 		if (r.isBottom() || s.isBottom()) {
 			return true; // empty role is disjoint with everything
 		}
-		return getTBox().isDisjointRoles(r, s);
+		return this.getTBox().isDisjointRoles(r, s);
 	}
 
 	/** @return true if R is a sub-role of S */
 	public boolean isSubRoles(final ObjectRoleComplexExpression R,
 			final ObjectRoleExpression S) {
-		preprocessKB(); // ensure KB is ready to answer the query
-		Role r = getRole(R, "Role expression expected in isSubRoles()");
-		Role s = getRole(S, "Role expression expected in isSubRoles()");
+		this.preprocessKB(); // ensure KB is ready to answer the query
+		Role r = this.getRole(R, "Role expression expected in isSubRoles()");
+		Role s = this.getRole(S, "Role expression expected in isSubRoles()");
 		if (r.isBottom() || s.isTop()) {
 			return true; // \bot [= X [= \top
 		}
 		if (r.isTop() && s.isBottom()) {
 			return false; // as \top [= \bot leads to inconsistent ontology
 		}
-		if (getExpressionManager().isEmptyRole(R)
-				|| getExpressionManager().isUniversalRole(S)) {
+		if (this.getExpressionManager().isEmptyRole(R)
+				|| this.getExpressionManager().isUniversalRole(S)) {
 			return true; // \bot [= X [= \top
 		}
-		if (getExpressionManager().isUniversalRole(R)
-				&& getExpressionManager().isEmptyRole(S)) {
+		if (this.getExpressionManager().isUniversalRole(R)
+				&& this.getExpressionManager().isEmptyRole(S)) {
 			return false; // as \top [= \bot leads to inconsistent ontology
 		}
 		// told case first
@@ -1038,15 +1044,15 @@ public final class ReasoningKernel {
 		// check the general case
 		// FIXME!! cache it later
 		//DLTree r = e(R), s = e(S);
-		return checkRoleSubsumption(r, s);
+		return this.checkRoleSubsumption(r, s);
 	}
 
 	// single satisfiability
 	/** @return true iff C is satisfiable */
 	public boolean isSatisfiable(final ConceptExpression C) {
-		preprocessKB();
+		this.preprocessKB();
 		try {
-			return checkSat(C);
+			return this.checkSat(C);
 		} catch (OWLRuntimeException crn) {
 			if (C instanceof ConceptName) {
 				// this is an unknown concept
@@ -1059,19 +1065,20 @@ public final class ReasoningKernel {
 
 	/** @return true iff C [= D holds */
 	public boolean isSubsumedBy(final ConceptExpression C, final ConceptExpression D) {
-		preprocessKB();
+		this.preprocessKB();
 		if (this.isNameOrConst(D) && this.isNameOrConst(C)) {
-			return this.checkSub(getTBox().getCI(e(C)), getTBox().getCI(e(D)));
+			return this.checkSub(this.getTBox().getCI(this.e(C)),
+					this.getTBox().getCI(this.e(D)));
 		}
-		DLTree nD = DLTreeFactory.createSNFNot(e(D));
-		return !checkSatTree(DLTreeFactory.createSNFAnd(e(C), nD));
+		DLTree nD = DLTreeFactory.createSNFNot(this.e(D));
+		return !this.checkSatTree(DLTreeFactory.createSNFAnd(this.e(C), nD));
 		//		return !this.checkSat(this.getExpressionManager().and(C,
 		//				this.getExpressionManager().not(D)));
 	}
 
 	/** @return true iff C is disjoint with D; that is, C [= \not D holds */
 	public boolean isDisjoint(final ConceptExpression C, final ConceptExpression D) {
-		return isSubsumedBy(C, getExpressionManager().not(D));
+		return this.isSubsumedBy(C, this.getExpressionManager().not(D));
 	}
 
 	/** @return true iff C is equivalent to D */
@@ -1079,11 +1086,11 @@ public final class ReasoningKernel {
 		if (C == D) {
 			return true;
 		}
-		preprocessKB();
-		if (isKBClassified()) { // try to detect C=D wrt named concepts
+		this.preprocessKB();
+		if (this.isKBClassified()) { // try to detect C=D wrt named concepts
 			if (this.isNameOrConst(D) && this.isNameOrConst(C)) {
-				TaxonomyVertex cV = getTBox().getCI(e(C)).getTaxVertex();
-				TaxonomyVertex dV = getTBox().getCI(e(D)).getTaxVertex();
+				TaxonomyVertex cV = this.getTBox().getCI(this.e(C)).getTaxVertex();
+				TaxonomyVertex dV = this.getTBox().getCI(this.e(D)).getTaxVertex();
 				if (cV == null && dV == null) {
 					return false; // 2 different fresh names
 				}
@@ -1091,72 +1098,72 @@ public final class ReasoningKernel {
 			}
 		}
 		// not classified or not named constants
-		return isSubsumedBy(C, D) && isSubsumedBy(D, C);
+		return this.isSubsumedBy(C, D) && this.isSubsumedBy(D, C);
 	}
 
 	// concept hierarchy
 	/** apply actor__apply() to all DIRECT super-concepts of [complex] C */
 	public void getSupConcepts(final ConceptExpression C, final boolean direct,
 			final Actor actor) {
-		classifyKB(); // ensure KB is ready to answer the query
+		this.classifyKB(); // ensure KB is ready to answer the query
 		this.setUpCache(C, csClassified);
-		Taxonomy tax = getCTaxonomy();
+		Taxonomy tax = this.getCTaxonomy();
 		if (direct) {
-			tax.getRelativesInfo(cachedVertex, actor, false, true, true);
+			tax.getRelativesInfo(this.cachedVertex, actor, false, true, true);
 		} else {
-			tax.getRelativesInfo(cachedVertex, actor, false, false, true);
+			tax.getRelativesInfo(this.cachedVertex, actor, false, false, true);
 		}
 	}
 
 	/** apply actor__apply() to all DIRECT sub-concepts of [complex] C */
 	public void getSubConcepts(final ConceptExpression C, final boolean direct,
 			final Actor actor) {
-		classifyKB(); // ensure KB is ready to answer the query
+		this.classifyKB(); // ensure KB is ready to answer the query
 		this.setUpCache(C, csClassified);
-		Taxonomy tax = getCTaxonomy();
-		tax.getRelativesInfo(cachedVertex, actor, false, direct, false);
+		Taxonomy tax = this.getCTaxonomy();
+		tax.getRelativesInfo(this.cachedVertex, actor, false, direct, false);
 	}
 
 	/** apply actor__apply() to all synonyms of [complex] C */
 	public void getEquivalentConcepts(final ConceptExpression C, final Actor actor) {
-		classifyKB(); // ensure KB is ready to answer the query
+		this.classifyKB(); // ensure KB is ready to answer the query
 		this.setUpCache(C, csClassified);
-		actor.apply(cachedVertex);
+		actor.apply(this.cachedVertex);
 	}
 
 	/// apply actor::apply() to all named concepts disjoint with [complex] C
 	public void getDisjointConcepts(final ConceptExpression C, final Actor actor) {
-		classifyKB(); // ensure KB is ready to answer the query
-		this.setUpCache(getExpressionManager().not(C), csClassified);
-		Taxonomy tax = getCTaxonomy();
+		this.classifyKB(); // ensure KB is ready to answer the query
+		this.setUpCache(this.getExpressionManager().not(C), csClassified);
+		Taxonomy tax = this.getCTaxonomy();
 		// we are looking for all sub-concepts of (not C) (including synonyms to it)
-		tax.getRelativesInfo(cachedVertex, actor, true, false, false);
+		tax.getRelativesInfo(this.cachedVertex, actor, true, false, false);
 	}
 
 	// role hierarchy
 	/** apply actor__apply() to all DIRECT super-roles of [complex] R */
 	public void getSupRoles(final RoleExpression r, final boolean direct,
 			final Actor actor) {
-		preprocessKB(); // ensure KB is ready to answer the query
-		Role R = getRole(r, "Role expression expected in getSupRoles()");
-		Taxonomy tax = getTaxonomy(R);
-		tax.getRelativesInfo(getTaxVertex(R), actor, false, direct, true);
+		this.preprocessKB(); // ensure KB is ready to answer the query
+		Role R = this.getRole(r, "Role expression expected in getSupRoles()");
+		Taxonomy tax = this.getTaxonomy(R);
+		tax.getRelativesInfo(this.getTaxVertex(R), actor, false, direct, true);
 	}
 
 	/** apply actor__apply() to all DIRECT sub-roles of [complex] R */
 	public void getSubRoles(final RoleExpression r, final boolean direct,
 			final Actor actor) {
-		preprocessKB(); // ensure KB is ready to answer the query
-		Role R = getRole(r, "Role expression expected in getSubRoles()");
-		Taxonomy tax = getTaxonomy(R);
-		tax.getRelativesInfo(getTaxVertex(R), actor, false, direct, false);
+		this.preprocessKB(); // ensure KB is ready to answer the query
+		Role R = this.getRole(r, "Role expression expected in getSubRoles()");
+		Taxonomy tax = this.getTaxonomy(R);
+		tax.getRelativesInfo(this.getTaxVertex(R), actor, false, direct, false);
 	}
 
 	/** apply actor__apply() to all synonyms of [complex] R */
 	public void getEquivalentRoles(final RoleExpression r, final Actor actor) {
-		preprocessKB(); // ensure KB is ready to answer the query
-		Role R = getRole(r, "Role expression expected in getEquivalentRoles()");
-		actor.apply(getTaxVertex(R));
+		this.preprocessKB(); // ensure KB is ready to answer the query
+		Role R = this.getRole(r, "Role expression expected in getEquivalentRoles()");
+		actor.apply(this.getTaxVertex(R));
 	}
 
 	// domain and range as a set of named concepts
@@ -1166,26 +1173,28 @@ public final class ReasoningKernel {
 	 */
 	public void getORoleDomain(final ObjectRoleExpression r, final boolean direct,
 			final Actor actor) {
-		classifyKB(); // ensure KB is ready to answer the query
-		this.setUpCache(getExpressionManager().exists(r, getExpressionManager().top()),
+		this.classifyKB(); // ensure KB is ready to answer the query
+		this.setUpCache(
+				this.getExpressionManager().exists(r, this.getExpressionManager().top()),
 				csClassified);
-		Taxonomy tax = getCTaxonomy();
-		tax.getRelativesInfo(cachedVertex, actor, true, direct, true);
+		Taxonomy tax = this.getCTaxonomy();
+		tax.getRelativesInfo(this.cachedVertex, actor, true, direct, true);
 	}
 
 	/// apply actor::apply() to all DIRECT NC that are in the domain of data role R
 	//template<class Actor>
 	void getDRoleDomain(final DataRoleExpression r, final boolean direct,
 			final Actor actor) {
-		classifyKB(); // ensure KB is ready to answer the query
-		this.setUpCache(getExpressionManager()
-				.exists(r, getExpressionManager().dataTop()), csClassified);
-		Taxonomy tax = getCTaxonomy();
+		this.classifyKB(); // ensure KB is ready to answer the query
+		this.setUpCache(
+				this.getExpressionManager().exists(r,
+						this.getExpressionManager().dataTop()), csClassified);
+		Taxonomy tax = this.getCTaxonomy();
 		if (direct) {
-			tax.getRelativesInfo(cachedVertex, actor, true, true, true);
+			tax.getRelativesInfo(this.cachedVertex, actor, true, true, true);
 		} else {
 			// gets all named classes that are in the domain of a role
-			tax.getRelativesInfo(cachedVertex, actor, true, false, true);
+			tax.getRelativesInfo(this.cachedVertex, actor, true, false, true);
 		}
 	}
 
@@ -1195,14 +1204,14 @@ public final class ReasoningKernel {
 	 */
 	public void getRoleRange(final ObjectRoleExpression r, final boolean direct,
 			final Actor actor) {
-		getORoleDomain(getExpressionManager().inverse(r), direct, actor);
+		this.getORoleDomain(this.getExpressionManager().inverse(r), direct, actor);
 	}
 
 	// instances
 	public void getInstances(final ConceptExpression C, final Actor actor,
 			final boolean direct) {
 		if (direct) {
-			getDirectInstances(C, actor);
+			this.getDirectInstances(C, actor);
 		} else {
 			this.getInstances(C, actor);
 		}
@@ -1210,26 +1219,26 @@ public final class ReasoningKernel {
 
 	/** apply actor__apply() to all direct instances of given [complex] C */
 	public void getDirectInstances(final ConceptExpression C, final Actor actor) {
-		realiseKB(); // ensure KB is ready to answer the query
+		this.realiseKB(); // ensure KB is ready to answer the query
 		this.setUpCache(C, csClassified);
 		// implement 1-level check by hand
 		// if the root vertex contains individuals -- we are done
-		if (actor.apply(cachedVertex)) {
+		if (actor.apply(this.cachedVertex)) {
 			return;
 		}
 		// if not, just go 1 level down and apply the actor regardless of what's found
 		// FIXME!! check again after bucket-method will be implemented
-		for (TaxonomyVertex p : cachedVertex.neigh(/* upDirection= */false)) {
+		for (TaxonomyVertex p : this.cachedVertex.neigh(/* upDirection= */false)) {
 			actor.apply(p);
 		}
 	}
 
 	/** apply actor__apply() to all instances of given [complex] C */
 	public void getInstances(final ConceptExpression C, final Actor actor) { // FIXME!! check for Racer's/IS approach
-		realiseKB(); // ensure KB is ready to answer the query
+		this.realiseKB(); // ensure KB is ready to answer the query
 		this.setUpCache(C, csClassified);
-		Taxonomy tax = getCTaxonomy();
-		tax.getRelativesInfo(cachedVertex, actor, true, false, false);
+		Taxonomy tax = this.getCTaxonomy();
+		tax.getRelativesInfo(this.cachedVertex, actor, true, false, false);
 	}
 
 	/**
@@ -1238,27 +1247,27 @@ public final class ReasoningKernel {
 	 */
 	public void getTypes(final IndividualExpression I, final boolean direct,
 			final Actor actor) {
-		realiseKB(); // ensure KB is ready to answer the query
-		this.setUpCache(getExpressionManager().oneOf(I), csClassified);
-		Taxonomy tax = getCTaxonomy();
-		tax.getRelativesInfo(cachedVertex, actor, true, direct, true);
+		this.realiseKB(); // ensure KB is ready to answer the query
+		this.setUpCache(this.getExpressionManager().oneOf(I), csClassified);
+		Taxonomy tax = this.getCTaxonomy();
+		tax.getRelativesInfo(this.cachedVertex, actor, true, direct, true);
 	}
 
 	/** apply actor__apply() to all synonyms of an individual I */
 	public void getSameAs(final IndividualExpression I, final Actor actor) {
-		realiseKB(); // ensure KB is ready to answer the query
-		getEquivalentConcepts(getExpressionManager().oneOf(I), actor);
+		this.realiseKB(); // ensure KB is ready to answer the query
+		this.getEquivalentConcepts(this.getExpressionManager().oneOf(I), actor);
 	}
 
 	/** @return true iff I and J refer to the same individual */
 	public boolean isSameIndividuals(final IndividualExpression I,
 			final IndividualExpression J) {
-		realiseKB();
-		Individual i = getIndividual(I,
+		this.realiseKB();
+		Individual i = this.getIndividual(I,
 				"Only known individuals are allowed in the isSameAs()");
-		Individual j = getIndividual(J,
+		Individual j = this.getIndividual(J,
 				"Only known individuals are allowed in the isSameAs()");
-		return getTBox().isSameIndividuals(i, j);
+		return this.getTBox().isSameIndividuals(i, j);
 	}
 
 	//----------------------------------------------------------------------------------
@@ -1266,49 +1275,49 @@ public final class ReasoningKernel {
 	//----------------------------------------------------------------------------------
 	/// build a completion tree for a concept expression C (no caching as it breaks the idea of KE). @return the root node
 	public DlCompletionTree buildCompletionTree(final ConceptExpression C) {
-		preprocessKB();
+		this.preprocessKB();
 		this.setUpCache(C, csSat);
-		DlCompletionTree ret = getTBox().buildCompletionTree(cachedConcept);
+		DlCompletionTree ret = this.getTBox().buildCompletionTree(this.cachedConcept);
 		// init KB after the sat test to reduce the number of DAG adjustments
-		if (KE == null) {
-			KE = new KnowledgeExplorer(getTBox(), getExpressionManager());
+		if (this.KE == null) {
+			this.KE = new KnowledgeExplorer(this.getTBox(), this.getExpressionManager());
 		}
 		return ret;
 		//	return getTBox().buildCompletionTree(cachedConcept);
 	}
 
 	public KnowledgeExplorer getKnowledgeExplorer() {
-		return KE;
+		return this.KE;
 	}
 
 	/// build the set of data neighbours of a NODE, put the set of data roles into the RESULT variable
 	public Set<RoleExpression> getDataRoles(final DlCompletionTree node,
 			final boolean onlyDet) {
-		return KE.getDataRoles(node, onlyDet);
+		return this.KE.getDataRoles(node, onlyDet);
 	}
 
 	/// build the set of object neighbours of a NODE, put the set of object roles and inverses into the RESULT variable
 	public Set<RoleExpression> getObjectRoles(final DlCompletionTree node,
 			final boolean onlyDet, final boolean needIncoming) {
-		return KE.getObjectRoles(node, onlyDet, needIncoming);
+		return this.KE.getObjectRoles(node, onlyDet, needIncoming);
 	}
 
 	/// build the set of neighbours of a NODE via role ROLE; put the resulting list into RESULT
 	public List<DlCompletionTree> getNeighbours(final DlCompletionTree node,
 			final RoleExpression role) {
-		return KE.getNeighbours(node,
-				getRole(role, "Role expression expected in getNeighbours() method"));
+		return this.KE.getNeighbours(node,
+				this.getRole(role, "Role expression expected in getNeighbours() method"));
 	}
 
 	/// put into RESULT all the expressions from the NODE label; if ONLYDET is true, return only deterministic elements
 	public List<ConceptExpression> getObjectLabel(final DlCompletionTree node,
 			final boolean onlyDet) {
-		return KE.getObjectLabel(node, onlyDet);
+		return this.KE.getObjectLabel(node, onlyDet);
 	}
 
 	public List<DataExpression> getDataLabel(final DlCompletionTree node,
 			final boolean onlyDet) {
-		return KE.getDataLabel(node, onlyDet);
+		return this.KE.getDataLabel(node, onlyDet);
 	}
 
 	//----------------------------------------------------------------------------------
@@ -1316,34 +1325,34 @@ public final class ReasoningKernel {
 	//----------------------------------------------------------------------------------
 	/** @return true iff individual I is instance of given [complex] C */
 	public boolean isInstance(final IndividualExpression I, final ConceptExpression C) {
-		realiseKB(); // ensure KB is ready to answer the query
-		getIndividual(I, "individual name expected in the isInstance()");
+		this.realiseKB(); // ensure KB is ready to answer the query
+		this.getIndividual(I, "individual name expected in the isInstance()");
 		// FIXME!! this way a new concept is created; could be done more optimal
-		return isSubsumedBy(getExpressionManager().oneOf(I), C);
+		return this.isSubsumedBy(this.getExpressionManager().oneOf(I), C);
 	}
 
 	public ReasoningKernel(final JFactReasonerConfiguration conf,
 			final DatatypeFactory factory) {
 		// should be commented
-		cachedQuery = null;
-		cachedQueryTree = null;
-		kernelOptions = conf;
-		datatypeFactory = factory;
-		pTBox = null;
-		pET = null;
-		ModSyn = null;
-		ModSem = null;
-		cachedQuery = null;
-		initCacheAndFlags();
-		useAxiomSplitting = false;
+		this.cachedQuery = null;
+		this.cachedQueryTree = null;
+		this.kernelOptions = conf;
+		this.datatypeFactory = factory;
+		this.pTBox = null;
+		this.pET = null;
+		this.ModSyn = null;
+		this.ModSem = null;
+		this.cachedQuery = null;
+		this.initCacheAndFlags();
+		this.useAxiomSplitting = false;
 	}
 
 	/// try to perform the incremental reasoning on the changed ontology
 	private boolean tryIncremental() {
-		if (pTBox == null) {
+		if (this.pTBox == null) {
 			return true;
 		}
-		if (!ontology.isChanged()) {
+		if (!this.ontology.isChanged()) {
 			return false;
 		}
 		return true;
@@ -1351,8 +1360,8 @@ public final class ReasoningKernel {
 
 	/// force the re-classification of the changed ontology
 	private void forceReload() {
-		clearTBox();
-		newKB();
+		this.clearTBox();
+		this.newKB();
 		// Protege (as the only user of non-trivial monitors with reload) does not accept multiple usage of a monitor
 		// so switch it off after the 1st usage
 		//		if (kernelOptions.isUseELReasoner()) {
@@ -1366,13 +1375,13 @@ public final class ReasoningKernel {
 		//			}
 		//		}
 		// split ontological axioms
-		if (kernelOptions.isSplits()) {
-			TAxiomSplitter AxiomSplitter = new TAxiomSplitter(ontology);
+		if (this.kernelOptions.isSplits()) {
+			TAxiomSplitter AxiomSplitter = new TAxiomSplitter(this.ontology);
 			AxiomSplitter.buildSplit();
 		}
-		OntologyLoader OntologyLoader = new OntologyLoader(getTBox());
-		OntologyLoader.visitOntology(ontology);
-		ontology.setProcessed();
+		OntologyLoader OntologyLoader = new OntologyLoader(this.getTBox());
+		OntologyLoader.visitOntology(this.ontology);
+		this.ontology.setProcessed();
 	}
 
 	//----------------------------------------------------------------------------------
@@ -1383,30 +1392,30 @@ public final class ReasoningKernel {
 	private void processKB(final KBStatus status) {
 		assert status.ordinal() >= kbCChecked.ordinal();
 		// check whether reasoning was failed
-		if (reasoningFailed) {
+		if (this.reasoningFailed) {
 			throw new ReasonerInternalException(
 					"Can't classify KB because of previous errors");
 		}
 		// check if something have to be done
-		if (getStatus().ordinal() >= status.ordinal()) { // nothing to do; but make sure that we are consistent
-			if (!isKBConsistent()) {
+		if (this.getStatus().ordinal() >= status.ordinal()) { // nothing to do; but make sure that we are consistent
+			if (!this.isKBConsistent()) {
 				throw new InconsistentOntologyException();
 			}
 			return;
 		}
 		// here we have to do something: let's decide what to do
 		boolean stillGo = true;
-		switch (getStatus()) {
+		switch (this.getStatus()) {
 			case kbEmpty:
 			case kbLoading:
 				break; // need to do the whole cycle -- just after the switch
 			case kbCChecked: {
-				classify(status);
+				this.classify(status);
 				stillGo = false;
 				break; // do classification
 			}
 			case kbClassified: {
-				realise();
+				this.realise();
 				stillGo = false;
 				break;
 			} // do realisation
@@ -1415,19 +1424,19 @@ public final class ReasoningKernel {
 		}
 		if (stillGo) {
 			// start with loading and preprocessing -- here might be a failures
-			reasoningFailed = true;
+			this.reasoningFailed = true;
 			// load the axioms from the ontology to the TBox
-			if (tryIncremental()) {
-				forceReload();
+			if (this.tryIncremental()) {
+				this.forceReload();
 			}
 			// do the consistency check
-			pTBox.isConsistent();
+			this.pTBox.isConsistent();
 			// if there were no exception thrown -- clear the failure status
-			reasoningFailed = false;
+			this.reasoningFailed = false;
 			if (status == kbCChecked) {
 				return;
 			}
-			classify(status);
+			this.classify(status);
 		}
 	}
 
@@ -1436,21 +1445,21 @@ public final class ReasoningKernel {
 		// don't do classification twice
 		if (status != kbRealised) {
 			//goto Realise;
-			if (!pTBox.isConsistent()) {
+			if (!this.pTBox.isConsistent()) {
 				return;
 			}
-			pTBox.performClassification();
+			this.pTBox.performClassification();
 			return;
 		}
-		realise();
+		this.realise();
 	}
 
 	// do realisation
 	private void realise() {
-		if (!pTBox.isConsistent()) {
+		if (!this.pTBox.isConsistent()) {
 			return;
 		}
-		pTBox.performRealisation();
+		this.pTBox.performRealisation();
 	}
 
 	//-----------------------------------------------------------------------------
@@ -1459,31 +1468,31 @@ public final class ReasoningKernel {
 	/// classify query; cache is ready at the point. NAMED means whether concept is just a name
 	void classifyQuery(final boolean named) {
 		// make sure KB is classified
-		classifyKB();
+		this.classifyKB();
 		if (!named) {
-			getTBox().classifyQueryConcept();
+			this.getTBox().classifyQueryConcept();
 		}
-		cachedVertex = cachedConcept.getTaxVertex();
-		if (cachedVertex == null) {
-			cachedVertex = getCTaxonomy().getFreshVertex(cachedConcept);
+		this.cachedVertex = this.cachedConcept.getTaxVertex();
+		if (this.cachedVertex == null) {
+			this.cachedVertex = this.getCTaxonomy().getFreshVertex(this.cachedConcept);
 		}
 	}
 
 	void setUpCache(final DLTree query, final CacheStatus level) {
 		// if KB was changed since it was classified,
 		// we should catch it before
-		assert !ontology.isChanged();
+		assert !this.ontology.isChanged();
 		// check if the query is already cached
 		if (this.checkQueryCache(query)) { // ... with the same level -- nothing to do
 											//deleteTree(query);
 											//query=null;
-			if (level.ordinal() <= cacheLevel.ordinal()) {
+			if (level.ordinal() <= this.cacheLevel.ordinal()) {
 				return;
 			} else { // concept was defined but not classified yet
-				assert level == csClassified && cacheLevel != csClassified;
-				if (cacheLevel == csSat) // already check satisfiability
+				assert level == csClassified && this.cacheLevel != csClassified;
+				if (this.cacheLevel == csSat) // already check satisfiability
 				{
-					classifyQuery(cachedQueryTree.isCN());
+					this.classifyQuery(this.cachedQueryTree.isCN());
 					return;
 				}
 			}
@@ -1492,39 +1501,39 @@ public final class ReasoningKernel {
 			this.setQueryCache(query);
 		}
 		// clean cached info
-		cachedVertex = null;
-		cacheLevel = level;
+		this.cachedVertex = null;
+		this.cacheLevel = level;
 		// check if concept-to-cache is defined in ontology
-		if (cachedQueryTree.isCN()) {
-			cachedConcept = getTBox().getCI(cachedQueryTree);
+		if (this.cachedQueryTree.isCN()) {
+			this.cachedConcept = this.getTBox().getCI(this.cachedQueryTree);
 		} else // case of complex query
 		{
 			//getTBox().clearQueryConcept();
-			cachedConcept = getTBox().createQueryConcept(cachedQueryTree);
+			this.cachedConcept = this.getTBox().createQueryConcept(this.cachedQueryTree);
 		}
-		assert cachedConcept != null;
+		assert this.cachedConcept != null;
 		// preprocess concept is necessary (fresh concept in query or complex one)
-		if (cachedConcept.getpName() == 0) {
-			getTBox().preprocessQueryConcept(cachedConcept);
+		if (this.cachedConcept.getpName() == 0) {
+			this.getTBox().preprocessQueryConcept(this.cachedConcept);
 		}
 		if (level == csClassified) {
-			classifyQuery(cachedQueryTree.isCN());
+			this.classifyQuery(this.cachedQueryTree.isCN());
 		}
 	}
 
 	void setUpCache(final ConceptExpression query, final CacheStatus level) {
 		// if KB was changed since it was classified,
 		// we should catch it before
-		assert !ontology.isChanged();
+		assert !this.ontology.isChanged();
 		// check if the query is already cached
 		if (this.checkQueryCache(query)) { // ... with the same level -- nothing to do
-			if (level.ordinal() <= cacheLevel.ordinal()) {
+			if (level.ordinal() <= this.cacheLevel.ordinal()) {
 				return;
 			} else { // concept was defined but not classified yet
-				assert level == csClassified && cacheLevel != csClassified;
-				if (cacheLevel == csSat) // already check satisfiability
+				assert level == csClassified && this.cacheLevel != csClassified;
+				if (this.cacheLevel == csSat) // already check satisfiability
 				{
-					classifyQuery(this.isNameOrConst(cachedQuery));
+					this.classifyQuery(this.isNameOrConst(this.cachedQuery));
 					return;
 				}
 			}
@@ -1533,25 +1542,26 @@ public final class ReasoningKernel {
 			this.setQueryCache(query);
 		}
 		// clean cached info
-		cachedVertex = null;
-		cacheLevel = level;
+		this.cachedVertex = null;
+		this.cacheLevel = level;
 		// check if concept-to-cache is defined in ontology
-		if (this.isNameOrConst(cachedQuery)) {
-			cachedConcept = getTBox().getCI(e(cachedQuery));
+		if (this.isNameOrConst(this.cachedQuery)) {
+			this.cachedConcept = this.getTBox().getCI(this.e(this.cachedQuery));
 		} else // case of complex query
 		{
 			// need to clear the query before transform it into DLTree
 			//getTBox().clearQueryConcept();
 			// ... as if fresh names appears there, they would be cleaned up
-			cachedConcept = getTBox().createQueryConcept(e(cachedQuery));
+			this.cachedConcept = this.getTBox().createQueryConcept(
+					this.e(this.cachedQuery));
 		}
-		assert cachedConcept != null;
+		assert this.cachedConcept != null;
 		// preprocess concept is necessary (fresh concept in query or complex one)
-		if (cachedConcept.getpName() == 0) {
-			getTBox().preprocessQueryConcept(cachedConcept);
+		if (this.cachedConcept.getpName() == 0) {
+			this.getTBox().preprocessQueryConcept(this.cachedConcept);
 		}
 		if (level == csClassified) {
-			classifyQuery(this.isNameOrConst(cachedQuery));
+			this.classifyQuery(this.isNameOrConst(this.cachedQuery));
 		}
 	}
 
@@ -1562,31 +1572,32 @@ public final class ReasoningKernel {
 	public int getAtomicDecompositionSize(final boolean useSemantics,
 			final ModuleType type) {
 		// init AD field
-		if (AD == null) {
+		if (this.AD == null) {
 			//XXX
 			if (useSemantics) {
-				AD = new AtomicDecomposer(new SemanticLocalityChecker(this,
+				this.AD = new AtomicDecomposer(new SemanticLocalityChecker(this,
 						new TSignature()));
 			} else {
-				AD = new AtomicDecomposer(new SyntacticLocalityChecker(new TSignature()));
+				this.AD = new AtomicDecomposer(new SyntacticLocalityChecker(
+						new TSignature()));
 			}
 		}
-		return AD.getAOS(ontology, type).size();
+		return this.AD.getAOS(this.ontology, type).size();
 	}
 
 	/// get a set of axioms that corresponds to the atom with the id INDEX
 	public Set<Axiom> getAtomAxioms(final int index) {
-		return AD.getAOS().get(index).getAtomAxioms();
+		return this.AD.getAOS().get(index).getAtomAxioms();
 	}
 
 	/// get a set of axioms that corresponds to the module of the atom with the id INDEX
 	public Set<Axiom> getAtomModule(final int index) {
-		return AD.getAOS().get(index).getModule();
+		return this.AD.getAOS().get(index).getModule();
 	}
 
 	/// get a set of atoms on which atom with index INDEX depends
 	public Set<TOntologyAtom> getAtomDependents(final int index) {
-		return AD.getAOS().get(index).getDepAtoms();
+		return this.AD.getAOS().get(index).getDepAtoms();
 	}
 
 	//----------------------------------------------------------------------------------
@@ -1682,58 +1693,61 @@ public final class ReasoningKernel {
 	private boolean checkSubChain(final Role R, final List<ObjectRoleExpression> l) {
 		// retrieve a role chain
 		// R1 o ... o Rn [= R iff \ER1.\ER2....\ERn.(notC) and AR.C is unsatisfiable
-		DLTree tmp = DLTreeFactory.createSNFNot(getTBox().getFreshConcept());
+		DLTree tmp = DLTreeFactory.createSNFNot(this.getTBox().getFreshConcept());
 		for (int i = l.size() - 1; i > -1; i--) {
 			ObjectRoleExpression p = l.get(i);
-			tmp = DLTreeFactory.createSNFExists(e(p), tmp);
+			tmp = DLTreeFactory.createSNFExists(this.e(p), tmp);
 		}
-		tmp = DLTreeFactory.createSNFAnd(tmp, DLTreeFactory.createSNFForall(DLTreeFactory
-				.buildTree(new Lexeme(Token.RNAME, R)), getTBox().getFreshConcept()));
-		return !checkSatTree(tmp);
+		tmp = DLTreeFactory
+				.createSNFAnd(tmp, DLTreeFactory.createSNFForall(DLTreeFactory
+						.buildTree(new Lexeme(Token.RNAME, R)), this.getTBox()
+						.getFreshConcept()));
+		return !this.checkSatTree(tmp);
 	}
 
 	/** @return true if R is a super-role of a chain holding in the args */
 	public boolean isSubChain(final ObjectRoleComplexExpression R,
 			final List<ObjectRoleExpression> l) {
-		preprocessKB(); // ensure KB is ready to answer the query
-		Role r = getRole(R, "Role expression expected in isSubChain()");
+		this.preprocessKB(); // ensure KB is ready to answer the query
+		Role r = this.getRole(R, "Role expression expected in isSubChain()");
 		if (r.isTop()) {
 			return true; // universal role is a super of any chain
 		}
 		if (r.isBottom()) {
 			for (ObjectRoleExpression p : l) {
-				Role S = getRole(p, "Role expression expected in chain of isSubChain()");
+				Role S = this.getRole(p,
+						"Role expression expected in chain of isSubChain()");
 				if (S.isBottom()) {
 					return true;
 				}
 			}
 			return false; // empty role is not a super of any chain
 		}
-		return checkSubChain(r, l);
+		return this.checkSubChain(r, l);
 	}
 
 	/** @return true if R is a sub-role of S */
 	public boolean isSubRoles(final DataRoleExpression R, final DataRoleExpression S) {
-		preprocessKB(); // ensure KB is ready to answer the query
-		if (getExpressionManager().isEmptyRole(R)
-				|| getExpressionManager().isUniversalRole(S)) {
+		this.preprocessKB(); // ensure KB is ready to answer the query
+		if (this.getExpressionManager().isEmptyRole(R)
+				|| this.getExpressionManager().isUniversalRole(S)) {
 			return true; // \bot [= X [= \top
 		}
-		if (getExpressionManager().isUniversalRole(R)
-				&& getExpressionManager().isEmptyRole(S)) {
+		if (this.getExpressionManager().isUniversalRole(R)
+				&& this.getExpressionManager().isEmptyRole(S)) {
 			return false; // as \top [= \bot leads to inconsistent ontology
 		}
 		// told case first
-		final uk.ac.manchester.cs.jfact.kernel.Role r = getRole(R,
+		final uk.ac.manchester.cs.jfact.kernel.Role r = this.getRole(R,
 				"Role expression expected in isSubRoles()");
-		final uk.ac.manchester.cs.jfact.kernel.Role s = getRole(S,
+		final uk.ac.manchester.cs.jfact.kernel.Role s = this.getRole(S,
 				"Role expression expected in isSubRoles()");
 		if (!r.isTop() && !s.isBottom() && r.lesserequal(s)) {
 			return true;
 		}
 		// check the general case
 		// FIXME!! cache it later
-		return checkRoleSubsumption(r, s);
+		return this.checkRoleSubsumption(r, s);
 	}
 
 	// all-disjoint query implementation
@@ -1744,32 +1758,34 @@ public final class ReasoningKernel {
 		for (Expression p : l) {
 			if (p instanceof ObjectRoleExpression) {
 				ObjectRoleExpression ORole = (ObjectRoleExpression) p;
-				if (getExpressionManager().isUniversalRole(ORole)) {
+				if (this.getExpressionManager().isUniversalRole(ORole)) {
 					return false; // universal role is not disjoint with anything
 				}
-				if (getExpressionManager().isEmptyRole(ORole)) {
+				if (this.getExpressionManager().isEmptyRole(ORole)) {
 					continue; // empty role is disjoint with everything
 				}
-				Roles.add(getRole(ORole, "Role expression expected in isDisjointRoles()"));
+				Roles.add(this.getRole(ORole,
+						"Role expression expected in isDisjointRoles()"));
 			} else {
 				if (!(p instanceof DataRoleExpression)) {
 					throw new ReasonerInternalException(
 							"Role expression expected in isDisjointRoles()");
 				}
 				DataRoleExpression DRole = (DataRoleExpression) p;
-				if (getExpressionManager().isUniversalRole(DRole)) {
+				if (this.getExpressionManager().isUniversalRole(DRole)) {
 					return false; // universal role is not disjoint with anything
 				}
-				if (getExpressionManager().isEmptyRole(DRole)) {
+				if (this.getExpressionManager().isEmptyRole(DRole)) {
 					continue; // empty role is disjoint with everything
 				}
-				Roles.add(getRole(DRole, "Role expression expected in isDisjointRoles()"));
+				Roles.add(this.getRole(DRole,
+						"Role expression expected in isDisjointRoles()"));
 			}
 		}
 		// test pair-wise disjointness
 		for (int i = 0; i < Roles.size() - 1; i++) {
 			for (int j = i + 1; j < Roles.size(); j++) {
-				if (!getTBox().isDisjointRoles(Roles.get(i), Roles.get(j))) {
+				if (!this.getTBox().isDisjointRoles(Roles.get(i), Roles.get(j))) {
 					return false;
 				}
 			}
@@ -1781,18 +1797,18 @@ public final class ReasoningKernel {
 		// grab all roles from the arg-list
 		List<Role> Roles = new ArrayList<Role>(l.size());
 		for (DataRoleExpression p : l) {
-			if (getExpressionManager().isUniversalRole(p)) {
+			if (this.getExpressionManager().isUniversalRole(p)) {
 				return false; // universal role is not disjoint with anything
 			}
-			if (getExpressionManager().isEmptyRole(p)) {
+			if (this.getExpressionManager().isEmptyRole(p)) {
 				continue; // empty role is disjoint with everything
 			}
-			Roles.add(getRole(p, "Role expression expected in isDisjointRoles()"));
+			Roles.add(this.getRole(p, "Role expression expected in isDisjointRoles()"));
 		}
 		// test pair-wise disjointness
 		for (int i = 0; i < Roles.size() - 1; i++) {
 			for (int j = i + 1; j < Roles.size(); j++) {
-				if (!getTBox().isDisjointRoles(Roles.get(i), Roles.get(j))) {
+				if (!this.getTBox().isDisjointRoles(Roles.get(i), Roles.get(j))) {
 					return false;
 				}
 			}
@@ -1805,18 +1821,18 @@ public final class ReasoningKernel {
 		//List<TDLExpression> Disj = getExpressionManager().getArgList();
 		List<Role> Roles = new ArrayList<Role>(l.size());
 		for (ObjectRoleExpression p : l) {
-			if (getExpressionManager().isUniversalRole(p)) {
+			if (this.getExpressionManager().isUniversalRole(p)) {
 				return false; // universal role is not disjoint with anything
 			}
-			if (getExpressionManager().isEmptyRole(p)) {
+			if (this.getExpressionManager().isEmptyRole(p)) {
 				continue; // empty role is disjoint with everything
 			}
-			Roles.add(getRole(p, "Role expression expected in isDisjointRoles()"));
+			Roles.add(this.getRole(p, "Role expression expected in isDisjointRoles()"));
 		}
 		// test pair-wise disjointness
 		for (int i = 0; i < Roles.size() - 1; i++) {
 			for (int j = i + 1; j < Roles.size(); j++) {
-				if (!getTBox().isDisjointRoles(Roles.get(i), Roles.get(j))) {
+				if (!this.getTBox().isDisjointRoles(Roles.get(i), Roles.get(j))) {
 					return false;
 				}
 			}
@@ -1826,47 +1842,47 @@ public final class ReasoningKernel {
 
 	private List<Individual> buildRelatedCache(final Individual I, final Role R) {
 		if (R.isSynonym()) {
-			return getRelated(I, ClassifiableEntry.resolveSynonym(R));
+			return this.getRelated(I, ClassifiableEntry.resolveSynonym(R));
 		}
 		if (R.isDataRole() || R.isBottom()) {
 			return new ArrayList<Individual>();
 		}
 		RIActor actor = new RIActor();
-		ObjectRoleExpression InvR = R.getId() > 0 ? getExpressionManager().inverse(
-				getExpressionManager().objectRole(R.getName())) : getExpressionManager()
-				.objectRole(R.inverse().getName());
+		ObjectRoleExpression InvR = R.getId() > 0 ? this.getExpressionManager().inverse(
+				this.getExpressionManager().objectRole(R.getName())) : this
+				.getExpressionManager().objectRole(R.inverse().getName());
 		ConceptExpression query;
 		if (R.isTop()) {
-			query = getExpressionManager().top();
+			query = this.getExpressionManager().top();
 		} else {
-			query = getExpressionManager().value(InvR,
-					getExpressionManager().individual(I.getName()));
+			query = this.getExpressionManager().value(InvR,
+					this.getExpressionManager().individual(I.getName()));
 		}
 		this.getInstances(query, actor);
 		return actor.getAcc();
 	}
 
-	public void getRoleFillers(final IndividualExpression I,
-			final ObjectRoleExpression R, final List<NamedEntry> Result) {
-		realiseKB();
-		List<Individual> vec = getRelated(
-				getIndividual(I, "Individual name expected in the getRoleFillers()"),
-				getRole(R, "Role expression expected in the getRoleFillers()"));
-		for (Individual p : vec) {
-			Result.add(p);
-		}
+	public List<Individual> getRoleFillers(final IndividualExpression I,
+			final ObjectRoleExpression R) {
+		this.realiseKB();
+		return this
+				.getRelated(this.getIndividual(I,
+						"Individual name expected in the getRoleFillers()"), this
+						.getRole(R, "Role expression expected in the getRoleFillers()"));
 	}
 
 	public boolean isRelated(final IndividualExpression I, final ObjectRoleExpression R,
 			final IndividualExpression J) {
-		realiseKB();
-		Individual i = getIndividual(I, "Individual name expected in the isRelated()");
-		Role r = getRole(R, "Role expression expected in the isRelated()");
+		this.realiseKB();
+		Individual i = this.getIndividual(I,
+				"Individual name expected in the isRelated()");
+		Role r = this.getRole(R, "Role expression expected in the isRelated()");
 		if (r.isDataRole()) {
 			return false;
 		}
-		Individual j = getIndividual(J, "Individual name expected in the isRelated()");
-		List<Individual> vec = getRelated(i, r);
+		Individual j = this.getIndividual(J,
+				"Individual name expected in the isRelated()");
+		List<Individual> vec = this.getRelated(i, r);
 		for (Individual p : vec) {
 			if (j.equals(p)) {
 				return true;

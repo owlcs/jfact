@@ -24,28 +24,29 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
 
 	public DatatypeEnumeration(final Datatype<R> d, final Literal<R> l) {
 		this(d);
-		literals.add(l);
+		this.literals.add(l);
 	}
 
 	public DatatypeEnumeration(final Datatype<R> d, final Collection<Literal<R>> c) {
 		this(d);
-		literals.addAll(c);
-		Collections.sort(literals);
+		this.literals.addAll(c);
+		Collections.sort(this.literals);
 	}
 
 	public Datatype<?> getHost() {
-		return host;
+		return this.host;
 	}
 
 	public DatatypeEnumeration<R> add(final Literal<R> d) {
-		DatatypeEnumeration<R> toReturn = new DatatypeEnumeration<R>(host, literals);
+		DatatypeEnumeration<R> toReturn = new DatatypeEnumeration<R>(this.host,
+				this.literals);
 		toReturn.literals.add(d);
 		Collections.sort(toReturn.literals);
 		return toReturn;
 	}
 
 	public Collection<Literal<R>> listValues() {
-		return new ArrayList<Literal<R>>(literals);
+		return new ArrayList<Literal<R>>(this.literals);
 	}
 
 	public boolean isExpression() {
@@ -57,11 +58,11 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
 	}
 
 	public Collection<Datatype<?>> getAncestors() {
-		return host.getAncestors();
+		return this.host.getAncestors();
 	}
 
 	public boolean getBounded() {
-		return host.getBounded();
+		return this.host.getBounded();
 	}
 
 	public cardinality getCardinality() {
@@ -69,35 +70,36 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
 	}
 
 	public Set<Facet> getFacets() {
-		return host.getFacets();
+		return this.host.getFacets();
 	}
 
 	public Map<Facet, Object> getKnownFacetValues() {
-		return host.getKnownFacetValues();
+		return this.host.getKnownFacetValues();
 	}
 
 	public <O extends Comparable<O>> O getFacetValue(final Facet f) {
-		return host.getFacetValue(f);
+		return this.host.getFacetValue(f);
 	}
 
 	public BigDecimal getNumericFacetValue(final Facet f) {
-		return host.getNumericFacetValue(f);
+		return this.host.getNumericFacetValue(f);
 	}
 
 	public boolean getNumeric() {
-		return host.getNumeric();
+		return this.host.getNumeric();
 	}
 
 	public ordered getOrdered() {
-		return host.getOrdered();
+		return this.host.getOrdered();
 	}
 
 	public boolean isCompatible(final Literal<?> l) {
-		return literals.contains(l) && host.isCompatible(l.getDatatypeExpression());
+		return this.literals.contains(l)
+				&& this.host.isCompatible(l.getDatatypeExpression());
 	}
 
 	public boolean isInValueSpace(final R l) {
-		for (Literal<R> lit : literals) {
+		for (Literal<R> lit : this.literals) {
 			if (lit.typedValue().equals(l)) {
 				return true;
 			}
@@ -107,28 +109,28 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
 
 	public R parseValue(final String s) {
 		//delegated to the host type
-		return host.parseValue(s);
+		return this.host.parseValue(s);
 	}
 
 	public Literal<R> buildLiteral(final String s) {
-		return host.buildLiteral(s);
+		return this.host.buildLiteral(s);
 	}
 
 	public boolean isSubType(final Datatype<?> type) {
-		return host.isSubType(type);
+		return this.host.isSubType(type);
 	}
 
 	public String getDatatypeURI() {
-		return uri;
+		return this.uri;
 	}
 
 	public boolean isCompatible(final Datatype<?> type) {
 		//	return host.isCompatible(type);
-		if (!host.isCompatible(type)) {
+		if (!this.host.isCompatible(type)) {
 			return false;
 		}
 		// at least one value must be admissible in both
-		for (Literal<?> l : literals) {
+		for (Literal<?> l : this.literals) {
 			if (type.isCompatible(l)) {
 				return true;
 			}
@@ -145,11 +147,11 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
 	}
 
 	public Iterable<Literal<R>> getList() {
-		return literals;
+		return this.literals;
 	}
 
 	public boolean emptyValueSpace() {
-		return literals.isEmpty();
+		return this.literals.isEmpty();
 	}
 
 	public boolean isNumericDatatype() {
@@ -170,7 +172,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
 
 	@Override
 	public String toString() {
-		return uri + literals;
+		return this.uri + this.literals;
 	}
 
 	@Override
@@ -179,18 +181,18 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
 			return true;
 		}
 		if (obj instanceof DatatypeEnumeration) {
-			return this.literals.equals(((DatatypeEnumeration) obj).literals);
+			return this.literals.equals(((DatatypeEnumeration<?>) obj).literals);
 		}
 		return false;
 	}
 
 	@Override
 	public int hashCode() {
-		return literals.hashCode();
+		return this.literals.hashCode();
 	}
 
 	public Datatype<R> getHostType() {
-		return host;
+		return this.host;
 	}
 
 	public DatatypeExpression<R> addFacet(final Facet f, final Object value) {
