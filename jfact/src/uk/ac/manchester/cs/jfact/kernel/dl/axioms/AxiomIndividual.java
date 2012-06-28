@@ -10,15 +10,15 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 
 abstract class AxiomIndividual extends AxiomImpl {
-	private final IndividualExpression individualExpression;
+    private final IndividualExpression individualExpression;
 
-	protected AxiomIndividual(final OWLAxiom ax, final IndividualExpression i) {
-		super(ax);
-		individualExpression = i;
-	}
+    protected AxiomIndividual(final OWLAxiom ax, final IndividualExpression i) {
+        super(ax);
+        individualExpression = i;
+    }
 
-	/** access */
-	public final IndividualExpression getIndividual() {
-		return individualExpression;
-	}
+    /** access */
+    public final IndividualExpression getIndividual() {
+        return individualExpression;
+    }
 }

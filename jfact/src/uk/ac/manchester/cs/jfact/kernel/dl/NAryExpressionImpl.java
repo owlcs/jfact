@@ -13,41 +13,41 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 
 public class NAryExpressionImpl<Argument extends Expression> implements
-		NAryExpression<Argument> {
-	/** set of equivalent concept descriptions */
-	private final List<Argument> Base = new ArrayList<Argument>();
+        NAryExpression<Argument> {
+    /** set of equivalent concept descriptions */
+    private final List<Argument> Base = new ArrayList<Argument>();
 
-	public NAryExpressionImpl() {}
+    public NAryExpressionImpl() {}
 
-	public void add(final Collection<Expression> v) {
-		for (Expression e : v) {
-			add(e);
-		}
-	}
+    public void add(final Collection<Expression> v) {
+        for (Expression e : v) {
+            add(e);
+        }
+    }
 
-	public void add(final Expression p) {
-		Base.add(transform(p));
-	}
+    public void add(final Expression p) {
+        Base.add(transform(p));
+    }
 
-	public List<Argument> getArguments() {
-		return Base;
-	}
+    public List<Argument> getArguments() {
+        return Base;
+    }
 
-	public boolean isEmpty() {
-		return Base.isEmpty();
-	}
+    public boolean isEmpty() {
+        return Base.isEmpty();
+    }
 
-	public int size() {
-		return Base.size();
-	}
+    public int size() {
+        return Base.size();
+    }
 
-	/** transform general expression into the argument one */
-	public Argument transform(final Expression arg) {
-		return (Argument) arg;
-	}
+    /** transform general expression into the argument one */
+    public Argument transform(final Expression arg) {
+        return (Argument) arg;
+    }
 
-	@Override
-	public String toString() {
-		return "NAryExpression(" + Base + ")";
-	}
+    @Override
+    public String toString() {
+        return "NAryExpression(" + Base + ")";
+    }
 }

@@ -10,11 +10,11 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 public final class DataBottom implements DataExpression {
-	public void accept(final DLExpressionVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLExpressionVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 }

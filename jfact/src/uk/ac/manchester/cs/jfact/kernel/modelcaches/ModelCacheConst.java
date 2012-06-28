@@ -11,52 +11,52 @@ import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 
 public final class ModelCacheConst extends ModelCacheInterface {
-	/** the final itself */
-	private final boolean isTop;
+    /** the final itself */
+    private final boolean isTop;
 
-	/** c'tor: no nominals can be here */
-	public ModelCacheConst(final boolean top) {
-		super(false);
-		isTop = top;
-	}
+    /** c'tor: no nominals can be here */
+    public ModelCacheConst(final boolean top) {
+        super(false);
+        isTop = top;
+    }
 
-	/** Check if the model contains clash */
-	@Override
-	public ModelCacheState getState() {
-		return isTop ? csValid : csInvalid;
-	}
+    /** Check if the model contains clash */
+    @Override
+    public ModelCacheState getState() {
+        return isTop ? csValid : csInvalid;
+    }
 
-	/** get the value of the constant */
-	public boolean getConst() {
-		return isTop;
-	}
+    /** get the value of the constant */
+    public boolean getConst() {
+        return isTop;
+    }
 
-	// mergable part
-	/** check whether two caches can be merged; @return state of "merged" model */
-	@Override
-	public ModelCacheState canMerge(final ModelCacheInterface p) {
-		if (p.getCacheType() == ModelCacheType.mctConst) {
-			return isTop && ((ModelCacheConst) p).isTop ? csValid : csInvalid;
-		} else {
-			return p.canMerge(this);
-		}
-	}
+    // mergable part
+    /** check whether two caches can be merged; @return state of "merged" model */
+    @Override
+    public ModelCacheState canMerge(final ModelCacheInterface p) {
+        if (p.getCacheType() == ModelCacheType.mctConst) {
+            return isTop && ((ModelCacheConst) p).isTop ? csValid : csInvalid;
+        } else {
+            return p.canMerge(this);
+        }
+    }
 
-	/** Get the tag identifying the cache type */
-	@Override
-	public ModelCacheType getCacheType() {
-		return ModelCacheType.mctConst;
-	}
+    /** Get the tag identifying the cache type */
+    @Override
+    public ModelCacheType getCacheType() {
+        return ModelCacheType.mctConst;
+    }
 
-	/** log this cache entry (with given level) */
-	@Override
-	public void logCacheEntry(final int level, final LogAdapter l) {
-		l.printTemplate(Templates.LOGCACHEENTRY, isTop ? "TOP" : "BOTTOM");
-	}
+    /** log this cache entry (with given level) */
+    @Override
+    public void logCacheEntry(final int level, final LogAdapter l) {
+        l.printTemplate(Templates.LOGCACHEENTRY, isTop ? "TOP" : "BOTTOM");
+    }
 
-	/** create const cache by BP; BP should be either bpTOP or bpBOTTOM */
-	public static ModelCacheConst createConstCache(final int bp) {
-		assert bp == Helper.bpTOP || bp == Helper.bpBOTTOM;
-		return new ModelCacheConst(bp == Helper.bpTOP);
-	}
+    /** create const cache by BP; BP should be either bpTOP or bpBOTTOM */
+    public static ModelCacheConst createConstCache(final int bp) {
+        assert bp == Helper.bpTOP || bp == Helper.bpBOTTOM;
+        return new ModelCacheConst(bp == Helper.bpTOP);
+    }
 }

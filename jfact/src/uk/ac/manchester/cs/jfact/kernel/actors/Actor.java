@@ -8,5 +8,5 @@ package uk.ac.manchester.cs.jfact.kernel.actors;
 import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
 
 public interface Actor {
-	boolean apply(final TaxonomyVertex v);
+    boolean apply(final TaxonomyVertex v);
 }

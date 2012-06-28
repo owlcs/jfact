@@ -13,29 +13,29 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 public final class ConceptDataForall implements ConceptDataRVExpression, DataRoleArg {
-	/** data role argument */
-	private final DataRoleExpression dataRoleExpression;
-	private final DataExpression delegate;
+    /** data role argument */
+    private final DataRoleExpression dataRoleExpression;
+    private final DataExpression delegate;
 
-	public ConceptDataForall(final DataRoleExpression R, final DataExpression E) {
-		dataRoleExpression = R;
-		delegate = E;
-	}
+    public ConceptDataForall(final DataRoleExpression R, final DataExpression E) {
+        dataRoleExpression = R;
+        delegate = E;
+    }
 
-	public void accept(final DLExpressionVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLExpressionVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 
-	/** get access to the argument */
-	public DataRoleExpression getDataRoleExpression() {
-		return dataRoleExpression;
-	}
+    /** get access to the argument */
+    public DataRoleExpression getDataRoleExpression() {
+        return dataRoleExpression;
+    }
 
-	public DataExpression getExpr() {
-		return delegate;
-	}
+    public DataExpression getExpr() {
+        return delegate;
+    }
 }

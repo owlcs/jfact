@@ -13,37 +13,37 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 public final class ConceptDataMaxCardinality implements ConceptDataCardinalityExpression,
-		DataRoleArg {
-	/** data role argument */
-	private final DataRoleExpression dataRoleExpression;
-	private final int delegate;
-	private final DataExpression delegateExpression;
+        DataRoleArg {
+    /** data role argument */
+    private final DataRoleExpression dataRoleExpression;
+    private final int delegate;
+    private final DataExpression delegateExpression;
 
-	public ConceptDataMaxCardinality(final int n, final DataRoleExpression R,
-			final DataExpression E) {
-		dataRoleExpression = R;
-		delegateExpression = E;
-		delegate = n;
-	}
+    public ConceptDataMaxCardinality(final int n, final DataRoleExpression R,
+            final DataExpression E) {
+        dataRoleExpression = R;
+        delegateExpression = E;
+        delegate = n;
+    }
 
-	public void accept(final DLExpressionVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLExpressionVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 
-	public int getCardinality() {
-		return delegate;
-	}
+    public int getCardinality() {
+        return delegate;
+    }
 
-	/** get access to the argument */
-	public DataRoleExpression getDataRoleExpression() {
-		return dataRoleExpression;
-	}
+    /** get access to the argument */
+    public DataRoleExpression getDataRoleExpression() {
+        return dataRoleExpression;
+    }
 
-	public DataExpression getExpr() {
-		return delegateExpression;
-	}
+    public DataExpression getExpr() {
+        return delegateExpression;
+    }
 }

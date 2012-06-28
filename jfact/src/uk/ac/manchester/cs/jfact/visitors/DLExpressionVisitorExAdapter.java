@@ -42,159 +42,159 @@ import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleTop;
 
 @SuppressWarnings("unused")
 public abstract class DLExpressionVisitorExAdapter<A> implements DLExpressionVisitorEx<A> {
-	public A visit(final ConceptTop expr) {
-		return null;
-	}
+    public A visit(final ConceptTop expr) {
+        return null;
+    }
 
-	public A visit(final ConceptBottom expr) {
-		return null;
-	}
+    public A visit(final ConceptBottom expr) {
+        return null;
+    }
 
-	public A visit(final ConceptName expr) {
-		return null;
-	}
+    public A visit(final ConceptName expr) {
+        return null;
+    }
 
-	public A visit(final ConceptNot expr) {
-		return null;
-	}
+    public A visit(final ConceptNot expr) {
+        return null;
+    }
 
-	public A visit(final ConceptAnd expr) {
-		return null;
-	}
+    public A visit(final ConceptAnd expr) {
+        return null;
+    }
 
-	public A visit(final ConceptOr expr) {
-		return null;
-	}
+    public A visit(final ConceptOr expr) {
+        return null;
+    }
 
-	public A visit(final ConceptOneOf expr) {
-		return null;
-	}
+    public A visit(final ConceptOneOf expr) {
+        return null;
+    }
 
-	public A visit(final ConceptObjectSelf expr) {
-		return null;
-	}
+    public A visit(final ConceptObjectSelf expr) {
+        return null;
+    }
 
-	public A visit(final ConceptObjectValue expr) {
-		return null;
-	}
+    public A visit(final ConceptObjectValue expr) {
+        return null;
+    }
 
-	public A visit(final ConceptObjectExists expr) {
-		return null;
-	}
+    public A visit(final ConceptObjectExists expr) {
+        return null;
+    }
 
-	public A visit(final ConceptObjectForall expr) {
-		return null;
-	}
+    public A visit(final ConceptObjectForall expr) {
+        return null;
+    }
 
-	public A visit(final ConceptObjectMinCardinality expr) {
-		return null;
-	}
+    public A visit(final ConceptObjectMinCardinality expr) {
+        return null;
+    }
 
-	public A visit(final ConceptObjectMaxCardinality expr) {
-		return null;
-	}
+    public A visit(final ConceptObjectMaxCardinality expr) {
+        return null;
+    }
 
-	public A visit(final ConceptObjectExactCardinality expr) {
-		return null;
-	}
+    public A visit(final ConceptObjectExactCardinality expr) {
+        return null;
+    }
 
-	public A visit(final ConceptDataValue expr) {
-		return null;
-	}
+    public A visit(final ConceptDataValue expr) {
+        return null;
+    }
 
-	public A visit(final ConceptDataExists expr) {
-		return null;
-	}
+    public A visit(final ConceptDataExists expr) {
+        return null;
+    }
 
-	public A visit(final ConceptDataForall expr) {
-		return null;
-	}
+    public A visit(final ConceptDataForall expr) {
+        return null;
+    }
 
-	public A visit(final ConceptDataMinCardinality expr) {
-		return null;
-	}
+    public A visit(final ConceptDataMinCardinality expr) {
+        return null;
+    }
 
-	public A visit(final ConceptDataMaxCardinality expr) {
-		return null;
-	}
+    public A visit(final ConceptDataMaxCardinality expr) {
+        return null;
+    }
 
-	public A visit(final ConceptDataExactCardinality expr) {
-		return null;
-	}
+    public A visit(final ConceptDataExactCardinality expr) {
+        return null;
+    }
 
-	public A visit(final IndividualName expr) {
-		return null;
-	}
+    public A visit(final IndividualName expr) {
+        return null;
+    }
 
-	public A visit(final ObjectRoleTop expr) {
-		return null;
-	}
+    public A visit(final ObjectRoleTop expr) {
+        return null;
+    }
 
-	public A visit(final ObjectRoleBottom expr) {
-		return null;
-	}
+    public A visit(final ObjectRoleBottom expr) {
+        return null;
+    }
 
-	public A visit(final ObjectRoleName expr) {
-		return null;
-	}
+    public A visit(final ObjectRoleName expr) {
+        return null;
+    }
 
-	public A visit(final ObjectRoleInverse expr) {
-		return null;
-	}
+    public A visit(final ObjectRoleInverse expr) {
+        return null;
+    }
 
-	public A visit(final ObjectRoleChain expr) {
-		return null;
-	}
+    public A visit(final ObjectRoleChain expr) {
+        return null;
+    }
 
-	public A visit(final ObjectRoleProjectionFrom expr) {
-		return null;
-	}
+    public A visit(final ObjectRoleProjectionFrom expr) {
+        return null;
+    }
 
-	public A visit(final ObjectRoleProjectionInto expr) {
-		return null;
-	}
+    public A visit(final ObjectRoleProjectionInto expr) {
+        return null;
+    }
 
-	public A visit(final DataRoleTop expr) {
-		return null;
-	}
+    public A visit(final DataRoleTop expr) {
+        return null;
+    }
 
-	public A visit(final DataRoleBottom expr) {
-		return null;
-	}
+    public A visit(final DataRoleBottom expr) {
+        return null;
+    }
 
-	public A visit(final DataRoleName expr) {
-		return null;
-	}
+    public A visit(final DataRoleName expr) {
+        return null;
+    }
 
-	public A visit(final DataTop expr) {
-		return null;
-	}
+    public A visit(final DataTop expr) {
+        return null;
+    }
 
-	public A visit(final DataBottom expr) {
-		return null;
-	}
+    public A visit(final DataBottom expr) {
+        return null;
+    }
 
-	public A visit(final Datatype<?> expr) {
-		return null;
-	}
+    public A visit(final Datatype<?> expr) {
+        return null;
+    }
 
-	public A visit(final Literal<?> expr) {
-		return null;
-	}
+    public A visit(final Literal<?> expr) {
+        return null;
+    }
 
-	public A visit(final DataNot expr) {
-		return null;
-	}
+    public A visit(final DataNot expr) {
+        return null;
+    }
 
-	public A visit(final DataAnd expr) {
-		return null;
-	}
+    public A visit(final DataAnd expr) {
+        return null;
+    }
 
-	public A visit(final DataOr expr) {
-		return null;
-	}
+    public A visit(final DataOr expr) {
+        return null;
+    }
 
-	public A visit(final DataOneOf expr) {
-		return null;
-	}
+    public A visit(final DataOneOf expr) {
+        return null;
+    }
 }

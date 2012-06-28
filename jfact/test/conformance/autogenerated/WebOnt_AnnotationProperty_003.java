@@ -7,24 +7,24 @@ import conformance.JUnitRunner;
 import conformance.TestClasses;
 
 public class WebOnt_AnnotationProperty_003 {
-	@Test
-	public void testWebOnt_AnnotationProperty_003() {
-		String premise = "<rdf:RDF\n"
-				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-				+ "    xmlns:first=\"http://www.w3.org/2002/03owlt/AnnotationProperty/consistent003#\"\n"
-				+ "    xml:base=\"http://www.w3.org/2002/03owlt/AnnotationProperty/consistent003\" >\n"
-				+ "\n" + "  <owl:Ontology/>\n"
-				+ "  <owl:AnnotationProperty rdf:ID=\"ap\"/>\n" + "\n"
-				+ "  <owl:Class rdf:ID=\"A\">\n" + "    <first:ap>\n"
-				+ "       <rdf:Description rdf:ID=\"B\"/>\n" + "    </first:ap>\n"
-				+ "  </owl:Class>\n" + "\n" + "</rdf:RDF>";
-		String conclusion = "";
-		String id = "WebOnt_AnnotationProperty_003";
-		TestClasses tc = TestClasses.valueOf("CONSISTENCY");
-		String d = "URI references used in annotations don't need to be typed.";
-		JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-		r.setReasonerFactory(Factory.factory());
-		r.run();
-	}
+    @Test
+    public void testWebOnt_AnnotationProperty_003() {
+        String premise = "<rdf:RDF\n"
+                + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+                + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
+                + "    xmlns:first=\"http://www.w3.org/2002/03owlt/AnnotationProperty/consistent003#\"\n"
+                + "    xml:base=\"http://www.w3.org/2002/03owlt/AnnotationProperty/consistent003\" >\n"
+                + "\n" + "  <owl:Ontology/>\n"
+                + "  <owl:AnnotationProperty rdf:ID=\"ap\"/>\n" + "\n"
+                + "  <owl:Class rdf:ID=\"A\">\n" + "    <first:ap>\n"
+                + "       <rdf:Description rdf:ID=\"B\"/>\n" + "    </first:ap>\n"
+                + "  </owl:Class>\n" + "\n" + "</rdf:RDF>";
+        String conclusion = "";
+        String id = "WebOnt_AnnotationProperty_003";
+        TestClasses tc = TestClasses.valueOf("CONSISTENCY");
+        String d = "URI references used in annotations don't need to be typed.";
+        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        r.setReasonerFactory(Factory.factory());
+        r.run();
+    }
 }

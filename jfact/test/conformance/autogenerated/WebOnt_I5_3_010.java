@@ -7,23 +7,23 @@ import conformance.JUnitRunner;
 import conformance.TestClasses;
 
 public class WebOnt_I5_3_010 {
-	@Test
-	public void testWebOnt_I5_3_010() {
-		String premise = "<rdf:RDF\n"
-				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-				+ "    xmlns:first=\"http://www.w3.org/2002/03owlt/I5.3/consistent010#\"\n"
-				+ "    xml:base=\"http://www.w3.org/2002/03owlt/I5.3/consistent010\" >\n"
-				+ "   <owl:Ontology/>\n" + "   <owl:ObjectProperty rdf:ID=\"p\"/>   \n"
-				+ "   <owl:Thing>\n" + "      <first:p>\n"
-				+ "         <owl:Class rdf:ID=\"c\"/>\n" + "      </first:p>\n"
-				+ "    </owl:Thing>\n" + "</rdf:RDF>";
-		String conclusion = "";
-		String id = "WebOnt_I5_3_010";
-		TestClasses tc = TestClasses.valueOf("CONSISTENCY");
-		String d = "Classes could not be the object of regular properties in OWL DL.  This ontology is permissible in OWL 2 DL due to class / individual punning.";
-		JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-		r.setReasonerFactory(Factory.factory());
-		r.run();
-	}
+    @Test
+    public void testWebOnt_I5_3_010() {
+        String premise = "<rdf:RDF\n"
+                + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+                + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
+                + "    xmlns:first=\"http://www.w3.org/2002/03owlt/I5.3/consistent010#\"\n"
+                + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.3/consistent010\" >\n"
+                + "   <owl:Ontology/>\n" + "   <owl:ObjectProperty rdf:ID=\"p\"/>   \n"
+                + "   <owl:Thing>\n" + "      <first:p>\n"
+                + "         <owl:Class rdf:ID=\"c\"/>\n" + "      </first:p>\n"
+                + "    </owl:Thing>\n" + "</rdf:RDF>";
+        String conclusion = "";
+        String id = "WebOnt_I5_3_010";
+        TestClasses tc = TestClasses.valueOf("CONSISTENCY");
+        String d = "Classes could not be the object of regular properties in OWL DL.  This ontology is permissible in OWL 2 DL due to class / individual punning.";
+        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        r.setReasonerFactory(Factory.factory());
+        r.run();
+    }
 }

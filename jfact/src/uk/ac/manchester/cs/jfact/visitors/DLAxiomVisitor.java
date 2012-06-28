@@ -40,69 +40,69 @@ import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOf;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOfNot;
 
 public interface DLAxiomVisitor {
-	void visit(AxiomDeclaration axiom);
+    void visit(AxiomDeclaration axiom);
 
-	void visit(AxiomEquivalentConcepts axiom);
+    void visit(AxiomEquivalentConcepts axiom);
 
-	void visit(AxiomDisjointConcepts axiom);
+    void visit(AxiomDisjointConcepts axiom);
 
-	void visit(AxiomEquivalentORoles axiom);
+    void visit(AxiomEquivalentORoles axiom);
 
-	void visit(AxiomEquivalentDRoles axiom);
+    void visit(AxiomEquivalentDRoles axiom);
 
-	void visit(AxiomDisjointORoles axiom);
+    void visit(AxiomDisjointORoles axiom);
 
-	void visit(AxiomDisjointDRoles axiom);
+    void visit(AxiomDisjointDRoles axiom);
 
-	void visit(AxiomSameIndividuals axiom);
+    void visit(AxiomSameIndividuals axiom);
 
-	void visit(AxiomDifferentIndividuals axiom);
+    void visit(AxiomDifferentIndividuals axiom);
 
-	void visit(AxiomFairnessConstraint axiom);
+    void visit(AxiomFairnessConstraint axiom);
 
-	void visit(AxiomRoleInverse axiom);
+    void visit(AxiomRoleInverse axiom);
 
-	void visit(AxiomORoleSubsumption axiom);
+    void visit(AxiomORoleSubsumption axiom);
 
-	void visit(AxiomDRoleSubsumption axiom);
+    void visit(AxiomDRoleSubsumption axiom);
 
-	void visit(AxiomORoleDomain axiom);
+    void visit(AxiomORoleDomain axiom);
 
-	void visit(AxiomDRoleDomain axiom);
+    void visit(AxiomDRoleDomain axiom);
 
-	void visit(AxiomORoleRange axiom);
+    void visit(AxiomORoleRange axiom);
 
-	void visit(AxiomDRoleRange axiom);
+    void visit(AxiomDRoleRange axiom);
 
-	void visit(AxiomRoleTransitive axiom);
+    void visit(AxiomRoleTransitive axiom);
 
-	void visit(AxiomRoleReflexive axiom);
+    void visit(AxiomRoleReflexive axiom);
 
-	void visit(AxiomRoleIrreflexive axiom);
+    void visit(AxiomRoleIrreflexive axiom);
 
-	void visit(AxiomRoleSymmetric axiom);
+    void visit(AxiomRoleSymmetric axiom);
 
-	void visit(AxiomRoleAsymmetric axiom);
+    void visit(AxiomRoleAsymmetric axiom);
 
-	void visit(AxiomORoleFunctional axiom);
+    void visit(AxiomORoleFunctional axiom);
 
-	void visit(AxiomDRoleFunctional axiom);
+    void visit(AxiomDRoleFunctional axiom);
 
-	void visit(AxiomRoleInverseFunctional axiom);
+    void visit(AxiomRoleInverseFunctional axiom);
 
-	void visit(AxiomConceptInclusion axiom);
+    void visit(AxiomConceptInclusion axiom);
 
-	void visit(AxiomInstanceOf axiom);
+    void visit(AxiomInstanceOf axiom);
 
-	void visit(AxiomRelatedTo axiom);
+    void visit(AxiomRelatedTo axiom);
 
-	void visit(AxiomRelatedToNot axiom);
+    void visit(AxiomRelatedToNot axiom);
 
-	void visit(AxiomValueOf axiom);
+    void visit(AxiomValueOf axiom);
 
-	void visit(AxiomValueOfNot axiom);
+    void visit(AxiomValueOfNot axiom);
 
-	void visitOntology(Ontology ontology);
+    void visitOntology(Ontology ontology);
 
-	void visit(AxiomDisjointUnion axiom);
+    void visit(AxiomDisjointUnion axiom);
 }

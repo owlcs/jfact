@@ -1,17 +1,17 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
 public interface DatatypeCombination<Type, Element> {
-	Type add(Element d);
+    Type add(Element d);
 
-	boolean isCompatible(Literal<?> l);
+    boolean isCompatible(Literal<?> l);
 
-	String getDatatypeURI();
+    String getDatatypeURI();
 
-	boolean isCompatible(Datatype<?> type);
+    boolean isCompatible(Datatype<?> type);
 
-	Iterable<Element> getList();
+    Iterable<Element> getList();
 
-	boolean emptyValueSpace();
+    boolean emptyValueSpace();
 
-	Datatype<?> getHost();
+    Datatype<?> getHost();
 }

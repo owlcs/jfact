@@ -7,52 +7,52 @@ import conformance.JUnitRunner;
 import conformance.TestClasses;
 
 public class rdfbased_sem_eqdis_eqclass_subst {
-	@Test
-	public void testrdfbased_sem_eqdis_eqclass_subst() {
-		//XXX test modified because of ontology not compliant with OWL 2
-		String premise = "<rdf:RDF\n"
-				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-				+ "    xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\"\n"
-				+ "    xmlns:ex=\"http://www.example.org#\"\n"
-				+ "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-				//added
-				+ "<owl:Class rdf:about=\"http://www.example.org#c2\"/>\n"
-				+ "<owl:Class rdf:about=\"http://www.example.org#c1\"/>\n"
-				+ "  <owl:Class rdf:about=\"http://www.example.org#d1\"/>\n"
-				+ "<owl:Class rdf:about=\"http://www.example.org#d2\"/>\n"
-				//end added
-				+ "  <rdf:Description rdf:about=\"http://www.example.org#c1\">\n"
-				+ "    <rdfs:subClassOf>\n"
-				+ "      <rdf:Description rdf:about=\"http://www.example.org#c2\">\n"
-				+ "        <owl:equivalentClass rdf:resource=\"http://www.example.org#d2\"/>\n"
-				+ "      </rdf:Description>\n"
-				+ "    </rdfs:subClassOf>\n"
-				+ "    <owl:equivalentClass rdf:resource=\"http://www.example.org#d1\"/>\n"
-				+ "  </rdf:Description>\n" + "</rdf:RDF>";
-		String conclusion = "<rdf:RDF\n"
-				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-				+ "    xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\"\n"
-				+ "    xmlns:ex=\"http://www.example.org#\"\n"
-				+ "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-				//added
-				+ "<owl:Class rdf:about=\"http://www.example.org#c2\"/>\n"
-				+ "<owl:Class rdf:about=\"http://www.example.org#c1\"/>\n"
-				+ "  <owl:Class rdf:about=\"http://www.example.org#d1\"/>\n"
-				+ "<owl:Class rdf:about=\"http://www.example.org#d2\"/>\n"
-				//end added
-				+ "  <rdf:Description rdf:about=\"http://www.example.org#c1\">\n"
-				+ "    <rdfs:subClassOf rdf:resource=\"http://www.example.org#d2\"/>\n"
-				+ "  </rdf:Description>\n"
-				+ "  <rdf:Description rdf:about=\"http://www.example.org#d1\">\n"
-				+ "    <rdfs:subClassOf rdf:resource=\"http://www.example.org#c2\"/>\n"
-				+ "  </rdf:Description>\n" + "</rdf:RDF>";
-		String id = "rdfbased_sem_eqdis_eqclass_subst";
-		TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-		String d = "Equivalence of two classes allows for substituting one class for the other in a sub class axiom.";
-		JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-		r.setReasonerFactory(Factory.factory());
-		r.run();
-	}
+    @Test
+    public void testrdfbased_sem_eqdis_eqclass_subst() {
+        //XXX test modified because of ontology not compliant with OWL 2
+        String premise = "<rdf:RDF\n"
+                + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+                + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
+                + "    xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\"\n"
+                + "    xmlns:ex=\"http://www.example.org#\"\n"
+                + "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
+                //added
+                + "<owl:Class rdf:about=\"http://www.example.org#c2\"/>\n"
+                + "<owl:Class rdf:about=\"http://www.example.org#c1\"/>\n"
+                + "  <owl:Class rdf:about=\"http://www.example.org#d1\"/>\n"
+                + "<owl:Class rdf:about=\"http://www.example.org#d2\"/>\n"
+                //end added
+                + "  <rdf:Description rdf:about=\"http://www.example.org#c1\">\n"
+                + "    <rdfs:subClassOf>\n"
+                + "      <rdf:Description rdf:about=\"http://www.example.org#c2\">\n"
+                + "        <owl:equivalentClass rdf:resource=\"http://www.example.org#d2\"/>\n"
+                + "      </rdf:Description>\n"
+                + "    </rdfs:subClassOf>\n"
+                + "    <owl:equivalentClass rdf:resource=\"http://www.example.org#d1\"/>\n"
+                + "  </rdf:Description>\n" + "</rdf:RDF>";
+        String conclusion = "<rdf:RDF\n"
+                + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+                + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
+                + "    xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\"\n"
+                + "    xmlns:ex=\"http://www.example.org#\"\n"
+                + "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
+                //added
+                + "<owl:Class rdf:about=\"http://www.example.org#c2\"/>\n"
+                + "<owl:Class rdf:about=\"http://www.example.org#c1\"/>\n"
+                + "  <owl:Class rdf:about=\"http://www.example.org#d1\"/>\n"
+                + "<owl:Class rdf:about=\"http://www.example.org#d2\"/>\n"
+                //end added
+                + "  <rdf:Description rdf:about=\"http://www.example.org#c1\">\n"
+                + "    <rdfs:subClassOf rdf:resource=\"http://www.example.org#d2\"/>\n"
+                + "  </rdf:Description>\n"
+                + "  <rdf:Description rdf:about=\"http://www.example.org#d1\">\n"
+                + "    <rdfs:subClassOf rdf:resource=\"http://www.example.org#c2\"/>\n"
+                + "  </rdf:Description>\n" + "</rdf:RDF>";
+        String id = "rdfbased_sem_eqdis_eqclass_subst";
+        TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
+        String d = "Equivalence of two classes allows for substituting one class for the other in a sub class axiom.";
+        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        r.setReasonerFactory(Factory.factory());
+        r.run();
+    }
 }

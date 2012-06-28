@@ -7,64 +7,64 @@ import conformance.JUnitRunner;
 import conformance.TestClasses;
 
 public class WebOnt_description_logic_003 {
-	@Test
-	public void testWebOnt_description_logic_003() {
-		String premise = "<rdf:RDF\n"
-				+ "    xml:base=\"http://www.w3.org/2002/03owlt/description-logic/inconsistent003\"\n"
-				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-				+ "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\">\n"
-				+ "    <owl:Ontology rdf:about=\"\"/>\n"
-				+ "    <owl:Class rdf:about=\"http://oiled.man.example.net/test#Unsatisfiable\">\n"
-				+ "        <owl:equivalentClass>\n"
-				+ "            <owl:Class>\n"
-				+ "                <owl:intersectionOf rdf:parseType=\"Collection\">\n"
-				+ "                    <owl:Restriction>\n"
-				+ "                        <owl:onProperty rdf:resource=\"http://oiled.man.example.net/test#f1\"/>\n"
-				+ "                        <owl:someValuesFrom>\n"
-				+ "                            <owl:Class rdf:about=\"http://oiled.man.example.net/test#p1\"/>\n"
-				+ "                        </owl:someValuesFrom>\n"
-				+ "                    </owl:Restriction>\n"
-				+ "                    <owl:Restriction>\n"
-				+ "                        <owl:onProperty rdf:resource=\"http://oiled.man.example.net/test#f2\"/>\n"
-				+ "                        <owl:someValuesFrom>\n"
-				+ "                            <owl:Class>\n"
-				+ "                                <owl:complementOf>\n"
-				+ "                                    <owl:Class rdf:about=\"http://oiled.man.example.net/test#p1\"/>\n"
-				+ "                                </owl:complementOf>\n"
-				+ "                            </owl:Class>\n"
-				+ "                        </owl:someValuesFrom>\n"
-				+ "                    </owl:Restriction>\n"
-				+ "                    <owl:Restriction>\n"
-				+ "                        <owl:onProperty rdf:resource=\"http://oiled.man.example.net/test#f3\"/>\n"
-				+ "                        <owl:someValuesFrom>\n"
-				+ "                            <owl:Class rdf:about=\"http://oiled.man.example.net/test#p2\"/>\n"
-				+ "                        </owl:someValuesFrom>\n"
-				+ "                    </owl:Restriction>\n"
-				+ "                </owl:intersectionOf>\n"
-				+ "            </owl:Class>\n"
-				+ "        </owl:equivalentClass>\n"
-				+ "    </owl:Class>\n"
-				+ "    <owl:Class rdf:about=\"http://oiled.man.example.net/test#p1\"/>\n"
-				+ "    <owl:Class rdf:about=\"http://oiled.man.example.net/test#p2\"/>\n"
-				+ "    <owl:ObjectProperty rdf:about=\"http://oiled.man.example.net/test#f1\"/>\n"
-				+ "    <owl:FunctionalProperty rdf:about=\"http://oiled.man.example.net/test#f1\"/>\n"
-				+ "    <owl:ObjectProperty rdf:about=\"http://oiled.man.example.net/test#f2\"/>\n"
-				+ "    <owl:FunctionalProperty rdf:about=\"http://oiled.man.example.net/test#f2\"/>\n"
-				+ "    <owl:ObjectProperty rdf:about=\"http://oiled.man.example.net/test#f3\">\n"
-				+ "        <rdfs:subPropertyOf rdf:resource=\"http://oiled.man.example.net/test#f2\"/>\n"
-				+ "        <rdfs:subPropertyOf rdf:resource=\"http://oiled.man.example.net/test#f1\"/>\n"
-				+ "    </owl:ObjectProperty>\n"
-				+ "    <owl:FunctionalProperty rdf:about=\"http://oiled.man.example.net/test#f3\"/>\n"
-				+ "    <rdf:Description>\n"
-				+ "        <rdf:type rdf:resource=\"http://oiled.man.example.net/test#Unsatisfiable\"/>\n"
-				+ "    </rdf:Description>\n" + "</rdf:RDF>";
-		String conclusion = "";
-		String id = "WebOnt_description_logic_003";
-		TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-		String d = "DL Test: fact3.1";
-		JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-		r.setReasonerFactory(Factory.factory());
-		r.run();
-	}
+    @Test
+    public void testWebOnt_description_logic_003() {
+        String premise = "<rdf:RDF\n"
+                + "    xml:base=\"http://www.w3.org/2002/03owlt/description-logic/inconsistent003\"\n"
+                + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
+                + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+                + "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\">\n"
+                + "    <owl:Ontology rdf:about=\"\"/>\n"
+                + "    <owl:Class rdf:about=\"http://oiled.man.example.net/test#Unsatisfiable\">\n"
+                + "        <owl:equivalentClass>\n"
+                + "            <owl:Class>\n"
+                + "                <owl:intersectionOf rdf:parseType=\"Collection\">\n"
+                + "                    <owl:Restriction>\n"
+                + "                        <owl:onProperty rdf:resource=\"http://oiled.man.example.net/test#f1\"/>\n"
+                + "                        <owl:someValuesFrom>\n"
+                + "                            <owl:Class rdf:about=\"http://oiled.man.example.net/test#p1\"/>\n"
+                + "                        </owl:someValuesFrom>\n"
+                + "                    </owl:Restriction>\n"
+                + "                    <owl:Restriction>\n"
+                + "                        <owl:onProperty rdf:resource=\"http://oiled.man.example.net/test#f2\"/>\n"
+                + "                        <owl:someValuesFrom>\n"
+                + "                            <owl:Class>\n"
+                + "                                <owl:complementOf>\n"
+                + "                                    <owl:Class rdf:about=\"http://oiled.man.example.net/test#p1\"/>\n"
+                + "                                </owl:complementOf>\n"
+                + "                            </owl:Class>\n"
+                + "                        </owl:someValuesFrom>\n"
+                + "                    </owl:Restriction>\n"
+                + "                    <owl:Restriction>\n"
+                + "                        <owl:onProperty rdf:resource=\"http://oiled.man.example.net/test#f3\"/>\n"
+                + "                        <owl:someValuesFrom>\n"
+                + "                            <owl:Class rdf:about=\"http://oiled.man.example.net/test#p2\"/>\n"
+                + "                        </owl:someValuesFrom>\n"
+                + "                    </owl:Restriction>\n"
+                + "                </owl:intersectionOf>\n"
+                + "            </owl:Class>\n"
+                + "        </owl:equivalentClass>\n"
+                + "    </owl:Class>\n"
+                + "    <owl:Class rdf:about=\"http://oiled.man.example.net/test#p1\"/>\n"
+                + "    <owl:Class rdf:about=\"http://oiled.man.example.net/test#p2\"/>\n"
+                + "    <owl:ObjectProperty rdf:about=\"http://oiled.man.example.net/test#f1\"/>\n"
+                + "    <owl:FunctionalProperty rdf:about=\"http://oiled.man.example.net/test#f1\"/>\n"
+                + "    <owl:ObjectProperty rdf:about=\"http://oiled.man.example.net/test#f2\"/>\n"
+                + "    <owl:FunctionalProperty rdf:about=\"http://oiled.man.example.net/test#f2\"/>\n"
+                + "    <owl:ObjectProperty rdf:about=\"http://oiled.man.example.net/test#f3\">\n"
+                + "        <rdfs:subPropertyOf rdf:resource=\"http://oiled.man.example.net/test#f2\"/>\n"
+                + "        <rdfs:subPropertyOf rdf:resource=\"http://oiled.man.example.net/test#f1\"/>\n"
+                + "    </owl:ObjectProperty>\n"
+                + "    <owl:FunctionalProperty rdf:about=\"http://oiled.man.example.net/test#f3\"/>\n"
+                + "    <rdf:Description>\n"
+                + "        <rdf:type rdf:resource=\"http://oiled.man.example.net/test#Unsatisfiable\"/>\n"
+                + "    </rdf:Description>\n" + "</rdf:RDF>";
+        String conclusion = "";
+        String id = "WebOnt_description_logic_003";
+        TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
+        String d = "DL Test: fact3.1";
+        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        r.setReasonerFactory(Factory.factory());
+        r.run();
+    }
 }

@@ -14,31 +14,31 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
 public final class AxiomValueOfNot extends AxiomIndividual {
-	private final DataRoleExpression dataRoleExpression;
-	private final Literal<?> value;
+    private final DataRoleExpression dataRoleExpression;
+    private final Literal<?> value;
 
-	public AxiomValueOfNot(final OWLAxiom ax, final IndividualExpression i,
-			final DataRoleExpression a, final Literal<?> v) {
-		super(ax, i);
-		dataRoleExpression = a;
-		value = v;
-	}
+    public AxiomValueOfNot(final OWLAxiom ax, final IndividualExpression i,
+            final DataRoleExpression a, final Literal<?> v) {
+        super(ax, i);
+        dataRoleExpression = a;
+        value = v;
+    }
 
-	public void accept(final DLAxiomVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLAxiomVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 
-	/** access to role */
-	public final DataRoleExpression getAttribute() {
-		return dataRoleExpression;
-	}
+    /** access to role */
+    public final DataRoleExpression getAttribute() {
+        return dataRoleExpression;
+    }
 
-	/** access to value */
-	public final Literal<?> getValue() {
-		return value;
-	}
+    /** access to value */
+    public final Literal<?> getValue() {
+        return value;
+    }
 }

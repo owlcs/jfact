@@ -19,105 +19,105 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
  * == i.
  **/
 public class NamedEntryCollection<T extends NamedEntry> {
-	/** vector of elements */
-	private final List<T> base = new ArrayList<T>();
-	/** nameset to hold the elements */
-	private final NameSet<T> nameset;
-	/** name of the type */
-	private final String typeName;
-	/** flag to lock the nameset (ie, prohibit to add new names there) */
-	private boolean locked;
-	private final JFactReasonerConfiguration options;
+    /** vector of elements */
+    private final List<T> base = new ArrayList<T>();
+    /** nameset to hold the elements */
+    private final NameSet<T> nameset;
+    /** name of the type */
+    private final String typeName;
+    /** flag to lock the nameset (ie, prohibit to add new names there) */
+    private boolean locked;
+    private final JFactReasonerConfiguration options;
 
-	/** abstract method for additional tuning of newly created element */
-	public void registerNew(final T p) {}
+    /** abstract method for additional tuning of newly created element */
+    public void registerNew(final T p) {}
 
-	/** new element in a collection; return this element */
-	public T registerElem(final T p) {
-		p.setId(base.size());
-		base.add(p);
-		registerNew(p);
-		return p;
-	}
+    /** new element in a collection; return this element */
+    public T registerElem(final T p) {
+        p.setId(base.size());
+        base.add(p);
+        registerNew(p);
+        return p;
+    }
 
-	/** c'tor: clear 0-th element */
-	public NamedEntryCollection(final String name, final NameCreator<T> creator,
-			final JFactReasonerConfiguration options) {
-		typeName = name;
-		locked = false;
-		base.add(null);
-		nameset = new NameSet<T>(creator);
-		this.options = options;
-	}
+    /** c'tor: clear 0-th element */
+    public NamedEntryCollection(final String name, final NameCreator<T> creator,
+            final JFactReasonerConfiguration options) {
+        typeName = name;
+        locked = false;
+        base.add(null);
+        nameset = new NameSet<T>(creator);
+        this.options = options;
+    }
 
-	/** check if collection is locked */
-	public boolean isLocked() {
-		return locked;
-	}
+    /** check if collection is locked */
+    public boolean isLocked() {
+        return locked;
+    }
 
-	/** set LOCKED value to a VAL; @return old value of LOCKED */
-	public boolean setLocked(final boolean val) {
-		boolean old = locked;
-		locked = val;
-		return old;
-	}
+    /** set LOCKED value to a VAL; @return old value of LOCKED */
+    public boolean setLocked(final boolean val) {
+        boolean old = locked;
+        locked = val;
+        return old;
+    }
 
-	// add/remove elements
-	/** check if entry with a NAME is registered in given collection */
-	public boolean isRegistered(final String name) {
-		return nameset.get(name) != null;
-	}
+    // add/remove elements
+    /** check if entry with a NAME is registered in given collection */
+    public boolean isRegistered(final String name) {
+        return nameset.get(name) != null;
+    }
 
-	/** get entry by NAME from the collection; it if necessary */
-	public T get(final String name) {
-		T p = nameset.get(name);
-		// check if name is already defined
-		if (p != null) {
-			return p;
-		}
-		// check if it is possible to insert name
-		if (isLocked() && !options.isUseUndefinedNames()
-				&& options.getFreshEntityPolicy() == FreshEntityPolicy.DISALLOW) {
-			throw new ReasonerFreshEntityException("Unable to register '" + name
-					+ "' as a " + typeName, name);
-		}
-		// create name in name set, and register it
-		p = registerElem(nameset.add(name));
-		// if fresh entity -- mark it System
-		if (isLocked()) {
-			p.setSystem();
-			if (p instanceof ClassifiableEntry) {
-				((ClassifiableEntry) p).setNonClassifiable();
-			}
-		}
-		return p;
-		//		// name in name set, and it
-		//		return registerElem(nameset.add(name));
-	}
+    /** get entry by NAME from the collection; it if necessary */
+    public T get(final String name) {
+        T p = nameset.get(name);
+        // check if name is already defined
+        if (p != null) {
+            return p;
+        }
+        // check if it is possible to insert name
+        if (isLocked() && !options.isUseUndefinedNames()
+                && options.getFreshEntityPolicy() == FreshEntityPolicy.DISALLOW) {
+            throw new ReasonerFreshEntityException("Unable to register '" + name
+                    + "' as a " + typeName, name);
+        }
+        // create name in name set, and register it
+        p = registerElem(nameset.add(name));
+        // if fresh entity -- mark it System
+        if (isLocked()) {
+            p.setSystem();
+            if (p instanceof ClassifiableEntry) {
+                ((ClassifiableEntry) p).setNonClassifiable();
+            }
+        }
+        return p;
+        //		// name in name set, and it
+        //		return registerElem(nameset.add(name));
+    }
 
-	/**
-	 * remove given entry from the collection; @return true iff it was NOT the
-	 * last entry.
-	 */
-	public boolean remove(final T p) {
-		if (!isRegistered(p.getName())) // not in a name-set: just delete it
-		{
-			return false;
-		}
-		// we might delete vars in order (6,7), so the resize should be done to 6
-		if (p.getId() > 0 && base.size() > p.getId()) {
-			Helper.resize(base, p.getId());
-		}
-		nameset.remove(p.getName());
-		return false;
-	}
+    /**
+     * remove given entry from the collection; @return true iff it was NOT the
+     * last entry.
+     */
+    public boolean remove(final T p) {
+        if (!isRegistered(p.getName())) // not in a name-set: just delete it
+        {
+            return false;
+        }
+        // we might delete vars in order (6,7), so the resize should be done to 6
+        if (p.getId() > 0 && base.size() > p.getId()) {
+            Helper.resize(base, p.getId());
+        }
+        nameset.remove(p.getName());
+        return false;
+    }
 
-	// access to elements
-	public List<T> getList() {
-		return base.subList(1, base.size());
-	}
+    // access to elements
+    public List<T> getList() {
+        return base.subList(1, base.size());
+    }
 
-	public int size() {
-		return base.size() - 1;
-	}
+    public int size() {
+        return base.size() - 1;
+    }
 }

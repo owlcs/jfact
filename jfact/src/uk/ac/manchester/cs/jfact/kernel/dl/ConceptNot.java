@@ -11,23 +11,23 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 public final class ConceptNot implements ConceptExpression, ConceptArg {
-	/** concept argument */
-	private final ConceptExpression conceptExpression;
+    /** concept argument */
+    private final ConceptExpression conceptExpression;
 
-	public ConceptNot(final ConceptExpression C) {
-		conceptExpression = C;
-	}
+    public ConceptNot(final ConceptExpression C) {
+        conceptExpression = C;
+    }
 
-	public void accept(final DLExpressionVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLExpressionVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 
-	/** get access to the argument */
-	public ConceptExpression getConcept() {
-		return conceptExpression;
-	}
+    /** get access to the argument */
+    public ConceptExpression getConcept() {
+        return conceptExpression;
+    }
 }

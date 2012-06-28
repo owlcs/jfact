@@ -10,23 +10,23 @@ package uk.ac.manchester.cs.jfact.datatypes;
  * restrictions. All implementations must be immutable
  */
 public interface DatatypeExpression<Representation extends Comparable<Representation>>
-		extends Datatype<Representation> {
-	/** @return the predefined datatype which is host for this expression */
-	Datatype<Representation> getHostType();
+        extends Datatype<Representation> {
+    /** @return the predefined datatype which is host for this expression */
+    Datatype<Representation> getHostType();
 
-	/**
-	 * add a new facet value for this datatype expression
-	 * 
-	 * @param f
-	 *            a valid facet for the host datatype
-	 * @param value
-	 *            the value for the facet
-	 */
-	DatatypeExpression<Representation> addFacet(Facet f, Object value);
+    /**
+     * add a new facet value for this datatype expression
+     * 
+     * @param f
+     *            a valid facet for the host datatype
+     * @param value
+     *            the value for the facet
+     */
+    DatatypeExpression<Representation> addFacet(Facet f, Object value);
 
-	/**
-	 * @return true if this datatype expression is limited in such a way that
-	 *         there are no valid values
-	 */
-	boolean emptyValueSpace();
+    /**
+     * @return true if this datatype expression is limited in such a way that
+     *         there are no valid values
+     */
+    boolean emptyValueSpace();
 }

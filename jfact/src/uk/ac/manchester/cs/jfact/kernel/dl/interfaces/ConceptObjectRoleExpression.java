@@ -9,6 +9,6 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 
 /** general concept expression that contains an object role */
 public interface ConceptObjectRoleExpression extends ConceptExpression, ObjectRoleArg {
-	/** accept method for the visitor pattern */
-	void accept(DLExpressionVisitor visitor);
+    /** accept method for the visitor pattern */
+    void accept(DLExpressionVisitor visitor);
 }

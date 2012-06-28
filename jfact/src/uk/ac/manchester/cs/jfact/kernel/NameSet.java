@@ -8,32 +8,32 @@ package uk.ac.manchester.cs.jfact.kernel;
 import java.util.HashMap;
 
 public final class NameSet<T> extends HashMap<String, T> {
-	/** creator of new name */
-	private final NameCreator<T> creator;
+    /** creator of new name */
+    private final NameCreator<T> creator;
 
-	public NameSet(final NameCreator<T> p) {
-		creator = p;
-	}
+    public NameSet(final NameCreator<T> p) {
+        creator = p;
+    }
 
-	/**
-	 * unconditionally add new element with name ID to the set; return new
-	 * element
-	 */
-	public T add(final String id) {
-		T pne = creator.makeEntry(id);
-		put(id, pne);
-		return pne;
-	}
+    /**
+     * unconditionally add new element with name ID to the set; return new
+     * element
+     */
+    public T add(final String id) {
+        T pne = creator.makeEntry(id);
+        put(id, pne);
+        return pne;
+    }
 
-	/**
-	 * Insert id to a nameset (if necessary); @return pointer to id structure
-	 * created by external creator
-	 */
-	public T insert(final String id) {
-		T pne = get(id);
-		if (pne == null) {
-			pne = add(id);
-		}
-		return pne;
-	}
+    /**
+     * Insert id to a nameset (if necessary); @return pointer to id structure
+     * created by external creator
+     */
+    public T insert(final String id) {
+        T pne = get(id);
+        if (pne == null) {
+            pne = add(id);
+        }
+        return pne;
+    }
 }

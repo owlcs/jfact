@@ -7,34 +7,34 @@ import conformance.JUnitRunner;
 import conformance.TestClasses;
 
 public class WebOnt_equivalentClass_003 {
-	@Test
-	public void testWebOnt_equivalentClass_003() {
-		String premise = "<rdf:RDF\n"
-				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-				+ "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n"
-				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-				+ "    xml:base=\"http://www.w3.org/2002/03owlt/equivalentClass/premises003\" >\n"
-				+ "   <owl:Ontology/>\n"
-				+ "   <owl:Class rdf:about=\"conclusions003#Car\">\n"
-				+ "     <rdfs:subClassOf>\n"
-				+ "       <owl:Class rdf:about=\"conclusions003#Automobile\">\n"
-				+ "          <rdfs:subClassOf rdf:resource=\"conclusions003#Car\" />\n"
-				+ "       </owl:Class>\n" + "     </rdfs:subClassOf>\n"
-				+ "  </owl:Class>\n" + "</rdf:RDF>";
-		String conclusion = "<rdf:RDF\n"
-				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-				+ "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n"
-				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-				+ "    xml:base=\"http://www.w3.org/2002/03owlt/equivalentClass/conclusions003\" >\n"
-				+ "   <owl:Ontology/>\n" + "   <owl:Class rdf:ID=\"Car\">\n"
-				+ "     <owl:equivalentClass>\n"
-				+ "       <owl:Class rdf:ID=\"Automobile\"/>\n"
-				+ "     </owl:equivalentClass>\n" + "  </owl:Class>\n" + "</rdf:RDF>";
-		String id = "WebOnt_equivalentClass_003";
-		TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-		String d = "Two classes may be different names for the same set of individuals";
-		JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-		r.setReasonerFactory(Factory.factory());
-		r.run();
-	}
+    @Test
+    public void testWebOnt_equivalentClass_003() {
+        String premise = "<rdf:RDF\n"
+                + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+                + "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n"
+                + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
+                + "    xml:base=\"http://www.w3.org/2002/03owlt/equivalentClass/premises003\" >\n"
+                + "   <owl:Ontology/>\n"
+                + "   <owl:Class rdf:about=\"conclusions003#Car\">\n"
+                + "     <rdfs:subClassOf>\n"
+                + "       <owl:Class rdf:about=\"conclusions003#Automobile\">\n"
+                + "          <rdfs:subClassOf rdf:resource=\"conclusions003#Car\" />\n"
+                + "       </owl:Class>\n" + "     </rdfs:subClassOf>\n"
+                + "  </owl:Class>\n" + "</rdf:RDF>";
+        String conclusion = "<rdf:RDF\n"
+                + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+                + "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n"
+                + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
+                + "    xml:base=\"http://www.w3.org/2002/03owlt/equivalentClass/conclusions003\" >\n"
+                + "   <owl:Ontology/>\n" + "   <owl:Class rdf:ID=\"Car\">\n"
+                + "     <owl:equivalentClass>\n"
+                + "       <owl:Class rdf:ID=\"Automobile\"/>\n"
+                + "     </owl:equivalentClass>\n" + "  </owl:Class>\n" + "</rdf:RDF>";
+        String id = "WebOnt_equivalentClass_003";
+        TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
+        String d = "Two classes may be different names for the same set of individuals";
+        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        r.setReasonerFactory(Factory.factory());
+        r.run();
+    }
 }

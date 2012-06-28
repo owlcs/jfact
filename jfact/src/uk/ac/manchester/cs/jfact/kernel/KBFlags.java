@@ -6,32 +6,32 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 public final class KBFlags {
-	private boolean GCI, RnD, Reflexive;
+    private boolean GCI, RnD, Reflexive;
 
-	/** flag for GCIs */
-	public boolean isGCI() {
-		return GCI;
-	}
+    /** flag for GCIs */
+    public boolean isGCI() {
+        return GCI;
+    }
 
-	public void setGCI(final boolean action) {
-		GCI = action;
-	}
+    public void setGCI(final boolean action) {
+        GCI = action;
+    }
 
-	/** flag for Range and Domain axioms */
-	public boolean isRnD() {
-		return RnD;
-	}
+    /** flag for Range and Domain axioms */
+    public boolean isRnD() {
+        return RnD;
+    }
 
-	public void setRnD() {
-		RnD = true;
-	}
+    public void setRnD() {
+        RnD = true;
+    }
 
-	/** flag for Reflexive roles */
-	public boolean isReflexive() {
-		return Reflexive;
-	}
+    /** flag for Reflexive roles */
+    public boolean isReflexive() {
+        return Reflexive;
+    }
 
-	public void setReflexive(final boolean action) {
-		Reflexive = action;
-	}
+    public void setReflexive(final boolean action) {
+        Reflexive = action;
+    }
 }

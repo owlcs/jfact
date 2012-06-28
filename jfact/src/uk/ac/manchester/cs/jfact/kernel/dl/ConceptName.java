@@ -12,36 +12,36 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 public final class ConceptName implements ConceptExpression, NamedEntity {
-	/** name of the entity */
-	protected final String name;
-	private NamedEntry entry;
+    /** name of the entity */
+    protected final String name;
+    private NamedEntry entry;
 
-	public NamedEntry getEntry() {
-		return entry;
-	}
+    public NamedEntry getEntry() {
+        return entry;
+    }
 
-	public void setEntry(final NamedEntry e) {
-		entry = e;
-	}
+    public void setEntry(final NamedEntry e) {
+        entry = e;
+    }
 
-	public ConceptName(final String name) {
-		this.name = name;
-	}
+    public ConceptName(final String name) {
+        this.name = name;
+    }
 
-	public void accept(final DLExpressionVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLExpressionVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	@Override
-	public String toString() {
-		return this.getClass().getName() + "(" + name + ")";
-	}
+    @Override
+    public String toString() {
+        return this.getClass().getName() + "(" + name + ")";
+    }
 }

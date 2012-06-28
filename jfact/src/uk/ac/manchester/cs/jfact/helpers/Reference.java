@@ -6,50 +6,50 @@ package uk.ac.manchester.cs.jfact.helpers;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 public final class Reference<E> {
-	private E e;
+    private E e;
 
-	public Reference() {}
+    public Reference() {}
 
-	public Reference(final E e) {
-		setReference(e);
-	}
+    public Reference(final E e) {
+        setReference(e);
+    }
 
-	public void setReference(final E e) {
-		this.e = e;
-	}
+    public void setReference(final E e) {
+        this.e = e;
+    }
 
-	public E getReference() {
-		return e;
-	}
+    public E getReference() {
+        return e;
+    }
 
-	public void delete() {
-		e = null;
-	}
+    public void delete() {
+        e = null;
+    }
 
-	@Override
-	public String toString() {
-		if (e != null) {
-			return "ref(" + e.toString() + ")";
-		}
-		return "ref(null)";
-	}
+    @Override
+    public String toString() {
+        if (e != null) {
+            return "ref(" + e.toString() + ")";
+        }
+        return "ref(null)";
+    }
 
-	@Override
-	public int hashCode() {
-		return e != null ? e.hashCode() : super.hashCode();
-	}
+    @Override
+    public int hashCode() {
+        return e != null ? e.hashCode() : super.hashCode();
+    }
 
-	@Override
-	public boolean equals(final Object arg0) {
-		if (arg0 == null) {
-			return false;
-		}
-		if (this == arg0) {
-			return true;
-		}
-		if (arg0 instanceof Reference) {
-			return e != null ? e.equals(((Reference<?>) arg0).getReference()) : false;
-		}
-		return false;
-	}
+    @Override
+    public boolean equals(final Object arg0) {
+        if (arg0 == null) {
+            return false;
+        }
+        if (this == arg0) {
+            return true;
+        }
+        if (arg0 instanceof Reference) {
+            return e != null ? e.equals(((Reference<?>) arg0).getReference()) : false;
+        }
+        return false;
+    }
 }

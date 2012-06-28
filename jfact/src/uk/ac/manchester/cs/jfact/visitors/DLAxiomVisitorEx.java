@@ -40,69 +40,69 @@ import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOf;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOfNot;
 
 public interface DLAxiomVisitorEx<O> {
-	public O visit(AxiomDeclaration axiom);
+    public O visit(AxiomDeclaration axiom);
 
-	public O visit(AxiomEquivalentConcepts axiom);
+    public O visit(AxiomEquivalentConcepts axiom);
 
-	public O visit(AxiomDisjointConcepts axiom);
+    public O visit(AxiomDisjointConcepts axiom);
 
-	public O visit(AxiomEquivalentORoles axiom);
+    public O visit(AxiomEquivalentORoles axiom);
 
-	public O visit(AxiomEquivalentDRoles axiom);
+    public O visit(AxiomEquivalentDRoles axiom);
 
-	public O visit(AxiomDisjointUnion axiom);
+    public O visit(AxiomDisjointUnion axiom);
 
-	public O visit(AxiomDisjointORoles axiom);
+    public O visit(AxiomDisjointORoles axiom);
 
-	public O visit(AxiomDisjointDRoles axiom);
+    public O visit(AxiomDisjointDRoles axiom);
 
-	public O visit(AxiomSameIndividuals axiom);
+    public O visit(AxiomSameIndividuals axiom);
 
-	public O visit(AxiomDifferentIndividuals axiom);
+    public O visit(AxiomDifferentIndividuals axiom);
 
-	public O visit(AxiomFairnessConstraint axiom);
+    public O visit(AxiomFairnessConstraint axiom);
 
-	public O visit(AxiomRoleInverse axiom);
+    public O visit(AxiomRoleInverse axiom);
 
-	public O visit(AxiomORoleSubsumption axiom);
+    public O visit(AxiomORoleSubsumption axiom);
 
-	public O visit(AxiomDRoleSubsumption axiom);
+    public O visit(AxiomDRoleSubsumption axiom);
 
-	public O visit(AxiomORoleDomain axiom);
+    public O visit(AxiomORoleDomain axiom);
 
-	public O visit(AxiomDRoleDomain axiom);
+    public O visit(AxiomDRoleDomain axiom);
 
-	public O visit(AxiomORoleRange axiom);
+    public O visit(AxiomORoleRange axiom);
 
-	public O visit(AxiomDRoleRange axiom);
+    public O visit(AxiomDRoleRange axiom);
 
-	public O visit(AxiomRoleTransitive axiom);
+    public O visit(AxiomRoleTransitive axiom);
 
-	public O visit(AxiomRoleReflexive axiom);
+    public O visit(AxiomRoleReflexive axiom);
 
-	public O visit(AxiomRoleIrreflexive axiom);
+    public O visit(AxiomRoleIrreflexive axiom);
 
-	public O visit(AxiomRoleSymmetric axiom);
+    public O visit(AxiomRoleSymmetric axiom);
 
-	public O visit(AxiomRoleAsymmetric axiom);
+    public O visit(AxiomRoleAsymmetric axiom);
 
-	public O visit(AxiomORoleFunctional axiom);
+    public O visit(AxiomORoleFunctional axiom);
 
-	public O visit(AxiomDRoleFunctional axiom);
+    public O visit(AxiomDRoleFunctional axiom);
 
-	public O visit(AxiomRoleInverseFunctional axiom);
+    public O visit(AxiomRoleInverseFunctional axiom);
 
-	public O visit(AxiomConceptInclusion axiom);
+    public O visit(AxiomConceptInclusion axiom);
 
-	public O visit(AxiomInstanceOf axiom);
+    public O visit(AxiomInstanceOf axiom);
 
-	public O visit(AxiomRelatedTo axiom);
+    public O visit(AxiomRelatedTo axiom);
 
-	public O visit(AxiomRelatedToNot axiom);
+    public O visit(AxiomRelatedToNot axiom);
 
-	public O visit(AxiomValueOf axiom);
+    public O visit(AxiomValueOf axiom);
 
-	public O visit(AxiomValueOfNot axiom);
+    public O visit(AxiomValueOfNot axiom);
 
-	public O visitOntology(Ontology ontology);
+    public O visitOntology(Ontology ontology);
 }

@@ -11,23 +11,23 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 public final class ObjectRoleInverse implements ObjectRoleExpression, ObjectRoleArg {
-	/** object role argument */
-	private final ObjectRoleExpression objectRoleExpression;
+    /** object role argument */
+    private final ObjectRoleExpression objectRoleExpression;
 
-	public ObjectRoleInverse(final ObjectRoleExpression R) {
-		objectRoleExpression = R;
-	}
+    public ObjectRoleInverse(final ObjectRoleExpression R) {
+        objectRoleExpression = R;
+    }
 
-	public void accept(final DLExpressionVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLExpressionVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 
-	/** get access to the argument */
-	public ObjectRoleExpression getOR() {
-		return objectRoleExpression;
-	}
+    /** get access to the argument */
+    public ObjectRoleExpression getOR() {
+        return objectRoleExpression;
+    }
 }

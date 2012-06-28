@@ -15,17 +15,17 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 public final class ObjectRoleChain extends NAryExpressionImpl<ObjectRoleExpression>
-		implements NAryExpression<ObjectRoleExpression>, ObjectRoleComplexExpression {
-	/** create role chain from given array */
-	public ObjectRoleChain(final List<Expression> v) {
-		add(v);
-	}
+        implements NAryExpression<ObjectRoleExpression>, ObjectRoleComplexExpression {
+    /** create role chain from given array */
+    public ObjectRoleChain(final List<Expression> v) {
+        add(v);
+    }
 
-	public void accept(final DLExpressionVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLExpressionVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 }

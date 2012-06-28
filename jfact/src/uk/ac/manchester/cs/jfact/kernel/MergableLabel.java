@@ -6,56 +6,56 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 public final class MergableLabel {
-	/** sample for all equivalent labels */
-	private MergableLabel pSample;
+    /** sample for all equivalent labels */
+    private MergableLabel pSample;
 
-	public MergableLabel() {
-		pSample = this;
-	}
+    public MergableLabel() {
+        pSample = this;
+    }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (this == obj) {
-			return true;
-		}
-		if (obj instanceof MergableLabel) {
-			MergableLabel p = (MergableLabel) obj;
-			return pSample.equals(p.pSample);
-		}
-		return false;
-	}
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof MergableLabel) {
+            MergableLabel p = (MergableLabel) obj;
+            return pSample.equals(p.pSample);
+        }
+        return false;
+    }
 
-	@Override
-	public int hashCode() {
-		if (pSample != null) {
-			return pSample.hashCode();
-		}
-		return super.hashCode();
-	}
+    @Override
+    public int hashCode() {
+        if (pSample != null) {
+            return pSample.hashCode();
+        }
+        return super.hashCode();
+    }
 
-	/** make 2 labels equal */
-	public void merge(final MergableLabel p) {
-		MergableLabel sample = p.resolve();
-		resolve();
-		if (pSample != sample) {
-			pSample.pSample = sample;
-		}
-	}
+    /** make 2 labels equal */
+    public void merge(final MergableLabel p) {
+        MergableLabel sample = p.resolve();
+        resolve();
+        if (pSample != sample) {
+            pSample.pSample = sample;
+        }
+    }
 
-	/** make label's depth <= 2; @return sample of the label */
-	public MergableLabel resolve() {
-		// check if current node is itself sample
-		if (!isSample()) {
-			pSample = pSample.resolve();
-		}
-		return pSample;
-	}
+    /** make label's depth <= 2; @return sample of the label */
+    public MergableLabel resolve() {
+        // check if current node is itself sample
+        if (!isSample()) {
+            pSample = pSample.resolve();
+        }
+        return pSample;
+    }
 
-	/** is given lable a sample label */
-	public boolean isSample() {
-		return pSample.equals(this);
-	}
+    /** is given lable a sample label */
+    public boolean isSample() {
+        return pSample.equals(this);
+    }
 }

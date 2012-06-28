@@ -7,34 +7,34 @@ import conformance.JUnitRunner;
 import conformance.TestClasses;
 
 public class rdfbased_sem_class_thing_term {
-	@Test
-	public void testrdfbased_sem_class_thing_term() {
-		//XXX test modified because of ontology not compliant with OWL 2
-		String premise = "<rdf:RDF\n"
-				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-				+ "    xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\"\n"
-				+ "    xmlns:ex=\"http://www.example.org#\"\n"
-				+ "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-				+ "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
-				+ "</rdf:RDF>";
-		String conclusion = "<rdf:RDF\n"
-				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-				+ "    xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\"\n"
-				+ "    xmlns:ex=\"http://www.example.org#\"\n"
-				+ "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-				//added
-				+ "<owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
-				//end added
-				+ "  <rdf:Description rdf:about=\"http://www.example.org#c\">\n"
-				+ "    <rdfs:subClassOf rdf:resource=\"http://www.w3.org/2002/07/owl#Thing\"/>\n"
-				+ "  </rdf:Description>\n" + "</rdf:RDF>";
-		String id = "rdfbased_sem_class_thing_term";
-		TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-		String d = "Every OWL class is a sub class of the vocabulary class owl:Thing.";
-		JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-		r.setReasonerFactory(Factory.factory());
-		r.run();
-	}
+    @Test
+    public void testrdfbased_sem_class_thing_term() {
+        //XXX test modified because of ontology not compliant with OWL 2
+        String premise = "<rdf:RDF\n"
+                + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+                + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
+                + "    xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\"\n"
+                + "    xmlns:ex=\"http://www.example.org#\"\n"
+                + "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
+                + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
+                + "</rdf:RDF>";
+        String conclusion = "<rdf:RDF\n"
+                + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+                + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
+                + "    xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\"\n"
+                + "    xmlns:ex=\"http://www.example.org#\"\n"
+                + "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
+                //added
+                + "<owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
+                //end added
+                + "  <rdf:Description rdf:about=\"http://www.example.org#c\">\n"
+                + "    <rdfs:subClassOf rdf:resource=\"http://www.w3.org/2002/07/owl#Thing\"/>\n"
+                + "  </rdf:Description>\n" + "</rdf:RDF>";
+        String id = "rdfbased_sem_class_thing_term";
+        TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
+        String d = "Every OWL class is a sub class of the vocabulary class owl:Thing.";
+        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        r.setReasonerFactory(Factory.factory());
+        r.run();
+    }
 }

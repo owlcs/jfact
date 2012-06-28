@@ -4,19 +4,19 @@ package uk.ac.manchester.cs.jfact.datatypes;
  * all Datatypes whose getNumeric() method returns true implement this interface
  */
 public interface OrderedDatatype<R extends Comparable<R>> {
-	boolean hasMinExclusive();
+    boolean hasMinExclusive();
 
-	boolean hasMinInclusive();
+    boolean hasMinInclusive();
 
-	boolean hasMaxExclusive();
+    boolean hasMaxExclusive();
 
-	boolean hasMaxInclusive();
+    boolean hasMaxInclusive();
 
-	boolean hasMin();
+    boolean hasMin();
 
-	boolean hasMax();
+    boolean hasMax();
 
-	R getMin();
+    R getMin();
 
-	R getMax();
+    R getMax();
 }

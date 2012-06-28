@@ -7,64 +7,64 @@ import conformance.JUnitRunner;
 import conformance.TestClasses;
 
 public class WebOnt_I4_5_001 {
-	@Test
-	public void testWebOnt_I4_5_001() {
-		String premise = "<rdf:RDF\n"
-				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-				+ "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n"
-				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-				+ "    xmlns:first=\"http://www.w3.org/2002/03owlt/I4.5/premises001#\"\n"
-				+ "    xml:base=\"http://www.w3.org/2002/03owlt/I4.5/premises001\" >\n"
-				+ "\n"
-				+ "    <owl:Ontology/>\n"
-				+ "\n"
-				+ "    <owl:Class rdf:ID=\"EuropeanCountry\" />\n"
-				+ "    <owl:Class rdf:ID=\"Person\" />\n"
-				+ "\n"
-				+ "    <owl:Class rdf:ID=\"EUCountry\">\n"
-				+ "      <owl:oneOf rdf:parseType=\"Collection\">\n"
-				+ "         <first:EuropeanCountry rdf:ID=\"UK\"/>\n"
-				+ "         <first:EuropeanCountry rdf:ID=\"BE\"/>\n"
-				+ "         <first:EuropeanCountry rdf:ID=\"ES\"/>\n"
-				+ "         <first:EuropeanCountry rdf:ID=\"FR\"/>\n"
-				+ "         <first:EuropeanCountry rdf:ID=\"NL\"/>\n"
-				+ "         <first:EuropeanCountry rdf:ID=\"PT\"/>\n"
-				+ "      </owl:oneOf>\n"
-				+ "    </owl:Class>\n"
-				+ "\n"
-				+ "    <owl:ObjectProperty rdf:ID=\"hasEuroMP\" >\n"
-				+ "      <rdfs:domain rdf:resource=\"#EUCountry\"/>\n"
-				+ "    </owl:ObjectProperty>\n"
-				+ "\n"
-				+ "    <owl:ObjectProperty rdf:ID=\"isEuroMPFrom\" >\n"
-				+ "      <owl:inverseOf rdf:resource=\"#hasEuroMP\"/>\n"
-				+ "    </owl:ObjectProperty>\n"
-				+ "\n"
-				+ "    <owl:Class rdf:ID=\"EuroMP\">\n"
-				+ "      <owl:equivalentClass>\n"
-				+ "        <owl:Restriction>\n"
-				+ "          <owl:onProperty rdf:resource=\"#isEuroMPFrom\" />\n"
-				+ "          <owl:someValuesFrom rdf:resource=\"http://www.w3.org/2002/07/owl#Thing\" />\n"
-				+ "        </owl:Restriction>\n" + "      </owl:equivalentClass>\n"
-				+ "    </owl:Class>\n" + "\n"
-				+ "    <first:Person rdf:ID=\"Kinnock\" />\n" + "\n"
-				+ "    <first:EuropeanCountry rdf:about=\"#UK\">\n"
-				+ "      <first:hasEuroMP rdf:resource=\"#Kinnock\" />\n"
-				+ "    </first:EuropeanCountry>\n" + "  \n" + "\n" + "</rdf:RDF>";
-		String conclusion = "<rdf:RDF\n"
-				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-				+ "    xmlns:first=\"http://www.w3.org/2002/03owlt/I4.5/premises001#\"\n"
-				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-				+ "    xml:base=\"http://www.w3.org/2002/03owlt/I4.5/conclusions001\" >\n"
-				+ "\n" + "  <owl:Ontology/>\n"
-				+ "  <first:EuroMP rdf:about=\"premises001#Kinnock\" />\n"
-				+ "  <owl:Class rdf:about=\"premises001#EuroMP\"/>\n" + "\n"
-				+ "</rdf:RDF>";
-		String id = "WebOnt_I4_5_001";
-		TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-		String d = "An example combinging owl:oneOf and owl:inverseOf.";
-		JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-		r.setReasonerFactory(Factory.factory());
-		r.run();
-	}
+    @Test
+    public void testWebOnt_I4_5_001() {
+        String premise = "<rdf:RDF\n"
+                + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+                + "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n"
+                + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
+                + "    xmlns:first=\"http://www.w3.org/2002/03owlt/I4.5/premises001#\"\n"
+                + "    xml:base=\"http://www.w3.org/2002/03owlt/I4.5/premises001\" >\n"
+                + "\n"
+                + "    <owl:Ontology/>\n"
+                + "\n"
+                + "    <owl:Class rdf:ID=\"EuropeanCountry\" />\n"
+                + "    <owl:Class rdf:ID=\"Person\" />\n"
+                + "\n"
+                + "    <owl:Class rdf:ID=\"EUCountry\">\n"
+                + "      <owl:oneOf rdf:parseType=\"Collection\">\n"
+                + "         <first:EuropeanCountry rdf:ID=\"UK\"/>\n"
+                + "         <first:EuropeanCountry rdf:ID=\"BE\"/>\n"
+                + "         <first:EuropeanCountry rdf:ID=\"ES\"/>\n"
+                + "         <first:EuropeanCountry rdf:ID=\"FR\"/>\n"
+                + "         <first:EuropeanCountry rdf:ID=\"NL\"/>\n"
+                + "         <first:EuropeanCountry rdf:ID=\"PT\"/>\n"
+                + "      </owl:oneOf>\n"
+                + "    </owl:Class>\n"
+                + "\n"
+                + "    <owl:ObjectProperty rdf:ID=\"hasEuroMP\" >\n"
+                + "      <rdfs:domain rdf:resource=\"#EUCountry\"/>\n"
+                + "    </owl:ObjectProperty>\n"
+                + "\n"
+                + "    <owl:ObjectProperty rdf:ID=\"isEuroMPFrom\" >\n"
+                + "      <owl:inverseOf rdf:resource=\"#hasEuroMP\"/>\n"
+                + "    </owl:ObjectProperty>\n"
+                + "\n"
+                + "    <owl:Class rdf:ID=\"EuroMP\">\n"
+                + "      <owl:equivalentClass>\n"
+                + "        <owl:Restriction>\n"
+                + "          <owl:onProperty rdf:resource=\"#isEuroMPFrom\" />\n"
+                + "          <owl:someValuesFrom rdf:resource=\"http://www.w3.org/2002/07/owl#Thing\" />\n"
+                + "        </owl:Restriction>\n" + "      </owl:equivalentClass>\n"
+                + "    </owl:Class>\n" + "\n"
+                + "    <first:Person rdf:ID=\"Kinnock\" />\n" + "\n"
+                + "    <first:EuropeanCountry rdf:about=\"#UK\">\n"
+                + "      <first:hasEuroMP rdf:resource=\"#Kinnock\" />\n"
+                + "    </first:EuropeanCountry>\n" + "  \n" + "\n" + "</rdf:RDF>";
+        String conclusion = "<rdf:RDF\n"
+                + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+                + "    xmlns:first=\"http://www.w3.org/2002/03owlt/I4.5/premises001#\"\n"
+                + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
+                + "    xml:base=\"http://www.w3.org/2002/03owlt/I4.5/conclusions001\" >\n"
+                + "\n" + "  <owl:Ontology/>\n"
+                + "  <first:EuroMP rdf:about=\"premises001#Kinnock\" />\n"
+                + "  <owl:Class rdf:about=\"premises001#EuroMP\"/>\n" + "\n"
+                + "</rdf:RDF>";
+        String id = "WebOnt_I4_5_001";
+        TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
+        String d = "An example combinging owl:oneOf and owl:inverseOf.";
+        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        r.setReasonerFactory(Factory.factory());
+        r.run();
+    }
 }

@@ -14,17 +14,17 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 public final class DataAnd extends NAryExpressionImpl<DataExpression> implements
-		NAryExpression<DataExpression>, DataExpression {
-	/** create AND of expressions from the given array */
-	public DataAnd(final List<Expression> v) {
-		add(v);
-	}
+        NAryExpression<DataExpression>, DataExpression {
+    /** create AND of expressions from the given array */
+    public DataAnd(final List<Expression> v) {
+        add(v);
+    }
 
-	public void accept(final DLExpressionVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLExpressionVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 }

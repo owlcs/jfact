@@ -12,16 +12,16 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 
 /** policy for object properties */
 public final class ObjectPropertyPolicy implements Policy {
-	public boolean applicable(final ClassifiableEntry p) {
-		return true;
-	}
+    public boolean applicable(final ClassifiableEntry p) {
+        return true;
+    }
 
-	public boolean needPlain() {
-		return false;
-	}
+    public boolean needPlain() {
+        return false;
+    }
 
-	public Expression buildTree(final ExpressionManager EM, final ClassifiableEntry p) {
-		return p.getId() >= 0 ? EM.objectRole(p.getName()) : EM.inverse(EM
-				.objectRole(((Role) p).realInverse().getName()));
-	}
+    public Expression buildTree(final ExpressionManager EM, final ClassifiableEntry p) {
+        return p.getId() >= 0 ? EM.objectRole(p.getName()) : EM.inverse(EM
+                .objectRole(((Role) p).realInverse().getName()));
+    }
 }

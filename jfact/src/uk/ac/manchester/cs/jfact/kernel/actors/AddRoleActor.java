@@ -11,18 +11,18 @@ import uk.ac.manchester.cs.jfact.kernel.Role;
 import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
 
 public final class AddRoleActor implements Actor {
-	private final List<Role> rset;
+    private final List<Role> rset;
 
-	//TODO check other actors
-	public AddRoleActor(final List<Role> v) {
-		rset = v;
-	}
+    //TODO check other actors
+    public AddRoleActor(final List<Role> v) {
+        rset = v;
+    }
 
-	public boolean apply(final TaxonomyVertex v) {
-		if (v.getPrimer().getId() == 0) {
-			return false;
-		}
-		rset.add((Role) v.getPrimer());
-		return true;
-	}
+    public boolean apply(final TaxonomyVertex v) {
+        if (v.getPrimer().getId() == 0) {
+            return false;
+        }
+        rset.add((Role) v.getPrimer());
+        return true;
+    }
 }

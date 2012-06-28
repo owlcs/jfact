@@ -12,49 +12,49 @@ import java.util.Collection;
 import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 
 public class LiteralEntry extends NamedEntry {
-	private Literal<?> literal;
-	/** DAG index of the entry */
-	private int pName;
+    private Literal<?> literal;
+    /** DAG index of the entry */
+    private int pName;
 
-	/** create data entry with given name */
-	public LiteralEntry(final String name) {
-		super(name);
-		pName = bpINVALID;
-	}
+    /** create data entry with given name */
+    public LiteralEntry(final String name) {
+        super(name);
+        pName = bpINVALID;
+    }
 
-	/** set host data type for the data value */
-	public void setLiteral(final Literal<?> l) {
-		literal = l;
-	}
+    /** set host data type for the data value */
+    public void setLiteral(final Literal<?> l) {
+        literal = l;
+    }
 
-	public Literal<?> getLiteral() {
-		return literal;
-	}
+    public Literal<?> getLiteral() {
+        return literal;
+    }
 
-	/** get host type */
-	public Datatype<?> getType() {
-		return literal.getDatatypeExpression();
-	}
+    /** get host type */
+    public Datatype<?> getType() {
+        return literal.getDatatypeExpression();
+    }
 
-	public Collection<Facet> getFacet() {
-		return literal.getDatatypeExpression().getFacets();
-	}
+    public Collection<Facet> getFacet() {
+        return literal.getDatatypeExpression().getFacets();
+    }
 
-	/** get pointer to DAG entry corresponding to the data entry */
-	@Override
-	public int getIndex() {
-		return pName;
-	}
+    /** get pointer to DAG entry corresponding to the data entry */
+    @Override
+    public int getIndex() {
+        return pName;
+    }
 
-	/** set DAG index of the data entry */
-	@Override
-	public void setIndex(final int p) {
-		pName = p;
-	}
+    /** set DAG index of the data entry */
+    @Override
+    public void setIndex(final int p) {
+        pName = p;
+    }
 
-	@Override
-	public String toString() {
-		return "(" + this.getClass().getSimpleName() + " " + literal.toString()
-				+ super.toString() + ")";
-	}
+    @Override
+    public String toString() {
+        return "(" + this.getClass().getSimpleName() + " " + literal.toString()
+                + super.toString() + ")";
+    }
 }

@@ -10,15 +10,15 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 
 public abstract class AxiomSingleORole extends AxiomImpl {
-	private final ObjectRoleExpression role;
+    private final ObjectRoleExpression role;
 
-	protected AxiomSingleORole(final OWLAxiom ax, final ObjectRoleExpression role) {
-		super(ax);
-		this.role = role;
-	}
+    protected AxiomSingleORole(final OWLAxiom ax, final ObjectRoleExpression role) {
+        super(ax);
+        this.role = role;
+    }
 
-	/** access to role */
-	public final ObjectRoleExpression getRole() {
-		return role;
-	}
+    /** access to role */
+    public final ObjectRoleExpression getRole() {
+        return role;
+    }
 }

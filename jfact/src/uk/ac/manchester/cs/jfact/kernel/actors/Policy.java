@@ -10,9 +10,9 @@ import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 
 public interface Policy {
-	boolean applicable(ClassifiableEntry p);
+    boolean applicable(ClassifiableEntry p);
 
-	boolean needPlain();
+    boolean needPlain();
 
-	Expression buildTree(ExpressionManager EM, ClassifiableEntry p);
+    Expression buildTree(ExpressionManager EM, ClassifiableEntry p);
 }

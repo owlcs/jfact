@@ -16,16 +16,16 @@ import org.semanticweb.owlapi.reasoner.TimedConsoleProgressMonitor;
 import org.semanticweb.owlapi.util.AutoIRIMapper;
 
 public class TestPeriodic {
-	public static void main(final String[] args) throws OWLOntologyCreationException {
-		OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
-		File base = new File("../JFact/robertstest");
-		File url = new File(base, "periodic.owl");
-		AutoIRIMapper mapper = new AutoIRIMapper(base, true);
-		ontologyManager.addIRIMapper(mapper);
-		OWLOntology ontology = ontologyManager.loadOntology(IRI.create(url));
-		ThreadMXBean bean = ManagementFactory.getThreadMXBean();
-		OWLReasoner reasoner = Factory.factory().createReasoner(ontology,
-				new SimpleConfiguration(new TimedConsoleProgressMonitor()));
-		reasoner.precomputeInferences(InferenceType.values());
-	}
+    public static void main(final String[] args) throws OWLOntologyCreationException {
+        OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
+        File base = new File("../JFact/robertstest");
+        File url = new File(base, "periodic.owl");
+        AutoIRIMapper mapper = new AutoIRIMapper(base, true);
+        ontologyManager.addIRIMapper(mapper);
+        OWLOntology ontology = ontologyManager.loadOntology(IRI.create(url));
+        ThreadMXBean bean = ManagementFactory.getThreadMXBean();
+        OWLReasoner reasoner = Factory.factory().createReasoner(ontology,
+                new SimpleConfiguration(new TimedConsoleProgressMonitor()));
+        reasoner.precomputeInferences(InferenceType.values());
+    }
 }

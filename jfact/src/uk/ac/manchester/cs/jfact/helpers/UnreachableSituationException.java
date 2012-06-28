@@ -8,15 +8,15 @@ package uk.ac.manchester.cs.jfact.helpers;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 public class UnreachableSituationException extends ReasonerInternalException {
-	public UnreachableSituationException() {
-		super("Unreachable situation!");
-	}
+    public UnreachableSituationException() {
+        super("Unreachable situation!");
+    }
 
-	public UnreachableSituationException(final String text) {
-		super("Unreachable situation!\n" + text);
-	}
+    public UnreachableSituationException(final String text) {
+        super("Unreachable situation!\n" + text);
+    }
 
-	public UnreachableSituationException(final String text, final Throwable cause) {
-		super("Unreachable situation!\n" + text, cause);
-	}
+    public UnreachableSituationException(final String text, final Throwable cause) {
+        super("Unreachable situation!\n" + text, cause);
+    }
 }

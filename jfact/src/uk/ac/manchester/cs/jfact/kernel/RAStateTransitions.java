@@ -13,97 +13,97 @@ import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 
 /** class to represent transitions from a single state in an automaton */
 public final class RAStateTransitions {
-	/** all transitions */
-	protected final List<RATransition> base = new ArrayList<RATransition>();
-	/** check whether there is an empty transition going from this state */
-	protected boolean emptyTransition;
-	private final BitSet applicableRoles = new BitSet();
-	/** state from which all the transition starts */
-	private int from;
-	/** flag whether the role is data or not (valid only for simple automata) */
-	private boolean dataRole;
-	private int size = 0;
+    /** all transitions */
+    protected final List<RATransition> base = new ArrayList<RATransition>();
+    /** check whether there is an empty transition going from this state */
+    protected boolean emptyTransition;
+    private final BitSet applicableRoles = new BitSet();
+    /** state from which all the transition starts */
+    private int from;
+    /** flag whether the role is data or not (valid only for simple automata) */
+    private boolean dataRole;
+    private int size = 0;
 
-	/** RW begin */
-	public List<RATransition> begin() {
-		return base;
-	}
+    /** RW begin */
+    public List<RATransition> begin() {
+        return base;
+    }
 
-	public RAStateTransitions() {
-		emptyTransition = false;
-	}
+    public RAStateTransitions() {
+        emptyTransition = false;
+    }
 
-	/** add a transition from a given state */
-	public void add(final RATransition trans) {
-		base.add(trans);
-		size++;
-		if (trans.isEmpty()) {
-			emptyTransition = true;
-		}
-	}
+    /** add a transition from a given state */
+    public void add(final RATransition trans) {
+        base.add(trans);
+        size++;
+        if (trans.isEmpty()) {
+            emptyTransition = true;
+        }
+    }
 
-	/** @return true iff there are no transitions from this state */
-	public boolean isEmpty() {
-		return size == 0;
-	}
+    /** @return true iff there are no transitions from this state */
+    public boolean isEmpty() {
+        return size == 0;
+    }
 
-	/** @return true iff there is an empty transition from the state */
-	public boolean hasEmptyTransition() {
-		return emptyTransition;
-	}
+    /** @return true iff there is an empty transition from the state */
+    public boolean hasEmptyTransition() {
+        return emptyTransition;
+    }
 
-	/** print all the transitions starting from the state FROM */
-	public void print(final LogAdapter o) {
-		for (int i = 0; i < size; i++) {
-			base.get(i).print(o, from);
-		}
-	}
+    /** print all the transitions starting from the state FROM */
+    public void print(final LogAdapter o) {
+        for (int i = 0; i < size; i++) {
+            base.get(i).print(o, from);
+        }
+    }
 
-	/** set up state transitions: no more additions to the structure */
-	public void setup(final int state, final int nRoles, final boolean data) {
-		from = state;
-		dataRole = data;
-		// fills the set of recognisable roles
-		for (int i = 0; i < size; i++) {
-			for (Role t : base.get(i).begin()) {
-				applicableRoles.set(t.getAbsoluteIndex());
-			}
-		}
-	}
+    /** set up state transitions: no more additions to the structure */
+    public void setup(final int state, final int nRoles, final boolean data) {
+        from = state;
+        dataRole = data;
+        // fills the set of recognisable roles
+        for (int i = 0; i < size; i++) {
+            for (Role t : base.get(i).begin()) {
+                applicableRoles.set(t.getAbsoluteIndex());
+            }
+        }
+    }
 
-	/**
-	 * add information from TRANS to existing transition between the same
-	 * states. @return false if no such transition found
-	 */
-	public boolean addToExisting(final RATransition trans) {
-		int to = trans.final_state();
-		boolean tEmpty = trans.isEmpty();
-		for (int i = 0; i < size; i++) {
-			RATransition p = base.get(i);
-			//TODO index in Base
-			if (p.final_state() == to && p.isEmpty() == tEmpty) { // found existing transition
-				p.add(trans);
-				return true;
-			}
-		}
-		// no transition from->to found
-		return false;
-	}
+    /**
+     * add information from TRANS to existing transition between the same
+     * states. @return false if no such transition found
+     */
+    public boolean addToExisting(final RATransition trans) {
+        int to = trans.final_state();
+        boolean tEmpty = trans.isEmpty();
+        for (int i = 0; i < size; i++) {
+            RATransition p = base.get(i);
+            //TODO index in Base
+            if (p.final_state() == to && p.isEmpty() == tEmpty) { // found existing transition
+                p.add(trans);
+                return true;
+            }
+        }
+        // no transition from->to found
+        return false;
+    }
 
-	public boolean recognise(final Role R) {
-		if (R == null) {
-			return false;
-		}
-		return R.isDataRole() == dataRole && applicableRoles.get(R.getAbsoluteIndex());
-	}
+    public boolean recognise(final Role R) {
+        if (R == null) {
+            return false;
+        }
+        return R.isDataRole() == dataRole && applicableRoles.get(R.getAbsoluteIndex());
+    }
 
-	/** @return true iff there is only one transition */
-	public boolean isSingleton() {
-		return size == 1;
-	}
+    /** @return true iff there is only one transition */
+    public boolean isSingleton() {
+        return size == 1;
+    }
 
-	/** @return final state of the 1st transition; used for singletons */
-	public int getTransitionEnd() {
-		return base.get(0).final_state();
-	}
+    /** @return final state of the 1st transition; used for singletons */
+    public int getTransitionEnd() {
+        return base.get(0).final_state();
+    }
 }

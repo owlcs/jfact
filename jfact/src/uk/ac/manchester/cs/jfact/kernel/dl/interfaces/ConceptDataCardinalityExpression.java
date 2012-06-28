@@ -9,7 +9,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 
 /** general data role cardinality expression */
 public interface ConceptDataCardinalityExpression extends ConceptDataRVExpression,
-		NumberArg {
-	/** accept method for the visitor pattern */
-	void accept(DLExpressionVisitor visitor);
+        NumberArg {
+    /** accept method for the visitor pattern */
+    void accept(DLExpressionVisitor visitor);
 }

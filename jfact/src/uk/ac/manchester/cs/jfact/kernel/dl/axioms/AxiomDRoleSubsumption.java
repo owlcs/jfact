@@ -12,24 +12,24 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
 public final class AxiomDRoleSubsumption extends AxiomSingleDRole {
-	private final DataRoleExpression subRole;
+    private final DataRoleExpression subRole;
 
-	public AxiomDRoleSubsumption(final OWLAxiom ax, final DataRoleExpression subRole,
-			final DataRoleExpression supRole) {
-		super(ax, supRole);
-		this.subRole = subRole;
-	}
+    public AxiomDRoleSubsumption(final OWLAxiom ax, final DataRoleExpression subRole,
+            final DataRoleExpression supRole) {
+        super(ax, supRole);
+        this.subRole = subRole;
+    }
 
-	public void accept(final DLAxiomVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLAxiomVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 
-	/** access to role */
-	public final DataRoleExpression getSubRole() {
-		return subRole;
-	}
+    /** access to role */
+    public final DataRoleExpression getSubRole() {
+        return subRole;
+    }
 }

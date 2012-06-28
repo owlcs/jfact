@@ -12,27 +12,27 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 
 /** policy for concepts */
 public final class ClassPolicy implements Policy {
-	public boolean applicable(final ClassifiableEntry p) {
-		return !((Concept) p).isSingleton();
-	}
+    public boolean applicable(final ClassifiableEntry p) {
+        return !((Concept) p).isSingleton();
+    }
 
-	public boolean needPlain() {
-		return false;
-	}
+    public boolean needPlain() {
+        return false;
+    }
 
-	public Expression buildTree(final ExpressionManager EM, final ClassifiableEntry p) {
-		if (p.getId() >= 0) {
-			return EM.concept(p.getName());
-		}
-		// top or bottom
-		String name = p.getName();
-		if (name.equals("TOP")) {
-			return EM.top();
-		} else if (name.equals("BOTTOM")) {
-			return EM.bottom();
-		} else {
-			// error
-			return null;
-		}
-	}
+    public Expression buildTree(final ExpressionManager EM, final ClassifiableEntry p) {
+        if (p.getId() >= 0) {
+            return EM.concept(p.getName());
+        }
+        // top or bottom
+        String name = p.getName();
+        if (name.equals("TOP")) {
+            return EM.top();
+        } else if (name.equals("BOTTOM")) {
+            return EM.bottom();
+        } else {
+            // error
+            return null;
+        }
+    }
 }

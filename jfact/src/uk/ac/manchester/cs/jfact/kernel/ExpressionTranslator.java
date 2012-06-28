@@ -63,292 +63,292 @@ import uk.ac.manchester.cs.jfact.split.TSignature;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 public final class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
-	/** TBox to get access to the named entities */
-	private final TBox tbox;
-	/// signature of non-trivial entities; used in semantic locality checkers only
-	TSignature sig;
+    /** TBox to get access to the named entities */
+    private final TBox tbox;
+    /// signature of non-trivial entities; used in semantic locality checkers only
+    TSignature sig;
 
-	/// @return true iff ENTRY is not in signature
-	boolean nc(final NamedEntity entity) {
-		return sig != null && !sig.containsNamedEntity(entity);
-	}
+    /// @return true iff ENTRY is not in signature
+    boolean nc(final NamedEntity entity) {
+        return sig != null && !sig.containsNamedEntity(entity);
+    }
 
-	/// set internal signature to a given signature S
-	void setSignature(final TSignature s) {
-		sig = s;
-	}
+    /// set internal signature to a given signature S
+    void setSignature(final TSignature s) {
+        sig = s;
+    }
 
-	ExpressionTranslator(final TBox kb) {
-		tbox = kb;
-	}
+    ExpressionTranslator(final TBox kb) {
+        tbox = kb;
+    }
 
-	// concept expressions
-	public DLTree visit(final ConceptTop expr) {
-		return DLTreeFactory.createTop();
-	}
+    // concept expressions
+    public DLTree visit(final ConceptTop expr) {
+        return DLTreeFactory.createTop();
+    }
 
-	public DLTree visit(final ConceptBottom expr) {
-		return DLTreeFactory.createBottom();
-	}
+    public DLTree visit(final ConceptBottom expr) {
+        return DLTreeFactory.createBottom();
+    }
 
-	public DLTree visit(final ConceptName expr) {
-		if (nc(expr)) {
-			return sig.topCLocal() ? DLTreeFactory.createTop() : DLTreeFactory
-					.createBottom();
-		} else {
-			NamedEntry entry = expr.getEntry();
-			if (entry == null) {
-				entry = matchEntry(tbox.getConcept(expr.getName()), expr);
-			}
-			//tree = createEntry(CNAME,entry);
-			return DLTreeFactory.buildTree(new Lexeme(CNAME, entry));
-		}
-	}
+    public DLTree visit(final ConceptName expr) {
+        if (nc(expr)) {
+            return sig.topCLocal() ? DLTreeFactory.createTop() : DLTreeFactory
+                    .createBottom();
+        } else {
+            NamedEntry entry = expr.getEntry();
+            if (entry == null) {
+                entry = matchEntry(tbox.getConcept(expr.getName()), expr);
+            }
+            //tree = createEntry(CNAME,entry);
+            return DLTreeFactory.buildTree(new Lexeme(CNAME, entry));
+        }
+    }
 
-	/// create DLTree of given TAG and named ENTRY; set the entry's ENTITY if necessary
-	NamedEntry matchEntry(final NamedEntry entry, final NamedEntity entity) {
-		entry.setEntity(entity);
-		entity.setEntry(entry);
-		return entry;
-	}
+    /// create DLTree of given TAG and named ENTRY; set the entry's ENTITY if necessary
+    NamedEntry matchEntry(final NamedEntry entry, final NamedEntity entity) {
+        entry.setEntity(entity);
+        entity.setEntry(entry);
+        return entry;
+    }
 
-	//	private Lexeme setEntry(Token cname, NamedEntry expr, NamedEntity e) {
-	//		if (expr.getEntity() == null) {
-	//			expr.setEntity(e);
-	//		}
-	//		return new Lexeme(cname, expr);
-	//	}
-	public DLTree visit(final ConceptNot expr) {
-		return DLTreeFactory.createSNFNot(expr.getConcept().accept(this));
-	}
+    //	private Lexeme setEntry(Token cname, NamedEntry expr, NamedEntity e) {
+    //		if (expr.getEntity() == null) {
+    //			expr.setEntity(e);
+    //		}
+    //		return new Lexeme(cname, expr);
+    //	}
+    public DLTree visit(final ConceptNot expr) {
+        return DLTreeFactory.createSNFNot(expr.getConcept().accept(this));
+    }
 
-	private List<DLTree> visitArgs(final NAryExpression<? extends Expression> expr) {
-		List<DLTree> args = new ArrayList<DLTree>();
-		List<? extends Expression> list = expr.getArguments();
-		for (int i = 0; i < list.size(); i++) {
-			args.add(list.get(i).accept(this));
-		}
-		return args;
-	}
+    private List<DLTree> visitArgs(final NAryExpression<? extends Expression> expr) {
+        List<DLTree> args = new ArrayList<DLTree>();
+        List<? extends Expression> list = expr.getArguments();
+        for (int i = 0; i < list.size(); i++) {
+            args.add(list.get(i).accept(this));
+        }
+        return args;
+    }
 
-	public DLTree visit(final ConceptAnd expr) {
-		return DLTreeFactory.createSNFAnd(visitArgs(expr));
-	}
+    public DLTree visit(final ConceptAnd expr) {
+        return DLTreeFactory.createSNFAnd(visitArgs(expr));
+    }
 
-	public DLTree visit(final ConceptOr expr) {
-		return DLTreeFactory.createSNFOr(visitArgs(expr));
-	}
+    public DLTree visit(final ConceptOr expr) {
+        return DLTreeFactory.createSNFOr(visitArgs(expr));
+    }
 
-	public DLTree visit(final ConceptOneOf expr) {
-		return DLTreeFactory.createSNFOr(visitArgs(expr));
-	}
+    public DLTree visit(final ConceptOneOf expr) {
+        return DLTreeFactory.createSNFOr(visitArgs(expr));
+    }
 
-	public DLTree visit(final ConceptObjectSelf expr) {
-		DLTree r = expr.getOR().accept(this);
-		if (r.elem().getNE().isBottom()) {
-			return DLTreeFactory.createBottom();
-		}
-		DLTree toReturn = DLTreeFactory.createSNFSelf(DLTreeFactory.buildTree(new Lexeme(
-				Token.SELF), r));
-		return toReturn;
-	}
+    public DLTree visit(final ConceptObjectSelf expr) {
+        DLTree r = expr.getOR().accept(this);
+        if (r.elem().getNE().isBottom()) {
+            return DLTreeFactory.createBottom();
+        }
+        DLTree toReturn = DLTreeFactory.createSNFSelf(DLTreeFactory.buildTree(new Lexeme(
+                Token.SELF), r));
+        return toReturn;
+    }
 
-	public DLTree visit(final ConceptObjectValue expr) {
-		return DLTreeFactory.createSNFExists(expr.getOR().accept(this), expr.getI()
-				.accept(this));
-	}
+    public DLTree visit(final ConceptObjectValue expr) {
+        return DLTreeFactory.createSNFExists(expr.getOR().accept(this), expr.getI()
+                .accept(this));
+    }
 
-	public DLTree visit(final ConceptObjectExists expr) {
-		return DLTreeFactory.createSNFExists(expr.getOR().accept(this), expr.getConcept()
-				.accept(this));
-	}
+    public DLTree visit(final ConceptObjectExists expr) {
+        return DLTreeFactory.createSNFExists(expr.getOR().accept(this), expr.getConcept()
+                .accept(this));
+    }
 
-	public DLTree visit(final ConceptObjectForall expr) {
-		return DLTreeFactory.createSNFForall(expr.getOR().accept(this), expr.getConcept()
-				.accept(this));
-	}
+    public DLTree visit(final ConceptObjectForall expr) {
+        return DLTreeFactory.createSNFForall(expr.getOR().accept(this), expr.getConcept()
+                .accept(this));
+    }
 
-	public DLTree visit(final ConceptObjectMinCardinality expr) {
-		return DLTreeFactory.createSNFGE(expr.getCardinality(),
-				expr.getOR().accept(this), expr.getConcept().accept(this));
-	}
+    public DLTree visit(final ConceptObjectMinCardinality expr) {
+        return DLTreeFactory.createSNFGE(expr.getCardinality(),
+                expr.getOR().accept(this), expr.getConcept().accept(this));
+    }
 
-	public DLTree visit(final ConceptObjectMaxCardinality expr) {
-		return DLTreeFactory.createSNFLE(expr.getCardinality(),
-				expr.getOR().accept(this), expr.getConcept().accept(this));
-	}
+    public DLTree visit(final ConceptObjectMaxCardinality expr) {
+        return DLTreeFactory.createSNFLE(expr.getCardinality(),
+                expr.getOR().accept(this), expr.getConcept().accept(this));
+    }
 
-	public DLTree visit(final ConceptObjectExactCardinality expr) {
-		DLTree le = DLTreeFactory.createSNFLE(expr.getCardinality(),
-				expr.getOR().accept(this).copy(), expr.getConcept().accept(this).copy());
-		DLTree ge = DLTreeFactory.createSNFGE(expr.getCardinality(),
-				expr.getOR().accept(this).copy(), expr.getConcept().accept(this).copy());
-		return DLTreeFactory.createSNFAnd(ge, le);
-	}
+    public DLTree visit(final ConceptObjectExactCardinality expr) {
+        DLTree le = DLTreeFactory.createSNFLE(expr.getCardinality(),
+                expr.getOR().accept(this).copy(), expr.getConcept().accept(this).copy());
+        DLTree ge = DLTreeFactory.createSNFGE(expr.getCardinality(),
+                expr.getOR().accept(this).copy(), expr.getConcept().accept(this).copy());
+        return DLTreeFactory.createSNFAnd(ge, le);
+    }
 
-	public DLTree visit(final ConceptDataValue expr) {
-		return DLTreeFactory.createSNFExists(expr.getDataRoleExpression().accept(this),
-				expr.getExpr().accept(this));
-	}
+    public DLTree visit(final ConceptDataValue expr) {
+        return DLTreeFactory.createSNFExists(expr.getDataRoleExpression().accept(this),
+                expr.getExpr().accept(this));
+    }
 
-	public DLTree visit(final ConceptDataExists expr) {
-		return DLTreeFactory.createSNFExists(expr.getDataRoleExpression().accept(this),
-				expr.getExpr().accept(this));
-	}
+    public DLTree visit(final ConceptDataExists expr) {
+        return DLTreeFactory.createSNFExists(expr.getDataRoleExpression().accept(this),
+                expr.getExpr().accept(this));
+    }
 
-	public DLTree visit(final ConceptDataForall expr) {
-		return DLTreeFactory.createSNFForall(expr.getDataRoleExpression().accept(this),
-				expr.getExpr().accept(this));
-	}
+    public DLTree visit(final ConceptDataForall expr) {
+        return DLTreeFactory.createSNFForall(expr.getDataRoleExpression().accept(this),
+                expr.getExpr().accept(this));
+    }
 
-	public DLTree visit(final ConceptDataMinCardinality expr) {
-		return DLTreeFactory.createSNFGE(expr.getCardinality(), expr
-				.getDataRoleExpression().accept(this), expr.getExpr().accept(this));
-	}
+    public DLTree visit(final ConceptDataMinCardinality expr) {
+        return DLTreeFactory.createSNFGE(expr.getCardinality(), expr
+                .getDataRoleExpression().accept(this), expr.getExpr().accept(this));
+    }
 
-	public DLTree visit(final ConceptDataMaxCardinality expr) {
-		return DLTreeFactory.createSNFLE(expr.getCardinality(), expr
-				.getDataRoleExpression().accept(this), expr.getExpr().accept(this));
-	}
+    public DLTree visit(final ConceptDataMaxCardinality expr) {
+        return DLTreeFactory.createSNFLE(expr.getCardinality(), expr
+                .getDataRoleExpression().accept(this), expr.getExpr().accept(this));
+    }
 
-	public DLTree visit(final ConceptDataExactCardinality expr) {
-		DLTree le = DLTreeFactory.createSNFLE(expr.getCardinality(), expr
-				.getDataRoleExpression().accept(this).copy(), expr.getExpr().accept(this)
-				.copy());
-		DLTree ge = DLTreeFactory.createSNFGE(expr.getCardinality(), expr
-				.getDataRoleExpression().accept(this).copy(), expr.getExpr().accept(this)
-				.copy());
-		return DLTreeFactory.createSNFAnd(ge, le);
-	}
+    public DLTree visit(final ConceptDataExactCardinality expr) {
+        DLTree le = DLTreeFactory.createSNFLE(expr.getCardinality(), expr
+                .getDataRoleExpression().accept(this).copy(), expr.getExpr().accept(this)
+                .copy());
+        DLTree ge = DLTreeFactory.createSNFGE(expr.getCardinality(), expr
+                .getDataRoleExpression().accept(this).copy(), expr.getExpr().accept(this)
+                .copy());
+        return DLTreeFactory.createSNFAnd(ge, le);
+    }
 
-	// individual expressions
-	public DLTree visit(final IndividualName expr) {
-		NamedEntry entry = expr.getEntry();
-		if (entry == null) {
-			entry = matchEntry(tbox.getIndividual(expr.getName()), expr);
-		}
-		//tree = createEntry(INAME,entry);
-		return DLTreeFactory.buildTree(new Lexeme(INAME, entry));
-	}
+    // individual expressions
+    public DLTree visit(final IndividualName expr) {
+        NamedEntry entry = expr.getEntry();
+        if (entry == null) {
+            entry = matchEntry(tbox.getIndividual(expr.getName()), expr);
+        }
+        //tree = createEntry(INAME,entry);
+        return DLTreeFactory.buildTree(new Lexeme(INAME, entry));
+    }
 
-	// object role expressions
-	public DLTree visit(final ObjectRoleTop expr) {
-		throw new ReasonerInternalException(
-				"Unsupported expression 'top object role' in transformation");
-	}
+    // object role expressions
+    public DLTree visit(final ObjectRoleTop expr) {
+        throw new ReasonerInternalException(
+                "Unsupported expression 'top object role' in transformation");
+    }
 
-	public DLTree visit(final ObjectRoleBottom expr) {
-		throw new ReasonerInternalException(
-				"Unsupported expression 'bottom object role' in transformation");
-	}
+    public DLTree visit(final ObjectRoleBottom expr) {
+        throw new ReasonerInternalException(
+                "Unsupported expression 'bottom object role' in transformation");
+    }
 
-	public DLTree visit(final ObjectRoleName expr) {
-		RoleMaster RM = tbox.getORM();
-		NamedEntry role;
-		if (nc(expr)) {
-			role = sig.topRLocal() ? RM.getTopRole() : RM.getBotRole();
-		} else {
-			role = expr.getEntry();
-			if (role == null) {
-				role = matchEntry(RM.ensureRoleName(expr.getName()), expr);
-			}
-		}
-		//	tree = createEntry(RNAME,role);
-		return DLTreeFactory.buildTree(new Lexeme(RNAME, role));
-	}
+    public DLTree visit(final ObjectRoleName expr) {
+        RoleMaster RM = tbox.getORM();
+        NamedEntry role;
+        if (nc(expr)) {
+            role = sig.topRLocal() ? RM.getTopRole() : RM.getBotRole();
+        } else {
+            role = expr.getEntry();
+            if (role == null) {
+                role = matchEntry(RM.ensureRoleName(expr.getName()), expr);
+            }
+        }
+        //	tree = createEntry(RNAME,role);
+        return DLTreeFactory.buildTree(new Lexeme(RNAME, role));
+    }
 
-	public DLTree visit(final ObjectRoleInverse expr) {
-		return DLTreeFactory.createInverse(expr.getOR().accept(this));
-	}
+    public DLTree visit(final ObjectRoleInverse expr) {
+        return DLTreeFactory.createInverse(expr.getOR().accept(this));
+    }
 
-	public DLTree visit(final ObjectRoleChain expr) {
-		List<ObjectRoleExpression> l = new ArrayList<ObjectRoleExpression>(
-				expr.getArguments());
-		if (l.size() == 0) {
-			throw new ReasonerInternalException(
-					"Unsupported expression 'empty role chain' in transformation");
-		}
-		DLTree acc = l.get(0).accept(this);
-		for (int i = 1; i < l.size(); i++) {
-			//TODO this is still a binary tree while it should be n-ary with enforced order
-			acc = DLTreeFactory.buildTree(new Lexeme(RCOMPOSITION), acc,
-					l.get(i).accept(this));
-		}
-		return acc;
-	}
+    public DLTree visit(final ObjectRoleChain expr) {
+        List<ObjectRoleExpression> l = new ArrayList<ObjectRoleExpression>(
+                expr.getArguments());
+        if (l.size() == 0) {
+            throw new ReasonerInternalException(
+                    "Unsupported expression 'empty role chain' in transformation");
+        }
+        DLTree acc = l.get(0).accept(this);
+        for (int i = 1; i < l.size(); i++) {
+            //TODO this is still a binary tree while it should be n-ary with enforced order
+            acc = DLTreeFactory.buildTree(new Lexeme(RCOMPOSITION), acc,
+                    l.get(i).accept(this));
+        }
+        return acc;
+    }
 
-	public DLTree visit(final ObjectRoleProjectionFrom expr) {
-		return DLTreeFactory.buildTree(new Lexeme(PROJFROM), expr.getOR().accept(this),
-				expr.getConcept().accept(this));
-	}
+    public DLTree visit(final ObjectRoleProjectionFrom expr) {
+        return DLTreeFactory.buildTree(new Lexeme(PROJFROM), expr.getOR().accept(this),
+                expr.getConcept().accept(this));
+    }
 
-	public DLTree visit(final ObjectRoleProjectionInto expr) {
-		return DLTreeFactory.buildTree(new Lexeme(PROJINTO), expr.getOR().accept(this),
-				expr.getConcept().accept(this));
-	}
+    public DLTree visit(final ObjectRoleProjectionInto expr) {
+        return DLTreeFactory.buildTree(new Lexeme(PROJINTO), expr.getOR().accept(this),
+                expr.getConcept().accept(this));
+    }
 
-	// data role expressions
-	public DLTree visit(final DataRoleTop expr) {
-		throw new ReasonerInternalException(
-				"Unsupported expression 'top data role' in transformation");
-	}
+    // data role expressions
+    public DLTree visit(final DataRoleTop expr) {
+        throw new ReasonerInternalException(
+                "Unsupported expression 'top data role' in transformation");
+    }
 
-	public DLTree visit(final DataRoleBottom expr) {
-		throw new ReasonerInternalException(
-				"Unsupported expression 'bottom data role' in transformation");
-	}
+    public DLTree visit(final DataRoleBottom expr) {
+        throw new ReasonerInternalException(
+                "Unsupported expression 'bottom data role' in transformation");
+    }
 
-	public DLTree visit(final DataRoleName expr) {
-		RoleMaster RM = tbox.getDRM();
-		NamedEntry role;
-		if (nc(expr)) {
-			role = sig.topRLocal() ? RM.getTopRole() : RM.getBotRole();
-		} else
-		//role = RM.ensureRoleName(expr.getName());
-		{
-			role = expr.getEntry();
-			if (role == null) {
-				role = matchEntry(RM.ensureRoleName(expr.getName()), expr);
-			}
-		}
-		//tree = createEntry(DNAME,role);
-		return DLTreeFactory.buildTree(new Lexeme(DNAME, role));
-	}
+    public DLTree visit(final DataRoleName expr) {
+        RoleMaster RM = tbox.getDRM();
+        NamedEntry role;
+        if (nc(expr)) {
+            role = sig.topRLocal() ? RM.getTopRole() : RM.getBotRole();
+        } else
+        //role = RM.ensureRoleName(expr.getName());
+        {
+            role = expr.getEntry();
+            if (role == null) {
+                role = matchEntry(RM.ensureRoleName(expr.getName()), expr);
+            }
+        }
+        //tree = createEntry(DNAME,role);
+        return DLTreeFactory.buildTree(new Lexeme(DNAME, role));
+    }
 
-	// data expressions
-	public DLTree visit(final DataTop expr) {
-		return DLTreeFactory.createTop();
-	}
+    // data expressions
+    public DLTree visit(final DataTop expr) {
+        return DLTreeFactory.createTop();
+    }
 
-	public DLTree visit(final DataBottom expr) {
-		return DLTreeFactory.createBottom();
-	}
+    public DLTree visit(final DataBottom expr) {
+        return DLTreeFactory.createBottom();
+    }
 
-	public DLTree visit(final Datatype<?> expr) {
-		DatatypeEntry entry = new DatatypeEntry(expr);
-		return DLTreeFactory.wrap(entry);
-	}
+    public DLTree visit(final Datatype<?> expr) {
+        DatatypeEntry entry = new DatatypeEntry(expr);
+        return DLTreeFactory.wrap(entry);
+    }
 
-	public DLTree visit(final Literal<?> expr) {
-		// process type
-		LiteralEntry entry = new LiteralEntry(expr.value());
-		entry.setLiteral(expr);
-		return DLTreeFactory.wrap(entry);
-	}
+    public DLTree visit(final Literal<?> expr) {
+        // process type
+        LiteralEntry entry = new LiteralEntry(expr.value());
+        entry.setLiteral(expr);
+        return DLTreeFactory.wrap(entry);
+    }
 
-	public DLTree visit(final DataNot expr) {
-		return DLTreeFactory.createSNFNot(expr.getExpr().accept(this));
-	}
+    public DLTree visit(final DataNot expr) {
+        return DLTreeFactory.createSNFNot(expr.getExpr().accept(this));
+    }
 
-	public DLTree visit(final DataAnd expr) {
-		return DLTreeFactory.createSNFAnd(visitArgs(expr));
-	}
+    public DLTree visit(final DataAnd expr) {
+        return DLTreeFactory.createSNFAnd(visitArgs(expr));
+    }
 
-	public DLTree visit(final DataOr expr) {
-		return DLTreeFactory.createSNFOr(visitArgs(expr));
-	}
+    public DLTree visit(final DataOr expr) {
+        return DLTreeFactory.createSNFOr(visitArgs(expr));
+    }
 
-	public DLTree visit(final DataOneOf expr) {
-		return DLTreeFactory.createSNFOr(visitArgs(expr));
-	}
+    public DLTree visit(final DataOneOf expr) {
+        return DLTreeFactory.createSNFOr(visitArgs(expr));
+    }
 }

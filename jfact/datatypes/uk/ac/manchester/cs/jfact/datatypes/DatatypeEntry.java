@@ -12,48 +12,48 @@ import java.util.Collection;
 import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 
 public class DatatypeEntry extends NamedEntry {
-	/** corresponding type (Type has null in the field) */
-	private final Datatype<?> type;
-	/** DAG index of the entry */
-	private int pName;
+    /** corresponding type (Type has null in the field) */
+    private final Datatype<?> type;
+    /** DAG index of the entry */
+    private int pName;
 
-	/** create data entry with given name */
-	public DatatypeEntry(final Datatype<?> type) {
-		super(type.getDatatypeURI());
-		this.type = type;
-		pName = bpINVALID;
-	}
+    /** create data entry with given name */
+    public DatatypeEntry(final Datatype<?> type) {
+        super(type.getDatatypeURI());
+        this.type = type;
+        pName = bpINVALID;
+    }
 
-	/** check if data entry represents basic data type */
-	public boolean isBasicDataType() {
-		return type != null && !type.isExpression();
-	}
+    /** check if data entry represents basic data type */
+    public boolean isBasicDataType() {
+        return type != null && !type.isExpression();
+    }
 
-	public Datatype<?> getDatatype() {
-		return type;
-	}
+    public Datatype<?> getDatatype() {
+        return type;
+    }
 
-	// facet part
-	/** get RW access to constraints of the DE */
-	public Collection<Facet> getFacet() {
-		return type.getFacets();
-	}
+    // facet part
+    /** get RW access to constraints of the DE */
+    public Collection<Facet> getFacet() {
+        return type.getFacets();
+    }
 
-	/** get pointer to DAG entry corresponding to the data entry */
-	@Override
-	public int getIndex() {
-		return pName;
-	}
+    /** get pointer to DAG entry corresponding to the data entry */
+    @Override
+    public int getIndex() {
+        return pName;
+    }
 
-	/** set DAG index of the data entry */
-	@Override
-	public void setIndex(final int p) {
-		pName = p;
-	}
+    /** set DAG index of the data entry */
+    @Override
+    public void setIndex(final int p) {
+        pName = p;
+    }
 
-	@Override
-	public String toString() {
-		return "(" + this.getClass().getSimpleName() + " " + pName + " " + type + " "
-				+ super.toString() + ")";
-	}
+    @Override
+    public String toString() {
+        return "(" + this.getClass().getSimpleName() + " " + pName + " " + type + " "
+                + super.toString() + ")";
+    }
 }

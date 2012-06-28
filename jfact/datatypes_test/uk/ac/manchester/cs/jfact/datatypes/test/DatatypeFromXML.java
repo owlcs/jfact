@@ -208,7 +208,7 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
 	public BigDecimal getNumericFacetValue(final Facet f) {
 		Map<Facet, Object> toReturn = this.getKnownFacetValues();
 		if (toReturn.containsKey(f)) {
-			return f.parseNumber(toReturn.get(f));
+			return (BigDecimal) f.parseNumber(toReturn.get(f));
 		}
 		return null;
 	}

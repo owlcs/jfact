@@ -7,49 +7,49 @@ import conformance.JUnitRunner;
 import conformance.TestClasses;
 
 public class WebOnt_TransitiveProperty_002 {
-	@Test
-	public void testWebOnt_TransitiveProperty_002() {
-		String premise = "<rdf:RDF\n"
-				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-				+ "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n"
-				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-				+ "    xmlns:first=\"http://www.w3.org/2002/03owlt/TransitiveProperty/premises002#\"\n"
-				+ "    xmlns:second=\"http://www.w3.org/2002/03owlt/TransitiveProperty/conclusions002#\"\n"
-				+ "    xml:base=\"http://www.w3.org/2002/03owlt/TransitiveProperty/premises002\" >\n"
-				+ "   <owl:Ontology/>\n"
-				+ "   <owl:SymmetricProperty rdf:ID=\"symProp\">\n"
-				+ "     <rdfs:range>\n" + "       <owl:Class>\n"
-				+ "          <owl:oneOf rdf:parseType=\"Collection\">\n"
-				+ "            <owl:Thing rdf:ID=\"a\"/>\n"
-				+ "            <owl:Thing rdf:ID=\"b\"/>\n" + "          </owl:oneOf>\n"
-				+ "       </owl:Class>\n" + "     </rdfs:range>\n"
-				+ "   </owl:SymmetricProperty>\n" + "   <owl:Thing rdf:about=\"#a\">\n"
-				+ "     <first:symProp rdf:resource=\"#a\"/>\n" + "   </owl:Thing>\n"
-				+ "   <owl:Thing rdf:about=\"#b\">\n"
-				+ "     <first:symProp rdf:resource=\"#b\"/>\n" + "   </owl:Thing>\n"
-				+ "\n" + "\n" + "</rdf:RDF>";
-		String conclusion = "<rdf:RDF\n"
-				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-				+ "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n"
-				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-				+ "    xmlns:first=\"http://www.w3.org/2002/03owlt/TransitiveProperty/premises002#\"\n"
-				+ "    xmlns:second=\"http://www.w3.org/2002/03owlt/TransitiveProperty/conclusions002#\"\n"
-				+ "    xml:base=\"http://www.w3.org/2002/03owlt/TransitiveProperty/conclusions002\" >\n"
-				+ "   <owl:Ontology/>\n"
-				+ "   <owl:TransitiveProperty rdf:about=\"premises002#symProp\"/>\n"
-				+ "   <rdf:Description rdf:about=\"premises002#a\">\n"
-				+ "     <rdf:type>\n"
-				+ "       <owl:Restriction>\n"
-				+ "         <rdf:type rdf:resource=\"http://www.w3.org/2002/07/owl#Class\"/>\n"
-				+ "         <owl:onProperty rdf:resource=\"premises002#symProp\"/>\n"
-				+ "         <owl:someValuesFrom  rdf:resource=\"http://www.w3.org/2002/07/owl#Thing\"/>\n"
-				+ "       </owl:Restriction>\n" + "     </rdf:type>\n"
-				+ "   </rdf:Description>\n" + "\n" + "</rdf:RDF>";
-		String id = "WebOnt_TransitiveProperty_002";
-		TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-		String d = "Test illustrating extensional semantics of <code>owl:TransitiveProperty</code>.";
-		JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-		r.setReasonerFactory(Factory.factory());
-		r.run();
-	}
+    @Test
+    public void testWebOnt_TransitiveProperty_002() {
+        String premise = "<rdf:RDF\n"
+                + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+                + "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n"
+                + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
+                + "    xmlns:first=\"http://www.w3.org/2002/03owlt/TransitiveProperty/premises002#\"\n"
+                + "    xmlns:second=\"http://www.w3.org/2002/03owlt/TransitiveProperty/conclusions002#\"\n"
+                + "    xml:base=\"http://www.w3.org/2002/03owlt/TransitiveProperty/premises002\" >\n"
+                + "   <owl:Ontology/>\n"
+                + "   <owl:SymmetricProperty rdf:ID=\"symProp\">\n"
+                + "     <rdfs:range>\n" + "       <owl:Class>\n"
+                + "          <owl:oneOf rdf:parseType=\"Collection\">\n"
+                + "            <owl:Thing rdf:ID=\"a\"/>\n"
+                + "            <owl:Thing rdf:ID=\"b\"/>\n" + "          </owl:oneOf>\n"
+                + "       </owl:Class>\n" + "     </rdfs:range>\n"
+                + "   </owl:SymmetricProperty>\n" + "   <owl:Thing rdf:about=\"#a\">\n"
+                + "     <first:symProp rdf:resource=\"#a\"/>\n" + "   </owl:Thing>\n"
+                + "   <owl:Thing rdf:about=\"#b\">\n"
+                + "     <first:symProp rdf:resource=\"#b\"/>\n" + "   </owl:Thing>\n"
+                + "\n" + "\n" + "</rdf:RDF>";
+        String conclusion = "<rdf:RDF\n"
+                + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+                + "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n"
+                + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
+                + "    xmlns:first=\"http://www.w3.org/2002/03owlt/TransitiveProperty/premises002#\"\n"
+                + "    xmlns:second=\"http://www.w3.org/2002/03owlt/TransitiveProperty/conclusions002#\"\n"
+                + "    xml:base=\"http://www.w3.org/2002/03owlt/TransitiveProperty/conclusions002\" >\n"
+                + "   <owl:Ontology/>\n"
+                + "   <owl:TransitiveProperty rdf:about=\"premises002#symProp\"/>\n"
+                + "   <rdf:Description rdf:about=\"premises002#a\">\n"
+                + "     <rdf:type>\n"
+                + "       <owl:Restriction>\n"
+                + "         <rdf:type rdf:resource=\"http://www.w3.org/2002/07/owl#Class\"/>\n"
+                + "         <owl:onProperty rdf:resource=\"premises002#symProp\"/>\n"
+                + "         <owl:someValuesFrom  rdf:resource=\"http://www.w3.org/2002/07/owl#Thing\"/>\n"
+                + "       </owl:Restriction>\n" + "     </rdf:type>\n"
+                + "   </rdf:Description>\n" + "\n" + "</rdf:RDF>";
+        String id = "WebOnt_TransitiveProperty_002";
+        TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
+        String d = "Test illustrating extensional semantics of <code>owl:TransitiveProperty</code>.";
+        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        r.setReasonerFactory(Factory.factory());
+        r.run();
+    }
 }

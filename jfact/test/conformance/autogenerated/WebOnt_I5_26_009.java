@@ -16,52 +16,52 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import conformance.Factory;
 
 public class WebOnt_I5_26_009 {
-	@Test
-	public void testWebOnt_I5_26_009() throws OWLOntologyCreationException {
-		//TODO test doesn't make sense
-		//		String premise = "<rdf:RDF\n"
-		//				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-		//				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-		//				+ "    xmlns:first=\"http://www.w3.org/2002/03owlt/I5.26/premises009#\"\n"
-		//				+ "    xml:base=\"http://www.w3.org/2002/03owlt/I5.26/premises009\" >\n"
-		//				+ "   <owl:Ontology/>\n"
-		//				+ "   <owl:ObjectProperty rdf:ID=\"p\" />\n" + "\n"
-		//				+ "</rdf:RDF>";
-		//		String conclusion = "<rdf:RDF\n"
-		//				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-		//				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-		//				+ "    xml:base=\"http://www.w3.org/2002/03owlt/I5.26/conclusions009\" >\n"
-		//				+ "   \n"
-		//				+ "  <owl:Ontology/>\n"
-		//				+ "  <owl:Restriction rdf:nodeID=\"n\">\n"
-		//				+ "     <owl:onProperty>\n"
-		//				+ "        <owl:ObjectProperty rdf:about=\"premises009#p\" />\n"
-		//				+ "     </owl:onProperty>\n"
-		//				+ "     <owl:minCardinality rdf:datatype=\n"
-		//				+ " \"http://www.w3.org/2001/XMLSchema#int\"\n"
-		//				+ "     >1</owl:minCardinality>\n"
-		//				+ "     <owl:equivalentClass rdf:nodeID=\"n\"/>\n"
-		//				+ "  </owl:Restriction>\n" + "\n" + "</rdf:RDF>";
-		//		String id = "WebOnt_I5_26_009";
-		//		TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-		//		String d = "The abstract syntax form of the conclusions is:\n"
-		//				+ "\n"
-		//				+ " EquivalentClasses( restriction( first:p, minCardinality(1) ) )\n"
-		//				+ " ObjectProperty( first:p )\n" + "\n"
-		//				+ "This is trivially true given that first:p is an \n"
-		//				+ "<code>individualvaluedPropertyID</code>.";
-		//		JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-		//		r.setReasonerFactory(Factory.factory());
-		//		r.run();
-		// This code does the test in a meaningful way
-		OWLOntologyManager m = OWLManager.createOWLOntologyManager();
-		OWLOntology o = m.createOntology();
-		OWLDataFactory f = m.getOWLDataFactory();
-		final OWLObjectProperty p = f.getOWLObjectProperty(IRI.create("urn:test:test#p"));
-		m.addAxiom(o, f.getOWLDeclarationAxiom(p));
-		OWLReasoner r = Factory.factory().createReasoner(o);
-		assertTrue(r.isConsistent());
-		final OWLObjectMinCardinality c = f.getOWLObjectMinCardinality(1, p);
-		assertTrue(r.isEntailed(f.getOWLSubClassOfAxiom(c, c)));
-	}
+    @Test
+    public void testWebOnt_I5_26_009() throws OWLOntologyCreationException {
+        //TODO test doesn't make sense
+        //		String premise = "<rdf:RDF\n"
+        //				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+        //				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
+        //				+ "    xmlns:first=\"http://www.w3.org/2002/03owlt/I5.26/premises009#\"\n"
+        //				+ "    xml:base=\"http://www.w3.org/2002/03owlt/I5.26/premises009\" >\n"
+        //				+ "   <owl:Ontology/>\n"
+        //				+ "   <owl:ObjectProperty rdf:ID=\"p\" />\n" + "\n"
+        //				+ "</rdf:RDF>";
+        //		String conclusion = "<rdf:RDF\n"
+        //				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+        //				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
+        //				+ "    xml:base=\"http://www.w3.org/2002/03owlt/I5.26/conclusions009\" >\n"
+        //				+ "   \n"
+        //				+ "  <owl:Ontology/>\n"
+        //				+ "  <owl:Restriction rdf:nodeID=\"n\">\n"
+        //				+ "     <owl:onProperty>\n"
+        //				+ "        <owl:ObjectProperty rdf:about=\"premises009#p\" />\n"
+        //				+ "     </owl:onProperty>\n"
+        //				+ "     <owl:minCardinality rdf:datatype=\n"
+        //				+ " \"http://www.w3.org/2001/XMLSchema#int\"\n"
+        //				+ "     >1</owl:minCardinality>\n"
+        //				+ "     <owl:equivalentClass rdf:nodeID=\"n\"/>\n"
+        //				+ "  </owl:Restriction>\n" + "\n" + "</rdf:RDF>";
+        //		String id = "WebOnt_I5_26_009";
+        //		TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
+        //		String d = "The abstract syntax form of the conclusions is:\n"
+        //				+ "\n"
+        //				+ " EquivalentClasses( restriction( first:p, minCardinality(1) ) )\n"
+        //				+ " ObjectProperty( first:p )\n" + "\n"
+        //				+ "This is trivially true given that first:p is an \n"
+        //				+ "<code>individualvaluedPropertyID</code>.";
+        //		JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        //		r.setReasonerFactory(Factory.factory());
+        //		r.run();
+        // This code does the test in a meaningful way
+        OWLOntologyManager m = OWLManager.createOWLOntologyManager();
+        OWLOntology o = m.createOntology();
+        OWLDataFactory f = m.getOWLDataFactory();
+        final OWLObjectProperty p = f.getOWLObjectProperty(IRI.create("urn:test:test#p"));
+        m.addAxiom(o, f.getOWLDeclarationAxiom(p));
+        OWLReasoner r = Factory.factory().createReasoner(o);
+        assertTrue(r.isConsistent());
+        final OWLObjectMinCardinality c = f.getOWLObjectMinCardinality(1, p);
+        assertTrue(r.isEntailed(f.getOWLSubClassOfAxiom(c, c)));
+    }
 }

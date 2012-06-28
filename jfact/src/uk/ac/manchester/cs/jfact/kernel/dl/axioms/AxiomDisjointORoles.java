@@ -20,44 +20,44 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
 /** Object Role disjointness axiom */
 public final class AxiomDisjointORoles extends AxiomImpl implements Axiom,
-		NAryExpression<ObjectRoleExpression> {
-	private final NAryExpressionImpl<ObjectRoleExpression> delegate;
+        NAryExpression<ObjectRoleExpression> {
+    private final NAryExpressionImpl<ObjectRoleExpression> delegate;
 
-	public AxiomDisjointORoles(final OWLAxiom ax, final List<Expression> v) {
-		super(ax);
-		delegate = new NAryExpressionImpl<ObjectRoleExpression>();
-		delegate.add(v);
-	}
+    public AxiomDisjointORoles(final OWLAxiom ax, final List<Expression> v) {
+        super(ax);
+        delegate = new NAryExpressionImpl<ObjectRoleExpression>();
+        delegate.add(v);
+    }
 
-	public void accept(final DLAxiomVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLAxiomVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 
-	public void add(final Collection<Expression> v) {
-		delegate.add(v);
-	}
+    public void add(final Collection<Expression> v) {
+        delegate.add(v);
+    }
 
-	public void add(final Expression p) {
-		delegate.add(p);
-	}
+    public void add(final Expression p) {
+        delegate.add(p);
+    }
 
-	public List<ObjectRoleExpression> getArguments() {
-		return delegate.getArguments();
-	}
+    public List<ObjectRoleExpression> getArguments() {
+        return delegate.getArguments();
+    }
 
-	public boolean isEmpty() {
-		return delegate.isEmpty();
-	}
+    public boolean isEmpty() {
+        return delegate.isEmpty();
+    }
 
-	public int size() {
-		return delegate.size();
-	}
+    public int size() {
+        return delegate.size();
+    }
 
-	public ObjectRoleExpression transform(final Expression arg) {
-		return delegate.transform(arg);
-	}
+    public ObjectRoleExpression transform(final Expression arg) {
+        return delegate.transform(arg);
+    }
 }

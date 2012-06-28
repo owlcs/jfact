@@ -14,29 +14,29 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 public final class ObjectRoleProjectionFrom implements ObjectRoleComplexExpression,
-		ObjectRoleArg, ConceptArg {
-	private final ConceptExpression delegate;
-	private final ObjectRoleExpression roleDelegate;
+        ObjectRoleArg, ConceptArg {
+    private final ConceptExpression delegate;
+    private final ObjectRoleExpression roleDelegate;
 
-	public ObjectRoleProjectionFrom(final ObjectRoleExpression R,
-			final ConceptExpression C) {
-		roleDelegate = R;
-		delegate = C;
-	}
+    public ObjectRoleProjectionFrom(final ObjectRoleExpression R,
+            final ConceptExpression C) {
+        roleDelegate = R;
+        delegate = C;
+    }
 
-	public void accept(final DLExpressionVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLExpressionVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 
-	public ConceptExpression getConcept() {
-		return delegate;
-	}
+    public ConceptExpression getConcept() {
+        return delegate;
+    }
 
-	public ObjectRoleExpression getOR() {
-		return roleDelegate;
-	}
+    public ObjectRoleExpression getOR() {
+        return roleDelegate;
+    }
 }

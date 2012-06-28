@@ -7,50 +7,50 @@ import conformance.JUnitRunner;
 import conformance.TestClasses;
 
 public class WebOnt_equivalentClass_004 {
-	@Test
-	public void testWebOnt_equivalentClass_004() {
-		String premise = "<rdf:RDF\n"
-				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-				+ "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n"
-				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-				+ "    xml:base=\"http://www.w3.org/2002/03owlt/equivalentClass/premises004\" >\n"
-				+ "    <owl:Ontology/>\n"
-				+ "    <owl:Class rdf:ID=\"c1\">\n"
-				+ "             <owl:intersectionOf rdf:parseType=\"Collection\">\n"
-				+ "    <owl:Class rdf:ID=\"c3\"/>\n"
-				+ "                <owl:Restriction>\n"
-				+ "                   <owl:onProperty rdf:resource=\"#p\"/>\n"
-				+ "                   <owl:cardinality\n"
-				+ " rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\"\n"
-				+ "                   >1</owl:cardinality>\n"
-				+ "                </owl:Restriction>\n"
-				+ "              </owl:intersectionOf>\n"
-				+ "           </owl:Class>\n"
-				+ "    <owl:Class rdf:ID=\"c2\">\n"
-				+ "             <owl:intersectionOf rdf:parseType=\"Collection\">\n"
-				+ "    <owl:Class rdf:ID=\"c3\"/>\n"
-				+ "                <owl:Restriction>\n"
-				+ "                   <owl:onProperty rdf:resource=\"#p\"/>\n"
-				+ "                   <owl:cardinality\n"
-				+ " rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\"\n"
-				+ "                   >1</owl:cardinality>\n"
-				+ "                </owl:Restriction>\n"
-				+ "              </owl:intersectionOf>\n" + "     </owl:Class>\n"
-				+ "     <owl:ObjectProperty rdf:ID=\"p\"/>\n" + "</rdf:RDF>";
-		String conclusion = "<rdf:RDF\n"
-				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-				+ "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n"
-				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-				+ "    xml:base=\"http://www.w3.org/2002/03owlt/equivalentClass/conclusions004\" >\n"
-				+ "  <owl:Ontology/>\n" + "  <owl:Class rdf:about=\"premises004#c1\">\n"
-				+ "     <owl:equivalentClass>\n"
-				+ "       <owl:Class rdf:about=\"premises004#c2\"/>\n"
-				+ "     </owl:equivalentClass>\n" + "  </owl:Class>\n" + "</rdf:RDF>";
-		String id = "WebOnt_equivalentClass_004";
-		TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-		String d = "Two classes with the same complete description are equivalent.";
-		JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-		r.setReasonerFactory(Factory.factory());
-		r.run();
-	}
+    @Test
+    public void testWebOnt_equivalentClass_004() {
+        String premise = "<rdf:RDF\n"
+                + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+                + "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n"
+                + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
+                + "    xml:base=\"http://www.w3.org/2002/03owlt/equivalentClass/premises004\" >\n"
+                + "    <owl:Ontology/>\n"
+                + "    <owl:Class rdf:ID=\"c1\">\n"
+                + "             <owl:intersectionOf rdf:parseType=\"Collection\">\n"
+                + "    <owl:Class rdf:ID=\"c3\"/>\n"
+                + "                <owl:Restriction>\n"
+                + "                   <owl:onProperty rdf:resource=\"#p\"/>\n"
+                + "                   <owl:cardinality\n"
+                + " rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\"\n"
+                + "                   >1</owl:cardinality>\n"
+                + "                </owl:Restriction>\n"
+                + "              </owl:intersectionOf>\n"
+                + "           </owl:Class>\n"
+                + "    <owl:Class rdf:ID=\"c2\">\n"
+                + "             <owl:intersectionOf rdf:parseType=\"Collection\">\n"
+                + "    <owl:Class rdf:ID=\"c3\"/>\n"
+                + "                <owl:Restriction>\n"
+                + "                   <owl:onProperty rdf:resource=\"#p\"/>\n"
+                + "                   <owl:cardinality\n"
+                + " rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\"\n"
+                + "                   >1</owl:cardinality>\n"
+                + "                </owl:Restriction>\n"
+                + "              </owl:intersectionOf>\n" + "     </owl:Class>\n"
+                + "     <owl:ObjectProperty rdf:ID=\"p\"/>\n" + "</rdf:RDF>";
+        String conclusion = "<rdf:RDF\n"
+                + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+                + "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n"
+                + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
+                + "    xml:base=\"http://www.w3.org/2002/03owlt/equivalentClass/conclusions004\" >\n"
+                + "  <owl:Ontology/>\n" + "  <owl:Class rdf:about=\"premises004#c1\">\n"
+                + "     <owl:equivalentClass>\n"
+                + "       <owl:Class rdf:about=\"premises004#c2\"/>\n"
+                + "     </owl:equivalentClass>\n" + "  </owl:Class>\n" + "</rdf:RDF>";
+        String id = "WebOnt_equivalentClass_004";
+        TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
+        String d = "Two classes with the same complete description are equivalent.";
+        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        r.setReasonerFactory(Factory.factory());
+        r.run();
+    }
 }

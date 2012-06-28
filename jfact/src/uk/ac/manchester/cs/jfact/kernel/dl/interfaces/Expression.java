@@ -9,8 +9,8 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 public interface Expression extends Entity {
-	/** accept method for the visitor pattern */
-	void accept(DLExpressionVisitor visitor);
+    /** accept method for the visitor pattern */
+    void accept(DLExpressionVisitor visitor);
 
-	<O> O accept(DLExpressionVisitorEx<O> visitor);
+    <O> O accept(DLExpressionVisitorEx<O> visitor);
 }

@@ -11,146 +11,146 @@ import java.util.Map;
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 
 public final class InAx {
-	/** build an RW concept from a given [C|I]NAME-rooted DLTree */
-	static Concept getConcept(final DLTree p) {
-		return (Concept) p.elem().getNE();
-	}
+    /** build an RW concept from a given [C|I]NAME-rooted DLTree */
+    static Concept getConcept(final DLTree p) {
+        return (Concept) p.elem().getNE();
+    }
 
-	/// @return true iff P is a TOP
-	static boolean isTop(final DLTree p) {
-		return p.isBOTTOM();
-	}
+    /// @return true iff P is a TOP
+    static boolean isTop(final DLTree p) {
+        return p.isBOTTOM();
+    }
 
-	/// @return true iff P is a BOTTOM
-	static boolean isBot(final DLTree p) {
-		return p.isTOP();
-	}
+    /// @return true iff P is a BOTTOM
+    static boolean isBot(final DLTree p) {
+        return p.isTOP();
+    }
 
-	/// @return true iff P is a positive concept name
-	static boolean isPosCN(final DLTree p) {
-		return p.isNOT() && p.getChild().isName();
-	}
+    /// @return true iff P is a positive concept name
+    static boolean isPosCN(final DLTree p) {
+        return p.isNOT() && p.getChild().isName();
+    }
 
-	/// @return true iff P is a positive non-primitive CN
-	static boolean isPosNP(final DLTree p) {
-		return isPosCN(p) && !getConcept(p.getChild()).isPrimitive();
-	}
+    /// @return true iff P is a positive non-primitive CN
+    static boolean isPosNP(final DLTree p) {
+        return isPosCN(p) && !getConcept(p.getChild()).isPrimitive();
+    }
 
-	/// @return true iff P is a positive primitive CN
-	static boolean isPosPC(final DLTree p) {
-		return isPosCN(p) && getConcept(p.getChild()).isPrimitive();
-	}
+    /// @return true iff P is a positive primitive CN
+    static boolean isPosPC(final DLTree p) {
+        return isPosCN(p) && getConcept(p.getChild()).isPrimitive();
+    }
 
-	/// @return true iff P is a negative concept name
-	static boolean isNegCN(final DLTree p) {
-		return p.isName();
-	}
+    /// @return true iff P is a negative concept name
+    static boolean isNegCN(final DLTree p) {
+        return p.isName();
+    }
 
-	/// @return true iff P is a negative non-primitive CN
-	static boolean isNegNP(final DLTree p) {
-		return isNegCN(p) && !getConcept(p).isPrimitive();
-	}
+    /// @return true iff P is a negative non-primitive CN
+    static boolean isNegNP(final DLTree p) {
+        return isNegCN(p) && !getConcept(p).isPrimitive();
+    }
 
-	/// @return true iff P is a negative primitive CN
-	static boolean isNegPC(final DLTree p) {
-		return isNegCN(p) && getConcept(p).isPrimitive();
-	}
+    /// @return true iff P is a negative primitive CN
+    static boolean isNegPC(final DLTree p) {
+        return isNegCN(p) && getConcept(p).isPrimitive();
+    }
 
-	/** check whether P is in the form (and C D) */
-	static boolean isAnd(final DLTree p) {
-		return p.isNOT() && p.getChild().isAND();
-	}
+    /** check whether P is in the form (and C D) */
+    static boolean isAnd(final DLTree p) {
+        return p.isNOT() && p.getChild().isAND();
+    }
 
-	/// @return true iff P is an OR expression
-	static boolean isOr(final DLTree p) {
-		return p.isAND();
-	}
+    /// @return true iff P is an OR expression
+    static boolean isOr(final DLTree p) {
+        return p.isAND();
+    }
 
-	/// @return true iff P is a general FORALL expression
-	static boolean isForall(final DLTree p) {
-		return p.isNOT() && p.getChild().token() == Token.FORALL;
-	}
+    /// @return true iff P is a general FORALL expression
+    static boolean isForall(final DLTree p) {
+        return p.isNOT() && p.getChild().token() == Token.FORALL;
+    }
 
-	/// @return true iff P is an object FORALL expression
-	static boolean isOForall(final DLTree p) {
-		return isForall(p) && !Role.resolveRole(p.getChild().getLeft()).isDataRole();
-	}
+    /// @return true iff P is an object FORALL expression
+    static boolean isOForall(final DLTree p) {
+        return isForall(p) && !Role.resolveRole(p.getChild().getLeft()).isDataRole();
+    }
 
-	/// @return true iff P is a FORALL expression suitable for absorption
-	static boolean isAbsForall(final DLTree p) {
-		if (!isOForall(p)) {
-			return false;
-		}
-		DLTree C = p.getChild().getRight();
-		if (isTop(C)) {
-			return false;
-		}
-		return !C.isName() || !getConcept(C).isSystem();
-	}
+    /// @return true iff P is a FORALL expression suitable for absorption
+    static boolean isAbsForall(final DLTree p) {
+        if (!isOForall(p)) {
+            return false;
+        }
+        DLTree C = p.getChild().getRight();
+        if (isTop(C)) {
+            return false;
+        }
+        return !C.isName() || !getConcept(C).isSystem();
+    }
 
-	static Map<String, Integer> created = new HashMap<String, Integer>();
+    static Map<String, Integer> created = new HashMap<String, Integer>();
 
-	static void add(final String s) {
-		if (created.containsKey(s)) {
-			created.put(s, created.get(s) + 1);
-		} else {
-			created.put(s, 1);
-		}
-	}
+    static void add(final String s) {
+        if (created.containsKey(s)) {
+            created.put(s, created.get(s) + 1);
+        } else {
+            created.put(s, 1);
+        }
+    }
 
-	static int get(final String s) {
-		return created.containsKey(s) ? created.get(s) : 0;
-	}
+    static int get(final String s) {
+        return created.containsKey(s) ? created.get(s) : 0;
+    }
 
-	static void SAbsRepCN() {
-		add("SAbsRepCN");
-	}
+    static void SAbsRepCN() {
+        add("SAbsRepCN");
+    }
 
-	static void SAbsRepForall() {
-		add("SAbsRepForall");
-	}
+    static void SAbsRepForall() {
+        add("SAbsRepForall");
+    }
 
-	static void SAbsBApply() {
-		add("SAbsBApply");
-	}
+    static void SAbsBApply() {
+        add("SAbsBApply");
+    }
 
-	static void SAbsSplit() {
-		add("SAbsSplit");
-	}
+    static void SAbsSplit() {
+        add("SAbsSplit");
+    }
 
-	static void SAbsTApply() {
-		add("SAbsTApply");
-	}
+    static void SAbsTApply() {
+        add("SAbsTApply");
+    }
 
-	static void SAbsCApply() {
-		add("SAbsCApply");
-	}
+    static void SAbsCApply() {
+        add("SAbsCApply");
+    }
 
-	static void SAbsCAttempt() {
-		add("SAbsCAttempt");
-	}
+    static void SAbsCAttempt() {
+        add("SAbsCAttempt");
+    }
 
-	static void SAbsRApply() {
-		add("SAbsRApply");
-	}
+    static void SAbsRApply() {
+        add("SAbsRApply");
+    }
 
-	static void SAbsRAttempt() {
-		add("SAbsRAttempt");
-	}
+    static void SAbsRAttempt() {
+        add("SAbsRAttempt");
+    }
 
-	static void SAbsInput() {
-		add("SAbsInput");
-	}
+    static void SAbsInput() {
+        add("SAbsInput");
+    }
 
-	static void SAbsAction() {
-		add("SAbsAction");
-	}
+    static void SAbsAction() {
+        add("SAbsAction");
+    }
 
-	static void SAbsNApply() {
-		add("SAbsNApply");
-	}
+    static void SAbsNApply() {
+        add("SAbsNApply");
+    }
 
-	static void SAbsNAttempt() {
-		add("SAbsNAttempt");
-	}
+    static void SAbsNAttempt() {
+        add("SAbsNAttempt");
+    }
 }

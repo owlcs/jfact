@@ -14,80 +14,80 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
 public final class Ontology {
-	/** all the axioms */
-	private final List<Axiom> axioms = new ArrayList<Axiom>();
-	/** expression manager that builds all the expressions for the axioms */
-	private final ExpressionManager expressionManager = new ExpressionManager();
-	/** id to be given to the next axiom */
-	private int axiomId;
-	/** true iff ontology was changed */
-	private boolean changed;
-	public TSplitVars Splits = new TSplitVars();
+    /** all the axioms */
+    private final List<Axiom> axioms = new ArrayList<Axiom>();
+    /** expression manager that builds all the expressions for the axioms */
+    private final ExpressionManager expressionManager = new ExpressionManager();
+    /** id to be given to the next axiom */
+    private int axiomId;
+    /** true iff ontology was changed */
+    private boolean changed;
+    public TSplitVars Splits = new TSplitVars();
 
-	public Ontology() {
-		axiomId = 0;
-		changed = false;
-	}
+    public Ontology() {
+        axiomId = 0;
+        changed = false;
+    }
 
-	public Axiom get(final int i) {
-		return axioms.get(i);
-	}
+    public Axiom get(final int i) {
+        return axioms.get(i);
+    }
 
-	/** @return true iff the ontology was changed since its last load */
-	public boolean isChanged() {
-		return changed;
-	}
+    /** @return true iff the ontology was changed since its last load */
+    public boolean isChanged() {
+        return changed;
+    }
 
-	/** set the processed marker to the end of the ontology */
-	public void setProcessed() {
-		changed = false;
-	}
+    /** set the processed marker to the end of the ontology */
+    public void setProcessed() {
+        changed = false;
+    }
 
-	/** add given axiom to the ontology */
-	public Axiom add(final Axiom p) {
-		p.setId(++axiomId);
-		axioms.add(p);
-		changed = true;
-		return p;
-	}
+    /** add given axiom to the ontology */
+    public Axiom add(final Axiom p) {
+        p.setId(++axiomId);
+        axioms.add(p);
+        changed = true;
+        return p;
+    }
 
-	/** retract given axiom to the ontology */
-	public void retract(final Axiom p) {
-		if (p.getId() <= axioms.size() && axioms.get(p.getId() - 1).equals(p)) {
-			changed = true;
-			p.setUsed(false);
-		}
-	}
+    /** retract given axiom to the ontology */
+    public void retract(final Axiom p) {
+        if (p.getId() <= axioms.size() && axioms.get(p.getId() - 1).equals(p)) {
+            changed = true;
+            p.setUsed(false);
+        }
+    }
 
-	/** clear the ontology */
-	public void clear() {
-		axioms.clear();
-		expressionManager.clear();
-		changed = false;
-	}
+    /** clear the ontology */
+    public void clear() {
+        axioms.clear();
+        expressionManager.clear();
+        changed = false;
+    }
 
-	// access to axioms
-	/** get access to an expression manager */
-	public ExpressionManager getExpressionManager() {
-		return expressionManager;
-	}
+    // access to axioms
+    /** get access to an expression manager */
+    public ExpressionManager getExpressionManager() {
+        return expressionManager;
+    }
 
-	/** RW begin() for the whole ontology */
-	public List<Axiom> getAxioms() {
-		return axioms;
-	}
+    /** RW begin() for the whole ontology */
+    public List<Axiom> getAxioms() {
+        return axioms;
+    }
 
-	/** size of the ontology */
-	public int size() {
-		return axioms.size();
-	}
+    /** size of the ontology */
+    public int size() {
+        return axioms.size();
+    }
 
-	/** accept method for the visitor pattern */
-	public void accept(final DLAxiomVisitor visitor) {
-		visitor.visitOntology(this);
-	}
+    /** accept method for the visitor pattern */
+    public void accept(final DLAxiomVisitor visitor) {
+        visitor.visitOntology(this);
+    }
 
-	public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
-		return visitor.visitOntology(this);
-	}
+    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+        return visitor.visitOntology(this);
+    }
 }

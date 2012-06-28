@@ -8,59 +8,59 @@ package uk.ac.manchester.cs.jfact.kernel;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 
 public final class ConceptWDep {
-	/** "pointer" to a concept in DAG */
-	private final int concept;
-	/** dep-set for a concept */
-	private final DepSet depSet;
+    /** "pointer" to a concept in DAG */
+    private final int concept;
+    /** dep-set for a concept */
+    private final DepSet depSet;
 
-	/** c'tor with empty dep-set */
-	public ConceptWDep(final int p) {
-		concept = p;
-		depSet = DepSet.create();
-	}
+    /** c'tor with empty dep-set */
+    public ConceptWDep(final int p) {
+        concept = p;
+        depSet = DepSet.create();
+    }
 
-	/** usual c'tor */
-	public ConceptWDep(final int p, final DepSet dep) {
-		concept = p;
-		depSet = DepSet.create(dep);
-	}
+    /** usual c'tor */
+    public ConceptWDep(final int p, final DepSet dep) {
+        concept = p;
+        depSet = DepSet.create(dep);
+    }
 
-	public int getConcept() {
-		return concept;
-	}
+    public int getConcept() {
+        return concept;
+    }
 
-	/** get dep-set part */
-	public final DepSet getDep() {
-		return depSet;
-	}
+    /** get dep-set part */
+    public final DepSet getDep() {
+        return depSet;
+    }
 
-	/** add dep-set to a CWD */
-	public void addDep(final DepSet d) {
-		depSet.add(d);
-	}
+    /** add dep-set to a CWD */
+    public void addDep(final DepSet d) {
+        depSet.add(d);
+    }
 
-	/** print concept and a dep-set */
-	@Override
-	public String toString() {
-		return concept + depSet.toString();
-	}
+    /** print concept and a dep-set */
+    @Override
+    public String toString() {
+        return concept + depSet.toString();
+    }
 
-	@Override
-	public int hashCode() {
-		return concept;
-	}
+    @Override
+    public int hashCode() {
+        return concept;
+    }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (this == obj) {
-			return true;
-		}
-		if (obj instanceof ConceptWDep) {
-			return concept == ((ConceptWDep) obj).concept;
-		}
-		return false;
-	}
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof ConceptWDep) {
+            return concept == ((ConceptWDep) obj).concept;
+        }
+        return false;
+    }
 }

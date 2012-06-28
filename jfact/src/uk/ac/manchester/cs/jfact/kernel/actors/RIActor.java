@@ -14,27 +14,27 @@ import uk.ac.manchester.cs.jfact.kernel.Individual;
 import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
 
 public final class RIActor implements Actor {
-	private final List<Individual> acc = new ArrayList<Individual>();
+    private final List<Individual> acc = new ArrayList<Individual>();
 
-	private boolean tryEntry(final ClassifiableEntry p) {
-		if (p.isSystem() || !((Concept) p).isSingleton()) {
-			return false;
-		}
-		acc.add((Individual) p);
-		return true;
-	}
+    private boolean tryEntry(final ClassifiableEntry p) {
+        if (p.isSystem() || !((Concept) p).isSingleton()) {
+            return false;
+        }
+        acc.add((Individual) p);
+        return true;
+    }
 
-	public RIActor() {}
+    public RIActor() {}
 
-	public boolean apply(final TaxonomyVertex v) {
-		boolean ret = tryEntry(v.getPrimer());
-		for (ClassifiableEntry p : v.begin_syn()) {
-			ret |= tryEntry(p);
-		}
-		return ret;
-	}
+    public boolean apply(final TaxonomyVertex v) {
+        boolean ret = tryEntry(v.getPrimer());
+        for (ClassifiableEntry p : v.begin_syn()) {
+            ret |= tryEntry(p);
+        }
+        return ret;
+    }
 
-	public List<Individual> getAcc() {
-		return acc;
-	}
+    public List<Individual> getAcc() {
+        return acc;
+    }
 }

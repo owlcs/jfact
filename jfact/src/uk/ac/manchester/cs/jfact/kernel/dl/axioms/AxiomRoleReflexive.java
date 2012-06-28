@@ -12,15 +12,15 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
 public final class AxiomRoleReflexive extends AxiomSingleORole {
-	public AxiomRoleReflexive(final OWLAxiom ax, final ObjectRoleExpression role) {
-		super(ax, role);
-	}
+    public AxiomRoleReflexive(final OWLAxiom ax, final ObjectRoleExpression role) {
+        super(ax, role);
+    }
 
-	public void accept(final DLAxiomVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLAxiomVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 }

@@ -7,45 +7,45 @@ import conformance.JUnitRunner;
 import conformance.TestClasses;
 
 public class WebOnt_I5_2_002 {
-	@Test
-	public void testWebOnt_I5_2_002() {
-		String premise = "<rdf:RDF\n"
-				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-				+ "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n"
-				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-				+ "    xml:base=\"http://www.w3.org/2002/03owlt/I5.2/premises002\" >\n"
-				+ "\n" + "   <owl:Ontology/>\n" + "   <owl:Class rdf:ID=\"Nothing\">\n"
-				+ "       <rdfs:subClassOf>\n" + "         <owl:Restriction>\n"
-				+ "            <owl:onProperty>\n"
-				+ "                <owl:ObjectProperty rdf:about=\"#p\"/>\n"
-				+ "            </owl:onProperty>\n"
-				+ "            <owl:minCardinality rdf:datatype=\n"
-				+ "\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\"\n"
-				+ "            >1</owl:minCardinality>\n"
-				+ "         </owl:Restriction>\n" + "       </rdfs:subClassOf>\n"
-				+ "       <rdfs:subClassOf>\n" + "         <owl:Restriction>\n"
-				+ "            <owl:onProperty>\n"
-				+ "                <owl:ObjectProperty rdf:about=\"#p\"/>\n"
-				+ "            </owl:onProperty>\n"
-				+ "            <owl:maxCardinality rdf:datatype=\n"
-				+ "\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\"\n"
-				+ "            >0</owl:maxCardinality>\n"
-				+ "         </owl:Restriction>\n" + "       </rdfs:subClassOf>\n"
-				+ "   </owl:Class>\n" + "</rdf:RDF>";
-		String conclusion = "<rdf:RDF\n"
-				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-				+ "    xml:base=\"http://www.w3.org/2002/03owlt/I5.2/conclusions002\" >\n"
-				+ "   <owl:Ontology/>\n"
-				+ "   <owl:Class rdf:about=\"premises002#Nothing\">\n"
-				+ "       <owl:equivalentClass>\n"
-				+ "         <owl:Class rdf:about=\"http://www.w3.org/2002/07/owl#Nothing\" />\n"
-				+ "       </owl:equivalentClass>\n" + "   </owl:Class>\n" + "</rdf:RDF>";
-		String id = "WebOnt_I5_2_002";
-		TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-		String d = "A class like <code>owl:Nothing</code> can be defined using OWL Lite restrictions.";
-		JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-		r.setReasonerFactory(Factory.factory());
-		r.run();
-	}
+    @Test
+    public void testWebOnt_I5_2_002() {
+        String premise = "<rdf:RDF\n"
+                + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+                + "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n"
+                + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
+                + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.2/premises002\" >\n"
+                + "\n" + "   <owl:Ontology/>\n" + "   <owl:Class rdf:ID=\"Nothing\">\n"
+                + "       <rdfs:subClassOf>\n" + "         <owl:Restriction>\n"
+                + "            <owl:onProperty>\n"
+                + "                <owl:ObjectProperty rdf:about=\"#p\"/>\n"
+                + "            </owl:onProperty>\n"
+                + "            <owl:minCardinality rdf:datatype=\n"
+                + "\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\"\n"
+                + "            >1</owl:minCardinality>\n"
+                + "         </owl:Restriction>\n" + "       </rdfs:subClassOf>\n"
+                + "       <rdfs:subClassOf>\n" + "         <owl:Restriction>\n"
+                + "            <owl:onProperty>\n"
+                + "                <owl:ObjectProperty rdf:about=\"#p\"/>\n"
+                + "            </owl:onProperty>\n"
+                + "            <owl:maxCardinality rdf:datatype=\n"
+                + "\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\"\n"
+                + "            >0</owl:maxCardinality>\n"
+                + "         </owl:Restriction>\n" + "       </rdfs:subClassOf>\n"
+                + "   </owl:Class>\n" + "</rdf:RDF>";
+        String conclusion = "<rdf:RDF\n"
+                + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+                + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
+                + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.2/conclusions002\" >\n"
+                + "   <owl:Ontology/>\n"
+                + "   <owl:Class rdf:about=\"premises002#Nothing\">\n"
+                + "       <owl:equivalentClass>\n"
+                + "         <owl:Class rdf:about=\"http://www.w3.org/2002/07/owl#Nothing\" />\n"
+                + "       </owl:equivalentClass>\n" + "   </owl:Class>\n" + "</rdf:RDF>";
+        String id = "WebOnt_I5_2_002";
+        TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
+        String d = "A class like <code>owl:Nothing</code> can be defined using OWL Lite restrictions.";
+        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        r.setReasonerFactory(Factory.factory());
+        r.run();
+    }
 }

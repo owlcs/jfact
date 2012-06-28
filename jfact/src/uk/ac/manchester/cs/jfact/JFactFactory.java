@@ -15,40 +15,40 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 
 public final class JFactFactory implements OWLReasonerFactory {
-	public String getReasonerName() {
-		return "JFact";
-	}
+    public String getReasonerName() {
+        return "JFact";
+    }
 
-	public OWLReasoner createReasoner(final OWLOntology ontology) {
-		JFactReasoner toReturn = new JFactReasoner(ontology, new SimpleConfiguration(),
-				BufferingMode.BUFFERING);
-		return verify(toReturn);
-	}
+    public OWLReasoner createReasoner(final OWLOntology ontology) {
+        JFactReasoner toReturn = new JFactReasoner(ontology, new SimpleConfiguration(),
+                BufferingMode.BUFFERING);
+        return verify(toReturn);
+    }
 
-	private OWLReasoner verify(final JFactReasoner toReturn) {
-		OWLOntologyManager m = toReturn.getRootOntology().getOWLOntologyManager();
-		m.addOntologyChangeListener(toReturn);
-		//	toReturn.kernel.writeReasoningResult(new LeveLogger.LogAdapterStream(), 0);
-		return toReturn;
-	}
+    private OWLReasoner verify(final JFactReasoner toReturn) {
+        OWLOntologyManager m = toReturn.getRootOntology().getOWLOntologyManager();
+        m.addOntologyChangeListener(toReturn);
+        //	toReturn.kernel.writeReasoningResult(new LeveLogger.LogAdapterStream(), 0);
+        return toReturn;
+    }
 
-	public OWLReasoner createNonBufferingReasoner(final OWLOntology ontology) {
-		JFactReasoner toReturn = new JFactReasoner(ontology, new SimpleConfiguration(),
-				BufferingMode.NON_BUFFERING);
-		return verify(toReturn);
-	}
+    public OWLReasoner createNonBufferingReasoner(final OWLOntology ontology) {
+        JFactReasoner toReturn = new JFactReasoner(ontology, new SimpleConfiguration(),
+                BufferingMode.NON_BUFFERING);
+        return verify(toReturn);
+    }
 
-	public OWLReasoner createReasoner(final OWLOntology ontology,
-			final OWLReasonerConfiguration config) throws IllegalConfigurationException {
-		JFactReasoner toReturn = new JFactReasoner(ontology, config,
-				BufferingMode.BUFFERING);
-		return verify(toReturn);
-	}
+    public OWLReasoner createReasoner(final OWLOntology ontology,
+            final OWLReasonerConfiguration config) throws IllegalConfigurationException {
+        JFactReasoner toReturn = new JFactReasoner(ontology, config,
+                BufferingMode.BUFFERING);
+        return verify(toReturn);
+    }
 
-	public OWLReasoner createNonBufferingReasoner(final OWLOntology ontology,
-			final OWLReasonerConfiguration config) throws IllegalConfigurationException {
-		JFactReasoner toReturn = new JFactReasoner(ontology, config,
-				BufferingMode.NON_BUFFERING);
-		return verify(toReturn);
-	}
+    public OWLReasoner createNonBufferingReasoner(final OWLOntology ontology,
+            final OWLReasonerConfiguration config) throws IllegalConfigurationException {
+        JFactReasoner toReturn = new JFactReasoner(ontology, config,
+                BufferingMode.NON_BUFFERING);
+        return verify(toReturn);
+    }
 }

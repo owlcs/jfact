@@ -9,19 +9,19 @@ import java.util.Collection;
 import java.util.List;
 
 public interface NAryExpression<Argument extends Expression> {
-	/** transform general expression into the argument one */
-	Argument transform(final Expression arg);
+    /** transform general expression into the argument one */
+    Argument transform(final Expression arg);
 
-	/** add a single element to the array */
-	void add(final Expression p);
+    /** add a single element to the array */
+    void add(final Expression p);
 
-	/** add a vector */
-	void add(final Collection<Expression> v);
+    /** add a vector */
+    void add(final Collection<Expression> v);
 
-	/** access to members */
-	List<Argument> getArguments();
+    /** access to members */
+    List<Argument> getArguments();
 
-	boolean isEmpty();
+    boolean isEmpty();
 
-	int size();
+    int size();
 }

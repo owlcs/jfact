@@ -13,82 +13,82 @@ import uk.ac.manchester.cs.jfact.split.TSignature;
 import uk.ac.manchester.cs.jfact.split.TSignatureUpdater;
 
 abstract class AxiomImpl implements Axiom {
-	/** id of the axiom */
-	private int id;
-	/// signature (built lazily on demand)
-	TSignature sig = null;
-	/// flag to show whether or not the axiom is in the search space for the optimised modularization algorithm
-	boolean inSearchSpace = false;
-	/// flag to show whether or not the axiom is in the module
-	boolean inModule;
-	/** flag to show whether it is used (to support retraction) */
-	private boolean used;
-	TOntologyAtom atom = null;
-	private final OWLAxiom axiom;
+    /** id of the axiom */
+    private int id;
+    /// signature (built lazily on demand)
+    TSignature sig = null;
+    /// flag to show whether or not the axiom is in the search space for the optimised modularization algorithm
+    boolean inSearchSpace = false;
+    /// flag to show whether or not the axiom is in the module
+    boolean inModule;
+    /** flag to show whether it is used (to support retraction) */
+    private boolean used;
+    TOntologyAtom atom = null;
+    private final OWLAxiom axiom;
 
-	public TOntologyAtom getAtom() {
-		return atom;
-	}
+    public TOntologyAtom getAtom() {
+        return atom;
+    }
 
-	public void setAtom(final TOntologyAtom atom) {
-		this.atom = atom;
-	}
+    public void setAtom(final TOntologyAtom atom) {
+        this.atom = atom;
+    }
 
-	/// set the isSearchSpace flag
-	public void setInSS(final boolean flag) {
-		inSearchSpace = flag;
-	}
+    /// set the isSearchSpace flag
+    public void setInSS(final boolean flag) {
+        inSearchSpace = flag;
+    }
 
-	/// get the value of the isSearchSpace flag
-	public boolean isInSS() {
-		return inSearchSpace;
-	}
+    /// get the value of the isSearchSpace flag
+    public boolean isInSS() {
+        return inSearchSpace;
+    }
 
-	// signature access
-	public TSignature getSignature() {
-		if (sig == null) {
-			buildSignature();
-		}
-		return sig;
-	}
+    // signature access
+    public TSignature getSignature() {
+        if (sig == null) {
+            buildSignature();
+        }
+        return sig;
+    }
 
-	void buildSignature() {
-		sig = new TSignature();
-		TSignatureUpdater Updater = new TSignatureUpdater(sig);
-		accept(Updater);
-	}
+    void buildSignature() {
+        sig = new TSignature();
+        TSignatureUpdater Updater = new TSignatureUpdater(sig);
+        accept(Updater);
+    }
 
-	public AxiomImpl(final OWLAxiom ax) {
-		axiom = ax;
-		used = true;
-		inModule = false;
-	}
+    public AxiomImpl(final OWLAxiom ax) {
+        axiom = ax;
+        used = true;
+        inModule = false;
+    }
 
-	public OWLAxiom getOWLAxiom() {
-		return axiom;
-	}
+    public OWLAxiom getOWLAxiom() {
+        return axiom;
+    }
 
-	public int getId() {
-		return id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public boolean isInModule() {
-		return inModule;
-	}
+    public boolean isInModule() {
+        return inModule;
+    }
 
-	public boolean isUsed() {
-		return used;
-	}
+    public boolean isUsed() {
+        return used;
+    }
 
-	public void setId(final int Id) {
-		id = Id;
-	}
+    public void setId(final int Id) {
+        id = Id;
+    }
 
-	public void setInModule(final boolean inModule) {
-		this.inModule = inModule;
-	}
+    public void setInModule(final boolean inModule) {
+        this.inModule = inModule;
+    }
 
-	public void setUsed(final boolean Used) {
-		used = Used;
-	}
+    public void setUsed(final boolean Used) {
+        used = Used;
+    }
 }

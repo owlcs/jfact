@@ -12,34 +12,34 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
 public final class AxiomConceptInclusion extends AxiomImpl {
-	private final ConceptExpression subConcept;
-	private final ConceptExpression superConcept;
+    private final ConceptExpression subConcept;
+    private final ConceptExpression superConcept;
 
-	public AxiomConceptInclusion(final OWLAxiom ax, final ConceptExpression sub,
-			final ConceptExpression sup) {
-		super(ax);
-		subConcept = sub;
-		superConcept = sup;
-	}
+    public AxiomConceptInclusion(final OWLAxiom ax, final ConceptExpression sub,
+            final ConceptExpression sup) {
+        super(ax);
+        subConcept = sub;
+        superConcept = sup;
+    }
 
-	public void accept(final DLAxiomVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLAxiomVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 
-	public final ConceptExpression getSubConcept() {
-		return subConcept;
-	}
+    public final ConceptExpression getSubConcept() {
+        return subConcept;
+    }
 
-	public final ConceptExpression getSupConcept() {
-		return superConcept;
-	}
+    public final ConceptExpression getSupConcept() {
+        return superConcept;
+    }
 
-	@Override
-	public String toString() {
-		return subConcept.toString() + " subClassOf " + superConcept.toString();
-	}
+    @Override
+    public String toString() {
+        return subConcept.toString() + " subClassOf " + superConcept.toString();
+    }
 }

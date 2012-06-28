@@ -13,24 +13,24 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
 public final class AxiomInstanceOf extends AxiomIndividual {
-	private final ConceptExpression conceptExpression;
+    private final ConceptExpression conceptExpression;
 
-	public AxiomInstanceOf(final OWLAxiom ax, final IndividualExpression i,
-			final ConceptExpression c) {
-		super(ax, i);
-		conceptExpression = c;
-	}
+    public AxiomInstanceOf(final OWLAxiom ax, final IndividualExpression i,
+            final ConceptExpression c) {
+        super(ax, i);
+        conceptExpression = c;
+    }
 
-	public void accept(final DLAxiomVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLAxiomVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 
-	/** access */
-	public final ConceptExpression getC() {
-		return conceptExpression;
-	}
+    /** access */
+    public final ConceptExpression getC() {
+        return conceptExpression;
+    }
 }

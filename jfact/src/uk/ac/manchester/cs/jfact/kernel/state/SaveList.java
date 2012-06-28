@@ -8,25 +8,25 @@ package uk.ac.manchester.cs.jfact.kernel.state;
 import java.util.LinkedList;
 
 public final class SaveList extends LinkedList<DLCompletionTreeSaveState> {
-	@Override
-	public DLCompletionTreeSaveState pop() {
-		if (!this.isEmpty()) {
-			return super.pop();
-		}
-		return null;
-	}
+    @Override
+    public DLCompletionTreeSaveState pop() {
+        if (!this.isEmpty()) {
+            return super.pop();
+        }
+        return null;
+    }
 
-	/** get element from stack with given level */
-	public DLCompletionTreeSaveState pop(final int level) {
-		DLCompletionTreeSaveState p = this.isEmpty() ? null : this.peek();
-		while (p != null && p.level() > level) {
-			this.pop();
-			p = this.peek();
-		}
-		// here p==head and either both == NULL or points to proper element
-		if (p != null) {
-			this.pop();
-		}
-		return p != null ? p : null;
-	}
+    /** get element from stack with given level */
+    public DLCompletionTreeSaveState pop(final int level) {
+        DLCompletionTreeSaveState p = this.isEmpty() ? null : this.peek();
+        while (p != null && p.level() > level) {
+            this.pop();
+            p = this.peek();
+        }
+        // here p==head and either both == NULL or points to proper element
+        if (p != null) {
+            this.pop();
+        }
+        return p != null ? p : null;
+    }
 }

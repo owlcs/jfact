@@ -8,44 +8,44 @@ package uk.ac.manchester.cs.jfact.helpers;
 import java.util.List;
 
 public final class Helper {
-	public static void resize(final List<?> l, final int n) {
-		if (l.size() > n) {
-			while (l.size() > n) {
-				l.remove(l.size() - 1);
-			}
-		} else {
-			while (l.size() < n) {
-				l.add(null);
-			}
-		}
-	}
+    public static void resize(final List<?> l, final int n) {
+        if (l.size() > n) {
+            while (l.size() > n) {
+                l.remove(l.size() - 1);
+            }
+        } else {
+            while (l.size() < n) {
+                l.add(null);
+            }
+        }
+    }
 
-	public static <T> void resize(final List<T> l, final int n, final T filler) {
-		if (l.size() > n) {
-			while (l.size() > n) {
-				l.remove(l.size() - 1);
-			}
-		} else {
-			while (l.size() < n) {
-				l.add(filler);
-			}
-		}
-	}
+    public static <T> void resize(final List<T> l, final int n, final T filler) {
+        if (l.size() > n) {
+            while (l.size() > n) {
+                l.remove(l.size() - 1);
+            }
+        } else {
+            while (l.size() < n) {
+                l.add(filler);
+            }
+        }
+    }
 
-	public static final int InitBranchingLevelValue = 1;
-	public static final int bpINVALID = 0;
-	public static final int bpTOP = 1;
-	public static final int bpBOTTOM = -1;
+    public static final int InitBranchingLevelValue = 1;
+    public static final int bpINVALID = 0;
+    public static final int bpTOP = 1;
+    public static final int bpBOTTOM = -1;
 
-	public static final int createBiPointer(final int index, final boolean pos) {
-		return pos ? index : -index;
-	}
+    public static final int createBiPointer(final int index, final boolean pos) {
+        return pos ? index : -index;
+    }
 
-	public static boolean isCorrect(final int p) {
-		return p != bpINVALID;
-	}
+    public static boolean isCorrect(final int p) {
+        return p != bpINVALID;
+    }
 
-	public static final boolean isValid(final int p) {
-		return p != bpINVALID;
-	}
+    public static final boolean isValid(final int p) {
+        return p != bpINVALID;
+    }
 }

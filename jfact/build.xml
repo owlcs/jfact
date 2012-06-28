@@ -35,6 +35,7 @@
 	<property name="src-name" value="jfact_src.jar" />
 
 	<property name="sourcepath" value="src/**/*.java" />
+	<property name="datatypepath" value="datatypes/**/*.java" />
 
 
 	<!-- For the classpath, we just use all of the libraries in the
@@ -58,6 +59,7 @@
 		<javac srcdir="." destdir="${classesdir}" debug="on" target="1.6" source="1.6" compiler="javac1.6" fork="yes">
 			<classpath refid="classpath" />
 			<include name="${sourcepath}" />
+			<include name="${datatypepath}" />
 		</javac>
 	</target>
 

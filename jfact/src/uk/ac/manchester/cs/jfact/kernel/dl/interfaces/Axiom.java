@@ -13,36 +13,36 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
 public interface Axiom extends Entity {
-	OWLAxiom getOWLAxiom();
+    OWLAxiom getOWLAxiom();
 
-	/** set the id */
-	void setId(int Id);
+    /** set the id */
+    void setId(int Id);
 
-	/** get the id */
-	int getId();
+    /** get the id */
+    int getId();
 
-	/** set the used flag */
-	void setUsed(boolean Used);
+    /** set the used flag */
+    void setUsed(boolean Used);
 
-	/** get the value of the used flag */
-	boolean isUsed();
+    /** get the value of the used flag */
+    boolean isUsed();
 
-	boolean isInModule();
+    boolean isInModule();
 
-	void setInModule(boolean inModule);
+    void setInModule(boolean inModule);
 
-	/** accept method for the visitor pattern */
-	void accept(DLAxiomVisitor visitor);
+    /** accept method for the visitor pattern */
+    void accept(DLAxiomVisitor visitor);
 
-	<O> O accept(DLAxiomVisitorEx<O> visitor);
+    <O> O accept(DLAxiomVisitorEx<O> visitor);
 
-	void setInSS(boolean flag);
+    void setInSS(boolean flag);
 
-	boolean isInSS();
+    boolean isInSS();
 
-	TSignature getSignature();
+    TSignature getSignature();
 
-	TOntologyAtom getAtom();
+    TOntologyAtom getAtom();
 
-	void setAtom(TOntologyAtom atom);
+    void setAtom(TOntologyAtom atom);
 }

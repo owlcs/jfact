@@ -11,15 +11,15 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 
 /** policy for data properties */
 public final class DataPropertyPolicy implements Policy {
-	public boolean applicable(final ClassifiableEntry p) {
-		return p.getId() > 0;
-	}
+    public boolean applicable(final ClassifiableEntry p) {
+        return p.getId() > 0;
+    }
 
-	public boolean needPlain() {
-		return false;
-	}
+    public boolean needPlain() {
+        return false;
+    }
 
-	public Expression buildTree(final ExpressionManager EM, final ClassifiableEntry p) {
-		return EM.dataRole(p.getName());
-	}
+    public Expression buildTree(final ExpressionManager EM, final ClassifiableEntry p) {
+        return EM.dataRole(p.getName());
+    }
 }

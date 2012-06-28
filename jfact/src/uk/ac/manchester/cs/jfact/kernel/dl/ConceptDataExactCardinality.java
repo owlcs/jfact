@@ -13,37 +13,37 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 public final class ConceptDataExactCardinality implements
-		ConceptDataCardinalityExpression, DataRoleArg {
-	private final int cardinality;
-	/** data role argument */
-	private final DataRoleExpression dataRoleExpression;
-	private final DataExpression expression;
+        ConceptDataCardinalityExpression, DataRoleArg {
+    private final int cardinality;
+    /** data role argument */
+    private final DataRoleExpression dataRoleExpression;
+    private final DataExpression expression;
 
-	public ConceptDataExactCardinality(final int n, final DataRoleExpression R,
-			final DataExpression E) {
-		dataRoleExpression = R;
-		expression = E;
-		cardinality = n;
-	}
+    public ConceptDataExactCardinality(final int n, final DataRoleExpression R,
+            final DataExpression E) {
+        dataRoleExpression = R;
+        expression = E;
+        cardinality = n;
+    }
 
-	public void accept(final DLExpressionVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLExpressionVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 
-	public int getCardinality() {
-		return cardinality;
-	}
+    public int getCardinality() {
+        return cardinality;
+    }
 
-	/** get access to the argument */
-	public DataRoleExpression getDataRoleExpression() {
-		return dataRoleExpression;
-	}
+    /** get access to the argument */
+    public DataRoleExpression getDataRoleExpression() {
+        return dataRoleExpression;
+    }
 
-	public DataExpression getExpr() {
-		return expression;
-	}
+    public DataExpression getExpr() {
+        return expression;
+    }
 }

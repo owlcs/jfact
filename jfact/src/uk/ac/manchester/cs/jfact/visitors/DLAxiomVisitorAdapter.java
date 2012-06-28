@@ -36,69 +36,69 @@ import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOfNot;
 
 @SuppressWarnings("unused")
 public class DLAxiomVisitorAdapter implements DLAxiomVisitor {
-	public void visit(final AxiomDeclaration axiom) {}
+    public void visit(final AxiomDeclaration axiom) {}
 
-	public void visit(final AxiomEquivalentConcepts axiom) {}
+    public void visit(final AxiomEquivalentConcepts axiom) {}
 
-	public void visit(final AxiomDisjointConcepts axiom) {}
+    public void visit(final AxiomDisjointConcepts axiom) {}
 
-	public void visit(final AxiomEquivalentORoles axiom) {}
+    public void visit(final AxiomEquivalentORoles axiom) {}
 
-	public void visit(final AxiomEquivalentDRoles axiom) {}
+    public void visit(final AxiomEquivalentDRoles axiom) {}
 
-	public void visit(final AxiomDisjointORoles axiom) {}
+    public void visit(final AxiomDisjointORoles axiom) {}
 
-	public void visit(final AxiomDisjointDRoles axiom) {}
+    public void visit(final AxiomDisjointDRoles axiom) {}
 
-	public void visit(final AxiomSameIndividuals axiom) {}
+    public void visit(final AxiomSameIndividuals axiom) {}
 
-	public void visit(final AxiomDifferentIndividuals axiom) {}
+    public void visit(final AxiomDifferentIndividuals axiom) {}
 
-	public void visit(final AxiomFairnessConstraint axiom) {}
+    public void visit(final AxiomFairnessConstraint axiom) {}
 
-	public void visit(final AxiomRoleInverse axiom) {}
+    public void visit(final AxiomRoleInverse axiom) {}
 
-	public void visit(final AxiomORoleSubsumption axiom) {}
+    public void visit(final AxiomORoleSubsumption axiom) {}
 
-	public void visit(final AxiomDRoleSubsumption axiom) {}
+    public void visit(final AxiomDRoleSubsumption axiom) {}
 
-	public void visit(final AxiomORoleDomain axiom) {}
+    public void visit(final AxiomORoleDomain axiom) {}
 
-	public void visit(final AxiomDRoleDomain axiom) {}
+    public void visit(final AxiomDRoleDomain axiom) {}
 
-	public void visit(final AxiomORoleRange axiom) {}
+    public void visit(final AxiomORoleRange axiom) {}
 
-	public void visit(final AxiomDRoleRange axiom) {}
+    public void visit(final AxiomDRoleRange axiom) {}
 
-	public void visit(final AxiomRoleTransitive axiom) {}
+    public void visit(final AxiomRoleTransitive axiom) {}
 
-	public void visit(final AxiomRoleReflexive axiom) {}
+    public void visit(final AxiomRoleReflexive axiom) {}
 
-	public void visit(final AxiomRoleIrreflexive axiom) {}
+    public void visit(final AxiomRoleIrreflexive axiom) {}
 
-	public void visit(final AxiomRoleSymmetric axiom) {}
+    public void visit(final AxiomRoleSymmetric axiom) {}
 
-	public void visit(final AxiomRoleAsymmetric axiom) {}
+    public void visit(final AxiomRoleAsymmetric axiom) {}
 
-	public void visit(final AxiomORoleFunctional axiom) {}
+    public void visit(final AxiomORoleFunctional axiom) {}
 
-	public void visit(final AxiomDRoleFunctional axiom) {}
+    public void visit(final AxiomDRoleFunctional axiom) {}
 
-	public void visit(final AxiomRoleInverseFunctional axiom) {}
+    public void visit(final AxiomRoleInverseFunctional axiom) {}
 
-	public void visit(final AxiomConceptInclusion axiom) {}
+    public void visit(final AxiomConceptInclusion axiom) {}
 
-	public void visit(final AxiomInstanceOf axiom) {}
+    public void visit(final AxiomInstanceOf axiom) {}
 
-	public void visit(final AxiomRelatedTo axiom) {}
+    public void visit(final AxiomRelatedTo axiom) {}
 
-	public void visit(final AxiomRelatedToNot axiom) {}
+    public void visit(final AxiomRelatedToNot axiom) {}
 
-	public void visit(final AxiomValueOf axiom) {}
+    public void visit(final AxiomValueOf axiom) {}
 
-	public void visit(final AxiomValueOfNot axiom) {}
+    public void visit(final AxiomValueOfNot axiom) {}
 
-	public void visitOntology(final Ontology ontology) {}
+    public void visitOntology(final Ontology ontology) {}
 
-	public void visit(final AxiomDisjointUnion axiom) {}
+    public void visit(final AxiomDisjointUnion axiom) {}
 }

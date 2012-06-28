@@ -7,48 +7,48 @@ import conformance.JUnitRunner;
 import conformance.TestClasses;
 
 public class rdfbased_sem_bool_intersection_inst_expr {
-	@Test
-	public void testrdfbased_sem_bool_intersection_inst_expr() {
-		//XXX test modified because of ontology not compliant with OWL 2
-		String premise = "<rdf:RDF\n"
-				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-				+ "    xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\"\n"
-				+ "    xmlns:ex=\"http://www.example.org#\"\n"
-				+ "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-				//added
-				+ "<owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
-				+ "<owl:Class rdf:about=\"http://www.example.org#x\"/>\n"
-				+ "<owl:Class rdf:about=\"http://www.example.org#y\"/>\n"
-				//end added
-				+ "  <ex:c rdf:about=\"http://www.example.org#z\"/>\n"
-				+ "  <rdf:Description rdf:nodeID=\"A0\">\n"
-				+ "    <rdf:first rdf:resource=\"http://www.example.org#x\"/>\n"
-				+ "    <rdf:rest rdf:parseType=\"Collection\">\n"
-				+ "      <rdf:Description rdf:about=\"http://www.example.org#y\"/>\n"
-				+ "    </rdf:rest>\n" + "  </rdf:Description>\n"
-				+ "  <rdf:Description rdf:about=\"http://www.example.org#c\">\n"
-				+ "    <owl:intersectionOf rdf:nodeID=\"A0\"/>\n"
-				+ "  </rdf:Description>\n" + "</rdf:RDF>";
-		String conclusion = "<rdf:RDF\n"
-				+ "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-				+ "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-				+ "    xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\"\n"
-				+ "    xmlns:ex=\"http://www.example.org#\"\n"
-				+ "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-				//added
-				+ "<owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
-				+ "<owl:Class rdf:about=\"http://www.example.org#x\"/>\n"
-				+ "<owl:Class rdf:about=\"http://www.example.org#y\"/>\n"
-				//end added
-				+ "  <ex:x rdf:about=\"http://www.example.org#z\">\n"
-				+ "    <rdf:type rdf:resource=\"http://www.example.org#y\"/>\n"
-				+ "  </ex:x>\n" + "</rdf:RDF>";
-		String id = "rdfbased_sem_bool_intersection_inst_expr";
-		TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-		String d = "An individual, which is an instance of an intersection class expression of two classes, is an instance of every component class.";
-		JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-		r.setReasonerFactory(Factory.factory());
-		r.run();
-	}
+    @Test
+    public void testrdfbased_sem_bool_intersection_inst_expr() {
+        //XXX test modified because of ontology not compliant with OWL 2
+        String premise = "<rdf:RDF\n"
+                + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+                + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
+                + "    xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\"\n"
+                + "    xmlns:ex=\"http://www.example.org#\"\n"
+                + "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
+                //added
+                + "<owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
+                + "<owl:Class rdf:about=\"http://www.example.org#x\"/>\n"
+                + "<owl:Class rdf:about=\"http://www.example.org#y\"/>\n"
+                //end added
+                + "  <ex:c rdf:about=\"http://www.example.org#z\"/>\n"
+                + "  <rdf:Description rdf:nodeID=\"A0\">\n"
+                + "    <rdf:first rdf:resource=\"http://www.example.org#x\"/>\n"
+                + "    <rdf:rest rdf:parseType=\"Collection\">\n"
+                + "      <rdf:Description rdf:about=\"http://www.example.org#y\"/>\n"
+                + "    </rdf:rest>\n" + "  </rdf:Description>\n"
+                + "  <rdf:Description rdf:about=\"http://www.example.org#c\">\n"
+                + "    <owl:intersectionOf rdf:nodeID=\"A0\"/>\n"
+                + "  </rdf:Description>\n" + "</rdf:RDF>";
+        String conclusion = "<rdf:RDF\n"
+                + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+                + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
+                + "    xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\"\n"
+                + "    xmlns:ex=\"http://www.example.org#\"\n"
+                + "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
+                //added
+                + "<owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
+                + "<owl:Class rdf:about=\"http://www.example.org#x\"/>\n"
+                + "<owl:Class rdf:about=\"http://www.example.org#y\"/>\n"
+                //end added
+                + "  <ex:x rdf:about=\"http://www.example.org#z\">\n"
+                + "    <rdf:type rdf:resource=\"http://www.example.org#y\"/>\n"
+                + "  </ex:x>\n" + "</rdf:RDF>";
+        String id = "rdfbased_sem_bool_intersection_inst_expr";
+        TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
+        String d = "An individual, which is an instance of an intersection class expression of two classes, is an instance of every component class.";
+        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        r.setReasonerFactory(Factory.factory());
+        r.run();
+    }
 }

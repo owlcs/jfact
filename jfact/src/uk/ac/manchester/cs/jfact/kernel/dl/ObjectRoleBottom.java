@@ -10,16 +10,16 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 public final class ObjectRoleBottom implements ObjectRoleExpression {
-	public void accept(final DLExpressionVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLExpressionVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 
-	@Override
-	public String toString() {
-		return this.getClass().getSimpleName() + "(BOTTOM)";
-	}
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + "(BOTTOM)";
+    }
 }

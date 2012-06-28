@@ -8,6 +8,6 @@ package uk.ac.manchester.cs.jfact.kernel.dl.interfaces;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 
 public interface ConceptDataRoleExpression extends ConceptExpression, DataRoleArg {
-	/** accept method for the visitor pattern */
-	void accept(DLExpressionVisitor visitor);
+    /** accept method for the visitor pattern */
+    void accept(DLExpressionVisitor visitor);
 }

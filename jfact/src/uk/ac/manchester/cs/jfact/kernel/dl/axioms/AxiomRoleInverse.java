@@ -12,24 +12,24 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
 public final class AxiomRoleInverse extends AxiomSingleORole {
-	private final ObjectRoleExpression inverseRole;
+    private final ObjectRoleExpression inverseRole;
 
-	public AxiomRoleInverse(final OWLAxiom ax, final ObjectRoleExpression dirRole,
-			final ObjectRoleExpression invRole) {
-		super(ax, dirRole);
-		inverseRole = invRole;
-	}
+    public AxiomRoleInverse(final OWLAxiom ax, final ObjectRoleExpression dirRole,
+            final ObjectRoleExpression invRole) {
+        super(ax, dirRole);
+        inverseRole = invRole;
+    }
 
-	public void accept(final DLAxiomVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLAxiomVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 
-	/** access to role */
-	public final ObjectRoleExpression getInvRole() {
-		return inverseRole;
-	}
+    /** access to role */
+    public final ObjectRoleExpression getInvRole() {
+        return inverseRole;
+    }
 }

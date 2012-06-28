@@ -7,39 +7,39 @@ package uk.ac.manchester.cs.jfact.kernel.state;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** class for saving Completion Tree nodes state */
 public final class DLCompletionTreeSaveState {
-	/** saving status of the label */
-	private final SaveState lab;
-	/** curLevel of the Node structure */
-	private int curLevel;
-	/** amount of neighbours */
-	private int nNeighbours;
+    /** saving status of the label */
+    private final SaveState lab;
+    /** curLevel of the Node structure */
+    private int curLevel;
+    /** amount of neighbours */
+    private int nNeighbours;
 
-	public DLCompletionTreeSaveState() {
-		lab = new SaveState();
-	}
+    public DLCompletionTreeSaveState() {
+        lab = new SaveState();
+    }
 
-	/** get level of a saved node */
-	public int level() {
-		return curLevel;
-	}
+    /** get level of a saved node */
+    public int level() {
+        return curLevel;
+    }
 
-	public SaveState getLab() {
-		return lab;
-	}
+    public SaveState getLab() {
+        return lab;
+    }
 
-	public int getCurLevel() {
-		return curLevel;
-	}
+    public int getCurLevel() {
+        return curLevel;
+    }
 
-	public int getnNeighbours() {
-		return nNeighbours;
-	}
+    public int getnNeighbours() {
+        return nNeighbours;
+    }
 
-	public void setCurLevel(final int curLevel) {
-		this.curLevel = curLevel;
-	}
+    public void setCurLevel(final int curLevel) {
+        this.curLevel = curLevel;
+    }
 
-	public void setnNeighbours(final int nNeighbours) {
-		this.nNeighbours = nNeighbours;
-	}
+    public void setnNeighbours(final int nNeighbours) {
+        this.nNeighbours = nNeighbours;
+    }
 }

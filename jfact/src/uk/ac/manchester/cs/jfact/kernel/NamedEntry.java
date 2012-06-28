@@ -8,109 +8,109 @@ package uk.ac.manchester.cs.jfact.kernel;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 
 public abstract class NamedEntry {
-	/** name of the entry */
-	protected final String extName;
-	/** entry identifier */
-	protected int extId;
-	protected NamedEntity entity = null;
+    /** name of the entry */
+    protected final String extName;
+    /** entry identifier */
+    protected int extId;
+    protected NamedEntity entity = null;
 
-	//protected final BitSet bits = new BitSet();
-	public NamedEntry(final String name) {
-		assert name != null;
-		extName = name;
-		extId = 0; // sets local id
-		if (extName.equals("TOP")) {
-			top = true;
-		}
-		if (extName.equals("BOTTOM")) {
-			bottom = true;
-		}
-	}
+    //protected final BitSet bits = new BitSet();
+    public NamedEntry(final String name) {
+        assert name != null;
+        extName = name;
+        extId = 0; // sets local id
+        if (extName.equals("TOP")) {
+            top = true;
+        }
+        if (extName.equals("BOTTOM")) {
+            bottom = true;
+        }
+    }
 
-	/** gets name of given entry */
-	public String getName() {
-		return extName;
-	}
+    /** gets name of given entry */
+    public String getName() {
+        return extName;
+    }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (this == obj) {
-			return true;
-		}
-		if (obj instanceof NamedEntry) {
-			NamedEntry e = (NamedEntry) obj;
-			return extName.equals(e.extName) && extId == e.extId;
-		}
-		return false;
-	}
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof NamedEntry) {
+            NamedEntry e = (NamedEntry) obj;
+            return extName.equals(e.extName) && extId == e.extId;
+        }
+        return false;
+    }
 
-	@Override
-	public int hashCode() {
-		return extName.hashCode();
-	}
+    @Override
+    public int hashCode() {
+        return extName.hashCode();
+    }
 
-	/** set internal ID */
-	public void setId(final int id) {
-		extId = id;
-	}
+    /** set internal ID */
+    public void setId(final int id) {
+        extId = id;
+    }
 
-	/** get internal ID */
-	public int getId() {
-		return extId;
-	}
+    /** get internal ID */
+    public int getId() {
+        return extId;
+    }
 
-	@Override
-	public String toString() {
-		return extName + " " + extId + " " + entity + " " + bottom + " " + system + " "
-				+ top;
-	}
+    @Override
+    public String toString() {
+        return extName + " " + extId + " " + entity + " " + bottom + " " + system + " "
+                + top;
+    }
 
-	private boolean system;
+    private boolean system;
 
-	/** a System flag */
-	public boolean isSystem() {
-		return system;
-	}
+    /** a System flag */
+    public boolean isSystem() {
+        return system;
+    }
 
-	public void setSystem() {
-		system = true;
-	}
+    public void setSystem() {
+        system = true;
+    }
 
-	private boolean top = false;
+    private boolean top = false;
 
-	// hierarchy interface
-	/** a Top-of-the-hierarchy flag */
-	public boolean isTop() {
-		return top;
-	}
+    // hierarchy interface
+    /** a Top-of-the-hierarchy flag */
+    public boolean isTop() {
+        return top;
+    }
 
-	public void setTop() {
-		top = true;
-	}
+    public void setTop() {
+        top = true;
+    }
 
-	private boolean bottom;
+    private boolean bottom;
 
-	/** a Bottom-of-the-hierarchy flag */
-	public boolean isBottom() {
-		return bottom;
-	}
+    /** a Bottom-of-the-hierarchy flag */
+    public boolean isBottom() {
+        return bottom;
+    }
 
-	public void setBottom() {
-		bottom = true;
-	}
+    public void setBottom() {
+        bottom = true;
+    }
 
-	public NamedEntity getEntity() {
-		return entity;
-	}
+    public NamedEntity getEntity() {
+        return entity;
+    }
 
-	public void setEntity(final NamedEntity entity) {
-		this.entity = entity;
-	}
+    public void setEntity(final NamedEntity entity) {
+        this.entity = entity;
+    }
 
-	public abstract void setIndex(int i);
+    public abstract void setIndex(int i);
 
-	public abstract int getIndex();
+    public abstract int getIndex();
 }

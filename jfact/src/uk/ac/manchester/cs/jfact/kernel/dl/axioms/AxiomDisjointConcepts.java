@@ -20,44 +20,44 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
 /** Concept disjointness axiom */
 public final class AxiomDisjointConcepts extends AxiomImpl implements Axiom,
-		NAryExpression<ConceptExpression> {
-	private final NAryExpressionImpl<ConceptExpression> delegate;
+        NAryExpression<ConceptExpression> {
+    private final NAryExpressionImpl<ConceptExpression> delegate;
 
-	public AxiomDisjointConcepts(final OWLAxiom ax, final List<Expression> v) {
-		super(ax);
-		delegate = new NAryExpressionImpl<ConceptExpression>();
-		delegate.add(v);
-	}
+    public AxiomDisjointConcepts(final OWLAxiom ax, final List<Expression> v) {
+        super(ax);
+        delegate = new NAryExpressionImpl<ConceptExpression>();
+        delegate.add(v);
+    }
 
-	public void accept(final DLAxiomVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLAxiomVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 
-	public void add(final Collection<Expression> v) {
-		delegate.add(v);
-	}
+    public void add(final Collection<Expression> v) {
+        delegate.add(v);
+    }
 
-	public void add(final Expression p) {
-		delegate.add(p);
-	}
+    public void add(final Expression p) {
+        delegate.add(p);
+    }
 
-	public List<ConceptExpression> getArguments() {
-		return delegate.getArguments();
-	}
+    public List<ConceptExpression> getArguments() {
+        return delegate.getArguments();
+    }
 
-	public boolean isEmpty() {
-		return delegate.isEmpty();
-	}
+    public boolean isEmpty() {
+        return delegate.isEmpty();
+    }
 
-	public int size() {
-		return delegate.size();
-	}
+    public int size() {
+        return delegate.size();
+    }
 
-	public ConceptExpression transform(final Expression arg) {
-		return delegate.transform(arg);
-	}
+    public ConceptExpression transform(final Expression arg) {
+        return delegate.transform(arg);
+    }
 }

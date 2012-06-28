@@ -8,46 +8,46 @@ package uk.ac.manchester.cs.jfact.helpers;
 import java.util.LinkedList;
 
 public class SaveStack<T> {
-	protected final LinkedList<T> list = new LinkedList<T>();
+    protected final LinkedList<T> list = new LinkedList<T>();
 
-	/** get an object from a fixed depth */
-	public T pop(final int depth) {
-		top(depth);
-		return pop();
-	}
+    /** get an object from a fixed depth */
+    public T pop(final int depth) {
+        top(depth);
+        return pop();
+    }
 
-	/** get an object from a fixed depth */
-	public T top(final int depth) {
-		assert list.size() >= depth;
-		while (list.size() > depth) {
-			pop();
-		}
-		return list.peek();
-	}
+    /** get an object from a fixed depth */
+    public T top(final int depth) {
+        assert list.size() >= depth;
+        while (list.size() > depth) {
+            pop();
+        }
+        return list.peek();
+    }
 
-	public T top() {
-		return list.peek();
-	}
+    public T top() {
+        return list.peek();
+    }
 
-	public T pop() {
-		assert !list.isEmpty();
-		T pop = list.pop();
-		return pop;
-	}
+    public T pop() {
+        assert !list.isEmpty();
+        T pop = list.pop();
+        return pop;
+    }
 
-	public void push(final T e) {
-		list.push(e);
-	}
+    public void push(final T e) {
+        list.push(e);
+    }
 
-	public void clear() {
-		list.clear();
-	}
+    public void clear() {
+        list.clear();
+    }
 
-	public boolean isEmpty() {
-		return list.isEmpty();
-	}
+    public boolean isEmpty() {
+        return list.isEmpty();
+    }
 
-	public int size() {
-		return list.size();
-	}
+    public int size() {
+        return list.size();
+    }
 }

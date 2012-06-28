@@ -42,81 +42,81 @@ import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleTop;
 
 @SuppressWarnings("unused")
 public abstract class DLExpressionVisitorAdapter implements DLExpressionVisitor {
-	public void visit(final ConceptTop expr) {}
+    public void visit(final ConceptTop expr) {}
 
-	public void visit(final ConceptBottom expr) {}
+    public void visit(final ConceptBottom expr) {}
 
-	public void visit(final ConceptName expr) {}
+    public void visit(final ConceptName expr) {}
 
-	public void visit(final ConceptNot expr) {}
+    public void visit(final ConceptNot expr) {}
 
-	public void visit(final ConceptAnd expr) {}
+    public void visit(final ConceptAnd expr) {}
 
-	public void visit(final ConceptOr expr) {}
+    public void visit(final ConceptOr expr) {}
 
-	public void visit(final ConceptOneOf expr) {}
+    public void visit(final ConceptOneOf expr) {}
 
-	public void visit(final ConceptObjectSelf expr) {}
+    public void visit(final ConceptObjectSelf expr) {}
 
-	public void visit(final ConceptObjectValue expr) {}
+    public void visit(final ConceptObjectValue expr) {}
 
-	public void visit(final ConceptObjectExists expr) {}
+    public void visit(final ConceptObjectExists expr) {}
 
-	public void visit(final ConceptObjectForall expr) {}
+    public void visit(final ConceptObjectForall expr) {}
 
-	public void visit(final ConceptObjectMinCardinality expr) {}
+    public void visit(final ConceptObjectMinCardinality expr) {}
 
-	public void visit(final ConceptObjectMaxCardinality expr) {}
+    public void visit(final ConceptObjectMaxCardinality expr) {}
 
-	public void visit(final ConceptObjectExactCardinality expr) {}
+    public void visit(final ConceptObjectExactCardinality expr) {}
 
-	public void visit(final ConceptDataValue expr) {}
+    public void visit(final ConceptDataValue expr) {}
 
-	public void visit(final ConceptDataExists expr) {}
+    public void visit(final ConceptDataExists expr) {}
 
-	public void visit(final ConceptDataForall expr) {}
+    public void visit(final ConceptDataForall expr) {}
 
-	public void visit(final ConceptDataMinCardinality expr) {}
+    public void visit(final ConceptDataMinCardinality expr) {}
 
-	public void visit(final ConceptDataMaxCardinality expr) {}
+    public void visit(final ConceptDataMaxCardinality expr) {}
 
-	public void visit(final ConceptDataExactCardinality expr) {}
+    public void visit(final ConceptDataExactCardinality expr) {}
 
-	public void visit(final IndividualName expr) {}
+    public void visit(final IndividualName expr) {}
 
-	public void visit(final ObjectRoleTop expr) {}
+    public void visit(final ObjectRoleTop expr) {}
 
-	public void visit(final ObjectRoleBottom expr) {}
+    public void visit(final ObjectRoleBottom expr) {}
 
-	public void visit(final ObjectRoleName expr) {}
+    public void visit(final ObjectRoleName expr) {}
 
-	public void visit(final ObjectRoleInverse expr) {}
+    public void visit(final ObjectRoleInverse expr) {}
 
-	public void visit(final ObjectRoleChain expr) {}
+    public void visit(final ObjectRoleChain expr) {}
 
-	public void visit(final ObjectRoleProjectionFrom expr) {}
+    public void visit(final ObjectRoleProjectionFrom expr) {}
 
-	public void visit(final ObjectRoleProjectionInto expr) {}
+    public void visit(final ObjectRoleProjectionInto expr) {}
 
-	public void visit(final DataRoleTop expr) {}
+    public void visit(final DataRoleTop expr) {}
 
-	public void visit(final DataRoleBottom expr) {}
+    public void visit(final DataRoleBottom expr) {}
 
-	public void visit(final DataRoleName expr) {}
+    public void visit(final DataRoleName expr) {}
 
-	public void visit(final DataTop expr) {}
+    public void visit(final DataTop expr) {}
 
-	public void visit(final DataBottom expr) {}
+    public void visit(final DataBottom expr) {}
 
-	public void visit(final Datatype<?> expr) {}
+    public void visit(final Datatype<?> expr) {}
 
-	public void visit(final Literal<?> expr) {}
+    public void visit(final Literal<?> expr) {}
 
-	public void visit(final DataNot expr) {}
+    public void visit(final DataNot expr) {}
 
-	public void visit(final DataAnd expr) {}
+    public void visit(final DataAnd expr) {}
 
-	public void visit(final DataOr expr) {}
+    public void visit(final DataOr expr) {}
 
-	public void visit(final DataOneOf expr) {}
+    public void visit(final DataOneOf expr) {}
 }

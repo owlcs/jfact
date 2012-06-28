@@ -13,24 +13,24 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
 public final class AxiomORoleRange extends AxiomSingleORole {
-	private final ConceptExpression range;
+    private final ConceptExpression range;
 
-	public AxiomORoleRange(final OWLAxiom ax, final ObjectRoleExpression role,
-			final ConceptExpression range) {
-		super(ax, role);
-		this.range = range;
-	}
+    public AxiomORoleRange(final OWLAxiom ax, final ObjectRoleExpression role,
+            final ConceptExpression range) {
+        super(ax, role);
+        this.range = range;
+    }
 
-	public void accept(final DLAxiomVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLAxiomVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 
-	/** access */
-	public final ConceptExpression getRange() {
-		return range;
-	}
+    /** access */
+    public final ConceptExpression getRange() {
+        return range;
+    }
 }

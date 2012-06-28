@@ -6,20 +6,20 @@ import java.math.BigDecimal;
  * all Datatypes whose getNumeric() method returns true implement this interface
  */
 public interface NumericDatatype<R extends Comparable<R>> extends Datatype<R>,
-		OrderedDatatype<BigDecimal> {
-	boolean hasMinExclusive();
+        OrderedDatatype<BigDecimal> {
+    boolean hasMinExclusive();
 
-	boolean hasMinInclusive();
+    boolean hasMinInclusive();
 
-	boolean hasMaxExclusive();
+    boolean hasMaxExclusive();
 
-	boolean hasMaxInclusive();
+    boolean hasMaxInclusive();
 
-	boolean hasMin();
+    boolean hasMin();
 
-	boolean hasMax();
+    boolean hasMax();
 
-	BigDecimal getMin();
+    BigDecimal getMin();
 
-	BigDecimal getMax();
+    BigDecimal getMax();
 }

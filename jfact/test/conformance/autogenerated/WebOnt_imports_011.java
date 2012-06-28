@@ -7,37 +7,37 @@ import conformance.JUnitRunner;
 import conformance.TestClasses;
 
 public class WebOnt_imports_011 {
-	@Test
-	public void testWebOnt_imports_011() {
-		String premise = "<rdf:RDF\n"
-				+ "    xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'\n"
-				+ "    xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#'\n"
-				+ "    xmlns:owl='http://www.w3.org/2002/07/owl#'\n"
-				+ "    xmlns:ont='http://www.w3.org/2002/03owlt/imports/support011-A#'\n"
-				+ "    xml:base='http://www.w3.org/2002/03owlt/imports/premises011' >\n"
-				+ "\n"
-				+ "    <owl:Ontology rdf:about=''>\n"
-				+ "        <owl:imports \n"
-				+ "     rdf:resource=\"http://www.w3.org/2002/03owlt/imports/support011-A\"/>\n"
-				+ "    </owl:Ontology>\n" + "\n"
-				+ "    <ont:Man rdf:about='http://example.org/data#Socrates'/>\n" + "\n"
-				+ "</rdf:RDF>";
-		String conclusion = "<rdf:RDF\n"
-				+ "    xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'\n"
-				+ "    xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#'\n"
-				+ "    xmlns:owl='http://www.w3.org/2002/07/owl#'\n"
-				+ "    xml:base='http://www.w3.org/2002/03owlt/imports/conclusions011' >\n"
-				+ "\n" + "    <owl:Ontology/>\n"
-				+ "    <rdf:Description rdf:about='http://example.org/data#Socrates'>\n"
-				+ "        <rdf:type>\n"
-				+ "           <owl:Class rdf:about='support011-A#Mortal'/>\n"
-				+ "        </rdf:type>\n" + "    </rdf:Description>\n" + "\n"
-				+ "</rdf:RDF>";
-		String id = "WebOnt_imports_011";
-		TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-		String d = "A Lite version of test <a xmlns=\"http://www.w3.org/1999/xhtml\" href=\"#imports-001\">imports-001</a>.";
-		JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-		r.setReasonerFactory(Factory.factory());
-		r.run();
-	}
+    @Test
+    public void testWebOnt_imports_011() {
+        String premise = "<rdf:RDF\n"
+                + "    xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'\n"
+                + "    xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#'\n"
+                + "    xmlns:owl='http://www.w3.org/2002/07/owl#'\n"
+                + "    xmlns:ont='http://www.w3.org/2002/03owlt/imports/support011-A#'\n"
+                + "    xml:base='http://www.w3.org/2002/03owlt/imports/premises011' >\n"
+                + "\n"
+                + "    <owl:Ontology rdf:about=''>\n"
+                + "        <owl:imports \n"
+                + "     rdf:resource=\"http://www.w3.org/2002/03owlt/imports/support011-A\"/>\n"
+                + "    </owl:Ontology>\n" + "\n"
+                + "    <ont:Man rdf:about='http://example.org/data#Socrates'/>\n" + "\n"
+                + "</rdf:RDF>";
+        String conclusion = "<rdf:RDF\n"
+                + "    xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'\n"
+                + "    xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#'\n"
+                + "    xmlns:owl='http://www.w3.org/2002/07/owl#'\n"
+                + "    xml:base='http://www.w3.org/2002/03owlt/imports/conclusions011' >\n"
+                + "\n" + "    <owl:Ontology/>\n"
+                + "    <rdf:Description rdf:about='http://example.org/data#Socrates'>\n"
+                + "        <rdf:type>\n"
+                + "           <owl:Class rdf:about='support011-A#Mortal'/>\n"
+                + "        </rdf:type>\n" + "    </rdf:Description>\n" + "\n"
+                + "</rdf:RDF>";
+        String id = "WebOnt_imports_011";
+        TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
+        String d = "A Lite version of test <a xmlns=\"http://www.w3.org/1999/xhtml\" href=\"#imports-001\">imports-001</a>.";
+        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        r.setReasonerFactory(Factory.factory());
+        r.run();
+    }
 }

@@ -12,29 +12,29 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 public final class ConceptObjectExists implements ConceptObjectRCExpression {
-	/** concept argument */
-	private final ConceptExpression conceptExpression;
-	private final ObjectRoleExpression delegate;
+    /** concept argument */
+    private final ConceptExpression conceptExpression;
+    private final ObjectRoleExpression delegate;
 
-	public ConceptObjectExists(final ObjectRoleExpression R, final ConceptExpression C) {
-		conceptExpression = C;
-		delegate = R;
-	}
+    public ConceptObjectExists(final ObjectRoleExpression R, final ConceptExpression C) {
+        conceptExpression = C;
+        delegate = R;
+    }
 
-	public void accept(final DLExpressionVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLExpressionVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 
-	/** get access to the argument */
-	public ConceptExpression getConcept() {
-		return conceptExpression;
-	}
+    /** get access to the argument */
+    public ConceptExpression getConcept() {
+        return conceptExpression;
+    }
 
-	public ObjectRoleExpression getOR() {
-		return delegate;
-	}
+    public ObjectRoleExpression getOR() {
+        return delegate;
+    }
 }

@@ -11,23 +11,23 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 public final class DataNot implements DataExpression, DataExpressionArg<DataExpression> {
-	/** data expression argument */
-	protected final DataExpression Expr;
+    /** data expression argument */
+    protected final DataExpression Expr;
 
-	public DataNot(final DataExpression E) {
-		Expr = E;
-	}
+    public DataNot(final DataExpression E) {
+        Expr = E;
+    }
 
-	public void accept(final DLExpressionVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLExpressionVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 
-	/** get access to the argument */
-	public DataExpression getExpr() {
-		return Expr;
-	}
+    /** get access to the argument */
+    public DataExpression getExpr() {
+        return Expr;
+    }
 }

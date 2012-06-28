@@ -20,44 +20,44 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
 /** Data Role disjointness axiom */
 public final class AxiomDisjointDRoles extends AxiomImpl implements Axiom,
-		NAryExpression<DataRoleExpression> {
-	private final NAryExpressionImpl<DataRoleExpression> delegate;
+        NAryExpression<DataRoleExpression> {
+    private final NAryExpressionImpl<DataRoleExpression> delegate;
 
-	public AxiomDisjointDRoles(final OWLAxiom ax, final List<Expression> v) {
-		super(ax);
-		delegate = new NAryExpressionImpl<DataRoleExpression>();
-		delegate.add(v);
-	}
+    public AxiomDisjointDRoles(final OWLAxiom ax, final List<Expression> v) {
+        super(ax);
+        delegate = new NAryExpressionImpl<DataRoleExpression>();
+        delegate.add(v);
+    }
 
-	public void accept(final DLAxiomVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLAxiomVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 
-	public void add(final Collection<Expression> v) {
-		delegate.add(v);
-	}
+    public void add(final Collection<Expression> v) {
+        delegate.add(v);
+    }
 
-	public void add(final Expression p) {
-		delegate.add(p);
-	}
+    public void add(final Expression p) {
+        delegate.add(p);
+    }
 
-	public List<DataRoleExpression> getArguments() {
-		return delegate.getArguments();
-	}
+    public List<DataRoleExpression> getArguments() {
+        return delegate.getArguments();
+    }
 
-	public boolean isEmpty() {
-		return delegate.isEmpty();
-	}
+    public boolean isEmpty() {
+        return delegate.isEmpty();
+    }
 
-	public int size() {
-		return delegate.size();
-	}
+    public int size() {
+        return delegate.size();
+    }
 
-	public DataRoleExpression transform(final Expression arg) {
-		return delegate.transform(arg);
-	}
+    public DataRoleExpression transform(final Expression arg) {
+        return delegate.transform(arg);
+    }
 }

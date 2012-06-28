@@ -13,23 +13,23 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
 public final class AxiomDRoleDomain extends AxiomSingleDRole {
-	private final ConceptExpression domain;
+    private final ConceptExpression domain;
 
-	public AxiomDRoleDomain(final OWLAxiom ax, final DataRoleExpression role,
-			final ConceptExpression domain) {
-		super(ax, role);
-		this.domain = domain;
-	}
+    public AxiomDRoleDomain(final OWLAxiom ax, final DataRoleExpression role,
+            final ConceptExpression domain) {
+        super(ax, role);
+        this.domain = domain;
+    }
 
-	public void accept(final DLAxiomVisitor visitor) {
-		visitor.visit(this);
-	}
+    public void accept(final DLAxiomVisitor visitor) {
+        visitor.visit(this);
+    }
 
-	public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
-		return visitor.visit(this);
-	}
+    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+        return visitor.visit(this);
+    }
 
-	public final ConceptExpression getDomain() {
-		return domain;
-	}
+    public final ConceptExpression getDomain() {
+        return domain;
+    }
 }

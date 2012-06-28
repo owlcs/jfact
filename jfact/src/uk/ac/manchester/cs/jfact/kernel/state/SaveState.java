@@ -7,33 +7,33 @@ package uk.ac.manchester.cs.jfact.kernel.state;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** class for save/restore */
 public final class SaveState {
-	/** states for simple-, complex- and extra labels */
-	private int sc;
-	private int cc;
+    /** states for simple-, complex- and extra labels */
+    private int sc;
+    private int cc;
 
-	public SaveState() {
-		sc = Integer.MAX_VALUE;
-		cc = Integer.MAX_VALUE;
-	}
+    public SaveState() {
+        sc = Integer.MAX_VALUE;
+        cc = Integer.MAX_VALUE;
+    }
 
-	/** copy c'tor */
-	//	public SaveState(SaveState ss) {
-	//		sc = ss.sc;
-	//		cc = ss.cc;
-	//	}
-	public int getSc() {
-		return sc;
-	}
+    /** copy c'tor */
+    //	public SaveState(SaveState ss) {
+    //		sc = ss.sc;
+    //		cc = ss.cc;
+    //	}
+    public int getSc() {
+        return sc;
+    }
 
-	public int getCc() {
-		return cc;
-	}
+    public int getCc() {
+        return cc;
+    }
 
-	public void setSc(final int sc) {
-		this.sc = sc;
-	}
+    public void setSc(final int sc) {
+        this.sc = sc;
+    }
 
-	public void setCc(final int cc) {
-		this.cc = cc;
-	}
+    public void setCc(final int cc) {
+        this.cc = cc;
+    }
 }

@@ -8,34 +8,34 @@ package uk.ac.manchester.cs.jfact.kernel;
 import static uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry.resolveSynonym;
 
 public class Related {
-	private Individual a;
-	private Individual b;
-	private Role R;
+    private Individual a;
+    private Individual b;
+    private Role R;
 
-	public Related(final Individual a_, final Individual b_, final Role R_) {
-		a = a_;
-		b = b_;
-		R = R_;
-	}
+    public Related(final Individual a_, final Individual b_, final Role R_) {
+        a = a_;
+        b = b_;
+        R = R_;
+    }
 
-	/** simplify structure wrt synonyms */
-	public void simplify() {
-		R = resolveSynonym(R);
-		a = resolveSynonym(a);
-		b = resolveSynonym(b);
-		a.addRelated(this);
-	}
+    /** simplify structure wrt synonyms */
+    public void simplify() {
+        R = resolveSynonym(R);
+        a = resolveSynonym(a);
+        b = resolveSynonym(b);
+        a.addRelated(this);
+    }
 
-	/** get access to role wrt the FROM direction */
-	public Role getRole() {
-		return R;
-	}
+    /** get access to role wrt the FROM direction */
+    public Role getRole() {
+        return R;
+    }
 
-	public Individual getA() {
-		return a;
-	}
+    public Individual getA() {
+        return a;
+    }
 
-	public Individual getB() {
-		return b;
-	}
+    public Individual getB() {
+        return b;
+    }
 }
