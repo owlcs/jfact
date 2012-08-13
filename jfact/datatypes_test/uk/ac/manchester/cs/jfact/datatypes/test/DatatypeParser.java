@@ -26,7 +26,7 @@ import uk.ac.manchester.cs.jfact.datatypes.Facet;
 
 public class DatatypeParser {
 	public static String ns = "http://www.w3.org/2001/XMLSchema#";
-	static final String Literal = "http://www.w3.org/2000/01/rdf-schema#Literal";
+	static  String Literal = "http://www.w3.org/2000/01/rdf-schema#Literal";
 
 	public static void testDatatypes() throws SAXException, IOException,
 			ParserConfigurationException {
@@ -40,8 +40,8 @@ public class DatatypeParser {
 			assertEquals(rebuilt.getNumeric(), d.getNumeric());
 			assertEquals(rebuilt.getDatatypeURI(), d.getDatatypeURI());
 			for (Datatype<?> t : f.getKnownDatatypes()) {
-				final boolean compatible = rebuilt.isCompatible(t);
-				final boolean compatible2 = d.isCompatible(t);
+				 boolean compatible = rebuilt.isCompatible(t);
+				 boolean compatible2 = d.isCompatible(t);
 				assertEquals("not equal: " + t + "\t" + rebuilt + "\t" + d, compatible,
 						compatible2);
 				assertEquals("for " + t + "\t" + rebuilt + "\t" + d,
@@ -73,11 +73,11 @@ public class DatatypeParser {
 		String complex = "xs:complexType";
 		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
 				.parse(new File("datatypes/schema.xsd"));
-		final NodeList childNodes = doc.getElementsByTagName(simple);
+		 NodeList childNodes = doc.getElementsByTagName(simple);
 		DatatypeFactory f = DatatypeFactory.getInstance();
 		Map<String, Element> known = new HashMap<String, Element>();
 		for (int i = 0; i < childNodes.getLength(); i++) {
-			final Element e = (Element) childNodes.item(i);
+			 Element e = (Element) childNodes.item(i);
 			String uri = ns + e.getAttribute("name");
 			if (f.isKnownDatatype(uri)) {
 				//System.out.println("DatatypeParser.main() " + uri);
@@ -94,7 +94,7 @@ public class DatatypeParser {
 			}
 		}
 		// hack in rational and real
-		final List<Facet> list = Arrays.asList(minExclusive, minInclusive, maxExclusive,
+		 List<Facet> list = Arrays.asList(minExclusive, minInclusive, maxExclusive,
 				maxInclusive);
 		DatatypeFromXML<BigDecimal> real = new DatatypeFromXML<BigDecimal>(
 				"http://www.w3.org/2002/07/owl#real", types, restrictions, "partial",
@@ -132,10 +132,10 @@ public class DatatypeParser {
 	}
 
 	private static <R extends Comparable<R>> DatatypeFromXML<R> getDatatype(
-			final Datatype<R> d, final Element element,
-			final Map<String, DatatypeFromXML<?>> map,
-			final Map<String, String> restrictions) {
-		final DatatypeFromXML<R> datatypeFromXML = new DatatypeFromXML<R>(element, map,
+			 Datatype<R> d,  Element element,
+			 Map<String, DatatypeFromXML<?>> map,
+			 Map<String, String> restrictions) {
+		 DatatypeFromXML<R> datatypeFromXML = new DatatypeFromXML<R>(element, map,
 				restrictions);
 		map.put(datatypeFromXML.getDatatypeURI(), datatypeFromXML);
 		return datatypeFromXML;

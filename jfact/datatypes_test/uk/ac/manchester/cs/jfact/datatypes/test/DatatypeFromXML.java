@@ -25,16 +25,16 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
-	private final String name;
-	private final String uri;
-	private final Map<String, DatatypeFromXML<?>> types;
-	private final Map<String, String> restrictions;
-	private final Map<String, String> hfpProperties = new HashMap<String, String>();
-	private final Map<Facet, Object> knownFacetValues = new HashMap<Facet, Object>();
-	private final Set<Facet> facets;
+	private  String name;
+	private  String uri;
+	private  Map<String, DatatypeFromXML<?>> types;
+	private  Map<String, String> restrictions;
+	private  Map<String, String> hfpProperties = new HashMap<String, String>();
+	private  Map<Facet, Object> knownFacetValues = new HashMap<Facet, Object>();
+	private  Set<Facet> facets;
 
-	public DatatypeFromXML(final String n, final Map<String, DatatypeFromXML<?>> types,
-			final Map<String, String> restrictions) {
+	public DatatypeFromXML( String n,  Map<String, DatatypeFromXML<?>> types,
+			 Map<String, String> restrictions) {
 		this.name = n;
 		if (this.name.startsWith("http://")) {
 			this.uri = this.name;
@@ -50,10 +50,10 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
 		this.hfpProperties.put("numeric", "false");
 	}
 
-	public DatatypeFromXML(final String n, final Map<String, DatatypeFromXML<?>> types,
-			final Map<String, String> restrictions, final String ordered,
-			final String bounded, final String cardinality, final String numeric,
-			final Collection<Facet> fac) {
+	public DatatypeFromXML( String n,  Map<String, DatatypeFromXML<?>> types,
+			 Map<String, String> restrictions,  String ordered,
+			 String bounded,  String cardinality,  String numeric,
+			 Collection<Facet> fac) {
 		this(n, types, restrictions);
 		this.hfpProperties.put("ordered", ordered);
 		this.hfpProperties.put("bounded", bounded);
@@ -62,14 +62,14 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
 		this.facets.addAll(fac);
 	}
 
-	public DatatypeFromXML(final Element e, final Map<String, DatatypeFromXML<?>> typ,
-			final Map<String, String> restrict) {
+	public DatatypeFromXML( Element e,  Map<String, DatatypeFromXML<?>> typ,
+			 Map<String, String> restrict) {
 		this(e.getAttribute("name"), typ, restrict);
 		// this constructor does not use the defaults
 		this.hfpProperties.clear();
 		NodeList restr = e.getElementsByTagName("xs:restriction");
 		for (int i = 0; i < restr.getLength(); i++) {
-			final String attribute = ((Element) restr.item(i)).getAttribute("base");
+			 String attribute = ((Element) restr.item(i)).getAttribute("base");
 			if (attribute != null && attribute.length() > 0) {
 				this.restrictions.put(this.uri,
 						attribute.replace("xs:anySimpleType", DatatypeParser.Literal)
@@ -112,11 +112,11 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
 		//				+ restrictions);
 	}
 
-	public void accept(final DLExpressionVisitor visitor) {
+	public void accept( DLExpressionVisitor visitor) {
 		visitor.visit(this);
 	}
 
-	public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+	public <O> O accept( DLExpressionVisitorEx<O> visitor) {
 		return visitor.visit(this);
 	}
 
@@ -133,7 +133,7 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
 		//toReturn.add(this.types.get(DatatypeParser.Literal));
 		String current = this.restrictions.get(this.uri);
 		while (current != null) {
-			final DatatypeFromXML<?> datatypeFromXML = this.types.get(current);
+			 DatatypeFromXML<?> datatypeFromXML = this.types.get(current);
 			if (datatypeFromXML != null) {
 				toReturn.add(datatypeFromXML);
 			}
@@ -169,7 +169,7 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
 	}
 
 	public Set<Facet> getFacets() {
-		final HashSet<Facet> hashSet = new HashSet<Facet>(this.facets);
+		 HashSet<Facet> hashSet = new HashSet<Facet>(this.facets);
 		String ancestor = this.restrictions.get(this.uri);
 		if (ancestor != null) {
 			Datatype<?> d = this.types.get(ancestor);
@@ -194,7 +194,7 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
 		return toReturn;
 	}
 
-	public <O extends Comparable<O>> O getFacetValue(final Facet f) {
+	public <O extends Comparable<O>> O getFacetValue( Facet f) {
 		Map<Facet, Object> toReturn = this.getKnownFacetValues();
 		if (toReturn.containsKey(f)) {
 			if (!f.isNumberFacet()) {
@@ -205,7 +205,7 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
 		return null;
 	}
 
-	public BigDecimal getNumericFacetValue(final Facet f) {
+	public BigDecimal getNumericFacetValue( Facet f) {
 		Map<Facet, Object> toReturn = this.getKnownFacetValues();
 		if (toReturn.containsKey(f)) {
 			return (BigDecimal) f.parseNumber(toReturn.get(f));
@@ -239,7 +239,7 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
 		return ordered.FALSE;
 	}
 
-	public boolean isCompatible(final Datatype<?> type) {
+	public boolean isCompatible( Datatype<?> type) {
 		if (type instanceof NumericDatatype) {
 			return type.isCompatible(this);
 		}
@@ -248,31 +248,31 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
 				|| this.isSubType(type) || type.isSubType(this);
 	}
 
-	public boolean isCompatible(final Literal<?> l) {
+	public boolean isCompatible( Literal<?> l) {
 		return this.isCompatible(l.getDatatypeExpression())
 				&& this.isInValueSpace(this.parseValue(l.value()));
 	}
 
-	public boolean isInValueSpace(final R l) {
+	public boolean isInValueSpace( R l) {
 		//TODO verify the constraining facets
 		return false;
 	}
 
-	public R parseValue(final String s) {
+	public R parseValue( String s) {
 		return null;
 	}
 
-	public Literal<R> buildLiteral(final String s) {
+	public Literal<R> buildLiteral( String s) {
 		return new Literal<R>() {
-			public void accept(final DLExpressionVisitor visitor) {
+			public void accept( DLExpressionVisitor visitor) {
 				visitor.visit(this);
 			}
 
-			public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+			public <O> O accept( DLExpressionVisitorEx<O> visitor) {
 				return visitor.visit(this);
 			}
 
-			public int compareTo(final Literal<R> o) {
+			public int compareTo( Literal<R> o) {
 				return this.typedValue().compareTo(o.typedValue());
 			}
 
@@ -290,12 +290,12 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
 		};
 	}
 
-	public boolean isSubType(final Datatype<?> type) {
+	public boolean isSubType( Datatype<?> type) {
 		if (this.equals(type)) {
 			return true;
 		}
-		final Collection<Datatype<?>> ancestors = this.getAncestors();
-		final boolean contains = ancestors.contains(type);
+		 Collection<Datatype<?>> ancestors = this.getAncestors();
+		 boolean contains = ancestors.contains(type);
 		//		System.out.println("DatatypeFromXML.isSubType() " + ancestors);
 		//		System.out.println("DatatypeFromXML.isSubType() " + type);
 		//		System.out.println("DatatypeFromXML.isSubType() " + contains);
@@ -321,7 +321,7 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals( Object obj) {
 		if (super.equals(obj)) {
 			return true;
 		}

@@ -12,24 +12,24 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
-public final class ConceptObjectExactCardinality implements
-        ConceptObjectCardinalityExpression, NumberArg {
-    private final ConceptExpression delegate;
-    private final int N;
-    private final ObjectRoleExpression roleDelegate;
+public class ConceptObjectExactCardinality implements ConceptObjectCardinalityExpression,
+        NumberArg {
+    private ConceptExpression delegate;
+    private int N;
+    private ObjectRoleExpression roleDelegate;
 
-    public ConceptObjectExactCardinality(final int n, final ObjectRoleExpression R,
-            final ConceptExpression C) {
+    public ConceptObjectExactCardinality(int n, ObjectRoleExpression R,
+            ConceptExpression C) {
         N = n;
         delegate = C;
         roleDelegate = R;
     }
 
-    public void accept(final DLExpressionVisitor visitor) {
+    public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+    public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 

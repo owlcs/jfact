@@ -19,32 +19,31 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
 /** Disjoint Union axiom */
-public final class AxiomDisjointUnion extends AxiomImpl implements Axiom,
+public class AxiomDisjointUnion extends AxiomImpl implements Axiom,
         NAryExpression<ConceptExpression> {
-    private final ConceptExpression conceptExpression;
-    private final NAryExpressionImpl<ConceptExpression> delegate;
+    private ConceptExpression conceptExpression;
+    private NAryExpressionImpl<ConceptExpression> delegate;
 
-    public AxiomDisjointUnion(final OWLAxiom ax, final ConceptExpression c,
-            final Collection<Expression> v) {
+    public AxiomDisjointUnion(OWLAxiom ax, ConceptExpression c, Collection<Expression> v) {
         super(ax);
         delegate = new NAryExpressionImpl<ConceptExpression>();
         conceptExpression = c;
         add(v);
     }
 
-    public void accept(final DLAxiomVisitor visitor) {
+    public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+    public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
-    public void add(final Collection<Expression> v) {
+    public void add(Collection<Expression> v) {
         delegate.add(v);
     }
 
-    public void add(final Expression p) {
+    public void add(Expression p) {
         delegate.add(p);
     }
 
@@ -64,7 +63,7 @@ public final class AxiomDisjointUnion extends AxiomImpl implements Axiom,
         return delegate.size();
     }
 
-    public ConceptExpression transform(final Expression arg) {
+    public ConceptExpression transform(Expression arg) {
         return delegate.transform(arg);
     }
 }

@@ -6,7 +6,7 @@ package uk.ac.manchester.cs.jfact.kernel.state;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** class for S/R local state */
-public final class DLCompletionGraphSaveState {
+public class DLCompletionGraphSaveState {
     /** number of valid nodes */
     private int nNodes;
     /** end pointer of saved nodes */
@@ -24,7 +24,7 @@ public final class DLCompletionGraphSaveState {
         return nNodes;
     }
 
-    public void setnNodes(final int nNodes) {
+    public void setnNodes(int nNodes) {
         this.nNodes = nNodes;
     }
 
@@ -32,7 +32,7 @@ public final class DLCompletionGraphSaveState {
         return sNodes;
     }
 
-    public void setsNodes(final int sNodes) {
+    public void setsNodes(int sNodes) {
         this.sNodes = sNodes;
     }
 
@@ -40,7 +40,7 @@ public final class DLCompletionGraphSaveState {
         return nEdges;
     }
 
-    public void setnEdges(final int nEdges) {
+    public void setnEdges(int nEdges) {
         this.nEdges = nEdges;
     }
 

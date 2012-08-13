@@ -7,12 +7,12 @@ package uk.ac.manchester.cs.jfact.helpers;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.Arrays;
 
-public final class FastSetSimple extends AbstractFastSet {
+public class FastSetSimple extends AbstractFastSet {
     protected int[] values;
     protected int size = 0;
-    protected static final int defaultSize = 16;
+    protected static int defaultSize = 16;
 
-    protected final int insertionIndex(final int key) {
+    protected int insertionIndex(int key) {
         if (key < values[0]) {
             return -1;
         }
@@ -49,7 +49,7 @@ public final class FastSetSimple extends AbstractFastSet {
 
     public FastSetSimple() {}
 
-    public FastSetSimple(final FastSetSimple c1, final FastSetSimple c2) {
+    public FastSetSimple(FastSetSimple c1, FastSetSimple c2) {
         values = new int[(c1.size + c2.size) / defaultSize * defaultSize + defaultSize];
         int i = 0;
         int j = 0;
@@ -85,23 +85,24 @@ public final class FastSetSimple extends AbstractFastSet {
         }
     }
 
-    public final int get(final int i) {
+    public int get(int i) {
         if (values != null) {
             return values[i];
         }
         throw new IllegalArgumentException("Illegal argument " + i + ": no such element");
     }
 
-    protected final void init() {
+    protected void init() {
         values = new int[defaultSize];
         size = 0;
     }
 
-    public final void add(final int e) {
+    public void add(int e) {
         int pos = -1;
         if (values == null) {
             init();
-            // pos stays at -1, in an empty set that's the place to start - it will become 0
+            // pos stays at -1, in an empty set that's the place to start - it
+            // will become 0
         } else {
             // else find the right place
             pos = insertionIndex(e);
@@ -124,13 +125,13 @@ public final class FastSetSimple extends AbstractFastSet {
         size++;
     }
 
-    public final void addAll(final FastSet c) {
+    public void addAll(FastSet c) {
         if (c.isEmpty()) {
             return;
         }
         // merge two sorted arrays: how bad can it be?
         if (values == null) {
-            //extreme case: just copy the other set
+            // extreme case: just copy the other set
             values = Arrays.copyOf(((FastSetSimple) c).values, c.size());
             size = c.size();
             return;
@@ -173,12 +174,12 @@ public final class FastSetSimple extends AbstractFastSet {
         size = newsize;
     }
 
-    public final void clear() {
+    public void clear() {
         values = null;
         size = 0;
     }
 
-    public final boolean contains(final int o) {
+    public boolean contains(int o) {
         if (values != null) {
             int i = insertionIndex(o);
             boolean toReturn = i > -1;
@@ -187,7 +188,7 @@ public final class FastSetSimple extends AbstractFastSet {
         return false;
     }
 
-    public final boolean containsAll(final FastSet c) {
+    public boolean containsAll(FastSet c) {
         if (c.isEmpty()) {
             return true;
         }
@@ -214,14 +215,16 @@ public final class FastSetSimple extends AbstractFastSet {
                     break;
                 }
                 if (get(i) > currentValue) {
-                    // found a value larger than the value it's looking for - c is not contained
+                    // found a value larger than the value it's looking for - c
+                    // is not contained
                     return false;
                 }
                 // get(i) is < than current value: check next i
                 i++;
             }
             if (!found) {
-                // finished exploring this and currentValue was not found - it happens if currentValue < any element in this set
+                // finished exploring this and currentValue was not found - it
+                // happens if currentValue < any element in this set
                 return false;
             }
             j++;
@@ -229,11 +232,11 @@ public final class FastSetSimple extends AbstractFastSet {
         return true;
     }
 
-    public final boolean isEmpty() {
+    public boolean isEmpty() {
         return values == null;
     }
 
-    public final boolean containsAny(final FastSet c) {
+    public boolean containsAny(FastSet c) {
         if (c.isEmpty() || size == 0) {
             return false;
         }
@@ -248,7 +251,8 @@ public final class FastSetSimple extends AbstractFastSet {
                     return true;
                 }
                 if (get(i) > currentValue) {
-                    // found a value larger than the value it's looking for - c is not contained
+                    // found a value larger than the value it's looking for - c
+                    // is not contained
                     break;
                 }
                 // get(i) is < than current value: check next i
@@ -259,7 +263,7 @@ public final class FastSetSimple extends AbstractFastSet {
         return false;
     }
 
-    public final void remove(final int o) {
+    public void remove(int o) {
         if (values == null) {
             return;
         }
@@ -267,23 +271,23 @@ public final class FastSetSimple extends AbstractFastSet {
         removeAt(i);
     }
 
-    public final int size() {
+    public int size() {
         return size;
     }
 
-    public final int[] toIntArray() {
+    public int[] toIntArray() {
         if (values == null) {
             return new int[0];
         }
         return Arrays.copyOf(values, size);
     }
 
-    public final boolean intersect(final FastSet f) {
+    public boolean intersect(FastSet f) {
         return containsAny(f);
     }
 
     @Override
-    public final boolean equals(final Object arg0) {
+    public boolean equals(Object arg0) {
         if (arg0 == null) {
             return false;
         }
@@ -306,11 +310,11 @@ public final class FastSetSimple extends AbstractFastSet {
     }
 
     @Override
-    public final int hashCode() {
+    public int hashCode() {
         return super.hashCode();
     }
 
-    public final void removeAt(final int i) {
+    public void removeAt(int i) {
         if (values == null) {
             return;
         }
@@ -330,7 +334,7 @@ public final class FastSetSimple extends AbstractFastSet {
         }
     }
 
-    public final void removeAll(final int i, final int end) {
+    public void removeAll(int i, int end) {
         if (values == null) {
             return;
         }
@@ -357,7 +361,7 @@ public final class FastSetSimple extends AbstractFastSet {
         }
     }
 
-    public final void removeAllValues(final int... vals) {
+    public void removeAllValues(int... vals) {
         if (values == null) {
             return;
         }
@@ -381,10 +385,10 @@ public final class FastSetSimple extends AbstractFastSet {
         }
     }
 
-    public void completeSet(final int value) {
+    public void completeSet(int value) {
         for (int i = 0; i <= value; i++) {
             add(i);
         }
-        //XXX notice: these sets go to negative numbers. Is this the best way?
+        // XXX notice: these sets go to negative numbers. Is this the best way?
     }
 }

@@ -10,19 +10,19 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
-public final class ConceptObjectSelf implements ConceptObjectRoleExpression {
+public class ConceptObjectSelf implements ConceptObjectRoleExpression {
     /** object role argument */
-    private final ObjectRoleExpression objectRoleExpression;
+    private ObjectRoleExpression objectRoleExpression;
 
-    public ConceptObjectSelf(final ObjectRoleExpression R) {
+    public ConceptObjectSelf(ObjectRoleExpression R) {
         objectRoleExpression = R;
     }
 
-    public void accept(final DLExpressionVisitor visitor) {
+    public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+    public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 

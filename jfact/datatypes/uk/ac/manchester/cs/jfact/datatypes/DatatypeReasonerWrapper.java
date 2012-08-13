@@ -15,15 +15,14 @@ public class DatatypeReasonerWrapper {
         System.out.println("\nDatatypeReasonerWrapper " + delegate.hashCode());
     }
 
-    public boolean addDataEntry(final boolean positive, final DagTag type,
-            final NamedEntry dataEntry, final DepSet dep) {
+    public boolean addDataEntry(boolean positive, DagTag type, NamedEntry dataEntry,
+            DepSet dep) {
         boolean toReturn = delegate.addDataEntry(positive, type, dataEntry, dep);
         print(toReturn, "addDataEntry()", positive, type.toString(), dataEntry, dep);
         return toReturn;
     }
 
-    private void print(final Object toReturn, final String methodName,
-            final Object... params) {
+    private void print(Object toReturn, String methodName, Object... params) {
         System.out.print("\t" + methodName + "\t" + toReturn);
         if (params.length > 0) {
             System.out.println("\tparams:\t" + Arrays.toString(params));

@@ -13,32 +13,32 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
-public final class AxiomValueOf extends AxiomIndividual {
-    private final DataRoleExpression dataRoleExpression;
-    private final Literal<?> value;
+public class AxiomValueOf extends AxiomIndividual {
+    private DataRoleExpression dataRoleExpression;
+    private Literal<?> value;
 
-    public AxiomValueOf(final OWLAxiom ax, final IndividualExpression i,
-            final DataRoleExpression a, final Literal<?> v) {
+    public AxiomValueOf(OWLAxiom ax, IndividualExpression i, DataRoleExpression a,
+            Literal<?> v) {
         super(ax, i);
         dataRoleExpression = a;
         value = v;
     }
 
-    public void accept(final DLAxiomVisitor visitor) {
+    public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+    public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
     /** access to role */
-    public final DataRoleExpression getAttribute() {
+    public DataRoleExpression getAttribute() {
         return dataRoleExpression;
     }
 
     /** access to value */
-    public final Literal<?> getValue() {
+    public Literal<?> getValue() {
         return value;
     }
 }

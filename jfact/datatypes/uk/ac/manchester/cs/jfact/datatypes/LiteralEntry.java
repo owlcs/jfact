@@ -5,7 +5,7 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static uk.ac.manchester.cs.jfact.helpers.Helper.bpINVALID;
+import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
 
 import java.util.Collection;
 
@@ -17,13 +17,13 @@ public class LiteralEntry extends NamedEntry {
     private int pName;
 
     /** create data entry with given name */
-    public LiteralEntry(final String name) {
+    public LiteralEntry(String name) {
         super(name);
         pName = bpINVALID;
     }
 
     /** set host data type for the data value */
-    public void setLiteral(final Literal<?> l) {
+    public void setLiteral(Literal<?> l) {
         literal = l;
     }
 
@@ -48,7 +48,7 @@ public class LiteralEntry extends NamedEntry {
 
     /** set DAG index of the data entry */
     @Override
-    public void setIndex(final int p) {
+    public void setIndex(int p) {
         pName = p;
     }
 

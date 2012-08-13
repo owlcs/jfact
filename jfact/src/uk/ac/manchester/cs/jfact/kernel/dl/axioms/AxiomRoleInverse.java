@@ -11,25 +11,25 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
-public final class AxiomRoleInverse extends AxiomSingleORole {
-    private final ObjectRoleExpression inverseRole;
+public class AxiomRoleInverse extends AxiomSingleORole {
+    private ObjectRoleExpression inverseRole;
 
-    public AxiomRoleInverse(final OWLAxiom ax, final ObjectRoleExpression dirRole,
-            final ObjectRoleExpression invRole) {
+    public AxiomRoleInverse(OWLAxiom ax, ObjectRoleExpression dirRole,
+            ObjectRoleExpression invRole) {
         super(ax, dirRole);
         inverseRole = invRole;
     }
 
-    public void accept(final DLAxiomVisitor visitor) {
+    public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+    public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
     /** access to role */
-    public final ObjectRoleExpression getInvRole() {
+    public ObjectRoleExpression getInvRole() {
         return inverseRole;
     }
 }

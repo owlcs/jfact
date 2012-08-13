@@ -19,29 +19,29 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
 /** Same individuals axiom */
-public final class AxiomSameIndividuals extends AxiomImpl implements Axiom,
+public class AxiomSameIndividuals extends AxiomImpl implements Axiom,
         NAryExpression<IndividualExpression> {
-    private final NAryExpressionImpl<IndividualExpression> delegate;
+    private NAryExpressionImpl<IndividualExpression> delegate;
 
-    public AxiomSameIndividuals(final OWLAxiom ax, final List<Expression> v) {
+    public AxiomSameIndividuals(OWLAxiom ax, List<Expression> v) {
         super(ax);
         delegate = new NAryExpressionImpl<IndividualExpression>();
         delegate.add(v);
     }
 
-    public void accept(final DLAxiomVisitor visitor) {
+    public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+    public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
-    public void add(final Collection<Expression> v) {
+    public void add(Collection<Expression> v) {
         delegate.add(v);
     }
 
-    public void add(final Expression p) {
+    public void add(Expression p) {
         delegate.add(p);
     }
 
@@ -57,7 +57,7 @@ public final class AxiomSameIndividuals extends AxiomImpl implements Axiom,
         return delegate.size();
     }
 
-    public IndividualExpression transform(final Expression arg) {
+    public IndividualExpression transform(Expression arg) {
         return delegate.transform(arg);
     }
 }

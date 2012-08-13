@@ -17,7 +17,7 @@ public abstract class Restorer {
     }
 
     /** for accessing the level on TRareSaveStack */
-    public void setRaresavestackLevel(final int raresavestackLevel) {
+    public void setRaresavestackLevel(int raresavestackLevel) {
         this.raresavestackLevel = raresavestackLevel;
     }
 }

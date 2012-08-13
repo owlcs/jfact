@@ -14,9 +14,9 @@ import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 
-public final class AxiomSet {
+public class AxiomSet {
     /** host TBox that holds all concepts/etc */
-    protected final TBox tboxHost;
+    protected TBox tboxHost;
     /** set of axioms that accumilates incoming (and newly created) axioms; Tg */
     private List<Axiom> accumulator = new ArrayList<Axiom>();
 
@@ -24,18 +24,18 @@ public final class AxiomSet {
         boolean absMethod(Axiom ax);
     }
 
-    /// set of absorption action, in order
-    private final List<Abs> actions = new ArrayList<AxiomSet.Abs>();
+    // / set of absorption action, in order
+    private List<Abs> actions = new ArrayList<AxiomSet.Abs>();
 
     /** add already built GCI p */
-    private void insertGCI(final Axiom p) {
+    private void insertGCI(Axiom p) {
         tboxHost.getOptions().getAbsorptionLog()
                 .print("\n new axiom (", accumulator.size(), "):", p);
         accumulator.add(p);
     }
 
     /** insert GCI if new; @return true iff already exists */
-    private boolean insertIfNew(final Axiom q) {
+    private boolean insertIfNew(Axiom q) {
         if (!accumulator.contains(q)) {
             insertGCI(q);
             return false;
@@ -43,8 +43,8 @@ public final class AxiomSet {
         return true;
     }
 
-    /// helper that inserts an axiom into Accum; @return bool if success
-    protected boolean processNewAxiom(final Axiom q) {
+    // / helper that inserts an axiom into Accum; @return bool if success
+    protected boolean processNewAxiom(Axiom q) {
         if (q == null) {
             return false;
         }
@@ -54,12 +54,12 @@ public final class AxiomSet {
         return true;
     }
 
-    public AxiomSet(final TBox host) {
+    public AxiomSet(TBox host) {
         tboxHost = host;
     }
 
     /** add axiom for the GCI C [= D */
-    public void addAxiom(final DLTree C, final DLTree D) {
+    public void addAxiom(DLTree C, DLTree D) {
         SAbsInput();
         Axiom p = new Axiom();
         p.add(C);
@@ -88,7 +88,7 @@ public final class AxiomSet {
     }
 
     /** split given axiom */
-    protected boolean split(final Axiom p) {
+    protected boolean split(Axiom p) {
         List<Axiom> splitted = p.split(tboxHost);
         if (splitted.isEmpty()) {
             // nothing to split
@@ -110,7 +110,8 @@ public final class AxiomSet {
     public int absorb() {
         // GCIs to process
         List<Axiom> GCIs = new ArrayList<Axiom>();
-        // we will change Accum (via split rule), so indexing and compare with size
+        // we will change Accum (via split rule), so indexing and compare with
+        // size
         for (int i = 0; i < accumulator.size(); i++) {
             Axiom ax = accumulator.get(i);
             tboxHost.getOptions().getAbsorptionLog().print("\nProcessing (", i, "):");
@@ -126,7 +127,7 @@ public final class AxiomSet {
         return size();
     }
 
-    private boolean absorbGCI(final Axiom p) {
+    private boolean absorbGCI(Axiom p) {
         SAbsAction();
         for (Abs abs : actions) {
             if (abs.absMethod(p)) {
@@ -137,62 +138,62 @@ public final class AxiomSet {
         return false;
     }
 
-    public boolean initAbsorptionFlags(final String flags) {
+    public boolean initAbsorptionFlags(String flags) {
         actions.clear();
         for (char c : flags.toCharArray()) {
             switch (c) {
                 case 'B':
                     actions.add(new Abs() {
-                        public boolean absMethod(final Axiom ax) {
+                        public boolean absMethod(Axiom ax) {
                             return ax.absorbIntoBottom(tboxHost);
                         }
                     });
                     break;
                 case 'T':
                     actions.add(new Abs() {
-                        public boolean absMethod(final Axiom ax) {
+                        public boolean absMethod(Axiom ax) {
                             return ax.absorbIntoTop(tboxHost);
                         }
                     });
                     break;
                 case 'E':
                     actions.add(new Abs() {
-                        public boolean absMethod(final Axiom ax) {
+                        public boolean absMethod(Axiom ax) {
                             return processNewAxiom(ax.simplifyCN(tboxHost));
                         }
                     });
                     break;
                 case 'C':
                     actions.add(new Abs() {
-                        public boolean absMethod(final Axiom ax) {
+                        public boolean absMethod(Axiom ax) {
                             return ax.absorbIntoConcept(tboxHost);
                         }
                     });
                     break;
                 case 'N':
                     actions.add(new Abs() {
-                        public boolean absMethod(final Axiom ax) {
+                        public boolean absMethod(Axiom ax) {
                             return ax.absorbIntoNegConcept(tboxHost);
                         }
                     });
                     break;
                 case 'F':
                     actions.add(new Abs() {
-                        public boolean absMethod(final Axiom ax) {
+                        public boolean absMethod(Axiom ax) {
                             return processNewAxiom(ax.simplifyForall(tboxHost));
                         }
                     });
                     break;
                 case 'R':
                     actions.add(new Abs() {
-                        public boolean absMethod(final Axiom ax) {
+                        public boolean absMethod(Axiom ax) {
                             return ax.absorbIntoDomain(tboxHost);
                         }
                     });
                     break;
                 case 'S':
                     actions.add(new Abs() {
-                        public boolean absMethod(final Axiom ax) {
+                        public boolean absMethod(Axiom ax) {
                             return split(ax);
                         }
                     });
@@ -210,7 +211,7 @@ public final class AxiomSet {
         if (!created.containsKey("SAbsAction")) {
             return;
         }
-        final LogAdapter log = tboxHost.getOptions().getAbsorptionLog();
+        LogAdapter log = tboxHost.getOptions().getAbsorptionLog();
         log.print("\nAbsorption dealt with ", get("SAbsInput"),
                 " input axioms\nThere were made ", get("SAbsAction"),
                 " absorption actions, of which:");

@@ -14,14 +14,14 @@ import uk.ac.manchester.cs.jfact.helpers.ArrayIntMap;
 import uk.ac.manchester.cs.jfact.helpers.FastSetSimple;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 
-public final class CWDArray {
-    private static final double distribution = 0.025;
+public class CWDArray {
+    private static double distribution = 0.025;
     /** array of concepts together with dep-sets */
-    private final List<ConceptWDep> base = new ArrayList<ConceptWDep>();
+    private List<ConceptWDep> base = new ArrayList<ConceptWDep>();
     private BitSet cache;
-    private final ArrayIntMap indexes = new ArrayIntMap();
+    private ArrayIntMap indexes = new ArrayIntMap();
     private boolean createCache = false;
-    private final static int cacheLimit = 1;
+    private static int cacheLimit = 1;
     private int size = 0;
 
     /** init/clear label */
@@ -42,7 +42,7 @@ public final class CWDArray {
     }
 
     /** adds concept P to a label - to be called only from CGLabel */
-    protected void private_add(final ConceptWDep p) {
+    protected void private_add(ConceptWDep p) {
         base.add(p);
         size++;
         if (cache != null) {
@@ -52,13 +52,13 @@ public final class CWDArray {
         int span = Math.max(asPositive(indexes.keySet(0)),
                 indexes.keySet(indexes.size() - 1));
         // create a cache only if the size is higher than a preset minimum and
-        //there is at least an element in 20; caches with very dispersed
-        //elements eat up too much memory
+        // there is at least an element in 20; caches with very dispersed
+        // elements eat up too much memory
         createCache = size > cacheLimit && (double) size / (span + 1) > distribution;
     }
 
     /** check whether label contains BP (ignoring dep-set) */
-    public boolean contains(final int bp) {
+    public boolean contains(int bp) {
         if (cache == null && createCache) {
             initCache();
         }
@@ -76,11 +76,11 @@ public final class CWDArray {
         }
     }
 
-    final int asPositive(final int p) {
+    int asPositive(int p) {
         return p >= 0 ? 2 * p : 1 - 2 * p;
     }
 
-    public int index(final int bp) {
+    public int index(int bp) {
         // check that the index actually exist: quicker
         if (cache != null && !cache.get(asPositive(bp))) {
             return -1;
@@ -88,7 +88,7 @@ public final class CWDArray {
         return indexes.get(bp);
     }
 
-    public DepSet get(final int bp) {
+    public DepSet get(int bp) {
         // check that the index actually exist: quicker
         if (cache != null && !cache.get(asPositive(bp))) {
             return null;
@@ -100,7 +100,7 @@ public final class CWDArray {
         return base.get(i).getDep();
     }
 
-    public ConceptWDep getConceptWithBP(final int bp) {
+    public ConceptWDep getConceptWithBP(int bp) {
         // check that the index actually exist: quicker
         if (cache != null && !cache.get(asPositive(bp))) {
             return null;
@@ -116,7 +116,7 @@ public final class CWDArray {
         return size;
     }
 
-    public boolean lesserequal(final CWDArray label) {
+    public boolean lesserequal(CWDArray label) {
         // use the cache on the label if there is one
         if (label.cache != null) {
             for (int i = 0; i < indexes.size(); i++) {
@@ -136,7 +136,7 @@ public final class CWDArray {
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
         if (obj == null) {
             return false;
         }
@@ -155,7 +155,7 @@ public final class CWDArray {
         return size;
     }
 
-    public Restorer updateDepSet(final int index, final DepSet dep) {
+    public Restorer updateDepSet(int index, DepSet dep) {
         if (dep.isEmpty()) {
             throw new IllegalArgumentException();
         }
@@ -164,7 +164,7 @@ public final class CWDArray {
         return ret;
     }
 
-    public List<Restorer> updateDepSet(final DepSet dep) {
+    public List<Restorer> updateDepSet(DepSet dep) {
         if (dep.isEmpty()) {
             throw new IllegalArgumentException();
         }
@@ -177,7 +177,7 @@ public final class CWDArray {
         return toReturn;
     }
 
-    public void restore(final int ss, final int level) {
+    public void restore(int ss, int level) {
         for (int i = ss; i < size; i++) {
             int concept = base.get(i).getConcept();
             indexes.remove(concept);
@@ -204,12 +204,12 @@ public final class CWDArray {
     }
 }
 
-final class UnMerge extends Restorer {
-    private final CWDArray label;
-    private final int offset;
-    private final FastSetSimple dep;
+class UnMerge extends Restorer {
+    private CWDArray label;
+    private int offset;
+    private FastSetSimple dep;
 
-    UnMerge(final CWDArray lab, final ConceptWDep p, final int offset) {
+    UnMerge(CWDArray lab, ConceptWDep p, int offset) {
         label = lab;
         this.offset = offset;
         dep = p.getDep().getDelegate();
@@ -217,8 +217,8 @@ final class UnMerge extends Restorer {
 
     @Override
     public void restore() {
-        final int concept = label.getBase().get(offset).getConcept();
-        final ConceptWDep conceptWDep = new ConceptWDep(concept, DepSet.create(dep));
+        int concept = label.getBase().get(offset).getConcept();
+        ConceptWDep conceptWDep = new ConceptWDep(concept, DepSet.create(dep));
         label.getBase().set(offset, conceptWDep);
     }
 }

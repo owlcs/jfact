@@ -10,19 +10,19 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
-public final class ConceptNot implements ConceptExpression, ConceptArg {
+public class ConceptNot implements ConceptExpression, ConceptArg {
     /** concept argument */
-    private final ConceptExpression conceptExpression;
+    private ConceptExpression conceptExpression;
 
-    public ConceptNot(final ConceptExpression C) {
+    public ConceptNot(ConceptExpression C) {
         conceptExpression = C;
     }
 
-    public void accept(final DLExpressionVisitor visitor) {
+    public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+    public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 

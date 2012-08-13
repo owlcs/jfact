@@ -12,32 +12,32 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
-public final class AxiomRelatedToNot extends AxiomIndividual {
-    private final IndividualExpression individualExpression;
-    private final ObjectRoleExpression objectRoleExpression;
+public class AxiomRelatedToNot extends AxiomIndividual {
+    private IndividualExpression individualExpression;
+    private ObjectRoleExpression objectRoleExpression;
 
-    public AxiomRelatedToNot(final OWLAxiom ax, final IndividualExpression i,
-            final ObjectRoleExpression r, final IndividualExpression j) {
+    public AxiomRelatedToNot(OWLAxiom ax, IndividualExpression i, ObjectRoleExpression r,
+            IndividualExpression j) {
         super(ax, i);
         objectRoleExpression = r;
         individualExpression = j;
     }
 
-    public void accept(final DLAxiomVisitor visitor) {
+    public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+    public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
     /** access */
-    public final IndividualExpression getRelatedIndividual() {
+    public IndividualExpression getRelatedIndividual() {
         return individualExpression;
     }
 
     /** access */
-    public final ObjectRoleExpression getRelation() {
+    public ObjectRoleExpression getRelation() {
         return objectRoleExpression;
     }
 }

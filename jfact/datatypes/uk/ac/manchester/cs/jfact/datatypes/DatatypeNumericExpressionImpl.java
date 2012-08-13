@@ -6,21 +6,21 @@ import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.ABSTRACT_NUMERIC_DATA
 
 class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
         ABSTRACT_NUMERIC_DATATYPE<O> implements DatatypeExpression<O> {
-    //TODO handle all value space restrictions in the delegations
+    // TODO handle all value space restrictions in the delegations
     private final Datatype<O> host;
 
-    public DatatypeNumericExpressionImpl(final Datatype<O> b) {
+    public DatatypeNumericExpressionImpl(Datatype<O> b) {
         super(b.getDatatypeURI() + "_" + DatatypeFactory.getIndex(), b.getFacets());
         if (b.isExpression()) {
             this.host = b.asExpression().getHostType();
         } else {
             this.host = b;
         }
-        this.ancestors = Utils.generateAncestors(this.host);
-        this.knownFacetValues.putAll(b.getKnownFacetValues());
+        ancestors = Utils.generateAncestors(this.host);
+        knownFacetValues.putAll(b.getKnownFacetValues());
     }
 
-    public O parseValue(final String s) {
+    public O parseValue(String s) {
         return this.host.parseValue(s);
     }
 
@@ -28,8 +28,8 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
         return this.host;
     }
 
-    public DatatypeExpression<O> addFacet(final Facet f, final Object value) {
-        if (!this.facets.contains(f)) {
+    public DatatypeExpression<O> addFacet(Facet f, Object value) {
+        if (!facets.contains(f)) {
             throw new IllegalArgumentException("Facet " + f
                     + " not allowed tor datatype " + this.getHostType());
         }
@@ -48,8 +48,9 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
         }
         DatatypeNumericExpressionImpl<O> toReturn = new DatatypeNumericExpressionImpl<O>(
                 this.host);
-        toReturn.knownFacetValues.putAll(this.knownFacetValues);
-        // cannot have noth min/maxInclusive and min/maxExclusive values, so remove them if the feature is min/max
+        toReturn.knownFacetValues.putAll(knownFacetValues);
+        // cannot have noth min/maxInclusive and min/maxExclusive values, so
+        // remove them if the feature is min/max
         if (f.equals(Facets.minExclusive) || f.equals(Facets.minInclusive)) {
             toReturn.knownFacetValues.remove(Facets.minExclusive);
             toReturn.knownFacetValues.remove(Facets.minInclusive);
@@ -68,18 +69,20 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
     }
 
     public boolean emptyValueSpace() {
-        // TODO not checking string type value spaces; looks like the only sensible way would be to check for 0 length constraints
-        if (this.getNumeric()) {
-            // remember whether it's inclusive or exclusive - needed to know if the two extremes can be the same or not
+        // TODO not checking string type value spaces; looks like the only
+        // sensible way would be to check for 0 length constraints
+        if (getNumeric()) {
+            // remember whether it's inclusive or exclusive - needed to know if
+            // the two extremes can be the same or not
             int excluded = 0;
-            BigDecimal min = (BigDecimal) this.getFacetValue(Facets.minInclusive);
+            BigDecimal min = (BigDecimal) getFacetValue(Facets.minInclusive);
             if (min == null) {
-                min = (BigDecimal) this.getFacetValue(Facets.minExclusive);
+                min = (BigDecimal) getFacetValue(Facets.minExclusive);
                 excluded++;
             }
-            BigDecimal max = (BigDecimal) this.getFacetValue(Facets.maxInclusive);
+            BigDecimal max = (BigDecimal) getFacetValue(Facets.maxInclusive);
             if (max == null) {
-                max = (BigDecimal) this.getFacetValue(Facets.maxExclusive);
+                max = (BigDecimal) getFacetValue(Facets.maxExclusive);
                 excluded++;
             }
             return DatatypeFactory.nonEmptyInterval(min, max, excluded);
@@ -109,7 +112,7 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
 
     @Override
     public String toString() {
-        return "numeric(" + this.host.toString() + "(extra facets:" + this.getMin() + " "
-                + this.getMax() + "))";
+        return "numeric(" + this.host.toString() + "(extra facets:" + getMin() + " "
+                + getMax() + "))";
     }
 }

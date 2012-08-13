@@ -7,12 +7,9 @@ class LiteralImpl<T extends Comparable<T>> implements Literal<T> {
     private final Datatype<T> type;
     private final String value;
 
-    //private final T typedValue;
-    public LiteralImpl(final Datatype<T> type, final String value) {
-        //,  T  typedValue) {
+    public LiteralImpl(Datatype<T> type, String value) {
         this.type = type;
         this.value = value;
-        //this.typedValue = typedValue;
     }
 
     public Datatype<T> getDatatypeExpression() {
@@ -27,15 +24,15 @@ class LiteralImpl<T extends Comparable<T>> implements Literal<T> {
         return this.type.parseValue(this.value);
     }
 
-    public void accept(final DLExpressionVisitor visitor) {
+    public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+    public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
-    public int compareTo(final Literal<T> arg0) {
+    public int compareTo(Literal<T> arg0) {
         return this.type.parseValue(this.value).compareTo(arg0.typedValue());
     }
 
@@ -45,7 +42,7 @@ class LiteralImpl<T extends Comparable<T>> implements Literal<T> {
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
         if (super.equals(obj)) {
             return true;
         }

@@ -10,19 +10,19 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpressionArg;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
-public final class DataNot implements DataExpression, DataExpressionArg<DataExpression> {
+public class DataNot implements DataExpression, DataExpressionArg<DataExpression> {
     /** data expression argument */
-    protected final DataExpression Expr;
+    protected DataExpression Expr;
 
-    public DataNot(final DataExpression E) {
+    public DataNot(DataExpression E) {
         Expr = E;
     }
 
-    public void accept(final DLExpressionVisitor visitor) {
+    public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+    public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 

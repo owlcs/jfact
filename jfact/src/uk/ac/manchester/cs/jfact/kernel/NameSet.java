@@ -7,29 +7,25 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.HashMap;
 
-public final class NameSet<T> extends HashMap<String, T> {
+public class NameSet<T> extends HashMap<String, T> {
     /** creator of new name */
-    private final NameCreator<T> creator;
+    private NameCreator<T> creator;
 
-    public NameSet(final NameCreator<T> p) {
+    public NameSet(NameCreator<T> p) {
         creator = p;
     }
 
-    /**
-     * unconditionally add new element with name ID to the set; return new
-     * element
-     */
-    public T add(final String id) {
+    /** unconditionally add new element with name ID to the set; return new
+     * element */
+    public T add(String id) {
         T pne = creator.makeEntry(id);
         put(id, pne);
         return pne;
     }
 
-    /**
-     * Insert id to a nameset (if necessary); @return pointer to id structure
-     * created by external creator
-     */
-    public T insert(final String id) {
+    /** Insert id to a nameset (if necessary); @return pointer to id structure
+     * created by external creator */
+    public T insert(String id) {
         T pne = get(id);
         if (pne == null) {
             pne = add(id);

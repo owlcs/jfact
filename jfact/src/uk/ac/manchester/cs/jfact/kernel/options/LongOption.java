@@ -7,10 +7,10 @@ package uk.ac.manchester.cs.jfact.kernel.options;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 public class LongOption implements Option {
     /** option name */
-    private final String optionName;
-    private final Long value;
+    private String optionName;
+    private Long value;
 
-    public LongOption(final String name, final Long defVal) {
+    public LongOption(String name, Long defVal) {
         optionName = name;
         value = defVal;
     }

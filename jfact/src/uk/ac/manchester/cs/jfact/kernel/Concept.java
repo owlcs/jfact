@@ -8,22 +8,12 @@ package uk.ac.manchester.cs.jfact.kernel;
 import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
 import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-import uk.ac.manchester.cs.jfact.helpers.DLTree;
-import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
-import uk.ac.manchester.cs.jfact.helpers.FastSet;
-import uk.ac.manchester.cs.jfact.helpers.FastSetFactory;
-import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
+import uk.ac.manchester.cs.jfact.helpers.*;
 
 public class Concept extends ClassifiableEntry {
-    public static final Concept getBOTTOM() {
+    public static Concept getBOTTOM() {
         Concept toReturn = new Concept("BOTTOM");
         toReturn.setBottom();
         toReturn.setId(-1);
@@ -32,7 +22,7 @@ public class Concept extends ClassifiableEntry {
         return toReturn;
     }
 
-    public static final Concept getTOP() {
+    public static Concept getTOP() {
         Concept toReturn = new Concept("TOP");
         toReturn.setTop();
         toReturn.setId(-1);
@@ -67,9 +57,9 @@ public class Concept extends ClassifiableEntry {
         cttRegular('r'),
         /** any non-primitive concept (except synonyms) */
         cttNonPrimitive('n');
-        private final char c;
+        private char c;
 
-        private CTTag(final char c) {
+        private CTTag(char c) {
             this.c = c;
         }
 
@@ -80,10 +70,8 @@ public class Concept extends ClassifiableEntry {
 
     /** label to use in relevant-only checks */
     private long rel;
-    /**
-     * classification type of concept: completely defined (true- or like-), no
-     * TS, other
-     */
+    /** classification type of concept: completely defined (true- or like-), no
+     * TS, other */
     private CTTag classTag;
     /** depth of the concept wrt told subsumers */
     private int tsDepth;
@@ -92,18 +80,16 @@ public class Concept extends ClassifiableEntry {
     /** pointer to the entry in DAG with concept definition */
     private int pBody;
     /** features for C */
-    private final LogicFeatures posFeatures = new LogicFeatures();
+    private LogicFeatures posFeatures = new LogicFeatures();
     /** features for ~C */
-    private final LogicFeatures negFeatures = new LogicFeatures();
+    private LogicFeatures negFeatures = new LogicFeatures();
     /** all extra rules for a given concept */
-    private final FastSet extraRules = FastSetFactory.create();
+    private FastSet extraRules = FastSetFactory.create();
     protected DLTree description;
 
-    /**
-     * adds concept as a told subsumer of current one; @return value for CDC
-     * analisys
-     */
-    private boolean addToldSubsumer(final Concept p) {
+    /** adds concept as a told subsumer of current one; @return value for CDC
+     * analisys */
+    private boolean addToldSubsumer(Concept p) {
         if (p != this) {
             addParentIfNew(p);
             if (p.isSingleton() || p.isHasSP()) {
@@ -114,7 +100,7 @@ public class Concept extends ClassifiableEntry {
         return p.isPrimitive();
     }
 
-    public Concept(final String name) {
+    public Concept(String name) {
         super(name);
         rel = 0;
         classTag = CTTag.cttUnspecified;
@@ -125,7 +111,7 @@ public class Concept extends ClassifiableEntry {
     }
 
     /** add index of a simple rule in TBox to the ER set */
-    public void addExtraRule(final int p) {
+    public void addExtraRule(int p) {
         extraRules.add(p);
         setCompletelyDefined(false);
     }
@@ -163,11 +149,9 @@ public class Concept extends ClassifiableEntry {
         description = null;
     }
 
-    /**
-     * check whether it is possible to init this as a non-primitive concept with
-     * DESC
-     */
-    public boolean canInitNonPrim(final DLTree desc) {
+    /** check whether it is possible to init this as a non-primitive concept with
+     * DESC */
+    public boolean canInitNonPrim(DLTree desc) {
         if (description == null) {
             return true;
         }
@@ -177,11 +161,9 @@ public class Concept extends ClassifiableEntry {
         return false;
     }
 
-    /**
-     * switch primitive concept to non-primitive with new definition; @return
-     * old definition
-     */
-    public DLTree makeNonPrimitive(final DLTree desc) {
+    /** switch primitive concept to non-primitive with new definition; @return
+     * old definition */
+    public DLTree makeNonPrimitive(DLTree desc) {
         DLTree ret = description;
         removeDescription();
         addDesc(desc);
@@ -202,7 +184,9 @@ public class Concept extends ClassifiableEntry {
         if (isPrimitive() && description != null && description.isTOP()) {
             removeDescription();
         }
-        boolean CD = !hasExtraRules() && isPrimitive(); // not a completely defined if there are extra rules
+        boolean CD = !hasExtraRules() && isPrimitive(); // not a completely
+                                                        // defined if there are
+                                                        // extra rules
         if (description != null) {
             CD &= this.initToldSubsumers(description, new HashSet<Role>());
         }
@@ -210,7 +194,7 @@ public class Concept extends ClassifiableEntry {
     }
 
     /** init TOP told subsumer if necessary */
-    public void setToldTop(final Concept top) {
+    public void setToldTop(Concept top) {
         if (description == null && !hasToldSubsumers()) {
             addParent(top);
         }
@@ -229,11 +213,11 @@ public class Concept extends ClassifiableEntry {
         return pName; // return concept's name
     }
 
-    public void addDesc(final DLTree Desc) {
+    public void addDesc(DLTree Desc) {
         if (Desc == null) {
             return;
         }
-        //assert this.isPrimitive();
+        // assert this.isPrimitive();
         if (description == null) {
             description = Desc.copy();
             return;
@@ -256,8 +240,8 @@ public class Concept extends ClassifiableEntry {
         }
     }
 
-    public void addLeaves(final Collection<DLTree> Desc) {
-        //assert this.isPrimitive();
+    public void addLeaves(Collection<DLTree> Desc) {
+        // assert this.isPrimitive();
         if (description == null) {
             description = DLTreeFactory.createSNFAnd(Desc);
         } else {
@@ -320,11 +304,11 @@ public class Concept extends ClassifiableEntry {
         return CTTag.cttTrueCompletelyDefined;
     }
 
-    private static final EnumSet<Token> replacements = EnumSet.of(CNAME, INAME, RNAME,
-            DNAME);
+    private static EnumSet<Token> replacements = EnumSet.of(CNAME, INAME, RNAME, DNAME);
 
-    public void push(final LinkedList<DLTree> stack, final DLTree current) {
-        // push subtrees: stack size increases by one or two, or current is a leaf
+    public void push(LinkedList<DLTree> stack, DLTree current) {
+        // push subtrees: stack size increases by one or two, or current is a
+        // leaf
         for (DLTree t : current.getChildren()) {
             if (t != null) {
                 stack.push(t);
@@ -332,7 +316,7 @@ public class Concept extends ClassifiableEntry {
         }
     }
 
-    private DLTree replaceWithConstOld(final DLTree t) {
+    private DLTree replaceWithConstOld(DLTree t) {
         if (t == null) {
             return null;
         }
@@ -357,11 +341,9 @@ public class Concept extends ClassifiableEntry {
         return t;
     }
 
-    /**
-     * init told subsumers of the concept by given DESCription; @return TRUE iff
-     * concept is CD
-     */
-    public boolean initToldSubsumers(final DLTree _desc, final Set<Role> RolesProcessed) {
+    /** init told subsumers of the concept by given DESCription; @return TRUE iff
+     * concept is CD */
+    public boolean initToldSubsumers(DLTree _desc, Set<Role> RolesProcessed) {
         if (_desc == null || _desc.isTOP()) {
             return true;
         }
@@ -378,13 +360,15 @@ public class Concept extends ClassifiableEntry {
             return false;
         }
         if (token == SELF) {
-            final Role R = Role.resolveRole(desc.getChild());
+            Role R = Role.resolveRole(desc.getChild());
             searchTSbyRoleAndSupers(R, RolesProcessed);
             searchTSbyRoleAndSupers(R.inverse(), RolesProcessed);
             return false;
         }
         if (token == AND) {
-            // push all AND children on the list and traverse the list removing n-th level ANDs and pushing their children in turn; ends up with the leaves of the AND subtree
+            // push all AND children on the list and traverse the list removing
+            // n-th level ANDs and pushing their children in turn; ends up with
+            // the leaves of the AND subtree
             boolean toReturn = true;
             for (DLTree t : desc.getChildren()) {
                 toReturn &= this.initToldSubsumers(t, RolesProcessed);
@@ -394,7 +378,7 @@ public class Concept extends ClassifiableEntry {
         return false;
     }
 
-    private void searchTSbyRole(final Role R, final Set<Role> rolesProcessed) {
+    private void searchTSbyRole(Role R, Set<Role> rolesProcessed) {
         if (rolesProcessed.contains(R)) {
             return;
         }
@@ -406,7 +390,7 @@ public class Concept extends ClassifiableEntry {
         this.initToldSubsumers(Domain, rolesProcessed);
     }
 
-    public void searchTSbyRoleAndSupers(final Role r, final Set<Role> RolesProcessed) {
+    public void searchTSbyRoleAndSupers(Role r, Set<Role> RolesProcessed) {
         searchTSbyRole(r, RolesProcessed);
         List<Role> list = r.getAncestor();
         for (int i = 0; i < list.size(); i++) {
@@ -421,7 +405,7 @@ public class Concept extends ClassifiableEntry {
         }
         int max = 0;
         for (ClassifiableEntry p : toldSubsumers) {
-            //XXX should not be needed
+            // XXX should not be needed
             if (!p.getToldSubsumers().contains(this)) {
                 int cur = ((Concept) p).calculateTSDepth();
                 if (max < cur) {
@@ -436,7 +420,7 @@ public class Concept extends ClassifiableEntry {
         return pName;
     }
 
-    public void setpName(final int pName) {
+    public void setpName(int pName) {
         this.pName = pName;
     }
 
@@ -444,7 +428,7 @@ public class Concept extends ClassifiableEntry {
         return pBody;
     }
 
-    public void setpBody(final int pBody) {
+    public void setpBody(int pBody) {
         this.pBody = pBody;
     }
 
@@ -456,7 +440,7 @@ public class Concept extends ClassifiableEntry {
         return tsDepth;
     }
 
-    private void setTsDepth(final int tsDepth) {
+    private void setTsDepth(int tsDepth) {
         this.tsDepth = tsDepth;
     }
 
@@ -468,7 +452,7 @@ public class Concept extends ClassifiableEntry {
         return posFeatures;
     }
 
-    private void setClassTag(final CTTag classTag) {
+    private void setClassTag(CTTag classTag) {
         this.classTag = classTag;
     }
 
@@ -478,7 +462,7 @@ public class Concept extends ClassifiableEntry {
         return primitive;
     }
 
-    public final void setPrimitive(final boolean action) {
+    public void setPrimitive(boolean action) {
         primitive = action;
     }
 
@@ -489,7 +473,7 @@ public class Concept extends ClassifiableEntry {
         return hasSP;
     }
 
-    public void setHasSP(final boolean action) {
+    public void setHasSP(boolean action) {
         hasSP = action;
     }
 
@@ -499,7 +483,7 @@ public class Concept extends ClassifiableEntry {
         return nominal;
     }
 
-    public void setNominal(final boolean action) {
+    public void setNominal(boolean action) {
         nominal = action;
     }
 
@@ -509,23 +493,23 @@ public class Concept extends ClassifiableEntry {
         return singleton;
     }
 
-    public void setSingleton(final boolean action) {
+    public void setSingleton(boolean action) {
         singleton = action;
     }
 
     // relevance part
     /** is given concept relevant to given Labeller's state */
-    public boolean isRelevant(final long lab) {
+    public boolean isRelevant(long lab) {
         return lab == rel;
     }
 
     /** make given concept relevant to given Labeller's state */
-    public void setRelevant(final long lab) {
+    public void setRelevant(long lab) {
         rel = lab;
     }
 
     /** make given concept irrelevant to given Labeller's state */
-    public void dropRelevant(final long lab) {
+    public void dropRelevant(long lab) {
         rel = 0;
     }
 }

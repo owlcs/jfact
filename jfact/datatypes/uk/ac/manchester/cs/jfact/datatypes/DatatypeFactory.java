@@ -6,14 +6,7 @@ import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -23,7 +16,7 @@ import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 import uk.ac.manchester.cs.jfact.datatypes.Facets.whitespace;
 
-public final class DatatypeFactory {
+public class DatatypeFactory {
     static final String namespace = "http://www.w3.org/2001/XMLSchema#";
     static final Facet[] minmax = new Facet[] { maxInclusive, maxExclusive, minInclusive,
             minExclusive };
@@ -41,31 +34,31 @@ public final class DatatypeFactory {
     public static final Datatype<String> STRING = new STRING_DATATYPE();
     public static final Datatype<String> PLAINLITERAL = new PLAINLITERAL_DATATYPE();
     public static final Datatype<BigDecimal> REAL = new REAL_DATATYPE<BigDecimal>() {
-        public BigDecimal parseValue(final String s) {
+        public BigDecimal parseValue(String s) {
             return new BigDecimal(s);
         }
     };
     public static final Datatype<BigDecimal> RATIONAL = new RATIONAL_DATATYPE<BigDecimal>() {
-        public BigDecimal parseValue(final String s) {
+        public BigDecimal parseValue(String s) {
             return new BigDecimal(s);
         }
     };
     public static final Datatype<Calendar> DATETIMESTAMP = new DATETIMESTAMP_DATATYPE();
     public static final Datatype<BigDecimal> DECIMAL = new DECIMAL_DATATYPE<BigDecimal>() {
-        public BigDecimal parseValue(final String s) {
+        public BigDecimal parseValue(String s) {
             return new BigDecimal(s);
         }
     };
     public static final Datatype<BigInteger> INTEGER = new INTEGER_DATATYPE<BigInteger>() {
-        public BigInteger parseValue(final String s) {
+        public BigInteger parseValue(String s) {
             return new BigInteger(s);
         }
     };
     public static final Datatype<Double> DOUBLE = new DOUBLE_DATATYPE();
     public static final Datatype<Float> FLOAT = new FLOAT_DATATYPE();
     public static final Datatype<BigInteger> NONPOSITIVEINTEGER = new NONPOSITIVEINTEGER_DATATYPE<BigInteger>() {
-        public BigInteger parseValue(final String s) {
-            final BigInteger parse = new BigInteger(s);
+        public BigInteger parseValue(String s) {
+            BigInteger parse = new BigInteger(s);
             if (parse.compareTo(BigInteger.ZERO) > 0) {
                 throw new ArithmeticException(
                         "Non positive integer required, but found: " + s);
@@ -74,8 +67,8 @@ public final class DatatypeFactory {
         }
     };
     public static final Datatype<BigInteger> NEGATIVEINTEGER = new NEGATIVEINTEGER_DATATYPE<BigInteger>() {
-        public BigInteger parseValue(final String s) {
-            final BigInteger parse = new BigInteger(s);
+        public BigInteger parseValue(String s) {
+            BigInteger parse = new BigInteger(s);
             if (parse.compareTo(new BigInteger("-1")) > 0) {
                 throw new ArithmeticException("Negative integer required, but found: "
                         + s);
@@ -84,8 +77,8 @@ public final class DatatypeFactory {
         }
     };
     public static final Datatype<BigInteger> NONNEGATIVEINTEGER = new NONNEGATIVEINTEGER_DATATYPE<BigInteger>() {
-        public BigInteger parseValue(final String s) {
-            final BigInteger parseValue = new BigInteger(s);
+        public BigInteger parseValue(String s) {
+            BigInteger parseValue = new BigInteger(s);
             if (parseValue.compareTo(BigInteger.ZERO) < 0) {
                 throw new ArithmeticException(
                         "Non negative integer required, but found: " + s);
@@ -94,8 +87,8 @@ public final class DatatypeFactory {
         }
     };
     public static final Datatype<BigInteger> POSITIVEINTEGER = new POSITIVEINTEGER_DATATYPE<BigInteger>() {
-        public BigInteger parseValue(final String s) {
-            final BigInteger parseValue = new BigInteger(s);
+        public BigInteger parseValue(String s) {
+            BigInteger parseValue = new BigInteger(s);
             if (parseValue.compareTo(BigInteger.ZERO) <= 0) {
                 throw new ArithmeticException("Positive integer required, but found: "
                         + s);
@@ -104,27 +97,27 @@ public final class DatatypeFactory {
         }
     };
     public static final Datatype<Long> LONG = new LONG_DATATYPE<Long>() {
-        public Long parseValue(final String s) {
+        public Long parseValue(String s) {
             return Long.parseLong(s);
         }
     };
     public static final Datatype<Integer> INT = new INT_DATATYPE<Integer>() {
-        public Integer parseValue(final String s) {
+        public Integer parseValue(String s) {
             return Integer.parseInt(s);
         }
     };
     public static final Datatype<Short> SHORT = new SHORT_DATATYPE<Short>() {
-        public Short parseValue(final String s) {
+        public Short parseValue(String s) {
             return Short.parseShort(s);
         }
     };
     public static final Datatype<Byte> BYTE = new BYTE_DATATYPE<Byte>() {
-        public Byte parseValue(final String s) {
+        public Byte parseValue(String s) {
             return Byte.parseByte(s);
         }
     };
     public static final Datatype<BigInteger> UNSIGNEDLONG = new UNSIGNEDLONG_DATATYPE<BigInteger>() {
-        public BigInteger parseValue(final String s) {
+        public BigInteger parseValue(String s) {
             BigInteger b = new BigInteger(s);
             if (b.compareTo(BigInteger.ZERO) < 0) {
                 throw new ArithmeticException("Unsigned long required, but found: " + s);
@@ -133,8 +126,8 @@ public final class DatatypeFactory {
         }
     };
     public static final Datatype<Long> UNSIGNEDINT = new UNSIGNEDINT_DATATYPE<Long>() {
-        public Long parseValue(final String s) {
-            final Long parseInt = Long.parseLong(s);
+        public Long parseValue(String s) {
+            Long parseInt = Long.parseLong(s);
             if (parseInt < 0) {
                 throw new ArithmeticException("Unsigned int required, but found: " + s);
             }
@@ -142,8 +135,8 @@ public final class DatatypeFactory {
         }
     };
     public static final Datatype<Integer> UNSIGNEDSHORT = new UNSIGNEDSHORT_DATATYPE<Integer>() {
-        public Integer parseValue(final String s) {
-            final Integer parseShort = Integer.parseInt(s);
+        public Integer parseValue(String s) {
+            Integer parseShort = Integer.parseInt(s);
             if (parseShort < 0) {
                 throw new ArithmeticException("Unsigned short required, but found: " + s);
             }
@@ -151,8 +144,8 @@ public final class DatatypeFactory {
         }
     };
     public static final Datatype<Short> UNSIGNEDBYTE = new UNSIGNEDBYTE_DATATYPE<Short>() {
-        public Short parseValue(final String s) {
-            final Short parseByte = Short.parseShort(s);
+        public Short parseValue(String s) {
+            Short parseByte = Short.parseShort(s);
             if (parseByte < 0) {
                 throw new ArithmeticException("Unsigned short required, but found: " + s);
             }
@@ -209,161 +202,164 @@ public final class DatatypeFactory {
         return Collections.unmodifiableList(toReturn);
     }
 
-    /**
-     * @return the predefined datatypes, in an enumeration fashion - the list is
-     *         unmodifiable.
-     */
+    /** @return the predefined datatypes, in an enumeration fashion - the list is
+     *         unmodifiable. */
     public static List<Datatype<?>> getValues() {
         return values;
     }
 
-    /**
-     * @return the datatypes defined for this instance of DatatypeFactory; the
+    /** @return the datatypes defined for this instance of DatatypeFactory; the
      *         returned list is modifiable but not backed by the
-     *         DatatypeFactory, so changes will not be reflected back.
-     */
+     *         DatatypeFactory, so changes will not be reflected back. */
     public Collection<Datatype<?>> getKnownDatatypes() {
-        return new ArrayList<Datatype<?>>(this.knownDatatypes.values());
+        return new ArrayList<Datatype<?>>(knownDatatypes.values());
     }
 
     private final Map<String, Datatype<?>> knownDatatypes = new HashMap<String, Datatype<?>>();
     private static int uri_index = 0;
 
-    static final int getIndex() {
+    static int getIndex() {
         return uri_index++;
     }
 
     private DatatypeFactory() {
         for (Datatype<?> d : values) {
-            this.knownDatatypes.put(d.getDatatypeURI(), d);
+            knownDatatypes.put(d.getDatatypeURI(), d);
         }
         // XXX handle dates as datetimes
-        this.knownDatatypes.put("http://www.w3.org/2001/XMLSchema#date", DATETIME);
+        knownDatatypes.put("http://www.w3.org/2001/XMLSchema#date", DATETIME);
     }
 
-    public Datatype<?> getKnownDatatype(final String key) {
-        return this.knownDatatypes.get(key);
+    public Datatype<?> getKnownDatatype(String key) {
+        return knownDatatypes.get(key);
     }
 
-    public boolean isKnownDatatype(final String key) {
-        return this.knownDatatypes.containsKey(key);
+    public boolean isKnownDatatype(String key) {
+        return knownDatatypes.containsKey(key);
     }
 
     public static DatatypeFactory getInstance() {
         return new DatatypeFactory();
     }
 
-    //	public <O extends Comparable<O>> Datatype<O> defineNewDatatype(
-    //			final Datatype<O> base, final String uri, final Collection<Facet> facets,
-    //			final Collection<Datatype<?>> ancestors, final Map<Facet, Object> knownFacets) {
-    //		return defineNewDatatype(base, uri, facets, ancestors, knownFacets,
-    //				base.getOrdered(), base.getNumeric(), base.getCardinality(),
-    //				base.getBounded());
-    //	}
+    // public <O extends Comparable<O>> Datatype<O> defineNewDatatype(
+    // Datatype<O> base, String uri, Collection<Facet> facets,
+    // Collection<Datatype<?>> ancestors, Map<Facet, Object> knownFacets) {
+    // return defineNewDatatype(base, uri, facets, ancestors, knownFacets,
+    // base.getOrdered(), base.getNumeric(), base.getCardinality(),
+    // base.getBounded());
+    // }
     //
-    //	public <O extends Comparable<O>> Datatype<O> defineNewDatatype(
-    //			final Datatype<O> base, final String uri) {
-    //		return defineNewDatatype(base, uri, null, null, null, base.getOrdered(),
-    //				base.getNumeric(), base.getCardinality(), base.getBounded());
-    //	}
+    // public <O extends Comparable<O>> Datatype<O> defineNewDatatype(
+    // Datatype<O> base, String uri) {
+    // return defineNewDatatype(base, uri, null, null, null, base.getOrdered(),
+    // base.getNumeric(), base.getCardinality(), base.getBounded());
+    // }
     //
-    //	public Datatype<String> defineNewDatatype(final String uri) {
-    //		return defineNewDatatype(LITERAL, uri, null, null, null, LITERAL.getOrdered(),
-    //				LITERAL.getNumeric(), LITERAL.getCardinality(), LITERAL.getBounded());
-    //	}
+    // public Datatype<String> defineNewDatatype( String uri) {
+    // return defineNewDatatype(LITERAL, uri, null, null, null,
+    // LITERAL.getOrdered(),
+    // LITERAL.getNumeric(), LITERAL.getCardinality(), LITERAL.getBounded());
+    // }
     //
-    //	public <R extends Comparable<R>> DatatypeExpression<R> defineNewDatatypeIntersection(
-    //			Collection<Datatype<R>> types) {
-    //		return new DatatypeIntersection<R>(getIndex(), types);
-    //	}
+    // public <R extends Comparable<R>> DatatypeExpression<R>
+    // defineNewDatatypeIntersection(
+    // Collection<Datatype<R>> types) {
+    // return new DatatypeIntersection<R>(getIndex(), types);
+    // }
     //
-    //	public <R extends Comparable<R>> DatatypeExpression<R> defineNewDatatypeUnion(
-    //			Collection<Datatype<R>> types) {
-    //		return new DatatypeUnion<R>(getIndex(), types);
-    //	}
+    // public <R extends Comparable<R>> DatatypeExpression<R>
+    // defineNewDatatypeUnion(
+    // Collection<Datatype<R>> types) {
+    // return new DatatypeUnion<R>(getIndex(), types);
+    // }
     //
-    //	public <O extends Comparable<O>> Datatype<O> defineNewDatatype(
-    //			final Datatype<O> base, final String uri, final Collection<Facet> facets,
-    //			final Collection<Datatype<?>> ancestors,
-    //			final Map<Facet, Object> knownFacets, final ordered ord,
-    //			final boolean numeric, final cardinality card, final boolean bound) {
-    //		if (knownDatatypes.containsKey(uri)) { throw new IllegalArgumentException(
-    //				"datatype definitions cannot be overridden: " + uri
-    //						+ " is already in the known types"); }
-    //		final Set<Facet> f = new HashSet<Facet>(base.getFacets());
-    //		if (facets != null) {
-    //			f.addAll(facets);
-    //		}
-    //		final Set<Datatype<?>> a = new HashSet<Datatype<?>>(base.getAncestors());
-    //		if (ancestors != null) {
-    //			a.addAll(ancestors);
-    //		}
-    //		a.add(base);
-    //		final Map<Facet, Object> known = new HashMap<Facet, Object>(
-    //				base.getKnownFacetValues());
-    //		if (knownFacets != null) {
-    //			known.putAll(knownFacets);
-    //		}
-    //		Datatype<O> toReturn = new ABSTRACT_DATATYPE<O>(uri, f) {
-    //			@Override
-    //			public ordered getOrdered() {
-    //				return ord;
-    //			}
+    // public <O extends Comparable<O>> Datatype<O> defineNewDatatype(
+    // Datatype<O> base, String uri, Collection<Facet> facets,
+    // Collection<Datatype<?>> ancestors,
+    // Map<Facet, Object> knownFacets, ordered ord,
+    // boolean numeric, cardinality card, boolean bound) {
+    // if (knownDatatypes.containsKey(uri)) { throw new
+    // IllegalArgumentException(
+    // "datatype definitions cannot be overridden: " + uri
+    // + " is already in the known types"); }
+    // Set<Facet> f = new HashSet<Facet>(base.getFacets());
+    // if (facets != null) {
+    // f.addAll(facets);
+    // }
+    // Set<Datatype<?>> a = new HashSet<Datatype<?>>(base.getAncestors());
+    // if (ancestors != null) {
+    // a.addAll(ancestors);
+    // }
+    // a.add(base);
+    // Map<Facet, Object> known = new HashMap<Facet, Object>(
+    // base.getKnownFacetValues());
+    // if (knownFacets != null) {
+    // known.putAll(knownFacets);
+    // }
+    // Datatype<O> toReturn = new ABSTRACT_DATATYPE<O>(uri, f) {
+    // @Override
+    // public ordered getOrdered() {
+    // return ord;
+    // }
     //
-    //			@Override
-    //			public boolean getNumeric() {
-    //				return numeric;
-    //			}
+    // @Override
+    // public boolean getNumeric() {
+    // return numeric;
+    // }
     //
-    //			@Override
-    //			public cardinality getCardinality() {
-    //				return card;
-    //			}
+    // @Override
+    // public cardinality getCardinality() {
+    // return card;
+    // }
     //
-    //			@Override
-    //			public boolean getBounded() {
-    //				return bound;
-    //			}
+    // @Override
+    // public boolean getBounded() {
+    // return bound;
+    // }
     //
-    //			@Override
-    //			public boolean isInValueSpace(O l) {
-    //				return base.isInValueSpace(l);
-    //			}
+    // @Override
+    // public boolean isInValueSpace(O l) {
+    // return base.isInValueSpace(l);
+    // }
     //
-    //			@Override
-    //			public Collection<Literal<O>> listValues() {
-    //				return base.listValues();
-    //			}
+    // @Override
+    // public Collection<Literal<O>> listValues() {
+    // return base.listValues();
+    // }
     //
-    //			public O parseValue(String s) {
-    //				return base.parseValue(s);
-    //			}
+    // public O parseValue(String s) {
+    // return base.parseValue(s);
+    // }
     //
-    //			@Override
-    //			public Literal<O> buildLiteral(String s) {
-    //				return base.buildLiteral(s);
-    //			}
-    //		};
-    //		knownDatatypes.put(uri, toReturn);
-    //		return toReturn;
-    //	}
-    public static final boolean nonEmptyInterval(final BigDecimal min,
-            final BigDecimal max, final int excluded) {
+    // @Override
+    // public Literal<O> buildLiteral(String s) {
+    // return base.buildLiteral(s);
+    // }
+    // };
+    // knownDatatypes.put(uri, toReturn);
+    // return toReturn;
+    // }
+    public static boolean nonEmptyInterval(BigDecimal min, BigDecimal max, int excluded) {
         if (min == null) {
             // unbound lower limit - value space cannot be empty
-            // even if the actual type used to represent the literal is bounded, the limit should explicitly be there.
+            // even if the actual type used to represent the literal is bounded,
+            // the limit should explicitly be there.
             return false;
         }
         if (max == null) {
             // unbound upper limit - value space cannot be empty
-            // even if the actual type used to represent the literal is bounded, the limit should explicitly be there.
+            // even if the actual type used to represent the literal is bounded,
+            // the limit should explicitly be there.
             return false;
         }
         // min and max are both not null
         int comparison = min.compareTo(max);
-        // comparison < 0: min is strictly smaller than max. Value space can still be empty:
+        // comparison < 0: min is strictly smaller than max. Value space can
+        // still be empty:
         // (1,2)^^integer has no values
-        // if excluded is 0, comparison <=0 is enough to return true; there would still be one element: [1,1]
+        // if excluded is 0, comparison <=0 is enough to return true; there
+        // would still be one element: [1,1]
         if (excluded == 0) {
             return comparison <= 0;
         }
@@ -371,31 +367,33 @@ public final class DatatypeFactory {
         if (excluded == 1) {
             return comparison < 0;
         }
-        // if excluded is 2, then min + 1 unit must be strictly smaller than max; this becomes type dependent since it depends on the representation
+        // if excluded is 2, then min + 1 unit must be strictly smaller than
+        // max; this becomes type dependent since it depends on the
+        // representation
         if (excluded == 2) {
             return min.add(min.ulp()).compareTo(max) < 0;
         }
         return false;
     }
 
-    public static final <R extends Comparable<R>> DatatypeExpression<R> getDatatypeExpression(
-            final Datatype<R> base) {
+    public static <R extends Comparable<R>> DatatypeExpression<R> getDatatypeExpression(
+            Datatype<R> base) {
         return new DatatypeExpressionImpl<R>(base);
     }
 
-    public static final <R extends Comparable<R>> DatatypeExpression<R> getNumericDatatypeExpression(
-            final NumericDatatype<R> base) {
+    public static <R extends Comparable<R>> DatatypeExpression<R>
+            getNumericDatatypeExpression(NumericDatatype<R> base) {
         return new DatatypeNumericExpressionImpl<R>(base);
     }
 
-    public static final <R extends Comparable<R>> DatatypeExpression<R> getOrderedDatatypeExpression(
-            final Datatype<R> base) {
+    public static <R extends Comparable<R>> DatatypeExpression<R>
+            getOrderedDatatypeExpression(Datatype<R> base) {
         return new DatatypeOrderedExpressionImpl<R>(base);
     }
 
     static abstract class ABSTRACT_NUMERIC_DATATYPE<R extends Comparable<R>> extends
             ABSTRACT_DATATYPE<R> implements NumericDatatype<R> {
-        public ABSTRACT_NUMERIC_DATATYPE(final String uri, final Set<Facet> f) {
+        public ABSTRACT_NUMERIC_DATATYPE(String uri, Set<Facet> f) {
             super(uri, f);
         }
 
@@ -430,7 +428,7 @@ public final class DatatypeFactory {
         }
 
         @Override
-        public boolean isInValueSpace(final R l) {
+        public boolean isInValueSpace(R l) {
             if (this.hasMinExclusive()) {
                 if (this.getMin().compareTo((BigDecimal) minExclusive.parseNumber(l)) <= 0) {
                     return false;
@@ -455,18 +453,19 @@ public final class DatatypeFactory {
         }
 
         @Override
-        public boolean isCompatible(final Datatype<?> type) {
-            //			if (!super.isCompatible(type)) {
-            //				return false;
-            //			}
+        public boolean isCompatible(Datatype<?> type) {
+            // if (!super.isCompatible(type)) {
+            // return false;
+            // }
             if (type.equals(LITERAL)) {
                 return true;
             }
-            //			if(isSubType(type)||type.isSubType(this)) {
-            //				return true;
-            //			}
+            // if(isSubType(type)||type.isSubType(this)) {
+            // return true;
+            // }
             if (type.getNumeric()) {
-                // specific cases: float and double have overlapping value spaces with all numerics but are not compatible with any
+                // specific cases: float and double have overlapping value
+                // spaces with all numerics but are not compatible with any
                 if (type.equals(FLOAT) || type.equals(DOUBLE)) {
                     return super.isCompatible(type);
                 }
@@ -477,9 +476,12 @@ public final class DatatypeFactory {
                     wrapper = this.wrap(type);
                 }
                 // then both types are numeric
-                // if both have no max or both have no min -> there is an overlap
-                // if one has no max, then min must be smaller than max of the other
-                // if one has no min, the max must be larger than min of the other
+                // if both have no max or both have no min -> there is an
+                // overlap
+                // if one has no max, then min must be smaller than max of the
+                // other
+                // if one has no min, the max must be larger than min of the
+                // other
                 // if one has neither max nor min, they are compatible
                 if (!this.hasMax() && !this.hasMin()) {
                     return true;
@@ -506,33 +508,34 @@ public final class DatatypeFactory {
                     return this.overlapping(this, wrapper);
                 }
                 // compare their range facets:
-                //disjoint if:
+                // disjoint if:
                 // exclusives:
-                // one minInclusive/exclusive is strictly larger than the other maxinclusive/exclusive
+                // one minInclusive/exclusive is strictly larger than the other
+                // maxinclusive/exclusive
                 return this.overlapping(this, wrapper) || this.overlapping(wrapper, this);
             } else {
                 return false;
             }
         }
 
-        <O extends Comparable<O>> NumericDatatype<O> wrap(final Datatype<O> d) {
+        <O extends Comparable<O>> NumericDatatype<O> wrap(Datatype<O> d) {
             return new NumericDatatypeWrapper<O>(d);
         }
 
         public boolean hasMinExclusive() {
-            return this.knownFacetValues.containsKey(minExclusive);
+            return knownFacetValues.containsKey(minExclusive);
         }
 
         public boolean hasMinInclusive() {
-            return this.knownFacetValues.containsKey(minInclusive);
+            return knownFacetValues.containsKey(minInclusive);
         }
 
         public boolean hasMaxExclusive() {
-            return this.knownFacetValues.containsKey(maxExclusive);
+            return knownFacetValues.containsKey(maxExclusive);
         }
 
         public boolean hasMaxInclusive() {
-            return this.knownFacetValues.containsKey(maxInclusive);
+            return knownFacetValues.containsKey(maxInclusive);
         }
 
         public boolean hasMin() {
@@ -545,11 +548,11 @@ public final class DatatypeFactory {
 
         public BigDecimal getMin() {
             if (this.hasMinExclusive()) {
-                return (BigDecimal) minExclusive.parseNumber(this.knownFacetValues
+                return (BigDecimal) minExclusive.parseNumber(knownFacetValues
                         .get(minExclusive));
             }
             if (this.hasMinInclusive()) {
-                return (BigDecimal) minInclusive.parseNumber(this.knownFacetValues
+                return (BigDecimal) minInclusive.parseNumber(knownFacetValues
                         .get(minInclusive));
             }
             return null;
@@ -557,11 +560,11 @@ public final class DatatypeFactory {
 
         public BigDecimal getMax() {
             if (this.hasMaxExclusive()) {
-                return (BigDecimal) maxExclusive.parseNumber(this.knownFacetValues
+                return (BigDecimal) maxExclusive.parseNumber(knownFacetValues
                         .get(maxExclusive));
             }
             if (this.hasMaxInclusive()) {
-                return (BigDecimal) maxInclusive.parseNumber(this.knownFacetValues
+                return (BigDecimal) maxInclusive.parseNumber(knownFacetValues
                         .get(maxInclusive));
             }
             return null;
@@ -571,17 +574,17 @@ public final class DatatypeFactory {
     static class ANYURI_DATATYPE extends ABSTRACT_DATATYPE<String> {
         ANYURI_DATATYPE() {
             super(namespace + "anyURI", StringFacets);
-            this.ancestors = Utils.generateAncestors(LITERAL);
-            this.knownFacetValues.putAll(LITERAL.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
+            ancestors = Utils.generateAncestors(LITERAL);
+            knownFacetValues.putAll(LITERAL.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
         }
 
-        public String parseValue(final String s) {
+        public String parseValue(String s) {
             return whitespace.collapse.normalize(s);
         }
 
         @Override
-        public boolean isInValueSpace(final String l) {
+        public boolean isInValueSpace(String l) {
             try {
                 URI.create(l);
                 return true;
@@ -594,20 +597,20 @@ public final class DatatypeFactory {
     static class BASE64BINARY_DATATYPE extends ABSTRACT_DATATYPE<String> {
         BASE64BINARY_DATATYPE() {
             super(namespace + "base64Binary", StringFacets);
-            this.ancestors = Utils.generateAncestors(LITERAL);
-            this.knownFacetValues.putAll(LITERAL.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
+            ancestors = Utils.generateAncestors(LITERAL);
+            knownFacetValues.putAll(LITERAL.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
         }
 
-        public String parseValue(final String s) {
+        public String parseValue(String s) {
             return whitespace.collapse.normalize(s);
         }
 
         @Override
-        public boolean isInValueSpace(final String s) {
+        public boolean isInValueSpace(String s) {
             // all characters are letters, numbers, or +/=
             for (int i = 0; i < s.length(); i++) {
-                final char c = s.charAt(i);
+                char c = s.charAt(i);
                 if (!Character.isLetter(c) && !Character.isDigit(c)
                         && "+/=".indexOf(c) == -1) {
                     return false;
@@ -620,9 +623,9 @@ public final class DatatypeFactory {
     static class BOOLEAN_DATATYPE extends ABSTRACT_DATATYPE<Boolean> {
         BOOLEAN_DATATYPE() {
             super(namespace + "boolean", Utils.getFacets(pattern, whiteSpace));
-            this.ancestors = Utils.generateAncestors(LITERAL);
-            this.knownFacetValues.putAll(LITERAL.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
+            ancestors = Utils.generateAncestors(LITERAL);
+            knownFacetValues.putAll(LITERAL.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
         }
 
         @Override
@@ -632,15 +635,16 @@ public final class DatatypeFactory {
 
         @Override
         public Collection<Literal<Boolean>> listValues() {
-            // if all datatypes are compatible, the intersection is the two booleans minu any restriction
+            // if all datatypes are compatible, the intersection is the two
+            // booleans minu any restriction
             List<Literal<Boolean>> toReturn = new ArrayList<Literal<Boolean>>(2);
-            toReturn.add(this.buildLiteral(Boolean.toString(true)));
-            toReturn.add(this.buildLiteral(Boolean.toString(false)));
+            toReturn.add(buildLiteral(Boolean.toString(true)));
+            toReturn.add(buildLiteral(Boolean.toString(false)));
             return toReturn;
         }
 
-        public Boolean parseValue(final String s) {
-            whitespace facet = (whitespace) whiteSpace.parse(this.knownFacetValues
+        public Boolean parseValue(String s) {
+            whitespace facet = (whitespace) whiteSpace.parse(knownFacetValues
                     .get(whiteSpace));
             return Boolean.parseBoolean(facet.normalize(s));
         }
@@ -652,11 +656,11 @@ public final class DatatypeFactory {
             this(namespace + "dateTime");
         }
 
-        DATETIME_DATATYPE(final String u) {
+        DATETIME_DATATYPE(String u) {
             super(u, FACETS4);
-            this.ancestors = Utils.generateAncestors(LITERAL);
-            this.knownFacetValues.putAll(LITERAL.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
+            ancestors = Utils.generateAncestors(LITERAL);
+            knownFacetValues.putAll(LITERAL.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
         }
 
         @Override
@@ -674,7 +678,7 @@ public final class DatatypeFactory {
             return this;
         }
 
-        public Calendar parseValue(final String s) {
+        public Calendar parseValue(String s) {
             XMLGregorianCalendar cal;
             try {
                 cal = javax.xml.datatype.DatatypeFactory.newInstance()
@@ -686,24 +690,24 @@ public final class DatatypeFactory {
         }
 
         @Override
-        public boolean isInValueSpace(final Calendar l) {
-            if (this.hasMinExclusive()) {
-                if (this.getMin().compareTo(l) <= 0) {
+        public boolean isInValueSpace(Calendar l) {
+            if (hasMinExclusive()) {
+                if (getMin().compareTo(l) <= 0) {
                     return false;
                 }
             }
-            if (this.hasMinInclusive()) {
-                if (this.getMin().compareTo(l) < 0) {
+            if (hasMinInclusive()) {
+                if (getMin().compareTo(l) < 0) {
                     return false;
                 }
             }
-            if (this.hasMaxExclusive()) {
-                if (this.getMax().compareTo(l) >= 0) {
+            if (hasMaxExclusive()) {
+                if (getMax().compareTo(l) >= 0) {
                     return false;
                 }
             }
-            if (this.hasMaxInclusive()) {
-                if (this.getMax().compareTo(l) > 0) {
+            if (hasMaxInclusive()) {
+                if (getMax().compareTo(l) > 0) {
                     return false;
                 }
             }
@@ -711,7 +715,7 @@ public final class DatatypeFactory {
         }
 
         @Override
-        public boolean isCompatible(final Datatype<?> type) {
+        public boolean isCompatible(Datatype<?> type) {
             if (super.isCompatible(type)) {
                 return true;
             }
@@ -719,26 +723,29 @@ public final class DatatypeFactory {
                 // then its representation must be Calendars
                 OrderedDatatype<Calendar> wrapper = (OrderedDatatype<Calendar>) type;
                 // then both types are numeric
-                // if both have no max or both have no min -> there is an overlap
-                // if one has no max, then min must be smaller than max of the other
-                // if one has no min, the max must be larger than min of the other
+                // if both have no max or both have no min -> there is an
+                // overlap
+                // if one has no max, then min must be smaller than max of the
+                // other
+                // if one has no min, the max must be larger than min of the
+                // other
                 // if one has neither max nor min, they are compatible
-                if (!this.hasMax() && !this.hasMin()) {
+                if (!hasMax() && !hasMin()) {
                     return true;
                 }
                 if (!wrapper.hasMax() && !wrapper.hasMin()) {
                     return true;
                 }
-                if (!this.hasMax() && !wrapper.hasMax()) {
+                if (!hasMax() && !wrapper.hasMax()) {
                     return true;
                 }
-                if (!this.hasMin() && !wrapper.hasMin()) {
+                if (!hasMin() && !wrapper.hasMin()) {
                     return true;
                 }
-                if (!this.hasMin()) {
+                if (!hasMin()) {
                     return this.overlapping(this, wrapper);
                 }
-                if (!this.hasMax()) {
+                if (!hasMax()) {
                     return this.overlapping(wrapper, this);
                 }
                 if (!wrapper.hasMin()) {
@@ -748,9 +755,10 @@ public final class DatatypeFactory {
                     return this.overlapping(this, wrapper);
                 }
                 // compare their range facets:
-                //disjoint if:
+                // disjoint if:
                 // exclusives:
-                // one minInclusive/exclusive is strictly larger than the other maxinclusive/exclusive
+                // one minInclusive/exclusive is strictly larger than the other
+                // maxinclusive/exclusive
                 return this.overlapping(this, wrapper) || this.overlapping(wrapper, this);
             } else {
                 return false;
@@ -758,45 +766,45 @@ public final class DatatypeFactory {
         }
 
         public boolean hasMinExclusive() {
-            return this.knownFacetValues.containsKey(minExclusive);
+            return knownFacetValues.containsKey(minExclusive);
         }
 
         public boolean hasMinInclusive() {
-            return this.knownFacetValues.containsKey(minInclusive);
+            return knownFacetValues.containsKey(minInclusive);
         }
 
         public boolean hasMaxExclusive() {
-            return this.knownFacetValues.containsKey(maxExclusive);
+            return knownFacetValues.containsKey(maxExclusive);
         }
 
         public boolean hasMaxInclusive() {
-            return this.knownFacetValues.containsKey(maxInclusive);
+            return knownFacetValues.containsKey(maxInclusive);
         }
 
         public boolean hasMin() {
-            return this.hasMinInclusive() || this.hasMinExclusive();
+            return hasMinInclusive() || hasMinExclusive();
         }
 
         public boolean hasMax() {
-            return this.hasMaxInclusive() || this.hasMaxExclusive();
+            return hasMaxInclusive() || hasMaxExclusive();
         }
 
         public Calendar getMin() {
-            if (this.hasMinExclusive()) {
-                return (Calendar) this.getFacetValue(minExclusive);
+            if (hasMinExclusive()) {
+                return (Calendar) getFacetValue(minExclusive);
             }
-            if (this.hasMinInclusive()) {
-                return (Calendar) this.getFacetValue(minInclusive);
+            if (hasMinInclusive()) {
+                return (Calendar) getFacetValue(minInclusive);
             }
             return null;
         }
 
         public Calendar getMax() {
-            if (this.hasMaxExclusive()) {
-                return (Calendar) this.getFacetValue(maxExclusive);
+            if (hasMaxExclusive()) {
+                return (Calendar) getFacetValue(maxExclusive);
             }
-            if (this.hasMaxInclusive()) {
-                return (Calendar) this.getFacetValue(maxInclusive);
+            if (hasMaxInclusive()) {
+                return (Calendar) getFacetValue(maxInclusive);
             }
             return null;
         }
@@ -805,20 +813,20 @@ public final class DatatypeFactory {
     static class HEXBINARY_DATATYPE extends ABSTRACT_DATATYPE<String> {
         HEXBINARY_DATATYPE() {
             super(namespace + "hexBinary", StringFacets);
-            this.ancestors = Utils.generateAncestors(LITERAL);
-            this.knownFacetValues.putAll(LITERAL.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
+            ancestors = Utils.generateAncestors(LITERAL);
+            knownFacetValues.putAll(LITERAL.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
         }
 
-        public String parseValue(final String s) {
+        public String parseValue(String s) {
             return whitespace.collapse.normalize(s);
         }
 
         @Override
-        public boolean isInValueSpace(final String s) {
+        public boolean isInValueSpace(String s) {
             // all characters are numbers, or ABCDEF
             for (int i = 0; i < s.length(); i++) {
-                final char c = s.charAt(i);
+                char c = s.charAt(i);
                 if (!Character.isDigit(c) && "ABCDEF".indexOf(c) == -1) {
                     return false;
                 }
@@ -831,10 +839,10 @@ public final class DatatypeFactory {
         LITERAL_DATATYPE() {
             super("http://www.w3.org/2000/01/rdf-schema#Literal", Collections
                     .<Facet> emptySet());
-            this.ancestors = Collections.emptySet();
+            ancestors = Collections.emptySet();
         }
 
-        public String parseValue(final String s) {
+        public String parseValue(String s) {
             return s;
         }
     }
@@ -843,11 +851,11 @@ public final class DatatypeFactory {
         PLAINLITERAL_DATATYPE() {
             super("http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral", Utils
                     .getFacets(length, minLength, maxLength, pattern, enumeration));
-            this.ancestors = Utils.generateAncestors(LITERAL);
-            this.knownFacetValues.putAll(LITERAL.getKnownFacetValues());
+            ancestors = Utils.generateAncestors(LITERAL);
+            knownFacetValues.putAll(LITERAL.getKnownFacetValues());
         }
 
-        public String parseValue(final String s) {
+        public String parseValue(String s) {
             return s;
         }
     }
@@ -858,41 +866,41 @@ public final class DatatypeFactory {
             this("http://www.w3.org/2002/07/owl#real");
         }
 
-        REAL_DATATYPE(final String uri) {
+        REAL_DATATYPE(String uri) {
             this(uri, Utils.getFacets(minmax));
         }
 
-        REAL_DATATYPE(final String uri, final Set<Facet> f) {
+        REAL_DATATYPE(String uri, Set<Facet> f) {
             super(uri, f);
-            this.ancestors = Utils.generateAncestors(LITERAL);
-            this.knownFacetValues.putAll(LITERAL.getKnownFacetValues());
+            ancestors = Utils.generateAncestors(LITERAL);
+            knownFacetValues.putAll(LITERAL.getKnownFacetValues());
         }
 
         @Override
-        public boolean isInValueSpace(final R l) {
-            if (this.knownFacetValues.containsKey(minExclusive)) {
-                BigDecimal v = this.getNumericFacetValue(minExclusive);
+        public boolean isInValueSpace(R l) {
+            if (knownFacetValues.containsKey(minExclusive)) {
+                BigDecimal v = getNumericFacetValue(minExclusive);
                 BigDecimal input = (BigDecimal) minExclusive.parseNumber(l);
                 if (input.compareTo(v) <= 0) {
                     return false;
                 }
             }
-            if (this.knownFacetValues.containsKey(minInclusive)) {
-                BigDecimal v = this.getNumericFacetValue(minInclusive);
+            if (knownFacetValues.containsKey(minInclusive)) {
+                BigDecimal v = getNumericFacetValue(minInclusive);
                 BigDecimal input = (BigDecimal) minInclusive.parseNumber(l);
                 if (input.compareTo(v) < 0) {
                     return false;
                 }
             }
-            if (this.knownFacetValues.containsKey(maxInclusive)) {
-                BigDecimal v = this.getNumericFacetValue(maxInclusive);
+            if (knownFacetValues.containsKey(maxInclusive)) {
+                BigDecimal v = getNumericFacetValue(maxInclusive);
                 BigDecimal input = (BigDecimal) maxInclusive.parseNumber(l);
                 if (input.compareTo(v) > 0) {
                     return false;
                 }
             }
-            if (this.knownFacetValues.containsKey(maxExclusive)) {
-                BigDecimal v = this.getNumericFacetValue(maxExclusive);
+            if (knownFacetValues.containsKey(maxExclusive)) {
+                BigDecimal v = getNumericFacetValue(maxExclusive);
                 BigDecimal input = (BigDecimal) maxExclusive.parseNumber(l);
                 if (input.compareTo(v) >= 0) {
                     return false;
@@ -907,14 +915,14 @@ public final class DatatypeFactory {
             this(namespace + "string");
         }
 
-        STRING_DATATYPE(final String uri) {
+        STRING_DATATYPE(String uri) {
             super(uri, StringFacets);
-            this.ancestors = Utils.generateAncestors(LITERAL);
-            this.knownFacetValues.putAll(LITERAL.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.preserve);
+            ancestors = Utils.generateAncestors(LITERAL);
+            knownFacetValues.putAll(LITERAL.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.preserve);
         }
 
-        public String parseValue(final String s) {
+        public String parseValue(String s) {
             return s;
         }
     }
@@ -922,8 +930,8 @@ public final class DatatypeFactory {
     static class DATETIMESTAMP_DATATYPE extends DATETIME_DATATYPE {
         DATETIMESTAMP_DATATYPE() {
             super(namespace + "dateTimeStamp");
-            this.ancestors = Utils.generateAncestors(DATETIME);
-            //TODO check what's required for this
+            ancestors = Utils.generateAncestors(DATETIME);
+            // TODO check what's required for this
         }
     }
 
@@ -933,11 +941,11 @@ public final class DatatypeFactory {
             this(namespace + "decimal");
         }
 
-        DECIMAL_DATATYPE(final String uri) {
+        DECIMAL_DATATYPE(String uri) {
             super(uri, Utils.getFacets(digs, pew, minmax));
-            this.ancestors = Utils.generateAncestors(RATIONAL);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
+            ancestors = Utils.generateAncestors(RATIONAL);
+            knownFacetValues.putAll(super.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
         }
 
         @Override
@@ -949,9 +957,9 @@ public final class DatatypeFactory {
     static class DOUBLE_DATATYPE extends ABSTRACT_NUMERIC_DATATYPE<Double> {
         DOUBLE_DATATYPE() {
             super(namespace + "double", Utils.getFacets(pew, minmax));
-            this.ancestors = Utils.generateAncestors(LITERAL);
-            this.knownFacetValues.putAll(LITERAL.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
+            ancestors = Utils.generateAncestors(LITERAL);
+            knownFacetValues.putAll(LITERAL.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
         }
 
         @Override
@@ -969,7 +977,7 @@ public final class DatatypeFactory {
             return true;
         }
 
-        public Double parseValue(final String s) {
+        public Double parseValue(String s) {
             return Double.parseDouble(s);
         }
 
@@ -980,16 +988,16 @@ public final class DatatypeFactory {
                 type = type.asExpression().getHostType();
             }
             return type.equals(this) || type.equals(DatatypeFactory.LITERAL)
-                    || type.isSubType(this) || this.isSubType(type);
+                    || type.isSubType(this) || isSubType(type);
         }
     }
 
     static class FLOAT_DATATYPE extends ABSTRACT_NUMERIC_DATATYPE<Float> {
         FLOAT_DATATYPE() {
             super(namespace + "float", FACETS4);
-            this.ancestors = Utils.generateAncestors(LITERAL);
-            this.knownFacetValues.putAll(LITERAL.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
+            ancestors = Utils.generateAncestors(LITERAL);
+            knownFacetValues.putAll(LITERAL.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
         }
 
         @Override
@@ -1007,8 +1015,8 @@ public final class DatatypeFactory {
             return true;
         }
 
-        public Float parseValue(final String s) {
-            final String trim = s.trim();
+        public Float parseValue(String s) {
+            String trim = s.trim();
             if (trim.equals("-INF")) {
                 return Float.NEGATIVE_INFINITY;
             }
@@ -1025,7 +1033,7 @@ public final class DatatypeFactory {
                 type = type.asExpression().getHostType();
             }
             return type.equals(this) || type.equals(DatatypeFactory.LITERAL)
-                    || type.isSubType(this) || this.isSubType(type);
+                    || type.isSubType(this) || isSubType(type);
         }
     }
 
@@ -1033,12 +1041,12 @@ public final class DatatypeFactory {
             SHORT_DATATYPE<R> {
         BYTE_DATATYPE() {
             super(namespace + "byte");
-            this.ancestors = Utils.generateAncestors(SHORT);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
-            this.knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
-            this.knownFacetValues.put(minInclusive, Byte.MIN_VALUE);
-            this.knownFacetValues.put(maxInclusive, Byte.MAX_VALUE);
+            ancestors = Utils.generateAncestors(SHORT);
+            knownFacetValues.putAll(super.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
+            knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
+            knownFacetValues.put(minInclusive, Byte.MIN_VALUE);
+            knownFacetValues.put(maxInclusive, Byte.MAX_VALUE);
         }
     }
 
@@ -1047,14 +1055,14 @@ public final class DatatypeFactory {
             this(namespace + "int");
         }
 
-        INT_DATATYPE(final String uri) {
+        INT_DATATYPE(String uri) {
             super(uri);
-            this.ancestors = Utils.generateAncestors(LONG);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
-            this.knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
-            this.knownFacetValues.put(minInclusive, Integer.MIN_VALUE);
-            this.knownFacetValues.put(maxInclusive, Integer.MAX_VALUE);
+            ancestors = Utils.generateAncestors(LONG);
+            knownFacetValues.putAll(super.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
+            knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
+            knownFacetValues.put(minInclusive, Integer.MIN_VALUE);
+            knownFacetValues.put(maxInclusive, Integer.MAX_VALUE);
         }
     }
 
@@ -1064,13 +1072,13 @@ public final class DatatypeFactory {
             this(namespace + "integer");
         }
 
-        INTEGER_DATATYPE(final String uri) {
+        INTEGER_DATATYPE(String uri) {
             super(uri);
-            this.ancestors = Utils.generateAncestors(DECIMAL);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
-            this.knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
-            this.knownFacetValues.put(fractionDigits, 0);
+            ancestors = Utils.generateAncestors(DECIMAL);
+            knownFacetValues.putAll(super.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
+            knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
+            knownFacetValues.put(fractionDigits, 0);
         }
     }
 
@@ -1080,14 +1088,14 @@ public final class DatatypeFactory {
             this(namespace + "long");
         }
 
-        LONG_DATATYPE(final String uri) {
+        LONG_DATATYPE(String uri) {
             super(uri);
-            this.ancestors = Utils.generateAncestors(INTEGER);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
-            this.knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
-            this.knownFacetValues.put(minInclusive, Long.MIN_VALUE);
-            this.knownFacetValues.put(maxInclusive, Long.MAX_VALUE);
+            ancestors = Utils.generateAncestors(INTEGER);
+            knownFacetValues.putAll(super.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
+            knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
+            knownFacetValues.put(minInclusive, Long.MIN_VALUE);
+            knownFacetValues.put(maxInclusive, Long.MAX_VALUE);
         }
 
         @Override
@@ -1105,11 +1113,11 @@ public final class DatatypeFactory {
             NONPOSITIVEINTEGER_DATATYPE<R> {
         NEGATIVEINTEGER_DATATYPE() {
             super(namespace + "negativeInteger");
-            this.ancestors = Utils.generateAncestors(NONPOSITIVEINTEGER);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
-            this.knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
-            this.knownFacetValues.put(maxInclusive, -1);
+            ancestors = Utils.generateAncestors(NONPOSITIVEINTEGER);
+            knownFacetValues.putAll(super.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
+            knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
+            knownFacetValues.put(maxInclusive, -1);
         }
     }
 
@@ -1119,13 +1127,13 @@ public final class DatatypeFactory {
             this(namespace + "nonNegativeInteger");
         }
 
-        NONNEGATIVEINTEGER_DATATYPE(final String uri) {
+        NONNEGATIVEINTEGER_DATATYPE(String uri) {
             super(uri);
-            this.ancestors = Utils.generateAncestors(INTEGER);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
-            this.knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
-            this.knownFacetValues.put(minInclusive, 0);
+            ancestors = Utils.generateAncestors(INTEGER);
+            knownFacetValues.putAll(super.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
+            knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
+            knownFacetValues.put(minInclusive, 0);
         }
     }
 
@@ -1135,13 +1143,13 @@ public final class DatatypeFactory {
             this(namespace + "nonPositiveInteger");
         }
 
-        NONPOSITIVEINTEGER_DATATYPE(final String uri) {
+        NONPOSITIVEINTEGER_DATATYPE(String uri) {
             super(uri);
-            this.ancestors = Utils.generateAncestors(INTEGER);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
-            this.knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
-            this.knownFacetValues.put(maxInclusive, 0);
+            ancestors = Utils.generateAncestors(INTEGER);
+            knownFacetValues.putAll(super.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
+            knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
+            knownFacetValues.put(maxInclusive, 0);
         }
     }
 
@@ -1149,11 +1157,11 @@ public final class DatatypeFactory {
             NONNEGATIVEINTEGER_DATATYPE<R> {
         POSITIVEINTEGER_DATATYPE() {
             super(namespace + "positiveInteger");
-            this.ancestors = Utils.generateAncestors(NONNEGATIVEINTEGER);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
-            this.knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
-            this.knownFacetValues.put(minInclusive, 1);
+            ancestors = Utils.generateAncestors(NONNEGATIVEINTEGER);
+            knownFacetValues.putAll(super.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
+            knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
+            knownFacetValues.put(minInclusive, 1);
         }
     }
 
@@ -1162,14 +1170,14 @@ public final class DatatypeFactory {
             this(namespace + "short");
         }
 
-        SHORT_DATATYPE(final String uri) {
+        SHORT_DATATYPE(String uri) {
             super(uri);
-            this.ancestors = Utils.generateAncestors(INT);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
-            this.knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
-            this.knownFacetValues.put(minInclusive, Short.MIN_VALUE);
-            this.knownFacetValues.put(maxInclusive, Short.MAX_VALUE);
+            ancestors = Utils.generateAncestors(INT);
+            knownFacetValues.putAll(super.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
+            knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
+            knownFacetValues.put(minInclusive, Short.MIN_VALUE);
+            knownFacetValues.put(maxInclusive, Short.MAX_VALUE);
         }
     }
 
@@ -1177,12 +1185,12 @@ public final class DatatypeFactory {
             UNSIGNEDSHORT_DATATYPE<R> {
         UNSIGNEDBYTE_DATATYPE() {
             super(namespace + "unsignedByte");
-            this.ancestors = Utils.generateAncestors(UNSIGNEDSHORT);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
-            this.knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
-            this.knownFacetValues.put(minInclusive, 0);
-            this.knownFacetValues.put(maxInclusive, 255);
+            ancestors = Utils.generateAncestors(UNSIGNEDSHORT);
+            knownFacetValues.putAll(super.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
+            knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
+            knownFacetValues.put(minInclusive, 0);
+            knownFacetValues.put(maxInclusive, 255);
         }
     }
 
@@ -1192,14 +1200,14 @@ public final class DatatypeFactory {
             this(namespace + "unsignedInt");
         }
 
-        UNSIGNEDINT_DATATYPE(final String uri) {
+        UNSIGNEDINT_DATATYPE(String uri) {
             super(uri);
-            this.ancestors = Utils.generateAncestors(UNSIGNEDLONG);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
-            this.knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
-            this.knownFacetValues.put(minInclusive, 0);
-            this.knownFacetValues.put(maxInclusive, 4294967295L);
+            ancestors = Utils.generateAncestors(UNSIGNEDLONG);
+            knownFacetValues.putAll(super.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
+            knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
+            knownFacetValues.put(minInclusive, 0);
+            knownFacetValues.put(maxInclusive, 4294967295L);
         }
     }
 
@@ -1209,15 +1217,14 @@ public final class DatatypeFactory {
             this(namespace + "unsignedLong");
         }
 
-        UNSIGNEDLONG_DATATYPE(final String uri) {
+        UNSIGNEDLONG_DATATYPE(String uri) {
             super(uri);
-            this.ancestors = Utils.generateAncestors(NONNEGATIVEINTEGER);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
-            this.knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
-            this.knownFacetValues.put(minInclusive, 0);
-            this.knownFacetValues.put(maxInclusive,
-                    new BigInteger("18446744073709551615"));
+            ancestors = Utils.generateAncestors(NONNEGATIVEINTEGER);
+            knownFacetValues.putAll(super.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
+            knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
+            knownFacetValues.put(minInclusive, 0);
+            knownFacetValues.put(maxInclusive, new BigInteger("18446744073709551615"));
         }
 
         @Override
@@ -1237,43 +1244,43 @@ public final class DatatypeFactory {
             this(namespace + "unsignedShort");
         }
 
-        UNSIGNEDSHORT_DATATYPE(final String uri) {
+        UNSIGNEDSHORT_DATATYPE(String uri) {
             super(uri);
-            this.ancestors = Utils.generateAncestors(UNSIGNEDINT);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
-            this.knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
-            this.knownFacetValues.put(minInclusive, 0);
-            this.knownFacetValues.put(maxInclusive, 65535);
+            ancestors = Utils.generateAncestors(UNSIGNEDINT);
+            knownFacetValues.putAll(super.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
+            knownFacetValues.put(pattern, "[\\-+]?[0-9]+");
+            knownFacetValues.put(minInclusive, 0);
+            knownFacetValues.put(maxInclusive, 65535);
         }
     }
 
     static abstract class RATIONAL_DATATYPE<R extends Comparable<R>> extends
             REAL_DATATYPE<R> {
-        RATIONAL_DATATYPE(final String uri, final Set<Facet> f) {
+        RATIONAL_DATATYPE(String uri, Set<Facet> f) {
             super(uri, f);
-            this.ancestors = Utils.generateAncestors(REAL);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
+            ancestors = Utils.generateAncestors(REAL);
+            knownFacetValues.putAll(super.getKnownFacetValues());
         }
 
         public RATIONAL_DATATYPE() {
             this("http://www.w3.org/2002/07/owl#rational");
         }
 
-        RATIONAL_DATATYPE(final String uri) {
+        RATIONAL_DATATYPE(String uri) {
             super(uri);
-            this.ancestors = Utils.generateAncestors(REAL);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
+            ancestors = Utils.generateAncestors(REAL);
+            knownFacetValues.putAll(super.getKnownFacetValues());
         }
     }
 
     static class LANGUAGE_DATATYPE extends TOKEN_DATATYPE {
         LANGUAGE_DATATYPE() {
             super(namespace + "language");
-            this.ancestors = Utils.generateAncestors(TOKEN);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
-            this.knownFacetValues.put(pattern, "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*");
+            ancestors = Utils.generateAncestors(TOKEN);
+            knownFacetValues.putAll(super.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
+            knownFacetValues.put(pattern, "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*");
         }
     }
 
@@ -1282,27 +1289,27 @@ public final class DatatypeFactory {
             this(namespace + "Name");
         }
 
-        NAME_DATATYPE(final String uri) {
+        NAME_DATATYPE(String uri) {
             super(uri);
-            this.ancestors = Utils.generateAncestors(TOKEN);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
-            this.knownFacetValues.put(pattern, "\\i\\c*");
+            ancestors = Utils.generateAncestors(TOKEN);
+            knownFacetValues.putAll(super.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
+            knownFacetValues.put(pattern, "\\i\\c*");
         }
     }
 
     static class NCNAME_DATATYPE extends NAME_DATATYPE {
         NCNAME_DATATYPE() {
             super(namespace + "NCName");
-            this.ancestors = Utils.generateAncestors(NAME);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
-            this.knownFacetValues.put(pattern, "[\\i-[:]][\\c-[:]]*");
+            ancestors = Utils.generateAncestors(NAME);
+            knownFacetValues.putAll(super.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
+            knownFacetValues.put(pattern, "[\\i-[:]][\\c-[:]]*");
         }
 
         @Override
         public String getDatatypeURI() {
-            return this.uri;
+            return uri;
         }
     }
 
@@ -1311,27 +1318,27 @@ public final class DatatypeFactory {
             this(namespace + "NMTOKEN");
         }
 
-        NMTOKEN_DATATYPE(final String uri) {
+        NMTOKEN_DATATYPE(String uri) {
             super(uri);
-            this.ancestors = Utils.generateAncestors(TOKEN);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
-            this.knownFacetValues.put(pattern, "\\c+");
+            ancestors = Utils.generateAncestors(TOKEN);
+            knownFacetValues.putAll(super.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
+            knownFacetValues.put(pattern, "\\c+");
         }
 
         @Override
         public String getDatatypeURI() {
-            return this.uri;
+            return uri;
         }
     }
 
     static class NMTOKENS_DATATYPE extends NMTOKEN_DATATYPE {
         NMTOKENS_DATATYPE() {
             super(namespace + "NMTOKENS");
-            this.ancestors = Utils.generateAncestors(NMTOKEN);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
-            this.knownFacetValues.put(minLength, 1);
+            ancestors = Utils.generateAncestors(NMTOKEN);
+            knownFacetValues.putAll(super.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
+            knownFacetValues.put(minLength, 1);
         }
     }
 
@@ -1340,11 +1347,11 @@ public final class DatatypeFactory {
             this(namespace + "normalizedString");
         }
 
-        NORMALIZEDSTRING_DATATYPE(final String uri) {
+        NORMALIZEDSTRING_DATATYPE(String uri) {
             super(uri);
-            this.ancestors = Utils.generateAncestors(STRING);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.replace);
+            ancestors = Utils.generateAncestors(STRING);
+            knownFacetValues.putAll(super.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.replace);
         }
     }
 
@@ -1353,11 +1360,11 @@ public final class DatatypeFactory {
             this(namespace + "token");
         }
 
-        TOKEN_DATATYPE(final String uri) {
+        TOKEN_DATATYPE(String uri) {
             super(uri);
-            this.ancestors = Utils.generateAncestors(NORMALIZEDSTRING);
-            this.knownFacetValues.putAll(super.getKnownFacetValues());
-            this.knownFacetValues.put(whiteSpace, whitespace.collapse);
+            ancestors = Utils.generateAncestors(NORMALIZEDSTRING);
+            knownFacetValues.putAll(super.getKnownFacetValues());
+            knownFacetValues.put(whiteSpace, whitespace.collapse);
         }
     }
 
@@ -1365,17 +1372,19 @@ public final class DatatypeFactory {
         XMLLITERAL_DATATYPE() {
             super("http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral", Collections
                     .<Facet> emptySet());
-            this.ancestors = Utils.generateAncestors(LITERAL);
-            this.knownFacetValues.putAll(LITERAL.getKnownFacetValues());
+            ancestors = Utils.generateAncestors(LITERAL);
+            knownFacetValues.putAll(LITERAL.getKnownFacetValues());
         }
 
-        public String parseValue(final String s) {
-            // XXX sort of arbitrary decision; the specs say it depends on the XML datatype whitespace normalization policy, but that's not clear. Some W3C tests assume that text elements are irrelevant
+        public String parseValue(String s) {
+            // XXX sort of arbitrary decision; the specs say it depends on the
+            // XML datatype whitespace normalization policy, but that's not
+            // clear. Some W3C tests assume that text elements are irrelevant
             return whitespace.collapse.normalize(s);
         }
 
         @Override
-        public boolean isInValueSpace(final String l) {
+        public boolean isInValueSpace(String l) {
             try {
                 DocumentBuilderFactory.newInstance().newDocumentBuilder()
                         .parse(new ByteArrayInputStream(l.getBytes()));

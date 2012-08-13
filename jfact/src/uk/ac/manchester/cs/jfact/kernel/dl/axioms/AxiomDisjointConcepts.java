@@ -19,29 +19,29 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
 /** Concept disjointness axiom */
-public final class AxiomDisjointConcepts extends AxiomImpl implements Axiom,
+public class AxiomDisjointConcepts extends AxiomImpl implements Axiom,
         NAryExpression<ConceptExpression> {
-    private final NAryExpressionImpl<ConceptExpression> delegate;
+    private NAryExpressionImpl<ConceptExpression> delegate;
 
-    public AxiomDisjointConcepts(final OWLAxiom ax, final List<Expression> v) {
+    public AxiomDisjointConcepts(OWLAxiom ax, List<Expression> v) {
         super(ax);
         delegate = new NAryExpressionImpl<ConceptExpression>();
         delegate.add(v);
     }
 
-    public void accept(final DLAxiomVisitor visitor) {
+    public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+    public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
-    public void add(final Collection<Expression> v) {
+    public void add(Collection<Expression> v) {
         delegate.add(v);
     }
 
-    public void add(final Expression p) {
+    public void add(Expression p) {
         delegate.add(p);
     }
 
@@ -57,7 +57,7 @@ public final class AxiomDisjointConcepts extends AxiomImpl implements Axiom,
         return delegate.size();
     }
 
-    public ConceptExpression transform(final Expression arg) {
+    public ConceptExpression transform(Expression arg) {
         return delegate.transform(arg);
     }
 }

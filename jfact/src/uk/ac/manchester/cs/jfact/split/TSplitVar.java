@@ -21,10 +21,10 @@ public class TSplitVar {
     // members
     public ConceptName oldName; // name of split concept
     public Concept C; // split concept itself
-    private final List<Entry> Entries = new ArrayList<Entry>();
+    private List<Entry> Entries = new ArrayList<Entry>();
 
     // methods
-    void addEntry(final ConceptName name, final TSignature sig, final Set<Axiom> mod) {
+    void addEntry(ConceptName name, TSignature sig, Set<Axiom> mod) {
         Entry e = new Entry();
         e.name = name;
         e.concept = null;

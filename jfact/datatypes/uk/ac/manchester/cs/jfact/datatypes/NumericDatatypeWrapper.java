@@ -14,7 +14,7 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype
         OrderedDatatype<BigDecimal> {
     private final Datatype<O> d;
 
-    public NumericDatatypeWrapper(final Datatype<O> d) {
+    public NumericDatatypeWrapper(Datatype<O> d) {
         this.d = d;
     }
 
@@ -47,11 +47,11 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype
         return this.d.getKnownFacetValues();
     }
 
-    public <T extends Comparable<T>> T getFacetValue(final Facet f) {
+    public <T extends Comparable<T>> T getFacetValue(Facet f) {
         return this.d.getFacetValue(f);
     }
 
-    public BigDecimal getNumericFacetValue(final Facet f) {
+    public BigDecimal getNumericFacetValue(Facet f) {
         return this.d.getNumericFacetValue(f);
     }
 
@@ -63,27 +63,27 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype
         return this.d.getOrdered();
     }
 
-    public boolean isCompatible(final Datatype<?> type) {
+    public boolean isCompatible(Datatype<?> type) {
         return this.d.isCompatible(type);
     }
 
-    public boolean isCompatible(final Literal<?> l) {
+    public boolean isCompatible(Literal<?> l) {
         return this.d.isCompatible(l);
     }
 
-    public boolean isInValueSpace(final O l) {
+    public boolean isInValueSpace(O l) {
         return this.d.isInValueSpace(l);
     }
 
-    public O parseValue(final String s) {
+    public O parseValue(String s) {
         return this.d.parseValue(s);
     }
 
-    public Literal<O> buildLiteral(final String s) {
+    public Literal<O> buildLiteral(String s) {
         return this.d.buildLiteral(s);
     }
 
-    public boolean isSubType(final Datatype<?> type) {
+    public boolean isSubType(Datatype<?> type) {
         return this.d.isSubType(type);
     }
 
@@ -95,11 +95,11 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype
         return this.d.listValues();
     }
 
-    public void accept(final DLExpressionVisitor visitor) {
+    public void accept(DLExpressionVisitor visitor) {
         this.d.accept(visitor);
     }
 
-    public <T> T accept(final DLExpressionVisitorEx<T> visitor) {
+    public <T> T accept(DLExpressionVisitorEx<T> visitor) {
         return this.d.accept(visitor);
     }
 

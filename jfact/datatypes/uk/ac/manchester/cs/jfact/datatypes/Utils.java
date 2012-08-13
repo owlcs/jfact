@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Utils {
-    public static Set<Facet> getFacets(final Facet... facets) {
+    public static Set<Facet> getFacets(Facet... facets) {
         Set<Facet> toReturn = new HashSet<Facet>();
         for (Facet f : facets) {
             toReturn.add(f);
@@ -12,7 +12,7 @@ public class Utils {
         return toReturn;
     }
 
-    public static Set<Facet> getFacets(final Facet[]... facets) {
+    public static Set<Facet> getFacets(Facet[]... facets) {
         Set<Facet> toReturn = new HashSet<Facet>();
         for (Facet[] fac : facets) {
             for (Facet f : fac) {
@@ -22,7 +22,7 @@ public class Utils {
         return toReturn;
     }
 
-    public static Set<Datatype<?>> generateAncestors(final Datatype<?> d) {
+    public static Set<Datatype<?>> generateAncestors(Datatype<?> d) {
         Set<Datatype<?>> toReturn = new HashSet<Datatype<?>>(d.getAncestors());
         toReturn.add(d);
         return toReturn;

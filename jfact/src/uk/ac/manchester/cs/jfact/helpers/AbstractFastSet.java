@@ -25,7 +25,7 @@ abstract class AbstractFastSet implements FastSet {
     }
 
     @Override
-    public boolean equals(final Object arg0) {
+    public boolean equals(Object arg0) {
         if (arg0 == null) {
             return false;
         }

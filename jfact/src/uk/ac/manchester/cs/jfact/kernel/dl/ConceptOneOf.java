@@ -13,18 +13,18 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
-public final class ConceptOneOf extends NAryExpressionImpl<IndividualName> implements
+public class ConceptOneOf extends NAryExpressionImpl<IndividualName> implements
         NAryExpression<IndividualName>, ConceptExpression {
     /** create one-of from individuals in the given array */
-    public ConceptOneOf(final List<Expression> v) {
+    public ConceptOneOf(List<Expression> v) {
         add(v);
     }
 
-    public void accept(final DLExpressionVisitor visitor) {
+    public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+    public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 }

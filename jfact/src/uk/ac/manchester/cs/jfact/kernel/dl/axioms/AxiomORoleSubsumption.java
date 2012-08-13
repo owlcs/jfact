@@ -12,25 +12,25 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
-public final class AxiomORoleSubsumption extends AxiomSingleORole {
-    private final ObjectRoleComplexExpression complexRole;
+public class AxiomORoleSubsumption extends AxiomSingleORole {
+    private ObjectRoleComplexExpression complexRole;
 
-    public AxiomORoleSubsumption(final OWLAxiom ax,
-            final ObjectRoleComplexExpression subRole, final ObjectRoleExpression supRole) {
+    public AxiomORoleSubsumption(OWLAxiom ax, ObjectRoleComplexExpression subRole,
+            ObjectRoleExpression supRole) {
         super(ax, supRole);
         complexRole = subRole;
     }
 
-    public void accept(final DLAxiomVisitor visitor) {
+    public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+    public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
     /** access to role */
-    public final ObjectRoleComplexExpression getSubRole() {
+    public ObjectRoleComplexExpression getSubRole() {
         return complexRole;
     }
 }

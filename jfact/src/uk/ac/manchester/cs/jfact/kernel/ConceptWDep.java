@@ -7,20 +7,20 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 
-public final class ConceptWDep {
+public class ConceptWDep {
     /** "pointer" to a concept in DAG */
-    private final int concept;
+    private int concept;
     /** dep-set for a concept */
-    private final DepSet depSet;
+    private DepSet depSet;
 
     /** c'tor with empty dep-set */
-    public ConceptWDep(final int p) {
+    public ConceptWDep(int p) {
         concept = p;
         depSet = DepSet.create();
     }
 
     /** usual c'tor */
-    public ConceptWDep(final int p, final DepSet dep) {
+    public ConceptWDep(int p, DepSet dep) {
         concept = p;
         depSet = DepSet.create(dep);
     }
@@ -30,12 +30,12 @@ public final class ConceptWDep {
     }
 
     /** get dep-set part */
-    public final DepSet getDep() {
+    public DepSet getDep() {
         return depSet;
     }
 
     /** add dep-set to a CWD */
-    public void addDep(final DepSet d) {
+    public void addDep(DepSet d) {
         depSet.add(d);
     }
 
@@ -51,7 +51,7 @@ public final class ConceptWDep {
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
         if (obj == null) {
             return false;
         }

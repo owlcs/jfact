@@ -5,35 +5,35 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version. 
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-public final class Lexeme {
+public class Lexeme {
     /** Lexeme's Token */
-    private final Token token;
+    private Token token;
     /** pointer to information (for names) */
-    private final NamedEntry pName;
+    private NamedEntry pName;
     int data;
 
-    private Lexeme(final Token tok, final NamedEntry e, final int i) {
+    private Lexeme(Token tok, NamedEntry e, int i) {
         token = tok;
         pName = e;
         data = i;
     }
 
     /** default c'tor for pointers */
-    public Lexeme(final Token tok, final NamedEntry p) {
+    public Lexeme(Token tok, NamedEntry p) {
         this(tok, p, 0);
     }
 
     /** default c'tor for pointers */
-    public Lexeme(final Token tok) {
+    public Lexeme(Token tok) {
         this(tok, null, 0);
     }
 
     /** default c'tor for numbers */
-    public Lexeme(final Token tok, final int val) {
+    public Lexeme(Token tok, int val) {
         this(tok, null, val);
     }
 
-    public Lexeme(final Lexeme t) {
+    public Lexeme(Lexeme t) {
         this(t.token, t.pName, t.data);
     }
 
@@ -53,7 +53,7 @@ public final class Lexeme {
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
         if (obj == null) {
             return false;
         }

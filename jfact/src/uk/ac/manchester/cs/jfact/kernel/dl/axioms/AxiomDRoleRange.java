@@ -12,25 +12,24 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
-public final class AxiomDRoleRange extends AxiomSingleDRole {
-    private final DataExpression range;
+public class AxiomDRoleRange extends AxiomSingleDRole {
+    private DataExpression range;
 
-    public AxiomDRoleRange(final OWLAxiom ax, final DataRoleExpression role,
-            final DataExpression range) {
+    public AxiomDRoleRange(OWLAxiom ax, DataRoleExpression role, DataExpression range) {
         super(ax, role);
         this.range = range;
     }
 
-    public void accept(final DLAxiomVisitor visitor) {
+    public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+    public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
     /** access */
-    public final DataExpression getRange() {
+    public DataExpression getRange() {
         return range;
     }
 }

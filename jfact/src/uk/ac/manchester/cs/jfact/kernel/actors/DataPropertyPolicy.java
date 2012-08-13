@@ -10,8 +10,8 @@ import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 
 /** policy for data properties */
-public final class DataPropertyPolicy implements Policy {
-    public boolean applicable(final ClassifiableEntry p) {
+public class DataPropertyPolicy implements Policy {
+    public boolean applicable(ClassifiableEntry p) {
         return p.getId() > 0;
     }
 
@@ -19,7 +19,7 @@ public final class DataPropertyPolicy implements Policy {
         return false;
     }
 
-    public Expression buildTree(final ExpressionManager EM, final ClassifiableEntry p) {
+    public Expression buildTree(ExpressionManager EM, ClassifiableEntry p) {
         return EM.dataRole(p.getName());
     }
 }

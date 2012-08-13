@@ -5,25 +5,24 @@ import java.util.Collection;
 
 public class DatatypeNumericEnumeration<R extends Comparable<R>> extends
         DatatypeEnumeration<R> implements NumericDatatype<R> {
-    public DatatypeNumericEnumeration(final NumericDatatype<R> d) {
+    public DatatypeNumericEnumeration(NumericDatatype<R> d) {
         super(d);
     }
 
-    public DatatypeNumericEnumeration(final NumericDatatype<R> d, final Literal<R> l) {
+    public DatatypeNumericEnumeration(NumericDatatype<R> d, Literal<R> l) {
         this(d);
-        this.literals.add(l);
+        literals.add(l);
     }
 
-    public DatatypeNumericEnumeration(final NumericDatatype<R> d,
-            final Collection<Literal<R>> c) {
+    public DatatypeNumericEnumeration(NumericDatatype<R> d, Collection<Literal<R>> c) {
         this(d);
-        this.literals.addAll(c);
+        literals.addAll(c);
     }
 
     @Override
-    public DatatypeNumericEnumeration<R> add(final Literal<R> d) {
+    public DatatypeNumericEnumeration<R> add(Literal<R> d) {
         DatatypeNumericEnumeration<R> toReturn = new DatatypeNumericEnumeration<R>(
-                (NumericDatatype<R>) this.host, this.literals);
+                (NumericDatatype<R>) host, literals);
         toReturn.literals.add(d);
         return toReturn;
     }
@@ -48,7 +47,7 @@ public class DatatypeNumericEnumeration<R extends Comparable<R>> extends
     }
 
     public boolean hasMinInclusive() {
-        return !this.literals.isEmpty();
+        return !literals.isEmpty();
     }
 
     public boolean hasMaxExclusive() {
@@ -56,30 +55,30 @@ public class DatatypeNumericEnumeration<R extends Comparable<R>> extends
     }
 
     public boolean hasMaxInclusive() {
-        return !this.literals.isEmpty();
+        return !literals.isEmpty();
     }
 
     public boolean hasMin() {
-        return !this.literals.isEmpty();
+        return !literals.isEmpty();
     }
 
     public boolean hasMax() {
-        return !this.literals.isEmpty();
+        return !literals.isEmpty();
     }
 
     public BigDecimal getMin() {
-        if (this.literals.isEmpty()) {
+        if (literals.isEmpty()) {
             return null;
         }
-        return (BigDecimal) Facets.minInclusive.parseNumber(this.literals.get(0));
+        return (BigDecimal) Facets.minInclusive.parseNumber(literals.get(0));
     }
 
     public BigDecimal getMax() {
-        if (this.literals.isEmpty()) {
+        if (literals.isEmpty()) {
             return null;
         }
-        return (BigDecimal) Facets.maxInclusive.parseNumber(this.literals
-                .get(this.literals.size() - 1));
+        return (BigDecimal) Facets.maxInclusive
+                .parseNumber(literals.get(literals.size() - 1));
     }
 
     @Override

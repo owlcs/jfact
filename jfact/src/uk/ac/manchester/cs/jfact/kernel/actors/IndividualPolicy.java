@@ -11,14 +11,14 @@ import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 
 /** policy for individuals */
-public final class IndividualPolicy implements Policy {
-    private final boolean plain;
+public class IndividualPolicy implements Policy {
+    private boolean plain;
 
-    public IndividualPolicy(final boolean plain) {
+    public IndividualPolicy(boolean plain) {
         this.plain = plain;
     }
 
-    public boolean applicable(final ClassifiableEntry p) {
+    public boolean applicable(ClassifiableEntry p) {
         return ((Concept) p).isSingleton();
     }
 
@@ -26,7 +26,7 @@ public final class IndividualPolicy implements Policy {
         return plain;
     }
 
-    public Expression buildTree(final ExpressionManager EM, final ClassifiableEntry p) {
+    public Expression buildTree(ExpressionManager EM, ClassifiableEntry p) {
         return EM.individual(p.getName());
     }
 }

@@ -11,25 +11,25 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
-public final class AxiomDRoleSubsumption extends AxiomSingleDRole {
-    private final DataRoleExpression subRole;
+public class AxiomDRoleSubsumption extends AxiomSingleDRole {
+    private DataRoleExpression subRole;
 
-    public AxiomDRoleSubsumption(final OWLAxiom ax, final DataRoleExpression subRole,
-            final DataRoleExpression supRole) {
+    public AxiomDRoleSubsumption(OWLAxiom ax, DataRoleExpression subRole,
+            DataRoleExpression supRole) {
         super(ax, supRole);
         this.subRole = subRole;
     }
 
-    public void accept(final DLAxiomVisitor visitor) {
+    public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+    public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
     /** access to role */
-    public final DataRoleExpression getSubRole() {
+    public DataRoleExpression getSubRole() {
         return subRole;
     }
 }

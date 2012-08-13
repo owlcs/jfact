@@ -1,11 +1,7 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class DatatypeIntersection implements
         DatatypeCombination<DatatypeIntersection, Datatype<?>> {
@@ -13,9 +9,10 @@ public class DatatypeIntersection implements
     private final String uri;
     private final Datatype<?> host;
 
-    public static Datatype<?> getHostDatatype(final Collection<Datatype<?>> c) {
+    public static Datatype<?> getHostDatatype(Collection<Datatype<?>> c) {
         List<Datatype<?>> list = new ArrayList<Datatype<?>>(c);
-        // all types need to be compatible, or the intersection cannot be anything but empty
+        // all types need to be compatible, or the intersection cannot be
+        // anything but empty
         for (int i = 0; i < list.size(); i++) {
             for (int j = i + 1; j < list.size(); j++) {
                 if (!list.get(i).isCompatible(list.get(j))) {
@@ -37,19 +34,20 @@ public class DatatypeIntersection implements
                 }
             }
         } while (list.size() > 1 && old_size != list.size());
-        // now if list.size >1, there is no single most specific type... troubles
+        // now if list.size >1, there is no single most specific type...
+        // troubles
         if (list.size() == 1) {
             return list.get(0);
         }
         return null;
     }
 
-    public DatatypeIntersection(final Datatype<?> host) {
+    public DatatypeIntersection(Datatype<?> host) {
         uri = "intersection#a" + DatatypeFactory.getIndex();
         this.host = host;
     }
 
-    public DatatypeIntersection(final Datatype<?> host, final Iterable<Datatype<?>> list) {
+    public DatatypeIntersection(Datatype<?> host, Iterable<Datatype<?>> list) {
         this(host);
         for (Datatype<?> d : list) {
             basics.add(d);
@@ -64,13 +62,13 @@ public class DatatypeIntersection implements
         return basics;
     }
 
-    public DatatypeIntersection add(final Datatype<?> d) {
+    public DatatypeIntersection add(Datatype<?> d) {
         DatatypeIntersection toReturn = new DatatypeIntersection(host, basics);
         toReturn.basics.add(d);
         return toReturn;
     }
 
-    public boolean isCompatible(final Literal<?> l) {
+    public boolean isCompatible(Literal<?> l) {
         // must be compatible with all basics
         // host is a shortcut to them
         if (!host.isCompatible(l)) {
@@ -88,7 +86,7 @@ public class DatatypeIntersection implements
         return uri;
     }
 
-    public boolean isCompatible(final Datatype<?> type) {
+    public boolean isCompatible(Datatype<?> type) {
         // must be compatible with all basics
         // host is a shortcut to them
         if (!host.isCompatible(type)) {
@@ -109,7 +107,9 @@ public class DatatypeIntersection implements
         }
         BigDecimal min = null;
         BigDecimal max = null;
-        // all intervals must intersect - i.e., the interval with max min (excluded if any interval excludes it), min max (excluded if any interval excludes it) must contain at least one element
+        // all intervals must intersect - i.e., the interval with max min
+        // (excluded if any interval excludes it), min max (excluded if any
+        // interval excludes it) must contain at least one element
         // get max minimum value
         boolean minExclusive = false;
         boolean maxExclusive = false;

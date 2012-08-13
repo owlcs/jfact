@@ -5,36 +5,26 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static uk.ac.manchester.cs.jfact.helpers.DLTree.equalTrees;
-import static uk.ac.manchester.cs.jfact.helpers.Helper.bpINVALID;
-import static uk.ac.manchester.cs.jfact.kernel.Token.RCOMPOSITION;
+import static uk.ac.manchester.cs.jfact.helpers.DLTree.*;
+import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
+import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
-import uk.ac.manchester.cs.jfact.helpers.DLTree;
-import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
-import uk.ac.manchester.cs.jfact.helpers.FastSet;
-import uk.ac.manchester.cs.jfact.helpers.FastSetFactory;
-import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
+import uk.ac.manchester.cs.jfact.helpers.*;
 import uk.ac.manchester.cs.jfact.kernel.actors.AddRoleActor;
 
-public final class Role extends ClassifiableEntry {
+public class Role extends ClassifiableEntry {
     static class KnownValue {
         /** flag value */
         protected boolean value;
         /** whether flag set or not */
         protected boolean known;
 
-        public KnownValue(final boolean val) {
+        public KnownValue(boolean val) {
             value = val;
             known = false;
         }
@@ -54,7 +44,7 @@ public final class Role extends ClassifiableEntry {
         }
 
         /** set the value; it is now known */
-        protected void setValue(final boolean val) {
+        protected void setValue(boolean val) {
             value = val;
             known = true;
         }
@@ -75,40 +65,40 @@ public final class Role extends ClassifiableEntry {
     /** is role relevant to current query */
     private long rel;
     /** label of a domain (inverse role is used for a range label) */
-    private final MergableLabel domLabel = new MergableLabel();
+    private MergableLabel domLabel = new MergableLabel();
     // for later filling
-    private final List<Role> ancestorRoles = new ArrayList<Role>();
-    private final List<Role> descendantRoles = new ArrayList<Role>();
+    private List<Role> ancestorRoles = new ArrayList<Role>();
+    private List<Role> descendantRoles = new ArrayList<Role>();
     /** set of the most functional super-roles */
-    private final List<Role> topFunctionalRoles = new ArrayList<Role>();
+    private List<Role> topFunctionalRoles = new ArrayList<Role>();
     /** set of the roles that are disjoint with a given one */
-    private final Set<Role> disjointRoles = new HashSet<Role>();
+    private Set<Role> disjointRoles = new HashSet<Role>();
     /** all compositions in the form R1*R2*\ldots*Rn [= R */
-    private final List<List<Role>> subCompositions = new ArrayList<List<Role>>();
+    private List<List<Role>> subCompositions = new ArrayList<List<Role>>();
     /** bit-vector of all parents */
-    private final FastSet ancestorMap = FastSetFactory.create();
+    private FastSet ancestorMap = FastSetFactory.create();
     /** bit-vector of all roles disjoint with current */
-    private final FastSet disjointRolesIndex = FastSetFactory.create();
+    private FastSet disjointRolesIndex = FastSetFactory.create();
     /** automaton for role */
-    private final RoleAutomaton automaton = new RoleAutomaton();
+    private RoleAutomaton automaton = new RoleAutomaton();
     /** value for functionality */
-    private final KnownValue functionality = new KnownValue();
+    private KnownValue functionality = new KnownValue();
     /** value for symmetry */
-    private final KnownValue symmetry = new KnownValue();
+    private KnownValue symmetry = new KnownValue();
     /** value for asymmetricity */
-    private final KnownValue asymmetry = new KnownValue();
+    private KnownValue asymmetry = new KnownValue();
     /** value for transitivity */
-    private final KnownValue transitivity = new KnownValue();
+    private KnownValue transitivity = new KnownValue();
     /** value for reflexivity */
-    private final KnownValue reflexivity = new KnownValue();
+    private KnownValue reflexivity = new KnownValue();
     /** value for reflexivity */
-    private final KnownValue irreflexivity = new KnownValue();
+    private KnownValue irreflexivity = new KnownValue();
     /** flag to show that this role needs special R&D processing */
     private boolean specialDomain;
     private int absoluteIndex;
 
     /** add automaton of a sub-role to a given one */
-    private void addSubRoleAutomaton(final Role R) {
+    private void addSubRoleAutomaton(Role R) {
         if (equals(R)) {
             return;
         }
@@ -119,14 +109,13 @@ public final class Role extends ClassifiableEntry {
         }
     }
 
-    private void addTrivialTransition(final Role r) {
+    private void addTrivialTransition(Role r) {
         automaton.addTransitionSafe(RoleAutomaton.initial, new RATransition(
                 RoleAutomaton.final_state, r));
     }
 
     /** get an automaton by a (possibly synonymical) role */
-    private final RoleAutomaton completeAutomatonByRole(final Role R,
-            final Set<Role> RInProcess) {
+    private RoleAutomaton completeAutomatonByRole(Role R, Set<Role> RInProcess) {
         assert !R.isSynonym(); // no synonyms here
         assert R != this; // no case ...*S*... [= S
         R.completeAutomaton(RInProcess);
@@ -141,7 +130,8 @@ public final class Role extends ClassifiableEntry {
         if (isReflexive()) {
             domLabel.merge(getRangeLabel());
         }
-        // for R1*R2*...*Rn [= R, merge dom(R) with dom(R1) and ran(R) with ran(Rn)
+        // for R1*R2*...*Rn [= R, merge dom(R) with dom(R1) and ran(R) with
+        // ran(Rn)
         for (List<Role> q : subCompositions) {
             if (!q.isEmpty()) {
                 domLabel.merge(q.get(0).domLabel);
@@ -150,7 +140,7 @@ public final class Role extends ClassifiableEntry {
         }
     }
 
-    /** get inverse of given role (non-final version) */
+    /** get inverse of given role (non- version) */
     public Role inverse() {
         assert inverse != null;
         return resolveSynonym(inverse);
@@ -163,7 +153,7 @@ public final class Role extends ClassifiableEntry {
     }
 
     /** set inverse to given role */
-    public void setInverse(final Role p) {
+    public void setInverse(Role p) {
         assert inverse == null;
         inverse = p;
     }
@@ -183,7 +173,7 @@ public final class Role extends ClassifiableEntry {
         simple = false;
     }
 
-    public void setSimple(final boolean action) {
+    public void setSimple(boolean action) {
         simple = action;
     }
 
@@ -202,7 +192,7 @@ public final class Role extends ClassifiableEntry {
         finished = false;
     }
 
-    public void setFinished(final boolean action) {
+    public void setFinished(boolean action) {
         finished = action;
     }
 
@@ -228,7 +218,7 @@ public final class Role extends ClassifiableEntry {
     }
 
     /** set the special domain value */
-    public void setSpecialDomain(final int bp) {
+    public void setSpecialDomain(int bp) {
         bpSpecialDomain = bp;
     }
 
@@ -247,7 +237,7 @@ public final class Role extends ClassifiableEntry {
         dataRole = false;
     }
 
-    public void setDataRole(final boolean action) {
+    public void setDataRole(boolean action) {
         dataRole = action;
     }
 
@@ -262,7 +252,7 @@ public final class Role extends ClassifiableEntry {
     }
 
     /** set role functionality value */
-    public void setFunctional(final boolean value) {
+    public void setFunctional(boolean value) {
         functionality.setValue(value);
     }
 
@@ -286,7 +276,7 @@ public final class Role extends ClassifiableEntry {
     }
 
     /** set the transitivity of both role and it's inverse */
-    public void setTransitive(final boolean value) {
+    public void setTransitive(boolean value) {
         transitivity.setValue(value);
         inverse().transitivity.setValue(value);
     }
@@ -307,7 +297,7 @@ public final class Role extends ClassifiableEntry {
     }
 
     /** set the symmetry of both role and it's inverse */
-    public void setSymmetric(final boolean value) {
+    public void setSymmetric(boolean value) {
         symmetry.setValue(value);
         inverse().symmetry.setValue(value);
     }
@@ -328,7 +318,7 @@ public final class Role extends ClassifiableEntry {
     }
 
     /** set the asymmetry of both role and it's inverse */
-    public void setAsymmetric(final boolean value) {
+    public void setAsymmetric(boolean value) {
         asymmetry.setValue(value);
         inverse().asymmetry.setValue(value);
     }
@@ -344,7 +334,7 @@ public final class Role extends ClassifiableEntry {
     }
 
     /** set the reflexivity of both role and it's inverse */
-    public void setReflexive(final boolean value) {
+    public void setReflexive(boolean value) {
         reflexivity.setValue(value);
         inverse().reflexivity.setValue(value);
     }
@@ -365,7 +355,7 @@ public final class Role extends ClassifiableEntry {
     }
 
     /** set the irreflexivity of both role and it's inverse */
-    public void setIrreflexive(final boolean value) {
+    public void setIrreflexive(boolean value) {
         irreflexivity.setValue(value);
         inverse().irreflexivity.setValue(value);
     }
@@ -374,16 +364,15 @@ public final class Role extends ClassifiableEntry {
         this.setIrreflexive(true);
     }
 
-    /**
-     * check if the role is topmost-functional (ie, has no functional ancestors)
-     */
+    /** check if the role is topmost-functional (ie, has no functional ancestors) */
     public boolean isTopFunc() {
-        // check for emptyness is here due to case where a role is determined to be a functional
+        // check for emptyness is here due to case where a role is determined to
+        // be a functional
         return !topFunctionalRoles.isEmpty() && topFunctionalRoles.get(0).equals(this);
     }
 
     /** set functional attribute to given value (functional DAG vertex) */
-    public void setFunctional(final int fNode) {
+    public void setFunctional(int fNode) {
         functional = fNode;
     }
 
@@ -394,12 +383,12 @@ public final class Role extends ClassifiableEntry {
 
     // relevance
     /** is given role relevant to given Labeller's state */
-    public boolean isRelevant(final long lab) {
+    public boolean isRelevant(long lab) {
         return lab == rel;
     }
 
     /** make given role relevant to given Labeller's state */
-    public void setRelevant(final long lab) {
+    public void setRelevant(long lab) {
         rel = lab;
     }
 
@@ -415,19 +404,20 @@ public final class Role extends ClassifiableEntry {
     }
 
     /** add p to domain of the role */
-    public void setDomain(final DLTree p) {
+    public void setDomain(DLTree p) {
         if (equalTrees(pDomain, p)) {
             // usual case when you have a name for inverse role
         } else if (DLTreeFactory.isFunctionalExpr(p, this)) {
             this.setFunctional();
-            // functional restriction in the role domain means the role is functional
+            // functional restriction in the role domain means the role is
+            // functional
         } else {
             pDomain = DLTreeFactory.createSNFAnd(Arrays.asList(pDomain, p));
         }
     }
 
     /** add p to range of the role */
-    public void setRange(final DLTree p) {
+    public void setRange(DLTree p) {
         inverse().setDomain(p);
     }
 
@@ -449,7 +439,7 @@ public final class Role extends ClassifiableEntry {
     }
 
     /** set domain-as-a-bipointer to a role */
-    public void setBPDomain(final int p) {
+    public void setBPDomain(int p) {
         bpDomain = p;
     }
 
@@ -465,7 +455,7 @@ public final class Role extends ClassifiableEntry {
 
     // disjoint roles
     /** set R and THIS as a disjoint; use it after Anc/Desc are determined */
-    public void addDisjointRole(final Role R) {
+    public void addDisjointRole(Role R) {
         disjointRoles.add(R);
         for (Role p : R.descendantRoles) {
             disjointRoles.add(p);
@@ -487,17 +477,17 @@ public final class Role extends ClassifiableEntry {
     }
 
     /** check whether a role is disjoint with R */
-    public boolean isDisjoint(final Role r) {
+    public boolean isDisjoint(Role r) {
         return disjointRolesIndex.contains(r.getAbsoluteIndex());
     }
 
     /** check if role is a non-strict sub-role of R */
-    private boolean lesser(final Role r) {
+    private boolean lesser(Role r) {
         return isDataRole() == r.isDataRole()
                 && ancestorMap.contains(r.getAbsoluteIndex());
     }
 
-    public boolean lesserequal(final Role r) {
+    public boolean lesserequal(Role r) {
         return equals(r) || lesser(r);
     }
 
@@ -511,14 +501,14 @@ public final class Role extends ClassifiableEntry {
     }
 
     /** fills BITMAP with the role's ancestors */
-    private void addAncestorsToBitMap(final FastSet bitmap) {
+    private void addAncestorsToBitMap(FastSet bitmap) {
         for (int i = 0; i < ancestorRoles.size(); i++) {
             bitmap.add(ancestorRoles.get(i).getAbsoluteIndex());
         }
     }
 
     /** add composition to a role */
-    public void addComposition(final DLTree tree) {
+    public void addComposition(DLTree tree) {
         List<Role> RS = new ArrayList<Role>();
         fillsComposition(RS, tree);
         subCompositions.add(RS);
@@ -538,7 +528,7 @@ public final class Role extends ClassifiableEntry {
     }
 
     /** complete role automaton */
-    public void completeAutomaton(final int nRoles) {
+    public void completeAutomaton(int nRoles) {
         Set<Role> RInProcess = new HashSet<Role>();
         this.completeAutomaton(RInProcess);
         automaton.setup(nRoles, isDataRole());
@@ -563,7 +553,7 @@ public final class Role extends ClassifiableEntry {
         }
     }
 
-    private static Role resolveRoleHelper(final DLTree t) {
+    private static Role resolveRoleHelper(DLTree t) {
         if (t == null) {
             throw new ReasonerInternalException("Role expression expected");
         }
@@ -579,11 +569,11 @@ public final class Role extends ClassifiableEntry {
     }
 
     /** @return R or -R for T in the form (inv ... (inv R)...); remove synonyms */
-    public static Role resolveRole(final DLTree t) {
+    public static Role resolveRole(DLTree t) {
         return resolveSynonym(resolveRoleHelper(t));
     }
 
-    protected Role(final String name) {
+    protected Role(String name) {
         super(name);
         absoluteIndex = buildIndex();
         inverse = null;
@@ -600,25 +590,25 @@ public final class Role extends ClassifiableEntry {
     }
 
     /** get (unsigned) unique index of the role */
-    public final int getAbsoluteIndex() {
+    public int getAbsoluteIndex() {
         return absoluteIndex;
-        //		int i = 2 * extId;
-        //		return i > 0 ? i : 1 - i;
+        // int i = 2 * extId;
+        // return i > 0 ? i : 1 - i;
     }
 
-    private final int buildIndex() {
+    private int buildIndex() {
         int i = 2 * extId;
         return i > 0 ? i : 1 - i;
     }
 
     @Override
-    public void setId(final int id) {
+    public void setId(int id) {
         // overriden to update the computed unique index
         super.setId(id);
         absoluteIndex = buildIndex();
     }
 
-    private void fillsComposition(final List<Role> Composition, final DLTree tree) {
+    private void fillsComposition(List<Role> Composition, DLTree tree) {
         if (tree.token() == RCOMPOSITION) {
             fillsComposition(Composition, tree.getLeft());
             fillsComposition(Composition, tree.getRight());
@@ -655,8 +645,7 @@ public final class Role extends ClassifiableEntry {
         addParent(syn);
     }
 
-    private Role eliminateToldCycles(final Set<Role> RInProcess,
-            final List<Role> ToldSynonyms) {
+    private Role eliminateToldCycles(Set<Role> RInProcess, List<Role> ToldSynonyms) {
         if (isSynonym()) {
             return null;
         }
@@ -695,7 +684,7 @@ public final class Role extends ClassifiableEntry {
         return extName + " " + extId;
     }
 
-    public void print(final LogAdapter o) {
+    public void print(LogAdapter o) {
         o.print("Role \"", getName(), "\"(", getId(), ")", isTransitive() ? "T" : "",
                 isReflexive() ? "R" : "", isTopFunc() ? "t" : "", isFunctional() ? "F"
                         : "", isDataRole() ? "D" : "");
@@ -737,7 +726,7 @@ public final class Role extends ClassifiableEntry {
         o.print("\n");
     }
 
-    public void initADbyTaxonomy(final Taxonomy pTax, final int nRoles) {
+    public void initADbyTaxonomy(Taxonomy pTax, int nRoles) {
         assert isClassified(); // safety check
         assert ancestorRoles.isEmpty() && descendantRoles.isEmpty();
         // Note that Top/Bottom are not connected to taxonomy yet.
@@ -804,7 +793,7 @@ public final class Role extends ClassifiableEntry {
         }
     }
 
-    private void checkHierarchicalDisjoint(final Role R) {
+    private void checkHierarchicalDisjoint(Role R) {
         if (disjointRoles.contains(R)) {
             setDomain(DLTreeFactory.createBottom());
             disjointRoles.clear();
@@ -825,10 +814,10 @@ public final class Role extends ClassifiableEntry {
         }
     }
 
-    private void preprocessComposition(final List<Role> RS) {
+    private void preprocessComposition(List<Role> RS) {
         boolean same = false;
         int last = RS.size() - 1;
-        //TODO doublecheck, strange assignments to what is in the list
+        // TODO doublecheck, strange assignments to what is in the list
         for (int i = 0; i < RS.size(); i++) {
             Role p = RS.get(i);
             Role R = resolveSynonym(p);
@@ -860,7 +849,7 @@ public final class Role extends ClassifiableEntry {
         }
     }
 
-    private void completeAutomaton(final Set<Role> RInProcess) {
+    private void completeAutomaton(Set<Role> RInProcess) {
         if (isFinished()) {
             return;
             // if we found a cycle...
@@ -897,8 +886,7 @@ public final class Role extends ClassifiableEntry {
     }
 
     /** add automaton for a role composition */
-    private void addSubCompositionAutomaton(final List<Role> RS,
-            final Set<Role> RInProcess) {
+    private void addSubCompositionAutomaton(List<Role> RS, Set<Role> RInProcess) {
         // first preprocess the role chain
         preprocessComposition(RS);
         if (RS.isEmpty()) {
@@ -920,7 +908,8 @@ public final class Role extends ClassifiableEntry {
         // make sure the role chain contain at least one element
         assert p <= p_last;
         // create a chain
-        boolean oSafe = false; // we couldn't assume that the current role automaton is i- or o-safe
+        boolean oSafe = false; // we couldn't assume that the current role
+                               // automaton is i- or o-safe
         automaton.initChain(from);
         for (; p != p_last; ++p) {
             oSafe = automaton.addToChain(completeAutomatonByRole(RS.get(p), RInProcess),
@@ -936,7 +925,7 @@ public final class Role extends ClassifiableEntry {
 }
 
 class RoleCompare implements Comparator<Role>, Serializable {
-    public int compare(final Role p, final Role q) {
+    public int compare(Role p, Role q) {
         int n = p.getId();
         int m = q.getId();
         if (n > 0 && m < 0) {

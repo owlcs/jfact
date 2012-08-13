@@ -16,7 +16,7 @@ import org.semanticweb.owlapi.reasoner.TimedConsoleProgressMonitor;
 import org.semanticweb.owlapi.util.AutoIRIMapper;
 
 public class TestPeriodic {
-    public static void main(final String[] args) throws OWLOntologyCreationException {
+    public static void main(String[] args) throws OWLOntologyCreationException {
         OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
         File base = new File("../JFact/robertstest");
         File url = new File(base, "periodic.owl");

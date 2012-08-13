@@ -7,16 +7,14 @@ package uk.ac.manchester.cs.jfact.kernel.modelcaches;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 
-/**
- * Model caching implementation for singleton models. Such models contains only
+/** Model caching implementation for singleton models. Such models contains only
  * one [negated] concept in completion tree. Reduced set of operations, but very
- * efficient.
- */
-public final class ModelCacheSingleton extends ModelCacheInterface {
+ * efficient. */
+public class ModelCacheSingleton extends ModelCacheInterface {
     /** the singleton itself */
-    private final int singleton;
+    private int singleton;
 
-    public ModelCacheSingleton(final int bp) {
+    public ModelCacheSingleton(int bp) {
         super(false);
         singleton = bp;
     }
@@ -35,9 +33,10 @@ public final class ModelCacheSingleton extends ModelCacheInterface {
     // mergable part
     /** check whether two caches can be merged; @return state of "merged" model */
     @Override
-    public ModelCacheState canMerge(final ModelCacheInterface p) {
+    public ModelCacheState canMerge(ModelCacheInterface p) {
         switch (p.getCacheType()) {
-            case mctConst: // TOP/BOTTOM: the current node can't add anything to the result
+            case mctConst: // TOP/BOTTOM: the current node can't add anything to
+                           // the result
                 return p.getState();
             case mctSingleton: // it can be a clash
                 return ((ModelCacheSingleton) p).singleton == -singleton ? ModelCacheState.csInvalid
@@ -58,7 +57,7 @@ public final class ModelCacheSingleton extends ModelCacheInterface {
 
     /** log this cache entry (with given level) */
     @Override
-    public void logCacheEntry(final int level, final LogAdapter l) {
+    public void logCacheEntry(int level, LogAdapter l) {
         l.print("\nSingleton cache: element ", singleton);
     }
 }

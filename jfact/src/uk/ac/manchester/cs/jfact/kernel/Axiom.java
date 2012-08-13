@@ -19,10 +19,11 @@ import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.split.TOntologyAtom;
 
-public final class Axiom {
+public class Axiom {
     // NS for different DLTree matchers for trees in axiom
-    /// absorb into negation of a concept; @return true if absorption is performed
-    public boolean absorbIntoNegConcept(final TBox KB) {
+    // / absorb into negation of a concept; @return true if absorption is
+    // performed
+    public boolean absorbIntoNegConcept(TBox KB) {
         List<DLTree> Cons = new ArrayList<DLTree>();
         Concept Concept;
         DLTree bestConcept = null;
@@ -48,7 +49,7 @@ public final class Axiom {
         Concept = InAx.getConcept(bestConcept.getChild());
         JFactReasonerConfiguration options = KB.getOptions();
         if (options.isAbsorptionLoggingActive()) {
-            final LogAdapter logAbsorptionAdapter = options.getAbsorptionLog();
+            LogAdapter logAbsorptionAdapter = options.getAbsorptionLog();
             logAbsorptionAdapter.print(" N-Absorb GCI to concept ", Concept.getName());
             if (Cons.size() > 1) {
                 logAbsorptionAdapter.print(" (other options are");
@@ -68,11 +69,11 @@ public final class Axiom {
     }
 
     /** GCI is presented in the form (or Disjuncts); */
-    private final Set<DLTree> disjuncts = new LinkedHashSet<DLTree>();
+    private Set<DLTree> disjuncts = new LinkedHashSet<DLTree>();
     private TOntologyAtom atom;
 
     /** create a copy of a given GCI; ignore SKIP entry */
-    private Axiom copy(final DLTree skip) {
+    private Axiom copy(DLTree skip) {
         Axiom ret = new Axiom();
         for (DLTree i : disjuncts) {
             if (!i.equals(skip)) {
@@ -83,7 +84,7 @@ public final class Axiom {
     }
 
     /** simplify (OR C ...) for a non-primitive C in a given position */
-    private Axiom simplifyPosNP(final DLTree pos, final TBox KB) {
+    private Axiom simplifyPosNP(DLTree pos, TBox KB) {
         SAbsRepCN();
         Axiom ret = copy(pos);
         ret.add(DLTreeFactory.createSNFNot(InAx.getConcept(pos.getChild())
@@ -94,7 +95,7 @@ public final class Axiom {
     }
 
     /** simplify (OR ~C ...) for a non-primitive C in a given position */
-    private Axiom simplifyNegNP(final DLTree pos, final TBox KB) {
+    private Axiom simplifyNegNP(DLTree pos, TBox KB) {
         SAbsRepCN();
         Axiom ret = copy(pos);
         ret.add(InAx.getConcept(pos).getDescription().copy());
@@ -103,7 +104,7 @@ public final class Axiom {
     }
 
     /** split (OR (AND...) ...) in a given position */
-    private List<Axiom> split(List<Axiom> acc, final DLTree pos, final DLTree pAnd) {
+    private List<Axiom> split(List<Axiom> acc, DLTree pos, DLTree pAnd) {
         if (pAnd.isAND()) {
             // split the AND
             List<DLTree> children = new ArrayList<DLTree>(pAnd.getChildren());
@@ -120,7 +121,7 @@ public final class Axiom {
     }
 
     /** split an axiom; @return new axiom and/or NULL */
-    public List<Axiom> split(final TBox KB) {
+    public List<Axiom> split(TBox KB) {
         List<Axiom> acc = new ArrayList<Axiom>();
         for (DLTree p : disjuncts) {
             if (InAx.isAnd(p)) {
@@ -131,7 +132,8 @@ public final class Axiom {
                 // no need to split more than once:
                 // every extra splits would be together with unsplitted parts
                 // like: (A or B) and (C or D) would be transform into
-                // A and (C or D), B and (C or D), (A or B) and C, (A or B) and D
+                // A and (C or D), B and (C or D), (A or B) and C, (A or B) and
+                // D
                 // so just return here
                 return acc;
             }
@@ -140,7 +142,7 @@ public final class Axiom {
     }
 
     /** add DLTree to an axiom */
-    public void add(final DLTree p) {
+    public void add(DLTree p) {
         if (InAx.isBot(p)) {
             return; // nothing to do
         }
@@ -165,8 +167,8 @@ public final class Axiom {
         return b.toString();
     }
 
-    /// replace a defined concept with its description
-    public Axiom simplifyCN(final TBox tbox) {
+    // / replace a defined concept with its description
+    public Axiom simplifyCN(TBox tbox) {
         for (DLTree p : disjuncts) {
             if (InAx.isPosNP(p)) {
                 return simplifyPosNP(p, tbox);
@@ -177,8 +179,8 @@ public final class Axiom {
         return null;
     }
 
-    /// replace a universal restriction with a fresh concept
-    public Axiom simplifyForall(final TBox KB) {
+    // / replace a universal restriction with a fresh concept
+    public Axiom simplifyForall(TBox KB) {
         for (DLTree i : disjuncts) {
             if (InAx.isAbsForall(i)) {
                 return this.simplifyForall(i, KB);
@@ -187,7 +189,7 @@ public final class Axiom {
         return null;
     }
 
-    private Axiom simplifyForall(final DLTree pos, final TBox KB) {
+    private Axiom simplifyForall(DLTree pos, TBox KB) {
         SAbsRepForall();
         DLTree pAll = pos.getChild(); // (all R ~C)
         KB.getOptions().getAbsorptionLog().print(" simplify ALL expression", pAll);
@@ -196,13 +198,14 @@ public final class Axiom {
         return ret;
     }
 
-    /// create a concept expression corresponding to a given GCI; ignore SKIP entry
-    public DLTree createAnAxiom(final DLTree replaced) {
+    // / create a concept expression corresponding to a given GCI; ignore SKIP
+    // entry
+    public DLTree createAnAxiom(DLTree replaced) {
         // XXX check if this is correct
         if (disjuncts.isEmpty()) {
             return DLTreeFactory.createBottom();
         }
-        //assert !this.disjuncts.isEmpty();
+        // assert !this.disjuncts.isEmpty();
         List<DLTree> leaves = new ArrayList<DLTree>();
         for (DLTree d : disjuncts) {
             if (!d.equals(replaced)) {
@@ -213,8 +216,8 @@ public final class Axiom {
         return DLTreeFactory.createSNFNot(result);
     }
 
-    /// absorb into BOTTOM; @return true if absorption is performed
-    public boolean absorbIntoBottom(final TBox KB) {
+    // / absorb into BOTTOM; @return true if absorption is performed
+    public boolean absorbIntoBottom(TBox KB) {
         List<DLTree> Pos = new ArrayList<DLTree>(), Neg = new ArrayList<DLTree>();
         for (DLTree p : disjuncts) {
             switch (p.token()) {
@@ -246,7 +249,7 @@ public final class Axiom {
         return false;
     }
 
-    public boolean absorbIntoConcept(final TBox KB) {
+    public boolean absorbIntoConcept(TBox KB) {
         List<DLTree> Cons = new ArrayList<DLTree>();
         DLTree bestConcept = null;
         for (DLTree p : disjuncts) {
@@ -268,7 +271,7 @@ public final class Axiom {
         // normal concept absorption
         Concept Concept = InAx.getConcept(bestConcept);
         if (KB.getOptions().isAbsorptionLoggingActive()) {
-            final LogAdapter logAbsorptionAdapter = KB.getOptions().getAbsorptionLog();
+            LogAdapter logAbsorptionAdapter = KB.getOptions().getAbsorptionLog();
             logAbsorptionAdapter.print(" C-Absorb GCI to concept ", Concept.getName());
             if (Cons.size() > 1) {
                 logAbsorptionAdapter.print(" (other options are");
@@ -287,7 +290,7 @@ public final class Axiom {
         return true;
     }
 
-    public boolean absorbIntoDomain(final TBox KB) {
+    public boolean absorbIntoDomain(TBox KB) {
         List<DLTree> Cons = new ArrayList<DLTree>();
         DLTree bestSome = null;
         for (DLTree p : disjuncts) {
@@ -312,7 +315,7 @@ public final class Axiom {
             role = Role.resolveRole(Cons.get(0).getChild().getLeft());
         }
         if (KB.getOptions().isAbsorptionLoggingActive()) {
-            final LogAdapter logAbsorptionAdapter = KB.getOptions().getAbsorptionLog();
+            LogAdapter logAbsorptionAdapter = KB.getOptions().getAbsorptionLog();
             logAbsorptionAdapter.print(" R-Absorb GCI to the domain of role ",
                     role.getName());
             if (Cons.size() > 1) {
@@ -329,7 +332,7 @@ public final class Axiom {
     }
 
     /** absorb into TOP; @return true if absorption performs */
-    public boolean absorbIntoTop(final TBox KB) {
+    public boolean absorbIntoTop(TBox KB) {
         Concept C = null;
         // check whether the axiom is Top [= C
         for (DLTree p : disjuncts) {
@@ -355,7 +358,7 @@ public final class Axiom {
         // make an absorption
         DLTree desc = KB.makeNonPrimitive(C, DLTreeFactory.createTop());
         if (KB.getOptions().isAbsorptionLoggingActive()) {
-            final LogAdapter logAbsorptionAdapter = KB.getOptions().getAbsorptionLog();
+            LogAdapter logAbsorptionAdapter = KB.getOptions().getAbsorptionLog();
             logAbsorptionAdapter.print("TAxiom.absorbIntoTop() T-Absorb GCI to axiom\n");
             if (desc != null) {
                 logAbsorptionAdapter.print("s *TOP* [=", desc, " and\n");
@@ -369,7 +372,7 @@ public final class Axiom {
     }
 
     @Override
-    public boolean equals(final Object arg0) {
+    public boolean equals(Object arg0) {
         if (arg0 == null) {
             return false;
         }
@@ -392,7 +395,7 @@ public final class Axiom {
         return atom;
     }
 
-    public void setAtom(final TOntologyAtom atom) {
+    public void setAtom(TOntologyAtom atom) {
         this.atom = atom;
     }
 }

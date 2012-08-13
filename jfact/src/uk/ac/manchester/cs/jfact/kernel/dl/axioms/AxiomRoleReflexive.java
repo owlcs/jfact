@@ -11,16 +11,16 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
-public final class AxiomRoleReflexive extends AxiomSingleORole {
-    public AxiomRoleReflexive(final OWLAxiom ax, final ObjectRoleExpression role) {
+public class AxiomRoleReflexive extends AxiomSingleORole {
+    public AxiomRoleReflexive(OWLAxiom ax, ObjectRoleExpression role) {
         super(ax, role);
     }
 
-    public void accept(final DLAxiomVisitor visitor) {
+    public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+    public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 }

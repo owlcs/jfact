@@ -7,12 +7,12 @@ package uk.ac.manchester.cs.jfact.helpers;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.Arrays;
 
-public final class SortedIntList {
+public class SortedIntList {
     protected int[] values;
     protected int size = 0;
-    protected static final int defaultSize = 16;
+    protected static int defaultSize = 16;
 
-    protected final int insertionIndex(final int key) {
+    protected int insertionIndex(int key) {
         if (size == 0) {
             return 0;
         }
@@ -29,24 +29,25 @@ public final class SortedIntList {
 
     public SortedIntList() {}
 
-    public final int get(final int i) {
+    public int get(int i) {
         if (values != null) {
             return values[i];
         }
         throw new IllegalArgumentException("Illegal argument " + i + ": no such element");
     }
 
-    protected final void init() {
+    protected void init() {
         values = new int[defaultSize];
         Arrays.fill(values, Integer.MIN_VALUE);
         size = 0;
     }
 
-    public final void add(final int e) {
+    public void add(int e) {
         int pos = -1;
         if (values == null) {
             init();
-            // pos stays at -1, in an empty set that's the place to start - it will become 0
+            // pos stays at -1, in an empty set that's the place to start - it
+            // will become 0
         }
         // else find the right place
         pos = insertionIndex(e);
@@ -68,12 +69,12 @@ public final class SortedIntList {
         size++;
     }
 
-    public final void clear() {
+    public void clear() {
         values = null;
         size = 0;
     }
 
-    public final boolean contains(final int o) {
+    public boolean contains(int o) {
         if (values != null) {
             int i = insertionIndex(o);
             boolean toReturn = i > -1;
@@ -82,11 +83,11 @@ public final class SortedIntList {
         return false;
     }
 
-    public final boolean isEmpty() {
+    public boolean isEmpty() {
         return values == null;
     }
 
-    public final void remove(final int o) {
+    public void remove(int o) {
         if (values == null) {
             return;
         }
@@ -94,18 +95,18 @@ public final class SortedIntList {
         removeAt(i);
     }
 
-    public final int size() {
+    public int size() {
         return size;
     }
 
-    public final int[] toIntArray() {
+    public int[] toIntArray() {
         if (values == null) {
             return new int[0];
         }
         return Arrays.copyOf(values, size);
     }
 
-    public final void removeAt(final int i) {
+    public void removeAt(int i) {
         if (values == null) {
             return;
         }

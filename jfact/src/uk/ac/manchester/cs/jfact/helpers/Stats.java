@@ -11,14 +11,14 @@ import java.util.List;
 import uk.ac.manchester.cs.jfact.kernel.DlCompletionGraph;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
-public final class Stats {
-    public AccumulatedStatistic build(final List<AccumulatedStatistic> list) {
+public class Stats {
+    public AccumulatedStatistic build(List<AccumulatedStatistic> list) {
         AccumulatedStatistic toReturn = new AccumulatedStatistic();
         list.add(toReturn);
         return toReturn;
     }
 
-    public final static class AccumulatedStatistic {
+    public static class AccumulatedStatistic {
         /** accumulated statistic */
         private int total;
         /** current session statistic */
@@ -41,8 +41,7 @@ public final class Stats {
             local = 0;
         }
 
-        public void print(final LogAdapter l, final boolean b, final String s1,
-                final String s2) {
+        public void print(LogAdapter l, boolean b, String s1, String s2) {
             l.print(s1);
             if (b) {
                 l.print(local);
@@ -55,38 +54,38 @@ public final class Stats {
 
     // statistic elements
     /** all AccumulatedStatistic members are linked together */
-    private final List<AccumulatedStatistic> root = new ArrayList<AccumulatedStatistic>();
-    private final AccumulatedStatistic nTacticCalls = build(root);
-    private final AccumulatedStatistic nUseless = build(root);
-    private final AccumulatedStatistic nIdCalls = build(root);
-    private final AccumulatedStatistic nSingletonCalls = build(root);
-    private final AccumulatedStatistic nOrCalls = build(root);
-    private final AccumulatedStatistic nOrBrCalls = build(root);
-    private final AccumulatedStatistic nAndCalls = build(root);
-    private final AccumulatedStatistic nSomeCalls = build(root);
-    private final AccumulatedStatistic nAllCalls = build(root);
-    private final AccumulatedStatistic nFuncCalls = build(root);
-    private final AccumulatedStatistic nLeCalls = build(root);
-    private final AccumulatedStatistic nGeCalls = build(root);
-    private final AccumulatedStatistic nNNCalls = build(root);
-    private final AccumulatedStatistic nMergeCalls = build(root);
-    private final AccumulatedStatistic nAutoEmptyLookups = build(root);
-    private final AccumulatedStatistic nAutoTransLookups = build(root);
-    private final AccumulatedStatistic nSRuleAdd = build(root);
-    private final AccumulatedStatistic nSRuleFire = build(root);
-    private final AccumulatedStatistic nStateSaves = build(root);
-    private final AccumulatedStatistic nStateRestores = build(root);
-    private final AccumulatedStatistic nNodeSaves = build(root);
-    private final AccumulatedStatistic nNodeRestores = build(root);
-    private final AccumulatedStatistic nLookups = build(root);
-    private final AccumulatedStatistic nFairnessViolations = build(root);
+    private List<AccumulatedStatistic> root = new ArrayList<AccumulatedStatistic>();
+    private AccumulatedStatistic nTacticCalls = build(root);
+    private AccumulatedStatistic nUseless = build(root);
+    private AccumulatedStatistic nIdCalls = build(root);
+    private AccumulatedStatistic nSingletonCalls = build(root);
+    private AccumulatedStatistic nOrCalls = build(root);
+    private AccumulatedStatistic nOrBrCalls = build(root);
+    private AccumulatedStatistic nAndCalls = build(root);
+    private AccumulatedStatistic nSomeCalls = build(root);
+    private AccumulatedStatistic nAllCalls = build(root);
+    private AccumulatedStatistic nFuncCalls = build(root);
+    private AccumulatedStatistic nLeCalls = build(root);
+    private AccumulatedStatistic nGeCalls = build(root);
+    private AccumulatedStatistic nNNCalls = build(root);
+    private AccumulatedStatistic nMergeCalls = build(root);
+    private AccumulatedStatistic nAutoEmptyLookups = build(root);
+    private AccumulatedStatistic nAutoTransLookups = build(root);
+    private AccumulatedStatistic nSRuleAdd = build(root);
+    private AccumulatedStatistic nSRuleFire = build(root);
+    private AccumulatedStatistic nStateSaves = build(root);
+    private AccumulatedStatistic nStateRestores = build(root);
+    private AccumulatedStatistic nNodeSaves = build(root);
+    private AccumulatedStatistic nNodeRestores = build(root);
+    private AccumulatedStatistic nLookups = build(root);
+    private AccumulatedStatistic nFairnessViolations = build(root);
     // reasoning cache
-    private final AccumulatedStatistic nCacheTry = build(root);
-    private final AccumulatedStatistic nCacheFailedNoCache = build(root);
-    private final AccumulatedStatistic nCacheFailedShallow = build(root);
-    private final AccumulatedStatistic nCacheFailed = build(root);
-    private final AccumulatedStatistic nCachedSat = build(root);
-    private final AccumulatedStatistic nCachedUnsat = build(root);
+    private AccumulatedStatistic nCacheTry = build(root);
+    private AccumulatedStatistic nCacheFailedNoCache = build(root);
+    private AccumulatedStatistic nCacheFailedShallow = build(root);
+    private AccumulatedStatistic nCacheFailed = build(root);
+    private AccumulatedStatistic nCachedSat = build(root);
+    private AccumulatedStatistic nCachedUnsat = build(root);
 
     public void accumulate() {
         for (AccumulatedStatistic cur : root) {
@@ -94,8 +93,8 @@ public final class Stats {
         }
     }
 
-    public void logStatisticData(final LogAdapter o, final boolean needLocal,
-            final DlCompletionGraph CGraph, final JFactReasonerConfiguration options) {
+    public void logStatisticData(LogAdapter o, boolean needLocal,
+            DlCompletionGraph CGraph, JFactReasonerConfiguration options) {
         if (options.isUSE_REASONING_STATISTICS()) {
             nTacticCalls.print(o, needLocal, "\nThere were made ",
                     " tactic operations, of which:");

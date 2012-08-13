@@ -11,23 +11,23 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
-public final class AxiomDeclaration extends AxiomImpl {
-    private final Expression expression;
+public class AxiomDeclaration extends AxiomImpl {
+    private Expression expression;
 
-    public AxiomDeclaration(final OWLAxiom ax, final Expression d) {
+    public AxiomDeclaration(OWLAxiom ax, Expression d) {
         super(ax);
         expression = d;
     }
 
-    public void accept(final DLAxiomVisitor visitor) {
+    public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+    public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
-    public final Expression getDeclaration() {
+    public Expression getDeclaration() {
         return expression;
     }
 }

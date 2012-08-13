@@ -28,7 +28,7 @@ public class MainTestCase {
 	@Test
 	public void testLimits() {
 		for (Datatype<?> d : DatatypeFactory.getValues()) {
-			final String str = d.toString();
+			 String str = d.toString();
 			for (Facet facet : d.getFacets()) {
 				if (facet.isNumberFacet()) {
 					BigDecimal facetValue = d.getNumericFacetValue(facet);
@@ -64,9 +64,9 @@ public class MainTestCase {
 	public void testOne() {
 		for (Datatype<?> d : DatatypeFactory.getValues()) {
 			if (d.getNumeric()) {
-				final Literal<?> one = d.buildLiteral("1");
-				final Literal<?> minusone = d.buildLiteral("-1");
-				final Literal<?> zero = d.buildLiteral("0");
+				 Literal<?> one = d.buildLiteral("1");
+				 Literal<?> minusone = d.buildLiteral("-1");
+				 Literal<?> zero = d.buildLiteral("0");
 				if (!d.isCompatible(one)) {
 					assertTrue(d.toString(), d.isCompatible(minusone));
 				} else {

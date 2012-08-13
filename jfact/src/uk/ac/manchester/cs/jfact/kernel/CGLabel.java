@@ -15,7 +15,7 @@ import java.util.Set;
 import uk.ac.manchester.cs.jfact.helpers.ArrayIntMap;
 import uk.ac.manchester.cs.jfact.kernel.state.SaveState;
 
-public final class CGLabel {
+public class CGLabel {
     private static int idcounter = 0;
 
     private static int getnewId() {
@@ -23,10 +23,10 @@ public final class CGLabel {
     }
 
     /** all simple concepts, labelled a node */
-    private final CWDArray scLabel;
+    private CWDArray scLabel;
     /** all complex concepts (ie, FORALL, GE), labelled a node */
-    private final CWDArray ccLabel;
-    private final int id;
+    private CWDArray ccLabel;
+    private int id;
 
     public CGLabel() {
         scLabel = new CWDArray();
@@ -51,27 +51,27 @@ public final class CGLabel {
     }
 
     /** get (RW) label associated with the concepts defined by TAG */
-    public CWDArray getLabel(final DagTag tag) {
+    public CWDArray getLabel(DagTag tag) {
         return tag.isComplexConcept() ? ccLabel : scLabel;
     }
 
-    public void add(final DagTag tag, final ConceptWDep p) {
+    public void add(DagTag tag, ConceptWDep p) {
         getLabel(tag).private_add(p);
         clearMyCache();
     }
 
-    protected final void clearMyCache() {
+    protected void clearMyCache() {
         lesserEquals.clear();
     }
 
-    protected final void clearOthersCache() {
+    protected void clearOthersCache() {
         for (CGLabel c : lesserEquals) {
             c.lesserEquals.remove(this);
         }
     }
 
     /** check whether node is labelled by complex concept P */
-    public boolean containsCC(final int p) {
+    public boolean containsCC(int p) {
         return ccLabel.contains(p);
     }
 
@@ -80,10 +80,10 @@ public final class CGLabel {
         return id;
     }
 
-    private final Set<CGLabel> lesserEquals = Collections
+    private Set<CGLabel> lesserEquals = Collections
             .newSetFromMap(new IdentityHashMap<CGLabel, Boolean>());
 
-    public boolean lesserequal(final CGLabel label) {
+    public boolean lesserequal(CGLabel label) {
         if (this == label) {
             return true;
         }
@@ -99,7 +99,7 @@ public final class CGLabel {
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
         if (obj == null) {
             return false;
         }
@@ -116,16 +116,16 @@ public final class CGLabel {
     }
 
     /** save label using given SS */
-    public void save(final SaveState ss) {
+    public void save(SaveState ss) {
         ss.setSc(scLabel.save());
         ss.setCc(ccLabel.save());
     }
 
     /** restore label to given LEVEL using given SS */
-    public final void restore(final SaveState ss, final int level) {
+    public void restore(SaveState ss, int level) {
         scLabel.restore(ss.getSc(), level);
         ccLabel.restore(ss.getCc(), level);
-        //_clearCache();
+        // _clearCache();
         clearOthersCache();
     }
 
@@ -134,14 +134,14 @@ public final class CGLabel {
         return scLabel.toString() + ccLabel.toString();
     }
 
-    public final void init() {
+    public void init() {
         clearOthersCache();
         clearMyCache();
         scLabel.init();
         ccLabel.init();
     }
 
-    public boolean contains(final int p) {
+    public boolean contains(int p) {
         assert isCorrect(p);
         if (p == bpTOP) {
             return true;
@@ -153,7 +153,7 @@ public final class CGLabel {
         return b;
     }
 
-    public ConceptWDep getConceptWithBP(final int bp) {
+    public ConceptWDep getConceptWithBP(int bp) {
         ConceptWDep toReturn = scLabel.getConceptWithBP(bp);
         if (toReturn != null) {
             return toReturn;

@@ -8,16 +8,16 @@ package uk.ac.manchester.cs.jfact.helpers;
 import java.util.LinkedList;
 
 public class SaveStack<T> {
-    protected final LinkedList<T> list = new LinkedList<T>();
+    protected LinkedList<T> list = new LinkedList<T>();
 
     /** get an object from a fixed depth */
-    public T pop(final int depth) {
+    public T pop(int depth) {
         top(depth);
         return pop();
     }
 
     /** get an object from a fixed depth */
-    public T top(final int depth) {
+    public T top(int depth) {
         assert list.size() >= depth;
         while (list.size() > depth) {
             pop();
@@ -35,7 +35,7 @@ public class SaveStack<T> {
         return pop;
     }
 
-    public void push(final T e) {
+    public void push(T e) {
         list.push(e);
     }
 

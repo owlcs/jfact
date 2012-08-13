@@ -19,9 +19,9 @@ import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
-public final class RoleMaster {
-    protected static final class RoleCreator implements NameCreator<Role> {
-        public Role makeEntry(final String name) {
+public class RoleMaster {
+    protected static class RoleCreator implements NameCreator<Role> {
+        public Role makeEntry(String name) {
             return new Role(name);
         }
     }
@@ -29,26 +29,26 @@ public final class RoleMaster {
     /** number of the last registered role */
     private int newRoleId;
     /** all registered roles */
-    private final List<Role> roles = new ArrayList<Role>();
+    private List<Role> roles = new ArrayList<Role>();
     /** internal empty role (bottom in the taxonomy) */
-    private final Role emptyRole;
+    private Role emptyRole;
     /** internal universal role (top in the taxonomy) */
-    private final Role universalRole;
+    private Role universalRole;
     /** roles nameset */
-    private final NameSet<Role> roleNS;
+    private NameSet<Role> roleNS;
     /** Taxonomy of roles */
-    private final Taxonomy pTax;
+    private Taxonomy pTax;
     /** two halves of disjoint roles axioms */
-    private final List<Role> disjointRolesA = new ArrayList<Role>();
-    private final List<Role> disjointRolesB = new ArrayList<Role>();
+    private List<Role> disjointRolesA = new ArrayList<Role>();
+    private List<Role> disjointRolesB = new ArrayList<Role>();
     /** flag whether to create data roles or not */
-    private final boolean dataRoles;
+    private boolean dataRoles;
     /** flag if it is possible to introduce new names */
     private boolean useUndefinedNames;
-    private static final int firstRoleIndex = 2;
+    private static int firstRoleIndex = 2;
 
     /** TRole and it's inverse in RoleBox */
-    private void registerRole(final Role r) {
+    private void registerRole(Role r) {
         assert r != null && r.getInverse() == null; // sanity check
         assert r.getId() == 0; // only call it for the new roles
         if (dataRoles) {
@@ -69,11 +69,11 @@ public final class RoleMaster {
     }
 
     /** @return true if P is a role that is registered in the RM */
-    private boolean isRegisteredRole(final NamedEntry p) {
+    private boolean isRegisteredRole(NamedEntry p) {
         if (!(p instanceof Role)) {
             return false;
         }
-        final Role R = (Role) p;
+        Role R = (Role) p;
         int ind = R.getAbsoluteIndex();
         return ind >= firstRoleIndex && ind < roles.size() && roles.get(ind).equals(p);
     }
@@ -83,8 +83,8 @@ public final class RoleMaster {
         return roles.size() / 2 - 1;
     }
 
-    public RoleMaster(final boolean d, final String TopRoleName,
-            final String BotRoleName, final JFactReasonerConfiguration c) {
+    public RoleMaster(boolean d, String TopRoleName, String BotRoleName,
+            JFactReasonerConfiguration c) {
         newRoleId = 1;
         emptyRole = new Role(BotRoleName.equals("") ? "emptyRole" : BotRoleName);
         universalRole = new Role(TopRoleName.equals("") ? "universalRole" : TopRoleName);
@@ -114,7 +114,7 @@ public final class RoleMaster {
     }
 
     /** create role entry with given name */
-    public NamedEntry ensureRoleName(final String name) {
+    public NamedEntry ensureRoleName(String name) {
         // check for the Top/Bottom names
         if (name.equals(emptyRole.getName())) {
             return emptyRole;
@@ -142,7 +142,7 @@ public final class RoleMaster {
     }
 
     /** add parent for the input role */
-    public void addRoleParent(final Role role, final Role parent) {
+    public void addRoleParent(Role role, Role parent) {
         if (role.isDataRole() != parent.isDataRole()) {
             throw new ReasonerInternalException(
                     "Mixed object and data roles in role subsumption axiom");
@@ -152,7 +152,7 @@ public final class RoleMaster {
     }
 
     /** add synonym to existing role */
-    public void addRoleSynonym(final Role role, final Role syn) {
+    public void addRoleSynonym(Role role, Role syn) {
         if (!role.equals(syn)) {
             addRoleParent(role, syn);
             addRoleParent(syn, role);
@@ -160,7 +160,7 @@ public final class RoleMaster {
     }
 
     /** a pair of disjoint roles */
-    public void addDisjointRoles(final Role R, final Role S) {
+    public void addDisjointRoles(Role R, Role S) {
         // object- and data roles are always disjoint
         if (R.isDataRole() != S.isDataRole()) {
             return;
@@ -170,7 +170,7 @@ public final class RoleMaster {
     }
 
     /** change the undefined names usage policy */
-    public void setUndefinedNames(final boolean val) {
+    public void setUndefinedNames(boolean val) {
         useUndefinedNames = val;
     }
 
@@ -183,7 +183,7 @@ public final class RoleMaster {
         return pTax;
     }
 
-    public void print(final LogAdapter o, final String type) {
+    public void print(LogAdapter o, String type) {
         if (size() == 0) {
             return;
         }
@@ -204,7 +204,7 @@ public final class RoleMaster {
         return false;
     }
 
-    public void fillReflexiveRoles(final List<Role> RR) {
+    public void fillReflexiveRoles(List<Role> RR) {
         RR.clear();
         for (int i = firstRoleIndex; i < roles.size(); i++) {
             Role p = roles.get(i);
@@ -214,7 +214,7 @@ public final class RoleMaster {
         }
     }
 
-    public void addRoleParent(final DLTree tree, final Role parent) {
+    public void addRoleParent(DLTree tree, Role parent) {
         if (tree == null) {
             return;
         }
@@ -327,12 +327,12 @@ public final class RoleMaster {
         }
     }
 
-    /// @return pointer to a TOP role
+    // / @return pointer to a TOP role
     Role getTopRole() {
         return universalRole;
     }
 
-    /// @return pointer to a BOTTOM role
+    // / @return pointer to a BOTTOM role
     Role getBotRole() {
         return emptyRole;
     }

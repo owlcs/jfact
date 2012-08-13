@@ -12,11 +12,11 @@ public class UnreachableSituationException extends ReasonerInternalException {
         super("Unreachable situation!");
     }
 
-    public UnreachableSituationException(final String text) {
+    public UnreachableSituationException(String text) {
         super("Unreachable situation!\n" + text);
     }
 
-    public UnreachableSituationException(final String text, final Throwable cause) {
+    public UnreachableSituationException(String text, Throwable cause) {
         super("Unreachable situation!\n" + text, cause);
     }
 }

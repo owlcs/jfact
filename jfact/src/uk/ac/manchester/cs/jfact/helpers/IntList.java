@@ -7,26 +7,26 @@ package uk.ac.manchester.cs.jfact.helpers;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.Arrays;
 
-public final class IntList extends AbstractFastSet {
+public class IntList extends AbstractFastSet {
     protected int[] values;
     protected int size = 0;
-    protected static final int defaultSize = 16;
+    protected static int defaultSize = 16;
 
     public IntList() {}
 
-    public final int get(final int i) {
+    public int get(int i) {
         if (values != null) {
             return values[i];
         }
         throw new IllegalArgumentException("Illegal argument " + i + ": no such element");
     }
 
-    protected final void init() {
+    protected void init() {
         values = new int[defaultSize];
         size = 0;
     }
 
-    public final void add(final int e) {
+    public void add(int e) {
         if (values == null) {
             init();
         }
@@ -39,13 +39,13 @@ public final class IntList extends AbstractFastSet {
         size++;
     }
 
-    public final void addAll(final FastSet c) {
+    public void addAll(FastSet c) {
         if (c.isEmpty()) {
             return;
         }
         // merge two sorted arrays: how bad can it be?
         if (values == null) {
-            //extreme case: just copy the other set
+            // extreme case: just copy the other set
             values = Arrays.copyOf(((IntList) c).values, c.size());
             size = c.size();
             return;
@@ -55,12 +55,12 @@ public final class IntList extends AbstractFastSet {
         }
     }
 
-    public final void clear() {
+    public void clear() {
         values = null;
         size = 0;
     }
 
-    public final boolean contains(final int o) {
+    public boolean contains(int o) {
         if (values != null) {
             for (int i = 0; i < size; i++) {
                 if (values[i] == o) {
@@ -71,7 +71,7 @@ public final class IntList extends AbstractFastSet {
         return false;
     }
 
-    public final boolean containsAll(final FastSet c) {
+    public boolean containsAll(FastSet c) {
         if (c.isEmpty()) {
             return true;
         }
@@ -89,11 +89,11 @@ public final class IntList extends AbstractFastSet {
         return true;
     }
 
-    public final boolean isEmpty() {
+    public boolean isEmpty() {
         return values == null;
     }
 
-    public final boolean containsAny(final FastSet c) {
+    public boolean containsAny(FastSet c) {
         if (c.isEmpty() || isEmpty()) {
             return false;
         }
@@ -105,7 +105,7 @@ public final class IntList extends AbstractFastSet {
         return false;
     }
 
-    public final void remove(final int o) {
+    public void remove(int o) {
         if (values == null) {
             return;
         }
@@ -116,23 +116,23 @@ public final class IntList extends AbstractFastSet {
         }
     }
 
-    public final int size() {
+    public int size() {
         return size;
     }
 
-    public final int[] toIntArray() {
+    public int[] toIntArray() {
         if (values == null) {
             return new int[0];
         }
         return Arrays.copyOf(values, size);
     }
 
-    public final boolean intersect(final FastSet f) {
+    public boolean intersect(FastSet f) {
         return containsAny(f);
     }
 
     @Override
-    public final boolean equals(final Object arg0) {
+    public boolean equals(Object arg0) {
         if (arg0 == null) {
             return false;
         }
@@ -155,11 +155,11 @@ public final class IntList extends AbstractFastSet {
     }
 
     @Override
-    public final int hashCode() {
+    public int hashCode() {
         return super.hashCode();
     }
 
-    public final void removeAt(final int i) {
+    public void removeAt(int i) {
         if (values == null) {
             return;
         }
@@ -179,7 +179,7 @@ public final class IntList extends AbstractFastSet {
         }
     }
 
-    public final void removeAll(final int i, final int end) {
+    public void removeAll(int i, int end) {
         if (values == null) {
             return;
         }
@@ -206,7 +206,7 @@ public final class IntList extends AbstractFastSet {
         }
     }
 
-    public final void removeAllValues(final int... vals) {
+    public void removeAllValues(int... vals) {
         if (values == null) {
             return;
         }
@@ -218,10 +218,10 @@ public final class IntList extends AbstractFastSet {
         }
     }
 
-    public void completeSet(final int value) {
+    public void completeSet(int value) {
         for (int i = 0; i <= value; i++) {
             add(i);
         }
-        //XXX notice: these sets go to negative numbers. Is this the best way?
+        // XXX notice: these sets go to negative numbers. Is this the best way?
     }
 }

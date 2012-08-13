@@ -14,18 +14,18 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
-public final class ObjectRoleChain extends NAryExpressionImpl<ObjectRoleExpression>
-        implements NAryExpression<ObjectRoleExpression>, ObjectRoleComplexExpression {
+public class ObjectRoleChain extends NAryExpressionImpl<ObjectRoleExpression> implements
+        NAryExpression<ObjectRoleExpression>, ObjectRoleComplexExpression {
     /** create role chain from given array */
-    public ObjectRoleChain(final List<Expression> v) {
+    public ObjectRoleChain(List<Expression> v) {
         add(v);
     }
 
-    public void accept(final DLExpressionVisitor visitor) {
+    public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+    public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 }

@@ -13,11 +13,11 @@ import uk.ac.manchester.cs.jfact.split.TSplitVars;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
-public final class Ontology {
+public class Ontology {
     /** all the axioms */
-    private final List<Axiom> axioms = new ArrayList<Axiom>();
+    private List<Axiom> axioms = new ArrayList<Axiom>();
     /** expression manager that builds all the expressions for the axioms */
-    private final ExpressionManager expressionManager = new ExpressionManager();
+    private ExpressionManager expressionManager = new ExpressionManager();
     /** id to be given to the next axiom */
     private int axiomId;
     /** true iff ontology was changed */
@@ -29,7 +29,7 @@ public final class Ontology {
         changed = false;
     }
 
-    public Axiom get(final int i) {
+    public Axiom get(int i) {
         return axioms.get(i);
     }
 
@@ -44,7 +44,7 @@ public final class Ontology {
     }
 
     /** add given axiom to the ontology */
-    public Axiom add(final Axiom p) {
+    public Axiom add(Axiom p) {
         p.setId(++axiomId);
         axioms.add(p);
         changed = true;
@@ -52,7 +52,7 @@ public final class Ontology {
     }
 
     /** retract given axiom to the ontology */
-    public void retract(final Axiom p) {
+    public void retract(Axiom p) {
         if (p.getId() <= axioms.size() && axioms.get(p.getId() - 1).equals(p)) {
             changed = true;
             p.setUsed(false);
@@ -83,11 +83,11 @@ public final class Ontology {
     }
 
     /** accept method for the visitor pattern */
-    public void accept(final DLAxiomVisitor visitor) {
+    public void accept(DLAxiomVisitor visitor) {
         visitor.visitOntology(this);
     }
 
-    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+    public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visitOntology(this);
     }
 }

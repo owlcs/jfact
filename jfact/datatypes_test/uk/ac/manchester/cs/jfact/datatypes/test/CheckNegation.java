@@ -15,11 +15,11 @@ import uk.ac.manchester.cs.jfact.datatypes.NumericDatatype;
 public class CheckNegation {
 	@Test
 	public void testNegations() {
-		final DatatypeNumericEnumeration<BigInteger> four = new DatatypeNumericEnumeration<BigInteger>(
+		 DatatypeNumericEnumeration<BigInteger> four = new DatatypeNumericEnumeration<BigInteger>(
 				(NumericDatatype<BigInteger>) DatatypeFactory.INTEGER,
 				DatatypeFactory.INTEGER.buildLiteral("4"));
 		Datatype<?> d1 = new DatatypeNegation<BigInteger>(four);
-		final DatatypeNumericEnumeration<BigInteger> five = new DatatypeNumericEnumeration<BigInteger>(
+		 DatatypeNumericEnumeration<BigInteger> five = new DatatypeNumericEnumeration<BigInteger>(
 				(NumericDatatype<BigInteger>) DatatypeFactory.INTEGER,
 				DatatypeFactory.INTEGER.buildLiteral("5"));
 		Datatype<?> d2 = new DatatypeNegation<BigInteger>(five);

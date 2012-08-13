@@ -8,7 +8,7 @@ package uk.ac.manchester.cs.jfact.helpers;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class IntMap<V> {
+public class IntMap<V> {
     class Entry implements Comparable<Entry> {
         int index;
         V value;
@@ -19,7 +19,7 @@ public final class IntMap<V> {
         }
 
         @Override
-        public boolean equals(final Object obj) {
+        public boolean equals(Object obj) {
             if (obj == null) {
                 return false;
             }
@@ -32,7 +32,7 @@ public final class IntMap<V> {
             return false;
         }
 
-        public int compareTo(final Entry arg0) {
+        public int compareTo(Entry arg0) {
             return this.index - arg0.index;
         }
 
@@ -42,19 +42,19 @@ public final class IntMap<V> {
         }
     }
 
-    private final List<Entry> values = new ArrayList<Entry>();
+    private List<Entry> values = new ArrayList<Entry>();
 
     public void clear() {
         values.clear();
         size = 0;
     }
 
-    public boolean containsKey(final int key) {
+    public boolean containsKey(int key) {
         boolean toReturn = insertionIndex(key) > -1;
         return toReturn;
     }
 
-    private int insertionIndex(final int key) {
+    private int insertionIndex(int key) {
         if (size == 0) {
             return -1;
         }
@@ -93,7 +93,7 @@ public final class IntMap<V> {
         return -lowerbound - 1;
     }
 
-    public boolean containsValue(final V value) {
+    public boolean containsValue(V value) {
         for (int i = 0; i < size; i++) {
             if (values.get(i).value.equals(value)) {
                 return true;
@@ -102,7 +102,7 @@ public final class IntMap<V> {
         return false;
     }
 
-    public boolean containsAll(final IntMap<V> c) {
+    public boolean containsAll(IntMap<V> c) {
         if (c.size == 0) {
             return true;
         }
@@ -130,14 +130,16 @@ public final class IntMap<V> {
                     break;
                 }
                 if (values.get(i).index > currentValue) {
-                    // found a value larger than the value it's looking for - c is not contained
+                    // found a value larger than the value it's looking for - c
+                    // is not contained
                     return false;
                 }
                 // get(i) is < than current value: check next i
                 i++;
             }
             if (!found) {
-                // finished exploring this and currentValue was not found - it happens if currentValue < any element in this set
+                // finished exploring this and currentValue was not found - it
+                // happens if currentValue < any element in this set
                 return false;
             }
             j++;
@@ -149,11 +151,11 @@ public final class IntMap<V> {
         return values;
     }
 
-    public int index(final int key) {
+    public int index(int key) {
         return insertionIndex(key);
     }
 
-    public V get(final int key) {
+    public V get(int key) {
         int index = insertionIndex(key);
         if (index < 0) {
             return null;
@@ -175,7 +177,7 @@ public final class IntMap<V> {
 
     int size = 0;
 
-    public void put(final int key, final V value) {
+    public void put(int key, V value) {
         int index = insertionIndex(key);
         if (index > -1) {
             values.get(index).value = value;
@@ -189,7 +191,7 @@ public final class IntMap<V> {
         size++;
     }
 
-    public V remove(final int key) {
+    public V remove(int key) {
         int index = insertionIndex(key);
         if (index > -1) {
             size--;
@@ -208,7 +210,7 @@ public final class IntMap<V> {
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
         if (obj == null) {
             return false;
         }

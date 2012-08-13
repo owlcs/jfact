@@ -6,9 +6,9 @@ package uk.ac.manchester.cs.jfact.kernel.state;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** class for saving Completion Tree nodes state */
-public final class DLCompletionTreeSaveState {
+public class DLCompletionTreeSaveState {
     /** saving status of the label */
-    private final SaveState lab;
+    private SaveState lab;
     /** curLevel of the Node structure */
     private int curLevel;
     /** amount of neighbours */
@@ -35,11 +35,11 @@ public final class DLCompletionTreeSaveState {
         return nNeighbours;
     }
 
-    public void setCurLevel(final int curLevel) {
+    public void setCurLevel(int curLevel) {
         this.curLevel = curLevel;
     }
 
-    public void setnNeighbours(final int nNeighbours) {
+    public void setnNeighbours(int nNeighbours) {
         this.nNeighbours = nNeighbours;
     }
 }

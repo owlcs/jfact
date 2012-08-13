@@ -9,7 +9,7 @@ public class DatatypeUnion implements DatatypeCombination<DatatypeUnion, Datatyp
     private final String uri;
     private final Datatype<?> host;
 
-    public DatatypeUnion(final Datatype<?> host) {
+    public DatatypeUnion(Datatype<?> host) {
         uri = "union#a" + DatatypeFactory.getIndex();
         this.host = host;
     }
@@ -18,7 +18,7 @@ public class DatatypeUnion implements DatatypeCombination<DatatypeUnion, Datatyp
         return host;
     }
 
-    public DatatypeUnion(final Datatype<?> host, final Collection<Datatype<?>> list) {
+    public DatatypeUnion(Datatype<?> host, Collection<Datatype<?>> list) {
         this(host);
         basics.addAll(list);
     }
@@ -27,13 +27,13 @@ public class DatatypeUnion implements DatatypeCombination<DatatypeUnion, Datatyp
         return basics;
     }
 
-    public DatatypeUnion add(final Datatype<?> d) {
+    public DatatypeUnion add(Datatype<?> d) {
         DatatypeUnion toReturn = new DatatypeUnion(host, basics);
         toReturn.basics.add(d);
         return toReturn;
     }
 
-    public boolean isCompatible(final Literal<?> l) {
+    public boolean isCompatible(Literal<?> l) {
         // must be compatible with all basics
         // host is a shortcut to them
         if (!host.isCompatible(l)) {
@@ -51,7 +51,7 @@ public class DatatypeUnion implements DatatypeCombination<DatatypeUnion, Datatyp
         return uri;
     }
 
-    public boolean isCompatible(final Datatype<?> type) {
+    public boolean isCompatible(Datatype<?> type) {
         // must be compatible with all basics
         // host is a shortcut to them
         if (!host.isCompatible(type)) {

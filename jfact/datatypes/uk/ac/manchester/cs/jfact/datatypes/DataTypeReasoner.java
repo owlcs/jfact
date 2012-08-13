@@ -25,22 +25,21 @@ public final class DataTypeReasoner {
     private final Reference<DepSet> clashDep = new Reference<DepSet>();
     private final JFactReasonerConfiguration options;
 
-    /**
-     * set clash dep-set to DEP, report with given REASON; @return true to
-     * simplify callers
-     */
-    void reportClash(final DepSet dep, final String reason) {
-        options.getLog().printTemplate(Templates.CLASH, reason); // inform about clash...
+    /** set clash dep-set to DEP, report with given REASON; @return true to
+     * simplify callers */
+    void reportClash(DepSet dep, String reason) {
+        options.getLog().printTemplate(Templates.CLASH, reason); // inform about
+                                                                 // clash...
         clashDep.setReference(dep);
     }
 
-    public DataTypeReasoner(final JFactReasonerConfiguration o) {
+    public DataTypeReasoner(JFactReasonerConfiguration o) {
         options = o;
     }
 
     // managing DTR
     /** add data type to the reasoner */
-    private <R extends Comparable<R>> DataTypeSituation<R> getType(final Datatype<R> p) {
+    private <R extends Comparable<R>> DataTypeSituation<R> getType(Datatype<R> p) {
         if (map.containsKey(p)) {
             return (DataTypeSituation<R>) map.get(p);
         }
@@ -49,8 +48,8 @@ public final class DataTypeReasoner {
         return dataTypeAppearance;
     }
 
-    private <R extends Comparable<R>> DataTypeSituation<R> getType(
-            final DatatypeExpression<R> p) {
+    private <R extends Comparable<R>> DataTypeSituation<R>
+            getType(DatatypeExpression<R> p) {
         return this.getType(p.getHostType());
     }
 
@@ -59,8 +58,8 @@ public final class DataTypeReasoner {
         return clashDep.getReference();
     }
 
-    public boolean addDataEntry(final boolean positive, final DagTag type,
-            final NamedEntry entry, final DepSet dep) {
+    public boolean addDataEntry(boolean positive, DagTag type, NamedEntry entry,
+            DepSet dep) {
         switch (type) {
             case dtDataType: {
                 Datatype<?> t = ((DatatypeEntry) entry).getDatatype();
@@ -87,8 +86,8 @@ public final class DataTypeReasoner {
         }
     }
 
-    private <R extends Comparable<R>> boolean dataExpression(final boolean positive,
-            final DatatypeExpression<R> c, final DepSet dep) {
+    private <R extends Comparable<R>> boolean dataExpression(boolean positive,
+            DatatypeExpression<R> c, DepSet dep) {
         if (c.getKnownFacetValues().isEmpty()) {
             return false;
         }
@@ -100,15 +99,15 @@ public final class DataTypeReasoner {
         return this.getType(c).addInterval(positive, c, dep);
     }
 
-    private <R extends Comparable<R>> boolean dataValue(final boolean positive,
-            final Literal<R> c1, final DepSet dep) {
+    private <R extends Comparable<R>> boolean dataValue(boolean positive, Literal<R> c1,
+            DepSet dep) {
         Datatype<R> d = c1.getDatatypeExpression();
         if (positive) {
             this.getType(d).setPType(dep);
         } else {
             this.getType(d).setNType(dep);
         }
-        final Datatype<R> interval = d.isNumericDatatype() ? new DatatypeNumericEnumeration<R>(
+        Datatype<R> interval = d.isNumericDatatype() ? new DatatypeNumericEnumeration<R>(
                 d.asNumericDatatype(), c1) : new DatatypeEnumeration<R>(d, c1);
         options.getLog().printTemplate(Templates.INTERVAL, positive ? "+" : "-",
                 interval, "", "", "");
@@ -116,15 +115,18 @@ public final class DataTypeReasoner {
     }
 
     // try to find contradiction:
-    // -- if we have 2 same elements or direct contradiction (like "p" and "(not p)")
-    //    then addConcept() will eliminate this;
-    // => negations are not interesting also (p & ~p are eliminated; ~p means "all except p").
-    // -- all cases with 2 different values of the same class are found in previous search;
+    // -- if we have 2 same elements or direct contradiction (like "p" and
+    // "(not p)")
+    // then addConcept() will eliminate this;
+    // => negations are not interesting also (p & ~p are eliminated; ~p means
+    // "all except p").
+    // -- all cases with 2 different values of the same class are found in
+    // previous search;
     // -- The remaining problems are
-    //   - check if there are 2 different positive classes
-    //   - check if some value is present together with negation of its class
-    //   - check if some value is present together with the other class
-    //   - check if two values of different classes are present at the same time
+    // - check if there are 2 different positive classes
+    // - check if some value is present together with negation of its class
+    // - check if some value is present together with the other class
+    // - check if two values of different classes are present at the same time
     public boolean checkClash() {
         List<DataTypeSituation<?>> types = new ArrayList<DataTypeSituation<?>>(
                 map.values());
@@ -146,13 +148,15 @@ public final class DataTypeReasoner {
                     return true;
                 }
             }
-            // for every two datatypes, they must either be disjoint and opposite, or one subdatatype of the other
+            // for every two datatypes, they must either be disjoint and
+            // opposite, or one subdatatype of the other
             // if a subtype b, then b and not a, otherwise clash
-            // a subtype b => b compatible a (all a are b) but not a compatible b (some b might not be a)
+            // a subtype b => b compatible a (all a are b) but not a compatible
+            // b (some b might not be a)
             for (int i = 0; i < size; i++) {
-                final DataTypeSituation<?> ds1 = types.get(i);
+                DataTypeSituation<?> ds1 = types.get(i);
                 for (int j = i + 1; j < size; j++) {
-                    final DataTypeSituation<?> ds2 = types.get(j);
+                    DataTypeSituation<?> ds2 = types.get(j);
                     if (ds1.getType().isSubType(ds2.getType()) && ds1.hasPType()
                             && ds2.hasNType() || ds2.getType().isSubType(ds1.getType())
                             && ds2.hasPType() && ds1.hasNType()) {
@@ -162,9 +166,12 @@ public final class DataTypeReasoner {
                         clashDep.setReference(plus);
                         return true;
                     }
-                    // they're disjoint: they can't be both positive (but can be both negative)
+                    // they're disjoint: they can't be both positive (but can be
+                    // both negative)
                     if (ds1.hasPType() && ds2.hasPType()) {
-                        // special case: disjoint datatypes with overlapping value spaces, e.g., nonneginteger, and nonposinteger and value = 0
+                        // special case: disjoint datatypes with overlapping
+                        // value spaces, e.g., nonneginteger, and nonposinteger
+                        // and value = 0
                         if (!ds1.checkCompatibleValue(ds2)) {
                             options.getLog().print(" DT-TT");
                             clashDep.setReference(DepSet.plus(ds1.getPType(),
@@ -176,8 +183,9 @@ public final class DataTypeReasoner {
             }
             return false;
         }
-        // this will never be reached because the previous ifs are a partition of the possible
-        //sizes for types, but the compiler is not smart enough to see this
+        // this will never be reached because the previous ifs are a partition
+        // of the possible
+        // sizes for types, but the compiler is not smart enough to see this
         return false;
     }
 }

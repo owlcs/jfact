@@ -6,15 +6,7 @@ import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
@@ -34,7 +26,7 @@ public class WebOnt_description_logic_602_test {
         OWLClass U = f.getOWLClass(IRI.create("urn:U"));
         OWLObjectProperty p = f.getOWLObjectProperty(IRI.create("urn:p"));
         OWLObjectProperty r = f.getOWLObjectProperty(IRI.create("urn:r"));
-        final OWLObjectAllValuesFrom rAllC = f.getOWLObjectAllValuesFrom(r, C);
+        OWLObjectAllValuesFrom rAllC = f.getOWLObjectAllValuesFrom(r, C);
         m.addAxiom(o, f.getOWLEquivalentClassesAxiom(A, rAllC));
         m.addAxiom(o, f.getOWLSubClassOfAxiom(A, D));
         m.addAxiom(o, f.getOWLSubClassOfAxiom(U, C));

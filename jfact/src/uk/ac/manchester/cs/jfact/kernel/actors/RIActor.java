@@ -13,10 +13,10 @@ import uk.ac.manchester.cs.jfact.kernel.Concept;
 import uk.ac.manchester.cs.jfact.kernel.Individual;
 import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
 
-public final class RIActor implements Actor {
-    private final List<Individual> acc = new ArrayList<Individual>();
+public class RIActor implements Actor {
+    private List<Individual> acc = new ArrayList<Individual>();
 
-    private boolean tryEntry(final ClassifiableEntry p) {
+    private boolean tryEntry(ClassifiableEntry p) {
         if (p.isSystem() || !((Concept) p).isSingleton()) {
             return false;
         }
@@ -26,7 +26,7 @@ public final class RIActor implements Actor {
 
     public RIActor() {}
 
-    public boolean apply(final TaxonomyVertex v) {
+    public boolean apply(TaxonomyVertex v) {
         boolean ret = tryEntry(v.getPrimer());
         for (ClassifiableEntry p : v.begin_syn()) {
             ret |= tryEntry(p);

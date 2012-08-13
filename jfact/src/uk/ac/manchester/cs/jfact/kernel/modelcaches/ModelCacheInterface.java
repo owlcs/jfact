@@ -12,20 +12,18 @@ public abstract class ModelCacheInterface {
     private boolean hasNominalNode;
 
     /** Create cache model with given precense of nominals */
-    public ModelCacheInterface(final boolean flagNominals) {
+    public ModelCacheInterface(boolean flagNominals) {
         setHasNominalNode(flagNominals);
     }
 
-    /**
-     * check whether both models have nominals; in this case, merge is
-     * impossible
-     */
-    public boolean hasNominalClash(final ModelCacheInterface p) {
+    /** check whether both models have nominals; in this case, merge is
+     * impossible */
+    public boolean hasNominalClash(ModelCacheInterface p) {
         return isHasNominalNode() && p.isHasNominalNode();
     }
 
     /** update knoweledge about nominals in the model after merging */
-    public void updateNominalStatus(final ModelCacheInterface p) {
+    public void updateNominalStatus(ModelCacheInterface p) {
         setHasNominalNode(isHasNominalNode() | p.isHasNominalNode());
     }
 
@@ -34,7 +32,7 @@ public abstract class ModelCacheInterface {
     public abstract ModelCacheState getState();
 
     /** check whether two caches can be merged; @return state of "merged" model */
-    public abstract ModelCacheState canMerge(final ModelCacheInterface p);
+    public abstract ModelCacheState canMerge(ModelCacheInterface p);
 
     /** Get the tag identifying the cache type */
     public ModelCacheType getCacheType() {
@@ -47,9 +45,9 @@ public abstract class ModelCacheInterface {
     }
 
     /** log this cache entry (with given level) */
-    public void logCacheEntry(final int level, final LogAdapter l) {}
+    public void logCacheEntry(int level, LogAdapter l) {}
 
-    public final void setHasNominalNode(final boolean hasNominalNode) {
+    public void setHasNominalNode(boolean hasNominalNode) {
         this.hasNominalNode = hasNominalNode;
     }
 

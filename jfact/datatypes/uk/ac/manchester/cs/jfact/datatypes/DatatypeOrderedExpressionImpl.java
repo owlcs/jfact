@@ -7,26 +7,26 @@ import java.util.Collection;
 
 class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<O>
         implements DatatypeExpression<O>, OrderedDatatype<O> {
-    //TODO handle all value space restrictions in the delegations
+    // TODO handle all value space restrictions in the delegations
     private final Datatype<O> host;
 
-    public DatatypeOrderedExpressionImpl(final Datatype<O> b) {
+    public DatatypeOrderedExpressionImpl(Datatype<O> b) {
         super(b.getDatatypeURI() + "_" + DatatypeFactory.getIndex(), b.getFacets());
         if (b.isExpression()) {
             this.host = b.asExpression().getHostType();
         } else {
             this.host = b;
         }
-        this.ancestors = Utils.generateAncestors(this.host);
-        this.knownFacetValues.putAll(b.getKnownFacetValues());
+        ancestors = Utils.generateAncestors(this.host);
+        knownFacetValues.putAll(b.getKnownFacetValues());
     }
 
-    public O parseValue(final String s) {
+    public O parseValue(String s) {
         return this.host.parseValue(s);
     }
 
     @Override
-    public boolean isInValueSpace(final O l) {
+    public boolean isInValueSpace(O l) {
         if (!this.host.isInValueSpace(l)) {
             return false;
         }
@@ -62,8 +62,8 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
         return this.host;
     }
 
-    public DatatypeExpression<O> addFacet(final Facet f, final Object value) {
-        if (!this.facets.contains(f)) {
+    public DatatypeExpression<O> addFacet(Facet f, Object value) {
+        if (!facets.contains(f)) {
             throw new IllegalArgumentException("Facet " + f
                     + " not allowed tor datatype " + this.getHostType());
         }
@@ -76,8 +76,9 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
         }
         DatatypeOrderedExpressionImpl<O> toReturn = new DatatypeOrderedExpressionImpl<O>(
                 this.host);
-        toReturn.knownFacetValues.putAll(this.knownFacetValues);
-        // cannot have noth min/maxInclusive and min/maxExclusive values, so remove them if the feature is min/max
+        toReturn.knownFacetValues.putAll(knownFacetValues);
+        // cannot have noth min/maxInclusive and min/maxExclusive values, so
+        // remove them if the feature is min/max
         if (f.equals(minExclusive) || f.equals(minInclusive)) {
             toReturn.knownFacetValues.remove(minExclusive);
             toReturn.knownFacetValues.remove(minInclusive);
@@ -96,18 +97,20 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
     }
 
     public boolean emptyValueSpace() {
-        // TODO not checking string type value spaces; looks like the only sensible way would be to check for 0 length constraints
+        // TODO not checking string type value spaces; looks like the only
+        // sensible way would be to check for 0 length constraints
         if (this.getNumeric()) {
-            // remember whether it's inclusive or exclusive - needed to know if the two extremes can be the same or not
+            // remember whether it's inclusive or exclusive - needed to know if
+            // the two extremes can be the same or not
             int excluded = 0;
-            BigDecimal min = (BigDecimal) this.getFacetValue(minInclusive);
+            BigDecimal min = (BigDecimal) getFacetValue(minInclusive);
             if (min == null) {
-                min = (BigDecimal) this.getFacetValue(minExclusive);
+                min = (BigDecimal) getFacetValue(minExclusive);
                 excluded++;
             }
-            BigDecimal max = (BigDecimal) this.getFacetValue(maxInclusive);
+            BigDecimal max = (BigDecimal) getFacetValue(maxInclusive);
             if (max == null) {
-                max = (BigDecimal) this.getFacetValue(maxExclusive);
+                max = (BigDecimal) getFacetValue(maxExclusive);
                 excluded++;
             }
             return DatatypeFactory.nonEmptyInterval(min, max, excluded);
@@ -136,19 +139,19 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
     }
 
     public boolean hasMinExclusive() {
-        return this.knownFacetValues.containsKey(minExclusive);
+        return knownFacetValues.containsKey(minExclusive);
     }
 
     public boolean hasMinInclusive() {
-        return this.knownFacetValues.containsKey(minInclusive);
+        return knownFacetValues.containsKey(minInclusive);
     }
 
     public boolean hasMaxExclusive() {
-        return this.knownFacetValues.containsKey(maxExclusive);
+        return knownFacetValues.containsKey(maxExclusive);
     }
 
     public boolean hasMaxInclusive() {
-        return this.knownFacetValues.containsKey(maxInclusive);
+        return knownFacetValues.containsKey(maxInclusive);
     }
 
     public boolean hasMin() {
@@ -161,20 +164,20 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
 
     public O getMin() {
         if (this.hasMinInclusive()) {
-            return (O) this.knownFacetValues.get(minInclusive);
+            return (O) knownFacetValues.get(minInclusive);
         }
         if (this.hasMinExclusive()) {
-            return (O) this.knownFacetValues.get(minExclusive);
+            return (O) knownFacetValues.get(minExclusive);
         }
         return null;
     }
 
     public O getMax() {
         if (this.hasMaxInclusive()) {
-            return (O) this.knownFacetValues.get(maxInclusive);
+            return (O) knownFacetValues.get(maxInclusive);
         }
         if (this.hasMaxExclusive()) {
-            return (O) this.knownFacetValues.get(maxExclusive);
+            return (O) knownFacetValues.get(maxExclusive);
         }
         return null;
     }
@@ -182,6 +185,6 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
     @Override
     public String toString() {
         return this.getClass().getName() + "(" + this.host.toString() + "(extra facets:"
-                + this.knownFacetValues + "))";
+                + knownFacetValues + "))";
     }
 }

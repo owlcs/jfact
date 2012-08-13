@@ -19,29 +19,29 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
 /** Data Role equivalence axiom */
-public final class AxiomEquivalentDRoles extends AxiomImpl implements Axiom,
+public class AxiomEquivalentDRoles extends AxiomImpl implements Axiom,
         NAryExpression<DataRoleExpression> {
-    private final NAryExpressionImpl<DataRoleExpression> delegate;
+    private NAryExpressionImpl<DataRoleExpression> delegate;
 
-    public AxiomEquivalentDRoles(final OWLAxiom ax, final List<Expression> v) {
+    public AxiomEquivalentDRoles(OWLAxiom ax, List<Expression> v) {
         super(ax);
         delegate = new NAryExpressionImpl<DataRoleExpression>();
         delegate.add(v);
     }
 
-    public void accept(final DLAxiomVisitor visitor) {
+    public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+    public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
-    public void add(final Collection<Expression> v) {
+    public void add(Collection<Expression> v) {
         delegate.add(v);
     }
 
-    public void add(final Expression p) {
+    public void add(Expression p) {
         delegate.add(p);
     }
 
@@ -57,7 +57,7 @@ public final class AxiomEquivalentDRoles extends AxiomImpl implements Axiom,
         return delegate.size();
     }
 
-    public DataRoleExpression transform(final Expression arg) {
+    public DataRoleExpression transform(Expression arg) {
         return delegate.transform(arg);
     }
 }

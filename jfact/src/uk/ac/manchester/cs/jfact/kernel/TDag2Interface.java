@@ -13,24 +13,28 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
 
 /// class to translate DAG entities into the TDL* expressions
 public class TDag2Interface {
-    /// DAG to be translated
-    private final DLDag Dag;
-    /// expression manager
-    private final ExpressionManager Manager;
-    /// vector of cached expressions
-    private final List<ConceptExpression> TransConcept = new ArrayList<ConceptExpression>();
-    private final List<DataExpression> TransData = new ArrayList<DataExpression>();
+    // / DAG to be translated
+    private DLDag Dag;
+    // / expression manager
+    private ExpressionManager Manager;
+    // / vector of cached expressions
+    private List<ConceptExpression> TransConcept = new ArrayList<ConceptExpression>();
+    private List<DataExpression> TransData = new ArrayList<DataExpression>();
 
-    //	/// create concept name by named entry
-    //static ConceptName CName (  NamedEntry p ) { return dynamic_cast<const TDLConceptName*>(p->getEntity()); }
-    //	/// create individual name by named entry
-    //static IndividualName IName (  NamedEntry p ) { return dynamic_cast<const TDLIndividualName*>(p->getEntity()); }
-    //	/// create object role name by named entry
-    //static ObjectRoleName ORName (  NamedEntry p ) { return dynamic_cast<const TDLObjectRoleName*>(p->getEntity()); }
-    //	/// create data role name by named entry
-    //static DataRoleName DRName (  NamedEntry p ) { return dynamic_cast<const TDLDataRoleName*>(p->getEntity()); }
-    /// build concept expression by a vertex V
-    public ConceptExpression buildCExpr(final DLVertex v) {
+    // /// create concept name by named entry
+    // static ConceptName CName ( NamedEntry p ) { return dynamic_cast<const
+    // TDLConceptName*>(p->getEntity()); }
+    // /// create individual name by named entry
+    // static IndividualName IName ( NamedEntry p ) { return dynamic_cast<const
+    // TDLIndividualName*>(p->getEntity()); }
+    // /// create object role name by named entry
+    // static ObjectRoleName ORName ( NamedEntry p ) { return dynamic_cast<const
+    // TDLObjectRoleName*>(p->getEntity()); }
+    // /// create data role name by named entry
+    // static DataRoleName DRName ( NamedEntry p ) { return dynamic_cast<const
+    // TDLDataRoleName*>(p->getEntity()); }
+    // / build concept expression by a vertex V
+    public ConceptExpression buildCExpr(DLVertex v) {
         switch (v.getType()) {
             case dtTop:
                 return Manager.top();
@@ -72,15 +76,16 @@ public class TDag2Interface {
             case dtProj:
             case dtNN:
             case dtChoose:
-            case dtSplitConcept: // these are artificial constructions and shouldn't be visible
+            case dtSplitConcept: // these are artificial constructions and
+                                 // shouldn't be visible
                 return Manager.top();
             default:
                 throw new UnreachableSituationException();
         }
     }
 
-    /// build data expression by a vertex V
-    public DataExpression buildDExpr(final DLVertex v) {
+    // / build data expression by a vertex V
+    public DataExpression buildDExpr(DLVertex v) {
         switch (v.getType()) {
             case dtTop:
                 return Manager.dataTop();
@@ -101,8 +106,8 @@ public class TDag2Interface {
         }
     }
 
-    /// build expression by a vertex V given the DATA flag
-    public Expression buildExpr(final DLVertex v, final boolean data) {
+    // / build expression by a vertex V given the DATA flag
+    public Expression buildExpr(DLVertex v, boolean data) {
         if (data) {
             return buildDExpr(v);
         } else {
@@ -110,23 +115,24 @@ public class TDag2Interface {
         }
     }
 
-    /// init c'tor
-    public TDag2Interface(final DLDag dag, final ExpressionManager manager) {
+    // / init c'tor
+    public TDag2Interface(DLDag dag, ExpressionManager manager) {
         Dag = dag;
         Manager = manager;
         Helper.resize(TransConcept, dag.size());
         Helper.resize(TransData, dag.size());
     }
 
-    public RoleExpression getDataRoleExpression(final Role r) {
+    public RoleExpression getDataRoleExpression(Role r) {
         return Manager.dataRole(r.getName());
     }
 
-    public RoleExpression getObjectRoleExpression(final Role r) {
+    public RoleExpression getObjectRoleExpression(Role r) {
         return Manager.objectRole(r.getName());
     }
 
-    /// make sure that size of expression cache is the same as the size of a DAG
+    // / make sure that size of expression cache is the same as the size of a
+    // DAG
     public void ensureDagSize() {
         int ds = Dag.size(), ts = TransConcept.size();
         if (ds == ts) {
@@ -142,8 +148,8 @@ public class TDag2Interface {
         }
     }
 
-    /// get concept expression corresponding index of vertex
-    public ConceptExpression getCExpr(final int p) {
+    // / get concept expression corresponding index of vertex
+    public ConceptExpression getCExpr(int p) {
         if (p < 0) {
             return Manager.not(getCExpr(-p));
         }
@@ -153,8 +159,8 @@ public class TDag2Interface {
         return TransConcept.get(p);
     }
 
-    /// get data expression corresponding index of vertex
-    public DataExpression getDExpr(final int p) {
+    // / get data expression corresponding index of vertex
+    public DataExpression getDExpr(int p) {
         if (p < 0) {
             return Manager.dataNot(getDExpr(-p));
         }
@@ -166,7 +172,7 @@ public class TDag2Interface {
         return expression;
     }
 
-    public Expression getExpr(final int p, final boolean data) {
+    public Expression getExpr(int p, boolean data) {
         if (data) {
             return getDExpr(p);
         } else {

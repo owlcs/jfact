@@ -10,13 +10,13 @@ import java.util.List;
 
 public interface NAryExpression<Argument extends Expression> {
     /** transform general expression into the argument one */
-    Argument transform(final Expression arg);
+    Argument transform(Expression arg);
 
     /** add a single element to the array */
-    void add(final Expression p);
+    void add(Expression p);
 
     /** add a vector */
-    void add(final Collection<Expression> v);
+    void add(Collection<Expression> v);
 
     /** access to members */
     List<Argument> getArguments();

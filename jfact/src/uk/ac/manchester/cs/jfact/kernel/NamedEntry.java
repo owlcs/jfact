@@ -9,13 +9,13 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 
 public abstract class NamedEntry {
     /** name of the entry */
-    protected final String extName;
+    protected String extName;
     /** entry identifier */
     protected int extId;
     protected NamedEntity entity = null;
 
-    //protected final BitSet bits = new BitSet();
-    public NamedEntry(final String name) {
+    // protected BitSet bits = new BitSet();
+    public NamedEntry(String name) {
         assert name != null;
         extName = name;
         extId = 0; // sets local id
@@ -33,7 +33,7 @@ public abstract class NamedEntry {
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
         if (obj == null) {
             return false;
         }
@@ -53,7 +53,7 @@ public abstract class NamedEntry {
     }
 
     /** set internal ID */
-    public void setId(final int id) {
+    public void setId(int id) {
         extId = id;
     }
 
@@ -106,7 +106,7 @@ public abstract class NamedEntry {
         return entity;
     }
 
-    public void setEntity(final NamedEntity entity) {
+    public void setEntity(NamedEntity entity) {
         this.entity = entity;
     }
 

@@ -5,36 +5,31 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 
-public final class RATransition {
+public class RATransition {
     /** set of roles that may affect the transition */
-    private final Set<Role> label;
+    private Set<Role> label;
     BitSet cache = null;
-    /** final state of the transition */
-    private final int state;
+    /** state of the transition */
+    private int state;
 
     /** create a transition to given state */
-    public RATransition(final int st) {
+    public RATransition(int st) {
         state = st;
         label = new LinkedHashSet<Role>();
     }
 
     /** create a transition with a given label R to given state ST */
-    public RATransition(final int st, final Role R) {
+    public RATransition(int st, Role R) {
         this(st);
         label.add(R);
     }
 
     /** add label of transition TRANS to transition's label */
-    public void add(final RATransition trans) {
+    public void add(RATransition trans) {
         label.addAll(trans.label);
         cache = null;
     }
@@ -45,13 +40,13 @@ public final class RATransition {
         return label;
     }
 
-    /** give a final point of the transition */
+    /** give a point of the transition */
     public int final_state() {
         return state;
     }
 
     /** check whether transition is applicable wrt role R */
-    public boolean applicable(final Role R) {
+    public boolean applicable(Role R) {
         if (cache == null) {
             cache = new BitSet();
             for (Role t : label) {
@@ -67,7 +62,7 @@ public final class RATransition {
     }
 
     /** print the transition starting from FROM */
-    public void print(final LogAdapter o, final int from) {
+    public void print(LogAdapter o, int from) {
         o.print("\n", from, " -- ");
         if (isEmpty()) {
             o.print("e");

@@ -11,50 +11,50 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 
 /// class to hold the signature of a module
 public class TSignature {
-    /// set to keep all the elements in signature
-    private final Set<NamedEntity> set = new HashSet<NamedEntity>();
-    /// true if concept TOP-locality; false if concept BOTTOM-locality
+    // / set to keep all the elements in signature
+    private Set<NamedEntity> set = new HashSet<NamedEntity>();
+    // / true if concept TOP-locality; false if concept BOTTOM-locality
     private boolean topCLocality = false;
-    /// true if role TOP-locality; false if role BOTTOM-locality
+    // / true if role TOP-locality; false if role BOTTOM-locality
     private boolean topRLocality = false;
 
     public TSignature() {}
 
-    public TSignature(final TSignature copy) {
+    public TSignature(TSignature copy) {
         set.addAll(copy.set);
         topCLocality = copy.topCLocality;
         topRLocality = copy.topRLocality;
     }
 
-    /// add names to signature
-    public void add(final NamedEntity p) {
+    // / add names to signature
+    public void add(NamedEntity p) {
         set.add(p);
     }
 
-    /// remove given element from a signature
-    public void remove(final NamedEntity p) {
+    // / remove given element from a signature
+    public void remove(NamedEntity p) {
         set.remove(p);
     }
 
-    /// add another signature to a given one
-    void add(final TSignature Sig) {
+    // / add another signature to a given one
+    void add(TSignature Sig) {
         set.addAll(Sig.set);
     }
 
-    /// set new locality polarity
-    public void setLocality(final boolean top) {
+    // / set new locality polarity
+    public void setLocality(boolean top) {
         this.setLocality(top, top);
     }
 
-    /// set new locality polarity
-    public void setLocality(final boolean topC, final boolean topR) {
+    // / set new locality polarity
+    public void setLocality(boolean topC, boolean topR) {
         topCLocality = topC;
         topRLocality = topR;
     }
 
     // comparison
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
         if (obj == null) {
             return false;
         }
@@ -72,19 +72,19 @@ public class TSignature {
         return set.hashCode();
     }
 
-    /// check whether 2 signatures are the same
-    //	boolean operator == (  TSignature& sig )  { return Set == sig.Set; }
-    /// check whether 2 signatures are different
-    //	boolean operator != (  TSignature& sig )  { return Set != sig.Set; }
-    /// operator <
-    //	boolean operator < (  TSignature& sig )  { return Set < sig.Set; }
-    /// @return true iff signature contains given element
-    public boolean containsNamedEntity(final NamedEntity p) {
+    // / check whether 2 signatures are the same
+    // boolean operator == ( TSignature& sig ) { return Set == sig.Set; }
+    // / check whether 2 signatures are different
+    // boolean operator != ( TSignature& sig ) { return Set != sig.Set; }
+    // / operator <
+    // boolean operator < ( TSignature& sig ) { return Set < sig.Set; }
+    // / @return true iff signature contains given element
+    public boolean containsNamedEntity(NamedEntity p) {
         return set.contains(p);
     }
 
-    /// @return true iff signature contains given element
-    public boolean contains(final Expression p) {
+    // / @return true iff signature contains given element
+    public boolean contains(Expression p) {
         if (p instanceof NamedEntity) {
             return containsNamedEntity((NamedEntity) p);
         }
@@ -94,12 +94,12 @@ public class TSignature {
         return false;
     }
 
-    /// @return size of the signature
+    // / @return size of the signature
     public int size() {
         return set.size();
     }
 
-    /// clear the signature
+    // / clear the signature
     public void clear() {
         set.clear();
     }
@@ -108,17 +108,17 @@ public class TSignature {
         return set;
     }
 
-    /// @return true iff concepts are treated as TOPs
+    // / @return true iff concepts are treated as TOPs
     public boolean topCLocal() {
         return topCLocality;
     }
 
-    /// @return true iff roles are treated as TOPs
+    // / @return true iff roles are treated as TOPs
     public boolean topRLocal() {
         return topRLocality;
     }
 
-    public List<NamedEntity> intersect(final TSignature s2) {
+    public List<NamedEntity> intersect(TSignature s2) {
         List<NamedEntity> ret = new ArrayList<NamedEntity>();
         Set<NamedEntity> s = new HashSet<NamedEntity>(set);
         s.retainAll(s2.set);

@@ -6,12 +6,7 @@ import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
 import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.profiles.OWL2DLProfile;
 import org.semanticweb.owlapi.profiles.OWLProfileReport;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
@@ -29,11 +24,11 @@ public class JUnitRunner {
     private final String consequence;
     private final String description;
     OWLOntologyManager m = OWLManager.createOWLOntologyManager();
-    private final JFactReasonerConfiguration c = new JFactReasonerConfiguration(
+    private JFactReasonerConfiguration c = new JFactReasonerConfiguration(
             new SimpleConfiguration(_10000));
 
-    public JUnitRunner(final String premise, final String consequence,
-            final String testId, final TestClasses t, final String description) {
+    public JUnitRunner(String premise, String consequence, String testId, TestClasses t,
+            String description) {
         this.testId = testId;
         this.premise = premise;
         this.consequence = consequence;
@@ -41,7 +36,7 @@ public class JUnitRunner {
         this.t = t;
     }
 
-    public void setReasonerFactory(final OWLReasonerFactory f) {
+    public void setReasonerFactory(OWLReasonerFactory f) {
         this.f = f;
     }
 
@@ -49,7 +44,7 @@ public class JUnitRunner {
         return c;
     }
 
-    private boolean isConsistent(final OWLReasoner reasoner, final boolean expected) {
+    private boolean isConsistent(OWLReasoner reasoner, boolean expected) {
         try {
             boolean consistent = reasoner.isConsistent();
             return consistent;
@@ -59,8 +54,8 @@ public class JUnitRunner {
         }
     }
 
-    private boolean isEntailed(final OWLReasoner reasoner, final OWLAxiom conclusion,
-            final boolean expected) {
+    private boolean
+            isEntailed(OWLReasoner reasoner, OWLAxiom conclusion, boolean expected) {
         try {
             return reasoner.isEntailed(conclusion);
         } catch (RuntimeException e) {
@@ -104,7 +99,7 @@ public class JUnitRunner {
             }
         } catch (Exception e) {
             e.printStackTrace(System.out);
-            //System.out.println("JUnitRunner.run() premise:\n" + premise);
+            // System.out.println("JUnitRunner.run() premise:\n" + premise);
             throw new RuntimeException(e);
         }
         try {
@@ -127,8 +122,7 @@ public class JUnitRunner {
         this.run(premiseOntology, conclusionOntology);
     }
 
-    public void run(final OWLOntology premiseOntology,
-            final OWLOntology conclusionOntology) {
+    public void run(OWLOntology premiseOntology, OWLOntology conclusionOntology) {
         StringBuilder b = new StringBuilder();
         b.append("JUnitRunner.logTroubles() premise");
         b.append("\n");
@@ -203,9 +197,8 @@ public class JUnitRunner {
                 (OWLOntologyChangeListener) reasoner);
     }
 
-    public String logTroubles(final OWLOntology o, final boolean expected,
-            final boolean actual, final OWLAxiom ax, final TestClasses testclass,
-            final OWLAxiom axiom) {
+    public String logTroubles(OWLOntology o, boolean expected, boolean actual,
+            OWLAxiom ax, TestClasses testclass, OWLAxiom axiom) {
         StringBuilder b = new StringBuilder();
         b.append("JUnitRunner.logTroubles() \t");
         b.append(testclass);

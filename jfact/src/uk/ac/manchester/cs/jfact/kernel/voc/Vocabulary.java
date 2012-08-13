@@ -42,23 +42,4 @@ public final class Vocabulary {
     public static final String NONPOSINT = "http://www.w3.org/2001/XMLSchema#nonPositiveInteger";
     public static final String DATETIME = "http://www.w3.org/2001/XMLSchema#dateTime";
     public static final String DATE = "http://www.w3.org/2001/XMLSchema#date";
-    //	/** get name of the default string datatype */
-    //	public static final String getStrTypeName() {
-    //		return "http://www.w3.org/2001/XMLSchema//#string";
-    //	}
-    //
-    //	/** get name of the default integer datatype */
-    //	public static final String getIntTypeName() {
-    //		return "http://www.w3.org/2001/XMLSchema//#integer";
-    //	}
-    //
-    //	/** get name of the default floating point datatype */
-    //	public static final String getRealTypeName() {
-    //		return "http://www.w3.org/2001/XMLSchema//#float";
-    //	}
-    //
-    //	/** get name of the default boolean datatype */
-    //	public static final String getBoolTypeName() {
-    //		return "http://www.w3.org/2001/XMLSchema//#boolean";
-    //	}
 }

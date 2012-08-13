@@ -8,35 +8,38 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorAdapter;
 
 /// helper class to set signature and locality class
 public class SigAccessor extends DLExpressionVisitorAdapter {
-    /// signature of a module
+    // / signature of a module
     TSignature sig;
 
-    /// init c'tor
-    SigAccessor(final TSignature s) {
+    // / init c'tor
+    SigAccessor(TSignature s) {
         sig = new TSignature(s);
     }
 
-    /// @return true iff EXPR is a top datatype
-    static boolean isTopDT(final Expression expr) {
+    // / @return true iff EXPR is a top datatype
+    static boolean isTopDT(Expression expr) {
         return expr instanceof DataTop;
     }
 
-    //	/// @return true iff EXPR is a top datatype or a built-in datatype; FIXME for now -- just top
-    //	static boolean isTopOrBuiltInDT(final Expression expr) {
-    //		return isTopDT(expr);
-    //	}
+    // /// @return true iff EXPR is a top datatype or a built-in datatype; FIXME
+    // for now -- just top
+    // static boolean isTopOrBuiltInDT( Expression expr) {
+    // return isTopDT(expr);
+    // }
     //
-    //	/// @return true iff EXPR is a top datatype or an infinite built-in datatype; FIXME for now -- just top
-    //	static boolean isTopOrBuiltInInfDT(final Expression expr) {
-    //		return isTopDT(expr);
-    //	}
-    /// @return true iff EXPR is a top datatype or a built-in datatype;
-    public boolean isTopOrBuiltInDataType(final Expression expr) {
+    // /// @return true iff EXPR is a top datatype or an infinite built-in
+    // datatype; FIXME for now -- just top
+    // static boolean isTopOrBuiltInInfDT( Expression expr) {
+    // return isTopDT(expr);
+    // }
+    // / @return true iff EXPR is a top datatype or a built-in datatype;
+    public boolean isTopOrBuiltInDataType(Expression expr) {
         return isTopDT(expr) || expr instanceof Datatype<?>;
     }
 
-    /// @return true iff EXPR is a top datatype or an infinite built-in datatype; FIXME add real/fraction later
-    public boolean isTopOrBuiltInInfDataType(final Expression expr) {
+    // / @return true iff EXPR is a top datatype or an infinite built-in
+    // datatype; FIXME add real/fraction later
+    public boolean isTopOrBuiltInInfDataType(Expression expr) {
         if (isTopDT(expr)) {
             return true;
         }
@@ -45,12 +48,12 @@ public class SigAccessor extends DLExpressionVisitorAdapter {
                         cardinality.COUNTABLYINFINITE);
     }
 
-    /// @return true iff concepts are treated as TOPs
+    // / @return true iff concepts are treated as TOPs
     public boolean topCLocal() {
         return sig.topCLocal();
     }
 
-    /// @return true iff roles are treated as TOPs
+    // / @return true iff roles are treated as TOPs
     public boolean topRLocal() {
         return sig.topRLocal();
     }

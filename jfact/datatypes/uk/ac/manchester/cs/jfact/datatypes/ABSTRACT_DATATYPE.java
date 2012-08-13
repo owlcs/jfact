@@ -1,11 +1,7 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
@@ -16,7 +12,7 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
     protected final Map<Facet, Object> knownFacetValues = new HashMap<Facet, Object>();
     protected final String uri;
 
-    public ABSTRACT_DATATYPE(final String u, final Set<Facet> f) {
+    public ABSTRACT_DATATYPE(String u, Set<Facet> f) {
         this.facets = Collections.unmodifiableSet(f);
         this.uri = u;
     }
@@ -31,7 +27,7 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
         if (super.equals(obj)) {
             return true;
         }
@@ -53,7 +49,7 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
         return new HashMap<Facet, Object>(this.knownFacetValues);
     }
 
-    public Comparable<?> getFacetValue(final Facet f) {
+    public Comparable<?> getFacetValue(Facet f) {
         if (this.knownFacetValues.containsKey(f)) {
             if (f.isNumberFacet()) {
                 return this.getNumericFacetValue(f);
@@ -64,7 +60,7 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
         return null;
     }
 
-    public BigDecimal getNumericFacetValue(final Facet f) {
+    public BigDecimal getNumericFacetValue(Facet f) {
         if (this.knownFacetValues.containsKey(f)) {
             if (f.isNumberFacet()) {
                 return (BigDecimal) f.parseNumber(this.knownFacetValues.get(f));
@@ -73,7 +69,7 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
         return null;
     }
 
-    public boolean isSubType(final Datatype<?> type) {
+    public boolean isSubType(Datatype<?> type) {
         return this.ancestors.contains(type) || this.equals(type);
     }
 
@@ -92,12 +88,12 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
                 || type.isSubType(this) || this.isSubType(type);
     }
 
-    public boolean isCompatible(final Literal<?> l) {
+    public boolean isCompatible(Literal<?> l) {
         if (!this.isCompatible(l.getDatatypeExpression())) {
             return false;
         }
         try {
-            R value = this.parseValue(l.value());
+            R value = parseValue(l.value());
             return this.isInValueSpace(value);
         } catch (RuntimeException e) {
             // parsing exceptions will be caught here
@@ -105,16 +101,17 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
         }
     }
 
-    // most common answer; restrictions on value spaces to be tested in subclasses
-    public boolean isInValueSpace(final R l) {
+    // most common answer; restrictions on value spaces to be tested in
+    // subclasses
+    public boolean isInValueSpace(R l) {
         return true;
     }
 
-    public void accept(final DLExpressionVisitor visitor) {
+    public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+    public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
@@ -130,7 +127,7 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
         return (DatatypeExpression<R>) this;
     }
 
-    public Literal<R> buildLiteral(final String s) {
+    public Literal<R> buildLiteral(String s) {
         if (this.getNumeric()) {
             return new NumericLiteralImpl<R>(this.asNumericDatatype(), s);
         }
@@ -157,8 +154,8 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
         return cardinality.COUNTABLYINFINITE;
     }
 
-    <T extends Comparable<T>> boolean overlapping(final OrderedDatatype<T> first,
-            final OrderedDatatype<T> second) {
+    <T extends Comparable<T>> boolean overlapping(OrderedDatatype<T> first,
+            OrderedDatatype<T> second) {
         if (first.hasMaxInclusive() && second.hasMinInclusive()) {
             return first.getMax().compareTo(second.getMin()) >= 0;
         }

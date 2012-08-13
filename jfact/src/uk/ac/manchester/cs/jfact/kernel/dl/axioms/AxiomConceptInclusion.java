@@ -11,30 +11,29 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
-public final class AxiomConceptInclusion extends AxiomImpl {
-    private final ConceptExpression subConcept;
-    private final ConceptExpression superConcept;
+public class AxiomConceptInclusion extends AxiomImpl {
+    private ConceptExpression subConcept;
+    private ConceptExpression superConcept;
 
-    public AxiomConceptInclusion(final OWLAxiom ax, final ConceptExpression sub,
-            final ConceptExpression sup) {
+    public AxiomConceptInclusion(OWLAxiom ax, ConceptExpression sub, ConceptExpression sup) {
         super(ax);
         subConcept = sub;
         superConcept = sup;
     }
 
-    public void accept(final DLAxiomVisitor visitor) {
+    public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+    public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
-    public final ConceptExpression getSubConcept() {
+    public ConceptExpression getSubConcept() {
         return subConcept;
     }
 
-    public final ConceptExpression getSupConcept() {
+    public ConceptExpression getSupConcept() {
         return superConcept;
     }
 

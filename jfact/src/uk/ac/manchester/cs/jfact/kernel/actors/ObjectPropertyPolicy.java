@@ -11,8 +11,8 @@ import uk.ac.manchester.cs.jfact.kernel.Role;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 
 /** policy for object properties */
-public final class ObjectPropertyPolicy implements Policy {
-    public boolean applicable(final ClassifiableEntry p) {
+public class ObjectPropertyPolicy implements Policy {
+    public boolean applicable(ClassifiableEntry p) {
         return true;
     }
 
@@ -20,7 +20,7 @@ public final class ObjectPropertyPolicy implements Policy {
         return false;
     }
 
-    public Expression buildTree(final ExpressionManager EM, final ClassifiableEntry p) {
+    public Expression buildTree(ExpressionManager EM, ClassifiableEntry p) {
         return p.getId() >= 0 ? EM.objectRole(p.getName()) : EM.inverse(EM
                 .objectRole(((Role) p).realInverse().getName()));
     }

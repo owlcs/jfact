@@ -14,38 +14,38 @@ public class Facets {
         final String uri;
         final String fragment;
 
-        public AbstractFacet(final String u) {
-            this.uri = DatatypeFactory.namespace + u;
-            this.fragment = u;
+        public AbstractFacet(String u) {
+            uri = DatatypeFactory.namespace + u;
+            fragment = u;
         }
 
         public String getURI() {
-            return this.uri;
+            return uri;
         }
 
         @Override
         public String toString() {
-            return "facet[" + this.fragment + "]";
+            return "facet[" + fragment + "]";
         }
 
         @Override
         public int hashCode() {
-            return this.uri.hashCode();
+            return uri.hashCode();
         }
 
         @Override
-        public boolean equals(final Object obj) {
+        public boolean equals(Object obj) {
             if (super.equals(obj)) {
                 return true;
             }
             if (obj instanceof Facet) {
-                return this.uri.equals(((Facet) obj).getURI());
+                return uri.equals(((Facet) obj).getURI());
             }
             return false;
         }
 
-        public BigDecimal parseNumber(final Object value) {
-            if (!this.isNumberFacet()) {
+        public BigDecimal parseNumber(Object value) {
+            if (!isNumberFacet()) {
                 throw new UnsupportedOperationException(
                         "Only number facets can parse numbers");
             }
@@ -60,13 +60,14 @@ public class Facets {
                     return new BigDecimal((String) value);
                 }
                 if (value instanceof Literal) {
-                    final Object typedValue = ((Literal<?>) value).typedValue();
+                    Object typedValue = ((Literal<?>) value).typedValue();
                     if (typedValue instanceof Number) {
                         return new BigDecimal(typedValue.toString());
                     }
                     // else it's not parseable anyway...
                 }
-                // any other type, its string form must be parseable by BigDecimal - or exceptions will be spat out
+                // any other type, its string form must be parseable by
+                // BigDecimal - or exceptions will be spat out
                 return new BigDecimal(value.toString());
             } catch (NumberFormatException e) {
                 throw new NumberFormatException("Cannot parse '" + value.toString()
@@ -74,13 +75,13 @@ public class Facets {
             }
         }
 
-        public Comparable<?> parse(final Object o) {
+        public Comparable<?> parse(Object o) {
             return (Comparable<?>) o;
         }
     }
 
     private static class LimitFacet extends AbstractFacet {
-        public LimitFacet(final String u) {
+        public LimitFacet(String u) {
             super(u);
         }
 
@@ -98,17 +99,17 @@ public class Facets {
          * realized. The value of whiteSpace must be one of {preserve, replace,
          * collapse}.
          */
-        //preserve
+        // preserve
         /*
          * No normalization is done, the value is not changed (this is the
          * behavior required by [XML 1.0 (Second Edition)] for element content)
          */
-        //replace
+        // replace
         /*
          * All occurrences of #x9 (tab), #xA (line feed) and #xD (carriage
          * return) are replaced with #x20 (space)
          */
-        //collapse
+        // collapse
         /*
          * After the processing implied by replace, contiguous sequences of
          * #x20's are collapsed to a single #x20, and leading and trailing
@@ -123,19 +124,19 @@ public class Facets {
          */
         preserve {
             @Override
-            public String normalize(final String input) {
+            public String normalize(String input) {
                 return input;
             }
         },
         replace {
             @Override
-            public String normalize(final String input) {
+            public String normalize(String input) {
                 return input.replace('\t', ' ').replace('\n', ' ').replace('\r', ' ');
             }
         },
         collapse {
             @Override
-            public String normalize(final String input) {
+            public String normalize(String input) {
                 StringBuilder b = new StringBuilder(replace.normalize(input));
                 for (int i = 0; i < b.length(); i++) {
                     if (b.charAt(i) == ' ') {
@@ -161,7 +162,7 @@ public class Facets {
         }
 
         @Override
-        public whitespace parse(final Object value) {
+        public whitespace parse(Object value) {
             if (value instanceof whitespace) {
                 return (whitespace) value;
             }
@@ -178,7 +179,7 @@ public class Facets {
         }
 
         @Override
-        public String parse(final Object value) {
+        public String parse(Object value) {
             return value.toString();
         }
     };
@@ -220,7 +221,7 @@ public class Facets {
             length, maxExclusive, maxInclusive, minExclusive, minInclusive, maxLength,
             minLength, pattern, totalDigits, whiteSpace);
 
-    public static Facet parse(final OWLFacet f) {
+    public static Facet parse(OWLFacet f) {
         switch (f) {
             case LENGTH:
                 return length;

@@ -1,45 +1,9 @@
 package uk.ac.manchester.cs.jfact.helpers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomConceptInclusion;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleDomain;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleFunctional;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleRange;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleSubsumption;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDeclaration;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDifferentIndividuals;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDisjointConcepts;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDisjointDRoles;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDisjointORoles;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDisjointUnion;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomEquivalentConcepts;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomEquivalentDRoles;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomEquivalentORoles;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomFairnessConstraint;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomInstanceOf;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleDomain;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleFunctional;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleRange;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleSubsumption;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRelatedTo;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRelatedToNot;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleAsymmetric;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleInverse;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleInverseFunctional;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleIrreflexive;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleReflexive;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleSymmetric;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleTransitive;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomSameIndividuals;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOf;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOfNot;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
@@ -47,23 +11,23 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorAdapter;
 
 @SuppressWarnings("unused")
-//XXX verify unused parameters
+// XXX verify unused parameters
 public class ELFAxiomChecker extends DLAxiomVisitorAdapter {
     ELFExpressionChecker eCh = new ELFExpressionChecker();
     boolean value;
 
-    boolean v(final Expression expr) {
+    boolean v(Expression expr) {
         value = eCh.v(expr);
         return value;
     }
 
     @Override
-    public void visit(final AxiomDeclaration axiom) {
+    public void visit(AxiomDeclaration axiom) {
         v(axiom.getDeclaration());
     }
 
     @Override
-    public void visit(final AxiomEquivalentConcepts axiom) {
+    public void visit(AxiomEquivalentConcepts axiom) {
         value = false;
         for (Expression p : axiom.getArguments()) {
             if (!v(p)) {
@@ -74,7 +38,7 @@ public class ELFAxiomChecker extends DLAxiomVisitorAdapter {
     }
 
     @Override
-    public void visit(final AxiomDisjointConcepts axiom) {
+    public void visit(AxiomDisjointConcepts axiom) {
         value = false;
         for (Expression p : axiom.getArguments()) {
             if (!v(p)) {
@@ -85,12 +49,12 @@ public class ELFAxiomChecker extends DLAxiomVisitorAdapter {
     }
 
     @Override
-    public void visit(final AxiomDisjointUnion axiom) {
+    public void visit(AxiomDisjointUnion axiom) {
         value = axiom.size() > 1;
     }
 
     @Override
-    public void visit(final AxiomEquivalentORoles axiom) {
+    public void visit(AxiomEquivalentORoles axiom) {
         value = false;
         for (Expression p : axiom.getArguments()) {
             if (!v(p)) {
@@ -101,148 +65,148 @@ public class ELFAxiomChecker extends DLAxiomVisitorAdapter {
     }
 
     @Override
-    public void visit(final AxiomEquivalentDRoles axiom) {
+    public void visit(AxiomEquivalentDRoles axiom) {
         value = false;
     }
 
     @Override
-    public void visit(final AxiomDisjointORoles axiom) {
+    public void visit(AxiomDisjointORoles axiom) {
         value = false;
     }
 
     @Override
-    public void visit(final AxiomDisjointDRoles axiom) {
+    public void visit(AxiomDisjointDRoles axiom) {
         value = false;
     }
 
     @Override
-    public void visit(final AxiomSameIndividuals axiom) {
+    public void visit(AxiomSameIndividuals axiom) {
         value = false;
     }
 
     @Override
-    public void visit(final AxiomDifferentIndividuals axiom) {
+    public void visit(AxiomDifferentIndividuals axiom) {
         value = false;
     }
 
     @Override
-    public void visit(final AxiomFairnessConstraint axiom) {
+    public void visit(AxiomFairnessConstraint axiom) {
         value = false;
     }
 
     @Override
-    public void visit(final AxiomRoleInverse axiom) {
+    public void visit(AxiomRoleInverse axiom) {
         value = false;
     }
 
     @Override
-    public void visit(final AxiomORoleSubsumption axiom) {
+    public void visit(AxiomORoleSubsumption axiom) {
         if (v(axiom.getSubRole())) {
             v(axiom.getRole());
         }
     }
 
     @Override
-    public void visit(final AxiomDRoleSubsumption axiom) {
+    public void visit(AxiomDRoleSubsumption axiom) {
         value = false;
     }
 
     // FIXME!! check later
     @Override
-    public void visit(final AxiomORoleDomain axiom) {
+    public void visit(AxiomORoleDomain axiom) {
         value = false;
     }
 
     @Override
-    public void visit(final AxiomDRoleDomain axiom) {
+    public void visit(AxiomDRoleDomain axiom) {
         value = false;
     }
 
     // FIXME!! check later
     @Override
-    public void visit(final AxiomORoleRange axiom) {
+    public void visit(AxiomORoleRange axiom) {
         value = false;
     }
 
     @Override
-    public void visit(final AxiomDRoleRange axiom) {
+    public void visit(AxiomDRoleRange axiom) {
         value = false;
     }
 
     @Override
-    public void visit(final AxiomRoleTransitive axiom) {
+    public void visit(AxiomRoleTransitive axiom) {
         value = true;
     }
 
     @Override
-    public void visit(final AxiomRoleReflexive axiom) {
+    public void visit(AxiomRoleReflexive axiom) {
         value = false;
     }
 
     @Override
-    public void visit(final AxiomRoleIrreflexive axiom) {
+    public void visit(AxiomRoleIrreflexive axiom) {
         value = false;
     }
 
     @Override
-    public void visit(final AxiomRoleSymmetric axiom) {
+    public void visit(AxiomRoleSymmetric axiom) {
         value = false;
     }
 
     @Override
-    public void visit(final AxiomRoleAsymmetric axiom) {
+    public void visit(AxiomRoleAsymmetric axiom) {
         value = false;
     }
 
     @Override
-    public void visit(final AxiomORoleFunctional axiom) {
+    public void visit(AxiomORoleFunctional axiom) {
         value = false;
     }
 
     @Override
-    public void visit(final AxiomDRoleFunctional axiom) {
+    public void visit(AxiomDRoleFunctional axiom) {
         value = false;
     }
 
     @Override
-    public void visit(final AxiomRoleInverseFunctional axiom) {
+    public void visit(AxiomRoleInverseFunctional axiom) {
         value = false;
     }
 
     @Override
-    public void visit(final AxiomConceptInclusion axiom) {
+    public void visit(AxiomConceptInclusion axiom) {
         if (v(axiom.getSubConcept())) {
             v(axiom.getSupConcept());
         }
     }
 
     @Override
-    public void visit(final AxiomInstanceOf axiom) {
+    public void visit(AxiomInstanceOf axiom) {
         value = false;
     }
 
     @Override
-    public void visit(final AxiomRelatedTo axiom) {
+    public void visit(AxiomRelatedTo axiom) {
         value = false;
     }
 
     @Override
-    public void visit(final AxiomRelatedToNot axiom) {
+    public void visit(AxiomRelatedToNot axiom) {
         value = false;
     }
 
     @Override
-    public void visit(final AxiomValueOf axiom) {
+    public void visit(AxiomValueOf axiom) {
         value = false;
     }
 
     @Override
-    public void visit(final AxiomValueOfNot axiom) {
+    public void visit(AxiomValueOfNot axiom) {
         value = false;
     }
 
     @Override
-    public void visitOntology(final Ontology ontology) {
+    public void visitOntology(Ontology ontology) {
         value = true;
         for (Axiom p : ontology.getAxioms()) {
             if (p.isUsed()) {
@@ -260,80 +224,82 @@ public class ELFAxiomChecker extends DLAxiomVisitorAdapter {
     }
 }
 
-/// pattern for the rule. Contains apply() method with updates of the monitored set
+// / pattern for the rule. Contains apply() method with updates of the monitored
+// set
 class TELFRule {
-    /// reasoner that is used to add actions. The number of rules = the number of axioms, so the price is not too bad memory-wise.
+    // / reasoner that is used to add actions. The number of rules = the number
+    // of axioms, so the price is not too bad memory-wise.
     ELFReasoner ER;
 
-    /// init c'tor
-    TELFRule(final ELFReasoner er) {
+    // / init c'tor
+    TELFRule(ELFReasoner er) {
         ER = er;
     }
 
-    /// apply rule with fresh class C added to watching part
-    void apply(final TELFConcept addedC) {}
+    // / apply rule with fresh class C added to watching part
+    void apply(TELFConcept addedC) {}
 
-    /// apply rule with fresh pair (C,D) added to watching part
-    void apply(final TELFConcept addedC, final TELFConcept addedD) {}
+    // / apply rule with fresh pair (C,D) added to watching part
+    void apply(TELFConcept addedC, TELFConcept addedD) {}
 }
 
-//-------------------------------------------------------------
+// -------------------------------------------------------------
 // Concepts and roles, i.e. S(C) and R(C,D)
-//-------------------------------------------------------------
-/// aux class to support set of rules and rule applications
+// -------------------------------------------------------------
+// / aux class to support set of rules and rule applications
 class TRuleSet {
-    /// set of rules to apply on change
+    // / set of rules to apply on change
     List<TELFRule> Rules = new ArrayList<TELFRule>();
 
-    /// apply all rules with a single argument
-    void applyRules(final TELFConcept addedC) {
+    // / apply all rules with a single argument
+    void applyRules(TELFConcept addedC) {
         for (TELFRule p : Rules) {
             p.apply(addedC);
         }
     }
 
-    /// apply all rules with two arguments
-    void applyRules(final TELFConcept addedC, final TELFConcept addedD) {
+    // / apply all rules with two arguments
+    void applyRules(TELFConcept addedC, TELFConcept addedD) {
         for (TELFRule p : Rules) {
             p.apply(addedC, addedD);
         }
     }
 
-    /// add rule to a set
-    void addRule(final TELFRule rule) {
+    // / add rule to a set
+    void addRule(TELFRule rule) {
         Rules.add(rule);
     }
 }
 
-/// concept, set S(C) and aux things
+// / concept, set S(C) and aux things
 class TELFConcept extends TRuleSet {
-    /// original concept (if any)
+    // / original concept (if any)
     ConceptExpression Origin;
-    /// set of supers (built during classification)
+    // / set of supers (built during classification)
     Set<TELFConcept> Supers = new HashSet<TELFConcept>();
 
-    /// add C to supers
-    void addSuper(final TELFConcept C) {
+    // / add C to supers
+    void addSuper(TELFConcept C) {
         Supers.add(C);
     }
 
-    /// empty c'tor
+    // / empty c'tor
     TELFConcept() {
         Origin = null;
     }
 
-    /// init c'tor
-    TELFConcept(final ConceptExpression origin) {
+    // / init c'tor
+    TELFConcept(ConceptExpression origin) {
         Origin = origin;
     }
 
-    /// check whether concept C is contained in supers
-    boolean hasSuper(final TELFConcept C) {
+    // / check whether concept C is contained in supers
+    boolean hasSuper(TELFConcept C) {
         return Supers.contains(C);
     }
 
-    /// add an super concept
-    void addC(final TELFConcept C) {
+    // / add an super concept
+    void addC(TELFConcept C) {
         if (hasSuper(C)) {
             return;
         }
@@ -342,30 +308,30 @@ class TELFConcept extends TRuleSet {
     }
 }
 
-/// role, set R(C,D)
+// / role, set R(C,D)
 class TELFRole extends TRuleSet {
-    /// original role (if any)
+    // / original role (if any)
     ObjectRoleExpression Origin;
-    /// map itself
+    // / map itself
     Map<TELFConcept, Set<TELFConcept>> PredMap = new HashMap<TELFConcept, Set<TELFConcept>>();
 
-    /// add (C,D) to label
-    void addLabel(final TELFConcept C, final TELFConcept D) {
+    // / add (C,D) to label
+    void addLabel(TELFConcept C, TELFConcept D) {
         PredMap.get(D).add(C);
     }
 
-    /// empty c'tor
+    // / empty c'tor
     TELFRole() {
         Origin = null;
     }
 
-    /// init c'tor
-    TELFRole(final ObjectRoleExpression origin) {
+    // / init c'tor
+    TELFRole(ObjectRoleExpression origin) {
         Origin = origin;
     }
 
-    /// get the (possibly empty) set of predecessors of given D
-    Set<TELFConcept> getPredSet(final TELFConcept D) {
+    // / get the (possibly empty) set of predecessors of given D
+    Set<TELFConcept> getPredSet(TELFConcept D) {
         return PredMap.get(D);
     }
 
@@ -373,13 +339,13 @@ class TELFRole extends TRuleSet {
         return PredMap.entrySet();
     }
 
-    /// check whether (C,D) is in the R-set
-    boolean hasLabel(final TELFConcept C, final TELFConcept D) {
+    // / check whether (C,D) is in the R-set
+    boolean hasLabel(TELFConcept C, TELFConcept D) {
         return PredMap.get(D).contains(C);
     }
 
-    /// add pair (C,D) to a set
-    void addR(final TELFConcept C, final TELFConcept D) {
+    // / add pair (C,D) to a set
+    void addR(TELFConcept C, TELFConcept D) {
         if (hasLabel(C, D)) {
             return;
         }
@@ -388,33 +354,33 @@ class TELFRole extends TRuleSet {
     }
 }
 
-//-------------------------------------------------------------
+// -------------------------------------------------------------
 // Action class
-//-------------------------------------------------------------
-/// single algorithm action (application of a rule)
+// -------------------------------------------------------------
+// / single algorithm action (application of a rule)
 class ELFAction {
-    /// role R corresponded to R(C,D)
+    // / role R corresponded to R(C,D)
     TELFRole R = null;
-    /// concept C; to add
+    // / concept C; to add
     TELFConcept C = null;
-    /// concept D; to add
+    // / concept D; to add
     TELFConcept D = null;
 
-    /// init c'tor for C action
-    ELFAction(final TELFConcept c, final TELFConcept d) {
+    // / init c'tor for C action
+    ELFAction(TELFConcept c, TELFConcept d) {
         R = null;
         C = c;
         D = d;
     }
 
-    /// init c'tor for R action
-    ELFAction(final TELFRole r, final TELFConcept c, final TELFConcept d) {
+    // / init c'tor for R action
+    ELFAction(TELFRole r, TELFConcept c, TELFConcept d) {
         R = r;
         C = c;
         D = d;
     }
 
-    /// action itself, depending on the R state
+    // / action itself, depending on the R state
     void apply() {
         if (R != null) {
             R.addR(C, D);

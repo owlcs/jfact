@@ -9,9 +9,9 @@ import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 
-public final class DlCompletionTreeArc {
+public class DlCompletionTreeArc {
     /** pointer to "to" node */
-    private final DlCompletionTree node;
+    private DlCompletionTree node;
     /** role, labelling given arc */
     protected Role role;
     /** dep-set of the arc */
@@ -21,16 +21,14 @@ public final class DlCompletionTreeArc {
     /** true if the edge going from a predecessor to a successor */
     private boolean succEdge = true;
 
-    /**
-     * init an arc with R as a label and NODE on given LEVEL; use it inside
-     * MAKEARCS only
-     */
+    /** init an arc with R as a label and NODE on given LEVEL; use it inside
+     * MAKEARCS only */
     /** class for restoring edge */
-    final static class EdgeRestorer extends Restorer {
-        private final DlCompletionTreeArc arc;
-        private final Role role;
+    static class EdgeRestorer extends Restorer {
+        private DlCompletionTreeArc arc;
+        private Role role;
 
-        public EdgeRestorer(final DlCompletionTreeArc q) {
+        public EdgeRestorer(DlCompletionTreeArc q) {
             arc = q;
             role = q.role;
         }
@@ -43,11 +41,11 @@ public final class DlCompletionTreeArc {
     }
 
     /** class for restoring dep-set */
-    final static class EdgeDepRestorer extends Restorer {
-        private final DlCompletionTreeArc arc;
-        private final DepSet dep;
+    static class EdgeDepRestorer extends Restorer {
+        private DlCompletionTreeArc arc;
+        private DepSet dep;
 
-        public EdgeDepRestorer(final DlCompletionTreeArc q) {
+        public EdgeDepRestorer(DlCompletionTreeArc q) {
             arc = q;
             dep = DepSet.create(q.getDep());
         }
@@ -59,12 +57,12 @@ public final class DlCompletionTreeArc {
     }
 
     /** set given arc as a reverse of current */
-    public void setReverse(final DlCompletionTreeArc v) {
+    public void setReverse(DlCompletionTreeArc v) {
         reverse = v;
         v.reverse = this;
     }
 
-    public DlCompletionTreeArc(final Role r, final DepSet dep, final DlCompletionTree n) {
+    public DlCompletionTreeArc(Role r, DepSet dep, DlCompletionTree n) {
         role = r;
         depSet = DepSet.create(dep);
         node = n;
@@ -82,7 +80,7 @@ public final class DlCompletionTreeArc {
     }
 
     /** set the successor field */
-    public void setSuccEdge(final boolean val) {
+    public void setSuccEdge(boolean val) {
         succEdge = val;
     }
 
@@ -107,12 +105,12 @@ public final class DlCompletionTreeArc {
     }
 
     /** check if arc is labelled by a super-role of PROLE */
-    public boolean isNeighbour(final Role pRole) {
+    public boolean isNeighbour(Role pRole) {
         return role != null && role.lesserequal(pRole);
     }
 
     /** same as above; fills DEP with current DEPSET if so */
-    public boolean isNeighbour(final Role pRole, final DepSet dep) {
+    public boolean isNeighbour(Role pRole, DepSet dep) {
         if (isNeighbour(pRole)) {
             dep.clear();
             dep.add(depSet);
@@ -143,7 +141,7 @@ public final class DlCompletionTreeArc {
     }
 
     /** add dep-set to an edge; return restorer */
-    public Restorer addDep(final DepSet dep) {
+    public Restorer addDep(DepSet dep) {
         if (dep.isEmpty()) {
             throw new IllegalArgumentException();
         }
@@ -153,7 +151,7 @@ public final class DlCompletionTreeArc {
     }
 
     /** print current arc */
-    public void print(final LogAdapter o) {
+    public void print(LogAdapter o) {
         o.printTemplate(Templates.DLCOMPLETIONTREEARC,
                 isIBlocked() ? "-" : role.getName(), depSet);
     }

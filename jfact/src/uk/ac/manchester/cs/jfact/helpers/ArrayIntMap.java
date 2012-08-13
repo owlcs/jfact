@@ -7,12 +7,12 @@ package uk.ac.manchester.cs.jfact.helpers;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.Arrays;
 
-public final class ArrayIntMap {
+public class ArrayIntMap {
     private int[][] values;
     private int size = 0;
     private static int defaultSize = 16;
 
-    private int insertionIndex(final int key) {
+    private int insertionIndex(int key) {
         if (size == 0) {
             return -1;
         }
@@ -54,12 +54,13 @@ public final class ArrayIntMap {
         size = 0;
     }
 
-    public void put(final int e, final int v) {
-        //cache.resetNotContained();
+    public void put(int e, int v) {
+        // cache.resetNotContained();
         int pos = -1;
         if (values == null) {
             init();
-            // pos stays at -1, in an empty set that's the place to start - it will become 0
+            // pos stays at -1, in an empty set that's the place to start - it
+            // will become 0
         } else {
             // else find the right place
             pos = insertionIndex(e);
@@ -92,31 +93,31 @@ public final class ArrayIntMap {
     public void clear() {
         values = null;
         size = 0;
-        //		cache.resetContained();
-        //		cache.resetNotContained();
+        // cache.resetContained();
+        // cache.resetNotContained();
     }
 
-    //	IntCache cache = new IntCache();
-    public boolean containsKey(final int o) {
+    // IntCache cache = new IntCache();
+    public boolean containsKey(int o) {
         if (values != null) {
-            //			if (cache.isContained(o)) {
-            //				return true;
-            //			}
-            //			if (cache.isNotContained(o)) {
-            //				return false;
-            //			}
+            // if (cache.isContained(o)) {
+            // return true;
+            // }
+            // if (cache.isNotContained(o)) {
+            // return false;
+            // }
             boolean b = insertionIndex(o) > -1;
-            //			if (b) {
-            //				cache.hit(o);
-            //			} else {
-            //				cache.miss(o);
-            //			}
+            // if (b) {
+            // cache.hit(o);
+            // } else {
+            // cache.miss(o);
+            // }
             return b;
         }
         return false;
     }
 
-    public boolean containsAll(final ArrayIntMap c) {
+    public boolean containsAll(ArrayIntMap c) {
         if (c.size == 0) {
             return true;
         }
@@ -152,14 +153,16 @@ public final class ArrayIntMap {
                     break;
                 }
                 if (values[0][i] > currentValue) {
-                    // found a value larger than the value it's looking for - c is not contained
+                    // found a value larger than the value it's looking for - c
+                    // is not contained
                     return false;
                 }
                 // get(i) is < than current value: check next i
                 i++;
             }
             if (!found) {
-                // finished exploring this and currentValue was not found - it happens if currentValue < any element in this set
+                // finished exploring this and currentValue was not found - it
+                // happens if currentValue < any element in this set
                 return false;
             }
             j++;
@@ -171,11 +174,11 @@ public final class ArrayIntMap {
         return values == null;
     }
 
-    public void remove(final int o) {
+    public void remove(int o) {
         if (values == null) {
             return;
         }
-        //cache.resetContained();
+        // cache.resetContained();
         int i = insertionIndex(o);
         removeAt(i);
     }
@@ -184,7 +187,7 @@ public final class ArrayIntMap {
         return size;
     }
 
-    public void removeAt(final int i) {
+    public void removeAt(int i) {
         if (values == null) {
             return;
         }
@@ -205,7 +208,7 @@ public final class ArrayIntMap {
         }
     }
 
-    public boolean containsValue(final int value) {
+    public boolean containsValue(int value) {
         for (int i = 0; i < size; i++) {
             if (values[1][i] == value) {
                 return true;
@@ -218,7 +221,7 @@ public final class ArrayIntMap {
         return Arrays.copyOf(values[1], size);
     }
 
-    public int get(final int key) {
+    public int get(int key) {
         int index = insertionIndex(key);
         if (index < 0) {
             return Integer.MIN_VALUE;
@@ -230,7 +233,7 @@ public final class ArrayIntMap {
         return Arrays.copyOf(values[0], size);
     }
 
-    public int keySet(final int i) {
+    public int keySet(int i) {
         return values[0][i];
     }
 
@@ -244,7 +247,7 @@ public final class ArrayIntMap {
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
         if (obj == null) {
             return false;
         }

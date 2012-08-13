@@ -7,21 +7,21 @@ package uk.ac.manchester.cs.jfact.kernel.state;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.LinkedList;
 
-public final class SaveList extends LinkedList<DLCompletionTreeSaveState> {
+public class SaveList extends LinkedList<DLCompletionTreeSaveState> {
     @Override
     public DLCompletionTreeSaveState pop() {
-        if (!this.isEmpty()) {
+        if (!isEmpty()) {
             return super.pop();
         }
         return null;
     }
 
     /** get element from stack with given level */
-    public DLCompletionTreeSaveState pop(final int level) {
-        DLCompletionTreeSaveState p = this.isEmpty() ? null : this.peek();
+    public DLCompletionTreeSaveState pop(int level) {
+        DLCompletionTreeSaveState p = isEmpty() ? null : peek();
         while (p != null && p.level() > level) {
             this.pop();
-            p = this.peek();
+            p = peek();
         }
         // here p==head and either both == NULL or points to proper element
         if (p != null) {

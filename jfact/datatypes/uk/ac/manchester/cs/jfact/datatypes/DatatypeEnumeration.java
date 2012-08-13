@@ -1,12 +1,7 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
@@ -17,17 +12,17 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     protected Datatype<R> host;
     protected final List<Literal<R>> literals = new ArrayList<Literal<R>>();
 
-    public DatatypeEnumeration(final Datatype<R> d) {
+    public DatatypeEnumeration(Datatype<R> d) {
         this.uri = "enum" + DatatypeFactory.getIndex();
         this.host = d;
     }
 
-    public DatatypeEnumeration(final Datatype<R> d, final Literal<R> l) {
+    public DatatypeEnumeration(Datatype<R> d, Literal<R> l) {
         this(d);
         this.literals.add(l);
     }
 
-    public DatatypeEnumeration(final Datatype<R> d, final Collection<Literal<R>> c) {
+    public DatatypeEnumeration(Datatype<R> d, Collection<Literal<R>> c) {
         this(d);
         this.literals.addAll(c);
         Collections.sort(this.literals);
@@ -37,7 +32,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
         return this.host;
     }
 
-    public DatatypeEnumeration<R> add(final Literal<R> d) {
+    public DatatypeEnumeration<R> add(Literal<R> d) {
         DatatypeEnumeration<R> toReturn = new DatatypeEnumeration<R>(this.host,
                 this.literals);
         toReturn.literals.add(d);
@@ -77,11 +72,11 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
         return this.host.getKnownFacetValues();
     }
 
-    public <O extends Comparable<O>> O getFacetValue(final Facet f) {
+    public <O extends Comparable<O>> O getFacetValue(Facet f) {
         return this.host.getFacetValue(f);
     }
 
-    public BigDecimal getNumericFacetValue(final Facet f) {
+    public BigDecimal getNumericFacetValue(Facet f) {
         return this.host.getNumericFacetValue(f);
     }
 
@@ -93,12 +88,12 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
         return this.host.getOrdered();
     }
 
-    public boolean isCompatible(final Literal<?> l) {
+    public boolean isCompatible(Literal<?> l) {
         return this.literals.contains(l)
                 && this.host.isCompatible(l.getDatatypeExpression());
     }
 
-    public boolean isInValueSpace(final R l) {
+    public boolean isInValueSpace(R l) {
         for (Literal<R> lit : this.literals) {
             if (lit.typedValue().equals(l)) {
                 return true;
@@ -107,16 +102,16 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
         return false;
     }
 
-    public R parseValue(final String s) {
-        //delegated to the host type
+    public R parseValue(String s) {
+        // delegated to the host type
         return this.host.parseValue(s);
     }
 
-    public Literal<R> buildLiteral(final String s) {
+    public Literal<R> buildLiteral(String s) {
         return this.host.buildLiteral(s);
     }
 
-    public boolean isSubType(final Datatype<?> type) {
+    public boolean isSubType(Datatype<?> type) {
         return this.host.isSubType(type);
     }
 
@@ -124,8 +119,8 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
         return this.uri;
     }
 
-    public boolean isCompatible(final Datatype<?> type) {
-        //	return host.isCompatible(type);
+    public boolean isCompatible(Datatype<?> type) {
+        // return host.isCompatible(type);
         if (!this.host.isCompatible(type)) {
             return false;
         }
@@ -138,11 +133,11 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
         return false;
     }
 
-    public void accept(final DLExpressionVisitor visitor) {
+    public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+    public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
@@ -176,7 +171,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
         if (super.equals(obj)) {
             return true;
         }
@@ -195,7 +190,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
         return this.host;
     }
 
-    public DatatypeExpression<R> addFacet(final Facet f, final Object value) {
+    public DatatypeExpression<R> addFacet(Facet f, Object value) {
         System.out
                 .println("DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object");
         return this;

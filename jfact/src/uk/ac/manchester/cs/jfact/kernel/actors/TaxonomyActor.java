@@ -12,22 +12,18 @@ import java.util.List;
 import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
 import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
 import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 
-public final class TaxonomyActor implements Actor {
-    private final ExpressionManager expressionManager;
+public class TaxonomyActor implements Actor {
+    private ExpressionManager expressionManager;
     /** 2D array to return */
-    private final List<List<Expression>> acc = new ArrayList<List<Expression>>();
+    private List<List<Expression>> acc = new ArrayList<List<Expression>>();
     /** 1D array to return */
-    private final List<Expression> plain = new ArrayList<Expression>();
-    private final Policy policy;
+    private List<Expression> plain = new ArrayList<Expression>();
+    private Policy policy;
 
     /** try current entry */
-    public List<Expression> tryEntry(final ClassifiableEntry p) {
+    public List<Expression> tryEntry(ClassifiableEntry p) {
         List<Expression> toReturn = new ArrayList<Expression>();
         if (p.isSystem()) {
             return toReturn;
@@ -38,14 +34,12 @@ public final class TaxonomyActor implements Actor {
         return toReturn;
     }
 
-    public TaxonomyActor(final ExpressionManager em, final Policy policy) {
+    public TaxonomyActor(ExpressionManager em, Policy policy) {
         expressionManager = em;
         this.policy = policy;
     }
 
-    /**
-     * get single vector of synonyms (necessary for Equivalents, for example)
-     */
+    /** get single vector of synonyms (necessary for Equivalents, for example) */
     public Collection<ConceptExpression> getClassSynonyms() {
         Collection<ConceptExpression> toReturn = new ArrayList<ConceptExpression>();
         if (!acc.isEmpty()) {
@@ -156,11 +150,9 @@ public final class TaxonomyActor implements Actor {
     }
 
     /** taxonomy walking method. */
-    /**
-     * @return true if node was processed, and there is no need to go further,
-     *         false if node can not be processed in current settings
-     */
-    public boolean apply(final TaxonomyVertex v) {
+    /** @return true if node was processed, and there is no need to go further,
+     *         false if node can not be processed in current settings */
+    public boolean apply(TaxonomyVertex v) {
         List<Expression> syn = tryEntry(v.getPrimer());
         for (ClassifiableEntry p : v.begin_syn()) {
             syn.addAll(tryEntry(p));

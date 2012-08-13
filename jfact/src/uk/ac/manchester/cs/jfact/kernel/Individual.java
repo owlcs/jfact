@@ -5,22 +5,17 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Individual extends Concept {
     /** pointer to nominal node (works for singletons only) */
     private DlCompletionTree node;
     /** index for axioms <this,C>:R */
-    private final List<Related> relatedIndex = new ArrayList<Related>();
+    private List<Related> relatedIndex = new ArrayList<Related>();
     /** map for the related individuals: Map[R]={i:R(this,i)} */
-    private final Map<Role, List<Individual>> pRelatedMap;
+    private Map<Role, List<Individual>> pRelatedMap;
 
-    public Individual(final String name) {
+    public Individual(String name) {
         super(name);
         node = null;
         setSingleton(true);
@@ -39,7 +34,8 @@ public class Individual extends Concept {
         if (isPrimitive() && description != null && description.isTOP()) {
             removeDescription();
         }
-        // not a completely defined if there are extra rules or related individuals
+        // not a completely defined if there are extra rules or related
+        // individuals
         boolean CD = !hasExtraRules() && isPrimitive() && !isRelated();
         if (description != null || hasToldSubsumers()) {
             CD &= super.initToldSubsumers(description, new HashSet<Role>());
@@ -49,8 +45,7 @@ public class Individual extends Concept {
 
     // related things
     /** update told subsumers from the RELATED axioms in a given range */
-    private <T extends Related> void updateTold(final List<T> begin,
-            final Set<Role> RolesProcessed) {
+    private <T extends Related> void updateTold(List<T> begin, Set<Role> RolesProcessed) {
         for (int i = 0; i < begin.size(); i++) {
             searchTSbyRoleAndSupers(begin.get(i).getRole(), RolesProcessed);
         }
@@ -62,29 +57,29 @@ public class Individual extends Concept {
     }
 
     /** set individual related */
-    public void addRelated(final Related p) {
+    public void addRelated(Related p) {
         relatedIndex.add(p);
     }
 
     /** add all the related elements from the given P */
-    public void addRelated(final Individual p) {
+    public void addRelated(Individual p) {
         relatedIndex.addAll(p.relatedIndex);
     }
 
     // related map access
     /** @return true if has cache for related individuals via role R */
-    public boolean hasRelatedCache(final Role R) {
+    public boolean hasRelatedCache(Role R) {
         return pRelatedMap.containsKey(R);
     }
 
     /** get set of individuals related to THIS via R */
-    public List<Individual> getRelatedCache(final Role R) {
+    public List<Individual> getRelatedCache(Role R) {
         assert pRelatedMap.containsKey(R);
         return pRelatedMap.get(R);
     }
 
     /** set the cache of individuals related to THIS via R */
-    public void setRelatedCache(final Role R, final List<Individual> v) {
+    public void setRelatedCache(Role R, List<Individual> v) {
         assert !pRelatedMap.containsKey(R);
         pRelatedMap.put(R, v);
     }
@@ -99,7 +94,7 @@ public class Individual extends Concept {
         return node;
     }
 
-    public void setNode(final DlCompletionTree node) {
+    public void setNode(DlCompletionTree node) {
         this.node = node;
     }
 

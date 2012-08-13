@@ -7,10 +7,10 @@ package uk.ac.manchester.cs.jfact.kernel.options;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 public class BooleanOption implements Option {
     /** option name */
-    private final String optionName;
-    private final Boolean value;
+    private String optionName;
+    private Boolean value;
 
-    public BooleanOption(final String name, final Boolean defVal) {
+    public BooleanOption(String name, Boolean defVal) {
         optionName = name;
         value = defVal;
     }

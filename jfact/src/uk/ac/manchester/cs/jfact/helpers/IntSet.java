@@ -7,12 +7,12 @@ package uk.ac.manchester.cs.jfact.helpers;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.Arrays;
 
-public final class IntSet extends AbstractFastSet {
-    private final static int size = 17;
+public class IntSet extends AbstractFastSet {
+    private static int size = 17;
     FastSetSimple[] hashvalues = new FastSetSimple[size];
 
-    private int hash(final int value) {
-        //return value & hashbase;
+    private int hash(int value) {
+        // return value & hashbase;
         return Math.abs(value % size);
     }
 
@@ -20,7 +20,7 @@ public final class IntSet extends AbstractFastSet {
         hashvalues = new FastSetSimple[size];
     }
 
-    public boolean contains(final int key) {
+    public boolean contains(int key) {
         int hash = hash(key);
         if (hashvalues[hash] == null) {
             return false;
@@ -29,7 +29,7 @@ public final class IntSet extends AbstractFastSet {
         return b;
     }
 
-    public void add(final int e) {
+    public void add(int e) {
         int hash = hash(e);
         if (hashvalues[hash] == null) {
             hashvalues[hash] = new FastSetSimple();
@@ -41,13 +41,13 @@ public final class IntSet extends AbstractFastSet {
         }
     }
 
-    public void addAll(final FastSet c) {
+    public void addAll(FastSet c) {
         for (int i = 0; i < c.size(); i++) {
             add(c.get(i));
         }
     }
 
-    public boolean containsAll(final FastSet c) {
+    public boolean containsAll(FastSet c) {
         if (c instanceof IntSet) {
             IntSet set = (IntSet) c;
             for (int i = 0; i < set.hashvalues.length; i++) {
@@ -74,7 +74,7 @@ public final class IntSet extends AbstractFastSet {
         return true;
     }
 
-    public boolean containsAny(final FastSet c) {
+    public boolean containsAny(FastSet c) {
         if (c instanceof IntSet) {
             IntSet set = (IntSet) c;
             for (int i = 0; i < set.hashvalues.length; i++) {
@@ -94,7 +94,7 @@ public final class IntSet extends AbstractFastSet {
         return false;
     }
 
-    public void remove(final int o) {
+    public void remove(int o) {
         int hash = hash(o);
         if (hashvalues[hash] == null) {
             return;
@@ -134,7 +134,7 @@ public final class IntSet extends AbstractFastSet {
         return Arrays.copyOf(allValues, size);
     }
 
-    public boolean intersect(final FastSet f) {
+    public boolean intersect(FastSet f) {
         for (int i = 0; i < f.size(); i++) {
             if (contains(f.get(i))) {
                 return true;
@@ -143,14 +143,14 @@ public final class IntSet extends AbstractFastSet {
         return false;
     }
 
-    public int get(final int i) {
+    public int get(int i) {
         if (allValues == null) {
             toIntArray();
         }
         return allValues[i];
     }
 
-    public void removeAt(final int o) {
+    public void removeAt(int o) {
         if (allValues == null) {
             toIntArray();
         }
@@ -158,7 +158,7 @@ public final class IntSet extends AbstractFastSet {
         allValues = null;
     }
 
-    public void removeAll(final int i, final int end) {
+    public void removeAll(int i, int end) {
         for (int j = i; j < end; j++) {
             removeAt(j);
         }
@@ -178,16 +178,16 @@ public final class IntSet extends AbstractFastSet {
         return i;
     }
 
-    public void removeAllValues(final int... values) {
+    public void removeAllValues(int... values) {
         for (int i : values) {
             remove(i);
         }
     }
 
-    public void completeSet(final int value) {
+    public void completeSet(int value) {
         for (int i = 0; i <= value; i++) {
             add(i);
         }
-        //XXX notice: these sets go to negative numbers. Is this the best way?
+        // XXX notice: these sets go to negative numbers. Is this the best way?
     }
 }

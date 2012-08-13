@@ -7,10 +7,10 @@ package uk.ac.manchester.cs.jfact.kernel.options;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 public class StringOption implements Option {
     /** option name */
-    private final String optionName;
-    private final String value;
+    private String optionName;
+    private String value;
 
-    public StringOption(final String name, final String defVal) {
+    public StringOption(String name, String defVal) {
         optionName = name;
         value = defVal;
     }

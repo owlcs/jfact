@@ -15,31 +15,32 @@ import uk.ac.manchester.cs.jfact.split.TSignatureUpdater;
 abstract class AxiomImpl implements Axiom {
     /** id of the axiom */
     private int id;
-    /// signature (built lazily on demand)
+    // / signature (built lazily on demand)
     TSignature sig = null;
-    /// flag to show whether or not the axiom is in the search space for the optimised modularization algorithm
+    // / flag to show whether or not the axiom is in the search space for the
+    // optimised modularization algorithm
     boolean inSearchSpace = false;
-    /// flag to show whether or not the axiom is in the module
+    // / flag to show whether or not the axiom is in the module
     boolean inModule;
     /** flag to show whether it is used (to support retraction) */
     private boolean used;
     TOntologyAtom atom = null;
-    private final OWLAxiom axiom;
+    private OWLAxiom axiom;
 
     public TOntologyAtom getAtom() {
         return atom;
     }
 
-    public void setAtom(final TOntologyAtom atom) {
+    public void setAtom(TOntologyAtom atom) {
         this.atom = atom;
     }
 
-    /// set the isSearchSpace flag
-    public void setInSS(final boolean flag) {
+    // / set the isSearchSpace flag
+    public void setInSS(boolean flag) {
         inSearchSpace = flag;
     }
 
-    /// get the value of the isSearchSpace flag
+    // / get the value of the isSearchSpace flag
     public boolean isInSS() {
         return inSearchSpace;
     }
@@ -55,10 +56,10 @@ abstract class AxiomImpl implements Axiom {
     void buildSignature() {
         sig = new TSignature();
         TSignatureUpdater Updater = new TSignatureUpdater(sig);
-        accept(Updater);
+        this.accept(Updater);
     }
 
-    public AxiomImpl(final OWLAxiom ax) {
+    public AxiomImpl(OWLAxiom ax) {
         axiom = ax;
         used = true;
         inModule = false;
@@ -80,15 +81,15 @@ abstract class AxiomImpl implements Axiom {
         return used;
     }
 
-    public void setId(final int Id) {
+    public void setId(int Id) {
         id = Id;
     }
 
-    public void setInModule(final boolean inModule) {
+    public void setInModule(boolean inModule) {
         this.inModule = inModule;
     }
 
-    public void setUsed(final boolean Used) {
+    public void setUsed(boolean Used) {
         used = Used;
     }
 }

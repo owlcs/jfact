@@ -5,11 +5,7 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.FastSetSimple;
@@ -28,7 +24,7 @@ public final class DataTypeSituation<R extends Comparable<R>> {
     private final Datatype<R> type;
     private final List<Literal<?>> literals = new ArrayList<Literal<?>>();
 
-    protected DataTypeSituation(final Datatype<R> p, final DataTypeReasoner dep) {
+    protected DataTypeSituation(Datatype<R> p, DataTypeReasoner dep) {
         if (p == null) {
             throw new IllegalArgumentException("p cannot be null");
         }
@@ -37,13 +33,11 @@ public final class DataTypeSituation<R extends Comparable<R>> {
         this.constraints.add(new DepInterval<R>());
     }
 
-    /**
-     * update and add a single interval I to the constraints.
+    /** update and add a single interval I to the constraints.
      * 
-     * @return true iff clash occurs
-     */
-    private boolean addUpdatedInterval(final DepInterval<R> i,
-            final Datatype<R> interval, final DepSet localDep) {
+     * @return true iff clash occurs */
+    private boolean addUpdatedInterval(DepInterval<R> i, Datatype<R> interval,
+            DepSet localDep) {
         if (!i.consistent(interval)) {
             localDep.add(i.locDep);
             this.reasoner.reportClash(localDep, "C-IT");
@@ -67,13 +61,10 @@ public final class DataTypeSituation<R extends Comparable<R>> {
         return this.type;
     }
 
-    /**
-     * add restrictions [POS]INT to intervals
+    /** add restrictions [POS]INT to intervals
      * 
-     * @return true if clash occurs
-     */
-    public boolean addInterval(final boolean pos, final Datatype<R> interval,
-            final DepSet dep) {
+     * @return true if clash occurs */
+    public boolean addInterval(boolean pos, Datatype<R> interval, DepSet dep) {
         if (interval instanceof DatatypeEnumeration) {
             this.literals.addAll(interval.listValues());
         }
@@ -101,7 +92,7 @@ public final class DataTypeSituation<R extends Comparable<R>> {
             return true;
         }
         for (DepInterval<R> d : this.constraints) {
-            final boolean checkMinMaxClash = d.checkMinMaxClash();
+            boolean checkMinMaxClash = d.checkMinMaxClash();
             if (checkMinMaxClash) {
                 this.accDep.add(d.locDep);
                 this.reasoner.reportClash(this.accDep, "C-MM");
@@ -115,7 +106,7 @@ public final class DataTypeSituation<R extends Comparable<R>> {
         return this.constraints.isEmpty() || this.constraints.iterator().next().e == null;
     }
 
-    public boolean checkCompatibleValue(final DataTypeSituation<?> other) {
+    public boolean checkCompatibleValue(DataTypeSituation<?> other) {
         if (!this.type.isCompatible(other.type)) {
             return false;
         }
@@ -149,7 +140,7 @@ public final class DataTypeSituation<R extends Comparable<R>> {
     }
 
     /** data interval with dep-sets */
-    static final class DepInterval<R extends Comparable<R>> {
+    static class DepInterval<R extends Comparable<R>> {
         DatatypeExpression<R> e;
         /** local dep-set */
         FastSetSimple locDep;
@@ -160,7 +151,7 @@ public final class DataTypeSituation<R extends Comparable<R>> {
         }
 
         /** update MIN border of an TYPE's interval with VALUE wrt EXCL */
-        public boolean update(final Datatype<R> value, final DepSet dep) {
+        public boolean update(Datatype<R> value, DepSet dep) {
             if (this.e == null) {
                 if (value.isExpression()) {
                     this.e = value.asExpression();
@@ -180,13 +171,14 @@ public final class DataTypeSituation<R extends Comparable<R>> {
                     this.e = this.e.addFacet(f.getKey(), f.getValue());
                 }
             }
-            //TODO needs to return false if the new expression has the same value space as the old one
+            // TODO needs to return false if the new expression has the same
+            // value space as the old one
             this.locDep = dep == null ? null : dep.getDelegate();
             return true;
         }
 
         /** check if the interval is consistent wrt given type */
-        public boolean consistent(final Datatype<R> type) {
+        public boolean consistent(Datatype<R> type) {
             return this.e == null || this.e.isCompatible(type);
         }
 
@@ -198,7 +190,7 @@ public final class DataTypeSituation<R extends Comparable<R>> {
         }
 
         @Override
-        public boolean equals(final Object obj) {
+        public boolean equals(Object obj) {
             if (super.equals(obj)) {
                 return true;
             }
@@ -229,11 +221,11 @@ public final class DataTypeSituation<R extends Comparable<R>> {
     }
 
     /** set the precense of the PType */
-    public void setPType(final DepSet type) {
+    public void setPType(DepSet type) {
         this.pType = type;
     }
 
-    public void setNType(final DepSet t) {
+    public void setNType(DepSet t) {
         this.nType = t;
     }
 

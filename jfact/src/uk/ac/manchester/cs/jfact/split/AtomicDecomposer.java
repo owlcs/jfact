@@ -9,45 +9,46 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
 
 /// atomical decomposer of the ontology
 public class AtomicDecomposer {
-    /// atomic structure to build
+    // / atomic structure to build
     AOStructure AOS = null;
-    /// modularizer to build modules
+    // / modularizer to build modules
     TModularizer Modularizer;
-    /// tautologies of the ontology
+    // / tautologies of the ontology
     List<Axiom> Tautologies = new ArrayList<Axiom>();
-    /// progress indicator
+    // / progress indicator
     ProgressIndicatorInterface PI = null;
-    /// fake atom that represents the whole ontology
+    // / fake atom that represents the whole ontology
     TOntologyAtom rootAtom = null;
-    /// module type for current AOS creation
+    // / module type for current AOS creation
     ModuleType type;
 
-    public AtomicDecomposer(final LocalityChecker c) {
+    public AtomicDecomposer(LocalityChecker c) {
         Modularizer = new TModularizer(c);
     }
 
-    /// initialize signature index (for the improved modularization algorithm)
-    void initSigIndex(final Ontology O) {
+    // / initialize signature index (for the improved modularization algorithm)
+    void initSigIndex(Ontology O) {
         SigIndex SI = new SigIndex();
         SI.processRange(O.getAxioms());
         Modularizer.setSigIndex(SI);
     }
 
-    /// restore all tautologies back
+    // / restore all tautologies back
     void restoreTautologies() {
         for (Axiom p : Tautologies) {
             p.setUsed(true);
         }
     }
 
-    /// set progress indicator to be PI
-    void setProgressIndicator(final ProgressIndicatorInterface pi) {
+    // / set progress indicator to be PI
+    void setProgressIndicator(ProgressIndicatorInterface pi) {
         PI = pi;
     }
 
-    //#define RKG_DEBUG_AD
-    /// remove tautologies (axioms that are always local) from the ontology temporarily
-    void removeTautologies(final Ontology O) {
+    // #define RKG_DEBUG_AD
+    // / remove tautologies (axioms that are always local) from the ontology
+    // temporarily
+    void removeTautologies(Ontology O) {
         // we might use it for another decomposition
         Tautologies.clear();
         long nAx = 0;
@@ -68,8 +69,9 @@ public class AtomicDecomposer {
         }
     }
 
-    /// build a module for given axiom AX; use parent atom's module as a base for the module search
-    TOntologyAtom buildModule(final TSignature sig, final TOntologyAtom parent) {
+    // / build a module for given axiom AX; use parent atom's module as a base
+    // for the module search
+    TOntologyAtom buildModule(TSignature sig, TOntologyAtom parent) {
         // build a module for a given signature
         Modularizer.extract(parent.getModule(), sig, type);
         List<Axiom> Module = Modularizer.getModule();
@@ -81,7 +83,8 @@ public class AtomicDecomposer {
         if (PI != null) {
             PI.incIndicator();
         }
-        // check if the module corresponds to a PARENT one; modules are the same iff their sizes are the same
+        // check if the module corresponds to a PARENT one; modules are the same
+        // iff their sizes are the same
         if (parent != rootAtom && Module.size() == parent.getModule().size()) {
             return parent;
         }
@@ -91,8 +94,9 @@ public class AtomicDecomposer {
         return atom;
     }
 
-    /// create atom for given axiom AX; use parent atom's module as a base for the module search
-    TOntologyAtom createAtom(final Axiom ax, final TOntologyAtom parent) {
+    // / create atom for given axiom AX; use parent atom's module as a base for
+    // the module search
+    TOntologyAtom createAtom(Axiom ax, TOntologyAtom parent) {
         // check whether axiom already has an atom
         if (ax.getAtom() != null) {
             return ax.getAtom();
@@ -107,15 +111,16 @@ public class AtomicDecomposer {
         if (atom == parent) {
             return parent;
         }
-        // not the same as parent: for all atom's axioms check their atoms and make ATOM depend on them
-        //#ifdef RKG_DEBUG_AD
-        //	// do cycle via set to keep the order
-        //	typedef std::set<TDLAxiom*> AxSet;
-        //	Set<Axiom> M=new HashSet<Axiom> ( atom.getModule() );
-        //	for ( Axiom q : M )
-        //#else
+        // not the same as parent: for all atom's axioms check their atoms and
+        // make ATOM depend on them
+        // #ifdef RKG_DEBUG_AD
+        // // do cycle via set to keep the order
+        // typedef std::set<TDLAxiom*> AxSet;
+        // Set<Axiom> M=new HashSet<Axiom> ( atom.getModule() );
+        // for ( Axiom q : M )
+        // #else
         for (Axiom q : atom.getModule()) {
-            //#endif
+            // #endif
             if (!q.equals(ax)) {
                 atom.addDepAtom(createAtom(q, atom));
             }
@@ -127,8 +132,8 @@ public class AtomicDecomposer {
         return AOS;
     }
 
-    /// get the atomic structure for given module type T
-    public AOStructure getAOS(final Ontology O, final ModuleType t) {
+    // / get the atomic structure for given module type T
+    public AOStructure getAOS(Ontology O, ModuleType t) {
         // remember the type of the module
         type = t;
         // prepare a new AO structure

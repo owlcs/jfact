@@ -10,74 +10,74 @@ import java.util.Map;
 
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 
-public final class InAx {
+public class InAx {
     /** build an RW concept from a given [C|I]NAME-rooted DLTree */
-    static Concept getConcept(final DLTree p) {
+    static Concept getConcept(DLTree p) {
         return (Concept) p.elem().getNE();
     }
 
-    /// @return true iff P is a TOP
-    static boolean isTop(final DLTree p) {
+    // / @return true iff P is a TOP
+    static boolean isTop(DLTree p) {
         return p.isBOTTOM();
     }
 
-    /// @return true iff P is a BOTTOM
-    static boolean isBot(final DLTree p) {
+    // / @return true iff P is a BOTTOM
+    static boolean isBot(DLTree p) {
         return p.isTOP();
     }
 
-    /// @return true iff P is a positive concept name
-    static boolean isPosCN(final DLTree p) {
+    // / @return true iff P is a positive concept name
+    static boolean isPosCN(DLTree p) {
         return p.isNOT() && p.getChild().isName();
     }
 
-    /// @return true iff P is a positive non-primitive CN
-    static boolean isPosNP(final DLTree p) {
+    // / @return true iff P is a positive non-primitive CN
+    static boolean isPosNP(DLTree p) {
         return isPosCN(p) && !getConcept(p.getChild()).isPrimitive();
     }
 
-    /// @return true iff P is a positive primitive CN
-    static boolean isPosPC(final DLTree p) {
+    // / @return true iff P is a positive primitive CN
+    static boolean isPosPC(DLTree p) {
         return isPosCN(p) && getConcept(p.getChild()).isPrimitive();
     }
 
-    /// @return true iff P is a negative concept name
-    static boolean isNegCN(final DLTree p) {
+    // / @return true iff P is a negative concept name
+    static boolean isNegCN(DLTree p) {
         return p.isName();
     }
 
-    /// @return true iff P is a negative non-primitive CN
-    static boolean isNegNP(final DLTree p) {
+    // / @return true iff P is a negative non-primitive CN
+    static boolean isNegNP(DLTree p) {
         return isNegCN(p) && !getConcept(p).isPrimitive();
     }
 
-    /// @return true iff P is a negative primitive CN
-    static boolean isNegPC(final DLTree p) {
+    // / @return true iff P is a negative primitive CN
+    static boolean isNegPC(DLTree p) {
         return isNegCN(p) && getConcept(p).isPrimitive();
     }
 
     /** check whether P is in the form (and C D) */
-    static boolean isAnd(final DLTree p) {
+    static boolean isAnd(DLTree p) {
         return p.isNOT() && p.getChild().isAND();
     }
 
-    /// @return true iff P is an OR expression
-    static boolean isOr(final DLTree p) {
+    // / @return true iff P is an OR expression
+    static boolean isOr(DLTree p) {
         return p.isAND();
     }
 
-    /// @return true iff P is a general FORALL expression
-    static boolean isForall(final DLTree p) {
+    // / @return true iff P is a general FORALL expression
+    static boolean isForall(DLTree p) {
         return p.isNOT() && p.getChild().token() == Token.FORALL;
     }
 
-    /// @return true iff P is an object FORALL expression
-    static boolean isOForall(final DLTree p) {
+    // / @return true iff P is an object FORALL expression
+    static boolean isOForall(DLTree p) {
         return isForall(p) && !Role.resolveRole(p.getChild().getLeft()).isDataRole();
     }
 
-    /// @return true iff P is a FORALL expression suitable for absorption
-    static boolean isAbsForall(final DLTree p) {
+    // / @return true iff P is a FORALL expression suitable for absorption
+    static boolean isAbsForall(DLTree p) {
         if (!isOForall(p)) {
             return false;
         }
@@ -90,7 +90,7 @@ public final class InAx {
 
     static Map<String, Integer> created = new HashMap<String, Integer>();
 
-    static void add(final String s) {
+    static void add(String s) {
         if (created.containsKey(s)) {
             created.put(s, created.get(s) + 1);
         } else {
@@ -98,7 +98,7 @@ public final class InAx {
         }
     }
 
-    static int get(final String s) {
+    static int get(String s) {
         return created.containsKey(s) ? created.get(s) : 0;
     }
 

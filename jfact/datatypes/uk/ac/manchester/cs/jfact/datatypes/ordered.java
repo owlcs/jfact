@@ -3,7 +3,7 @@ package uk.ac.manchester.cs.jfact.datatypes;
 //equal facet: implemented by the equals() method on values
 public enum ordered {
     FALSE("false"), PARTIAL("partial"), TOTAL("total");
-    public static ordered parse(final String string) {
+    public static ordered parse(String string) {
         for (ordered o : values()) {
             if (o.name.equals(string)) {
                 return o;
@@ -12,9 +12,9 @@ public enum ordered {
         return null;
     }
 
-    private final String name;
+    private String name;
 
-    private ordered(final String s) {
+    private ordered(String s) {
         name = s;
     }
 }

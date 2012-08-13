@@ -12,22 +12,22 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
-public final class ConceptDataValue implements ConceptDataRoleExpression,
+public class ConceptDataValue implements ConceptDataRoleExpression,
         DataExpressionArg<Literal<?>> {
     /** data expression argument */
-    protected final Literal<?> dataValue;
-    private final DataRoleExpression delegate;
+    protected Literal<?> dataValue;
+    private DataRoleExpression delegate;
 
-    public ConceptDataValue(final DataRoleExpression R, final Literal<?> V) {
+    public ConceptDataValue(DataRoleExpression R, Literal<?> V) {
         dataValue = V;
         delegate = R;
     }
 
-    public void accept(final DLExpressionVisitor visitor) {
+    public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+    public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 

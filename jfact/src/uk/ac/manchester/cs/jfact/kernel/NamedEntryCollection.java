@@ -13,27 +13,25 @@ import org.semanticweb.owlapi.reasoner.FreshEntityPolicy;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
-/**
- * class for collect TNamedEntry'es together. Template parameter should be
+/** class for collect TNamedEntry'es together. Template parameter should be
  * inherited from TNamedEntry. Implemented as vector of T*, with Base[i].getId()
- * == i.
- **/
+ * == i. **/
 public class NamedEntryCollection<T extends NamedEntry> {
     /** vector of elements */
-    private final List<T> base = new ArrayList<T>();
+    private List<T> base = new ArrayList<T>();
     /** nameset to hold the elements */
-    private final NameSet<T> nameset;
+    private NameSet<T> nameset;
     /** name of the type */
-    private final String typeName;
+    private String typeName;
     /** flag to lock the nameset (ie, prohibit to add new names there) */
     private boolean locked;
-    private final JFactReasonerConfiguration options;
+    private JFactReasonerConfiguration options;
 
     /** abstract method for additional tuning of newly created element */
-    public void registerNew(final T p) {}
+    public void registerNew(T p) {}
 
     /** new element in a collection; return this element */
-    public T registerElem(final T p) {
+    public T registerElem(T p) {
         p.setId(base.size());
         base.add(p);
         registerNew(p);
@@ -41,8 +39,8 @@ public class NamedEntryCollection<T extends NamedEntry> {
     }
 
     /** c'tor: clear 0-th element */
-    public NamedEntryCollection(final String name, final NameCreator<T> creator,
-            final JFactReasonerConfiguration options) {
+    public NamedEntryCollection(String name, NameCreator<T> creator,
+            JFactReasonerConfiguration options) {
         typeName = name;
         locked = false;
         base.add(null);
@@ -56,7 +54,7 @@ public class NamedEntryCollection<T extends NamedEntry> {
     }
 
     /** set LOCKED value to a VAL; @return old value of LOCKED */
-    public boolean setLocked(final boolean val) {
+    public boolean setLocked(boolean val) {
         boolean old = locked;
         locked = val;
         return old;
@@ -64,12 +62,12 @@ public class NamedEntryCollection<T extends NamedEntry> {
 
     // add/remove elements
     /** check if entry with a NAME is registered in given collection */
-    public boolean isRegistered(final String name) {
+    public boolean isRegistered(String name) {
         return nameset.get(name) != null;
     }
 
     /** get entry by NAME from the collection; it if necessary */
-    public T get(final String name) {
+    public T get(String name) {
         T p = nameset.get(name);
         // check if name is already defined
         if (p != null) {
@@ -91,20 +89,19 @@ public class NamedEntryCollection<T extends NamedEntry> {
             }
         }
         return p;
-        //		// name in name set, and it
-        //		return registerElem(nameset.add(name));
+        // // name in name set, and it
+        // return registerElem(nameset.add(name));
     }
 
-    /**
-     * remove given entry from the collection; @return true iff it was NOT the
-     * last entry.
-     */
-    public boolean remove(final T p) {
+    /** remove given entry from the collection; @return true iff it was NOT the
+     * last entry. */
+    public boolean remove(T p) {
         if (!isRegistered(p.getName())) // not in a name-set: just delete it
         {
             return false;
         }
-        // we might delete vars in order (6,7), so the resize should be done to 6
+        // we might delete vars in order (6,7), so the resize should be done to
+        // 6
         if (p.getId() > 0 && base.size() > p.getId()) {
             Helper.resize(base, p.getId());
         }

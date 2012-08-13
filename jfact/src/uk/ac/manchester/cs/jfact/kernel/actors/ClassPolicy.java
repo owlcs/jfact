@@ -11,8 +11,8 @@ import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 
 /** policy for concepts */
-public final class ClassPolicy implements Policy {
-    public boolean applicable(final ClassifiableEntry p) {
+public class ClassPolicy implements Policy {
+    public boolean applicable(ClassifiableEntry p) {
         return !((Concept) p).isSingleton();
     }
 
@@ -20,7 +20,7 @@ public final class ClassPolicy implements Policy {
         return false;
     }
 
-    public Expression buildTree(final ExpressionManager EM, final ClassifiableEntry p) {
+    public Expression buildTree(ExpressionManager EM, ClassifiableEntry p) {
         if (p.getId() >= 0) {
             return EM.concept(p.getName());
         }

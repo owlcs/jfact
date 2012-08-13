@@ -10,15 +10,15 @@ import java.util.List;
 import uk.ac.manchester.cs.jfact.kernel.Role;
 import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
 
-public final class AddRoleActor implements Actor {
-    private final List<Role> rset;
+public class AddRoleActor implements Actor {
+    private List<Role> rset;
 
-    //TODO check other actors
-    public AddRoleActor(final List<Role> v) {
+    // TODO check other actors
+    public AddRoleActor(List<Role> v) {
         rset = v;
     }
 
-    public boolean apply(final TaxonomyVertex v) {
+    public boolean apply(TaxonomyVertex v) {
         if (v.getPrimer().getId() == 0) {
             return false;
         }

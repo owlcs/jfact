@@ -1,11 +1,7 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
@@ -15,7 +11,7 @@ public class DatatypeNegation<R extends Comparable<R>> implements Datatype<R>,
     private final Datatype<R> host;
     private final String uri;
 
-    public DatatypeNegation(final Datatype<R> d) {
+    public DatatypeNegation(Datatype<R> d) {
         this.uri = "neg#" + DatatypeFactory.getIndex();
         host = d;
     }
@@ -48,11 +44,11 @@ public class DatatypeNegation<R extends Comparable<R>> implements Datatype<R>,
         return host.getKnownFacetValues();
     }
 
-    public <O extends Comparable<O>> O getFacetValue(final Facet f) {
+    public <O extends Comparable<O>> O getFacetValue(Facet f) {
         return host.getFacetValue(f);
     }
 
-    public BigDecimal getNumericFacetValue(final Facet f) {
+    public BigDecimal getNumericFacetValue(Facet f) {
         return host.getNumericFacetValue(f);
     }
 
@@ -64,24 +60,24 @@ public class DatatypeNegation<R extends Comparable<R>> implements Datatype<R>,
         return host.getOrdered();
     }
 
-    public boolean isCompatible(final Literal<?> l) {
+    public boolean isCompatible(Literal<?> l) {
         return !host.isCompatible(l);
     }
 
-    public boolean isInValueSpace(final R l) {
+    public boolean isInValueSpace(R l) {
         return !host.isInValueSpace(l);
     }
 
-    public R parseValue(final String s) {
-        //delegated to the host type
+    public R parseValue(String s) {
+        // delegated to the host type
         return host.parseValue(s);
     }
 
-    public Literal<R> buildLiteral(final String s) {
+    public Literal<R> buildLiteral(String s) {
         return host.buildLiteral(s);
     }
 
-    public boolean isSubType(final Datatype<?> type) {
+    public boolean isSubType(Datatype<?> type) {
         return host.isSubType(type);
     }
 
@@ -89,18 +85,18 @@ public class DatatypeNegation<R extends Comparable<R>> implements Datatype<R>,
         return uri;
     }
 
-    public boolean isCompatible(final Datatype<?> type) {
+    public boolean isCompatible(Datatype<?> type) {
         if (type instanceof DatatypeNegation) {
             return !host.isCompatible(((DatatypeNegation<?>) type).host);
         }
         return !host.isCompatible(type);
     }
 
-    public void accept(final DLExpressionVisitor visitor) {
+    public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+    public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
@@ -141,7 +137,7 @@ public class DatatypeNegation<R extends Comparable<R>> implements Datatype<R>,
         return host.isExpression() ? host.asExpression().getHostType() : host;
     }
 
-    public DatatypeExpression<R> addFacet(final Facet f, final Object value) {
+    public DatatypeExpression<R> addFacet(Facet f, Object value) {
         System.out
                 .println("DatatypeNegation.addFacet() Cannot add a facet to a negation; modify the base type and rebuild a new negation. Returning the same object");
         return this;
@@ -151,7 +147,8 @@ public class DatatypeNegation<R extends Comparable<R>> implements Datatype<R>,
         if (!host.isExpression()) {
             return true;
         }
-        //TODO verify the cases where restrictions on the host actually bracket the value space, so its opposite is empty
+        // TODO verify the cases where restrictions on the host actually bracket
+        // the value space, so its opposite is empty
         return false;
     }
 }

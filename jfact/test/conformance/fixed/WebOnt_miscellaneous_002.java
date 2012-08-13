@@ -20,7 +20,7 @@ public class WebOnt_miscellaneous_002 {
         r.run();
     }
 
-    public void _testWebOnt_miscellaneous_002(final String s1, final String s2)
+    public void _testWebOnt_miscellaneous_002(String s1, String s2)
             throws OWLOntologyCreationException {
         String conclusion = "";
         String id = "WebOnt_miscellaneous_002";
@@ -29,15 +29,15 @@ public class WebOnt_miscellaneous_002 {
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.getConfiguration().setorSortSat(s1);
         r.getConfiguration().setorSortSub(s2);
-        //r.getConfiguration().setLoggingActive(true);
-        //r.setReasonerFactory(Factory.factory());
+        // r.getConfiguration().setLoggingActive(true);
+        // r.setReasonerFactory(Factory.factory());
         try {
             long start = System.currentTimeMillis();
             OWLReasoner reasoner = Factory.factory().createReasoner(r.getPremise(),
                     r.getConfiguration());
             System.out.println("WebOnt_miscellaneous_002.testWebOnt_miscellaneous_002() "
                     + reasoner.isConsistent());
-            //r.run();
+            // r.run();
             System.out
                     .println("WebOnt_miscellaneous_002.testWebOnt_miscellaneous_002() done in "
                             + (System.currentTimeMillis() - start));
@@ -47,12 +47,12 @@ public class WebOnt_miscellaneous_002 {
         }
     }
 
-    private static final String[] options = new String[] { "Sap", "Sdp", "San", "Sdn",
-            "Dap", "Ddp", "Dan", "Ddn", "Fap", "Fdp", "Fan", "Fdn", "Bap", "Bdp", "Ban",
-            "Bdn", "Gap", "Gdp", "Gan", "Gdn" };
+    private static String[] options = new String[] { "Sap", "Sdp", "San", "Sdn", "Dap",
+            "Ddp", "Dan", "Ddn", "Fap", "Fdp", "Fan", "Fdn", "Bap", "Bdp", "Ban", "Bdn",
+            "Gap", "Gdp", "Gan", "Gdn" };
 
-    public static void main(final String[] args) throws OWLOntologyCreationException {
-        final WebOnt_miscellaneous_002 t = new WebOnt_miscellaneous_002();
+    public static void main(String[] args) throws OWLOntologyCreationException {
+        WebOnt_miscellaneous_002 t = new WebOnt_miscellaneous_002();
         for (String s1 : options) {
             for (String s2 : options) {
                 t._testWebOnt_miscellaneous_002(s1, s2);
@@ -60,7 +60,7 @@ public class WebOnt_miscellaneous_002 {
         }
     }
 
-    private static final String premise = "<!DOCTYPE owl [\n"
+    private static String premise = "<!DOCTYPE owl [\n"
             + "     <!ENTITY vin  \"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#\" >\n"
             + "     <!ENTITY food \"http://www.w3.org/2002/03owlt/miscellaneous/consistent002#\" >\n"
             + "     <!ENTITY xsd  \"http://www.w3.org/2001/XMLSchema#\" >\n"

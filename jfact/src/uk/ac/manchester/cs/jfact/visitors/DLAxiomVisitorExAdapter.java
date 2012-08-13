@@ -1,170 +1,139 @@
 package uk.ac.manchester.cs.jfact.visitors;
 
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomConceptInclusion;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleDomain;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleFunctional;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleRange;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleSubsumption;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDeclaration;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDifferentIndividuals;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDisjointConcepts;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDisjointDRoles;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDisjointORoles;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDisjointUnion;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomEquivalentConcepts;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomEquivalentDRoles;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomEquivalentORoles;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomFairnessConstraint;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomInstanceOf;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleDomain;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleFunctional;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleRange;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleSubsumption;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRelatedTo;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRelatedToNot;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleAsymmetric;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleInverse;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleInverseFunctional;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleIrreflexive;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleReflexive;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleSymmetric;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleTransitive;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomSameIndividuals;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOf;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOfNot;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
 
 @SuppressWarnings("unused")
 public class DLAxiomVisitorExAdapter<A> implements DLAxiomVisitorEx<A> {
-    public A visit(final AxiomDeclaration axiom) {
+    public A visit(AxiomDeclaration axiom) {
         return null;
     }
 
-    public A visit(final AxiomEquivalentConcepts axiom) {
+    public A visit(AxiomEquivalentConcepts axiom) {
         return null;
     }
 
-    public A visit(final AxiomDisjointConcepts axiom) {
+    public A visit(AxiomDisjointConcepts axiom) {
         return null;
     }
 
-    public A visit(final AxiomEquivalentORoles axiom) {
+    public A visit(AxiomEquivalentORoles axiom) {
         return null;
     }
 
-    public A visit(final AxiomEquivalentDRoles axiom) {
+    public A visit(AxiomEquivalentDRoles axiom) {
         return null;
     }
 
-    public A visit(final AxiomDisjointUnion axiom) {
+    public A visit(AxiomDisjointUnion axiom) {
         return null;
     }
 
-    public A visit(final AxiomDisjointORoles axiom) {
+    public A visit(AxiomDisjointORoles axiom) {
         return null;
     }
 
-    public A visit(final AxiomDisjointDRoles axiom) {
+    public A visit(AxiomDisjointDRoles axiom) {
         return null;
     }
 
-    public A visit(final AxiomSameIndividuals axiom) {
+    public A visit(AxiomSameIndividuals axiom) {
         return null;
     }
 
-    public A visit(final AxiomDifferentIndividuals axiom) {
+    public A visit(AxiomDifferentIndividuals axiom) {
         return null;
     }
 
-    public A visit(final AxiomFairnessConstraint axiom) {
+    public A visit(AxiomFairnessConstraint axiom) {
         return null;
     }
 
-    public A visit(final AxiomRoleInverse axiom) {
+    public A visit(AxiomRoleInverse axiom) {
         return null;
     }
 
-    public A visit(final AxiomORoleSubsumption axiom) {
+    public A visit(AxiomORoleSubsumption axiom) {
         return null;
     }
 
-    public A visit(final AxiomDRoleSubsumption axiom) {
+    public A visit(AxiomDRoleSubsumption axiom) {
         return null;
     }
 
-    public A visit(final AxiomORoleDomain axiom) {
+    public A visit(AxiomORoleDomain axiom) {
         return null;
     }
 
-    public A visit(final AxiomDRoleDomain axiom) {
+    public A visit(AxiomDRoleDomain axiom) {
         return null;
     }
 
-    public A visit(final AxiomORoleRange axiom) {
+    public A visit(AxiomORoleRange axiom) {
         return null;
     }
 
-    public A visit(final AxiomDRoleRange axiom) {
+    public A visit(AxiomDRoleRange axiom) {
         return null;
     }
 
-    public A visit(final AxiomRoleTransitive axiom) {
+    public A visit(AxiomRoleTransitive axiom) {
         return null;
     }
 
-    public A visit(final AxiomRoleReflexive axiom) {
+    public A visit(AxiomRoleReflexive axiom) {
         return null;
     }
 
-    public A visit(final AxiomRoleIrreflexive axiom) {
+    public A visit(AxiomRoleIrreflexive axiom) {
         return null;
     }
 
-    public A visit(final AxiomRoleSymmetric axiom) {
+    public A visit(AxiomRoleSymmetric axiom) {
         return null;
     }
 
-    public A visit(final AxiomRoleAsymmetric axiom) {
+    public A visit(AxiomRoleAsymmetric axiom) {
         return null;
     }
 
-    public A visit(final AxiomORoleFunctional axiom) {
+    public A visit(AxiomORoleFunctional axiom) {
         return null;
     }
 
-    public A visit(final AxiomDRoleFunctional axiom) {
+    public A visit(AxiomDRoleFunctional axiom) {
         return null;
     }
 
-    public A visit(final AxiomRoleInverseFunctional axiom) {
+    public A visit(AxiomRoleInverseFunctional axiom) {
         return null;
     }
 
-    public A visit(final AxiomConceptInclusion axiom) {
+    public A visit(AxiomConceptInclusion axiom) {
         return null;
     }
 
-    public A visit(final AxiomInstanceOf axiom) {
+    public A visit(AxiomInstanceOf axiom) {
         return null;
     }
 
-    public A visit(final AxiomRelatedTo axiom) {
+    public A visit(AxiomRelatedTo axiom) {
         return null;
     }
 
-    public A visit(final AxiomRelatedToNot axiom) {
+    public A visit(AxiomRelatedToNot axiom) {
         return null;
     }
 
-    public A visit(final AxiomValueOf axiom) {
+    public A visit(AxiomValueOf axiom) {
         return null;
     }
 
-    public A visit(final AxiomValueOfNot axiom) {
+    public A visit(AxiomValueOfNot axiom) {
         return null;
     }
 
-    public A visitOntology(final Ontology ontology) {
+    public A visitOntology(Ontology ontology) {
         return null;
     }
 }

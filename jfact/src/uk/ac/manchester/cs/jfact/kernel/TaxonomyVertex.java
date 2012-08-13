@@ -5,29 +5,25 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
-public final class TaxonomyVertex {
-    //TODO check if they need to be list
+public class TaxonomyVertex {
+    // TODO check if they need to be list
     /** immediate parents and children */
-    private final List<TaxonomyVertex> linksParent = new ArrayList<TaxonomyVertex>();
-    private final List<TaxonomyVertex> linksChild = new ArrayList<TaxonomyVertex>();
+    private List<TaxonomyVertex> linksParent = new ArrayList<TaxonomyVertex>();
+    private List<TaxonomyVertex> linksChild = new ArrayList<TaxonomyVertex>();
     /** entry corresponding to current tax vertex */
     private ClassifiableEntry sample = null;
-    //TODO this can be a set, but there is no advantage
+    // TODO this can be a set, but there is no advantage
     /** synonyms of the sample entry */
-    private final Set<ClassifiableEntry> synonyms = new LinkedHashSet<ClassifiableEntry>();
-    // labels for different purposes. all for 2 directions: top-down and bottom-up search
+    private Set<ClassifiableEntry> synonyms = new LinkedHashSet<ClassifiableEntry>();
+    // labels for different purposes. all for 2 directions: top-down and
+    // bottom-up search
     /** flag if given vertex was checked; connected with checkLab */
     private long checked;
     /** flag if given vertex has value; connected with valuedLab */
@@ -37,13 +33,13 @@ public final class TaxonomyVertex {
     /** satisfiability value of a valued vertex */
     private boolean checkValue;
 
-    /// mark vertex as the one corresponding to a given ENTRY
-    public void setHostVertex(final ClassifiableEntry entry) {
+    // / mark vertex as the one corresponding to a given ENTRY
+    public void setHostVertex(ClassifiableEntry entry) {
         entry.setTaxVertex(this);
     }
 
     /** set sample to ENTRY */
-    public void setSample(final ClassifiableEntry entry, final boolean linkBack) {
+    public void setSample(ClassifiableEntry entry, boolean linkBack) {
         sample = entry;
         if (linkBack) {
             entry.setTaxVertex(this);
@@ -51,21 +47,21 @@ public final class TaxonomyVertex {
     }
 
     /** indirect RW access to Links */
-    public List<TaxonomyVertex> neigh(final boolean upDirection) {
+    public List<TaxonomyVertex> neigh(boolean upDirection) {
         return upDirection ? linksParent : linksChild;
     }
 
     // checked part
-    public boolean isChecked(final long checkLab) {
+    public boolean isChecked(long checkLab) {
         return checkLab == checked;
     }
 
-    public void setChecked(final long checkLab) {
+    public void setChecked(long checkLab) {
         checked = checkLab;
     }
 
     // value part
-    public boolean isValued(final long valueLab) {
+    public boolean isValued(long valueLab) {
         return valueLab == isValued;
     }
 
@@ -73,7 +69,7 @@ public final class TaxonomyVertex {
         return checkValue;
     }
 
-    public boolean setValued(final boolean val, final long valueLab) {
+    public boolean setValued(boolean val, long valueLab) {
         isValued = valueLab;
         checkValue = val;
         return val;
@@ -93,7 +89,7 @@ public final class TaxonomyVertex {
     }
 
     /** keep COMMON flag iff both flags are set; @return true if it is the case */
-    public boolean correctCommon(final int n) {
+    public boolean correctCommon(int n) {
         if (common == n) {
             return true;
         }
@@ -118,13 +114,13 @@ public final class TaxonomyVertex {
     }
 
     /** init c'tor; use it only for Top/Bot initialisations */
-    public TaxonomyVertex(final ClassifiableEntry p) {
+    public TaxonomyVertex(ClassifiableEntry p) {
         initFlags();
         setSample(p, true);
     }
 
     /** add P as a synonym to curent vertex */
-    public void addSynonym(final ClassifiableEntry p) {
+    public void addSynonym(ClassifiableEntry p) {
         synonyms.add(p);
         p.setTaxVertex(this);
     }
@@ -142,7 +138,7 @@ public final class TaxonomyVertex {
     }
 
     /** add link in given direction to vertex */
-    public void addNeighbour(final boolean upDirection, final TaxonomyVertex p) {
+    public void addNeighbour(boolean upDirection, TaxonomyVertex p) {
         if (p == null) {
             throw new IllegalArgumentException("p cannot be null");
         }
@@ -150,14 +146,12 @@ public final class TaxonomyVertex {
     }
 
     /** check if vertex has no neighbours in given direction */
-    public boolean noNeighbours(final boolean upDirection) {
+    public boolean noNeighbours(boolean upDirection) {
         return neigh(upDirection).isEmpty();
     }
 
-    /**
-     * @return v if node represents a synonym (v=Up[i]==Down[j]); @return null
-     *         otherwise
-     */
+    /** @return v if node represents a synonym (v=Up[i]==Down[j]); @return null
+     *         otherwise */
     public TaxonomyVertex getSynonymNode() {
         // try to find Vertex such that Vertex\in Up and Vertex\in Down
         for (TaxonomyVertex q : neigh(true)) {
@@ -171,16 +165,16 @@ public final class TaxonomyVertex {
     }
 
     /** remove latest link (usually to the BOTTOM node) */
-    public void removeLastLink(final boolean upDirection) {
+    public void removeLastLink(boolean upDirection) {
         Helper.resize(neigh(upDirection), neigh(upDirection).size() - 1);
     }
 
     /** clear all links in a given direction */
-    public void clearLinks(final boolean upDirection) {
+    public void clearLinks(boolean upDirection) {
         neigh(upDirection).clear();
     }
 
-    public boolean removeLink(final boolean upDirection, final TaxonomyVertex p) {
+    public boolean removeLink(boolean upDirection, TaxonomyVertex p) {
         List<TaxonomyVertex> begin = neigh(upDirection);
         int index = begin.indexOf(p);
         if (index > -1) {
@@ -191,10 +185,10 @@ public final class TaxonomyVertex {
         return false;
     }
 
-    //TODO does not work with synonyms
-    public void incorporate(final JFactReasonerConfiguration c) {
+    // TODO does not work with synonyms
+    public void incorporate(JFactReasonerConfiguration c) {
         // setup links
-        //TODO doublecheck
+        // TODO doublecheck
         List<TaxonomyVertex> falselist = new ArrayList<TaxonomyVertex>(neigh(false));
         List<TaxonomyVertex> truelist = new ArrayList<TaxonomyVertex>(neigh(true));
         for (TaxonomyVertex d : falselist) {
@@ -209,7 +203,7 @@ public final class TaxonomyVertex {
             u.addNeighbour(false, this);
         }
         if (c.isLoggingActive()) {
-            final LogAdapter logAdapter = c.getLog();
+            LogAdapter logAdapter = c.getLog();
             logAdapter.printTemplate(Templates.INCORPORATE, sample.getName());
             for (int i = 0; i < truelist.size(); i++) {
                 if (i > 0) {
@@ -228,9 +222,9 @@ public final class TaxonomyVertex {
         }
     }
 
-    /// merge NODE which is independent to THIS
-    void mergeIndepNode(final TaxonomyVertex node, final Set<TaxonomyVertex> excludes,
-            final ClassifiableEntry curEntry) {
+    // / merge NODE which is independent to THIS
+    void mergeIndepNode(TaxonomyVertex node, Set<TaxonomyVertex> excludes,
+            ClassifiableEntry curEntry) {
         // copy synonyms here
         if (!node.getPrimer().equals(curEntry)) {
             addSynonym(node.getPrimer());
@@ -273,14 +267,14 @@ public final class TaxonomyVertex {
         return o.toString();
     }
 
-    public String printNeighbours(final boolean upDirection) {
+    public String printNeighbours(boolean upDirection) {
         StringBuilder o = new StringBuilder();
         o.append(" {");
         o.append(neigh(upDirection).size());
         o.append(":");
         TreeSet<TaxonomyVertex> sorted = new TreeSet<TaxonomyVertex>(
                 new Comparator<TaxonomyVertex>() {
-                    public int compare(final TaxonomyVertex o1, final TaxonomyVertex o2) {
+                    public int compare(TaxonomyVertex o1, TaxonomyVertex o2) {
                         return o1.getPrimer().getName()
                                 .compareTo(o2.getPrimer().getName());
                     }

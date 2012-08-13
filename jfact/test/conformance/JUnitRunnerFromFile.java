@@ -6,7 +6,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
 public class JUnitRunnerFromFile extends JUnitRunner {
-    public static String readFile(final File f) {
+    public static String readFile(File f) {
         StringBuilder b = new StringBuilder();
         try {
             BufferedReader r = new BufferedReader(new InputStreamReader(
@@ -24,8 +24,8 @@ public class JUnitRunnerFromFile extends JUnitRunner {
         return b.toString();
     }
 
-    public JUnitRunnerFromFile(final File premise, final File consequence,
-            final String testId, final TestClasses t, final String description) {
+    public JUnitRunnerFromFile(File premise, File consequence, String testId,
+            TestClasses t, String description) {
         super(readFile(premise), readFile(consequence), testId, t, description);
     }
 }

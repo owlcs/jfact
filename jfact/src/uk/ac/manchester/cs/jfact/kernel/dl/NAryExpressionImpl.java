@@ -15,17 +15,17 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 public class NAryExpressionImpl<Argument extends Expression> implements
         NAryExpression<Argument> {
     /** set of equivalent concept descriptions */
-    private final List<Argument> Base = new ArrayList<Argument>();
+    private List<Argument> Base = new ArrayList<Argument>();
 
     public NAryExpressionImpl() {}
 
-    public void add(final Collection<Expression> v) {
+    public void add(Collection<Expression> v) {
         for (Expression e : v) {
             add(e);
         }
     }
 
-    public void add(final Expression p) {
+    public void add(Expression p) {
         Base.add(transform(p));
     }
 
@@ -42,7 +42,7 @@ public class NAryExpressionImpl<Argument extends Expression> implements
     }
 
     /** transform general expression into the argument one */
-    public Argument transform(final Expression arg) {
+    public Argument transform(Expression arg) {
         return (Argument) arg;
     }
 

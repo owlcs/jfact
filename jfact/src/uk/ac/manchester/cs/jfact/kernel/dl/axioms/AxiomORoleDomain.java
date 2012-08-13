@@ -12,25 +12,25 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
-public final class AxiomORoleDomain extends AxiomSingleORole {
-    private final ConceptExpression domain;
+public class AxiomORoleDomain extends AxiomSingleORole {
+    private ConceptExpression domain;
 
-    public AxiomORoleDomain(final OWLAxiom ax, final ObjectRoleExpression role,
-            final ConceptExpression domain) {
+    public AxiomORoleDomain(OWLAxiom ax, ObjectRoleExpression role,
+            ConceptExpression domain) {
         super(ax, role);
         this.domain = domain;
     }
 
-    public void accept(final DLAxiomVisitor visitor) {
+    public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLAxiomVisitorEx<O> visitor) {
+    public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
     /** access */
-    public final ConceptExpression getDomain() {
+    public ConceptExpression getDomain() {
         return domain;
     }
 }

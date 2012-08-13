@@ -10,12 +10,12 @@ import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 
-public final class ModelCacheConst extends ModelCacheInterface {
-    /** the final itself */
-    private final boolean isTop;
+public class ModelCacheConst extends ModelCacheInterface {
+    /** the itself */
+    private boolean isTop;
 
     /** c'tor: no nominals can be here */
-    public ModelCacheConst(final boolean top) {
+    public ModelCacheConst(boolean top) {
         super(false);
         isTop = top;
     }
@@ -34,7 +34,7 @@ public final class ModelCacheConst extends ModelCacheInterface {
     // mergable part
     /** check whether two caches can be merged; @return state of "merged" model */
     @Override
-    public ModelCacheState canMerge(final ModelCacheInterface p) {
+    public ModelCacheState canMerge(ModelCacheInterface p) {
         if (p.getCacheType() == ModelCacheType.mctConst) {
             return isTop && ((ModelCacheConst) p).isTop ? csValid : csInvalid;
         } else {
@@ -50,12 +50,12 @@ public final class ModelCacheConst extends ModelCacheInterface {
 
     /** log this cache entry (with given level) */
     @Override
-    public void logCacheEntry(final int level, final LogAdapter l) {
+    public void logCacheEntry(int level, LogAdapter l) {
         l.printTemplate(Templates.LOGCACHEENTRY, isTop ? "TOP" : "BOTTOM");
     }
 
     /** create const cache by BP; BP should be either bpTOP or bpBOTTOM */
-    public static ModelCacheConst createConstCache(final int bp) {
+    public static ModelCacheConst createConstCache(int bp) {
         assert bp == Helper.bpTOP || bp == Helper.bpBOTTOM;
         return new ModelCacheConst(bp == Helper.bpTOP);
     }

@@ -33,9 +33,9 @@ public enum Templates {
             "\nTold cycle elimination done with %s synonyms created"), IS_SATISFIABLE(
             "\n-----------\nChecking satisfiability of '%s':\n"), IS_SATISFIABLE1(
             "\nThe '%s' concept is %ssatisfiable w.r.t. TBox");
-    private final String template;
+    private String template;
 
-    private Templates(final String s) {
+    private Templates(String s) {
         template = s;
     }
 

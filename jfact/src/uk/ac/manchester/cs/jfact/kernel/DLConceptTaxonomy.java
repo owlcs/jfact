@@ -17,48 +17,48 @@ import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState;
 import uk.ac.manchester.cs.jfact.split.TSplitVar;
 import uk.ac.manchester.cs.jfact.split.TSplitVars;
 
-public final class DLConceptTaxonomy extends Taxonomy {
-    /// all the derived subsumers of a class (came from the model)
+public class DLConceptTaxonomy extends Taxonomy {
+    // / all the derived subsumers of a class (came from the model)
     class DerivedSubsumers extends KnownSubsumers {
-        //protected:	// typedefs
-        /// set of the subsumers
-        //typedef Taxonomy::SubsumerSet SubsumerSet;
-        /// SS RW iterator
-        //typedef SubsumerSet::iterator ss_iterator;
-        //protected:	// members
-        /// set of sure- and possible subsumers
-        protected final List<ClassifiableEntry> Sure, Possible;
+        // protected: // typedefs
+        // / set of the subsumers
+        // typedef Taxonomy::SubsumerSet SubsumerSet;
+        // / SS RW iterator
+        // typedef SubsumerSet::iterator ss_iterator;
+        // protected: // members
+        // / set of sure- and possible subsumers
+        protected List<ClassifiableEntry> Sure, Possible;
 
-        //public:		// interface
-        /// c'tor: copy given sets
-        public DerivedSubsumers(final List<ClassifiableEntry> sure,
-                final List<ClassifiableEntry> possible) {
+        // public: // interface
+        // / c'tor: copy given sets
+        public DerivedSubsumers(List<ClassifiableEntry> sure,
+                List<ClassifiableEntry> possible) {
             Sure = new ArrayList<ClassifiableEntry>(sure);
             Possible = new ArrayList<ClassifiableEntry>(possible);
         }
 
         // iterators
-        /// begin of the Sure subsumers interval
+        // / begin of the Sure subsumers interval
         @Override
         public List<ClassifiableEntry> s_begin() {
             return Sure;
         }
 
-        /// begin of the Possible subsumers interval
+        // / begin of the Possible subsumers interval
         @Override
         public List<ClassifiableEntry> p_begin() {
             return Possible;
         }
     }
 
-    /// set of split vars
+    // / set of split vars
     TSplitVars Splits;
-    /// flag shows that subsumption check could be simplified
+    // / flag shows that subsumption check could be simplified
     boolean inSplitCheck;
     /** host tBox */
-    private final TBox tBox;
+    private TBox tBox;
     /** common descendants of all parents of currently classified concept */
-    private final List<TaxonomyVertex> common = new ArrayList<TaxonomyVertex>();
+    private List<TaxonomyVertex> common = new ArrayList<TaxonomyVertex>();
     // statistic counters
     private long nConcepts;
     private long nTries;
@@ -76,16 +76,16 @@ public final class DLConceptTaxonomy extends Taxonomy {
     // flags
     /** flag to use Bottom-Up search */
     private boolean flagNeedBottomUp;
-    /// number of processed common parents
+    // / number of processed common parents
     protected int nCommon = 1;
 
-    //--	General support for DL concept classification
+    // -- General support for DL concept classification
     /** get access to curEntry as a TConcept */
-    private final Concept curConcept() {
+    private Concept curConcept() {
         return (Concept) curEntry;
     }
 
-    private boolean enhancedSubs(final boolean upDirection, final TaxonomyVertex cur) {
+    private boolean enhancedSubs(boolean upDirection, TaxonomyVertex cur) {
         ++nSubCalls;
         if (cur.isValued(valueLabel)) {
             return cur.getValue();
@@ -110,7 +110,8 @@ public final class DLConceptTaxonomy extends Taxonomy {
             if (isEqualToTop()) {
                 return;
             }
-            if (!willInsertIntoTaxonomy) { // after classification -- bottom set up already
+            if (!willInsertIntoTaxonomy) { // after classification -- bottom set
+                                           // up already
                 searchBaader(true, getBottomVertex());
                 return;
             }
@@ -141,7 +142,7 @@ public final class DLConceptTaxonomy extends Taxonomy {
     }
 
     /** the only c'tor */
-    public DLConceptTaxonomy(final Concept pTop, final Concept pBottom, final TBox kb) {
+    public DLConceptTaxonomy(Concept pTop, Concept pBottom, TBox kb) {
         super(pTop, pBottom, kb.getOptions());
         tBox = kb;
         nConcepts = 0;
@@ -154,34 +155,35 @@ public final class DLConceptTaxonomy extends Taxonomy {
         nCachedPositive = 0;
         nCachedNegative = 0;
         nSortedNegative = 0;
-        //	flagNeedBottomUp = GCIs.isGCI() || GCIs.isReflexive() && GCIs.isRnD();
+        // flagNeedBottomUp = GCIs.isGCI() || GCIs.isReflexive() &&
+        // GCIs.isRnD();
         inSplitCheck = false;
     }
 
-    /// process all splits
+    // / process all splits
     void processSplits() {
         for (TSplitVar v : Splits.getEntries()) {
             mergeSplitVars(v);
         }
     }
 
-    /// set split vars
-    void setSplitVars(final TSplitVars s) {
+    // / set split vars
+    void setSplitVars(TSplitVars s) {
         Splits = s;
     }
 
-    /// get access to split vars
+    // / get access to split vars
     TSplitVars getSplits() {
         return Splits;
     }
 
-    /// set bottom-up flag
-    public void setBottomUp(final KBFlags GCIs) {
+    // / set bottom-up flag
+    public void setBottomUp(KBFlags GCIs) {
         flagNeedBottomUp = GCIs.isGCI() || GCIs.isReflexive() && GCIs.isRnD();
     }
 
     private boolean isUnsatisfiable() {
-        final Concept p = curConcept();
+        Concept p = curConcept();
         if (tBox.isSatisfiable(p)) {
             return false;
         }
@@ -210,13 +212,14 @@ public final class DLConceptTaxonomy extends Taxonomy {
 
     @Override
     protected boolean needBottomUp() {
-        // we DON'T need bottom-up phase for primitive concepts during CD-like reasoning
+        // we DON'T need bottom-up phase for primitive concepts during CD-like
+        // reasoning
         // if no GCIs are in the TBox (C [= T, T [= X or Y, X [= D, Y [= D)
         // or no reflexive roles w/RnD precent (Refl(R), Range(R)=D)
         return flagNeedBottomUp || !useCompletelyDefined || !curConcept().isPrimitive();
     }
 
-    private boolean testSub(final Concept p, final Concept q) {
+    private boolean testSub(Concept p, Concept q) {
         assert p != null;
         assert q != null;
         if (q.isSingleton() // singleton on the RHS is useless iff...
@@ -254,7 +257,7 @@ public final class DLConceptTaxonomy extends Taxonomy {
     }
 
     /** test subsumption via TBox explicitely */
-    private boolean testSubTBox(final Concept p, final Concept q) {
+    private boolean testSubTBox(Concept p, Concept q) {
         boolean res = tBox.isSubHolds(p, q);
         // update statistic
         ++nTries;
@@ -284,12 +287,12 @@ public final class DLConceptTaxonomy extends Taxonomy {
         return o.toString();
     }
 
-    private void searchBaader(final boolean upDirection, final TaxonomyVertex cur) {
+    private void searchBaader(boolean upDirection, TaxonomyVertex cur) {
         cur.setChecked(checkLabel);
         ++nSearchCalls;
         boolean noPosSucc = true;
         List<TaxonomyVertex> neigh = cur.neigh(upDirection);
-        final int size = neigh.size();
+        int size = neigh.size();
         for (int i = 0; i < size; i++) {
             TaxonomyVertex p = neigh.get(i);
             if (enhancedSubs(upDirection, p)) {
@@ -299,7 +302,8 @@ public final class DLConceptTaxonomy extends Taxonomy {
                 noPosSucc = false;
             }
         }
-        // in case current node is unchecked (no BOTTOM node) -- check it explicitely
+        // in case current node is unchecked (no BOTTOM node) -- check it
+        // explicitely
         if (!cur.isValued(valueLabel)) {
             cur.setValued(testSubsumption(upDirection, cur), valueLabel);
         }
@@ -308,10 +312,10 @@ public final class DLConceptTaxonomy extends Taxonomy {
         }
     }
 
-    private boolean enhancedSubs1(final boolean upDirection, final TaxonomyVertex cur) {
+    private boolean enhancedSubs1(boolean upDirection, TaxonomyVertex cur) {
         ++nNonTrivialSubCalls;
         List<TaxonomyVertex> neigh = cur.neigh(!upDirection);
-        final int size = neigh.size();
+        int size = neigh.size();
         for (int i = 0; i < size; i++) {
             if (!enhancedSubs(upDirection, neigh.get(i))) {
                 return false;
@@ -321,8 +325,9 @@ public final class DLConceptTaxonomy extends Taxonomy {
     }
 
     /** short-cuf from ENHANCED_SUBS */
-    private boolean enhancedSubs2(final boolean upDirection, final TaxonomyVertex cur) {
-        // if bottom-up search and CUR is not a successor of checking entity -- return false
+    private boolean enhancedSubs2(boolean upDirection, TaxonomyVertex cur) {
+        // if bottom-up search and CUR is not a successor of checking entity --
+        // return false
         if (upDirection && !cur.isCommon()) {
             return false;
         }
@@ -334,8 +339,8 @@ public final class DLConceptTaxonomy extends Taxonomy {
         return enhancedSubs1(upDirection, cur);
     }
 
-    /// test whether a node could be a super-node of CUR
-    private boolean possibleSub(final TaxonomyVertex v) {
+    // / test whether a node could be a super-node of CUR
+    private boolean possibleSub(TaxonomyVertex v) {
         Concept C = (Concept) v.getPrimer();
         // non-prim concepts are candidates
         if (!C.isPrimitive()) {
@@ -345,8 +350,8 @@ public final class DLConceptTaxonomy extends Taxonomy {
         return ksStack.peek().isPossibleSub(C);
     }
 
-    private boolean testSubsumption(final boolean upDirection, final TaxonomyVertex cur) {
-        final Concept testC = (Concept) cur.getPrimer();
+    private boolean testSubsumption(boolean upDirection, TaxonomyVertex cur) {
+        Concept testC = (Concept) cur.getPrimer();
         if (upDirection) {
             return testSub(testC, curConcept());
         } else {
@@ -354,7 +359,7 @@ public final class DLConceptTaxonomy extends Taxonomy {
         }
     }
 
-    private void propagateOneCommon(final TaxonomyVertex node) {
+    private void propagateOneCommon(TaxonomyVertex node) {
         // checked if node already was visited this session
         if (node.isChecked(checkLabel)) {
             return;
@@ -373,10 +378,10 @@ public final class DLConceptTaxonomy extends Taxonomy {
     }
 
     private boolean propagateUp() {
-        final boolean upDirection = true;
+        boolean upDirection = true;
         nCommon = 1;
         List<TaxonomyVertex> list = current.neigh(upDirection);
-        final int size = list.size();
+        int size = list.size();
         assert size > 0; // there is at least one parent (TOP)
         TaxonomyVertex p = list.get(0);
         // define possible successors of the node
@@ -404,14 +409,14 @@ public final class DLConceptTaxonomy extends Taxonomy {
     }
 
     private void clearCommon() {
-        final int size = common.size();
+        int size = common.size();
         for (int i = 0; i < size; i++) {
             common.get(i).clearCommon();
         }
         common.clear();
     }
 
-    /// check if no BU classification is required as C=TOP
+    // / check if no BU classification is required as C=TOP
     private boolean isEqualToTop() {
         // check this up-front to avoid Sorted check's flaw wrt equals-to-top
         ModelCacheInterface cache = tBox.initCache(curConcept(), true);
@@ -431,7 +436,8 @@ public final class DLConceptTaxonomy extends Taxonomy {
         }
         if (curConcept().isSingleton()) {
             Individual curI = (Individual) curConcept();
-            if (tBox.isBlockedInd(curI)) { // check whether current entry is the same as another individual
+            if (tBox.isBlockedInd(curI)) { // check whether current entry is the
+                                           // same as another individual
                 Individual syn = tBox.getBlockingInd(curI);
                 assert syn.getTaxVertex() != null;
                 if (tBox.isBlockingDet(curI)) {
@@ -455,7 +461,8 @@ public final class DLConceptTaxonomy extends Taxonomy {
         return false;
     }
 
-    /// after merging, check whether there are extra neighbours that should be taken into account
+    // / after merging, check whether there are extra neighbours that should be
+    // taken into account
     void checkExtraParents() {
         inSplitCheck = true;
         for (TaxonomyVertex p : current.neigh(true)) {
@@ -477,8 +484,8 @@ public final class DLConceptTaxonomy extends Taxonomy {
         inSplitCheck = false;
     }
 
-    /// merge vars came from a given SPLIT together
-    void mergeSplitVars(final TSplitVar split) {
+    // / merge vars came from a given SPLIT together
+    void mergeSplitVars(TSplitVar split) {
         Set<TaxonomyVertex> splitVertices = new HashSet<TaxonomyVertex>();
         TaxonomyVertex v = split.C.getTaxVertex();
         boolean cIn = v != null;
@@ -510,9 +517,8 @@ public final class DLConceptTaxonomy extends Taxonomy {
         }
     }
 
-    /// merge a single vertex V to a node represented by CUR
-    void mergeVertex(final TaxonomyVertex cur, final TaxonomyVertex v,
-            final Set<TaxonomyVertex> excludes) {
+    // / merge a single vertex V to a node represented by CUR
+    void mergeVertex(TaxonomyVertex cur, TaxonomyVertex v, Set<TaxonomyVertex> excludes) {
         if (!cur.equals(v)) {
             cur.mergeIndepNode(v, excludes, curEntry);
             removeNode(v);

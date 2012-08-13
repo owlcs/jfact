@@ -5,7 +5,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static uk.ac.manchester.cs.jfact.helpers.Helper.bpTOP;
+import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
 
 import java.util.BitSet;
 
@@ -13,17 +13,17 @@ import uk.ac.manchester.cs.jfact.helpers.DLVertex;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 
-public final class LogicFeatures {
+public class LogicFeatures {
     /** all flags in one long */
-    private final BitSet flags = new BitSet();
+    private BitSet flags = new BitSet();
 
     /** set any flag */
-    private void setX(final int val) {
+    private void setX(int val) {
         flags.set(val);
     }
 
     /** get value of any flag */
-    private boolean getX(final int val) {
+    private boolean getX(int val) {
         return flags.get(val);
     }
 
@@ -31,12 +31,12 @@ public final class LogicFeatures {
     public LogicFeatures() {}
 
     /** copy c'tor */
-    public LogicFeatures(final LogicFeatures lf) {
+    public LogicFeatures(LogicFeatures lf) {
         flags.or(lf.flags);
     }
 
     /** operator add */
-    public void or(final LogicFeatures lf) {
+    public void or(LogicFeatures lf) {
         flags.or(lf.flags);
     }
 
@@ -98,19 +98,19 @@ public final class LogicFeatures {
         setX(lfBothRoles);
     }
 
-    public static LogicFeatures plus(final LogicFeatures f1, final LogicFeatures f2) {
+    public static LogicFeatures plus(LogicFeatures f1, LogicFeatures f2) {
         LogicFeatures f = new LogicFeatures(f1);
         f.flags.or(f2.flags);
         return f;
     }
 
-    public void fillConceptData(final Concept p) {
+    public void fillConceptData(Concept p) {
         if (p.isSingleton()) {
             setX(lfSingleton);
         }
     }
 
-    public void fillRoleData(final Role p, final boolean both) {
+    public void fillRoleData(Role p, boolean both) {
         if (p.isTop()) {
             if (!p.isDataRole()) {
                 setX(lfTopRole);
@@ -139,7 +139,7 @@ public final class LogicFeatures {
         }
     }
 
-    public void fillDAGData(final DLVertex v, final boolean pos) {
+    public void fillDAGData(DLVertex v, boolean pos) {
         switch (v.getType()) {
             case dtForall:
                 setX(lfSomeConstructor);
@@ -162,7 +162,7 @@ public final class LogicFeatures {
         }
     }
 
-    public void writeState(final LogAdapter l) {
+    public void writeState(LogAdapter l) {
         String NO = "NO ";
         String Q = "qualified ";
         l.printTemplate(Templates.WRITE_STATE, hasInverseRole() ? "" : NO,
@@ -173,34 +173,34 @@ public final class LogicFeatures {
                 hasSingletons() ? "" : NO);
     }
 
-    //private static final int lfInvalid = 0;
+    // private static int lfInvalid = 0;
     // role description
-    private static final int lfTransitiveRoles = 1;
-    private static final int lfRolesSubsumption = 2;
-    private static final int lfDirectRoles = 3;
-    private static final int lfInverseRoles = 4;
-    private static final int lfRangeAndDomain = 5;
-    private static final int lfFunctionalRoles = 6;
+    private static int lfTransitiveRoles = 1;
+    private static int lfRolesSubsumption = 2;
+    private static int lfDirectRoles = 3;
+    private static int lfInverseRoles = 4;
+    private static int lfRangeAndDomain = 5;
+    private static int lfFunctionalRoles = 6;
     // concept description
-    private static final int lfSomeConstructor = 7;
-    private static final int lfFConstructor = 8;
-    private static final int lfNConstructor = 9;
-    private static final int lfQConstructor = 10;
-    private static final int lfSingleton = 11;
+    private static int lfSomeConstructor = 7;
+    private static int lfFConstructor = 8;
+    private static int lfNConstructor = 9;
+    private static int lfQConstructor = 10;
+    private static int lfSingleton = 11;
     // global description
-    private static final int lfGeneralAxioms = 12;
-    private static final int lfBothRoles = 13;
+    private static int lfGeneralAxioms = 12;
+    private static int lfBothRoles = 13;
     // new constructions
-    private static final int lfSelfRef = 14;
-    private static final int lfTopRole = 15;
-    //		private final int value;
+    private static int lfSelfRef = 14;
+    private static int lfTopRole = 15;
+    // private int value;
     //
-    //		LFEnum(int v) {
-    //			value = v;
-    //		}
+    // LFEnum(int v) {
+    // value = v;
+    // }
     //
-    //		protected int getValue() {
-    //			return value;
-    //		}
-    //	}
+    // protected int getValue() {
+    // return value;
+    // }
+    // }
 }

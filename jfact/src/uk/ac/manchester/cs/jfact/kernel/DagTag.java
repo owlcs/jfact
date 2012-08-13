@@ -14,7 +14,7 @@ public enum DagTag {
     // operations
     dtTop("*TOP*"), dtAnd("and"), dtCollection("collection"), dtForall("all"), dtLE(
             "at-most"),
-    //dtUAll("all U"), // \dall U.C
+    // dtUAll("all U"), // \dall U.C
     dtIrr("irreflexive"), // \neg\exists R.Self
     dtProj("projection"), // aux vertex with Projection FROM the current node
     dtNN("NN-stopper"), // NN-rule was applied
@@ -24,16 +24,14 @@ public enum DagTag {
     dtPSingleton("prim-singleton"), dtNSingleton("singleton"), dtDataType("data-type"), dtDataValue(
             "data-value"), dtDataExpr("data-expr"), dtChoose("choose"), dtSplitConcept(
             "split-concept");
-    private static final EnumSet<DagTag> TRUE = EnumSet.of(dtDataType, dtDataValue,
-            dtDataExpr, dtNN, dtBad, dtTop, dtChoose);
-    private static final EnumSet<DagTag> NotPos = EnumSet.of(dtPConcept, dtPSingleton,
+    private static EnumSet<DagTag> TRUE = EnumSet.of(dtDataType, dtDataValue, dtDataExpr,
+            dtNN, dtBad, dtTop, dtChoose);
+    private static EnumSet<DagTag> NotPos = EnumSet.of(dtPConcept, dtPSingleton,
             dtCollection, dtProj);
 
-    /**
-     * whether statistic's gathering should be omitted due to the type of a
-     * vertex
-     */
-    public boolean omitStat(final boolean pos) {
+    /** whether statistic's gathering should be omitted due to the type of a
+     * vertex */
+    public boolean omitStat(boolean pos) {
         if (TRUE.contains(this)) {
             return true;
         }
@@ -45,7 +43,7 @@ public enum DagTag {
 
     private String name;
 
-    private DagTag(final String s) {
+    private DagTag(String s) {
         name = s;
     }
 
@@ -69,8 +67,8 @@ public enum DagTag {
         return isPNameTag() || isNNameTag();
     }
 
-    private static final EnumSet<DagTag> complexConceptsEnumSet = EnumSet.of(
-            DagTag.dtForall, DagTag.dtLE, DagTag.dtIrr, DagTag.dtNN, DagTag.dtChoose);
+    private static EnumSet<DagTag> complexConceptsEnumSet = EnumSet.of(DagTag.dtForall,
+            DagTag.dtLE, DagTag.dtIrr, DagTag.dtNN, DagTag.dtChoose);
 
     /** @return true iff TAG represents complex concept */
     public boolean isComplexConcept() {

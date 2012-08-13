@@ -25,7 +25,7 @@ public abstract class DLTree {
     protected List<DLTree> children;
     protected DLTree ancestor;
 
-    public DLTree(final Lexeme Init) {
+    public DLTree(Lexeme Init) {
         elem = Init;
     }
 
@@ -63,25 +63,25 @@ public abstract class DLTree {
         return ancestor;
     }
 
-    public final void setAncestor(final DLTree r) {
+    public void setAncestor(DLTree r) {
         ancestor = r;
     }
 
-    public final void addChild(final DLTree d) {
+    public void addChild(DLTree d) {
         if (d != null) {
             children.add(d);
             d.ancestor = this;
         }
     }
 
-    public final void addFirstChild(final DLTree d) {
+    public void addFirstChild(DLTree d) {
         if (d != null) {
             children.add(0, d);
             d.ancestor = this;
         }
     }
 
-    public final void addFirstChildren(final Collection<DLTree> d) {
+    public void addFirstChildren(Collection<DLTree> d) {
         if (d != null) {
             children.addAll(0, d);
             for (DLTree t : d) {
@@ -90,12 +90,12 @@ public abstract class DLTree {
         }
     }
 
-    public DLTree(final Token tok) {
+    public DLTree(Token tok) {
         this(new Lexeme(tok));
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
         if (obj == null) {
             return false;
         }
@@ -141,7 +141,7 @@ public abstract class DLTree {
         return children;
     }
 
-    public static boolean equalTrees(final DLTree t1, final DLTree t2) {
+    public static boolean equalTrees(DLTree t1, DLTree t2) {
         if (t1 == null && t2 == null) {
             return true;
         }
@@ -206,20 +206,20 @@ interface DLTreeVisitorEx<O> {
 }
 
 class CloningVisitor implements DLTreeVisitorEx<DLTree> {
-    public DLTree visit(final LEAFDLTree t) {
+    public DLTree visit(LEAFDLTree t) {
         return new LEAFDLTree(new Lexeme(t.elem));
     }
 
-    public DLTree visit(final ONEDLTree t) {
+    public DLTree visit(ONEDLTree t) {
         return new ONEDLTree(new Lexeme(t.elem), t.getChild().accept(this));
     }
 
-    public DLTree visit(final TWODLTree t) {
+    public DLTree visit(TWODLTree t) {
         return new TWODLTree(new Lexeme(t.elem), t.getLeft().accept(this), t.getRight()
                 .accept(this));
     }
 
-    public DLTree visit(final NDLTree t) {
+    public DLTree visit(NDLTree t) {
         List<DLTree> l = new ArrayList<DLTree>();
         for (DLTree tree : t.children) {
             l.add(tree.accept(this));
@@ -229,20 +229,20 @@ class CloningVisitor implements DLTreeVisitorEx<DLTree> {
 }
 
 class ReverseCloningVisitor implements DLTreeVisitorEx<DLTree> {
-    public DLTree visit(final LEAFDLTree t) {
+    public DLTree visit(LEAFDLTree t) {
         return DLTreeFactory.inverseComposition(t);
     }
 
-    public DLTree visit(final ONEDLTree t) {
+    public DLTree visit(ONEDLTree t) {
         return new ONEDLTree(new Lexeme(t.elem), t.getChild().accept(this));
     }
 
-    public DLTree visit(final TWODLTree t) {
+    public DLTree visit(TWODLTree t) {
         return new TWODLTree(new Lexeme(t.elem), t.getRight().accept(this), t.getLeft()
                 .accept(this));
     }
 
-    public DLTree visit(final NDLTree t) {
+    public DLTree visit(NDLTree t) {
         List<DLTree> l = new ArrayList<DLTree>(t.children);
         List<DLTree> actual = new ArrayList<DLTree>();
         Collections.reverse(l);
@@ -255,7 +255,7 @@ class ReverseCloningVisitor implements DLTreeVisitorEx<DLTree> {
 
 /** things that have no children */
 class LEAFDLTree extends DLTree {
-    LEAFDLTree(final Lexeme l) {
+    LEAFDLTree(Lexeme l) {
         super(l);
     }
 
@@ -280,17 +280,17 @@ class LEAFDLTree extends DLTree {
     }
 
     @Override
-    public void accept(final DLTreeVisitor v) {
+    public void accept(DLTreeVisitor v) {
         v.visit(this);
     }
 
     @Override
-    public <O> O accept(final DLTreeVisitorEx<O> v) {
+    public <O> O accept(DLTreeVisitorEx<O> v) {
         return v.visit(this);
     }
 
     @Override
-    public void replace(final DLTree toReplace, final DLTree replacement) {
+    public void replace(DLTree toReplace, DLTree replacement) {
         throw new UnsupportedOperationException();
     }
 }
@@ -299,7 +299,7 @@ class LEAFDLTree extends DLTree {
 class ONEDLTree extends DLTree {
     DLTree child;
 
-    ONEDLTree(final Lexeme l, final DLTree t) {
+    ONEDLTree(Lexeme l, DLTree t) {
         super(l);
         child = t;
         if (t != null) {
@@ -328,17 +328,17 @@ class ONEDLTree extends DLTree {
     }
 
     @Override
-    public void accept(final DLTreeVisitor v) {
+    public void accept(DLTreeVisitor v) {
         v.visit(this);
     }
 
     @Override
-    public <O> O accept(final DLTreeVisitorEx<O> v) {
+    public <O> O accept(DLTreeVisitorEx<O> v) {
         return v.visit(this);
     }
 
     @Override
-    public void replace(final DLTree toReplace, final DLTree replacement) {
+    public void replace(DLTree toReplace, DLTree replacement) {
         if (child == toReplace) {
             child = replacement;
             if (replacement != null) {
@@ -350,7 +350,7 @@ class ONEDLTree extends DLTree {
 
 /** covers trees with two and only two children */
 class TWODLTree extends DLTree {
-    TWODLTree(final Lexeme l, final DLTree t1, final DLTree t2) {
+    TWODLTree(Lexeme l, DLTree t1, DLTree t2) {
         super(l);
         children = new ArrayList<DLTree>(2);
         addChild(t1);
@@ -373,17 +373,17 @@ class TWODLTree extends DLTree {
     }
 
     @Override
-    public void accept(final DLTreeVisitor v) {
+    public void accept(DLTreeVisitor v) {
         v.visit(this);
     }
 
     @Override
-    public <O> O accept(final DLTreeVisitorEx<O> v) {
+    public <O> O accept(DLTreeVisitorEx<O> v) {
         return v.visit(this);
     }
 
     @Override
-    public void replace(final DLTree toReplace, final DLTree replacement) {
+    public void replace(DLTree toReplace, DLTree replacement) {
         int p = children.indexOf(toReplace);
         if (p > -1) {
             children.set(p, replacement);
@@ -395,7 +395,7 @@ class TWODLTree extends DLTree {
 }
 
 class NDLTree extends DLTree {
-    public NDLTree(final Lexeme l, final Collection<DLTree> trees) {
+    public NDLTree(Lexeme l, Collection<DLTree> trees) {
         super(l);
         children = new ArrayList<DLTree>();
         if (trees.size() < 2) {
@@ -407,7 +407,7 @@ class NDLTree extends DLTree {
         }
     }
 
-    public NDLTree(final Lexeme l, final DLTree C, final DLTree D) {
+    public NDLTree(Lexeme l, DLTree C, DLTree D) {
         super(l);
         children = new ArrayList<DLTree>();
         if (C == null || D == null) {
@@ -434,17 +434,17 @@ class NDLTree extends DLTree {
     }
 
     @Override
-    public void accept(final DLTreeVisitor v) {
+    public void accept(DLTreeVisitor v) {
         v.visit(this);
     }
 
     @Override
-    public <O> O accept(final DLTreeVisitorEx<O> v) {
+    public <O> O accept(DLTreeVisitorEx<O> v) {
         return v.visit(this);
     }
 
     @Override
-    public void replace(final DLTree toReplace, final DLTree replacement) {
+    public void replace(DLTree toReplace, DLTree replacement) {
         if (children.contains(toReplace)) {
             children.remove(toReplace);
             if (replacement != null) {

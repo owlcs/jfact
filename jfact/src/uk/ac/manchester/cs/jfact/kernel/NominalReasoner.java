@@ -5,7 +5,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry.resolveSynonym;
+import static uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import uk.ac.manchester.cs.jfact.helpers.Pair;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
-public final class NominalReasoner extends DlSatTester {
+public class NominalReasoner extends DlSatTester {
     /** all nominals defined in TBox */
     protected List<Individual> nominals = new ArrayList<Individual>();
 
@@ -27,22 +27,23 @@ public final class NominalReasoner extends DlSatTester {
         return true;
     }
 
-    ///		internal nominal reasoning interface
+    // / internal nominal reasoning interface
     /** create cache entry for given singleton */
-    protected void registerNominalCache(final Individual p) {
+    protected void registerNominalCache(Individual p) {
         dlHeap.setCache(p.getpName(), createModelCache(p.getNode().resolvePBlocker()));
     }
 
     /** init single nominal node */
-    protected boolean initNominalNode(final Individual nom) {
+    protected boolean initNominalNode(Individual nom) {
         DlCompletionTree node = cGraph.getNewNode();
         node.setNominalLevel();
         nom.setNode(node); // init nominal with associated node
-        return initNewNode(node, DepSet.create(), nom.getpName()); // ABox is inconsistent
+        return initNewNode(node, DepSet.create(), nom.getpName()); // ABox is
+                                                                   // inconsistent
     }
 
     /** use classification information for the nominal P */
-    protected void updateClassifiedSingleton(final Individual p) {
+    protected void updateClassifiedSingleton(Individual p) {
         registerNominalCache(p);
         if (p.getNode().isPBlocked()) {
             // BP of the individual P is merged to
@@ -54,8 +55,8 @@ public final class NominalReasoner extends DlSatTester {
         }
     }
 
-    public NominalReasoner(final TBox tbox, final JFactReasonerConfiguration Options,
-            final DatatypeFactory datatypeFactory) {
+    public NominalReasoner(TBox tbox, JFactReasonerConfiguration Options,
+            DatatypeFactory datatypeFactory) {
         super(tbox, Options, datatypeFactory);
         for (Individual pi : tBox.i_begin()) {
             if (!pi.isSynonym()) {
@@ -143,7 +144,7 @@ public final class NominalReasoner extends DlSatTester {
     }
 
     @Override
-    protected boolean isNNApplicable(final Role r, final int C, final int stopper) {
+    protected boolean isNNApplicable(Role r, int C, int stopper) {
         if (!curNode.isNominalNode()) {
             return false;
         }
@@ -163,7 +164,7 @@ public final class NominalReasoner extends DlSatTester {
         return false;
     }
 
-    private boolean initRelatedNominals(final Related rel) {
+    private boolean initRelatedNominals(Related rel) {
         DlCompletionTree from = resolveSynonym(rel.getA()).getNode();
         DlCompletionTree to = resolveSynonym(rel.getB()).getNode();
         Role R = resolveSynonym(rel.getRole());

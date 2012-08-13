@@ -25,13 +25,13 @@ public class TestInconsistent {
 		OWLOntologyManager m = OWLManager.createOWLOntologyManager();
 		OWLOntology o = m.createOntology();
 		OWLDataFactory f = m.getOWLDataFactory();
-		final OWLLiteral lit = f.getOWLLiteral("3", OWL2Datatype.XSD_INTEGER);
+		 OWLLiteral lit = f.getOWLLiteral("3", OWL2Datatype.XSD_INTEGER);
 		OWLIndividual a = f.getOWLNamedIndividual(IRI.create("urn:t:a"));
 		OWLClass A = f.getOWLClass(IRI.create("urn:t:A"));
 		OWLDataProperty p = f.getOWLDataProperty(IRI.create("urn:t:p"));
 		m.addAxiom(o, f.getOWLClassAssertionAxiom(A, a));
 		m.addAxiom(o, f.getOWLDataPropertyAssertionAxiom(p, a, lit));
-		final OWLDataOneOf oneof = f.getOWLDataOneOf(lit);
+		 OWLDataOneOf oneof = f.getOWLDataOneOf(lit);
 		m.addAxiom(o, f.getOWLSubClassOfAxiom(A, f.getOWLDataAllValuesFrom(p, oneof)));
 		m.addAxiom(
 				o,

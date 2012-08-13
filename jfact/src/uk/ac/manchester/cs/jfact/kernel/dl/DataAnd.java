@@ -13,18 +13,18 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
-public final class DataAnd extends NAryExpressionImpl<DataExpression> implements
+public class DataAnd extends NAryExpressionImpl<DataExpression> implements
         NAryExpression<DataExpression>, DataExpression {
     /** create AND of expressions from the given array */
-    public DataAnd(final List<Expression> v) {
+    public DataAnd(List<Expression> v) {
         add(v);
     }
 
-    public void accept(final DLExpressionVisitor visitor) {
+    public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
-    public <O> O accept(final DLExpressionVisitorEx<O> visitor) {
+    public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 }
