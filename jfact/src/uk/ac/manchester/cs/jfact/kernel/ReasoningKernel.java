@@ -83,56 +83,56 @@ public class ReasoningKernel {
     private boolean needTracing;
     private DatatypeFactory datatypeFactory;
     // types for knowledge exploration
-    // / dag-2-interface translator used in knowledge exploration
+    /** dag-2-interface translator used in knowledge exploration */
     // TDag2Interface D2I;
-    // / knowledge exploration support
+    /** knowledge exploration support */
     KnowledgeExplorer KE;
-    // / atomic decomposer
+    /** atomic decomposer */
     AtomicDecomposer AD;
-    // / syntactic locality based module extractor
+    /** syntactic locality based module extractor */
     TModularizer ModSyn;
-    // / semantic locality based module extractor
+    /** semantic locality based module extractor */
     TModularizer ModSem;
-    // / set to return by the locality checking procedure
+    /** set to return by the locality checking procedure */
     Set<Axiom> Result = new HashSet<Axiom>();
-    // / cached query input description
+    /** cached query input description */
     ConceptExpression cachedQuery;
     private boolean useAxiomSplitting;
-    // / ignore cache for the TExpr* (useful for semantic AD)
+    /** ignore cache for the TExpr* (useful for semantic AD) */
     boolean ignoreExprCache = false;
 
     // -----------------------------------------------------------------------------
     // -- internal query cache manipulation
     // -----------------------------------------------------------------------------
-    // / clear query cache
+    /** clear query cache */
     void clearQueryCache() {
         cachedQuery = null; // deleteTree(cachedQueryTree);
         cachedQueryTree = null;
     }
 
-    // / set query cache value to QUERY
+    /** set query cache value to QUERY */
     void setQueryCache(ConceptExpression query) {
         clearQueryCache();
         cachedQuery = query;
     }
 
-    // / set query cache value to QUERY
+    /** set query cache value to QUERY */
     void setQueryCache(DLTree query) {
         clearQueryCache();
         cachedQueryTree = query;
     }
 
-    // / choose whether TExpr cache should be ignored
+    /** choose whether TExpr cache should be ignored */
     public void setIgnoreExprCache(boolean value) {
         ignoreExprCache = value;
     }
 
-    // / check whether query cache is the same as QUERY
+    /** check whether query cache is the same as QUERY */
     boolean checkQueryCache(ConceptExpression query) {
         return ignoreExprCache ? false : cachedQuery == query;
     }
 
-    // / check whether query cache is the same as QUERY
+    /** check whether query cache is the same as QUERY */
     boolean checkQueryCache(DLTree query) {
         return equalTrees(cachedQueryTree, query);
     }
@@ -154,7 +154,7 @@ public class ReasoningKernel {
         return expr.accept(pET);
     }
 
-    // / get fresh filled depending of a type of R
+    /** get fresh filled depending of a type of R */
     private DLTree getFreshFiller(Role R) {
         if (R.isDataRole()) {
             LiteralEntry t = new LiteralEntry("freshliteral");
@@ -165,7 +165,7 @@ public class ReasoningKernel {
         }
     }
 
-    // / get role expression based on the R
+    /** get role expression based on the R */
     RoleExpression Role(Role R) {
         if (R.isDataRole()) {
             return getExpressionManager().dataRole(R.getName());
@@ -195,14 +195,14 @@ public class ReasoningKernel {
         return toReturn;
     }
 
-    // / set the signature of the expression translator
+    /** set the signature of the expression translator */
     public void setSignature(TSignature sig) {
         if (pET != null) {
             pET.setSignature(sig);
         }
     }
 
-    // / get RW access to the ontology
+    /** get RW access to the ontology */
     Ontology getOntology() {
         return ontology;
     }
@@ -235,13 +235,13 @@ public class ReasoningKernel {
         return getTBox().isSatisfiable(cachedConcept);
     }
 
-    // / @return true iff C is satisfiable
+    /** @return true iff C is satisfiable */
     boolean checkSat(ConceptExpression C) {
         this.setUpCache(C, csSat);
         return getTBox().isSatisfiable(cachedConcept);
     }
 
-    // / helper; @return true iff C is either named concept of Top/Bot
+    /** helper; @return true iff C is either named concept of Top/Bot */
     boolean isNameOrConst(ConceptExpression C) {
         return C instanceof ConceptName || C instanceof ConceptTop
                 || C instanceof ConceptBottom;
@@ -251,7 +251,7 @@ public class ReasoningKernel {
         return C.isBOTTOM() || C.isTOP() || C.isName();
     }
 
-    // / @return true iff C [= D holds
+    /** @return true iff C [= D holds */
     boolean checkSub(ConceptExpression C, ConceptExpression D) {
         if (this.isNameOrConst(D) && this.isNameOrConst(C)) {
             return this.checkSub(getTBox().getCI(e(C)), getTBox().getCI(e(D)));
@@ -259,29 +259,28 @@ public class ReasoningKernel {
         return !checkSat(getExpressionManager().and(C, getExpressionManager().not(D)));
     }
 
-    public TModularizer getModExtractor(TSignature tsig, boolean useSemantic) {
+    public TModularizer getModExtractor(boolean useSemantic) {
         boolean needInit = false;
         // check whether we need init
         if (useSemantic && ModSem == null) {
-            ModSem = new TModularizer(new SemanticLocalityChecker(this, tsig));
+            ModSem = new TModularizer(kernelOptions, new SemanticLocalityChecker(this,
+                    new TSignature()));
             needInit = true;
         }
         if (!useSemantic && ModSyn == null) {
-            ModSyn = new TModularizer(new SyntacticLocalityChecker(tsig));
+            ModSyn = new TModularizer(kernelOptions, new SyntacticLocalityChecker(
+                    new TSignature()));
             needInit = true;
         }
         // init if necessary
         TModularizer Mod = useSemantic ? ModSem : ModSyn;
         if (needInit) {
-            SigIndex SI = new SigIndex();
-            SI.processRange(getOntology().getAxioms());
-            Mod.setSigIndex(SI);
             Mod.preprocessOntology(getOntology().getAxioms());
         }
         return Mod;
     }
 
-    // / get a set of axioms that corresponds to the atom with the id INDEX
+    /** get a set of axioms that corresponds to the atom with the id INDEX */
     public List<Axiom> getModule(List<Expression> signature, boolean useSemantic,
             ModuleType type) {
         // init signature
@@ -292,12 +291,12 @@ public class ReasoningKernel {
                 Sig.add((NamedEntity) q);
             }
         }
-        TModularizer Mod = getModExtractor(Sig, useSemantic);
+        TModularizer Mod = getModExtractor(useSemantic);
         Mod.extract(getOntology().getAxioms(), Sig, type);
         return Mod.getModule();
     }
 
-    // / get a set of axioms that corresponds to the atom with the id INDEX
+    /** get a set of axioms that corresponds to the atom with the id INDEX */
     public Set<Axiom> getNonLocal(List<Expression> signature, boolean useSemantic,
             ModuleType type) {
         // init signature
@@ -309,7 +308,7 @@ public class ReasoningKernel {
             }
         }
         // do check
-        LocalityChecker LC = getModExtractor(Sig, useSemantic).getLocalityChecker();
+        LocalityChecker LC = getModExtractor(useSemantic).getLocalityChecker();
         LC.setSignatureValue(Sig);
         Result.clear();
         for (Axiom p : getOntology().getAxioms()) {
@@ -359,15 +358,6 @@ public class ReasoningKernel {
         }
     }
 
-    // /** @return true iff C [= D holds */
-    // private boolean checkSub(DLTree C, DLTree D) {
-    // if (C.isCN() && D.isCN()) {
-    // return checkSub(getTBox().getCI(C), getTBox().getCI(D));
-    // }
-    // return !checkSatTree(DLTreeFactory.createSNFAnd(C,
-    // DLTreeFactory.createSNFNot(D)));
-    // }
-    // get access to internal structures
     /** @throw an exception if no TBox found */
     private void checkTBox() {
         if (pTBox == null) {
@@ -385,7 +375,7 @@ public class ReasoningKernel {
     private void clearTBox() {
         pTBox = null;
         pET = null;
-        // D2I = null;
+        getExpressionManager().clearNameCache();
     }
 
     /** get RW access to Object RoleMaster from TBox */
@@ -542,7 +532,7 @@ public class ReasoningKernel {
     // {
     // if ( unlikely ( R->isDataRole() != S->isDataRole() ) )
     // return false;
-    // // R [= S iff \ER.C and \AS.(not C) is unsatisfiable
+    /** / R [= S iff \ER.C and \AS.(not C) is unsatisfiable */
     // DLTree* tmp = createSNFForall ( createRole(S),
     // createSNFNot(getFreshFiller(S)) );
     // tmp = createSNFAnd ( createSNFExists ( createRole(R), getFreshFiller(R)
@@ -1065,7 +1055,7 @@ public class ReasoningKernel {
         actor.apply(cachedVertex);
     }
 
-    // / apply actor::apply() to all named concepts disjoint with [complex] C
+    /** apply actor::apply() to all named concepts disjoint with [complex] C */
     public void getDisjointConcepts(ConceptExpression C, Actor actor) {
         classifyKB(); // ensure KB is ready to answer the query
         this.setUpCache(getExpressionManager().not(C), csClassified);
@@ -1110,7 +1100,7 @@ public class ReasoningKernel {
         tax.getRelativesInfo(cachedVertex, actor, true, direct, true);
     }
 
-    // / apply actor::apply() to all DIRECT NC that are in the domain of data
+    /** apply actor::apply() to all DIRECT NC that are in the domain of data */
     // role R
     // template<class Actor>
     void getDRoleDomain(DataRoleExpression r, boolean direct, Actor actor) {
@@ -1198,7 +1188,7 @@ public class ReasoningKernel {
     // ----------------------------------------------------------------------------------
     // knowledge exploration queries
     // ----------------------------------------------------------------------------------
-    // / build a completion tree for a concept expression C (no caching as it
+    /** build a completion tree for a concept expression C (no caching as it */
     // breaks the idea of KE). @return the root node
     public DlCompletionTree buildCompletionTree(ConceptExpression C) {
         preprocessKB();
@@ -1216,20 +1206,20 @@ public class ReasoningKernel {
         return KE;
     }
 
-    // / build the set of data neighbours of a NODE, put the set of data roles
+    /** build the set of data neighbours of a NODE, put the set of data roles */
     // into the RESULT variable
     public Set<RoleExpression> getDataRoles(DlCompletionTree node, boolean onlyDet) {
         return KE.getDataRoles(node, onlyDet);
     }
 
-    // / build the set of object neighbours of a NODE, put the set of object
+    /** build the set of object neighbours of a NODE, put the set of object */
     // roles and inverses into the RESULT variable
     public Set<RoleExpression> getObjectRoles(DlCompletionTree node, boolean onlyDet,
             boolean needIncoming) {
         return KE.getObjectRoles(node, onlyDet, needIncoming);
     }
 
-    // / build the set of neighbours of a NODE via role ROLE; put the resulting
+    /** build the set of neighbours of a NODE via role ROLE; put the resulting */
     // list into RESULT
     public List<DlCompletionTree>
             getNeighbours(DlCompletionTree node, RoleExpression role) {
@@ -1237,7 +1227,7 @@ public class ReasoningKernel {
                 getRole(role, "Role expression expected in getNeighbours() method"));
     }
 
-    // / put into RESULT all the expressions from the NODE label; if ONLYDET is
+    /** put into RESULT all the expressions from the NODE label; if ONLYDET is */
     // true, return only deterministic elements
     public List<ConceptExpression> getObjectLabel(DlCompletionTree node, boolean onlyDet) {
         return KE.getObjectLabel(node, onlyDet);
@@ -1273,7 +1263,7 @@ public class ReasoningKernel {
         useAxiomSplitting = false;
     }
 
-    // / try to perform the incremental reasoning on the changed ontology
+    /** try to perform the incremental reasoning on the changed ontology */
     private boolean tryIncremental() {
         if (pTBox == null) {
             return true;
@@ -1284,7 +1274,7 @@ public class ReasoningKernel {
         return true;
     }
 
-    // / force the re-classification of the changed ontology
+    /** force the re-classification of the changed ontology */
     private void forceReload() {
         clearTBox();
         newKB();
@@ -1303,7 +1293,7 @@ public class ReasoningKernel {
         // }
         // split ontological axioms
         if (kernelOptions.isSplits()) {
-            TAxiomSplitter AxiomSplitter = new TAxiomSplitter(ontology);
+            TAxiomSplitter AxiomSplitter = new TAxiomSplitter(kernelOptions, ontology);
             AxiomSplitter.buildSplit();
         }
         OntologyLoader OntologyLoader = new OntologyLoader(getTBox());
@@ -1314,7 +1304,7 @@ public class ReasoningKernel {
     // ----------------------------------------------------------------------------------
     // knowledge exploration queries
     // ----------------------------------------------------------------------------------
-    // / add the role R and all its supers to a set RESULT
+    /** add the role R and all its supers to a set RESULT */
     // void addRoleWithSupers ( Role R, TCGRoleSet Result );
     private void processKB(KBStatus status) {
         assert status.ordinal() >= kbCChecked.ordinal();
@@ -1395,7 +1385,7 @@ public class ReasoningKernel {
     // -----------------------------------------------------------------------------
     // -- query caching support
     // -----------------------------------------------------------------------------
-    // / classify query; cache is ready at the point. NAMED means whether
+    /** classify query; cache is ready at the point. NAMED means whether */
     // concept is just a name
     void classifyQuery(boolean named) {
         // make sure KB is classified
@@ -1502,34 +1492,28 @@ public class ReasoningKernel {
     // ----------------------------------------------------------------------------------
     // atomic decomposition queries
     // ----------------------------------------------------------------------------------
-    // / create new atomic decomposition of the loaded ontology using TYPE.
+    /** create new atomic decomposition of the loaded ontology using TYPE. */
     // @return size of the AD
     public int getAtomicDecompositionSize(boolean useSemantics, ModuleType type) {
         // init AD field
         if (AD == null) {
-            // XXX
-            if (useSemantics) {
-                AD = new AtomicDecomposer(new SemanticLocalityChecker(this,
-                        new TSignature()));
-            } else {
-                AD = new AtomicDecomposer(new SyntacticLocalityChecker(new TSignature()));
-            }
+            AD = new AtomicDecomposer(getModExtractor(useSemantics));
         }
         return AD.getAOS(ontology, type).size();
     }
 
-    // / get a set of axioms that corresponds to the atom with the id INDEX
+    /** get a set of axioms that corresponds to the atom with the id INDEX */
     public Set<Axiom> getAtomAxioms(int index) {
         return AD.getAOS().get(index).getAtomAxioms();
     }
 
-    // / get a set of axioms that corresponds to the module of the atom with the
+    /** get a set of axioms that corresponds to the module of the atom with the */
     // id INDEX
     public Set<Axiom> getAtomModule(int index) {
         return AD.getAOS().get(index).getModule();
     }
 
-    // / get a set of atoms on which atom with index INDEX depends
+    /** get a set of atoms on which atom with index INDEX depends */
     public Set<TOntologyAtom> getAtomDependents(int index) {
         return AD.getAOS().get(index).getDepAtoms();
     }
@@ -1537,7 +1521,7 @@ public class ReasoningKernel {
     // ----------------------------------------------------------------------------------
     // knowledge exploration queries
     // ----------------------------------------------------------------------------------
-    // / build the set of data neighbours of a NODE, put the set into the RESULT
+    /** build the set of data neighbours of a NODE, put the set into the RESULT */
     // variable
     // public Set<DataRoleExpression> getDataRoles(DlCompletionTree node,
     // boolean onlyDet) {
@@ -1545,14 +1529,14 @@ public class ReasoningKernel {
     // for (DlCompletionTreeArc p : node.getNeighbour()) {
     // if (!p.isIBlocked() && p.getArcEnd().isDataNode()
     // && (!onlyDet || p.getDep().isEmpty())) {
-    // // FIXME!! add also all supers
+    /** / FIXME!! add also all supers */
     // Result.add(getExpressionManager().dataRole(p.getRole().getName()));
     // }
     // }
     // return Result;
     // }
     //
-    // /// build the set of object neighbours of a NODE; incoming edges are
+    /** // build the set of object neighbours of a NODE; incoming edges are */
     // counted iff NEEDINCOMING is true
     // public Collection<ObjectRoleExpression> getObjectRoles(DlCompletionTree
     // node,
@@ -1569,7 +1553,7 @@ public class ReasoningKernel {
     // return Result;
     // }
     //
-    // /// build the set of neighbours of a NODE via role ROLE; put the
+    /** // build the set of neighbours of a NODE via role ROLE; put the */
     // resulting list into RESULT
     // public List<DlCompletionTree> getNeighbours(DlCompletionTree node,
     // RoleExpression role) {
@@ -1583,17 +1567,17 @@ public class ReasoningKernel {
     // }
     // return Result;
     // }
-    // / put into RESULT all the data expressions from the NODE label
+    /** put into RESULT all the data expressions from the NODE label */
     // public List<ConceptExpression> getObjectLabel(DlCompletionTree node,
     // boolean onlyDet) {
     // List<ConceptExpression> Result = new ArrayList<ConceptExpression>();
-    // // prepare D2I translator
+    /** / prepare D2I translator */
     // if (D2I == null) {
     // D2I = new TDag2Interface(getTBox().getDag(), getExpressionManager());
     // } else {
     // D2I.ensureDagSize();
     // }
-    // //boolean data = node.isDataNode();
+    /** /boolean data = node.isDataNode(); */
     // Result.clear();
     // for (ConceptWDep p : node.beginl_sc()) {
     // if (!onlyDet || p.getDep().isEmpty()) {
@@ -1610,7 +1594,7 @@ public class ReasoningKernel {
     // public List<DataExpression> getDataLabel(DlCompletionTree node, boolean
     // onlyDet) {
     // List<DataExpression> Result = new ArrayList<DataExpression>();
-    // // prepare D2I translator
+    /** / prepare D2I translator */
     // if (D2I == null) {
     // D2I = new TDag2Interface(getTBox().getDag(), getExpressionManager());
     // } else {

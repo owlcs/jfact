@@ -21,7 +21,7 @@ import uk.ac.manchester.cs.jfact.split.TOntologyAtom;
 
 public class Axiom {
     // NS for different DLTree matchers for trees in axiom
-    // / absorb into negation of a concept; @return true if absorption is
+    /**  absorb into negation of a concept; @return true if absorption is */
     // performed
     public boolean absorbIntoNegConcept(TBox KB) {
         List<DLTree> Cons = new ArrayList<DLTree>();
@@ -167,7 +167,7 @@ public class Axiom {
         return b.toString();
     }
 
-    // / replace a defined concept with its description
+    /**  replace a defined concept with its description */
     public Axiom simplifyCN(TBox tbox) {
         for (DLTree p : disjuncts) {
             if (InAx.isPosNP(p)) {
@@ -179,7 +179,7 @@ public class Axiom {
         return null;
     }
 
-    // / replace a universal restriction with a fresh concept
+    /**  replace a universal restriction with a fresh concept */
     public Axiom simplifyForall(TBox KB) {
         for (DLTree i : disjuncts) {
             if (InAx.isAbsForall(i)) {
@@ -198,7 +198,7 @@ public class Axiom {
         return ret;
     }
 
-    // / create a concept expression corresponding to a given GCI; ignore SKIP
+    /**  create a concept expression corresponding to a given GCI; ignore SKIP */
     // entry
     public DLTree createAnAxiom(DLTree replaced) {
         // XXX check if this is correct
@@ -216,7 +216,7 @@ public class Axiom {
         return DLTreeFactory.createSNFNot(result);
     }
 
-    // / absorb into BOTTOM; @return true if absorption is performed
+    /**  absorb into BOTTOM; @return true if absorption is performed */
     public boolean absorbIntoBottom(TBox KB) {
         List<DLTree> Pos = new ArrayList<DLTree>(), Neg = new ArrayList<DLTree>();
         for (DLTree p : disjuncts) {

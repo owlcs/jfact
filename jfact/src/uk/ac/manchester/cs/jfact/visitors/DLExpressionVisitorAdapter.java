@@ -4,7 +4,7 @@ import uk.ac.manchester.cs.jfact.datatypes.Datatype;
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.kernel.dl.*;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({ "unused", "javadoc" })
 public abstract class DLExpressionVisitorAdapter implements DLExpressionVisitor {
     public void visit(ConceptTop expr) {}
 

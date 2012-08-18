@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
+@SuppressWarnings("javadoc")
 public class JUnitRunnerFromFile extends JUnitRunner {
     public static String readFile(File f) {
         StringBuilder b = new StringBuilder();

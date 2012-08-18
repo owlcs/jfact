@@ -50,8 +50,10 @@ public class DlCompletionGraph {
     private int nNodeSaves;
     /** number of node' saves */
     private int nNodeRestores;
+    // / maximal size of the graph
+    int maxGraphSize = 0;
     // flags
-    // / how many nodes skip before block; work only with FAIRNESS
+    /** how many nodes skip before block; work only with FAIRNESS */
     private int nSkipBeforeBlock = 0;
     /** use or not lazy blocking (ie test blocking only expanding exists) */
     private boolean useLazyBlocking;
@@ -277,7 +279,7 @@ public class DlCompletionGraph {
         } while (repeat);
     }
 
-    // / @ return true if a fairness constraint C is violated in one of the
+    /** @return true if a fairness constraint C is violated in one of the */
     // loops in the CGraph
     DlCompletionTree getFCViolator(int C) {
         for (DlCompletionTree p : nodeBase) {
@@ -292,6 +294,14 @@ public class DlCompletionGraph {
     public void clearStatistics() {
         nNodeSaves = 0;
         nNodeRestores = 0;
+        if (maxGraphSize < endUsed) {
+            maxGraphSize = endUsed;
+        }
+    }
+
+    /** get number of nodes in the CGraph */
+    public int maxSize() {
+        return maxGraphSize;
     }
 
     /** mark all heap elements as unused */
@@ -304,11 +314,6 @@ public class DlCompletionGraph {
         stack.clear();
         savedNodes.clear();
         initRoot();
-    }
-
-    /** get number of nodes in the CGraph */
-    public int maxSize() {
-        return nodeBase.size();
     }
 
     /** save rarely appeared info if P is non-null */

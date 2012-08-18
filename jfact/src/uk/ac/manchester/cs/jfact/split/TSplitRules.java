@@ -12,25 +12,26 @@ import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomEquivalentConcepts;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
+import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.split.TSplitVar.Entry;
 
-/// all split rules: vector of rules with init and access methods
+/** all split rules: vector of rules with init and access methods */
 public class TSplitRules {
-    // / class to check whether there is a need to unsplit splitted var
+    /** class to check whether there is a need to unsplit splitted var */
     public class TSplitRule {
-        // / signature of equivalent part of the split
+        /** signature of equivalent part of the split */
         Set<NamedEntity> eqSig;
-        // / signature of subsumption part of the split
+        /** signature of subsumption part of the split */
         Set<NamedEntity> impSig;
-        // / pointer to split vertex to activate
+        /** pointer to split vertex to activate */
         int bpSplit;
 
-        // /// check whether set SUB contains in the set SUP
+        /** // check whether set SUB contains in the set SUP */
         // static boolean containsIn ( Set< NamedEntity> Sub, Set< NamedEntity>
         // Sup )
         // { return includes ( Sup.begin(), Sup.end(), Sub.begin(), Sub.end() );
         // }
-        // /// check whether set S1 intersects with the set S2
+        /** // check whether set S1 intersects with the set S2 */
         // static boolean intersectsWith ( Set< NamedEntity> S1, Set<
         // NamedEntity> S2 )
         // {
@@ -49,31 +50,31 @@ public class TSplitRules {
         // }
         TSplitRule() {}
 
-        // / init c'tor
+        /** init c'tor */
         TSplitRule(Set<NamedEntity> es, Set<NamedEntity> is, int p) {
             eqSig = new HashSet<NamedEntity>(es);
             impSig = new HashSet<NamedEntity>(is);
             bpSplit = p;
         }
 
-        // / copy c'tor
+        /** copy c'tor */
         TSplitRule(TSplitRule copy) {
             this(copy.eqSig, copy.impSig, copy.bpSplit);
         }
 
         // access methods
-        // / get bipolar pointer of the rule
+        /** get bipolar pointer of the rule */
         public int bp() {
             return bpSplit;
         }
 
-        // / check whether signatures of a rule are related to current signature
+        /** check whether signatures of a rule are related to current signature */
         // in such a way that allows rule to fire
         public boolean canFire(Set<NamedEntity> CurrentSig) {
             return CurrentSig.containsAll(eqSig) && intersectsWith(impSig, CurrentSig);
         }
 
-        // / calculates dep-set for a rule that can fire, write it to DEP.
+        /** calculates dep-set for a rule that can fire, write it to DEP. */
         public DepSet
                 fireDep(Set<NamedEntity> CurrentSig, Map<NamedEntity, DepSet> SigDep) {
             DepSet dep = DepSet.create();
@@ -92,7 +93,7 @@ public class TSplitRules {
             return dep;
         }
 
-        // / check whether set S1 intersects with the set S2
+        /** check whether set S1 intersects with the set S2 */
         boolean intersectsWith(Set<?> S1, Set<?> S2) {
             for (Object o : S1) {
                 if (S2.contains(o)) {
@@ -103,23 +104,28 @@ public class TSplitRules {
         }
     }
 
-    // / all known rules
+    /** all known rules */
     List<TSplitRule> Base = new ArrayList<TSplitRule>();
-    // / all entities that appears in all the splits in a set
+    /** all entities that appears in all the splits in a set */
     Set<NamedEntity> PossibleSignature = new HashSet<NamedEntity>();
-    // / map between BP and TNamedEntities
+    /** map between BP and TNamedEntities */
     List<NamedEntity> EntityMap = new ArrayList<NamedEntity>();
+    private JFactReasonerConfiguration config;
+
+    public TSplitRules(JFactReasonerConfiguration options) {
+        config = options;
+    }
 
     public List<TSplitRule> getRules() {
         return Base;
     }
 
-    // / add new split rule
+    /** add new split rule */
     void addSplitRule(Set<NamedEntity> eqSig, Set<NamedEntity> impSig, int bp) {
         Base.add(new TSplitRule(eqSig, impSig, bp));
     }
 
-    // / calculate single entity based on a named entry ENTRY and possible
+    /** calculate single entity based on a named entry ENTRY and possible */
     // signature
     NamedEntity getSingleEntity(NamedEntry entry) {
         if (entry == null) {
@@ -130,25 +136,25 @@ public class TSplitRules {
         return PossibleSignature.contains(ret) ? ret : null;
     }
 
-    // / create all the split rules by given split set SPLITS
+    /** create all the split rules by given split set SPLITS */
     public void createSplitRules(TSplitVars Splits) {
         for (TSplitVar p : Splits.getEntries()) {
             initSplit(p);
         }
     }
 
-    // / ensure that Map has the same size as DAG, so there would be no access
+    /** ensure that Map has the same size as DAG, so there would be no access */
     // violation
     public void ensureDagSize(int dagSize) {
         Helper.resize(EntityMap, dagSize);
     }
 
-    // / @return named entity corresponding to a given bp
+    /** @return named entity corresponding to a given bp */
     public NamedEntity getEntity(int bp) {
         return EntityMap.get(bp > 0 ? bp : -bp);
     }
 
-    // / init entity map using given DAG. note that this should be done AFTER
+    /** init entity map using given DAG. note that this should be done AFTER */
     // rule splits are created!
     public void initEntityMap(DLDag Dag) {
         int size = Dag.size();
@@ -160,7 +166,7 @@ public class TSplitRules {
         }
     }
 
-    // / build a set out of signature SIG w/o given ENTITY
+    /** build a set out of signature SIG w/o given ENTITY */
     Set<NamedEntity> buildSet(TSignature sig, NamedEntity entity) {
         Set<NamedEntity> set = new HashSet<NamedEntity>();
         // std::cout << "Building set for " << entity.getName() << "\n";
@@ -176,7 +182,7 @@ public class TSplitRules {
         return set;
     }
 
-    // / init split as a set-of-sets
+    /** init split as a set-of-sets */
     void initSplit(TSplitVar split) {
         // std::cout << "Processing split for " << split.oldName.getName() <<
         // ":\n";
@@ -208,7 +214,7 @@ public class TSplitRules {
         }
     }
 
-    // / prepare start signature
+    /** prepare start signature */
     void prepareStartSig(List<Axiom> Module, TSignature sig, List<NamedEntity> Allowed) {
         // remove all defined concepts from signature
         for (Axiom p : Module) {
@@ -240,7 +246,7 @@ public class TSplitRules {
         }
     }
 
-    // / build all the seed signatures
+    /** build all the seed signatures */
     void BuildAllSeedSigs(List<NamedEntity> Allowed, TSignature StartSig,
             List<Axiom> Module, Set<TSignature> Out) {
         // copy the signature
@@ -251,7 +257,7 @@ public class TSplitRules {
         List<NamedEntity> Keepers = new ArrayList<NamedEntity>();
         Set<Axiom> outModule = new HashSet<Axiom>();
         TModularizer mod = // XXX
-        new TModularizer(new SyntacticLocalityChecker(sig));
+        new TModularizer(config, new SyntacticLocalityChecker(sig));
         for (NamedEntity p : Allowed) {
             if (sig.containsNamedEntity(p)) {
                 sig.remove(p);

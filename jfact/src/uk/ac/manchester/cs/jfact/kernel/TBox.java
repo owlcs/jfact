@@ -82,7 +82,7 @@ public class TBox {
     private DLDag dlHeap;
     /** reasoner for TBox-related queries w/o nominals */
     private DlSatTester stdReasoner;
-    // / use this macro to do the same action with all available reasoners
+    /** use this macro to do the same action with all available reasoners */
     // # define REASONERS_DO(ACT) do { \
     // nomReasoner.ACT; \
     // stdReasoner.ACT; } while(0)
@@ -127,8 +127,8 @@ public class TBox {
     private List<List<Individual>> differentIndividuals = new ArrayList<List<Individual>>();
     /** all simple rules in KB */
     private List<SimpleRule> simpleRules = new ArrayList<SimpleRule>();
-    // / split rules
-    TSplitRules SplitRules = new TSplitRules();
+    /** split rules */
+    final TSplitRules SplitRules;
     /** internalisation of a general axioms */
     private int internalisedGeneralAxiom;
     /** KB flags about GCIs */
@@ -148,21 +148,21 @@ public class TBox {
     // Reasoner's members: there are many reasoner classes, some members are
     // shared
     // ---------------------------------------------------------------------------
-    // / flag for switching semantic branching
+    /** flag for switching semantic branching */
     boolean useSemanticBranching;
-    // / flag for switching backjumping
+    /** flag for switching backjumping */
     boolean useBackjumping;
-    // / whether or not check blocking status as late as possible
+    /** whether or not check blocking status as late as possible */
     boolean useLazyBlocking;
-    // / flag for switching between Anywhere and Ancestor blockings
+    /** flag for switching between Anywhere and Ancestor blockings */
     boolean useAnywhereBlocking;
-    // / flag to use caching during completion tree construction
+    /** flag to use caching during completion tree construction */
     boolean useNodeCache;
-    // / let reasoner know that we are in the classificaton (for splits)
+    /** let reasoner know that we are in the classificaton (for splits) */
     boolean duringClassification;
-    // / how many nodes skip before block; work only with FAIRNESS
+    /** how many nodes skip before block; work only with FAIRNESS */
     int nSkipBeforeBlock;
-    // / use special domains as GCIs
+    /** use special domains as GCIs */
     boolean useSpecialDomains;
     // Flags section
     /** flag for full/short KB */
@@ -196,7 +196,7 @@ public class TBox {
     protected int nC = 0;
     /** number of all distinct roles; used to set index for modelCache */
     protected int nR = 0;
-    // / maps from concept index to concept itself
+    /** maps from concept index to concept itself */
     private List<Concept> ConceptMap = new ArrayList<Concept>();
     /** map to show the possible equivalence between individuals */
     Map<Concept, Pair<Individual, Boolean>> sameIndividuals = new HashMap<Concept, Pair<Individual, Boolean>>();
@@ -383,14 +383,14 @@ public class TBox {
         }
     }
 
-    // / set new concept index for given C wrt existing nC
+    /** set new concept index for given C wrt existing nC */
     public void setConceptIndex(Concept C) {
         C.setIndex(nC);
         ConceptMap.add(C);
         ++nC;
     }
 
-    // / @return true iff reasoners were initialised
+    /** @return true iff reasoners were initialised */
     boolean reasonersInited() {
         return stdReasoner != null;
     }
@@ -575,12 +575,12 @@ public class TBox {
         return R.isDataRole() ? dataRoleMaster : objectRoleMaster;
     }
 
-    // / get RO access to DAG (needed for KE)
+    /** get RO access to DAG (needed for KE) */
     public DLDag getDag() {
         return dlHeap;
     }
 
-    // / set flag to use node cache to value VAL
+    /** set flag to use node cache to value VAL */
     void setUseNodeCache(boolean val) {
         useNodeCache = val;
     }
@@ -670,7 +670,7 @@ public class TBox {
         simpleRules.add(Rule);
     }
 
-    // / let TBox know that the whole ontology is loaded
+    /** let TBox know that the whole ontology is loaded */
     public void finishLoading() {
         setForbidUndefinedNames(true);
     }
@@ -910,7 +910,7 @@ public class TBox {
         }
     }
 
-    // / build up split rules for reasoners; create them after DAG is build
+    /** build up split rules for reasoners; create them after DAG is build */
     void buildSplitRules() {
         if (!getSplits().empty()) {
             SplitRules.createSplitRules(getSplits());
@@ -1111,7 +1111,7 @@ public class TBox {
         return ret;
     }
 
-    // / transform splitted concept registered in SPLIT to a dag representation
+    /** transform splitted concept registered in SPLIT to a dag representation */
     void split2dag(TSplitVar split) {
         DLVertex v = new DLVertex(dtSplitConcept);
         for (TSplitVar.Entry p : split.getEntries()) {
@@ -1275,6 +1275,7 @@ public class TBox {
             String BotDRoleName, AtomicBoolean interrupted) {
         this.datatypeFactory = datatypeFactory;
         this.interrupted = interrupted;
+        SplitRules = new TSplitRules(Options);
         axioms = new AxiomSet(this);
         GCIs = new KBFlags();
         dlHeap = new DLDag(Options);
@@ -1511,7 +1512,7 @@ public class TBox {
         return pQuery;
     }
 
-    // / preprocess query concept: put description into DAG
+    /** preprocess query concept: put description into DAG */
     void preprocessQueryConcept(Concept query) {
         // build DAG entries for the default concept
         addConceptToHeap(query);
@@ -1526,12 +1527,12 @@ public class TBox {
         initCache(query, false);
     }
 
-    // / delete all query-related stuff
+    /** delete all query-related stuff */
     void clearQueryConcept() {
         dlHeap.removeQuery();
     }
 
-    // / classify query concept
+    /** classify query concept */
     public void classifyQueryConcept() {
         pQuery.initToldSubsumers();
         assert pTax != null;
@@ -1539,8 +1540,8 @@ public class TBox {
         pTax.classifyEntry(pQuery);
     }
 
-    // / knowledge exploration: build a model and return a link to the root
-    // / build a completion tree for a concept C (no caching as it breaks the
+    /** knowledge exploration: build a model and return a link to the root */
+    /** build a completion tree for a concept C (no caching as it breaks the */
     // idea of KE). @return the root node
     DlCompletionTree buildCompletionTree(Concept pConcept) {
         DlCompletionTree ret = null;

@@ -27,7 +27,7 @@ public class NominalReasoner extends DlSatTester {
         return true;
     }
 
-    // / internal nominal reasoning interface
+    /**  internal nominal reasoning interface */
     /** create cache entry for given singleton */
     protected void registerNominalCache(Individual p) {
         dlHeap.setCache(p.getpName(), createModelCache(p.getNode().resolvePBlocker()));

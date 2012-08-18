@@ -13,10 +13,10 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
     /** Option 'useRelevantOnly' is used when creating internal DAG
      * representation for externally given TBox. If true, DAG contains only
      * concepts, relevant to query. It is safe to leave this option false. */
-    private static final Option useRelevantOnly = getOption("useRelevantOnly", false);
+    private boolean useRelevantOnly = false;
     /** Option 'dumpQuery' dumps sub-TBox relevant to given
      * satisfiability/subsumption query. */
-    private static final Option dumpQuery = getOption("dumpQuery", false);
+    private boolean dumpQuery = false;
     /** Option 'absorptionFlags' sets up absorption process for general axioms.
      * It text field of arbitrary length; every symbol means the absorption
      * action: (B)ottom Absorption), (T)op absorption, (E)quivalent concepts
@@ -26,7 +26,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
     /** Option 'alwaysPreferEquals' allows user to enforce usage of C=D
      * definition instead of C[=D during absorption, even if implication
      * appeares earlier in stream of axioms. */
-    private static final Option alwaysPreferEquals = getOption("alwaysPreferEquals", true);
+    private boolean alwaysPreferEquals = true;
     /** Option 'orSortSub' define the sorting order of OR vertices in the DAG
      * used in subsumption tests. Option has form of string 'Mop', where 'M' is
      * a sort field (could be 'D' for depth, 'S' for size, 'F' for frequency,
@@ -48,41 +48,31 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
     /** Option 'useSemanticBranching' switch semantic branching on and off. The
      * usage of semantic branching usually leads to faster reasoning, but
      * sometime could give small overhead. */
-    private static final Option useSemanticBranching = getOption("useSemanticBranching",
-            true);
+    private boolean useSemanticBranching = true;
     /** Option 'useBackjumping' switch backjumping on and off. The usage of
      * backjumping usually leads to much faster reasoning. */
-    private static final Option useBackjumping = getOption("useBackjumping", true);
+    private boolean useBackjumping = true;
     /** tell reasoner to use verbose output */
-    private static final Option verboseOutput = getOption("verboseOutput", false);
+    private boolean verboseOutput = false;
     /** Option 'useLazyBlocking' makes checking of blocking status as small as
      * possible. This greatly increase speed of reasoning. */
-    private static final Option useLazyBlocking = getOption("useLazyBlocking", true);
+    private boolean useLazyBlocking = true;
     /** Option 'useAnywhereBlocking' allow user to choose between Anywhere and
      * Ancestor blocking. */
-    private static final Option useAnywhereBlocking = getOption("useAnywhereBlocking",
-            true);
+    private boolean useAnywhereBlocking = true;
     /** Option 'useCompletelyDefined' leads to simpler Taxonomy creation if TBox
      * contains no non-primitive concepts. Unfortunately, it is quite rare case. */
-    private static final Option useCompletelyDefined = getOption("useCompletelyDefined",
-            true);
+    private boolean useCompletelyDefined = true;
     /** Option 'useSpecialDomains' (development) controls the special processing
      * of R&D for non-simple roles. Should always be set to true. */
-    private static final Option useSpecialDomains = getOption("useSpecialDomains", true);
+    private boolean useSpecialDomains = true;
     /** Internal use only. Option 'skipBeforeBlock' allow user to skip given
      * number of nodes before make a block. */
     private static final Option skipBeforeBlock = getOption("skipBeforeBlock", 0);
     private static final List<Option> defaults = new ArrayList<Option>(Arrays.asList(
-            absorptionFlags, alwaysPreferEquals, dumpQuery, IAOEFLG, orSortSat,
-            orSortSub, verboseOutput, useAnywhereBlocking, useBackjumping,
-            useCompletelyDefined, useLazyBlocking, useRelevantOnly, useSemanticBranching,
-            useSpecialDomains, skipBeforeBlock));
+            absorptionFlags, IAOEFLG, orSortSat, orSortSub, skipBeforeBlock));
     /** set of all avaliable (given) options */
     private final Map<String, Option> base = new HashMap<String, Option>();
-
-    public static Option getOption(String name, boolean b) {
-        return new BooleanOption(name, b);
-    }
 
     public static Option getOption(String name, long l) {
         return new LongOption(name, l);
@@ -117,48 +107,43 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
     }
 
     public boolean getuseAnywhereBlocking() {
-        Boolean boolean1 = this.get("useAnywhereBlocking");
-        return boolean1;
+        return useAnywhereBlocking;
     }
 
     public boolean getuseBackjumping() {
-        Boolean boolean1 = this.get("useBackjumping");
-        return boolean1;
+        return useBackjumping;
     }
 
     public boolean getuseLazyBlocking() {
-        Boolean boolean1 = this.get("useLazyBlocking");
-        return boolean1;
+        return useLazyBlocking;
     }
 
     public boolean getuseSemanticBranching() {
-        Boolean boolean1 = this.get("useSemanticBranching");
-        return boolean1;
+        return useSemanticBranching;
     }
 
     public boolean getverboseOutput() {
-        Boolean boolean1 = this.get("verboseOutput");
-        return boolean1;
+        return verboseOutput;
     }
 
     public boolean getdumpQuery() {
-        Boolean boolean1 = this.get("dumpQuery");
-        return boolean1;
+        return dumpQuery;
+    }
+
+    public void setdumpQuery(boolean value) {
+        dumpQuery = value;
     }
 
     public boolean getuseCompletelyDefined() {
-        Boolean boolean1 = this.get("useCompletelyDefined");
-        return boolean1;
+        return useCompletelyDefined;
     }
 
     public boolean getuseRelevantOnly() {
-        Boolean boolean1 = this.get("useRelevantOnly");
-        return boolean1;
+        return useRelevantOnly;
     }
 
     public boolean getalwaysPreferEquals() {
-        Boolean boolean1 = this.get("alwaysPreferEquals");
-        return boolean1;
+        return alwaysPreferEquals;
     }
 
     public String getabsorptionFlags() {
@@ -170,7 +155,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
     }
 
     public void setuseAnywhereBlocking(boolean b) {
-        registerOption(getOption("useAnywhereBlocking", b));
+        useAnywhereBlocking = b;
     }
 
     private ReasonerProgressMonitor progressMonitor = new NullReasonerProgressMonitor();
@@ -209,7 +194,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
     }
 
     public void setverboseOutput(boolean b) {
-        registerOption(getOption("verboseOutput", b));
+        verboseOutput = b;
     }
 
     boolean USE_LOGGING = false;
@@ -227,9 +212,9 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
     boolean RKG_USE_FAIRNESS = false;
     boolean FPP_DEBUG_SPLIT_MODULES = false;
     boolean splits = false;
-    // / whether EL polynomial reasoner should be used
+    /** whether EL polynomial reasoner should be used */
     boolean useELReasoner = false;
-    // / allow reasoner to use undefined names in queries
+    /** allow reasoner to use undefined names in queries */
     boolean useUndefinedNames = true;
     boolean useAxiomSplitting = false;
 
@@ -546,5 +531,15 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
 
     public void setUseAxiomSplitting(boolean useAxiomSplitting) {
         this.useAxiomSplitting = useAxiomSplitting;
+    }
+
+    private boolean useADInModuleExtraction;
+
+    public boolean isRKG_USE_AD_IN_MODULE_EXTRACTION() {
+        return useADInModuleExtraction;
+    }
+
+    public void setRKG_USE_AD_IN_MODULE_EXTRACTION(boolean value) {
+        useADInModuleExtraction = false;
     }
 }

@@ -7,46 +7,46 @@ import java.util.List;
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
 
-/// atomical decomposer of the ontology
+/** atomical decomposer of the ontology */
 public class AtomicDecomposer {
-    // / atomic structure to build
+    /** atomic structure to build */
     AOStructure AOS = null;
-    // / modularizer to build modules
+    /** modularizer to build modules */
     TModularizer Modularizer;
-    // / tautologies of the ontology
+    /** tautologies of the ontology */
     List<Axiom> Tautologies = new ArrayList<Axiom>();
-    // / progress indicator
+    /** progress indicator */
     ProgressIndicatorInterface PI = null;
-    // / fake atom that represents the whole ontology
+    /** fake atom that represents the whole ontology */
     TOntologyAtom rootAtom = null;
-    // / module type for current AOS creation
+    /** module type for current AOS creation */
     ModuleType type;
 
-    public AtomicDecomposer(LocalityChecker c) {
-        Modularizer = new TModularizer(c);
+    public AtomicDecomposer(TModularizer c) {
+        Modularizer = c;
     }
 
-    // / initialize signature index (for the improved modularization algorithm)
-    void initSigIndex(Ontology O) {
-        SigIndex SI = new SigIndex();
-        SI.processRange(O.getAxioms());
-        Modularizer.setSigIndex(SI);
-    }
-
-    // / restore all tautologies back
+    // /** initialize signature index (for the improved modularization
+    // algorithm) */
+    // void initSigIndex(Ontology O) {
+    // SigIndex SI = new SigIndex();
+    // SI.processRange(O.getAxioms());
+    // Modularizer.setSigIndex(SI);
+    // }
+    /** restore all tautologies back */
     void restoreTautologies() {
         for (Axiom p : Tautologies) {
             p.setUsed(true);
         }
     }
 
-    // / set progress indicator to be PI
+    /** set progress indicator to be PI */
     void setProgressIndicator(ProgressIndicatorInterface pi) {
         PI = pi;
     }
 
     // #define RKG_DEBUG_AD
-    // / remove tautologies (axioms that are always local) from the ontology
+    /** remove tautologies (axioms that are always local) from the ontology */
     // temporarily
     void removeTautologies(Ontology O) {
         // we might use it for another decomposition
@@ -56,7 +56,7 @@ public class AtomicDecomposer {
             if (p.isUsed()) {
                 // check whether an axiom is local wrt its own signature
                 Modularizer.extract(p, p.getSignature(), type);
-                if (!p.isInModule()) {
+                if (Modularizer.isTautology(p, type)) {
                     Tautologies.add(p);
                     p.setUsed(false);
                 } else {
@@ -69,7 +69,7 @@ public class AtomicDecomposer {
         }
     }
 
-    // / build a module for given axiom AX; use parent atom's module as a base
+    /** build a module for given axiom AX; use parent atom's module as a base */
     // for the module search
     TOntologyAtom buildModule(TSignature sig, TOntologyAtom parent) {
         // build a module for a given signature
@@ -94,7 +94,7 @@ public class AtomicDecomposer {
         return atom;
     }
 
-    // / create atom for given axiom AX; use parent atom's module as a base for
+    /** create atom for given axiom AX; use parent atom's module as a base for */
     // the module search
     TOntologyAtom createAtom(Axiom ax, TOntologyAtom parent) {
         // check whether axiom already has an atom
@@ -114,7 +114,7 @@ public class AtomicDecomposer {
         // not the same as parent: for all atom's axioms check their atoms and
         // make ATOM depend on them
         // #ifdef RKG_DEBUG_AD
-        // // do cycle via set to keep the order
+        /** / do cycle via set to keep the order */
         // typedef std::set<TDLAxiom*> AxSet;
         // Set<Axiom> M=new HashSet<Axiom> ( atom.getModule() );
         // for ( Axiom q : M )
@@ -132,7 +132,7 @@ public class AtomicDecomposer {
         return AOS;
     }
 
-    // / get the atomic structure for given module type T
+    /** get the atomic structure for given module type T */
     public AOStructure getAOS(Ontology O, ModuleType t) {
         // remember the type of the module
         type = t;
@@ -143,8 +143,6 @@ public class AtomicDecomposer {
         Modularizer.preprocessOntology(O.getAxioms());
         // we don't need tautologies here
         removeTautologies(O);
-        // prepare SigIndex for the optimized modularization
-        initSigIndex(O);
         // init the root atom
         rootAtom = new TOntologyAtom();
         rootAtom.setModule(new HashSet<Axiom>(O.getAxioms()));

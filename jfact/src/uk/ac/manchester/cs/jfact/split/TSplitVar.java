@@ -8,7 +8,7 @@ import uk.ac.manchester.cs.jfact.kernel.Concept;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
 
-/// this is to keep the track of new vars/axioms for C >< C0, C1, ..., Cn
+/**  this is to keep the track of new vars/axioms for C >< C0, C1, ..., Cn */
 public class TSplitVar {
     // types
     public class Entry {

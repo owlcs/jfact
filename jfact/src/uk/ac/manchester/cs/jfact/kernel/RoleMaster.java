@@ -327,12 +327,12 @@ public class RoleMaster {
         }
     }
 
-    // / @return pointer to a TOP role
+    /**  @return pointer to a TOP role */
     Role getTopRole() {
         return universalRole;
     }
 
-    // / @return pointer to a BOTTOM role
+    /**  @return pointer to a BOTTOM role */
     Role getBotRole() {
         return emptyRole;
     }

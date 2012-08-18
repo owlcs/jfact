@@ -118,7 +118,7 @@ public class DlSatTester {
         protected ConceptWDep concept = null;
         /** dependences for branching clashes */
         protected DepSet branchDep = DepSet.create();
-        // / size of a session GCIs vector
+        /** size of a session GCIs vector */
         int SGsize;
 
         /** empty c'tor */
@@ -371,13 +371,13 @@ public class DlSatTester {
 
     // typedef std::set<const TNamedEntity*> SigSet;
     // typedef std::vector<const TNamedEntity*> SigVec;
-    // / class to check whether there is a need to unsplit splitted var
+    /** class to check whether there is a need to unsplit splitted var */
     class SingleSplit {
-        // / signature of equivalent part of the split
+        /** signature of equivalent part of the split */
         Set<NamedEntity> eqSig;
-        // / signature of subsumption part of the split
+        /** signature of subsumption part of the split */
         Set<NamedEntity> impSig;
-        // / pointer to split vertex to activate
+        /** pointer to split vertex to activate */
         int bp;
 
         SingleSplit() {}
@@ -390,26 +390,26 @@ public class DlSatTester {
     }
 
     private List<SingleSplit> SplitRules = new ArrayList<SingleSplit>();
-    // / GCIs local to session
+    /** GCIs local to session */
     private List<Integer> SessionGCIs = new ArrayList<Integer>();
-    // / set of active splits
+    /** set of active splits */
     private FastSet ActiveSplits = FastSetFactory.create();
-    // / concept signature of current CGraph
+    /** concept signature of current CGraph */
     private Set<NamedEntity> SessionSignature = new HashSet<NamedEntity>();
-    // / signature to dep-set map for current session
+    /** signature to dep-set map for current session */
     private Map<NamedEntity, DepSet> SessionSigDepSet = new HashMap<NamedEntity, DepSet>();
     private Set<NamedEntity> ActiveSignature = new HashSet<NamedEntity>();
-    // / signature related to a split
+    /** signature related to a split */
     private Set<NamedEntity> PossibleSignature = new HashSet<NamedEntity>();
-    // / map between BP and TNamedEntities
+    /** map between BP and TNamedEntities */
     private List<NamedEntity> EntityMap = new ArrayList<NamedEntity>();
-    // / flag for using active signature
+    /** flag for using active signature */
     boolean useActiveSignature;
-    // / let reasoner know that we are in the classificaton (for splits)
+    /** let reasoner know that we are in the classificaton (for splits) */
     boolean duringClassification;
 
     // split rules support
-    // /// update active signature wrt given entity
+    /** // update active signature wrt given entity */
     boolean updateActiveSignature(NamedEntity entity, DepSet dep) {
         if (entity == null || // not a named one
                 ActiveSignature.contains(entity)) {
@@ -418,12 +418,12 @@ public class DlSatTester {
         return updateActiveSignature1(entity, dep);
     }
 
-    // / add new split rule
+    /** add new split rule */
     void addSplitRule(Set<NamedEntity> eqSig, Set<NamedEntity> impSig, int bp) {
         SplitRules.add(new SingleSplit(eqSig, impSig, bp));
     }
 
-    // / build a set out of signature SIG w/o given ENTITY
+    /** build a set out of signature SIG w/o given ENTITY */
     Set<NamedEntity> buildSet(TSignature sig, NamedEntity entity) {
         Set<NamedEntity> set = new HashSet<NamedEntity>();
         // std::cout << "Building set for " << entity.getName() << "\n";
@@ -439,7 +439,7 @@ public class DlSatTester {
         return set;
     }
 
-    // / init split as a set-of-sets
+    /** init split as a set-of-sets */
     void initSplit(TSplitVar split) {
         // std::cout << "Processing split for " << split.oldName.getName() <<
         // ":\n";
@@ -477,7 +477,7 @@ public class DlSatTester {
         }
     }
 
-    // / init splits
+    /** init splits */
     void initSplits() {
         for (TSplitVar p : tBox.getSplits().getEntries()) {
             initSplit(p);
@@ -490,12 +490,12 @@ public class DlSatTester {
         }
     }
 
-    // / check whether split-set S contains in the active set
+    /** check whether split-set S contains in the active set */
     boolean containsInActive(Set<NamedEntity> S) {
         return ActiveSignature.containsAll(S);
     }// includes ( ActiveSignature, S ); }
 
-    // / check whether split-set S intersects with the active set
+    /** check whether split-set S intersects with the active set */
     boolean intersectsWithActive(Collection<? extends NamedEntity> S) {
         for (NamedEntity e : S) {
             if (ActiveSignature.contains(e)) {
@@ -505,12 +505,12 @@ public class DlSatTester {
         return false;
     }
 
-    // / @return named entity corresponding to a given bp
+    /** @return named entity corresponding to a given bp */
     NamedEntity getEntity(int bp) {
         return EntityMap.get(bp > 0 ? bp : -bp);
     }
 
-    // / put TODO entry for either BP or inverse(BP) in NODE's label
+    /** put TODO entry for either BP or inverse(BP) in NODE's label */
     void updateName(DlCompletionTree node, int bp) {
         CGLabel lab = node.label();
         // CGLabel::const_iterator p;
@@ -523,7 +523,7 @@ public class DlSatTester {
         }
     }
 
-    // / re-do every BP or inverse(BP) in labels of CGraph
+    /** re-do every BP or inverse(BP) in labels of CGraph */
     void updateName(int bp) {
         int n = 0;
         DlCompletionTree node = null;
@@ -534,7 +534,7 @@ public class DlSatTester {
         }
     }
 
-    // / prepare start signature
+    /** prepare start signature */
     void prepareStartSig(
             List<uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom> Module,
             TSignature sig, List<NamedEntity> Allowed) {
@@ -567,7 +567,7 @@ public class DlSatTester {
         }
     }
 
-    // / build all the seed signatures
+    /** build all the seed signatures */
     void BuildAllSeedSigs(List<NamedEntity> Allowed, TSignature StartSig,
             List<uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom> Module,
             Set<TSignature> Out) {
@@ -578,7 +578,7 @@ public class DlSatTester {
         List<NamedEntity> RecAllowed = new ArrayList<NamedEntity>(), Keepers = new ArrayList<NamedEntity>();
         Set<uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom> outModule = new HashSet<uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom>();
         // TODO add configuration options
-        TModularizer mod = new TModularizer(new SyntacticLocalityChecker(sig));
+        TModularizer mod = new TModularizer(options, new SyntacticLocalityChecker(sig));
         for (NamedEntity p : Allowed) {
             if (sig.containsNamedEntity(p)) {
                 sig.remove(p);
@@ -648,7 +648,7 @@ public class DlSatTester {
     private int tryLevel;
     /** shift in order to determine the 1st non-det application */
     protected int nonDetShift;
-    // / last level when split rules were applied
+    /** last level when split rules were applied */
     private int splitRuleLevel;
     // current values
     /** currently processed CTree node */
@@ -667,14 +667,6 @@ public class DlSatTester {
     /** contains clash set if clash is encountered in a node label */
     private DepSet clashSet = DepSet.create();
     protected JFactReasonerConfiguration options;
-    // /** flag for switching semantic branching */
-    // private boolean useSemanticBranching;
-    // /** flag for switching backjumping */
-    // private boolean useBackjumping;
-    // /** whether or not check blocking status as late as possible */
-    // private boolean useLazyBlocking;
-    // /** flag for switching between Anywhere and Ancestor blockings */
-    // private boolean useAnywhereBlocking;
     // session status flags:
     /** true if nominal-related expansion rule was fired during reasoning */
     private boolean encounterNominal;
@@ -1052,7 +1044,7 @@ public class DlSatTester {
         cGraph.setBlockingMethod(hasInverse, hasQCR);
     }
 
-    // / set the in-classification flag
+    /** set the in-classification flag */
     public void setDuringClassification(boolean value) {
         duringClassification = value;
     }
@@ -1157,17 +1149,17 @@ public class DlSatTester {
     // -----------------------------------------------------------------------------
     // flags section
     // -----------------------------------------------------------------------------
-    // / @return true iff semantic branching is used
+    /** @return true iff semantic branching is used */
     boolean useSemanticBranching() {
         return tBox.useSemanticBranching;
     }
 
-    // / @return true iff lazy blocking is used
+    /** @return true iff lazy blocking is used */
     boolean useLazyBlocking() {
         return tBox.useLazyBlocking;
     }
 
-    // / @return true iff active signature is in use
+    /** @return true iff active signature is in use */
     boolean useActiveSignature() {
         return !tBox.getSplits().empty();
     }
@@ -1318,7 +1310,7 @@ public class DlSatTester {
         }
     }
 
-    // / add C to a set of session GCIs; init all nodes with (C,dep)
+    /** add C to a set of session GCIs; init all nodes with (C,dep) */
     private boolean addSessionGCI(int C, DepSet dep) {
         SessionGCIs.add(C);
         int n = 0;
@@ -1364,7 +1356,7 @@ public class DlSatTester {
         // useActiveSignature = !tBox.getSplits().empty();
         // if (useActiveSignature) {
         // initSplits();
-        // // make entity map
+        /** / make entity map */
         // int size = dlHeap.size();
         // Helper.resize(EntityMap, size);
         // EntityMap.set(0, null);
@@ -1403,7 +1395,7 @@ public class DlSatTester {
         resetSessionFlags();
     }
 
-    // / try to add a concept to a label given by TAG; ~C can't appear in the
+    /** try to add a concept to a label given by TAG; ~C can't appear in the */
     // label
     public boolean findConcept(CWDArray lab, int p) {
         assert Helper.isCorrect(p); // sanity checking
@@ -1433,7 +1425,7 @@ public class DlSatTester {
         return AddConceptResult.acrDone;
     }
 
-    // / try to add a concept to a label given by TAG; ~C can't appear in the
+    /** try to add a concept to a label given by TAG; ~C can't appear in the */
     // label; setup clash-set if found
     private boolean findConceptClash(CWDArray lab, int bp, DepSet dep) {
         stats.getnLookups().inc();
@@ -1719,7 +1711,7 @@ public class DlSatTester {
                 // if (TODO.isEmpty()) {
                 // if (options.isLoggingActive()) {
                 // logIndentation();
-                // //CGraph.Print(LL);
+                /** /CGraph.Print(LL); */
                 // options.getLog().print("[*ub:");
                 // }
                 // cGraph.retestCGBlockedStatus();
@@ -1761,7 +1753,7 @@ public class DlSatTester {
         }
     }
 
-    // / perform all the actions that should be done once, after all normal
+    /** perform all the actions that should be done once, after all normal */
     // rules are not applicable. @return true if the concept is unsat
     boolean performAfterReasoning() {
         // make sure all blocked nodes are still blocked
@@ -1811,7 +1803,7 @@ public class DlSatTester {
     // -----------------------------------------------------------------------------
     // split code implementation
     // -----------------------------------------------------------------------------
-    // / apply split rule RULE to a reasoner. @return true if clash was found
+    /** apply split rule RULE to a reasoner. @return true if clash was found */
     boolean applySplitRule(TSplitRule rule) {
         DepSet dep = rule.fireDep(SessionSignature, SessionSigDepSet);
         int bp = rule.bp() - 1; // p.bp points to Choose(C) node, p.bp-1 -- to
@@ -1827,7 +1819,7 @@ public class DlSatTester {
         return false;
     }
 
-    // / check whether any split rules should be run and do it. @return true iff
+    /** check whether any split rules should be run and do it. @return true iff */
     // clash was found
     boolean checkSplitRules() {
         if (splitRuleLevel == 0) // 1st application OR return was made before
@@ -2039,7 +2031,7 @@ public class DlSatTester {
         return addToDoEntry(curNode, C, curConceptDepSet, null);
     }
 
-    // / add entity.dep to a session structures
+    /** add entity.dep to a session structures */
     void updateSessionSignature(NamedEntity entity, DepSet dep) {
         if (entity != null) {
             SessionSignature.add(entity);
@@ -2047,7 +2039,7 @@ public class DlSatTester {
         }
     }
 
-    // / update session signature with all names from a given node
+    /** update session signature with all names from a given node */
     void updateSignatureByNode(DlCompletionTree node) {
         CGLabel lab = node.label();
         for (ConceptWDep p : lab.get_sc()) {
@@ -2056,7 +2048,7 @@ public class DlSatTester {
         }
     }
 
-    // / update session signature for all non-data nodes
+    /** update session signature for all non-data nodes */
     void updateSessionSignature() {
         int n = 0;
         DlCompletionTree node = null;
@@ -2552,7 +2544,7 @@ public class DlSatTester {
                 | redoAtMost.getValue() | redoIrr.getValue());
     }
 
-    // / expansion rule for the existential quantifier with universal role
+    /** expansion rule for the existential quantifier with universal role */
     boolean commonTacticBodySomeUniv(DLVertex cur) {
         // check blocking conditions
         if (isCurNodeBlocked()) {
@@ -2603,7 +2595,7 @@ public class DlSatTester {
         return pA;
     }
 
-    // / check whether current node is blocked
+    /** check whether current node is blocked */
     private boolean isCurNodeBlocked() {
         if (!options.getuseLazyBlocking()) {
             return curNode.isBlocked();
@@ -2772,9 +2764,10 @@ public class DlSatTester {
                     applyLE = false;
                     // skip init, because here we are after restoring
                     bcLE = (BCLE) bContext;
-                    if (bcLE.noMoreLEOptions()) { // set global clashset to
-                                                  // cummulative one from
-                                                  // previous branch failures
+                    if (bcLE.noMoreLEOptions()) {
+                        // set global clashset to
+                        // cummulative one from
+                        // previous branch failures
                         useBranchDep();
                         return true;
                     }
@@ -2782,8 +2775,7 @@ public class DlSatTester {
                     // Edges
                     from = bcLE.getFrom();
                     to = bcLE.getTo();
-                    Reference<DepSet> dep = new Reference<DepSet>(DepSet.create()); // empty
-                                                                                    // dep-set
+                    Reference<DepSet> dep = new Reference<DepSet>(DepSet.create());
                     // fast check for from.end() and to.end() are in \neq
                     if (cGraph.nonMergable(from.getArcEnd(), to.getArcEnd(), dep)) {
                         // need this for merging two nominal nodes
@@ -3314,7 +3306,7 @@ public class DlSatTester {
                         | redoIrr.getValue());
     }
 
-    // / expansion rule for split
+    /** expansion rule for split */
     private boolean commonTacticBodySplit(DLVertex cur) {
         if (duringClassification
                 && !ActiveSplits.contains(curConceptConcept > 0 ? curConceptConcept

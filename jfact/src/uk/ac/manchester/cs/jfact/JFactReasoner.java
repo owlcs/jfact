@@ -766,7 +766,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return kernel.getAtomicDecompositionSize(useSemantics, type);
     }
 
-    // / get a set of axioms that corresponds to the atom with the id INDEX
+    /**  get a set of axioms that corresponds to the atom with the id INDEX */
     public Set<OWLAxiom> getAtomAxioms(int index) {
         Set<OWLAxiom> toReturn = new HashSet<OWLAxiom>();
         for (Axiom ax : kernel.getAtomAxioms(index)) {
@@ -777,13 +777,13 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return toReturn;
     }
 
-    // / get a set of axioms that corresponds to the module of the atom with the
+    /**  get a set of axioms that corresponds to the module of the atom with the */
     // id INDEX
     public Set<Axiom> getAtomModule(int index) {
         return kernel.getAtomModule(index);
     }
 
-    // / get a set of atoms on which atom with index INDEX depends
+    /**  get a set of atoms on which atom with index INDEX depends */
     public Set<TOntologyAtom> getAtomDependents(int index) {
         return kernel.getAtomDependents(index);
     }
@@ -825,11 +825,14 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
                 list.add(ex);
             }
         }
+        System.out.println("JFactReasoner.getModule() " + list);
         List<Axiom> axioms = kernel.getModule(list, useSemantic, moduletype);
         Set<OWLAxiom> toReturn = new HashSet<OWLAxiom>();
         for (Axiom ax : axioms) {
             if (ax.getOWLAxiom() != null) {
                 toReturn.add(ax.getOWLAxiom());
+            } else {
+                System.out.println("JFactReasoner.getModule() " + ax);
             }
         }
         return toReturn;

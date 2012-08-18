@@ -10,10 +10,13 @@ import java.util.List;
 import uk.ac.manchester.cs.jfact.kernel.Role;
 import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
 
+/** actor that accumulates primers */
 public class AddRoleActor implements Actor {
     private List<Role> rset;
 
     // TODO check other actors
+    /** @param v
+     *            lit to accumulate primers */
     public AddRoleActor(List<Role> v) {
         rset = v;
     }

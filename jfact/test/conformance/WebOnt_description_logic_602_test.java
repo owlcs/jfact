@@ -9,6 +9,7 @@ import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
+@SuppressWarnings("javadoc")
 public class WebOnt_description_logic_602_test {
     @Test
     public void testWebOnt_description_logic_602() throws OWLOntologyCreationException,

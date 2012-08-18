@@ -11,29 +11,29 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
 
-/// class to translate DAG entities into the TDL* expressions
+/**  class to translate DAG entities into the TDL* expressions */
 public class TDag2Interface {
-    // / DAG to be translated
+    /**  DAG to be translated */
     private DLDag Dag;
-    // / expression manager
+    /**  expression manager */
     private ExpressionManager Manager;
-    // / vector of cached expressions
+    /**  vector of cached expressions */
     private List<ConceptExpression> TransConcept = new ArrayList<ConceptExpression>();
     private List<DataExpression> TransData = new ArrayList<DataExpression>();
 
-    // /// create concept name by named entry
+    /** // create concept name by named entry */
     // static ConceptName CName ( NamedEntry p ) { return dynamic_cast<const
     // TDLConceptName*>(p->getEntity()); }
-    // /// create individual name by named entry
+    /** // create individual name by named entry */
     // static IndividualName IName ( NamedEntry p ) { return dynamic_cast<const
     // TDLIndividualName*>(p->getEntity()); }
-    // /// create object role name by named entry
+    /** // create object role name by named entry */
     // static ObjectRoleName ORName ( NamedEntry p ) { return dynamic_cast<const
     // TDLObjectRoleName*>(p->getEntity()); }
-    // /// create data role name by named entry
+    /** // create data role name by named entry */
     // static DataRoleName DRName ( NamedEntry p ) { return dynamic_cast<const
     // TDLDataRoleName*>(p->getEntity()); }
-    // / build concept expression by a vertex V
+    /**  build concept expression by a vertex V */
     public ConceptExpression buildCExpr(DLVertex v) {
         switch (v.getType()) {
             case dtTop:
@@ -84,7 +84,7 @@ public class TDag2Interface {
         }
     }
 
-    // / build data expression by a vertex V
+    /**  build data expression by a vertex V */
     public DataExpression buildDExpr(DLVertex v) {
         switch (v.getType()) {
             case dtTop:
@@ -106,7 +106,7 @@ public class TDag2Interface {
         }
     }
 
-    // / build expression by a vertex V given the DATA flag
+    /**  build expression by a vertex V given the DATA flag */
     public Expression buildExpr(DLVertex v, boolean data) {
         if (data) {
             return buildDExpr(v);
@@ -115,7 +115,7 @@ public class TDag2Interface {
         }
     }
 
-    // / init c'tor
+    /**  init c'tor */
     public TDag2Interface(DLDag dag, ExpressionManager manager) {
         Dag = dag;
         Manager = manager;
@@ -131,7 +131,7 @@ public class TDag2Interface {
         return Manager.objectRole(r.getName());
     }
 
-    // / make sure that size of expression cache is the same as the size of a
+    /**  make sure that size of expression cache is the same as the size of a */
     // DAG
     public void ensureDagSize() {
         int ds = Dag.size(), ts = TransConcept.size();
@@ -148,7 +148,7 @@ public class TDag2Interface {
         }
     }
 
-    // / get concept expression corresponding index of vertex
+    /**  get concept expression corresponding index of vertex */
     public ConceptExpression getCExpr(int p) {
         if (p < 0) {
             return Manager.not(getCExpr(-p));
@@ -159,7 +159,7 @@ public class TDag2Interface {
         return TransConcept.get(p);
     }
 
-    // / get data expression corresponding index of vertex
+    /**  get data expression corresponding index of vertex */
     public DataExpression getDExpr(int p) {
         if (p < 0) {
             return Manager.dataNot(getDExpr(-p));

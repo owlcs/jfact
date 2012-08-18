@@ -13,25 +13,25 @@ public class TOntologyAtom {
             return arg0.getId() - arg1.getId();
         }
     };
-    // / set of axioms in the atom
+    /**  set of axioms in the atom */
     Set<Axiom> AtomAxioms = new HashSet<Axiom>();
-    // / set of axioms in the module (Atom's ideal)
+    /**  set of axioms in the module (Atom's ideal) */
     Set<Axiom> ModuleAxioms = new HashSet<Axiom>();
-    // / set of atoms current one depends on
+    /**  set of atoms current one depends on */
     Set<TOntologyAtom> DepAtoms = new HashSet<TOntologyAtom>();
-    // / set of all atoms current one depends on
+    /**  set of all atoms current one depends on */
     Set<TOntologyAtom> AllDepAtoms = new HashSet<TOntologyAtom>();
-    // / unique atom's identifier
+    /**  unique atom's identifier */
     int Id = 0;
 
-    // / remove all atoms in AllDepAtoms from DepAtoms
+    /**  remove all atoms in AllDepAtoms from DepAtoms */
     public void filterDep() {
         for (TOntologyAtom p : AllDepAtoms) {
             DepAtoms.remove(p);
         }
     }
 
-    // / build all dep atoms; filter them from DepAtoms
+    /**  build all dep atoms; filter them from DepAtoms */
     public void buildAllDepAtoms(Set<TOntologyAtom> checked) {
         // first gather all dep atoms from all known dep atoms
         for (TOntologyAtom p : DepAtoms) {
@@ -47,25 +47,25 @@ public class TOntologyAtom {
     }
 
     // fill in the sets
-    // / set the module axioms
+    /**  set the module axioms */
     public void setModule(Collection<Axiom> module) {
         ModuleAxioms = new HashSet<Axiom>(module);
     }
 
-    // / add axiom AX to an atom
+    /**  add axiom AX to an atom */
     public void addAxiom(Axiom ax) {
         AtomAxioms.add(ax);
         ax.setAtom(this);
     }
 
-    // / add atom to the dependency set
+    /**  add atom to the dependency set */
     public void addDepAtom(TOntologyAtom atom) {
         if (atom != null && atom != this) {
             DepAtoms.add(atom);
         }
     }
 
-    // / get all the atoms the current one depends on; build this set if
+    /**  get all the atoms the current one depends on; build this set if */
     // necessary
     public Set<TOntologyAtom> getAllDepAtoms(Set<TOntologyAtom> checked) {
         if (checked.contains(this)) {
@@ -75,27 +75,27 @@ public class TOntologyAtom {
     }
 
     // access to axioms
-    // / get all the atom's axioms
+    /**  get all the atom's axioms */
     public Set<Axiom> getAtomAxioms() {
         return AtomAxioms;
     }
 
-    // / get all the module axioms
+    /**  get all the module axioms */
     public Set<Axiom> getModule() {
         return ModuleAxioms;
     }
 
-    // / get atoms a given one depends on
+    /**  get atoms a given one depends on */
     public Set<TOntologyAtom> getDepAtoms() {
         return DepAtoms;
     }
 
-    // / get the value of the id
+    /**  get the value of the id */
     public int getId() {
         return Id;
     }
 
-    // / set the value of the id to ID
+    /**  set the value of the id to ID */
     public void setId(int id) {
         Id = id;
     }

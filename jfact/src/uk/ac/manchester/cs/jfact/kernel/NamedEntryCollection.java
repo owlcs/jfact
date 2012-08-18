@@ -89,7 +89,7 @@ public class NamedEntryCollection<T extends NamedEntry> {
             }
         }
         return p;
-        // // name in name set, and it
+        /** / name in name set, and it */
         // return registerElem(nameset.add(name));
     }
 

@@ -9,7 +9,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 public class ELFExpressionChecker implements DLExpressionVisitor {
     boolean value;
 
-    // / get DLTree corresponding to an expression EXPR
+    /**  get DLTree corresponding to an expression EXPR */
     boolean v(Expression expr) {
         expr.accept(this);
         return value;

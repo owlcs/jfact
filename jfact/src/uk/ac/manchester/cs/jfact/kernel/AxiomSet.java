@@ -24,7 +24,7 @@ public class AxiomSet {
         boolean absMethod(Axiom ax);
     }
 
-    // / set of absorption action, in order
+    /**  set of absorption action, in order */
     private List<Abs> actions = new ArrayList<AxiomSet.Abs>();
 
     /** add already built GCI p */
@@ -43,7 +43,7 @@ public class AxiomSet {
         return true;
     }
 
-    // / helper that inserts an axiom into Accum; @return bool if success
+    /**  helper that inserts an axiom into Accum; @return bool if success */
     protected boolean processNewAxiom(Axiom q) {
         if (q == null) {
             return false;

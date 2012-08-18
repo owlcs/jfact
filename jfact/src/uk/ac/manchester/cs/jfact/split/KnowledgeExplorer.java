@@ -12,24 +12,24 @@ import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 
 public class KnowledgeExplorer {
-    // / map concept into set of its synonyms
+    /**  map concept into set of its synonyms */
     MultiMap<NamedEntity, Concept> Cs = new MultiMap<NamedEntity, Concept>();
-    // / map individual into set of its synonyms
+    /**  map individual into set of its synonyms */
     MultiMap<NamedEntity, Individual> Is = new MultiMap<NamedEntity, Individual>();
-    // / map object role to the set of its super-roles (self included)
+    /**  map object role to the set of its super-roles (self included) */
     MultiMap<NamedEntity, Role> ORs = new MultiMap<NamedEntity, Role>();
-    // / map data role to the set of its super-roles (self included)
+    /**  map data role to the set of its super-roles (self included) */
     MultiMap<NamedEntity, Role> DRs = new MultiMap<NamedEntity, Role>();
-    // / dag-2-interface translator used in knowledge exploration
+    /**  dag-2-interface translator used in knowledge exploration */
     TDag2Interface D2I;
-    // / node vector to return
+    /**  node vector to return */
     List<DlCompletionTree> Nodes;
-    // / role set to return
+    /**  role set to return */
     Set<RoleExpression> Roles;
-    // / concept vector to return
+    /**  concept vector to return */
     List<Expression> Concepts;
 
-    // / adds an entity as a synonym to a map MAP
+    /**  adds an entity as a synonym to a map MAP */
     <E extends ClassifiableEntry> void addE(MultiMap<E, E> map, E entry) {
         map.put(entry, entry);
         if (entry.isSynonym()) {
@@ -81,7 +81,7 @@ public class KnowledgeExplorer {
      * u.__add__(F.__mul__(x)) P = F.__mul__(P.__mul__(transpose(F))) print 'x=
      * ' x.show() print 'P= ' P.show()
      */
-    // / add concept-like entity E (possibly with synonyms) to CONCEPTS
+    /**  add concept-like entity E (possibly with synonyms) to CONCEPTS */
     void addC(Expression e) {
         // check named concepts
         if (e instanceof ConceptName) {
@@ -126,7 +126,7 @@ public class KnowledgeExplorer {
         return Roles;
     }
 
-    // / build the set of object neighbours of a NODE; incoming edges are
+    /**  build the set of object neighbours of a NODE; incoming edges are */
     // counted iff NEEDINCOMING is true
     public Set<RoleExpression> getObjectRoles(DlCompletionTree node, boolean onlyDet,
             boolean needIncoming) {
@@ -143,7 +143,7 @@ public class KnowledgeExplorer {
         return Roles;
     }
 
-    // / build the set of neighbours of a NODE via role ROLE; put the resulting
+    /**  build the set of neighbours of a NODE via role ROLE; put the resulting */
     // list into RESULT
     public List<DlCompletionTree> getNeighbours(DlCompletionTree node, Role R) {
         Nodes.clear();
@@ -155,7 +155,7 @@ public class KnowledgeExplorer {
         return Nodes;
     }
 
-    // / put into RESULT all the data expressions from the NODE label
+    /**  put into RESULT all the data expressions from the NODE label */
     public List<ConceptExpression> getObjectLabel(DlCompletionTree node, boolean onlyDet) {
         // prepare D2I translator
         D2I.ensureDagSize();

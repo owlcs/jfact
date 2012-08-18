@@ -16,19 +16,19 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorAdapter;
 
 public class ELFNormalizer extends DLAxiomVisitorAdapter {
-    // / expression manager to build aux expressions
+    /**  expression manager to build aux expressions */
     ExpressionManager pEM;
     // TLISPOntologyPrinter LP;
-    // / set of new/procesed axioms
+    /**  set of new/procesed axioms */
     List<Axiom> Axioms = new ArrayList<Axiom>();
-    // / index of a freah variable
+    /**  index of a freah variable */
     int index;
-    // / true iff the axiom was changed after visiting
+    /**  true iff the axiom was changed after visiting */
     boolean changed;
-    // / true iff RHS is in a form \ER.C
+    /**  true iff RHS is in a form \ER.C */
     boolean eRHS;
 
-    // / process the axiom and mark it unused if necessary
+    /**  process the axiom and mark it unused if necessary */
     void v(Axiom ax) {
         // std::cout << "Processing ";
         // ax.accept(LP);
@@ -38,20 +38,20 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
         }
     }
 
-    // / add axiom to a list
+    /**  add axiom to a list */
     void addAxiom(Axiom ax) {
         // std::cout << "Adding ";
         // ax.accept(LP);
         Axioms.add(ax);
     }
 
-    // / create a new name
+    /**  create a new name */
     ConceptExpression buildFreshName() {
         // TODO check: should the string start with a space?
         return pEM.concept(" ELF_aux_" + index);
     }
 
-    // / split C [= D1 \and \and Dn into C [= D1, C [= Dn
+    /**  split C [= D1 \and \and Dn into C [= D1, C [= Dn */
     boolean splitAndRHS(OWLAxiom ax, ConceptExpression C, ConceptAnd D) {
         if (D == null) {
             return false;
@@ -63,7 +63,7 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
         return true;
     }
 
-    // / transform RHS into normalized one. @return a normalized RHS. Set the
+    /**  transform RHS into normalized one. @return a normalized RHS. Set the */
     // eRHS flag if it is an existential
     ConceptExpression transformExists(OWLAxiom ax, ConceptExpression D) {
         eRHS = false;
@@ -94,7 +94,7 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
         return pEM.exists(exists.getOR(), B);
     }
 
-    // / transform conjunction into the binary one with named concepts in it;
+    /**  transform conjunction into the binary one with named concepts in it; */
     // simplify
     ConceptExpression normalizeLHSAnd(OWLAxiom ax, ConceptAnd C) {
         if (C == null) {
@@ -152,7 +152,7 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
         return eRHS ? B : pEM.and(B, args.get(i));
     }
 
-    // / transform LHS into normalized one. @return a normalized LHS
+    /**  transform LHS into normalized one. @return a normalized LHS */
     ConceptExpression transformLHS(OWLAxiom ax, ConceptExpression C) {
         // here C is Top, A, AND and Exists
         // first normalize LHS And to contain only 2 names (or less)
@@ -182,7 +182,7 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
 
     // need only do something with a very few axioms as others doesn't present
     // here
-    // / replace it with C0 [= Ci, Ci [= C0
+    /**  replace it with C0 [= Ci, Ci [= C0 */
     @Override
     public void visit(AxiomEquivalentConcepts axiom) {
         List<ConceptExpression> list = axiom.getArguments();
@@ -194,7 +194,7 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
         changed = true;
     }
 
-    // / replace with Ci \and Cj [= \bot for 0 <= i < j < n
+    /**  replace with Ci \and Cj [= \bot for 0 <= i < j < n */
     @Override
     public void visit(AxiomDisjointConcepts axiom) {
         ConceptExpression bot = pEM.bottom();
@@ -210,7 +210,7 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
         changed = true;
     }
 
-    // / the only legal one contains a single element, so is C = D
+    /**  the only legal one contains a single element, so is C = D */
     @Override
     public void visit(AxiomDisjointUnion axiom) {
         changed = true; // replace it anyway
@@ -228,7 +228,7 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
         }
     }
 
-    // / normalize equivalence as a number of subsumptions R0 [= Ri, Ri [= R0
+    /**  normalize equivalence as a number of subsumptions R0 [= Ri, Ri [= R0 */
     @Override
     public void visit(AxiomEquivalentORoles axiom) {
         List<ObjectRoleExpression> arguments = axiom.getArguments();
@@ -240,13 +240,13 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
         changed = true;
     }
 
-    // / already canonical
+    /**  already canonical */
     @Override
     public void visit(AxiomORoleSubsumption axiom) {
         changed = false;
     }
 
-    // / normalize transitivity as role inclusion
+    /**  normalize transitivity as role inclusion */
     @Override
     public void visit(AxiomRoleTransitive axiom) {
         ObjectRoleExpression R = axiom.getRole();
@@ -254,7 +254,7 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
         changed = true;
     }
 
-    // / all the job is done here
+    /**  all the job is done here */
     @Override
     public void visit(AxiomConceptInclusion axiom) {
         ConceptExpression C = axiom.getSubConcept(), D = axiom.getSupConcept();

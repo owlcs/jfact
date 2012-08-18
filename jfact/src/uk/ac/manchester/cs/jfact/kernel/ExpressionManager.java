@@ -104,7 +104,7 @@ public class ExpressionManager {
     /** cache for the role inverses */
     private InverseRoleCache inverseRoleCache = new InverseRoleCache();
 
-    // / set Top/Bot properties
+    /** set Top/Bot properties */
     public void setTopBottomRoles(String topORoleName, String botORoleName,
             String topDRoleName, String botDRoleName) {
         objectRoleTop = new ObjectRoleName(topORoleName);
@@ -113,23 +113,34 @@ public class ExpressionManager {
         dataRoleBottom = new DataRoleName(botDRoleName);
     }
 
+    public void clearNameCache(NameSet<?> ns) {
+        ns.clear();
+    }
+
+    public void clearNameCache() {
+        clearNameCache(conceptNameset);
+        clearNameCache(objectRoleNameset);
+        clearNameCache(dataRoleNameset);
+        clearNameCache(individualNameset);
+    }
+
     // top/bottom roles
-    // / @return true iff R is a top object role
+    /** @return true iff R is a top object role */
     public boolean isUniversalRole(ObjectRoleComplexExpression R) {
         return R.equals(objectRoleTop);
     }
 
-    // / @return true iff R is a top data role
+    /** @return true iff R is a top data role */
     public boolean isUniversalRole(DataRoleExpression R) {
         return R.equals(dataRoleTop);
     }
 
-    // / @return true iff R is a bottom object role
+    /** @return true iff R is a bottom object role */
     public boolean isEmptyRole(ObjectRoleComplexExpression R) {
         return R.equals(objectRoleBottom);
     }
 
-    // / @return true iff R is a bottom data role
+    /** @return true iff R is a bottom data role */
     public boolean isEmptyRole(DataRoleExpression R) {
         return R.equals(dataRoleBottom);
     }

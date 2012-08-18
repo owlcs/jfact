@@ -13,16 +13,16 @@ import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 
-/// semantic locality checker for DL axioms
+/**  semantic locality checker for DL axioms */
 public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker {
-    // / Reasoner to detect the tautology
+    /**  Reasoner to detect the tautology */
     ReasoningKernel Kernel;
-    // / Expression manager of a kernel
+    /**  Expression manager of a kernel */
     ExpressionManager pEM;
-    // / map between axioms and concept expressions
+    /**  map between axioms and concept expressions */
     Map<Axiom, ConceptExpression> ExprMap = new HashMap<Axiom, ConceptExpression>();
 
-    // / @return expression necessary to build query for a given type of an
+    /**  @return expression necessary to build query for a given type of an */
     // axiom; @return NULL if none necessary
     protected ConceptExpression getExpr(Axiom axiom) {
         if (axiom instanceof AxiomRelatedTo) {
@@ -59,22 +59,22 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
         return null;
     }
 
-    // / signature to keep
+    /**  signature to keep */
     TSignature sig;
 
     public TSignature getSignature() {
         return sig;
     }
 
-    // / set a new value of a signature (without changing a locality parameters)
+    /**  set a new value of a signature (without changing a locality parameters) */
     public void setSignatureValue(TSignature Sig) {
         sig = Sig;
     }
 
-    // / remember the axiom locality value here
+    /**  remember the axiom locality value here */
     boolean isLocal;
 
-    // / init c'tor
+    /**  init c'tor */
     public SemanticLocalityChecker(ReasoningKernel k, TSignature s) {
         Kernel = k;
         sig = s;
@@ -89,13 +89,13 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
     }
 
     // set fields
-    // / @return true iff an AXIOM is local wrt defined policy
+    /**  @return true iff an AXIOM is local wrt defined policy */
     public boolean local(Axiom axiom) {
         axiom.accept(this);
         return isLocal;
     }
 
-    // / init kernel with the ontology signature
+    /**  init kernel with the ontology signature */
     public void preprocessOntology(Collection<Axiom> axioms) {
         TSignature s = new TSignature();
         ExprMap.clear();
@@ -117,7 +117,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
         Kernel.setIgnoreExprCache(true);
     }
 
-    // / load ontology to a given KB
+    /**  load ontology to a given KB */
     public void visitOntology(Ontology ontology) {
         for (Axiom p : ontology.getAxioms()) {
             if (p.isUsed()) {
@@ -160,7 +160,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
         isLocal = true;
     }
 
-    // / FIXME!! fornow
+    /**  FIXME!! fornow */
     public void visit(AxiomDisjointUnion axiom) {
         isLocal = true;
     }
@@ -211,7 +211,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
         isLocal = false;
     }
 
-    // / there is no such axiom in OWL API, but I hope nobody would use Fairness
+    /**  there is no such axiom in OWL API, but I hope nobody would use Fairness */
     // here
     public void visit(AxiomFairnessConstraint axiom) {
         isLocal = true;

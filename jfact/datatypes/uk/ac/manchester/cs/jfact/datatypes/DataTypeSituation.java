@@ -10,7 +10,7 @@ import java.util.*;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.FastSetSimple;
 
-public final class DataTypeSituation<R extends Comparable<R>> {
+public class DataTypeSituation<R extends Comparable<R>> {
     /** positive type appearance */
     private DepSet pType;
     /** negative type appearance */

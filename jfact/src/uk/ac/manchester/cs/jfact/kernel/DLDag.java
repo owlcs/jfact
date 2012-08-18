@@ -44,7 +44,7 @@ public class DLDag {
     private int finalDagSize;
     private JFactReasonerConfiguration options;
 
-    // / replace existing vertex at index I with a vertex V
+    /**  replace existing vertex at index I with a vertex V */
     public void replaceVertex(int i, DLVertex v, NamedEntry C) {
         heap.set(i > 0 ? i : -i, v);
         v.setConcept(C);
@@ -253,7 +253,7 @@ public class DLDag {
         }
     }
 
-    // / set the DAG size
+    /**  set the DAG size */
     public void setFinalSize() {
         finalDagSize = size();
         setExpressionCache(false);

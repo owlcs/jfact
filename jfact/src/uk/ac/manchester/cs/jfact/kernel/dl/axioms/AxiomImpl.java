@@ -15,12 +15,12 @@ import uk.ac.manchester.cs.jfact.split.TSignatureUpdater;
 abstract class AxiomImpl implements Axiom {
     /** id of the axiom */
     private int id;
-    // / signature (built lazily on demand)
+    /**  signature (built lazily on demand) */
     TSignature sig = null;
-    // / flag to show whether or not the axiom is in the search space for the
+    /**  flag to show whether or not the axiom is in the search space for the */
     // optimised modularization algorithm
     boolean inSearchSpace = false;
-    // / flag to show whether or not the axiom is in the module
+    /**  flag to show whether or not the axiom is in the module */
     boolean inModule;
     /** flag to show whether it is used (to support retraction) */
     private boolean used;
@@ -35,12 +35,12 @@ abstract class AxiomImpl implements Axiom {
         this.atom = atom;
     }
 
-    // / set the isSearchSpace flag
+    /**  set the isSearchSpace flag */
     public void setInSS(boolean flag) {
         inSearchSpace = flag;
     }
 
-    // / get the value of the isSearchSpace flag
+    /**  get the value of the isSearchSpace flag */
     public boolean isInSS() {
         return inSearchSpace;
     }

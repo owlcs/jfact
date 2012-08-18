@@ -6,14 +6,14 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 
-/// check whether class expressions are equivalent to top wrt given locality class
+/**  check whether class expressions are equivalent to top wrt given locality class */
 public class TopEquivalenceEvaluator extends SigAccessor implements DLExpressionVisitor {
-    // / corresponding bottom evaluator
+    /**  corresponding bottom evaluator */
     BotEquivalenceEvaluator BotEval = null;
-    // / keep the value here
+    /**  keep the value here */
     boolean isTopEq = false;
 
-    // / check whether the expression is top-equivalent
+    /**  check whether the expression is top-equivalent */
     boolean isBotEquivalent(Expression expr) {
         return BotEval.isBotEquivalent(expr);
     }
@@ -32,23 +32,23 @@ public class TopEquivalenceEvaluator extends SigAccessor implements DLExpression
                 && isTopEquivalent(expr.getConcept());
     }
 
-    // / @return true iff role expression in equivalent to const wrt locality
+    /**  @return true iff role expression in equivalent to const wrt locality */
     boolean isREquivalent(Expression expr) {
         return topRLocal() ? isTopEquivalent(expr) : isBotEquivalent(expr);
     }
 
-    // / init c'tor
+    /**  init c'tor */
     TopEquivalenceEvaluator(TSignature s) {
         super(s);
     }
 
     // set fields
-    // / set the corresponding bottom evaluator
+    /**  set the corresponding bottom evaluator */
     void setBotEval(BotEquivalenceEvaluator eval) {
         BotEval = eval;
     }
 
-    // / @return true iff an EXPRession is equivalent to top wrt defined policy
+    /**  @return true iff an EXPRession is equivalent to top wrt defined policy */
     boolean isTopEquivalent(Expression expr) {
         expr.accept(this);
         return isTopEq;
