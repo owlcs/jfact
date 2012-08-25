@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 public class TestCreator {
-    public static void main(String[] args) throws Exception {
+    public static void _main(String[] args) throws Exception {
         Map<String, PrintStream> streams = new HashMap<String, PrintStream>();
         File[] roots = new File[] { new File("src"), new File("datatypes") };
         for (File root : roots) {

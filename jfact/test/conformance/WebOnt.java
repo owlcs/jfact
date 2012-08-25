@@ -6811,15 +6811,19 @@ public class WebOnt {
 
     @Test
     public void testWebOnt_imports_011() {
-        String premise = "<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#' xmlns:owl='http://www.w3.org/2002/07/owl#' xmlns:ont='http://www.w3.org/2002/03owlt/imports/support011-A#'\n"
+        String premise = "<rdf:RDF "
+                + "xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' "
+                + "xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#' "
+                + "xmlns:owl='http://www.w3.org/2002/07/owl#' "
                 + "    xml:base='http://www.w3.org/2002/03owlt/imports/premises011' >\n"
-                + "    <owl:Ontology rdf:about=''><owl:imports \n"
-                + "     rdf:resource=\"http://www.w3.org/2002/03owlt/imports/support011-A\"/></owl:Ontology>\n"
-                + "    <ont:Man rdf:about='http://example.org/data#Socrates'/></rdf:RDF>";
+                + "    <owl:Ontology rdf:about=''></owl:Ontology>\n"
+                + "<owl:Class rdf:about='http://www.w3.org/2002/03owlt/imports/premises011#Man'><rdfs:subClassOf rdf:resource='http://www.w3.org/2002/03owlt/imports/premises011#Mortal'/></owl:Class>\n"
+                + "    <owl:Class rdf:about='#Mortal'/>\n"
+                + "    <owl:Thing rdf:about='http://example.org/data#Socrates'><rdf:type><owl:Class rdf:about='#Man'/></rdf:type></owl:Thing></rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#' xmlns:owl='http://www.w3.org/2002/07/owl#'\n"
                 + "    xml:base='http://www.w3.org/2002/03owlt/imports/conclusions011' >\n"
                 + "    <owl:Ontology/>\n"
-                + "    <rdf:Description rdf:about='http://example.org/data#Socrates'><rdf:type><owl:Class rdf:about='support011-A#Mortal'/></rdf:type></rdf:Description></rdf:RDF>";
+                + "    <rdf:Description rdf:about='http://example.org/data#Socrates'><rdf:type><owl:Class rdf:about='#Mortal'/></rdf:type></rdf:Description></rdf:RDF>";
         String id = "WebOnt_imports_011";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "A Lite version of test <a xmlns=\"http://www.w3.org/1999/xhtml\" href=\"#imports-001\">imports-001</a>.";

@@ -131,7 +131,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_split {
     @Test
     public void shouldTestSemanticLocalityChecker() throws Exception {
         SemanticLocalityChecker testSubject0 = new SemanticLocalityChecker(
-                mock(ReasoningKernel.class), mock(TSignature.class));
+                mock(ReasoningKernel.class));
         TSignature result0 = testSubject0.getSignature();
         testSubject0.visit(mock(AxiomValueOfNot.class));
         testSubject0.visit(mock(AxiomConceptInclusion.class));
@@ -226,17 +226,13 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_split {
         SigIndex testSubject0 = new SigIndex(mock(LocalityChecker.class));
         Collection result0 = testSubject0.getAxioms(mock(NamedEntity.class));
         Set result1 = testSubject0.getNonLocal(mock(boolean.class));
-        testSubject0.processRange(mock(Collection.class));
-        testSubject0.registerAx(mock(Axiom.class));
-        testSubject0.unregisterAx(mock(Axiom.class));
         testSubject0.processAx(mock(Axiom.class));
         String result2 = testSubject0.toString();
     }
 
     @Test
     public void shouldTestSyntacticLocalityChecker() throws Exception {
-        SyntacticLocalityChecker testSubject0 = new SyntacticLocalityChecker(
-                mock(TSignature.class));
+        SyntacticLocalityChecker testSubject0 = new SyntacticLocalityChecker();
         TSignature result0 = testSubject0.getSignature();
         testSubject0.visit(mock(AxiomRoleAsymmetric.class));
         testSubject0.visit(mock(AxiomRoleInverseFunctional.class));
