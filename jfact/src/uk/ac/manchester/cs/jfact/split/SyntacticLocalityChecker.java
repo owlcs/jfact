@@ -8,36 +8,35 @@ import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 
-/**  syntactic locality checker for DL axioms */
+/** syntactic locality checker for DL axioms */
 public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisitor,
         LocalityChecker {
-    /**  top evaluator */
+    /** top evaluator */
     TopEquivalenceEvaluator TopEval;
-    /**  bottom evaluator */
+    /** bottom evaluator */
     BotEquivalenceEvaluator BotEval;
-    /**  remember the axiom locality value here */
+    /** remember the axiom locality value here */
     boolean isLocal;
 
-    /**  @return true iff EXPR is top equivalent */
+    /** @return true iff EXPR is top equivalent */
     boolean isTopEquivalent(Expression expr) {
         return TopEval.isTopEquivalent(expr);
     }
 
-    /**  @return true iff EXPR is bottom equivalent */
+    /** @return true iff EXPR is bottom equivalent */
     boolean isBotEquivalent(Expression expr) {
         return BotEval.isBotEquivalent(expr);
     }
 
-    /**  @return true iff role expression in equivalent to const wrt locality */
+    /** @return true iff role expression in equivalent to const wrt locality */
     boolean isREquivalent(Expression expr) {
         return sig.topRLocal() ? isTopEquivalent(expr) : isBotEquivalent(expr);
     }
 
-    /**  init c'tor */
-    public SyntacticLocalityChecker(TSignature s) {
-        super(s);
-        TopEval = new TopEquivalenceEvaluator(s);
-        BotEval = new BotEquivalenceEvaluator(s);
+    /** init c'tor */
+    public SyntacticLocalityChecker() {
+        TopEval = new TopEquivalenceEvaluator();
+        BotEval = new BotEquivalenceEvaluator();
         TopEval.setBotEval(BotEval);
         BotEval.setTopEval(TopEval);
     }
@@ -46,19 +45,21 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
         return sig;
     }
 
-    /**  set a new value of a signature (without changing a locality parameters) */
+    /** set a new value of a signature (without changing a locality parameters) */
     public void setSignatureValue(TSignature Sig) {
         sig = Sig;
+        TopEval.sig = sig;
+        BotEval.sig = sig;
     }
 
     // set fields
-    /**  @return true iff an AXIOM is local wrt defined policy */
+    /** @return true iff an AXIOM is local wrt defined policy */
     public boolean local(Axiom axiom) {
         axiom.accept(this);
         return isLocal;
     }
 
-    /**  load ontology to a given KB */
+    /** load ontology to a given KB */
     public void visitOntology(Ontology ontology) {
         for (Axiom p : ontology.getAxioms()) {
             if (p.isUsed()) {
@@ -206,14 +207,14 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
     }
 
     public void visit(AxiomSameIndividuals axiom) {
-        isLocal = true;
+        isLocal = false;
     }
 
     public void visit(AxiomDifferentIndividuals axiom) {
-        isLocal = true;
+        isLocal = false;
     }
 
-    /**  there is no such axiom in OWL API, but I hope nobody would use Fairness */
+    /** there is no such axiom in OWL API, but I hope nobody would use Fairness */
     // here
     public void visit(AxiomFairnessConstraint axiom) {
         isLocal = true;
@@ -263,7 +264,7 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
         isLocal = isREquivalent(axiom.getRole());
     }
 
-    /**  as BotRole is irreflexive, the only local axiom is topEquivalent(R) */
+    /** as BotRole is irreflexive, the only local axiom is topEquivalent(R) */
     public void visit(AxiomRoleReflexive axiom) {
         isLocal = isTopEquivalent(axiom.getRole());
     }

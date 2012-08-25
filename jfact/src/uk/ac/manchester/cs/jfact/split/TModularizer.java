@@ -69,7 +69,7 @@ public class TModularizer {
         return true;
     }
 
-    /** add an axiom if it is non-local (or in noCheck is true) */
+    /** add an axiom if it is non-local (or if noCheck is true) */
     void addNonLocal(Axiom ax, boolean noCheck) {
         if (noCheck || isNonLocal(ax)) {
             addAxiomToModule(ax);
@@ -193,6 +193,7 @@ public class TModularizer {
     public void extract(Collection<Axiom> begin, TSignature signature, ModuleType type) {
         boolean topLocality = type == ModuleType.M_TOP;
         sig = signature;
+        Checker.setSignatureValue(sig);
         sig.setLocality(topLocality);
         this.extractModule(begin);
         if (type != ModuleType.M_STAR) {

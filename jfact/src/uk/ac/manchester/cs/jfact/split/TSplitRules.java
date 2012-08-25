@@ -256,8 +256,7 @@ public class TSplitRules {
         List<NamedEntity> RecAllowed = new ArrayList<NamedEntity>();
         List<NamedEntity> Keepers = new ArrayList<NamedEntity>();
         Set<Axiom> outModule = new HashSet<Axiom>();
-        TModularizer mod = // XXX
-        new TModularizer(config, new SyntacticLocalityChecker(sig));
+        TModularizer mod = new TModularizer(config, new SyntacticLocalityChecker());
         for (NamedEntity p : Allowed) {
             if (sig.containsNamedEntity(p)) {
                 sig.remove(p);

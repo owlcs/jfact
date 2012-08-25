@@ -24,29 +24,14 @@ public class SigIndex {
     /** number of registered axioms */
     int nUnregistered = 0;
 
-    /** add an axiom AX to an axiom set AXIOMS */
-    void add(Collection<Axiom> axioms, Axiom ax) {
-        axioms.add(ax);
-    }
-
-    /** remove an axiom AX from an axiom set AXIOMS */
-    void remove(Collection<Axiom> axioms, Axiom ax) {
-        axioms.remove(ax);
-    }
-
     // access to statistics
-    /** get number of ever processed axioms */
-    int nProcessedAx() {
+    /** @return number of ever processed axioms */
+    public int nProcessedAx() {
         return nRegistered;
     }
 
-    /** get number of currently registered axioms */
-    int nRegisteredAx() {
-        return nRegistered - nUnregistered;
-    }
-
     /** add axiom AX to the non-local set with top-locality value TOP */
-    void checkNonLocal(Axiom ax, boolean top) {
+    private void checkNonLocal(Axiom ax, boolean top) {
         emptySig.setLocality(top);
         Checker.setSignatureValue(emptySig);
         if (!Checker.local(ax)) {
@@ -65,7 +50,7 @@ public class SigIndex {
 
     // work with axioms
     /** register an axiom */
-    public void registerAx(Axiom ax) {
+    private void registerAx(Axiom ax) {
         for (NamedEntity p : ax.getSignature().begin()) {
             Base.put(p, ax);
         }
@@ -76,7 +61,7 @@ public class SigIndex {
     }
 
     /** unregister an axiom AX */
-    public void unregisterAx(Axiom ax) {
+    private void unregisterAx(Axiom ax) {
         for (NamedEntity p : ax.getSignature().begin()) {
             Base.get(p).remove(ax);
         }
@@ -96,31 +81,25 @@ public class SigIndex {
     }
 
     // / preprocess given set of axioms
-    void preprocessOntology(Collection<Axiom> axioms) {
+    public void preprocessOntology(Collection<Axiom> axioms) {
         for (Axiom ax : axioms) {
             processAx(ax);
         }
     }
 
     // / clear internal structures
-    void clear() {
+    public void clear() {
         Base.clear();
         NonLocalFalse.clear();
         NonLocalTrue.clear();
-    }
-
-    /** process the range [begin,end) of axioms */
-    public void processRange(Collection<Axiom> c) {
-        for (Axiom ax : c) {
-            processAx(ax);
-        }
     }
 
     // get the set by the index
     /** given an entity, return a set of all axioms that tontain this entity in */
     // a signature
     public Collection<Axiom> getAxioms(NamedEntity entity) {
-        return Base.get(entity);
+        final Collection<Axiom> collection = Base.get(entity);
+        return collection;
     }
 
     /** get the non-local axioms with top-locality value TOP */

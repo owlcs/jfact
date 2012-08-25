@@ -6,17 +6,16 @@ import uk.ac.manchester.cs.jfact.kernel.dl.DataTop;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorAdapter;
 
-/**  helper class to set signature and locality class */
+/** helper class to set signature and locality class */
 public class SigAccessor extends DLExpressionVisitorAdapter {
-    /**  signature of a module */
+    /** signature of a module */
     TSignature sig;
 
-    /**  init c'tor */
-    SigAccessor(TSignature s) {
-        sig = new TSignature(s);
+    public void setSignature(TSignature s) {
+        sig = s;
     }
 
-    /**  @return true iff EXPR is a top datatype */
+    /** @return true iff EXPR is a top datatype */
     static boolean isTopDT(Expression expr) {
         return expr instanceof DataTop;
     }
@@ -32,12 +31,12 @@ public class SigAccessor extends DLExpressionVisitorAdapter {
     // static boolean isTopOrBuiltInInfDT( Expression expr) {
     // return isTopDT(expr);
     // }
-    /**  @return true iff EXPR is a top datatype or a built-in datatype; */
+    /** @return true iff EXPR is a top datatype or a built-in datatype; */
     public boolean isTopOrBuiltInDataType(Expression expr) {
         return isTopDT(expr) || expr instanceof Datatype<?>;
     }
 
-    /**  @return true iff EXPR is a top datatype or an infinite built-in */
+    /** @return true iff EXPR is a top datatype or an infinite built-in */
     // datatype; FIXME add real/fraction later
     public boolean isTopOrBuiltInInfDataType(Expression expr) {
         if (isTopDT(expr)) {
@@ -48,12 +47,12 @@ public class SigAccessor extends DLExpressionVisitorAdapter {
                         cardinality.COUNTABLYINFINITE);
     }
 
-    /**  @return true iff concepts are treated as TOPs */
+    /** @return true iff concepts are treated as TOPs */
     public boolean topCLocal() {
         return sig.topCLocal();
     }
 
-    /**  @return true iff roles are treated as TOPs */
+    /** @return true iff roles are treated as TOPs */
     public boolean topRLocal() {
         return sig.topRLocal();
     }

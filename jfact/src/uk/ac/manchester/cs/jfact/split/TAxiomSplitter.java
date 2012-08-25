@@ -91,22 +91,25 @@ public class TAxiomSplitter {
     /** create a signature of a module corresponding to a new axiom in record */
     protected void buildSig(TRecord rec) {
         sig = rec.newAxiom.getSignature();
-        mod.extract(O.getAxioms(), sig, ModuleType.M_STAR); // build a
-                                                            // module/signature
-                                                            // for the axiom
-        rec.newAxSig = mod.getSignature(); // FIXME!! check that SIG wouldn't
-                                           // change after some axiom
-                                           // retractions
+        mod.extract(O.getAxioms(), sig, ModuleType.M_STAR);
+        // build a
+        // module/signature
+        // for the axiom
+        rec.newAxSig = mod.getSignature();
+        // FIXME!! check that SIG wouldn't
+        // change after some axiom
+        // retractions
         rec.Module.clear();
         rec.Module.addAll(mod.getModule());
     }
 
     /** add axiom CI in a form C [= D for D != TOP */
     protected void addSingleCI(AxiomConceptInclusion ci) {
-        if (ci != null && !(ci.getSupConcept() instanceof ConceptTop)) { // skip
-                                                                         // axioms
-                                                                         // with
-                                                                         // RHS=TOP
+        if (ci != null && !(ci.getSupConcept() instanceof ConceptTop)) {
+            // skip
+            // axioms
+            // with
+            // RHS=TOP
             if (ci.getSubConcept() instanceof ConceptName) {
                 ConceptName name = (ConceptName) ci.getSubConcept();
                 SubNames.add(name);
@@ -307,7 +310,7 @@ public class TAxiomSplitter {
         // pr(std::cout);
         newNameId = 0;
         O = o;
-        mod = new TModularizer(config, new SyntacticLocalityChecker(sig));
+        mod = new TModularizer(config, new SyntacticLocalityChecker());
     }
 
     public void buildSplit() {

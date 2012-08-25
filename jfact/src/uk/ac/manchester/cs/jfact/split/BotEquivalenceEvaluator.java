@@ -6,37 +6,33 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 
-/**  check whether class expressions are equivalent to bottom wrt given locality class */
+/** check whether class expressions are equivalent to bottom wrt given locality
+ * class */
 @SuppressWarnings("unused")
 // XXX verify unused parameters
 public class BotEquivalenceEvaluator extends SigAccessor implements DLExpressionVisitor {
-    /**  corresponding top evaluator */
+    /** corresponding top evaluator */
     TopEquivalenceEvaluator TopEval = null;
-    /**  keep the value here */
+    /** keep the value here */
     boolean isBotEq = false;
 
-    /**  check whether the expression is top-equivalent */
+    /** check whether the expression is top-equivalent */
     boolean isTopEquivalent(Expression expr) {
         return TopEval.isTopEquivalent(expr);
     }
 
-    /**  @return true iff role expression in equivalent to const wrt locality */
+    /** @return true iff role expression in equivalent to const wrt locality */
     boolean isREquivalent(Expression expr) {
         return sig.topRLocal() ? isTopEquivalent(expr) : isBotEquivalent(expr);
     }
 
-    /**  init c'tor */
-    BotEquivalenceEvaluator(TSignature s) {
-        super(s);
-    }
-
     // set fields
-    /**  set the corresponding top evaluator */
+    /** set the corresponding top evaluator */
     void setTopEval(TopEquivalenceEvaluator eval) {
         TopEval = eval;
     }
 
-    /**  @return true iff an EXPRession is equivalent to bottom wrt defined */
+    /** @return true iff an EXPRession is equivalent to bottom wrt defined */
     // policy
     boolean isBotEquivalent(Expression expr) {
         expr.accept(this);

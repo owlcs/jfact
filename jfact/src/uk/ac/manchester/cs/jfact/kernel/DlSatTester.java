@@ -578,7 +578,7 @@ public class DlSatTester {
         List<NamedEntity> RecAllowed = new ArrayList<NamedEntity>(), Keepers = new ArrayList<NamedEntity>();
         Set<uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom> outModule = new HashSet<uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom>();
         // TODO add configuration options
-        TModularizer mod = new TModularizer(options, new SyntacticLocalityChecker(sig));
+        TModularizer mod = new TModularizer(options, new SyntacticLocalityChecker());
         for (NamedEntity p : Allowed) {
             if (sig.containsNamedEntity(p)) {
                 sig.remove(p);

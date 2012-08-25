@@ -90,10 +90,10 @@ public class ReasoningKernel {
     /** atomic decomposer */
     AtomicDecomposer AD;
     /** syntactic locality based module extractor */
-    TModularizer ModSyn;
-    /** semantic locality based module extractor */
-    TModularizer ModSem;
-    /** set to return by the locality checking procedure */
+     TModularizer ModSyn=null;
+     /** semantic locality based module extractor */
+     TModularizer ModSem=null;
+     /** set to return by the locality checking procedure */
     Set<Axiom> Result = new HashSet<Axiom>();
     /** cached query input description */
     ConceptExpression cachedQuery;
@@ -260,24 +260,20 @@ public class ReasoningKernel {
     }
 
     public TModularizer getModExtractor(boolean useSemantic) {
-        boolean needInit = false;
-        // check whether we need init
-        if (useSemantic && ModSem == null) {
-            ModSem = new TModularizer(kernelOptions, new SemanticLocalityChecker(this,
-                    new TSignature()));
-            needInit = true;
-        }
-        if (!useSemantic && ModSyn == null) {
-            ModSyn = new TModularizer(kernelOptions, new SyntacticLocalityChecker(
-                    new TSignature()));
-            needInit = true;
-        }
-        // init if necessary
-        TModularizer Mod = useSemantic ? ModSem : ModSyn;
-        if (needInit) {
+        if (useSemantic){
+        if(ModSem == null) {
+            TModularizer Mod = new TModularizer(kernelOptions,
+                    new SemanticLocalityChecker(this));
             Mod.preprocessOntology(getOntology().getAxioms());
+            ModSem=Mod;}
+            return ModSem;
         }
-        return Mod;
+         if ( ModSyn == null) {
+        TModularizer Mod = new TModularizer(kernelOptions, new SyntacticLocalityChecker());
+        Mod.preprocessOntology(getOntology().getAxioms());
+        ModSyn=Mod;}
+        return ModSyn;
+        
     }
 
     /** get a set of axioms that corresponds to the atom with the id INDEX */
@@ -1256,8 +1252,6 @@ public class ReasoningKernel {
         datatypeFactory = factory;
         pTBox = null;
         pET = null;
-        ModSyn = null;
-        ModSem = null;
         cachedQuery = null;
         initCacheAndFlags();
         useAxiomSplitting = false;
