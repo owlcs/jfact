@@ -95,7 +95,6 @@ public class Role extends ClassifiableEntry {
     private KnownValue irreflexivity = new KnownValue();
     /** flag to show that this role needs special R&D processing */
     private boolean specialDomain;
-    private int absoluteIndex;
 
     /** add automaton of a sub-role to a given one */
     private void addSubRoleAutomaton(Role R) {
@@ -453,6 +452,12 @@ public class Role extends ClassifiableEntry {
         return inverse().bpDomain;
     }
 
+    @Override
+    public int getIndex() {
+        // TODO Auto-generated method stub
+        return super.getIndex();
+    }
+
     // disjoint roles
     /** set R and THIS as a disjoint; use it after Anc/Desc are determined */
     public void addDisjointRole(Role R) {
@@ -575,7 +580,6 @@ public class Role extends ClassifiableEntry {
 
     protected Role(String name) {
         super(name);
-        absoluteIndex = buildIndex();
         inverse = null;
         pDomain = null;
         pSpecialDomain = null;
@@ -591,21 +595,13 @@ public class Role extends ClassifiableEntry {
 
     /** get (unsigned) unique index of the role */
     public int getAbsoluteIndex() {
-        return absoluteIndex;
-        // int i = 2 * extId;
-        // return i > 0 ? i : 1 - i;
+        int i = 2 * extId;
+        return i > 0 ? i : 1 - i;
     }
 
     private int buildIndex() {
         int i = 2 * extId;
         return i > 0 ? i : 1 - i;
-    }
-
-    @Override
-    public void setId(int id) {
-        // overriden to update the computed unique index
-        super.setId(id);
-        absoluteIndex = buildIndex();
     }
 
     private void fillsComposition(List<Role> Composition, DLTree tree) {

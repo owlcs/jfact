@@ -36,6 +36,9 @@ public class SaveStack<T> {
     }
 
     public void push(T e) {
+        if (e == null) {
+            System.out.println("SaveStack.push()");
+        }
         list.push(e);
     }
 

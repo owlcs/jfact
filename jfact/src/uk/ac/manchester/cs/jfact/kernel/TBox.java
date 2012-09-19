@@ -81,7 +81,7 @@ public class TBox {
     private long relevance = 1;
     private DLDag dlHeap;
     /** reasoner for TBox-related queries w/o nominals */
-    private DlSatTester stdReasoner;
+    private DlSatTester stdReasoner = null;
     /** use this macro to do the same action with all available reasoners */
     // # define REASONERS_DO(ACT) do { \
     // nomReasoner.ACT; \
@@ -93,7 +93,7 @@ public class TBox {
     /** DataType center */
     // private DataTypeCenter datatypeCenter = new DataTypeCenter();
     /** set of reasoning options */
-    private JFactReasonerConfiguration pOptions;
+    private JFactReasonerConfiguration config;
     /** status of the KB */
     private KBStatus kbStatus;
     /** global KB features */
@@ -105,7 +105,7 @@ public class TBox {
     /** aux features */
     private LogicFeatures auxFeatures = new LogicFeatures();
     /** pointer to current feature (in case of local ones) */
-    private LogicFeatures curFeature = new LogicFeatures();
+    private LogicFeatures curFeature = null;
     /** concept representing temporary one that can not be used anywhere in the
      * ontology */
     private Concept pTemp;
@@ -132,11 +132,11 @@ public class TBox {
     /** internalisation of a general axioms */
     private int internalisedGeneralAxiom;
     /** KB flags about GCIs */
-    private KBFlags GCIs;
+    private KBFlags GCIs = new KBFlags();
     /** cache for the \forall R.C replacements during absorption */
     private Map<DLTree, Concept> forall_R_C_Cache = new HashMap<DLTree, Concept>();
     /** current aux concept's ID */
-    private int auxConceptID;
+    private int auxConceptID = 0;
     /** how many times nominals were found during translation to DAG; local to
      * BuildDAG */
     private int nNominalReferences;
@@ -213,7 +213,7 @@ public class TBox {
     }
 
     public JFactReasonerConfiguration getOptions() {
-        return pOptions;
+        return config;
     }
 
     /** get concept by it's BP (non- version) */
@@ -696,8 +696,7 @@ public class TBox {
         // in presence of fairness constraints use ancestor blocking
         if (useAnywhereBlocking && hasFC()) {
             useAnywhereBlocking = false;
-            pOptions.getLog()
-                    .print("\nFairness constraints: set useAnywhereBlocking = 0");
+            config.getLog().print("\nFairness constraints: set useAnywhereBlocking = 0");
         }
     }
 
@@ -803,14 +802,14 @@ public class TBox {
 
     /** print TBox as a whole */
     public void print() {
-        dlHeap.printStat(pOptions.getLog());
-        objectRoleMaster.print(pOptions.getLog(), "Object");
-        dataRoleMaster.print(pOptions.getLog(), "Data");
-        printConcepts(pOptions.getLog());
-        printIndividuals(pOptions.getLog());
-        printSimpleRules(pOptions.getLog());
-        printAxioms(pOptions.getLog());
-        pOptions.getLog().print(dlHeap);
+        dlHeap.printStat(config.getLog());
+        objectRoleMaster.print(config.getLog(), "Object");
+        dataRoleMaster.print(config.getLog(), "Data");
+        printConcepts(config.getLog());
+        printIndividuals(config.getLog());
+        printSimpleRules(config.getLog());
+        printAxioms(config.getLog());
+        config.getLog().print(dlHeap);
     }
 
     public void buildDAG() {
@@ -887,7 +886,7 @@ public class TBox {
         for (Role p : RM.getRoles()) {
             if (!p.isSynonym()) {
                 Role R = p;
-                if (pOptions.isRKG_UPDATE_RND_FROM_SUPERROLES()) {
+                if (config.isRKG_UPDATE_RND_FROM_SUPERROLES()) {
                     // add R&D from super-roles (do it AFTER axioms are
                     // transformed into R&D)
                     R.collectDomainFromSupers();
@@ -1005,7 +1004,7 @@ public class TBox {
         }
         Lexeme cur = t.elem();
         int ret = bpINVALID;
-        int index = 0;
+        // int index = 0;
         switch (cur.getToken()) {
             case BOTTOM:
                 ret = bpBOTTOM;
@@ -1138,9 +1137,6 @@ public class TBox {
         }
     }
 
-    // public void initTaxonomy() {
-    // pTax = new DLConceptTaxonomy(top, bottom, this, GCIs);
-    // }
     private List<Concept> arrayCD = new ArrayList<Concept>(),
             arrayNoCD = new ArrayList<Concept>(), arrayNP = new ArrayList<Concept>();
 
@@ -1193,8 +1189,8 @@ public class TBox {
         // } else {
         // return;
         // }
-        if (pOptions.getverboseOutput()) {
-            pOptions.getLog().print("Processing query...\n");
+        if (config.getverboseOutput()) {
+            config.getLog().print("Processing query...\n");
         }
         Timer locTimer = new Timer();
         locTimer.start();
@@ -1204,8 +1200,8 @@ public class TBox {
         arrayNP.clear();
         nItems += this.fillArrays(concepts.getList());
         nItems += this.fillArrays(individuals.getList());
-        if (pOptions.getProgressMonitor() != null) {
-            pOptions.getProgressMonitor().reasonerTaskStarted(
+        if (config.getProgressMonitor() != null) {
+            config.getProgressMonitor().reasonerTaskStarted(
                     ReasonerProgressMonitor.CLASSIFYING);
         }
         // stdReasoner.setDuringClassification(true);
@@ -1222,13 +1218,13 @@ public class TBox {
         // }
         duringClassification = false;
         pTax.processSplits();
-        if (pOptions.getProgressMonitor() != null) {
-            pOptions.getProgressMonitor().reasonerTaskStopped();
+        if (config.getProgressMonitor() != null) {
+            config.getProgressMonitor().reasonerTaskStopped();
         }
         pTax.finalise();
         locTimer.stop();
-        if (pOptions.getverboseOutput()) {
-            pOptions.getLog().print(" done in ", locTimer.calcDelta(), " seconds\n\n");
+        if (config.getverboseOutput()) {
+            config.getLog().print(" done in ", locTimer.calcDelta(), " seconds\n\n");
         }
         if (needConcept && kbStatus.ordinal() < kbClassified.ordinal()) {
             kbStatus = kbClassified;
@@ -1236,15 +1232,15 @@ public class TBox {
         if (needIndividual) {
             kbStatus = kbRealised;
         }
-        if (pOptions.getverboseOutput()) {
-            pOptions.getLog().print(pTax);
+        if (config.getverboseOutput()) {
+            config.getLog().print(pTax);
         }
     }
 
     public void classifyConcepts(List<Concept> collection, boolean curCompletelyDefined,
             String type) {
         pTax.setCompletelyDefined(curCompletelyDefined);
-        pOptions.getLog().printTemplate(Templates.CLASSIFY_CONCEPTS, type);
+        config.getLog().printTemplate(Templates.CLASSIFY_CONCEPTS, type);
         int n = 0;
         for (Concept q : collection) {
             if (!interrupted.get() && !q.isClassified()) {
@@ -1255,46 +1251,50 @@ public class TBox {
                 }
             }
         }
-        pOptions.getLog().printTemplate(Templates.CLASSIFY_CONCEPTS2, n, type);
+        config.getLog().printTemplate(Templates.CLASSIFY_CONCEPTS2, n, type);
     }
 
     /** classify single concept */
     void classifyEntry(Concept entry) {
         if (isBlockedInd(entry)) {
-            classifyEntry(getBlockingInd(entry)); // make sure that the possible
-                                                  // synonym is already
-                                                  // classified
+            classifyEntry(getBlockingInd(entry));
+            // make sure that the possible
+            // synonym is already
+            // classified
         }
         if (!entry.isClassified()) {
             pTax.classifyEntry(entry);
         }
     }
 
-    public TBox(DatatypeFactory datatypeFactory, JFactReasonerConfiguration Options,
-            String TopORoleName, String BotORoleName, String TopDRoleName,
-            String BotDRoleName, AtomicBoolean interrupted) {
+    /** @param datatypeFactory
+     * @param configuration
+     * @param topObjectRoleName
+     * @param botObjectRoleName
+     * @param topDataRoleName
+     * @param botDataRoleName
+     * @param interrupted */
+    public TBox(DatatypeFactory datatypeFactory,
+            JFactReasonerConfiguration configuration, String topObjectRoleName,
+            String botObjectRoleName, String topDataRoleName, String botDataRoleName,
+            AtomicBoolean interrupted) {
         this.datatypeFactory = datatypeFactory;
         this.interrupted = interrupted;
-        SplitRules = new TSplitRules(Options);
+        SplitRules = new TSplitRules(configuration);
         axioms = new AxiomSet(this);
-        GCIs = new KBFlags();
-        dlHeap = new DLDag(Options);
-        stdReasoner = null;
-        nomReasoner = null;
-        // pTax = null;
-        pOptions = Options;
+        dlHeap = new DLDag(configuration);
+        config = configuration;
         kbStatus = kbLoading;
-        curFeature = null;
         pQuery = null;
         concepts = new NamedEntryCollection<Concept>("concept", new ConceptCreator(),
-                pOptions);
+                config);
         individuals = new NamedEntryCollection<Individual>("individual",
-                new IndividualCreator(), pOptions);
-        objectRoleMaster = new RoleMaster(false, TopORoleName, BotORoleName, pOptions);
-        dataRoleMaster = new RoleMaster(true, TopDRoleName, BotDRoleName, pOptions);
+                new IndividualCreator(), config);
+        objectRoleMaster = new RoleMaster(false, topObjectRoleName, botObjectRoleName,
+                config);
+        dataRoleMaster = new RoleMaster(true, topDataRoleName, botDataRoleName, config);
         axioms = new AxiomSet(this);
         internalisedGeneralAxiom = bpTOP;
-        auxConceptID = 0;
         useNodeCache = true;
         duringClassification = false;
         useSortedReasoning = true;
@@ -1304,10 +1304,10 @@ public class TBox {
         // precompleted = false;
         preprocTime = 0;
         consistTime = 0;
-        pOptions.getLog().printTemplate(Templates.READ_CONFIG,
-                pOptions.getuseCompletelyDefined(), pOptions.getuseRelevantOnly(),
-                pOptions.getdumpQuery(), pOptions.getalwaysPreferEquals());
-        if (axioms.initAbsorptionFlags(pOptions.getabsorptionFlags())) {
+        config.getLog().printTemplate(Templates.READ_CONFIG,
+                config.getuseCompletelyDefined(), config.getuseRelevantOnly(),
+                config.getdumpQuery(), config.getalwaysPreferEquals());
+        if (axioms.initAbsorptionFlags(config.getabsorptionFlags())) {
             throw new ReasonerInternalException("Incorrect absorption flags given");
         }
         // setToDoPriorities();
@@ -1345,7 +1345,12 @@ public class TBox {
         preprocess();
         initReasoner();
         // check if it is necessary to dump relevant part TBox
-        if (pOptions.getdumpQuery()) {
+        dumpQuery();
+        dlHeap.setSatOrder();
+    }
+
+    private void dumpQuery() {
+        if (config.getdumpQuery()) {
             // TODO
             markAllRelevant();
             PrintStream of;
@@ -1359,7 +1364,6 @@ public class TBox {
             of.close();
             clearRelevanceInfo();
         }
-        dlHeap.setSatOrder();
     }
 
     public void prepareFeatures(Concept pConcept, Concept qConcept) {
@@ -1402,8 +1406,8 @@ public class TBox {
     }
 
     public boolean performConsistencyCheck() {
-        if (pOptions.getverboseOutput()) {
-            pOptions.getLog().print("Consistency checking...\n");
+        if (config.getverboseOutput()) {
+            config.getLog().print("Consistency checking...\n");
         }
         Timer pt = new Timer();
         pt.start();
@@ -1426,8 +1430,8 @@ public class TBox {
         }
         pt.stop();
         consistTime = pt.calcDelta();
-        if (pOptions.getverboseOutput()) {
-            pOptions.getLog().print(" done in ", consistTime, " seconds\n\n");
+        if (config.getverboseOutput()) {
+            config.getLog().print(" done in ", consistTime, " seconds\n\n");
         }
         return ret;
     }
@@ -1438,26 +1442,26 @@ public class TBox {
         if (cache != null) {
             return cache.getState() != ModelCacheState.csInvalid;
         }
-        pOptions.getLog().printTemplate(Templates.IS_SATISFIABLE, pConcept.getName());
+        config.getLog().printTemplate(Templates.IS_SATISFIABLE, pConcept.getName());
         prepareFeatures(pConcept, null);
         boolean result = getReasoner().runSat(pConcept.resolveId(), bpTOP);
         cache = getReasoner().buildCacheByCGraph(result);
         dlHeap.setCache(pConcept.getpName(), cache);
         clearFeatures();
-        pOptions.getLog().printTemplate(Templates.IS_SATISFIABLE1, pConcept.getName(),
+        config.getLog().printTemplate(Templates.IS_SATISFIABLE1, pConcept.getName(),
                 !result ? "un" : "");
         return result;
     }
 
     public boolean isSubHolds(Concept pConcept, Concept qConcept) {
         assert pConcept != null && qConcept != null;
-        pOptions.getLog().printTemplate(Templates.ISSUBHOLDS1, pConcept.getName(),
+        config.getLog().printTemplate(Templates.ISSUBHOLDS1, pConcept.getName(),
                 qConcept.getName());
         prepareFeatures(pConcept, qConcept);
         boolean result = !getReasoner().runSat(pConcept.resolveId(),
                 -qConcept.resolveId());
         clearFeatures();
-        pOptions.getLog().printTemplate(Templates.ISSUBHOLDS2, pConcept.getName(),
+        config.getLog().printTemplate(Templates.ISSUBHOLDS2, pConcept.getName(),
                 qConcept.getName(), !result ? " NOT" : "");
         return result;
     }
@@ -1560,7 +1564,7 @@ public class TBox {
     }
 
     public void writeReasoningResult(long time) {
-        LogAdapter o = pOptions.getLog();
+        LogAdapter o = config.getLog();
         if (nomReasoner != null) {
             o.print("Query processing reasoning statistic: Nominals");
             nomReasoner.writeTotalStatistic(o);
@@ -1967,7 +1971,7 @@ public class TBox {
         if (C.isSingleton() && D != null && !D.isSingleton()) {
             return false;
         }
-        if (pOptions.getalwaysPreferEquals() && C.isPrimitive()) {
+        if (config.getalwaysPreferEquals() && C.isPrimitive()) {
             addSubsumeForDefined(C, makeNonPrimitive(C, right));
             return true;
         }
@@ -2071,16 +2075,16 @@ public class TBox {
     }
 
     public void preprocess() {
-        if (pOptions.getverboseOutput()) {
-            pOptions.getLog().print("\nPreprocessing...\n");
+        if (config.getverboseOutput()) {
+            config.getLog().print("\nPreprocessing...\n");
         }
         Timer pt = new Timer();
         pt.start();
         objectRoleMaster.initAncDesc();
         dataRoleMaster.initAncDesc();
-        if (pOptions.getverboseOutput()) {
-            pOptions.getLog().print(objectRoleMaster.getTaxonomy());
-            pOptions.getLog().print(dataRoleMaster.getTaxonomy());
+        if (config.getverboseOutput()) {
+            config.getLog().print(objectRoleMaster.getTaxonomy());
+            config.getLog().print(dataRoleMaster.getTaxonomy());
         }
         if (countSynonyms() > 0) {
             replaceAllSynonyms();
@@ -2112,8 +2116,8 @@ public class TBox {
         removeExtraDescriptions();
         pt.stop();
         preprocTime = pt.calcDelta();
-        if (pOptions.getverboseOutput()) {
-            pOptions.getLog().print(" done in ", pt.calcDelta(), " seconds\n\n");
+        if (config.getverboseOutput()) {
+            config.getLog().print(" done in ", pt.calcDelta(), " seconds\n\n");
         }
     }
 
@@ -2191,7 +2195,7 @@ public class TBox {
         clearRelevanceInfo();
         nSynonyms = countSynonyms() - nSynonyms;
         if (nSynonyms > 0) {
-            pOptions.getLog().printTemplate(Templates.TRANSFORM_TOLD_CYCLES, nSynonyms);
+            config.getLog().printTemplate(Templates.TRANSFORM_TOLD_CYCLES, nSynonyms);
             replaceAllSynonyms();
         }
     }
@@ -2307,7 +2311,7 @@ public class TBox {
     // PC.performPrecompletion();
     // }
     public void determineSorts() {
-        if (pOptions.isRKG_USE_SORTED_REASONING()) {
+        if (config.isRKG_USE_SORTED_REASONING()) {
             // Related individuals does not appears in DLHeap,
             // so their sorts shall be determined explicitely
             for (Related p : relatedIndividuals) {
@@ -2372,9 +2376,8 @@ public class TBox {
                 ++nNoTold;
             }
         }
-        pOptions.getLog().print("There are ", nPC,
-                " primitive concepts used\n of which ", npFull,
-                " completely defined\n      and ", nNoTold,
+        config.getLog().print("There are ", nPC, " primitive concepts used\n of which ",
+                npFull, " completely defined\n      and ", nNoTold,
                 " has no told subsumers\nThere are ", nNC,
                 " non-primitive concepts used\n of which ", nsFull,
                 " synonyms\nThere are ", nSing, " individuals or nominals used\n");
@@ -2449,9 +2452,9 @@ public class TBox {
         assert !reasonersInited();
         // if (stdReasoner == null) {
         // assert nomReasoner == null;
-        stdReasoner = new DlSatTester(this, pOptions, datatypeFactory);
+        stdReasoner = new DlSatTester(this, config, datatypeFactory);
         if (nominalCloudFeatures.hasSingletons()) {
-            nomReasoner = new NominalReasoner(this, pOptions, datatypeFactory);
+            nomReasoner = new NominalReasoner(this, config, datatypeFactory);
         }
         setToDoPriorities();
         // }
@@ -2632,8 +2635,8 @@ public class TBox {
     }
 
     public void printFeatures() {
-        KBFeatures.writeState(pOptions.getLog());
-        pOptions.getLog().print("KB contains ", GCIs.isGCI() ? "" : "NO ",
+        KBFeatures.writeState(config.getLog());
+        config.getLog().print("KB contains ", GCIs.isGCI() ? "" : "NO ",
                 "GCIs\nKB contains ", GCIs.isReflexive() ? "" : "NO ",
                 "reflexive roles\nKB contains ", GCIs.isRnD() ? "" : "NO ",
                 "range and domain restrictions\n");

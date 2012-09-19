@@ -48,7 +48,8 @@ public abstract class NamedEntityImpl implements NamedEntity {
             return true;
         }
         if (obj instanceof NamedEntity) {
-            return name.equals(((NamedEntity) obj).getName());
+            return name.equals(((NamedEntity) obj).getName())
+                    && obj.getClass().equals(this.getClass());
         }
         return false;
     }
