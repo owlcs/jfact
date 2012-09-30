@@ -90,10 +90,10 @@ public class ReasoningKernel {
     /** atomic decomposer */
     AtomicDecomposer AD;
     /** syntactic locality based module extractor */
-     TModularizer ModSyn=null;
-     /** semantic locality based module extractor */
-     TModularizer ModSem=null;
-     /** set to return by the locality checking procedure */
+    TModularizer ModSyn = null;
+    /** semantic locality based module extractor */
+    TModularizer ModSem = null;
+    /** set to return by the locality checking procedure */
     Set<Axiom> Result = new HashSet<Axiom>();
     /** cached query input description */
     ConceptExpression cachedQuery;
@@ -260,20 +260,22 @@ public class ReasoningKernel {
     }
 
     public TModularizer getModExtractor(boolean useSemantic) {
-        if (useSemantic){
-        if(ModSem == null) {
-            TModularizer Mod = new TModularizer(kernelOptions,
-                    new SemanticLocalityChecker(this));
-            Mod.preprocessOntology(getOntology().getAxioms());
-            ModSem=Mod;}
+        if (useSemantic) {
+            if (ModSem == null) {
+                TModularizer Mod = new TModularizer(kernelOptions,
+                        new SemanticLocalityChecker(this));
+                Mod.preprocessOntology(getOntology().getAxioms());
+                ModSem = Mod;
+            }
             return ModSem;
         }
-         if ( ModSyn == null) {
-        TModularizer Mod = new TModularizer(kernelOptions, new SyntacticLocalityChecker());
-        Mod.preprocessOntology(getOntology().getAxioms());
-        ModSyn=Mod;}
+        if (ModSyn == null) {
+            TModularizer Mod = new TModularizer(kernelOptions,
+                    new SyntacticLocalityChecker());
+            Mod.preprocessOntology(getOntology().getAxioms());
+            ModSyn = Mod;
+        }
         return ModSyn;
-        
     }
 
     /** get a set of axioms that corresponds to the atom with the id INDEX */
@@ -1499,6 +1501,10 @@ public class ReasoningKernel {
     /** get a set of axioms that corresponds to the atom with the id INDEX */
     public Set<Axiom> getAtomAxioms(int index) {
         return AD.getAOS().get(index).getAtomAxioms();
+    }
+
+    public List<Axiom> getTautologies() {
+        return AD.getTautologies();
     }
 
     /** get a set of axioms that corresponds to the module of the atom with the */

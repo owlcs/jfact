@@ -128,6 +128,10 @@ public class AtomicDecomposer {
         return atom;
     }
 
+    public List<Axiom> getTautologies() {
+        return new ArrayList<Axiom>(Tautologies);
+    }
+
     public AOStructure getAOS() {
         return AOS;
     }
@@ -161,9 +165,9 @@ public class AtomicDecomposer {
         }
         // restore tautologies in the ontology
         restoreTautologies();
-        System.out.println("AtomicDecomposer.getAOS()\nThere were "
-                + Modularizer.getNNonLocal() + " non-local axioms out of "
-                + Modularizer.getNChecks() + " totally checked");
+        // System.out.println("AtomicDecomposer.getAOS()\nThere were "
+        // + Modularizer.getNNonLocal() + " non-local axioms out of "
+        // + Modularizer.getNChecks() + " totally checked");
         // clear the root atom
         rootAtom = null;
         // reduce graph

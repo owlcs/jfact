@@ -44,7 +44,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             InferenceType.DATA_PROPERTY_HIERARCHY,
             InferenceType.OBJECT_PROPERTY_HIERARCHY, InferenceType.SAME_INDIVIDUAL);
     private final OWLOntologyManager manager;
-    private final OWLOntology rootOntology;
+    private final OWLOntology root;
     private final BufferingMode bufferingMode;
     private final List<OWLOntologyChange> rawChanges = new ArrayList<OWLOntologyChange>();
     private final List<OWLAxiom> reasonerAxioms = new ArrayList<OWLAxiom>();
@@ -65,16 +65,16 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     public JFactReasoner(OWLOntology rootOntology, JFactReasonerConfiguration config,
             BufferingMode bufferingMode) {
         configuration = config;
-        this.rootOntology = rootOntology;
-        df = this.rootOntology.getOWLOntologyManager().getOWLDataFactory();
+        root = rootOntology;
+        df = root.getOWLOntologyManager().getOWLDataFactory();
         datatypeFactory = DatatypeFactory.getInstance();
         kernel = new ReasoningKernel(configuration, datatypeFactory);
         em = kernel.getExpressionManager();
         this.bufferingMode = bufferingMode;
-        manager = rootOntology.getOWLOntologyManager();
+        manager = root.getOWLOntologyManager();
         knownEntities.add(df.getOWLThing());
         knownEntities.add(df.getOWLNothing());
-        for (OWLOntology ont : rootOntology.getImportsClosure()) {
+        for (OWLOntology ont : root.getImportsClosure()) {
             for (OWLAxiom ax : ont.getLogicalAxioms()) {
                 OWLAxiom axiom = ax.getAxiomWithoutAnnotations();
                 reasonerAxioms.add(axiom);
@@ -140,7 +140,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     }
 
     public OWLOntology getRootOntology() {
-        return rootOntology;
+        return root;
     }
 
     /** Handles raw ontology changes. If the reasoner is a buffering reasoner
@@ -219,7 +219,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
      *            The logical axioms that have been removed from the imports
      *            closure of the reasoner root ontology */
     private synchronized void computeDiff(Set<OWLAxiom> added, Set<OWLAxiom> removed) {
-        for (OWLOntology ont : rootOntology.getImportsClosure()) {
+        for (OWLOntology ont : root.getImportsClosure()) {
             for (OWLAxiom ax : ont.getLogicalAxioms()) {
                 if (!reasonerAxioms.contains(ax.getAxiomWithoutAnnotations())) {
                     added.add(ax);
@@ -232,7 +232,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             }
         }
         for (OWLAxiom ax : reasonerAxioms) {
-            if (!rootOntology.containsAxiomIgnoreAnnotations(ax, true)) {
+            if (!root.containsAxiomIgnoreAnnotations(ax, true)) {
                 removed.add(ax);
             }
         }
@@ -764,6 +764,16 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
 
     public int getAtomicDecompositionSize(boolean useSemantics, ModuleType type) {
         return kernel.getAtomicDecompositionSize(useSemantics, type);
+    }
+
+    public Set<OWLAxiom> getTautologies() {
+        Set<OWLAxiom> toReturn = new HashSet<OWLAxiom>();
+        for (Axiom ax : kernel.getTautologies()) {
+            if (ax.getOWLAxiom() != null) {
+                toReturn.add(ax.getOWLAxiom());
+            }
+        }
+        return toReturn;
     }
 
     /** get a set of axioms that corresponds to the atom with the id INDEX */
