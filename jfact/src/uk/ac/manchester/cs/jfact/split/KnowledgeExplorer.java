@@ -1,6 +1,7 @@
 package uk.ac.manchester.cs.jfact.split;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -25,9 +26,9 @@ public class KnowledgeExplorer {
     /**  node vector to return */
     List<DlCompletionTree> Nodes;
     /**  role set to return */
-    Set<RoleExpression> Roles;
+    Set<RoleExpression> Roles = new HashSet<RoleExpression>();
     /**  concept vector to return */
-    List<Expression> Concepts;
+    List<Expression> Concepts = new ArrayList<Expression>();
 
     /**  adds an entity as a synonym to a map MAP */
     <E extends ClassifiableEntry> void addE(MultiMap<E, E> map, E entry) {
