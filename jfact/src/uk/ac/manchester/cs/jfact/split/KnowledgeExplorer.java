@@ -24,7 +24,7 @@ public class KnowledgeExplorer {
     /**  dag-2-interface translator used in knowledge exploration */
     TDag2Interface D2I;
     /**  node vector to return */
-    List<DlCompletionTree> Nodes;
+    List<DlCompletionTree> Nodes = new ArrayList<DlCompletionTree>();
     /**  role set to return */
     Set<RoleExpression> Roles = new HashSet<RoleExpression>();
     /**  concept vector to return */
