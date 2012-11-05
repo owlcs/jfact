@@ -140,12 +140,6 @@ public class TDag2Interface {
         }
         Helper.resize(TransConcept, ds);
         Helper.resize(TransData, ds);
-        if (ds > ts) {
-            while (ts != ds) {
-                TransConcept.set(ts++, null);
-                TransData.set(ts++, null);
-            }
-        }
     }
 
     /**  get concept expression corresponding index of vertex */
