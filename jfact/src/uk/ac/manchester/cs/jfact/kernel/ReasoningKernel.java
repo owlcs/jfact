@@ -761,10 +761,14 @@ public class ReasoningKernel {
      */
     /** return consistency status of KB */
     public boolean isKBConsistent() {
-        if (getStatus().ordinal() <= kbLoading.ordinal()) {
-            processKB(kbCChecked);
+        try {
+            if (getStatus().ordinal() <= kbLoading.ordinal()) {
+                processKB(kbCChecked);
+            }
+            return getTBox().isConsistent();
+        } catch (InconsistentOntologyException e) {
+            return false;
         }
-        return getTBox().isConsistent();
     }
 
     /** ensure that KB is preprocessed/consistence checked */
@@ -1623,7 +1627,11 @@ public class ReasoningKernel {
         DLTree tmp = DLTreeFactory.createSNFNot(getTBox().getFreshConcept());
         for (int i = l.size() - 1; i > -1; i--) {
             ObjectRoleExpression p = l.get(i);
-            tmp = DLTreeFactory.createSNFExists(e(p), tmp);
+            Role S = getRole(p, "Role expression expected in chain of isSubChain()");
+            if (S.isBottom()) {
+                return true;
+            }
+            tmp = DLTreeFactory.createSNFExists(DLTreeFactory.createRole(S), tmp);
         }
         tmp = DLTreeFactory.createSNFAnd(tmp, DLTreeFactory.createSNFForall(DLTreeFactory
                 .buildTree(new Lexeme(Token.RNAME, R)), getTBox().getFreshConcept()));
@@ -1637,15 +1645,6 @@ public class ReasoningKernel {
         Role r = getRole(R, "Role expression expected in isSubChain()");
         if (r.isTop()) {
             return true; // universal role is a super of any chain
-        }
-        if (r.isBottom()) {
-            for (ObjectRoleExpression p : l) {
-                Role S = getRole(p, "Role expression expected in chain of isSubChain()");
-                if (S.isBottom()) {
-                    return true;
-                }
-            }
-            return false; // empty role is not a super of any chain
         }
         return checkSubChain(r, l);
     }
@@ -1679,31 +1678,31 @@ public class ReasoningKernel {
         // grab all roles from the arg-list
         // List<TDLExpression> Disj = getExpressionManager().getArgList();
         List<Role> Roles = new ArrayList<Role>(l.size());
+        int nTopRoles = 0;
         for (Expression p : l) {
             if (p instanceof ObjectRoleExpression) {
-                ObjectRoleExpression ORole = (ObjectRoleExpression) p;
-                if (getExpressionManager().isUniversalRole(ORole)) {
-                    return false; // universal role is not disjoint with
-                                  // anything
+                Role R = getRole((RoleExpression) p,
+                        "Role expression expected in isDisjointRoles()");
+                if (R.isBottom()) {
+                    continue;
                 }
-                if (getExpressionManager().isEmptyRole(ORole)) {
-                    continue; // empty role is disjoint with everything
+                if (R.isTop()) {
+                    nTopRoles++;
+                } else {
+                    Roles.add(R);
                 }
-                Roles.add(getRole(ORole, "Role expression expected in isDisjointRoles()"));
             } else {
-                if (!(p instanceof DataRoleExpression)) {
-                    throw new ReasonerInternalException(
-                            "Role expression expected in isDisjointRoles()");
-                }
-                DataRoleExpression DRole = (DataRoleExpression) p;
-                if (getExpressionManager().isUniversalRole(DRole)) {
-                    return false; // universal role is not disjoint with
-                                  // anything
-                }
-                if (getExpressionManager().isEmptyRole(DRole)) {
-                    continue; // empty role is disjoint with everything
-                }
-                Roles.add(getRole(DRole, "Role expression expected in isDisjointRoles()"));
+                throw new ReasonerInternalException(
+                        "Role expression expected in isDisjointRoles()");
+            }
+        }
+        // deal with top-roles
+        if (nTopRoles > 0) {
+            if (nTopRoles > 1 || !Roles.isEmpty()) {
+                return false;   // universal role is not disjoint with anything
+                              // but the bottom role
+            } else {
+                return true;
             }
         }
         // test pair-wise disjointness

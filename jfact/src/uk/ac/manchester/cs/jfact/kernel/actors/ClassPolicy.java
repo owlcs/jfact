@@ -12,14 +12,17 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 
 /** policy for concepts */
 public class ClassPolicy implements Policy {
+    @Override
     public boolean applicable(ClassifiableEntry p) {
         return !((Concept) p).isSingleton();
     }
 
+    @Override
     public boolean needPlain() {
         return false;
     }
 
+    @Override
     public Expression buildTree(ExpressionManager EM, ClassifiableEntry p) {
         if (p.getId() >= 0) {
             return EM.concept(p.getName());

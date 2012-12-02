@@ -85,6 +85,7 @@ public class FastSetSimple extends AbstractFastSet {
         }
     }
 
+    @Override
     public int get(int i) {
         if (values != null) {
             return values[i];
@@ -97,6 +98,7 @@ public class FastSetSimple extends AbstractFastSet {
         size = 0;
     }
 
+    @Override
     public void add(int e) {
         int pos = -1;
         if (values == null) {
@@ -125,6 +127,7 @@ public class FastSetSimple extends AbstractFastSet {
         size++;
     }
 
+    @Override
     public void addAll(FastSet c) {
         if (c.isEmpty()) {
             return;
@@ -174,11 +177,13 @@ public class FastSetSimple extends AbstractFastSet {
         size = newsize;
     }
 
+    @Override
     public void clear() {
         values = null;
         size = 0;
     }
 
+    @Override
     public boolean contains(int o) {
         if (values != null) {
             int i = insertionIndex(o);
@@ -188,6 +193,7 @@ public class FastSetSimple extends AbstractFastSet {
         return false;
     }
 
+    @Override
     public boolean containsAll(FastSet c) {
         if (c.isEmpty()) {
             return true;
@@ -232,10 +238,12 @@ public class FastSetSimple extends AbstractFastSet {
         return true;
     }
 
+    @Override
     public boolean isEmpty() {
         return values == null;
     }
 
+    @Override
     public boolean containsAny(FastSet c) {
         if (c.isEmpty() || size == 0) {
             return false;
@@ -263,6 +271,7 @@ public class FastSetSimple extends AbstractFastSet {
         return false;
     }
 
+    @Override
     public void remove(int o) {
         if (values == null) {
             return;
@@ -271,10 +280,12 @@ public class FastSetSimple extends AbstractFastSet {
         removeAt(i);
     }
 
+    @Override
     public int size() {
         return size;
     }
 
+    @Override
     public int[] toIntArray() {
         if (values == null) {
             return new int[0];
@@ -282,6 +293,7 @@ public class FastSetSimple extends AbstractFastSet {
         return Arrays.copyOf(values, size);
     }
 
+    @Override
     public boolean intersect(FastSet f) {
         return containsAny(f);
     }
@@ -314,6 +326,7 @@ public class FastSetSimple extends AbstractFastSet {
         return super.hashCode();
     }
 
+    @Override
     public void removeAt(int i) {
         if (values == null) {
             return;
@@ -334,6 +347,7 @@ public class FastSetSimple extends AbstractFastSet {
         }
     }
 
+    @Override
     public void removeAll(int i, int end) {
         if (values == null) {
             return;
@@ -361,6 +375,7 @@ public class FastSetSimple extends AbstractFastSet {
         }
     }
 
+    @Override
     public void removeAllValues(int... vals) {
         if (values == null) {
             return;
@@ -385,6 +400,7 @@ public class FastSetSimple extends AbstractFastSet {
         }
     }
 
+    @Override
     public void completeSet(int value) {
         for (int i = 0; i <= value; i++) {
             add(i);

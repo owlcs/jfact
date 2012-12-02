@@ -14,6 +14,7 @@ public class DatatypeUnion implements DatatypeCombination<DatatypeUnion, Datatyp
         this.host = host;
     }
 
+    @Override
     public Datatype<?> getHost() {
         return host;
     }
@@ -23,16 +24,19 @@ public class DatatypeUnion implements DatatypeCombination<DatatypeUnion, Datatyp
         basics.addAll(list);
     }
 
+    @Override
     public Iterable<Datatype<?>> getList() {
         return basics;
     }
 
+    @Override
     public DatatypeUnion add(Datatype<?> d) {
         DatatypeUnion toReturn = new DatatypeUnion(host, basics);
         toReturn.basics.add(d);
         return toReturn;
     }
 
+    @Override
     public boolean isCompatible(Literal<?> l) {
         // must be compatible with all basics
         // host is a shortcut to them
@@ -47,10 +51,12 @@ public class DatatypeUnion implements DatatypeCombination<DatatypeUnion, Datatyp
         return false;
     }
 
+    @Override
     public String getDatatypeURI() {
         return uri;
     }
 
+    @Override
     public boolean isCompatible(Datatype<?> type) {
         // must be compatible with all basics
         // host is a shortcut to them
@@ -65,6 +71,7 @@ public class DatatypeUnion implements DatatypeCombination<DatatypeUnion, Datatyp
         return false;
     }
 
+    @Override
     public boolean emptyValueSpace() {
         for (Datatype<?> d : basics) {
             if (!d.isExpression()) {

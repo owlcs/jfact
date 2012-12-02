@@ -25,22 +25,27 @@ public class ConceptObjectExactCardinality implements ConceptObjectCardinalityEx
         roleDelegate = R;
     }
 
+    @Override
     public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
+    @Override
     public int getCardinality() {
         return N;
     }
 
+    @Override
     public ConceptExpression getConcept() {
         return delegate;
     }
 
+    @Override
     public ObjectRoleExpression getOR() {
         return roleDelegate;
     }

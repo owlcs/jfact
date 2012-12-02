@@ -416,6 +416,20 @@ public class Concept extends ClassifiableEntry {
         return tsDepth = max + 1;
     }
 
+    void clear() {
+        // TNamedEntry clean
+        setId(0);
+        // ClassifiableEntry clean
+        taxVertex = null;
+        toldSubsumers.clear();
+        setCompletelyDefined(false);
+        pSynonym = null;
+        // TConcept clean
+        removeDescription();
+        setPrimitive(true);
+        pName = pBody = bpINVALID;
+    }
+
     public int getpName() {
         return pName;
     }

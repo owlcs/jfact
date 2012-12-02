@@ -26,6 +26,7 @@ public class RIActor implements Actor {
 
     public RIActor() {}
 
+    @Override
     public boolean apply(TaxonomyVertex v) {
         boolean ret = tryEntry(v.getPrimer());
         for (ClassifiableEntry p : v.begin_syn()) {

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.semanticweb.owlapi.model.OWLRuntimeException;
+import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
@@ -21,6 +22,7 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
 public class RoleMaster {
     protected static class RoleCreator implements NameCreator<Role> {
+        @Override
         public Role makeEntry(String name) {
             return new Role(name);
         }
@@ -100,15 +102,14 @@ public class RoleMaster {
         emptyRole.setDataRole(dataRoles);
         emptyRole.setBPDomain(Helper.bpBOTTOM);
         emptyRole.setBottom();
-        // OWL 2 says Bottom role is non-simple, but this is unnecessary
-        // and leads to inconsistent results wrt presence of an axiom Bot [= R
-        emptyRole.setSimple();
         // setup universal role
         universalRole.setId(0);
         universalRole.setInverse(universalRole);
         universalRole.setDataRole(dataRoles);
         universalRole.setBPDomain(Helper.bpTOP);
         universalRole.setTop();
+     // FIXME!! now it is not transitive => simple
+        universalRole.getAutomaton().setCompleted();
         // create roles taxonomy
         pTax = new Taxonomy(universalRole, emptyRole, c);
     }
@@ -141,23 +142,58 @@ public class RoleMaster {
         return p;
     }
 
-    /** add parent for the input role */
-    public void addRoleParent(Role role, Role parent) {
-        if (role.isDataRole() != parent.isDataRole()) {
-            throw new ReasonerInternalException(
-                    "Mixed object and data roles in role subsumption axiom");
-        }
-        role.addParent(parent);
-        role.getInverse().addParent(parent.getInverse());
+    /** add synonym to existing role */
+
+    public void addRoleSynonym(Role role, Role syn)
+    {
+        // no synonyms
+//      role = resolveSynonym(role);
+//      syn = resolveSynonym(syn);
+        // FIXME!! 1st call can make one of them a synonym of a const
+        addRoleParentProper(ClassifiableEntry.resolveSynonym(role),
+                ClassifiableEntry.resolveSynonym(syn));
+        addRoleParentProper(ClassifiableEntry.resolveSynonym(syn),
+                ClassifiableEntry.resolveSynonym(role));
     }
 
-    /** add synonym to existing role */
-    public void addRoleSynonym(Role role, Role syn) {
-        if (!role.equals(syn)) {
-            addRoleParent(role, syn);
-            addRoleParent(syn, role);
+    /** add parent for the input role */
+    public void addRoleParentProper(Role role, Role parent)
+    {
+        assert !role.isSynonym() && !parent.isSynonym();
+
+        if ( role == parent ) {
+            return;
         }
+
+        if (role.isDataRole() != parent.isDataRole()) {
+            throw new ReasonerInternalException("Mixed object and data roles in role subsumption axiom");
+        }
+
+        // check the inconsistency case *UROLE* [= *EROLE*
+        if (role.isTop() && parent.isBottom()) {
+            throw new InconsistentOntologyException();
+        }
+
+        // *UROLE* [= R means R (and R-) are synonym of *UROLE*
+        if (role.isTop())
+        {
+            parent.setSynonym(role);
+            parent.inverse().setSynonym(role);
+            return;
+        }
+
+        // R [= *EROLE* means R (and R-) are synonyms of *EROLE*
+        if (parent.isBottom())
+        {
+            role.setSynonym(parent);
+            role.inverse().setSynonym(parent);
+            return;
+        }
+
+        role.addParent(parent);
+        role.inverse().addParent(parent.inverse());
     }
+
 
     /** a pair of disjoint roles */
     public void addDisjointRoles(Role R, Role S) {
@@ -188,6 +224,7 @@ public class RoleMaster {
             return;
         }
         o.print(type, " Roles (", size(), "):\n");
+        o.print(emptyRole);
         for (int i = firstRoleIndex; i < roles.size(); i++) {
             Role p = roles.get(i);
             p.print(o);
@@ -246,7 +283,7 @@ public class RoleMaster {
             C = DLTreeFactory.buildTree(new Lexeme(PROJFROM), tree.getLeft().copy(), C);
             R.setDomain(C);
         } else {
-            addRoleParent(Role.resolveRole(tree), parent);
+            addRoleParentProper(Role.resolveRole(tree), parent);
         }
     }
 
@@ -269,6 +306,10 @@ public class RoleMaster {
                 p.removeSynonymsFromParents();
             }
         }
+        
+        // here TOP-role has no children yet, so it's safe to complete the automaton
+        universalRole.completeAutomaton(nRoles);
+        
         for (int i = firstRoleIndex; i < roles.size(); i++) {
             Role p = roles.get(i);
             if (!p.isSynonym() && !p.hasToldSubsumers()) {

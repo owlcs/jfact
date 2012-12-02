@@ -29,34 +29,42 @@ public class AxiomEquivalentDRoles extends AxiomImpl implements Axiom,
         delegate.add(v);
     }
 
+    @Override
     public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
+    @Override
     public void add(Collection<Expression> v) {
         delegate.add(v);
     }
 
+    @Override
     public void add(Expression p) {
         delegate.add(p);
     }
 
+    @Override
     public List<DataRoleExpression> getArguments() {
         return delegate.getArguments();
     }
 
+    @Override
     public boolean isEmpty() {
         return delegate.isEmpty();
     }
 
+    @Override
     public int size() {
         return delegate.size();
     }
 
+    @Override
     public DataRoleExpression transform(Expression arg) {
         return delegate.transform(arg);
     }

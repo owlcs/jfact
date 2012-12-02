@@ -9,6 +9,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 
 public interface ConceptObjectRCExpression extends ConceptObjectRoleExpression,
         ConceptArg {
+    @Override
     /** accept method for the visitor pattern */
     void accept(DLExpressionVisitor visitor);
 }

@@ -12,26 +12,32 @@ class LiteralImpl<T extends Comparable<T>> implements Literal<T> {
         this.value = value;
     }
 
+    @Override
     public Datatype<T> getDatatypeExpression() {
         return this.type;
     }
 
+    @Override
     public String value() {
         return this.value;
     }
 
+    @Override
     public T typedValue() {
         return this.type.parseValue(this.value);
     }
 
+    @Override
     public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
+    @Override
     public int compareTo(Literal<T> arg0) {
         return this.type.parseValue(this.value).compareTo(arg0.typedValue());
     }

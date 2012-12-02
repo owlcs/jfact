@@ -18,15 +18,18 @@ public class ConceptObjectSelf implements ConceptObjectRoleExpression {
         objectRoleExpression = R;
     }
 
+    @Override
     public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
     /** get access to the argument */
+    @Override
     public ObjectRoleExpression getOR() {
         return objectRoleExpression;
     }

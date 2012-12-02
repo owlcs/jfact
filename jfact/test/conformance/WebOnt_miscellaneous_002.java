@@ -57,6 +57,7 @@ public class WebOnt_miscellaneous_002 {
         }
     }
 
+
     private static String premise = "<!DOCTYPE owl ["
             + "<!ENTITY owl \"http://www.w3.org/2002/07/owl#\" >"
             + "<!ENTITY vin  \"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#\" >"
@@ -70,6 +71,19 @@ public class WebOnt_miscellaneous_002 {
             + "      http://ontolingua.stanford.edu/doc/chimaera/ontologies/wines.daml\n"
             + "      Substantially modified.</rdfs:comment> "
             + "</owl:Ontology>\n"
+            // XXX added
+            + "  <owl:Class rdf:about=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#WineFlavor\"/>"
+            + "  <owl:ObjectProperty rdf:about=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#hasBody\"/>"
+            + "  <owl:ObjectProperty rdf:about=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#hasSugar\"/>"
+            + "  <owl:Class rdf:about=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#WineSugar\"/>"
+            + "  <owl:ObjectProperty rdf:about=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#hasFlavor\"/>"
+            + "  <owl:Class rdf:about=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#WineColor\"/>"
+            + "  <owl:ObjectProperty rdf:about=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#hasColor\"/>"
+            + "  <owl:Class rdf:about=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#WineBody\"/>"
+            + "  <owl:Class rdf:about=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#Winery\"/>"
+            + "  <owl:Class rdf:about=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#Region\"/>"
+            + "  <owl:Class rdf:about=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#Wine\"/>"
+            // XXX end added
             + "  <owl:Class rdf:about=\"#Wine\">\n"
             + "    <rdfs:subClassOf rdf:resource=\"&food;PotableLiquid\" />\n"
             + "    <rdfs:subClassOf>\n"

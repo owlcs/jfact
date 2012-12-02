@@ -18,115 +18,143 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype
         this.d = d;
     }
 
+    @Override
     public boolean isExpression() {
         return this.d.isExpression();
     }
 
+    @Override
     public DatatypeExpression<O> asExpression() {
         return this.d.asExpression();
     }
 
+    @Override
     public Collection<Datatype<?>> getAncestors() {
         return this.d.getAncestors();
     }
 
+    @Override
     public boolean getBounded() {
         return this.d.getBounded();
     }
 
+    @Override
     public cardinality getCardinality() {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Set<Facet> getFacets() {
         return this.d.getFacets();
     }
 
+    @Override
     public Map<Facet, Object> getKnownFacetValues() {
         return this.d.getKnownFacetValues();
     }
 
+    @Override
     public <T extends Comparable<T>> T getFacetValue(Facet f) {
         return this.d.getFacetValue(f);
     }
 
+    @Override
     public BigDecimal getNumericFacetValue(Facet f) {
         return this.d.getNumericFacetValue(f);
     }
 
+    @Override
     public boolean getNumeric() {
         return this.d.getNumeric();
     }
 
+    @Override
     public ordered getOrdered() {
         return this.d.getOrdered();
     }
 
+    @Override
     public boolean isCompatible(Datatype<?> type) {
         return this.d.isCompatible(type);
     }
 
+    @Override
     public boolean isCompatible(Literal<?> l) {
         return this.d.isCompatible(l);
     }
 
+    @Override
     public boolean isInValueSpace(O l) {
         return this.d.isInValueSpace(l);
     }
 
+    @Override
     public O parseValue(String s) {
         return this.d.parseValue(s);
     }
 
+    @Override
     public Literal<O> buildLiteral(String s) {
         return this.d.buildLiteral(s);
     }
 
+    @Override
     public boolean isSubType(Datatype<?> type) {
         return this.d.isSubType(type);
     }
 
+    @Override
     public String getDatatypeURI() {
         return this.d.getDatatypeURI();
     }
 
+    @Override
     public Collection<Literal<O>> listValues() {
         return this.d.listValues();
     }
 
+    @Override
     public void accept(DLExpressionVisitor visitor) {
         this.d.accept(visitor);
     }
 
+    @Override
     public <T> T accept(DLExpressionVisitorEx<T> visitor) {
         return this.d.accept(visitor);
     }
 
+    @Override
     public boolean hasMinExclusive() {
         return this.d.getNumericFacetValue(minExclusive) != null;
     }
 
+    @Override
     public boolean hasMinInclusive() {
         return this.d.getNumericFacetValue(minInclusive) != null;
     }
 
+    @Override
     public boolean hasMaxExclusive() {
         return this.d.getNumericFacetValue(maxExclusive) != null;
     }
 
+    @Override
     public boolean hasMaxInclusive() {
         return this.d.getNumericFacetValue(maxInclusive) != null;
     }
 
+    @Override
     public boolean hasMin() {
         return this.hasMinInclusive() || this.hasMinExclusive();
     }
 
+    @Override
     public boolean hasMax() {
         return this.hasMaxInclusive() || this.hasMaxExclusive();
     }
 
+    @Override
     public BigDecimal getMin() {
         if (this.hasMinExclusive()) {
             return this.d.getNumericFacetValue(minExclusive);
@@ -137,6 +165,7 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype
         return null;
     }
 
+    @Override
     public BigDecimal getMax() {
         if (this.hasMaxExclusive()) {
             return this.d.getNumericFacetValue(maxExclusive);
@@ -147,18 +176,22 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype
         return null;
     }
 
+    @Override
     public boolean isNumericDatatype() {
         return true;
     }
 
+    @Override
     public NumericDatatype<O> asNumericDatatype() {
         return this;
     }
 
+    @Override
     public boolean isOrderedDatatype() {
         return true;
     }
 
+    @Override
     public OrderedDatatype<BigDecimal> asOrderedDatatype() {
         return this;
     }

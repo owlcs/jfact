@@ -10,10 +10,12 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.*;
 
 public class JFactFactory implements OWLReasonerFactory {
+    @Override
     public String getReasonerName() {
         return "JFact";
     }
 
+    @Override
     public OWLReasoner createReasoner(OWLOntology ontology) {
         JFactReasoner toReturn = new JFactReasoner(ontology, new SimpleConfiguration(),
                 BufferingMode.BUFFERING);
@@ -28,12 +30,14 @@ public class JFactFactory implements OWLReasonerFactory {
         return toReturn;
     }
 
+    @Override
     public OWLReasoner createNonBufferingReasoner(OWLOntology ontology) {
         JFactReasoner toReturn = new JFactReasoner(ontology, new SimpleConfiguration(),
                 BufferingMode.NON_BUFFERING);
         return verify(toReturn);
     }
 
+    @Override
     public OWLReasoner createReasoner(OWLOntology ontology,
             OWLReasonerConfiguration config) throws IllegalConfigurationException {
         JFactReasoner toReturn = new JFactReasoner(ontology, config,
@@ -41,6 +45,7 @@ public class JFactFactory implements OWLReasonerFactory {
         return verify(toReturn);
     }
 
+    @Override
     public OWLReasoner createNonBufferingReasoner(OWLOntology ontology,
             OWLReasonerConfiguration config) throws IllegalConfigurationException {
         JFactReasoner toReturn = new JFactReasoner(ontology, config,

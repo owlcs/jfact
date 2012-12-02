@@ -41,11 +41,13 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
         BotEval.setTopEval(TopEval);
     }
 
+    @Override
     public TSignature getSignature() {
         return sig;
     }
 
     /** set a new value of a signature (without changing a locality parameters) */
+    @Override
     public void setSignatureValue(TSignature Sig) {
         sig = Sig;
         TopEval.sig = sig;
@@ -54,12 +56,14 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
 
     // set fields
     /** @return true iff an AXIOM is local wrt defined policy */
+    @Override
     public boolean local(Axiom axiom) {
         axiom.accept(this);
         return isLocal;
     }
 
     /** load ontology to a given KB */
+    @Override
     public void visitOntology(Ontology ontology) {
         for (Axiom p : ontology.getAxioms()) {
             if (p.isUsed()) {
@@ -68,10 +72,12 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
         }
     }
 
+    @Override
     public void visit(AxiomDeclaration axiom) {
         isLocal = true;
     }
 
+    @Override
     public void visit(AxiomEquivalentConcepts axiom) {
         // 1 element => local
         if (axiom.size() == 1) {
@@ -102,6 +108,7 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
         isLocal = true;
     }
 
+    @Override
     public void visit(AxiomDisjointConcepts axiom) {
         // local iff at most 1 concept is not bot-equiv
         boolean hasNBE = false;
@@ -118,6 +125,7 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
         }
     }
 
+    @Override
     public void visit(AxiomDisjointUnion axiom) {
         isLocal = false;
         boolean topLoc = sig.topCLocal();
@@ -144,6 +152,7 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
         isLocal = true;
     }
 
+    @Override
     public void visit(AxiomEquivalentORoles axiom) {
         isLocal = true;
         if (axiom.size() <= 1) {
@@ -157,6 +166,7 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
         }
     }
 
+    @Override
     public void visit(AxiomEquivalentDRoles axiom) {
         isLocal = true;
         if (axiom.size() <= 1) {
@@ -170,6 +180,7 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
         }
     }
 
+    @Override
     public void visit(AxiomDisjointORoles axiom) {
         isLocal = false;
         if (sig.topRLocal()) {
@@ -188,6 +199,7 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
         isLocal = true;
     }
 
+    @Override
     public void visit(AxiomDisjointDRoles axiom) {
         isLocal = false;
         if (sig.topRLocal()) {
@@ -206,32 +218,39 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
         isLocal = true;
     }
 
+    @Override
     public void visit(AxiomSameIndividuals axiom) {
         isLocal = false;
     }
 
+    @Override
     public void visit(AxiomDifferentIndividuals axiom) {
         isLocal = false;
     }
 
     /** there is no such axiom in OWL API, but I hope nobody would use Fairness */
     // here
+    @Override
     public void visit(AxiomFairnessConstraint axiom) {
         isLocal = true;
     }
 
+    @Override
     public void visit(AxiomRoleInverse axiom) {
         isLocal = isREquivalent(axiom.getRole()) && isREquivalent(axiom.getInvRole());
     }
 
+    @Override
     public void visit(AxiomORoleSubsumption axiom) {
         isLocal = isREquivalent(sig.topRLocal() ? axiom.getRole() : axiom.getSubRole());
     }
 
+    @Override
     public void visit(AxiomDRoleSubsumption axiom) {
         isLocal = isREquivalent(sig.topRLocal() ? axiom.getRole() : axiom.getSubRole());
     }
 
+    @Override
     public void visit(AxiomORoleDomain axiom) {
         isLocal = isTopEquivalent(axiom.getDomain());
         if (!sig.topRLocal()) {
@@ -239,6 +258,7 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
         }
     }
 
+    @Override
     public void visit(AxiomDRoleDomain axiom) {
         isLocal = isTopEquivalent(axiom.getDomain());
         if (!sig.topRLocal()) {
@@ -246,6 +266,7 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
         }
     }
 
+    @Override
     public void visit(AxiomORoleRange axiom) {
         isLocal = isTopEquivalent(axiom.getRange());
         if (!sig.topRLocal()) {
@@ -253,6 +274,7 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
         }
     }
 
+    @Override
     public void visit(AxiomDRoleRange axiom) {
         isLocal = isTopDT(axiom.getRange());
         if (!sig.topRLocal()) {
@@ -260,64 +282,79 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
         }
     }
 
+    @Override
     public void visit(AxiomRoleTransitive axiom) {
         isLocal = isREquivalent(axiom.getRole());
     }
 
     /** as BotRole is irreflexive, the only local axiom is topEquivalent(R) */
+    @Override
     public void visit(AxiomRoleReflexive axiom) {
         isLocal = isTopEquivalent(axiom.getRole());
     }
 
+    @Override
     public void visit(AxiomRoleIrreflexive axiom) {
         isLocal = !sig.topRLocal();
     }
 
+    @Override
     public void visit(AxiomRoleSymmetric axiom) {
         isLocal = isREquivalent(axiom.getRole());
     }
 
+    @Override
     public void visit(AxiomRoleAsymmetric axiom) {
         isLocal = !sig.topRLocal();
     }
 
+    @Override
     public void visit(AxiomORoleFunctional axiom) {
         isLocal = !sig.topRLocal() && isBotEquivalent(axiom.getRole());
     }
 
+    @Override
     public void visit(AxiomDRoleFunctional axiom) {
         isLocal = !sig.topRLocal() && isBotEquivalent(axiom.getRole());
     }
 
+    @Override
     public void visit(AxiomRoleInverseFunctional axiom) {
         isLocal = !sig.topRLocal() && isBotEquivalent(axiom.getRole());
     }
 
+    @Override
     public void visit(AxiomConceptInclusion axiom) {
         isLocal = isBotEquivalent(axiom.getSubConcept())
                 || isTopEquivalent(axiom.getSupConcept());
     }
 
+    @Override
     public void visit(AxiomInstanceOf axiom) {
         isLocal = isTopEquivalent(axiom.getC());
     }
 
+    @Override
     public void visit(AxiomRelatedTo axiom) {
         isLocal = sig.topRLocal() && isTopEquivalent(axiom.getRelation());
     }
 
+    @Override
     public void visit(AxiomRelatedToNot axiom) {
         isLocal = !sig.topRLocal() && isBotEquivalent(axiom.getRelation());
     }
 
+    @Override
     public void visit(AxiomValueOf axiom) {
         isLocal = sig.topRLocal() && isTopEquivalent(axiom.getAttribute());
     }
 
+    @Override
     public void visit(AxiomValueOfNot axiom) {
         isLocal = !sig.topRLocal() && isBotEquivalent(axiom.getAttribute());
     }
 
+    @Override
     public void preprocessOntology(Collection<Axiom> s) {
         sig = new TSignature();
         for (Axiom ax : s) {

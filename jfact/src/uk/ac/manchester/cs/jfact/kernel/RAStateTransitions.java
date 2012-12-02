@@ -23,6 +23,8 @@ public class RAStateTransitions {
     /** flag whether the role is data or not (valid only for simple automata) */
     private boolean dataRole;
     private int size = 0;
+    // / true iff there is a top transition going from this state
+    boolean TopTransition;
 
     /** RW begin */
     public List<RATransition> begin() {
@@ -40,7 +42,16 @@ public class RAStateTransitions {
         if (trans.isEmpty()) {
             emptyTransition = true;
         }
+        if (trans.isTop()) {
+            TopTransition = true;
+        }
     }
+
+    // / @return true iff there is a top-role transition from the state
+    boolean hasTopTransition() {
+        return TopTransition;
+    }
+
 
     /** @return true iff there are no transitions from this state */
     public boolean isEmpty() {
@@ -106,4 +117,5 @@ public class RAStateTransitions {
     public int getTransitionEnd() {
         return base.get(0).final_state();
     }
+
 }

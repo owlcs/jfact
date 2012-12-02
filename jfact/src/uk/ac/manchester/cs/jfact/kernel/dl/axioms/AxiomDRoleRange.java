@@ -20,10 +20,12 @@ public class AxiomDRoleRange extends AxiomSingleDRole {
         this.range = range;
     }
 
+    @Override
     public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }

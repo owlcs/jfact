@@ -14,10 +14,12 @@ public class IndividualName extends NamedEntityImpl implements IndividualExpress
         super(name);
     }
 
+    @Override
     public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }

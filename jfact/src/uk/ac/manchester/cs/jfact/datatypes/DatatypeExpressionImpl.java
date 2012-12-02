@@ -19,6 +19,7 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<
         knownFacetValues.putAll(b.getKnownFacetValues());
     }
 
+    @Override
     public O parseValue(String s) {
         return this.host.parseValue(s);
     }
@@ -53,10 +54,12 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<
         return this.host.listValues();
     }
 
+    @Override
     public Datatype<O> getHostType() {
         return this.host;
     }
 
+    @Override
     public DatatypeExpression<O> addFacet(Facet f, Object value) {
         if (!facets.contains(f)) {
             throw new IllegalArgumentException("Facet " + f
@@ -86,6 +89,7 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<
         return true;
     }
 
+    @Override
     public boolean emptyValueSpace() {
         // TODO not checking string type value spaces; looks like the only
         // sensible way would be to check for 0 length constraints

@@ -11,14 +11,17 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 
 /** policy for data properties */
 public class DataPropertyPolicy implements Policy {
+    @Override
     public boolean applicable(ClassifiableEntry p) {
         return p.getId() > 0;
     }
 
+    @Override
     public boolean needPlain() {
         return false;
     }
 
+    @Override
     public Expression buildTree(ExpressionManager EM, ClassifiableEntry p) {
         return EM.dataRole(p.getName());
     }

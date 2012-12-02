@@ -52,143 +52,182 @@ class TExpressionSignatureUpdater implements DLExpressionVisitor {
     }
 
     // concept expressions
+    @Override
     public void visit(ConceptTop expr) {}
 
+    @Override
     public void visit(ConceptBottom expr) {}
 
+    @Override
     public void visit(ConceptName expr) {
         vE(expr);
     }
 
+    @Override
     public void visit(ConceptNot expr) {
         vC(expr);
     }
 
+    @Override
     public void visit(ConceptAnd expr) {
         processArray(expr);
     }
 
+    @Override
     public void visit(ConceptOr expr) {
         processArray(expr);
     }
 
+    @Override
     public void visit(ConceptOneOf expr) {
         processArray(expr);
     }
 
+    @Override
     public void visit(ConceptObjectSelf expr) {
         vOR(expr);
     }
 
+    @Override
     public void visit(ConceptObjectValue expr) {
         vOR(expr);
         vI(expr.getI());
     }
 
+    @Override
     public void visit(ConceptObjectExists expr) {
         vOR(expr);
         vC(expr);
     }
 
+    @Override
     public void visit(ConceptObjectForall expr) {
         vOR(expr);
         vC(expr);
     }
 
+    @Override
     public void visit(ConceptObjectMinCardinality expr) {
         vOR(expr);
         vC(expr);
     }
 
+    @Override
     public void visit(ConceptObjectMaxCardinality expr) {
         vOR(expr);
         vC(expr);
     }
 
+    @Override
     public void visit(ConceptObjectExactCardinality expr) {
         vOR(expr);
         vC(expr);
     }
 
+    @Override
     public void visit(ConceptDataValue expr) {
         vDR(expr);
     }
 
+    @Override
     public void visit(ConceptDataExists expr) {
         vDR(expr);
     }
 
+    @Override
     public void visit(ConceptDataForall expr) {
         vDR(expr);
     }
 
+    @Override
     public void visit(ConceptDataMinCardinality expr) {
         vDR(expr);
     }
 
+    @Override
     public void visit(ConceptDataMaxCardinality expr) {
         vDR(expr);
     }
 
+    @Override
     public void visit(ConceptDataExactCardinality expr) {
         vDR(expr);
     }
 
     // individual expressions
+    @Override
     public void visit(IndividualName expr) {
         vE(expr);
     }
 
     // object role expressions
+    @Override
     public void visit(ObjectRoleTop expr) {}
 
+    @Override
     public void visit(ObjectRoleBottom expr) {}
 
+    @Override
     public void visit(ObjectRoleName expr) {
         vE(expr);
     }
 
+    @Override
     public void visit(ObjectRoleInverse expr) {
         vOR(expr);
     }
 
+    @Override
     public void visit(ObjectRoleChain expr) {
         processArray(expr);
     }
 
+    @Override
     public void visit(ObjectRoleProjectionFrom expr) {
         vOR(expr);
         vC(expr);
     }
 
+    @Override
     public void visit(ObjectRoleProjectionInto expr) {
         vOR(expr);
         vC(expr);
     }
 
     // data role expressions
+    @Override
     public void visit(DataRoleTop expr) {}
 
+    @Override
     public void visit(DataRoleBottom expr) {}
 
+    @Override
     public void visit(DataRoleName expr) {
         vE(expr);
     }
 
     // data expressions
+    @Override
     public void visit(DataTop expr) {}
 
+    @Override
     public void visit(DataBottom expr) {}
 
+    @Override
     public void visit(Datatype<?> expr) {}
 
+    @Override
     public void visit(Literal<?> expr) {}
 
+    @Override
     public void visit(DataNot expr) {}
 
+    @Override
     public void visit(DataAnd expr) {}
 
+    @Override
     public void visit(DataOr expr) {}
 
+    @Override
     public void visit(DataOneOf expr) {}
 }

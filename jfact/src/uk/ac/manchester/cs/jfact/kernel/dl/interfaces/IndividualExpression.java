@@ -8,6 +8,7 @@ package uk.ac.manchester.cs.jfact.kernel.dl.interfaces;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 
 public interface IndividualExpression extends Expression {
+    @Override
     /** accept method for the visitor pattern */
     void accept(DLExpressionVisitor visitor);
 }

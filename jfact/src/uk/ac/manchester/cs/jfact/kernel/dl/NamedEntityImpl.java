@@ -13,10 +13,12 @@ public abstract class NamedEntityImpl implements NamedEntity {
     protected String name;
     private NamedEntry entry;
 
+    @Override
     public NamedEntry getEntry() {
         return entry;
     }
 
+    @Override
     public void setEntry(NamedEntry e) {
         entry = e;
     }
@@ -25,6 +27,7 @@ public abstract class NamedEntityImpl implements NamedEntity {
         this.name = name;
     }
 
+    @Override
     public String getName() {
         return name;
     }

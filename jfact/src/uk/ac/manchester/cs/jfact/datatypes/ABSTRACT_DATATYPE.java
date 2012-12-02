@@ -17,6 +17,7 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
         this.uri = u;
     }
 
+    @Override
     public String getDatatypeURI() {
         return this.uri;
     }
@@ -37,18 +38,22 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
         return false;
     }
 
+    @Override
     public Collection<Datatype<?>> getAncestors() {
         return this.ancestors;
     }
 
+    @Override
     public Set<Facet> getFacets() {
         return this.facets;
     }
 
+    @Override
     public Map<Facet, Object> getKnownFacetValues() {
         return new HashMap<Facet, Object>(this.knownFacetValues);
     }
 
+    @Override
     public Comparable<?> getFacetValue(Facet f) {
         if (this.knownFacetValues.containsKey(f)) {
             if (f.isNumberFacet()) {
@@ -60,6 +65,7 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
         return null;
     }
 
+    @Override
     public BigDecimal getNumericFacetValue(Facet f) {
         if (this.knownFacetValues.containsKey(f)) {
             if (f.isNumberFacet()) {
@@ -69,6 +75,7 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
         return null;
     }
 
+    @Override
     public boolean isSubType(Datatype<?> type) {
         return this.ancestors.contains(type) || this.equals(type);
     }
@@ -80,6 +87,7 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
         return datatypeURI;
     }
 
+    @Override
     public boolean isCompatible(Datatype<?> type) {
         if (type.isExpression()) {
             type = type.asExpression().getHostType();
@@ -88,6 +96,7 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
                 || type.isSubType(this) || this.isSubType(type);
     }
 
+    @Override
     public boolean isCompatible(Literal<?> l) {
         if (!this.isCompatible(l.getDatatypeExpression())) {
             return false;
@@ -103,22 +112,27 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
 
     // most common answer; restrictions on value spaces to be tested in
     // subclasses
+    @Override
     public boolean isInValueSpace(R l) {
         return true;
     }
 
+    @Override
     public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
+    @Override
     public boolean isExpression() {
         return false;
     }
 
+    @Override
     public DatatypeExpression<R> asExpression() {
         if (!this.isExpression()) {
             throw new UnsupportedOperationException("Type: " + this.getDatatypeURI()
@@ -127,6 +141,7 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
         return (DatatypeExpression<R>) this;
     }
 
+    @Override
     public Literal<R> buildLiteral(String s) {
         if (this.getNumeric()) {
             return new NumericLiteralImpl<R>(this.asNumericDatatype(), s);
@@ -134,22 +149,27 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
         return new LiteralImpl<R>(this, s);
     }
 
+    @Override
     public Collection<Literal<R>> listValues() {
         return Collections.emptyList();
     }
 
+    @Override
     public boolean getBounded() {
         return false;
     }
 
+    @Override
     public boolean getNumeric() {
         return false;
     }
 
+    @Override
     public ordered getOrdered() {
         return ordered.FALSE;
     }
 
+    @Override
     public cardinality getCardinality() {
         return cardinality.COUNTABLYINFINITE;
     }
@@ -167,18 +187,22 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
         return false;
     }
 
+    @Override
     public boolean isNumericDatatype() {
         return false;
     }
 
+    @Override
     public NumericDatatype<R> asNumericDatatype() {
         return null;
     }
 
+    @Override
     public boolean isOrderedDatatype() {
         return false;
     }
 
+    @Override
     public <O extends Comparable<O>> OrderedDatatype<O> asOrderedDatatype() {
         return null;
     }

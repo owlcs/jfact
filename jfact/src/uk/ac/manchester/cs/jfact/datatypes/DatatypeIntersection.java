@@ -54,20 +54,24 @@ public class DatatypeIntersection implements
         }
     }
 
+    @Override
     public Datatype<?> getHost() {
         return host;
     }
 
+    @Override
     public Iterable<Datatype<?>> getList() {
         return basics;
     }
 
+    @Override
     public DatatypeIntersection add(Datatype<?> d) {
         DatatypeIntersection toReturn = new DatatypeIntersection(host, basics);
         toReturn.basics.add(d);
         return toReturn;
     }
 
+    @Override
     public boolean isCompatible(Literal<?> l) {
         // must be compatible with all basics
         // host is a shortcut to them
@@ -82,10 +86,12 @@ public class DatatypeIntersection implements
         return true;
     }
 
+    @Override
     public String getDatatypeURI() {
         return uri;
     }
 
+    @Override
     public boolean isCompatible(Datatype<?> type) {
         // must be compatible with all basics
         // host is a shortcut to them
@@ -100,6 +106,7 @@ public class DatatypeIntersection implements
         return true;
     }
 
+    @Override
     public boolean emptyValueSpace() {
         // all base types must be numeric
         if (!host.getNumeric()) {

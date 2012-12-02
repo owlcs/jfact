@@ -27,25 +27,30 @@ abstract class AxiomImpl implements Axiom {
     TOntologyAtom atom = null;
     private OWLAxiom axiom;
 
+    @Override
     public TOntologyAtom getAtom() {
         return atom;
     }
 
+    @Override
     public void setAtom(TOntologyAtom atom) {
         this.atom = atom;
     }
 
     /** set the isSearchSpace flag */
+    @Override
     public void setInSS(boolean flag) {
         inSearchSpace = flag;
     }
 
     /** get the value of the isSearchSpace flag */
+    @Override
     public boolean isInSS() {
         return inSearchSpace;
     }
 
     // signature access
+    @Override
     public TSignature getSignature() {
         if (sig == null) {
             buildSignature();
@@ -66,30 +71,37 @@ abstract class AxiomImpl implements Axiom {
         inModule = false;
     }
 
+    @Override
     public OWLAxiom getOWLAxiom() {
         return axiom;
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public boolean isInModule() {
         return inModule;
     }
 
+    @Override
     public boolean isUsed() {
         return used;
     }
 
+    @Override
     public void setId(int Id) {
         id = Id;
     }
 
+    @Override
     public void setInModule(boolean inModule) {
         this.inModule = inModule;
     }
 
+    @Override
     public void setUsed(boolean Used) {
         used = Used;
     }

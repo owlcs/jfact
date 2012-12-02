@@ -5,6 +5,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
 import static uk.ac.manchester.cs.jfact.kernel.DagTag.*;
 import static uk.ac.manchester.cs.jfact.kernel.Redo.*;
 
@@ -39,46 +40,57 @@ public class DlSatTester {
 
         public LocalFastSet() {}
 
+        @Override
         public int[] toIntArray() {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public int size() {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public void removeAt(int o) {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public void removeAllValues(int... values) {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public void removeAll(int i, int end) {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public void remove(int o) {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public boolean isEmpty() {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public boolean intersect(FastSet f) {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public int get(int i) {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public boolean containsAny(FastSet c) {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public boolean containsAll(FastSet c) {
             throw new UnsupportedOperationException();
         }
@@ -87,22 +99,27 @@ public class DlSatTester {
             return p >= 0 ? 2 * p : 1 - 2 * p;
         }
 
+        @Override
         public boolean contains(int o) {
             return pos.get(asPositive(o));
         }
 
+        @Override
         public void clear() {
             pos.clear();
         }
 
+        @Override
         public void addAll(FastSet c) {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public void add(int e) {
             pos.set(asPositive(e));
         }
 
+        @Override
         public void completeSet(int value) {
             for (int i = 0; i <= value; i++) {
                 pos.set(i);
@@ -175,14 +192,22 @@ public class DlSatTester {
         }
 
         /** get BC for LE-rule */
-        protected BranchingContext pushLE() {
-            BCLE e = new BCLE();
+        protected BCLE<DlCompletionTreeArc> pushLE() {
+            BCLE<DlCompletionTreeArc> e = new BCLE<DlCompletionTreeArc>();
+            push(e);
+            return e;
+        }
+
+        // / get BC for TopLE-rule
+        BCLE<DlCompletionTree> pushTopLE() {
+            // XXX verify if this is correct
+            BCLE<DlCompletionTree> e = new BCLE<DlCompletionTree>();
             push(e);
             return e;
         }
 
         /** get BC for Choose-rule */
-        protected BranchingContext pushCh() {
+        protected BCChoose pushCh() {
             BCChoose c = new BCChoose() {
                 @Override
                 public void nextOption() {}
@@ -195,7 +220,7 @@ public class DlSatTester {
         }
 
         /** get BC for the barrier */
-        protected BranchingContext pushBarrier() {
+        protected BCBarrier pushBarrier() {
             push(bcBarrier);
             return bcBarrier;
         }
@@ -209,19 +234,25 @@ public class DlSatTester {
         public void nextOption() {}
     }
 
-    class BCLE extends BranchingContext {
+    class BCLE<I> extends BranchingContext {
         /** current branching index; used in several branching rules */
         private int branchIndex;
         /** index of a merge-candidate (in LE concept) */
         private int mergeCandIndex;
         /** vector of edges to be merged */
-        private List<DlCompletionTreeArc> edges = new ArrayList<DlCompletionTreeArc>();
+        private List<I> edges = new ArrayList<I>();
 
         /** init tag and indeces */
         @Override
         public void init() {
             branchIndex = 0;
             mergeCandIndex = 0;
+        }
+
+        public List<I> swap(List<I> values) {
+            List<I> temp = edges;
+            edges = values;
+            return temp;
         }
 
         /** correct mergeCandIndex after changing */
@@ -244,12 +275,12 @@ public class DlSatTester {
 
         // access to the fields
         /** get FROM pointer to merge */
-        protected DlCompletionTreeArc getFrom() {
+        protected I getFrom() {
             return edges.get(mergeCandIndex);
         }
 
         /** get FROM pointer to merge */
-        protected DlCompletionTreeArc getTo() {
+        protected I getTo() {
             return edges.get(branchIndex);
         }
 
@@ -258,11 +289,11 @@ public class DlSatTester {
             return mergeCandIndex <= branchIndex;
         }
 
-        protected List<DlCompletionTreeArc> getEdgesToMerge() {
+        protected List<I> getEdgesToMerge() {
             return edges;
         }
 
-        protected void setEdgesToMerge(List<DlCompletionTreeArc> edgesToMerge) {
+        protected void setEdgesToMerge(List<I> edgesToMerge) {
             edges = edgesToMerge;
         }
     }
@@ -407,6 +438,20 @@ public class DlSatTester {
     boolean useActiveSignature;
     /** let reasoner know that we are in the classificaton (for splits) */
     boolean duringClassification;
+    // / nodes to merge in the TopRole-LE rules
+    List<DlCompletionTree> NodesToMerge = new ArrayList<DlCompletionTree>();
+    List<DlCompletionTreeArc> EdgesToMerge = new ArrayList<DlCompletionTreeArc>();
+
+    // CGraph-wide rules support
+    // / @return true if node is valid for the reasoning
+    boolean isNodeGloballyUsed(DlCompletionTree node) {
+        return !(node.isDataNode() || node.isIBlocked() || node.isPBlocked());
+    }
+
+    // / @return true if node is valid for the reasoning
+    boolean isObjectNodeUnblocked(DlCompletionTree node) {
+        return isNodeGloballyUsed(node) && !node.isDBlocked();
+    }
 
     // split rules support
     /** // update active signature wrt given entity */
@@ -528,7 +573,7 @@ public class DlSatTester {
         int n = 0;
         DlCompletionTree node = null;
         while ((node = cGraph.getNode(n++)) != null) {
-            if (!node.isDataNode()) {
+            if (isNodeGloballyUsed(node)) {
                 this.updateName(node, bp);
             }
         }
@@ -1073,7 +1118,9 @@ public class DlSatTester {
         if ((cache = dlHeap.getCache(p)) != null) {
             return cache;
         }
-        prepareCascadedCache(p, f);
+        if (!tBox.testHasTopRole()) {
+            prepareCascadedCache(p, f);
+        }
         if ((cache = dlHeap.getCache(p)) != null) {
             return cache;
         }
@@ -1316,7 +1363,7 @@ public class DlSatTester {
         int n = 0;
         DlCompletionTree node = null;
         while ((node = cGraph.getNode(n++)) != null) {
-            if (!node.isDataNode() && addToDoEntry(node, C, dep, "sg")) {
+            if (isNodeGloballyUsed(node) && addToDoEntry(node, C, dep, "sg")) {
                 return true;
             }
         }
@@ -1711,8 +1758,8 @@ public class DlSatTester {
                 // if (TODO.isEmpty()) {
                 // if (options.isLoggingActive()) {
                 // logIndentation();
-                /** /CGraph.Print(LL); */
-                // options.getLog().print("[*ub:");
+                // //CGraph.Print(LL);
+                // options.getLog().print("ub:");
                 // }
                 // cGraph.retestCGBlockedStatus();
                 // options.getLog().print("]");
@@ -1758,7 +1805,7 @@ public class DlSatTester {
     boolean performAfterReasoning() {
         // make sure all blocked nodes are still blocked
         logIndentation();
-        options.getLog().print("[*ub:");
+        options.getLog().print("ub:");
         cGraph.retestCGBlockedStatus();
         options.getLog().print("]");
         if (!TODO.isEmpty()) {
@@ -1767,7 +1814,7 @@ public class DlSatTester {
         // check if any split expansion rule could be fired
         if (!tBox.getSplits().empty()) {
             logIndentation();
-            options.getLog().print("[*split:");
+            options.getLog().print("split:");
             boolean clash = checkSplitRules();
             options.getLog().print("]");
             if (clash) {
@@ -1899,13 +1946,14 @@ public class DlSatTester {
         for (int i = 1; i < getCurLevel(); i++) {
             logAdapter.print(' ');
         }
+        logAdapter.print('[');
     }
 
     private void logStartEntry() {
         if (options.isLoggingActive()) {
             logIndentation();
             LogAdapter logAdapter = options.getLog();
-            logAdapter.print("[*(");
+            logAdapter.print("(");
             logAdapter.print(curNode.logNode());
             logAdapter.print(",");
             logAdapter.print(curConceptConcept);
@@ -2053,7 +2101,7 @@ public class DlSatTester {
         int n = 0;
         DlCompletionTree node = null;
         while ((node = cGraph.getNode(n++)) != null) {
-            if (!node.isDataNode()) {
+            if (isObjectNodeUnblocked(node)) {
                 updateSignatureByNode(node);
             }
         }
@@ -2257,7 +2305,19 @@ public class DlSatTester {
                 }
             }
         }
-        // apply -state rule
+        // apply all top-role transitions
+        if (RST.hasTopTransition()) {
+            List<RATransition> list = RST.begin();
+            for (int i = 0; i < list.size(); i++) {
+                RATransition q = list.get(i);
+                if (q.isTop()) {
+                    if (addSessionGCI(C + q.final_state(), curConceptDepSet)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        // apply final-state rule
         if (state == 1) {
             if (addToDoEntry(curNode, cur.getConceptIndex(), curConceptDepSet, null)) {
                 return true;
@@ -2476,8 +2536,7 @@ public class DlSatTester {
                         rFuncRestriction);
                 DlCompletionTree succ = functionalArc.getArcEnd();
                 newDep.add(curConceptDepSet);
-                if (R.isDisjoint()
-                        && this.checkDisjointRoleClash(curNode, succ, R, newDep)) {
+                if (R.isDisjoint() && checkDisjointRoleClash(curNode, succ, R, newDep)) {
                     return true;
                 }
                 functionalArc = cGraph.addRoleLabel(curNode, succ,
@@ -2534,7 +2593,7 @@ public class DlSatTester {
         stats.getnSomeCalls().inc();
         assert nom.getNode() != null;
         DlCompletionTree realNode = nom.getNode().resolvePBlocker(dep);
-        if (R.isDisjoint() && this.checkDisjointRoleClash(curNode, realNode, R, dep)) {
+        if (R.isDisjoint() && checkDisjointRoleClash(curNode, realNode, R, dep)) {
             return true;
         }
         encounterNominal = true;
@@ -2556,7 +2615,7 @@ public class DlSatTester {
         int i = 0;
         DlCompletionTree node;
         while ((node = cGraph.getNode(i++)) != null) {
-            if (node.label().contains(C)) {
+            if (isObjectNodeUnblocked(node) && node.label().contains(C)) {
                 return false;
             }
         }
@@ -2687,6 +2746,9 @@ public class DlSatTester {
 
     private boolean commonTacticBodyFunc(DLVertex cur) {
         assert curConceptConcept > 0 && isFunctionalVertex(cur);
+        if (cur.getRole().isTop()) {
+            return processTopRoleFunc(cur);
+        }
         if (isNNApplicable(cur.getRole(), Helper.bpTOP, curConceptConcept + 1)) {
             return commonTacticBodyNN(cur);
         }
@@ -2716,7 +2778,7 @@ public class DlSatTester {
     private boolean applyCh(DLVertex cur) {
         int C = cur.getConceptIndex();
         Role R = cur.getRole();
-        BCLE bcLE = null;
+        BCLE<DlCompletionTreeArc> bcLE = null;
         // applyCh:
         // check if we have Qualified NR
         if (C != Helper.bpTOP) {
@@ -2750,10 +2812,8 @@ public class DlSatTester {
                 createBCLE();
                 bContext.branchDep.add(dep);
                 // setup BCLE
-                bcLE = (BCLE) bContext;
-                List<DlCompletionTreeArc> temp = edgesToMerge;
-                edgesToMerge = bcLE.getEdgesToMerge();
-                bcLE.setEdgesToMerge(temp);
+                bcLE = (BCLE<DlCompletionTreeArc>) bContext;
+                edgesToMerge = bcLE.swap(edgesToMerge);
                 bcLE.resetMCI();
             }
             {
@@ -2763,7 +2823,7 @@ public class DlSatTester {
                 while (applyLE) {
                     applyLE = false;
                     // skip init, because here we are after restoring
-                    bcLE = (BCLE) bContext;
+                    bcLE = (BCLE<DlCompletionTreeArc>) bContext;
                     if (bcLE.noMoreLEOptions()) {
                         // set global clashset to
                         // cummulative one from
@@ -2828,125 +2888,263 @@ public class DlSatTester {
         }
     }
 
-    private boolean commonTacticBodyLE(DLVertex cur) {
+    private boolean commonTacticBodyLE(DLVertex cur) // for <=nR.C concepts
+    {
         assert curConceptConcept > 0 && cur.getType() == dtLE;
         stats.getnLeCalls().inc();
-        int C = cur.getConceptIndex();
         Role R = cur.getRole();
-        BCLE bcLE = null;
+        if (R.isTop()) {
+            return processTopRoleLE(cur);
+        }
+        int C = cur.getConceptIndex();
+        boolean needInit = true;
         if (!isFirstBranchCall()) {
             if (bContext instanceof BCNN) {
-                // break applyNN; // clash in NN-rule: skip choose-rule
+                return commonTacticBodyNN(cur);
+                // after application <=-rule would be checked again
+            }
+            if (bContext instanceof BCLE) {
+                needInit = false;
+                // clash in LE-rule: skip the initial checks
+            } else {
+                assert bContext instanceof BCChoose;
+            }
+        } else {
+            // if we are here that it IS first LE call
+            if (isQuickClashLE(cur)) {
+                return true;
+            }
+        }
+        // initial phase: choose-rule, NN-rule
+        if (needInit) {
+            // check if we have Qualified NR
+            if (C != bpTOP) {
+                if (commonTacticBodyChoose(R, C)) {
+                    return true;
+                }
+            }
+            // check whether we need to apply NN rule first
+            if (isNNApplicable(R, C, /* stopper= */curConceptConcept + cur.getNumberLE())) {
                 return commonTacticBodyNN(cur); // after application <=-rule
                                                 // would be checked again
             }
-            if (bContext instanceof BCLE)
-            // break applyLE; // clash in LE-rule: skip all the rest
-            {
-                // we need to repeate merge until there will be necessary amount
-                // of edges
-                while (true) {
-                    {
-                        DlCompletionTreeArc from = null;
-                        DlCompletionTreeArc to = null;
-                        boolean applyLE = true;
-                        while (applyLE) {
-                            applyLE = false;
-                            // skip init, because here we are after restoring
-                            bcLE = (BCLE) bContext;
-                            if (bcLE.noMoreLEOptions()) { // set global clashset
-                                                          // to cummulative one
-                                                          // from previous
-                                                          // branch failures
-                                useBranchDep();
-                                return true;
-                            }
-                            // get from- and to-arcs using corresponding indexes
-                            // in Edges
-                            from = bcLE.getFrom();
-                            to = bcLE.getTo();
-                            Reference<DepSet> dep = new Reference<DepSet>(DepSet.create()); // empty
-                                                                                            // dep-set
-                            // fast check for from.end() and to.end() are in
-                            // \neq
-                            if (cGraph.nonMergable(from.getArcEnd(), to.getArcEnd(), dep)) {
-                                dep.getReference().add(from.getDep());
-                                dep.getReference().add(to.getDep());
-                                // add dep-set from labels
-                                if (C == Helper.bpTOP) {
-                                    this.setClashSet(dep.getReference());
-                                } else // QCR: update dep-set wrt C
-                                {
-                                    // here we know that C is in both labels;
-                                    // set a proper clash-set
-                                    DagTag tag = dlHeap.get(C).getType();
-                                    boolean test;
-                                    // here dep contains the clash-set
-                                    test = findConceptClash(from.getArcEnd().label()
-                                            .getLabel(tag), C, dep.getReference());
-                                    assert test;
-                                    dep.setReference(DepSet.plus(dep.getReference(),
-                                            clashSet)); // save new dep-set
-                                    test = findConceptClash(to.getArcEnd().label()
-                                            .getLabel(tag), C, dep.getReference());
-                                    assert test;
-                                    // both clash-sets are now in common
-                                    // clash-set
-                                }
-                                updateBranchDep();
-                                bContext.nextOption();
-                                applyLE = true;
-                            }
-                        }
-                        save();
-                        // add depset from current level and FROM arc and to
-                        // current dep.set
-                        DepSet curDep = getCurDepSet();
-                        curDep.add(from.getDep());
-                        if (merge(from.getArcEnd(), to.getArcEnd(), curDep)) {
-                            return true;
-                        }
-                        // it might be the case (see bIssue28) that after the
-                        // merge there is an R-neigbour
-                        // that have neither C or ~C in its label (it was far in
-                        // the nominal cloud)
-                        if (C != Helper.bpTOP) {
-                            if (commonTacticBodyChoose(R, C)) {
-                                return true;
-                            }
-                        }
-                    }
-                    if (isFirstBranchCall()) {
-                        DepSet dep = DepSet.create();
-                        // check the amount of neighbours we have
-                        findNeighbours(R, C, dep);
-                        // if the number of R-neighbours satisfies condition --
-                        // nothing to do
-                        if (edgesToMerge.size() <= cur.getNumberLE()) {
-                            return false;
-                        }
-                        // init context
-                        createBCLE();
-                        bContext.branchDep.add(dep);
-                        // setup BCLE
-                        bcLE = (BCLE) bContext;
-                        List<DlCompletionTreeArc> temp = edgesToMerge;
-                        edgesToMerge = bcLE.getEdgesToMerge();
-                        bcLE.setEdgesToMerge(temp);
-                        bcLE.resetMCI();
-                    }
+        }
+        // we need to repeat merge until there will be necessary amount of edges
+        while (true) {
+            if (isFirstBranchCall()) {
+                if (initLEProcessing(cur)) {
+                    return false;
                 }
             }
-            assert bContext instanceof BCChoose;
-            // break applyCh; // clash in choose-rule: redo all
-            return applyCh(cur);
+            BCLE<DlCompletionTreeArc> bcLE = (BCLE<DlCompletionTreeArc>) bContext;
+            if (bcLE.noMoreLEOptions()) {
+                // set global clashset to cumulative
+                // one from previous branch failures
+                useBranchDep();
+                return true;
+            }
+            // get from- and to-arcs using corresponding indexes in Edges
+            DlCompletionTreeArc fromArc = bcLE.getFrom();
+            DlCompletionTreeArc toArc = bcLE.getTo();
+            DlCompletionTree from = fromArc.getArcEnd();
+            DlCompletionTree to = toArc.getArcEnd();
+            Reference<DepSet> dep = new Reference<DepSet>(DepSet.create()); // empty
+                                                                            // dep-set
+            // fast check for FROM =/= TO
+            if (cGraph.nonMergable(from, to, dep)) {
+                // need this for merging two nominal nodes
+                dep.getReference().add(fromArc.getDep());
+                dep.getReference().add(toArc.getDep());
+                // add dep-set from labels
+                if (C == bpTOP) {
+                    setClashSet(dep.getReference());
+                } else    // QCR: update dep-set wrt C
+                {
+                    // here we know that C is in both labels; set a proper
+                    // clash-set
+                    DagTag tag = dlHeap.get(C).getType();
+                    boolean test;
+                    // here dep contains the clash-set
+                    test = findConceptClash(from.label().getLabel(tag), C,
+                            dep.getReference());
+                    assert test;
+                    dep.getReference().add(clashSet);   // save new dep-set
+                    test = findConceptClash(to.label().getLabel(tag), C,
+                            dep.getReference());
+                    assert test;
+                    // both clash-sets are now in common clash-set
+                }
+                updateBranchDep();
+                bContext.nextOption();
+                assert !isFirstBranchCall();
+                continue;
+            }
+            save();
+            // add depset from current level and FROM arc and to current dep.set
+            DepSet curDep = DepSet.create(getCurDepSet());
+            curDep.add(fromArc.getDep());
+            if (merge(from, to, curDep)) {
+                return true;
+            }
+            // it might be the case (see bIssue28) that after the merge there is
+            // an R-neigbour
+            // that have neither C or ~C in its label (it was far in the nominal
+            // cloud)
+            if (C != bpTOP) {
+                if (commonTacticBodyChoose(R, C)) {
+                    return true;
+                }
+            }
         }
-        return applyCh(cur);
+    }
+
+    // private boolean commonTacticBodyLE(DLVertex cur) {
+    // assert curConceptConcept > 0 && cur.getType() == dtLE;
+    // stats.getnLeCalls().inc();
+    // Role R = cur.getRole();
+    // if (R.isTop()) {
+    // return processTopRoleLE(cur);
+    // }
+    // BCLE<DlCompletionTreeArc> bcLE = null;
+    // int C = cur.getConceptIndex();
+    // boolean needInit = true;
+    // if (!isFirstBranchCall()) {
+    // if (bContext instanceof BCNN) {
+    // // break applyNN; // clash in NN-rule: skip choose-rule
+    // return commonTacticBodyNN(cur); // after application <=-rule
+    // // would be checked again
+    // }
+    // if (bContext instanceof BCLE)
+    // // break applyLE; // clash in LE-rule: skip all the rest
+    // {
+    // // we need to repeate merge until there will be necessary amount
+    // // of edges
+    // while (true) {
+    // {
+    // DlCompletionTreeArc from = null;
+    // DlCompletionTreeArc to = null;
+    // boolean applyLE = true;
+    // while (applyLE) {
+    // applyLE = false;
+    // // skip init, because here we are after restoring
+    // bcLE = (BCLE) bContext;
+    // if (bcLE.noMoreLEOptions()) { // set global clashset
+    // // to cummulative one
+    // // from previous
+    // // branch failures
+    // useBranchDep();
+    // return true;
+    // }
+    // // get from- and to-arcs using corresponding indexes
+    // // in Edges
+    // from = bcLE.getFrom();
+    // to = bcLE.getTo();
+    // Reference<DepSet> dep = new Reference<DepSet>(DepSet.create()); // empty
+    // // dep-set
+    // // fast check for from.end() and to.end() are in
+    // // \neq
+    // if (cGraph.nonMergable(from.getArcEnd(), to.getArcEnd(), dep)) {
+    // dep.getReference().add(from.getDep());
+    // dep.getReference().add(to.getDep());
+    // // add dep-set from labels
+    // if (C == Helper.bpTOP) {
+    // this.setClashSet(dep.getReference());
+    // } else // QCR: update dep-set wrt C
+    // {
+    // // here we know that C is in both labels;
+    // // set a proper clash-set
+    // DagTag tag = dlHeap.get(C).getType();
+    // boolean test;
+    // // here dep contains the clash-set
+    // test = findConceptClash(from.getArcEnd().label()
+    // .getLabel(tag), C, dep.getReference());
+    // assert test;
+    // dep.setReference(DepSet.plus(dep.getReference(),
+    // clashSet)); // save new dep-set
+    // test = findConceptClash(to.getArcEnd().label()
+    // .getLabel(tag), C, dep.getReference());
+    // assert test;
+    // // both clash-sets are now in common
+    // // clash-set
+    // }
+    // updateBranchDep();
+    // bContext.nextOption();
+    // applyLE = true;
+    // }
+    // }
+    // save();
+    // // add depset from current level and FROM arc and to
+    // // current dep.set
+    // DepSet curDep = getCurDepSet();
+    // curDep.add(from.getDep());
+    // if (merge(from.getArcEnd(), to.getArcEnd(), curDep)) {
+    // return true;
+    // }
+    // // it might be the case (see bIssue28) that after the
+    // // merge there is an R-neigbour
+    // // that have neither C or ~C in its label (it was far in
+    // // the nominal cloud)
+    // if (C != Helper.bpTOP) {
+    // if (commonTacticBodyChoose(R, C)) {
+    // return true;
+    // }
+    // }
+    // }
+    // if (isFirstBranchCall()) {
+    // DepSet dep = DepSet.create();
+    // // check the amount of neighbours we have
+    // findNeighbours(R, C, dep);
+    // // if the number of R-neighbours satisfies condition --
+    // // nothing to do
+    // if (edgesToMerge.size() <= cur.getNumberLE()) {
+    // return false;
+    // }
+    // // init context
+    // createBCLE();
+    // bContext.branchDep.add(dep);
+    // // setup BCLE
+    // bcLE = (BCLE) bContext;
+    // List<DlCompletionTreeArc> temp = edgesToMerge;
+    // edgesToMerge = bcLE.getEdgesToMerge();
+    // bcLE.setEdgesToMerge(temp);
+    // bcLE.resetMCI();
+    // }
+    // }
+    // }
+    // assert bContext instanceof BCChoose;
+    // // break applyCh; // clash in choose-rule: redo all
+    // return applyCh(cur);
+    // }
+    // return applyCh(cur);
+    // }
+    boolean initLEProcessing(DLVertex cur) {
+        DepSet dep = DepSet.create();
+        // check the amount of neighbours we have
+        findNeighbours(cur.getRole(), cur.getConceptIndex(), dep);
+        // if the number of R-neighbours satisfies condition -- nothing to do
+        if (EdgesToMerge.size() <= cur.getNumberLE()) {
+            return true;
+        }
+        // init context
+        createBCLE();
+        bContext.branchDep.add(dep);
+        // setup BCLE
+        BCLE bcLE = (BCLE<DlCompletionTreeArc>) bContext;
+        EdgesToMerge = bcLE.swap(EdgesToMerge);
+        bcLE.resetMCI();
+        return false;
     }
 
     private boolean commonTacticBodyGE(DLVertex cur) {
+        // for >=nR.C concepts
+        assert curConceptConcept < 0 && cur.getType() == dtLE;
+        // check blocking conditions
         if (isCurNodeBlocked()) {
             return false;
+        }
+        Role R = cur.getRole();
+        if (R.isTop()) {
+            return processTopRoleGE(cur);
         }
         stats.getnGeCalls().inc();
         if (isQuickClashGE(cur)) {
@@ -2955,6 +3153,149 @@ public class DlSatTester {
         // create N new different edges
         return createDifferentNeighbours(cur.getRole(), cur.getConceptIndex(),
                 curConceptDepSet, cur.getNumberGE(), DlCompletionTree.BLOCKABLE_LEVEL);
+    }
+
+    // -------------------------------------------------------------------------------
+    // Func/LE/GE with top role processing
+    // -------------------------------------------------------------------------------
+    boolean processTopRoleFunc(DLVertex cur) {
+        // for <=1 R concepts
+        assert curConceptConcept > 0 && isFunctionalVertex(cur);
+        stats.getnFuncCalls().inc();
+        if (isQuickClashLE(cur)) {
+            return true;
+        }
+        // locate all R-neighbours of curNode
+        DepSet dummy = DepSet.create();   // not used
+        findCLabelledNodes(bpTOP, dummy);
+        // check if we have nodes to merge
+        if (NodesToMerge.size() < 2) {
+            return false;
+        }
+        // merge all nodes to the first (the least wrt nominal hierarchy) found
+        // node
+        DlCompletionTree sample = NodesToMerge.get(0);
+        DepSet dep = DepSet.create(curConceptDepSet);   // dep-set for merging
+        // merge all elements to sample (sample wouldn't be merge)
+        for (int i = 0; i < NodesToMerge.size(); i++) {
+            // during merge EdgesToMerge may became purged (see Nasty4) => check
+            // this
+            if (!NodesToMerge.get(i).isPBlocked()) {
+                if (merge(NodesToMerge.get(i), sample, dep)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    boolean processTopRoleLE(DLVertex cur) {
+        // for <=nR.C concepts
+        assert curConceptConcept > 0 && cur.getType() == dtLE;
+        int C = cur.getConceptIndex();
+        boolean needInit = true;
+        if (!isFirstBranchCall()) {
+            if (bContext instanceof BCLE) {
+                needInit = false;   // clash in LE-rule: skip the initial checks
+            } else {
+                assert bContext instanceof BCChoose;
+            }
+        } else    // if we are here that it IS first LE call
+        if (isQuickClashLE(cur)) {
+            return true;
+        }
+        // initial phase: choose-rule, NN-rule
+        if (needInit) {
+            // check if we have Qualified NR
+            if (C != bpTOP) {
+                if (applyChooseRuleGlobally(C)) {
+                    return true;
+                }
+            }
+        }
+        // we need to repeat merge until there will be necessary amount of edges
+        while (true) {
+            if (isFirstBranchCall()) {
+                if (initTopLEProcessing(cur)) {
+                    return false;
+                }
+            }
+            BCLE<DlCompletionTree> bcLE = (BCLE<DlCompletionTree>) bContext;
+            if (bcLE.noMoreLEOptions()) {
+                // set global clashset to cumulative
+                // one from previous branch failures
+                useBranchDep();
+                return true;
+            }
+            // get from- and to-arcs using corresponding indexes in Edges
+            DlCompletionTree from = bcLE.getFrom();
+            DlCompletionTree to = bcLE.getTo();
+            Reference<DepSet> dep = new Reference<DepSet>(DepSet.create());
+            // fast check for FROM =/= TO
+            if (cGraph.nonMergable(from, to, dep)) {
+                // add dep-set from labels
+                if (C == bpTOP) {
+                    setClashSet(dep.getReference());
+                } else {
+                    // QCR: update dep-set wrt C
+                    // here we know that C is in both labels; set a proper
+                    // clash-set
+                    DagTag tag = dlHeap.get(C).getType();
+                    boolean test;
+                    // here dep contains the clash-set
+                    test = findConceptClash(from.label().getLabel(tag), C,
+                            dep.getReference());
+                    assert test;
+                    dep.getReference().add(clashSet);   // save new dep-set
+                    test = findConceptClash(to.label().getLabel(tag), C,
+                            dep.getReference());
+                    assert test;
+                    // both clash-sets are now in common clash-set
+                }
+                updateBranchDep();
+                bContext.nextOption();
+                assert !isFirstBranchCall();
+                continue;
+            }
+            save();
+            // add depset from current level and FROM arc and to current dep.set
+            DepSet curDep = DepSet.create(getCurDepSet());
+            if (merge(from, to, curDep)) {
+                return true;
+            }
+        }
+    }
+
+    // for >=nR.C concepts
+    boolean processTopRoleGE(DLVertex cur) {
+        assert curConceptConcept < 0 && cur.getType() == dtLE;
+        assert !isCurNodeBlocked();
+        stats.getnGeCalls().inc();
+        if (isQuickClashGE(cur)) {
+            return true;
+        }
+        // create N new different edges
+        // FIXME!! for now
+        return createDifferentNeighbours(cur.getRole(), cur.getConceptIndex(),
+                curConceptDepSet, cur.getNumberGE(), DlCompletionTree.BLOCKABLE_LEVEL);
+    }
+
+    boolean initTopLEProcessing(DLVertex cur) {
+        DepSet dep = DepSet.create();
+        // check the amount of neighbours we have
+        findCLabelledNodes(cur.getConceptIndex(), dep);
+        // if the number of R-neighbours satisfies condition -- nothing to do
+        if (NodesToMerge.size() <= cur.getNumberLE()) {
+            return true;
+        }
+        // init context
+        createBCTopLE();
+        bContext.branchDep.add(dep);
+        // setup BCLE
+        BCLE<DlCompletionTree> bcLE = (BCLE<DlCompletionTree>) bContext;
+        NodesToMerge = bcLE.swap(NodesToMerge);
+        bcLE.resetMCI();
+        return false;
     }
 
     private boolean
@@ -3098,8 +3439,8 @@ public class DlSatTester {
         for (int i = 0; i < size; i++) {
             DlCompletionTreeArc q = edges.get(i);
             if (q.getRole().isDisjoint()
-                    && this.checkDisjointRoleClash(q.getReverse().getArcEnd(),
-                            q.getArcEnd(), q.getRole(), depF)) {
+                    && checkDisjointRoleClash(q.getReverse().getArcEnd(), q.getArcEnd(),
+                            q.getRole(), depF)) {
                 // XXX dubious
                 {
                     return true;
@@ -3121,7 +3462,7 @@ public class DlSatTester {
     protected boolean checkDisjointRoleClash(DlCompletionTree from, DlCompletionTree to,
             Role R, DepSet dep) {
         for (DlCompletionTreeArc p : from.getNeighbour()) {
-            if (this.checkDisjointRoleClash(p, to, R, dep)) {
+            if (checkDisjointRoleClash(p, to, R, dep)) {
                 return true;
             }
         }
@@ -3306,6 +3647,12 @@ public class DlSatTester {
                         | redoIrr.getValue());
     }
 
+    // / create BC for LE-rule
+    public void createBCTopLE() {
+        bContext = stack.pushTopLE();
+        initBC(bContext);
+    }
+
     /** expansion rule for split */
     private boolean commonTacticBodySplit(DLVertex cur) {
         if (duringClassification
@@ -3322,6 +3669,50 @@ public class DlSatTester {
         }
         return false;
     }
+
+    // / apply choose-rule for all vertices (necessary for Top role in QCR)
+    boolean applyChooseRuleGlobally(int C) {
+        int i = 0;
+        DlCompletionTree p = cGraph.getNode(i++);
+        while (p != null) {
+            if (isObjectNodeUnblocked(p)) {
+                if (applyChooseRule(p, C)) {
+                    return true;
+                }
+            }
+            p = cGraph.getNode(i++);
+        }
+        return false;
+    }
+
+    void findCLabelledNodes(int C, DepSet Dep) {
+        NodesToMerge.clear();
+        DagTag tag = dlHeap.get(C).getType();
+        // FIXME!! do we need this for d-blocked nodes?
+        int i = 0;
+        DlCompletionTree arc = cGraph.getNode(i++);
+        while (arc != null) {
+            if (isNodeGloballyUsed(arc)
+                    && findChooseRuleConcept(arc.label().getLabel(tag), C, Dep)) {
+                NodesToMerge.add(arc);
+            }
+            arc = cGraph.getNode(i++);
+        }
+        // sort EdgesToMerge: From named nominals to generated nominals to
+        // blockable nodes
+        Collections.sort(NodesToMerge, new NodeCompare());
+    }
+}
+
+class NodeCompare implements Comparator<DlCompletionTree>, Serializable {
+    @Override
+    public int compare(DlCompletionTree o1, DlCompletionTree o2) {
+        // TODO Auto-generated method stub
+        return 0;
+        // XXX implement this properly
+        // bool operator() ( DlCompletionTree* p, DlCompletionTree* q )
+        // const { return *p < *q; }
+    }
 }
 
 enum AddConceptResult {
@@ -3329,6 +3720,7 @@ enum AddConceptResult {
 }
 
 class EdgeCompare implements Comparator<DlCompletionTreeArc>, Serializable {
+    @Override
     public int compare(DlCompletionTreeArc o1, DlCompletionTreeArc o2) {
         return o1.getArcEnd().compareTo(o2.getArcEnd());
     }

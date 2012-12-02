@@ -8,7 +8,6 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 
 /** check whether class expressions are equivalent to bottom wrt given locality
  * class */
-@SuppressWarnings("unused")
 // XXX verify unused parameters
 public class BotEquivalenceEvaluator extends SigAccessor implements DLExpressionVisitor {
     /** corresponding top evaluator */

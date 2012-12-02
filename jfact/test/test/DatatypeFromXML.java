@@ -98,22 +98,27 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
         // + restrictions);
     }
 
+    @Override
     public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
+    @Override
     public boolean isExpression() {
         return false;
     }
 
+    @Override
     public DatatypeExpression<R> asExpression() {
         return (DatatypeExpression<R>) this;
     }
 
+    @Override
     public Collection<Datatype<?>> getAncestors() {
         Set<Datatype<?>> toReturn = new HashSet<Datatype<?>>();
         // toReturn.add(this.types.get(DatatypeParser.Literal));
@@ -128,6 +133,7 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
         return toReturn;
     }
 
+    @Override
     public boolean getBounded() {
         if (this.hfpProperties.containsKey("bounded")) {
             return Boolean.parseBoolean(this.hfpProperties.get("bounded"));
@@ -141,6 +147,7 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
         return false;
     }
 
+    @Override
     public cardinality getCardinality() {
         if (this.hfpProperties.containsKey("cardinality")) {
             return cardinality.parse(this.hfpProperties.get("cardinality"));
@@ -154,6 +161,7 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
         return cardinality.COUNTABLYINFINITE;
     }
 
+    @Override
     public Set<Facet> getFacets() {
         HashSet<Facet> hashSet = new HashSet<Facet>(this.facets);
         String ancestor = this.restrictions.get(this.uri);
@@ -166,6 +174,7 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
         return hashSet;
     }
 
+    @Override
     public Map<Facet, Object> getKnownFacetValues() {
         Map<Facet, Object> toReturn = new HashMap<Facet, Object>(this.knownFacetValues);
         String current = this.restrictions.get(this.uri);
@@ -180,6 +189,7 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
         return toReturn;
     }
 
+    @Override
     public <O extends Comparable<O>> O getFacetValue(Facet f) {
         Map<Facet, Object> toReturn = this.getKnownFacetValues();
         if (toReturn.containsKey(f)) {
@@ -191,6 +201,7 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
         return null;
     }
 
+    @Override
     public BigDecimal getNumericFacetValue(Facet f) {
         Map<Facet, Object> toReturn = this.getKnownFacetValues();
         if (toReturn.containsKey(f)) {
@@ -199,6 +210,7 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
         return null;
     }
 
+    @Override
     public boolean getNumeric() {
         if (this.hfpProperties.containsKey("numeric")) {
             return Boolean.parseBoolean(this.hfpProperties.get("numeric"));
@@ -212,6 +224,7 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
         return false;
     }
 
+    @Override
     public ordered getOrdered() {
         if (this.hfpProperties.containsKey("ordered")) {
             return ordered.parse(this.hfpProperties.get("ordered"));
@@ -225,6 +238,7 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
         return ordered.FALSE;
     }
 
+    @Override
     public boolean isCompatible(Datatype<?> type) {
         if (type instanceof NumericDatatype) {
             return type.isCompatible(this);
@@ -234,48 +248,59 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
                 || this.isSubType(type) || type.isSubType(this);
     }
 
+    @Override
     public boolean isCompatible(Literal<?> l) {
         return this.isCompatible(l.getDatatypeExpression())
                 && this.isInValueSpace(this.parseValue(l.value()));
     }
 
+    @Override
     public boolean isInValueSpace(R l) {
         // TODO verify the constraining facets
         return false;
     }
 
+    @Override
     public R parseValue(String s) {
         return null;
     }
 
+    @Override
     public Literal<R> buildLiteral(final String s) {
         return new Literal<R>() {
+            @Override
             public void accept(DLExpressionVisitor visitor) {
                 visitor.visit(this);
             }
 
+            @Override
             public <O> O accept(DLExpressionVisitorEx<O> visitor) {
                 return visitor.visit(this);
             }
 
+            @Override
             public int compareTo(Literal<R> o) {
                 return this.typedValue().compareTo(o.typedValue());
             }
 
+            @Override
             public Datatype<R> getDatatypeExpression() {
                 return DatatypeFromXML.this;
             }
 
+            @Override
             public String value() {
                 return s;
             }
 
+            @Override
             public R typedValue() {
                 return DatatypeFromXML.this.parseValue(s);
             }
         };
     }
 
+    @Override
     public boolean isSubType(Datatype<?> type) {
         if (this.equals(type)) {
             return true;
@@ -288,10 +313,12 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
         return contains;
     }
 
+    @Override
     public String getDatatypeURI() {
         return this.uri;
     }
 
+    @Override
     public Collection<Literal<R>> listValues() {
         return Collections.emptyList();
     }
@@ -317,21 +344,25 @@ public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
         return false;
     }
 
+    @Override
     public boolean isNumericDatatype() {
         // TODO Auto-generated method stub
         return false;
     }
 
+    @Override
     public NumericDatatype<R> asNumericDatatype() {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public boolean isOrderedDatatype() {
         // TODO Auto-generated method stub
         return false;
     }
 
+    @Override
     public <O extends Comparable<O>> OrderedDatatype<O> asOrderedDatatype() {
         // TODO Auto-generated method stub
         return null;

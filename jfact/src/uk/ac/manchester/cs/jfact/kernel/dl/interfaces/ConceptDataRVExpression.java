@@ -9,6 +9,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 
 public interface ConceptDataRVExpression extends ConceptDataRoleExpression,
         DataExpressionArg<DataExpression> {
+    @Override
     /** accept method for the visitor pattern */
     void accept(DLExpressionVisitor visitor);
 }

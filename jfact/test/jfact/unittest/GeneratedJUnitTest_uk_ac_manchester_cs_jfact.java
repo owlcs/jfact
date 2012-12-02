@@ -61,7 +61,6 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact {
         testSubject0.ontologiesChanged(mock(List.class));
         Version result11 = testSubject0.getReasonerVersion();
         BufferingMode result12 = testSubject0.getBufferingMode();
-        @SuppressWarnings("rawtypes")
         List result13 = testSubject0.getPendingChanges();
         Set result14 = testSubject0.getPendingAxiomAdditions();
         Set result15 = testSubject0.getPendingAxiomRemovals();

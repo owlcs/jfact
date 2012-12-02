@@ -18,14 +18,17 @@ public class IndividualPolicy implements Policy {
         this.plain = plain;
     }
 
+    @Override
     public boolean applicable(ClassifiableEntry p) {
         return ((Concept) p).isSingleton();
     }
 
+    @Override
     public boolean needPlain() {
         return plain;
     }
 
+    @Override
     public Expression buildTree(ExpressionManager EM, ClassifiableEntry p) {
         return EM.individual(p.getName());
     }

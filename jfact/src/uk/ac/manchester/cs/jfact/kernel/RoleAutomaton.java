@@ -65,16 +65,19 @@ public class RoleAutomaton {
     }
 
     // add single RA
-    /** add RA from simple subrole to given one */
-    public void addSimpleRA(RoleAutomaton RA) {
-        boolean ok = base.get(initial).addToExisting(RA.base.get(initial).begin().get(0));
-        assert ok;
-    }
+
 
     /** add RA from a subrole to given one */
     public void addRA(RoleAutomaton RA) {
-        initChain(initial);
-        addToChain(RA, /* oSafe= */false, final_state);
+        assert !isCompleted();
+        if (RA.isSimple()) {
+            boolean ok = base.get(initial).addToExisting(
+                    RA.getBase().get(initial).begin().get(0));
+            assert ok;
+        } else {
+            initChain(initial);
+            addToChain(RA, /* oSafe= */false, final_state);
+        }
     }
 
     /** add TRANSition leading from a given STATE; check whether all states are
@@ -207,6 +210,7 @@ public class RoleAutomaton {
     /** add an Automaton to the chain that would start from the iRA; OSAFE shows
      * the safety of a previous automaton in a chain */
     public boolean addToChain(RoleAutomaton RA, boolean oSafe, int fRA) {
+        assert !isCompleted();
         boolean needFinalTrans = fRA < size() && !RA.isOSafe();
         // we can skip transition if chaining automata are i- and o-safe
         if (!oSafe && !RA.isISafe()) {
@@ -224,4 +228,30 @@ public class RoleAutomaton {
     public List<RAStateTransitions> getBase() {
         return base;
     }
+
+    // automaton completeness
+    private boolean Complete;
+    // / mark an automaton as completed
+    void setCompleted() {
+        Complete = true;
+    }
+
+    void setCompleted(boolean b) {
+        Complete = b;
+    }
+
+    // / check whether automaton is completed
+    boolean isCompleted() {
+        return Complete;
+    }
+
+
+
+    // / @return true iff the automaton is simple
+    boolean isSimple() {
+        assert isCompleted();
+        return size() == 2 && inputSafe && outputSafe;
+    }
+
+
 }

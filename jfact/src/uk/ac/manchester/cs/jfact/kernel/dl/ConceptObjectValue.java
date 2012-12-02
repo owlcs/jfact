@@ -20,10 +20,12 @@ public class ConceptObjectValue implements ConceptObjectRoleExpression {
         delegate = R;
     }
 
+    @Override
     public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
@@ -32,6 +34,7 @@ public class ConceptObjectValue implements ConceptObjectRoleExpression {
         return individualExpression;
     }
 
+    @Override
     public ObjectRoleExpression getOR() {
         return delegate;
     }

@@ -274,6 +274,7 @@ public class TaxonomyVertex {
         o.append(":");
         TreeSet<TaxonomyVertex> sorted = new TreeSet<TaxonomyVertex>(
                 new Comparator<TaxonomyVertex>() {
+                    @Override
                     public int compare(TaxonomyVertex o1, TaxonomyVertex o2) {
                         return o1.getPrimer().getName()
                                 .compareTo(o2.getPrimer().getName());

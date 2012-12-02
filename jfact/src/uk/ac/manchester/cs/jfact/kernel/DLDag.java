@@ -272,7 +272,7 @@ public class DLDag {
                     break;
                 case dtPConcept:
                 case dtNConcept:
-                    ((Concept) v.getConcept()).setpName(bpINVALID);
+                    ((Concept) v.getConcept()).clear();
                     break;
                 default:
                     break;

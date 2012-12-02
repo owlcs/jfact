@@ -1,35 +1,35 @@
 package uk.ac.manchester.cs.jfact.helpers;
 
 public interface LogAdapter {
-    void printTemplate(Templates t, Object... strings);
+    LogAdapter printTemplate(Templates t, Object... strings);
 
-    void print(int i);
+    LogAdapter print(int i);
 
-    void println();
+    LogAdapter println();
 
-    void print(double d);
+    LogAdapter print(double d);
 
-    void print(float f);
+    LogAdapter print(float f);
 
-    void print(boolean b);
+    LogAdapter print(boolean b);
 
-    void print(byte b);
+    LogAdapter print(byte b);
 
-    void print(char c);
+    LogAdapter print(char c);
 
-    void print(short s);
+    LogAdapter print(short s);
 
-    void print(String s);
+    LogAdapter print(String s);
 
-    void print(Object s);
+    LogAdapter print(Object s);
 
-    void print(Object... s);
+    LogAdapter print(Object... s);
 
-    void print(Object s1, Object s2);
+    LogAdapter print(Object s1, Object s2);
 
-    void print(Object s1, Object s2, Object s3);
+    LogAdapter print(Object s1, Object s2, Object s3);
 
-    void print(Object s1, Object s2, Object s3, Object s4);
+    LogAdapter print(Object s1, Object s2, Object s3, Object s4);
 
-    void print(Object s1, Object s2, Object s3, Object s4, Object s5);
+    LogAdapter print(Object s1, Object s2, Object s3, Object s4, Object s5);
 }

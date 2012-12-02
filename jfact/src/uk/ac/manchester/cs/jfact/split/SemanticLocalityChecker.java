@@ -62,11 +62,13 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
     /** signature to keep */
     TSignature sig;
 
+    @Override
     public TSignature getSignature() {
         return sig;
     }
 
     /** set a new value of a signature (without changing a locality parameters) */
+    @Override
     public void setSignatureValue(TSignature Sig) {
         sig = Sig;
         Kernel.setSignature(sig);
@@ -89,12 +91,14 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
 
     // set fields
     /** @return true iff an AXIOM is local wrt defined policy */
+    @Override
     public boolean local(Axiom axiom) {
         axiom.accept(this);
         return isLocal;
     }
 
     /** init kernel with the ontology signature */
+    @Override
     public void preprocessOntology(Collection<Axiom> axioms) {
         TSignature s = new TSignature();
         ExprMap.clear();
@@ -117,6 +121,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
     }
 
     /** load ontology to a given KB */
+    @Override
     public void visitOntology(Ontology ontology) {
         for (Axiom p : ontology.getAxioms()) {
             if (p.isUsed()) {
@@ -125,10 +130,12 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
         }
     }
 
+    @Override
     public void visit(AxiomDeclaration axiom) {
         isLocal = true;
     }
 
+    @Override
     public void visit(AxiomEquivalentConcepts axiom) {
         isLocal = false;
         List<ConceptExpression> arguments = axiom.getArguments();
@@ -143,6 +150,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
         isLocal = true;
     }
 
+    @Override
     public void visit(AxiomDisjointConcepts axiom) {
         isLocal = false;
         List<ConceptExpression> arguments = axiom.getArguments();
@@ -160,10 +168,12 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
     }
 
     /** FIXME!! fornow */
+    @Override
     public void visit(AxiomDisjointUnion axiom) {
         isLocal = true;
     }
 
+    @Override
     public void visit(AxiomEquivalentORoles axiom) {
         isLocal = false;
         List<ObjectRoleExpression> arguments = axiom.getArguments();
@@ -179,6 +189,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
     }
 
     // tautology if all the subsumptions Ri [= Rj holds
+    @Override
     public void visit(AxiomEquivalentDRoles axiom) {
         isLocal = false;
         List<DataRoleExpression> arguments = axiom.getArguments();
@@ -192,36 +203,43 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
         isLocal = true;
     }
 
+    @Override
     public void visit(AxiomDisjointORoles axiom) {
         isLocal = Kernel.isDisjointObjectRoles(axiom.getArguments());
     }
 
+    @Override
     public void visit(AxiomDisjointDRoles axiom) {
         isLocal = Kernel.isDisjointDataRoles(axiom.getArguments());
     }
 
     // never local
+    @Override
     public void visit(AxiomSameIndividuals axiom) {
         isLocal = false;
     }
 
     // never local
+    @Override
     public void visit(AxiomDifferentIndividuals axiom) {
         isLocal = false;
     }
 
     /** there is no such axiom in OWL API, but I hope nobody would use Fairness */
     // here
+    @Override
     public void visit(AxiomFairnessConstraint axiom) {
         isLocal = true;
     }
 
     // R = inverse(S) is tautology iff R [= S- and S [= R-
+    @Override
     public void visit(AxiomRoleInverse axiom) {
         isLocal = Kernel.isSubRoles(axiom.getRole(), pEM.inverse(axiom.getInvRole()))
                 && Kernel.isSubRoles(axiom.getInvRole(), pEM.inverse(axiom.getRole()));
     }
 
+    @Override
     public void visit(AxiomORoleSubsumption axiom) {
         // check whether the LHS is a role chain
         if (axiom.getSubRole() instanceof ObjectRoleChain) {
@@ -238,81 +256,100 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
         isLocal = true;
     }
 
+    @Override
     public void visit(AxiomDRoleSubsumption axiom) {
         isLocal = Kernel.isSubRoles(axiom.getSubRole(), axiom.getRole());
     }
 
     // Domain(R) = C is tautology iff ER.Top [= C
+    @Override
     public void visit(AxiomORoleDomain axiom) {
         isLocal = Kernel.isSubsumedBy(ExprMap.get(axiom), axiom.getDomain());
     }
 
+    @Override
     public void visit(AxiomDRoleDomain axiom) {
         isLocal = Kernel.isSubsumedBy(ExprMap.get(axiom), axiom.getDomain());
     }
 
     // Range(R) = C is tautology iff ER.~C is unsatisfiable
+    @Override
     public void visit(AxiomORoleRange axiom) {
         isLocal = !Kernel.isSatisfiable(ExprMap.get(axiom));
     }
 
+    @Override
     public void visit(AxiomDRoleRange axiom) {
         isLocal = !Kernel.isSatisfiable(ExprMap.get(axiom));
     }
 
+    @Override
     public void visit(AxiomRoleTransitive axiom) {
         isLocal = Kernel.isTransitive(axiom.getRole());
     }
 
+    @Override
     public void visit(AxiomRoleReflexive axiom) {
         isLocal = Kernel.isReflexive(axiom.getRole());
     }
 
+    @Override
     public void visit(AxiomRoleIrreflexive axiom) {
         isLocal = Kernel.isIrreflexive(axiom.getRole());
     }
 
+    @Override
     public void visit(AxiomRoleSymmetric axiom) {
         isLocal = Kernel.isSymmetric(axiom.getRole());
     }
 
+    @Override
     public void visit(AxiomRoleAsymmetric axiom) {
         isLocal = Kernel.isAsymmetric(axiom.getRole());
     }
 
+    @Override
     public void visit(AxiomORoleFunctional axiom) {
         isLocal = Kernel.isFunctional(axiom.getRole());
     }
 
+    @Override
     public void visit(AxiomDRoleFunctional axiom) {
         isLocal = Kernel.isFunctional(axiom.getRole());
     }
 
+    @Override
     public void visit(AxiomRoleInverseFunctional axiom) {
         isLocal = Kernel.isInverseFunctional(axiom.getRole());
     }
 
+    @Override
     public void visit(AxiomConceptInclusion axiom) {
         isLocal = Kernel.isSubsumedBy(axiom.getSubConcept(), axiom.getSupConcept());
     }
 
     // for top locality, this might be local
+    @Override
     public void visit(AxiomInstanceOf axiom) {
         isLocal = Kernel.isInstance(axiom.getIndividual(), axiom.getC());
     }
 
+    @Override
     public void visit(AxiomRelatedTo axiom) {
         isLocal = Kernel.isInstance(axiom.getIndividual(), ExprMap.get(axiom));
     }
 
+    @Override
     public void visit(AxiomRelatedToNot axiom) {
         isLocal = Kernel.isInstance(axiom.getIndividual(), ExprMap.get(axiom));
     }
 
+    @Override
     public void visit(AxiomValueOf axiom) {
         isLocal = Kernel.isInstance(axiom.getIndividual(), ExprMap.get(axiom));
     }
 
+    @Override
     public void visit(AxiomValueOfNot axiom) {
         isLocal = Kernel.isInstance(axiom.getIndividual(), ExprMap.get(axiom));
     }

@@ -42,30 +42,37 @@ public class DatatypeNumericEnumeration<R extends Comparable<R>> extends
         return true;
     }
 
+    @Override
     public boolean hasMinExclusive() {
         return false;
     }
 
+    @Override
     public boolean hasMinInclusive() {
         return !literals.isEmpty();
     }
 
+    @Override
     public boolean hasMaxExclusive() {
         return false;
     }
 
+    @Override
     public boolean hasMaxInclusive() {
         return !literals.isEmpty();
     }
 
+    @Override
     public boolean hasMin() {
         return !literals.isEmpty();
     }
 
+    @Override
     public boolean hasMax() {
         return !literals.isEmpty();
     }
 
+    @Override
     public BigDecimal getMin() {
         if (literals.isEmpty()) {
             return null;
@@ -73,6 +80,7 @@ public class DatatypeNumericEnumeration<R extends Comparable<R>> extends
         return (BigDecimal) Facets.minInclusive.parseNumber(literals.get(0));
     }
 
+    @Override
     public BigDecimal getMax() {
         if (literals.isEmpty()) {
             return null;

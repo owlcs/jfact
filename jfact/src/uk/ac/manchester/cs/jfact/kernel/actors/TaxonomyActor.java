@@ -152,6 +152,7 @@ public class TaxonomyActor implements Actor {
     /** taxonomy walking method. */
     /** @return true if node was processed, and there is no need to go further,
      *         false if node can not be processed in current settings */
+    @Override
     public boolean apply(TaxonomyVertex v) {
         List<Expression> syn = tryEntry(v.getPrimer());
         for (ClassifiableEntry p : v.begin_syn()) {

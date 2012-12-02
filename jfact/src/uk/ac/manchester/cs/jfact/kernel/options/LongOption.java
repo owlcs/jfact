@@ -15,10 +15,12 @@ public class LongOption implements Option {
         value = defVal;
     }
 
+    @Override
     public String getOptionName() {
         return optionName;
     }
 
+    @Override
     public <O> O getValue() {
         return (O) value;
     }

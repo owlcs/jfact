@@ -25,23 +25,28 @@ public class ConceptDataMaxCardinality implements ConceptDataCardinalityExpressi
         delegate = n;
     }
 
+    @Override
     public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
+    @Override
     public int getCardinality() {
         return delegate;
     }
 
     /** get access to the argument */
+    @Override
     public DataRoleExpression getDataRoleExpression() {
         return dataRoleExpression;
     }
 
+    @Override
     public DataExpression getExpr() {
         return delegateExpression;
     }

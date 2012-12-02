@@ -21,6 +21,7 @@ import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 public class DLVertex extends DLVertexTagDFS {
     static class ChildSet {
         private Comparator<Integer> c = new Comparator<Integer>() {
+            @Override
             public int compare(Integer o1, Integer o2) {
                 if (o1.equals(o2)) {
                     return 0;

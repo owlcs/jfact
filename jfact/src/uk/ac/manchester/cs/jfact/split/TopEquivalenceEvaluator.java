@@ -120,8 +120,9 @@ public class TopEquivalenceEvaluator extends SigAccessor implements DLExpression
 
     @Override
     public void visit(ConceptObjectMinCardinality expr) {
-        isTopEq = expr.getCardinality() == 0 || sig.topRLocal()
-                && isTopEquivalent(expr.getOR()) && isTopEquivalent(expr.getConcept());
+        isTopEq = expr.getCardinality() == 0 || expr.getCardinality() == 1
+                && sig.topRLocal() && isTopEquivalent(expr.getOR())
+                && isTopEquivalent(expr.getConcept());
     }
 
     @Override

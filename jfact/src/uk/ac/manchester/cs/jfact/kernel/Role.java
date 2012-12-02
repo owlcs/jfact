@@ -98,13 +98,8 @@ public class Role extends ClassifiableEntry {
 
     /** add automaton of a sub-role to a given one */
     private void addSubRoleAutomaton(Role R) {
-        if (equals(R)) {
-            return;
-        }
-        if (R.isSimple()) {
-            automaton.addSimpleRA(R.automaton);
-        } else {
-            automaton.addRA(R.automaton);
+        if (!equals(R)) {
+            automaton.addRA(R.getAutomaton());
         }
     }
 
@@ -157,42 +152,9 @@ public class Role extends ClassifiableEntry {
         inverse = p;
     }
 
-    private boolean simple;
-
     /** a Simple flag (not simple if role or any of its sub-roles is transitive) */
     public boolean isSimple() {
-        return simple;
-    }
-
-    public void setSimple() {
-        simple = true;
-    }
-
-    public void clearSimple() {
-        simple = false;
-    }
-
-    public void setSimple(boolean action) {
-        simple = action;
-    }
-
-    private boolean finished;
-
-    /** flag for recursive walks (used in Automaton creation) */
-    public boolean isFinished() {
-        return finished;
-    }
-
-    public void setFinished() {
-        finished = true;
-    }
-
-    public void clearFinished() {
-        finished = false;
-    }
-
-    public void setFinished(boolean action) {
-        finished = action;
+        return automaton.isSimple();
     }
 
     public DLTree getTSpecialDomain() {
@@ -732,8 +694,6 @@ public class Role extends ClassifiableEntry {
         // fills descendants by the taxonomy
         AddRoleActor desc = new AddRoleActor(descendantRoles);
         pTax.getRelativesInfo(getTaxVertex(), desc, false, false, false);
-        // determine Simple attribute
-        initSimple();
         // init map for fast Anc/Desc access
         addAncestorsToBitMap(ancestorMap);
     }
@@ -745,19 +705,6 @@ public class Role extends ClassifiableEntry {
         }
     }
 
-    private void initSimple() {
-        assert !isSynonym();
-        this.setSimple(false);
-        if (isTransitive() || !subCompositions.isEmpty()) {
-            return;
-        }
-        for (Role p : descendantRoles) {
-            if (p.isTransitive() || !p.subCompositions.isEmpty()) {
-                return;
-            }
-        }
-        this.setSimple(true);
-    }
 
     private boolean isRealTopFunc() {
         if (!isFunctional()) {
@@ -817,10 +764,6 @@ public class Role extends ClassifiableEntry {
         for (int i = 0; i < RS.size(); i++) {
             Role p = RS.get(i);
             Role R = resolveSynonym(p);
-            if (R.isTop()) {
-                throw new ReasonerInternalException(
-                        "Universal role can not be used in role composition chain");
-            }
             if (R.isBottom()) {
                 RS.clear();
                 return;
@@ -846,7 +789,7 @@ public class Role extends ClassifiableEntry {
     }
 
     private void completeAutomaton(Set<Role> RInProcess) {
-        if (isFinished()) {
+        if (automaton.isCompleted()) {
             return;
             // if we found a cycle...
         }
@@ -869,7 +812,7 @@ public class Role extends ClassifiableEntry {
                     RoleAutomaton.initial));
         }
         // here automaton is complete
-        this.setFinished(true);
+        automaton.setCompleted(true);
         for (ClassifiableEntry p : toldSubsumers) {
             Role R = (Role) resolveSynonym(p);
             R.addSubRoleAutomaton(this);
@@ -921,6 +864,7 @@ public class Role extends ClassifiableEntry {
 }
 
 class RoleCompare implements Comparator<Role>, Serializable {
+    @Override
     public int compare(Role p, Role q) {
         int n = p.getId();
         int m = q.getId();

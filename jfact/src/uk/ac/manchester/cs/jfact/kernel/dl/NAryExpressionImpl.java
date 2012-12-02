@@ -19,29 +19,35 @@ public class NAryExpressionImpl<Argument extends Expression> implements
 
     public NAryExpressionImpl() {}
 
+    @Override
     public void add(Collection<Expression> v) {
         for (Expression e : v) {
             add(e);
         }
     }
 
+    @Override
     public void add(Expression p) {
         Base.add(transform(p));
     }
 
+    @Override
     public List<Argument> getArguments() {
         return Base;
     }
 
+    @Override
     public boolean isEmpty() {
         return Base.isEmpty();
     }
 
+    @Override
     public int size() {
         return Base.size();
     }
 
     /** transform general expression into the argument one */
+    @Override
     public Argument transform(Expression arg) {
         return (Argument) arg;
     }

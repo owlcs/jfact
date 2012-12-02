@@ -75,36 +75,44 @@ public class OntologyLoader implements DLAxiomVisitor {
         }
     }
 
+    @Override
     public void visit(AxiomDeclaration axiom) {
         ensureNames(axiom.getDeclaration());
         axiom.getDeclaration().accept(expressionTranslator); // names in the KB
     }
 
     // n-ary axioms
+    @Override
     public void visit(AxiomEquivalentConcepts axiom) {
         tbox.processEquivalentC(prepareArgList(axiom.getArguments()));
     }
 
+    @Override
     public void visit(AxiomDisjointConcepts axiom) {
         tbox.processDisjointC(prepareArgList(axiom.getArguments()));
     }
 
+    @Override
     public void visit(AxiomEquivalentORoles axiom) {
         tbox.processEquivalentR(prepareArgList(axiom.getArguments()));
     }
 
+    @Override
     public void visit(AxiomEquivalentDRoles axiom) {
         tbox.processEquivalentR(prepareArgList(axiom.getArguments()));
     }
 
+    @Override
     public void visit(AxiomDisjointORoles axiom) {
         tbox.processDisjointR(prepareArgList(axiom.getArguments()));
     }
 
+    @Override
     public void visit(AxiomDisjointDRoles axiom) {
         tbox.processDisjointR(prepareArgList(axiom.getArguments()));
     }
 
+    @Override
     public void visit(AxiomDisjointUnion axiom) {
         // first make a disjoint axiom
         tbox.processDisjointC(prepareArgList(axiom.getArguments()));
@@ -120,19 +128,23 @@ public class OntologyLoader implements DLAxiomVisitor {
         tbox.processEquivalentC(ArgList);
     }
 
+    @Override
     public void visit(AxiomSameIndividuals axiom) {
         tbox.processSame(prepareArgList(axiom.getArguments()));
     }
 
+    @Override
     public void visit(AxiomDifferentIndividuals axiom) {
         tbox.processDifferent(prepareArgList(axiom.getArguments()));
     }
 
+    @Override
     public void visit(AxiomFairnessConstraint axiom) {
         tbox.setFairnessConstraintDLTrees(prepareArgList(axiom.getArguments()));
     }
 
     // role axioms
+    @Override
     public void visit(AxiomRoleInverse axiom) {
         ensureNames(axiom.getRole());
         ensureNames(axiom.getInvRole());
@@ -143,6 +155,7 @@ public class OntologyLoader implements DLAxiomVisitor {
         tbox.getRM(R).addRoleSynonym(iR.inverse(), R);
     }
 
+    @Override
     public void visit(AxiomORoleSubsumption axiom) {
         ensureNames(axiom.getRole());
         ensureNames(axiom.getSubRole());
@@ -152,6 +165,7 @@ public class OntologyLoader implements DLAxiomVisitor {
         tbox.getRM(R).addRoleParent(Sub, R);
     }
 
+    @Override
     public void visit(AxiomDRoleSubsumption axiom) {
         ensureNames(axiom.getRole());
         ensureNames(axiom.getSubRole());
@@ -159,30 +173,64 @@ public class OntologyLoader implements DLAxiomVisitor {
                 "Role expression expected in Data Roles Subsumption axiom");
         Role S = getRole(axiom.getSubRole(),
                 "Role expression expected in Data Roles Subsumption axiom");
-        tbox.getDRM().addRoleParent(S, R);
+        tbox.getDRM().addRoleParentProper(S, R);
     }
 
-    public void visit(AxiomORoleDomain axiom) {
+    @Override
+    public void visit(AxiomORoleDomain axiom)
+    {
         ensureNames(axiom.getRole());
         ensureNames(axiom.getDomain());
-        getRole(axiom.getRole(), "Role expression expected in Object Role Domain axiom")
-                .setDomain(axiom.getDomain().accept(expressionTranslator));
+        Role R = getRole(axiom.getRole(),
+                "Role expression expected in Object Role Domain axiom");
+        DLTree C = axiom.getDomain().accept(expressionTranslator);
+
+        if (R.isTop()) {
+            // add GCI
+            tbox.addSubsumeAxiom(DLTreeFactory.createTop(), C);
+        } else if (!R.isBottom()) {
+            // nothing to do for bottom
+            R.setDomain(C);
+        }
     }
 
-    public void visit(AxiomDRoleDomain axiom) {
+    @Override
+    public void visit(AxiomDRoleDomain axiom)
+    {
         ensureNames(axiom.getRole());
         ensureNames(axiom.getDomain());
-        getRole(axiom.getRole(), "Role expression expected in Data Role Domain axiom")
-                .setDomain(axiom.getDomain().accept(expressionTranslator));
+        Role R = getRole(axiom.getRole(),
+                "Role expression expected in Data Role Domain axiom");
+        DLTree C = axiom.getDomain().accept(expressionTranslator);
+
+        if (R.isTop()) {
+            // add GCI
+            tbox.addSubsumeAxiom(DLTreeFactory.createTop(), C);
+        } else if (!R.isBottom()) {
+            // nothing to do for bottom
+            R.setDomain(C);
+        }
     }
 
-    public void visit(AxiomORoleRange axiom) {
+    @Override
+    public void visit(AxiomORoleRange axiom)
+    {
         ensureNames(axiom.getRole());
         ensureNames(axiom.getRange());
-        getRole(axiom.getRole(), "Role expression expected in Object Role Range axiom")
-                .setRange(axiom.getRange().accept(expressionTranslator));
+        Role R = getRole(axiom.getRole(),
+                "Role expression expected in Object Role Range axiom");
+        DLTree C = axiom.getRange().accept(expressionTranslator);
+
+        if (R.isTop()) {
+            // add GCI
+            tbox.addSubsumeAxiom(DLTreeFactory.createTop(), C);
+        } else if (!R.isBottom()) {
+            // nothing to do for bottom
+            R.setRange(C);
+        }
     }
 
+    @Override
     public void visit(AxiomDRoleRange axiom) {
         ensureNames(axiom.getRole());
         ensureNames(axiom.getRange());
@@ -190,6 +238,7 @@ public class OntologyLoader implements DLAxiomVisitor {
                 .setRange(axiom.getRange().accept(expressionTranslator));
     }
 
+    @Override
     public void visit(AxiomRoleTransitive axiom) {
         ensureNames(axiom.getRole());
         Role role = getRole(axiom.getRole(),
@@ -200,6 +249,7 @@ public class OntologyLoader implements DLAxiomVisitor {
         }
     }
 
+    @Override
     public void visit(AxiomRoleReflexive axiom) {
         ensureNames(axiom.getRole());
         Role role = getRole(axiom.getRole(),
@@ -213,6 +263,7 @@ public class OntologyLoader implements DLAxiomVisitor {
         }
     }
 
+    @Override
     public void visit(AxiomRoleIrreflexive axiom) {
         ensureNames(axiom.getRole());
         // if (isUniversalRole(axiom.getRole())) {
@@ -232,6 +283,7 @@ public class OntologyLoader implements DLAxiomVisitor {
         }
     }
 
+    @Override
     public void visit(AxiomRoleSymmetric axiom) {
         ensureNames(axiom.getRole());
         Role R = getRole(axiom.getRole(),
@@ -239,10 +291,11 @@ public class OntologyLoader implements DLAxiomVisitor {
         // if (!isUniversalRole(axiom.getRole())) {
         if (!R.isTop() && !R.isBottom()) {
             R.setSymmetric(true);
-            tbox.getORM().addRoleParent(R, R.inverse());
+            tbox.getORM().addRoleParentProper(R, R.inverse());
         }
     }
 
+    @Override
     public void visit(AxiomRoleAsymmetric axiom) {
         ensureNames(axiom.getRole());
         Role R = getRole(axiom.getRole(),
@@ -257,6 +310,7 @@ public class OntologyLoader implements DLAxiomVisitor {
         }
     }
 
+    @Override
     public void visit(AxiomORoleFunctional axiom) {
         ensureNames(axiom.getRole());
         Role role = getRole(axiom.getRole(),
@@ -270,6 +324,7 @@ public class OntologyLoader implements DLAxiomVisitor {
         }
     }
 
+    @Override
     public void visit(AxiomDRoleFunctional axiom) {
         ensureNames(axiom.getRole());
         Role role = getRole(axiom.getRole(),
@@ -283,6 +338,7 @@ public class OntologyLoader implements DLAxiomVisitor {
         }
     }
 
+    @Override
     public void visit(AxiomRoleInverseFunctional axiom) {
         ensureNames(axiom.getRole());
         Role role = getRole(axiom.getRole(),
@@ -297,6 +353,7 @@ public class OntologyLoader implements DLAxiomVisitor {
     }
 
     // concept/individual axioms
+    @Override
     public void visit(AxiomConceptInclusion axiom) {
         ensureNames(axiom.getSubConcept());
         ensureNames(axiom.getSupConcept());
@@ -305,6 +362,7 @@ public class OntologyLoader implements DLAxiomVisitor {
         tbox.addSubsumeAxiom(C, D);
     }
 
+    @Override
     public void visit(AxiomInstanceOf axiom) {
         ensureNames(axiom.getIndividual());
         ensureNames(axiom.getC());
@@ -314,6 +372,7 @@ public class OntologyLoader implements DLAxiomVisitor {
         tbox.addSubsumeAxiom(I, C);
     }
 
+    @Override
     public void visit(AxiomRelatedTo axiom) {
         ensureNames(axiom.getIndividual());
         ensureNames(axiom.getRelation());
@@ -335,6 +394,7 @@ public class OntologyLoader implements DLAxiomVisitor {
         }
     }
 
+    @Override
     public void visit(AxiomRelatedToNot axiom) {
         ensureNames(axiom.getIndividual());
         ensureNames(axiom.getRelation());
@@ -361,6 +421,7 @@ public class OntologyLoader implements DLAxiomVisitor {
         }
     }
 
+    @Override
     public void visit(AxiomValueOf axiom) {
         ensureNames(axiom.getIndividual());
         ensureNames(axiom.getAttribute());
@@ -380,6 +441,7 @@ public class OntologyLoader implements DLAxiomVisitor {
         }
     }
 
+    @Override
     public void visit(AxiomValueOfNot axiom) {
         ensureNames(axiom.getIndividual());
         ensureNames(axiom.getAttribute());
@@ -406,6 +468,7 @@ public class OntologyLoader implements DLAxiomVisitor {
     }
 
     /** load ontology to a given KB */
+    @Override
     public void visitOntology(Ontology ontology) {
         for (Axiom p : ontology.getAxioms()) {
             if (p.isUsed()) {

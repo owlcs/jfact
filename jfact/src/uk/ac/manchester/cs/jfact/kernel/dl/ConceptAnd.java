@@ -20,11 +20,32 @@ public class ConceptAnd extends NAryExpressionImpl<ConceptExpression> implements
         add(v);
     }
 
+    @Override
     public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
+    }
+
+    @Override
+    public int hashCode() {
+        return getArguments().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof ConceptAnd) {
+            return getArguments().equals(((ConceptAnd) obj).getArguments());
+        }
+        return false;
     }
 }

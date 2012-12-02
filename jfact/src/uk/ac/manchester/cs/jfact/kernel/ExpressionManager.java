@@ -49,24 +49,28 @@ public class ExpressionManager {
     }
 
     protected static class DataroleNameCreator implements NameCreator<DataRoleName> {
+        @Override
         public DataRoleName makeEntry(String name) {
             return new DataRoleName(name);
         }
     }
 
     protected static class ObjectroleNameCreator implements NameCreator<ObjectRoleName> {
+        @Override
         public ObjectRoleName makeEntry(String name) {
             return new ObjectRoleName(name);
         }
     }
 
     protected static class IndividualNameCreator implements NameCreator<IndividualName> {
+        @Override
         public IndividualName makeEntry(String name) {
             return new IndividualName(name);
         }
     }
 
     protected static class ConceptNameCreator implements NameCreator<ConceptName> {
+        @Override
         public ConceptName makeEntry(String name) {
             return new ConceptName(name);
         }
@@ -103,6 +107,9 @@ public class ExpressionManager {
     private DataBottom dataBottom = new DataBottom();
     /** cache for the role inverses */
     private InverseRoleCache inverseRoleCache = new InverseRoleCache();
+
+    // / cache for the one-of singletons
+    private Map<IndividualExpression, ConceptExpression> OneOfCache = new HashMap<IndividualExpression, ConceptExpression>();
 
     /** set Top/Bot properties */
     public void setTopBottomRoles(String topORoleName, String botORoleName,
@@ -210,6 +217,16 @@ public class ExpressionManager {
     /** get an n-ary one-of expression; take the arguments from the last argument
      * list */
     public ConceptExpression oneOf(List<Expression> l) {
+        
+        if (l.size() == 1) {
+            IndividualExpression i = (IndividualExpression) l.get(0);
+            ConceptExpression c = OneOfCache.get(i);
+            if (c == null) {
+                c = new ConceptOneOf(l);
+                OneOfCache.put(i, c);
+            }
+            return c;
+        }
         return new ConceptOneOf(l);
     }
 
@@ -401,5 +418,6 @@ public class ExpressionManager {
         objectRoleNameset.clear();
         dataRoleNameset.clear();
         inverseRoleCache.clear();
+        OneOfCache.clear();
     }
 }

@@ -263,7 +263,7 @@ public class ToDoList {
         }
     }
 
-    private boolean saveStateGenerationStarted = false;
+    protected boolean saveStateGenerationStarted = false;
 
     public boolean isSaveStateGenerationStarted() {
         return saveStateGenerationStarted;

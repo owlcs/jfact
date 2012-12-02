@@ -24,10 +24,12 @@ public class AxiomValueOf extends AxiomIndividual {
         value = v;
     }
 
+    @Override
     public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }

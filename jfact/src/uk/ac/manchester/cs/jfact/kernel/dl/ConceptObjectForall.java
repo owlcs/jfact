@@ -21,19 +21,23 @@ public class ConceptObjectForall implements ConceptObjectRCExpression {
         delegate = R;
     }
 
+    @Override
     public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
     /** get access to the argument */
+    @Override
     public ConceptExpression getConcept() {
         return conceptExpression;
     }
 
+    @Override
     public ObjectRoleExpression getOR() {
         return delegate;
     }

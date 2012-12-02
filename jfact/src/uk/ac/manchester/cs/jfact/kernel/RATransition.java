@@ -80,4 +80,10 @@ public class RATransition {
         o.print(" -> ");
         o.print(final_state());
     }
+
+    // / check whether transition is TopRole one
+    boolean isTop() {
+        return label.size() == 1 && label.iterator().next().isTop();
+    }
+
 }

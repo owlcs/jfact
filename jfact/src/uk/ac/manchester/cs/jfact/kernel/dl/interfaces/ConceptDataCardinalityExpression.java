@@ -10,6 +10,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 /** general data role cardinality expression */
 public interface ConceptDataCardinalityExpression extends ConceptDataRVExpression,
         NumberArg {
+    @Override
     /** accept method for the visitor pattern */
     void accept(DLExpressionVisitor visitor);
 }

@@ -34,22 +34,26 @@ public class DatatypeFactory {
     public static final Datatype<String> STRING = new STRING_DATATYPE();
     public static final Datatype<String> PLAINLITERAL = new PLAINLITERAL_DATATYPE();
     public static final Datatype<BigDecimal> REAL = new REAL_DATATYPE<BigDecimal>() {
+        @Override
         public BigDecimal parseValue(String s) {
             return new BigDecimal(s);
         }
     };
     public static final Datatype<BigDecimal> RATIONAL = new RATIONAL_DATATYPE<BigDecimal>() {
+        @Override
         public BigDecimal parseValue(String s) {
             return new BigDecimal(s);
         }
     };
     public static final Datatype<Calendar> DATETIMESTAMP = new DATETIMESTAMP_DATATYPE();
     public static final Datatype<BigDecimal> DECIMAL = new DECIMAL_DATATYPE<BigDecimal>() {
+        @Override
         public BigDecimal parseValue(String s) {
             return new BigDecimal(s);
         }
     };
     public static final Datatype<BigInteger> INTEGER = new INTEGER_DATATYPE<BigInteger>() {
+        @Override
         public BigInteger parseValue(String s) {
             return new BigInteger(s);
         }
@@ -57,6 +61,7 @@ public class DatatypeFactory {
     public static final Datatype<Double> DOUBLE = new DOUBLE_DATATYPE();
     public static final Datatype<Float> FLOAT = new FLOAT_DATATYPE();
     public static final Datatype<BigInteger> NONPOSITIVEINTEGER = new NONPOSITIVEINTEGER_DATATYPE<BigInteger>() {
+        @Override
         public BigInteger parseValue(String s) {
             BigInteger parse = new BigInteger(s);
             if (parse.compareTo(BigInteger.ZERO) > 0) {
@@ -67,6 +72,7 @@ public class DatatypeFactory {
         }
     };
     public static final Datatype<BigInteger> NEGATIVEINTEGER = new NEGATIVEINTEGER_DATATYPE<BigInteger>() {
+        @Override
         public BigInteger parseValue(String s) {
             BigInteger parse = new BigInteger(s);
             if (parse.compareTo(new BigInteger("-1")) > 0) {
@@ -77,6 +83,7 @@ public class DatatypeFactory {
         }
     };
     public static final Datatype<BigInteger> NONNEGATIVEINTEGER = new NONNEGATIVEINTEGER_DATATYPE<BigInteger>() {
+        @Override
         public BigInteger parseValue(String s) {
             BigInteger parseValue = new BigInteger(s);
             if (parseValue.compareTo(BigInteger.ZERO) < 0) {
@@ -87,6 +94,7 @@ public class DatatypeFactory {
         }
     };
     public static final Datatype<BigInteger> POSITIVEINTEGER = new POSITIVEINTEGER_DATATYPE<BigInteger>() {
+        @Override
         public BigInteger parseValue(String s) {
             BigInteger parseValue = new BigInteger(s);
             if (parseValue.compareTo(BigInteger.ZERO) <= 0) {
@@ -97,26 +105,31 @@ public class DatatypeFactory {
         }
     };
     public static final Datatype<Long> LONG = new LONG_DATATYPE<Long>() {
+        @Override
         public Long parseValue(String s) {
             return Long.parseLong(s);
         }
     };
     public static final Datatype<Integer> INT = new INT_DATATYPE<Integer>() {
+        @Override
         public Integer parseValue(String s) {
             return Integer.parseInt(s);
         }
     };
     public static final Datatype<Short> SHORT = new SHORT_DATATYPE<Short>() {
+        @Override
         public Short parseValue(String s) {
             return Short.parseShort(s);
         }
     };
     public static final Datatype<Byte> BYTE = new BYTE_DATATYPE<Byte>() {
+        @Override
         public Byte parseValue(String s) {
             return Byte.parseByte(s);
         }
     };
     public static final Datatype<BigInteger> UNSIGNEDLONG = new UNSIGNEDLONG_DATATYPE<BigInteger>() {
+        @Override
         public BigInteger parseValue(String s) {
             BigInteger b = new BigInteger(s);
             if (b.compareTo(BigInteger.ZERO) < 0) {
@@ -126,6 +139,7 @@ public class DatatypeFactory {
         }
     };
     public static final Datatype<Long> UNSIGNEDINT = new UNSIGNEDINT_DATATYPE<Long>() {
+        @Override
         public Long parseValue(String s) {
             Long parseInt = Long.parseLong(s);
             if (parseInt < 0) {
@@ -135,6 +149,7 @@ public class DatatypeFactory {
         }
     };
     public static final Datatype<Integer> UNSIGNEDSHORT = new UNSIGNEDSHORT_DATATYPE<Integer>() {
+        @Override
         public Integer parseValue(String s) {
             Integer parseShort = Integer.parseInt(s);
             if (parseShort < 0) {
@@ -144,6 +159,7 @@ public class DatatypeFactory {
         }
     };
     public static final Datatype<Short> UNSIGNEDBYTE = new UNSIGNEDBYTE_DATATYPE<Short>() {
+        @Override
         public Short parseValue(String s) {
             Short parseByte = Short.parseShort(s);
             if (parseByte < 0) {
@@ -522,30 +538,37 @@ public class DatatypeFactory {
             return new NumericDatatypeWrapper<O>(d);
         }
 
+        @Override
         public boolean hasMinExclusive() {
             return knownFacetValues.containsKey(minExclusive);
         }
 
+        @Override
         public boolean hasMinInclusive() {
             return knownFacetValues.containsKey(minInclusive);
         }
 
+        @Override
         public boolean hasMaxExclusive() {
             return knownFacetValues.containsKey(maxExclusive);
         }
 
+        @Override
         public boolean hasMaxInclusive() {
             return knownFacetValues.containsKey(maxInclusive);
         }
 
+        @Override
         public boolean hasMin() {
             return this.hasMinInclusive() || this.hasMinExclusive();
         }
 
+        @Override
         public boolean hasMax() {
             return this.hasMaxInclusive() || this.hasMaxExclusive();
         }
 
+        @Override
         public BigDecimal getMin() {
             if (this.hasMinExclusive()) {
                 return (BigDecimal) minExclusive.parseNumber(knownFacetValues
@@ -558,6 +581,7 @@ public class DatatypeFactory {
             return null;
         }
 
+        @Override
         public BigDecimal getMax() {
             if (this.hasMaxExclusive()) {
                 return (BigDecimal) maxExclusive.parseNumber(knownFacetValues
@@ -579,6 +603,7 @@ public class DatatypeFactory {
             knownFacetValues.put(whiteSpace, whitespace.collapse);
         }
 
+        @Override
         public String parseValue(String s) {
             return whitespace.collapse.normalize(s);
         }
@@ -602,6 +627,7 @@ public class DatatypeFactory {
             knownFacetValues.put(whiteSpace, whitespace.collapse);
         }
 
+        @Override
         public String parseValue(String s) {
             return whitespace.collapse.normalize(s);
         }
@@ -643,6 +669,7 @@ public class DatatypeFactory {
             return toReturn;
         }
 
+        @Override
         public Boolean parseValue(String s) {
             whitespace facet = (whitespace) whiteSpace.parse(knownFacetValues
                     .get(whiteSpace));
@@ -678,6 +705,7 @@ public class DatatypeFactory {
             return this;
         }
 
+        @Override
         public Calendar parseValue(String s) {
             XMLGregorianCalendar cal;
             try {
@@ -765,30 +793,37 @@ public class DatatypeFactory {
             }
         }
 
+        @Override
         public boolean hasMinExclusive() {
             return knownFacetValues.containsKey(minExclusive);
         }
 
+        @Override
         public boolean hasMinInclusive() {
             return knownFacetValues.containsKey(minInclusive);
         }
 
+        @Override
         public boolean hasMaxExclusive() {
             return knownFacetValues.containsKey(maxExclusive);
         }
 
+        @Override
         public boolean hasMaxInclusive() {
             return knownFacetValues.containsKey(maxInclusive);
         }
 
+        @Override
         public boolean hasMin() {
             return hasMinInclusive() || hasMinExclusive();
         }
 
+        @Override
         public boolean hasMax() {
             return hasMaxInclusive() || hasMaxExclusive();
         }
 
+        @Override
         public Calendar getMin() {
             if (hasMinExclusive()) {
                 return (Calendar) getFacetValue(minExclusive);
@@ -799,6 +834,7 @@ public class DatatypeFactory {
             return null;
         }
 
+        @Override
         public Calendar getMax() {
             if (hasMaxExclusive()) {
                 return (Calendar) getFacetValue(maxExclusive);
@@ -818,6 +854,7 @@ public class DatatypeFactory {
             knownFacetValues.put(whiteSpace, whitespace.collapse);
         }
 
+        @Override
         public String parseValue(String s) {
             return whitespace.collapse.normalize(s);
         }
@@ -842,6 +879,7 @@ public class DatatypeFactory {
             ancestors = Collections.emptySet();
         }
 
+        @Override
         public String parseValue(String s) {
             return s;
         }
@@ -855,6 +893,7 @@ public class DatatypeFactory {
             knownFacetValues.putAll(LITERAL.getKnownFacetValues());
         }
 
+        @Override
         public String parseValue(String s) {
             return s;
         }
@@ -922,6 +961,7 @@ public class DatatypeFactory {
             knownFacetValues.put(whiteSpace, whitespace.preserve);
         }
 
+        @Override
         public String parseValue(String s) {
             return s;
         }
@@ -977,6 +1017,7 @@ public class DatatypeFactory {
             return true;
         }
 
+        @Override
         public Double parseValue(String s) {
             return Double.parseDouble(s);
         }
@@ -1015,6 +1056,7 @@ public class DatatypeFactory {
             return true;
         }
 
+        @Override
         public Float parseValue(String s) {
             String trim = s.trim();
             if (trim.equals("-INF")) {

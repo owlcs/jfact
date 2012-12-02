@@ -30,7 +30,8 @@ public class AxiomSet {
     /** add already built GCI p */
     private void insertGCI(Axiom p) {
         tboxHost.getOptions().getAbsorptionLog()
-                .print("\n new axiom (", accumulator.size(), "):", p);
+.print("\n new axiom (")
+                .print(accumulator.size()).print("):", p);
         accumulator.add(p);
     }
 
@@ -114,7 +115,8 @@ public class AxiomSet {
         // size
         for (int i = 0; i < accumulator.size(); i++) {
             Axiom ax = accumulator.get(i);
-            tboxHost.getOptions().getAbsorptionLog().print("\nProcessing (", i, "):");
+            tboxHost.getOptions().getAbsorptionLog().print("\nProcessing (").print(i)
+                    .print("):");
             if (!absorbGCI(ax)) {
                 GCIs.add(ax);
             }
@@ -122,7 +124,8 @@ public class AxiomSet {
         // clear absorbed and remove them from Accum
         accumulator = GCIs;
         tboxHost.getOptions().getAbsorptionLog()
-                .print("\nAbsorption done with ", accumulator.size(), " GCIs left\n");
+.print("\nAbsorption done with ")
+                .print(accumulator.size()).print(" GCIs left\n");
         printStatistics();
         return size();
     }
@@ -144,6 +147,7 @@ public class AxiomSet {
             switch (c) {
                 case 'B':
                     actions.add(new Abs() {
+                        @Override
                         public boolean absMethod(Axiom ax) {
                             return ax.absorbIntoBottom(tboxHost);
                         }
@@ -151,6 +155,7 @@ public class AxiomSet {
                     break;
                 case 'T':
                     actions.add(new Abs() {
+                        @Override
                         public boolean absMethod(Axiom ax) {
                             return ax.absorbIntoTop(tboxHost);
                         }
@@ -158,6 +163,7 @@ public class AxiomSet {
                     break;
                 case 'E':
                     actions.add(new Abs() {
+                        @Override
                         public boolean absMethod(Axiom ax) {
                             return processNewAxiom(ax.simplifyCN(tboxHost));
                         }
@@ -165,6 +171,7 @@ public class AxiomSet {
                     break;
                 case 'C':
                     actions.add(new Abs() {
+                        @Override
                         public boolean absMethod(Axiom ax) {
                             return ax.absorbIntoConcept(tboxHost);
                         }
@@ -172,6 +179,7 @@ public class AxiomSet {
                     break;
                 case 'N':
                     actions.add(new Abs() {
+                        @Override
                         public boolean absMethod(Axiom ax) {
                             return ax.absorbIntoNegConcept(tboxHost);
                         }
@@ -179,6 +187,7 @@ public class AxiomSet {
                     break;
                 case 'F':
                     actions.add(new Abs() {
+                        @Override
                         public boolean absMethod(Axiom ax) {
                             return processNewAxiom(ax.simplifyForall(tboxHost));
                         }
@@ -186,6 +195,7 @@ public class AxiomSet {
                     break;
                 case 'R':
                     actions.add(new Abs() {
+                        @Override
                         public boolean absMethod(Axiom ax) {
                             return ax.absorbIntoDomain(tboxHost);
                         }
@@ -193,6 +203,7 @@ public class AxiomSet {
                     break;
                 case 'S':
                     actions.add(new Abs() {
+                        @Override
                         public boolean absMethod(Axiom ax) {
                             return split(ax);
                         }
@@ -212,38 +223,42 @@ public class AxiomSet {
             return;
         }
         LogAdapter log = tboxHost.getOptions().getAbsorptionLog();
-        log.print("\nAbsorption dealt with ", get("SAbsInput"),
-                " input axioms\nThere were made ", get("SAbsAction"),
+        log.print("\nAbsorption dealt with ").print(get("SAbsInput"))
+                .print(" input axioms\nThere were made ").print(get("SAbsAction"))
+                .print(
                 " absorption actions, of which:");
         if (get("SAbsRepCN") > 0) {
-            log.print("\n\t", get("SAbsRepCN"), " concept name replacements");
+            log.print("\n\t").print(get("SAbsRepCN")).print(" concept name replacements");
         }
         if (get("SAbsRepForall") > 0) {
-            log.print("\n\t", get("SAbsRepForall"), " universals replacements");
+            log.print("\n\t").print(get("SAbsRepForall"))
+                    .print(" universals replacements");
         }
         if (get("SAbsSplit") > 0) {
-            log.print("\n\t", get("SAbsSplit"), " conjunction splits");
+            log.print("\n\t").print(get("SAbsSplit")).print(" conjunction splits");
         }
         if (get("SAbsBApply") > 0) {
-            log.print("\n\t", get("SAbsBApply"), " BOTTOM absorptions");
+            log.print("\n\t").print(get("SAbsBApply")).print(" BOTTOM absorptions");
         }
         if (get("SAbsTApply") > 0) {
-            log.print("\n\t", get("SAbsTApply"), " TOP absorptions");
+            log.print("\n\t").print(get("SAbsTApply")).print(" TOP absorptions");
         }
         if (get("SAbsCApply") > 0) {
-            log.print("\n\t", get("SAbsCApply"), " concept absorption with ",
-                    get("SAbsCAttempt"), " possibilities");
+            log.print("\n\t").print(get("SAbsCApply")).print(" concept absorption with ")
+                    .print(get("SAbsCAttempt")).print(" possibilities");
         }
         if (get("SAbsNApply") > 0) {
-            log.print("\n\t", get("SAbsNApply"), " negated concept absorption with ",
-                    get("SAbsNAttempt"), " possibilities");
+            log.print("\n\t").print(get("SAbsNApply"))
+                    .print(" negated concept absorption with ")
+                    .print(get("SAbsNAttempt")).print(" possibilities");
         }
         if (get("SAbsRApply") > 0) {
-            log.print("\n\t", get("SAbsRApply"), " role domain absorption with ",
-                    get("SAbsRAttempt"), " possibilities");
+            log.print("\n\t").print(get("SAbsRApply"))
+                    .print(" role domain absorption with ").print(get("SAbsRAttempt"))
+                    .print(" possibilities");
         }
         if (!accumulator.isEmpty()) {
-            log.print("\nThere are ", accumulator.size(), " GCIs left");
+            log.print("\nThere are ").print(accumulator.size()).print(" GCIs left");
         }
     }
 }

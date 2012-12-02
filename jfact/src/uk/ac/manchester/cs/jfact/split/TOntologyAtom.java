@@ -9,6 +9,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
 
 public class TOntologyAtom {
     static Comparator<TOntologyAtom> comparator = new Comparator<TOntologyAtom>() {
+        @Override
         public int compare(TOntologyAtom arg0, TOntologyAtom arg1) {
             return arg0.getId() - arg1.getId();
         }

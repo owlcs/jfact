@@ -34,12 +34,14 @@ import uk.ac.manchester.cs.jfact.split.TSplitVars;
 
 public class TBox {
     protected static class IndividualCreator implements NameCreator<Individual> {
+        @Override
         public Individual makeEntry(String name) {
             return new Individual(name);
         }
     }
 
     protected static class ConceptCreator implements NameCreator<Concept> {
+        @Override
         public Concept makeEntry(String name) {
             return new Concept(name);
         }
@@ -745,6 +747,15 @@ public class TBox {
         }
     }
 
+    // / check if the relevant part of KB contains top role
+    public boolean testHasTopRole() {
+        if (curFeature != null) {
+            return curFeature.hasTopRole();
+        } else {
+            return KBFeatures.hasTopRole();
+        }
+    }
+
     /** check if Sorted Reasoning is applicable */
     public boolean canUseSortedReasoning() {
         return useSortedReasoning && !GCIs.isGCI() && !GCIs.isReflexive();
@@ -851,6 +862,12 @@ public class TBox {
                     list.add(p.getTSpecialDomain().copy());
                 }
             }
+        }
+        // take chains that lead to Bot role into account
+        if (!objectRoleMaster.getBotRole().isSimple()) {
+            list.add(DLTreeFactory.createSNFForall(
+                    DLTreeFactory.createRole(objectRoleMaster.getBotRole()),
+                    DLTreeFactory.createBottom()));
         }
         if (list.size() > 0) {
             list.add(GCI);
@@ -1224,7 +1241,8 @@ public class TBox {
         pTax.finalise();
         locTimer.stop();
         if (config.getverboseOutput()) {
-            config.getLog().print(" done in ", locTimer.calcDelta(), " seconds\n\n");
+            config.getLog().print(" done in ").print(locTimer.calcDelta())
+                    .print(" seconds\n\n");
         }
         if (needConcept && kbStatus.ordinal() < kbClassified.ordinal()) {
             kbStatus = kbClassified;
@@ -1431,7 +1449,7 @@ public class TBox {
         pt.stop();
         consistTime = pt.calcDelta();
         if (config.getverboseOutput()) {
-            config.getLog().print(" done in ", consistTime, " seconds\n\n");
+            config.getLog().print(" done in ").print(consistTime).print(" seconds\n\n");
         }
         return ret;
     }
@@ -1578,8 +1596,9 @@ public class TBox {
             o.print("KB is inconsistent. Query is NOT processed\nConsistency");
         }
         long sum = preprocTime + consistTime;
-        o.print(" check done in ", time, " seconds\nof which:\nPreproc. takes ",
-                preprocTime, " seconds\nConsist. takes ", consistTime, " seconds");
+        o.print(" check done in ").print(time)
+                .print(" seconds\nof which:\nPreproc. takes ").print(preprocTime)
+                .print(" seconds\nConsist. takes ").print(consistTime).print(" seconds");
         if (nomReasoner != null) {
             o.print("\nReasoning NOM:");
             sum += nomReasoner.printReasoningTime(o);
@@ -2117,7 +2136,8 @@ public class TBox {
         pt.stop();
         preprocTime = pt.calcDelta();
         if (config.getverboseOutput()) {
-            config.getLog().print(" done in ", pt.calcDelta(), " seconds\n\n");
+            config.getLog().print(" done in ").print(pt.calcDelta())
+                    .print(" seconds\n\n");
         }
     }
 
@@ -2514,24 +2534,19 @@ public class TBox {
                                 && !roleToExplore.isRelevant(relevance)) {
                             roleToExplore.setRelevant(relevance);
                             this.collectLogicFeature(roleToExplore);
-                            // setRelevant(roleToExplore.getBPDomain());
-                            // setRelevant(roleToExplore.getBPRange());
                             queue.add(roleToExplore.getBPDomain());
                             queue.add(roleToExplore.getBPRange());
                             rolesToExplore.addAll(roleToExplore.getAncestor());
                         }
                     }
                 }
-                    // setRelevant(v.getConceptIndex());
                     queue.add(v.getConceptIndex());
                     break;
                 case dtProj:
                 case dtChoose:
-                    // setRelevant(v.getConceptIndex());
                     queue.add(v.getConceptIndex());
                     break;
                 case dtIrr:
-                // setRelevant(v.getRole());
                 {
                     Role _role = v.getRole();
                     List<Role> rolesToExplore = new LinkedList<Role>();
@@ -2542,8 +2557,6 @@ public class TBox {
                                 && !roleToExplore.isRelevant(relevance)) {
                             roleToExplore.setRelevant(relevance);
                             this.collectLogicFeature(roleToExplore);
-                            // setRelevant(roleToExplore.getBPDomain());
-                            // setRelevant(roleToExplore.getBPRange());
                             queue.add(roleToExplore.getBPDomain());
                             queue.add(roleToExplore.getBPRange());
                             rolesToExplore.addAll(roleToExplore.getAncestor());
@@ -2574,31 +2587,6 @@ public class TBox {
         return v;
     }
 
-    /** set given concept relevant wrt current TBox if not checked yet */
-    // private void setRelevant(Concept p) {
-    // if (!p.isRelevant(relevance)) {
-    // ++nRelevantCCalls;
-    // p.setRelevant(relevance);
-    // collectLogicFeature(p);
-    // setRelevant(p.getpBody());
-    // }
-    // }
-    /** set given role relevant wrt current TBox if not checked yet */
-    // private void setRelevant(Role _p) {
-    // List<Role> rolesToExplore = new LinkedList<Role>();
-    // rolesToExplore.add(_p);
-    // while (rolesToExplore.size() > 0) {
-    // Role roleToExplore = rolesToExplore.remove(0);
-    // if (roleToExplore.getId() != 0
-    // && !roleToExplore.isRelevant(relevance)) {
-    // roleToExplore.setRelevant(relevance);
-    // collectLogicFeature(roleToExplore);
-    // setRelevant(roleToExplore.getBPDomain());
-    // setRelevant(roleToExplore.getBPRange());
-    // rolesToExplore.addAll(roleToExplore.getAncestor());
-    // }
-    // }
-    // }
     private void gatherRelevanceInfo() {
         nRelevantCCalls = 0;
         nRelevantBCalls = 0;
@@ -2863,13 +2851,11 @@ class DumpLisp extends DumpInterface {
     }
 
     @Override
-    @SuppressWarnings("unused")
     public void contAx(DIOp Ax) {
         o.print(" ");
     }
 
     @Override
-    @SuppressWarnings("unused")
     public void finishAx(DIOp Ax) {
         o.print(")\n");
     }
@@ -2921,4 +2907,5 @@ class DumpLisp extends DumpInterface {
         }
         contAx(Ax);
     }
+
 }

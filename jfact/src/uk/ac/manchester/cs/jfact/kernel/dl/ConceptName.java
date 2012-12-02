@@ -14,10 +14,12 @@ public class ConceptName extends NamedEntityImpl implements ConceptExpression {
         super(name);
     }
 
+    @Override
     public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }

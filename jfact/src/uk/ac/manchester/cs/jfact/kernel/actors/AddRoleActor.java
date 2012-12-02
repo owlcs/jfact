@@ -21,6 +21,7 @@ public class AddRoleActor implements Actor {
         rset = v;
     }
 
+    @Override
     public boolean apply(TaxonomyVertex v) {
         if (v.getPrimer().getId() == 0) {
             return false;

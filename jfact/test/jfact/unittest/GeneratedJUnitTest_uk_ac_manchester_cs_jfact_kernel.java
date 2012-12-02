@@ -1220,13 +1220,6 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
         MergableLabel result12 = testSubject0.getRangeLabel();
         Role result13 = testSubject0.realInverse();
         testSubject0.setInverse(mock(Role.class));
-        testSubject0.setSimple(mock(boolean.class));
-        testSubject0.setSimple();
-        testSubject0.clearSimple();
-        boolean result14 = testSubject0.isFinished();
-        testSubject0.setFinished();
-        testSubject0.setFinished(mock(boolean.class));
-        testSubject0.clearFinished();
         DLTree result15 = testSubject0.getTSpecialDomain();
         boolean result16 = testSubject0.hasSpecialDomain();
         testSubject0.initSpecialDomain();
@@ -1321,7 +1314,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
         int result0 = testSubject0.size();
         testSubject0.setup(mock(int.class), mock(boolean.class));
         testSubject0.print(mock(LogAdapter.class));
-        testSubject0.addSimpleRA(mock(RoleAutomaton.class));
+        testSubject0.addRA(mock(RoleAutomaton.class));
         testSubject0.addRA(mock(RoleAutomaton.class));
         testSubject0.addTransitionSafe(mock(int.class), mock(RATransition.class));
         boolean result1 = testSubject0.isISafe();
@@ -1359,7 +1352,6 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
         testSubject0.initAncDesc();
         testSubject0.fillReflexiveRoles(mock(List.class));
         NamedEntry result4 = testSubject0.ensureRoleName(mock(String.class));
-        testSubject0.addRoleParent(mock(Role.class), mock(Role.class));
         testSubject0.addRoleParent(mock(DLTree.class), mock(Role.class));
         String result5 = testSubject0.toString();
     }

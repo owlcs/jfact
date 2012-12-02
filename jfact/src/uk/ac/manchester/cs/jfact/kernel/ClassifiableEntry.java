@@ -123,10 +123,9 @@ public class ClassifiableEntry extends NamedEntry {
 
     /** make sure that synonym's representative is not a synonym itself */
     public void canonicaliseSynonym() {
+        assert isSynonym();
         if (isSynonym()) {
-            while (pSynonym.isSynonym()) {
-                pSynonym = pSynonym.pSynonym;
-            }
+        pSynonym = resolveSynonym(pSynonym);
         }
     }
 

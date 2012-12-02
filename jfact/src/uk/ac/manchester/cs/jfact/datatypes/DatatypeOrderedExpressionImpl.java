@@ -21,6 +21,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
         knownFacetValues.putAll(b.getKnownFacetValues());
     }
 
+    @Override
     public O parseValue(String s) {
         return this.host.parseValue(s);
     }
@@ -58,10 +59,12 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
         return this.host.listValues();
     }
 
+    @Override
     public Datatype<O> getHostType() {
         return this.host;
     }
 
+    @Override
     public DatatypeExpression<O> addFacet(Facet f, Object value) {
         if (!facets.contains(f)) {
             throw new IllegalArgumentException("Facet " + f
@@ -96,6 +99,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
         return true;
     }
 
+    @Override
     public boolean emptyValueSpace() {
         // TODO not checking string type value spaces; looks like the only
         // sensible way would be to check for 0 length constraints
@@ -138,30 +142,37 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
         return this;
     }
 
+    @Override
     public boolean hasMinExclusive() {
         return knownFacetValues.containsKey(minExclusive);
     }
 
+    @Override
     public boolean hasMinInclusive() {
         return knownFacetValues.containsKey(minInclusive);
     }
 
+    @Override
     public boolean hasMaxExclusive() {
         return knownFacetValues.containsKey(maxExclusive);
     }
 
+    @Override
     public boolean hasMaxInclusive() {
         return knownFacetValues.containsKey(maxInclusive);
     }
 
+    @Override
     public boolean hasMin() {
         return this.hasMinInclusive() || this.hasMinExclusive();
     }
 
+    @Override
     public boolean hasMax() {
         return this.hasMaxInclusive() || this.hasMaxExclusive();
     }
 
+    @Override
     public O getMin() {
         if (this.hasMinInclusive()) {
             return (O) knownFacetValues.get(minInclusive);
@@ -172,6 +183,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
         return null;
     }
 
+    @Override
     public O getMax() {
         if (this.hasMaxInclusive()) {
             return (O) knownFacetValues.get(maxInclusive);

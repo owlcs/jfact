@@ -23,19 +23,23 @@ public class ConceptDataValue implements ConceptDataRoleExpression,
         delegate = R;
     }
 
+    @Override
     public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
+    @Override
     public DataRoleExpression getDataRoleExpression() {
         return delegate;
     }
 
     /** get access to the argument */
+    @Override
     public Literal<?> getExpr() {
         return dataValue;
     }

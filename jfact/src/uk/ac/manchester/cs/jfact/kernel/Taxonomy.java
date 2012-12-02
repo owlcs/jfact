@@ -259,6 +259,7 @@ public class Taxonomy {
         o.append(" are completely defined\n\nAll entries are in format:\n\"entry\" {n: parent_1 ... parent_n} {m: child_1 child_m}\n\n");
         TreeSet<TaxonomyVertex> sorted = new TreeSet<TaxonomyVertex>(
                 new Comparator<TaxonomyVertex>() {
+                    @Override
                     public int compare(TaxonomyVertex o1, TaxonomyVertex o2) {
                         return o1.getPrimer().getName()
                                 .compareTo(o2.getPrimer().getName());

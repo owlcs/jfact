@@ -10,7 +10,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorAdapter;
 
-@SuppressWarnings("unused")
 // XXX verify unused parameters
 public class ELFAxiomChecker extends DLAxiomVisitorAdapter {
     ELFExpressionChecker eCh = new ELFExpressionChecker();

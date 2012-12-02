@@ -16,10 +16,12 @@ public class IntSet extends AbstractFastSet {
         return Math.abs(value % size);
     }
 
+    @Override
     public void clear() {
         hashvalues = new FastSetSimple[size];
     }
 
+    @Override
     public boolean contains(int key) {
         int hash = hash(key);
         if (hashvalues[hash] == null) {
@@ -29,6 +31,7 @@ public class IntSet extends AbstractFastSet {
         return b;
     }
 
+    @Override
     public void add(int e) {
         int hash = hash(e);
         if (hashvalues[hash] == null) {
@@ -41,12 +44,14 @@ public class IntSet extends AbstractFastSet {
         }
     }
 
+    @Override
     public void addAll(FastSet c) {
         for (int i = 0; i < c.size(); i++) {
             add(c.get(i));
         }
     }
 
+    @Override
     public boolean containsAll(FastSet c) {
         if (c instanceof IntSet) {
             IntSet set = (IntSet) c;
@@ -74,6 +79,7 @@ public class IntSet extends AbstractFastSet {
         return true;
     }
 
+    @Override
     public boolean containsAny(FastSet c) {
         if (c instanceof IntSet) {
             IntSet set = (IntSet) c;
@@ -94,6 +100,7 @@ public class IntSet extends AbstractFastSet {
         return false;
     }
 
+    @Override
     public void remove(int o) {
         int hash = hash(o);
         if (hashvalues[hash] == null) {
@@ -111,6 +118,7 @@ public class IntSet extends AbstractFastSet {
 
     private int[] allValues = null;
 
+    @Override
     public int[] toIntArray() {
         if (allValues == null) {
             int i = 0;
@@ -134,6 +142,7 @@ public class IntSet extends AbstractFastSet {
         return Arrays.copyOf(allValues, size);
     }
 
+    @Override
     public boolean intersect(FastSet f) {
         for (int i = 0; i < f.size(); i++) {
             if (contains(f.get(i))) {
@@ -143,6 +152,7 @@ public class IntSet extends AbstractFastSet {
         return false;
     }
 
+    @Override
     public int get(int i) {
         if (allValues == null) {
             toIntArray();
@@ -150,6 +160,7 @@ public class IntSet extends AbstractFastSet {
         return allValues[i];
     }
 
+    @Override
     public void removeAt(int o) {
         if (allValues == null) {
             toIntArray();
@@ -158,16 +169,19 @@ public class IntSet extends AbstractFastSet {
         allValues = null;
     }
 
+    @Override
     public void removeAll(int i, int end) {
         for (int j = i; j < end; j++) {
             removeAt(j);
         }
     }
 
+    @Override
     public boolean isEmpty() {
         return size() == 0;
     }
 
+    @Override
     public int size() {
         int i = 0;
         for (FastSet f : hashvalues) {
@@ -178,12 +192,14 @@ public class IntSet extends AbstractFastSet {
         return i;
     }
 
+    @Override
     public void removeAllValues(int... values) {
         for (int i : values) {
             remove(i);
         }
     }
 
+    @Override
     public void completeSet(int value) {
         for (int i = 0; i <= value; i++) {
             add(i);

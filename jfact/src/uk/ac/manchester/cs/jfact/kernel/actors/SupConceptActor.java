@@ -16,6 +16,7 @@ public class SupConceptActor implements Actor {
         pe = q;
     }
 
+    @Override
     public boolean apply(TaxonomyVertex v) {
         if (pe.equals(v.getPrimer()) || v.begin_syn().contains(pe)) {
             return false;

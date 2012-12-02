@@ -12,14 +12,17 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 
 /** policy for object properties */
 public class ObjectPropertyPolicy implements Policy {
+    @Override
     public boolean applicable(ClassifiableEntry p) {
         return true;
     }
 
+    @Override
     public boolean needPlain() {
         return false;
     }
 
+    @Override
     public Expression buildTree(ExpressionManager EM, ClassifiableEntry p) {
         return p.getId() >= 0 ? EM.objectRole(p.getName()) : EM.inverse(EM
                 .objectRole(((Role) p).realInverse().getName()));

@@ -32,6 +32,7 @@ public class IntMap<V> {
             return false;
         }
 
+        @Override
         public int compareTo(Entry arg0) {
             return this.index - arg0.index;
         }

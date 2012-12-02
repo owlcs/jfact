@@ -9,6 +9,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 
 public interface ConceptObjectCardinalityExpression extends ConceptObjectRCExpression,
         NumberArg {
+    @Override
     /** accept method for the visitor pattern */
     void accept(DLExpressionVisitor visitor);
 }

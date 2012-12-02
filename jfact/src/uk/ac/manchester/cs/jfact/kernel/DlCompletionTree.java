@@ -925,6 +925,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree> {
         return ret;
     }
 
+    @Override
     public int compareTo(DlCompletionTree o) {
         if (nominalLevel == o.nominalLevel) {
             return id - o.id;

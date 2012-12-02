@@ -206,19 +206,23 @@ interface DLTreeVisitorEx<O> {
 }
 
 class CloningVisitor implements DLTreeVisitorEx<DLTree> {
+    @Override
     public DLTree visit(LEAFDLTree t) {
         return new LEAFDLTree(new Lexeme(t.elem));
     }
 
+    @Override
     public DLTree visit(ONEDLTree t) {
         return new ONEDLTree(new Lexeme(t.elem), t.getChild().accept(this));
     }
 
+    @Override
     public DLTree visit(TWODLTree t) {
         return new TWODLTree(new Lexeme(t.elem), t.getLeft().accept(this), t.getRight()
                 .accept(this));
     }
 
+    @Override
     public DLTree visit(NDLTree t) {
         List<DLTree> l = new ArrayList<DLTree>();
         for (DLTree tree : t.children) {
@@ -229,19 +233,23 @@ class CloningVisitor implements DLTreeVisitorEx<DLTree> {
 }
 
 class ReverseCloningVisitor implements DLTreeVisitorEx<DLTree> {
+    @Override
     public DLTree visit(LEAFDLTree t) {
         return DLTreeFactory.inverseComposition(t);
     }
 
+    @Override
     public DLTree visit(ONEDLTree t) {
         return new ONEDLTree(new Lexeme(t.elem), t.getChild().accept(this));
     }
 
+    @Override
     public DLTree visit(TWODLTree t) {
         return new TWODLTree(new Lexeme(t.elem), t.getRight().accept(this), t.getLeft()
                 .accept(this));
     }
 
+    @Override
     public DLTree visit(NDLTree t) {
         List<DLTree> l = new ArrayList<DLTree>(t.children);
         List<DLTree> actual = new ArrayList<DLTree>();

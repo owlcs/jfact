@@ -177,18 +177,22 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
         timeOut = source.getTimeOut();
     }
 
+    @Override
     public FreshEntityPolicy getFreshEntityPolicy() {
         return freshEntityPolicy;
     }
 
+    @Override
     public IndividualNodeSetPolicy getIndividualNodeSetPolicy() {
         return individualNodeSetPolicy;
     }
 
+    @Override
     public ReasonerProgressMonitor getProgressMonitor() {
         return progressMonitor;
     }
 
+    @Override
     public long getTimeOut() {
         return timeOut;
     }
@@ -380,133 +384,212 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
             out = o;
         }
 
-        public void printTemplate(Templates t, Object... strings) {
+        @Override
+        public LogAdapter printTemplate(Templates t, Object... strings) {
             this.print(String.format(t.getTemplate(), strings));
+            return this;
         }
 
-        public void print(int i) {
+        @Override
+        public LogAdapter print(int i) {
             this.print(Integer.toString(i));
+            return this;
         }
 
-        public void print(double i) {
+        @Override
+        public LogAdapter print(double i) {
             try {
                 out.write(Double.toString(i).getBytes());
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            return this;
         }
 
-        public void print(float i) {
+        @Override
+        public LogAdapter print(float i) {
             try {
                 out.write(Float.toString(i).getBytes());
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            return this;
         }
 
-        public void print(boolean i) {
+        @Override
+        public LogAdapter print(boolean i) {
             try {
                 out.write(Boolean.toString(i).getBytes());
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            return this;
         }
 
-        public void print(byte i) {
+        @Override
+        public LogAdapter print(byte i) {
             this.print(Byte.toString(i));
+            return this;
         }
 
-        public void print(char i) {
+        @Override
+        public LogAdapter print(char i) {
             this.print(Character.toString(i));
+            return this;
         }
 
-        public void print(short i) {
+        @Override
+        public LogAdapter print(short i) {
             this.print(Short.toString(i));
+            return this;
         }
 
-        public void print(String i) {
+        @Override
+        public LogAdapter print(String i) {
             try {
                 out.write(i.getBytes());
                 out.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            return this;
         }
 
-        public void println() {
+        @Override
+        public LogAdapter println() {
             this.print('\n');
+            return this;
         }
 
-        public void print(Object s) {
+        @Override
+        public LogAdapter print(Object s) {
             this.print(s == null ? "null" : s.toString());
+            return this;
         }
 
-        public void print(Object... s) {
+        @Override
+        public LogAdapter print(Object... s) {
             for (Object o : s) {
                 this.print(o == null ? "null" : o.toString());
             }
+            return this;
         }
 
-        public void print(Object s1, Object s2) {
+        @Override
+        public LogAdapter print(Object s1, Object s2) {
             this.print(s1.toString());
             this.print(s2.toString());
+            return this;
         }
 
-        public void print(Object s1, Object s2, Object s3) {
+        @Override
+        public LogAdapter print(Object s1, Object s2, Object s3) {
             this.print(s1.toString());
             this.print(s2.toString());
             this.print(s3.toString());
+            return this;
         }
 
-        public void print(Object s1, Object s2, Object s3, Object s4) {
+        @Override
+        public LogAdapter print(Object s1, Object s2, Object s3, Object s4) {
             this.print(s1.toString());
             this.print(s2.toString());
             this.print(s3.toString());
             this.print(s4.toString());
+            return this;
         }
 
-        public void print(Object s1, Object s2, Object s3, Object s4, Object s5) {
+        @Override
+        public LogAdapter print(Object s1, Object s2, Object s3, Object s4, Object s5) {
             this.print(s1.toString());
             this.print(s2.toString());
             this.print(s3.toString());
             this.print(s4.toString());
             this.print(s5.toString());
+            return this;
         }
     }
 
-    @SuppressWarnings("unused")
     static class LogAdapterImpl implements LogAdapter {
-        public void printTemplate(Templates t, Object... strings) {}
+        @Override
+        public LogAdapter printTemplate(Templates t, Object... strings) {
+            return this;
+        }
 
-        public void print(int i) {}
+        @Override
+        public LogAdapter print(int i) {
+            return this;
+        }
 
-        public void print(double d) {}
+        @Override
+        public LogAdapter print(double d) {
+            return this;
+        }
 
-        public void print(float f) {}
+        @Override
+        public LogAdapter print(float f) {
+            return this;
+        }
 
-        public void print(boolean b) {}
+        @Override
+        public LogAdapter print(boolean b) {
+            return this;
+        }
 
-        public void print(byte b) {}
+        @Override
+        public LogAdapter print(byte b) {
+            return this;
+        }
 
-        public void print(char c) {}
+        @Override
+        public LogAdapter print(char c) {
+            return this;
+        }
 
-        public void print(short s) {}
+        @Override
+        public LogAdapter print(short s) {
+            return this;
+        }
 
-        public void print(String s) {}
+        @Override
+        public LogAdapter print(String s) {
+            return this;
+        }
 
-        public void println() {}
+        @Override
+        public LogAdapter println() {
+            return this;
+        }
 
-        public void print(Object s) {}
+        @Override
+        public LogAdapter print(Object s) {
+            return this;
+        }
 
-        public void print(Object... s) {}
+        @Override
+        public LogAdapter print(Object... s) {
+            return this;
+        }
 
-        public void print(Object s1, Object s2) {}
+        @Override
+        public LogAdapter print(Object s1, Object s2) {
+            return this;
+        }
 
-        public void print(Object s1, Object s2, Object s3) {}
+        @Override
+        public LogAdapter print(Object s1, Object s2, Object s3) {
+            return this;
+        }
 
-        public void print(Object s1, Object s2, Object s3, Object s4) {}
+        @Override
+        public LogAdapter print(Object s1, Object s2, Object s3, Object s4) {
+            return this;
+        }
 
-        public void print(Object s1, Object s2, Object s3, Object s4, Object s5) {}
+        @Override
+        public LogAdapter print(Object s1, Object s2, Object s3, Object s4, Object s5) {
+            return this;
+        }
     }
 
     public boolean isUseELReasoner() {

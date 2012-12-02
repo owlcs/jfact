@@ -19,6 +19,7 @@ public class Facets {
             fragment = u;
         }
 
+        @Override
         public String getURI() {
             return uri;
         }
@@ -44,6 +45,7 @@ public class Facets {
             return false;
         }
 
+        @Override
         public BigDecimal parseNumber(Object value) {
             if (!isNumberFacet()) {
                 throw new UnsupportedOperationException(
@@ -75,6 +77,7 @@ public class Facets {
             }
         }
 
+        @Override
         public Comparable<?> parse(Object o) {
             return (Comparable<?>) o;
         }
@@ -85,6 +88,7 @@ public class Facets {
             super(u);
         }
 
+        @Override
         public boolean isNumberFacet() {
             return true;
         }
@@ -157,6 +161,7 @@ public class Facets {
     public static Facet totalDigits = new LimitFacet("totalDigits");
     public static Facet fractionDigits = new LimitFacet("fractionDigits");
     public static Facet whiteSpace = new AbstractFacet("whiteSpace") {
+        @Override
         public boolean isNumberFacet() {
             return false;
         }
@@ -174,6 +179,7 @@ public class Facets {
         }
     };
     public static Facet pattern = new AbstractFacet("pattern") {
+        @Override
         public boolean isNumberFacet() {
             return false;
         }
@@ -184,6 +190,7 @@ public class Facets {
         }
     };
     public static Facet enumeration = new AbstractFacet("enumeration") {
+        @Override
         public boolean isNumberFacet() {
             return false;
         }

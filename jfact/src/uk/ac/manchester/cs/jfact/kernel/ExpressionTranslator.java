@@ -48,14 +48,17 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
     }
 
     // concept expressions
+    @Override
     public DLTree visit(ConceptTop expr) {
         return DLTreeFactory.createTop();
     }
 
+    @Override
     public DLTree visit(ConceptBottom expr) {
         return DLTreeFactory.createBottom();
     }
 
+    @Override
     public DLTree visit(ConceptName expr) {
         if (nc(expr)) {
             return sig.topCLocal() ? DLTreeFactory.createTop() : DLTreeFactory
@@ -84,6 +87,7 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
     // }
     // return new Lexeme(cname, expr);
     // }
+    @Override
     public DLTree visit(ConceptNot expr) {
         return DLTreeFactory.createSNFNot(expr.getConcept().accept(this));
     }
@@ -97,18 +101,22 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
         return args;
     }
 
+    @Override
     public DLTree visit(ConceptAnd expr) {
         return DLTreeFactory.createSNFAnd(visitArgs(expr));
     }
 
+    @Override
     public DLTree visit(ConceptOr expr) {
         return DLTreeFactory.createSNFOr(visitArgs(expr));
     }
 
+    @Override
     public DLTree visit(ConceptOneOf expr) {
         return DLTreeFactory.createSNFOr(visitArgs(expr));
     }
 
+    @Override
     public DLTree visit(ConceptObjectSelf expr) {
         DLTree r = expr.getOR().accept(this);
         if (r.elem().getNE().isBottom()) {
@@ -119,31 +127,37 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
         return toReturn;
     }
 
+    @Override
     public DLTree visit(ConceptObjectValue expr) {
         return DLTreeFactory.createSNFExists(expr.getOR().accept(this), expr.getI()
                 .accept(this));
     }
 
+    @Override
     public DLTree visit(ConceptObjectExists expr) {
         return DLTreeFactory.createSNFExists(expr.getOR().accept(this), expr.getConcept()
                 .accept(this));
     }
 
+    @Override
     public DLTree visit(ConceptObjectForall expr) {
         return DLTreeFactory.createSNFForall(expr.getOR().accept(this), expr.getConcept()
                 .accept(this));
     }
 
+    @Override
     public DLTree visit(ConceptObjectMinCardinality expr) {
         return DLTreeFactory.createSNFGE(expr.getCardinality(),
                 expr.getOR().accept(this), expr.getConcept().accept(this));
     }
 
+    @Override
     public DLTree visit(ConceptObjectMaxCardinality expr) {
         return DLTreeFactory.createSNFLE(expr.getCardinality(),
                 expr.getOR().accept(this), expr.getConcept().accept(this));
     }
 
+    @Override
     public DLTree visit(ConceptObjectExactCardinality expr) {
         DLTree le = DLTreeFactory.createSNFLE(expr.getCardinality(),
                 expr.getOR().accept(this).copy(), expr.getConcept().accept(this).copy());
@@ -152,31 +166,37 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
         return DLTreeFactory.createSNFAnd(ge, le);
     }
 
+    @Override
     public DLTree visit(ConceptDataValue expr) {
         return DLTreeFactory.createSNFExists(expr.getDataRoleExpression().accept(this),
                 expr.getExpr().accept(this));
     }
 
+    @Override
     public DLTree visit(ConceptDataExists expr) {
         return DLTreeFactory.createSNFExists(expr.getDataRoleExpression().accept(this),
                 expr.getExpr().accept(this));
     }
 
+    @Override
     public DLTree visit(ConceptDataForall expr) {
         return DLTreeFactory.createSNFForall(expr.getDataRoleExpression().accept(this),
                 expr.getExpr().accept(this));
     }
 
+    @Override
     public DLTree visit(ConceptDataMinCardinality expr) {
         return DLTreeFactory.createSNFGE(expr.getCardinality(), expr
                 .getDataRoleExpression().accept(this), expr.getExpr().accept(this));
     }
 
+    @Override
     public DLTree visit(ConceptDataMaxCardinality expr) {
         return DLTreeFactory.createSNFLE(expr.getCardinality(), expr
                 .getDataRoleExpression().accept(this), expr.getExpr().accept(this));
     }
 
+    @Override
     public DLTree visit(ConceptDataExactCardinality expr) {
         DLTree le = DLTreeFactory.createSNFLE(expr.getCardinality(), expr
                 .getDataRoleExpression().accept(this).copy(), expr.getExpr().accept(this)
@@ -188,6 +208,7 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
     }
 
     // individual expressions
+    @Override
     public DLTree visit(IndividualName expr) {
         NamedEntry entry = expr.getEntry();
         if (entry == null) {
@@ -198,16 +219,19 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
     }
 
     // object role expressions
+    @Override
     public DLTree visit(ObjectRoleTop expr) {
         throw new ReasonerInternalException(
                 "Unsupported expression 'top object role' in transformation");
     }
 
+    @Override
     public DLTree visit(ObjectRoleBottom expr) {
         throw new ReasonerInternalException(
                 "Unsupported expression 'bottom object role' in transformation");
     }
 
+    @Override
     public DLTree visit(ObjectRoleName expr) {
         RoleMaster RM = tbox.getORM();
         NamedEntry role;
@@ -223,10 +247,12 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
         return DLTreeFactory.buildTree(new Lexeme(RNAME, role));
     }
 
+    @Override
     public DLTree visit(ObjectRoleInverse expr) {
         return DLTreeFactory.createInverse(expr.getOR().accept(this));
     }
 
+    @Override
     public DLTree visit(ObjectRoleChain expr) {
         List<ObjectRoleExpression> l = new ArrayList<ObjectRoleExpression>(
                 expr.getArguments());
@@ -244,27 +270,32 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
         return acc;
     }
 
+    @Override
     public DLTree visit(ObjectRoleProjectionFrom expr) {
         return DLTreeFactory.buildTree(new Lexeme(PROJFROM), expr.getOR().accept(this),
                 expr.getConcept().accept(this));
     }
 
+    @Override
     public DLTree visit(ObjectRoleProjectionInto expr) {
         return DLTreeFactory.buildTree(new Lexeme(PROJINTO), expr.getOR().accept(this),
                 expr.getConcept().accept(this));
     }
 
     // data role expressions
+    @Override
     public DLTree visit(DataRoleTop expr) {
         throw new ReasonerInternalException(
                 "Unsupported expression 'top data role' in transformation");
     }
 
+    @Override
     public DLTree visit(DataRoleBottom expr) {
         throw new ReasonerInternalException(
                 "Unsupported expression 'bottom data role' in transformation");
     }
 
+    @Override
     public DLTree visit(DataRoleName expr) {
         RoleMaster RM = tbox.getDRM();
         NamedEntry role;
@@ -283,19 +314,23 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
     }
 
     // data expressions
+    @Override
     public DLTree visit(DataTop expr) {
         return DLTreeFactory.createTop();
     }
 
+    @Override
     public DLTree visit(DataBottom expr) {
         return DLTreeFactory.createBottom();
     }
 
+    @Override
     public DLTree visit(Datatype<?> expr) {
         DatatypeEntry entry = new DatatypeEntry(expr);
         return DLTreeFactory.wrap(entry);
     }
 
+    @Override
     public DLTree visit(Literal<?> expr) {
         // process type
         LiteralEntry entry = new LiteralEntry(expr.value());
@@ -303,18 +338,22 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
         return DLTreeFactory.wrap(entry);
     }
 
+    @Override
     public DLTree visit(DataNot expr) {
         return DLTreeFactory.createSNFNot(expr.getExpr().accept(this));
     }
 
+    @Override
     public DLTree visit(DataAnd expr) {
         return DLTreeFactory.createSNFAnd(visitArgs(expr));
     }
 
+    @Override
     public DLTree visit(DataOr expr) {
         return DLTreeFactory.createSNFOr(visitArgs(expr));
     }
 
+    @Override
     public DLTree visit(DataOneOf expr) {
         return DLTreeFactory.createSNFOr(visitArgs(expr));
     }
