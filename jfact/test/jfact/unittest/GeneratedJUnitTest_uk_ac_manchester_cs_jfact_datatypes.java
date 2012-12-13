@@ -69,7 +69,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
         DatatypeEntry testSubject0 = new DatatypeEntry(mock(Datatype.class));
         String result0 = testSubject0.toString();
         int result1 = testSubject0.getIndex();
-        testSubject0.setIndex(mock(int.class));
+        testSubject0.setIndex(1);
         Collection result2 = testSubject0.getFacet();
         boolean result3 = testSubject0.isBasicDataType();
         Datatype result4 = testSubject0.getDatatype();
@@ -77,7 +77,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
         int result6 = testSubject0.getId();
         boolean result7 = testSubject0.isBottom();
         boolean result8 = testSubject0.isTop();
-        testSubject0.setId(mock(int.class));
+        testSubject0.setId(1);
         boolean result9 = testSubject0.isSystem();
         testSubject0.setSystem();
         testSubject0.setTop();
@@ -174,7 +174,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
         Datatype result4 = testSubject0.getKnownDatatype(mock(String.class));
         boolean result5 = testSubject0.isKnownDatatype(mock(String.class));
         boolean result6 = DatatypeFactory.nonEmptyInterval(mock(BigDecimal.class),
-                mock(BigDecimal.class), mock(int.class));
+                mock(BigDecimal.class), 1);
         DatatypeExpression result7 = DatatypeFactory
                 .getNumericDatatypeExpression(mock(NumericDatatype.class));
         DatatypeExpression result8 = DatatypeFactory
@@ -293,18 +293,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
     public void shouldTestDataTypeReasoner() throws Exception {
         DataTypeReasoner testSubject0 = new DataTypeReasoner(
                 mock(JFactReasonerConfiguration.class));
-        boolean result0 = testSubject0.addDataEntry(mock(boolean.class),
-                mock(DagTag.class), mock(NamedEntry.class), mock(DepSet.class));
-        DepSet result1 = testSubject0.getClashSet();
-        boolean result2 = testSubject0.checkClash();
-        String result3 = testSubject0.toString();
-    }
-
-    @Test
-    public void shouldTestDatatypeReasonerWrapper() throws Exception {
-        DatatypeReasonerWrapper testSubject0 = new DatatypeReasonerWrapper(
-                mock(JFactReasonerConfiguration.class));
-        boolean result0 = testSubject0.addDataEntry(mock(boolean.class),
+        boolean result0 = testSubject0.addDataEntry(true,
                 mock(DagTag.class), mock(NamedEntry.class), mock(DepSet.class));
         DepSet result1 = testSubject0.getClashSet();
         boolean result2 = testSubject0.checkClash();
@@ -317,7 +306,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
         Datatype result1 = testSubject0.getType();
         testSubject0.setPType(mock(DepSet.class));
         testSubject0.setNType(mock(DepSet.class));
-        boolean result2 = testSubject0.addInterval(mock(boolean.class),
+        boolean result2 = testSubject0.addInterval(true,
                 mock(Datatype.class), mock(DepSet.class));
         boolean result3 = testSubject0.checkPNTypeClash();
         DepSet result4 = testSubject0.getPType();
@@ -378,7 +367,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
         String result0 = testSubject0.toString();
         Datatype result1 = testSubject0.getType();
         int result2 = testSubject0.getIndex();
-        testSubject0.setIndex(mock(int.class));
+        testSubject0.setIndex(1);
         Collection result3 = testSubject0.getFacet();
         testSubject0.setLiteral(mock(Literal.class));
         Literal result4 = testSubject0.getLiteral();
@@ -386,7 +375,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
         int result6 = testSubject0.getId();
         boolean result7 = testSubject0.isBottom();
         boolean result8 = testSubject0.isTop();
-        testSubject0.setId(mock(int.class));
+        testSubject0.setId(1);
         boolean result9 = testSubject0.isSystem();
         testSubject0.setSystem();
         testSubject0.setTop();

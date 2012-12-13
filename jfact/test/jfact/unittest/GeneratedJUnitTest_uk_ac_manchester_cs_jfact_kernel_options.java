@@ -36,7 +36,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel_options {
         Option result11 = JFactReasonerConfiguration.getOption(mock(String.class),
                 mock(String.class));
         Option result12 = JFactReasonerConfiguration.getOption(mock(String.class),
-                mock(long.class));
+ 1L);
         boolean result13 = testSubject0.getuseAnywhereBlocking();
         boolean result14 = testSubject0.getuseBackjumping();
         boolean result15 = testSubject0.getuseLazyBlocking();
@@ -48,49 +48,49 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel_options {
         boolean result21 = testSubject0.getalwaysPreferEquals();
         String result22 = testSubject0.getabsorptionFlags();
         String result23 = testSubject0.getIAOEFLG();
-        testSubject0.setuseAnywhereBlocking(mock(boolean.class));
-        testSubject0.setverboseOutput(mock(boolean.class));
+        testSubject0.setuseAnywhereBlocking(true);
+        testSubject0.setverboseOutput(true);
         boolean result24 = testSubject0.isLoggingActive();
-        testSubject0.setLoggingActive(mock(boolean.class));
+        testSubject0.setLoggingActive(true);
         boolean result25 = testSubject0.isAbsorptionLoggingActive();
-        testSubject0.setAbsorptionLoggingActive(mock(boolean.class));
+        testSubject0.setAbsorptionLoggingActive(true);
         boolean result26 = testSubject0.isRKG_IMPROVE_SAVE_RESTORE_DEPSET();
-        testSubject0.setRKG_IMPROVE_SAVE_RESTORE_DEPSET(mock(boolean.class));
-        testSubject0.setRKG_PRINT_DAG_USAGE(mock(boolean.class));
+        testSubject0.setRKG_IMPROVE_SAVE_RESTORE_DEPSET(true);
+        testSubject0.setRKG_PRINT_DAG_USAGE(true);
         boolean result27 = testSubject0.isRKG_USE_SIMPLE_RULES();
-        testSubject0.setRKG_USE_SIMPLE_RULES(mock(boolean.class));
-        testSubject0.setRKG_USE_SORTED_REASONING(mock(boolean.class));
+        testSubject0.setRKG_USE_SIMPLE_RULES(true);
+        testSubject0.setRKG_USE_SORTED_REASONING(true);
         boolean result28 = testSubject0.isUSE_REASONING_STATISTICS();
-        testSubject0.setUSE_REASONING_STATISTICS(mock(boolean.class));
+        testSubject0.setUSE_REASONING_STATISTICS(true);
         boolean result29 = testSubject0.isRKG_UPDATE_RND_FROM_SUPERROLES();
-        testSubject0.setRKG_UPDATE_RND_FROM_SUPERROLES(mock(boolean.class));
+        testSubject0.setRKG_UPDATE_RND_FROM_SUPERROLES(true);
         boolean result30 = testSubject0.isUSE_BLOCKING_STATISTICS();
-        testSubject0.setUSE_BLOCKING_STATISTICS(mock(boolean.class));
+        testSubject0.setUSE_BLOCKING_STATISTICS(true);
         boolean result31 = testSubject0.isRKG_USE_DYNAMIC_BACKJUMPING();
-        testSubject0.setRKG_USE_DYNAMIC_BACKJUMPING(mock(boolean.class));
+        testSubject0.setRKG_USE_DYNAMIC_BACKJUMPING(true);
         boolean result32 = testSubject0.isTMP_PRINT_TAXONOMY_INFO();
-        testSubject0.setTMP_PRINT_TAXONOMY_INFO(mock(boolean.class));
+        testSubject0.setTMP_PRINT_TAXONOMY_INFO(true);
         boolean result33 = testSubject0.isDEBUG_SAVE_RESTORE();
-        testSubject0.setDEBUG_SAVE_RESTORE(mock(boolean.class));
+        testSubject0.setDEBUG_SAVE_RESTORE(true);
         boolean result34 = testSubject0.isRKG_USE_FAIRNESS();
-        testSubject0.setRKG_USE_FAIRNESS(mock(boolean.class));
+        testSubject0.setRKG_USE_FAIRNESS(true);
         boolean result35 = testSubject0.isFPP_DEBUG_SPLIT_MODULES();
-        testSubject0.setFPP_DEBUG_SPLIT_MODULES(mock(boolean.class));
+        testSubject0.setFPP_DEBUG_SPLIT_MODULES(true);
         boolean result36 = testSubject0.isSplits();
-        testSubject0.setSplits(mock(boolean.class));
+        testSubject0.setSplits(true);
         LogAdapter result37 = testSubject0.getAbsorptionLog();
         boolean result38 = testSubject0.isUseELReasoner();
-        testSubject0.setUseELReasoner(mock(boolean.class));
+        testSubject0.setUseELReasoner(true);
         boolean result39 = testSubject0.isUseUndefinedNames();
-        testSubject0.setUseUndefinedNames(mock(boolean.class));
+        testSubject0.setUseUndefinedNames(true);
         boolean result40 = testSubject0.isUseAxiomSplitting();
-        testSubject0.setUseAxiomSplitting(mock(boolean.class));
+        testSubject0.setUseAxiomSplitting(true);
         String result41 = testSubject0.toString();
     }
 
     @Test
     public void shouldTestLongOption() throws Exception {
-        LongOption testSubject0 = new LongOption(mock(String.class), mock(Long.class));
+        LongOption testSubject0 = new LongOption(mock(String.class), 1L);
         Object result0 = testSubject0.getValue();
         String result1 = testSubject0.getOptionName();
         String result2 = testSubject0.toString();

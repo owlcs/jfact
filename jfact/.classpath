@@ -6,8 +6,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/libs/junit.jar"/>
 	<classpathentry kind="lib" path="lib/owlapitools-bin.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/OWLAPI"/>
 	<classpathentry kind="var" path="M2_REPO/org/mockito/mockito-all/1.9.5-rc1/mockito-all-1.9.5-rc1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/factjavasvn"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/owlapi"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

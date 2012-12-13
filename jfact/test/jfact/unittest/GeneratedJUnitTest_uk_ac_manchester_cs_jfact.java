@@ -47,9 +47,9 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact {
         boolean result0 = testSubject0.isConsistent();
         Node result1 = testSubject0.getUnsatisfiableClasses();
         NodeSet result2 = testSubject0.getSubClasses(mock(OWLClassExpression.class),
-                mock(boolean.class));
+ true);
         NodeSet result3 = testSubject0.getInstances(mock(OWLClassExpression.class),
-                mock(boolean.class));
+ true);
         NodeSet result4 = testSubject0.getObjectPropertyValues(
                 mock(OWLNamedIndividual.class), mock(OWLObjectPropertyExpression.class));
         String result5 = testSubject0.getReasonerName();
@@ -74,16 +74,16 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact {
         Node result22 = testSubject0.getTopClassNode();
         Node result23 = testSubject0.getBottomClassNode();
         NodeSet result24 = testSubject0.getSuperClasses(mock(OWLClassExpression.class),
-                mock(boolean.class));
+                true);
         Node result25 = testSubject0.getEquivalentClasses(mock(OWLClassExpression.class));
         NodeSet result26 = testSubject0
                 .getDisjointClasses(mock(OWLClassExpression.class));
         Node result27 = testSubject0.getTopObjectPropertyNode();
         Node result28 = testSubject0.getBottomObjectPropertyNode();
         NodeSet result29 = testSubject0.getSubObjectProperties(
-                mock(OWLObjectPropertyExpression.class), mock(boolean.class));
+                mock(OWLObjectPropertyExpression.class), true);
         NodeSet result30 = testSubject0.getSuperObjectProperties(
-                mock(OWLObjectPropertyExpression.class), mock(boolean.class));
+                mock(OWLObjectPropertyExpression.class), true);
         Node result31 = testSubject0
                 .getEquivalentObjectProperties(mock(OWLObjectPropertyExpression.class));
         NodeSet result32 = testSubject0
@@ -91,23 +91,23 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact {
         Node result33 = testSubject0
                 .getInverseObjectProperties(mock(OWLObjectPropertyExpression.class));
         NodeSet result34 = testSubject0.getObjectPropertyDomains(
-                mock(OWLObjectPropertyExpression.class), mock(boolean.class));
+                mock(OWLObjectPropertyExpression.class), true);
         NodeSet result35 = testSubject0.getObjectPropertyRanges(
-                mock(OWLObjectPropertyExpression.class), mock(boolean.class));
+                mock(OWLObjectPropertyExpression.class), true);
         Node result36 = testSubject0.getTopDataPropertyNode();
         Node result37 = testSubject0.getBottomDataPropertyNode();
         NodeSet result38 = testSubject0.getSubDataProperties(mock(OWLDataProperty.class),
-                mock(boolean.class));
+                true);
         NodeSet result39 = testSubject0.getSuperDataProperties(
-                mock(OWLDataProperty.class), mock(boolean.class));
+                mock(OWLDataProperty.class), true);
         Node result40 = testSubject0
                 .getEquivalentDataProperties(mock(OWLDataProperty.class));
         NodeSet result41 = testSubject0
                 .getDisjointDataProperties(mock(OWLDataPropertyExpression.class));
         NodeSet result42 = testSubject0.getDataPropertyDomains(
-                mock(OWLDataProperty.class), mock(boolean.class));
+                mock(OWLDataProperty.class), true);
         NodeSet result43 = testSubject0.getTypes(mock(OWLNamedIndividual.class),
-                mock(boolean.class));
+ true);
         Set result44 = testSubject0.getDataPropertyValues(mock(OWLNamedIndividual.class),
                 mock(OWLDataProperty.class));
         Node result45 = testSubject0.getSameIndividuals(mock(OWLNamedIndividual.class));
@@ -116,28 +116,28 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact {
         testSubject0.dispose();
         DatatypeFactory result47 = testSubject0.getDatatypeFactory();
         Set result48 = testSubject0.getTrace(mock(OWLAxiom.class));
-        testSubject0.dumpClassHierarchy(mock(LogAdapter.class), mock(boolean.class));
-        testSubject0.writeReasoningResult(mock(LogAdapter.class), mock(long.class));
+        testSubject0.dumpClassHierarchy(mock(LogAdapter.class), true);
+        testSubject0.writeReasoningResult(mock(LogAdapter.class), 1L);
         Node result49 = testSubject0.getObjectNeighbours(mock(RootNode.class),
-                mock(boolean.class));
+ true);
         Collection result50 = testSubject0.getObjectNeighbours(mock(RootNode.class),
                 mock(OWLObjectProperty.class));
         Collection result51 = testSubject0.getDataNeighbours(mock(RootNode.class),
                 mock(OWLDataProperty.class));
         Node result52 = testSubject0.getDataNeighbours(mock(RootNode.class),
-                mock(boolean.class));
+ true);
         Node result53 = testSubject0.getObjectLabel(mock(RootNode.class),
-                mock(boolean.class));
+ true);
         Node result54 = testSubject0.getDataLabel(mock(RootNode.class),
-                mock(boolean.class));
-        int result55 = testSubject0.getAtomicDecompositionSize(mock(boolean.class),
+ true);
+        int result55 = testSubject0.getAtomicDecompositionSize(true,
                 mock(ModuleType.class));
-        Set result56 = testSubject0.getAtomAxioms(mock(int.class));
-        Set result57 = testSubject0.getAtomModule(mock(int.class));
-        Set result58 = testSubject0.getAtomDependents(mock(int.class));
-        Set result59 = testSubject0.getModule(mock(Set.class), mock(boolean.class),
+        Set result56 = testSubject0.getAtomAxioms(1);
+        Set result57 = testSubject0.getAtomModule(1);
+        Set result58 = testSubject0.getAtomDependents(1);
+        Set result59 = testSubject0.getModule(mock(Set.class), true,
                 mock(ModuleType.class));
-        Set result60 = testSubject0.getNonLocal(mock(Set.class), mock(boolean.class),
+        Set result60 = testSubject0.getNonLocal(mock(Set.class), true,
                 mock(ModuleType.class));
         String result61 = testSubject0.toString();
     }

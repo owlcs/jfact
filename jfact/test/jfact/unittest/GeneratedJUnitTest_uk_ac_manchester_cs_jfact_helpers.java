@@ -24,20 +24,20 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_helpers {
     @Test
     public void shouldTestArrayIntMap() throws Exception {
         ArrayIntMap testSubject0 = new ArrayIntMap();
-        int result0 = testSubject0.get(mock(int.class));
-        testSubject0.put(mock(int.class), mock(int.class));
+        int result0 = testSubject0.get(1);
+        testSubject0.put(1, 1);
         String result1 = testSubject0.toString();
         int[] result2 = testSubject0.values();
         testSubject0.clear();
         boolean result3 = testSubject0.isEmpty();
         int result4 = testSubject0.size();
-        testSubject0.remove(mock(int.class));
+        testSubject0.remove(1);
         int[] result5 = testSubject0.keySet();
-        int result6 = testSubject0.keySet(mock(int.class));
-        boolean result7 = testSubject0.containsValue(mock(int.class));
-        boolean result8 = testSubject0.containsKey(mock(int.class));
+        int result6 = testSubject0.keySet(1);
+        boolean result7 = testSubject0.containsValue(1);
+        boolean result8 = testSubject0.containsKey(1);
         boolean result9 = testSubject0.containsAll(mock(ArrayIntMap.class));
-        testSubject0.removeAt(mock(int.class));
+        testSubject0.removeAt(1);
     }
 
     @Test
@@ -65,10 +65,10 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_helpers {
         DLTree result14 = DLTreeFactory.createSNFForall(mock(DLTree.class),
                 mock(DLTree.class));
         DLTree result15 = DLTreeFactory.createRole(mock(Role.class));
-        DLTree result16 = DLTreeFactory.createSNFLE(mock(int.class), mock(DLTree.class),
+        DLTree result16 = DLTreeFactory.createSNFLE(1, mock(DLTree.class),
                 mock(DLTree.class));
         DLTree result17 = DLTreeFactory.createSNFSelf(mock(DLTree.class));
-        DLTree result18 = DLTreeFactory.createSNFGE(mock(int.class), mock(DLTree.class),
+        DLTree result18 = DLTreeFactory.createSNFGE(1, mock(DLTree.class),
                 mock(DLTree.class));
         DLTree result19 = DLTreeFactory.createSNFOr(mock(Collection.class));
         DLTree result20 = DLTreeFactory.inverseComposition(mock(DLTree.class));
@@ -90,14 +90,14 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_helpers {
     @Test
     public void shouldTestDLVertex() throws Exception {
         DLVertex testSubject0 = new DLVertex(mock(DagTag.class));
-        DLVertex testSubject1 = new DLVertex(mock(DagTag.class), mock(int.class),
-                mock(Role.class), mock(int.class), mock(Role.class));
+        DLVertex testSubject1 = new DLVertex(mock(DagTag.class), 1, mock(Role.class), 1,
+                mock(Role.class));
         String result0 = testSubject0.toString();
         int result1 = testSubject0.getState();
         DagTag result2 = testSubject0.getType();
         testSubject0.merge(mock(MergableLabel.class));
-        testSubject0.setCache(mock(boolean.class), mock(ModelCacheInterface.class));
-        boolean result3 = testSubject0.addChild(mock(int.class));
+        testSubject0.setCache(true, mock(ModelCacheInterface.class));
+        boolean result3 = testSubject0.addChild(1);
         MergableLabel result4 = testSubject0.getSort();
         int result5 = testSubject0.getConceptIndex();
         int result6 = testSubject0.getNumberLE();
@@ -107,25 +107,23 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_helpers {
         Role result10 = testSubject0.getProjRole();
         NamedEntry result11 = testSubject0.getConcept();
         testSubject0.setConcept(mock(NamedEntry.class));
-        testSubject0.setChild(mock(int.class));
+        testSubject0.setChild(1);
         int result12 = testSubject0.getAndToDagValue();
         testSubject0.sortEntry(mock(DLDag.class));
-        testSubject0.updateStatValues(mock(int.class), mock(int.class), mock(int.class),
-                mock(int.class), mock(boolean.class));
-        testSubject0.updateStatValues(mock(DLVertex.class), mock(boolean.class),
-                mock(boolean.class));
-        testSubject0.incFreqValue(mock(boolean.class));
-        int result13 = testSubject0.getStat(mock(int.class));
-        int result14 = testSubject0.getDepth(mock(boolean.class));
-        long result15 = testSubject0.getUsage(mock(boolean.class));
-        boolean result16 = testSubject0.isVisited(mock(boolean.class));
-        testSubject0.setProcessed(mock(boolean.class));
-        testSubject0.setInCycle(mock(boolean.class));
+        testSubject0.updateStatValues(1, 1, 1, 1, true);
+        testSubject0.updateStatValues(mock(DLVertex.class), true, true);
+        testSubject0.incFreqValue(true);
+        int result13 = testSubject0.getStat(1);
+        int result14 = testSubject0.getDepth(true);
+        long result15 = testSubject0.getUsage(true);
+        boolean result16 = testSubject0.isVisited(true);
+        testSubject0.setProcessed(true);
+        testSubject0.setInCycle(true);
         testSubject0.clearDFS();
-        ModelCacheInterface result17 = testSubject0.getCache(mock(boolean.class));
-        boolean result18 = testSubject0.isInCycle(mock(boolean.class));
-        boolean result19 = testSubject0.isProcessed(mock(boolean.class));
-        testSubject0.setVisited(mock(boolean.class));
+        ModelCacheInterface result17 = testSubject0.getCache(true);
+        boolean result18 = testSubject0.isInCycle(true);
+        boolean result19 = testSubject0.isProcessed(true);
+        testSubject0.setVisited(true);
     }
 
     @Test
@@ -263,22 +261,22 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_helpers {
     @Test
     public void shouldTestInterfaceFastSet() throws Exception {
         FastSet testSubject0 = mock(FastSet.class);
-        testSubject0.add(mock(int.class));
-        int result0 = testSubject0.get(mock(int.class));
+        testSubject0.add(1);
+        int result0 = testSubject0.get(1);
         testSubject0.clear();
         boolean result1 = testSubject0.isEmpty();
-        boolean result2 = testSubject0.contains(mock(int.class));
+        boolean result2 = testSubject0.contains(1);
         testSubject0.addAll(mock(FastSet.class));
         int result3 = testSubject0.size();
-        testSubject0.remove(mock(int.class));
-        testSubject0.removeAll(mock(int.class), mock(int.class));
+        testSubject0.remove(1);
+        testSubject0.removeAll(1, 1);
         boolean result4 = testSubject0.containsAll(mock(FastSet.class));
         int[] result5 = testSubject0.toIntArray();
         boolean result6 = testSubject0.containsAny(mock(FastSet.class));
-        testSubject0.removeAt(mock(int.class));
+        testSubject0.removeAt(1);
         boolean result7 = testSubject0.intersect(mock(FastSet.class));
         testSubject0.removeAllValues(mock(int[].class));
-        testSubject0.completeSet(mock(int.class));
+        testSubject0.completeSet(1);
     }
 
     @Test
@@ -293,45 +291,45 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_helpers {
         FastSetSimple testSubject0 = new FastSetSimple();
         FastSetSimple testSubject1 = new FastSetSimple(mock(FastSetSimple.class),
                 mock(FastSetSimple.class));
-        testSubject0.add(mock(int.class));
-        int result0 = testSubject0.get(mock(int.class));
+        testSubject0.add(1);
+        int result0 = testSubject0.get(1);
         String result1 = testSubject0.toString();
         testSubject0.clear();
         boolean result2 = testSubject0.isEmpty();
-        boolean result3 = testSubject0.contains(mock(int.class));
+        boolean result3 = testSubject0.contains(1);
         testSubject0.addAll(mock(FastSet.class));
         int result4 = testSubject0.size();
-        testSubject0.remove(mock(int.class));
-        testSubject0.removeAll(mock(int.class), mock(int.class));
+        testSubject0.remove(1);
+        testSubject0.removeAll(1, 1);
         boolean result5 = testSubject0.containsAll(mock(FastSet.class));
         int[] result6 = testSubject0.toIntArray();
         boolean result7 = testSubject0.containsAny(mock(FastSet.class));
-        testSubject0.removeAt(mock(int.class));
+        testSubject0.removeAt(1);
         boolean result8 = testSubject0.intersect(mock(FastSet.class));
         testSubject0.removeAllValues(mock(int[].class));
-        testSubject0.completeSet(mock(int.class));
+        testSubject0.completeSet(1);
     }
 
     @Test
     public void shouldTestHelper() throws Exception {
         Helper testSubject0 = new Helper();
-        Helper.resize(mock(List.class), mock(int.class));
-        Helper.resize(mock(List.class), mock(int.class), mock(Object.class));
-        boolean result0 = Helper.isValid(mock(int.class));
-        int result1 = Helper.createBiPointer(mock(int.class), mock(boolean.class));
-        boolean result2 = Helper.isCorrect(mock(int.class));
+        Helper.resize(mock(List.class), 1);
+        Helper.resize(mock(List.class), 1, mock(Object.class));
+        boolean result0 = Helper.isValid(1);
+        int result1 = Helper.createBiPointer(1, true);
+        boolean result2 = Helper.isCorrect(1);
         String result3 = testSubject0.toString();
     }
 
     @Test
     public void shouldTestIntCache() throws Exception {
         IntCache testSubject0 = new IntCache();
-        testSubject0.add(mock(int.class));
-        testSubject0.delete(mock(int.class));
-        testSubject0.hit(mock(int.class));
-        testSubject0.miss(mock(int.class));
-        boolean result0 = testSubject0.isContained(mock(int.class));
-        boolean result1 = testSubject0.isNotContained(mock(int.class));
+        testSubject0.add(1);
+        testSubject0.delete(1);
+        testSubject0.hit(1);
+        testSubject0.miss(1);
+        boolean result0 = testSubject0.isContained(1);
+        boolean result1 = testSubject0.isNotContained(1);
         testSubject0.resetContained();
         testSubject0.resetNotContained();
         String result2 = testSubject0.toString();
@@ -340,73 +338,73 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_helpers {
     @Test
     public void shouldTestIntList() throws Exception {
         IntList testSubject0 = new IntList();
-        testSubject0.add(mock(int.class));
-        int result0 = testSubject0.get(mock(int.class));
+        testSubject0.add(1);
+        int result0 = testSubject0.get(1);
         String result1 = testSubject0.toString();
         testSubject0.clear();
         boolean result2 = testSubject0.isEmpty();
-        boolean result3 = testSubject0.contains(mock(int.class));
+        boolean result3 = testSubject0.contains(1);
         testSubject0.addAll(mock(FastSet.class));
         int result4 = testSubject0.size();
-        testSubject0.remove(mock(int.class));
-        testSubject0.removeAll(mock(int.class), mock(int.class));
+        testSubject0.remove(1);
+        testSubject0.removeAll(1, 1);
         boolean result5 = testSubject0.containsAll(mock(FastSet.class));
         int[] result6 = testSubject0.toIntArray();
         boolean result7 = testSubject0.containsAny(mock(FastSet.class));
-        testSubject0.removeAt(mock(int.class));
+        testSubject0.removeAt(1);
         boolean result8 = testSubject0.intersect(mock(FastSet.class));
         testSubject0.removeAllValues(mock(int[].class));
-        testSubject0.completeSet(mock(int.class));
+        testSubject0.completeSet(1);
     }
 
     @Test
     public void shouldTestIntMap() throws Exception {
         IntMap testSubject0 = new IntMap();
-        Object result0 = testSubject0.get(mock(int.class));
-        testSubject0.put(mock(int.class), mock(Object.class));
+        Object result0 = testSubject0.get(1);
+        testSubject0.put(1, mock(Object.class));
         String result1 = testSubject0.toString();
         testSubject0.clear();
         boolean result2 = testSubject0.isEmpty();
         int result3 = testSubject0.size();
         List result4 = testSubject0.entrySet();
-        Object result5 = testSubject0.remove(mock(int.class));
+        Object result5 = testSubject0.remove(1);
         int[] result6 = testSubject0.keySet();
         boolean result7 = testSubject0.containsValue(mock(Object.class));
-        boolean result8 = testSubject0.containsKey(mock(int.class));
+        boolean result8 = testSubject0.containsKey(1);
         boolean result9 = testSubject0.containsAll(mock(IntMap.class));
-        int result10 = testSubject0.index(mock(int.class));
+        int result10 = testSubject0.index(1);
     }
 
     @Test
     public void shouldTestIntSet() throws Exception {
         IntSet testSubject0 = new IntSet();
-        testSubject0.add(mock(int.class));
-        int result0 = testSubject0.get(mock(int.class));
+        testSubject0.add(1);
+        int result0 = testSubject0.get(1);
         String result1 = testSubject0.toString();
         testSubject0.clear();
         boolean result2 = testSubject0.isEmpty();
-        boolean result3 = testSubject0.contains(mock(int.class));
+        boolean result3 = testSubject0.contains(1);
         testSubject0.addAll(mock(FastSet.class));
         int result4 = testSubject0.size();
-        testSubject0.remove(mock(int.class));
-        testSubject0.removeAll(mock(int.class), mock(int.class));
+        testSubject0.remove(1);
+        testSubject0.removeAll(1, 1);
         boolean result5 = testSubject0.containsAll(mock(FastSet.class));
         int[] result6 = testSubject0.toIntArray();
         boolean result7 = testSubject0.containsAny(mock(FastSet.class));
-        testSubject0.removeAt(mock(int.class));
+        testSubject0.removeAt(1);
         boolean result8 = testSubject0.intersect(mock(FastSet.class));
         testSubject0.removeAllValues(mock(int[].class));
-        testSubject0.completeSet(mock(int.class));
+        testSubject0.completeSet(1);
     }
 
     @Test
     public void shouldTestInterfaceLogAdapter() throws Exception {
         LogAdapter testSubject0 = mock(LogAdapter.class);
         testSubject0.println();
-        testSubject0.print(mock(int.class));
+        testSubject0.print(1);
         testSubject0.print(mock(double.class));
         testSubject0.print(mock(float.class));
-        testSubject0.print(mock(boolean.class));
+        testSubject0.print(true);
         testSubject0.print(mock(byte.class));
         testSubject0.print(mock(char.class));
         testSubject0.print(mock(short.class));
@@ -446,24 +444,24 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_helpers {
         int result1 = testSubject0.size();
         testSubject0.push(mock(Object.class));
         Object result2 = testSubject0.pop();
-        Object result3 = testSubject0.pop(mock(int.class));
+        Object result3 = testSubject0.pop(1);
         Object result4 = testSubject0.top();
-        Object result5 = testSubject0.top(mock(int.class));
+        Object result5 = testSubject0.top(1);
         String result6 = testSubject0.toString();
     }
 
     @Test
     public void shouldTestSortedIntList() throws Exception {
         SortedIntList testSubject0 = new SortedIntList();
-        testSubject0.add(mock(int.class));
-        int result0 = testSubject0.get(mock(int.class));
+        testSubject0.add(1);
+        int result0 = testSubject0.get(1);
         testSubject0.clear();
         boolean result1 = testSubject0.isEmpty();
-        boolean result2 = testSubject0.contains(mock(int.class));
+        boolean result2 = testSubject0.contains(1);
         int result3 = testSubject0.size();
-        testSubject0.remove(mock(int.class));
+        testSubject0.remove(1);
         int[] result4 = testSubject0.toIntArray();
-        testSubject0.removeAt(mock(int.class));
+        testSubject0.removeAt(1);
         String result5 = testSubject0.toString();
     }
 
@@ -471,14 +469,12 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_helpers {
     public void shouldTestStatIndex() throws Exception {
         StatIndex testSubject0 = StatIndex.valueOf(mock(String.class));
         StatIndex[] result0 = StatIndex.values();
-        int result2 = testSubject0.getIndex(mock(boolean.class));
-        StatIndex.updateStatValues(mock(int.class), mock(int.class), mock(int.class),
-                mock(int.class), mock(boolean.class), mock(int[].class));
-        StatIndex.updateStatValues(mock(DLVertex.class), mock(boolean.class),
-                mock(boolean.class), mock(int[].class));
-        StatIndex.incFreqValue(mock(boolean.class), mock(int[].class));
-        int result3 = StatIndex.getDepth(mock(boolean.class), mock(int[].class));
-        int result4 = StatIndex.choose(mock(char.class));
+        int result2 = testSubject0.getIndex(true);
+        StatIndex.updateStatValues(1, 1, 1, 1, true, mock(int[].class));
+        StatIndex.updateStatValues(mock(DLVertex.class), true, true, mock(int[].class));
+        StatIndex.incFreqValue(true, mock(int[].class));
+        int result3 = StatIndex.getDepth(true, mock(int[].class));
+        int result4 = StatIndex.choose('c');
         String result5 = testSubject0.name();
         String result6 = testSubject0.toString();
         Enum result9 = Enum.valueOf(mock(Class.class), mock(String.class));
@@ -491,7 +487,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_helpers {
         Stats testSubject0 = new Stats();
         AccumulatedStatistic result0 = testSubject0.build(mock(List.class));
         testSubject0.accumulate();
-        testSubject0.logStatisticData(mock(LogAdapter.class), mock(boolean.class),
+        testSubject0.logStatisticData(mock(LogAdapter.class), true,
                 mock(DlCompletionGraph.class), mock(JFactReasonerConfiguration.class));
         AccumulatedStatistic result1 = testSubject0.getnTacticCalls();
         AccumulatedStatistic result2 = testSubject0.getnUseless();

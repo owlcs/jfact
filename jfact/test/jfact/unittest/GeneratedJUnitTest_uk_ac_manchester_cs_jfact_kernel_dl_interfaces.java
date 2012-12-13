@@ -26,13 +26,13 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel_dl_interfaces {
         TSignature result1 = testSubject0.getSignature();
         Object result2 = testSubject0.accept(mock(DLAxiomVisitorEx.class));
         testSubject0.accept(mock(DLAxiomVisitor.class));
-        testSubject0.setId(mock(int.class));
+        testSubject0.setId(1);
         boolean result3 = testSubject0.isUsed();
         TOntologyAtom result4 = testSubject0.getAtom();
-        testSubject0.setInModule(mock(boolean.class));
+        testSubject0.setInModule(true);
         testSubject0.setAtom(mock(TOntologyAtom.class));
-        testSubject0.setUsed(mock(boolean.class));
-        testSubject0.setInSS(mock(boolean.class));
+        testSubject0.setUsed(true);
+        testSubject0.setInSS(true);
         boolean result5 = testSubject0.isInModule();
         OWLAxiom result6 = testSubject0.getOWLAxiom();
         boolean result7 = testSubject0.isInSS();

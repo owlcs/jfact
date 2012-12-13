@@ -50,7 +50,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel_actors {
 
     @Test
     public void shouldTestIndividualPolicy() throws Exception {
-        IndividualPolicy testSubject0 = new IndividualPolicy(mock(boolean.class));
+        IndividualPolicy testSubject0 = new IndividualPolicy(true);
         Expression result0 = testSubject0.buildTree(mock(ExpressionManager.class),
                 mock(ClassifiableEntry.class));
         boolean result1 = testSubject0.applicable(mock(ClassifiableEntry.class));

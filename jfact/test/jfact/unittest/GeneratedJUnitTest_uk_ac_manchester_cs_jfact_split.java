@@ -24,7 +24,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_split {
     @Test
     public void shouldTestAOStructure() throws Exception {
         AOStructure testSubject0 = new AOStructure();
-        TOntologyAtom result0 = testSubject0.get(mock(int.class));
+        TOntologyAtom result0 = testSubject0.get(1);
         int result1 = testSubject0.size();
         List result2 = testSubject0.begin();
         TOntologyAtom result3 = testSubject0.newAtom();
@@ -95,15 +95,16 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_split {
         KnowledgeExplorer testSubject0 = new KnowledgeExplorer(mock(TBox.class),
                 mock(ExpressionManager.class));
         Set result0 = testSubject0.getObjectRoles(mock(DlCompletionTree.class),
-                mock(boolean.class), mock(boolean.class));
+ true,
+                true);
         Set result1 = testSubject0.getDataRoles(mock(DlCompletionTree.class),
-                mock(boolean.class));
+ true);
         List result2 = testSubject0.getNeighbours(mock(DlCompletionTree.class),
                 mock(Role.class));
         List result3 = testSubject0.getObjectLabel(mock(DlCompletionTree.class),
-                mock(boolean.class));
+ true);
         List result4 = testSubject0.getDataLabel(mock(DlCompletionTree.class),
-                mock(boolean.class));
+ true);
         String result5 = testSubject0.toString();
     }
 
@@ -225,7 +226,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_split {
     public void shouldTestSigIndex() throws Exception {
         SigIndex testSubject0 = new SigIndex(mock(LocalityChecker.class));
         Collection result0 = testSubject0.getAxioms(mock(NamedEntity.class));
-        Set result1 = testSubject0.getNonLocal(mock(boolean.class));
+        Set result1 = testSubject0.getNonLocal(true);
         testSubject0.processAx(mock(Axiom.class));
         String result2 = testSubject0.toString();
     }
@@ -344,7 +345,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_split {
     public void shouldTestTOntologyAtom() throws Exception {
         TOntologyAtom testSubject0 = new TOntologyAtom();
         int result0 = testSubject0.getId();
-        testSubject0.setId(mock(int.class));
+        testSubject0.setId(1);
         testSubject0.addAxiom(mock(Axiom.class));
         Set result1 = testSubject0.getAtomAxioms();
         Set result2 = testSubject0.getModule();
@@ -417,8 +418,8 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_split {
         testSubject0.remove(mock(NamedEntity.class));
         List result2 = testSubject0.intersect(mock(TSignature.class));
         Set result3 = testSubject0.begin();
-        testSubject0.setLocality(mock(boolean.class));
-        testSubject0.setLocality(mock(boolean.class), mock(boolean.class));
+        testSubject0.setLocality(true);
+        testSubject0.setLocality(true, true);
         boolean result4 = testSubject0.containsNamedEntity(mock(NamedEntity.class));
         boolean result5 = testSubject0.topCLocal();
         boolean result6 = testSubject0.topRLocal();
@@ -467,10 +468,10 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_split {
     @Test
     public void shouldTestTSplitRules() throws Exception {
         TSplitRules testSubject0 = new TSplitRules(new JFactReasonerConfiguration());
-        NamedEntity result0 = testSubject0.getEntity(mock(int.class));
+        NamedEntity result0 = testSubject0.getEntity(1);
         testSubject0.createSplitRules(mock(TSplitVars.class));
         testSubject0.initEntityMap(mock(DLDag.class));
-        testSubject0.ensureDagSize(mock(int.class));
+        testSubject0.ensureDagSize(1);
         List result1 = testSubject0.getRules();
         String result2 = testSubject0.toString();
     }
