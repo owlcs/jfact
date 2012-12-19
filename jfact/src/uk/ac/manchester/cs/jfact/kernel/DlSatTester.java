@@ -442,6 +442,7 @@ public class DlSatTester {
     List<DlCompletionTree> NodesToMerge = new ArrayList<DlCompletionTree>();
     List<DlCompletionTreeArc> EdgesToMerge = new ArrayList<DlCompletionTreeArc>();
 
+
     // CGraph-wide rules support
     // / @return true if node is valid for the reasoning
     boolean isNodeGloballyUsed(DlCompletionTree node) {
@@ -707,8 +708,6 @@ public class DlSatTester {
     private int dagSize;
     /** temporary array used in OR operation */
     private List<ConceptWDep> orConceptsToTest = new ArrayList<ConceptWDep>();
-    /** temporary array used in <= operations */
-    private List<DlCompletionTreeArc> edgesToMerge = new ArrayList<DlCompletionTreeArc>();
     /** contains clash set if clash is encountered in a node label */
     private DepSet clashSet = DepSet.create();
     protected JFactReasonerConfiguration options;
@@ -2757,15 +2756,15 @@ public class DlSatTester {
             return true;
         }
         findNeighbours(cur.getRole(), Helper.bpTOP, null);
-        if (edgesToMerge.size() < 2) {
+        if (EdgesToMerge.size() < 2) {
             return false;
         }
-        DlCompletionTreeArc q = edgesToMerge.get(0);
+        DlCompletionTreeArc q = EdgesToMerge.get(0);
         DlCompletionTree sample = q.getArcEnd();
         DepSet depF = DepSet.create(curConceptDepSet);
         depF.add(q.getDep());
-        for (int i = 1; i < edgesToMerge.size(); i++) {
-            q = edgesToMerge.get(i);
+        for (int i = 1; i < EdgesToMerge.size(); i++) {
+            q = EdgesToMerge.get(i);
             if (!q.getArcEnd().isPBlocked()) {
                 if (merge(q.getArcEnd(), sample, DepSet.plus(depF, q.getDep()))) {
                     return true;
@@ -2805,7 +2804,7 @@ public class DlSatTester {
                 findNeighbours(R, C, dep);
                 // if the number of R-neighbours satisfies condition -- nothing
                 // to do
-                if (edgesToMerge.size() <= cur.getNumberLE()) {
+                if (EdgesToMerge.size() <= cur.getNumberLE()) {
                     return false;
                 }
                 // init context
@@ -2813,7 +2812,7 @@ public class DlSatTester {
                 bContext.branchDep.add(dep);
                 // setup BCLE
                 bcLE = (BCLE<DlCompletionTreeArc>) bContext;
-                edgesToMerge = bcLE.swap(edgesToMerge);
+                EdgesToMerge = bcLE.swap(EdgesToMerge);
                 bcLE.resetMCI();
             }
             {
@@ -3480,18 +3479,18 @@ public class DlSatTester {
     }
 
     private void findNeighbours(Role Role, int c, DepSet Dep) {
-        edgesToMerge.clear();
+        EdgesToMerge.clear();
         DagTag tag = dlHeap.get(c).getType();
         List<DlCompletionTreeArc> neighbour = curNode.getNeighbour();
         int size = neighbour.size();
         for (int i = 0; i < size; i++) {
             DlCompletionTreeArc p = neighbour.get(i);
-            if (p.isNeighbour(Role) && isNewEdge(p.getArcEnd(), edgesToMerge)
+            if (p.isNeighbour(Role) && isNewEdge(p.getArcEnd(), EdgesToMerge)
                     && findChooseRuleConcept(p.getArcEnd().label().getLabel(tag), c, Dep)) {
-                edgesToMerge.add(p);
+                EdgesToMerge.add(p);
             }
         }
-        Collections.sort(edgesToMerge, new EdgeCompare());
+        Collections.sort(EdgesToMerge, new EdgeCompare());
     }
 
     private boolean commonTacticBodyChoose(Role R, int C) {

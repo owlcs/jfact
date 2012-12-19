@@ -759,7 +759,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel_dl_axioms {
 
     @Test
     public void shouldTestAxiomSingleDRole() throws Exception {
-        AxiomSingleDRole testSubject0 = null;
+        AxiomSingleDRole testSubject0 = mock(AxiomSingleDRole.class);
         int result0 = testSubject0.getId();
         testSubject0.setId(1);
         DataRoleExpression result1 = testSubject0.getRole();
@@ -780,7 +780,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel_dl_axioms {
 
     @Test
     public void shouldTestAxiomSingleORole() throws Exception {
-        AxiomSingleORole testSubject0 = null;
+        AxiomSingleORole testSubject0 = mock(AxiomSingleORole.class);
         int result0 = testSubject0.getId();
         testSubject0.setId(1);
         ObjectRoleExpression result1 = testSubject0.getRole();

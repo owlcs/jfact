@@ -368,7 +368,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel_dl {
 
     @Test
     public void shouldTestNamedEntityImpl() throws Exception {
-        NamedEntityImpl testSubject0 = null;
+        NamedEntityImpl testSubject0 = mock(NamedEntityImpl.class);
         String result0 = testSubject0.toString();
         String result1 = testSubject0.getName();
         NamedEntry result2 = testSubject0.getEntry();

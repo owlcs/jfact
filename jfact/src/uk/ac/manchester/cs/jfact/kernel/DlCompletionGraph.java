@@ -17,7 +17,7 @@ import uk.ac.manchester.cs.jfact.kernel.state.DLCompletionGraphSaveState;
 
 public class DlCompletionGraph {
     /** initial value of IR level */
-    private static int initIRLevel = 0;
+    private static final int initIRLevel = 0;
     // XXX is this actually used?
     /** allocator for edges */
     private List<DlCompletionTreeArc> ctEdgeHeap = new ArrayList<DlCompletionTreeArc>();

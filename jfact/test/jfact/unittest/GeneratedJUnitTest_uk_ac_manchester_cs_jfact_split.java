@@ -43,7 +43,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_split {
 
     @Test
     public void shouldTestBotEquivalenceEvaluator() throws Exception {
-        BotEquivalenceEvaluator testSubject0 = null;
+        BotEquivalenceEvaluator testSubject0 = mock(BotEquivalenceEvaluator.class);
         testSubject0.visit(mock(DataRoleName.class));
         testSubject0.visit(mock(ObjectRoleInverse.class));
         testSubject0.visit(mock(ObjectRoleChain.class));
@@ -119,7 +119,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_split {
 
     @Test
     public void shouldTestModuleType() throws Exception {
-        ModuleType testSubject0 = null;
+        ModuleType testSubject0 = ModuleType.M_BOT;
         ModuleType[] result0 = ModuleType.values();
         ModuleType result1 = ModuleType.valueOf(mock(String.class));
         String result2 = testSubject0.name();
@@ -175,7 +175,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_split {
 
     @Test
     public void shouldTestSigAccessor() throws Exception {
-        SigAccessor testSubject0 = null;
+        SigAccessor testSubject0 = mock(SigAccessor.class);
         boolean result0 = testSubject0.topCLocal();
         boolean result1 = testSubject0.topRLocal();
         boolean result2 = testSubject0.isTopOrBuiltInDataType(mock(Expression.class));
@@ -360,7 +360,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_split {
 
     @Test
     public void shouldTestTopEquivalenceEvaluator() throws Exception {
-        TopEquivalenceEvaluator testSubject0 = null;
+        TopEquivalenceEvaluator testSubject0 = mock(TopEquivalenceEvaluator.class);
         testSubject0.visit(mock(ObjectRoleProjectionFrom.class));
         testSubject0.visit(mock(ObjectRoleProjectionInto.class));
         testSubject0.visit(mock(DataRoleName.class));

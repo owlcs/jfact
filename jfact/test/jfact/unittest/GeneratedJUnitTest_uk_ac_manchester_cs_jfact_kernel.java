@@ -34,7 +34,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
     @Test
     public void shouldTestAxiom() throws Exception {
-        uk.ac.manchester.cs.jfact.kernel.Axiom testSubject0 = null;
+        uk.ac.manchester.cs.jfact.kernel.Axiom testSubject0 = mock(uk.ac.manchester.cs.jfact.kernel.Axiom.class);
         testSubject0.add(mock(DLTree.class));
         String result0 = testSubject0.toString();
         List result1 = testSubject0.split(mock(TBox.class));
@@ -86,7 +86,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
 
     @Test
     public void shouldTestClassifiableEntry() throws Exception {
-        ClassifiableEntry testSubject0 = null;
+        ClassifiableEntry testSubject0 = mock(ClassifiableEntry.class);
         int result0 = testSubject0.getIndex();
         testSubject0.setIndex(1);
         boolean result1 = testSubject0.isSynonym();
@@ -239,7 +239,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
 
     @Test
     public void shouldTestDagTag() throws Exception {
-        DagTag testSubject0 = null;
+        DagTag testSubject0 = DagTag.dtAnd;
         DagTag[] result0 = DagTag.values();
         DagTag result1 = DagTag.valueOf(mock(String.class));
         String result2 = testSubject0.getName();
@@ -452,7 +452,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
 
     @Test
     public void shouldTestDlSatTester() throws Exception {
-        DlSatTester testSubject0 = null;
+        DlSatTester testSubject0 = mock(DlSatTester.class);
         JFactReasonerConfiguration result0 = testSubject0.getOptions();
         testSubject0.setBlockingMethod(true, true);
         DLDag result1 = testSubject0.getDAG();
@@ -561,7 +561,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
 
     @Test
     public void shouldTestExpressionTranslator() throws Exception {
-        ExpressionTranslator testSubject0 = null;
+        ExpressionTranslator testSubject0 = mock(ExpressionTranslator.class);
         Object result0 = testSubject0.visit(mock(ConceptTop.class));
         Object result1 = testSubject0.visit(mock(ConceptAnd.class));
         Object result2 = testSubject0.visit(mock(ConceptNot.class));
@@ -805,7 +805,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
 
     @Test
     public void shouldTestNamedEntry() throws Exception {
-        NamedEntry testSubject0 = null;
+        NamedEntry testSubject0 = mock(NamedEntry.class);
         String result0 = testSubject0.toString();
         String result1 = testSubject0.getName();
         int result2 = testSubject0.getId();
@@ -1193,7 +1193,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
 
     @Test
     public void shouldTestRestorer() throws Exception {
-        Restorer testSubject0 = null;
+        Restorer testSubject0 = mock(Restorer.class);
         testSubject0.restore();
         int result0 = testSubject0.getRaresavestackLevel();
         testSubject0.setRaresavestackLevel(1);
@@ -1202,7 +1202,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
 
     @Test
     public void shouldTestRole() throws Exception {
-        Role testSubject0 = null;
+        Role testSubject0 = mock(Role.class);
         String result0 = testSubject0.toString();
         testSubject0.print(mock(LogAdapter.class));
         boolean result1 = testSubject0.isSymmetric();
@@ -1589,7 +1589,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
 
     @Test
     public void shouldTestToken() throws Exception {
-        Token testSubject0 = null;
+        Token testSubject0 = Token.AND;
         Token[] result0 = Token.values();
         Token result1 = Token.valueOf(mock(String.class));
         String result2 = testSubject0.getName();

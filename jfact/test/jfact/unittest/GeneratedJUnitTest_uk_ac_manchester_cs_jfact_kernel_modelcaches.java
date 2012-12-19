@@ -57,7 +57,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel_modelcaches {
 
     @Test
     public void shouldTestModelCacheInterface() throws Exception {
-        ModelCacheInterface testSubject0 = null;
+        ModelCacheInterface testSubject0 = mock(ModelCacheInterface.class);
         ModelCacheState result0 = testSubject0.getState();
         testSubject0.setHasNominalNode(true);
         boolean result1 = testSubject0.hasNominalClash(mock(ModelCacheInterface.class));
@@ -88,7 +88,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel_modelcaches {
 
     @Test
     public void shouldTestModelCacheState() throws Exception {
-        ModelCacheState testSubject0 = null;
+        ModelCacheState testSubject0 = mock(ModelCacheState.class);
         ModelCacheState[] result0 = ModelCacheState.values();
         ModelCacheState result1 = ModelCacheState.valueOf(mock(String.class));
         boolean result2 = testSubject0.usageByState();
@@ -101,7 +101,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel_modelcaches {
 
     @Test
     public void shouldTestModelCacheType() throws Exception {
-        ModelCacheType testSubject0 = null;
+        ModelCacheType testSubject0 = mock(ModelCacheType.class);
         ModelCacheType[] result0 = ModelCacheType.values();
         ModelCacheType result1 = ModelCacheType.valueOf(mock(String.class));
         String result2 = testSubject0.name();

@@ -7,6 +7,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.*;
 
+@SuppressWarnings("javadoc")
 public class TestCreator {
     public static void _main(String[] args) throws Exception {
         Map<String, PrintStream> streams = new HashMap<String, PrintStream>();

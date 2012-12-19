@@ -302,7 +302,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
 
     @Test
     public void shouldTestDataTypeSituation() throws Exception {
-        DataTypeSituation testSubject0 = null;
+        DataTypeSituation testSubject0 = mock(DataTypeSituation.class);
         Datatype result1 = testSubject0.getType();
         testSubject0.setPType(mock(DepSet.class));
         testSubject0.setNType(mock(DepSet.class));

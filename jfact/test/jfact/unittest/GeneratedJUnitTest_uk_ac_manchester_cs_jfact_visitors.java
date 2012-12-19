@@ -213,7 +213,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_visitors {
 
     @Test
     public void shouldTestDLExpressionVisitorAdapter() throws Exception {
-        DLExpressionVisitorAdapter testSubject0 = null;
+        DLExpressionVisitorAdapter testSubject0 = mock(DLExpressionVisitorAdapter.class);
         testSubject0.visit(mock(ConceptTop.class));
         testSubject0.visit(mock(ConceptBottom.class));
         testSubject0.visit(mock(ConceptName.class));
@@ -302,7 +302,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_visitors {
 
     @Test
     public void shouldTestDLExpressionVisitorExAdapter() throws Exception {
-        DLExpressionVisitorExAdapter testSubject0 = null;
+        DLExpressionVisitorExAdapter testSubject0 = mock(DLExpressionVisitorExAdapter.class);
         Object result0 = testSubject0.visit(mock(ConceptTop.class));
         Object result1 = testSubject0.visit(mock(ConceptBottom.class));
         Object result2 = testSubject0.visit(mock(ConceptName.class));
