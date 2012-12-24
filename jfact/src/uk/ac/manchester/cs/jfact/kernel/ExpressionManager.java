@@ -107,7 +107,6 @@ public class ExpressionManager {
     private DataBottom dataBottom = new DataBottom();
     /** cache for the role inverses */
     private InverseRoleCache inverseRoleCache = new InverseRoleCache();
-
     // / cache for the one-of singletons
     private Map<IndividualExpression, ConceptExpression> OneOfCache = new HashMap<IndividualExpression, ConceptExpression>();
 
@@ -217,7 +216,6 @@ public class ExpressionManager {
     /** get an n-ary one-of expression; take the arguments from the last argument
      * list */
     public ConceptExpression oneOf(List<Expression> l) {
-        
         if (l.size() == 1) {
             IndividualExpression i = (IndividualExpression) l.get(0);
             ConceptExpression c = OneOfCache.get(i);

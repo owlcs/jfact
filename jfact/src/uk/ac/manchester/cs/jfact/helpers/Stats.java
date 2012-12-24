@@ -11,6 +11,7 @@ import java.util.List;
 import uk.ac.manchester.cs.jfact.kernel.DlCompletionGraph;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
+@SuppressWarnings("javadoc")
 public class Stats {
     public AccumulatedStatistic build(List<AccumulatedStatistic> list) {
         AccumulatedStatistic toReturn = new AccumulatedStatistic();

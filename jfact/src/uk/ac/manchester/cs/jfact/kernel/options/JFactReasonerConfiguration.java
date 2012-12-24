@@ -9,6 +9,7 @@ import org.semanticweb.owlapi.reasoner.*;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 
+@SuppressWarnings("javadoc")
 public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
     /** Option 'useRelevantOnly' is used when creating internal DAG
      * representation for externally given TBox. If true, DAG contains only

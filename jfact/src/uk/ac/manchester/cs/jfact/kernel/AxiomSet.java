@@ -24,13 +24,12 @@ public class AxiomSet {
         boolean absMethod(Axiom ax);
     }
 
-    /**  set of absorption action, in order */
+    /** set of absorption action, in order */
     private List<Abs> actions = new ArrayList<AxiomSet.Abs>();
 
     /** add already built GCI p */
     private void insertGCI(Axiom p) {
-        tboxHost.getOptions().getAbsorptionLog()
-.print("\n new axiom (")
+        tboxHost.getOptions().getAbsorptionLog().print("\n new axiom (")
                 .print(accumulator.size()).print("):", p);
         accumulator.add(p);
     }
@@ -44,7 +43,7 @@ public class AxiomSet {
         return true;
     }
 
-    /**  helper that inserts an axiom into Accum; @return bool if success */
+    /** helper that inserts an axiom into Accum; @return bool if success */
     protected boolean processNewAxiom(Axiom q) {
         if (q == null) {
             return false;
@@ -123,8 +122,7 @@ public class AxiomSet {
         }
         // clear absorbed and remove them from Accum
         accumulator = GCIs;
-        tboxHost.getOptions().getAbsorptionLog()
-.print("\nAbsorption done with ")
+        tboxHost.getOptions().getAbsorptionLog().print("\nAbsorption done with ")
                 .print(accumulator.size()).print(" GCIs left\n");
         printStatistics();
         return size();
@@ -225,8 +223,7 @@ public class AxiomSet {
         LogAdapter log = tboxHost.getOptions().getAbsorptionLog();
         log.print("\nAbsorption dealt with ").print(get("SAbsInput"))
                 .print(" input axioms\nThere were made ").print(get("SAbsAction"))
-                .print(
-                " absorption actions, of which:");
+                .print(" absorption actions, of which:");
         if (get("SAbsRepCN") > 0) {
             log.print("\n\t").print(get("SAbsRepCN")).print(" concept name replacements");
         }

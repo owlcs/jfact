@@ -513,7 +513,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree> {
         return false;
     }
 
-    /**  check if IR for the node contains C */
+    /** check if IR for the node contains C */
     private boolean inIRwithC(int level, DepSet ds, Reference<DepSet> dep) {
         if (inequalityRelation.isEmpty()) {
             return false;
@@ -890,7 +890,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree> {
         return o.toString();
     }
 
-    /**  check if the NODE's and current node's IR are labelled with the same */
+    /** check if the NODE's and current node's IR are labelled with the same */
     // level
     public boolean nonMergable(DlCompletionTree node, Reference<DepSet> dep) {
         if (inequalityRelation.isEmpty() || node.inequalityRelation.isEmpty()) {

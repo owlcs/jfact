@@ -18,19 +18,19 @@ import uk.ac.manchester.cs.jfact.split.TSplitVar;
 import uk.ac.manchester.cs.jfact.split.TSplitVars;
 
 public class DLConceptTaxonomy extends Taxonomy {
-    /**  all the derived subsumers of a class (came from the model) */
+    /** all the derived subsumers of a class (came from the model) */
     class DerivedSubsumers extends KnownSubsumers {
         // protected: // typedefs
-        /**  set of the subsumers */
+        /** set of the subsumers */
         // typedef Taxonomy::SubsumerSet SubsumerSet;
-        /**  SS RW iterator */
+        /** SS RW iterator */
         // typedef SubsumerSet::iterator ss_iterator;
         // protected: // members
-        /**  set of sure- and possible subsumers */
+        /** set of sure- and possible subsumers */
         protected List<ClassifiableEntry> Sure, Possible;
 
         // public: // interface
-        /**  c'tor: copy given sets */
+        /** c'tor: copy given sets */
         public DerivedSubsumers(List<ClassifiableEntry> sure,
                 List<ClassifiableEntry> possible) {
             Sure = new ArrayList<ClassifiableEntry>(sure);
@@ -38,22 +38,22 @@ public class DLConceptTaxonomy extends Taxonomy {
         }
 
         // iterators
-        /**  begin of the Sure subsumers interval */
+        /** begin of the Sure subsumers interval */
         @Override
         public List<ClassifiableEntry> s_begin() {
             return Sure;
         }
 
-        /**  begin of the Possible subsumers interval */
+        /** begin of the Possible subsumers interval */
         @Override
         public List<ClassifiableEntry> p_begin() {
             return Possible;
         }
     }
 
-    /**  set of split vars */
+    /** set of split vars */
     TSplitVars Splits;
-    /**  flag shows that subsumption check could be simplified */
+    /** flag shows that subsumption check could be simplified */
     boolean inSplitCheck;
     /** host tBox */
     private TBox tBox;
@@ -76,7 +76,7 @@ public class DLConceptTaxonomy extends Taxonomy {
     // flags
     /** flag to use Bottom-Up search */
     private boolean flagNeedBottomUp;
-    /**  number of processed common parents */
+    /** number of processed common parents */
     protected int nCommon = 1;
 
     // -- General support for DL concept classification
@@ -160,24 +160,24 @@ public class DLConceptTaxonomy extends Taxonomy {
         inSplitCheck = false;
     }
 
-    /**  process all splits */
+    /** process all splits */
     void processSplits() {
         for (TSplitVar v : Splits.getEntries()) {
             mergeSplitVars(v);
         }
     }
 
-    /**  set split vars */
+    /** set split vars */
     void setSplitVars(TSplitVars s) {
         Splits = s;
     }
 
-    /**  get access to split vars */
+    /** get access to split vars */
     TSplitVars getSplits() {
         return Splits;
     }
 
-    /**  set bottom-up flag */
+    /** set bottom-up flag */
     public void setBottomUp(KBFlags GCIs) {
         flagNeedBottomUp = GCIs.isGCI() || GCIs.isReflexive() && GCIs.isRnD();
     }
@@ -339,7 +339,7 @@ public class DLConceptTaxonomy extends Taxonomy {
         return enhancedSubs1(upDirection, cur);
     }
 
-    /**  test whether a node could be a super-node of CUR */
+    /** test whether a node could be a super-node of CUR */
     private boolean possibleSub(TaxonomyVertex v) {
         Concept C = (Concept) v.getPrimer();
         // non-prim concepts are candidates
@@ -416,7 +416,7 @@ public class DLConceptTaxonomy extends Taxonomy {
         common.clear();
     }
 
-    /**  check if no BU classification is required as C=TOP */
+    /** check if no BU classification is required as C=TOP */
     private boolean isEqualToTop() {
         // check this up-front to avoid Sorted check's flaw wrt equals-to-top
         ModelCacheInterface cache = tBox.initCache(curConcept(), true);
@@ -461,7 +461,7 @@ public class DLConceptTaxonomy extends Taxonomy {
         return false;
     }
 
-    /**  after merging, check whether there are extra neighbours that should be */
+    /** after merging, check whether there are extra neighbours that should be */
     // taken into account
     void checkExtraParents() {
         inSplitCheck = true;
@@ -484,7 +484,7 @@ public class DLConceptTaxonomy extends Taxonomy {
         inSplitCheck = false;
     }
 
-    /**  merge vars came from a given SPLIT together */
+    /** merge vars came from a given SPLIT together */
     void mergeSplitVars(TSplitVar split) {
         Set<TaxonomyVertex> splitVertices = new HashSet<TaxonomyVertex>();
         TaxonomyVertex v = split.C.getTaxVertex();
@@ -517,7 +517,7 @@ public class DLConceptTaxonomy extends Taxonomy {
         }
     }
 
-    /**  merge a single vertex V to a node represented by CUR */
+    /** merge a single vertex V to a node represented by CUR */
     void mergeVertex(TaxonomyVertex cur, TaxonomyVertex v, Set<TaxonomyVertex> excludes) {
         if (!cur.equals(v)) {
             cur.mergeIndepNode(v, excludes, curEntry);

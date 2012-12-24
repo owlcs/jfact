@@ -705,7 +705,6 @@ public class Role extends ClassifiableEntry {
         }
     }
 
-
     private boolean isRealTopFunc() {
         if (!isFunctional()) {
             return false;

@@ -85,5 +85,4 @@ public class RATransition {
     boolean isTop() {
         return label.size() == 1 && label.iterator().next().isTop();
     }
-
 }

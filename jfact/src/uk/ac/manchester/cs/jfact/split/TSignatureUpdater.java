@@ -8,17 +8,17 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 
-/**  update signature by adding the signature of a given axiom to it */
+/** update signature by adding the signature of a given axiom to it */
 public class TSignatureUpdater implements DLAxiomVisitor {
-    /**  helper with expressions */
+    /** helper with expressions */
     TExpressionSignatureUpdater Updater;
 
-    /**  helper for the expression processing */
+    /** helper for the expression processing */
     void v(Expression E) {
         E.accept(Updater);
     }
 
-    /**  helper for the [begin,end) interval */
+    /** helper for the [begin,end) interval */
     void v(Collection<? extends Expression> arg) {
         for (Expression e : arg) {
             v(e);
@@ -205,7 +205,7 @@ public class TSignatureUpdater implements DLAxiomVisitor {
         Updater = new TExpressionSignatureUpdater(sig);
     }
 
-    /**  load ontology to a given KB */
+    /** load ontology to a given KB */
     @Override
     public void visitOntology(Ontology ontology) {
         for (Axiom p : ontology.getAxioms()) {

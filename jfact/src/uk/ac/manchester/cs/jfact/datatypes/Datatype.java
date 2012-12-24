@@ -7,17 +7,17 @@ import java.util.Set;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 
+/** @author ignazio
+ * @param <Representation> */
 public interface Datatype<Representation extends Comparable<Representation>> extends
         DataExpression {
     /** @return true if this datatype is an expression */
     boolean isExpression();
 
-    /**
-     * @return this datatype as a datatype expression, if it is an expression.
+    /** @return this datatype as a datatype expression, if it is an expression.
      * @throws UnsupportedOperationException
      *             if this datatype is not an expression (isExpression() returns
-     *             false)
-     */
+     *             false) */
     DatatypeExpression<Representation> asExpression();
 
     /** @return the known ancestors of this datatype */
@@ -29,21 +29,20 @@ public interface Datatype<Representation extends Comparable<Representation>> ext
     /** @return the cardinality of the value space: finite or countably infinite */
     cardinality getCardinality();
 
-    /**
-     * @return the available facets for this datatype. The collection is
-     *         immutable - only specs sanctioned facets allowed
-     */
+    /** @return the available facets for this datatype. The collection is
+     *         immutable - only specs sanctioned facets allowed */
     Set<Facet> getFacets();
 
     /** @return the known values for a subset of the available facets */
     Map<Facet, Object> getKnownFacetValues();
 
-    /**
-     * @return known value for facet, or null if there is no known value for the
-     *         facet
-     */
+    /** @param f
+     * @return known value for f, or null if there is no known value for the
+     *         facet */
     <O extends Comparable<O>> O getFacetValue(Facet f);
 
+    /** @param f
+     * @return numeric value */
     BigDecimal getNumericFacetValue(Facet f);
 
     /** @return true if this datatype is numeric */
@@ -52,67 +51,56 @@ public interface Datatype<Representation extends Comparable<Representation>> ext
     /** @return the kind of ordering: false, partial or total */
     ordered getOrdered();
 
-    /**
+    /** @param type
      * @return true if type\s value space and this datatype's value space have
      *         an intersection, e.g., non negative integers and non positive
-     *         integers intersect at 0
-     */
+     *         integers intersect at 0 */
     boolean isCompatible(Datatype<?> type);
 
-    /**
-     * @param l
-     * 
-     * @return true if l is a literal with compatible datatype and value
-     *         included in this datatype value space
-     */
+    /** @param l
+     * @return true if l is a literal with compatible datatype and value included
+     *         in this datatype value space */
     boolean isCompatible(Literal<?> l);
 
-    /**
-     * @param l
+    /** @param l
      * @return false if this literal representation does not represent a value
      *         included in the value space of this datatype; its datatype must
-     *         be this datatype
-     */
+     *         be this datatype */
     boolean isInValueSpace(Representation l);
 
-    /**
-     * @param s
+    /** @param s
      *            parses a literal form to a value in the datatype value space;
      *            for use when building Literals
-     */
+     * @return value */
     Representation parseValue(String s);
 
-    /**
-     * @param s
+    /** @param s
      * @return a literal with parseValue(s) as typed value, generic type O equal
      *         to the internal class representing the type, and datatype this
-     *         datatype.
-     */
+     *         datatype. */
     Literal<Representation> buildLiteral(String s);
 
-    /**
-     * @param type
-     * @return true if this datatype has type as an ancestor
-     */
+    /** @param type
+     * @return true if this datatype has type as an ancestor */
     boolean isSubType(Datatype<?> type);
 
-    /**
-     * @return the datatype uri as a string (there does seem to be no need for a
-     *         more complex representation)
-     */
+    /** @return the datatype uri as a string (there does seem to be no need for a
+     *         more complex representation) */
     String getDatatypeURI();
 
-    /**
-     * @return the list of possible values for this datatype which are
-     *         compatible with the listed datatypes.
-     */
+    /** @return the list of possible values for this datatype which are
+     *         compatible with the listed datatypes. */
     Collection<Literal<Representation>> listValues();
 
+    /** @return true if the datatype is numeric */
     boolean isNumericDatatype();
 
+    /** @return cast as numeric datatype */
     NumericDatatype<Representation> asNumericDatatype();
 
+    /** @return true if ordered */
     boolean isOrderedDatatype();
 
+    /** @return cast as ordered datatype */
     <O extends Comparable<O>> OrderedDatatype<O> asOrderedDatatype();
 }

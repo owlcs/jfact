@@ -52,7 +52,6 @@ public class RAStateTransitions {
         return TopTransition;
     }
 
-
     /** @return true iff there are no transitions from this state */
     public boolean isEmpty() {
         return size == 0;
@@ -117,5 +116,4 @@ public class RAStateTransitions {
     public int getTransitionEnd() {
         return base.get(0).final_state();
     }
-
 }

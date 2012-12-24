@@ -62,7 +62,6 @@ abstract class AxiomImpl implements Axiom {
         sig = new TSignature();
         TSignatureUpdater Updater = new TSignatureUpdater(sig);
         this.accept(Updater);
-        
     }
 
     public AxiomImpl(OWLAxiom ax) {

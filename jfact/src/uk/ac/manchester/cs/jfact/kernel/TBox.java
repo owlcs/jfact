@@ -2546,8 +2546,7 @@ public class TBox {
                 case dtChoose:
                     queue.add(v.getConceptIndex());
                     break;
-                case dtIrr:
-                {
+                case dtIrr: {
                     Role _role = v.getRole();
                     List<Role> rolesToExplore = new LinkedList<Role>();
                     rolesToExplore.add(_role);
@@ -2907,5 +2906,4 @@ class DumpLisp extends DumpInterface {
         }
         contAx(Ax);
     }
-
 }

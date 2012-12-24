@@ -9,6 +9,7 @@ import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 import org.semanticweb.owlapi.vocab.OWLFacet;
 
+@SuppressWarnings("javadoc")
 public class Facets {
     private static abstract class AbstractFacet implements Facet {
         final String uri;

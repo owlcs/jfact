@@ -6,22 +6,29 @@ import java.util.*;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
+/** @author ignazio
+ * @param <R> */
 public class DatatypeEnumeration<R extends Comparable<R>> implements
         DatatypeCombination<DatatypeEnumeration<R>, Literal<R>>, DatatypeExpression<R> {
     private final String uri;
     protected Datatype<R> host;
     protected final List<Literal<R>> literals = new ArrayList<Literal<R>>();
 
+    /** @param d */
     public DatatypeEnumeration(Datatype<R> d) {
         this.uri = "enum" + DatatypeFactory.getIndex();
         this.host = d;
     }
 
+    /** @param d
+     * @param l */
     public DatatypeEnumeration(Datatype<R> d, Literal<R> l) {
         this(d);
         this.literals.add(l);
     }
 
+    /** @param d
+     * @param c */
     public DatatypeEnumeration(Datatype<R> d, Collection<Literal<R>> c) {
         this(d);
         this.literals.addAll(c);

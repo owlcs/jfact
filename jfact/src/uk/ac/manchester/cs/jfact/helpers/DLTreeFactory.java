@@ -15,6 +15,7 @@ import java.util.List;
 
 import uk.ac.manchester.cs.jfact.kernel.*;
 
+@SuppressWarnings("javadoc")
 public class DLTreeFactory {
     private static EnumSet<Token> snfCalls = EnumSet.of(TOP, BOTTOM, CNAME, INAME, RNAME,
             DNAME, DATAEXPR, NOT, INV, AND, FORALL, LE, SELF, RCOMPOSITION, PROJFROM,
@@ -41,25 +42,25 @@ public class DLTreeFactory {
     }
 
     // Semantic Locality checking support. DO NOT used in usual reasoning
-    /**  @return true iff a data range DR is semantically equivalent to TOP. */
+    /** @return true iff a data range DR is semantically equivalent to TOP. */
     // FIXME!! good approximation for now
     static boolean isSemanticallyDataTop(DLTree dr) {
         return dr.elem().getToken() == TOP;
     }
 
-    /**  @return true iff a data range DR is semantically equivalent to BOTTOM. */
+    /** @return true iff a data range DR is semantically equivalent to BOTTOM. */
     // FIXME!! good approximation for now
     static boolean isSemanticallyDataBottom(DLTree dr) {
         return dr.elem().getToken() == BOTTOM;
     }
 
-    /**  @return true iff the cardinality of a given data range DR is greater */
+    /** @return true iff the cardinality of a given data range DR is greater */
     // than N. FIXME!! good approximation for now
     static boolean isDataRangeBigEnough(DLTree dr, int n) {
         return true;
     }
 
-    /**  simplify universal restriction with top data role */
+    /** simplify universal restriction with top data role */
     static DLTree simplifyDataTopForall(DLTree dr) {
         // if the filler (dr) is TOP (syntactically or semantically), then the
         // forall is top
@@ -70,7 +71,7 @@ public class DLTreeFactory {
         return createBottom();
     }
 
-    /**  simplify minimal cardinality restriction with top data role */
+    /** simplify minimal cardinality restriction with top data role */
     static DLTree simplifyDataTopLE(int n, DLTree dr) {
         // if the filler (dr) is BOTTOM (syntactically or semantically), then
         // the LE is top
@@ -210,17 +211,17 @@ public class DLTreeFactory {
         return new TWODLTree(new Lexeme(LE, n), R, C);
     }
 
-    /**  check whether T is a bottom (empty) role */
+    /** check whether T is a bottom (empty) role */
     public static boolean isBotRole(DLTree t) {
         return isRName(t) && t.elem().getNE().isBottom();
     }
 
-    /**  check whether T is a top (universal) role */
+    /** check whether T is a top (universal) role */
     public static boolean isTopRole(DLTree t) {
         return isRName(t) && t.elem().getNE().isTop();
     }
 
-    /**  create SELF restriction for role R */
+    /** create SELF restriction for role R */
     public static DLTree createSNFSelf(DLTree R) {
         if (isBotRole(R)) {
             return createBottom(); // loop on bottom role is always unsat

@@ -177,14 +177,12 @@ public class OntologyLoader implements DLAxiomVisitor {
     }
 
     @Override
-    public void visit(AxiomORoleDomain axiom)
-    {
+    public void visit(AxiomORoleDomain axiom) {
         ensureNames(axiom.getRole());
         ensureNames(axiom.getDomain());
         Role R = getRole(axiom.getRole(),
                 "Role expression expected in Object Role Domain axiom");
         DLTree C = axiom.getDomain().accept(expressionTranslator);
-
         if (R.isTop()) {
             // add GCI
             tbox.addSubsumeAxiom(DLTreeFactory.createTop(), C);
@@ -195,14 +193,12 @@ public class OntologyLoader implements DLAxiomVisitor {
     }
 
     @Override
-    public void visit(AxiomDRoleDomain axiom)
-    {
+    public void visit(AxiomDRoleDomain axiom) {
         ensureNames(axiom.getRole());
         ensureNames(axiom.getDomain());
         Role R = getRole(axiom.getRole(),
                 "Role expression expected in Data Role Domain axiom");
         DLTree C = axiom.getDomain().accept(expressionTranslator);
-
         if (R.isTop()) {
             // add GCI
             tbox.addSubsumeAxiom(DLTreeFactory.createTop(), C);
@@ -213,14 +209,12 @@ public class OntologyLoader implements DLAxiomVisitor {
     }
 
     @Override
-    public void visit(AxiomORoleRange axiom)
-    {
+    public void visit(AxiomORoleRange axiom) {
         ensureNames(axiom.getRole());
         ensureNames(axiom.getRange());
         Role R = getRole(axiom.getRole(),
                 "Role expression expected in Object Role Range axiom");
         DLTree C = axiom.getRange().accept(expressionTranslator);
-
         if (R.isTop()) {
             // add GCI
             tbox.addSubsumeAxiom(DLTreeFactory.createTop(), C);

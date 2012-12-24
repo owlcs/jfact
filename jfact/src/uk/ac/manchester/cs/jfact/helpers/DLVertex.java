@@ -18,6 +18,9 @@ import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 import uk.ac.manchester.cs.jfact.kernel.*;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 
+/** DL Vertex
+ * 
+ * @author ignazio */
 public class DLVertex extends DLVertexTagDFS {
     static class ChildSet {
         private Comparator<Integer> c = new Comparator<Integer>() {
@@ -120,24 +123,36 @@ public class DLVertex extends DLVertexTagDFS {
     private int n;
     /** maximal depth, size and frequency of reference of the expression */
     private MergableLabel sort = new MergableLabel();
-    public static boolean printExtendedStats = false;
 
-    /** get RW access to the label */
+    /** get RW access to the label
+     * 
+     * @return sort label */
     public MergableLabel getSort() {
         return sort;
     }
 
-    /** merge local label to label LABEL */
+    /** merge local label to label LABEL
+     * 
+     * @param label
+     *            label to merge */
     public void merge(MergableLabel label) {
         sort.merge(label);
     }
 
-    /** c'tor for Top/CN/And (before adding any operands) */
+    /** c'tor for Top/CN/And (before adding any operands)
+     * 
+     * @param op */
     public DLVertex(DagTag op) {
         this(op, 0, null, bpINVALID, null);
     }
 
-    /** c'tor for <= n R_C; and for \A R{n}_C; Note order C, n, R.pointer */
+    /** c'tor for <= n R_C; and for \A R{n}_C; Note order C, n, R.pointer
+     * 
+     * @param op
+     * @param m
+     * @param R
+     * @param c
+     * @param ProjR */
     public DLVertex(DagTag op, int m, Role R, int c, Role ProjR) {
         super(op);
         role = R;
@@ -177,56 +192,62 @@ public class DLVertex extends DLVertexTagDFS {
                 + (child == null ? 0 : child.hashCode());
     }
 
-    /** return C for concepts/quantifiers/NR verteces */
+    /** @return C for concepts/quantifiers/NR verteces */
     public int getConceptIndex() {
         return conceptIndex;
     }
 
-    /** return N for the (<= n R) vertex */
+    /** @return N for the (<= n R) vertex */
     public int getNumberLE() {
         return n;
     }
 
-    /** return N for the (>= n R) vertex */
+    /** @return N for the (>= n R) vertex */
     public int getNumberGE() {
         return n + 1;
     }
 
-    /** return STATE for the (\all R{state}.C) vertex */
+    /** @return STATE for the (\all R{state}.C) vertex */
     public int getState() {
         return n;
     }
 
-    /** return pointer to the first concept name of the entry */
+    /** @return pointer to the first concept name of the entry */
     public int[] begin() {
         return child.sorted();
     }
 
-    /** return pointer to Role for the Role-like verteces */
+    /** @return pointer to Role for the Role-like verteces */
     public Role getRole() {
         return role;
     }
 
-    /** return pointer to Projection Role for the Projection verteces */
+    /** @return pointer to Projection Role for the Projection verteces */
     public Role getProjRole() {
         return projRole;
     }
 
-    /** get (RW) TConcept for concept-like fields */
+    /** @return TConcept for concept-like fields */
     public NamedEntry getConcept() {
         return concept;
     }
 
-    /** set TConcept value to entry */
+    /** set TConcept value to entry
+     * 
+     * @param p */
     public void setConcept(NamedEntry p) {
         concept = p;
     }
 
-    /** set a concept (child) to Name-like vertex */
+    /** set a concept (child) to Name-like vertex
+     * 
+     * @param p */
     public void setChild(int p) {
         conceptIndex = p;
     }
 
+    /** @param p
+     * @return true if dtBad */
     public boolean addChild(int p) {
         if (p == bpTOP) {
             return false;
@@ -249,6 +270,7 @@ public class DLVertex extends DLVertexTagDFS {
         return false;
     }
 
+    /** @return andToDag */
     public int getAndToDagValue() {
         if (child.set.size() == 0) {
             return bpTOP;
@@ -259,6 +281,7 @@ public class DLVertex extends DLVertexTagDFS {
         return bpINVALID;
     }
 
+    /** @param dag */
     public void sortEntry(DLDag dag) {
         if (op != dtAnd) {
             return;
@@ -266,10 +289,12 @@ public class DLVertex extends DLVertexTagDFS {
         child.setSorter(dag);
     }
 
-    @Override
-    public String toString() {
+    /** @param extendedStats
+     *            true if extended stats should be printed
+     * @return toString value */
+    public String toString(boolean extendedStats) {
         StringBuilder o = new StringBuilder();
-        if (printExtendedStats) {
+        if (extendedStats) {
             o.append("[d(");
             o.append(stat[0]);
             o.append("/");
@@ -292,6 +317,13 @@ public class DLVertex extends DLVertexTagDFS {
             o.append(stat[9]);
             o.append(")] ");
         }
+        o.append(toString());
+        return o.toString();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder o = new StringBuilder();
         o.append(op.getName());
         switch (op) {
             case dtAnd:
@@ -315,28 +347,22 @@ public class DLVertex extends DLVertexTagDFS {
                         concept.getName(), op.isNNameTag() ? "=" : "[=", conceptIndex));
                 return o.toString();
             case dtLE:
-                o.append(" ");
-                o.append(n);
-                o.append(" ");
-                o.append(role.getName());
-                o.append(" ");
-                o.append(conceptIndex);
+                o.append(" ").append(n).append(" ").append(role.getName()).append(" ")
+                        .append(conceptIndex);
                 return o.toString();
             case dtForall:
                 o.append(String.format(Templates.DLVERTEXPrint3.getTemplate(),
                         role.getName(), n, conceptIndex));
                 return o.toString();
             case dtIrr:
-                o.append(" ");
-                o.append(role.getName());
+                o.append(" ").append(role.getName());
                 return o.toString();
             case dtProj:
                 o.append(String.format(Templates.DLVERTEXPrint4.getTemplate(),
                         role.getName(), conceptIndex, projRole.getName()));
                 return o.toString();
             case dtChoose:
-                o.append(" ");
-                o.append(getConceptIndex());
+                o.append(" ").append(getConceptIndex());
                 return o.toString();
             default:
                 throw new ReasonerInternalException(String.format(
@@ -352,28 +378,46 @@ public class DLVertex extends DLVertexTagDFS {
     /** maximal depth, size and frequency of reference of the expression */
     protected int[] stat = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-    /** add-up all stat values at once by explicit values */
+    /** add-up all stat values at once by explicit values
+     * 
+     * @param d
+     * @param s
+     * @param b
+     * @param g
+     * @param pos */
     public void updateStatValues(int d, int s, int b, int g, boolean pos) {
         StatIndex.updateStatValues(d, s, b, g, pos, stat);
     }
 
-    /** add-up all values at once by a given vertex */
+    /** add-up all values at once by a given vertex
+     * 
+     * @param v
+     * @param posV
+     * @param pos */
     public void updateStatValues(DLVertex v, boolean posV, boolean pos) {
         StatIndex.updateStatValues(v, posV, pos, stat);
     }
 
-    /** increment frequency value */
+    /** increment frequency value
+     * 
+     * @param pos */
     public void incFreqValue(boolean pos) {
         StatIndex.incFreqValue(pos, stat);
     }
 
     // get methods
-    /** general access to a stat value by index */
+    /** general access to a stat value by index
+     * 
+     * @param i
+     * @return stat at position i */
     public int getStat(int i) {
         return stat[i];
     }
 
-    /** general access to a stat value by index */
+    /** general access to a stat value by index
+     * 
+     * @param pos
+     * @return depth of queue pos */
     public int getDepth(boolean pos) {
         return StatIndex.getDepth(pos, stat);
     }
@@ -382,7 +426,10 @@ public class DLVertex extends DLVertexTagDFS {
     protected long posUsage = 0;
     protected long negUsage = 0;
 
-    /** get access to a usage wrt POS */
+    /** get access to a usage wrt POS
+     * 
+     * @param pos
+     * @return usage */
     public long getUsage(boolean pos) {
         return pos ? posUsage : negUsage;
     }
@@ -408,23 +455,31 @@ class DLVertexTagDFS {
     }
 
     // tag access
-    /** return tag of the CE */
+    /** @return tag of the CE */
     public DagTag getType() {
         return op;
     }
 
     // DFS-related method
-    /** check whether current Vertex is being visited */
+    /** check whether current Vertex is being visited
+     * 
+     * @param pos
+     * @return true if being visited */
     public boolean isVisited(boolean pos) {
         return pos ? visitedPos : visitedNeg;
     }
 
-    /** check whether current Vertex is processed */
+    /** check whether current Vertex is processed
+     * 
+     * @param pos
+     * @return true if processed */
     public boolean isProcessed(boolean pos) {
         return pos ? processedPos : processedNeg;
     }
 
-    /** set that the node is being visited */
+    /** set that the node is being visited
+     * 
+     * @param pos */
     public void setVisited(boolean pos) {
         if (pos) {
             visitedPos = true;
@@ -433,7 +488,9 @@ class DLVertexTagDFS {
         }
     }
 
-    /** set that the node' DFS processing is completed */
+    /** set that the node' DFS processing is completed
+     * 
+     * @param pos */
     public void setProcessed(boolean pos) {
         if (pos) {
             processedPos = true;
@@ -452,12 +509,17 @@ class DLVertexTagDFS {
         visitedNeg = false;
     }
 
-    /** check whether concept is in cycle */
+    /** check whether concept is in cycle
+     * 
+     * @param pos
+     * @return true if concept is in cycle */
     public boolean isInCycle(boolean pos) {
         return pos ? inCyclePos : inCycleNeg;
     }
 
-    /** set concept is in cycle */
+    /** set concept is in cycle
+     * 
+     * @param pos */
     public void setInCycle(boolean pos) {
         if (pos) {
             inCyclePos = true;
@@ -471,12 +533,16 @@ class DLVertexTagDFS {
     /** cache for the negative entry */
     protected ModelCacheInterface nCache = null;
 
-    /** return cache wrt positive flag */
+    /** @return cache wrt positive flag
+     * @param pos */
     public ModelCacheInterface getCache(boolean pos) {
         return pos ? pCache : nCache;
     }
 
-    /** set cache wrt positive flag; note that cache is set up only once */
+    /** set cache wrt positive flag; note that cache is set up only once
+     * 
+     * @param pos
+     * @param p */
     public void setCache(boolean pos, ModelCacheInterface p) {
         if (pos) {
             pCache = p;

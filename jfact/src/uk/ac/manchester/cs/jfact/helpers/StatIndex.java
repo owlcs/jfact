@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.jfact.helpers;
 
+@SuppressWarnings("javadoc")
 public enum StatIndex {
     Depth, Size, Branch, Gener, Freq;
     public int getIndex(boolean pos) {

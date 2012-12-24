@@ -9,21 +9,32 @@ import java.util.NoSuchElementException;
 
 import uk.ac.manchester.cs.jfact.helpers.FastSetSimple;
 
+/** Dependency set
+ * 
+ * @author ignazio */
 public class DepSet {
+    /** @return empty depset */
     public static DepSet create() {
         return new DepSet();
     }
 
+    /** @param i
+     * @return depset with value i */
     public static DepSet create(int i) {
         return new DepSet(i);
     }
 
+    /** @param dep
+     * @return copy of dep */
     public static DepSet create(DepSet dep) {
         DepSet toReturn = new DepSet();
         toReturn.add(dep);
         return toReturn;
     }
 
+    /** @param ds1
+     * @param ds2
+     * @return union of ds1 and ds2 */
     public static DepSet plus(DepSet ds1, DepSet ds2) {
         DepSet toReturn = new DepSet();
         toReturn.add(ds1);
@@ -31,45 +42,51 @@ public class DepSet {
         return toReturn;
     }
 
+    /** @param delegate
+     * @return depset wrapper over delegate */
     public static DepSet create(FastSetSimple delegate) {
         return new DepSet(delegate);
     }
 
     private FastSetSimple delegate = null;
 
-    public DepSet() {}
+    protected DepSet() {}
 
-    public DepSet(FastSetSimple delegate) {
-        this.delegate = delegate;
+    /** @param d */
+    public DepSet(FastSetSimple d) {
+        delegate = d;
     }
 
-    // to be used to get the FastSet and store it in CWDArray save/restore
+    /** to be used to get the FastSet and store it in CWDArray save/restore
+     * 
+     * @return delegate */
     public FastSetSimple getDelegate() {
         return delegate;
     }
 
-    DepSet(int i) {
+    protected DepSet(int i) {
         // only case in which the delegate is modified instead of a copy being
         // made
         delegate = new FastSetSimple();
         delegate.add(i);
     }
 
+    /** @return last delegate */
     public int level() {
-        if (delegate == null) {
-            return 0;
-        }
-        if (delegate.size() == 0) {
+        if (isEmpty()) {
             return 0;
         } else {
             return delegate.get(delegate.size() - 1);
         }
     }
 
+    /** @return true if empty or null delegate */
     public boolean isEmpty() {
         return delegate == null || delegate.isEmpty();
     }
 
+    /** @param level
+     * @return true if delegate contains level */
     public boolean contains(int level) {
         return delegate != null && delegate.contains(level);
     }
@@ -102,8 +119,10 @@ public class DepSet {
         }
         if (obj instanceof DepSet) {
             DepSet obj2 = (DepSet) obj;
-            return delegate == null && obj2.delegate == null
-                    || (delegate != null ? delegate.equals(obj2.delegate) : false); // obj2.delegate.equals(delegate);
+            if (delegate == null) {
+                return obj2.delegate == null;
+            }
+            return delegate.equals(obj2.delegate);
         }
         return false;
     }
@@ -113,17 +132,23 @@ public class DepSet {
         return delegate == null ? 0 : delegate.hashCode();
     }
 
+    /** @return delegate size */
     public int size() {
         return delegate == null ? 0 : delegate.size();
     }
 
+    /** @param i
+     * @return element at position i; if no such element exists, throws
+     *         NoSuchElementExcepton */
     public int get(int i) {
-        if (size() == 0) {
+        if (isEmpty()) {
             throw new NoSuchElementException("the index " + i + " is not valid");
         }
         return delegate.get(i);
     }
 
+    /** @param level
+     *            level to cut the delegate to */
     public void restrict(int level) {
         if (delegate != null) {
             FastSetSimple f = new FastSetSimple();
@@ -139,10 +164,13 @@ public class DepSet {
         // if the depset is empty, no operation
     }
 
+    /** empty the delegate */
     public void clear() {
         delegate = null;
     }
 
+    /** @param toAdd
+     *            add all elements in the depset to this depset */
     public void add(DepSet toAdd) {
         if (toAdd == null || toAdd.size() == 0) {
             return;
@@ -154,6 +182,8 @@ public class DepSet {
         }
     }
 
+    /** @param d
+     *            add all elements in the depset to this depset */
     public void add(FastSetSimple d) {
         if (d == null || d.size() == 0) {
             return;

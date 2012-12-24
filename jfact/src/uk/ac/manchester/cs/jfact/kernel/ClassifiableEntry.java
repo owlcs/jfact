@@ -125,7 +125,7 @@ public class ClassifiableEntry extends NamedEntry {
     public void canonicaliseSynonym() {
         assert isSynonym();
         if (isSynonym()) {
-        pSynonym = resolveSynonym(pSynonym);
+            pSynonym = resolveSynonym(pSynonym);
         }
     }
 

@@ -33,7 +33,7 @@ public class TaxonomyVertex {
     /** satisfiability value of a valued vertex */
     private boolean checkValue;
 
-    /**  mark vertex as the one corresponding to a given ENTRY */
+    /** mark vertex as the one corresponding to a given ENTRY */
     public void setHostVertex(ClassifiableEntry entry) {
         entry.setTaxVertex(this);
     }
@@ -222,7 +222,7 @@ public class TaxonomyVertex {
         }
     }
 
-    /**  merge NODE which is independent to THIS */
+    /** merge NODE which is independent to THIS */
     void mergeIndepNode(TaxonomyVertex node, Set<TaxonomyVertex> excludes,
             ClassifiableEntry curEntry) {
         // copy synonyms here

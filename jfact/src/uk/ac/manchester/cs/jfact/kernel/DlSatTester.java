@@ -442,7 +442,6 @@ public class DlSatTester {
     List<DlCompletionTree> NodesToMerge = new ArrayList<DlCompletionTree>();
     List<DlCompletionTreeArc> EdgesToMerge = new ArrayList<DlCompletionTreeArc>();
 
-
     // CGraph-wide rules support
     // / @return true if node is valid for the reasoning
     boolean isNodeGloballyUsed(DlCompletionTree node) {

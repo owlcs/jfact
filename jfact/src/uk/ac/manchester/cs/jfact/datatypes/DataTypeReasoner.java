@@ -18,6 +18,7 @@ import uk.ac.manchester.cs.jfact.kernel.DagTag;
 import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
+/** @author ignazio Datatype reasoner implementation */
 public final class DataTypeReasoner {
     /** map Type.pName.Type appearance */
     private final Map<Datatype<?>, DataTypeSituation<?>> map = new HashMap<Datatype<?>, DataTypeSituation<?>>();
@@ -33,6 +34,7 @@ public final class DataTypeReasoner {
         clashDep.setReference(dep);
     }
 
+    /** @param o */
     public DataTypeReasoner(JFactReasonerConfiguration o) {
         options = o;
     }
@@ -53,11 +55,18 @@ public final class DataTypeReasoner {
         return this.getType(p.getHostType());
     }
 
-    /** get clash-set */
+    /** get clash-set
+     * 
+     * @return clash set */
     public DepSet getClashSet() {
         return clashDep.getReference();
     }
 
+    /** @param positive
+     * @param type
+     * @param entry
+     * @param dep
+     * @return false if datatype, true otherwise */
     public boolean addDataEntry(boolean positive, DagTag type, NamedEntry entry,
             DepSet dep) {
         switch (type) {
@@ -127,6 +136,7 @@ public final class DataTypeReasoner {
     // - check if some value is present together with negation of its class
     // - check if some value is present together with the other class
     // - check if two values of different classes are present at the same time
+    /** @return true if clash */
     public boolean checkClash() {
         List<DataTypeSituation<?>> types = new ArrayList<DataTypeSituation<?>>(
                 map.values());

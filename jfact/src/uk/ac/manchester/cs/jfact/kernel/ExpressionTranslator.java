@@ -29,16 +29,16 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
     /** TBox to get access to the named entities */
     private TBox tbox;
-    /**  signature of non-trivial entities; used in semantic locality checkers */
+    /** signature of non-trivial entities; used in semantic locality checkers */
     // only
     TSignature sig;
 
-    /**  @return true iff ENTRY is not in signature */
+    /** @return true iff ENTRY is not in signature */
     boolean nc(NamedEntity entity) {
         return sig != null && !sig.containsNamedEntity(entity);
     }
 
-    /**  set internal signature to a given signature S */
+    /** set internal signature to a given signature S */
     void setSignature(TSignature s) {
         sig = s;
     }
@@ -73,7 +73,7 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
         }
     }
 
-    /**  create DLTree of given TAG and named ENTRY; set the entry's ENTITY if */
+    /** create DLTree of given TAG and named ENTRY; set the entry's ENTITY if */
     // necessary
     NamedEntry matchEntry(NamedEntry entry, NamedEntity entity) {
         entry.setEntity(entity);

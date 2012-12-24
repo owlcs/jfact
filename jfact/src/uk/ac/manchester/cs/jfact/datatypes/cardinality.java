@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
+@SuppressWarnings("javadoc")
 public enum cardinality {
     FINITE, COUNTABLYINFINITE;
     public static cardinality parse(String string) {

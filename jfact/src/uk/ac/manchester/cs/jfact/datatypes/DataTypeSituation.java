@@ -10,6 +10,8 @@ import java.util.*;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.FastSetSimple;
 
+/** @author ignazio
+ * @param <R> */
 public class DataTypeSituation<R extends Comparable<R>> {
     /** positive type appearance */
     private DepSet pType;
@@ -57,12 +59,16 @@ public class DataTypeSituation<R extends Comparable<R>> {
         return false;
     }
 
+    /** @return type */
     public Datatype<?> getType() {
         return this.type;
     }
 
     /** add restrictions [POS]INT to intervals
      * 
+     * @param pos
+     * @param interval
+     * @param dep
      * @return true if clash occurs */
     public boolean addInterval(boolean pos, Datatype<R> interval, DepSet dep) {
         if (interval instanceof DatatypeEnumeration) {
@@ -106,6 +112,8 @@ public class DataTypeSituation<R extends Comparable<R>> {
         return this.constraints.isEmpty() || this.constraints.iterator().next().e == null;
     }
 
+    /** @param other
+     * @return true if compatible */
     public boolean checkCompatibleValue(DataTypeSituation<?> other) {
         if (!this.type.isCompatible(other.type)) {
             return false;
@@ -150,7 +158,11 @@ public class DataTypeSituation<R extends Comparable<R>> {
             return "depInterval{" + this.e + "}";
         }
 
-        /** update MIN border of an TYPE's interval with VALUE wrt EXCL */
+        /** update MIN border of an TYPE's interval with VALUE wrt EXCL
+         * 
+         * @param value
+         * @param dep
+         * @return true if updated */
         public boolean update(Datatype<R> value, DepSet dep) {
             if (this.e == null) {
                 if (value.isExpression()) {
@@ -177,7 +189,10 @@ public class DataTypeSituation<R extends Comparable<R>> {
             return true;
         }
 
-        /** check if the interval is consistent wrt given type */
+        /** check if the interval is consistent wrt given type
+         * 
+         * @param type
+         * @return true if consistent */
         public boolean consistent(Datatype<R> type) {
             return this.e == null || this.e.isCompatible(type);
         }
@@ -210,29 +225,38 @@ public class DataTypeSituation<R extends Comparable<R>> {
     }
 
     // presence interface
-    /** check if type is present positively in the node */
+    /** check if type is present positively in the node
+     * 
+     * @return true if pType not null */
     public boolean hasPType() {
         return this.pType != null;
     }
 
-    /** check if type is present negatively in the node */
+    /** check if type is present negatively in the node
+     * 
+     * @return true if nType not null */
     public boolean hasNType() {
         return this.nType != null;
     }
 
-    /** set the precense of the PType */
+    /** set the precense of the PType
+     * 
+     * @param type */
     public void setPType(DepSet type) {
         this.pType = type;
     }
 
+    /** @param t */
     public void setNType(DepSet t) {
         this.nType = t;
     }
 
+    /** @return pType */
     public DepSet getPType() {
         return this.pType;
     }
 
+    /** @return nType */
     public DepSet getNType() {
         return this.nType;
     }

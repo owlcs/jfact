@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.jfact.helpers;
 
+@SuppressWarnings("javadoc")
 public interface LogAdapter {
     LogAdapter printTemplate(Templates t, Object... strings);
 

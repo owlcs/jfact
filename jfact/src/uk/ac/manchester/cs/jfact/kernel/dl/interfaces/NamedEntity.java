@@ -11,7 +11,7 @@ public interface NamedEntity {
     /** get access to the name */
     String getName();
 
-    //	 NamedEntity getEntity();
+    // NamedEntity getEntity();
     NamedEntry getEntry();
 
     void setEntry(NamedEntry e);

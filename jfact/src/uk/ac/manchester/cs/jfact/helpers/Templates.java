@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.jfact.helpers;
 
+@SuppressWarnings("javadoc")
 public enum Templates {
     TAX_TRYING("\nTAX: trying '%s' [= '%s'... "), INTERVAL(" %s%s%s,%s%s"), CLASH(
             " DT-%s"), CREATE_EDGE(" ce(%s%s%s,%s)"), IS_BLOCKED_FAILURE_BY(" fb(%s,%s)"), LOG_NODE_BLOCKED(

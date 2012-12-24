@@ -65,8 +65,6 @@ public class RoleAutomaton {
     }
 
     // add single RA
-
-
     /** add RA from a subrole to given one */
     public void addRA(RoleAutomaton RA) {
         assert !isCompleted();
@@ -231,6 +229,7 @@ public class RoleAutomaton {
 
     // automaton completeness
     private boolean Complete;
+
     // / mark an automaton as completed
     void setCompleted() {
         Complete = true;
@@ -245,13 +244,9 @@ public class RoleAutomaton {
         return Complete;
     }
 
-
-
     // / @return true iff the automaton is simple
     boolean isSimple() {
         assert isCompleted();
         return size() == 2 && inputSafe && outputSafe;
     }
-
-
 }

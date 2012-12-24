@@ -20,7 +20,7 @@ public class Taxonomy {
     List<ClassifiableEntry> Syns = new ArrayList<ClassifiableEntry>();
     /** aux. vertex to be included to taxonomy */
     protected TaxonomyVertex current;
-    /**  vertex with parent Top and child Bot, represents the fresh entity */
+    /** vertex with parent Top and child Bot, represents the fresh entity */
     TaxonomyVertex FreshNode = new TaxonomyVertex();
     /** pointer to currently classified entry */
     protected ClassifiableEntry curEntry;
@@ -212,7 +212,7 @@ public class Taxonomy {
         return graph.get(0);
     }
 
-    /**  get node for fresh entity E */
+    /** get node for fresh entity E */
     TaxonomyVertex getFreshVertex(ClassifiableEntry e) {
         FreshNode.setSample(e, false);
         return FreshNode;
@@ -296,18 +296,18 @@ public class Taxonomy {
         }
     }
 
-    /**  @return true if taxonomy works in a query mode (no need to insert query */
+    /** @return true if taxonomy works in a query mode (no need to insert query */
     // vertex)
     public boolean queryMode() {
         return !willInsertIntoTaxonomy;
     }
 
-    /**  remove node from the taxonomy; assume no references to the node */
+    /** remove node from the taxonomy; assume no references to the node */
     void removeNode(TaxonomyVertex node) {
         graph.remove(node);
     }
 
-    /**  @return true if V is a direct parent of current wrt labels */
+    /** @return true if V is a direct parent of current wrt labels */
     boolean isDirectParent(TaxonomyVertex v) {
         for (TaxonomyVertex q : v.neigh(false)) {
             if (q.isValued(valueLabel) && q.getValue()) {
@@ -416,7 +416,7 @@ public class Taxonomy {
         // }
     }
 
-    /**  ensure that all TS of the top entry are classified. @return the reason */
+    /** ensure that all TS of the top entry are classified. @return the reason */
     // of cycle or NULL.
     ClassifiableEntry prepareTS(ClassifiableEntry cur) {
         // we just found that TS forms a cycle -- return stop-marker
@@ -555,48 +555,48 @@ public class Taxonomy {
         }
     }
 
-    /**  abstract class to represent the known subsumers of a concept */
+    /** abstract class to represent the known subsumers of a concept */
     abstract class KnownSubsumers {
-        /**  begin of the Sure subsumers interval */
+        /** begin of the Sure subsumers interval */
         abstract List<ClassifiableEntry> s_begin();
 
-        /**  begin of the Possible subsumers interval */
+        /** begin of the Possible subsumers interval */
         abstract List<ClassifiableEntry> p_begin();
 
         // flags
-        /**  whether there are no sure subsumers */
+        /** whether there are no sure subsumers */
         boolean s_empty() {
             return s_begin().isEmpty();
         }
 
-        /**  whether there are no possible subsumers */
+        /** whether there are no possible subsumers */
         boolean p_empty() {
             return p_begin().isEmpty();
         }
 
-        /**  @return true iff CE is the possible subsumer */
+        /** @return true iff CE is the possible subsumer */
         boolean isPossibleSub(ClassifiableEntry ce) {
             return true;
         }
     }
 
-    /**  class to represent the TS's */
+    /** class to represent the TS's */
     class ToldSubsumers extends KnownSubsumers {
-        /**  two iterators for the TS of a concept */
+        /** two iterators for the TS of a concept */
         List<ClassifiableEntry> beg;
 
         public ToldSubsumers(Collection<ClassifiableEntry> b) {
             beg = new ArrayList<ClassifiableEntry>(b);
         }
 
-        /**  begin of the Sure subsumers interval */
+        /** begin of the Sure subsumers interval */
         @Override
         List<ClassifiableEntry> s_begin() {
             return beg;
         }
 
-        /**  end of the Sure subsumers interval */
-        /**  begin of the Possible subsumers interval */
+        /** end of the Sure subsumers interval */
+        /** begin of the Possible subsumers interval */
         @Override
         List<ClassifiableEntry> p_begin() {
             return Collections.emptyList();

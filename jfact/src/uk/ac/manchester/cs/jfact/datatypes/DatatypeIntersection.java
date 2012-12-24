@@ -3,12 +3,15 @@ package uk.ac.manchester.cs.jfact.datatypes;
 import java.math.BigDecimal;
 import java.util.*;
 
+/** @author ignazio */
 public class DatatypeIntersection implements
         DatatypeCombination<DatatypeIntersection, Datatype<?>> {
     private final Set<Datatype<?>> basics = new HashSet<Datatype<?>>();
     private final String uri;
     private final Datatype<?> host;
 
+    /** @param c
+     * @return datatype host for a set of datatypes */
     public static Datatype<?> getHostDatatype(Collection<Datatype<?>> c) {
         List<Datatype<?>> list = new ArrayList<Datatype<?>>(c);
         // all types need to be compatible, or the intersection cannot be
@@ -42,11 +45,14 @@ public class DatatypeIntersection implements
         return null;
     }
 
+    /** @param host */
     public DatatypeIntersection(Datatype<?> host) {
         uri = "intersection#a" + DatatypeFactory.getIndex();
         this.host = host;
     }
 
+    /** @param host
+     * @param list */
     public DatatypeIntersection(Datatype<?> host, Iterable<Datatype<?>> list) {
         this(host);
         for (Datatype<?> d : list) {

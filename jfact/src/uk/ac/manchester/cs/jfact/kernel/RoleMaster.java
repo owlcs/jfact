@@ -108,7 +108,7 @@ public class RoleMaster {
         universalRole.setDataRole(dataRoles);
         universalRole.setBPDomain(Helper.bpTOP);
         universalRole.setTop();
-     // FIXME!! now it is not transitive => simple
+        // FIXME!! now it is not transitive => simple
         universalRole.getAutomaton().setCompleted();
         // create roles taxonomy
         pTax = new Taxonomy(universalRole, emptyRole, c);
@@ -143,12 +143,10 @@ public class RoleMaster {
     }
 
     /** add synonym to existing role */
-
-    public void addRoleSynonym(Role role, Role syn)
-    {
+    public void addRoleSynonym(Role role, Role syn) {
         // no synonyms
-//      role = resolveSynonym(role);
-//      syn = resolveSynonym(syn);
+        // role = resolveSynonym(role);
+        // syn = resolveSynonym(syn);
         // FIXME!! 1st call can make one of them a synonym of a const
         addRoleParentProper(ClassifiableEntry.resolveSynonym(role),
                 ClassifiableEntry.resolveSynonym(syn));
@@ -157,43 +155,34 @@ public class RoleMaster {
     }
 
     /** add parent for the input role */
-    public void addRoleParentProper(Role role, Role parent)
-    {
+    public void addRoleParentProper(Role role, Role parent) {
         assert !role.isSynonym() && !parent.isSynonym();
-
-        if ( role == parent ) {
+        if (role == parent) {
             return;
         }
-
         if (role.isDataRole() != parent.isDataRole()) {
-            throw new ReasonerInternalException("Mixed object and data roles in role subsumption axiom");
+            throw new ReasonerInternalException(
+                    "Mixed object and data roles in role subsumption axiom");
         }
-
         // check the inconsistency case *UROLE* [= *EROLE*
         if (role.isTop() && parent.isBottom()) {
             throw new InconsistentOntologyException();
         }
-
         // *UROLE* [= R means R (and R-) are synonym of *UROLE*
-        if (role.isTop())
-        {
+        if (role.isTop()) {
             parent.setSynonym(role);
             parent.inverse().setSynonym(role);
             return;
         }
-
         // R [= *EROLE* means R (and R-) are synonyms of *EROLE*
-        if (parent.isBottom())
-        {
+        if (parent.isBottom()) {
             role.setSynonym(parent);
             role.inverse().setSynonym(parent);
             return;
         }
-
         role.addParent(parent);
         role.inverse().addParent(parent.inverse());
     }
-
 
     /** a pair of disjoint roles */
     public void addDisjointRoles(Role R, Role S) {
@@ -306,10 +295,9 @@ public class RoleMaster {
                 p.removeSynonymsFromParents();
             }
         }
-        
-        // here TOP-role has no children yet, so it's safe to complete the automaton
+        // here TOP-role has no children yet, so it's safe to complete the
+        // automaton
         universalRole.completeAutomaton(nRoles);
-        
         for (int i = firstRoleIndex; i < roles.size(); i++) {
             Role p = roles.get(i);
             if (!p.isSynonym() && !p.hasToldSubsumers()) {
@@ -368,12 +356,12 @@ public class RoleMaster {
         }
     }
 
-    /**  @return pointer to a TOP role */
+    /** @return pointer to a TOP role */
     Role getTopRole() {
         return universalRole;
     }
 
-    /**  @return pointer to a BOTTOM role */
+    /** @return pointer to a BOTTOM role */
     Role getBotRole() {
         return emptyRole;
     }

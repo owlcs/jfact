@@ -223,81 +223,81 @@ public class ELFAxiomChecker extends DLAxiomVisitorAdapter {
     }
 }
 
-/**  pattern for the rule. Contains apply() method with updates of the monitored */
+/** pattern for the rule. Contains apply() method with updates of the monitored */
 // set
 class TELFRule {
-    /**  reasoner that is used to add actions. The number of rules = the number */
+    /** reasoner that is used to add actions. The number of rules = the number */
     // of axioms, so the price is not too bad memory-wise.
     ELFReasoner ER;
 
-    /**  init c'tor */
+    /** init c'tor */
     TELFRule(ELFReasoner er) {
         ER = er;
     }
 
-    /**  apply rule with fresh class C added to watching part */
+    /** apply rule with fresh class C added to watching part */
     void apply(TELFConcept addedC) {}
 
-    /**  apply rule with fresh pair (C,D) added to watching part */
+    /** apply rule with fresh pair (C,D) added to watching part */
     void apply(TELFConcept addedC, TELFConcept addedD) {}
 }
 
 // -------------------------------------------------------------
 // Concepts and roles, i.e. S(C) and R(C,D)
 // -------------------------------------------------------------
-/**  aux class to support set of rules and rule applications */
+/** aux class to support set of rules and rule applications */
 class TRuleSet {
-    /**  set of rules to apply on change */
+    /** set of rules to apply on change */
     List<TELFRule> Rules = new ArrayList<TELFRule>();
 
-    /**  apply all rules with a single argument */
+    /** apply all rules with a single argument */
     void applyRules(TELFConcept addedC) {
         for (TELFRule p : Rules) {
             p.apply(addedC);
         }
     }
 
-    /**  apply all rules with two arguments */
+    /** apply all rules with two arguments */
     void applyRules(TELFConcept addedC, TELFConcept addedD) {
         for (TELFRule p : Rules) {
             p.apply(addedC, addedD);
         }
     }
 
-    /**  add rule to a set */
+    /** add rule to a set */
     void addRule(TELFRule rule) {
         Rules.add(rule);
     }
 }
 
-/**  concept, set S(C) and aux things */
+/** concept, set S(C) and aux things */
 class TELFConcept extends TRuleSet {
-    /**  original concept (if any) */
+    /** original concept (if any) */
     ConceptExpression Origin;
-    /**  set of supers (built during classification) */
+    /** set of supers (built during classification) */
     Set<TELFConcept> Supers = new HashSet<TELFConcept>();
 
-    /**  add C to supers */
+    /** add C to supers */
     void addSuper(TELFConcept C) {
         Supers.add(C);
     }
 
-    /**  empty c'tor */
+    /** empty c'tor */
     TELFConcept() {
         Origin = null;
     }
 
-    /**  init c'tor */
+    /** init c'tor */
     TELFConcept(ConceptExpression origin) {
         Origin = origin;
     }
 
-    /**  check whether concept C is contained in supers */
+    /** check whether concept C is contained in supers */
     boolean hasSuper(TELFConcept C) {
         return Supers.contains(C);
     }
 
-    /**  add an super concept */
+    /** add an super concept */
     void addC(TELFConcept C) {
         if (hasSuper(C)) {
             return;
@@ -307,29 +307,29 @@ class TELFConcept extends TRuleSet {
     }
 }
 
-/**  role, set R(C,D) */
+/** role, set R(C,D) */
 class TELFRole extends TRuleSet {
-    /**  original role (if any) */
+    /** original role (if any) */
     ObjectRoleExpression Origin;
-    /**  map itself */
+    /** map itself */
     Map<TELFConcept, Set<TELFConcept>> PredMap = new HashMap<TELFConcept, Set<TELFConcept>>();
 
-    /**  add (C,D) to label */
+    /** add (C,D) to label */
     void addLabel(TELFConcept C, TELFConcept D) {
         PredMap.get(D).add(C);
     }
 
-    /**  empty c'tor */
+    /** empty c'tor */
     TELFRole() {
         Origin = null;
     }
 
-    /**  init c'tor */
+    /** init c'tor */
     TELFRole(ObjectRoleExpression origin) {
         Origin = origin;
     }
 
-    /**  get the (possibly empty) set of predecessors of given D */
+    /** get the (possibly empty) set of predecessors of given D */
     Set<TELFConcept> getPredSet(TELFConcept D) {
         return PredMap.get(D);
     }
@@ -338,12 +338,12 @@ class TELFRole extends TRuleSet {
         return PredMap.entrySet();
     }
 
-    /**  check whether (C,D) is in the R-set */
+    /** check whether (C,D) is in the R-set */
     boolean hasLabel(TELFConcept C, TELFConcept D) {
         return PredMap.get(D).contains(C);
     }
 
-    /**  add pair (C,D) to a set */
+    /** add pair (C,D) to a set */
     void addR(TELFConcept C, TELFConcept D) {
         if (hasLabel(C, D)) {
             return;
@@ -356,30 +356,30 @@ class TELFRole extends TRuleSet {
 // -------------------------------------------------------------
 // Action class
 // -------------------------------------------------------------
-/**  single algorithm action (application of a rule) */
+/** single algorithm action (application of a rule) */
 class ELFAction {
-    /**  role R corresponded to R(C,D) */
+    /** role R corresponded to R(C,D) */
     TELFRole R = null;
-    /**  concept C; to add */
+    /** concept C; to add */
     TELFConcept C = null;
-    /**  concept D; to add */
+    /** concept D; to add */
     TELFConcept D = null;
 
-    /**  init c'tor for C action */
+    /** init c'tor for C action */
     ELFAction(TELFConcept c, TELFConcept d) {
         R = null;
         C = c;
         D = d;
     }
 
-    /**  init c'tor for R action */
+    /** init c'tor for R action */
     ELFAction(TELFRole r, TELFConcept c, TELFConcept d) {
         R = r;
         C = c;
         D = d;
     }
 
-    /**  action itself, depending on the R state */
+    /** action itself, depending on the R state */
     void apply() {
         if (R != null) {
             R.addR(C, D);

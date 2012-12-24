@@ -17,6 +17,9 @@ import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 import uk.ac.manchester.cs.jfact.kernel.Lexeme;
 import uk.ac.manchester.cs.jfact.kernel.Token;
 
+/** DLTree class
+ * 
+ * @author ignazio */
 public abstract class DLTree {
     private static final CloningVisitor cloner = new CloningVisitor();
     /** element in the tree node */
@@ -25,48 +28,64 @@ public abstract class DLTree {
     protected List<DLTree> children;
     protected DLTree ancestor;
 
-    public DLTree(Lexeme Init) {
-        elem = Init;
+    /** @param l
+     *            element */
+    public DLTree(Lexeme l) {
+        elem = l;
     }
 
+    /** @return the element token */
     public Token token() {
         return elem.getToken();
     }
 
+    /** @return true if the token is top */
     public boolean isTOP() {
         return elem.getToken() == TOP;
     }
 
+    /** @return true if the token is not */
     public boolean isNOT() {
         return elem.getToken() == NOT;
     }
 
+    /** @return true if the token is bottom */
     public boolean isBOTTOM() {
         return elem.getToken() == BOTTOM;
     }
 
+    /** @return true if the token is and */
     public boolean isAND() {
         return elem.getToken() == AND;
     }
 
+    /** @return element */
     public Lexeme elem() {
         return elem;
     }
 
+    /** @return the chind node for nodes with a single child */
     public abstract DLTree getChild();
 
+    /** @return the first child for a node with two children */
     public abstract DLTree getLeft();
 
+    /** @return the second child for a node with two children */
     public abstract DLTree getRight();
 
+    /** @return the ancestor */
     public DLTree getAncestor() {
         return ancestor;
     }
 
+    /** @param r
+     *            ancestor */
     public void setAncestor(DLTree r) {
         ancestor = r;
     }
 
+    /** @param d
+     *            child to add */
     public void addChild(DLTree d) {
         if (d != null) {
             children.add(d);
@@ -74,6 +93,8 @@ public abstract class DLTree {
         }
     }
 
+    /** @param d
+     *            child to add in first position */
     public void addFirstChild(DLTree d) {
         if (d != null) {
             children.add(0, d);
@@ -81,6 +102,8 @@ public abstract class DLTree {
         }
     }
 
+    /** @param d
+     *            children to add in first position */
     public void addFirstChildren(Collection<DLTree> d) {
         if (d != null) {
             children.addAll(0, d);
@@ -90,6 +113,7 @@ public abstract class DLTree {
         }
     }
 
+    /** @param tok */
     public DLTree(Token tok) {
         this(new Lexeme(tok));
     }
@@ -137,10 +161,14 @@ public abstract class DLTree {
 
     public abstract void replace(DLTree toReplace, DLTree replacement);
 
+    /** @return list of children */
     public List<DLTree> getChildren() {
         return children;
     }
 
+    /** @param t1
+     * @param t2
+     * @return true if arguments are equal */
     public static boolean equalTrees(DLTree t1, DLTree t2) {
         if (t1 == null && t2 == null) {
             return true;
@@ -162,24 +190,26 @@ public abstract class DLTree {
         return false;
     }
 
+    /** @return copy of this tree */
     public DLTree copy() {
         return this.accept(cloner);
     }
 
-    /** check if DL tree is a concept-like name */
+    /** check if DL tree is a concept-like name
+     * 
+     * @return true if conceptlike name */
     public boolean isCN() {
         return isConst() || isName();
     }
 
     // check if DL tree is a concept constant
+    /** @return true if constant */
     public boolean isConst() {
-        if (isTOP() || isBOTTOM()) {
-            return true;
-        }
-        return false;
+        return isTOP() || isBOTTOM();
     }
 
     // check if DL tree is a concept/individual name
+    /** @return true if token is a cname or iname */
     public boolean isName() {
         return token() == CNAME || token() == INAME;
     }

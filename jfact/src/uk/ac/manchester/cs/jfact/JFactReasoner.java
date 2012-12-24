@@ -810,8 +810,8 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             boolean deterministicOnly) {
         Node<OWLClass> nodeFromPointers = translationMachinery
                 .getClassExpressionTranslator().getNodeFromPointers(
-                kernel.getObjectLabel((DlCompletionTree) object.getNode(),
-                        deterministicOnly));
+                        kernel.getObjectLabel((DlCompletionTree) object.getNode(),
+                                deterministicOnly));
         System.out.println("JFactReasoner.getObjectLabel() " + nodeFromPointers);
         return nodeFromPointers;
     }
