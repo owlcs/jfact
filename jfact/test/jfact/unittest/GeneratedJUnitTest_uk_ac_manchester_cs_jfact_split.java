@@ -94,17 +94,13 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_split {
     public void shouldTestKnowledgeExplorer() throws Exception {
         KnowledgeExplorer testSubject0 = new KnowledgeExplorer(mock(TBox.class),
                 mock(ExpressionManager.class));
-        Set result0 = testSubject0.getObjectRoles(mock(DlCompletionTree.class),
- true,
+        Set result0 = testSubject0.getObjectRoles(mock(DlCompletionTree.class), true,
                 true);
-        Set result1 = testSubject0.getDataRoles(mock(DlCompletionTree.class),
- true);
+        Set result1 = testSubject0.getDataRoles(mock(DlCompletionTree.class), true);
         List result2 = testSubject0.getNeighbours(mock(DlCompletionTree.class),
                 mock(Role.class));
-        List result3 = testSubject0.getObjectLabel(mock(DlCompletionTree.class),
- true);
-        List result4 = testSubject0.getDataLabel(mock(DlCompletionTree.class),
- true);
+        List result3 = testSubject0.getObjectLabel(mock(DlCompletionTree.class), true);
+        List result4 = testSubject0.getDataLabel(mock(DlCompletionTree.class), true);
         String result5 = testSubject0.toString();
     }
 

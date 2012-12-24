@@ -12,7 +12,6 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_dep {
     @Test
     public void shouldTestDepSet() throws Exception {
         DepSet testSubject0 = new DepSet(mock(FastSetSimple.class));
-        DepSet testSubject1 = new DepSet();
         testSubject0.add(mock(FastSetSimple.class));
         testSubject0.add(mock(DepSet.class));
         int result0 = testSubject0.get(1);

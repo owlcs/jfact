@@ -18,6 +18,7 @@ import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
 import uk.ac.manchester.cs.jfact.datatypes.Facet;
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
 
+@SuppressWarnings("javadoc")
 public class MainTestCase {
     @Test
     public void testByteFiller() {

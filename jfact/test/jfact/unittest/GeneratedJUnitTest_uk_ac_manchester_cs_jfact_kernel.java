@@ -233,8 +233,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
         ArrayIntMap result8 = testSubject0.getContainedConcepts();
         ConceptWDep result9 = testSubject0.getConceptWithBP(1);
         List result10 = testSubject0.updateDepSet(mock(DepSet.class));
-        Restorer result11 = testSubject0
-.updateDepSet(1, mock(DepSet.class));
+        Restorer result11 = testSubject0.updateDepSet(1, mock(DepSet.class));
     }
 
     @Test
@@ -257,8 +256,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
 
     @Test
     public void shouldTestDlCompletionGraph() throws Exception {
-        DlCompletionGraph testSubject0 = new DlCompletionGraph(1,
-                mock(DlSatTester.class));
+        DlCompletionGraph testSubject0 = new DlCompletionGraph(1, mock(DlSatTester.class));
         testSubject0.clear();
         testSubject0.print(mock(LogAdapter.class));
         testSubject0.save();
@@ -280,12 +278,10 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
         testSubject0.updateDBlockedStatus(mock(DlCompletionTree.class));
         testSubject0.retestCGBlockedStatus();
         DlCompletionTreeArc result4 = testSubject0.addRoleLabel(
-                mock(DlCompletionTree.class), mock(DlCompletionTree.class),
- true,
+                mock(DlCompletionTree.class), mock(DlCompletionTree.class), true,
                 mock(Role.class), mock(DepSet.class));
         DlCompletionTreeArc result5 = testSubject0.createNeighbour(
-                mock(DlCompletionTree.class), true, mock(Role.class),
-                mock(DepSet.class));
+                mock(DlCompletionTree.class), true, mock(Role.class), mock(DepSet.class));
         DlCompletionTreeArc result6 = testSubject0.createLoop(
                 mock(DlCompletionTree.class), mock(Role.class), mock(DepSet.class));
         testSubject0.restore(1);
@@ -352,8 +348,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
         boolean result35 = testSubject0.isDataNode();
         boolean result36 = testSubject0.isCached();
         Restorer result37 = testSubject0.setCached(true);
-        DlCompletionTree result38 = testSubject0.isSomeApplicable(mock(Role.class),
- 1);
+        DlCompletionTree result38 = testSubject0.isSomeApplicable(mock(Role.class), 1);
         List result39 = testSubject0.beginl_cc();
         String result40 = testSubject0.logNode();
         testSubject0.setInit(1);
@@ -363,8 +358,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
         testSubject0.setDataNode();
         int result42 = testSubject0.getNominalLevel();
         boolean result43 = testSubject0.isLabelledBy(1);
-        boolean result44 = testSubject0.B2Complex(mock(RAStateTransitions.class),
- 1);
+        boolean result44 = testSubject0.B2Complex(mock(RAStateTransitions.class), 1);
         ArrayIntMap result45 = testSubject0.beginl_sc_concepts();
         ArrayIntMap result46 = testSubject0.beginl_cc_concepts();
         DlCompletionTree result47 = testSubject0.getBlocker();
@@ -428,8 +422,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
         int result5 = testSubject0.maxSize();
         testSubject0.setCache(1, mock(ModelCacheInterface.class));
         ModelCacheInterface result6 = testSubject0.getCache(1);
-        testSubject0.replaceVertex(1, mock(DLVertex.class),
-                mock(NamedEntry.class));
+        testSubject0.replaceVertex(1, mock(DLVertex.class), mock(NamedEntry.class));
         testSubject0.updateIndex(mock(DagTag.class), 1);
         int result7 = testSubject0.directAdd(mock(DLVertex.class));
         int result8 = testSubject0.directAddAndCache(mock(DLVertex.class));
@@ -456,26 +449,22 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
         JFactReasonerConfiguration result0 = testSubject0.getOptions();
         testSubject0.setBlockingMethod(true, true);
         DLDag result1 = testSubject0.getDAG();
-        testSubject0.repeatUnblockedNode(mock(DlCompletionTree.class),
- true);
+        testSubject0.repeatUnblockedNode(mock(DlCompletionTree.class), true);
         boolean result2 = testSubject0.checkIrreflexivity(mock(Role.class));
         boolean result3 = testSubject0.runSat(1, 1);
-        ModelCacheInterface result4 = testSubject0
-.buildCacheByCGraph(true);
+        ModelCacheInterface result4 = testSubject0.buildCacheByCGraph(true);
         boolean result5 = testSubject0.checkDisjointRoles(mock(Role.class),
                 mock(Role.class));
         DlCompletionTree result6 = testSubject0.getRootNode();
         testSubject0.writeTotalStatistic(mock(LogAdapter.class));
         float result7 = testSubject0.printReasoningTime(mock(LogAdapter.class));
         testSubject0.initToDoPriorities();
-        ModelCacheInterface result8 = testSubject0.createCache(1,
-                mock(FastSet.class));
+        ModelCacheInterface result8 = testSubject0.createCache(1, mock(FastSet.class));
         boolean result9 = testSubject0.hasNominals();
         testSubject0.setDuringClassification(true);
         boolean result10 = testSubject0.setupEdge(mock(DlCompletionTreeArc.class),
                 mock(DepSet.class), 1);
-        boolean result11 = testSubject0
-.findConcept(mock(CWDArray.class), 1);
+        boolean result11 = testSubject0.findConcept(mock(CWDArray.class), 1);
         String result12 = testSubject0.toString();
     }
 
@@ -868,25 +857,21 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
         JFactReasonerConfiguration result2 = testSubject0.getOptions();
         testSubject0.setBlockingMethod(true, true);
         DLDag result3 = testSubject0.getDAG();
-        testSubject0.repeatUnblockedNode(mock(DlCompletionTree.class),
- true);
+        testSubject0.repeatUnblockedNode(mock(DlCompletionTree.class), true);
         boolean result4 = testSubject0.checkIrreflexivity(mock(Role.class));
         boolean result5 = testSubject0.runSat(1, 1);
-        ModelCacheInterface result6 = testSubject0
-.buildCacheByCGraph(true);
+        ModelCacheInterface result6 = testSubject0.buildCacheByCGraph(true);
         boolean result7 = testSubject0.checkDisjointRoles(mock(Role.class),
                 mock(Role.class));
         DlCompletionTree result8 = testSubject0.getRootNode();
         testSubject0.writeTotalStatistic(mock(LogAdapter.class));
         float result9 = testSubject0.printReasoningTime(mock(LogAdapter.class));
         testSubject0.initToDoPriorities();
-        ModelCacheInterface result10 = testSubject0.createCache(1,
-                mock(FastSet.class));
+        ModelCacheInterface result10 = testSubject0.createCache(1, mock(FastSet.class));
         testSubject0.setDuringClassification(true);
         boolean result11 = testSubject0.setupEdge(mock(DlCompletionTreeArc.class),
                 mock(DepSet.class), 1);
-        boolean result12 = testSubject0
-.findConcept(mock(CWDArray.class), 1);
+        boolean result12 = testSubject0.findConcept(mock(CWDArray.class), 1);
         String result13 = testSubject0.toString();
     }
 
@@ -1012,8 +997,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
                 mock(IndividualExpression.class), mock(DataRoleExpression.class),
                 mock(Literal.class));
         testSubject0.getInstances(mock(ConceptExpression.class), mock(Actor.class));
-        testSubject0.getInstances(mock(ConceptExpression.class), mock(Actor.class),
- true);
+        testSubject0.getInstances(mock(ConceptExpression.class), mock(Actor.class), true);
         boolean result2 = testSubject0
                 .isInverseFunctional(mock(ObjectRoleExpression.class));
         boolean result3 = testSubject0.isSymmetric(mock(ObjectRoleExpression.class));
@@ -1038,8 +1022,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
         testSubject0.retract(mock(Axiom.class));
         ExpressionManager result16 = testSubject0.getExpressionManager();
         boolean result17 = testSubject0.isSatisfiable(mock(ConceptExpression.class));
-        testSubject0.getTypes(mock(IndividualExpression.class), true,
-                mock(Actor.class));
+        testSubject0.getTypes(mock(IndividualExpression.class), true, mock(Actor.class));
         testSubject0.setTopBottomRoleNames(mock(String.class), mock(String.class),
                 mock(String.class), mock(String.class));
         testSubject0.setInterruptedSwitch(mock(AtomicBoolean.class));
@@ -1055,10 +1038,8 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
                 mock(Actor.class));
         testSubject0
                 .getDisjointConcepts(mock(ConceptExpression.class), mock(Actor.class));
-        testSubject0.getSubRoles(mock(RoleExpression.class), true,
-                mock(Actor.class));
-        testSubject0.getSupRoles(mock(RoleExpression.class), true,
-                mock(Actor.class));
+        testSubject0.getSubRoles(mock(RoleExpression.class), true, mock(Actor.class));
+        testSubject0.getSupRoles(mock(RoleExpression.class), true, mock(Actor.class));
         testSubject0.getEquivalentRoles(mock(RoleExpression.class), mock(Actor.class));
         List result22 = testSubject0.getRoleFillers(mock(IndividualExpression.class),
                 mock(ObjectRoleExpression.class));
@@ -1068,17 +1049,13 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
         testSubject0.writeReasoningResult(mock(LogAdapter.class), 1L);
         DlCompletionTree result23 = testSubject0
                 .buildCompletionTree(mock(ConceptExpression.class));
-        Set result24 = testSubject0.getObjectRoles(mock(DlCompletionTree.class),
- true,
+        Set result24 = testSubject0.getObjectRoles(mock(DlCompletionTree.class), true,
                 true);
-        Set result25 = testSubject0.getDataRoles(mock(DlCompletionTree.class),
- true);
+        Set result25 = testSubject0.getDataRoles(mock(DlCompletionTree.class), true);
         List result26 = testSubject0.getNeighbours(mock(DlCompletionTree.class),
                 mock(RoleExpression.class));
-        List result27 = testSubject0.getObjectLabel(mock(DlCompletionTree.class),
- true);
-        List result28 = testSubject0.getDataLabel(mock(DlCompletionTree.class),
- true);
+        List result27 = testSubject0.getObjectLabel(mock(DlCompletionTree.class), true);
+        List result28 = testSubject0.getDataLabel(mock(DlCompletionTree.class), true);
         int result29 = testSubject0.getAtomicDecompositionSize(true,
                 mock(ModuleType.class));
         Set result30 = testSubject0.getAtomAxioms(1);
@@ -1166,8 +1143,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
                 mock(ConceptExpression.class));
         boolean result72 = testSubject0.isEquivalent(mock(ConceptExpression.class),
                 mock(ConceptExpression.class));
-        testSubject0.getORoleDomain(mock(ObjectRoleExpression.class),
- true,
+        testSubject0.getORoleDomain(mock(ObjectRoleExpression.class), true,
                 mock(Actor.class));
         testSubject0.getRoleRange(mock(ObjectRoleExpression.class), true,
                 mock(Actor.class));
@@ -1321,11 +1297,8 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
         boolean result1 = testSubject0.isISafe();
         boolean result2 = testSubject0.isOSafe();
         testSubject0.initChain(1);
-        boolean result3 = testSubject0.addToChain(mock(RoleAutomaton.class),
- true,
- 1);
-        boolean result4 = testSubject0.addToChain(mock(RoleAutomaton.class),
- true);
+        boolean result3 = testSubject0.addToChain(mock(RoleAutomaton.class), true, 1);
+        boolean result4 = testSubject0.addToChain(mock(RoleAutomaton.class), true);
         RAStateTransitions result5 = testSubject0.begin(1);
         List result6 = testSubject0.getBase();
         int result7 = testSubject0.newState();
@@ -1402,8 +1375,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
         TaxonomyVertex result11 = testSubject0.getSynonymNode();
         testSubject0.removeLastLink(true);
         testSubject0.clearLinks(true);
-        boolean result12 = testSubject0.removeLink(true,
-                mock(TaxonomyVertex.class));
+        boolean result12 = testSubject0.removeLink(true, mock(TaxonomyVertex.class));
         testSubject0.incorporate(mock(JFactReasonerConfiguration.class));
         String result13 = testSubject0.printSynonyms();
         String result14 = testSubject0.printNeighbours(true);
@@ -1499,8 +1471,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
         int result45 = testSubject0.forall2dag(mock(Role.class), 1);
         int result46 = testSubject0.fillArrays(mock(List.class));
         int result47 = testSubject0.getNItems();
-        testSubject0.classifyConcepts(mock(List.class), true,
-                mock(String.class));
+        testSubject0.classifyConcepts(mock(List.class), true, mock(String.class));
         boolean result48 = testSubject0.isBlockedInd(mock(Concept.class));
         Individual result49 = testSubject0.getBlockingInd(mock(Concept.class));
         testSubject0.preprocess();
@@ -1514,8 +1485,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
         boolean result52 = testSubject0.isDisjointRoles(mock(Role.class),
                 mock(Role.class));
         Concept result53 = testSubject0.createQueryConcept(mock(DLTree.class));
-        ModelCacheInterface result54 = testSubject0.initCache(mock(Concept.class),
- true);
+        ModelCacheInterface result54 = testSubject0.initCache(mock(Concept.class), true);
         testSubject0.classifyQueryConcept();
         DLTree result55 = testSubject0.applyAxiomCToCN(mock(DLTree.class),
                 mock(DLTree.class));
@@ -1566,8 +1536,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
         ConceptExpression result4 = testSubject0.buildCExpr(mock(DLVertex.class));
         DataExpression result5 = testSubject0.getDExpr(1);
         DataExpression result6 = testSubject0.buildDExpr(mock(DLVertex.class));
-        Expression result7 = testSubject0.buildExpr(mock(DLVertex.class),
- true);
+        Expression result7 = testSubject0.buildExpr(mock(DLVertex.class), true);
         String result8 = testSubject0.toString();
     }
 

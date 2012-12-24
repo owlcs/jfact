@@ -20,6 +20,7 @@ import uk.ac.manchester.cs.jfact.datatypes.Datatype;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
 import uk.ac.manchester.cs.jfact.datatypes.Facet;
 
+@SuppressWarnings("javadoc")
 public class DatatypeParser {
     public static String ns = "http://www.w3.org/2001/XMLSchema#";
     static String Literal = "http://www.w3.org/2000/01/rdf-schema#Literal";

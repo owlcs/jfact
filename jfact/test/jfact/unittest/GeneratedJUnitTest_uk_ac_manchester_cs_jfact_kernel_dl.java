@@ -40,10 +40,8 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel_dl {
 
     @Test
     public void shouldTestConceptDataExactCardinality() throws Exception {
-        ConceptDataExactCardinality testSubject0 = new ConceptDataExactCardinality(
-1,
-                mock(DataRoleExpression.class),
-                mock(DataExpression.class));
+        ConceptDataExactCardinality testSubject0 = new ConceptDataExactCardinality(1,
+                mock(DataRoleExpression.class), mock(DataExpression.class));
         testSubject0.accept(mock(DLExpressionVisitor.class));
         Object result0 = testSubject0.accept(mock(DLExpressionVisitorEx.class));
         int result1 = testSubject0.getCardinality();
@@ -79,10 +77,8 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel_dl {
 
     @Test
     public void shouldTestConceptDataMaxCardinality() throws Exception {
-        ConceptDataMaxCardinality testSubject0 = new ConceptDataMaxCardinality(
-1,
-                mock(DataRoleExpression.class),
-                mock(DataExpression.class));
+        ConceptDataMaxCardinality testSubject0 = new ConceptDataMaxCardinality(1,
+                mock(DataRoleExpression.class), mock(DataExpression.class));
         testSubject0.accept(mock(DLExpressionVisitor.class));
         Object result0 = testSubject0.accept(mock(DLExpressionVisitorEx.class));
         int result1 = testSubject0.getCardinality();
@@ -94,10 +90,8 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel_dl {
 
     @Test
     public void shouldTestConceptDataMinCardinality() throws Exception {
-        ConceptDataMinCardinality testSubject0 = new ConceptDataMinCardinality(
-1,
-                mock(DataRoleExpression.class),
-                mock(DataExpression.class));
+        ConceptDataMinCardinality testSubject0 = new ConceptDataMinCardinality(1,
+                mock(DataRoleExpression.class), mock(DataExpression.class));
         testSubject0.accept(mock(DLExpressionVisitor.class));
         Object result0 = testSubject0.accept(mock(DLExpressionVisitorEx.class));
         int result1 = testSubject0.getCardinality();
@@ -141,10 +135,8 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel_dl {
 
     @Test
     public void shouldTestConceptObjectExactCardinality() throws Exception {
-        ConceptObjectExactCardinality testSubject0 = new ConceptObjectExactCardinality(
-1,
-                mock(ObjectRoleExpression.class),
-                mock(ConceptExpression.class));
+        ConceptObjectExactCardinality testSubject0 = new ConceptObjectExactCardinality(1,
+                mock(ObjectRoleExpression.class), mock(ConceptExpression.class));
         testSubject0.accept(mock(DLExpressionVisitor.class));
         Object result0 = testSubject0.accept(mock(DLExpressionVisitorEx.class));
         ConceptExpression result1 = testSubject0.getConcept();
@@ -177,10 +169,8 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel_dl {
 
     @Test
     public void shouldTestConceptObjectMaxCardinality() throws Exception {
-        ConceptObjectMaxCardinality testSubject0 = new ConceptObjectMaxCardinality(
-1,
-                mock(ObjectRoleExpression.class),
-                mock(ConceptExpression.class));
+        ConceptObjectMaxCardinality testSubject0 = new ConceptObjectMaxCardinality(1,
+                mock(ObjectRoleExpression.class), mock(ConceptExpression.class));
         testSubject0.accept(mock(DLExpressionVisitor.class));
         Object result0 = testSubject0.accept(mock(DLExpressionVisitorEx.class));
         ConceptExpression result1 = testSubject0.getConcept();
@@ -191,10 +181,8 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel_dl {
 
     @Test
     public void shouldTestConceptObjectMinCardinality() throws Exception {
-        ConceptObjectMinCardinality testSubject0 = new ConceptObjectMinCardinality(
-1,
-                mock(ObjectRoleExpression.class),
-                mock(ConceptExpression.class));
+        ConceptObjectMinCardinality testSubject0 = new ConceptObjectMinCardinality(1,
+                mock(ObjectRoleExpression.class), mock(ConceptExpression.class));
         testSubject0.accept(mock(DLExpressionVisitor.class));
         Object result0 = testSubject0.accept(mock(DLExpressionVisitorEx.class));
         ConceptExpression result1 = testSubject0.getConcept();

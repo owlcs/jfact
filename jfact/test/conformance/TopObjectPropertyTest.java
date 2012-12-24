@@ -8,6 +8,7 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 
+@SuppressWarnings("javadoc")
 public class TopObjectPropertyTest {
     @Test
     public void testReasoner3() throws OWLOntologyCreationException {

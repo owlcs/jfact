@@ -11,6 +11,7 @@ import uk.ac.manchester.cs.jfact.datatypes.*;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
+@SuppressWarnings("javadoc")
 public class DatatypeFromXML<R extends Comparable<R>> implements Datatype<R> {
     private String name;
     private String uri;

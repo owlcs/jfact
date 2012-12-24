@@ -35,8 +35,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel_options {
         testSubject0.setorSortSub(mock(String.class));
         Option result11 = JFactReasonerConfiguration.getOption(mock(String.class),
                 mock(String.class));
-        Option result12 = JFactReasonerConfiguration.getOption(mock(String.class),
- 1L);
+        Option result12 = JFactReasonerConfiguration.getOption(mock(String.class), 1L);
         boolean result13 = testSubject0.getuseAnywhereBlocking();
         boolean result14 = testSubject0.getuseBackjumping();
         boolean result15 = testSubject0.getuseLazyBlocking();

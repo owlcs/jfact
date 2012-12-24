@@ -293,8 +293,8 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
     public void shouldTestDataTypeReasoner() throws Exception {
         DataTypeReasoner testSubject0 = new DataTypeReasoner(
                 mock(JFactReasonerConfiguration.class));
-        boolean result0 = testSubject0.addDataEntry(true,
-                mock(DagTag.class), mock(NamedEntry.class), mock(DepSet.class));
+        boolean result0 = testSubject0.addDataEntry(true, mock(DagTag.class),
+                mock(NamedEntry.class), mock(DepSet.class));
         DepSet result1 = testSubject0.getClashSet();
         boolean result2 = testSubject0.checkClash();
         String result3 = testSubject0.toString();
@@ -306,8 +306,8 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
         Datatype result1 = testSubject0.getType();
         testSubject0.setPType(mock(DepSet.class));
         testSubject0.setNType(mock(DepSet.class));
-        boolean result2 = testSubject0.addInterval(true,
-                mock(Datatype.class), mock(DepSet.class));
+        boolean result2 = testSubject0.addInterval(true, mock(Datatype.class),
+                mock(DepSet.class));
         boolean result3 = testSubject0.checkPNTypeClash();
         DepSet result4 = testSubject0.getPType();
         boolean result5 = testSubject0.hasPType();

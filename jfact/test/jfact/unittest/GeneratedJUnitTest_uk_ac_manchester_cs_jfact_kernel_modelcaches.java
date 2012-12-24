@@ -32,8 +32,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel_modelcaches {
     @Test
     public void shouldTestModelCacheIan() throws Exception {
         ModelCacheIan testSubject0 = new ModelCacheIan(mock(DLDag.class),
-                mock(DlCompletionTree.class), true, 1, 1,
-                true);
+                mock(DlCompletionTree.class), true, 1, 1, true);
         ModelCacheIan testSubject1 = new ModelCacheIan(true, 1, 1, true);
         testSubject0.clear();
         ModelCacheState result0 = testSubject0.getState();
@@ -45,8 +44,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel_modelcaches {
         testSubject0.initRolesFromArcs(mock(DlCompletionTree.class));
         testSubject0.processConcept(mock(DLVertex.class), true, true);
         testSubject0.processAutomaton(mock(DLVertex.class));
-        ModelCacheState result5 = testSubject0.isMergableSingleton(1,
- true);
+        ModelCacheState result5 = testSubject0.isMergableSingleton(1, true);
         ModelCacheState result6 = testSubject0.isMergableIan(mock(ModelCacheIan.class));
         testSubject0.setHasNominalNode(true);
         boolean result7 = testSubject0.hasNominalClash(mock(ModelCacheInterface.class));

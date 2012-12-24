@@ -57,7 +57,6 @@ public class WebOnt_miscellaneous_002 {
         }
     }
 
-
     private static String premise = "<!DOCTYPE owl ["
             + "<!ENTITY owl \"http://www.w3.org/2002/07/owl#\" >"
             + "<!ENTITY vin  \"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#\" >"

@@ -46,10 +46,9 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact {
         testSubject0.precomputeInferences(mock(InferenceType[].class));
         boolean result0 = testSubject0.isConsistent();
         Node result1 = testSubject0.getUnsatisfiableClasses();
-        NodeSet result2 = testSubject0.getSubClasses(mock(OWLClassExpression.class),
- true);
-        NodeSet result3 = testSubject0.getInstances(mock(OWLClassExpression.class),
- true);
+        NodeSet result2 = testSubject0
+                .getSubClasses(mock(OWLClassExpression.class), true);
+        NodeSet result3 = testSubject0.getInstances(mock(OWLClassExpression.class), true);
         NodeSet result4 = testSubject0.getObjectPropertyValues(
                 mock(OWLNamedIndividual.class), mock(OWLObjectPropertyExpression.class));
         String result5 = testSubject0.getReasonerName();
@@ -106,8 +105,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact {
                 .getDisjointDataProperties(mock(OWLDataPropertyExpression.class));
         NodeSet result42 = testSubject0.getDataPropertyDomains(
                 mock(OWLDataProperty.class), true);
-        NodeSet result43 = testSubject0.getTypes(mock(OWLNamedIndividual.class),
- true);
+        NodeSet result43 = testSubject0.getTypes(mock(OWLNamedIndividual.class), true);
         Set result44 = testSubject0.getDataPropertyValues(mock(OWLNamedIndividual.class),
                 mock(OWLDataProperty.class));
         Node result45 = testSubject0.getSameIndividuals(mock(OWLNamedIndividual.class));
@@ -118,18 +116,14 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact {
         Set result48 = testSubject0.getTrace(mock(OWLAxiom.class));
         testSubject0.dumpClassHierarchy(mock(LogAdapter.class), true);
         testSubject0.writeReasoningResult(mock(LogAdapter.class), 1L);
-        Node result49 = testSubject0.getObjectNeighbours(mock(RootNode.class),
- true);
+        Node result49 = testSubject0.getObjectNeighbours(mock(RootNode.class), true);
         Collection result50 = testSubject0.getObjectNeighbours(mock(RootNode.class),
                 mock(OWLObjectProperty.class));
         Collection result51 = testSubject0.getDataNeighbours(mock(RootNode.class),
                 mock(OWLDataProperty.class));
-        Node result52 = testSubject0.getDataNeighbours(mock(RootNode.class),
- true);
-        Node result53 = testSubject0.getObjectLabel(mock(RootNode.class),
- true);
-        Node result54 = testSubject0.getDataLabel(mock(RootNode.class),
- true);
+        Node result52 = testSubject0.getDataNeighbours(mock(RootNode.class), true);
+        Node result53 = testSubject0.getObjectLabel(mock(RootNode.class), true);
+        Node result54 = testSubject0.getDataLabel(mock(RootNode.class), true);
         int result55 = testSubject0.getAtomicDecompositionSize(true,
                 mock(ModuleType.class));
         Set result56 = testSubject0.getAtomAxioms(1);

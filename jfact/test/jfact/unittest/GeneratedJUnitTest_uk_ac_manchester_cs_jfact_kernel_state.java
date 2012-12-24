@@ -63,8 +63,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel_state {
         DLCompletionTreeSaveState result14 = testSubject0.remove(1);
         boolean result15 = testSubject0.remove(mock(Object.class));
         Object result16 = testSubject0.remove();
-        Object result17 = testSubject0.set(1,
-                mock(DLCompletionTreeSaveState.class));
+        Object result17 = testSubject0.set(1, mock(DLCompletionTreeSaveState.class));
         Object result18 = testSubject0.poll();
         ListIterator result19 = testSubject0.listIterator(1);
         Object result20 = testSubject0.peek();

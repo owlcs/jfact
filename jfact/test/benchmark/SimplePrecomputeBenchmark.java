@@ -12,13 +12,10 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 import uk.ac.manchester.cs.jfact.JFactFactory;
 
+@SuppressWarnings("javadoc")
 public class SimplePrecomputeBenchmark {
     private static File mainPath = new File("./test/benchmark/test.owl");
 
-    /** @param args
-     * @throws InterruptedException
-     * @throws IOException
-     * @throws OWLOntologyCreationException */
     public static void main(String[] args) throws IOException, InterruptedException,
             OWLOntologyCreationException {
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
