@@ -14,8 +14,10 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.split.TSplitVar.Entry;
+import conformance.PortedFrom;
 
 /** all split rules: vector of rules with init and access methods */
+@PortedFrom(file = "tSplitExpansionRules.h", name = "TSplitRules")
 public class TSplitRules {
     /** class to check whether there is a need to unsplit splitted var */
     public class TSplitRule {

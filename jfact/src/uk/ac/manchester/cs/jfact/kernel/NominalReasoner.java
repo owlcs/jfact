@@ -16,7 +16,9 @@ import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.Pair;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "ReasonerNom.h", name = "NominalReasoner")
 public class NominalReasoner extends DlSatTester {
     /** all nominals defined in TBox */
     protected List<Individual> nominals = new ArrayList<Individual>();

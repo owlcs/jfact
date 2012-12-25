@@ -3,7 +3,9 @@ package uk.ac.manchester.cs.jfact.split;
 import java.util.Collection;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "LocalityChecker.h", name = "LocalityChecker")
 public interface LocalityChecker {
     boolean local(Axiom axiom);
 

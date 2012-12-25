@@ -11,7 +11,9 @@ import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 import java.util.*;
 
 import uk.ac.manchester.cs.jfact.helpers.*;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "ConceptWithDep.h", name = "Concept")
 public class Concept extends ClassifiableEntry {
     public static Concept getBOTTOM() {
         Concept toReturn = new Concept("BOTTOM");

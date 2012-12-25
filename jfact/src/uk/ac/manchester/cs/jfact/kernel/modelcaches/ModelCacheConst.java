@@ -9,7 +9,9 @@ import static uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState.*;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "modelCacheConst.h", name = "modelCacheConst")
 public class ModelCacheConst extends ModelCacheInterface {
     /** the itself */
     private boolean isTop;

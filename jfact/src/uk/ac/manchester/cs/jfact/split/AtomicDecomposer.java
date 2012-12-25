@@ -6,8 +6,10 @@ import java.util.List;
 
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
+import conformance.PortedFrom;
 
 /** atomical decomposer of the ontology */
+@PortedFrom(file = "AtomicDecomposer.h", name = "AtomicDecomposer")
 public class AtomicDecomposer {
     /** atomic structure to build */
     AOStructure AOS = null;

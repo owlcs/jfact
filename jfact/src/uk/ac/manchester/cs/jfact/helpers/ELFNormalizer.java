@@ -14,7 +14,9 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorAdapter;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "ELFNormalizer.h", name = "ELFNormalizer")
 public class ELFNormalizer extends DLAxiomVisitorAdapter {
     /** expression manager to build aux expressions */
     ExpressionManager pEM;

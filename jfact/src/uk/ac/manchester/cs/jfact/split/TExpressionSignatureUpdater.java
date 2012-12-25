@@ -5,8 +5,10 @@ import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.kernel.dl.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
+import conformance.PortedFrom;
 
 /** update the signature by adding all signature elements from the expression */
+@PortedFrom(file = "tSignatureUpdater.h", name = "TExpressionSignatureUpdater")
 class TExpressionSignatureUpdater implements DLExpressionVisitor {
     /** Signature to be filled */
     TSignature sig;

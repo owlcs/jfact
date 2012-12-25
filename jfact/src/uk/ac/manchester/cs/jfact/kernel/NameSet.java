@@ -7,6 +7,9 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.HashMap;
 
+import conformance.PortedFrom;
+
+@PortedFrom(file="tNameSet.h",name="TNameSet")
 public class NameSet<T> extends HashMap<String, T> {
     /** creator of new name */
     private NameCreator<T> creator;

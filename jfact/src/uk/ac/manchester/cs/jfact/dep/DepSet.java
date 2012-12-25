@@ -8,10 +8,12 @@ package uk.ac.manchester.cs.jfact.dep;
 import java.util.NoSuchElementException;
 
 import uk.ac.manchester.cs.jfact.helpers.FastSetSimple;
+import conformance.PortedFrom;
 
 /** Dependency set
  * 
  * @author ignazio */
+@PortedFrom(file = "tDepSet.h", name = "TDepSet")
 public class DepSet {
     /** @return empty depset */
     public static DepSet create() {

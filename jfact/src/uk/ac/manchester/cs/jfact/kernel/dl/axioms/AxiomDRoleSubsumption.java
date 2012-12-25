@@ -10,7 +10,9 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tDLAxiom.h",name="TDLAxiomDRoleSubsumption")
 public class AxiomDRoleSubsumption extends AxiomSingleDRole {
     private DataRoleExpression subRole;
 

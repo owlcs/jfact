@@ -13,7 +13,9 @@ import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.actors.Actor;
 import uk.ac.manchester.cs.jfact.kernel.actors.SupConceptActor;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "Taxonomy.h", name = "Taxonomy")
 public class Taxonomy {
     /** array of taxonomy verteces */
     private List<TaxonomyVertex> graph = new ArrayList<TaxonomyVertex>();

@@ -17,8 +17,10 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
+import conformance.PortedFrom;
 
 /** Same individuals axiom */
+@PortedFrom(file="tDLAxiom.h",name="TDLAxiomSameIndividuals")
 public class AxiomSameIndividuals extends AxiomImpl implements Axiom,
         NAryExpression<IndividualExpression> {
     private NAryExpressionImpl<IndividualExpression> delegate;

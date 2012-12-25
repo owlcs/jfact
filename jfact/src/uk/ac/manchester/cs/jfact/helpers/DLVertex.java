@@ -17,10 +17,12 @@ import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 import uk.ac.manchester.cs.jfact.kernel.*;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
+import conformance.PortedFrom;
 
 /** DL Vertex
  * 
  * @author ignazio */
+@PortedFrom(file = "dlVertex.h", name = "DLVertex")
 public class DLVertex extends DLVertexTagDFS {
     static class ChildSet {
         private Comparator<Integer> c = new Comparator<Integer>() {
@@ -435,6 +437,7 @@ public class DLVertex extends DLVertexTagDFS {
     }
 }
 
+@PortedFrom(file = "dlVertex.h", name = "DLVertexTagDFS")
 class DLVertexTagDFS {
     protected DagTag op; // 17 types
     /** aux field for DFS in presence of cycles */

@@ -8,7 +8,9 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tDLExpression.h",name="TDLObjectRoleTop")
 public class ObjectRoleTop implements ObjectRoleExpression {
     @Override
     public void accept(DLExpressionVisitor visitor) {

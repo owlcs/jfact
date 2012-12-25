@@ -11,7 +11,9 @@ import uk.ac.manchester.cs.jfact.split.TOntologyAtom;
 import uk.ac.manchester.cs.jfact.split.TSignature;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tAxiom.h",name="TAxiom")
 public interface Axiom extends Entity {
     OWLAxiom getOWLAxiom();
 

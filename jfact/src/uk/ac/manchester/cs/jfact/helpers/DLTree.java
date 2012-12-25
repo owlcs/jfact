@@ -16,10 +16,12 @@ import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 import uk.ac.manchester.cs.jfact.kernel.Lexeme;
 import uk.ac.manchester.cs.jfact.kernel.Token;
+import conformance.PortedFrom;
 
 /** DLTree class
  * 
  * @author ignazio */
+@PortedFrom(file = "dltree.h", name = "TsTTree")
 public abstract class DLTree {
     private static final CloningVisitor cloner = new CloningVisitor();
     /** element in the tree node */

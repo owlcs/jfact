@@ -18,7 +18,9 @@ import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.split.TOntologyAtom;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tAxiom.h",name="TAxiom")
 public class Axiom {
     // NS for different DLTree matchers for trees in axiom
     /** absorb into negation of a concept; @return true if absorption is */

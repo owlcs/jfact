@@ -10,7 +10,9 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptObjectRCExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tDLExpression.h",name="TDLConceptObjectExists")
 public class ConceptObjectExists implements ConceptObjectRCExpression {
     /** concept argument */
     private ConceptExpression conceptExpression;

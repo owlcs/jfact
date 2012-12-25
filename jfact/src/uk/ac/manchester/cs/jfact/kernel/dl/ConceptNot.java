@@ -9,7 +9,9 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptArg;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tDLExpression.h",name="TDLConceptNot")
 public class ConceptNot implements ConceptExpression, ConceptArg {
     /** concept argument */
     private ConceptExpression conceptExpression;

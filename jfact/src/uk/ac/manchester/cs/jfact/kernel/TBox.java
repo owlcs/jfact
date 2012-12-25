@@ -31,7 +31,9 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.split.TSplitRules;
 import uk.ac.manchester.cs.jfact.split.TSplitVar;
 import uk.ac.manchester.cs.jfact.split.TSplitVars;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "dlTBox.h", name = "TBox")
 public class TBox {
     protected static class IndividualCreator implements NameCreator<Individual> {
         @Override
@@ -2721,6 +2723,7 @@ enum DIOp {
     }
 }
 
+@PortedFrom(file = "dumpInterface.h", name = "dumpInterface")
 class DumpInterface {
     /** output stream */
     protected PrintStream o;
@@ -2804,6 +2807,7 @@ class DumpInterface {
     }
 }
 
+@PortedFrom(file = "dumpLisp.h", name = "dumpLisp")
 class DumpLisp extends DumpInterface {
     public DumpLisp(PrintStream oo) {
         super(oo);

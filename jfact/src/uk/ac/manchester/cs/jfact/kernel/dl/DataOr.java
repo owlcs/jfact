@@ -12,7 +12,9 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tDLExpression.h",name="TDLDataOr")
 public class DataOr extends NAryExpressionImpl<DataExpression> implements
         NAryExpression<DataExpression>, DataExpression {
     /** create OR of expressions from the given array */

@@ -13,7 +13,9 @@ import java.util.List;
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tAxiomSet.h",name="TAxiomSet")
 public class AxiomSet {
     /** host TBox that holds all concepts/etc */
     protected TBox tboxHost;

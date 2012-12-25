@@ -13,7 +13,9 @@ import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.ArrayIntMap;
 import uk.ac.manchester.cs.jfact.helpers.FastSetSimple;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "CWDArray.h", name = "CWDArray")
 public class CWDArray {
     private static double distribution = 0.025;
     /** array of concepts together with dep-sets */
@@ -204,6 +206,7 @@ public class CWDArray {
     }
 }
 
+@PortedFrom(file = "CWDArray.cpp", name = "UnMerge")
 class UnMerge extends Restorer {
     private CWDArray label;
     private int offset;

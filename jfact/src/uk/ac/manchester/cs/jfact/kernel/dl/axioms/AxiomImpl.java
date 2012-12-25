@@ -11,7 +11,9 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
 import uk.ac.manchester.cs.jfact.split.TOntologyAtom;
 import uk.ac.manchester.cs.jfact.split.TSignature;
 import uk.ac.manchester.cs.jfact.split.TSignatureUpdater;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "tAxiom.h", name = "TAxiom")
 abstract class AxiomImpl implements Axiom {
     /** id of the axiom */
     private int id;

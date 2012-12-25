@@ -16,7 +16,9 @@ import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState;
 import uk.ac.manchester.cs.jfact.split.TSplitVar;
 import uk.ac.manchester.cs.jfact.split.TSplitVars;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "DLConceptTaxonomy.h", name = "DLConceptTaxonomy")
 public class DLConceptTaxonomy extends Taxonomy {
     /** all the derived subsumers of a class (came from the model) */
     class DerivedSubsumers extends KnownSubsumers {

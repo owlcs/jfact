@@ -25,7 +25,9 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.split.TSignature;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tExpressionTranslator.h",name="TExpressionTranslator")
 public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
     /** TBox to get access to the named entities */
     private TBox tbox;

@@ -17,8 +17,10 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
+import conformance.PortedFrom;
 
 /** Concept disjointness axiom */
+@PortedFrom(file="tDLAxiom.h",name="TDLAxiomDisjointConcepts")
 public class AxiomDisjointConcepts extends AxiomImpl implements Axiom,
         NAryExpression<ConceptExpression> {
     private NAryExpressionImpl<ConceptExpression> delegate;

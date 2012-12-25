@@ -10,7 +10,9 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tDLAxiom.h",name="TDLAxiomORoleFunctional")
 public class AxiomORoleFunctional extends AxiomSingleORole {
     public AxiomORoleFunctional(OWLAxiom ax, ObjectRoleExpression role) {
         super(ax, role);

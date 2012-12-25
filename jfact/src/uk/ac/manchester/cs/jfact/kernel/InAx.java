@@ -9,7 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "tAxiom.h", name = "InAx")
 public class InAx {
     /** build an RW concept from a given [C|I]NAME-rooted DLTree */
     static Concept getConcept(DLTree p) {

@@ -13,7 +13,9 @@ import java.util.List;
 
 import uk.ac.manchester.cs.jfact.helpers.*;
 import uk.ac.manchester.cs.jfact.kernel.*;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "modelCacheIan.h", name = "modelCacheIan")
 public class ModelCacheIan extends ModelCacheInterface {
     // sets for the cache
     /** named concepts that appears positively det-lly in a root node of a cache */

@@ -8,7 +8,9 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tDLExpression.h",name="TDLConceptName")
 public class ConceptName extends NamedEntityImpl implements ConceptExpression {
     public ConceptName(String name) {
         super(name);

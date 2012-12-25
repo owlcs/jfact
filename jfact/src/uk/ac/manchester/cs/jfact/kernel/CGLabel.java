@@ -14,7 +14,9 @@ import java.util.Set;
 
 import uk.ac.manchester.cs.jfact.helpers.ArrayIntMap;
 import uk.ac.manchester.cs.jfact.kernel.state.SaveState;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "CGLabel.h", name = "CGLabel")
 public class CGLabel {
     private static int idcounter = 0;
 

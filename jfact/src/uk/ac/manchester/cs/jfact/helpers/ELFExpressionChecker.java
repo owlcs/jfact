@@ -5,7 +5,9 @@ import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.kernel.dl.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "ELFExpressionChecker.h", name = "ELFExpressionChecker")
 public class ELFExpressionChecker implements DLExpressionVisitor {
     boolean value;
 

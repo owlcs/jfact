@@ -13,7 +13,9 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tDLExpression.h",name="TDLDataOneOf")
 public class DataOneOf extends NAryExpressionImpl<Literal<?>> implements
         NAryExpression<Literal<?>>, DataExpression {
     /** create one-of from individuals in the given array */

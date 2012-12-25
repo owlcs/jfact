@@ -6,7 +6,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "tOntologyAtom.h", name = "TOntologyAtom")
 public class TOntologyAtom {
     static Comparator<TOntologyAtom> comparator = new Comparator<TOntologyAtom>() {
         @Override

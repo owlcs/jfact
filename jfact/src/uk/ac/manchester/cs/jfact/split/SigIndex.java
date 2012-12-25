@@ -8,7 +8,9 @@ import org.semanticweb.owlapi.util.MultiMap;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "SigIndex.h", name = "SigIndex")
 public class SigIndex {
     /** map between entities and axioms that contains them in their signature */
     MultiMap<NamedEntity, Axiom> Base = new MultiMap<NamedEntity, Axiom>();

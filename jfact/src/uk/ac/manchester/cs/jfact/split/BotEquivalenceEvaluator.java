@@ -5,10 +5,12 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
+import conformance.PortedFrom;
 
 /** check whether class expressions are equivalent to bottom wrt given locality
  * class */
 // XXX verify unused parameters
+@PortedFrom(file = "SyntacticLocalityChecker.h", name = "BotEquivalenceEvaluator")
 public class BotEquivalenceEvaluator extends SigAccessor implements DLExpressionVisitor {
     /** corresponding top evaluator */
     TopEquivalenceEvaluator TopEval = null;

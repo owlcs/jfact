@@ -8,7 +8,9 @@ package uk.ac.manchester.cs.jfact.kernel;
 import java.util.*;
 
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "RAutomaton.h", name = "RATransition")
 public class RATransition {
     /** set of roles that may affect the transition */
     private Set<Role> label;

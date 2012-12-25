@@ -8,8 +8,10 @@ import java.util.Set;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleInverse;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
+import conformance.PortedFrom;
 
 /** class to hold the signature of a module */
+@PortedFrom(file = "tSignature.h", name = "TSignature")
 public class TSignature {
     /** set to keep all the elements in signature */
     private Set<NamedEntity> set = new HashSet<NamedEntity>();

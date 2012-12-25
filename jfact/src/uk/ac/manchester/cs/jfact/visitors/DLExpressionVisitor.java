@@ -8,8 +8,10 @@ package uk.ac.manchester.cs.jfact.visitors;
 import uk.ac.manchester.cs.jfact.datatypes.Datatype;
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.kernel.dl.*;
+import conformance.PortedFrom;
 
 @SuppressWarnings("javadoc")
+@PortedFrom(file = "tDLExpression.h", name = "DLExpressionVisitor")
 public interface DLExpressionVisitor {
     // concept expressions
     public void visit(ConceptTop expr);

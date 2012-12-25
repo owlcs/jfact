@@ -9,8 +9,10 @@ import java.util.List;
 
 import uk.ac.manchester.cs.jfact.kernel.Role;
 import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
+import conformance.PortedFrom;
 
 /** actor that accumulates primers */
+@PortedFrom(file = "tRole.cpp", name = "AddRoleActor")
 public class AddRoleActor implements Actor {
     private List<Role> rset;
 

@@ -11,7 +11,9 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tDLAxiom.h",name="TDLAxiomInstanceOf")
 public class AxiomInstanceOf extends AxiomIndividual {
     private ConceptExpression conceptExpression;
 

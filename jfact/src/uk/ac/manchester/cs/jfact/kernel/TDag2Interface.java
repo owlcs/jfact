@@ -10,8 +10,10 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
+import conformance.PortedFrom;
 
 /** class to translate DAG entities into the TDL* expressions */
+@PortedFrom(file = "tDag2Interface.h", name = "TDag2Interface")
 public class TDag2Interface {
     /** DAG to be translated */
     private DLDag Dag;

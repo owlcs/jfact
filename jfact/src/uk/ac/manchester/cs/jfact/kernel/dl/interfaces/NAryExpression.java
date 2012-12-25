@@ -8,6 +8,9 @@ package uk.ac.manchester.cs.jfact.kernel.dl.interfaces;
 import java.util.Collection;
 import java.util.List;
 
+import conformance.PortedFrom;
+
+@PortedFrom(file="tDLExpression.h",name="TDLNAryExpression")
 public interface NAryExpression<Argument extends Expression> {
     /** transform general expression into the argument one */
     Argument transform(Expression arg);

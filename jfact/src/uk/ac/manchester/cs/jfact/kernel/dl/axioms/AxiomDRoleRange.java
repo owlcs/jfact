@@ -11,7 +11,9 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tDLAxiom.h",name="TDLAxiomDRoleRange")
 public class AxiomDRoleRange extends AxiomSingleDRole {
     private DataExpression range;
 

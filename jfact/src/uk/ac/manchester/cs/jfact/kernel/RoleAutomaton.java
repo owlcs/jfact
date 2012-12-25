@@ -11,7 +11,9 @@ import java.util.List;
 
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "RAutomaton.h", name = "RoleAutomaton")
 public class RoleAutomaton {
     /** all transitions of the automaton, groupped by a starting state */
     private List<RAStateTransitions> base = new ArrayList<RAStateTransitions>();

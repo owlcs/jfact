@@ -8,7 +8,9 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tDLExpression.h",name="TDLDataTop")
 public class DataTop implements DataExpression {
     @Override
     public void accept(DLExpressionVisitor visitor) {

@@ -9,7 +9,9 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptObjectRoleExpressio
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tDLExpression.h",name="TDLConceptObjectSelf")
 public class ConceptObjectSelf implements ConceptObjectRoleExpression {
     /** object role argument */
     private ObjectRoleExpression objectRoleExpression;

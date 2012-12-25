@@ -11,7 +11,9 @@ import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "taxVertex.h", name = "TaxonomyVertex")
 public class TaxonomyVertex {
     // TODO check if they need to be list
     /** immediate parents and children */

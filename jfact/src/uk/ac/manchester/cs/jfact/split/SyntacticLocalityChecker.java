@@ -7,8 +7,10 @@ import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
+import conformance.PortedFrom;
 
 /** syntactic locality checker for DL axioms */
+@PortedFrom(file = "SyntacticLocalityChecker.h", name = "SyntacticLocalityChecker")
 public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisitor,
         LocalityChecker {
     /** top evaluator */

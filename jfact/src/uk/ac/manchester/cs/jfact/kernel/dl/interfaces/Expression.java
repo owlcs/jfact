@@ -7,7 +7,9 @@ package uk.ac.manchester.cs.jfact.kernel.dl.interfaces;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "tNAryQueue.h", name = "Expression")
 public interface Expression extends Entity {
     /** accept method for the visitor pattern */
     void accept(DLExpressionVisitor visitor);

@@ -8,7 +8,9 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tDLExpression.h",name="TDLIndividualName")
 public class IndividualName extends NamedEntityImpl implements IndividualExpression {
     public IndividualName(String name) {
         super(name);

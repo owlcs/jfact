@@ -8,8 +8,10 @@ import java.util.List;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import conformance.PortedFrom;
 
 /** class to create modules of an ontology wrt module type */
+@PortedFrom(file = "Modularity.h", name = "TModularizer")
 public class TModularizer {
     /** shared signature signature */
     TSignature sig;

@@ -7,8 +7,10 @@ import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
+import conformance.PortedFrom;
 
 /** update signature by adding the signature of a given axiom to it */
+@PortedFrom(file = "tSignatureUpdater.h", name = "TSignatureUpdater")
 public class TSignatureUpdater implements DLAxiomVisitor {
     /** helper with expressions */
     TExpressionSignatureUpdater Updater;

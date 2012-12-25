@@ -8,7 +8,9 @@ package uk.ac.manchester.cs.jfact.kernel.dl.axioms;
 import org.semanticweb.owlapi.model.OWLAxiom;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tDLAxiom.h",name="TDLAxiomIndividual")
 abstract class AxiomIndividual extends AxiomImpl {
     private IndividualExpression individualExpression;
 

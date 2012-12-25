@@ -11,7 +11,9 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NumberArg;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tDLExpression.h",name="TDLConceptObjectMaxCardinality")
 public class ConceptObjectMaxCardinality implements ConceptObjectCardinalityExpression,
         NumberArg {
     private ConceptExpression delegate;

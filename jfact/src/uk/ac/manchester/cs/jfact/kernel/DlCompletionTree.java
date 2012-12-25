@@ -18,7 +18,9 @@ import uk.ac.manchester.cs.jfact.helpers.*;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.kernel.state.DLCompletionTreeSaveState;
 import uk.ac.manchester.cs.jfact.kernel.state.SaveList;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "dlCompletionTree.h", name = "DlCompletionTree")
 public class DlCompletionTree implements Comparable<DlCompletionTree> {
     /** restore blocked node */
     static class UnBlock extends Restorer {

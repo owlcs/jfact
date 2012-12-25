@@ -8,7 +8,9 @@ package uk.ac.manchester.cs.jfact.kernel.dl.axioms;
 import org.semanticweb.owlapi.model.OWLAxiom;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tDLAxiom.h",name="TDLAxiomSingleDRole")
 public abstract class AxiomSingleDRole extends AxiomImpl {
     private DataRoleExpression role;
 

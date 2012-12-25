@@ -9,7 +9,9 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpressionArg;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tDLExpression.h",name="TDLDataNot")
 public class DataNot implements DataExpression, DataExpressionArg<DataExpression> {
     /** data expression argument */
     protected DataExpression Expr;

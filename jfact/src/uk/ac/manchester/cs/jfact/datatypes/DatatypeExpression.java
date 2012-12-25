@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.datatypes;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** Represents an extended datatype - intersection, union or further
  * restrictions. All implementations must be immutable */
+
 public interface DatatypeExpression<Representation extends Comparable<Representation>>
         extends Datatype<Representation> {
     /** @return the predefined datatype which is host for this expression */

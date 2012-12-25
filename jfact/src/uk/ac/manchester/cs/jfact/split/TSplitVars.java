@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
+import conformance.PortedFrom;
 
 /** set of all known var splits with access by name */
+@PortedFrom(file = "tSplitVars.h", name = "TSplitVars")
 public class TSplitVars {
     protected List<TSplitVar> Base = new ArrayList<TSplitVar>();
     protected Map<ConceptName, TSplitVar> Index = new HashMap<ConceptName, TSplitVar>();

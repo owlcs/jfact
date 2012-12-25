@@ -5,8 +5,10 @@ import uk.ac.manchester.cs.jfact.datatypes.cardinality;
 import uk.ac.manchester.cs.jfact.kernel.dl.DataTop;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorAdapter;
+import conformance.PortedFrom;
 
 /** helper class to set signature and locality class */
+@PortedFrom(file = "LocalityChecker.h", name = "SigAccessor")
 public class SigAccessor extends DLExpressionVisitorAdapter {
     /** signature of a module */
     TSignature sig;

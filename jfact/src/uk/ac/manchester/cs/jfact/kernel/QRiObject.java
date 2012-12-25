@@ -8,14 +8,17 @@ import java.util.Set;
 import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
+import conformance.PortedFrom;
 
 //---------------------------------------------------------
 // i-objects (vars and individuals)
 //---------------------------------------------------------
 /** i-object (from SWRL proposal), which is variable or an individual */
+@PortedFrom(file = "QR.h", name = "QRiObject")
 class QRiObject {}
 
 /** QR variable replacing the individual */
+@PortedFrom(file = "QR.h", name = "QRVariable")
 class QRVariable extends QRiObject {
     /** name of a var */
     String Name;
@@ -34,6 +37,7 @@ class QRVariable extends QRiObject {
 }
 
 /** individual in a query */
+@PortedFrom(file = "QR.h", name = "QRIndividual")
 class QRIndividual extends QRiObject {
     /** original individual from Expression Manager */
     IndividualName Ind;
@@ -52,6 +56,7 @@ class QRIndividual extends QRiObject {
 // ---------------------------------------------------------
 // var factory
 // ---------------------------------------------------------
+@PortedFrom(file = "QR.h", name = "VariableFactory")
 class VariableFactory {
     List<QRVariable> Base = new ArrayList<QRVariable>();
 
@@ -67,9 +72,11 @@ class VariableFactory {
 // atoms in the query
 // ---------------------------------------------------------
 /** general atom interface */
+@PortedFrom(file = "QR.h", name = "QRAtom")
 class QRAtom {}
 
 /** concept atom: C(x) */
+@PortedFrom(file = "QR.h", name = "QRConceptAtom")
 class QRConceptAtom extends QRAtom {
     /** pointer to a concept (named one atm) */
     ConceptExpression Concept;
@@ -95,6 +102,7 @@ class QRConceptAtom extends QRAtom {
 }
 
 /** interface for general 2-arg atom */
+@PortedFrom(file = "QR.h", name = "QR2ArgAtom")
 class QR2ArgAtom extends QRAtom {
     /** argument 1 */
     QRiObject Arg1;
@@ -119,6 +127,7 @@ class QR2ArgAtom extends QRAtom {
 }
 
 /** role atom R(x,y) */
+@PortedFrom(file = "QR.h", name = "QRRoleAtom")
 class QRRoleAtom extends QR2ArgAtom {
     /** role between two i-objects */
     ObjectRoleExpression Role;
@@ -136,6 +145,7 @@ class QRRoleAtom extends QR2ArgAtom {
 }
 
 /** equality atom x=y */
+@PortedFrom(file = "QR.h", name = "QREqAtom")
 class QREqAtom extends QR2ArgAtom {
     QREqAtom(QRiObject A1, QRiObject A2) {
         super(A1, A2);
@@ -143,6 +153,7 @@ class QREqAtom extends QR2ArgAtom {
 }
 
 /** inequality atom x!=y */
+@PortedFrom(file = "QR.h", name = "QRNeqAtom")
 class QRNeqAtom extends QR2ArgAtom {
     QRNeqAtom(QRiObject A1, QRiObject A2) {
         super(A1, A2);
@@ -150,6 +161,7 @@ class QRNeqAtom extends QR2ArgAtom {
 }
 
 /** general QR conjunctions of atoms */
+@PortedFrom(file = "QR.h", name = "QRSetAtoms")
 class QRSetAtoms {
     List<QRAtom> Base = new ArrayList<QRAtom>();
 
@@ -160,6 +172,7 @@ class QRSetAtoms {
 }
 
 /** class for the queries */
+@PortedFrom(file = "QR.h", name = "QRQuery")
 class QRQuery {
     /** query as a set of atoms */
     QRSetAtoms Body = new QRSetAtoms();
@@ -178,4 +191,5 @@ class QRQuery {
 }
 
 /** rule in a general form body -> head */
+@PortedFrom(file = "QR.h", name = "QRRule")
 class QRRule {}

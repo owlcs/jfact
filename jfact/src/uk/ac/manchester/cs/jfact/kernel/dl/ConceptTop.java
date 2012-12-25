@@ -8,7 +8,9 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tDLExpression.h",name="TDLConceptTop")
 public class ConceptTop implements ConceptExpression {
     @Override
     public void accept(DLExpressionVisitor visitor) {

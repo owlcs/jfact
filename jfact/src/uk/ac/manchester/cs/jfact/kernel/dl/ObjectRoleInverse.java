@@ -9,7 +9,9 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleArg;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tDLExpression.h",name="TDLObjectRoleInverse")
 public class ObjectRoleInverse implements ObjectRoleExpression, ObjectRoleArg {
     /** object role argument */
     private ObjectRoleExpression objectRoleExpression;

@@ -10,8 +10,10 @@ import java.util.BitSet;
 import java.util.List;
 
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
+import conformance.PortedFrom;
 
 /** class to represent transitions from a single state in an automaton */
+@PortedFrom(file = "RAutomaton.h", name = "RAStateTransitions")
 public class RAStateTransitions {
     /** all transitions */
     protected List<RATransition> base = new ArrayList<RATransition>();

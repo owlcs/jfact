@@ -19,7 +19,9 @@ import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "RoleMaster.h", name = "RoleMaster")
 public class RoleMaster {
     protected static class RoleCreator implements NameCreator<Role> {
         @Override

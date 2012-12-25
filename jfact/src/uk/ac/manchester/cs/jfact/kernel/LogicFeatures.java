@@ -12,7 +12,9 @@ import java.util.BitSet;
 import uk.ac.manchester.cs.jfact.helpers.DLVertex;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "LogicFeature.h", name = "LogicFeatures")
 public class LogicFeatures {
     /** all flags in one long */
     private BitSet flags = new BitSet();

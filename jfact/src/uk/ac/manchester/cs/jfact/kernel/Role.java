@@ -16,7 +16,9 @@ import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 import uk.ac.manchester.cs.jfact.helpers.*;
 import uk.ac.manchester.cs.jfact.kernel.actors.AddRoleActor;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "tRole.h", name = "Role")
 public class Role extends ClassifiableEntry {
     static class KnownValue {
         /** flag value */
@@ -862,6 +864,7 @@ public class Role extends ClassifiableEntry {
     }
 }
 
+@PortedFrom(file = "tRole.cpp", name = "TRoleCompare")
 class RoleCompare implements Comparator<Role>, Serializable {
     @Override
     public int compare(Role p, Role q) {

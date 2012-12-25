@@ -17,8 +17,10 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
+import conformance.PortedFrom;
 
 /** Disjoint Union axiom */
+@PortedFrom(file="tDLAxiom.h",name="TDLAxiomDisjointUnion")
 public class AxiomDisjointUnion extends AxiomImpl implements Axiom,
         NAryExpression<ConceptExpression> {
     private ConceptExpression conceptExpression;

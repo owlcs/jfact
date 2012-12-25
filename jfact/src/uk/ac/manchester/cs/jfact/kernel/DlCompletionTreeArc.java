@@ -8,7 +8,9 @@ package uk.ac.manchester.cs.jfact.kernel;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "dlCompletionTreeArc.h", name = "DlCompletionTreeArc")
 public class DlCompletionTreeArc {
     /** pointer to "to" node */
     private DlCompletionTree node;

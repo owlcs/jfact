@@ -13,7 +13,9 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleComplexExpressio
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tDLExpression.h",name="TDLObjectRoleChain")
 public class ObjectRoleChain extends NAryExpressionImpl<ObjectRoleExpression> implements
         NAryExpression<ObjectRoleExpression>, ObjectRoleComplexExpression {
     /** create role chain from given array */

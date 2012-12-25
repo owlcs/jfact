@@ -24,7 +24,9 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
 import uk.ac.manchester.cs.jfact.split.TSplitVar;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "tOntologyLoader.h", name = "TOntologyLoader")
 public class OntologyLoader implements DLAxiomVisitor {
     /** KB to load the ontology */
     private TBox tbox;

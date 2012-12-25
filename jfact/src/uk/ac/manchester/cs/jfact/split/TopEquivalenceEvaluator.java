@@ -5,9 +5,11 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
+import conformance.PortedFrom;
 
 /** check whether class expressions are equivalent to top wrt given locality
  * class */
+@PortedFrom(file = "SyntacticLocalityChecker.h", name = "TopEquivalenceEvaluator")
 public class TopEquivalenceEvaluator extends SigAccessor implements DLExpressionVisitor {
     /** corresponding bottom evaluator */
     BotEquivalenceEvaluator BotEval = null;

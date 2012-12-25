@@ -38,7 +38,9 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.split.*;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "Kernel.h", name = "ReasoningKernel")
 public class ReasoningKernel {
     /** options for the kernel and all related substructures */
     private JFactReasonerConfiguration kernelOptions;

@@ -9,7 +9,9 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tDLExpression.h",name="TDLObjectRoleName")
 public class ObjectRoleName extends NamedEntityImpl implements ObjectRoleExpression,
         NamedEntity {
     public ObjectRoleName(String name) {

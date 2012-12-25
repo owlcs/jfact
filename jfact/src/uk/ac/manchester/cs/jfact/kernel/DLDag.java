@@ -16,7 +16,9 @@ import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
 import uk.ac.manchester.cs.jfact.helpers.*;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "dlDag.h", name = "DLDag")
 public class DLDag {
     /** body of DAG */
     private List<DLVertex> heap = new ArrayList<DLVertex>();
@@ -615,6 +617,7 @@ public class DLDag {
     }
 }
 
+@PortedFrom(file = "dlVHash.h", name = "dlVHashTable")
 class DLVTable {
     /** host DAG that contains actual nodes; */
     private DLDag host;

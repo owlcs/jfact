@@ -1,6 +1,9 @@
 package uk.ac.manchester.cs.jfact.split;
 
+import conformance.PortedFrom;
+
 /** interface of the progress indicator */
+@PortedFrom(file = "ProgressIndicatorInterface.h", name = "ProgressIndicatorInterface")
 abstract class ProgressIndicatorInterface {
     /** limit of the progress: indicate [0..uLimit] */
     long uLimit;

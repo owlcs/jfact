@@ -33,7 +33,9 @@ import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.split.*;
 import uk.ac.manchester.cs.jfact.split.TSplitRules.TSplitRule;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "Reasoner.h", name = "DlSatTester")
 public class DlSatTester {
     private class LocalFastSet implements FastSet {
         BitSet pos = new BitSet();
@@ -3702,6 +3704,7 @@ public class DlSatTester {
     }
 }
 
+@PortedFrom(file = "Tactic.cpp", name = "NodeCompare")
 class NodeCompare implements Comparator<DlCompletionTree>, Serializable {
     @Override
     public int compare(DlCompletionTree o1, DlCompletionTree o2) {
@@ -3717,6 +3720,7 @@ enum AddConceptResult {
     acrClash, acrExist, acrDone
 }
 
+@PortedFrom(file = "Tactic.cpp", name = "EdgeCompare")
 class EdgeCompare implements Comparator<DlCompletionTreeArc>, Serializable {
     @Override
     public int compare(DlCompletionTreeArc o1, DlCompletionTreeArc o2) {

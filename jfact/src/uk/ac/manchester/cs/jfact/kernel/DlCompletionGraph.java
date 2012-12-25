@@ -14,7 +14,9 @@ import java.util.List;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.*;
 import uk.ac.manchester.cs.jfact.kernel.state.DLCompletionGraphSaveState;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "dlCompletionGraph.h", name = "DlCompletionGraph")
 public class DlCompletionGraph {
     /** initial value of IR level */
     private static final int initIRLevel = 0;
@@ -693,6 +695,7 @@ public class DlCompletionGraph {
     }
 }
 
+@PortedFrom(file = "tRareSaveStack.h", name = "TRareSaveStack")
 class SaveStackRare {
     /** heap of saved objects */
     private LinkedList<Restorer> base = new LinkedList<Restorer>();

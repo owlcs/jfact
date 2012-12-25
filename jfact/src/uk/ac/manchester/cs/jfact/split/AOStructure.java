@@ -5,7 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import conformance.PortedFrom;
+
 /** atomical ontology structure */
+@PortedFrom(file = "AtomicDecomposer.h", name = "AOStructure")
 public class AOStructure {
     /** vector of atoms as a type */
     // typedef std::vector<TOntologyAtom*> AtomVec;

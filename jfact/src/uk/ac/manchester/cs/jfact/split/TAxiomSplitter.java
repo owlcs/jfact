@@ -11,7 +11,9 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "AxiomSplitter.h", name = "TAxiomSplitter")
 public class TAxiomSplitter {
     /** keep the single rename: named concept C in an axiom (C=D or C[=D) into */
     // a new name C' and new axiom C'=D or C'[=D

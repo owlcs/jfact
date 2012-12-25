@@ -14,7 +14,9 @@ import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.kernel.dl.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 import uk.ac.manchester.cs.jfact.kernel.voc.Vocabulary;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tExpressionManager.h",name="TExpressionManager")
 public class ExpressionManager {
     /** Cache for the inverse roles */
     protected class InverseRoleCache {

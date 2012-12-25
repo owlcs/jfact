@@ -9,8 +9,10 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorAdapter;
+import conformance.PortedFrom;
 
 // XXX verify unused parameters
+@PortedFrom(file = "ELFAxiomChecker.h", name = "ELFAxiomChecker")
 public class ELFAxiomChecker extends DLAxiomVisitorAdapter {
     ELFExpressionChecker eCh = new ELFExpressionChecker();
     boolean value;
@@ -223,11 +225,12 @@ public class ELFAxiomChecker extends DLAxiomVisitorAdapter {
     }
 }
 
-/** pattern for the rule. Contains apply() method with updates of the monitored */
-// set
+/** pattern for the rule. Contains apply() method with updates of the monitored
+ * set */
+@PortedFrom(file = "ELFReasoner.h", name = "TELFRule")
 class TELFRule {
-    /** reasoner that is used to add actions. The number of rules = the number */
-    // of axioms, so the price is not too bad memory-wise.
+    /** reasoner that is used to add actions. The number of rules = the number of
+     * axioms, so the price is not too bad memory-wise. */
     ELFReasoner ER;
 
     /** init c'tor */
@@ -246,6 +249,7 @@ class TELFRule {
 // Concepts and roles, i.e. S(C) and R(C,D)
 // -------------------------------------------------------------
 /** aux class to support set of rules and rule applications */
+@PortedFrom(file = "ELFReasoner.h", name = "TRuleSet")
 class TRuleSet {
     /** set of rules to apply on change */
     List<TELFRule> Rules = new ArrayList<TELFRule>();
@@ -271,6 +275,7 @@ class TRuleSet {
 }
 
 /** concept, set S(C) and aux things */
+@PortedFrom(file = "ELFReasoner.h", name = "TELFConcept")
 class TELFConcept extends TRuleSet {
     /** original concept (if any) */
     ConceptExpression Origin;
@@ -308,6 +313,7 @@ class TELFConcept extends TRuleSet {
 }
 
 /** role, set R(C,D) */
+@PortedFrom(file = "ELFReasoner.h", name = "TELFRole")
 class TELFRole extends TRuleSet {
     /** original role (if any) */
     ObjectRoleExpression Origin;
@@ -357,6 +363,7 @@ class TELFRole extends TRuleSet {
 // Action class
 // -------------------------------------------------------------
 /** single algorithm action (application of a rule) */
+@PortedFrom(file = "ELFReasoner.h", name = "ELFAction")
 class ELFAction {
     /** role R corresponded to R(C,D) */
     TELFRole R = null;

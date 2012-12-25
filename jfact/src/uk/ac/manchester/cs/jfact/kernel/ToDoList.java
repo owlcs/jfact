@@ -18,7 +18,9 @@ import uk.ac.manchester.cs.jfact.helpers.FastSetSimple;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.SaveStack;
 import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "ToDoList.h", name = "ToDoList")
 public class ToDoList {
     static int limit = 500;
     protected TODOListSaveState[] states = new TODOListSaveState[limit];
@@ -438,6 +440,7 @@ public class ToDoList {
     }
 }
 
+@PortedFrom(file = "PriorityMatrix.h", name = "ToDoPriorMatrix")
 class ToDoPriorMatrix {
     // regular operation indexes
     private int indexAnd;

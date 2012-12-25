@@ -17,8 +17,10 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
+import conformance.PortedFrom;
 
 /** Data Role equivalence axiom */
+@PortedFrom(file="tDLAxiom.h",name="TDLAxiomEquivalentDRoles")
 public class AxiomEquivalentDRoles extends AxiomImpl implements Axiom,
         NAryExpression<DataRoleExpression> {
     private NAryExpressionImpl<DataRoleExpression> delegate;

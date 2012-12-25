@@ -17,8 +17,10 @@ import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import uk.ac.manchester.cs.jfact.kernel.DagTag;
 import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import conformance.PortedFrom;
 
 /** @author ignazio Datatype reasoner implementation */
+@PortedFrom(file = "DataReasoning.h", name = "DataTypeReasoner")
 public final class DataTypeReasoner {
     /** map Type.pName.Type appearance */
     private final Map<Datatype<?>, DataTypeSituation<?>> map = new HashMap<Datatype<?>, DataTypeSituation<?>>();

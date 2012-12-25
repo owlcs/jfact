@@ -12,8 +12,10 @@ import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleChain;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
+import conformance.PortedFrom;
 
 /** semantic locality checker for DL axioms */
+@PortedFrom(file = "SemanticLocalityChecker.h", name = "SemanticLocalityChecker")
 public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker {
     /** Reasoner to detect the tautology */
     ReasoningKernel Kernel;

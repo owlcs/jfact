@@ -12,7 +12,9 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
 import uk.ac.manchester.cs.jfact.split.TSplitVars;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
+import conformance.PortedFrom;
 
+@PortedFrom(file="tOntology.h",name="TOntology")
 public class Ontology {
     /** all the axioms */
     private List<Axiom> axioms = new ArrayList<Axiom>();

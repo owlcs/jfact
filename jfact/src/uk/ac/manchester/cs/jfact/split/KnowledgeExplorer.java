@@ -11,7 +11,9 @@ import uk.ac.manchester.cs.jfact.kernel.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
 import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
+import conformance.PortedFrom;
 
+@PortedFrom(file = "KnowledgeExplorer.h", name = "KnowledgeExplorer")
 public class KnowledgeExplorer {
     /** map concept into set of its synonyms */
     MultiMap<NamedEntity, Concept> Cs = new MultiMap<NamedEntity, Concept>();
