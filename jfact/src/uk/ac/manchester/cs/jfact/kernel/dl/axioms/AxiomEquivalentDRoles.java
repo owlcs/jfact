@@ -32,11 +32,15 @@ public class AxiomEquivalentDRoles extends AxiomImpl implements Axiom,
     }
 
     @Override
+
+@PortedFrom(file="tDLAxiom.h",name="accept")
     public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
     @Override
+
+@PortedFrom(file="tDLAxiom.h",name="accept")
     public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }

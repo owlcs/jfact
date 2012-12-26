@@ -1,9 +1,9 @@
-package uk.ac.manchester.cs.jfact.helpers;
+package uk.ac.manchester.cs.jfact.elf;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptAnd;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectExists;
@@ -35,6 +35,7 @@ public class ELFReasoner {
     int nC2C, nA2C, nC2E, nE2C, nR2R, nC2R;
 
     /** get concept (expression) corresponding to a given DL expression */
+@PortedFrom(file="ELFReasoner.h",name="getC")
     protected TELFConcept getC(ConceptExpression p) {
         TELFConcept i = CMap.get(p);
         if (i != null) {
@@ -47,6 +48,7 @@ public class ELFReasoner {
     }
 
     /** get role (expression, but actually just a name) */
+@PortedFrom(file="ELFReasoner.h",name="getR")
     TELFRole getR(ObjectRoleExpression p) {
         TELFRole r = RMap.get(p);
         if (r != null) {
@@ -95,11 +97,13 @@ public class ELFReasoner {
     }
 
     /** add action to a queue */
+@PortedFrom(file="ELFReasoner.h",name="addAction")
     void addAction(ELFAction action) {
         queue.add(action);
     }
 
     /** classification method */
+@PortedFrom(file="ELFReasoner.h",name="classify")
     public void classify() {
         // init all CIs
         for (TELFConcept C : CMap.values()) {
@@ -116,12 +120,14 @@ public class ELFReasoner {
     // inline ELFReasoner implementation
     // -------------------------------------------------------------
     /** process axiom C [= D */
+@PortedFrom(file="ELFReasoner.h",name="processC2C")
     void processC2C(TELFConcept C, TELFConcept D) {
         ++nC2C;
         C.addRule(new CSubRule(this, D));
     }
 
     /** process axiom C1 and C2 [= D */
+@PortedFrom(file="ELFReasoner.h",name="processA2C")
     void processA2C(TELFConcept C1, TELFConcept C2, TELFConcept D) {
         ++nA2C;
         C1.addRule(new CAndSubRule(this, C2, D));
@@ -129,12 +135,14 @@ public class ELFReasoner {
     }
 
     /** process axiom C [= \ER.D */
+@PortedFrom(file="ELFReasoner.h",name="processC2E")
     void processC2E(TELFConcept C, TELFRole R, TELFConcept D) {
         ++nC2E;
         C.addRule(new RAddRule(this, R, D));
     }
 
     /** process axiom \ER.C [= D */
+@PortedFrom(file="ELFReasoner.h",name="processE2C")
     void processE2C(TELFRole R, TELFConcept C, TELFConcept D) {
         ++nE2C;
         // C from existential will have a C-adder rule
@@ -144,12 +152,14 @@ public class ELFReasoner {
     }
 
     /** process axiom R [= S */
+@PortedFrom(file="ELFReasoner.h",name="processR2R")
     void processR2R(TELFRole R, TELFRole S) {
         ++nR2R;
         R.addRule(new RSubRule(this, S));
     }
 
     /** process axiom R1 o R2 [= S */
+@PortedFrom(file="ELFReasoner.h",name="processC2R")
     void processC2R(TELFRole R1, TELFRole R2, TELFRole S) {
         ++nC2R;
         R1.addRule(new RChainLRule(this, R2, S));
@@ -157,6 +167,7 @@ public class ELFReasoner {
     }
 
     /** process concept inclusion axiom into the internal structures */
+@PortedFrom(file="ELFReasoner.h",name="processCI")
     protected void processCI(AxiomConceptInclusion axiom) {
         assert axiom != null;
         // deal with existentials
@@ -189,6 +200,7 @@ public class ELFReasoner {
     }
 
     /** process role inclusion axiom into the internal structures */
+@PortedFrom(file="ELFReasoner.h",name="processRI")
     void processRI(AxiomORoleSubsumption axiom) {
         TELFRole rhs = getR(axiom.getRole());
         if (axiom.getSubRole() instanceof ObjectRoleChain) // R o S [= T
@@ -205,6 +217,7 @@ public class ELFReasoner {
     }
 
     /** process declaration axiom */
+@PortedFrom(file="ELFReasoner.h",name="processDeclaration")
     protected void processDeclaration(AxiomDeclaration axiom) {
         assert axiom != null;
         if (axiom.getDeclaration() instanceof ConceptExpression) {
@@ -220,6 +233,7 @@ public class ELFReasoner {
     }
 
     /** helper that inits \bot-related rules */
+@PortedFrom(file="ELFReasoner.h",name="initBotRules")
     void initBotRules() {
         for (TELFRole i : RMap.values()) {
             // for every R add listener that checks whether for R(C,D) S(D)
@@ -228,243 +242,6 @@ public class ELFReasoner {
             // add rule that adds \bot for every C in R(C,D), if S(D) contains
             // \bot
             CBot.addRule(new CAddFillerRule(this, i, CBot));
-        }
-    }
-
-    // -------------------------------------------------------------
-    // Rule for C [= D case; CR1
-    // -------------------------------------------------------------
-    /** the rule for C [= D case */
-    class CSubRule extends TELFRule {
-        /** super of a concept; it would be added to S(C) */
-        TELFConcept Sup = null;
-
-        /** init c'tor: remember D */
-        CSubRule(ELFReasoner ER, TELFConcept D) {
-            super(ER);
-            Sup = D;
-        }
-
-        /** apply a method with a given S(C) */
-        @Override
-        void apply(TELFConcept addedC) {
-            if (!addedC.hasSuper(Sup)) {
-                ER.addAction(new ELFAction(addedC, Sup));
-            }
-        }
-    }
-
-    // -------------------------------------------------------------
-    // Rule for C1 and C2 [= D case; CR2
-    // -------------------------------------------------------------
-    /** the rule for C1 and C2 [= D case */
-    class CAndSubRule extends TELFRule {
-        /** concept to find in order to fire a rule */
-        TELFConcept Conj;
-        /** super of a concept; it would be added to S(C) */
-        TELFConcept Sup;
-
-        /** init c'tor: remember D */
-        CAndSubRule(ELFReasoner ER, TELFConcept C, TELFConcept D) {
-            super(ER);
-            Conj = C;
-            Sup = D;
-        }
-
-        /** apply a method with a given S(C) */
-        @Override
-        void apply(TELFConcept C) {
-            if (C.hasSuper(Conj) && !C.hasSuper(Sup)) {
-                ER.addAction(new ELFAction(C, Sup));
-            }
-        }
-    }
-
-    // -------------------------------------------------------------
-    // Rule for C [= \Er.D case; CR3
-    // -------------------------------------------------------------
-    /** the rule for C [= \ER.D case */
-    class RAddRule extends TELFRule {
-        /** role to add the pair */
-        TELFRole R;
-        /** filler (D) of the existential */
-        TELFConcept Filler;
-
-        /** init c'tor: remember D */
-        RAddRule(ELFReasoner ER, TELFRole r, TELFConcept C) {
-            super(ER);
-            R = r;
-            Filler = C;
-        }
-
-        /** apply a method with a given source S(C) */
-        @Override
-        void apply(TELFConcept Source) {
-            // if ( !R.hasLabel ( Source, Filler ) )
-            ER.addAction(new ELFAction(R, Source, Filler));
-        }
-    }
-
-    // -------------------------------------------------------------
-    // Rules for \Er.C [= D case; CR4
-    // -------------------------------------------------------------
-    /** rule that checks an addition of C to S(Y) and checks whether there is X */
-    // s.t. R(X,Y)
-    class CAddFillerRule extends TELFRule {
-        /** role to add the pair */
-        TELFRole R;
-        /** super (E) of the existential */
-        TELFConcept Sup;
-
-        /** init c'tor: remember E */
-        CAddFillerRule(ELFReasoner ER, TELFRole r, TELFConcept C) {
-            super(ER);
-            R = r;
-            Sup = C;
-        }
-
-        /** apply a method with a given source S(C) */
-        @Override
-        void apply(TELFConcept Source) {
-            Set<TELFConcept> SupSet = R.getPredSet(Source);
-            if (!SupSet.isEmpty()) {
-                for (TELFConcept p : SupSet) {
-                    if (!p.hasSuper(Sup)) {
-                        ER.addAction(new ELFAction(p, Sup));
-                    }
-                }
-            }
-        }
-    }
-
-    /** rule that checks the addition of (X,Y) to R and finds a C in S(Y) */
-    class CExistSubRule extends TELFRule {
-        /** filler of an existential */
-        TELFConcept Filler;
-        /** super of an axiom concept; it would be added to S(C) */
-        TELFConcept Sup;
-
-        /** init c'tor: remember D */
-        CExistSubRule(ELFReasoner ER, TELFConcept filler, TELFConcept sup) {
-            super(ER);
-            Filler = filler;
-            Sup = sup;
-        }
-
-        /** apply a method with an added pair (C,D) */
-        @Override
-        void apply(TELFConcept addedC, TELFConcept addedD) {
-            if (addedD.hasSuper(Filler) && !addedC.hasSuper(Sup)) {
-                ER.addAction(new ELFAction(addedC, Sup));
-            }
-        }
-    }
-
-    // -------------------------------------------------------------
-    // Rule for R(C,D) with \bot\in S(D) case; CR5
-    // -------------------------------------------------------------
-    // rule that checks whether for R(C,D) S(D) contains \bot
-    class RBotRule extends TELFRule {
-        /** remember the Bottom concept */
-        TELFConcept ConceptBot;
-
-        /** init c'tor: remember E */
-        RBotRule(ELFReasoner ER, TELFConcept bot) {
-            super(ER);
-            ConceptBot = bot;
-        }
-
-        /** apply a method with a given new pair (C,D) */
-        @Override
-        void apply(TELFConcept addedC, TELFConcept addedD) {
-            // it seems like every other pair is already processed, either via
-            // that rule or via add(\bot)
-            if (addedD.hasSuper(ConceptBot) && !addedC.hasSuper(ConceptBot)) {
-                ER.addAction(new ELFAction(addedC, ConceptBot));
-            }
-        }
-    }
-
-    // -------------------------------------------------------------
-    // Rule for R [= S case; CR10
-    // -------------------------------------------------------------
-    /** the rule for R [= S case */
-    class RSubRule extends TELFRule {
-        /** role to add the pair */
-        TELFRole S;
-
-        /** init c'tor: remember S */
-        RSubRule(ELFReasoner ER, TELFRole s) {
-            super(ER);
-            S = s;
-        }
-
-        /** apply a method with a given pair (C,D) */
-        @Override
-        void apply(TELFConcept addedC, TELFConcept addedD) {
-            // if ( !S.hasLabel ( addedC, addedD ) )
-            ER.addAction(new ELFAction(S, addedC, addedD));
-        }
-    }
-
-    // -------------------------------------------------------------
-    // Rules for R o S [= T case; CR11
-    // -------------------------------------------------------------
-    /** the rule for R in R o S [= T case */
-    class RChainLRule extends TELFRule {
-        /** role to check the chain */
-        TELFRole S;
-        /** role to add the pair */
-        TELFRole T;
-
-        /** init c'tor: remember S and T */
-        RChainLRule(ELFReasoner ER, TELFRole s, TELFRole t) {
-            super(ER);
-            S = s;
-            T = t;
-        }
-
-        /** apply a method with a given pair (C,D) */
-        @Override
-        void apply(TELFConcept addedC, TELFConcept addedD) {
-            // we have R(C,D); so for all E in range(S), if S(D,E) then add
-            // T(C,E)
-            for (Map.Entry<TELFConcept, Set<TELFConcept>> i : S.begin()) {
-                if (i.getValue().contains(addedD)) {
-                    TELFConcept E = i.getKey();
-                    // if ( !T.hasLabel ( addedC, E ) )
-                    ER.addAction(new ELFAction(T, addedC, E));
-                }
-            }
-        }
-    }
-
-    /** the rule for S in R o S [= T case */
-    class RChainRRule extends TELFRule {
-        /** role to check the chain */
-        TELFRole R;
-        /** role to add the pair */
-        TELFRole T;
-
-        /** init c'tor: remember R and T */
-        RChainRRule(ELFReasoner ER, TELFRole r, TELFRole t) {
-            super(ER);
-            R = r;
-            T = t;
-        }
-
-        /** apply a method with a given pair (C,D) */
-        @Override
-        void apply(TELFConcept addedC, TELFConcept addedD) {
-            // we have S(C,D); so for all E in domain(R), if R(E,C) then add
-            // T(E,D)
-            Set<TELFConcept> SupSet = R.getPredSet(addedC);
-            if (!SupSet.isEmpty()) {
-                for (TELFConcept p : SupSet) {
-                    // if ( !T.hasLabel ( *p, addedD ) )
-                    ER.addAction(new ELFAction(T, p, addedD));
-                }
-            }
         }
     }
 }

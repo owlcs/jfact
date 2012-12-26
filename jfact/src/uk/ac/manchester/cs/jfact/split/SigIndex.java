@@ -28,11 +28,13 @@ public class SigIndex {
 
     // access to statistics
     /** @return number of ever processed axioms */
+@PortedFrom(file="SigIndex.h",name="nProcessedAx")
     public int nProcessedAx() {
         return nRegistered;
     }
 
     /** add axiom AX to the non-local set with top-locality value TOP */
+@PortedFrom(file="SigIndex.h",name="checkNonLocal")
     private void checkNonLocal(Axiom ax, boolean top) {
         emptySig.setLocality(top);
         Checker.setSignatureValue(emptySig);
@@ -52,6 +54,7 @@ public class SigIndex {
 
     // work with axioms
     /** register an axiom */
+@PortedFrom(file="SigIndex.h",name="registerAx")
     private void registerAx(Axiom ax) {
         for (NamedEntity p : ax.getSignature().begin()) {
             Base.put(p, ax);
@@ -63,6 +66,7 @@ public class SigIndex {
     }
 
     /** unregister an axiom AX */
+@PortedFrom(file="SigIndex.h",name="unregisterAx")
     private void unregisterAx(Axiom ax) {
         for (NamedEntity p : ax.getSignature().begin()) {
             Base.get(p).remove(ax);
@@ -74,6 +78,7 @@ public class SigIndex {
     }
 
     /** process an axiom wrt its Used status */
+@PortedFrom(file="SigIndex.h",name="processAx")
     public void processAx(Axiom ax) {
         if (ax.isUsed()) {
             registerAx(ax);
@@ -83,6 +88,7 @@ public class SigIndex {
     }
 
     // / preprocess given set of axioms
+@PortedFrom(file="SigIndex.h",name="preprocessOntology")
     public void preprocessOntology(Collection<Axiom> axioms) {
         for (Axiom ax : axioms) {
             processAx(ax);
@@ -90,6 +96,7 @@ public class SigIndex {
     }
 
     // / clear internal structures
+@PortedFrom(file="SigIndex.h",name="clear")
     public void clear() {
         Base.clear();
         NonLocalFalse.clear();
@@ -99,12 +106,14 @@ public class SigIndex {
     // get the set by the index
     /** given an entity, return a set of all axioms that tontain this entity in */
     // a signature
+@PortedFrom(file="SigIndex.h",name="getAxioms")
     public Collection<Axiom> getAxioms(NamedEntity entity) {
         final Collection<Axiom> collection = Base.get(entity);
         return collection;
     }
 
     /** get the non-local axioms with top-locality value TOP */
+@PortedFrom(file="SigIndex.h",name="getNonLocal")
     public Set<Axiom> getNonLocal(boolean top) {
         return top ? NonLocalFalse : NonLocalTrue;
     }

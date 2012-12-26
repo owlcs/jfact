@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
+import conformance.Original;
+
 /* This file is part of the JFact DL reasoner
  Copyright 2011 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -7,7 +9,7 @@ package uk.ac.manchester.cs.jfact.datatypes;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** Represents an extended datatype - intersection, union or further
  * restrictions. All implementations must be immutable */
-
+@Original
 public interface DatatypeExpression<Representation extends Comparable<Representation>>
         extends Datatype<Representation> {
     /** @return the predefined datatype which is host for this expression */

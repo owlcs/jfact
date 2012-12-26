@@ -20,6 +20,7 @@ public abstract class AxiomSingleDRole extends AxiomImpl {
     }
 
     /** access to role */
+@PortedFrom(file="tDLAxiom.h",name="getRole")
     public DataRoleExpression getRole() {
         return role;
     }

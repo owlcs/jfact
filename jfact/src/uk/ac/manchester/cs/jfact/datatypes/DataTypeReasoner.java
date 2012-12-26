@@ -30,6 +30,7 @@ public final class DataTypeReasoner {
 
     /** set clash dep-set to DEP, report with given REASON; @return true to
      * simplify callers */
+@PortedFrom(file="DataReasoning.h",name="reportClash")
     void reportClash(DepSet dep, String reason) {
         options.getLog().printTemplate(Templates.CLASH, reason); // inform about
                                                                  // clash...
@@ -60,6 +61,7 @@ public final class DataTypeReasoner {
     /** get clash-set
      * 
      * @return clash set */
+@PortedFrom(file="DataReasoning.h",name="getClashSet")
     public DepSet getClashSet() {
         return clashDep.getReference();
     }
@@ -69,6 +71,7 @@ public final class DataTypeReasoner {
      * @param entry
      * @param dep
      * @return false if datatype, true otherwise */
+@PortedFrom(file="DataReasoning.h",name="addDataEntry")
     public boolean addDataEntry(boolean positive, DagTag type, NamedEntry entry,
             DepSet dep) {
         switch (type) {
@@ -110,6 +113,7 @@ public final class DataTypeReasoner {
         return this.getType(c).addInterval(positive, c, dep);
     }
 
+@PortedFrom(file="DataReasoning.h",name="dataValue")
     private <R extends Comparable<R>> boolean dataValue(boolean positive, Literal<R> c1,
             DepSet dep) {
         Datatype<R> d = c1.getDatatypeExpression();
@@ -139,6 +143,7 @@ public final class DataTypeReasoner {
     // - check if some value is present together with the other class
     // - check if two values of different classes are present at the same time
     /** @return true if clash */
+@PortedFrom(file="DataReasoning.h",name="checkClash")
     public boolean checkClash() {
         List<DataTypeSituation<?>> types = new ArrayList<DataTypeSituation<?>>(
                 map.values());

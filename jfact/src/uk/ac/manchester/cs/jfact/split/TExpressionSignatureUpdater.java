@@ -14,11 +14,13 @@ class TExpressionSignatureUpdater implements DLExpressionVisitor {
     TSignature sig;
 
     /** helper for concept arguments */
+@PortedFrom(file="tSignatureUpdater.h",name="vC")
     void vC(ConceptArg expr) {
         expr.getConcept().accept(this);
     }
 
     /** helper for individual arguments */
+@PortedFrom(file="tSignatureUpdater.h",name="vI")
     void vI(IndividualExpression expr) {
         // should no longer be needed: IndividualNames are NamedEntities
         // themselves
@@ -28,21 +30,25 @@ class TExpressionSignatureUpdater implements DLExpressionVisitor {
     }
 
     /** helper for object role arguments */
+@PortedFrom(file="tSignatureUpdater.h",name="vOR")
     void vOR(ObjectRoleArg expr) {
         expr.getOR().accept(this);
     }
 
     /** helper for object role arguments */
+@PortedFrom(file="tSignatureUpdater.h",name="vDR")
     void vDR(DataRoleArg expr) {
         expr.getDataRoleExpression().accept(this);
     }
 
     /** helper for the named entity */
+@PortedFrom(file="tSignatureUpdater.h",name="vE")
     void vE(NamedEntity e) {
         sig.add(e);
     }
 
     /** array helper */
+@PortedFrom(file="tSignatureUpdater.h",name="processArray")
     void processArray(NAryExpression<? extends Expression> expr) {
         for (Expression p : expr.getArguments()) {
             p.accept(this);

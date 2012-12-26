@@ -47,12 +47,14 @@ public class DLDag {
     private JFactReasonerConfiguration options;
 
     /** replace existing vertex at index I with a vertex V */
+@PortedFrom(file="dlDag.h",name="replaceVertex")
     public void replaceVertex(int i, DLVertex v, NamedEntry C) {
         heap.set(i > 0 ? i : -i, v);
         v.setConcept(C);
     }
 
     /** @return index of a vertex containing a concept */
+@PortedFrom(file="dlDag.h",name="index")
     public int index(NamedEntry c) {
         for (int i = 0; i < heap.size(); i++) {
             NamedEntry concept = heap.get(i).getConcept();
@@ -64,6 +66,7 @@ public class DLDag {
     }
 
     /** check if given string is correct sort ordering representation */
+@PortedFrom(file="dlDag.h",name="isCorrectOption")
     private boolean isCorrectOption(String str) {
         if (str == null) {
             return false;
@@ -87,6 +90,7 @@ public class DLDag {
     }
 
     /** clear all DFS info from elements of DAG */
+@PortedFrom(file="dlDag.h",name="clearDFS")
     private void clearDFS() {
         for (DLVertex d : heap) {
             d.clearDFS();
@@ -94,6 +98,7 @@ public class DLDag {
     }
 
     /** update index corresponding to DLVertex's tag */
+@PortedFrom(file="dlDag.h",name="updateIndex")
     public void updateIndex(DagTag tag, int value) {
         if (!indexes.containsKey(tag)) {
             return;
@@ -105,6 +110,7 @@ public class DLDag {
     }
 
     /** add vertex to the end of DAG and calculate it's statistic if necessary */
+@PortedFrom(file="dlDag.h",name="directAdd")
     public int directAdd(DLVertex v) {
         int index = index(v.getConcept());
         if (index != bpINVALID) {
@@ -117,6 +123,7 @@ public class DLDag {
 
     /** add vertex to the end of DAG and calculate it's statistic if necessary;
      * put it into cache */
+@PortedFrom(file="dlDag.h",name="directAddAndCache")
     public int directAddAndCache(DLVertex v) {
         int ret = directAdd(v);
         if (useDLVCache) {
@@ -126,54 +133,64 @@ public class DLDag {
     }
 
     /** check if given index points to the last DAG entry */
+@PortedFrom(file="dlDag.h",name="isLast")
     public boolean isLast(int p) {
         return p == heap.size() - 1 || -p == heap.size() - 1;
     }
 
     // access methods
     /** whether to use cache for nodes */
+@PortedFrom(file="dlDag.h",name="setExpressionCache")
     public void setExpressionCache(boolean val) {
         useDLVCache = val;
     }
 
     /** access by index */
+@PortedFrom(file="dlDag.h",name="get")
     public DLVertex get(int i) {
         assert isValid(i);
         return heap.get(i < 0 ? -i : i);
     }
 
     /** get size of DAG */
+@PortedFrom(file="dlDag.h",name="size")
     public int size() {
         return heap.size();
     }
 
     /** get approximation of the size after query is added */
+@PortedFrom(file="dlDag.h",name="maxSize")
     public int maxSize() {
         return size() + (size() < 220 ? 10 : size() / 20);
     }
 
     /** use SUB options to OR ordering */
+@PortedFrom(file="dlDag.h",name="setSubOrder")
     public void setSubOrder() {
         setOrderOptions(options.getORSortSub());
     }
 
     /** use SAT options to OR ordering; */
+@PortedFrom(file="dlDag.h",name="setSatOrder")
     public void setSatOrder() {
         setOrderOptions(options.getORSortSat());
     }
 
     /** get cache for given BiPointer (may return null if no cache defined) */
+@PortedFrom(file="dlDag.h",name="getCache")
     public ModelCacheInterface getCache(int p) {
         return get(p).getCache(p > 0);
     }
 
     /** set cache for given BiPointer; @return given cache */
+@PortedFrom(file="dlDag.h",name="setCache")
     public void setCache(int p, ModelCacheInterface cache) {
         get(p).setCache(p > 0, cache);
     }
 
     // sort interface
     /** merge two given DAG entries */
+@PortedFrom(file="dlDag.h",name="merge")
     public void merge(MergableLabel ml, int p) {
         if (p != bpINVALID && p != bpTOP && p != bpBOTTOM) {
             get(p).merge(ml);
@@ -181,6 +198,7 @@ public class DLDag {
     }
 
     /** check if two BPs are of the same sort */
+@PortedFrom(file="dlDag.h",name="haveSameSort")
     public boolean haveSameSort(int p, int q) {
         if (options.isRKG_USE_SORTED_REASONING()) {
             assert p > 0 && q > 0; // sanity check
@@ -222,6 +240,7 @@ public class DLDag {
     }
 
     // save/load interface; implementation is in SaveLoad.cpp
+@PortedFrom(file="dlDag.h",name="add")
     public int add(DLVertex v) {
         int ret = useDLVCache ? indexes.get(v.getType()).locate(v) : bpINVALID;
         if (!isValid(ret)) {
@@ -256,11 +275,13 @@ public class DLDag {
     }
 
     /** set the DAG size */
+@PortedFrom(file="dlDag.h",name="setFinalSize")
     public void setFinalSize() {
         finalDagSize = size();
         setExpressionCache(false);
     }
 
+@PortedFrom(file="dlDag.h",name="removeQuery")
     public void removeQuery() {
         for (int i = size() - 1; i >= finalDagSize; --i) {
             DLVertex v = heap.get(i);
@@ -283,6 +304,7 @@ public class DLDag {
         Helper.resize(heap, finalDagSize);
     }
 
+@PortedFrom(file="dlDag.h",name="setOrderDefaults")
     public void setOrderDefaults(String defSat, String defSub) {
         assert isCorrectOption(defSat) && isCorrectOption(defSub);
         options.getLog().print("orSortSat: initial=", options.getORSortSat(),
@@ -299,6 +321,7 @@ public class DLDag {
         options.getLog().print(", used=", options.getORSortSub(), "\n");
     }
 
+@PortedFrom(file="dlDag.h",name="setOrderOptions")
     public void setOrderOptions(String opt) {
         if (opt.charAt(0) == '0') {
             return;
@@ -309,6 +332,7 @@ public class DLDag {
         recompute();
     }
 
+@PortedFrom(file="dlDag.h",name="computeVertexStat")
     private void computeVertexStat(DLVertex v, boolean pos, int depth) {
         // in case of cycle: mark concept as such
         if (v.isVisited(pos)) {
@@ -364,6 +388,7 @@ public class DLDag {
         updateVertexStat(v, pos);
     }
 
+@PortedFrom(file="dlDag.h",name="updateVertexStat")
     private void updateVertexStat(DLVertex v, boolean pos) {
         int d = 0, s = 1, b = 0, g = 0;
         if (!v.getType().omitStat(pos)) {
@@ -409,6 +434,7 @@ public class DLDag {
     }
 
     /** gather vertex freq statistics */
+@PortedFrom(file="dlDag.h",name="computeVertexFreq")
     private void computeVertexFreq(int p) {
         DLVertex v = get(p);
         boolean pos = p > 0;
@@ -431,6 +457,7 @@ public class DLDag {
     }
 
     /** helper for the recursion */
+@PortedFrom(file="dlDag.h",name="updateVertexStat")
     private void updateVertexStat(DLVertex v, int p, boolean pos) {
         DLVertex w = get(p);
         boolean same = pos == p > 0;
@@ -442,10 +469,12 @@ public class DLDag {
     }
 
     /** helper for the recursion */
+@PortedFrom(file="dlDag.h",name="computeVertexFreq")
     private void computeVertexFreq(int p, boolean pos) {
         computeVertexFreq(createBiPointer(p, pos));
     }
 
+@PortedFrom(file="dlDag.h",name="gatherStatistic")
     public void gatherStatistic() {
         // gather main statistics for disjunctions
         for (int i = 0; i < listAnds.size(); i++) {
@@ -469,6 +498,7 @@ public class DLDag {
         }
     }
 
+@PortedFrom(file="dlDag.h",name="less")
     public boolean less(int p1, int p2) {
         if (preferNonGen) {
             if (p1 < 0 && p2 > 0) {
@@ -504,6 +534,7 @@ public class DLDag {
     }
 
     /** build the sort system for given TBox */
+@PortedFrom(file="dlDag.h",name="determineSorts")
     public void determineSorts(RoleMaster ORM, RoleMaster DRM) {
         sortArraySize = heap.size();
         // init roles R&D sorts
@@ -556,6 +587,7 @@ public class DLDag {
     }
 
     /** merge sorts for a given role */
+@PortedFrom(file="dlDag.h",name="mergeSorts")
     private void mergeSorts(Role R) {
         // associate role domain labels
         R.mergeSupersDomain();
@@ -567,6 +599,7 @@ public class DLDag {
     }
 
     /** merge sorts for a given vertex */
+@PortedFrom(file="dlDag.h",name="mergeSorts")
     private void mergeSorts(DLVertex v) {
         switch (v.getType()) {
             case dtLE: // set R&D for role
@@ -611,6 +644,7 @@ public class DLDag {
     }
 
     /** update sorts for <a,b>:R construction */
+@PortedFrom(file="dlDag.h",name="updateSorts")
     public void updateSorts(int a, Role R, int b) {
         merge(R.getDomainLabel(), a);
         merge(R.getRangeLabel(), b);

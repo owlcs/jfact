@@ -91,6 +91,7 @@ public class Concept extends ClassifiableEntry {
 
     /** adds concept as a told subsumer of current one; @return value for CDC
      * analisys */
+@PortedFrom(file="tConcept.h",name="addToldSubsumer")
     private boolean addToldSubsumer(Concept p) {
         if (p != this) {
             addParentIfNew(p);
@@ -113,12 +114,14 @@ public class Concept extends ClassifiableEntry {
     }
 
     /** add index of a simple rule in TBox to the ER set */
+@PortedFrom(file="tConcept.h",name="addExtraRule")
     public void addExtraRule(int p) {
         extraRules.add(p);
         setCompletelyDefined(false);
     }
 
     /** check if a concept is in a disjoint relation with anything */
+@PortedFrom(file="tConcept.h",name="hasExtraRules")
     public boolean hasExtraRules() {
         return !extraRules.isEmpty();
     }
@@ -133,6 +136,7 @@ public class Concept extends ClassifiableEntry {
     }
 
     /** get value of a tag; determine it if unset */
+@PortedFrom(file="tConcept.h",name="getClassTag")
     public CTTag getClassTag() {
         if (classTag == CTTag.cttUnspecified) {
             classTag = determineClassTag();
@@ -141,18 +145,21 @@ public class Concept extends ClassifiableEntry {
     }
 
     /** remove concept from its own definition (like in case C [= (or C ...) */
+@PortedFrom(file="tConcept.h",name="removeSelfFromDescription")
     public void removeSelfFromDescription() {
         description = replaceWithConstOld(description);
         this.initToldSubsumers();
     }
 
     /** remove concept description (to save space) */
+@PortedFrom(file="tConcept.h",name="removeDescription")
     public void removeDescription() {
         description = null;
     }
 
     /** check whether it is possible to init this as a non-primitive concept with
      * DESC */
+@PortedFrom(file="tConcept.h",name="canInitNonPrim")
     public boolean canInitNonPrim(DLTree desc) {
         if (description == null) {
             return true;
@@ -165,6 +172,7 @@ public class Concept extends ClassifiableEntry {
 
     /** switch primitive concept to non-primitive with new definition; @return
      * old definition */
+@PortedFrom(file="tConcept.h",name="makeNonPrimitive")
     public DLTree makeNonPrimitive(DLTree desc) {
         DLTree ret = description;
         removeDescription();
@@ -179,6 +187,7 @@ public class Concept extends ClassifiableEntry {
     }
 
     /** init told subsumers of the concept by it's description */
+@PortedFrom(file="tConcept.h",name="initToldSubsumers")
     public void initToldSubsumers() {
         toldSubsumers.clear();
         setHasSP(false);
@@ -196,12 +205,14 @@ public class Concept extends ClassifiableEntry {
     }
 
     /** init TOP told subsumer if necessary */
+@PortedFrom(file="tConcept.h",name="setToldTop")
     public void setToldTop(Concept top) {
         if (description == null && !hasToldSubsumers()) {
             addParent(top);
         }
     }
 
+@PortedFrom(file="tConcept.h",name="resolveId")
     public int resolveId() {
         if (pName == bpINVALID) {
             return pBody;
@@ -215,6 +226,7 @@ public class Concept extends ClassifiableEntry {
         return pName; // return concept's name
     }
 
+@PortedFrom(file="tConcept.h",name="addDesc")
     public void addDesc(DLTree Desc) {
         if (Desc == null) {
             return;
@@ -259,6 +271,7 @@ public class Concept extends ClassifiableEntry {
         }
     }
 
+@PortedFrom(file="tConcept.h",name="determineClassTag")
     private CTTag determineClassTag() {
         if (isSynonym()) {
             return resolveSynonym(this).getClassTag();
@@ -345,6 +358,7 @@ public class Concept extends ClassifiableEntry {
 
     /** init told subsumers of the concept by given DESCription; @return TRUE iff
      * concept is CD */
+@PortedFrom(file="tConcept.h",name="initToldSubsumers")
     public boolean initToldSubsumers(DLTree _desc, Set<Role> RolesProcessed) {
         if (_desc == null || _desc.isTOP()) {
             return true;
@@ -401,6 +415,7 @@ public class Concept extends ClassifiableEntry {
         }
     }
 
+@PortedFrom(file="tConcept.h",name="calculateTSDepth")
     public int calculateTSDepth() {
         if (tsDepth > 0) {
             return tsDepth;
@@ -418,6 +433,7 @@ public class Concept extends ClassifiableEntry {
         return tsDepth = max + 1;
     }
 
+@PortedFrom(file="tConcept.h",name="clear")
     void clear() {
         // TNamedEntry clean
         setId(0);
@@ -515,16 +531,19 @@ public class Concept extends ClassifiableEntry {
 
     // relevance part
     /** is given concept relevant to given Labeller's state */
+@PortedFrom(file="tConcept.h",name="isRelevant")
     public boolean isRelevant(long lab) {
         return lab == rel;
     }
 
     /** make given concept relevant to given Labeller's state */
+@PortedFrom(file="tConcept.h",name="setRelevant")
     public void setRelevant(long lab) {
         rel = lab;
     }
 
     /** make given concept irrelevant to given Labeller's state */
+@PortedFrom(file="tConcept.h",name="dropRelevant")
     public void dropRelevant(long lab) {
         rel = 0;
     }

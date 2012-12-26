@@ -11,13 +11,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
-
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.FastSetSimple;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.SaveStack;
-import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "ToDoList.h", name = "ToDoList")
@@ -72,6 +69,7 @@ public class ToDoList {
         }
 
         /** clear queue */
+@PortedFrom(file="ToDoList.h",name="clear")
         public void clear() {
             sPointer = 0;
             Wait.clear();
@@ -88,17 +86,20 @@ public class ToDoList {
         }
 
         /** save queue content to the given entry */
+@PortedFrom(file="ToDoList.h",name="save")
         public void save(int[][] tss, int pos) {
             tss[pos][0] = sPointer;
             tss[pos][1] = Wait.size();
         }
 
         /** restore queue content from the given entry */
+@PortedFrom(file="ToDoList.h",name="restore")
         public void restore(int[][] tss, int pos) {
             sPointer = tss[pos][0];
             Helper.resize(Wait, tss[pos][1]);
         }
 
+@PortedFrom(file="ToDoList.h",name="restore")
         public void restore(int sp, int ep) {
             sPointer = sp;
             Helper.resize(Wait, ep);
@@ -173,6 +174,7 @@ public class ToDoList {
         }
 
         /** clear queue */
+@PortedFrom(file="ToDoList.h",name="clear")
         void clear() {
             sPointer = 0;
             queueBroken = false;
@@ -191,6 +193,7 @@ public class ToDoList {
         }
 
         /** save queue content to the given entry */
+@PortedFrom(file="ToDoList.h",name="save")
         void save(QueueQueueSaveState tss) {
             tss.queueBroken = queueBroken;
             tss.sp = sPointer;
@@ -204,6 +207,7 @@ public class ToDoList {
         }
 
         /** restore queue content from the given entry */
+@PortedFrom(file="ToDoList.h",name="restore")
         void restore(QueueQueueSaveState tss) {
             queueBroken = tss.queueBroken;
             sPointer = tss.sp;
@@ -320,6 +324,7 @@ public class ToDoList {
     private int noe;
 
     /** save current Todo table content to given saveState entry */
+@PortedFrom(file="ToDoList.h",name="saveState")
     public void saveState(TODOListSaveState tss) {
         tss.backupID_sp = queueID.sPointer;
         tss.backupID_ep = queueID.Wait.size();
@@ -331,6 +336,7 @@ public class ToDoList {
     }
 
     /** restore Todo table content from given saveState entry */
+@PortedFrom(file="ToDoList.h",name="restoreState")
     public void restoreState(TODOListSaveState tss) {
         queueID.restore(tss.backupID_sp, tss.backupID_ep);
         queueNN.restore(tss.backupNN);
@@ -354,6 +360,7 @@ public class ToDoList {
     }
 
     /** clear Todo table */
+@PortedFrom(file="ToDoList.h",name="clear")
     public void clear() {
         queueID.clear();
         queueNN.clear();
@@ -371,6 +378,7 @@ public class ToDoList {
 
     // work with entries
     /** add entry with given NODE and CONCEPT with given OFFSET to the Todo table */
+@PortedFrom(file="ToDoList.h",name="addEntry")
     public void addEntry(DlCompletionTree node, DagTag type, ConceptWDep C) {
         int index = matrix.getIndex(type, C.getConcept() > 0, node.isNominalNode());
         switch (index) {
@@ -390,6 +398,7 @@ public class ToDoList {
     }
 
     /** save current state using internal stack */
+@PortedFrom(file="ToDoList.h",name="save")
     public void save() {
         TODOListSaveState state = getInstance();
         saveState(state);
@@ -397,10 +406,12 @@ public class ToDoList {
     }
 
     /** restore state to the given level using internal stack */
+@PortedFrom(file="ToDoList.h",name="restore")
     public void restore(int level) {
         restoreState(saveStack.pop(level));
     }
 
+@PortedFrom(file="ToDoList.h",name="getNextEntry")
     public ToDoEntry getNextEntry() {
         assert !isEmpty(); // safety check
         // decrease amount of elements-to-process
@@ -440,77 +451,3 @@ public class ToDoList {
     }
 }
 
-@PortedFrom(file = "PriorityMatrix.h", name = "ToDoPriorMatrix")
-class ToDoPriorMatrix {
-    // regular operation indexes
-    private int indexAnd;
-    private int indexOr;
-    private int indexExists;
-    private int indexForall;
-    private int indexLE;
-    private int indexGE;
-
-    public ToDoPriorMatrix() {}
-
-    /** number of regular options (o- and NN-rules are not included) */
-    protected static final int nRegularOptions = 7;
-    /** priority index for o- and ID operations (note that these ops have the
-     * highest priority) */
-    protected static final int priorityIndexID = nRegularOptions + 1;
-    /** priority index for <= operation in nominal node */
-    protected static final int priorityIndexNominalNode = nRegularOptions + 2;
-
-    /** Auxiliary class to get priorities on operations */
-    public void initPriorities(String options, String optionName) {
-        // check for correctness
-        if (options.length() < 7) {
-            throw new ReasonerInternalException(
-                    "ToDo List option string should have length 7");
-        }
-        // init values by symbols loaded
-        indexAnd = options.charAt(1) - '0';
-        indexOr = options.charAt(2) - '0';
-        indexExists = options.charAt(3) - '0';
-        indexForall = options.charAt(4) - '0';
-        indexLE = options.charAt(5) - '0';
-        indexGE = options.charAt(6) - '0';
-        // correctness checking
-        if (indexAnd >= nRegularOptions || indexOr >= nRegularOptions
-                || indexExists >= nRegularOptions || indexForall >= nRegularOptions
-                || indexGE >= nRegularOptions || indexLE >= nRegularOptions) {
-            throw new ReasonerInternalException("ToDo List option out of range");
-        }
-    }
-
-    public int getIndex(DagTag Op, boolean Sign, boolean NominalNode) {
-        switch (Op) {
-            case dtAnd:
-                return Sign ? indexAnd : indexOr;
-            case dtSplitConcept:
-                return indexAnd;
-            case dtForall:
-            case dtIrr: // process local (ir-)reflexivity as a FORALL
-                return Sign ? indexForall : indexExists;
-            case dtProj: // it should be the lowest priority but now just OR's
-                         // one
-            case dtChoose:
-                return indexOr;
-            case dtLE:
-                return Sign ? NominalNode ? priorityIndexNominalNode : indexLE : indexGE;
-            case dtDataType:
-            case dtDataValue:
-            case dtDataExpr:
-            case dtNN:
-            case dtTop: // no need to process these ops
-                return nRegularOptions;
-            case dtPSingleton:
-            case dtPConcept: // no need to process neg of PC
-                return Sign ? priorityIndexID : nRegularOptions;
-            case dtNSingleton:
-            case dtNConcept: // both NC and neg NC are processed
-                return priorityIndexID;
-            default: // safety check
-                throw new UnreachableSituationException();
-        }
-    }
-}

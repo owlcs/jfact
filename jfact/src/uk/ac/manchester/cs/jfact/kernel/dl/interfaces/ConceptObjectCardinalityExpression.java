@@ -13,5 +13,6 @@ public interface ConceptObjectCardinalityExpression extends ConceptObjectRCExpre
         NumberArg {
     @Override
     /** accept method for the visitor pattern */
+@PortedFrom(file="tDLExpression.h",name="accept")
     void accept(DLExpressionVisitor visitor);
 }

@@ -26,11 +26,13 @@ public class ConceptDataValue implements ConceptDataRoleExpression,
     }
 
     @Override
+@PortedFrom(file="tDLExpression.h",name="accept")
     public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
     @Override
+@PortedFrom(file="tDLExpression.h",name="accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
@@ -42,6 +44,7 @@ public class ConceptDataValue implements ConceptDataRoleExpression,
 
     /** get access to the argument */
     @Override
+@PortedFrom(file="tDLExpression.h",name="getExpr")
     public Literal<?> getExpr() {
         return dataValue;
     }

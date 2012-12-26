@@ -12,6 +12,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tSaveList.h", name = "TSaveList")
 public class SaveList extends LinkedList<DLCompletionTreeSaveState> {
     @Override
+@PortedFrom(file="tSaveList.h",name="pop")
     public DLCompletionTreeSaveState pop() {
         if (!isEmpty()) {
             return super.pop();
@@ -20,6 +21,7 @@ public class SaveList extends LinkedList<DLCompletionTreeSaveState> {
     }
 
     /** get element from stack with given level */
+@PortedFrom(file="tSaveList.h",name="pop")
     public DLCompletionTreeSaveState pop(int level) {
         DLCompletionTreeSaveState p = isEmpty() ? null : peek();
         while (p != null && p.level() > level) {

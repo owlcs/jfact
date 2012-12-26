@@ -18,23 +18,27 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
     boolean isBotEq = false;
 
     /** check whether the expression is top-equivalent */
+@PortedFrom(file="SyntacticLocalityChecker.h",name="isTopEquivalent")
     boolean isTopEquivalent(Expression expr) {
         return TopEval.isTopEquivalent(expr);
     }
 
     /** @return true iff role expression in equivalent to const wrt locality */
+@PortedFrom(file="SyntacticLocalityChecker.h",name="isREquivalent")
     boolean isREquivalent(Expression expr) {
         return sig.topRLocal() ? isTopEquivalent(expr) : isBotEquivalent(expr);
     }
 
     // set fields
     /** set the corresponding top evaluator */
+@PortedFrom(file="SyntacticLocalityChecker.h",name="setTopEval")
     void setTopEval(TopEquivalenceEvaluator eval) {
         TopEval = eval;
     }
 
     /** @return true iff an EXPRession is equivalent to bottom wrt defined */
     // policy
+@PortedFrom(file="SyntacticLocalityChecker.h",name="isBotEquivalent")
     boolean isBotEquivalent(Expression expr) {
         expr.accept(this);
         return isBotEq;

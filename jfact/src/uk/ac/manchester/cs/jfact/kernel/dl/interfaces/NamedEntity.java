@@ -11,10 +11,13 @@ import conformance.PortedFrom;
 @PortedFrom(file="tDLExpression.h",name="TNamedEntity")
 public interface NamedEntity {
     /** get access to the name */
+@PortedFrom(file="tDLExpression.h",name="getName")
     String getName();
 
     // NamedEntity getEntity();
+@PortedFrom(file="tDLExpression.h",name="getEntry")
     NamedEntry getEntry();
 
+@PortedFrom(file="tDLExpression.h",name="setEntry")
     void setEntry(NamedEntry e);
 }

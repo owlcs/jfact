@@ -43,6 +43,7 @@ public class ModelCacheIan extends ModelCacheInterface {
     private boolean simpleRules;
 
     /** process CT label in given interval; set Deterministic accordingly */
+@PortedFrom(file="modelCacheIan.h",name="processLabelInterval")
     private void processLabelInterval(DLDag DLHeap, List<ConceptWDep> start) {
         for (int i = 0; i < start.size(); i++) {
             ConceptWDep p = start.get(i);
@@ -52,6 +53,7 @@ public class ModelCacheIan extends ModelCacheInterface {
     }
 
     /** fills cache sets by tree.Label; set Deterministic accordingly */
+@PortedFrom(file="modelCacheIan.h",name="initCacheByLabel")
     private void initCacheByLabel(DLDag DLHeap, DlCompletionTree pCT) {
         processLabelInterval(DLHeap, pCT.beginl_sc());
         processLabelInterval(DLHeap, pCT.beginl_cc());
@@ -75,26 +77,31 @@ public class ModelCacheIan extends ModelCacheInterface {
     }
 
     @Override
+@PortedFrom(file="modelCacheIan.h",name="getState")
     public ModelCacheState getState() {
         return curState;
     }
 
+@PortedFrom(file="modelCacheIan.h",name="getDConcepts")
     private BitSet getDConcepts(boolean pos) {
         return pos ? posDConcepts : negDConcepts;
     }
 
     /** get RW access to N-concepts wrt polarity */
+@PortedFrom(file="modelCacheIan.h",name="getNConcepts")
     private BitSet getNConcepts(boolean pos) {
         return pos ? posNConcepts : negNConcepts;
     }
 
     /** get RW access to extra concepts wrt deterministic flag */
+@PortedFrom(file="modelCacheIan.h",name="getExtra")
     private FastSet getExtra(boolean det) {
         return det ? extraDConcepts : extraNConcepts;
     }
 
     /** init existRoles from arcs; can be used to create pseudo-cache with deps
      * of CT edges */
+@PortedFrom(file="modelCacheIan.h",name="initRolesFromArcs")
     public void initRolesFromArcs(DlCompletionTree pCT) {
         List<DlCompletionTreeArc> list = pCT.getNeighbour();
         for (int i = 0; i < list.size(); i++) {
@@ -107,17 +114,20 @@ public class ModelCacheIan extends ModelCacheInterface {
 
     /** Get the tag identifying the cache type */
     @Override
+@PortedFrom(file="modelCacheIan.h",name="getCacheType")
     public ModelCacheType getCacheType() {
         return mctIan;
     }
 
     /** get type of cache (deep or shallow) */
     @Override
+@PortedFrom(file="modelCacheIan.h",name="shallowCache")
     public boolean shallowCache() {
         return existsRoles.isEmpty();
     }
 
     /** clear the cache */
+@PortedFrom(file="modelCacheIan.h",name="clear")
     public void clear() {
         posDConcepts.clear();
         posNConcepts.clear();
@@ -133,6 +143,7 @@ public class ModelCacheIan extends ModelCacheInterface {
         curState = csValid;
     }
 
+@PortedFrom(file="modelCacheIan.h",name="processConcept")
     public void processConcept(DLVertex cur, boolean pos, boolean det) {
         switch (cur.getType()) {
             case dtTop:
@@ -169,6 +180,7 @@ public class ModelCacheIan extends ModelCacheInterface {
         }
     }
 
+@PortedFrom(file="modelCacheIan.h",name="processAutomaton")
     public void processAutomaton(DLVertex cur) {
         RAStateTransitions RST = cur.getRole().getAutomaton().getBase()
                 .get(cur.getState());
@@ -183,6 +195,7 @@ public class ModelCacheIan extends ModelCacheInterface {
     }
 
     /** adds role to exists- and func-role if necessary */
+@PortedFrom(file="modelCacheIan.h",name="addRoleToCache")
     private void addRoleToCache(Role R) {
         existsRoles.add(R.getIndex());
         if (R.isTopFunc()) {
@@ -191,6 +204,7 @@ public class ModelCacheIan extends ModelCacheInterface {
     }
 
     /** adds role (and all its super-roles) to exists- and funcRoles */
+@PortedFrom(file="modelCacheIan.h",name="addExistsRole")
     private void addExistsRole(Role R) {
         addRoleToCache(R);
         List<Role> list = R.getAncestor();
@@ -201,6 +215,7 @@ public class ModelCacheIan extends ModelCacheInterface {
     }
 
     @Override
+@PortedFrom(file="modelCacheIan.h",name="canMerge")
     public ModelCacheState canMerge(ModelCacheInterface p) {
         if (hasNominalClash(p)) {
             return csFailed;
@@ -222,6 +237,7 @@ public class ModelCacheIan extends ModelCacheInterface {
         }
     }
 
+@PortedFrom(file="modelCacheIan.h",name="isMergableSingleton")
     public ModelCacheState isMergableSingleton(int Singleton, boolean pos) {
         assert Singleton != 0;
         // deterministic clash
@@ -233,6 +249,7 @@ public class ModelCacheIan extends ModelCacheInterface {
         return csValid;
     }
 
+@PortedFrom(file="modelCacheIan.h",name="isMergableIan")
     public ModelCacheState isMergableIan(ModelCacheIan q) {
         if (posDConcepts.intersects(q.negDConcepts)
                 || q.posDConcepts.intersects(negDConcepts)
@@ -269,6 +286,7 @@ public class ModelCacheIan extends ModelCacheInterface {
         }
     }
 
+@PortedFrom(file="modelCacheIan.h",name="merge")
     public ModelCacheState merge(ModelCacheInterface p) {
         assert p != null;
         // check for nominal clash
@@ -295,6 +313,7 @@ public class ModelCacheIan extends ModelCacheInterface {
     }
 
     /** actual merge with a singleton cache */
+@PortedFrom(file="modelCacheIan.h",name="mergeSingleton")
     private void mergeSingleton(int Singleton, boolean pos) {
         ModelCacheState newState = isMergableSingleton(Singleton, pos);
         if (newState != csValid) {
@@ -305,6 +324,7 @@ public class ModelCacheIan extends ModelCacheInterface {
     }
 
     /** actual merge with an Ian's cache */
+@PortedFrom(file="modelCacheIan.h",name="mergeIan")
     private void mergeIan(ModelCacheIan p) {
         // setup curState
         curState = isMergableIan(p);
@@ -323,6 +343,7 @@ public class ModelCacheIan extends ModelCacheInterface {
     }
 
     @Override
+@PortedFrom(file="modelCacheIan.h",name="logCacheEntry")
     public void logCacheEntry(int level, LogAdapter l) {
         l.print("\nIan cache: posDConcepts = {", posDConcepts, "}, posNConcepts = {",
                 posNConcepts, "}, negDConcepts = {", negDConcepts, "}, negNConcepts = {",

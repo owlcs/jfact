@@ -9,7 +9,6 @@ import static uk.ac.manchester.cs.jfact.helpers.DLTree.*;
 import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
 import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 
-import java.io.Serializable;
 import java.util.*;
 
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
@@ -99,18 +98,21 @@ public class Role extends ClassifiableEntry {
     private boolean specialDomain;
 
     /** add automaton of a sub-role to a given one */
+@PortedFrom(file="tRole.h",name="addSubRoleAutomaton")
     private void addSubRoleAutomaton(Role R) {
         if (!equals(R)) {
             automaton.addRA(R.getAutomaton());
         }
     }
 
+@PortedFrom(file="tRole.h",name="addTrivialTransition")
     private void addTrivialTransition(Role r) {
         automaton.addTransitionSafe(RoleAutomaton.initial, new RATransition(
                 RoleAutomaton.final_state, r));
     }
 
     /** get an automaton by a (possibly synonymical) role */
+@PortedFrom(file="tRole.h",name="completeAutomatonByRole")
     private RoleAutomaton completeAutomatonByRole(Role R, Set<Role> RInProcess) {
         assert !R.isSynonym(); // no synonyms here
         assert R != this; // no case ...*S*... [= S
@@ -118,6 +120,7 @@ public class Role extends ClassifiableEntry {
         return R.automaton;
     }
 
+@PortedFrom(file="tRole.h",name="mergeSupersDomain")
     void mergeSupersDomain() {
         for (int i = 0; i < ancestorRoles.size(); i++) {
             domLabel.merge(ancestorRoles.get(i).domLabel);
@@ -137,38 +140,45 @@ public class Role extends ClassifiableEntry {
     }
 
     /** get inverse of given role (non- version) */
+@PortedFrom(file="tRole.h",name="inverse")
     public Role inverse() {
         assert inverse != null;
         return resolveSynonym(inverse);
     }
 
     /** get real inverse of a role (RO) */
+@PortedFrom(file="tRole.h",name="realInverse")
     public Role realInverse() {
         assert inverse != null;
         return inverse;
     }
 
     /** set inverse to given role */
+@PortedFrom(file="tRole.h",name="setInverse")
     public void setInverse(Role p) {
         assert inverse == null;
         inverse = p;
     }
 
     /** a Simple flag (not simple if role or any of its sub-roles is transitive) */
+@PortedFrom(file="tRole.h",name="isSimple")
     public boolean isSimple() {
         return automaton.isSimple();
     }
 
+@PortedFrom(file="tRole.h",name="getTSpecialDomain")
     public DLTree getTSpecialDomain() {
         return pSpecialDomain;
     }
 
     /** @return true iff role has a special domain */
+@PortedFrom(file="tRole.h",name="hasSpecialDomain")
     public boolean hasSpecialDomain() {
         return specialDomain;
     }
 
     /** init special domain; call this only after *ALL* the domains are known */
+@PortedFrom(file="tRole.h",name="initSpecialDomain")
     public void initSpecialDomain() {
         if (!hasSpecialDomain() || getTRange() == null) {
             pSpecialDomain = DLTreeFactory.createTop();
@@ -181,6 +191,7 @@ public class Role extends ClassifiableEntry {
     }
 
     /** set the special domain value */
+@PortedFrom(file="tRole.h",name="setSpecialDomain")
     public void setSpecialDomain(int bp) {
         bpSpecialDomain = bp;
     }
@@ -205,21 +216,25 @@ public class Role extends ClassifiableEntry {
     }
 
     /** test if role is functional (ie, have some functional ancestors) */
+@PortedFrom(file="tRole.h",name="isFunctional")
     public boolean isFunctional() {
         return functionality.getValue();
     }
 
     /** check whether the functionality of a role is known */
+@PortedFrom(file="tRole.h",name="isFunctionalityKnown")
     public boolean isFunctionalityKnown() {
         return functionality.isKnown();
     }
 
     /** set role functionality value */
+@PortedFrom(file="tRole.h",name="setFunctional")
     public void setFunctional(boolean value) {
         functionality.setValue(value);
     }
 
     /** mark role (topmost) functional */
+@PortedFrom(file="tRole.h",name="setFunctional")
     public void setFunctional() {
         if (topFunctionalRoles.isEmpty()) {
             topFunctionalRoles.add(this);
@@ -229,105 +244,125 @@ public class Role extends ClassifiableEntry {
 
     // transitivity
     /** check whether the role is transitive */
+@PortedFrom(file="tRole.h",name="isTransitive")
     public boolean isTransitive() {
         return transitivity.getValue();
     }
 
     /** check whether the transitivity of a role is known */
+@PortedFrom(file="tRole.h",name="isTransitivityKnown")
     public boolean isTransitivityKnown() {
         return transitivity.isKnown();
     }
 
     /** set the transitivity of both role and it's inverse */
+@PortedFrom(file="tRole.h",name="setTransitive")
     public void setTransitive(boolean value) {
         transitivity.setValue(value);
         inverse().transitivity.setValue(value);
     }
 
+@PortedFrom(file="tRole.h",name="setTransitive")
     public void setTransitive() {
         this.setTransitive(true);
     }
 
     // symmetry
     /** check whether the role is symmetric */
+@PortedFrom(file="tRole.h",name="isSymmetric")
     public boolean isSymmetric() {
         return symmetry.getValue();
     }
 
     /** check whether the symmetry of a role is known */
+@PortedFrom(file="tRole.h",name="isSymmetryKnown")
     public boolean isSymmetryKnown() {
         return symmetry.isKnown();
     }
 
     /** set the symmetry of both role and it's inverse */
+@PortedFrom(file="tRole.h",name="setSymmetric")
     public void setSymmetric(boolean value) {
         symmetry.setValue(value);
         inverse().symmetry.setValue(value);
     }
 
+@PortedFrom(file="tRole.h",name="setSymmetric")
     public void setSymmetric() {
         this.setSymmetric(true);
     }
 
     // asymmetry
     /** check whether the role is asymmetric */
+@PortedFrom(file="tRole.h",name="isAsymmetric")
     public boolean isAsymmetric() {
         return asymmetry.getValue();
     }
 
     /** check whether the asymmetry of a role is known */
+@PortedFrom(file="tRole.h",name="isAsymmetryKnown")
     public boolean isAsymmetryKnown() {
         return asymmetry.isKnown();
     }
 
     /** set the asymmetry of both role and it's inverse */
+@PortedFrom(file="tRole.h",name="setAsymmetric")
     public void setAsymmetric(boolean value) {
         asymmetry.setValue(value);
         inverse().asymmetry.setValue(value);
     }
 
     /** check whether the role is reflexive */
+@PortedFrom(file="tRole.h",name="isReflexive")
     public boolean isReflexive() {
         return reflexivity.getValue();
     }
 
     /** check whether the reflexivity of a role is known */
+@PortedFrom(file="tRole.h",name="isReflexivityKnown")
     public boolean isReflexivityKnown() {
         return reflexivity.isKnown();
     }
 
     /** set the reflexivity of both role and it's inverse */
+@PortedFrom(file="tRole.h",name="setReflexive")
     public void setReflexive(boolean value) {
         reflexivity.setValue(value);
         inverse().reflexivity.setValue(value);
     }
 
+@PortedFrom(file="tRole.h",name="setReflexive")
     public void setReflexive() {
         this.setReflexive(true);
     }
 
     // irreflexivity
     /** check whether the role is irreflexive */
+@PortedFrom(file="tRole.h",name="isIrreflexive")
     public boolean isIrreflexive() {
         return irreflexivity.getValue();
     }
 
     /** check whether the irreflexivity of a role is known */
+@PortedFrom(file="tRole.h",name="isIrreflexivityKnown")
     public boolean isIrreflexivityKnown() {
         return irreflexivity.isKnown();
     }
 
     /** set the irreflexivity of both role and it's inverse */
+@PortedFrom(file="tRole.h",name="setIrreflexive")
     public void setIrreflexive(boolean value) {
         irreflexivity.setValue(value);
         inverse().irreflexivity.setValue(value);
     }
 
+@PortedFrom(file="tRole.h",name="setIrreflexive")
     public void setIrreflexive() {
         this.setIrreflexive(true);
     }
 
     /** check if the role is topmost-functional (ie, has no functional ancestors) */
+@PortedFrom(file="tRole.h",name="isTopFunc")
     public boolean isTopFunc() {
         // check for emptyness is here due to case where a role is determined to
         // be a functional
@@ -335,38 +370,45 @@ public class Role extends ClassifiableEntry {
     }
 
     /** set functional attribute to given value (functional DAG vertex) */
+@PortedFrom(file="tRole.h",name="setFunctional")
     public void setFunctional(int fNode) {
         functional = fNode;
     }
 
     /** get the Functional DAG vertex */
+@PortedFrom(file="tRole.h",name="getFunctional")
     public int getFunctional() {
         return functional;
     }
 
     // relevance
     /** is given role relevant to given Labeller's state */
+@PortedFrom(file="tRole.h",name="isRelevant")
     public boolean isRelevant(long lab) {
         return lab == rel;
     }
 
     /** make given role relevant to given Labeller's state */
+@PortedFrom(file="tRole.h",name="setRelevant")
     public void setRelevant(long lab) {
         rel = lab;
     }
 
     // Sorted reasoning interface
     /** get label of the role's domain */
+@PortedFrom(file="tRole.h",name="getDomainLabel")
     public MergableLabel getDomainLabel() {
         return domLabel;
     }
 
     /** get label of the role's range */
+@PortedFrom(file="tRole.h",name="getRangeLabel")
     public MergableLabel getRangeLabel() {
         return inverse().domLabel;
     }
 
     /** add p to domain of the role */
+@PortedFrom(file="tRole.h",name="setDomain")
     public void setDomain(DLTree p) {
         if (equalTrees(pDomain, p)) {
             // usual case when you have a name for inverse role
@@ -380,21 +422,25 @@ public class Role extends ClassifiableEntry {
     }
 
     /** add p to range of the role */
+@PortedFrom(file="tRole.h",name="setRange")
     public void setRange(DLTree p) {
         inverse().setDomain(p);
     }
 
     /** get domain-as-a-tree of the role */
+@PortedFrom(file="tRole.h",name="getTDomain")
     public DLTree getTDomain() {
         return pDomain;
     }
 
     /** get range-as-a-tree of the role */
+@PortedFrom(file="tRole.h",name="getTRange")
     private DLTree getTRange() {
         return inverse().pDomain;
     }
 
     /** merge to Domain all domains from super-roles */
+@PortedFrom(file="tRole.h",name="collectDomainFromSupers")
     public void collectDomainFromSupers() {
         for (int i = 0; i < ancestorRoles.size(); i++) {
             setDomain(ancestorRoles.get(i).pDomain.copy());
@@ -402,21 +448,25 @@ public class Role extends ClassifiableEntry {
     }
 
     /** set domain-as-a-bipointer to a role */
+@PortedFrom(file="tRole.h",name="setBPDomain")
     public void setBPDomain(int p) {
         bpDomain = p;
     }
 
     /** get domain-as-a-bipointer of the role */
+@PortedFrom(file="tRole.h",name="getBPDomain")
     public int getBPDomain() {
         return bpDomain;
     }
 
     /** get range-as-a-bipointer of the role */
+@PortedFrom(file="tRole.h",name="getBPRange")
     public int getBPRange() {
         return inverse().bpDomain;
     }
 
     @Override
+@PortedFrom(file="tRole.h",name="getIndex")
     public int getIndex() {
         // TODO Auto-generated method stub
         return super.getIndex();
@@ -424,6 +474,7 @@ public class Role extends ClassifiableEntry {
 
     // disjoint roles
     /** set R and THIS as a disjoint; use it after Anc/Desc are determined */
+@PortedFrom(file="tRole.h",name="addDisjointRole")
     public void addDisjointRole(Role R) {
         disjointRoles.add(R);
         for (Role p : R.descendantRoles) {
@@ -433,6 +484,7 @@ public class Role extends ClassifiableEntry {
     }
 
     /** check (and correct) case whether R != S for R [= S */
+@PortedFrom(file="tRole.h",name="checkHierarchicalDisjoint")
     public void checkHierarchicalDisjoint() {
         this.checkHierarchicalDisjoint(this);
         if (isReflexive()) {
@@ -441,11 +493,13 @@ public class Role extends ClassifiableEntry {
     }
 
     /** check whether a role is disjoint with anything */
+@PortedFrom(file="tRole.h",name="isDisjoint")
     public boolean isDisjoint() {
         return !disjointRoles.isEmpty();
     }
 
     /** check whether a role is disjoint with R */
+@PortedFrom(file="tRole.h",name="isDisjoint")
     public boolean isDisjoint(Role r) {
         return disjointRolesIndex.contains(r.getAbsoluteIndex());
     }
@@ -465,11 +519,13 @@ public class Role extends ClassifiableEntry {
     }
 
     /** get access to the func super-roles w/o func parents via iterator */
+@PortedFrom(file="tRole.h",name="begin_topfunc")
     public List<Role> begin_topfunc() {
         return topFunctionalRoles;
     }
 
     /** fills BITMAP with the role's ancestors */
+@PortedFrom(file="tRole.h",name="addAncestorsToBitMap")
     private void addAncestorsToBitMap(FastSet bitmap) {
         for (int i = 0; i < ancestorRoles.size(); i++) {
             bitmap.add(ancestorRoles.get(i).getAbsoluteIndex());
@@ -477,6 +533,7 @@ public class Role extends ClassifiableEntry {
     }
 
     /** add composition to a role */
+@PortedFrom(file="tRole.h",name="addComposition")
     public void addComposition(DLTree tree) {
         List<Role> RS = new ArrayList<Role>();
         fillsComposition(RS, tree);
@@ -484,12 +541,14 @@ public class Role extends ClassifiableEntry {
     }
 
     /** get access to a RA for the role */
+@PortedFrom(file="tRole.h",name="getAutomaton")
     public RoleAutomaton getAutomaton() {
         return automaton;
     }
 
     // completing internal constructions
     /** eliminate told role cycle */
+@PortedFrom(file="tRole.h",name="eliminateToldCycles")
     public Role eliminateToldCycles() {
         Set<Role> RInProcess = new HashSet<Role>();
         List<Role> ToldSynonyms = new ArrayList<Role>();
@@ -497,6 +556,7 @@ public class Role extends ClassifiableEntry {
     }
 
     /** complete role automaton */
+@PortedFrom(file="tRole.h",name="completeAutomaton")
     public void completeAutomaton(int nRoles) {
         Set<Role> RInProcess = new HashSet<Role>();
         this.completeAutomaton(RInProcess);
@@ -504,6 +564,7 @@ public class Role extends ClassifiableEntry {
     }
 
     /** check whether role description is consistent */
+@PortedFrom(file="tRole.h",name="consistent")
     public void consistent() {
         if (isSimple()) {
             return;
@@ -538,6 +599,7 @@ public class Role extends ClassifiableEntry {
     }
 
     /** @return R or -R for T in the form (inv ... (inv R)...); remove synonyms */
+@PortedFrom(file="tRole.h",name="resolveRole")
     public static Role resolveRole(DLTree t) {
         return resolveSynonym(resolveRoleHelper(t));
     }
@@ -568,6 +630,7 @@ public class Role extends ClassifiableEntry {
         return i > 0 ? i : 1 - i;
     }
 
+@PortedFrom(file="tRole.h",name="fillsComposition")
     private void fillsComposition(List<Role> Composition, DLTree tree) {
         if (tree.token() == RCOMPOSITION) {
             fillsComposition(Composition, tree.getLeft());
@@ -577,6 +640,7 @@ public class Role extends ClassifiableEntry {
         }
     }
 
+@PortedFrom(file="tRole.h",name="addFeaturesToSynonym")
     public void addFeaturesToSynonym() {
         if (!isSynonym()) {
             return;
@@ -605,6 +669,7 @@ public class Role extends ClassifiableEntry {
         addParent(syn);
     }
 
+@PortedFrom(file="tRole.h",name="eliminateToldCycles")
     private Role eliminateToldCycles(Set<Role> RInProcess, List<Role> ToldSynonyms) {
         if (isSynonym()) {
             return null;
@@ -644,6 +709,7 @@ public class Role extends ClassifiableEntry {
         return extName + " " + extId;
     }
 
+@PortedFrom(file="tRole.h",name="print")
     public void print(LogAdapter o) {
         o.print("Role \"", getName(), "\"(", getId(), ")", isTransitive() ? "T" : "",
                 isReflexive() ? "R" : "", isTopFunc() ? "t" : "", isFunctional() ? "F"
@@ -686,6 +752,7 @@ public class Role extends ClassifiableEntry {
         o.print("\n");
     }
 
+@PortedFrom(file="tRole.h",name="initADbyTaxonomy")
     public void initADbyTaxonomy(Taxonomy pTax, int nRoles) {
         assert isClassified(); // safety check
         assert ancestorRoles.isEmpty() && descendantRoles.isEmpty();
@@ -700,6 +767,7 @@ public class Role extends ClassifiableEntry {
         addAncestorsToBitMap(ancestorMap);
     }
 
+@PortedFrom(file="tRole.h",name="postProcess")
     public void postProcess() {
         initTopFunc();
         if (this.isDisjoint()) {
@@ -707,6 +775,7 @@ public class Role extends ClassifiableEntry {
         }
     }
 
+@PortedFrom(file="tRole.h",name="isRealTopFunc")
     private boolean isRealTopFunc() {
         if (!isFunctional()) {
             return false;
@@ -719,6 +788,7 @@ public class Role extends ClassifiableEntry {
         return true;
     }
 
+@PortedFrom(file="tRole.h",name="initTopFunc")
     private void initTopFunc() {
         if (isRealTopFunc()) {
             return;
@@ -737,6 +807,7 @@ public class Role extends ClassifiableEntry {
         }
     }
 
+@PortedFrom(file="tRole.h",name="checkHierarchicalDisjoint")
     private void checkHierarchicalDisjoint(Role R) {
         if (disjointRoles.contains(R)) {
             setDomain(DLTreeFactory.createBottom());
@@ -752,12 +823,14 @@ public class Role extends ClassifiableEntry {
         }
     }
 
+@PortedFrom(file="tRole.h",name="initDJMap")
     private void initDJMap() {
         for (Role q : disjointRoles) {
             disjointRolesIndex.add(q.getAbsoluteIndex());
         }
     }
 
+@PortedFrom(file="tRole.h",name="preprocessComposition")
     private void preprocessComposition(List<Role> RS) {
         boolean same = false;
         int last = RS.size() - 1;
@@ -789,6 +862,7 @@ public class Role extends ClassifiableEntry {
         }
     }
 
+@PortedFrom(file="tRole.h",name="completeAutomaton")
     private void completeAutomaton(Set<Role> RInProcess) {
         if (automaton.isCompleted()) {
             return;
@@ -826,6 +900,7 @@ public class Role extends ClassifiableEntry {
     }
 
     /** add automaton for a role composition */
+@PortedFrom(file="tRole.h",name="addSubCompositionAutomaton")
     private void addSubCompositionAutomaton(List<Role> RS, Set<Role> RInProcess) {
         // first preprocess the role chain
         preprocessComposition(RS);
@@ -861,21 +936,5 @@ public class Role extends ClassifiableEntry {
 
     public Role getInverse() {
         return inverse;
-    }
-}
-
-@PortedFrom(file = "tRole.cpp", name = "TRoleCompare")
-class RoleCompare implements Comparator<Role>, Serializable {
-    @Override
-    public int compare(Role p, Role q) {
-        int n = p.getId();
-        int m = q.getId();
-        if (n > 0 && m < 0) {
-            return -1;
-        }
-        if (n < 0 && m > 0) {
-            return 1;
-        }
-        return 0;
     }
 }

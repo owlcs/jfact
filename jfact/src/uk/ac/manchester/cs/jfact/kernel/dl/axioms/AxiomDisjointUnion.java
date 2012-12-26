@@ -34,11 +34,15 @@ public class AxiomDisjointUnion extends AxiomImpl implements Axiom,
     }
 
     @Override
+
+@PortedFrom(file="tDLAxiom.h",name="accept")
     public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
     @Override
+
+@PortedFrom(file="tDLAxiom.h",name="accept")
     public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
@@ -58,6 +62,7 @@ public class AxiomDisjointUnion extends AxiomImpl implements Axiom,
         return delegate.getArguments();
     }
 
+@PortedFrom(file="tDLAxiom.h",name="getC")
     public ConceptExpression getC() {
         return conceptExpression;
     }

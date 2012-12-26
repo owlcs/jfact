@@ -40,6 +40,7 @@ public class MergableLabel {
     }
 
     /** make 2 labels equal */
+@PortedFrom(file="mergableLabel.h",name="merge")
     public void merge(MergableLabel p) {
         MergableLabel sample = p.resolve();
         resolve();
@@ -49,6 +50,7 @@ public class MergableLabel {
     }
 
     /** make label's depth <= 2; @return sample of the label */
+@PortedFrom(file="mergableLabel.h",name="resolve")
     public MergableLabel resolve() {
         // check if current node is itself sample
         if (!isSample()) {
@@ -58,6 +60,7 @@ public class MergableLabel {
     }
 
     /** is given lable a sample label */
+@PortedFrom(file="mergableLabel.h",name="isSample")
     public boolean isSample() {
         return pSample.equals(this);
     }

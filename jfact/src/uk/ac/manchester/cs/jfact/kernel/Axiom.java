@@ -25,6 +25,7 @@ public class Axiom {
     // NS for different DLTree matchers for trees in axiom
     /** absorb into negation of a concept; @return true if absorption is */
     // performed
+@PortedFrom(file="tAxiom.h",name="absorbIntoNegConcept")
     public boolean absorbIntoNegConcept(TBox KB) {
         List<DLTree> Cons = new ArrayList<DLTree>();
         Concept Concept;
@@ -75,6 +76,7 @@ public class Axiom {
     private TOntologyAtom atom;
 
     /** create a copy of a given GCI; ignore SKIP entry */
+@PortedFrom(file="tAxiom.h",name="copy")
     private Axiom copy(DLTree skip) {
         Axiom ret = new Axiom();
         for (DLTree i : disjuncts) {
@@ -86,6 +88,7 @@ public class Axiom {
     }
 
     /** simplify (OR C ...) for a non-primitive C in a given position */
+@PortedFrom(file="tAxiom.h",name="simplifyPosNP")
     private Axiom simplifyPosNP(DLTree pos, TBox KB) {
         SAbsRepCN();
         Axiom ret = copy(pos);
@@ -97,6 +100,7 @@ public class Axiom {
     }
 
     /** simplify (OR ~C ...) for a non-primitive C in a given position */
+@PortedFrom(file="tAxiom.h",name="simplifyNegNP")
     private Axiom simplifyNegNP(DLTree pos, TBox KB) {
         SAbsRepCN();
         Axiom ret = copy(pos);
@@ -106,6 +110,7 @@ public class Axiom {
     }
 
     /** split (OR (AND...) ...) in a given position */
+@PortedFrom(file="tAxiom.h",name="split")
     private List<Axiom> split(List<Axiom> acc, DLTree pos, DLTree pAnd) {
         if (pAnd.isAND()) {
             // split the AND
@@ -123,6 +128,7 @@ public class Axiom {
     }
 
     /** split an axiom; @return new axiom and/or NULL */
+@PortedFrom(file="tAxiom.h",name="split")
     public List<Axiom> split(TBox KB) {
         List<Axiom> acc = new ArrayList<Axiom>();
         for (DLTree p : disjuncts) {
@@ -144,6 +150,7 @@ public class Axiom {
     }
 
     /** add DLTree to an axiom */
+@PortedFrom(file="tAxiom.h",name="add")
     public void add(DLTree p) {
         if (InAx.isBot(p)) {
             return; // nothing to do
@@ -170,6 +177,7 @@ public class Axiom {
     }
 
     /** replace a defined concept with its description */
+@PortedFrom(file="tAxiom.h",name="simplifyCN")
     public Axiom simplifyCN(TBox tbox) {
         for (DLTree p : disjuncts) {
             if (InAx.isPosNP(p)) {
@@ -182,6 +190,7 @@ public class Axiom {
     }
 
     /** replace a universal restriction with a fresh concept */
+@PortedFrom(file="tAxiom.h",name="simplifyForall")
     public Axiom simplifyForall(TBox KB) {
         for (DLTree i : disjuncts) {
             if (InAx.isAbsForall(i)) {
@@ -191,6 +200,7 @@ public class Axiom {
         return null;
     }
 
+@PortedFrom(file="tAxiom.h",name="simplifyForall")
     private Axiom simplifyForall(DLTree pos, TBox KB) {
         SAbsRepForall();
         DLTree pAll = pos.getChild(); // (all R ~C)
@@ -202,6 +212,7 @@ public class Axiom {
 
     /** create a concept expression corresponding to a given GCI; ignore SKIP */
     // entry
+@PortedFrom(file="tAxiom.h",name="createAnAxiom")
     public DLTree createAnAxiom(DLTree replaced) {
         // XXX check if this is correct
         if (disjuncts.isEmpty()) {
@@ -219,6 +230,7 @@ public class Axiom {
     }
 
     /** absorb into BOTTOM; @return true if absorption is performed */
+@PortedFrom(file="tAxiom.h",name="absorbIntoBottom")
     public boolean absorbIntoBottom(TBox KB) {
         List<DLTree> Pos = new ArrayList<DLTree>(), Neg = new ArrayList<DLTree>();
         for (DLTree p : disjuncts) {
@@ -251,6 +263,7 @@ public class Axiom {
         return false;
     }
 
+@PortedFrom(file="tAxiom.h",name="absorbIntoConcept")
     public boolean absorbIntoConcept(TBox KB) {
         List<DLTree> Cons = new ArrayList<DLTree>();
         DLTree bestConcept = null;
@@ -292,6 +305,7 @@ public class Axiom {
         return true;
     }
 
+@PortedFrom(file="tAxiom.h",name="absorbIntoDomain")
     public boolean absorbIntoDomain(TBox KB) {
         List<DLTree> Cons = new ArrayList<DLTree>();
         DLTree bestSome = null;
@@ -334,6 +348,7 @@ public class Axiom {
     }
 
     /** absorb into TOP; @return true if absorption performs */
+@PortedFrom(file="tAxiom.h",name="absorbIntoTop")
     public boolean absorbIntoTop(TBox KB) {
         Concept C = null;
         // check whether the axiom is Top [= C

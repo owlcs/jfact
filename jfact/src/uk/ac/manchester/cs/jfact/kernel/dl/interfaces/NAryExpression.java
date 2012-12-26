@@ -13,12 +13,15 @@ import conformance.PortedFrom;
 @PortedFrom(file="tDLExpression.h",name="TDLNAryExpression")
 public interface NAryExpression<Argument extends Expression> {
     /** transform general expression into the argument one */
+@PortedFrom(file="tDLExpression.h",name="transform")
     Argument transform(Expression arg);
 
     /** add a single element to the array */
+@PortedFrom(file="tDLExpression.h",name="add")
     void add(Expression p);
 
     /** add a vector */
+@PortedFrom(file="tDLExpression.h",name="add")
     void add(Collection<Expression> v);
 
     /** access to members */
@@ -26,5 +29,6 @@ public interface NAryExpression<Argument extends Expression> {
 
     boolean isEmpty();
 
+@PortedFrom(file="tDLExpression.h",name="size")
     int size();
 }

@@ -10,5 +10,6 @@ import conformance.PortedFrom;
 @PortedFrom(file="tDLExpression.h",name="TDataExpressionArg")
 public interface DataExpressionArg<T> {
     /** get access to the argument */
+@PortedFrom(file="tDLExpression.h",name="getExpr")
     T getExpr();
 }

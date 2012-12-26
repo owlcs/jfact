@@ -23,11 +23,13 @@ public class ConceptOneOf extends NAryExpressionImpl<IndividualName> implements
     }
 
     @Override
+@PortedFrom(file="tDLExpression.h",name="accept")
     public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
     @Override
+@PortedFrom(file="tDLExpression.h",name="accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }

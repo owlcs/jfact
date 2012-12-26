@@ -31,21 +31,25 @@ public class Ontology {
         changed = false;
     }
 
+@PortedFrom(file="tOntology.h",name="get")
     public Axiom get(int i) {
         return axioms.get(i);
     }
 
     /** @return true iff the ontology was changed since its last load */
+@PortedFrom(file="tOntology.h",name="isChanged")
     public boolean isChanged() {
         return changed;
     }
 
     /** set the processed marker to the end of the ontology */
+@PortedFrom(file="tOntology.h",name="setProcessed")
     public void setProcessed() {
         changed = false;
     }
 
     /** add given axiom to the ontology */
+@PortedFrom(file="tOntology.h",name="add")
     public Axiom add(Axiom p) {
         p.setId(++axiomId);
         axioms.add(p);
@@ -54,6 +58,7 @@ public class Ontology {
     }
 
     /** retract given axiom to the ontology */
+@PortedFrom(file="tOntology.h",name="retract")
     public void retract(Axiom p) {
         if (p.getId() <= axioms.size() && axioms.get(p.getId() - 1).equals(p)) {
             changed = true;
@@ -62,6 +67,7 @@ public class Ontology {
     }
 
     /** clear the ontology */
+@PortedFrom(file="tOntology.h",name="clear")
     public void clear() {
         axioms.clear();
         expressionManager.clear();
@@ -70,16 +76,19 @@ public class Ontology {
 
     // access to axioms
     /** get access to an expression manager */
+@PortedFrom(file="tOntology.h",name="getExpressionManager")
     public ExpressionManager getExpressionManager() {
         return expressionManager;
     }
 
     /** RW begin() for the whole ontology */
+@PortedFrom(file="tOntology.h",name="getAxioms")
     public List<Axiom> getAxioms() {
         return axioms;
     }
 
     /** size of the ontology */
+@PortedFrom(file="tOntology.h",name="size")
     public int size() {
         return axioms.size();
     }

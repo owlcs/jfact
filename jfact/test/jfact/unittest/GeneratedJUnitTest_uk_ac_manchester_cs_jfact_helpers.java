@@ -11,6 +11,10 @@ import org.junit.Test;
 
 import uk.ac.manchester.cs.jfact.datatypes.Datatype;
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
+import uk.ac.manchester.cs.jfact.elf.ELFAxiomChecker;
+import uk.ac.manchester.cs.jfact.elf.ELFExpressionChecker;
+import uk.ac.manchester.cs.jfact.elf.ELFNormalizer;
+import uk.ac.manchester.cs.jfact.elf.ELFReasoner;
 import uk.ac.manchester.cs.jfact.helpers.*;
 import uk.ac.manchester.cs.jfact.helpers.Stats.AccumulatedStatistic;
 import uk.ac.manchester.cs.jfact.kernel.*;

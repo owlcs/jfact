@@ -20,33 +20,40 @@ public abstract class ModelCacheInterface {
 
     /** check whether both models have nominals; in this case, merge is
      * impossible */
+@PortedFrom(file="modelCacheInterface.h",name="hasNominalClash")
     public boolean hasNominalClash(ModelCacheInterface p) {
         return isHasNominalNode() && p.isHasNominalNode();
     }
 
     /** update knoweledge about nominals in the model after merging */
+@PortedFrom(file="modelCacheInterface.h",name="updateNominalStatus")
     public void updateNominalStatus(ModelCacheInterface p) {
         setHasNominalNode(isHasNominalNode() | p.isHasNominalNode());
     }
 
     // mergable part
     /** Check the model cache internal state. */
+@PortedFrom(file="modelCacheInterface.h",name="getState")
     public abstract ModelCacheState getState();
 
     /** check whether two caches can be merged; @return state of "merged" model */
+@PortedFrom(file="modelCacheInterface.h",name="canMerge")
     public abstract ModelCacheState canMerge(ModelCacheInterface p);
 
     /** Get the tag identifying the cache type */
+@PortedFrom(file="modelCacheInterface.h",name="getCacheType")
     public ModelCacheType getCacheType() {
         return ModelCacheType.mctBadType;
     }
 
     /** get type of cache (deep or shallow) */
+@PortedFrom(file="modelCacheInterface.h",name="shallowCache")
     public boolean shallowCache() {
         return true;
     }
 
     /** log this cache entry (with given level) */
+@PortedFrom(file="modelCacheInterface.h",name="logCacheEntry")
     public void logCacheEntry(int level, LogAdapter l) {}
 
     public void setHasNominalNode(boolean hasNominalNode) {

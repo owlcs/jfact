@@ -24,11 +24,13 @@ public class ModelCacheConst extends ModelCacheInterface {
 
     /** Check if the model contains clash */
     @Override
+@PortedFrom(file="modelCacheConst.h",name="getState")
     public ModelCacheState getState() {
         return isTop ? csValid : csInvalid;
     }
 
     /** get the value of the constant */
+@PortedFrom(file="modelCacheConst.h",name="getConst")
     public boolean getConst() {
         return isTop;
     }
@@ -36,6 +38,7 @@ public class ModelCacheConst extends ModelCacheInterface {
     // mergable part
     /** check whether two caches can be merged; @return state of "merged" model */
     @Override
+@PortedFrom(file="modelCacheConst.h",name="canMerge")
     public ModelCacheState canMerge(ModelCacheInterface p) {
         if (p.getCacheType() == ModelCacheType.mctConst) {
             return isTop && ((ModelCacheConst) p).isTop ? csValid : csInvalid;
@@ -46,17 +49,20 @@ public class ModelCacheConst extends ModelCacheInterface {
 
     /** Get the tag identifying the cache type */
     @Override
+@PortedFrom(file="modelCacheConst.h",name="getCacheType")
     public ModelCacheType getCacheType() {
         return ModelCacheType.mctConst;
     }
 
     /** log this cache entry (with given level) */
     @Override
+@PortedFrom(file="modelCacheConst.h",name="logCacheEntry")
     public void logCacheEntry(int level, LogAdapter l) {
         l.printTemplate(Templates.LOGCACHEENTRY, isTop ? "TOP" : "BOTTOM");
     }
 
     /** create const cache by BP; BP should be either bpTOP or bpBOTTOM */
+@PortedFrom(file="modelCacheConst.h",name="createConstCache")
     public static ModelCacheConst createConstCache(int bp) {
         assert bp == Helper.bpTOP || bp == Helper.bpBOTTOM;
         return new ModelCacheConst(bp == Helper.bpTOP);

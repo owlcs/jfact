@@ -21,16 +21,19 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
     boolean isLocal;
 
     /** @return true iff EXPR is top equivalent */
+@PortedFrom(file="SyntacticLocalityChecker.h",name="isTopEquivalent")
     boolean isTopEquivalent(Expression expr) {
         return TopEval.isTopEquivalent(expr);
     }
 
     /** @return true iff EXPR is bottom equivalent */
+@PortedFrom(file="SyntacticLocalityChecker.h",name="isBotEquivalent")
     boolean isBotEquivalent(Expression expr) {
         return BotEval.isBotEquivalent(expr);
     }
 
     /** @return true iff role expression in equivalent to const wrt locality */
+@PortedFrom(file="SyntacticLocalityChecker.h",name="isREquivalent")
     boolean isREquivalent(Expression expr) {
         return sig.topRLocal() ? isTopEquivalent(expr) : isBotEquivalent(expr);
     }
@@ -59,6 +62,7 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
     // set fields
     /** @return true iff an AXIOM is local wrt defined policy */
     @Override
+@PortedFrom(file="SyntacticLocalityChecker.h",name="local")
     public boolean local(Axiom axiom) {
         axiom.accept(this);
         return isLocal;

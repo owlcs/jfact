@@ -6,9 +6,11 @@ import java.util.Map;
 import java.util.Set;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
+import conformance.Original;
 
 /** @author ignazio
  * @param <Representation> */
+@Original 
 public interface Datatype<Representation extends Comparable<Representation>> extends
         DataExpression {
     /** @return true if this datatype is an expression */

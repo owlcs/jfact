@@ -41,16 +41,19 @@ public class Lexeme {
     }
 
     /** get Token of given Lexeme */
+@PortedFrom(file="tLexeme.h",name="getToken")
     public Token getToken() {
         return token;
     }
 
     /** get name pointer of given lexeme */
+@PortedFrom(file="tLexeme.h",name="getNE")
     public NamedEntry getNE() {
         return pName;
     }
 
     /** get data value of given lexeme */
+@PortedFrom(file="tLexeme.h",name="getData")
     public int getData() {
         return data;
     }

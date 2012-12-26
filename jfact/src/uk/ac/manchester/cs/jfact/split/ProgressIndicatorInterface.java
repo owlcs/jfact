@@ -11,12 +11,15 @@ abstract class ProgressIndicatorInterface {
     long uCurrent;
 
     /** initial exposure method: can be overriden in derived classes */
+@PortedFrom(file="ProgressIndicatorInterface.h",name="initExposure")
     void initExposure() {}
 
     /** indicate current value somehow */
+@PortedFrom(file="ProgressIndicatorInterface.h",name="expose")
     abstract void expose();
 
     /** check whether the limit is reached */
+@PortedFrom(file="ProgressIndicatorInterface.h",name="checkMax")
     boolean checkMax() {
         if (uCurrent > uLimit) {
             uCurrent = uLimit;
@@ -39,6 +42,7 @@ abstract class ProgressIndicatorInterface {
     }
 
     /** set indicator to a given VALUE */
+@PortedFrom(file="ProgressIndicatorInterface.h",name="setIndicator")
     void setIndicator(long value) {
         if (uCurrent != value) {
             uCurrent = value;
@@ -48,20 +52,24 @@ abstract class ProgressIndicatorInterface {
     }
 
     /** increment current value of an indicator to DELTA steps */
+@PortedFrom(file="ProgressIndicatorInterface.h",name="incIndicator")
     void incIndicator(long delta) {
         setIndicator(uCurrent + delta);
     }
 
+@PortedFrom(file="ProgressIndicatorInterface.h",name="incIndicator")
     void incIndicator() {
         setIndicator(uCurrent + 1);
     }
 
     /** set indicator to 0 */
+@PortedFrom(file="ProgressIndicatorInterface.h",name="reset")
     void reset() {
         setIndicator(0);
     }
 
     /** set the limit of an indicator to a given VALUE */
+@PortedFrom(file="ProgressIndicatorInterface.h",name="setLimit")
     protected void setLimit(long limit) {
         uLimit = limit;
         reset();

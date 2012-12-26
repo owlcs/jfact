@@ -30,6 +30,7 @@ public abstract class NamedEntry {
     }
 
     /** gets name of given entry */
+@PortedFrom(file="tNamedEntry.h",name="getName")
     public String getName() {
         return extName;
     }
@@ -55,11 +56,13 @@ public abstract class NamedEntry {
     }
 
     /** set internal ID */
+@PortedFrom(file="tNamedEntry.h",name="setId")
     public void setId(int id) {
         extId = id;
     }
 
     /** get internal ID */
+@PortedFrom(file="tNamedEntry.h",name="getId")
     public int getId() {
         return extId;
     }
@@ -104,10 +107,12 @@ public abstract class NamedEntry {
         bottom = true;
     }
 
+@PortedFrom(file="tNamedEntry.h",name="getEntity")
     public NamedEntity getEntity() {
         return entity;
     }
 
+@PortedFrom(file="tNamedEntry.h",name="setEntity")
     public void setEntity(NamedEntity entity) {
         this.entity = entity;
     }

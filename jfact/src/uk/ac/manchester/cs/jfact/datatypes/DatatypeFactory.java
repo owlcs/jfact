@@ -15,8 +15,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 import uk.ac.manchester.cs.jfact.datatypes.Facets.whitespace;
+import conformance.Original;
 
 @SuppressWarnings("javadoc")
+@Original
 public class DatatypeFactory {
     static final String namespace = "http://www.w3.org/2001/XMLSchema#";
     static final Facet[] minmax = new Facet[] { maxInclusive, maxExclusive, minInclusive,

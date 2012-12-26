@@ -24,6 +24,7 @@ public class AddRoleActor implements Actor {
     }
 
     @Override
+@PortedFrom(file="tRole.cpp",name="apply")
     public boolean apply(TaxonomyVertex v) {
         if (v.getPrimer().getId() == 0) {
             return false;

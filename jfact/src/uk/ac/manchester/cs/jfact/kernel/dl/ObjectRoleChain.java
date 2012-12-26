@@ -24,11 +24,13 @@ public class ObjectRoleChain extends NAryExpressionImpl<ObjectRoleExpression> im
     }
 
     @Override
+@PortedFrom(file="tDLExpression.h",name="accept")
     public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
     @Override
+@PortedFrom(file="tDLExpression.h",name="accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }

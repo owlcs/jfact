@@ -31,6 +31,7 @@ public class RATransition {
     }
 
     /** add label of transition TRANS to transition's label */
+@PortedFrom(file="RAutomaton.h",name="add")
     public void add(RATransition trans) {
         label.addAll(trans.label);
         cache = null;
@@ -38,6 +39,7 @@ public class RATransition {
 
     // query the transition
     /** get the 1st role in (multi-)transition */
+@PortedFrom(file="RAutomaton.h",name="begin")
     public Collection<Role> begin() {
         return label;
     }
@@ -48,6 +50,7 @@ public class RATransition {
     }
 
     /** check whether transition is applicable wrt role R */
+@PortedFrom(file="RAutomaton.h",name="applicable")
     public boolean applicable(Role R) {
         if (cache == null) {
             cache = new BitSet();
@@ -64,6 +67,7 @@ public class RATransition {
     }
 
     /** print the transition starting from FROM */
+@PortedFrom(file="RAutomaton.h",name="print")
     public void print(LogAdapter o, int from) {
         o.print("\n", from, " -- ");
         if (isEmpty()) {
@@ -84,6 +88,7 @@ public class RATransition {
     }
 
     // / check whether transition is TopRole one
+@PortedFrom(file="RAutomaton.h",name="isTop")
     boolean isTop() {
         return label.size() == 1 && label.iterator().next().isTop();
     }

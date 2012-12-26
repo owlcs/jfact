@@ -14,12 +14,14 @@ public class SaveStack<T> {
     protected LinkedList<T> list = new LinkedList<T>();
 
     /** get an object from a fixed depth */
+@PortedFrom(file="tSaveStack.h",name="pop")
     public T pop(int depth) {
         top(depth);
         return pop();
     }
 
     /** get an object from a fixed depth */
+@PortedFrom(file="tSaveStack.h",name="top")
     public T top(int depth) {
         assert list.size() >= depth;
         while (list.size() > depth) {
@@ -28,16 +30,19 @@ public class SaveStack<T> {
         return list.peek();
     }
 
+@PortedFrom(file="tSaveStack.h",name="top")
     public T top() {
         return list.peek();
     }
 
+@PortedFrom(file="tSaveStack.h",name="pop")
     public T pop() {
         assert !list.isEmpty();
         T pop = list.pop();
         return pop;
     }
 
+@PortedFrom(file="tSaveStack.h",name="push")
     public void push(T e) {
         list.push(e);
     }

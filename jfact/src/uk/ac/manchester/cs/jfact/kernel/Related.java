@@ -21,6 +21,7 @@ public class Related {
     }
 
     /** simplify structure wrt synonyms */
+@PortedFrom(file="tRelated.h",name="simplify")
     public void simplify() {
         R = resolveSynonym(R);
         a = resolveSynonym(a);
@@ -29,6 +30,7 @@ public class Related {
     }
 
     /** get access to role wrt the FROM direction */
+@PortedFrom(file="tRelated.h",name="getRole")
     public Role getRole() {
         return R;
     }

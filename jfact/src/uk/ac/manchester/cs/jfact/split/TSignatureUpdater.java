@@ -16,11 +16,13 @@ public class TSignatureUpdater implements DLAxiomVisitor {
     TExpressionSignatureUpdater Updater;
 
     /** helper for the expression processing */
+@PortedFrom(file="tSignatureUpdater.h",name="v")
     void v(Expression E) {
         E.accept(Updater);
     }
 
     /** helper for the [begin,end) interval */
+@PortedFrom(file="tSignatureUpdater.h",name="v")
     void v(Collection<? extends Expression> arg) {
         for (Expression e : arg) {
             v(e);
@@ -209,6 +211,7 @@ public class TSignatureUpdater implements DLAxiomVisitor {
 
     /** load ontology to a given KB */
     @Override
+@PortedFrom(file="tSignatureUpdater.h",name="visitOntology")
     public void visitOntology(Ontology ontology) {
         for (Axiom p : ontology.getAxioms()) {
             if (p.isUsed()) {

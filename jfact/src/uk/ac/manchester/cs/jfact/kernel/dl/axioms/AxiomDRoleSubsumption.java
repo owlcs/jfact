@@ -23,16 +23,21 @@ public class AxiomDRoleSubsumption extends AxiomSingleDRole {
     }
 
     @Override
+
+@PortedFrom(file="tDLAxiom.h",name="accept")
     public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
     @Override
+
+@PortedFrom(file="tDLAxiom.h",name="accept")
     public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
     /** access to role */
+@PortedFrom(file="tDLAxiom.h",name="getSubRole")
     public DataRoleExpression getSubRole() {
         return subRole;
     }

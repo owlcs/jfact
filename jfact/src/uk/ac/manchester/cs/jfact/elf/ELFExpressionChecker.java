@@ -1,4 +1,4 @@
-package uk.ac.manchester.cs.jfact.helpers;
+package uk.ac.manchester.cs.jfact.elf;
 
 import uk.ac.manchester.cs.jfact.datatypes.Datatype;
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
@@ -12,6 +12,7 @@ public class ELFExpressionChecker implements DLExpressionVisitor {
     boolean value;
 
     /** get DLTree corresponding to an expression EXPR */
+@PortedFrom(file="ELFExpressionChecker.h",name="v")
     boolean v(Expression expr) {
         expr.accept(this);
         return value;

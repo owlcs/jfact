@@ -19,6 +19,7 @@ public class SupConceptActor implements Actor {
     }
 
     @Override
+@PortedFrom(file="Kernel.cpp",name="apply")
     public boolean apply(TaxonomyVertex v) {
         if (pe.equals(v.getPrimer()) || v.begin_syn().contains(pe)) {
             return false;

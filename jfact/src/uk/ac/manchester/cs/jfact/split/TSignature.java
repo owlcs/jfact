@@ -29,26 +29,31 @@ public class TSignature {
     }
 
     /** add names to signature */
+@PortedFrom(file="tSignature.h",name="add")
     public void add(NamedEntity p) {
         set.add(p);
     }
 
     /** remove given element from a signature */
+@PortedFrom(file="tSignature.h",name="remove")
     public void remove(NamedEntity p) {
         set.remove(p);
     }
 
     /** add another signature to a given one */
+@PortedFrom(file="tSignature.h",name="add")
     void add(TSignature Sig) {
         set.addAll(Sig.set);
     }
 
     /** set new locality polarity */
+@PortedFrom(file="tSignature.h",name="setLocality")
     public void setLocality(boolean top) {
         this.setLocality(top, top);
     }
 
     /** set new locality polarity */
+@PortedFrom(file="tSignature.h",name="setLocality")
     public void setLocality(boolean topC, boolean topR) {
         topCLocality = topC;
         topRLocality = topR;
@@ -86,6 +91,7 @@ public class TSignature {
     }
 
     /** @return true iff signature contains given element */
+@PortedFrom(file="tSignature.h",name="contains")
     public boolean contains(Expression p) {
         if (p instanceof NamedEntity) {
             return containsNamedEntity((NamedEntity) p);
@@ -97,25 +103,30 @@ public class TSignature {
     }
 
     /** @return size of the signature */
+@PortedFrom(file="tSignature.h",name="size")
     public int size() {
         return set.size();
     }
 
     /** clear the signature */
+@PortedFrom(file="tSignature.h",name="clear")
     public void clear() {
         set.clear();
     }
 
+@PortedFrom(file="tSignature.h",name="begin")
     public Set<NamedEntity> begin() {
         return set;
     }
 
     /** @return true iff concepts are treated as TOPs */
+@PortedFrom(file="tSignature.h",name="topCLocal")
     public boolean topCLocal() {
         return topCLocality;
     }
 
     /** @return true iff roles are treated as TOPs */
+@PortedFrom(file="tSignature.h",name="topRLocal")
     public boolean topRLocal() {
         return topRLocality;
     }

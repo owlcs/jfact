@@ -16,7 +16,6 @@ import java.util.List;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 import uk.ac.manchester.cs.jfact.kernel.*;
-import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 import conformance.PortedFrom;
 
 /** DL Vertex
@@ -27,6 +26,7 @@ public class DLVertex extends DLVertexTagDFS {
     static class ChildSet {
         private Comparator<Integer> c = new Comparator<Integer>() {
             @Override
+@PortedFrom(file="dlVertex.h",name="compare")
             public int compare(Integer o1, Integer o2) {
                 if (o1.equals(o2)) {
                     return 0;
@@ -129,6 +129,7 @@ public class DLVertex extends DLVertexTagDFS {
     /** get RW access to the label
      * 
      * @return sort label */
+@PortedFrom(file="dlVertex.h",name="getSort")
     public MergableLabel getSort() {
         return sort;
     }
@@ -137,6 +138,7 @@ public class DLVertex extends DLVertexTagDFS {
      * 
      * @param label
      *            label to merge */
+@PortedFrom(file="dlVertex.h",name="merge")
     public void merge(MergableLabel label) {
         sort.merge(label);
     }
@@ -180,6 +182,7 @@ public class DLVertex extends DLVertexTagDFS {
         return false;
     }
 
+@PortedFrom(file="dlVertex.h",name="compare")
     private boolean compare(Object o1, Object o2) {
         if (o1 == null) {
             return o2 == null;
@@ -200,36 +203,43 @@ public class DLVertex extends DLVertexTagDFS {
     }
 
     /** @return N for the (<= n R) vertex */
+@PortedFrom(file="dlVertex.h",name="getNumberLE")
     public int getNumberLE() {
         return n;
     }
 
     /** @return N for the (>= n R) vertex */
+@PortedFrom(file="dlVertex.h",name="getNumberGE")
     public int getNumberGE() {
         return n + 1;
     }
 
     /** @return STATE for the (\all R{state}.C) vertex */
+@PortedFrom(file="dlVertex.h",name="getState")
     public int getState() {
         return n;
     }
 
     /** @return pointer to the first concept name of the entry */
+@PortedFrom(file="dlVertex.h",name="begin")
     public int[] begin() {
         return child.sorted();
     }
 
     /** @return pointer to Role for the Role-like verteces */
+@PortedFrom(file="dlVertex.h",name="getRole")
     public Role getRole() {
         return role;
     }
 
     /** @return pointer to Projection Role for the Projection verteces */
+@PortedFrom(file="dlVertex.h",name="getProjRole")
     public Role getProjRole() {
         return projRole;
     }
 
     /** @return TConcept for concept-like fields */
+@PortedFrom(file="dlVertex.h",name="getConcept")
     public NamedEntry getConcept() {
         return concept;
     }
@@ -237,6 +247,7 @@ public class DLVertex extends DLVertexTagDFS {
     /** set TConcept value to entry
      * 
      * @param p */
+@PortedFrom(file="dlVertex.h",name="setConcept")
     public void setConcept(NamedEntry p) {
         concept = p;
     }
@@ -244,12 +255,14 @@ public class DLVertex extends DLVertexTagDFS {
     /** set a concept (child) to Name-like vertex
      * 
      * @param p */
+@PortedFrom(file="dlVertex.h",name="setChild")
     public void setChild(int p) {
         conceptIndex = p;
     }
 
     /** @param p
      * @return true if dtBad */
+@PortedFrom(file="dlVertex.h",name="addChild")
     public boolean addChild(int p) {
         if (p == bpTOP) {
             return false;
@@ -284,6 +297,7 @@ public class DLVertex extends DLVertexTagDFS {
     }
 
     /** @param dag */
+@PortedFrom(file="dlVertex.h",name="sortEntry")
     public void sortEntry(DLDag dag) {
         if (op != dtAnd) {
             return;
@@ -387,6 +401,7 @@ public class DLVertex extends DLVertexTagDFS {
      * @param b
      * @param g
      * @param pos */
+@PortedFrom(file="dlVertex.h",name="updateStatValues")
     public void updateStatValues(int d, int s, int b, int g, boolean pos) {
         StatIndex.updateStatValues(d, s, b, g, pos, stat);
     }
@@ -396,6 +411,7 @@ public class DLVertex extends DLVertexTagDFS {
      * @param v
      * @param posV
      * @param pos */
+@PortedFrom(file="dlVertex.h",name="updateStatValues")
     public void updateStatValues(DLVertex v, boolean posV, boolean pos) {
         StatIndex.updateStatValues(v, posV, pos, stat);
     }
@@ -403,6 +419,7 @@ public class DLVertex extends DLVertexTagDFS {
     /** increment frequency value
      * 
      * @param pos */
+@PortedFrom(file="dlVertex.h",name="incFreqValue")
     public void incFreqValue(boolean pos) {
         StatIndex.incFreqValue(pos, stat);
     }
@@ -412,6 +429,7 @@ public class DLVertex extends DLVertexTagDFS {
      * 
      * @param i
      * @return stat at position i */
+@PortedFrom(file="dlVertex.h",name="getStat")
     public int getStat(int i) {
         return stat[i];
     }
@@ -420,6 +438,7 @@ public class DLVertex extends DLVertexTagDFS {
      * 
      * @param pos
      * @return depth of queue pos */
+@PortedFrom(file="dlVertex.h",name="getDepth")
     public int getDepth(boolean pos) {
         return StatIndex.getDepth(pos, stat);
     }
@@ -432,125 +451,8 @@ public class DLVertex extends DLVertexTagDFS {
      * 
      * @param pos
      * @return usage */
+@PortedFrom(file="dlVertex.h",name="getUsage")
     public long getUsage(boolean pos) {
         return pos ? posUsage : negUsage;
-    }
-}
-
-@PortedFrom(file = "dlVertex.h", name = "DLVertexTagDFS")
-class DLVertexTagDFS {
-    protected DagTag op; // 17 types
-    /** aux field for DFS in presence of cycles */
-    protected boolean visitedPos = false;
-    /** aux field for DFS in presence of cycles */
-    protected boolean processedPos = false;
-    /** true iff node is involved in cycle */
-    protected boolean inCyclePos = false;
-    /** aux field for DFS in presence of cycles */
-    protected boolean visitedNeg = false;
-    /** aux field for DFS in presence of cycles */
-    protected boolean processedNeg = false;
-    /** true iff node is involved in cycle */
-    protected boolean inCycleNeg = false;
-
-    protected DLVertexTagDFS(DagTag op) {
-        this.op = op;
-    }
-
-    // tag access
-    /** @return tag of the CE */
-    public DagTag getType() {
-        return op;
-    }
-
-    // DFS-related method
-    /** check whether current Vertex is being visited
-     * 
-     * @param pos
-     * @return true if being visited */
-    public boolean isVisited(boolean pos) {
-        return pos ? visitedPos : visitedNeg;
-    }
-
-    /** check whether current Vertex is processed
-     * 
-     * @param pos
-     * @return true if processed */
-    public boolean isProcessed(boolean pos) {
-        return pos ? processedPos : processedNeg;
-    }
-
-    /** set that the node is being visited
-     * 
-     * @param pos */
-    public void setVisited(boolean pos) {
-        if (pos) {
-            visitedPos = true;
-        } else {
-            visitedNeg = true;
-        }
-    }
-
-    /** set that the node' DFS processing is completed
-     * 
-     * @param pos */
-    public void setProcessed(boolean pos) {
-        if (pos) {
-            processedPos = true;
-            visitedPos = false;
-        } else {
-            processedNeg = true;
-            visitedNeg = false;
-        }
-    }
-
-    /** clear DFS flags */
-    public void clearDFS() {
-        processedPos = false;
-        visitedPos = false;
-        processedNeg = false;
-        visitedNeg = false;
-    }
-
-    /** check whether concept is in cycle
-     * 
-     * @param pos
-     * @return true if concept is in cycle */
-    public boolean isInCycle(boolean pos) {
-        return pos ? inCyclePos : inCycleNeg;
-    }
-
-    /** set concept is in cycle
-     * 
-     * @param pos */
-    public void setInCycle(boolean pos) {
-        if (pos) {
-            inCyclePos = true;
-        } else {
-            inCycleNeg = true;
-        }
-    }
-
-    /** cache for the positive entry */
-    protected ModelCacheInterface pCache = null;
-    /** cache for the negative entry */
-    protected ModelCacheInterface nCache = null;
-
-    /** @return cache wrt positive flag
-     * @param pos */
-    public ModelCacheInterface getCache(boolean pos) {
-        return pos ? pCache : nCache;
-    }
-
-    /** set cache wrt positive flag; note that cache is set up only once
-     * 
-     * @param pos
-     * @param p */
-    public void setCache(boolean pos, ModelCacheInterface p) {
-        if (pos) {
-            pCache = p;
-        } else {
-            nCache = p;
-        }
     }
 }

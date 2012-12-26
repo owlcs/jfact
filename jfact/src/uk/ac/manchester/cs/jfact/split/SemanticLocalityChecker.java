@@ -26,6 +26,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
 
     /** @return expression necessary to build query for a given type of an */
     // axiom; @return NULL if none necessary
+@PortedFrom(file="SemanticLocalityChecker.h",name="getExpr")
     protected ConceptExpression getExpr(Axiom axiom) {
         if (axiom instanceof AxiomRelatedTo) {
             return pEM.value(((AxiomRelatedTo) axiom).getRelation(),
@@ -101,6 +102,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
 
     /** init kernel with the ontology signature */
     @Override
+@PortedFrom(file="SemanticLocalityChecker.h",name="preprocessOntology")
     public void preprocessOntology(Collection<Axiom> axioms) {
         TSignature s = new TSignature();
         ExprMap.clear();

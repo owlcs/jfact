@@ -36,11 +36,13 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
     TSignature sig;
 
     /** @return true iff ENTRY is not in signature */
+@PortedFrom(file="tExpressionTranslator.h",name="nc")
     boolean nc(NamedEntity entity) {
         return sig != null && !sig.containsNamedEntity(entity);
     }
 
     /** set internal signature to a given signature S */
+@PortedFrom(file="tExpressionTranslator.h",name="setSignature")
     void setSignature(TSignature s) {
         sig = s;
     }
@@ -77,6 +79,7 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
 
     /** create DLTree of given TAG and named ENTRY; set the entry's ENTITY if */
     // necessary
+@PortedFrom(file="tExpressionTranslator.h",name="matchEntry")
     NamedEntry matchEntry(NamedEntry entry, NamedEntity entity) {
         entry.setEntity(entity);
         entity.setEntry(entry);

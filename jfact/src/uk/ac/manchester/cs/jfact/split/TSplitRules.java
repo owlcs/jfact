@@ -123,12 +123,13 @@ public class TSplitRules {
     }
 
     /** add new split rule */
+@PortedFrom(file="tSplitExpansionRules.h",name="addSplitRule")
     void addSplitRule(Set<NamedEntity> eqSig, Set<NamedEntity> impSig, int bp) {
         Base.add(new TSplitRule(eqSig, impSig, bp));
     }
 
-    /** calculate single entity based on a named entry ENTRY and possible */
-    // signature
+    /** calculate single entity based on a named entry ENTRY and possible signature*/
+@PortedFrom(file="tSplitExpansionRules.h",name="getSingleEntity")
     NamedEntity getSingleEntity(NamedEntry entry) {
         if (entry == null) {
             return null;
@@ -139,25 +140,27 @@ public class TSplitRules {
     }
 
     /** create all the split rules by given split set SPLITS */
+@PortedFrom(file="tSplitExpansionRules.h",name="createSplitRules")
     public void createSplitRules(TSplitVars Splits) {
         for (TSplitVar p : Splits.getEntries()) {
             initSplit(p);
         }
     }
 
-    /** ensure that Map has the same size as DAG, so there would be no access */
-    // violation
+    /** ensure that Map has the same size as DAG, so there would be no access violation*/
+@PortedFrom(file="tSplitExpansionRules.h",name="ensureDagSize")
     public void ensureDagSize(int dagSize) {
         Helper.resize(EntityMap, dagSize);
     }
 
     /** @return named entity corresponding to a given bp */
+@PortedFrom(file="tSplitExpansionRules.h",name="getEntity")
     public NamedEntity getEntity(int bp) {
         return EntityMap.get(bp > 0 ? bp : -bp);
     }
 
-    /** init entity map using given DAG. note that this should be done AFTER */
-    // rule splits are created!
+    /** init entity map using given DAG. note that this should be done AFTER rule splits are created!*/
+@PortedFrom(file="tSplitExpansionRules.h",name="initEntityMap")
     public void initEntityMap(DLDag Dag) {
         int size = Dag.size();
         Helper.resize(EntityMap, size);
@@ -169,6 +172,7 @@ public class TSplitRules {
     }
 
     /** build a set out of signature SIG w/o given ENTITY */
+@PortedFrom(file="tSplitExpansionRules.h",name="buildSet")
     Set<NamedEntity> buildSet(TSignature sig, NamedEntity entity) {
         Set<NamedEntity> set = new HashSet<NamedEntity>();
         // std::cout << "Building set for " << entity.getName() << "\n";
@@ -185,6 +189,7 @@ public class TSplitRules {
     }
 
     /** init split as a set-of-sets */
+@PortedFrom(file="tSplitExpansionRules.h",name="initSplit")
     void initSplit(TSplitVar split) {
         // std::cout << "Processing split for " << split.oldName.getName() <<
         // ":\n";
@@ -217,6 +222,7 @@ public class TSplitRules {
     }
 
     /** prepare start signature */
+@PortedFrom(file="tSplitExpansionRules.h",name="prepareStartSig")
     void prepareStartSig(List<Axiom> Module, TSignature sig, List<NamedEntity> Allowed) {
         // remove all defined concepts from signature
         for (Axiom p : Module) {
@@ -249,6 +255,7 @@ public class TSplitRules {
     }
 
     /** build all the seed signatures */
+@PortedFrom(file="tSplitExpansionRules.h",name="BuildAllSeedSigs")
     void BuildAllSeedSigs(List<NamedEntity> Allowed, TSignature StartSig,
             List<Axiom> Module, Set<TSignature> Out) {
         // copy the signature

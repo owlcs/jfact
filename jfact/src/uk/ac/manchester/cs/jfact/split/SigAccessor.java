@@ -50,11 +50,13 @@ public class SigAccessor extends DLExpressionVisitorAdapter {
     }
 
     /** @return true iff concepts are treated as TOPs */
+@PortedFrom(file="LocalityChecker.h",name="topCLocal")
     public boolean topCLocal() {
         return sig.topCLocal();
     }
 
     /** @return true iff roles are treated as TOPs */
+@PortedFrom(file="LocalityChecker.h",name="topRLocal")
     public boolean topRLocal() {
         return sig.topRLocal();
     }

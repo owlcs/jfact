@@ -20,11 +20,13 @@ public class LogicFeatures {
     private BitSet flags = new BitSet();
 
     /** set any flag */
+@PortedFrom(file="LogicFeature.h",name="setX")
     private void setX(int val) {
         flags.set(val);
     }
 
     /** get value of any flag */
+@PortedFrom(file="LogicFeature.h",name="getX")
     private boolean getX(int val) {
         return flags.get(val);
     }
@@ -38,46 +40,57 @@ public class LogicFeatures {
     }
 
     /** operator add */
+@PortedFrom(file="LogicFeature.h",name="or")
     public void or(LogicFeatures lf) {
         flags.or(lf.flags);
     }
 
+@PortedFrom(file="LogicFeature.h",name="hasInverseRole")
     public boolean hasInverseRole() {
         return getX(lfBothRoles);
     }
 
+@PortedFrom(file="LogicFeature.h",name="hasRoleHierarchy")
     private boolean hasRoleHierarchy() {
         return getX(lfRolesSubsumption);
     }
 
+@PortedFrom(file="LogicFeature.h",name="hasTransitiveRole")
     private boolean hasTransitiveRole() {
         return getX(lfTransitiveRoles);
     }
 
+@PortedFrom(file="LogicFeature.h",name="hasSomeAll")
     public boolean hasSomeAll() {
         return getX(lfSomeConstructor);
     }
 
+@PortedFrom(file="LogicFeature.h",name="hasFunctionalRestriction")
     public boolean hasFunctionalRestriction() {
         return getX(lfFConstructor) || getX(lfFunctionalRoles);
     }
 
+@PortedFrom(file="LogicFeature.h",name="hasNumberRestriction")
     public boolean hasNumberRestriction() {
         return getX(lfNConstructor);
     }
 
+@PortedFrom(file="LogicFeature.h",name="hasQNumberRestriction")
     public boolean hasQNumberRestriction() {
         return getX(lfQConstructor);
     }
 
+@PortedFrom(file="LogicFeature.h",name="hasSingletons")
     public boolean hasSingletons() {
         return getX(lfSingleton);
     }
 
+@PortedFrom(file="LogicFeature.h",name="hasSelfRef")
     public boolean hasSelfRef() {
         return getX(lfSelfRef);
     }
 
+@PortedFrom(file="LogicFeature.h",name="hasTopRole")
     public boolean hasTopRole() {
         return getX(lfTopRole);
     }
@@ -89,6 +102,7 @@ public class LogicFeatures {
     }
 
     /** build bothRoles from single Roles flags */
+@PortedFrom(file="LogicFeature.h",name="mergeRoles")
     public void mergeRoles() {
         if (getX(lfDirectRoles) && getX(lfInverseRoles)) {
             setX(lfBothRoles);
@@ -96,6 +110,7 @@ public class LogicFeatures {
     }
 
     /** allow user to set presence of inverse roles */
+@PortedFrom(file="LogicFeature.h",name="setInverseRoles")
     public void setInverseRoles() {
         setX(lfBothRoles);
     }
@@ -106,12 +121,14 @@ public class LogicFeatures {
         return f;
     }
 
+@PortedFrom(file="LogicFeature.h",name="fillConceptData")
     public void fillConceptData(Concept p) {
         if (p.isSingleton()) {
             setX(lfSingleton);
         }
     }
 
+@PortedFrom(file="LogicFeature.h",name="fillRoleData")
     public void fillRoleData(Role p, boolean both) {
         if (p.isTop()) {
             if (!p.isDataRole()) {
@@ -141,6 +158,7 @@ public class LogicFeatures {
         }
     }
 
+@PortedFrom(file="LogicFeature.h",name="fillDAGData")
     public void fillDAGData(DLVertex v, boolean pos) {
         switch (v.getType()) {
             case dtForall:
@@ -164,6 +182,7 @@ public class LogicFeatures {
         }
     }
 
+@PortedFrom(file="LogicFeature.h",name="writeState")
     public void writeState(LogAdapter l) {
         String NO = "NO ";
         String Q = "qualified ";

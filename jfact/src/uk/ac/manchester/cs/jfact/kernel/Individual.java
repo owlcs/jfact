@@ -27,6 +27,7 @@ public class Individual extends Concept {
 
     /** init told subsumers of the individual by it's description */
     @Override
+@PortedFrom(file="tIndividual.h",name="initToldSubsumers")
     public void initToldSubsumers() {
         toldSubsumers.clear();
         setHasSP(false);
@@ -48,6 +49,7 @@ public class Individual extends Concept {
 
     // related things
     /** update told subsumers from the RELATED axioms in a given range */
+@PortedFrom(file="tIndividual.h",name="updateTold")
     private <T extends Related> void updateTold(List<T> begin, Set<Role> RolesProcessed) {
         for (int i = 0; i < begin.size(); i++) {
             searchTSbyRoleAndSupers(begin.get(i).getRole(), RolesProcessed);
@@ -55,39 +57,46 @@ public class Individual extends Concept {
     }
 
     /** check if individual connected to something with RELATED statement */
+@PortedFrom(file="tIndividual.h",name="isRelated")
     private boolean isRelated() {
         return !relatedIndex.isEmpty();
     }
 
     /** set individual related */
+@PortedFrom(file="tIndividual.h",name="addRelated")
     public void addRelated(Related p) {
         relatedIndex.add(p);
     }
 
     /** add all the related elements from the given P */
+@PortedFrom(file="tIndividual.h",name="addRelated")
     public void addRelated(Individual p) {
         relatedIndex.addAll(p.relatedIndex);
     }
 
     // related map access
     /** @return true if has cache for related individuals via role R */
+@PortedFrom(file="tIndividual.h",name="hasRelatedCache")
     public boolean hasRelatedCache(Role R) {
         return pRelatedMap.containsKey(R);
     }
 
     /** get set of individuals related to THIS via R */
+@PortedFrom(file="tIndividual.h",name="getRelatedCache")
     public List<Individual> getRelatedCache(Role R) {
         assert pRelatedMap.containsKey(R);
         return pRelatedMap.get(R);
     }
 
     /** set the cache of individuals related to THIS via R */
+@PortedFrom(file="tIndividual.h",name="setRelatedCache")
     public void setRelatedCache(Role R, List<Individual> v) {
         assert !pRelatedMap.containsKey(R);
         pRelatedMap.put(R, v);
     }
 
     // TIndividual RELATED-dependent method' implementation
+@PortedFrom(file="tIndividual.h",name="updateToldFromRelated")
     private void updateToldFromRelated() {
         Set<Role> RolesProcessed = new HashSet<Role>();
         updateTold(relatedIndex, RolesProcessed);

@@ -14,5 +14,6 @@ public interface Actor {
     /** @param v
      *            the vertex to act upon
      * @return true if applied */
+@PortedFrom(file="Actor.h",name="apply")
     boolean apply(TaxonomyVertex v);
 }

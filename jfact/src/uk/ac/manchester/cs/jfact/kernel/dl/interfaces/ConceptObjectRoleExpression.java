@@ -13,5 +13,6 @@ import conformance.PortedFrom;
 public interface ConceptObjectRoleExpression extends ConceptExpression, ObjectRoleArg {
     @Override
     /** accept method for the visitor pattern */
+@PortedFrom(file="tDLExpression.h",name="accept")
     void accept(DLExpressionVisitor visitor);
 }

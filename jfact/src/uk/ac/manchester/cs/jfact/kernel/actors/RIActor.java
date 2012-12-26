@@ -18,6 +18,7 @@ import conformance.PortedFrom;
 public class RIActor implements Actor {
     private List<Individual> acc = new ArrayList<Individual>();
 
+@PortedFrom(file="Kernel.cpp",name="tryEntry")
     private boolean tryEntry(ClassifiableEntry p) {
         if (p.isSystem() || !((Concept) p).isSingleton()) {
             return false;
@@ -29,6 +30,7 @@ public class RIActor implements Actor {
     public RIActor() {}
 
     @Override
+@PortedFrom(file="Kernel.cpp",name="apply")
     public boolean apply(TaxonomyVertex v) {
         boolean ret = tryEntry(v.getPrimer());
         for (ClassifiableEntry p : v.begin_syn()) {
@@ -37,6 +39,7 @@ public class RIActor implements Actor {
         return ret;
     }
 
+@PortedFrom(file="Kernel.cpp",name="getAcc")
     public List<Individual> getAcc() {
         return acc;
     }
