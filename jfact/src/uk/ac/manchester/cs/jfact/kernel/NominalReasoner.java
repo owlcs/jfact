@@ -153,6 +153,7 @@ public class NominalReasoner extends DlSatTester {
     }
 
     @Override
+    @PortedFrom(file = "Reasoner.h", name = "isNNApplicable")
     protected boolean isNNApplicable(Role r, int C, int stopper) {
         if (!curNode.isNominalNode()) {
             return false;
@@ -187,6 +188,7 @@ public class NominalReasoner extends DlSatTester {
     }
 
     /** create BC for the barrier */
+    @PortedFrom(file = "Reasoner.h", name = "createBCBarrier")
     private void createBCBarrier() {
         bContext = stack.pushBarrier();
     }

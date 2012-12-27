@@ -58,6 +58,7 @@ public class RAStateTransitions {
     }
 
     /** @return true iff there are no transitions from this state */
+    @PortedFrom(file = "RAutomaton.h", name = "empty")
     public boolean isEmpty() {
         return size == 0;
     }

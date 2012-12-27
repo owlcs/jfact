@@ -10,6 +10,7 @@ import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
 import java.util.Collection;
 
 import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
+import conformance.PortedFrom;
 
 public class DatatypeEntry extends NamedEntry {
     /** corresponding type (Type has null in the field) */
@@ -41,12 +42,14 @@ public class DatatypeEntry extends NamedEntry {
 
     /** get pointer to DAG entry corresponding to the data entry */
     @Override
+    @PortedFrom(file = "taxNamEntry.h", name = "getIndex")
     public int getIndex() {
         return pName;
     }
 
     /** set DAG index of the data entry */
     @Override
+    @PortedFrom(file = "taxNamEntry.h", name = "setIndex")
     public void setIndex(int p) {
         pName = p;
     }

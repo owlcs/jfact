@@ -10,6 +10,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
+import conformance.Original;
 import conformance.PortedFrom;
 
 /** class to translate DAG entities into the TDL* expressions */
@@ -110,15 +111,6 @@ public class TDag2Interface {
         }
     }
 
-    /** build expression by a vertex V given the DATA flag */
-    public Expression buildExpr(DLVertex v, boolean data) {
-        if (data) {
-            return buildDExpr(v);
-        } else {
-            return buildCExpr(v);
-        }
-    }
-
     /** init c'tor */
     public TDag2Interface(DLDag dag, ExpressionManager manager) {
         Dag = dag;
@@ -127,10 +119,12 @@ public class TDag2Interface {
         Helper.resize(TransData, dag.size());
     }
 
+    @Original
     public RoleExpression getDataRoleExpression(Role r) {
         return Manager.dataRole(r.getName());
     }
 
+    @Original
     public RoleExpression getObjectRoleExpression(Role r) {
         return Manager.objectRole(r.getName());
     }

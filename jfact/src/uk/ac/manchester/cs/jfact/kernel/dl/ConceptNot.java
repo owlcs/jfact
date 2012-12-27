@@ -34,6 +34,7 @@ public class ConceptNot implements ConceptExpression, ConceptArg {
 
     /** get access to the argument */
     @Override
+    @PortedFrom(file = "tDLExpression.h", name = "getC")
     public ConceptExpression getConcept() {
         return conceptExpression;
     }

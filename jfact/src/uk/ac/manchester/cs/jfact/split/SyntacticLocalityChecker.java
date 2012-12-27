@@ -7,6 +7,7 @@ import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
+import conformance.Original;
 import conformance.PortedFrom;
 
 /** syntactic locality checker for DL axioms */
@@ -47,12 +48,14 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
     }
 
     @Override
+    @Original
     public TSignature getSignature() {
         return sig;
     }
 
     /** set a new value of a signature (without changing a locality parameters) */
     @Override
+    @Original
     public void setSignatureValue(TSignature Sig) {
         sig = Sig;
         TopEval.sig = sig;
@@ -70,6 +73,7 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
 
     /** load ontology to a given KB */
     @Override
+    @Original
     public void visitOntology(Ontology ontology) {
         for (Axiom p : ontology.getAxioms()) {
             if (p.isUsed()) {
@@ -361,6 +365,7 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
     }
 
     @Override
+    @Original
     public void preprocessOntology(Collection<Axiom> s) {
         sig = new TSignature();
         for (Axiom ax : s) {

@@ -40,6 +40,7 @@ public class ConceptDataMaxCardinality implements ConceptDataCardinalityExpressi
     }
 
     @Override
+    @PortedFrom(file = "tDLExpression.h", name = "getNumber")
     public int getCardinality() {
         return delegate;
     }

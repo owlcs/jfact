@@ -164,6 +164,7 @@ public class KnowledgeExplorer {
     }
 
     /** put into RESULT all the data expressions from the NODE label */
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "getLabel")
     public List<ConceptExpression> getObjectLabel(DlCompletionTree node, boolean onlyDet) {
         // prepare D2I translator
         D2I.ensureDagSize();
@@ -188,6 +189,7 @@ public class KnowledgeExplorer {
         return toReturn;
     }
 
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "getLabel")
     public List<DataExpression> getDataLabel(DlCompletionTree node, boolean onlyDet) {
         // prepare D2I translator
         D2I.ensureDagSize();

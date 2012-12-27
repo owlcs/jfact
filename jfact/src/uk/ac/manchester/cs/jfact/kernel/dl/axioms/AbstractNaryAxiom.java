@@ -29,7 +29,6 @@ public abstract class AbstractNaryAxiom<I extends Expression> extends AxiomImpl 
         delegate.add(v);
     }
 
-
     @Override
     public final void add(Collection<Expression> v) {
         delegate.add(v);
@@ -41,6 +40,7 @@ public abstract class AbstractNaryAxiom<I extends Expression> extends AxiomImpl 
     }
 
     @Override
+    @PortedFrom(file = "tDLExpression.h", name = "begin")
     public final List<I> getArguments() {
         return delegate.getArguments();
     }

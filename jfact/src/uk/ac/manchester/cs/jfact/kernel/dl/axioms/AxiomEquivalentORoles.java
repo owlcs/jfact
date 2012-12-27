@@ -33,5 +33,4 @@ public class AxiomEquivalentORoles extends AbstractNaryAxiom<ObjectRoleExpressio
     public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
-
 }

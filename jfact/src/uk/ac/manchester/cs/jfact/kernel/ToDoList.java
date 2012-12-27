@@ -15,6 +15,7 @@ import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.FastSetSimple;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.SaveStack;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "ToDoList.h", name = "ToDoList")
@@ -76,6 +77,7 @@ public class ToDoList {
         }
 
         /** check if queue empty */
+        @PortedFrom(file = "ToDoList.h", name = "empty")
         public boolean isEmpty() {
             return sPointer == Wait.size();
         }
@@ -250,6 +252,7 @@ public class ToDoList {
         }
     }
 
+    @Original
     public TODOListSaveState getInstance() {
         // return new TODOListSaveState();
         if (nextState == limit) {
@@ -269,12 +272,15 @@ public class ToDoList {
         }
     }
 
+    @Original
     protected boolean saveStateGenerationStarted = false;
 
+    @Original
     public boolean isSaveStateGenerationStarted() {
         return saveStateGenerationStarted;
     }
 
+    @Original
     public void startSaveStateGeneration() {
         saveStateGenerationStarted = true;
         Thread stateFiller = new Thread() {
@@ -355,6 +361,7 @@ public class ToDoList {
     }
 
     /** init priorities via Options */
+    @Original
     public void initPriorities(String Options) {
         matrix.initPriorities(Options, "IAOEFLG");
     }

@@ -31,6 +31,7 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.split.TSplitRules;
 import uk.ac.manchester.cs.jfact.split.TSplitVar;
 import uk.ac.manchester.cs.jfact.split.TSplitVars;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "dlTBox.h", name = "TBox")
@@ -171,6 +172,7 @@ public class TBox {
         return concepts.getList();
     }
 
+    @Original
     public JFactReasonerConfiguration getOptions() {
         return config;
     }
@@ -274,6 +276,7 @@ public class TBox {
     }
 
     /** absorb all axioms */
+    @PortedFrom(file = "dlTBox.h", name = "AbsorbAxioms")
     public void absorbAxioms() {
         int nSynonyms = countSynonyms();
         axioms.absorb();
@@ -340,6 +343,7 @@ public class TBox {
     }
 
     /** init Extra Rule field in concepts given by a vector V with a given INDEX */
+    @PortedFrom(file = "dlTBox.h", name = "initRuleFields")
     public void initRuleFields(List<Concept> v, int index) {
         for (Concept q : v) {
             q.addExtraRule(index);
@@ -383,6 +387,7 @@ public class TBox {
     }
 
     /** print all registered concepts */
+    @PortedFrom(file = "dlTBox.h", name = "PrintConcepts")
     public void printConcepts(LogAdapter o) {
         if (concepts.size() == 0) {
             return;
@@ -394,6 +399,7 @@ public class TBox {
     }
 
     /** print all registered individuals */
+    @PortedFrom(file = "dlTBox.h", name = "PrintIndividuals")
     public void printIndividuals(LogAdapter o) {
         if (individuals.size() == 0) {
             return;
@@ -404,6 +410,7 @@ public class TBox {
         }
     }
 
+    @PortedFrom(file = "dlTBox.h", name = "PrintSimpleRules")
     public void printSimpleRules(LogAdapter o) {
         if (simpleRules.isEmpty()) {
             return;
@@ -421,6 +428,7 @@ public class TBox {
         }
     }
 
+    @PortedFrom(file = "dlTBox.h", name = "PrintAxioms")
     public void printAxioms(LogAdapter o) {
         if (internalisedGeneralAxiom == bpTOP) {
             return;
@@ -650,6 +658,7 @@ public class TBox {
     }
 
     /** individual relation <a,b>:R */
+    @PortedFrom(file = "dlTBox.h", name = "RegisterIndividualRelation")
     public void registerIndividualRelation(NamedEntry a, NamedEntry R, NamedEntry b) {
         if (!this.isIndividual(a.getName()) || !this.isIndividual(b.getName())) {
             throw new ReasonerInternalException("Individual expected in related()");
@@ -705,6 +714,7 @@ public class TBox {
         }
     }
 
+    @PortedFrom(file = "dlTBox.h", name = "setFairnessConstraint")
     public void setFairnessConstraintDLTrees(List<DLTree> l) {
         for (int i = 0; i < l.size(); i++) {
             // build a flag for a FC
@@ -995,6 +1005,7 @@ public class TBox {
         return toReturn;
     }
 
+    @Original
     public int addDatatypeExpressionToHeap(Datatype<?> p) {
         int hostBP = 0;
         DatatypeEntry concept = new DatatypeEntry(p);
@@ -1215,6 +1226,7 @@ public class TBox {
     private AtomicBoolean interrupted;
     private DatatypeFactory datatypeFactory;
 
+    @Original
     public int getNItems() {
         return nItems;
     }
@@ -1404,6 +1416,7 @@ public class TBox {
         dlHeap.setSatOrder();
     }
 
+    @Original
     private void dumpQuery() {
         if (config.getdumpQuery()) {
             // TODO
@@ -1665,6 +1678,7 @@ public class TBox {
         print();
     }
 
+    @PortedFrom(file = "dlTBox.h", name = "PrintDagEntry")
     public void printDagEntry(LogAdapter o, int p) {
         depth++;
         assert isValid(p);
@@ -1743,6 +1757,7 @@ public class TBox {
         }
     }
 
+    @PortedFrom(file = "dlTBox.h", name = "PrintConcept")
     public void printConcept(LogAdapter o, Concept p) {
         if (isValid(p.getpName())) {
             o.print(p.getClassTagPlain().getCTTagName());
@@ -2428,6 +2443,7 @@ public class TBox {
         }
     }
 
+    @PortedFrom(file = "dlTBox.h", name = "CalculateStatistic")
     public void calculateStatistic() {
         int npFull = 0, nsFull = 0;
         int nPC = 0, nNC = 0, nSing = 0;
@@ -2482,6 +2498,7 @@ public class TBox {
                 " synonyms\nThere are ", nSing, " individuals or nominals used\n");
     }
 
+    @PortedFrom(file = "dlTBox.h", name = "RemoveExtraDescriptions")
     public void removeExtraDescriptions() {
         for (Concept pc : concepts.getList()) {
             pc.removeDescription();
@@ -2492,6 +2509,7 @@ public class TBox {
     }
 
     /** set ToDo priorities using local OPTIONS */
+    @Original
     public void setToDoPriorities() {
         stdReasoner.initToDoPriorities();
         if (nomReasoner != null) {
@@ -2666,6 +2684,7 @@ public class TBox {
         }
     }
 
+    @Original
     private DLVertex realSetRelevant(int p) {
         DLVertex v = dlHeap.get(p);
         boolean pos = p > 0;
@@ -2719,18 +2738,22 @@ public class TBox {
                 "range and domain restrictions\n");
     }
 
+    @Original
     public List<List<Individual>> getDifferent() {
         return differentIndividuals;
     }
 
+    @Original
     public List<Related> getRelatedI() {
         return relatedIndividuals;
     }
 
+    @Original
     public DLDag getDLHeap() {
         return dlHeap;
     }
 
+    @Original
     public KBFlags getGCIs() {
         return GCIs;
     }
@@ -2764,6 +2787,7 @@ public class TBox {
         return getTaxonomy().getSplits();
     }
 
+    @Original
     public List<Concept> getFairness() {
         return fairness;
     }

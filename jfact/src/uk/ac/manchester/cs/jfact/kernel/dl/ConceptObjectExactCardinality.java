@@ -40,11 +40,13 @@ public class ConceptObjectExactCardinality implements ConceptObjectCardinalityEx
     }
 
     @Override
+    @PortedFrom(file = "tDLExpression.h", name = "getNumber")
     public int getCardinality() {
         return N;
     }
 
     @Override
+    @PortedFrom(file = "tDLExpression.h", name = "getC")
     public ConceptExpression getConcept() {
         return delegate;
     }

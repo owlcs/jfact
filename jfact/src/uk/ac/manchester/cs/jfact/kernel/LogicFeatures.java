@@ -97,6 +97,7 @@ public class LogicFeatures {
 
     // overall state
     /** check whether no flags are set */
+    @PortedFrom(file = "LogicFeature.h", name = "empty")
     public boolean isEmpty() {
         return flags.isEmpty();
     }
@@ -115,6 +116,7 @@ public class LogicFeatures {
         setX(lfBothRoles);
     }
 
+    @PortedFrom(file = "LogicFeature.h", name = "+")
     public static LogicFeatures plus(LogicFeatures f1, LogicFeatures f2) {
         LogicFeatures f = new LogicFeatures(f1);
         f.flags.or(f2.flags);

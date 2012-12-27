@@ -17,6 +17,7 @@ import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import uk.ac.manchester.cs.jfact.kernel.DagTag;
 import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import conformance.Original;
 import conformance.PortedFrom;
 
 /** @author ignazio Datatype reasoner implementation */
@@ -28,12 +29,11 @@ public final class DataTypeReasoner {
     private final Reference<DepSet> clashDep = new Reference<DepSet>();
     private final JFactReasonerConfiguration options;
 
-    /** set clash dep-set to DEP, report with given REASON; @return true to
-     * simplify callers */
+    /** set clash dep-set to DEP, report with given REASON */
     @PortedFrom(file = "DataReasoning.h", name = "reportClash")
     void reportClash(DepSet dep, String reason) {
-        options.getLog().printTemplate(Templates.CLASH, reason); // inform about
-                                                                 // clash...
+        // inform about clash...
+        options.getLog().printTemplate(Templates.CLASH, reason);
         clashDep.setReference(dep);
     }
 
@@ -44,6 +44,7 @@ public final class DataTypeReasoner {
 
     // managing DTR
     /** add data type to the reasoner */
+    @PortedFrom(file = "DataReasoning.h", name = "registerDataType")
     private <R extends Comparable<R>> DataTypeSituation<R> getType(Datatype<R> p) {
         if (map.containsKey(p)) {
             return (DataTypeSituation<R>) map.get(p);
@@ -53,6 +54,7 @@ public final class DataTypeReasoner {
         return dataTypeAppearance;
     }
 
+    @Original
     private <R extends Comparable<R>> DataTypeSituation<R>
             getType(DatatypeExpression<R> p) {
         return this.getType(p.getHostType());
@@ -100,6 +102,7 @@ public final class DataTypeReasoner {
         }
     }
 
+    @Original
     private <R extends Comparable<R>> boolean dataExpression(boolean positive,
             DatatypeExpression<R> c, DepSet dep) {
         if (c.getKnownFacetValues().isEmpty()) {

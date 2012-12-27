@@ -25,9 +25,10 @@ public interface NAryExpression<Argument extends Expression> {
     void add(Collection<Expression> v);
 
     /** access to members */
+    @PortedFrom(file = "tDLExpression.h", name = "begin")
     List<Argument> getArguments();
 
-    @PortedFrom(file = "tDLAxiom.h", name = "empty")
+    @PortedFrom(file = "tDLExpression.h", name = "empty")
     boolean isEmpty();
 
     @PortedFrom(file = "tDLExpression.h", name = "size")

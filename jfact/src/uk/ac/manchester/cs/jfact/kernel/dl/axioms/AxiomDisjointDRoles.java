@@ -18,7 +18,6 @@ import conformance.PortedFrom;
 /** Data Role disjointness axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDisjointDRoles")
 public class AxiomDisjointDRoles extends AbstractNaryAxiom<DataRoleExpression> {
-
     public AxiomDisjointDRoles(OWLAxiom ax, List<Expression> v) {
         super(ax, v);
     }

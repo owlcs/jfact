@@ -14,6 +14,7 @@ import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.kernel.dl.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 import uk.ac.manchester.cs.jfact.kernel.voc.Vocabulary;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "tExpressionManager.h", name = "TExpressionManager")
@@ -136,28 +137,16 @@ public class ExpressionManager {
     }
 
     // top/bottom roles
-    /** @return true iff R is a top object role */
+    /** @return true iff R is a top data/object role */
     @PortedFrom(file = "tExpressionManager.h", name = "isUniversalRole")
-    public boolean isUniversalRole(ObjectRoleComplexExpression R) {
-        return R.equals(objectRoleTop);
+    public boolean isUniversalRole(RoleExpression R) {
+        return R.equals(dataRoleTop) || R.equals(objectRoleTop);
     }
 
-    /** @return true iff R is a top data role */
-    @PortedFrom(file = "tExpressionManager.h", name = "isUniversalRole")
-    public boolean isUniversalRole(DataRoleExpression R) {
-        return R.equals(dataRoleTop);
-    }
-
-    /** @return true iff R is a bottom object role */
+    /** @return true iff R is a bottom data/object role */
     @PortedFrom(file = "tExpressionManager.h", name = "isEmptyRole")
-    public boolean isEmptyRole(ObjectRoleComplexExpression R) {
-        return R.equals(objectRoleBottom);
-    }
-
-    /** @return true iff R is a bottom data role */
-    @PortedFrom(file = "tExpressionManager.h", name = "isEmptyRole")
-    public boolean isEmptyRole(DataRoleExpression R) {
-        return R.equals(dataRoleBottom);
+    public boolean isEmptyRole(RoleExpression R) {
+        return R.equals(dataRoleBottom) || R.equals(objectRoleBottom);
     }
 
     /** get number of registered concepts */
@@ -203,6 +192,7 @@ public class ExpressionManager {
     }
 
     /** get negation of a concept C */
+    @PortedFrom(file = "tExpressionManager.h", name = "Not")
     public ConceptExpression not(ConceptExpression C) {
         return new ConceptNot(C);
     }
@@ -235,6 +225,7 @@ public class ExpressionManager {
 
     /** get an n-ary one-of expression; take the arguments from the last argument
      * list */
+    @PortedFrom(file = "tExpressionManager.h", name = "OneOf")
     public ConceptExpression oneOf(List<Expression> l) {
         if (l.size() == 1) {
             IndividualExpression i = (IndividualExpression) l.get(0);
@@ -254,11 +245,13 @@ public class ExpressionManager {
     }
 
     /** @return concept {I} for the individual I */
+    @PortedFrom(file = "tExpressionManager.h", name = "OneOf")
     public ConceptExpression oneOf(IndividualExpression I) {
         return oneOf(Arrays.<Expression> asList(I));
     }
 
     /** get self-reference restriction of an object role R */
+    @PortedFrom(file = "tExpressionManager.h", name = "SelfReference")
     public ConceptExpression selfReference(ObjectRoleExpression R) {
         return new ConceptObjectSelf(R);
     }
@@ -270,17 +263,20 @@ public class ExpressionManager {
     }
 
     /** get existential restriction wrt an object role R and a concept C */
+    @PortedFrom(file = "tExpressionManager.h", name = "Exists")
     public ConceptExpression exists(ObjectRoleExpression R, ConceptExpression C) {
         return new ConceptObjectExists(R, C);
     }
 
     /** get universal restriction wrt an object role R and a concept C */
+    @PortedFrom(file = "tExpressionManager.h", name = "Forall")
     public ConceptExpression forall(ObjectRoleExpression R, ConceptExpression C) {
         return new ConceptObjectForall(R, C);
     }
 
     /** get min cardinality restriction wrt number N, an object role R and a
      * concept C */
+    @PortedFrom(file = "tExpressionManager.h", name = "MinCardinality")
     public ConceptExpression minCardinality(int n, ObjectRoleExpression R,
             ConceptExpression C) {
         return new ConceptObjectMinCardinality(n, R, C);
@@ -288,6 +284,7 @@ public class ExpressionManager {
 
     /** get max cardinality restriction wrt number N, an object role R and a
      * concept C */
+    @PortedFrom(file = "tExpressionManager.h", name = "MaxCardinality")
     public ConceptExpression maxCardinality(int n, ObjectRoleExpression R,
             ConceptExpression C) {
         return new ConceptObjectMaxCardinality(n, R, C);
@@ -308,17 +305,20 @@ public class ExpressionManager {
     }
 
     /** get existential restriction wrt a data role R and a data expression E */
+    @PortedFrom(file = "tExpressionManager.h", name = "Exists")
     public ConceptExpression exists(DataRoleExpression R, DataExpression E) {
         return new ConceptDataExists(R, E);
     }
 
     /** get universal restriction wrt a data role R and a data expression E */
+    @PortedFrom(file = "tExpressionManager.h", name = "Forall")
     public ConceptExpression forall(DataRoleExpression R, DataExpression E) {
         return new ConceptDataForall(R, E);
     }
 
     /** get min cardinality restriction wrt number N, a data role R and a data
      * expression E */
+    @PortedFrom(file = "tExpressionManager.h", name = "MinCardinality")
     public ConceptExpression
             minCardinality(int n, DataRoleExpression R, DataExpression E) {
         return new ConceptDataMinCardinality(n, R, E);
@@ -326,6 +326,7 @@ public class ExpressionManager {
 
     /** get max cardinality restriction wrt number N, a data role R and a data
      * expression E */
+    @PortedFrom(file = "tExpressionManager.h", name = "MaxCardinality")
     public ConceptExpression
             maxCardinality(int n, DataRoleExpression R, DataExpression E) {
         return new ConceptDataMaxCardinality(n, R, E);
@@ -347,37 +348,44 @@ public class ExpressionManager {
 
     // object roles
     /** get TOP object role */
+    @PortedFrom(file = "tExpressionManager.h", name = "ObjectRoleTop")
     public ObjectRoleExpression objectRoleTop() {
         return objectRoleTop;
     }
 
     /** get BOTTOM object role */
+    @PortedFrom(file = "tExpressionManager.h", name = "ObjectRoleBottom")
     public ObjectRoleExpression objectRoleBottom() {
         return objectRoleBottom;
     }
 
     /** get named object role */
+    @PortedFrom(file = "tExpressionManager.h", name = "ObjectRole")
     public ObjectRoleExpression objectRole(String name) {
         return objectRoleNameset.insert(name);
     }
 
     /** get a role chain corresponding to R1 o ... o Rn; take the arguments from
      * the last argument list */
+    @PortedFrom(file = "tExpressionManager.h", name = "Compose")
     public ObjectRoleComplexExpression compose(List<Expression> l) {
         return new ObjectRoleChain(l);
     }
 
+    @PortedFrom(file = "tExpressionManager.h", name = "Compose")
     public ObjectRoleComplexExpression compose(Expression e1, Expression e2) {
         return new ObjectRoleChain(Arrays.asList(e1, e2));
     }
 
     /** get a expression corresponding to R projected from C */
+    @PortedFrom(file = "tExpressionManager.h", name = "ProjectFrom")
     public ObjectRoleComplexExpression projectFrom(ObjectRoleExpression R,
             ConceptExpression C) {
         return new ObjectRoleProjectionFrom(R, C);
     }
 
     /** get a expression corresponding to R projected into C */
+    @PortedFrom(file = "tExpressionManager.h", name = "ProjectInto")
     public ObjectRoleComplexExpression projectInto(ObjectRoleExpression R,
             ConceptExpression C) {
         return new ObjectRoleProjectionInto(R, C);
@@ -385,53 +393,63 @@ public class ExpressionManager {
 
     // data roles
     /** get TOP data role */
+    @PortedFrom(file = "tExpressionManager.h", name = "DataRoleTop")
     public DataRoleExpression dataRoleTop() {
         return dataRoleTop;
     }
 
     /** get BOTTOM data role */
+    @PortedFrom(file = "tExpressionManager.h", name = "DataRoleBottom")
     public DataRoleExpression dataRoleBottom() {
         return dataRoleBottom;
     }
 
     /** get named data role */
+    @PortedFrom(file = "tExpressionManager.h", name = "DataRole")
     public DataRoleExpression dataRole(String name) {
         return dataRoleNameset.insert(name);
     }
 
     // data expressions
     /** get TOP data element */
+    @PortedFrom(file = "tExpressionManager.h", name = "DataTop")
     public DataExpression dataTop() {
         return dataTop;
     }
 
     /** get BOTTOM data element */
+    @PortedFrom(file = "tExpressionManager.h", name = "DataBottom")
     public DataExpression dataBottom() {
         return dataBottom;
     }
 
     /** get basic string data type */
+    @Original
     public String getDataTop() {
         // XXX there is no link between TDLDataTop and the uri
         return Vocabulary.LITERAL;
     }
 
     /** get negation of a data expression E */
+    @PortedFrom(file = "tExpressionManager.h", name = "DataNot")
     public DataExpression dataNot(DataExpression E) {
         return new DataNot(E);
     }
 
     /** get an n-ary data conjunction expression */
+    @PortedFrom(file = "tExpressionManager.h", name = "DataAnd")
     public DataExpression dataAnd(List<Expression> l) {
         return new DataAnd(l);
     }
 
     /** get an n-ary data disjunction expression */
+    @PortedFrom(file = "tExpressionManager.h", name = "DataOr")
     public DataExpression dataOr(List<Expression> l) {
         return new DataOr(l);
     }
 
     /** get an n-ary data one-of expression */
+    @PortedFrom(file = "tExpressionManager.h", name = "DataOneOf")
     public DataExpression dataOneOf(List<Expression> l) {
         return new DataOneOf(l);
     }

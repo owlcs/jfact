@@ -35,10 +35,12 @@ public class AxiomConceptInclusion extends AxiomImpl {
         return visitor.visit(this);
     }
 
+    @PortedFrom(file = "tDLAxiom.h", name = "getSubC")
     public ConceptExpression getSubConcept() {
         return subConcept;
     }
 
+    @PortedFrom(file = "tDLAxiom.h", name = "getSupC")
     public ConceptExpression getSupConcept() {
         return superConcept;
     }

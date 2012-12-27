@@ -6,6 +6,7 @@ import java.util.List;
 
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
+import conformance.Original;
 import conformance.PortedFrom;
 
 /** atomical decomposer of the ontology */
@@ -135,6 +136,7 @@ public class AtomicDecomposer {
         return atom;
     }
 
+    @Original
     public List<Axiom> getTautologies() {
         return new ArrayList<Axiom>(Tautologies);
     }

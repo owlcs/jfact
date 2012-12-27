@@ -18,7 +18,6 @@ import conformance.PortedFrom;
 /** Concept disjointness axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDisjointConcepts")
 public class AxiomDisjointConcepts extends AbstractNaryAxiom<ConceptExpression> {
-
     public AxiomDisjointConcepts(OWLAxiom ax, List<Expression> v) {
         super(ax, v);
     }
@@ -34,5 +33,4 @@ public class AxiomDisjointConcepts extends AbstractNaryAxiom<ConceptExpression> 
     public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
-
 }

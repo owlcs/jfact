@@ -183,6 +183,7 @@ public class DlCompletionGraph {
     }
 
     /** print proper indentation */
+    @PortedFrom(file = "dlCompletionGraph.h", name = "PrintIndent")
     private void printIndent(LogAdapter o) {
         o.print("\n|");
         for (int i = 1; i < cgpIndent; ++i) {
@@ -360,7 +361,11 @@ public class DlCompletionGraph {
     /** add role R with dep-set DEP to the label of the TO arc */
     @PortedFrom(file = "dlCompletionGraph.h", name = "addRoleLabel")
     public DlCompletionTreeArc addRoleLabel(DlCompletionTree from, DlCompletionTree to,
-            boolean isPredEdge, Role R, // name of role (arc label)
+            boolean isPredEdge, Role R, // name
+                                        // of
+                                        // role
+                                        // (arc
+                                        // label)
             DepSet dep) // dep-set of the arc label
     {
         // check if GCraph already has FROM.TO edge labelled with RNAME
@@ -378,7 +383,11 @@ public class DlCompletionGraph {
     /** Create an empty R-neighbour of FROM; @return an edge to created node */
     @PortedFrom(file = "dlCompletionGraph.h", name = "createNeighbour")
     public DlCompletionTreeArc createNeighbour(DlCompletionTree from, boolean isPredEdge,
-            Role r, // name of role (arc label)
+            Role r, // name
+                    // of
+                    // role
+                    // (arc
+                    // label)
             DepSet dep) // dep-set of the arc label
     {
         if (pReasoner.getOptions().isRKG_IMPROVE_SAVE_RESTORE_DEPSET()) {
@@ -691,6 +700,7 @@ public class DlCompletionGraph {
         o.print("\n");
     }
 
+    @PortedFrom(file = "dlCompletionGraph.h", name = "PrintEdge")
     private void printEdge(List<DlCompletionTreeArc> l, int pos,
             DlCompletionTreeArc _edge, DlCompletionTree parent, LogAdapter o) {
         DlCompletionTreeArc edge = _edge;
@@ -717,6 +727,7 @@ public class DlCompletionGraph {
         }
     }
 
+    @PortedFrom(file = "dlCompletionGraph.h", name = "PrintNode")
     private void printNode(DlCompletionTree node, LogAdapter o) {
         if (cgpIndent > 0) {
             printIndent(o);

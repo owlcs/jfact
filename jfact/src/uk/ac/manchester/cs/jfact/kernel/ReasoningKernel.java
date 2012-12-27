@@ -38,6 +38,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.split.*;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "Kernel.h", name = "ReasoningKernel")
@@ -63,6 +64,7 @@ public class ReasoningKernel {
     // values to propagate to the new KB in case of clearance
     private AtomicBoolean interrupted;
 
+    @Original
     public void setInterruptedSwitch(AtomicBoolean b) {
         interrupted = b;
     }
@@ -1328,12 +1330,13 @@ public class ReasoningKernel {
         // return getTBox().buildCompletionTree(cachedConcept);
     }
 
+    @Original
     public KnowledgeExplorer getKnowledgeExplorer() {
         return KE;
     }
 
-    /** build the set of data neighbours of a NODE, put the set of data roles */
-    // into the RESULT variable
+    /** build the set of data neighbours of a NODE, put the set of data roles
+     * into the RESULT variable */
     @PortedFrom(file = "Kernel.h", name = "getDataRoles")
     public Set<RoleExpression> getDataRoles(DlCompletionTree node, boolean onlyDet) {
         return KE.getDataRoles(node, onlyDet);
@@ -1356,12 +1359,14 @@ public class ReasoningKernel {
                 getRole(role, "Role expression expected in getNeighbours() method"));
     }
 
-    /** put into RESULT all the expressions from the NODE label; if ONLYDET is */
-    // true, return only deterministic elements
+    /** put into RESULT all the expressions from the NODE label; if ONLYDET is
+     * true, return only deterministic elements */
+    @PortedFrom(file = "Kernel.h", name = "getLabel")
     public List<ConceptExpression> getObjectLabel(DlCompletionTree node, boolean onlyDet) {
         return KE.getObjectLabel(node, onlyDet);
     }
 
+    @PortedFrom(file = "Kernel.h", name = "getLabel")
     public List<DataExpression> getDataLabel(DlCompletionTree node, boolean onlyDet) {
         return KE.getDataLabel(node, onlyDet);
     }
@@ -1507,6 +1512,7 @@ public class ReasoningKernel {
     }
 
     // do realisation
+    @PortedFrom(file = "Kernel.h", name = "realiseKB")
     private void realise() {
         if (!pTBox.isConsistent()) {
             return;
@@ -1644,6 +1650,7 @@ public class ReasoningKernel {
         return AD.getAOS().get(index).getAtomAxioms();
     }
 
+    @Original
     public List<Axiom> getTautologies() {
         return AD.getTautologies();
     }
@@ -1724,76 +1731,10 @@ public class ReasoningKernel {
 
     // all-disjoint query implementation
     @PortedFrom(file = "Kernel.h", name = "isDisjointRoles")
-    public boolean isDisjointRoles(List<Expression> l) {
-        // grab all roles from the arg-list
-        // List<TDLExpression> Disj = getExpressionManager().getArgList();
-        List<Role> Roles = new ArrayList<Role>(l.size());
-        int nTopRoles = 0;
-        for (Expression p : l) {
-            if (p instanceof ObjectRoleExpression) {
-                Role R = getRole((RoleExpression) p,
-                        "Role expression expected in isDisjointRoles()");
-                if (R.isBottom()) {
-                    continue;
-                }
-                if (R.isTop()) {
-                    nTopRoles++;
-                } else {
-                    Roles.add(R);
-                }
-            } else {
-                throw new ReasonerInternalException(
-                        "Role expression expected in isDisjointRoles()");
-            }
-        }
-        // deal with top-roles
-        if (nTopRoles > 0) {
-            if (nTopRoles > 1 || !Roles.isEmpty()) {
-                return false;   // universal role is not disjoint with anything
-                              // but the bottom role
-            } else {
-                return true;
-            }
-        }
-        // test pair-wise disjointness
-        for (int i = 0; i < Roles.size() - 1; i++) {
-            for (int j = i + 1; j < Roles.size(); j++) {
-                if (!getTBox().isDisjointRoles(Roles.get(i), Roles.get(j))) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    public boolean isDisjointDataRoles(List<DataRoleExpression> l) {
+    public boolean isDisjointRoles(List<? extends RoleExpression> l) {
         // grab all roles from the arg-list
         List<Role> Roles = new ArrayList<Role>(l.size());
-        for (DataRoleExpression p : l) {
-            if (getExpressionManager().isUniversalRole(p)) {
-                return false; // universal role is not disjoint with anything
-            }
-            if (getExpressionManager().isEmptyRole(p)) {
-                continue; // empty role is disjoint with everything
-            }
-            Roles.add(getRole(p, "Role expression expected in isDisjointRoles()"));
-        }
-        // test pair-wise disjointness
-        for (int i = 0; i < Roles.size() - 1; i++) {
-            for (int j = i + 1; j < Roles.size(); j++) {
-                if (!getTBox().isDisjointRoles(Roles.get(i), Roles.get(j))) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    public boolean isDisjointObjectRoles(List<ObjectRoleExpression> l) {
-        // grab all roles from the arg-list
-        // List<TDLExpression> Disj = getExpressionManager().getArgList();
-        List<Role> Roles = new ArrayList<Role>(l.size());
-        for (ObjectRoleExpression p : l) {
+        for (RoleExpression p : l) {
             if (getExpressionManager().isUniversalRole(p)) {
                 return false; // universal role is not disjoint with anything
             }
@@ -1864,4 +1805,3 @@ public class ReasoningKernel {
         return false;
     }
 }
-

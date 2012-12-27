@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
+import conformance.Original;
 import conformance.PortedFrom;
 
 /* This file is part of the JFact DL reasoner
@@ -12,28 +13,34 @@ public class KBFlags {
     private boolean GCI, RnD, Reflexive;
 
     /** flag for GCIs */
+    @Original
     public boolean isGCI() {
         return GCI;
     }
 
+    @Original
     public void setGCI(boolean action) {
         GCI = action;
     }
 
     /** flag for Range and Domain axioms */
+    @Original
     public boolean isRnD() {
         return RnD;
     }
 
+    @Original
     public void setRnD() {
         RnD = true;
     }
 
     /** flag for Reflexive roles */
+    @Original
     public boolean isReflexive() {
         return Reflexive;
     }
 
+    @Original
     public void setReflexive(boolean action) {
         Reflexive = action;
     }

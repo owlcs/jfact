@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.*;
 
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "tIndividual.h", name = "TIndividual")
@@ -102,14 +103,17 @@ public class Individual extends Concept {
         updateTold(relatedIndex, RolesProcessed);
     }
 
+    @Original
     public DlCompletionTree getNode() {
         return node;
     }
 
+    @Original
     public void setNode(DlCompletionTree node) {
         this.node = node;
     }
 
+    @Original
     public List<Related> getRelatedIndex() {
         return relatedIndex;
     }

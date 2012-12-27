@@ -11,10 +11,12 @@ import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 import java.util.*;
 
 import uk.ac.manchester.cs.jfact.helpers.*;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "ConceptWithDep.h", name = "Concept")
 public class Concept extends ClassifiableEntry {
+    @Original
     public static Concept getBOTTOM() {
         Concept toReturn = new Concept("BOTTOM");
         toReturn.setBottom();
@@ -24,6 +26,7 @@ public class Concept extends ClassifiableEntry {
         return toReturn;
     }
 
+    @Original
     public static Concept getTOP() {
         Concept toReturn = new Concept("TOP");
         toReturn.setTop();
@@ -35,6 +38,7 @@ public class Concept extends ClassifiableEntry {
         return toReturn;
     }
 
+    @Original
     public static Concept getTEMP() {
         Concept TEMP = new Concept(" ");
         TEMP.setId(-1);
@@ -127,10 +131,12 @@ public class Concept extends ClassifiableEntry {
     }
 
     /** iterator for accessing DJ elements */
+    @PortedFrom(file = "tConcept.h", name = "er_begin")
     public FastSet getExtraRules() {
         return extraRules;
     }
 
+    @Original
     public CTTag getClassTagPlain() {
         return classTag;
     }
@@ -254,6 +260,7 @@ public class Concept extends ClassifiableEntry {
         }
     }
 
+    @Original
     public void addLeaves(Collection<DLTree> Desc) {
         // assert this.isPrimitive();
         if (description == null) {
@@ -321,6 +328,7 @@ public class Concept extends ClassifiableEntry {
 
     private static EnumSet<Token> replacements = EnumSet.of(CNAME, INAME, RNAME, DNAME);
 
+    @Original
     public void push(LinkedList<DLTree> stack, DLTree current) {
         // push subtrees: stack size increases by one or two, or current is a
         // leaf
@@ -331,6 +339,7 @@ public class Concept extends ClassifiableEntry {
         }
     }
 
+    @PortedFrom(file = "tConcept.h", name = "replaceSelfWithConst")
     private DLTree replaceWithConstOld(DLTree t) {
         if (t == null) {
             return null;
@@ -394,6 +403,7 @@ public class Concept extends ClassifiableEntry {
         return false;
     }
 
+    @PortedFrom(file = "tConcept.h", name = "SearchTSbyRole")
     private void searchTSbyRole(Role R, Set<Role> rolesProcessed) {
         if (rolesProcessed.contains(R)) {
             return;
@@ -406,6 +416,7 @@ public class Concept extends ClassifiableEntry {
         this.initToldSubsumers(Domain, rolesProcessed);
     }
 
+    @PortedFrom(file = "tConcept.h", name = "SearchTSbyRoleAndSupers")
     public void searchTSbyRoleAndSupers(Role r, Set<Role> RolesProcessed) {
         searchTSbyRole(r, RolesProcessed);
         List<Role> list = r.getAncestor();
@@ -448,83 +459,105 @@ public class Concept extends ClassifiableEntry {
         pName = pBody = bpINVALID;
     }
 
+    @Original
     public int getpName() {
         return pName;
     }
 
+    @Original
     public void setpName(int pName) {
         this.pName = pName;
     }
 
+    @Original
     public int getpBody() {
         return pBody;
     }
 
+    @Original
     public void setpBody(int pBody) {
         this.pBody = pBody;
     }
 
+    @Original
     public DLTree getDescription() {
         return description;
     }
 
+    @Original
     public int getTsDepth() {
         return tsDepth;
     }
 
+    @Original
     private void setTsDepth(int tsDepth) {
         this.tsDepth = tsDepth;
     }
 
+    @Original
     public LogicFeatures getNegFeatures() {
         return negFeatures;
     }
 
+    @Original
     public LogicFeatures getPosFeatures() {
         return posFeatures;
     }
 
+    @Original
     private void setClassTag(CTTag classTag) {
         this.classTag = classTag;
     }
 
+    @Original
     private boolean primitive;
 
+    @Original
     public boolean isPrimitive() {
         return primitive;
     }
 
+    @Original
     public void setPrimitive(boolean action) {
         primitive = action;
     }
 
+    @Original
     private boolean hasSP;
 
     /** a HasSingletonParent flag */
+    @Original
     public boolean isHasSP() {
         return hasSP;
     }
 
+    @Original
     public void setHasSP(boolean action) {
         hasSP = action;
     }
 
+    @Original
     private boolean nominal;
 
+    @Original
     public boolean isNominal() {
         return nominal;
     }
 
+    @Original
     public void setNominal(boolean action) {
         nominal = action;
     }
 
+    @Original
     private boolean singleton;
 
+    @Original
     public boolean isSingleton() {
         return singleton;
     }
 
+    @Original
     public void setSingleton(boolean action) {
         singleton = action;
     }

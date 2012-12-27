@@ -10,5 +10,6 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDLExpression.h", name = "TNumberArg")
 public interface NumberArg {
     /** get access to the argument */
+    @PortedFrom(file = "tDLExpression.h", name = "getNumber")
     int getCardinality();
 }

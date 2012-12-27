@@ -37,10 +37,8 @@ public class AxiomDisjointUnion extends AbstractNaryAxiom<ConceptExpression> {
         return visitor.visit(this);
     }
 
-
     @PortedFrom(file = "tDLAxiom.h", name = "getC")
     public ConceptExpression getC() {
         return conceptExpression;
     }
-
 }

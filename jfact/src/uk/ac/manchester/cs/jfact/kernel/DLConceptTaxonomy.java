@@ -53,8 +53,6 @@ public class DLConceptTaxonomy extends Taxonomy {
         }
     }
 
-    /** set of split vars */
-    TSplitVars Splits;
     /** flag shows that subsumption check could be simplified */
     boolean inSplitCheck;
     /** host tBox */
@@ -168,6 +166,9 @@ public class DLConceptTaxonomy extends Taxonomy {
         inSplitCheck = false;
     }
 
+    /** set of split vars */
+    TSplitVars Splits;
+
     /** process all splits */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "processSplits")
     void processSplits() {
@@ -177,11 +178,13 @@ public class DLConceptTaxonomy extends Taxonomy {
     }
 
     /** set split vars */
+    @PortedFrom(file = "dlTBox.h", name = "setSplitVars")
     void setSplitVars(TSplitVars s) {
         Splits = s;
     }
 
     /** get access to split vars */
+    @PortedFrom(file = "dlTBox.h", name = "getSplitVars")
     TSplitVars getSplits() {
         return Splits;
     }

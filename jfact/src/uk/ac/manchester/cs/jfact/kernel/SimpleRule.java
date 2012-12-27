@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
+import conformance.Original;
 import conformance.PortedFrom;
 
 /** class for simple rules like Ch :- Cb1, Cbi, CbN; all C are primitive named
@@ -30,14 +31,17 @@ class SimpleRule {
         return Reasoner.applicable(this);
     }
 
+    @Original
     public List<Concept> getBody() {
         return simpleRuleBody;
     }
 
+    @Original
     public void setBpHead(int bpHead) {
         this.bpHead = bpHead;
     }
 
+    @Original
     public int getBpHead() {
         return bpHead;
     }

@@ -12,6 +12,7 @@ import java.util.List;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.ArrayIntMap;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "CWDArray.h", name = "CWDArray")
@@ -35,15 +36,18 @@ public class CWDArray {
         size = 0;
     }
 
+    @PortedFrom(file = "CWDArray.h", name = "begin")
     public List<ConceptWDep> getBase() {
         return base;
     }
 
+    @Original
     public ArrayIntMap getContainedConcepts() {
         return indexes;
     }
 
     /** adds concept P to a label - to be called only from CGLabel */
+    @Original
     protected void private_add(ConceptWDep p) {
         base.add(p);
         size++;
@@ -72,6 +76,7 @@ public class CWDArray {
         }
     }
 
+    @Original
     private void initCache() {
         cache = new BitSet();
         for (int i = 0; i < indexes.size(); i++) {
@@ -79,6 +84,7 @@ public class CWDArray {
         }
     }
 
+    @Original
     int asPositive(int p) {
         return p >= 0 ? 2 * p : 1 - 2 * p;
     }
@@ -105,6 +111,7 @@ public class CWDArray {
         return base.get(i).getDep();
     }
 
+    @Original
     public ConceptWDep getConceptWithBP(int bp) {
         // check that the index actually exist: quicker
         if (cache != null && !cache.get(asPositive(bp))) {
@@ -122,6 +129,7 @@ public class CWDArray {
         return size;
     }
 
+    @PortedFrom(file = "CWDArray.h", name = "<=")
     public boolean lesserequal(CWDArray label) {
         // use the cache on the label if there is one
         if (label.cache != null) {

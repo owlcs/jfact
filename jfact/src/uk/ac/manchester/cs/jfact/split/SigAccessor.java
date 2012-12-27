@@ -5,6 +5,7 @@ import uk.ac.manchester.cs.jfact.datatypes.cardinality;
 import uk.ac.manchester.cs.jfact.kernel.dl.DataTop;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorAdapter;
+import conformance.Original;
 import conformance.PortedFrom;
 
 /** helper class to set signature and locality class */
@@ -13,11 +14,13 @@ public class SigAccessor extends DLExpressionVisitorAdapter {
     /** signature of a module */
     TSignature sig;
 
+    @Original
     public void setSignature(TSignature s) {
         sig = s;
     }
 
     /** @return true iff EXPR is a top datatype */
+    @Original
     static boolean isTopDT(Expression expr) {
         return expr instanceof DataTop;
     }
@@ -34,12 +37,14 @@ public class SigAccessor extends DLExpressionVisitorAdapter {
     // return isTopDT(expr);
     // }
     /** @return true iff EXPR is a top datatype or a built-in datatype; */
+    @Original
     public boolean isTopOrBuiltInDataType(Expression expr) {
         return isTopDT(expr) || expr instanceof Datatype<?>;
     }
 
     /** @return true iff EXPR is a top datatype or an infinite built-in */
     // datatype; FIXME add real/fraction later
+    @Original
     public boolean isTopOrBuiltInInfDataType(Expression expr) {
         if (isTopDT(expr)) {
             return true;

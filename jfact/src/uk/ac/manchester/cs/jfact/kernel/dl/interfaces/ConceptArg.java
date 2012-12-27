@@ -10,5 +10,6 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDLExpression.h", name = "TConceptArg")
 public interface ConceptArg {
     /** get access to the argument */
+    @PortedFrom(file = "tDLExpression.h", name = "getC")
     ConceptExpression getConcept();
 }

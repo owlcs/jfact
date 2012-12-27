@@ -45,6 +45,7 @@ public class RATransition {
     }
 
     /** give a point of the transition */
+    @PortedFrom(file = "RAutomaton.h", name = "final")
     public int final_state() {
         return state;
     }
@@ -62,6 +63,7 @@ public class RATransition {
     }
 
     /** check whether transition is empty */
+    @PortedFrom(file = "RAutomaton.h", name = "empty")
     public boolean isEmpty() {
         return label.isEmpty();
     }

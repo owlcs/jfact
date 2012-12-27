@@ -461,7 +461,6 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
         testSubject0.initToDoPriorities();
         ModelCacheInterface result8 = testSubject0.createCache(1, mock(FastSet.class));
         boolean result9 = testSubject0.hasNominals();
-        testSubject0.setDuringClassification(true);
         boolean result10 = testSubject0.setupEdge(mock(DlCompletionTreeArc.class),
                 mock(DepSet.class), 1);
         boolean result11 = testSubject0.findConcept(mock(CWDArray.class), 1);
@@ -868,7 +867,6 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
         float result9 = testSubject0.printReasoningTime(mock(LogAdapter.class));
         testSubject0.initToDoPriorities();
         ModelCacheInterface result10 = testSubject0.createCache(1, mock(FastSet.class));
-        testSubject0.setDuringClassification(true);
         boolean result11 = testSubject0.setupEdge(mock(DlCompletionTreeArc.class),
                 mock(DepSet.class), 1);
         boolean result12 = testSubject0.findConcept(mock(CWDArray.class), 1);
@@ -1151,8 +1149,6 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
         KnowledgeExplorer result73 = testSubject0.getKnowledgeExplorer();
         boolean result74 = testSubject0.isSubChain(
                 mock(ObjectRoleComplexExpression.class), mock(List.class));
-        boolean result75 = testSubject0.isDisjointDataRoles(mock(List.class));
-        boolean result76 = testSubject0.isDisjointObjectRoles(mock(List.class));
         String result77 = testSubject0.toString();
     }
 
@@ -1536,7 +1532,6 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_kernel {
         ConceptExpression result4 = testSubject0.buildCExpr(mock(DLVertex.class));
         DataExpression result5 = testSubject0.getDExpr(1);
         DataExpression result6 = testSubject0.buildDExpr(mock(DLVertex.class));
-        Expression result7 = testSubject0.buildExpr(mock(DLVertex.class), true);
         String result8 = testSubject0.toString();
     }
 

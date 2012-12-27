@@ -209,6 +209,7 @@ public class RoleMaster {
         useUndefinedNames = val;
     }
 
+    @PortedFrom(file = "RoleMaster.h", name = "begin")
     public List<Role> getRoles() {
         return roles.subList(firstRoleIndex, roles.size());
     }
@@ -219,6 +220,7 @@ public class RoleMaster {
         return pTax;
     }
 
+    @PortedFrom(file = "RoleMaster.h", name = "Print")
     public void print(LogAdapter o, String type) {
         if (size() == 0) {
             return;

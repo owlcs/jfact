@@ -25,6 +25,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.split.TSignature;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "tExpressionTranslator.h", name = "TExpressionTranslator")
@@ -97,6 +98,7 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
         return DLTreeFactory.createSNFNot(expr.getConcept().accept(this));
     }
 
+    @Original
     private List<DLTree> visitArgs(NAryExpression<? extends Expression> expr) {
         List<DLTree> args = new ArrayList<DLTree>();
         List<? extends Expression> list = expr.getArguments();

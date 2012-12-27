@@ -16,11 +16,13 @@ public abstract class Restorer {
     public abstract void restore();
 
     /** for accessing the level on TRareSaveStack */
+    @PortedFrom(file = "tRestorer.h", name = "getLevel")
     public int getRaresavestackLevel() {
         return raresavestackLevel;
     }
 
     /** for accessing the level on TRareSaveStack */
+    @PortedFrom(file = "tRestorer.h", name = "setLevel")
     public void setRaresavestackLevel(int raresavestackLevel) {
         this.raresavestackLevel = raresavestackLevel;
     }

@@ -12,6 +12,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleChain;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
+import conformance.Original;
 import conformance.PortedFrom;
 
 /** semantic locality checker for DL axioms */
@@ -66,12 +67,14 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
     TSignature sig;
 
     @Override
+    @Original
     public TSignature getSignature() {
         return sig;
     }
 
     /** set a new value of a signature (without changing a locality parameters) */
     @Override
+    @Original
     public void setSignatureValue(TSignature Sig) {
         sig = Sig;
         Kernel.setSignature(sig);
@@ -95,6 +98,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
     // set fields
     /** @return true iff an AXIOM is local wrt defined policy */
     @Override
+    @Original
     public boolean local(Axiom axiom) {
         axiom.accept(this);
         return isLocal;
@@ -126,6 +130,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
 
     /** load ontology to a given KB */
     @Override
+    @PortedFrom(file = "SemanticLocalityChecker.h", name = "visitOntology")
     public void visitOntology(Ontology ontology) {
         for (Axiom p : ontology.getAxioms()) {
             if (p.isUsed()) {
@@ -209,12 +214,12 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
 
     @Override
     public void visit(AxiomDisjointORoles axiom) {
-        isLocal = Kernel.isDisjointObjectRoles(axiom.getArguments());
+        isLocal = Kernel.isDisjointRoles(axiom.getArguments());
     }
 
     @Override
     public void visit(AxiomDisjointDRoles axiom) {
-        isLocal = Kernel.isDisjointDataRoles(axiom.getArguments());
+        isLocal = Kernel.isDisjointRoles(axiom.getArguments());
     }
 
     // never local

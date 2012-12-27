@@ -34,6 +34,7 @@ public class ObjectRoleProjectionFrom implements ObjectRoleComplexExpression,
     }
 
     @Override
+    @PortedFrom(file = "tDLExpression.h", name = "getC")
     public ConceptExpression getConcept() {
         return delegate;
     }

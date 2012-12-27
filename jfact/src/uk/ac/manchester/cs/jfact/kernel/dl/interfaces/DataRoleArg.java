@@ -10,5 +10,6 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDLExpression.h", name = "TDataRoleArg")
 public interface DataRoleArg {
     /** get access to the argument */
+    @PortedFrom(file = "tDLExpression.h", name = "getDR")
     DataRoleExpression getDataRoleExpression();
 }

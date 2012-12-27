@@ -39,11 +39,13 @@ public class ConceptObjectMaxCardinality implements ConceptObjectCardinalityExpr
     }
 
     @Override
+    @PortedFrom(file = "tDLExpression.h", name = "getNumber")
     public int getCardinality() {
         return N;
     }
 
     @Override
+    @PortedFrom(file = "tDLExpression.h", name = "getC")
     public ConceptExpression getConcept() {
         return delegate;
     }

@@ -85,6 +85,7 @@ public class DLDag {
     }
 
     /** change order of ADD elements wrt statistic */
+    @PortedFrom(file = "dlDag.h", name = "Recompute")
     private void recompute() {
         for (int p = 0; p < listAnds.size(); p++) {
             heap.get(listAnds.get(p)).sortEntry(this);
@@ -221,6 +222,7 @@ public class DLDag {
 
     // output interface
     /** print DAG size and number of cache hits, together with DAG usage */
+    @PortedFrom(file = "dlDag.h", name = "PrintStat")
     public void printStat(LogAdapter o) {
         o.printTemplate(Templates.PRINT_STAT, heap.size(), nCacheHits);
         if (options.isRKG_PRINT_DAG_USAGE()) {
@@ -521,6 +523,7 @@ public class DLDag {
         }
     }
 
+    @PortedFrom(file = "dlDag.h", name = "PrintDAGUsage")
     public void printDAGUsage(LogAdapter o) {
         int n = 0; // number of no-used DAG entries
         int total = heap.size() * 2 - 2; // number of total DAG entries
@@ -652,4 +655,3 @@ public class DLDag {
         merge(R.getRangeLabel(), b);
     }
 }
-

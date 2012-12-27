@@ -78,7 +78,8 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
         // RHS now contains only Bot, A, \E R.C
         if (!(D instanceof ConceptObjectExists)) {
             assert D instanceof ConceptName || D instanceof ConceptBottom
-                    || D instanceof ConceptTop; // for LHS
+                    || D instanceof ConceptTop; // for
+                                                // LHS
             return D;
         }
         ConceptObjectExists exists = (ConceptObjectExists) D;

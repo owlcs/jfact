@@ -18,7 +18,6 @@ import conformance.PortedFrom;
 /** Data Role equivalence axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomEquivalentDRoles")
 public class AxiomEquivalentDRoles extends AbstractNaryAxiom<DataRoleExpression> {
-
     public AxiomEquivalentDRoles(OWLAxiom ax, List<Expression> v) {
         super(ax, v);
     }

@@ -27,6 +27,7 @@ public class ConceptWDep {
         depSet = DepSet.create(dep);
     }
 
+    @PortedFrom(file = "ConceptWithDep.h", name = "getC")
     public int getConcept() {
         return concept;
     }

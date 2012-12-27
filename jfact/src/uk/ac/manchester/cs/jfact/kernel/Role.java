@@ -15,6 +15,7 @@ import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 import uk.ac.manchester.cs.jfact.helpers.*;
 import uk.ac.manchester.cs.jfact.kernel.actors.AddRoleActor;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "tRole.h", name = "Role")
@@ -196,21 +197,26 @@ public class Role extends ClassifiableEntry {
         bpSpecialDomain = bp;
     }
 
+    @Original
     private boolean dataRole;
 
     /** distinguish data- and non-data role */
+    @Original
     public boolean isDataRole() {
         return dataRole;
     }
 
+    @Original
     public void setDataRole() {
         dataRole = true;
     }
 
+    @Original
     public void clearDataRole() {
         dataRole = false;
     }
 
+    @Original
     public void setDataRole(boolean action) {
         dataRole = action;
     }
@@ -505,15 +511,18 @@ public class Role extends ClassifiableEntry {
     }
 
     /** check if role is a non-strict sub-role of R */
+    @PortedFrom(file = "tRole.h", name = "<")
     private boolean lesser(Role r) {
         return isDataRole() == r.isDataRole()
                 && ancestorMap.contains(r.getAbsoluteIndex());
     }
 
+    @PortedFrom(file = "tRole.h", name = "<=")
     public boolean lesserequal(Role r) {
         return equals(r) || lesser(r);
     }
 
+    @PortedFrom(file = "tRole.h", name = "begin_anc")
     public List<Role> getAncestor() {
         return ancestorRoles;
     }
@@ -583,6 +592,7 @@ public class Role extends ClassifiableEntry {
         }
     }
 
+    @Original
     private static Role resolveRoleHelper(DLTree t) {
         if (t == null) {
             throw new ReasonerInternalException("Role expression expected");
@@ -620,11 +630,13 @@ public class Role extends ClassifiableEntry {
     }
 
     /** get (unsigned) unique index of the role */
+    @PortedFrom(file = "tRole.h", name = "getIndex")
     public int getAbsoluteIndex() {
         int i = 2 * extId;
         return i > 0 ? i : 1 - i;
     }
 
+    @Original
     private int buildIndex() {
         int i = 2 * extId;
         return i > 0 ? i : 1 - i;
@@ -934,6 +946,7 @@ public class Role extends ClassifiableEntry {
         automaton.addToChain(completeAutomatonByRole(RS.get(p), RInProcess), oSafe, to);
     }
 
+    @Original
     public Role getInverse() {
         return inverse;
     }

@@ -17,7 +17,6 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomEquivalentConcepts")
 public class AxiomEquivalentConcepts extends AbstractNaryAxiom<ConceptExpression> {
-
     public AxiomEquivalentConcepts(OWLAxiom ax, List<Expression> v) {
         super(ax, v);
     }
@@ -33,5 +32,4 @@ public class AxiomEquivalentConcepts extends AbstractNaryAxiom<ConceptExpression
     public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
-
 }

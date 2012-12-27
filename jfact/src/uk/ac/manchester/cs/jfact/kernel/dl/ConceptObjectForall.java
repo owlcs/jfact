@@ -37,6 +37,7 @@ public class ConceptObjectForall implements ConceptObjectRCExpression {
 
     /** get access to the argument */
     @Override
+    @PortedFrom(file = "tDLExpression.h", name = "getC")
     public ConceptExpression getConcept() {
         return conceptExpression;
     }

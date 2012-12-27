@@ -48,7 +48,6 @@ abstract class AxiomImpl implements Axiom {
         inSearchSpace = flag;
     }
 
-
     @Override
     @PortedFrom(file = "tDLAxiom.h", name = "isInSS")
     public boolean isInSS() {

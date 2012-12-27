@@ -92,6 +92,7 @@ public class ClassifiableEntry extends NamedEntry {
     }
 
     /** told subsumers */
+    @PortedFrom(file = "taxNamEntry.h", name = "told_begin")
     public Collection<ClassifiableEntry> getToldSubsumers() {
         return toldSubsumers;
     }
@@ -119,6 +120,7 @@ public class ClassifiableEntry extends NamedEntry {
     // index interface
     /** get the index value */
     @Override
+    @PortedFrom(file = "taxNamEntry.h", name = "getIndex")
     public int getIndex() {
         return index;
     }
@@ -187,6 +189,7 @@ public class ClassifiableEntry extends NamedEntry {
         toldSubsumers.removeAll(toRemove);
     }
 
+    @PortedFrom(file = "taxNamEntry.h", name = "resolveSynonym")
     public static <T extends ClassifiableEntry> T resolveSynonym(T p) {
         return p == null ? null : p.isSynonym() ? resolveSynonym((T) p.pSynonym) : p;
     }

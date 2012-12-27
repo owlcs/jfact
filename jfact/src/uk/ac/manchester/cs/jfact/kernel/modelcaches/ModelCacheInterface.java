@@ -1,6 +1,7 @@
 package uk.ac.manchester.cs.jfact.kernel.modelcaches;
 
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
+import conformance.Original;
 import conformance.PortedFrom;
 
 /* This file is part of the JFact DL reasoner
@@ -56,10 +57,12 @@ public abstract class ModelCacheInterface {
     @PortedFrom(file = "modelCacheInterface.h", name = "logCacheEntry")
     public void logCacheEntry(int level, LogAdapter l) {}
 
+    @Original
     public void setHasNominalNode(boolean hasNominalNode) {
         this.hasNominalNode = hasNominalNode;
     }
 
+    @Original
     public boolean isHasNominalNode() {
         return hasNominalNode;
     }

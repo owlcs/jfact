@@ -19,18 +19,14 @@ import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.*;
 import uk.ac.manchester.cs.jfact.helpers.Timer;
 import uk.ac.manchester.cs.jfact.kernel.ToDoList.ToDoEntry;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomConceptInclusion;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomEquivalentConcepts;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheConst;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheIan;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
-import uk.ac.manchester.cs.jfact.split.*;
 import uk.ac.manchester.cs.jfact.split.TSplitRules.TSplitRule;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "Reasoner.h", name = "DlSatTester")
@@ -435,9 +431,9 @@ public class DlSatTester {
     /** map between BP and TNamedEntities */
     private List<NamedEntity> EntityMap = new ArrayList<NamedEntity>();
     /** flag for using active signature */
-    boolean useActiveSignature;
+    private boolean useActiveSignature;
     /** let reasoner know that we are in the classificaton (for splits) */
-    boolean duringClassification;
+    private boolean duringClassification;
     // / nodes to merge in the TopRole-LE rules
     List<DlCompletionTree> NodesToMerge = new ArrayList<DlCompletionTree>();
     List<DlCompletionTreeArc> EdgesToMerge = new ArrayList<DlCompletionTreeArc>();
@@ -453,108 +449,6 @@ public class DlSatTester {
     @PortedFrom(file = "Reasoner.h", name = "isObjectNodeUnblocked")
     boolean isObjectNodeUnblocked(DlCompletionTree node) {
         return isNodeGloballyUsed(node) && !node.isDBlocked();
-    }
-
-    // split rules support
-    /** // update active signature wrt given entity */
-    boolean updateActiveSignature(NamedEntity entity, DepSet dep) {
-        if (entity == null || // not a named one
-                ActiveSignature.contains(entity)) {
-            return false;
-        }
-        return updateActiveSignature1(entity, dep);
-    }
-
-    /** add new split rule */
-    void addSplitRule(Set<NamedEntity> eqSig, Set<NamedEntity> impSig, int bp) {
-        SplitRules.add(new SingleSplit(eqSig, impSig, bp));
-    }
-
-    /** build a set out of signature SIG w/o given ENTITY */
-    Set<NamedEntity> buildSet(TSignature sig, NamedEntity entity) {
-        Set<NamedEntity> set = new HashSet<NamedEntity>();
-        // std::cout << "Building set for " << entity.getName() << "\n";
-        for (NamedEntity p : sig.begin()) {
-            if (!p.equals(entity) && p instanceof ConceptName) {
-                // std::cout << "In the set: " << (*p).getName() << "\n";
-                set.add(p);
-            }
-        }
-        // std::cout << "done\n";
-        // register all elements in the set in PossibleSignature
-        PossibleSignature.addAll(set);
-        return set;
-    }
-
-    /** init split as a set-of-sets */
-    void initSplit(TSplitVar split) {
-        // std::cout << "Processing split for " << split.oldName.getName() <<
-        // ":\n";
-        // TSplitVar::iterator p = split.begin(), p_end = split.end();
-        List<TSplitVar.Entry> vars = split.getEntries();
-        TSplitVar.Entry p = null;
-        if (vars.size() > 0) {
-            p = vars.get(0);
-            Set<NamedEntity> impSet = buildSet(p.sig, p.name);
-            int bp = split.C.getpBody() + 1; // choose-rule stays next to a
-                                             // split-definition of C
-            for (int i = 1; i < vars.size(); i++) {
-                p = vars.get(i);
-                if (p.Module.size() == 1) {
-                    addSplitRule(buildSet(p.sig, p.name), impSet, bp);
-                } else {
-                    // make set of all the seed signatures of for p.Module
-                    Set<TSignature> Out = new HashSet<TSignature>();
-                    // prepare vector of available entities
-                    List<NamedEntity> Allowed = new ArrayList<NamedEntity>();
-                    // std::cout << "\n\n\nMaking split for module with " <<
-                    // p.name.getName();
-                    List<uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom> Module = new ArrayList<uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom>(
-                            p.Module);
-                    // prepare signature for the process
-                    TSignature sig = p.sig;
-                    prepareStartSig(Module, sig, Allowed);
-                    // build all the seed sigs for p.sig
-                    BuildAllSeedSigs(Allowed, sig, Module, Out);
-                    for (TSignature q : Out) {
-                        addSplitRule(buildSet(q, p.name), impSet, bp);
-                    }
-                }
-            }
-        }
-    }
-
-    /** init splits */
-    void initSplits() {
-        for (TSplitVar p : tBox.getSplits().getEntries()) {
-            initSplit(p);
-        }
-        // now mark all the entities not in PossibleSignatures NULLs
-        for (int i = 1; i < EntityMap.size(); ++i) {
-            if (!PossibleSignature.contains(EntityMap.get(i))) {
-                EntityMap.set(i, null);
-            }
-        }
-    }
-
-    /** check whether split-set S contains in the active set */
-    boolean containsInActive(Set<NamedEntity> S) {
-        return ActiveSignature.containsAll(S);
-    }// includes ( ActiveSignature, S ); }
-
-    /** check whether split-set S intersects with the active set */
-    boolean intersectsWithActive(Collection<? extends NamedEntity> S) {
-        for (NamedEntity e : S) {
-            if (ActiveSignature.contains(e)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /** @return named entity corresponding to a given bp */
-    NamedEntity getEntity(int bp) {
-        return EntityMap.get(bp > 0 ? bp : -bp);
     }
 
     /** put TODO entry for either BP or inverse(BP) in NODE's label */
@@ -580,90 +474,6 @@ public class DlSatTester {
             if (isNodeGloballyUsed(node)) {
                 this.updateName(node, bp);
             }
-        }
-    }
-
-    /** prepare start signature */
-    void prepareStartSig(
-            List<uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom> Module,
-            TSignature sig, List<NamedEntity> Allowed) {
-        // remove all defined concepts from signature
-        for (uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom p : Module) {
-            // AxiomEquivalentConcepts ax = dynamic_cast<const
-            // TDLAxiomEquivalentConcepts*>(*p);
-            if (p instanceof AxiomEquivalentConcepts) {
-                for (ConceptExpression q : ((AxiomEquivalentConcepts) p).getArguments()) {
-                    // FIXME!! check for the case A=B for named classes
-                    if (q instanceof ConceptName) {
-                        sig.remove((ConceptName) q);
-                    }
-                }
-            } else {
-                if (p instanceof AxiomConceptInclusion) {
-                    AxiomConceptInclusion ci = (AxiomConceptInclusion) p;
-                    // don't need the left-hand part either if it is a name
-                    if (ci.getSubConcept() instanceof ConceptName) {
-                        sig.remove((ConceptName) ci.getSubConcept());
-                    }
-                }
-            }
-        }
-        // now put every concept name into Allowed
-        for (NamedEntity r : sig.begin()) {
-            if (r instanceof ConceptName) {
-                Allowed.add(r);
-            }
-        }
-    }
-
-    /** build all the seed signatures */
-    void BuildAllSeedSigs(List<NamedEntity> Allowed, TSignature StartSig,
-            List<uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom> Module,
-            Set<TSignature> Out) {
-        // copy the signature
-        TSignature sig = new TSignature(StartSig);
-        // std::cout << "\nBuilding seed signatures:";
-        // create a set of allowed entities for the next round
-        List<NamedEntity> RecAllowed = new ArrayList<NamedEntity>(), Keepers = new ArrayList<NamedEntity>();
-        Set<uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom> outModule = new HashSet<uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom>();
-        // TODO add configuration options
-        TModularizer mod = new TModularizer(options, new SyntacticLocalityChecker());
-        for (NamedEntity p : Allowed) {
-            if (sig.containsNamedEntity(p)) {
-                sig.remove(p);
-                outModule.addAll(mod.extractModule(Module, sig, ModuleType.M_STAR));
-                if (outModule.size() == Module.size()) { // possible to remove
-                                                         // one
-                    // std::cout << "remove";
-                    RecAllowed.add(p);
-                } else {
-                    // std::cout << "keep";
-                    Keepers.add(p);
-                }
-                sig.add(p);
-            }
-        }
-        if (RecAllowed.isEmpty()) // minimal seed signature
-        {
-            Out.add(StartSig);
-            return;
-        }
-        if (!Keepers.isEmpty()) {
-            for (NamedEntity p : RecAllowed) {
-                sig.remove(p);
-            }
-            outModule.addAll(mod.extractModule(Module, sig, ModuleType.M_STAR));
-            if (outModule.size() == Module.size()) {
-                Out.add(sig);
-                return;
-            }
-        }
-        // need to try smaller sigs
-        sig = StartSig;
-        for (NamedEntity p : RecAllowed) {
-            sig.remove(p);
-            BuildAllSeedSigs(RecAllowed, sig, Module, Out);
-            sig.add(p);
         }
     }
 
@@ -888,7 +698,14 @@ public class DlSatTester {
                                                                       // m S.D
                                                                       // iff...
         return (atmost.getConceptIndex() == Helper.bpTOP || atleast.getConceptIndex() == atmost
-                .getConceptIndex()) && // either D is TOP or C == D...
+                .getConceptIndex()) && // either
+                                       // D
+                                       // is
+                                       // TOP
+                                       // or
+                                       // C
+                                       // ==
+                                       // D...
                 atleast.getNumberGE() > atmost.getNumberLE() && // and n is
                                                                 // greater than
                                                                 // m...
@@ -952,7 +769,8 @@ public class DlSatTester {
     /** check whether clash occures EDGE to TO labelled with S disjoint with R */
     @PortedFrom(file = "Reasoner.h", name = "checkDisjointRoleClash")
     private boolean checkDisjointRoleClash(DlCompletionTreeArc edge, DlCompletionTree to,
-            Role R, DepSet dep) { // clash found
+            Role R, DepSet dep) { // clash
+                                  // found
         if (edge.getArcEnd().equals(to) && edge.getRole().isDisjoint(R)) {
             this.setClashSet(dep);
             updateClashSet(edge.getDep());
@@ -1120,6 +938,7 @@ public class DlSatTester {
     }
 
     /** init Todo list priority for classification */
+    @Original
     public void initToDoPriorities() {
         String iaoeflg = options.getIAOEFLG();
         // inform about used rules order
@@ -1131,11 +950,6 @@ public class DlSatTester {
     @PortedFrom(file = "Reasoner.h", name = "setBlockingMethod")
     public void setBlockingMethod(boolean hasInverse, boolean hasQCR) {
         cGraph.setBlockingMethod(hasInverse, hasQCR);
-    }
-
-    /** set the in-classification flag */
-    public void setDuringClassification(boolean value) {
-        duringClassification = value;
     }
 
     /** create model cache for the just-classified entry */
@@ -1334,7 +1148,9 @@ public class DlSatTester {
         // have been done yet.
         if (initNewNode(edgeR.getArcEnd(), dummy, Helper.bpTOP)
                 || initNewNode(edgeS.getArcEnd(), dummy, Helper.bpTOP)
-                || setupEdge(edgeR, dummy, /* flags= */
+                || setupEdge(edgeR, dummy, /*
+                                            * flags =
+                                            */
                         0) || setupEdge(edgeS, dummy, /* flags= */
                         0) || merge(edgeS.getArcEnd(), edgeR.getArcEnd(), dummy)) {
             return true;
@@ -1358,7 +1174,9 @@ public class DlSatTester {
         // init new nodes/edges. No need to apply restrictions, as no reasoning
         // have been done yet.
         if (initNewNode(edgeR.getArcEnd(), dummy, Helper.bpTOP)
-                || setupEdge(edgeR, dummy, /* flags= */
+                || setupEdge(edgeR, dummy, /*
+                                            * flags =
+                                            */
                         0) || merge(edgeR.getArcEnd(), cGraph.getRoot(), dummy)) {
             return true;
         }
@@ -1482,6 +1300,7 @@ public class DlSatTester {
         resetSessionFlags();
     }
 
+    @Original
     public JFactReasonerConfiguration getOptions() {
         return options;
     }
@@ -2201,25 +2020,6 @@ public class DlSatTester {
         }
     }
 
-    boolean updateActiveSignature1(NamedEntity entity, DepSet dep) {
-        ActiveSignature.add(entity);
-        // check whether some of the split rules require unsplitting
-        for (SingleSplit p : SplitRules) {
-            if (!ActiveSplits.contains(p.bp - 1) && containsInActive(p.eqSig)
-                    && intersectsWithActive(p.impSig)) {
-                // here p.bp points to Choose(C) node, p.bp-1 -- to the split
-                // node
-                ActiveSplits.add(p.bp - 1);
-                if (addSessionGCI(p.bp, dep)) {
-                    return true;
-                }
-                // make sure that all existing splits will be re-applied
-                this.updateName(p.bp - 1);
-            }
-        }
-        return false;
-    }
-
     @PortedFrom(file = "Reasoner.h", name = "applicable")
     protected boolean applicable(SimpleRule rule) {
         CWDArray lab = curNode.label().getLabel(DagTag.dtPConcept);
@@ -2891,119 +2691,6 @@ public class DlSatTester {
         return false;
     }
 
-    private boolean applyCh(DLVertex cur) {
-        int C = cur.getConceptIndex();
-        Role R = cur.getRole();
-        BCLE<DlCompletionTreeArc> bcLE = null;
-        // applyCh:
-        // check if we have Qualified NR
-        if (C != Helper.bpTOP) {
-            if (commonTacticBodyChoose(R, C)) {
-                return true;
-            }
-        }
-        // check whether we need to apply NN rule first
-        if (isNNApplicable(R, C, /* stopper= */
-                curConceptConcept + cur.getNumberLE())) {
-            // applyNN:
-            return commonTacticBodyNN(cur); // after application <=-rule would
-                                            // be checked again
-        }
-        // if we are here that it IS first LE call
-        if (isQuickClashLE(cur)) {
-            return true;
-        }
-        // we need to repeat merge until there will be necessary amount of edges
-        while (true) {
-            if (isFirstBranchCall()) {
-                DepSet dep = DepSet.create();
-                // check the amount of neighbours we have
-                findNeighbours(R, C, dep);
-                // if the number of R-neighbours satisfies condition -- nothing
-                // to do
-                if (EdgesToMerge.size() <= cur.getNumberLE()) {
-                    return false;
-                }
-                // init context
-                createBCLE();
-                bContext.branchDep.add(dep);
-                // setup BCLE
-                bcLE = (BCLE<DlCompletionTreeArc>) bContext;
-                EdgesToMerge = bcLE.swap(EdgesToMerge);
-                bcLE.resetMCI();
-            }
-            {
-                DlCompletionTreeArc from = null;
-                DlCompletionTreeArc to = null;
-                boolean applyLE = true;
-                while (applyLE) {
-                    applyLE = false;
-                    // skip init, because here we are after restoring
-                    bcLE = (BCLE<DlCompletionTreeArc>) bContext;
-                    if (bcLE.noMoreLEOptions()) {
-                        // set global clashset to
-                        // cummulative one from
-                        // previous branch failures
-                        useBranchDep();
-                        return true;
-                    }
-                    // get from- and to-arcs using corresponding indexes in
-                    // Edges
-                    from = bcLE.getFrom();
-                    to = bcLE.getTo();
-                    Reference<DepSet> dep = new Reference<DepSet>(DepSet.create());
-                    // fast check for from.end() and to.end() are in \neq
-                    if (cGraph.nonMergable(from.getArcEnd(), to.getArcEnd(), dep)) {
-                        // need this for merging two nominal nodes
-                        dep.getReference().add(from.getDep());
-                        dep.getReference().add(to.getDep());
-                        // add dep-set from labels
-                        if (C == Helper.bpTOP) {
-                            this.setClashSet(dep.getReference());
-                        } else {
-                            // QCR: update dep-set wrt C
-                            // here we know that C is in both labels; set a
-                            // proper clash-set
-                            DagTag tag = dlHeap.get(C).getType();
-                            boolean test;
-                            // here dep contains the clash-set
-                            test = findConceptClash(from.getArcEnd().label()
-                                    .getLabel(tag), C, dep.getReference());
-                            assert test;
-                            dep.setReference(DepSet.plus(dep.getReference(), clashSet));
-                            // save new dep-set
-                            test = findConceptClash(to.getArcEnd().label().getLabel(tag),
-                                    C, dep.getReference());
-                            assert test;
-                            // both clash-sets are now in common clash-set
-                        }
-                        updateBranchDep();
-                        bContext.nextOption();
-                        applyLE = true;
-                    }
-                }
-                save();
-                // add depset from current level and FROM arc and to current
-                // dep.set
-                DepSet curDep = getCurDepSet();
-                curDep.add(from.getDep());
-                if (merge(from.getArcEnd(), to.getArcEnd(), curDep)) {
-                    return true;
-                }
-                // it might be the case (see bIssue28) that after the merge
-                // there is an R-neigbour
-                // that have neither C or ~C in its label (it was far in the
-                // nominal cloud)
-                if (C != Helper.bpTOP) {
-                    if (commonTacticBodyChoose(R, C)) {
-                        return true;
-                    }
-                }
-            }
-            // return false;
-        }
-    }
-
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodyLE")
     private boolean commonTacticBodyLE(DLVertex cur) // for <=nR.C concepts
     {
@@ -3479,6 +3166,7 @@ public class DlSatTester {
         return false;
     }
 
+    @PortedFrom(file = "Tactic.cpp", name = "isNewEdge")
     private boolean isNewEdge(DlCompletionTree node, List<DlCompletionTreeArc> e) {
         int size = e.size();
         for (int i = 0; i < size; i++) {
@@ -3726,6 +3414,3 @@ public class DlSatTester {
         Collections.sort(NodesToMerge, new NodeCompare());
     }
 }
-
-
-

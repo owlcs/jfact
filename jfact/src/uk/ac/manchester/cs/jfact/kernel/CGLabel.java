@@ -14,12 +14,15 @@ import java.util.Set;
 
 import uk.ac.manchester.cs.jfact.helpers.ArrayIntMap;
 import uk.ac.manchester.cs.jfact.kernel.state.SaveState;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "CGLabel.h", name = "CGLabel")
 public class CGLabel {
+    @Original
     private static int idcounter = 0;
 
+    @Original
     private static int getnewId() {
         return idcounter++;
     }
@@ -28,6 +31,7 @@ public class CGLabel {
     private CWDArray scLabel;
     /** all complex concepts (ie, FORALL, GE), labelled a node */
     private CWDArray ccLabel;
+    @Original
     private int id;
 
     public CGLabel() {
@@ -36,18 +40,22 @@ public class CGLabel {
         id = getnewId();
     }
 
+    @Original
     public List<ConceptWDep> get_sc() {
         return scLabel.getBase();
     }
 
+    @Original
     public List<ConceptWDep> get_cc() {
         return ccLabel.getBase();
     }
 
+    @Original
     public ArrayIntMap get_sc_concepts() {
         return scLabel.getContainedConcepts();
     }
 
+    @Original
     public ArrayIntMap get_cc_concepts() {
         return ccLabel.getContainedConcepts();
     }
@@ -58,15 +66,18 @@ public class CGLabel {
         return tag.isComplexConcept() ? ccLabel : scLabel;
     }
 
+    @Original
     public void add(DagTag tag, ConceptWDep p) {
         getLabel(tag).private_add(p);
         clearMyCache();
     }
 
+    @Original
     protected void clearMyCache() {
         lesserEquals.clear();
     }
 
+    @Original
     protected void clearOthersCache() {
         for (CGLabel c : lesserEquals) {
             c.lesserEquals.remove(this);
@@ -87,6 +98,7 @@ public class CGLabel {
     private Set<CGLabel> lesserEquals = Collections
             .newSetFromMap(new IdentityHashMap<CGLabel, Boolean>());
 
+    @PortedFrom(file = "CGLabel.h", name = "<=")
     public boolean lesserequal(CGLabel label) {
         if (this == label) {
             return true;
@@ -161,6 +173,7 @@ public class CGLabel {
         return b;
     }
 
+    @PortedFrom(file = "CGLabel.h", name = "getConcept")
     public ConceptWDep getConceptWithBP(int bp) {
         ConceptWDep toReturn = scLabel.getConceptWithBP(bp);
         if (toReturn != null) {
@@ -170,10 +183,12 @@ public class CGLabel {
         return toReturn;
     }
 
+    @Original
     public int baseSize() {
         return ccLabel.size() + scLabel.size();
     }
 
+    @Original
     public int getId() {
         return id;
     }

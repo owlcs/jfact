@@ -245,6 +245,7 @@ public class RoleAutomaton {
         return RA.isOSafe();
     }
 
+    @PortedFrom(file = "RAutomaton.h", name = "begin")
     public List<RAStateTransitions> getBase() {
         return base;
     }

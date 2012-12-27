@@ -124,7 +124,9 @@ public abstract class NamedEntry {
         this.entity = entity;
     }
 
+    @PortedFrom(file = "taxNamEntry.h", name = "setIndex")
     public abstract void setIndex(int i);
 
+    @PortedFrom(file = "taxNamEntry.h", name = "getIndex")
     public abstract int getIndex();
 }
