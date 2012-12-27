@@ -12,6 +12,6 @@ import conformance.PortedFrom;
 public interface RoleExpression extends Expression {
     @Override
     /** accept method for the visitor pattern */
-@PortedFrom(file="tDLExpression.h",name="accept")
+    @PortedFrom(file = "tDLExpression.h", name = "accept")
     void accept(DLExpressionVisitor visitor);
 }

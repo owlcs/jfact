@@ -13,33 +13,33 @@ class DumpLisp extends DumpInterface {
 
     // general concept expression
     @Override
-@PortedFrom(file="dumpLisp.h",name="dumpTop")
+    @PortedFrom(file = "dumpLisp.h", name = "dumpTop")
     public void dumpTop() {
         o.print("*TOP*");
     }
 
     @Override
-@PortedFrom(file="dumpLisp.h",name="dumpBottom")
+    @PortedFrom(file = "dumpLisp.h", name = "dumpBottom")
     public void dumpBottom() {
         o.print("*BOTTOM*)");
     }
 
     @Override
-@PortedFrom(file="dumpLisp.h",name="dumpNumber")
+    @PortedFrom(file = "dumpLisp.h", name = "dumpNumber")
     public void dumpNumber(int n) {
         o.print(n + " ");
     }
 
     /** start operation >=/<= with number */
     @Override
-@PortedFrom(file="dumpLisp.h",name="startOp")
+    @PortedFrom(file = "dumpLisp.h", name = "startOp")
     public void startOp(DIOp Op, int n) {
         this.startOp(Op);
         dumpNumber(n);
     }
 
     @Override
-@PortedFrom(file="dumpLisp.h",name="contOp")
+    @PortedFrom(file = "dumpLisp.h", name = "contOp")
     public void contOp(DIOp Op) {
         if (Op == DIOp.diAnd || Op == DIOp.diOr) {
             skipIndent();
@@ -49,7 +49,7 @@ class DumpLisp extends DumpInterface {
     }
 
     @Override
-@PortedFrom(file="dumpLisp.h",name="finishOp")
+    @PortedFrom(file = "dumpLisp.h", name = "finishOp")
     public void finishOp(DIOp Op) {
         if (Op == DIOp.diAnd || Op == DIOp.diOr) {
             decIndent();
@@ -58,34 +58,34 @@ class DumpLisp extends DumpInterface {
     }
 
     @Override
-@PortedFrom(file="dumpLisp.h",name="contAx")
+    @PortedFrom(file = "dumpLisp.h", name = "contAx")
     public void contAx(DIOp Ax) {
         o.print(" ");
     }
 
     @Override
-@PortedFrom(file="dumpLisp.h",name="finishAx")
+    @PortedFrom(file = "dumpLisp.h", name = "finishAx")
     public void finishAx(DIOp Ax) {
         o.print(")\n");
     }
 
     /** obtain name by the named entry */
     @Override
-@PortedFrom(file="dumpLisp.h",name="dumpName")
+    @PortedFrom(file = "dumpLisp.h", name = "dumpName")
     public void dumpName(NamedEntry p) {
         o.print("|" + p.getName() + "|");
     }
 
     /** dump concept atom (as used in expression) */
     @Override
-@PortedFrom(file="dumpLisp.h",name="dumpConcept")
+    @PortedFrom(file = "dumpLisp.h", name = "dumpConcept")
     public void dumpConcept(Concept p) {
         dumpName(p);
     }
 
     /** dump role atom (as used in expression) */
     @Override
-@PortedFrom(file="dumpLisp.h",name="dumpRole")
+    @PortedFrom(file = "dumpLisp.h", name = "dumpRole")
     public void dumpRole(Role p) {
         if (p.getId() < 0) // inverse
         {
@@ -98,7 +98,7 @@ class DumpLisp extends DumpInterface {
     }
 
     @Override
-@PortedFrom(file="dumpLisp.h",name="startOp")
+    @PortedFrom(file = "dumpLisp.h", name = "startOp")
     public void startOp(DIOp Op) {
         if (Op == DIOp.diAnd || Op == DIOp.diOr) {
             incIndent();
@@ -112,7 +112,7 @@ class DumpLisp extends DumpInterface {
     }
 
     @Override
-@PortedFrom(file="dumpLisp.h",name="startAx")
+    @PortedFrom(file = "dumpLisp.h", name = "startAx")
     public void startAx(DIOp Ax) {
         o.print("(");
         o.print(Ax.getString());

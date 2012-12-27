@@ -15,7 +15,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
-@PortedFrom(file="tDLExpression.h",name="TDLDataOneOf")
+@PortedFrom(file = "tDLExpression.h", name = "TDLDataOneOf")
 public class DataOneOf extends NAryExpressionImpl<Literal<?>> implements
         NAryExpression<Literal<?>>, DataExpression {
     /** create one-of from individuals in the given array */
@@ -24,13 +24,13 @@ public class DataOneOf extends NAryExpressionImpl<Literal<?>> implements
     }
 
     @Override
-@PortedFrom(file="tDLExpression.h",name="accept")
+    @PortedFrom(file = "tDLExpression.h", name = "accept")
     public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
     @Override
-@PortedFrom(file="tDLExpression.h",name="accept")
+    @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }

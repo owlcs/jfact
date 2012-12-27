@@ -7,8 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel.modelcaches;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** status of model cache or merge operation */
 public enum ModelCacheState {
-    csInvalid, /** > clash in model/merging fails because of direct
-     * contradiction; */
+    csInvalid, /** > clash in model/merging fails because of direct contradiction; */
     csValid, /** > valid model/success in merging; */
     csFailed, /** > incorrect model/merging fails because of incompleteness of
      * procedure; */

@@ -15,6 +15,7 @@ class QRIndividual extends QRiObject {
     }
 
     /** get the name */
+    @PortedFrom(file = "QR.h", name = "getIndividual")
     IndividualName getIndividual() {
         return Ind;
     }

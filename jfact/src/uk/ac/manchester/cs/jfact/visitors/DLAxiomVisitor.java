@@ -74,7 +74,7 @@ public interface DLAxiomVisitor {
 
     void visit(AxiomValueOfNot axiom);
 
-@PortedFrom(file="tDLAxiom.h",name="visitOntology")
+    @PortedFrom(file = "tDLAxiom.h", name = "visitOntology")
     void visitOntology(Ontology ontology);
 
     void visit(AxiomDisjointUnion axiom);

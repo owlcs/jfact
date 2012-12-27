@@ -6,79 +6,41 @@ package uk.ac.manchester.cs.jfact.kernel.dl.axioms;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.Collection;
-import java.util.List;
 
 import org.semanticweb.owlapi.model.OWLAxiom;
 
-import uk.ac.manchester.cs.jfact.kernel.dl.NAryExpressionImpl;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
 
 /** Disjoint Union axiom */
-@PortedFrom(file="tDLAxiom.h",name="TDLAxiomDisjointUnion")
-public class AxiomDisjointUnion extends AxiomImpl implements Axiom,
-        NAryExpression<ConceptExpression> {
+@PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDisjointUnion")
+public class AxiomDisjointUnion extends AbstractNaryAxiom<ConceptExpression> {
     private ConceptExpression conceptExpression;
-    private NAryExpressionImpl<ConceptExpression> delegate;
 
     public AxiomDisjointUnion(OWLAxiom ax, ConceptExpression c, Collection<Expression> v) {
-        super(ax);
-        delegate = new NAryExpressionImpl<ConceptExpression>();
+        super(ax, v);
         conceptExpression = c;
-        add(v);
     }
 
     @Override
-
-@PortedFrom(file="tDLAxiom.h",name="accept")
+    @PortedFrom(file = "tDLAxiom.h", name = "accept")
     public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
     @Override
-
-@PortedFrom(file="tDLAxiom.h",name="accept")
+    @PortedFrom(file = "tDLAxiom.h", name = "accept")
     public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
-    @Override
-    public void add(Collection<Expression> v) {
-        delegate.add(v);
-    }
 
-    @Override
-    public void add(Expression p) {
-        delegate.add(p);
-    }
-
-    @Override
-    public List<ConceptExpression> getArguments() {
-        return delegate.getArguments();
-    }
-
-@PortedFrom(file="tDLAxiom.h",name="getC")
+    @PortedFrom(file = "tDLAxiom.h", name = "getC")
     public ConceptExpression getC() {
         return conceptExpression;
     }
 
-    @Override
-    public boolean isEmpty() {
-        return delegate.isEmpty();
-    }
-
-    @Override
-    public int size() {
-        return delegate.size();
-    }
-
-    @Override
-    public ConceptExpression transform(Expression arg) {
-        return delegate.transform(arg);
-    }
 }

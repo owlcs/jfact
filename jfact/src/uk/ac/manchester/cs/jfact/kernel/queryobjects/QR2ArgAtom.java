@@ -17,11 +17,13 @@ class QR2ArgAtom extends QRAtom {
 
     // access
     /** get first i-object */
+    @PortedFrom(file = "QR.h", name = "getArg1")
     QRiObject getArg1() {
         return Arg1;
     }
 
     /** get second i-object */
+    @PortedFrom(file = "QR.h", name = "getArg2")
     QRiObject getArg2() {
         return Arg2;
     }

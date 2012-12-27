@@ -11,7 +11,7 @@ class QRSetAtoms {
     List<QRAtom> Base = new ArrayList<QRAtom>();
 
     /** add atom to a set */
-@PortedFrom(file="QR.h",name="addAtom")
+    @PortedFrom(file = "QR.h", name = "addAtom")
     void addAtom(QRAtom atom) {
         Base.add(atom);
     }

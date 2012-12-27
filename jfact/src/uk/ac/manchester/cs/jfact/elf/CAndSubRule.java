@@ -6,7 +6,7 @@ import conformance.PortedFrom;
 // Rule for C1 and C2 [= D case; CR2
 // -------------------------------------------------------------
 /** the rule for C1 and C2 [= D case */
-@PortedFrom(file="ELFReasoner.h",name="CAndSubRule")
+@PortedFrom(file = "ELFReasoner.h", name = "CAndSubRule")
 public class CAndSubRule extends TELFRule {
     /** concept to find in order to fire a rule */
     TELFConcept Conj;
@@ -22,7 +22,7 @@ public class CAndSubRule extends TELFRule {
 
     /** apply a method with a given S(C) */
     @Override
-@PortedFrom(file="ELFReasoner.h",name="apply")
+    @PortedFrom(file = "ELFReasoner.h", name = "apply")
     void apply(TELFConcept C) {
         if (C.hasSuper(Conj) && !C.hasSuper(Sup)) {
             ER.addAction(new ELFAction(C, Sup));

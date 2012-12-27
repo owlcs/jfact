@@ -23,13 +23,13 @@ public class ModelCacheSingleton extends ModelCacheInterface {
 
     /** Check if the model contains clash */
     @Override
-@PortedFrom(file="modelCacheSingleton.h",name="getState")
+    @PortedFrom(file = "modelCacheSingleton.h", name = "getState")
     public ModelCacheState getState() {
         return ModelCacheState.csValid;
     }
 
     /** access to internal value */
-@PortedFrom(file="modelCacheSingleton.h",name="getValue")
+    @PortedFrom(file = "modelCacheSingleton.h", name = "getValue")
     public int getValue() {
         return singleton;
     }
@@ -37,7 +37,7 @@ public class ModelCacheSingleton extends ModelCacheInterface {
     // mergable part
     /** check whether two caches can be merged; @return state of "merged" model */
     @Override
-@PortedFrom(file="modelCacheSingleton.h",name="canMerge")
+    @PortedFrom(file = "modelCacheSingleton.h", name = "canMerge")
     public ModelCacheState canMerge(ModelCacheInterface p) {
         switch (p.getCacheType()) {
             case mctConst: // TOP/BOTTOM: the current node can't add anything to
@@ -56,14 +56,14 @@ public class ModelCacheSingleton extends ModelCacheInterface {
 
     /** Get the tag identifying the cache type */
     @Override
-@PortedFrom(file="modelCacheSingleton.h",name="getCacheType")
+    @PortedFrom(file = "modelCacheSingleton.h", name = "getCacheType")
     public ModelCacheType getCacheType() {
         return ModelCacheType.mctSingleton;
     }
 
     /** log this cache entry (with given level) */
     @Override
-@PortedFrom(file="modelCacheSingleton.h",name="logCacheEntry")
+    @PortedFrom(file = "modelCacheSingleton.h", name = "logCacheEntry")
     public void logCacheEntry(int level, LogAdapter l) {
         l.print("\nSingleton cache: element ", singleton);
     }

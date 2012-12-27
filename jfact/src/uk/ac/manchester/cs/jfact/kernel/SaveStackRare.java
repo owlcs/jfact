@@ -34,7 +34,7 @@ class SaveStackRare {
     }
 
     /** get all object from the top of the stack with levels >= LEVEL */
-@PortedFrom(file="dlCompletionGraph.h",name="restore")
+    @PortedFrom(file = "dlCompletionGraph.h", name = "restore")
     public void restore(int level) {
         curLevel = level;
         while (base.size() > 0 && base.getLast().getRaresavestackLevel() > level) {
@@ -45,7 +45,7 @@ class SaveStackRare {
     }
 
     /** clear stack */
-@PortedFrom(file="dlCompletionGraph.h",name="clear")
+    @PortedFrom(file = "dlCompletionGraph.h", name = "clear")
     public void clear() {
         base.clear();
         curLevel = InitBranchingLevelValue;

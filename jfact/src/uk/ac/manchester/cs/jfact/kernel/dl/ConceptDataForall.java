@@ -13,7 +13,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
-@PortedFrom(file="tDLExpression.h",name="TDLConceptDataForall")
+@PortedFrom(file = "tDLExpression.h", name = "TDLConceptDataForall")
 public class ConceptDataForall implements ConceptDataRVExpression, DataRoleArg {
     /** data role argument */
     private DataRoleExpression dataRoleExpression;
@@ -25,13 +25,13 @@ public class ConceptDataForall implements ConceptDataRVExpression, DataRoleArg {
     }
 
     @Override
-@PortedFrom(file="tDLExpression.h",name="accept")
+    @PortedFrom(file = "tDLExpression.h", name = "accept")
     public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
     @Override
-@PortedFrom(file="tDLExpression.h",name="accept")
+    @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
@@ -43,7 +43,7 @@ public class ConceptDataForall implements ConceptDataRVExpression, DataRoleArg {
     }
 
     @Override
-@PortedFrom(file="tDLExpression.h",name="getExpr")
+    @PortedFrom(file = "tDLExpression.h", name = "getExpr")
     public DataExpression getExpr() {
         return delegate;
     }

@@ -16,6 +16,7 @@ class QRRoleAtom extends QR2ArgAtom {
 
     // access
     /** get role expression */
+    @PortedFrom(file = "QR.h", name = "getRole")
     ObjectRoleExpression getRole() {
         return Role;
     }

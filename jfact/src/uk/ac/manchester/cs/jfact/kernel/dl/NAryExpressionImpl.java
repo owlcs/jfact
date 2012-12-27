@@ -39,6 +39,7 @@ public class NAryExpressionImpl<Argument extends Expression> implements
     }
 
     @Override
+    @PortedFrom(file = "tDLAxiom.h", name = "empty")
     public boolean isEmpty() {
         return Base.isEmpty();
     }

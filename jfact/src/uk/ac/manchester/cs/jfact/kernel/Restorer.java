@@ -12,7 +12,7 @@ public abstract class Restorer {
     private int raresavestackLevel;
 
     /** restore an object based on saved information */
-@PortedFrom(file="tRestorer.h",name="restore")
+    @PortedFrom(file = "tRestorer.h", name = "restore")
     public abstract void restore();
 
     /** for accessing the level on TRareSaveStack */

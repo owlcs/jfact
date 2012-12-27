@@ -12,20 +12,20 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
 
-@PortedFrom(file="tDLAxiom.h",name="TDLAxiomORoleFunctional")
+@PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomORoleFunctional")
 public class AxiomORoleFunctional extends AxiomSingleORole {
     public AxiomORoleFunctional(OWLAxiom ax, ObjectRoleExpression role) {
         super(ax, role);
     }
 
     @Override
-@PortedFrom(file="tDLAxiom.h",name="accept")
+    @PortedFrom(file = "tDLAxiom.h", name = "accept")
     public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
     @Override
-@PortedFrom(file="tDLAxiom.h",name="accept")
+    @PortedFrom(file = "tDLAxiom.h", name = "accept")
     public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }

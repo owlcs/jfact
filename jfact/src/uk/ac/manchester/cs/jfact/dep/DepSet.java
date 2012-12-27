@@ -8,6 +8,7 @@ package uk.ac.manchester.cs.jfact.dep;
 import java.util.NoSuchElementException;
 
 import uk.ac.manchester.cs.jfact.helpers.FastSetSimple;
+import conformance.Original;
 import conformance.PortedFrom;
 
 /** Dependency set
@@ -16,21 +17,21 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDepSet.h", name = "TDepSet")
 public class DepSet {
     /** @return empty depset */
-@PortedFrom(file="tDepSet.h",name="create")
+    @PortedFrom(file = "tDepSet.h", name = "create")
     public static DepSet create() {
         return new DepSet();
     }
 
     /** @param i
      * @return depset with value i */
-@PortedFrom(file="tDepSet.h",name="create")
+    @PortedFrom(file = "tDepSet.h", name = "create")
     public static DepSet create(int i) {
         return new DepSet(i);
     }
 
     /** @param dep
      * @return copy of dep */
-@PortedFrom(file="tDepSet.h",name="create")
+    @PortedFrom(file = "tDepSet.h", name = "create")
     public static DepSet create(DepSet dep) {
         DepSet toReturn = new DepSet();
         toReturn.add(dep);
@@ -40,6 +41,7 @@ public class DepSet {
     /** @param ds1
      * @param ds2
      * @return union of ds1 and ds2 */
+    @PortedFrom(file = "tDepSet.h", name = "+")
     public static DepSet plus(DepSet ds1, DepSet ds2) {
         DepSet toReturn = new DepSet();
         toReturn.add(ds1);
@@ -49,7 +51,7 @@ public class DepSet {
 
     /** @param delegate
      * @return depset wrapper over delegate */
-@PortedFrom(file="tDepSet.h",name="create")
+    @PortedFrom(file = "tDepSet.h", name = "create")
     public static DepSet create(FastSetSimple delegate) {
         return new DepSet(delegate);
     }
@@ -66,6 +68,7 @@ public class DepSet {
     /** to be used to get the FastSet and store it in CWDArray save/restore
      * 
      * @return delegate */
+    @Original
     public FastSetSimple getDelegate() {
         return delegate;
     }
@@ -78,7 +81,7 @@ public class DepSet {
     }
 
     /** @return last delegate */
-@PortedFrom(file="tDepSet.h",name="level")
+    @PortedFrom(file = "tDepSet.h", name = "level")
     public int level() {
         if (isEmpty()) {
             return 0;
@@ -88,13 +91,14 @@ public class DepSet {
     }
 
     /** @return true if empty or null delegate */
+    @PortedFrom(file = "tDepSet.h", name = "empty")
     public boolean isEmpty() {
         return delegate == null || delegate.isEmpty();
     }
 
     /** @param level
      * @return true if delegate contains level */
-@PortedFrom(file="tDepSet.h",name="contains")
+    @PortedFrom(file = "tDepSet.h", name = "contains")
     public boolean contains(int level) {
         return delegate != null && delegate.contains(level);
     }
@@ -141,7 +145,7 @@ public class DepSet {
     }
 
     /** @return delegate size */
-@PortedFrom(file="tDepSet.h",name="size")
+    @PortedFrom(file = "tDepSet.h", name = "size")
     public int size() {
         return delegate == null ? 0 : delegate.size();
     }
@@ -149,7 +153,7 @@ public class DepSet {
     /** @param i
      * @return element at position i; if no such element exists, throws
      *         NoSuchElementExcepton */
-@PortedFrom(file="tDepSet.h",name="get")
+    @PortedFrom(file = "tDepSet.h", name = "get")
     public int get(int i) {
         if (isEmpty()) {
             throw new NoSuchElementException("the index " + i + " is not valid");
@@ -159,7 +163,7 @@ public class DepSet {
 
     /** @param level
      *            level to cut the delegate to */
-@PortedFrom(file="tDepSet.h",name="restrict")
+    @PortedFrom(file = "tDepSet.h", name = "restrict")
     public void restrict(int level) {
         if (delegate != null) {
             FastSetSimple f = new FastSetSimple();
@@ -176,14 +180,14 @@ public class DepSet {
     }
 
     /** empty the delegate */
-@PortedFrom(file="tDepSet.h",name="clear")
+    @PortedFrom(file = "tDepSet.h", name = "clear")
     public void clear() {
         delegate = null;
     }
 
     /** @param toAdd
      *            add all elements in the depset to this depset */
-@PortedFrom(file="tDepSet.h",name="add")
+    @PortedFrom(file = "tDepSet.h", name = "add")
     public void add(DepSet toAdd) {
         if (toAdd == null || toAdd.size() == 0) {
             return;
@@ -197,7 +201,7 @@ public class DepSet {
 
     /** @param d
      *            add all elements in the depset to this depset */
-@PortedFrom(file="tDepSet.h",name="add")
+    @PortedFrom(file = "tDepSet.h", name = "add")
     public void add(FastSetSimple d) {
         if (d == null || d.size() == 0) {
             return;

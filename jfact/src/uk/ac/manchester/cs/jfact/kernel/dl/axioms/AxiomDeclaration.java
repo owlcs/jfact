@@ -12,7 +12,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
 
-@PortedFrom(file="tDLAxiom.h",name="TDLAxiomDeclaration")
+@PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDeclaration")
 public class AxiomDeclaration extends AxiomImpl {
     private Expression expression;
 
@@ -22,20 +22,18 @@ public class AxiomDeclaration extends AxiomImpl {
     }
 
     @Override
-
-@PortedFrom(file="tDLAxiom.h",name="accept")
+    @PortedFrom(file = "tDLAxiom.h", name = "accept")
     public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
     @Override
-
-@PortedFrom(file="tDLAxiom.h",name="accept")
+    @PortedFrom(file = "tDLAxiom.h", name = "accept")
     public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
-@PortedFrom(file="tDLAxiom.h",name="getDeclaration")
+    @PortedFrom(file = "tDLAxiom.h", name = "getDeclaration")
     public Expression getDeclaration() {
         return expression;
     }

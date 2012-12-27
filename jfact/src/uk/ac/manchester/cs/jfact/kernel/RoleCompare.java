@@ -8,7 +8,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tRole.cpp", name = "TRoleCompare")
 class RoleCompare implements Comparator<Role>, Serializable {
     @Override
-@PortedFrom(file="tRole.cpp",name="compare")
+    @PortedFrom(file = "tRole.cpp", name = "compare")
     public int compare(Role p, Role q) {
         int n = p.getId();
         int m = q.getId();

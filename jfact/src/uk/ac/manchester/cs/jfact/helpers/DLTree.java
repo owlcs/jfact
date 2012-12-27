@@ -16,6 +16,7 @@ import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 import uk.ac.manchester.cs.jfact.kernel.Lexeme;
 import uk.ac.manchester.cs.jfact.kernel.Token;
+import conformance.Original;
 import conformance.PortedFrom;
 
 /** DLTree class
@@ -217,6 +218,7 @@ public abstract class DLTree {
     }
 }
 
+@Original
 interface DLTreeVisitor {
     void visit(LEAFDLTree t);
 
@@ -227,6 +229,7 @@ interface DLTreeVisitor {
     void visit(NDLTree t);
 }
 
+@Original
 interface DLTreeVisitorEx<O> {
     O visit(LEAFDLTree t);
 
@@ -237,6 +240,7 @@ interface DLTreeVisitorEx<O> {
     O visit(NDLTree t);
 }
 
+@Original
 class CloningVisitor implements DLTreeVisitorEx<DLTree> {
     @Override
     public DLTree visit(LEAFDLTree t) {
@@ -264,6 +268,7 @@ class CloningVisitor implements DLTreeVisitorEx<DLTree> {
     }
 }
 
+@Original
 class ReverseCloningVisitor implements DLTreeVisitorEx<DLTree> {
     @Override
     public DLTree visit(LEAFDLTree t) {
@@ -294,6 +299,7 @@ class ReverseCloningVisitor implements DLTreeVisitorEx<DLTree> {
 }
 
 /** things that have no children */
+@Original
 class LEAFDLTree extends DLTree {
     LEAFDLTree(Lexeme l) {
         super(l);
@@ -336,6 +342,7 @@ class LEAFDLTree extends DLTree {
 }
 
 /** covers trees with only one child, i.e., inverse, not */
+@Original
 class ONEDLTree extends DLTree {
     DLTree child;
 
@@ -389,6 +396,7 @@ class ONEDLTree extends DLTree {
 }
 
 /** covers trees with two and only two children */
+@Original
 class TWODLTree extends DLTree {
     TWODLTree(Lexeme l, DLTree t1, DLTree t2) {
         super(l);
@@ -434,6 +442,7 @@ class TWODLTree extends DLTree {
     }
 }
 
+@Original
 class NDLTree extends DLTree {
     public NDLTree(Lexeme l, Collection<DLTree> trees) {
         super(l);

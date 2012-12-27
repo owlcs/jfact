@@ -9,7 +9,7 @@ import conformance.PortedFrom;
 // Rules for R o S [= T case; CR11
 // -------------------------------------------------------------
 /** the rule for R in R o S [= T case */
-@PortedFrom(file="ELFReasoner.h",name="RChainLRule")
+@PortedFrom(file = "ELFReasoner.h", name = "RChainLRule")
 public class RChainLRule extends TELFRule {
     /** role to check the chain */
     TELFRole S;
@@ -25,7 +25,7 @@ public class RChainLRule extends TELFRule {
 
     /** apply a method with a given pair (C,D) */
     @Override
-@PortedFrom(file="ELFReasoner.h",name="apply")
+    @PortedFrom(file = "ELFReasoner.h", name = "apply")
     void apply(TELFConcept addedC, TELFConcept addedD) {
         // we have R(C,D); so for all E in range(S), if S(D,E) then add
         // T(C,E)

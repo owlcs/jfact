@@ -12,7 +12,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
 
-@PortedFrom(file="tDLAxiom.h",name="TDLAxiomConceptInclusion")
+@PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomConceptInclusion")
 public class AxiomConceptInclusion extends AxiomImpl {
     private ConceptExpression subConcept;
     private ConceptExpression superConcept;
@@ -24,14 +24,13 @@ public class AxiomConceptInclusion extends AxiomImpl {
     }
 
     @Override
-@PortedFrom(file="tDLAxiom.h",name="accept")
+    @PortedFrom(file = "tDLAxiom.h", name = "accept")
     public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
     @Override
-
-@PortedFrom(file="tDLAxiom.h",name="accept")
+    @PortedFrom(file = "tDLAxiom.h", name = "accept")
     public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }

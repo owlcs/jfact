@@ -47,7 +47,7 @@ public class Taxonomy {
     /** apply ACTOR to subgraph starting from NODE as defined by flags; this
      * version is intended to work only with SupConceptActor, which requires the
      * method to return as soon as the apply() method returns false */
-@PortedFrom(file="Taxonomy.h",name="getRelativesInfo")
+    @PortedFrom(file = "Taxonomy.h", name = "getRelativesInfo")
     public boolean getRelativesInfo(TaxonomyVertex node, SupConceptActor actor,
             boolean needCurrent, boolean onlyDirect, boolean upDirection) {
         // if current node processed OK and there is no need to continue -- exit
@@ -94,7 +94,7 @@ public class Taxonomy {
     }
 
     /** apply ACTOR to subgraph starting from NODE as defined by flags; */
-@PortedFrom(file="Taxonomy.h",name="getRelativesInfo")
+    @PortedFrom(file = "Taxonomy.h", name = "getRelativesInfo")
     public void getRelativesInfo(TaxonomyVertex node, Actor actor, boolean needCurrent,
             boolean onlyDirect, boolean upDirection) {
         // if current node processed OK and there is no need to continue -- exit
@@ -133,71 +133,71 @@ public class Taxonomy {
     }
 
     /** clear the CHECKED label from all the taxonomy vertex */
-@PortedFrom(file="Taxonomy.h",name="clearCheckedLabel")
+    @PortedFrom(file = "Taxonomy.h", name = "clearCheckedLabel")
     protected void clearCheckedLabel() {
         checkLabel++;
     }
 
-@PortedFrom(file="Taxonomy.h",name="clearLabels")
+    @PortedFrom(file = "Taxonomy.h", name = "clearLabels")
     protected void clearLabels() {
         checkLabel++;
         valueLabel++;
     }
 
     /** initialise aux entry with given concept p */
-@PortedFrom(file="Taxonomy.h",name="setCurrentEntry")
+    @PortedFrom(file = "Taxonomy.h", name = "setCurrentEntry")
     protected void setCurrentEntry(ClassifiableEntry p) {
         current.clear();
         curEntry = p;
     }
 
     /** check if no classification needed (synonym, orphan, unsatisfiable) */
-@PortedFrom(file="Taxonomy.h",name="immediatelyClassified")
+    @PortedFrom(file = "Taxonomy.h", name = "immediatelyClassified")
     protected boolean immediatelyClassified() {
         return classifySynonym();
     }
 
     /** check if it is possible to skip TD phase */
-@PortedFrom(file="Taxonomy.h",name="needTopDown")
+    @PortedFrom(file = "Taxonomy.h", name = "needTopDown")
     protected boolean needTopDown() {
         return false;
     }
 
     /** explicitely run TD phase */
-@PortedFrom(file="Taxonomy.h",name="runTopDown")
+    @PortedFrom(file = "Taxonomy.h", name = "runTopDown")
     protected void runTopDown() {}
 
     /** check if it is possible to skip BU phase */
-@PortedFrom(file="Taxonomy.h",name="needBottomUp")
+    @PortedFrom(file = "Taxonomy.h", name = "needBottomUp")
     protected boolean needBottomUp() {
         return false;
     }
 
     /** explicitely run BU phase */
-@PortedFrom(file="Taxonomy.h",name="runBottomUp")
+    @PortedFrom(file = "Taxonomy.h", name = "runBottomUp")
     protected void runBottomUp() {}
 
     /** actions that to be done BEFORE entry will be classified */
-@PortedFrom(file="Taxonomy.h",name="preClassificationActions")
+    @PortedFrom(file = "Taxonomy.h", name = "preClassificationActions")
     protected void preClassificationActions() {}
 
     // -- DFS-based classification
     /** add top entry together with its known subsumers */
-@PortedFrom(file="Taxonomy.h",name="addTop")
+    @PortedFrom(file = "Taxonomy.h", name = "addTop")
     private void addTop(ClassifiableEntry p) {
         waitStack.push(p);
         ksStack.push(new ToldSubsumers(p.getToldSubsumers()));
     }
 
     /** remove top entry */
-@PortedFrom(file="Taxonomy.h",name="removeTop")
+    @PortedFrom(file = "Taxonomy.h", name = "removeTop")
     protected void removeTop() {
         waitStack.pop();
         ksStack.pop();
     }
 
     /** check if it is necessary to log taxonomy action */
-@PortedFrom(file="Taxonomy.h",name="needLogging")
+    @PortedFrom(file = "Taxonomy.h", name = "needLogging")
     protected boolean needLogging() {
         return true;
     }
@@ -219,19 +219,19 @@ public class Taxonomy {
     }
 
     /** special access to TOP of taxonomy */
-@PortedFrom(file="Taxonomy.h",name="getTopVertex")
+    @PortedFrom(file = "Taxonomy.h", name = "getTopVertex")
     public TaxonomyVertex getTopVertex() {
         return graph.get(1);
     }
 
     /** special access to BOTTOM of taxonomy */
-@PortedFrom(file="Taxonomy.h",name="getBottomVertex")
+    @PortedFrom(file = "Taxonomy.h", name = "getBottomVertex")
     public TaxonomyVertex getBottomVertex() {
         return graph.get(0);
     }
 
     /** get node for fresh entity E */
-@PortedFrom(file="Taxonomy.h",name="getFreshVertex")
+    @PortedFrom(file = "Taxonomy.h", name = "getFreshVertex")
     TaxonomyVertex getFreshVertex(ClassifiableEntry e) {
         FreshNode.setSample(e, false);
         return FreshNode;
@@ -240,13 +240,13 @@ public class Taxonomy {
     // -- classification interface
     // flags interface
     /** set Completely Defined flag */
-@PortedFrom(file="Taxonomy.h",name="setCompletelyDefined")
+    @PortedFrom(file = "Taxonomy.h", name = "setCompletelyDefined")
     public void setCompletelyDefined(boolean use) {
         useCompletelyDefined = use;
     }
 
     /** call this method after taxonomy is built */
-@PortedFrom(file="Taxonomy.h",name="finalise")
+    @PortedFrom(file = "Taxonomy.h", name = "finalise")
     public void finalise() {
         // create links from leaf concepts to bottom
         boolean upDirection = false;
@@ -262,7 +262,7 @@ public class Taxonomy {
                                         // new entries to taxonomy
     }
 
-@PortedFrom(file="Taxonomy.h",name="setupTopDown")
+    @PortedFrom(file = "Taxonomy.h", name = "setupTopDown")
     private void setupTopDown() {
         setToldSubsumers();
         if (!needTopDown()) {
@@ -295,7 +295,7 @@ public class Taxonomy {
         return o.toString();
     }
 
-@PortedFrom(file="Taxonomy.h",name="addCurrentToSynonym")
+    @PortedFrom(file = "Taxonomy.h", name = "addCurrentToSynonym")
     public void addCurrentToSynonym(TaxonomyVertex syn) {
         if (queryMode()) {
             // no need to insert; just mark SYN as a host to curEntry
@@ -307,7 +307,7 @@ public class Taxonomy {
         }
     }
 
-@PortedFrom(file="Taxonomy.h",name="insertCurrentNode")
+    @PortedFrom(file = "Taxonomy.h", name = "insertCurrentNode")
     void insertCurrentNode() {
         current.setSample(curEntry, true); // put curEntry as a representative
                                            // of Current
@@ -322,19 +322,19 @@ public class Taxonomy {
 
     /** @return true if taxonomy works in a query mode (no need to insert query */
     // vertex)
-@PortedFrom(file="Taxonomy.h",name="queryMode")
+    @PortedFrom(file = "Taxonomy.h", name = "queryMode")
     public boolean queryMode() {
         return !willInsertIntoTaxonomy;
     }
 
     /** remove node from the taxonomy; assume no references to the node */
-@PortedFrom(file="Taxonomy.h",name="removeNode")
+    @PortedFrom(file = "Taxonomy.h", name = "removeNode")
     void removeNode(TaxonomyVertex node) {
         graph.remove(node);
     }
 
     /** @return true if V is a direct parent of current wrt labels */
-@PortedFrom(file="Taxonomy.h",name="isDirectParent")
+    @PortedFrom(file = "Taxonomy.h", name = "isDirectParent")
     boolean isDirectParent(TaxonomyVertex v) {
         for (TaxonomyVertex q : v.neigh(false)) {
             if (q.isValued(valueLabel) && q.getValue()) {
@@ -344,7 +344,7 @@ public class Taxonomy {
         return true;
     }
 
-@PortedFrom(file="Taxonomy.h",name="performClassification")
+    @PortedFrom(file = "Taxonomy.h", name = "performClassification")
     private void performClassification() {
         // do something before classification (tunable)
         preClassificationActions();
@@ -368,7 +368,7 @@ public class Taxonomy {
         clearLabels();
     }
 
-@PortedFrom(file="Taxonomy.h",name="generalTwoPhaseClassification")
+    @PortedFrom(file = "Taxonomy.h", name = "generalTwoPhaseClassification")
     private void generalTwoPhaseClassification() {
         setupTopDown();
         if (needTopDown()) {
@@ -384,7 +384,7 @@ public class Taxonomy {
         clearLabels();
     }
 
-@PortedFrom(file="Taxonomy.h",name="classifySynonym")
+    @PortedFrom(file = "Taxonomy.h", name = "classifySynonym")
     protected boolean classifySynonym() {
         ClassifiableEntry syn = resolveSynonym(curEntry);
         if (syn.equals(curEntry)) {
@@ -396,7 +396,7 @@ public class Taxonomy {
         return true;
     }
 
-@PortedFrom(file="Taxonomy.h",name="setNonRedundantCandidates")
+    @PortedFrom(file = "Taxonomy.h", name = "setNonRedundantCandidates")
     private void setNonRedundantCandidates() {
         if (!curEntry.hasToldSubsumers()) {
             options.getLog().print("\nTAX: TOP");
@@ -424,7 +424,7 @@ public class Taxonomy {
         }
     }
 
-@PortedFrom(file="Taxonomy.h",name="setToldSubsumers")
+    @PortedFrom(file = "Taxonomy.h", name = "setToldSubsumers")
     private void setToldSubsumers() {
         Collection<ClassifiableEntry> top = ksStack.peek().s_begin();
         if (needLogging() && !top.isEmpty()) {
@@ -450,7 +450,7 @@ public class Taxonomy {
 
     /** ensure that all TS of the top entry are classified. @return the reason */
     // of cycle or NULL.
-@PortedFrom(file="Taxonomy.h",name="prepareTS")
+    @PortedFrom(file = "Taxonomy.h", name = "prepareTS")
     ClassifiableEntry prepareTS(ClassifiableEntry cur) {
         // we just found that TS forms a cycle -- return stop-marker
         if (waitStack.contains(cur)) {
@@ -505,7 +505,7 @@ public class Taxonomy {
         return null;
     }
 
-@PortedFrom(file="Taxonomy.h",name="classifyEntry")
+    @PortedFrom(file = "Taxonomy.h", name = "classifyEntry")
     public void classifyEntry(ClassifiableEntry p) {
         assert waitStack.isEmpty();
         // don't classify artificial concepts
@@ -541,7 +541,7 @@ public class Taxonomy {
     // }
     // return ret;
     // }
-@PortedFrom(file="Taxonomy.h",name="classifyTop")
+    @PortedFrom(file = "Taxonomy.h", name = "classifyTop")
     private void classifyTop() {
         assert !waitStack.isEmpty();
         // load last concept
@@ -575,7 +575,7 @@ public class Taxonomy {
     // }
     // throw new ReasonerInternalException(b.toString());
     // }
-@PortedFrom(file="Taxonomy.h",name="propagateTrueUp")
+    @PortedFrom(file = "Taxonomy.h", name = "propagateTrueUp")
     protected void propagateTrueUp(TaxonomyVertex node) {
         // if taxonomy class already checked -- do nothing
         if (node.isValued(valueLabel)) {

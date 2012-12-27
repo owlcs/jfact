@@ -10,6 +10,6 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tNameSet.h", name = "TNameCreator")
 public interface NameCreator<T> {
     /** create new Named Entry */
-@PortedFrom(file="tNameSet.h",name="makeEntry")
+    @PortedFrom(file = "tNameSet.h", name = "makeEntry")
     T makeEntry(String name);
 }

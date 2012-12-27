@@ -36,7 +36,7 @@ public class TDag2Interface {
     // static DataRoleName DRName ( NamedEntry p ) { return dynamic_cast<const
     // TDLDataRoleName*>(p->getEntity()); }
     /** build concept expression by a vertex V */
-@PortedFrom(file="tDag2Interface.h",name="buildCExpr")
+    @PortedFrom(file = "tDag2Interface.h", name = "buildCExpr")
     public ConceptExpression buildCExpr(DLVertex v) {
         switch (v.getType()) {
             case dtTop:
@@ -88,7 +88,7 @@ public class TDag2Interface {
     }
 
     /** build data expression by a vertex V */
-@PortedFrom(file="tDag2Interface.h",name="buildDExpr")
+    @PortedFrom(file = "tDag2Interface.h", name = "buildDExpr")
     public DataExpression buildDExpr(DLVertex v) {
         switch (v.getType()) {
             case dtTop:
@@ -137,7 +137,7 @@ public class TDag2Interface {
 
     /** make sure that size of expression cache is the same as the size of a */
     // DAG
-@PortedFrom(file="tDag2Interface.h",name="ensureDagSize")
+    @PortedFrom(file = "tDag2Interface.h", name = "ensureDagSize")
     public void ensureDagSize() {
         int ds = Dag.size(), ts = TransConcept.size();
         if (ds == ts) {
@@ -148,7 +148,7 @@ public class TDag2Interface {
     }
 
     /** get concept expression corresponding index of vertex */
-@PortedFrom(file="tDag2Interface.h",name="getCExpr")
+    @PortedFrom(file = "tDag2Interface.h", name = "getCExpr")
     public ConceptExpression getCExpr(int p) {
         if (p < 0) {
             return Manager.not(getCExpr(-p));
@@ -160,7 +160,7 @@ public class TDag2Interface {
     }
 
     /** get data expression corresponding index of vertex */
-@PortedFrom(file="tDag2Interface.h",name="getDExpr")
+    @PortedFrom(file = "tDag2Interface.h", name = "getDExpr")
     public DataExpression getDExpr(int p) {
         if (p < 0) {
             return Manager.dataNot(getDExpr(-p));
@@ -173,7 +173,7 @@ public class TDag2Interface {
         return expression;
     }
 
-@PortedFrom(file="tDag2Interface.h",name="getExpr")
+    @PortedFrom(file = "tDag2Interface.h", name = "getExpr")
     public Expression getExpr(int p, boolean data) {
         if (data) {
             return getDExpr(p);

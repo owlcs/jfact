@@ -52,7 +52,7 @@ public class RoleMaster {
     private static int firstRoleIndex = 2;
 
     /** TRole and it's inverse in RoleBox */
-@PortedFrom(file="RoleMaster.h",name="registerRole")
+    @PortedFrom(file = "RoleMaster.h", name = "registerRole")
     private void registerRole(Role r) {
         assert r != null && r.getInverse() == null; // sanity check
         assert r.getId() == 0; // only call it for the new roles
@@ -74,7 +74,7 @@ public class RoleMaster {
     }
 
     /** @return true if P is a role that is registered in the RM */
-@PortedFrom(file="RoleMaster.h",name="isRegisteredRole")
+    @PortedFrom(file = "RoleMaster.h", name = "isRegisteredRole")
     private boolean isRegisteredRole(NamedEntry p) {
         if (!(p instanceof Role)) {
             return false;
@@ -85,7 +85,7 @@ public class RoleMaster {
     }
 
     /** get number of roles */
-@PortedFrom(file="RoleMaster.h",name="size")
+    @PortedFrom(file = "RoleMaster.h", name = "size")
     public int size() {
         return roles.size() / 2 - 1;
     }
@@ -120,7 +120,7 @@ public class RoleMaster {
     }
 
     /** create role entry with given name */
-@PortedFrom(file="RoleMaster.h",name="ensureRoleName")
+    @PortedFrom(file = "RoleMaster.h", name = "ensureRoleName")
     public NamedEntry ensureRoleName(String name) {
         // check for the Top/Bottom names
         if (name.equals(emptyRole.getName())) {
@@ -149,7 +149,7 @@ public class RoleMaster {
     }
 
     /** add synonym to existing role */
-@PortedFrom(file="RoleMaster.h",name="addRoleSynonym")
+    @PortedFrom(file = "RoleMaster.h", name = "addRoleSynonym")
     public void addRoleSynonym(Role role, Role syn) {
         // no synonyms
         // role = resolveSynonym(role);
@@ -162,7 +162,7 @@ public class RoleMaster {
     }
 
     /** add parent for the input role */
-@PortedFrom(file="RoleMaster.h",name="addRoleParentProper")
+    @PortedFrom(file = "RoleMaster.h", name = "addRoleParentProper")
     public void addRoleParentProper(Role role, Role parent) {
         assert !role.isSynonym() && !parent.isSynonym();
         if (role == parent) {
@@ -193,7 +193,7 @@ public class RoleMaster {
     }
 
     /** a pair of disjoint roles */
-@PortedFrom(file="RoleMaster.h",name="addDisjointRoles")
+    @PortedFrom(file = "RoleMaster.h", name = "addDisjointRoles")
     public void addDisjointRoles(Role R, Role S) {
         // object- and data roles are always disjoint
         if (R.isDataRole() != S.isDataRole()) {
@@ -204,7 +204,7 @@ public class RoleMaster {
     }
 
     /** change the undefined names usage policy */
-@PortedFrom(file="RoleMaster.h",name="setUndefinedNames")
+    @PortedFrom(file = "RoleMaster.h", name = "setUndefinedNames")
     public void setUndefinedNames(boolean val) {
         useUndefinedNames = val;
     }
@@ -214,7 +214,7 @@ public class RoleMaster {
     }
 
     /** get access to the taxonomy */
-@PortedFrom(file="RoleMaster.h",name="getTaxonomy")
+    @PortedFrom(file = "RoleMaster.h", name = "getTaxonomy")
     public Taxonomy getTaxonomy() {
         return pTax;
     }
@@ -231,7 +231,7 @@ public class RoleMaster {
         }
     }
 
-@PortedFrom(file="RoleMaster.h",name="hasReflexiveRoles")
+    @PortedFrom(file = "RoleMaster.h", name = "hasReflexiveRoles")
     public boolean hasReflexiveRoles() {
         for (int i = firstRoleIndex; i < roles.size(); i++) {
             Role p = roles.get(i);
@@ -242,7 +242,7 @@ public class RoleMaster {
         return false;
     }
 
-@PortedFrom(file="RoleMaster.h",name="fillReflexiveRoles")
+    @PortedFrom(file = "RoleMaster.h", name = "fillReflexiveRoles")
     public void fillReflexiveRoles(List<Role> RR) {
         RR.clear();
         for (int i = firstRoleIndex; i < roles.size(); i++) {
@@ -253,7 +253,7 @@ public class RoleMaster {
         }
     }
 
-@PortedFrom(file="RoleMaster.h",name="addRoleParent")
+    @PortedFrom(file = "RoleMaster.h", name = "addRoleParent")
     public void addRoleParent(DLTree tree, Role parent) {
         if (tree == null) {
             return;
@@ -290,7 +290,7 @@ public class RoleMaster {
         }
     }
 
-@PortedFrom(file="RoleMaster.h",name="initAncDesc")
+    @PortedFrom(file = "RoleMaster.h", name = "initAncDesc")
     public void initAncDesc() {
         int nRoles = roles.size();
         for (int i = firstRoleIndex; i < roles.size(); i++) {
@@ -372,13 +372,13 @@ public class RoleMaster {
     }
 
     /** @return pointer to a TOP role */
-@PortedFrom(file="RoleMaster.h",name="getTopRole")
+    @PortedFrom(file = "RoleMaster.h", name = "getTopRole")
     Role getTopRole() {
         return universalRole;
     }
 
     /** @return pointer to a BOTTOM role */
-@PortedFrom(file="RoleMaster.h",name="getBotRole")
+    @PortedFrom(file = "RoleMaster.h", name = "getBotRole")
     Role getBotRole() {
         return emptyRole;
     }

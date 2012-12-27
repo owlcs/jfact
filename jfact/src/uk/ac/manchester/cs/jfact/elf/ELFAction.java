@@ -30,7 +30,7 @@ class ELFAction {
     }
 
     /** action itself, depending on the R state */
-@PortedFrom(file="ELFReasoner.h",name="apply")
+    @PortedFrom(file = "ELFReasoner.h", name = "apply")
     void apply() {
         if (R != null) {
             R.addR(C, D);

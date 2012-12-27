@@ -7,21 +7,22 @@ package uk.ac.manchester.cs.jfact.helpers;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.LinkedList;
 
+import conformance.Original;
 import conformance.PortedFrom;
 
-@PortedFrom(file="tSaveStack.h",name="TSaveStack")
+@PortedFrom(file = "tSaveStack.h", name = "TSaveStack")
 public class SaveStack<T> {
     protected LinkedList<T> list = new LinkedList<T>();
 
     /** get an object from a fixed depth */
-@PortedFrom(file="tSaveStack.h",name="pop")
+    @PortedFrom(file = "tSaveStack.h", name = "pop")
     public T pop(int depth) {
         top(depth);
         return pop();
     }
 
     /** get an object from a fixed depth */
-@PortedFrom(file="tSaveStack.h",name="top")
+    @PortedFrom(file = "tSaveStack.h", name = "top")
     public T top(int depth) {
         assert list.size() >= depth;
         while (list.size() > depth) {
@@ -30,31 +31,34 @@ public class SaveStack<T> {
         return list.peek();
     }
 
-@PortedFrom(file="tSaveStack.h",name="top")
+    @PortedFrom(file = "tSaveStack.h", name = "top")
     public T top() {
         return list.peek();
     }
 
-@PortedFrom(file="tSaveStack.h",name="pop")
+    @PortedFrom(file = "tSaveStack.h", name = "pop")
     public T pop() {
         assert !list.isEmpty();
         T pop = list.pop();
         return pop;
     }
 
-@PortedFrom(file="tSaveStack.h",name="push")
+    @PortedFrom(file = "tSaveStack.h", name = "push")
     public void push(T e) {
         list.push(e);
     }
 
+    @Original
     public void clear() {
         list.clear();
     }
 
+    @PortedFrom(file = "tSaveStack.h", name = "empty")
     public boolean isEmpty() {
         return list.isEmpty();
     }
 
+    @Original
     public int size() {
         return list.size();
     }

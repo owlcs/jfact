@@ -32,7 +32,7 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
     boolean eRHS;
 
     /** process the axiom and mark it unused if necessary */
-@PortedFrom(file="ELFNormalizer.h",name="v")
+    @PortedFrom(file = "ELFNormalizer.h", name = "v")
     void v(Axiom ax) {
         // std::cout << "Processing ";
         // ax.accept(LP);
@@ -43,7 +43,7 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
     }
 
     /** add axiom to a list */
-@PortedFrom(file="ELFNormalizer.h",name="addAxiom")
+    @PortedFrom(file = "ELFNormalizer.h", name = "addAxiom")
     void addAxiom(Axiom ax) {
         // std::cout << "Adding ";
         // ax.accept(LP);
@@ -51,14 +51,14 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
     }
 
     /** create a new name */
-@PortedFrom(file="ELFNormalizer.h",name="buildFreshName")
+    @PortedFrom(file = "ELFNormalizer.h", name = "buildFreshName")
     ConceptExpression buildFreshName() {
         // TODO check: should the string start with a space?
         return pEM.concept(" ELF_aux_" + index);
     }
 
     /** split C [= D1 \and \and Dn into C [= D1, C [= Dn */
-@PortedFrom(file="ELFNormalizer.h",name="splitAndRHS")
+    @PortedFrom(file = "ELFNormalizer.h", name = "splitAndRHS")
     boolean splitAndRHS(OWLAxiom ax, ConceptExpression C, ConceptAnd D) {
         if (D == null) {
             return false;
@@ -72,7 +72,7 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
 
     /** transform RHS into normalized one. @return a normalized RHS. Set the */
     // eRHS flag if it is an existential
-@PortedFrom(file="ELFNormalizer.h",name="transformExists")
+    @PortedFrom(file = "ELFNormalizer.h", name = "transformExists")
     ConceptExpression transformExists(OWLAxiom ax, ConceptExpression D) {
         eRHS = false;
         // RHS now contains only Bot, A, \E R.C
@@ -104,7 +104,7 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
 
     /** transform conjunction into the binary one with named concepts in it; */
     // simplify
-@PortedFrom(file="ELFNormalizer.h",name="normalizeLHSAnd")
+    @PortedFrom(file = "ELFNormalizer.h", name = "normalizeLHSAnd")
     ConceptExpression normalizeLHSAnd(OWLAxiom ax, ConceptAnd C) {
         if (C == null) {
             return null;
@@ -162,7 +162,7 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
     }
 
     /** transform LHS into normalized one. @return a normalized LHS */
-@PortedFrom(file="ELFNormalizer.h",name="transformLHS")
+    @PortedFrom(file = "ELFNormalizer.h", name = "transformLHS")
     ConceptExpression transformLHS(OWLAxiom ax, ConceptExpression C) {
         // here C is Top, A, AND and Exists
         // first normalize LHS And to contain only 2 names (or less)
@@ -295,7 +295,7 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
     }
 
     @Override
-@PortedFrom(file="ELFNormalizer.h",name="visitOntology")
+    @PortedFrom(file = "ELFNormalizer.h", name = "visitOntology")
     public void visitOntology(Ontology ontology) {
         for (Axiom p : ontology.getAxioms()) {
             if (p.isUsed()) {

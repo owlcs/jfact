@@ -7,16 +7,16 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "LocalityChecker.h", name = "LocalityChecker")
 public interface LocalityChecker {
-@PortedFrom(file="LocalityChecker.h",name="local")
+    @PortedFrom(file = "LocalityChecker.h", name = "local")
     boolean local(Axiom axiom);
 
     /** allow the checker to preprocess an ontology if necessary */
-@PortedFrom(file="LocalityChecker.h",name="preprocessOntology")
+    @PortedFrom(file = "LocalityChecker.h", name = "preprocessOntology")
     void preprocessOntology(Collection<Axiom> vec);
 
-@PortedFrom(file="LocalityChecker.h",name="setSignatureValue")
+    @PortedFrom(file = "LocalityChecker.h", name = "setSignatureValue")
     void setSignatureValue(TSignature sig);
 
-@PortedFrom(file="LocalityChecker.h",name="getSignature")
+    @PortedFrom(file = "LocalityChecker.h", name = "getSignature")
     TSignature getSignature();
 }

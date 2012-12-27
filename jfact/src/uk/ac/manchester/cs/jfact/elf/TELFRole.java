@@ -17,7 +17,7 @@ class TELFRole extends TRuleSet {
     Map<TELFConcept, Set<TELFConcept>> PredMap = new HashMap<TELFConcept, Set<TELFConcept>>();
 
     /** add (C,D) to label */
-@PortedFrom(file="ELFReasoner.h",name="addLabel")
+    @PortedFrom(file = "ELFReasoner.h", name = "addLabel")
     void addLabel(TELFConcept C, TELFConcept D) {
         PredMap.get(D).add(C);
     }
@@ -33,24 +33,24 @@ class TELFRole extends TRuleSet {
     }
 
     /** get the (possibly empty) set of predecessors of given D */
-@PortedFrom(file="ELFReasoner.h",name="getPredSet")
+    @PortedFrom(file = "ELFReasoner.h", name = "getPredSet")
     Set<TELFConcept> getPredSet(TELFConcept D) {
         return PredMap.get(D);
     }
 
-@PortedFrom(file="ELFReasoner.h",name="begin")
+    @PortedFrom(file = "ELFReasoner.h", name = "begin")
     Iterable<Map.Entry<TELFConcept, Set<TELFConcept>>> begin() {
         return PredMap.entrySet();
     }
 
     /** check whether (C,D) is in the R-set */
-@PortedFrom(file="ELFReasoner.h",name="hasLabel")
+    @PortedFrom(file = "ELFReasoner.h", name = "hasLabel")
     boolean hasLabel(TELFConcept C, TELFConcept D) {
         return PredMap.get(D).contains(C);
     }
 
     /** add pair (C,D) to a set */
-@PortedFrom(file="ELFReasoner.h",name="addR")
+    @PortedFrom(file = "ELFReasoner.h", name = "addR")
     void addR(TELFConcept C, TELFConcept D) {
         if (hasLabel(C, D)) {
             return;

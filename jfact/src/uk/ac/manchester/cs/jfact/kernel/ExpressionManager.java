@@ -16,7 +16,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 import uk.ac.manchester.cs.jfact.kernel.voc.Vocabulary;
 import conformance.PortedFrom;
 
-@PortedFrom(file="tExpressionManager.h",name="TExpressionManager")
+@PortedFrom(file = "tExpressionManager.h", name = "TExpressionManager")
 public class ExpressionManager {
     /** Cache for the inverse roles */
     protected class InverseRoleCache {
@@ -113,7 +113,7 @@ public class ExpressionManager {
     private Map<IndividualExpression, ConceptExpression> OneOfCache = new HashMap<IndividualExpression, ConceptExpression>();
 
     /** set Top/Bot properties */
-@PortedFrom(file="tExpressionManager.h",name="setTopBottomRoles")
+    @PortedFrom(file = "tExpressionManager.h", name = "setTopBottomRoles")
     public void setTopBottomRoles(String topORoleName, String botORoleName,
             String topDRoleName, String botDRoleName) {
         objectRoleTop = new ObjectRoleName(topORoleName);
@@ -122,12 +122,12 @@ public class ExpressionManager {
         dataRoleBottom = new DataRoleName(botDRoleName);
     }
 
-@PortedFrom(file="tExpressionManager.h",name="clearNameCache")
+    @PortedFrom(file = "tExpressionManager.h", name = "clearNameCache")
     public void clearNameCache(NameSet<?> ns) {
         ns.clear();
     }
 
-@PortedFrom(file="tExpressionManager.h",name="clearNameCache")
+    @PortedFrom(file = "tExpressionManager.h", name = "clearNameCache")
     public void clearNameCache() {
         clearNameCache(conceptNameset);
         clearNameCache(objectRoleNameset);
@@ -137,67 +137,67 @@ public class ExpressionManager {
 
     // top/bottom roles
     /** @return true iff R is a top object role */
-@PortedFrom(file="tExpressionManager.h",name="isUniversalRole")
+    @PortedFrom(file = "tExpressionManager.h", name = "isUniversalRole")
     public boolean isUniversalRole(ObjectRoleComplexExpression R) {
         return R.equals(objectRoleTop);
     }
 
     /** @return true iff R is a top data role */
-@PortedFrom(file="tExpressionManager.h",name="isUniversalRole")
+    @PortedFrom(file = "tExpressionManager.h", name = "isUniversalRole")
     public boolean isUniversalRole(DataRoleExpression R) {
         return R.equals(dataRoleTop);
     }
 
     /** @return true iff R is a bottom object role */
-@PortedFrom(file="tExpressionManager.h",name="isEmptyRole")
+    @PortedFrom(file = "tExpressionManager.h", name = "isEmptyRole")
     public boolean isEmptyRole(ObjectRoleComplexExpression R) {
         return R.equals(objectRoleBottom);
     }
 
     /** @return true iff R is a bottom data role */
-@PortedFrom(file="tExpressionManager.h",name="isEmptyRole")
+    @PortedFrom(file = "tExpressionManager.h", name = "isEmptyRole")
     public boolean isEmptyRole(DataRoleExpression R) {
         return R.equals(dataRoleBottom);
     }
 
     /** get number of registered concepts */
-@PortedFrom(file="tExpressionManager.h",name="nConcepts")
+    @PortedFrom(file = "tExpressionManager.h", name = "nConcepts")
     public int nConcepts() {
         return conceptNameset.size();
     }
 
     /** get number of registered individuals */
-@PortedFrom(file="tExpressionManager.h",name="nIndividuals")
+    @PortedFrom(file = "tExpressionManager.h", name = "nIndividuals")
     public int nIndividuals() {
         return individualNameset.size();
     }
 
     /** get number of registered object roles */
-@PortedFrom(file="tExpressionManager.h",name="nORoles")
+    @PortedFrom(file = "tExpressionManager.h", name = "nORoles")
     public int nORoles() {
         return objectRoleNameset.size();
     }
 
     /** get number of registered data roles */
-@PortedFrom(file="tExpressionManager.h",name="nDRoles")
+    @PortedFrom(file = "tExpressionManager.h", name = "nDRoles")
     public int nDRoles() {
         return dataRoleNameset.size();
     }
 
     /** get TOP concept */
-@PortedFrom(file="tExpressionManager.h",name="top")
+    @PortedFrom(file = "tExpressionManager.h", name = "top")
     public ConceptExpression top() {
         return top;
     }
 
     /** get BOTTOM concept */
-@PortedFrom(file="tExpressionManager.h",name="bottom")
+    @PortedFrom(file = "tExpressionManager.h", name = "bottom")
     public ConceptExpression bottom() {
         return bottom;
     }
 
     /** get named concept */
-@PortedFrom(file="tExpressionManager.h",name="concept")
+    @PortedFrom(file = "tExpressionManager.h", name = "concept")
     public ConceptExpression concept(String name) {
         return conceptNameset.insert(name);
     }
@@ -209,26 +209,26 @@ public class ExpressionManager {
 
     /** get an n-ary conjunction expression; take the arguments from the last
      * argument list */
-@PortedFrom(file="tExpressionManager.h",name="and")
+    @PortedFrom(file = "tExpressionManager.h", name = "and")
     public ConceptExpression and(List<Expression> l) {
         return new ConceptAnd(l);
     }
 
     /** @return C and D */
-@PortedFrom(file="tExpressionManager.h",name="and")
+    @PortedFrom(file = "tExpressionManager.h", name = "and")
     public ConceptExpression and(ConceptExpression C, ConceptExpression D) {
         return and(Arrays.<Expression> asList(C, D));
     }
 
     /** @return C or D */
-@PortedFrom(file="tExpressionManager.h",name="or")
+    @PortedFrom(file = "tExpressionManager.h", name = "or")
     public ConceptExpression or(ConceptExpression C, ConceptExpression D) {
         return or(Arrays.<Expression> asList(C, D));
     }
 
     /** get an n-ary disjunction expression; take the arguments from the last
      * argument list */
-@PortedFrom(file="tExpressionManager.h",name="or")
+    @PortedFrom(file = "tExpressionManager.h", name = "or")
     public ConceptExpression or(List<Expression> l) {
         return new ConceptOr(l);
     }
@@ -248,7 +248,7 @@ public class ExpressionManager {
         return new ConceptOneOf(l);
     }
 
-@PortedFrom(file="tExpressionManager.h",name="inverse")
+    @PortedFrom(file = "tExpressionManager.h", name = "inverse")
     public ObjectRoleExpression inverse(ObjectRoleExpression R) {
         return inverseRoleCache.get(R);
     }
@@ -264,7 +264,7 @@ public class ExpressionManager {
     }
 
     /** get value restriction wrt an object role R and an individual I */
-@PortedFrom(file="tExpressionManager.h",name="value")
+    @PortedFrom(file = "tExpressionManager.h", name = "value")
     public ConceptExpression value(ObjectRoleExpression R, IndividualExpression I) {
         return new ConceptObjectValue(R, I);
     }
@@ -295,14 +295,14 @@ public class ExpressionManager {
 
     /** get exact cardinality restriction wrt number N, an object role R and a
      * concept C */
-@PortedFrom(file="tExpressionManager.h",name="cardinality")
+    @PortedFrom(file = "tExpressionManager.h", name = "cardinality")
     public ConceptExpression cardinality(int n, ObjectRoleExpression R,
             ConceptExpression C) {
         return new ConceptObjectExactCardinality(n, R, C);
     }
 
     /** get value restriction wrt a data role R and a data value V */
-@PortedFrom(file="tExpressionManager.h",name="value")
+    @PortedFrom(file = "tExpressionManager.h", name = "value")
     public ConceptExpression value(DataRoleExpression R, Literal<?> V) {
         return new ConceptDataValue(R, V);
     }
@@ -333,14 +333,14 @@ public class ExpressionManager {
 
     /** get exact cardinality restriction wrt number N, a data role R and a data
      * expression E */
-@PortedFrom(file="tExpressionManager.h",name="cardinality")
+    @PortedFrom(file = "tExpressionManager.h", name = "cardinality")
     public ConceptExpression cardinality(int n, DataRoleExpression R, DataExpression E) {
         return new ConceptDataExactCardinality(n, R, E);
     }
 
     // individuals
     /** get named individual */
-@PortedFrom(file="tExpressionManager.h",name="individual")
+    @PortedFrom(file = "tExpressionManager.h", name = "individual")
     public IndividualExpression individual(String name) {
         return individualNameset.insert(name);
     }
@@ -436,7 +436,7 @@ public class ExpressionManager {
         return new DataOneOf(l);
     }
 
-@PortedFrom(file="tExpressionManager.h",name="clear")
+    @PortedFrom(file = "tExpressionManager.h", name = "clear")
     public void clear() {
         conceptNameset.clear();
         individualNameset.clear();

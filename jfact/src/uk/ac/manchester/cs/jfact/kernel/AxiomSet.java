@@ -15,7 +15,7 @@ import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import conformance.PortedFrom;
 
-@PortedFrom(file="tAxiomSet.h",name="TAxiomSet")
+@PortedFrom(file = "tAxiomSet.h", name = "TAxiomSet")
 public class AxiomSet {
     /** host TBox that holds all concepts/etc */
     protected TBox tboxHost;
@@ -30,7 +30,7 @@ public class AxiomSet {
     private List<Abs> actions = new ArrayList<AxiomSet.Abs>();
 
     /** add already built GCI p */
-@PortedFrom(file="tAxiomSet.h",name="insertGCI")
+    @PortedFrom(file = "tAxiomSet.h", name = "insertGCI")
     private void insertGCI(Axiom p) {
         tboxHost.getOptions().getAbsorptionLog().print("\n new axiom (")
                 .print(accumulator.size()).print("):", p);
@@ -38,7 +38,7 @@ public class AxiomSet {
     }
 
     /** insert GCI if new; @return true iff already exists */
-@PortedFrom(file="tAxiomSet.h",name="insertIfNew")
+    @PortedFrom(file = "tAxiomSet.h", name = "insertIfNew")
     private boolean insertIfNew(Axiom q) {
         if (!accumulator.contains(q)) {
             insertGCI(q);
@@ -48,7 +48,7 @@ public class AxiomSet {
     }
 
     /** helper that inserts an axiom into Accum; @return bool if success */
-@PortedFrom(file="tAxiomSet.h",name="processNewAxiom")
+    @PortedFrom(file = "tAxiomSet.h", name = "processNewAxiom")
     protected boolean processNewAxiom(Axiom q) {
         if (q == null) {
             return false;
@@ -64,7 +64,7 @@ public class AxiomSet {
     }
 
     /** add axiom for the GCI C [= D */
-@PortedFrom(file="tAxiomSet.h",name="addAxiom")
+    @PortedFrom(file = "tAxiomSet.h", name = "addAxiom")
     public void addAxiom(DLTree C, DLTree D) {
         SAbsInput();
         Axiom p = new Axiom();
@@ -74,20 +74,20 @@ public class AxiomSet {
     }
 
     /** get number of (not absorbed) GCIs */
-@PortedFrom(file="tAxiomSet.h",name="size")
+    @PortedFrom(file = "tAxiomSet.h", name = "size")
     private int size() {
         return accumulator.size();
     }
 
     /** @return true if non-concept aborption were executed */
-@PortedFrom(file="tAxiomSet.h",name="wasRoleAbsorptionApplied")
+    @PortedFrom(file = "tAxiomSet.h", name = "wasRoleAbsorptionApplied")
     public boolean wasRoleAbsorptionApplied() {
         String string = "SAbsRApply";
         return InAx.created.containsKey(string);
     }
 
     /** get GCI of all non-absorbed axioms */
-@PortedFrom(file="tAxiomSet.h",name="getGCI")
+    @PortedFrom(file = "tAxiomSet.h", name = "getGCI")
     public DLTree getGCI() {
         List<DLTree> l = new ArrayList<DLTree>();
         for (Axiom p : accumulator) {
@@ -97,7 +97,7 @@ public class AxiomSet {
     }
 
     /** split given axiom */
-@PortedFrom(file="tAxiomSet.h",name="split")
+    @PortedFrom(file = "tAxiomSet.h", name = "split")
     protected boolean split(Axiom p) {
         List<Axiom> splitted = p.split(tboxHost);
         if (splitted.isEmpty()) {
@@ -117,7 +117,7 @@ public class AxiomSet {
         return true;
     }
 
-@PortedFrom(file="tAxiomSet.h",name="absorb")
+    @PortedFrom(file = "tAxiomSet.h", name = "absorb")
     public int absorb() {
         // GCIs to process
         List<Axiom> GCIs = new ArrayList<Axiom>();
@@ -139,7 +139,7 @@ public class AxiomSet {
         return size();
     }
 
-@PortedFrom(file="tAxiomSet.h",name="absorbGCI")
+    @PortedFrom(file = "tAxiomSet.h", name = "absorbGCI")
     private boolean absorbGCI(Axiom p) {
         SAbsAction();
         for (Abs abs : actions) {
@@ -151,7 +151,7 @@ public class AxiomSet {
         return false;
     }
 
-@PortedFrom(file="tAxiomSet.h",name="initAbsorptionFlags")
+    @PortedFrom(file = "tAxiomSet.h", name = "initAbsorptionFlags")
     public boolean initAbsorptionFlags(String flags) {
         actions.clear();
         for (char c : flags.toCharArray()) {
@@ -229,6 +229,7 @@ public class AxiomSet {
         return false;
     }
 
+    @PortedFrom(file = "tAxiomSet.h", name = "PrintStatistics")
     private void printStatistics() {
         if (!created.containsKey("SAbsAction")) {
             return;

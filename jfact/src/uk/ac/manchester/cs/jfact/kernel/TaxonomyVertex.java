@@ -36,13 +36,13 @@ public class TaxonomyVertex {
     private boolean checkValue;
 
     /** mark vertex as the one corresponding to a given ENTRY */
-@PortedFrom(file="taxVertex.h",name="setHostVertex")
+    @PortedFrom(file = "taxVertex.h", name = "setHostVertex")
     public void setHostVertex(ClassifiableEntry entry) {
         entry.setTaxVertex(this);
     }
 
     /** set sample to ENTRY */
-@PortedFrom(file="taxVertex.h",name="setSample")
+    @PortedFrom(file = "taxVertex.h", name = "setSample")
     public void setSample(ClassifiableEntry entry, boolean linkBack) {
         sample = entry;
         if (linkBack) {
@@ -51,34 +51,34 @@ public class TaxonomyVertex {
     }
 
     /** indirect RW access to Links */
-@PortedFrom(file="taxVertex.h",name="neigh")
+    @PortedFrom(file = "taxVertex.h", name = "neigh")
     public List<TaxonomyVertex> neigh(boolean upDirection) {
         return upDirection ? linksParent : linksChild;
     }
 
     // checked part
-@PortedFrom(file="taxVertex.h",name="isChecked")
+    @PortedFrom(file = "taxVertex.h", name = "isChecked")
     public boolean isChecked(long checkLab) {
         return checkLab == checked;
     }
 
-@PortedFrom(file="taxVertex.h",name="setChecked")
+    @PortedFrom(file = "taxVertex.h", name = "setChecked")
     public void setChecked(long checkLab) {
         checked = checkLab;
     }
 
     // value part
-@PortedFrom(file="taxVertex.h",name="isValued")
+    @PortedFrom(file = "taxVertex.h", name = "isValued")
     public boolean isValued(long valueLab) {
         return valueLab == isValued;
     }
 
-@PortedFrom(file="taxVertex.h",name="getValue")
+    @PortedFrom(file = "taxVertex.h", name = "getValue")
     public boolean getValue() {
         return checkValue;
     }
 
-@PortedFrom(file="taxVertex.h",name="setValued")
+    @PortedFrom(file = "taxVertex.h", name = "setValued")
     public boolean setValued(boolean val, long valueLab) {
         isValued = valueLab;
         checkValue = val;
@@ -86,23 +86,23 @@ public class TaxonomyVertex {
     }
 
     // common part
-@PortedFrom(file="taxVertex.h",name="isCommon")
+    @PortedFrom(file = "taxVertex.h", name = "isCommon")
     public boolean isCommon() {
         return common != 0;
     }
 
-@PortedFrom(file="taxVertex.h",name="setCommon")
+    @PortedFrom(file = "taxVertex.h", name = "setCommon")
     public void setCommon() {
         ++common;
     }
 
-@PortedFrom(file="taxVertex.h",name="clearCommon")
+    @PortedFrom(file = "taxVertex.h", name = "clearCommon")
     public void clearCommon() {
         common = 0;
     }
 
     /** keep COMMON flag iff both flags are set; @return true if it is the case */
-@PortedFrom(file="taxVertex.h",name="correctCommon")
+    @PortedFrom(file = "taxVertex.h", name = "correctCommon")
     public boolean correctCommon(int n) {
         if (common == n) {
             return true;
@@ -112,7 +112,7 @@ public class TaxonomyVertex {
     }
 
     /** put initial values on the flags */
-@PortedFrom(file="taxVertex.h",name="initFlags")
+    @PortedFrom(file = "taxVertex.h", name = "initFlags")
     private void initFlags() {
         checked = 0;
         isValued = 0;
@@ -120,7 +120,7 @@ public class TaxonomyVertex {
     }
 
     // get info about taxonomy structure
-@PortedFrom(file="taxVertex.h",name="begin_syn")
+    @PortedFrom(file = "taxVertex.h", name = "begin_syn")
     public Set<ClassifiableEntry> begin_syn() {
         return synonyms;
     }
@@ -136,14 +136,14 @@ public class TaxonomyVertex {
     }
 
     /** add P as a synonym to curent vertex */
-@PortedFrom(file="taxVertex.h",name="addSynonym")
+    @PortedFrom(file = "taxVertex.h", name = "addSynonym")
     public void addSynonym(ClassifiableEntry p) {
         synonyms.add(p);
         p.setTaxVertex(this);
     }
 
     /** clears the vertex */
-@PortedFrom(file="taxVertex.h",name="clear")
+    @PortedFrom(file = "taxVertex.h", name = "clear")
     public void clear() {
         linksParent.clear();
         linksChild.clear();
@@ -151,13 +151,13 @@ public class TaxonomyVertex {
         initFlags();
     }
 
-@PortedFrom(file="taxVertex.h",name="getPrimer")
+    @PortedFrom(file = "taxVertex.h", name = "getPrimer")
     public ClassifiableEntry getPrimer() {
         return sample;
     }
 
     /** add link in given direction to vertex */
-@PortedFrom(file="taxVertex.h",name="addNeighbour")
+    @PortedFrom(file = "taxVertex.h", name = "addNeighbour")
     public void addNeighbour(boolean upDirection, TaxonomyVertex p) {
         if (p == null) {
             throw new IllegalArgumentException("p cannot be null");
@@ -166,14 +166,14 @@ public class TaxonomyVertex {
     }
 
     /** check if vertex has no neighbours in given direction */
-@PortedFrom(file="taxVertex.h",name="noNeighbours")
+    @PortedFrom(file = "taxVertex.h", name = "noNeighbours")
     public boolean noNeighbours(boolean upDirection) {
         return neigh(upDirection).isEmpty();
     }
 
     /** @return v if node represents a synonym (v=Up[i]==Down[j]); @return null
      *         otherwise */
-@PortedFrom(file="taxVertex.h",name="getSynonymNode")
+    @PortedFrom(file = "taxVertex.h", name = "getSynonymNode")
     public TaxonomyVertex getSynonymNode() {
         // try to find Vertex such that Vertex\in Up and Vertex\in Down
         for (TaxonomyVertex q : neigh(true)) {
@@ -187,18 +187,18 @@ public class TaxonomyVertex {
     }
 
     /** remove latest link (usually to the BOTTOM node) */
-@PortedFrom(file="taxVertex.h",name="removeLastLink")
+    @PortedFrom(file = "taxVertex.h", name = "removeLastLink")
     public void removeLastLink(boolean upDirection) {
         Helper.resize(neigh(upDirection), neigh(upDirection).size() - 1);
     }
 
     /** clear all links in a given direction */
-@PortedFrom(file="taxVertex.h",name="clearLinks")
+    @PortedFrom(file = "taxVertex.h", name = "clearLinks")
     public void clearLinks(boolean upDirection) {
         neigh(upDirection).clear();
     }
 
-@PortedFrom(file="taxVertex.h",name="removeLink")
+    @PortedFrom(file = "taxVertex.h", name = "removeLink")
     public boolean removeLink(boolean upDirection, TaxonomyVertex p) {
         List<TaxonomyVertex> begin = neigh(upDirection);
         int index = begin.indexOf(p);
@@ -211,7 +211,7 @@ public class TaxonomyVertex {
     }
 
     // TODO does not work with synonyms
-@PortedFrom(file="taxVertex.h",name="incorporate")
+    @PortedFrom(file = "taxVertex.h", name = "incorporate")
     public void incorporate(JFactReasonerConfiguration c) {
         // setup links
         // TODO doublecheck
@@ -249,7 +249,7 @@ public class TaxonomyVertex {
     }
 
     /** merge NODE which is independent to THIS */
-@PortedFrom(file="taxVertex.h",name="mergeIndepNode")
+    @PortedFrom(file = "taxVertex.h", name = "mergeIndepNode")
     void mergeIndepNode(TaxonomyVertex node, Set<TaxonomyVertex> excludes,
             ClassifiableEntry curEntry) {
         // copy synonyms here
@@ -275,7 +275,7 @@ public class TaxonomyVertex {
         }
     }
 
-@PortedFrom(file="taxVertex.h",name="printSynonyms")
+    @PortedFrom(file = "taxVertex.h", name = "printSynonyms")
     public String printSynonyms() {
         assert sample != null;
         StringBuilder o = new StringBuilder();
@@ -295,7 +295,7 @@ public class TaxonomyVertex {
         return o.toString();
     }
 
-@PortedFrom(file="taxVertex.h",name="printNeighbours")
+    @PortedFrom(file = "taxVertex.h", name = "printNeighbours")
     public String printNeighbours(boolean upDirection) {
         StringBuilder o = new StringBuilder();
         o.append(" {");

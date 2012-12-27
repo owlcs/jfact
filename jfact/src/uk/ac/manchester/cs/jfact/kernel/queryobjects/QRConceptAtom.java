@@ -19,11 +19,13 @@ class QRConceptAtom extends QRAtom {
 
     // access
     /** get concept expression */
+    @PortedFrom(file = "QR.h", name = "getConcept")
     ConceptExpression getConcept() {
         return Concept;
     }
 
     /** get i-object */
+    @PortedFrom(file = "QR.h", name = "getArg")
     QRiObject getArg() {
         return Arg;
     }

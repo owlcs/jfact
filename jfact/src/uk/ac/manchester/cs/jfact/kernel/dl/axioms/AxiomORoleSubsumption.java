@@ -13,7 +13,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
 
-@PortedFrom(file="tDLAxiom.h",name="TDLAxiomORoleSubsumption")
+@PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomORoleSubsumption")
 public class AxiomORoleSubsumption extends AxiomSingleORole {
     private ObjectRoleComplexExpression complexRole;
 
@@ -24,21 +24,19 @@ public class AxiomORoleSubsumption extends AxiomSingleORole {
     }
 
     @Override
-
-@PortedFrom(file="tDLAxiom.h",name="accept")
+    @PortedFrom(file = "tDLAxiom.h", name = "accept")
     public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
     @Override
-
-@PortedFrom(file="tDLAxiom.h",name="accept")
+    @PortedFrom(file = "tDLAxiom.h", name = "accept")
     public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
     /** access to role */
-@PortedFrom(file="tDLAxiom.h",name="getSubRole")
+    @PortedFrom(file = "tDLAxiom.h", name = "getSubRole")
     public ObjectRoleComplexExpression getSubRole() {
         return complexRole;
     }

@@ -57,7 +57,7 @@ public class TAxiomSplitter {
     protected Ontology O;
 
     /** rename old concept into a new one with a fresh name */
-@PortedFrom(file="AxiomSplitter.h",name="rename")
+    @PortedFrom(file = "AxiomSplitter.h", name = "rename")
     protected ConceptName rename(ConceptName oldName) {
         ConceptExpression c = O.getExpressionManager().concept(
                 oldName.getName() + "+" + ++newNameId);
@@ -68,14 +68,14 @@ public class TAxiomSplitter {
     }
 
     // / process (register/unregister) axioms in a record REC
-@PortedFrom(file="AxiomSplitter.h",name="processRec")
+    @PortedFrom(file = "AxiomSplitter.h", name = "processRec")
     public void processRec(TRecord rec) {
         mod.getSigIndex().preprocessOntology(rec.oldAxioms);
         mod.getSigIndex().processAx(rec.newAxiom);
     }
 
     /** register a record in the ontology */
-@PortedFrom(file="AxiomSplitter.h",name="registerRec")
+    @PortedFrom(file = "AxiomSplitter.h", name = "registerRec")
     void registerRec(TRecord rec) {
         for (Axiom p : rec.oldAxioms) {
             O.retract(p);
@@ -85,7 +85,7 @@ public class TAxiomSplitter {
     }
 
     /** unregister a record */
-@PortedFrom(file="AxiomSplitter.h",name="unregisterRec")
+    @PortedFrom(file = "AxiomSplitter.h", name = "unregisterRec")
     void unregisterRec(TRecord rec) {
         for (Axiom p : rec.oldAxioms) {
             p.setUsed(true);
@@ -95,7 +95,7 @@ public class TAxiomSplitter {
     }
 
     /** create a signature of a module corresponding to a new axiom in record */
-@PortedFrom(file="AxiomSplitter.h",name="buildSig")
+    @PortedFrom(file = "AxiomSplitter.h", name = "buildSig")
     protected void buildSig(TRecord rec) {
         sig = rec.newAxiom.getSignature();
         mod.extract(O.getAxioms(), sig, ModuleType.M_STAR);
@@ -111,7 +111,7 @@ public class TAxiomSplitter {
     }
 
     /** add axiom CI in a form C [= D for D != TOP */
-@PortedFrom(file="AxiomSplitter.h",name="addSingleCI")
+    @PortedFrom(file = "AxiomSplitter.h", name = "addSingleCI")
     protected void addSingleCI(AxiomConceptInclusion ci) {
         if (ci != null && !(ci.getSupConcept() instanceof ConceptTop)) {
             // skip
@@ -130,7 +130,7 @@ public class TAxiomSplitter {
     }
 
     /** register all axioms in a form C [= D */
-@PortedFrom(file="AxiomSplitter.h",name="registerCIs")
+    @PortedFrom(file = "AxiomSplitter.h", name = "registerCIs")
     protected void registerCIs() {
         // FIXME!! check for the case (not D) [= (not C) later
         // FIXME!! disjoints here as well
@@ -143,7 +143,7 @@ public class TAxiomSplitter {
 
     /** check whether an equivalent axiom is splittable; @return split name or */
     // NULL if not splittable
-@PortedFrom(file="AxiomSplitter.h",name="getEqSplit")
+    @PortedFrom(file = "AxiomSplitter.h", name = "getEqSplit")
     protected ConceptName getEqSplit(AxiomEquivalentConcepts ce) {
         // check whether it is not a synonym definition
         ConceptName splitName = null, name = null;
@@ -169,7 +169,7 @@ public class TAxiomSplitter {
     }
 
     /** make the axiom split for the equivalence axiom */
-@PortedFrom(file="AxiomSplitter.h",name="makeEqSplit")
+    @PortedFrom(file = "AxiomSplitter.h", name = "makeEqSplit")
     protected void makeEqSplit(AxiomEquivalentConcepts ce) {
         if (ce == null) {
             return;
@@ -192,7 +192,7 @@ public class TAxiomSplitter {
     }
 
     /** split all possible EQ axioms */
-@PortedFrom(file="AxiomSplitter.h",name="registerEQ")
+    @PortedFrom(file = "AxiomSplitter.h", name = "registerEQ")
     protected void registerEQ() {
         // use index instead of iterators will be invalidated during additions
         for (int i = 0; i < O.size(); ++i) {
@@ -203,7 +203,7 @@ public class TAxiomSplitter {
     }
 
     /** make implication split for a given old NAME */
-@PortedFrom(file="AxiomSplitter.h",name="makeImpSplit")
+    @PortedFrom(file = "AxiomSplitter.h", name = "makeImpSplit")
     protected TRecord makeImpSplit(ConceptName oldName) {
         ConceptName newName = rename(oldName);
         // std::cout << "split " << oldName.getName() << " into " <<
@@ -226,7 +226,7 @@ public class TAxiomSplitter {
     }
 
     /** get imp record of a given name; create if necessary */
-@PortedFrom(file="AxiomSplitter.h",name="getImpRec")
+    @PortedFrom(file = "AxiomSplitter.h", name = "getImpRec")
     protected TRecord getImpRec(ConceptName oldName) {
         if (!ImpRens.containsKey(oldName)) {
             ImpRens.put(oldName, makeImpSplit(oldName));
@@ -235,7 +235,7 @@ public class TAxiomSplitter {
     }
 
     /** create all the necessary records for the implications */
-@PortedFrom(file="AxiomSplitter.h",name="createAllImplications")
+    @PortedFrom(file = "AxiomSplitter.h", name = "createAllImplications")
     protected void createAllImplications() {
         for (TRecord r : Renames) {
             getImpRec(r.oldName);
@@ -243,7 +243,7 @@ public class TAxiomSplitter {
     }
 
     /** clear modules of Imp and Eq split records */
-@PortedFrom(file="AxiomSplitter.h",name="clearModules")
+    @PortedFrom(file = "AxiomSplitter.h", name = "clearModules")
     protected void clearModules() {
         for (Map.Entry<ConceptName, TRecord> p : ImpRens.entrySet()) {
             p.getValue().newAxSig.clear();
@@ -255,7 +255,7 @@ public class TAxiomSplitter {
 
     /** check whether the record is independent wrt modularity; @return true */
     // iff split was incorrect
-@PortedFrom(file="AxiomSplitter.h",name="checkSplitCorrectness")
+    @PortedFrom(file = "AxiomSplitter.h", name = "checkSplitCorrectness")
     protected boolean checkSplitCorrectness(TRecord rec) {
         if (Rejects.contains(rec.oldName)) {
             // unsplit: // restore the old axiom, get rid of the new one
@@ -282,7 +282,7 @@ public class TAxiomSplitter {
     }
 
     /** move all independent splits in R2; delete all the rest */
-@PortedFrom(file="AxiomSplitter.h",name="keepIndependentSplits")
+    @PortedFrom(file = "AxiomSplitter.h", name = "keepIndependentSplits")
     protected void keepIndependentSplits() {
         boolean change;
         do {
@@ -298,7 +298,7 @@ public class TAxiomSplitter {
     }
 
     /** split all implications corresponding to oldName; @return split pointer */
-@PortedFrom(file="AxiomSplitter.h",name="splitImplicationsFor")
+    @PortedFrom(file = "AxiomSplitter.h", name = "splitImplicationsFor")
     protected TSplitVar splitImplicationsFor(ConceptName oldName) {
         // check whether we already did translation for such a name
         if (O.Splits.hasCN(oldName)) {
@@ -314,7 +314,7 @@ public class TAxiomSplitter {
     }
 
     /** split all implications for which equivalences were split as well */
-@PortedFrom(file="AxiomSplitter.h",name="splitImplications")
+    @PortedFrom(file = "AxiomSplitter.h", name = "splitImplications")
     protected void splitImplications() {
         for (TRecord r : Renames) {
             if (!Rejects.contains(r.oldName)) {
@@ -333,7 +333,7 @@ public class TAxiomSplitter {
         mod = new TModularizer(config, new SyntacticLocalityChecker());
     }
 
-@PortedFrom(file="AxiomSplitter.h",name="buildSplit")
+    @PortedFrom(file = "AxiomSplitter.h", name = "buildSplit")
     public void buildSplit() {
         // first make a set of named concepts C s.t. C [= D is in the ontology
         registerCIs();

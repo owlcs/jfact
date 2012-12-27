@@ -13,7 +13,7 @@ import uk.ac.manchester.cs.jfact.split.TSignature;
 import uk.ac.manchester.cs.jfact.split.TSignatureUpdater;
 import conformance.PortedFrom;
 
-@PortedFrom(file = "tAxiom.h", name = "TAxiom")
+@PortedFrom(file = "tDLAxiom.h", name = "TDLAxiom")
 abstract class AxiomImpl implements Axiom {
     /** id of the axiom */
     private int id;
@@ -30,29 +30,34 @@ abstract class AxiomImpl implements Axiom {
     private OWLAxiom axiom;
 
     @Override
+    @PortedFrom(file = "tDLAxiom.h", name = "getAtom")
     public TOntologyAtom getAtom() {
         return atom;
     }
 
     @Override
+    @PortedFrom(file = "tDLAxiom.h", name = "setAtom")
     public void setAtom(TOntologyAtom atom) {
         this.atom = atom;
     }
 
     /** set the isSearchSpace flag */
     @Override
+    @PortedFrom(file = "tDLAxiom.h", name = "setInSS")
     public void setInSS(boolean flag) {
         inSearchSpace = flag;
     }
 
-    /** get the value of the isSearchSpace flag */
+
     @Override
+    @PortedFrom(file = "tDLAxiom.h", name = "isInSS")
     public boolean isInSS() {
         return inSearchSpace;
     }
 
     // signature access
     @Override
+    @PortedFrom(file = "tDLAxiom.h", name = "getSignature")
     public TSignature getSignature() {
         if (sig == null) {
             buildSignature();
@@ -78,6 +83,7 @@ abstract class AxiomImpl implements Axiom {
     }
 
     @Override
+    @PortedFrom(file = "tDLAxiom.h", name = "getId")
     public int getId() {
         return id;
     }
@@ -93,16 +99,19 @@ abstract class AxiomImpl implements Axiom {
     }
 
     @Override
+    @PortedFrom(file = "tDLAxiom.h", name = "setId")
     public void setId(int Id) {
         id = Id;
     }
 
     @Override
+    @PortedFrom(file = "tDLAxiom.h", name = "setInModule")
     public void setInModule(boolean inModule) {
         this.inModule = inModule;
     }
 
     @Override
+    @PortedFrom(file = "tDLAxiom.h", name = "setUsed")
     public void setUsed(boolean Used) {
         used = Used;
     }

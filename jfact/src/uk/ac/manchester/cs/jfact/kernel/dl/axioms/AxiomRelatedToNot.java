@@ -13,7 +13,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
 
-@PortedFrom(file="tDLAxiom.h",name="TDLAxiomRelatedToNot")
+@PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomRelatedToNot")
 public class AxiomRelatedToNot extends AxiomIndividual {
     private IndividualExpression individualExpression;
     private ObjectRoleExpression objectRoleExpression;
@@ -26,27 +26,25 @@ public class AxiomRelatedToNot extends AxiomIndividual {
     }
 
     @Override
-
-@PortedFrom(file="tDLAxiom.h",name="accept")
+    @PortedFrom(file = "tDLAxiom.h", name = "accept")
     public void accept(DLAxiomVisitor visitor) {
         visitor.visit(this);
     }
 
     @Override
-
-@PortedFrom(file="tDLAxiom.h",name="accept")
+    @PortedFrom(file = "tDLAxiom.h", name = "accept")
     public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
     /** access */
-@PortedFrom(file="tDLAxiom.h",name="getRelatedIndividual")
+    @PortedFrom(file = "tDLAxiom.h", name = "getRelatedIndividual")
     public IndividualExpression getRelatedIndividual() {
         return individualExpression;
     }
 
     /** access */
-@PortedFrom(file="tDLAxiom.h",name="getRelation")
+    @PortedFrom(file = "tDLAxiom.h", name = "getRelation")
     public ObjectRoleExpression getRelation() {
         return objectRoleExpression;
     }

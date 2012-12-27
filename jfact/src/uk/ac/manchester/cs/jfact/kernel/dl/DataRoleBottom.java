@@ -10,16 +10,16 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
-@PortedFrom(file="tDLExpression.h",name="TDLDataRoleBottom")
+@PortedFrom(file = "tDLExpression.h", name = "TDLDataRoleBottom")
 public class DataRoleBottom implements DataRoleExpression {
     @Override
-@PortedFrom(file="tDLExpression.h",name="accept")
+    @PortedFrom(file = "tDLExpression.h", name = "accept")
     public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
     @Override
-@PortedFrom(file="tDLExpression.h",name="accept")
+    @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }

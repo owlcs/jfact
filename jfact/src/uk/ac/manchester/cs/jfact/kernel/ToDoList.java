@@ -69,7 +69,7 @@ public class ToDoList {
         }
 
         /** clear queue */
-@PortedFrom(file="ToDoList.h",name="clear")
+        @PortedFrom(file = "ToDoList.h", name = "clear")
         public void clear() {
             sPointer = 0;
             Wait.clear();
@@ -86,20 +86,20 @@ public class ToDoList {
         }
 
         /** save queue content to the given entry */
-@PortedFrom(file="ToDoList.h",name="save")
+        @PortedFrom(file = "ToDoList.h", name = "save")
         public void save(int[][] tss, int pos) {
             tss[pos][0] = sPointer;
             tss[pos][1] = Wait.size();
         }
 
         /** restore queue content from the given entry */
-@PortedFrom(file="ToDoList.h",name="restore")
+        @PortedFrom(file = "ToDoList.h", name = "restore")
         public void restore(int[][] tss, int pos) {
             sPointer = tss[pos][0];
             Helper.resize(Wait, tss[pos][1]);
         }
 
-@PortedFrom(file="ToDoList.h",name="restore")
+        @PortedFrom(file = "ToDoList.h", name = "restore")
         public void restore(int sp, int ep) {
             sPointer = sp;
             Helper.resize(Wait, ep);
@@ -174,7 +174,7 @@ public class ToDoList {
         }
 
         /** clear queue */
-@PortedFrom(file="ToDoList.h",name="clear")
+        @PortedFrom(file = "ToDoList.h", name = "clear")
         void clear() {
             sPointer = 0;
             queueBroken = false;
@@ -193,7 +193,7 @@ public class ToDoList {
         }
 
         /** save queue content to the given entry */
-@PortedFrom(file="ToDoList.h",name="save")
+        @PortedFrom(file = "ToDoList.h", name = "save")
         void save(QueueQueueSaveState tss) {
             tss.queueBroken = queueBroken;
             tss.sp = sPointer;
@@ -207,7 +207,7 @@ public class ToDoList {
         }
 
         /** restore queue content from the given entry */
-@PortedFrom(file="ToDoList.h",name="restore")
+        @PortedFrom(file = "ToDoList.h", name = "restore")
         void restore(QueueQueueSaveState tss) {
             queueBroken = tss.queueBroken;
             sPointer = tss.sp;
@@ -324,7 +324,7 @@ public class ToDoList {
     private int noe;
 
     /** save current Todo table content to given saveState entry */
-@PortedFrom(file="ToDoList.h",name="saveState")
+    @PortedFrom(file = "ToDoList.h", name = "saveState")
     public void saveState(TODOListSaveState tss) {
         tss.backupID_sp = queueID.sPointer;
         tss.backupID_ep = queueID.Wait.size();
@@ -336,7 +336,7 @@ public class ToDoList {
     }
 
     /** restore Todo table content from given saveState entry */
-@PortedFrom(file="ToDoList.h",name="restoreState")
+    @PortedFrom(file = "ToDoList.h", name = "restoreState")
     public void restoreState(TODOListSaveState tss) {
         queueID.restore(tss.backupID_sp, tss.backupID_ep);
         queueNN.restore(tss.backupNN);
@@ -360,7 +360,7 @@ public class ToDoList {
     }
 
     /** clear Todo table */
-@PortedFrom(file="ToDoList.h",name="clear")
+    @PortedFrom(file = "ToDoList.h", name = "clear")
     public void clear() {
         queueID.clear();
         queueNN.clear();
@@ -378,7 +378,7 @@ public class ToDoList {
 
     // work with entries
     /** add entry with given NODE and CONCEPT with given OFFSET to the Todo table */
-@PortedFrom(file="ToDoList.h",name="addEntry")
+    @PortedFrom(file = "ToDoList.h", name = "addEntry")
     public void addEntry(DlCompletionTree node, DagTag type, ConceptWDep C) {
         int index = matrix.getIndex(type, C.getConcept() > 0, node.isNominalNode());
         switch (index) {
@@ -398,7 +398,7 @@ public class ToDoList {
     }
 
     /** save current state using internal stack */
-@PortedFrom(file="ToDoList.h",name="save")
+    @PortedFrom(file = "ToDoList.h", name = "save")
     public void save() {
         TODOListSaveState state = getInstance();
         saveState(state);
@@ -406,12 +406,12 @@ public class ToDoList {
     }
 
     /** restore state to the given level using internal stack */
-@PortedFrom(file="ToDoList.h",name="restore")
+    @PortedFrom(file = "ToDoList.h", name = "restore")
     public void restore(int level) {
         restoreState(saveStack.pop(level));
     }
 
-@PortedFrom(file="ToDoList.h",name="getNextEntry")
+    @PortedFrom(file = "ToDoList.h", name = "getNextEntry")
     public ToDoEntry getNextEntry() {
         assert !isEmpty(); // safety check
         // decrease amount of elements-to-process
@@ -450,4 +450,3 @@ public class ToDoList {
         return l.toString();
     }
 }
-

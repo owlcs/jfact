@@ -10,7 +10,7 @@ import conformance.Original;
 
 /** @author ignazio
  * @param <Representation> */
-@Original 
+@Original
 public interface Datatype<Representation extends Comparable<Representation>> extends
         DataExpression {
     /** @return true if this datatype is an expression */
@@ -60,8 +60,8 @@ public interface Datatype<Representation extends Comparable<Representation>> ext
     boolean isCompatible(Datatype<?> type);
 
     /** @param l
-     * @return true if l is a literal with compatible datatype and value included
-     *         in this datatype value space */
+     * @return true if l is a literal with compatible datatype and value
+     *         included in this datatype value space */
     boolean isCompatible(Literal<?> l);
 
     /** @param l
@@ -90,8 +90,8 @@ public interface Datatype<Representation extends Comparable<Representation>> ext
      *         more complex representation) */
     String getDatatypeURI();
 
-    /** @return the list of possible values for this datatype which are
-     *         compatible with the listed datatypes. */
+    /** @return the list of possible values for this datatype which are compatible
+     *         with the listed datatypes. */
     Collection<Literal<Representation>> listValues();
 
     /** @return true if the datatype is numeric */

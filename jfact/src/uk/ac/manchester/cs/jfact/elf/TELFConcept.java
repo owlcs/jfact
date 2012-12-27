@@ -15,7 +15,7 @@ class TELFConcept extends TRuleSet {
     Set<TELFConcept> Supers = new HashSet<TELFConcept>();
 
     /** add C to supers */
-@PortedFrom(file="ELFReasoner.h",name="addSuper")
+    @PortedFrom(file = "ELFReasoner.h", name = "addSuper")
     void addSuper(TELFConcept C) {
         Supers.add(C);
     }
@@ -31,13 +31,13 @@ class TELFConcept extends TRuleSet {
     }
 
     /** check whether concept C is contained in supers */
-@PortedFrom(file="ELFReasoner.h",name="hasSuper")
+    @PortedFrom(file = "ELFReasoner.h", name = "hasSuper")
     boolean hasSuper(TELFConcept C) {
         return Supers.contains(C);
     }
 
     /** add an super concept */
-@PortedFrom(file="ELFReasoner.h",name="addC")
+    @PortedFrom(file = "ELFReasoner.h", name = "addC")
     void addC(TELFConcept C) {
         if (hasSuper(C)) {
             return;

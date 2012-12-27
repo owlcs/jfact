@@ -12,7 +12,7 @@ public class ELFExpressionChecker implements DLExpressionVisitor {
     boolean value;
 
     /** get DLTree corresponding to an expression EXPR */
-@PortedFrom(file="ELFExpressionChecker.h",name="v")
+    @PortedFrom(file = "ELFExpressionChecker.h", name = "v")
     boolean v(Expression expr) {
         expr.accept(this);
         return value;

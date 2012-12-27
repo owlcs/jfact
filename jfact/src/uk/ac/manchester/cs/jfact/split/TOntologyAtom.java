@@ -28,7 +28,7 @@ public class TOntologyAtom {
     int Id = 0;
 
     /** remove all atoms in AllDepAtoms from DepAtoms */
-@PortedFrom(file="tOntologyAtom.h",name="filterDep")
+    @PortedFrom(file = "tOntologyAtom.h", name = "filterDep")
     public void filterDep() {
         for (TOntologyAtom p : AllDepAtoms) {
             DepAtoms.remove(p);
@@ -36,7 +36,7 @@ public class TOntologyAtom {
     }
 
     /** build all dep atoms; filter them from DepAtoms */
-@PortedFrom(file="tOntologyAtom.h",name="buildAllDepAtoms")
+    @PortedFrom(file = "tOntologyAtom.h", name = "buildAllDepAtoms")
     public void buildAllDepAtoms(Set<TOntologyAtom> checked) {
         // first gather all dep atoms from all known dep atoms
         for (TOntologyAtom p : DepAtoms) {
@@ -53,20 +53,20 @@ public class TOntologyAtom {
 
     // fill in the sets
     /** set the module axioms */
-@PortedFrom(file="tOntologyAtom.h",name="setModule")
+    @PortedFrom(file = "tOntologyAtom.h", name = "setModule")
     public void setModule(Collection<Axiom> module) {
         ModuleAxioms = new HashSet<Axiom>(module);
     }
 
     /** add axiom AX to an atom */
-@PortedFrom(file="tOntologyAtom.h",name="addAxiom")
+    @PortedFrom(file = "tOntologyAtom.h", name = "addAxiom")
     public void addAxiom(Axiom ax) {
         AtomAxioms.add(ax);
         ax.setAtom(this);
     }
 
     /** add atom to the dependency set */
-@PortedFrom(file="tOntologyAtom.h",name="addDepAtom")
+    @PortedFrom(file = "tOntologyAtom.h", name = "addDepAtom")
     public void addDepAtom(TOntologyAtom atom) {
         if (atom != null && atom != this) {
             DepAtoms.add(atom);
@@ -75,7 +75,7 @@ public class TOntologyAtom {
 
     /** get all the atoms the current one depends on; build this set if */
     // necessary
-@PortedFrom(file="tOntologyAtom.h",name="getAllDepAtoms")
+    @PortedFrom(file = "tOntologyAtom.h", name = "getAllDepAtoms")
     public Set<TOntologyAtom> getAllDepAtoms(Set<TOntologyAtom> checked) {
         if (checked.contains(this)) {
             buildAllDepAtoms(checked);
@@ -85,30 +85,31 @@ public class TOntologyAtom {
 
     // access to axioms
     /** get all the atom's axioms */
-@PortedFrom(file="tOntologyAtom.h",name="getAtomAxioms")
+    @PortedFrom(file = "tOntologyAtom.h", name = "getAtomAxioms")
     public Set<Axiom> getAtomAxioms() {
         return AtomAxioms;
     }
 
     /** get all the module axioms */
-@PortedFrom(file="tOntologyAtom.h",name="getModule")
+    @PortedFrom(file = "tOntologyAtom.h", name = "getModule")
     public Set<Axiom> getModule() {
         return ModuleAxioms;
     }
 
     /** get atoms a given one depends on */
-@PortedFrom(file="tOntologyAtom.h",name="getDepAtoms")
+    @PortedFrom(file = "tOntologyAtom.h", name = "getDepAtoms")
     public Set<TOntologyAtom> getDepAtoms() {
         return DepAtoms;
     }
 
     /** get the value of the id */
+    @PortedFrom(file = "tOntologyAtom.h", name = "getId")
     public int getId() {
         return Id;
     }
 
     /** set the value of the id to ID */
-@PortedFrom(file="tOntologyAtom.h",name="setId")
+    @PortedFrom(file = "tOntologyAtom.h", name = "setId")
     public void setId(int id) {
         Id = id;
     }

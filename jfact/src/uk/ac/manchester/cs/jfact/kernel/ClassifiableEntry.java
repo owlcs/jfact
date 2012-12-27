@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.*;
 
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "taxNamEntry.h", name = "ClassifiableEntry")
@@ -29,54 +30,63 @@ public class ClassifiableEntry extends NamedEntry {
     }
 
     /** is current entry classified */
-@PortedFrom(file="taxNamEntry.h",name="isClassified")
+    @PortedFrom(file = "taxNamEntry.h", name = "isClassified")
     public boolean isClassified() {
         return taxVertex != null;
     }
 
     /** set up given entry */
-@PortedFrom(file="taxNamEntry.h",name="setTaxVertex")
+    @PortedFrom(file = "taxNamEntry.h", name = "setTaxVertex")
     public void setTaxVertex(TaxonomyVertex vertex) {
         taxVertex = vertex;
     }
 
     /** get taxonomy vertex of the entry */
-@PortedFrom(file="taxNamEntry.h",name="getTaxVertex")
+    @PortedFrom(file = "taxNamEntry.h", name = "getTaxVertex")
     public TaxonomyVertex getTaxVertex() {
         return taxVertex;
     }
 
+    @Original
     private boolean completelyDefined;
 
     // completely defined interface
     /** a Completely Defined flag */
+    @Original
     public boolean isCompletelyDefined() {
         return completelyDefined;
     }
 
+    @Original
     public void clearCompletelyDefined() {
         completelyDefined = false;
     }
 
+    @Original
     public void setCompletelyDefined(boolean action) {
         completelyDefined = action;
     }
 
+    @Original
     private boolean nonClassifiable;
 
     /** a non-classifiable flag */
+    @Original
     public boolean isNonClassifiable() {
         return nonClassifiable;
     }
 
+    @Original
     public void setNonClassifiable() {
         nonClassifiable = true;
     }
 
+    @Original
     public void clearNonClassifiable() {
         nonClassifiable = false;
     }
 
+    @Original
     public void setNonClassifiable(boolean action) {
         nonClassifiable = action;
     }
@@ -87,19 +97,19 @@ public class ClassifiableEntry extends NamedEntry {
     }
 
     /** check whether entry ihas any TS */
-@PortedFrom(file="taxNamEntry.h",name="hasToldSubsumers")
+    @PortedFrom(file = "taxNamEntry.h", name = "hasToldSubsumers")
     public boolean hasToldSubsumers() {
         return !toldSubsumers.isEmpty();
     }
 
     /** add told subsumer of entry (duplications possible) */
-@PortedFrom(file="taxNamEntry.h",name="addParent")
+    @PortedFrom(file = "taxNamEntry.h", name = "addParent")
     public void addParent(ClassifiableEntry parent) {
         toldSubsumers.add(parent);
     }
 
     /** add all parents (with duplicates) from the range to current node */
-@PortedFrom(file="taxNamEntry.h",name="addParents")
+    @PortedFrom(file = "taxNamEntry.h", name = "addParents")
     public void addParents(Collection<ClassifiableEntry> entries) {
         for (ClassifiableEntry c : entries) {
             addParentIfNew(c);
@@ -115,26 +125,26 @@ public class ClassifiableEntry extends NamedEntry {
 
     /** set the index value */
     @Override
-@PortedFrom(file="taxNamEntry.h",name="setIndex")
+    @PortedFrom(file = "taxNamEntry.h", name = "setIndex")
     public void setIndex(int ind) {
         index = ind;
     }
 
     // synonym interface
     /** check if current entry is a synonym */
-@PortedFrom(file="taxNamEntry.h",name="isSynonym")
+    @PortedFrom(file = "taxNamEntry.h", name = "isSynonym")
     public boolean isSynonym() {
         return pSynonym != null;
     }
 
     /** get synonym of current entry */
-@PortedFrom(file="taxNamEntry.h",name="getSynonym")
+    @PortedFrom(file = "taxNamEntry.h", name = "getSynonym")
     public ClassifiableEntry getSynonym() {
         return pSynonym;
     }
 
     /** make sure that synonym's representative is not a synonym itself */
-@PortedFrom(file="taxNamEntry.h",name="canonicaliseSynonym")
+    @PortedFrom(file = "taxNamEntry.h", name = "canonicaliseSynonym")
     public void canonicaliseSynonym() {
         assert isSynonym();
         if (isSynonym()) {
@@ -143,7 +153,7 @@ public class ClassifiableEntry extends NamedEntry {
     }
 
     /** add entry's synonym */
-@PortedFrom(file="taxNamEntry.h",name="setSynonym")
+    @PortedFrom(file = "taxNamEntry.h", name = "setSynonym")
     public void setSynonym(ClassifiableEntry syn) {
         assert pSynonym == null; // do it only once
         // check there are no cycles
@@ -166,7 +176,7 @@ public class ClassifiableEntry extends NamedEntry {
     }
 
     /** if two synonyms are in 'told' list, merge them */
-@PortedFrom(file="taxNamEntry.h",name="removeSynonymsFromParents")
+    @PortedFrom(file = "taxNamEntry.h", name = "removeSynonymsFromParents")
     public void removeSynonymsFromParents() {
         List<ClassifiableEntry> toRemove = new ArrayList<ClassifiableEntry>();
         for (ClassifiableEntry c : toldSubsumers) {
@@ -181,7 +191,7 @@ public class ClassifiableEntry extends NamedEntry {
         return p == null ? null : p.isSynonym() ? resolveSynonym((T) p.pSynonym) : p;
     }
 
-@PortedFrom(file="taxNamEntry.h",name="addParentIfNew")
+    @PortedFrom(file = "taxNamEntry.h", name = "addParentIfNew")
     public void addParentIfNew(ClassifiableEntry parent) {
         // resolve synonyms
         parent = resolveSynonym(parent);

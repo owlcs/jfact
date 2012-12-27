@@ -34,7 +34,7 @@ public class OntologyLoader implements DLAxiomVisitor {
     private ExpressionTranslator expressionTranslator;
 
     /** get role by the DLTree; throw exception if unable */
-@PortedFrom(file="tOntologyLoader.h",name="getRole")
+    @PortedFrom(file = "tOntologyLoader.h", name = "getRole")
     private Role getRole(RoleExpression r, String reason) {
         try {
             return resolveRole(r.accept(expressionTranslator));
@@ -44,7 +44,7 @@ public class OntologyLoader implements DLAxiomVisitor {
     }
 
     /** get an individual be the DLTree; throw exception if unable */
-@PortedFrom(file="tOntologyLoader.h",name="getIndividual")
+    @PortedFrom(file = "tOntologyLoader.h", name = "getIndividual")
     public Individual getIndividual(IndividualExpression I, String reason) {
         DLTree i = I.accept(expressionTranslator);
         if (i == null) {
@@ -55,13 +55,13 @@ public class OntologyLoader implements DLAxiomVisitor {
 
     /** ensure that the expression EXPR has its named entities linked to the KB
      * ones */
-@PortedFrom(file="tOntologyLoader.h",name="ensureNames")
+    @PortedFrom(file = "tOntologyLoader.h", name = "ensureNames")
     public void ensureNames(Expression Expr) {
         assert Expr != null; // FORNOW
     }
 
     /** prepare arguments for the [begin,end) interval */
-@PortedFrom(file="tOntologyLoader.h",name="prepareArgList")
+    @PortedFrom(file = "tOntologyLoader.h", name = "prepareArgList")
     private <T extends Expression> List<DLTree> prepareArgList(Collection<T> c) {
         List<DLTree> ArgList = new ArrayList<DLTree>();
         for (T t : c) {
@@ -71,7 +71,7 @@ public class OntologyLoader implements DLAxiomVisitor {
         return ArgList;
     }
 
-@PortedFrom(file="tOntologyLoader.h",name="fillSplit")
+    @PortedFrom(file = "tOntologyLoader.h", name = "fillSplit")
     void fillSplit(TSplitVar sv) {
         sv.C = tbox.getConcept(sv.oldName.getName());
         sv.C.setNonClassifiable();
@@ -470,7 +470,7 @@ public class OntologyLoader implements DLAxiomVisitor {
 
     /** load ontology to a given KB */
     @Override
-@PortedFrom(file="tOntologyLoader.h",name="visitOntology")
+    @PortedFrom(file = "tOntologyLoader.h", name = "visitOntology")
     public void visitOntology(Ontology ontology) {
         for (Axiom p : ontology.getAxioms()) {
             if (p.isUsed()) {

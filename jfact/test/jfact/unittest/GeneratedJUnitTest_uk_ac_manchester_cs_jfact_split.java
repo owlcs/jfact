@@ -330,7 +330,6 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_split {
         List result2 = testSubject0.extractModule(mock(List.class),
                 mock(TSignature.class), mock(ModuleType.class));
         testSubject0.preprocessOntology(mock(Collection.class));
-        testSubject0.setSigIndex(mock(SigIndex.class));
         testSubject0.extract(mock(Collection.class), mock(TSignature.class),
                 mock(ModuleType.class));
         LocalityChecker result3 = testSubject0.getLocalityChecker();

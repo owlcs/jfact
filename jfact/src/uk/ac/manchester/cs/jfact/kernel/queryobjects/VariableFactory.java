@@ -13,6 +13,7 @@ class VariableFactory {
     List<QRVariable> Base = new ArrayList<QRVariable>();
 
     /** get fresh variable */
+    @PortedFrom(file = "QR.h", name = "getNewVar")
     QRVariable getNewVar() {
         QRVariable ret = new QRVariable();
         Base.add(ret);

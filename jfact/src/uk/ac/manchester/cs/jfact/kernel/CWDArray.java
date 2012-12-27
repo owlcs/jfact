@@ -26,7 +26,7 @@ public class CWDArray {
     private int size = 0;
 
     /** init/clear label */
-@PortedFrom(file="CWDArray.h",name="init")
+    @PortedFrom(file = "CWDArray.h", name = "init")
     public void init() {
         base.clear();
         cache = null;
@@ -60,7 +60,7 @@ public class CWDArray {
     }
 
     /** check whether label contains BP (ignoring dep-set) */
-@PortedFrom(file="CWDArray.h",name="contains")
+    @PortedFrom(file = "CWDArray.h", name = "contains")
     public boolean contains(int bp) {
         if (cache == null && createCache) {
             initCache();
@@ -83,7 +83,7 @@ public class CWDArray {
         return p >= 0 ? 2 * p : 1 - 2 * p;
     }
 
-@PortedFrom(file="CWDArray.h",name="index")
+    @PortedFrom(file = "CWDArray.h", name = "index")
     public int index(int bp) {
         // check that the index actually exist: quicker
         if (cache != null && !cache.get(asPositive(bp))) {
@@ -92,7 +92,7 @@ public class CWDArray {
         return indexes.get(bp);
     }
 
-@PortedFrom(file="CWDArray.h",name="get")
+    @PortedFrom(file = "CWDArray.h", name = "get")
     public DepSet get(int bp) {
         // check that the index actually exist: quicker
         if (cache != null && !cache.get(asPositive(bp))) {
@@ -117,7 +117,7 @@ public class CWDArray {
         return base.get(i);
     }
 
-@PortedFrom(file="CWDArray.h",name="size")
+    @PortedFrom(file = "CWDArray.h", name = "size")
     public int size() {
         return size;
     }
@@ -157,12 +157,12 @@ public class CWDArray {
     }
 
     /** save label using given SS */
-@PortedFrom(file="CWDArray.h",name="save")
+    @PortedFrom(file = "CWDArray.h", name = "save")
     public int save() {
         return size;
     }
 
-@PortedFrom(file="CWDArray.h",name="updateDepSet")
+    @PortedFrom(file = "CWDArray.h", name = "updateDepSet")
     public Restorer updateDepSet(int index, DepSet dep) {
         if (dep.isEmpty()) {
             throw new IllegalArgumentException();
@@ -172,7 +172,7 @@ public class CWDArray {
         return ret;
     }
 
-@PortedFrom(file="CWDArray.h",name="updateDepSet")
+    @PortedFrom(file = "CWDArray.h", name = "updateDepSet")
     public List<Restorer> updateDepSet(DepSet dep) {
         if (dep.isEmpty()) {
             throw new IllegalArgumentException();
@@ -186,7 +186,7 @@ public class CWDArray {
         return toReturn;
     }
 
-@PortedFrom(file="CWDArray.h",name="restore")
+    @PortedFrom(file = "CWDArray.h", name = "restore")
     public void restore(int ss, int level) {
         for (int i = ss; i < size; i++) {
             int concept = base.get(i).getConcept();
@@ -213,4 +213,3 @@ public class CWDArray {
         return o.toString();
     }
 }
-

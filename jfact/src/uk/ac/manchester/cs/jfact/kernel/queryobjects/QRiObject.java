@@ -1,6 +1,5 @@
 package uk.ac.manchester.cs.jfact.kernel.queryobjects;
 
-
 import conformance.PortedFrom;
 
 //---------------------------------------------------------

@@ -6,7 +6,7 @@ import conformance.PortedFrom;
 // Rule for C [= \Er.D case; CR3
 // -------------------------------------------------------------
 /** the rule for C [= \ER.D case */
-@PortedFrom(file="ELFReasoner.h",name="RAddRule")
+@PortedFrom(file = "ELFReasoner.h", name = "RAddRule")
 public class RAddRule extends TELFRule {
     /** role to add the pair */
     TELFRole R;
@@ -22,7 +22,7 @@ public class RAddRule extends TELFRule {
 
     /** apply a method with a given source S(C) */
     @Override
-@PortedFrom(file="ELFReasoner.h",name="apply")
+    @PortedFrom(file = "ELFReasoner.h", name = "apply")
     void apply(TELFConcept Source) {
         // if ( !R.hasLabel ( Source, Filler ) )
         ER.addAction(new ELFAction(R, Source, Filler));

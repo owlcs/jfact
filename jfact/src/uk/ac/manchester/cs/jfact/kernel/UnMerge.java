@@ -17,7 +17,7 @@ class UnMerge extends Restorer {
     }
 
     @Override
-@PortedFrom(file="CWDArray.h",name="restore")
+    @PortedFrom(file = "CWDArray.h", name = "restore")
     public void restore() {
         int concept = label.getBase().get(offset).getConcept();
         ConceptWDep conceptWDep = new ConceptWDep(concept, DepSet.create(dep));

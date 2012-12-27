@@ -16,10 +16,10 @@ class TELFRule {
     }
 
     /** apply rule with fresh class C added to watching part */
-@PortedFrom(file="ELFReasoner.h",name="apply")
+    @PortedFrom(file = "ELFReasoner.h", name = "apply")
     void apply(TELFConcept addedC) {}
 
     /** apply rule with fresh pair (C,D) added to watching part */
-@PortedFrom(file="ELFReasoner.h",name="apply")
+    @PortedFrom(file = "ELFReasoner.h", name = "apply")
     void apply(TELFConcept addedC, TELFConcept addedD) {}
 }

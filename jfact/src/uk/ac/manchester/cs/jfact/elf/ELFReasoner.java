@@ -35,7 +35,7 @@ public class ELFReasoner {
     int nC2C, nA2C, nC2E, nE2C, nR2R, nC2R;
 
     /** get concept (expression) corresponding to a given DL expression */
-@PortedFrom(file="ELFReasoner.h",name="getC")
+    @PortedFrom(file = "ELFReasoner.h", name = "getC")
     protected TELFConcept getC(ConceptExpression p) {
         TELFConcept i = CMap.get(p);
         if (i != null) {
@@ -48,7 +48,7 @@ public class ELFReasoner {
     }
 
     /** get role (expression, but actually just a name) */
-@PortedFrom(file="ELFReasoner.h",name="getR")
+    @PortedFrom(file = "ELFReasoner.h", name = "getR")
     TELFRole getR(ObjectRoleExpression p) {
         TELFRole r = RMap.get(p);
         if (r != null) {
@@ -97,13 +97,13 @@ public class ELFReasoner {
     }
 
     /** add action to a queue */
-@PortedFrom(file="ELFReasoner.h",name="addAction")
+    @PortedFrom(file = "ELFReasoner.h", name = "addAction")
     void addAction(ELFAction action) {
         queue.add(action);
     }
 
     /** classification method */
-@PortedFrom(file="ELFReasoner.h",name="classify")
+    @PortedFrom(file = "ELFReasoner.h", name = "classify")
     public void classify() {
         // init all CIs
         for (TELFConcept C : CMap.values()) {
@@ -120,14 +120,14 @@ public class ELFReasoner {
     // inline ELFReasoner implementation
     // -------------------------------------------------------------
     /** process axiom C [= D */
-@PortedFrom(file="ELFReasoner.h",name="processC2C")
+    @PortedFrom(file = "ELFReasoner.h", name = "processC2C")
     void processC2C(TELFConcept C, TELFConcept D) {
         ++nC2C;
         C.addRule(new CSubRule(this, D));
     }
 
     /** process axiom C1 and C2 [= D */
-@PortedFrom(file="ELFReasoner.h",name="processA2C")
+    @PortedFrom(file = "ELFReasoner.h", name = "processA2C")
     void processA2C(TELFConcept C1, TELFConcept C2, TELFConcept D) {
         ++nA2C;
         C1.addRule(new CAndSubRule(this, C2, D));
@@ -135,14 +135,14 @@ public class ELFReasoner {
     }
 
     /** process axiom C [= \ER.D */
-@PortedFrom(file="ELFReasoner.h",name="processC2E")
+    @PortedFrom(file = "ELFReasoner.h", name = "processC2E")
     void processC2E(TELFConcept C, TELFRole R, TELFConcept D) {
         ++nC2E;
         C.addRule(new RAddRule(this, R, D));
     }
 
     /** process axiom \ER.C [= D */
-@PortedFrom(file="ELFReasoner.h",name="processE2C")
+    @PortedFrom(file = "ELFReasoner.h", name = "processE2C")
     void processE2C(TELFRole R, TELFConcept C, TELFConcept D) {
         ++nE2C;
         // C from existential will have a C-adder rule
@@ -152,14 +152,14 @@ public class ELFReasoner {
     }
 
     /** process axiom R [= S */
-@PortedFrom(file="ELFReasoner.h",name="processR2R")
+    @PortedFrom(file = "ELFReasoner.h", name = "processR2R")
     void processR2R(TELFRole R, TELFRole S) {
         ++nR2R;
         R.addRule(new RSubRule(this, S));
     }
 
     /** process axiom R1 o R2 [= S */
-@PortedFrom(file="ELFReasoner.h",name="processC2R")
+    @PortedFrom(file = "ELFReasoner.h", name = "processC2R")
     void processC2R(TELFRole R1, TELFRole R2, TELFRole S) {
         ++nC2R;
         R1.addRule(new RChainLRule(this, R2, S));
@@ -167,7 +167,7 @@ public class ELFReasoner {
     }
 
     /** process concept inclusion axiom into the internal structures */
-@PortedFrom(file="ELFReasoner.h",name="processCI")
+    @PortedFrom(file = "ELFReasoner.h", name = "processCI")
     protected void processCI(AxiomConceptInclusion axiom) {
         assert axiom != null;
         // deal with existentials
@@ -200,7 +200,7 @@ public class ELFReasoner {
     }
 
     /** process role inclusion axiom into the internal structures */
-@PortedFrom(file="ELFReasoner.h",name="processRI")
+    @PortedFrom(file = "ELFReasoner.h", name = "processRI")
     void processRI(AxiomORoleSubsumption axiom) {
         TELFRole rhs = getR(axiom.getRole());
         if (axiom.getSubRole() instanceof ObjectRoleChain) // R o S [= T
@@ -217,7 +217,7 @@ public class ELFReasoner {
     }
 
     /** process declaration axiom */
-@PortedFrom(file="ELFReasoner.h",name="processDeclaration")
+    @PortedFrom(file = "ELFReasoner.h", name = "processDeclaration")
     protected void processDeclaration(AxiomDeclaration axiom) {
         assert axiom != null;
         if (axiom.getDeclaration() instanceof ConceptExpression) {
@@ -233,7 +233,7 @@ public class ELFReasoner {
     }
 
     /** helper that inits \bot-related rules */
-@PortedFrom(file="ELFReasoner.h",name="initBotRules")
+    @PortedFrom(file = "ELFReasoner.h", name = "initBotRules")
     void initBotRules() {
         for (TELFRole i : RMap.values()) {
             // for every R add listener that checks whether for R(C,D) S(D)

@@ -17,7 +17,7 @@ public class TopEquivalenceEvaluator extends SigAccessor implements DLExpression
     boolean isTopEq = false;
 
     /** check whether the expression is top-equivalent */
-@PortedFrom(file="SyntacticLocalityChecker.h",name="isBotEquivalent")
+    @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isBotEquivalent")
     boolean isBotEquivalent(Expression expr) {
         return BotEval.isBotEquivalent(expr);
     }
@@ -37,20 +37,20 @@ public class TopEquivalenceEvaluator extends SigAccessor implements DLExpression
     }
 
     /** @return true iff role expression in equivalent to const wrt locality */
-@PortedFrom(file="SyntacticLocalityChecker.h",name="isREquivalent")
+    @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isREquivalent")
     boolean isREquivalent(Expression expr) {
         return topRLocal() ? isTopEquivalent(expr) : isBotEquivalent(expr);
     }
 
     // set fields
     /** set the corresponding bottom evaluator */
-@PortedFrom(file="SyntacticLocalityChecker.h",name="setBotEval")
+    @PortedFrom(file = "SyntacticLocalityChecker.h", name = "setBotEval")
     void setBotEval(BotEquivalenceEvaluator eval) {
         BotEval = eval;
     }
 
     /** @return true iff an EXPRession is equivalent to top wrt defined policy */
-@PortedFrom(file="SyntacticLocalityChecker.h",name="isTopEquivalent")
+    @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isTopEquivalent")
     boolean isTopEquivalent(Expression expr) {
         expr.accept(this);
         return isTopEq;

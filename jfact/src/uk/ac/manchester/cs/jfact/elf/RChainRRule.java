@@ -5,7 +5,7 @@ import java.util.Set;
 import conformance.PortedFrom;
 
 /** the rule for S in R o S [= T case */
-@PortedFrom(file="ELFReasoner.h",name="RChainRRule")
+@PortedFrom(file = "ELFReasoner.h", name = "RChainRRule")
 public class RChainRRule extends TELFRule {
     /** role to check the chain */
     TELFRole R;
@@ -21,7 +21,7 @@ public class RChainRRule extends TELFRule {
 
     /** apply a method with a given pair (C,D) */
     @Override
-@PortedFrom(file="ELFReasoner.h",name="apply")
+    @PortedFrom(file = "ELFReasoner.h", name = "apply")
     void apply(TELFConcept addedC, TELFConcept addedD) {
         // we have S(C,D); so for all E in domain(R), if R(E,C) then add
         // T(E,D)

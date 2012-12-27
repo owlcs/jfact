@@ -11,7 +11,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
-@PortedFrom(file="tDLExpression.h",name="TDLObjectRoleInverse")
+@PortedFrom(file = "tDLExpression.h", name = "TDLObjectRoleInverse")
 public class ObjectRoleInverse implements ObjectRoleExpression, ObjectRoleArg {
     /** object role argument */
     private ObjectRoleExpression objectRoleExpression;
@@ -21,20 +21,20 @@ public class ObjectRoleInverse implements ObjectRoleExpression, ObjectRoleArg {
     }
 
     @Override
-@PortedFrom(file="tDLExpression.h",name="accept")
+    @PortedFrom(file = "tDLExpression.h", name = "accept")
     public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
     @Override
-@PortedFrom(file="tDLExpression.h",name="accept")
+    @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
     /** get access to the argument */
     @Override
-@PortedFrom(file="tDLExpression.h",name="getOR")
+    @PortedFrom(file = "tDLExpression.h", name = "getOR")
     public ObjectRoleExpression getOR() {
         return objectRoleExpression;
     }

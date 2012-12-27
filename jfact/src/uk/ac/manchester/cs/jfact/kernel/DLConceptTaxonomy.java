@@ -83,12 +83,12 @@ public class DLConceptTaxonomy extends Taxonomy {
 
     // -- General support for DL concept classification
     /** get access to curEntry as a TConcept */
-@PortedFrom(file="DLConceptTaxonomy.h",name="curConcept")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "curConcept")
     private Concept curConcept() {
         return (Concept) curEntry;
     }
 
-@PortedFrom(file="DLConceptTaxonomy.h",name="enhancedSubs")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "enhancedSubs")
     private boolean enhancedSubs(boolean upDirection, TaxonomyVertex cur) {
         ++nSubCalls;
         if (cur.isValued(valueLabel)) {
@@ -100,14 +100,14 @@ public class DLConceptTaxonomy extends Taxonomy {
 
     /** explicitely run TD phase */
     @Override
-@PortedFrom(file="DLConceptTaxonomy.h",name="runTopDown")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "runTopDown")
     public void runTopDown() {
         searchBaader(false, getTopVertex());
     }
 
     /** explicitely run BU phase */
     @Override
-@PortedFrom(file="DLConceptTaxonomy.h",name="runBottomUp")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "runBottomUp")
     public void runBottomUp() {
         try {
             if (propagateUp()) {
@@ -135,7 +135,7 @@ public class DLConceptTaxonomy extends Taxonomy {
 
     /** actions that to be done BEFORE entry will be classified */
     @Override
-@PortedFrom(file="DLConceptTaxonomy.h",name="preClassificationActions")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "preClassificationActions")
     public void preClassificationActions() {
         ++nConcepts;
         tBox.getOptions().getProgressMonitor()
@@ -144,7 +144,7 @@ public class DLConceptTaxonomy extends Taxonomy {
 
     /** check if it is necessary to log taxonomy action */
     @Override
-@PortedFrom(file="DLConceptTaxonomy.h",name="needLogging")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "needLogging")
     protected boolean needLogging() {
         return true;
     }
@@ -169,7 +169,7 @@ public class DLConceptTaxonomy extends Taxonomy {
     }
 
     /** process all splits */
-@PortedFrom(file="DLConceptTaxonomy.h",name="processSplits")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "processSplits")
     void processSplits() {
         for (TSplitVar v : Splits.getEntries()) {
             mergeSplitVars(v);
@@ -187,12 +187,12 @@ public class DLConceptTaxonomy extends Taxonomy {
     }
 
     /** set bottom-up flag */
-@PortedFrom(file="DLConceptTaxonomy.h",name="setBottomUp")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "setBottomUp")
     public void setBottomUp(KBFlags GCIs) {
         flagNeedBottomUp = GCIs.isGCI() || GCIs.isReflexive() && GCIs.isRnD();
     }
 
-@PortedFrom(file="DLConceptTaxonomy.h",name="isUnsatisfiable")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "isUnsatisfiable")
     private boolean isUnsatisfiable() {
         Concept p = curConcept();
         if (tBox.isSatisfiable(p)) {
@@ -203,7 +203,7 @@ public class DLConceptTaxonomy extends Taxonomy {
     }
 
     @Override
-@PortedFrom(file="DLConceptTaxonomy.h",name="immediatelyClassified")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "immediatelyClassified")
     protected boolean immediatelyClassified() {
         if (classifySynonym()) {
             return true;
@@ -218,13 +218,13 @@ public class DLConceptTaxonomy extends Taxonomy {
     }
 
     @Override
-@PortedFrom(file="DLConceptTaxonomy.h",name="needTopDown")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "needTopDown")
     protected boolean needTopDown() {
         return !(useCompletelyDefined && curEntry.isCompletelyDefined());
     }
 
     @Override
-@PortedFrom(file="DLConceptTaxonomy.h",name="needBottomUp")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "needBottomUp")
     protected boolean needBottomUp() {
         // we DON'T need bottom-up phase for primitive concepts during CD-like
         // reasoning
@@ -233,7 +233,7 @@ public class DLConceptTaxonomy extends Taxonomy {
         return flagNeedBottomUp || !useCompletelyDefined || !curConcept().isPrimitive();
     }
 
-@PortedFrom(file="DLConceptTaxonomy.h",name="testSub")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "testSub")
     private boolean testSub(Concept p, Concept q) {
         assert p != null;
         assert q != null;
@@ -272,7 +272,7 @@ public class DLConceptTaxonomy extends Taxonomy {
     }
 
     /** test subsumption via TBox explicitely */
-@PortedFrom(file="DLConceptTaxonomy.h",name="testSubTBox")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "testSubTBox")
     private boolean testSubTBox(Concept p, Concept q) {
         boolean res = tBox.isSubHolds(p, q);
         // update statistic
@@ -303,7 +303,7 @@ public class DLConceptTaxonomy extends Taxonomy {
         return o.toString();
     }
 
-@PortedFrom(file="DLConceptTaxonomy.h",name="searchBaader")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "searchBaader")
     private void searchBaader(boolean upDirection, TaxonomyVertex cur) {
         cur.setChecked(checkLabel);
         ++nSearchCalls;
@@ -329,7 +329,7 @@ public class DLConceptTaxonomy extends Taxonomy {
         }
     }
 
-@PortedFrom(file="DLConceptTaxonomy.h",name="enhancedSubs1")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "enhancedSubs1")
     private boolean enhancedSubs1(boolean upDirection, TaxonomyVertex cur) {
         ++nNonTrivialSubCalls;
         List<TaxonomyVertex> neigh = cur.neigh(!upDirection);
@@ -343,7 +343,7 @@ public class DLConceptTaxonomy extends Taxonomy {
     }
 
     /** short-cuf from ENHANCED_SUBS */
-@PortedFrom(file="DLConceptTaxonomy.h",name="enhancedSubs2")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "enhancedSubs2")
     private boolean enhancedSubs2(boolean upDirection, TaxonomyVertex cur) {
         // if bottom-up search and CUR is not a successor of checking entity --
         // return false
@@ -359,7 +359,7 @@ public class DLConceptTaxonomy extends Taxonomy {
     }
 
     /** test whether a node could be a super-node of CUR */
-@PortedFrom(file="DLConceptTaxonomy.h",name="possibleSub")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "possibleSub")
     private boolean possibleSub(TaxonomyVertex v) {
         Concept C = (Concept) v.getPrimer();
         // non-prim concepts are candidates
@@ -370,7 +370,7 @@ public class DLConceptTaxonomy extends Taxonomy {
         return ksStack.peek().isPossibleSub(C);
     }
 
-@PortedFrom(file="DLConceptTaxonomy.h",name="testSubsumption")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "testSubsumption")
     private boolean testSubsumption(boolean upDirection, TaxonomyVertex cur) {
         Concept testC = (Concept) cur.getPrimer();
         if (upDirection) {
@@ -380,7 +380,7 @@ public class DLConceptTaxonomy extends Taxonomy {
         }
     }
 
-@PortedFrom(file="DLConceptTaxonomy.h",name="propagateOneCommon")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "propagateOneCommon")
     private void propagateOneCommon(TaxonomyVertex node) {
         // checked if node already was visited this session
         if (node.isChecked(checkLabel)) {
@@ -399,7 +399,7 @@ public class DLConceptTaxonomy extends Taxonomy {
         }
     }
 
-@PortedFrom(file="DLConceptTaxonomy.h",name="propagateUp")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "propagateUp")
     private boolean propagateUp() {
         boolean upDirection = true;
         nCommon = 1;
@@ -431,7 +431,7 @@ public class DLConceptTaxonomy extends Taxonomy {
         return false;
     }
 
-@PortedFrom(file="DLConceptTaxonomy.h",name="clearCommon")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "clearCommon")
     private void clearCommon() {
         int size = common.size();
         for (int i = 0; i < size; i++) {
@@ -441,7 +441,7 @@ public class DLConceptTaxonomy extends Taxonomy {
     }
 
     /** check if no BU classification is required as C=TOP */
-@PortedFrom(file="DLConceptTaxonomy.h",name="isEqualToTop")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "isEqualToTop")
     private boolean isEqualToTop() {
         // check this up-front to avoid Sorted check's flaw wrt equals-to-top
         ModelCacheInterface cache = tBox.initCache(curConcept(), true);
@@ -455,7 +455,7 @@ public class DLConceptTaxonomy extends Taxonomy {
 
     /** @return true iff curEntry is classified as a synonym */
     @Override
-@PortedFrom(file="DLConceptTaxonomy.h",name="classifySynonym")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "classifySynonym")
     protected boolean classifySynonym() {
         if (super.classifySynonym()) {
             return true;
@@ -489,7 +489,7 @@ public class DLConceptTaxonomy extends Taxonomy {
 
     /** after merging, check whether there are extra neighbours that should be */
     // taken into account
-@PortedFrom(file="DLConceptTaxonomy.h",name="checkExtraParents")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "checkExtraParents")
     void checkExtraParents() {
         inSplitCheck = true;
         for (TaxonomyVertex p : current.neigh(true)) {
@@ -512,7 +512,7 @@ public class DLConceptTaxonomy extends Taxonomy {
     }
 
     /** merge vars came from a given SPLIT together */
-@PortedFrom(file="DLConceptTaxonomy.h",name="mergeSplitVars")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "mergeSplitVars")
     void mergeSplitVars(TSplitVar split) {
         Set<TaxonomyVertex> splitVertices = new HashSet<TaxonomyVertex>();
         TaxonomyVertex v = split.C.getTaxVertex();
@@ -546,7 +546,7 @@ public class DLConceptTaxonomy extends Taxonomy {
     }
 
     /** merge a single vertex V to a node represented by CUR */
-@PortedFrom(file="DLConceptTaxonomy.h",name="mergeVertex")
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "mergeVertex")
     void mergeVertex(TaxonomyVertex cur, TaxonomyVertex v, Set<TaxonomyVertex> excludes) {
         if (!cur.equals(v)) {
             cur.mergeIndepNode(v, excludes, curEntry);

@@ -25,20 +25,20 @@ public class NominalReasoner extends DlSatTester {
 
     /** there are nominals */
     @Override
-@PortedFrom(file="ReasonerNom.h",name="hasNominals")
+    @PortedFrom(file = "ReasonerNom.h", name = "hasNominals")
     public boolean hasNominals() {
         return true;
     }
 
     /** internal nominal reasoning interface */
     /** create cache entry for given singleton */
-@PortedFrom(file="ReasonerNom.h",name="registerNominalCache")
+    @PortedFrom(file = "ReasonerNom.h", name = "registerNominalCache")
     protected void registerNominalCache(Individual p) {
         dlHeap.setCache(p.getpName(), createModelCache(p.getNode().resolvePBlocker()));
     }
 
     /** init single nominal node */
-@PortedFrom(file="ReasonerNom.h",name="initNominalNode")
+    @PortedFrom(file = "ReasonerNom.h", name = "initNominalNode")
     protected boolean initNominalNode(Individual nom) {
         DlCompletionTree node = cGraph.getNewNode();
         node.setNominalLevel();
@@ -48,7 +48,7 @@ public class NominalReasoner extends DlSatTester {
     }
 
     /** use classification information for the nominal P */
-@PortedFrom(file="ReasonerNom.h",name="updateClassifiedSingleton")
+    @PortedFrom(file = "ReasonerNom.h", name = "updateClassifiedSingleton")
     protected void updateClassifiedSingleton(Individual p) {
         registerNominalCache(p);
         if (p.getNode().isPBlocked()) {
@@ -73,7 +73,7 @@ public class NominalReasoner extends DlSatTester {
 
     /** prerpare Nominal Reasoner to a new job */
     @Override
-@PortedFrom(file="ReasonerNom.h",name="prepareReasoner")
+    @PortedFrom(file = "ReasonerNom.h", name = "prepareReasoner")
     protected void prepareReasoner() {
         options.getLog().print("\nInitNominalReasoner:");
         restore(1);
@@ -89,7 +89,7 @@ public class NominalReasoner extends DlSatTester {
     }
 
     /** check whether ontology with nominals is consistent */
-@PortedFrom(file="ReasonerNom.h",name="consistentNominalCloud")
+    @PortedFrom(file = "ReasonerNom.h", name = "consistentNominalCloud")
     public boolean consistentNominalCloud() {
         options.getLog().print(
                 "\n\nChecking consistency of an ontology with individuals:\n");
@@ -124,7 +124,7 @@ public class NominalReasoner extends DlSatTester {
         return true;
     }
 
-@PortedFrom(file="ReasonerNom.h",name="initNominalCloud")
+    @PortedFrom(file = "ReasonerNom.h", name = "initNominalCloud")
     private boolean initNominalCloud() {
         for (Individual p : nominals) {
             if (initNominalNode(p)) {
@@ -173,7 +173,7 @@ public class NominalReasoner extends DlSatTester {
         return false;
     }
 
-@PortedFrom(file="ReasonerNom.h",name="initRelatedNominals")
+    @PortedFrom(file = "ReasonerNom.h", name = "initRelatedNominals")
     private boolean initRelatedNominals(Related rel) {
         DlCompletionTree from = resolveSynonym(rel.getA()).getNode();
         DlCompletionTree to = resolveSynonym(rel.getB()).getNode();

@@ -9,7 +9,7 @@ import conformance.PortedFrom;
 // -------------------------------------------------------------
 /** rule that checks an addition of C to S(Y) and checks whether there is X */
 // s.t. R(X,Y)
-@PortedFrom(file="ELFReasoner.h",name="CAddFillerRule")
+@PortedFrom(file = "ELFReasoner.h", name = "CAddFillerRule")
 public class CAddFillerRule extends TELFRule {
     /** role to add the pair */
     TELFRole R;
@@ -25,7 +25,7 @@ public class CAddFillerRule extends TELFRule {
 
     /** apply a method with a given source S(C) */
     @Override
-@PortedFrom(file="ELFReasoner.h",name="apply")
+    @PortedFrom(file = "ELFReasoner.h", name = "apply")
     void apply(TELFConcept Source) {
         Set<TELFConcept> SupSet = R.getPredSet(Source);
         if (!SupSet.isEmpty()) {

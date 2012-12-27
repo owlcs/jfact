@@ -34,7 +34,7 @@ public class TModularizer {
     private JFactReasonerConfiguration config;
 
     /** update SIG wrt the axiom signature */
-@PortedFrom(file="Modularity.h",name="addAxiomSig")
+    @PortedFrom(file = "Modularity.h", name = "addAxiomSig")
     void addAxiomSig(Axiom axiom) {
         TSignature axiomSig = axiom.getSignature();
         if (sigIndex != null) {
@@ -48,7 +48,7 @@ public class TModularizer {
     }
 
     /** add an axiom to a module */
-@PortedFrom(file="Modularity.h",name="addAxiomToModule")
+    @PortedFrom(file = "Modularity.h", name = "addAxiomToModule")
     void addAxiomToModule(Axiom axiom) {
         axiom.setInModule(true);
         Module.add(axiom);
@@ -56,15 +56,8 @@ public class TModularizer {
         addAxiomSig(axiom);
     }
 
-    /** set sig index to a given value */
-    public void setSigIndex(SigIndex p) {
-        sigIndex = p;
-        nChecks += 2 * p.nProcessedAx();
-        nNonLocal += p.getNonLocal(false).size() + p.getNonLocal(true).size();
-    }
-
     /** @return true iff an AXiom is non-local */
-@PortedFrom(file="Modularity.h",name="isNonLocal")
+    @PortedFrom(file = "Modularity.h", name = "isNonLocal")
     boolean isNonLocal(Axiom ax) {
         ++nChecks;
         if (Checker.local(ax)) {
@@ -75,7 +68,7 @@ public class TModularizer {
     }
 
     /** add an axiom if it is non-local (or if noCheck is true) */
-@PortedFrom(file="Modularity.h",name="addNonLocal")
+    @PortedFrom(file = "Modularity.h", name = "addNonLocal")
     void addNonLocal(Axiom ax, boolean noCheck) {
         if (noCheck || isNonLocal(ax)) {
             addAxiomToModule(ax);
@@ -89,22 +82,8 @@ public class TModularizer {
         }
     }
 
-    /** mark the ontology O such that all the marked axioms creates the module */
-    // wrt SIG
-    void extractModuleLoop(Collection<Axiom> args) {
-        int sigSize;
-        do {
-            sigSize = sig.size();
-            for (Axiom p : args) {
-                if (!p.isInModule() && p.isUsed()) {
-                    this.addNonLocal(p, /* noCheck= */false);
-                }
-            }
-        } while (sigSize != sig.size());
-    }
-
     /** add all the non-local axioms from given axiom-set AxSet */
-@PortedFrom(file="Modularity.h",name="addNonLocal")
+    @PortedFrom(file = "Modularity.h", name = "addNonLocal")
     void addNonLocal(Collection<Axiom> AxSet, boolean noCheck) {
         for (Axiom q : AxSet) {
             if (!q.isInModule() && q.isInSS()) {
@@ -114,7 +93,7 @@ public class TModularizer {
     }
 
     /** build a module traversing axioms by a signature */
-@PortedFrom(file="Modularity.h",name="extractModuleQueue")
+    @PortedFrom(file = "Modularity.h", name = "extractModuleQueue")
     void extractModuleQueue() {
         // init queue with a sig
         for (NamedEntity p : sig.begin()) {
@@ -132,7 +111,7 @@ public class TModularizer {
     }
 
     /** extract module wrt presence of a sig index */
-@PortedFrom(file="Modularity.h",name="extractModule")
+    @PortedFrom(file = "Modularity.h", name = "extractModule")
     void extractModule(Collection<Axiom> args) {
         Module.clear();
         // clear the module flag in the input
@@ -161,7 +140,7 @@ public class TModularizer {
     }
 
     /** allow the checker to preprocess an ontology if necessary */
-@PortedFrom(file="Modularity.h",name="preprocessOntology")
+    @PortedFrom(file = "Modularity.h", name = "preprocessOntology")
     public void preprocessOntology(Collection<Axiom> vec) {
         Checker.preprocessOntology(vec);
         sigIndex.clear();
@@ -169,7 +148,7 @@ public class TModularizer {
     }
 
     // / @return true iff the axiom AX is a tautology wrt given type
-@PortedFrom(file="Modularity.h",name="isTautology")
+    @PortedFrom(file = "Modularity.h", name = "isTautology")
     boolean isTautology(Axiom ax, ModuleType type) {
         boolean topLocality = type == ModuleType.M_TOP;
         sig = ax.getSignature();
@@ -186,25 +165,25 @@ public class TModularizer {
 
     // / get RW access to the sigIndex (mainly to (un-)register axioms on the
     // fly)
-@PortedFrom(file="Modularity.h",name="getSigIndex")
+    @PortedFrom(file = "Modularity.h", name = "getSigIndex")
     public SigIndex getSigIndex() {
         return sigIndex;
     }
 
     /** get access to the Locality checker */
-@PortedFrom(file="Modularity.h",name="getLocalityChecker")
+    @PortedFrom(file = "Modularity.h", name = "getLocalityChecker")
     public LocalityChecker getLocalityChecker() {
         return Checker;
     }
 
-@PortedFrom(file="Modularity.h",name="extract")
+    @PortedFrom(file = "Modularity.h", name = "extract")
     void extract(Axiom begin, TSignature signature, ModuleType type) {
         this.extract(Collections.singletonList(begin), signature, type);
     }
 
     /** extract module wrt SIGNATURE and TYPE from the set of axioms */
     // [BEGIN,END)
-@PortedFrom(file="Modularity.h",name="extract")
+    @PortedFrom(file = "Modularity.h", name = "extract")
     public void extract(Collection<Axiom> begin, TSignature signature, ModuleType type) {
         boolean topLocality = type == ModuleType.M_TOP;
         sig = signature;
@@ -229,19 +208,19 @@ public class TModularizer {
     }
 
     /** get number of checks made */
-@PortedFrom(file="Modularity.h",name="getNChecks")
+    @PortedFrom(file = "Modularity.h", name = "getNChecks")
     long getNChecks() {
         return nChecks;
     }
 
     /** get number of axioms that were local */
-@PortedFrom(file="Modularity.h",name="getNNonLocal")
+    @PortedFrom(file = "Modularity.h", name = "getNNonLocal")
     long getNNonLocal() {
         return nNonLocal;
     }
 
     /** extract module wrt SIGNATURE and TYPE from O; @return result in the Set */
-@PortedFrom(file="Modularity.h",name="extractModule")
+    @PortedFrom(file = "Modularity.h", name = "extractModule")
     public List<Axiom> extractModule(List<Axiom> list, TSignature signature,
             ModuleType type) {
         this.extract(list, signature, type);
@@ -249,13 +228,13 @@ public class TModularizer {
     }
 
     /** get the last computed module */
-@PortedFrom(file="Modularity.h",name="getModule")
+    @PortedFrom(file = "Modularity.h", name = "getModule")
     public List<Axiom> getModule() {
         return Module;
     }
 
     /** get access to a signature */
-@PortedFrom(file="Modularity.h",name="getSignature")
+    @PortedFrom(file = "Modularity.h", name = "getSignature")
     public TSignature getSignature() {
         return sig;
     }

@@ -15,7 +15,7 @@ public class ELFAxiomChecker extends DLAxiomVisitorAdapter {
     ELFExpressionChecker eCh = new ELFExpressionChecker();
     boolean value;
 
-@PortedFrom(file="ELFAxiomChecker.h",name="v")
+    @PortedFrom(file = "ELFAxiomChecker.h", name = "v")
     boolean v(Expression expr) {
         value = eCh.v(expr);
         return value;
@@ -206,7 +206,7 @@ public class ELFAxiomChecker extends DLAxiomVisitorAdapter {
     }
 
     @Override
-@PortedFrom(file="ELFAxiomChecker.h",name="visitOntology")
+    @PortedFrom(file = "ELFAxiomChecker.h", name = "visitOntology")
     public void visitOntology(Ontology ontology) {
         value = true;
         for (Axiom p : ontology.getAxioms()) {
@@ -220,7 +220,7 @@ public class ELFAxiomChecker extends DLAxiomVisitorAdapter {
         value = true;
     }
 
-@PortedFrom(file="ELFAxiomChecker.h",name="value")
+    @PortedFrom(file = "ELFAxiomChecker.h", name = "value")
     public boolean value() {
         return value;
     }

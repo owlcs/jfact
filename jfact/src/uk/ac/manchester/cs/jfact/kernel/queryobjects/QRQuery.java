@@ -14,13 +14,13 @@ class QRQuery {
     Set<QRVariable> FreeVars = new HashSet<QRVariable>();
 
     /** add atom to a query body */
-@PortedFrom(file="QR.h",name="addAtom")
+    @PortedFrom(file = "QR.h", name = "addAtom")
     void addAtom(QRAtom atom) {
         Body.addAtom(atom);
     }
 
     /** mark a variable as a free one */
-@PortedFrom(file="QR.h",name="setVarFree")
+    @PortedFrom(file = "QR.h", name = "setVarFree")
     void setVarFree(QRVariable var) {
         FreeVars.add(var);
     }

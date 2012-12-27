@@ -32,13 +32,13 @@ public class ConceptWDep {
     }
 
     /** get dep-set part */
-@PortedFrom(file="ConceptWithDep.h",name="getDep")
+    @PortedFrom(file = "ConceptWithDep.h", name = "getDep")
     public DepSet getDep() {
         return depSet;
     }
 
     /** add dep-set to a CWD */
-@PortedFrom(file="ConceptWithDep.h",name="addDep")
+    @PortedFrom(file = "ConceptWithDep.h", name = "addDep")
     public void addDep(DepSet d) {
         depSet.add(d);
     }

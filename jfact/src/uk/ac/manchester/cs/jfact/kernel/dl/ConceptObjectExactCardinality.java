@@ -13,7 +13,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
-@PortedFrom(file="tDLExpression.h",name="TDLConceptObjectExactCardinality")
+@PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectExactCardinality")
 public class ConceptObjectExactCardinality implements ConceptObjectCardinalityExpression,
         NumberArg {
     private ConceptExpression delegate;
@@ -28,13 +28,13 @@ public class ConceptObjectExactCardinality implements ConceptObjectCardinalityEx
     }
 
     @Override
-@PortedFrom(file="tDLExpression.h",name="accept")
+    @PortedFrom(file = "tDLExpression.h", name = "accept")
     public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
     @Override
-@PortedFrom(file="tDLExpression.h",name="accept")
+    @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
@@ -50,7 +50,7 @@ public class ConceptObjectExactCardinality implements ConceptObjectCardinalityEx
     }
 
     @Override
-@PortedFrom(file="tDLExpression.h",name="getOR")
+    @PortedFrom(file = "tDLExpression.h", name = "getOR")
     public ObjectRoleExpression getOR() {
         return roleDelegate;
     }

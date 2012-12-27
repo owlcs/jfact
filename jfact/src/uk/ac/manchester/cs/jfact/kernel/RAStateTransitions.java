@@ -29,7 +29,7 @@ public class RAStateTransitions {
     boolean TopTransition;
 
     /** RW begin */
-@PortedFrom(file="RAutomaton.h",name="begin")
+    @PortedFrom(file = "RAutomaton.h", name = "begin")
     public List<RATransition> begin() {
         return base;
     }
@@ -39,7 +39,7 @@ public class RAStateTransitions {
     }
 
     /** add a transition from a given state */
-@PortedFrom(file="RAutomaton.h",name="add")
+    @PortedFrom(file = "RAutomaton.h", name = "add")
     public void add(RATransition trans) {
         base.add(trans);
         size++;
@@ -52,7 +52,7 @@ public class RAStateTransitions {
     }
 
     // / @return true iff there is a top-role transition from the state
-@PortedFrom(file="RAutomaton.h",name="hasTopTransition")
+    @PortedFrom(file = "RAutomaton.h", name = "hasTopTransition")
     boolean hasTopTransition() {
         return TopTransition;
     }
@@ -63,13 +63,13 @@ public class RAStateTransitions {
     }
 
     /** @return true iff there is an empty transition from the state */
-@PortedFrom(file="RAutomaton.h",name="hasEmptyTransition")
+    @PortedFrom(file = "RAutomaton.h", name = "hasEmptyTransition")
     public boolean hasEmptyTransition() {
         return emptyTransition;
     }
 
     /** print all the transitions starting from the state FROM */
-@PortedFrom(file="RAutomaton.h",name="print")
+    @PortedFrom(file = "RAutomaton.h", name = "print")
     public void print(LogAdapter o) {
         for (int i = 0; i < size; i++) {
             base.get(i).print(o, from);
@@ -77,7 +77,7 @@ public class RAStateTransitions {
     }
 
     /** set up state transitions: no more additions to the structure */
-@PortedFrom(file="RAutomaton.h",name="setup")
+    @PortedFrom(file = "RAutomaton.h", name = "setup")
     public void setup(int state, int nRoles, boolean data) {
         from = state;
         dataRole = data;
@@ -91,7 +91,7 @@ public class RAStateTransitions {
 
     /** add information from TRANS to existing transition between the same
      * states. @return false if no such transition found */
-@PortedFrom(file="RAutomaton.h",name="addToExisting")
+    @PortedFrom(file = "RAutomaton.h", name = "addToExisting")
     public boolean addToExisting(RATransition trans) {
         int to = trans.final_state();
         boolean tEmpty = trans.isEmpty();
@@ -109,7 +109,7 @@ public class RAStateTransitions {
         return false;
     }
 
-@PortedFrom(file="RAutomaton.h",name="recognise")
+    @PortedFrom(file = "RAutomaton.h", name = "recognise")
     public boolean recognise(Role R) {
         if (R == null) {
             return false;
@@ -118,13 +118,13 @@ public class RAStateTransitions {
     }
 
     /** @return true iff there is only one transition */
-@PortedFrom(file="RAutomaton.h",name="isSingleton")
+    @PortedFrom(file = "RAutomaton.h", name = "isSingleton")
     public boolean isSingleton() {
         return size == 1;
     }
 
     /** @return state of the 1st transition; used for singletons */
-@PortedFrom(file="RAutomaton.h",name="getTransitionEnd")
+    @PortedFrom(file = "RAutomaton.h", name = "getTransitionEnd")
     public int getTransitionEnd() {
         return base.get(0).final_state();
     }

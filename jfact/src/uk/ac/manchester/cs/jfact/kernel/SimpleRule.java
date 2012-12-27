@@ -8,8 +8,8 @@ import java.util.List;
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import conformance.PortedFrom;
 
-/** class for simple rules like Ch :- Cb1, Cbi, CbN; all C are primitive
- * named concepts */
+/** class for simple rules like Ch :- Cb1, Cbi, CbN; all C are primitive named
+ * concepts */
 @PortedFrom(file = "dlTBox.h", name = "TSimpleRule")
 class SimpleRule {
     /** body of the rule */
@@ -25,7 +25,7 @@ class SimpleRule {
         setBpHead(bpINVALID);
     }
 
-@PortedFrom(file="dlTBox.h",name="applicable")
+    @PortedFrom(file = "dlTBox.h", name = "applicable")
     public boolean applicable(DlSatTester Reasoner) {
         return Reasoner.applicable(this);
     }

@@ -30,6 +30,7 @@ class DLVertexTagDFS {
 
     // tag access
     /** @return tag of the CE */
+    @PortedFrom(file = "dlVertex.h", name = "Type")
     public DagTag getType() {
         return op;
     }

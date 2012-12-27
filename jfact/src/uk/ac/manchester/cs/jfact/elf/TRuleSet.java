@@ -15,7 +15,7 @@ class TRuleSet {
     List<TELFRule> Rules = new ArrayList<TELFRule>();
 
     /** apply all rules with a single argument */
-@PortedFrom(file="ELFReasoner.h",name="applyRules")
+    @PortedFrom(file = "ELFReasoner.h", name = "applyRules")
     void applyRules(TELFConcept addedC) {
         for (TELFRule p : Rules) {
             p.apply(addedC);
@@ -23,7 +23,7 @@ class TRuleSet {
     }
 
     /** apply all rules with two arguments */
-@PortedFrom(file="ELFReasoner.h",name="applyRules")
+    @PortedFrom(file = "ELFReasoner.h", name = "applyRules")
     void applyRules(TELFConcept addedC, TELFConcept addedD) {
         for (TELFRule p : Rules) {
             p.apply(addedC, addedD);
@@ -31,7 +31,7 @@ class TRuleSet {
     }
 
     /** add rule to a set */
-@PortedFrom(file="ELFReasoner.h",name="addRule")
+    @PortedFrom(file = "ELFReasoner.h", name = "addRule")
     void addRule(TELFRule rule) {
         Rules.add(rule);
     }

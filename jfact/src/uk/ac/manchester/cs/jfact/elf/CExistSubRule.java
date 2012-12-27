@@ -3,7 +3,7 @@ package uk.ac.manchester.cs.jfact.elf;
 import conformance.PortedFrom;
 
 /** rule that checks the addition of (X,Y) to R and finds a C in S(Y) */
-@PortedFrom(file="ELFReasoner.h",name="CExistSubRule")
+@PortedFrom(file = "ELFReasoner.h", name = "CExistSubRule")
 public class CExistSubRule extends TELFRule {
     /** filler of an existential */
     TELFConcept Filler;
@@ -19,7 +19,7 @@ public class CExistSubRule extends TELFRule {
 
     /** apply a method with an added pair (C,D) */
     @Override
-@PortedFrom(file="ELFReasoner.h",name="apply")
+    @PortedFrom(file = "ELFReasoner.h", name = "apply")
     void apply(TELFConcept addedC, TELFConcept addedD) {
         if (addedD.hasSuper(Filler) && !addedC.hasSuper(Sup)) {
             ER.addAction(new ELFAction(addedC, Sup));

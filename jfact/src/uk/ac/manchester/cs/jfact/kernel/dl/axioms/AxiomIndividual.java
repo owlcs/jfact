@@ -10,7 +10,7 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import conformance.PortedFrom;
 
-@PortedFrom(file="tDLAxiom.h",name="TDLAxiomIndividual")
+@PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomIndividual")
 abstract class AxiomIndividual extends AxiomImpl {
     private IndividualExpression individualExpression;
 
@@ -20,7 +20,7 @@ abstract class AxiomIndividual extends AxiomImpl {
     }
 
     /** access */
-@PortedFrom(file="tDLAxiom.h",name="getIndividual")
+    @PortedFrom(file = "tDLAxiom.h", name = "getIndividual")
     public IndividualExpression getIndividual() {
         return individualExpression;
     }

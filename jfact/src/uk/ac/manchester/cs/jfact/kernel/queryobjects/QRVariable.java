@@ -16,6 +16,7 @@ class QRVariable extends QRiObject {
         Name = name;
     }
 
+    @PortedFrom(file = "QR.h", name = "getName")
     String getName() {
         return Name;
     }

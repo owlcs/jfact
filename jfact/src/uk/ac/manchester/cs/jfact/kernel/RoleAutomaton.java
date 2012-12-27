@@ -27,7 +27,7 @@ public class RoleAutomaton {
     private boolean outputSafe;
 
     /** make sure that STATE exists in the automaton (update ton's size) */
-@PortedFrom(file="RAutomaton.h",name="ensureState")
+    @PortedFrom(file = "RAutomaton.h", name = "ensureState")
     private void ensureState(int state) {
         if (state >= base.size()) {
             Helper.resize(base, state + 1);
@@ -47,33 +47,33 @@ public class RoleAutomaton {
     }
 
     /** make the beginning of the chain */
-@PortedFrom(file="RAutomaton.h",name="initChain")
+    @PortedFrom(file = "RAutomaton.h", name = "initChain")
     public void initChain(int from) {
         initialRA = from;
     }
 
     /** add an Automaton to the chain with a default state */
-@PortedFrom(file="RAutomaton.h",name="addToChain")
+    @PortedFrom(file = "RAutomaton.h", name = "addToChain")
     public boolean addToChain(RoleAutomaton RA, boolean oSafe) {
         return addToChain(RA, oSafe, size() + 1);
     }
 
     // i/o safety
     /** get the i-safe value */
-@PortedFrom(file="RAutomaton.h",name="isISafe")
+    @PortedFrom(file = "RAutomaton.h", name = "isISafe")
     public boolean isISafe() {
         return inputSafe;
     }
 
     /** get the o-safe value */
-@PortedFrom(file="RAutomaton.h",name="isOSafe")
+    @PortedFrom(file = "RAutomaton.h", name = "isOSafe")
     public boolean isOSafe() {
         return outputSafe;
     }
 
     // add single RA
     /** add RA from a subrole to given one */
-@PortedFrom(file="RAutomaton.h",name="addRA")
+    @PortedFrom(file = "RAutomaton.h", name = "addRA")
     public void addRA(RoleAutomaton RA) {
         assert !isCompleted();
         if (RA.isSimple()) {
@@ -88,7 +88,7 @@ public class RoleAutomaton {
 
     /** add TRANSition leading from a given STATE; check whether all states are
      * correct */
-@PortedFrom(file="RAutomaton.h",name="addTransitionSafe")
+    @PortedFrom(file = "RAutomaton.h", name = "addTransitionSafe")
     public void addTransitionSafe(int state, RATransition trans) {
         ensureState(state);
         ensureState(trans.final_state());
@@ -96,19 +96,19 @@ public class RoleAutomaton {
     }
 
     /** state that the automaton is i-unsafe */
-@PortedFrom(file="RAutomaton.h",name="setIUnsafe")
+    @PortedFrom(file = "RAutomaton.h", name = "setIUnsafe")
     public void setIUnsafe() {
         inputSafe = false;
     }
 
     /** state that the automaton is o-unsafe */
-@PortedFrom(file="RAutomaton.h",name="setOUnsafe")
+    @PortedFrom(file = "RAutomaton.h", name = "setOUnsafe")
     public void setOUnsafe() {
         outputSafe = false;
     }
 
     /** check whether transition between FROM and TO breaks safety */
-@PortedFrom(file="RAutomaton.h",name="checkTransition")
+    @PortedFrom(file = "RAutomaton.h", name = "checkTransition")
     public void checkTransition(int from, int to) {
         if (from == final_state) {
             setOUnsafe();
@@ -120,14 +120,14 @@ public class RoleAutomaton {
 
     /** add TRANSition leading from a state FROM; all states are known to fit the
      * ton */
-@PortedFrom(file="RAutomaton.h",name="addTransition")
+    @PortedFrom(file = "RAutomaton.h", name = "addTransition")
     public void addTransition(int from, RATransition trans) {
         checkTransition(from, trans.final_state());
         base.get(from).add(trans);
     }
 
     /** make the internal chain transition (between chainState and TO) */
-@PortedFrom(file="RAutomaton.h",name="nextChainTransition")
+    @PortedFrom(file = "RAutomaton.h", name = "nextChainTransition")
     public void nextChainTransition(int to) {
         addTransition(initialRA, new RATransition(to));
         initialRA = to;
@@ -139,7 +139,7 @@ public class RoleAutomaton {
     public static int final_state = 1;
 
     /** create new state */
-@PortedFrom(file="RAutomaton.h",name="newState")
+    @PortedFrom(file = "RAutomaton.h", name = "newState")
     public int newState() {
         int ret = base.size();
         ensureState(ret);
@@ -147,33 +147,33 @@ public class RoleAutomaton {
     }
 
     /** get the 1st (multi-)transition starting in STATE */
-@PortedFrom(file="RAutomaton.h",name="begin")
+    @PortedFrom(file = "RAutomaton.h", name = "begin")
     public RAStateTransitions begin(int state) {
         return base.get(state);
     }
 
     /** return number of distinct states */
-@PortedFrom(file="RAutomaton.h",name="size")
+    @PortedFrom(file = "RAutomaton.h", name = "size")
     public int size() {
         return base.size();
     }
 
     /** set up all transitions passing number of roles */
-@PortedFrom(file="RAutomaton.h",name="setup")
+    @PortedFrom(file = "RAutomaton.h", name = "setup")
     public void setup(int nRoles, boolean data) {
         for (int i = 0; i < base.size(); ++i) {
             base.get(i).setup(i, nRoles, data);
         }
     }
 
-@PortedFrom(file="RAutomaton.h",name="print")
+    @PortedFrom(file = "RAutomaton.h", name = "print")
     public void print(LogAdapter o) {
         for (int state = 0; state < base.size(); ++state) {
             base.get(state).print(o);
         }
     }
 
-@PortedFrom(file="RAutomaton.h",name="addCopy")
+    @PortedFrom(file = "RAutomaton.h", name = "addCopy")
     public void addCopy(RoleAutomaton RA) {
         for (int i = 0; i < RA.size(); ++i) {
             int from = map[i];
@@ -201,7 +201,7 @@ public class RoleAutomaton {
 
     /** init internal map according to RA size, with new initial state from
      * chainState and (FRA) states */
-@PortedFrom(file="RAutomaton.h",name="initMap")
+    @PortedFrom(file = "RAutomaton.h", name = "initMap")
     public void initMap(int RASize, int fRA) {
         map = Arrays.copyOf(map, RASize);
         // new state in the automaton
@@ -228,7 +228,7 @@ public class RoleAutomaton {
 
     /** add an Automaton to the chain that would start from the iRA; OSAFE shows
      * the safety of a previous automaton in a chain */
-@PortedFrom(file="RAutomaton.h",name="addToChain")
+    @PortedFrom(file = "RAutomaton.h", name = "addToChain")
     public boolean addToChain(RoleAutomaton RA, boolean oSafe, int fRA) {
         assert !isCompleted();
         boolean needFinalTrans = fRA < size() && !RA.isOSafe();
@@ -253,24 +253,24 @@ public class RoleAutomaton {
     private boolean Complete;
 
     // / mark an automaton as completed
-@PortedFrom(file="RAutomaton.h",name="setCompleted")
+    @PortedFrom(file = "RAutomaton.h", name = "setCompleted")
     void setCompleted() {
         Complete = true;
     }
 
-@PortedFrom(file="RAutomaton.h",name="setCompleted")
+    @PortedFrom(file = "RAutomaton.h", name = "setCompleted")
     void setCompleted(boolean b) {
         Complete = b;
     }
 
     // / check whether automaton is completed
-@PortedFrom(file="RAutomaton.h",name="isCompleted")
+    @PortedFrom(file = "RAutomaton.h", name = "isCompleted")
     boolean isCompleted() {
         return Complete;
     }
 
     // / @return true iff the automaton is simple
-@PortedFrom(file="RAutomaton.h",name="isSimple")
+    @PortedFrom(file = "RAutomaton.h", name = "isSimple")
     boolean isSimple() {
         assert isCompleted();
         return size() == 2 && inputSafe && outputSafe;

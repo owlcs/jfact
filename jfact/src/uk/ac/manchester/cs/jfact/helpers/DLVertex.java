@@ -16,6 +16,7 @@ import java.util.List;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 import uk.ac.manchester.cs.jfact.kernel.*;
+import conformance.Original;
 import conformance.PortedFrom;
 
 /** DL Vertex
@@ -26,7 +27,7 @@ public class DLVertex extends DLVertexTagDFS {
     static class ChildSet {
         private Comparator<Integer> c = new Comparator<Integer>() {
             @Override
-@PortedFrom(file="dlVertex.h",name="compare")
+            @PortedFrom(file = "dlVertex.h", name = "compare")
             public int compare(Integer o1, Integer o2) {
                 if (o1.equals(o2)) {
                     return 0;
@@ -129,7 +130,7 @@ public class DLVertex extends DLVertexTagDFS {
     /** get RW access to the label
      * 
      * @return sort label */
-@PortedFrom(file="dlVertex.h",name="getSort")
+    @PortedFrom(file = "dlVertex.h", name = "getSort")
     public MergableLabel getSort() {
         return sort;
     }
@@ -138,7 +139,7 @@ public class DLVertex extends DLVertexTagDFS {
      * 
      * @param label
      *            label to merge */
-@PortedFrom(file="dlVertex.h",name="merge")
+    @PortedFrom(file = "dlVertex.h", name = "merge")
     public void merge(MergableLabel label) {
         sort.merge(label);
     }
@@ -182,7 +183,7 @@ public class DLVertex extends DLVertexTagDFS {
         return false;
     }
 
-@PortedFrom(file="dlVertex.h",name="compare")
+    @PortedFrom(file = "dlVertex.h", name = "compare")
     private boolean compare(Object o1, Object o2) {
         if (o1 == null) {
             return o2 == null;
@@ -198,48 +199,49 @@ public class DLVertex extends DLVertexTagDFS {
     }
 
     /** @return C for concepts/quantifiers/NR verteces */
+    @PortedFrom(file = "dlVertex.h", name = "getC")
     public int getConceptIndex() {
         return conceptIndex;
     }
 
     /** @return N for the (<= n R) vertex */
-@PortedFrom(file="dlVertex.h",name="getNumberLE")
+    @PortedFrom(file = "dlVertex.h", name = "getNumberLE")
     public int getNumberLE() {
         return n;
     }
 
     /** @return N for the (>= n R) vertex */
-@PortedFrom(file="dlVertex.h",name="getNumberGE")
+    @PortedFrom(file = "dlVertex.h", name = "getNumberGE")
     public int getNumberGE() {
         return n + 1;
     }
 
     /** @return STATE for the (\all R{state}.C) vertex */
-@PortedFrom(file="dlVertex.h",name="getState")
+    @PortedFrom(file = "dlVertex.h", name = "getState")
     public int getState() {
         return n;
     }
 
     /** @return pointer to the first concept name of the entry */
-@PortedFrom(file="dlVertex.h",name="begin")
+    @PortedFrom(file = "dlVertex.h", name = "begin")
     public int[] begin() {
         return child.sorted();
     }
 
     /** @return pointer to Role for the Role-like verteces */
-@PortedFrom(file="dlVertex.h",name="getRole")
+    @PortedFrom(file = "dlVertex.h", name = "getRole")
     public Role getRole() {
         return role;
     }
 
     /** @return pointer to Projection Role for the Projection verteces */
-@PortedFrom(file="dlVertex.h",name="getProjRole")
+    @PortedFrom(file = "dlVertex.h", name = "getProjRole")
     public Role getProjRole() {
         return projRole;
     }
 
     /** @return TConcept for concept-like fields */
-@PortedFrom(file="dlVertex.h",name="getConcept")
+    @PortedFrom(file = "dlVertex.h", name = "getConcept")
     public NamedEntry getConcept() {
         return concept;
     }
@@ -247,7 +249,7 @@ public class DLVertex extends DLVertexTagDFS {
     /** set TConcept value to entry
      * 
      * @param p */
-@PortedFrom(file="dlVertex.h",name="setConcept")
+    @PortedFrom(file = "dlVertex.h", name = "setConcept")
     public void setConcept(NamedEntry p) {
         concept = p;
     }
@@ -255,14 +257,14 @@ public class DLVertex extends DLVertexTagDFS {
     /** set a concept (child) to Name-like vertex
      * 
      * @param p */
-@PortedFrom(file="dlVertex.h",name="setChild")
+    @PortedFrom(file = "dlVertex.h", name = "setChild")
     public void setChild(int p) {
         conceptIndex = p;
     }
 
     /** @param p
      * @return true if dtBad */
-@PortedFrom(file="dlVertex.h",name="addChild")
+    @PortedFrom(file = "dlVertex.h", name = "addChild")
     public boolean addChild(int p) {
         if (p == bpTOP) {
             return false;
@@ -286,6 +288,7 @@ public class DLVertex extends DLVertexTagDFS {
     }
 
     /** @return andToDag */
+    @Original
     public int getAndToDagValue() {
         if (child.set.size() == 0) {
             return bpTOP;
@@ -297,7 +300,7 @@ public class DLVertex extends DLVertexTagDFS {
     }
 
     /** @param dag */
-@PortedFrom(file="dlVertex.h",name="sortEntry")
+    @PortedFrom(file = "dlVertex.h", name = "sortEntry")
     public void sortEntry(DLDag dag) {
         if (op != dtAnd) {
             return;
@@ -401,7 +404,7 @@ public class DLVertex extends DLVertexTagDFS {
      * @param b
      * @param g
      * @param pos */
-@PortedFrom(file="dlVertex.h",name="updateStatValues")
+    @PortedFrom(file = "dlVertex.h", name = "updateStatValues")
     public void updateStatValues(int d, int s, int b, int g, boolean pos) {
         StatIndex.updateStatValues(d, s, b, g, pos, stat);
     }
@@ -411,7 +414,7 @@ public class DLVertex extends DLVertexTagDFS {
      * @param v
      * @param posV
      * @param pos */
-@PortedFrom(file="dlVertex.h",name="updateStatValues")
+    @PortedFrom(file = "dlVertex.h", name = "updateStatValues")
     public void updateStatValues(DLVertex v, boolean posV, boolean pos) {
         StatIndex.updateStatValues(v, posV, pos, stat);
     }
@@ -419,7 +422,7 @@ public class DLVertex extends DLVertexTagDFS {
     /** increment frequency value
      * 
      * @param pos */
-@PortedFrom(file="dlVertex.h",name="incFreqValue")
+    @PortedFrom(file = "dlVertex.h", name = "incFreqValue")
     public void incFreqValue(boolean pos) {
         StatIndex.incFreqValue(pos, stat);
     }
@@ -429,7 +432,7 @@ public class DLVertex extends DLVertexTagDFS {
      * 
      * @param i
      * @return stat at position i */
-@PortedFrom(file="dlVertex.h",name="getStat")
+    @PortedFrom(file = "dlVertex.h", name = "getStat")
     public int getStat(int i) {
         return stat[i];
     }
@@ -438,7 +441,7 @@ public class DLVertex extends DLVertexTagDFS {
      * 
      * @param pos
      * @return depth of queue pos */
-@PortedFrom(file="dlVertex.h",name="getDepth")
+    @PortedFrom(file = "dlVertex.h", name = "getDepth")
     public int getDepth(boolean pos) {
         return StatIndex.getDepth(pos, stat);
     }
@@ -451,7 +454,7 @@ public class DLVertex extends DLVertexTagDFS {
      * 
      * @param pos
      * @return usage */
-@PortedFrom(file="dlVertex.h",name="getUsage")
+    @PortedFrom(file = "dlVertex.h", name = "getUsage")
     public long getUsage(boolean pos) {
         return pos ? posUsage : negUsage;
     }

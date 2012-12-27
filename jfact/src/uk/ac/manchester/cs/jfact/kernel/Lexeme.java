@@ -7,7 +7,7 @@ import conformance.PortedFrom;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version. 
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-@PortedFrom(file="tLexeme.h",name="TLexeme")
+@PortedFrom(file = "tLexeme.h", name = "TLexeme")
 public class Lexeme {
     /** Lexeme's Token */
     private Token token;
@@ -41,19 +41,19 @@ public class Lexeme {
     }
 
     /** get Token of given Lexeme */
-@PortedFrom(file="tLexeme.h",name="getToken")
+    @PortedFrom(file = "tLexeme.h", name = "getToken")
     public Token getToken() {
         return token;
     }
 
     /** get name pointer of given lexeme */
-@PortedFrom(file="tLexeme.h",name="getNE")
+    @PortedFrom(file = "tLexeme.h", name = "getNE")
     public NamedEntry getNE() {
         return pName;
     }
 
     /** get data value of given lexeme */
-@PortedFrom(file="tLexeme.h",name="getData")
+    @PortedFrom(file = "tLexeme.h", name = "getData")
     public int getData() {
         return data;
     }

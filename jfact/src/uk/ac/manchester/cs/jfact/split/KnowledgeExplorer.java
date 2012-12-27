@@ -33,7 +33,7 @@ public class KnowledgeExplorer {
     List<Expression> Concepts = new ArrayList<Expression>();
 
     /** adds an entity as a synonym to a map MAP */
-@PortedFrom(file="KnowledgeExplorer.h",name="addE")
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "addE")
     <E extends ClassifiableEntry> void addE(MultiMap<E, E> map, E entry) {
         map.put(entry, entry);
         if (entry.isSynonym()) {
@@ -86,7 +86,7 @@ public class KnowledgeExplorer {
      * ' x.show() print 'P= ' P.show()
      */
     /** add concept-like entity E (possibly with synonyms) to CONCEPTS */
-@PortedFrom(file="KnowledgeExplorer.h",name="addC")
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "addC")
     void addC(Expression e) {
         // check named concepts
         if (e instanceof ConceptName) {
@@ -117,7 +117,7 @@ public class KnowledgeExplorer {
         Concepts.add(e);
     }
 
-@PortedFrom(file="KnowledgeExplorer.h",name="getDataRoles")
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "getDataRoles")
     public Set<RoleExpression> getDataRoles(DlCompletionTree node, boolean onlyDet) {
         Roles.clear();
         for (DlCompletionTreeArc p : node.getNeighbour()) {
@@ -134,7 +134,7 @@ public class KnowledgeExplorer {
 
     /** build the set of object neighbours of a NODE; incoming edges are */
     // counted iff NEEDINCOMING is true
-@PortedFrom(file="KnowledgeExplorer.h",name="getObjectRoles")
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "getObjectRoles")
     public Set<RoleExpression> getObjectRoles(DlCompletionTree node, boolean onlyDet,
             boolean needIncoming) {
         Roles.clear();
@@ -152,7 +152,7 @@ public class KnowledgeExplorer {
 
     /** build the set of neighbours of a NODE via role ROLE; put the resulting */
     // list into RESULT
-@PortedFrom(file="KnowledgeExplorer.h",name="getNeighbours")
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "getNeighbours")
     public List<DlCompletionTree> getNeighbours(DlCompletionTree node, Role R) {
         Nodes.clear();
         for (DlCompletionTreeArc p : node.getNeighbour()) {

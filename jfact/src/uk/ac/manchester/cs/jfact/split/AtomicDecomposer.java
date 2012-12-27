@@ -36,7 +36,7 @@ public class AtomicDecomposer {
     // Modularizer.setSigIndex(SI);
     // }
     /** restore all tautologies back */
-@PortedFrom(file="AtomicDecomposer.h",name="restoreTautologies")
+    @PortedFrom(file = "AtomicDecomposer.h", name = "restoreTautologies")
     void restoreTautologies() {
         for (Axiom p : Tautologies) {
             p.setUsed(true);
@@ -44,7 +44,7 @@ public class AtomicDecomposer {
     }
 
     /** set progress indicator to be PI */
-@PortedFrom(file="AtomicDecomposer.h",name="setProgressIndicator")
+    @PortedFrom(file = "AtomicDecomposer.h", name = "setProgressIndicator")
     void setProgressIndicator(ProgressIndicatorInterface pi) {
         PI = pi;
     }
@@ -52,7 +52,7 @@ public class AtomicDecomposer {
     // #define RKG_DEBUG_AD
     /** remove tautologies (axioms that are always local) from the ontology */
     // temporarily
-@PortedFrom(file="AtomicDecomposer.h",name="removeTautologies")
+    @PortedFrom(file = "AtomicDecomposer.h", name = "removeTautologies")
     void removeTautologies(Ontology O) {
         // we might use it for another decomposition
         Tautologies.clear();
@@ -76,7 +76,7 @@ public class AtomicDecomposer {
 
     /** build a module for given axiom AX; use parent atom's module as a base */
     // for the module search
-@PortedFrom(file="AtomicDecomposer.h",name="buildModule")
+    @PortedFrom(file = "AtomicDecomposer.h", name = "buildModule")
     TOntologyAtom buildModule(TSignature sig, TOntologyAtom parent) {
         // build a module for a given signature
         Modularizer.extract(parent.getModule(), sig, type);
@@ -102,7 +102,7 @@ public class AtomicDecomposer {
 
     /** create atom for given axiom AX; use parent atom's module as a base for */
     // the module search
-@PortedFrom(file="AtomicDecomposer.h",name="createAtom")
+    @PortedFrom(file = "AtomicDecomposer.h", name = "createAtom")
     TOntologyAtom createAtom(Axiom ax, TOntologyAtom parent) {
         // check whether axiom already has an atom
         if (ax.getAtom() != null) {
@@ -139,13 +139,13 @@ public class AtomicDecomposer {
         return new ArrayList<Axiom>(Tautologies);
     }
 
-@PortedFrom(file="AtomicDecomposer.h",name="getAOS")
+    @PortedFrom(file = "AtomicDecomposer.h", name = "getAOS")
     public AOStructure getAOS() {
         return AOS;
     }
 
     /** get the atomic structure for given module type T */
-@PortedFrom(file="AtomicDecomposer.h",name="getAOS")
+    @PortedFrom(file = "AtomicDecomposer.h", name = "getAOS")
     public AOStructure getAOS(Ontology O, ModuleType t) {
         // remember the type of the module
         type = t;

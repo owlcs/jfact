@@ -8,6 +8,7 @@ import java.util.Set;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleInverse;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
+import conformance.Original;
 import conformance.PortedFrom;
 
 /** class to hold the signature of a module */
@@ -29,31 +30,31 @@ public class TSignature {
     }
 
     /** add names to signature */
-@PortedFrom(file="tSignature.h",name="add")
+    @PortedFrom(file = "tSignature.h", name = "add")
     public void add(NamedEntity p) {
         set.add(p);
     }
 
     /** remove given element from a signature */
-@PortedFrom(file="tSignature.h",name="remove")
+    @PortedFrom(file = "tSignature.h", name = "remove")
     public void remove(NamedEntity p) {
         set.remove(p);
     }
 
     /** add another signature to a given one */
-@PortedFrom(file="tSignature.h",name="add")
+    @PortedFrom(file = "tSignature.h", name = "add")
     void add(TSignature Sig) {
         set.addAll(Sig.set);
     }
 
     /** set new locality polarity */
-@PortedFrom(file="tSignature.h",name="setLocality")
+    @PortedFrom(file = "tSignature.h", name = "setLocality")
     public void setLocality(boolean top) {
         this.setLocality(top, top);
     }
 
     /** set new locality polarity */
-@PortedFrom(file="tSignature.h",name="setLocality")
+    @PortedFrom(file = "tSignature.h", name = "setLocality")
     public void setLocality(boolean topC, boolean topR) {
         topCLocality = topC;
         topRLocality = topR;
@@ -86,12 +87,13 @@ public class TSignature {
     /** operator < */
     // boolean operator < ( TSignature& sig ) { return Set < sig.Set; }
     /** @return true iff signature contains given element */
+    @Original
     public boolean containsNamedEntity(NamedEntity p) {
         return set.contains(p);
     }
 
     /** @return true iff signature contains given element */
-@PortedFrom(file="tSignature.h",name="contains")
+    @PortedFrom(file = "tSignature.h", name = "contains")
     public boolean contains(Expression p) {
         if (p instanceof NamedEntity) {
             return containsNamedEntity((NamedEntity) p);
@@ -103,34 +105,35 @@ public class TSignature {
     }
 
     /** @return size of the signature */
-@PortedFrom(file="tSignature.h",name="size")
+    @PortedFrom(file = "tSignature.h", name = "size")
     public int size() {
         return set.size();
     }
 
     /** clear the signature */
-@PortedFrom(file="tSignature.h",name="clear")
+    @PortedFrom(file = "tSignature.h", name = "clear")
     public void clear() {
         set.clear();
     }
 
-@PortedFrom(file="tSignature.h",name="begin")
+    @PortedFrom(file = "tSignature.h", name = "begin")
     public Set<NamedEntity> begin() {
         return set;
     }
 
     /** @return true iff concepts are treated as TOPs */
-@PortedFrom(file="tSignature.h",name="topCLocal")
+    @PortedFrom(file = "tSignature.h", name = "topCLocal")
     public boolean topCLocal() {
         return topCLocality;
     }
 
     /** @return true iff roles are treated as TOPs */
-@PortedFrom(file="tSignature.h",name="topRLocal")
+    @PortedFrom(file = "tSignature.h", name = "topRLocal")
     public boolean topRLocal() {
         return topRLocality;
     }
 
+    @Original
     public List<NamedEntity> intersect(TSignature s2) {
         List<NamedEntity> ret = new ArrayList<NamedEntity>();
         Set<NamedEntity> s = new HashSet<NamedEntity>(set);

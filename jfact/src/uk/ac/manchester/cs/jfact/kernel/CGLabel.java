@@ -53,7 +53,7 @@ public class CGLabel {
     }
 
     /** get (RW) label associated with the concepts defined by TAG */
-@PortedFrom(file="CGLabel.h",name="getLabel")
+    @PortedFrom(file = "CGLabel.h", name = "getLabel")
     public CWDArray getLabel(DagTag tag) {
         return tag.isComplexConcept() ? ccLabel : scLabel;
     }
@@ -74,7 +74,7 @@ public class CGLabel {
     }
 
     /** check whether node is labelled by complex concept P */
-@PortedFrom(file="CGLabel.h",name="containsCC")
+    @PortedFrom(file = "CGLabel.h", name = "containsCC")
     public boolean containsCC(int p) {
         return ccLabel.contains(p);
     }
@@ -120,14 +120,14 @@ public class CGLabel {
     }
 
     /** save label using given SS */
-@PortedFrom(file="CGLabel.h",name="save")
+    @PortedFrom(file = "CGLabel.h", name = "save")
     public void save(SaveState ss) {
         ss.setSc(scLabel.save());
         ss.setCc(ccLabel.save());
     }
 
     /** restore label to given LEVEL using given SS */
-@PortedFrom(file="CGLabel.h",name="restore")
+    @PortedFrom(file = "CGLabel.h", name = "restore")
     public void restore(SaveState ss, int level) {
         scLabel.restore(ss.getSc(), level);
         ccLabel.restore(ss.getCc(), level);
@@ -140,7 +140,7 @@ public class CGLabel {
         return scLabel.toString() + ccLabel.toString();
     }
 
-@PortedFrom(file="CGLabel.h",name="init")
+    @PortedFrom(file = "CGLabel.h", name = "init")
     public void init() {
         clearOthersCache();
         clearMyCache();
@@ -148,7 +148,7 @@ public class CGLabel {
         ccLabel.init();
     }
 
-@PortedFrom(file="CGLabel.h",name="contains")
+    @PortedFrom(file = "CGLabel.h", name = "contains")
     public boolean contains(int p) {
         assert isCorrect(p);
         if (p == bpTOP) {

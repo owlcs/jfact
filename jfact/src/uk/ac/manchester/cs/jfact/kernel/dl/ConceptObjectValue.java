@@ -12,7 +12,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
-@PortedFrom(file="tDLExpression.h",name="TDLConceptObjectValue")
+@PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectValue")
 public class ConceptObjectValue implements ConceptObjectRoleExpression {
     private ObjectRoleExpression delegate;
     private IndividualExpression individualExpression;
@@ -23,24 +23,24 @@ public class ConceptObjectValue implements ConceptObjectRoleExpression {
     }
 
     @Override
-@PortedFrom(file="tDLExpression.h",name="accept")
+    @PortedFrom(file = "tDLExpression.h", name = "accept")
     public void accept(DLExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
     @Override
-@PortedFrom(file="tDLExpression.h",name="accept")
+    @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
-@PortedFrom(file="tDLExpression.h",name="getI")
+    @PortedFrom(file = "tDLExpression.h", name = "getI")
     public IndividualExpression getI() {
         return individualExpression;
     }
 
     @Override
-@PortedFrom(file="tDLExpression.h",name="getOR")
+    @PortedFrom(file = "tDLExpression.h", name = "getOR")
     public ObjectRoleExpression getOR() {
         return delegate;
     }
