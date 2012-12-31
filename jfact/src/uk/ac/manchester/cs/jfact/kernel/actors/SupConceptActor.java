@@ -12,6 +12,7 @@ import conformance.PortedFrom;
 /** class for exploring concept taxonomy to find super classes */
 @PortedFrom(file = "Kernel.cpp", name = "SupConceptActor")
 public class SupConceptActor implements Actor {
+    @PortedFrom(file = "Kernel.cpp", name = "pe")
     protected ClassifiableEntry pe;
 
     public SupConceptActor(ClassifiableEntry q) {

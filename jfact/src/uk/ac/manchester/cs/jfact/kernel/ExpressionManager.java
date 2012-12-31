@@ -80,37 +80,49 @@ public class ExpressionManager {
     }
 
     /** nameset for concepts */
+    @PortedFrom(file = "tExpressionManager.h", name = "NS_C")
     private NameSet<ConceptName> conceptNameset = new NameSet<ConceptName>(
             new ConceptNameCreator());
     /** nameset for individuals */
+    @PortedFrom(file = "tExpressionManager.h", name = "NS_I")
     private NameSet<IndividualName> individualNameset = new NameSet<IndividualName>(
             new IndividualNameCreator());
     /** nameset for object roles */
+    @PortedFrom(file = "tExpressionManager.h", name = "NS_OR")
     private NameSet<ObjectRoleName> objectRoleNameset = new NameSet<ObjectRoleName>(
             new ObjectroleNameCreator());
     /** nameset for data roles */
+    @PortedFrom(file = "tExpressionManager.h", name = "NS_DR")
     private NameSet<DataRoleName> dataRoleNameset = new NameSet<DataRoleName>(
             new DataroleNameCreator());
     /** TOP concept */
+    @PortedFrom(file = "tExpressionManager.h", name = "CTop")
     private ConceptTop top = new ConceptTop();
     /** BOTTOM concept */
+    @PortedFrom(file = "tExpressionManager.h", name = "CBottom")
     private ConceptBottom bottom = new ConceptBottom();
-    private DataTop DTop = new DataTop();
+    /** TOP data element */
+    @PortedFrom(file = "tExpressionManager.h", name = "DTop")
+    private DataTop dataTop = new DataTop();
     /** TOP object role */
+    @PortedFrom(file = "tExpressionManager.h", name = "ORTop")
     private ObjectRoleExpression objectRoleTop = new ObjectRoleTop();
     /** BOTTOM object role */
+    @PortedFrom(file = "tExpressionManager.h", name = "ORBottom")
     private ObjectRoleExpression objectRoleBottom = new ObjectRoleBottom();
     /** TOP data role */
+    @PortedFrom(file = "tExpressionManager.h", name = "DRTop")
     private DataRoleExpression dataRoleTop = new DataRoleTop();
     /** BOTTOM data role */
+    @PortedFrom(file = "tExpressionManager.h", name = "DRBottom")
     private DataRoleExpression dataRoleBottom = new DataRoleBottom();
-    /** TOP data element */
-    private DataTop dataTop = new DataTop();
-    /** BOTTOM data element */
+    @PortedFrom(file = "tExpressionManager.h", name = "DBottom")
     private DataBottom dataBottom = new DataBottom();
     /** cache for the role inverses */
+    @PortedFrom(file = "tExpressionManager.h", name = "InverseRoleCache")
     private InverseRoleCache inverseRoleCache = new InverseRoleCache();
     // / cache for the one-of singletons
+    @PortedFrom(file = "tExpressionManager.h", name = "OneOfCache")
     private Map<IndividualExpression, ConceptExpression> OneOfCache = new HashMap<IndividualExpression, ConceptExpression>();
 
     /** set Top/Bot properties */

@@ -14,6 +14,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "modelCacheSingleton.h", name = "modelCacheSingleton")
 public class ModelCacheSingleton extends ModelCacheInterface {
     /** the singleton itself */
+    @PortedFrom(file = "modelCacheSingleton.h", name = "Singleton")
     private int singleton;
 
     public ModelCacheSingleton(int bp) {

@@ -11,19 +11,25 @@ import java.util.List;
 
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "RAutomaton.h", name = "RoleAutomaton")
 public class RoleAutomaton {
     /** all transitions of the automaton, groupped by a starting state */
+    @PortedFrom(file = "RAutomaton.h", name = "Base")
     private List<RAStateTransitions> base = new ArrayList<RAStateTransitions>();
     /** maps original automata state into the new ones (used in copyRA) */
+    @PortedFrom(file = "RAutomaton.h", name = "map")
     private int[] map = new int[0];
     /** initial state of the next automaton in chain */
+    @PortedFrom(file = "RAutomaton.h", name = "iRA")
     private int initialRA;
     /** flag whether automaton is input safe */
+    @PortedFrom(file = "RAutomaton.h", name = "ISafe")
     private boolean inputSafe;
     /** flag whether automaton is output safe */
+    @PortedFrom(file = "RAutomaton.h", name = "OSafe")
     private boolean outputSafe;
 
     /** make sure that STATE exists in the automaton (update ton's size) */
@@ -134,8 +140,10 @@ public class RoleAutomaton {
     }
 
     /** get the initial state */
+    @Original
     public static int initial = 0;
     /** get the state */
+    @PortedFrom(file = "RAutomaton.h", name = "final")
     public static int final_state = 1;
 
     /** create new state */
@@ -251,6 +259,7 @@ public class RoleAutomaton {
     }
 
     // automaton completeness
+    @PortedFrom(file = "RAutomaton.h", name = "Complete")
     private boolean Complete;
 
     // / mark an automaton as completed

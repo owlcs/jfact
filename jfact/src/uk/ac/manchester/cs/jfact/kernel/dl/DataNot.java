@@ -14,6 +14,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDLExpression.h", name = "TDLDataNot")
 public class DataNot implements DataExpression, DataExpressionArg<DataExpression> {
     /** data expression argument */
+    @PortedFrom(file = "tDLExpression.h", name = "Expr")
     protected DataExpression Expr;
 
     public DataNot(DataExpression E) {

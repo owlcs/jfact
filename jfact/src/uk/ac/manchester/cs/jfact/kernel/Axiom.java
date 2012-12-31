@@ -73,7 +73,9 @@ public class Axiom {
     }
 
     /** GCI is presented in the form (or Disjuncts); */
+    @PortedFrom(file = "tAxiom.h", name = "Disjuncts")
     private Set<DLTree> disjuncts = new LinkedHashSet<DLTree>();
+    @Original
     private TOntologyAtom atom;
 
     /** create a copy of a given GCI; ignore SKIP entry */

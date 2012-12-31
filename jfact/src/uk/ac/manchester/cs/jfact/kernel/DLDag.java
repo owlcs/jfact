@@ -18,19 +18,25 @@ import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
 import uk.ac.manchester.cs.jfact.helpers.*;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "dlDag.h", name = "DLDag")
 public class DLDag {
     /** body of DAG */
+    @PortedFrom(file = "dlDag.h", name = "Heap")
     private List<DLVertex> heap = new ArrayList<DLVertex>();
     /** all the AND nodes (needs to recompute) */
+    @PortedFrom(file = "dlDag.h", name = "listAnds")
     private FastSet listAnds = FastSetFactory.create();
+    @Original
     private EnumMap<DagTag, DLVTable> indexes = new EnumMap<DagTag, DLVTable>(
             DagTag.class);
     /** cache efficiency -- statistic purposes */
+    @PortedFrom(file = "dlDag.h", name = "nCacheHits")
     private int nCacheHits;
     /** size of sort array */
+    @PortedFrom(file = "dlDag.h", name = "sortArraySize")
     private int sortArraySize;
     // tunable flags (set by readConfig)
     /** sort strings: option[0] for SAT/cache tests, option[1] for SUB/classify
@@ -38,14 +44,20 @@ public class DLDag {
     // private String orSortSat;
     // private String orSortSub;
     /** sort index (if necessary). Possible values are Size, Depth, Freq */
+    @PortedFrom(file = "dlDag.h", name = "iSort")
     private int iSort;
     /** whether or not sorting order is ascending */
+    @PortedFrom(file = "dlDag.h", name = "sortAscend")
     private boolean sortAscend;
     /** prefer non-generating rules in OR orderings */
+    @PortedFrom(file = "dlDag.h", name = "preferNonGen")
     private boolean preferNonGen;
     /** flag whether cache should be used */
+    @PortedFrom(file = "dlDag.h", name = "useDLVCache")
     private boolean useDLVCache;
+    @PortedFrom(file = "dlDag.h", name = "finalDagSize")
     private int finalDagSize;
+    @Original
     private JFactReasonerConfiguration options;
 
     /** replace existing vertex at index I with a vertex V */

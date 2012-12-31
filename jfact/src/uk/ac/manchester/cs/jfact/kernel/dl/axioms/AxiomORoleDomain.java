@@ -15,10 +15,11 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomORoleDomain")
 public class AxiomORoleDomain extends AxiomSingleORole {
+    @PortedFrom(file = "tDLAxiom.h", name = "Domain")
     private ConceptExpression domain;
 
     public AxiomORoleDomain(OWLAxiom ax, ObjectRoleExpression role,
-            ConceptExpression domain) {
+            @PortedFrom(file = "tDLAxiom.h", name = "Domain") ConceptExpression domain) {
         super(ax, role);
         this.domain = domain;
     }

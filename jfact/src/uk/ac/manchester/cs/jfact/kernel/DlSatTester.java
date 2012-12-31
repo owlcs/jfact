@@ -416,27 +416,23 @@ public class DlSatTester {
         }
     }
 
-    private List<SingleSplit> SplitRules = new ArrayList<SingleSplit>();
     /** GCIs local to session */
+    @PortedFrom(file = "Reasoner.h", name = "SessionGCIs")
     private List<Integer> SessionGCIs = new ArrayList<Integer>();
     /** set of active splits */
+    @PortedFrom(file = "Reasoner.h", name = "ActiveSplits")
     private FastSet ActiveSplits = FastSetFactory.create();
     /** concept signature of current CGraph */
+    @PortedFrom(file = "Reasoner.h", name = "SessionSignature")
     private Set<NamedEntity> SessionSignature = new HashSet<NamedEntity>();
     /** signature to dep-set map for current session */
+    @PortedFrom(file = "Reasoner.h", name = "SessionSigDepSet")
     private Map<NamedEntity, DepSet> SessionSigDepSet = new HashMap<NamedEntity, DepSet>();
-    private Set<NamedEntity> ActiveSignature = new HashSet<NamedEntity>();
-    /** signature related to a split */
-    private Set<NamedEntity> PossibleSignature = new HashSet<NamedEntity>();
-    /** map between BP and TNamedEntities */
-    private List<NamedEntity> EntityMap = new ArrayList<NamedEntity>();
-    /** flag for using active signature */
-    private boolean useActiveSignature;
-    /** let reasoner know that we are in the classificaton (for splits) */
-    private boolean duringClassification;
     // / nodes to merge in the TopRole-LE rules
-    List<DlCompletionTree> NodesToMerge = new ArrayList<DlCompletionTree>();
-    List<DlCompletionTreeArc> EdgesToMerge = new ArrayList<DlCompletionTreeArc>();
+    @PortedFrom(file = "Reasoner.h", name = "NodesToMerge")
+    private List<DlCompletionTree> NodesToMerge = new ArrayList<DlCompletionTree>();
+    @PortedFrom(file = "Reasoner.h", name = "EdgesToMerge")
+    private List<DlCompletionTreeArc> EdgesToMerge = new ArrayList<DlCompletionTreeArc>();
 
     // CGraph-wide rules support
     // / @return true if node is valid for the reasoning
@@ -478,62 +474,91 @@ public class DlSatTester {
     }
 
     /** host TBox */
+    @PortedFrom(file = "Reasoner.h", name = "tBox")
     protected TBox tBox;
     /** link to dag from TBox */
+    @PortedFrom(file = "Reasoner.h", name = "DLHeap")
     protected DLDag dlHeap;
     /** all the reflexive roles */
+    @PortedFrom(file = "Reasoner.h", name = "ReflexiveRoles")
     private List<Role> reflexiveRoles = new ArrayList<Role>();
     /** Completion Graph of tested concept(s) */
+    @PortedFrom(file = "Reasoner.h", name = "CGraph")
     protected DlCompletionGraph cGraph;
     /** Todo list */
+    @PortedFrom(file = "Reasoner.h", name = "TODO")
     private ToDoList TODO;
+    @Original
     private FastSet used = new LocalFastSet();
     /** GCI-related KB flags */
+    @PortedFrom(file = "Reasoner.h", name = "GCIs")
     private KBFlags gcis;
     /** record nodes that were processed during Cascaded Cache construction */
+    @PortedFrom(file = "Reasoner.h", name = "inProcess")
     private FastSet inProcess = FastSetFactory.create();
     /** timer for the SAT tests (ie, cache creation) */
+    @PortedFrom(file = "Reasoner.h", name = "satTimer")
     private Timer satTimer = new Timer();
     /** timer for the SUB tests (ie, general subsumption) */
+    @PortedFrom(file = "Reasoner.h", name = "subTimer")
     private Timer subTimer = new Timer();
     /** timer for a single test; use it as a timeout checker */
+    @PortedFrom(file = "Reasoner.h", name = "testTimer")
     private Timer testTimer = new Timer();
     // save/restore option
     /** stack for the local reasoner's state */
+    @PortedFrom(file = "Reasoner.h", name = "Stack")
     protected BCStack stack = new BCStack();
     /** context from the restored branching rule */
+    @PortedFrom(file = "Reasoner.h", name = "bContext")
     protected BranchingContext bContext;
     /** index of last non-det situation */
+    @PortedFrom(file = "Reasoner.h", name = "tryLevel")
     private int tryLevel;
     /** shift in order to determine the 1st non-det application */
+    @PortedFrom(file = "Reasoner.h", name = "nonDetShift")
     protected int nonDetShift;
     /** last level when split rules were applied */
+    @PortedFrom(file = "Reasoner.h", name = "splitRuleLevel")
     private int splitRuleLevel;
     // current values
     /** currently processed CTree node */
+    @PortedFrom(file = "Reasoner.h", name = "curNode")
     protected DlCompletionTree curNode;
     /** currently processed Concept */
+    @Original
     private DepSet curConceptDepSet;
+    @Original
     private int curConceptConcept;
     /** last processed d-blocked node */
     // private DlCompletionTree dBlocked;
     /** size of the DAG with some extra space */
+    @PortedFrom(file = "Reasoner.h", name = "dagSize")
     private int dagSize;
     /** temporary array used in OR operation */
+    @PortedFrom(file = "Reasoner.h", name = "OrConceptsToTest")
     private List<ConceptWDep> orConceptsToTest = new ArrayList<ConceptWDep>();
     /** contains clash set if clash is encountered in a node label */
+    @PortedFrom(file = "Reasoner.h", name = "clashSet")
     private DepSet clashSet = DepSet.create();
+    @Original
     protected JFactReasonerConfiguration options;
     // session status flags:
     /** true if nominal-related expansion rule was fired during reasoning */
+    @PortedFrom(file = "Reasoner.h", name = "encounterNominal")
     private boolean encounterNominal;
     /** flag to show if it is necessary to produce DT reasoning immediately */
+    @PortedFrom(file = "Reasoner.h", name = "checkDataNode")
     private boolean checkDataNode;
     /** cache for testing whether it's possible to non-expand newly created node */
-    ModelCacheIan newNodeCache;
+    @PortedFrom(file = "Reasoner.h", name = "newNodeCache")
+    private ModelCacheIan newNodeCache;
     /** auxilliary cache that is built from the edges of newly created node */
-    ModelCacheIan newNodeEdges;
-    Stats stats = new Stats();
+    @PortedFrom(file = "Reasoner.h", name = "newNodeEdges")
+    private ModelCacheIan newNodeEdges;
+    @Original
+    private Stats stats = new Stats();
+    @Original
     protected DatatypeFactory datatypeFactory;
 
     /** Adds ToDo entry which already exists in label of NODE. There is no need
@@ -569,7 +594,6 @@ public class DlSatTester {
     private void ensureDAGSize() {
         if (dagSize < dlHeap.size()) {
             dagSize = dlHeap.maxSize();
-            Helper.resize(EntityMap, dagSize);
             tBox.SplitRules.ensureDagSize(dagSize);
         }
     }
@@ -990,8 +1014,11 @@ public class DlSatTester {
         return cache;
     }
 
+    @Original
     private static EnumSet<DagTag> handlecollection = EnumSet.of(dtAnd, dtCollection);
+    @Original
     private static EnumSet<DagTag> handleforallle = EnumSet.of(dtForall, dtLE);
+    @Original
     private static EnumSet<DagTag> handlesingleton = EnumSet.of(dtPSingleton,
             dtNSingleton, dtNConcept, dtPConcept);
 
@@ -1268,7 +1295,6 @@ public class DlSatTester {
         nonDetShift = 0;
         curNode = null;
         dagSize = 0;
-        duringClassification = false;
         options.getLog().printTemplate(Templates.READCONFIG,
                 options.getuseSemanticBranching(), options.getuseBackjumping(),
                 options.getuseLazyBlocking(), options.getuseAnywhereBlocking());
@@ -1571,8 +1597,6 @@ public class DlSatTester {
         }
         return status.usageByState();
     }
-
-    int shortcuts = 0;
 
     @PortedFrom(file = "Reasoner.h", name = "hasDataClash")
     private boolean hasDataClash(DlCompletionTree node) {
@@ -3364,7 +3388,7 @@ public class DlSatTester {
     /** expansion rule for split */
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodySplit")
     private boolean commonTacticBodySplit(DLVertex cur) {
-        if (duringClassification
+        if (tBox.duringClassification
                 && !ActiveSplits.contains(curConceptConcept > 0 ? curConceptConcept
                         : -curConceptConcept)) {
             return false;

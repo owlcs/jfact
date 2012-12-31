@@ -9,8 +9,10 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ELFReasoner.h", name = "RAddRule")
 public class RAddRule extends TELFRule {
     /** role to add the pair */
+    @PortedFrom(file = "ELFReasoner.h", name = "R")
     TELFRole R;
     /** filler (D) of the existential */
+    @PortedFrom(file = "ELFReasoner.h", name = "Filler")
     TELFConcept Filler;
 
     /** init c'tor: remember D */

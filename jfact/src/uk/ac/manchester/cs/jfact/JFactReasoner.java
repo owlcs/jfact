@@ -27,6 +27,7 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.kernel.voc.Vocabulary;
 import uk.ac.manchester.cs.jfact.split.ModuleType;
 import uk.ac.manchester.cs.jfact.split.TOntologyAtom;
+import conformance.Original;
 
 /** Synchronization policy: all methods for OWLReasoner are synchronized, except
  * the methods which do not touch the kernel or only affect threadsafe data
@@ -48,6 +49,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     private final BufferingMode bufferingMode;
     private final List<OWLOntologyChange> rawChanges = new ArrayList<OWLOntologyChange>();
     private final List<OWLAxiom> reasonerAxioms = new ArrayList<OWLAxiom>();
+    @Original
     private final JFactReasonerConfiguration configuration;
     private final OWLDataFactory df;
     private TranslationMachinery translationMachinery;

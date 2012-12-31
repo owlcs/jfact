@@ -7,12 +7,16 @@ import conformance.PortedFrom;
 @PortedFrom(file = "dumpInterface.h", name = "dumpInterface")
 class DumpInterface {
     /** output stream */
+    @PortedFrom(file = "dumpInterface.h", name = "o")
     protected PrintStream o;
     /** indentation level */
+    @PortedFrom(file = "dumpInterface.h", name = "indent")
     private int indent;
     /** print every axiom on a single line (need for sorting, for example) */
+    @PortedFrom(file = "dumpInterface.h", name = "oneliner")
     private boolean oneliner;
 
+    @PortedFrom(file = "dumpInterface.h", name = "o")
     public DumpInterface(PrintStream oo) {
         o = oo;
         indent = 0;

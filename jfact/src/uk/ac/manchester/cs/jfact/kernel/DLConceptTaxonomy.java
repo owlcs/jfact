@@ -54,29 +54,44 @@ public class DLConceptTaxonomy extends Taxonomy {
     }
 
     /** flag shows that subsumption check could be simplified */
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "inSplitCheck")
     boolean inSplitCheck;
     /** host tBox */
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "tBox")
     private TBox tBox;
     /** common descendants of all parents of currently classified concept */
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "Common")
     private List<TaxonomyVertex> common = new ArrayList<TaxonomyVertex>();
     // statistic counters
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nConcepts")
     private long nConcepts;
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nTries")
     private long nTries;
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nPositives")
     private long nPositives;
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nNegatives")
     private long nNegatives;
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nSearchCalls")
     private long nSearchCalls;
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nSubCalls")
     private long nSubCalls;
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nNonTrivialSubCalls")
     private long nNonTrivialSubCalls;
     /** number of positive cached subsumptions */
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nCachedPositive")
     private long nCachedPositive;
     /** number of negative cached subsumptions */
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nCachedNegative")
     private long nCachedNegative;
     /** number of non-subsumptions detected by a sorted reasoning */
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nSortedNegative")
     private long nSortedNegative;
     // flags
     /** flag to use Bottom-Up search */
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "flagNeedBottomUp")
     private boolean flagNeedBottomUp;
     /** number of processed common parents */
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nCommon")
     protected int nCommon = 1;
 
     // -- General support for DL concept classification
@@ -167,6 +182,7 @@ public class DLConceptTaxonomy extends Taxonomy {
     }
 
     /** set of split vars */
+    @PortedFrom(file = "dlTBox.h", name = "Splits")
     TSplitVars Splits;
 
     /** process all splits */

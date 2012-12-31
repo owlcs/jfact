@@ -9,8 +9,10 @@ import conformance.PortedFrom;
 @PortedFrom(file = "QR.h", name = "QRQuery")
 class QRQuery {
     /** query as a set of atoms */
+    @PortedFrom(file = "QR.h", name = "Body")
     QRSetAtoms Body = new QRSetAtoms();
     /** set of free variables */
+    @PortedFrom(file = "QR.h", name = "FreeVars")
     Set<QRVariable> FreeVars = new HashSet<QRVariable>();
 
     /** add atom to a query body */

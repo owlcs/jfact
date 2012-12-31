@@ -19,10 +19,13 @@ import conformance.PortedFrom;
 @PortedFrom(file = "SemanticLocalityChecker.h", name = "SemanticLocalityChecker")
 public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker {
     /** Reasoner to detect the tautology */
+    @PortedFrom(file = "SemanticLocalityChecker.h", name = "Kernel")
     ReasoningKernel Kernel;
     /** Expression manager of a kernel */
+    @PortedFrom(file = "SemanticLocalityChecker.h", name = "pEM")
     ExpressionManager pEM;
     /** map between axioms and concept expressions */
+    @PortedFrom(file = "SemanticLocalityChecker.h", name = "ExprMap")
     Map<Axiom, ConceptExpression> ExprMap = new HashMap<Axiom, ConceptExpression>();
 
     /** @return expression necessary to build query for a given type of an */
@@ -64,6 +67,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
     }
 
     /** signature to keep */
+    @PortedFrom(file = "LocalityChecker.h", name = "sig")
     TSignature sig;
 
     @Override
@@ -81,6 +85,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
     }
 
     /** remember the axiom locality value here */
+    @PortedFrom(file = "SemanticLocalityChecker.h", name = "isLocal")
     boolean isLocal;
 
     /** init c'tor */

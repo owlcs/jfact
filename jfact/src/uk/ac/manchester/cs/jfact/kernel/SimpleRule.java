@@ -14,10 +14,13 @@ import conformance.PortedFrom;
 @PortedFrom(file = "dlTBox.h", name = "TSimpleRule")
 class SimpleRule {
     /** body of the rule */
+    @PortedFrom(file = "dlTBox.h", name = "Body")
     List<Concept> simpleRuleBody = new ArrayList<Concept>();
     /** head of the rule as a DLTree */
+    @PortedFrom(file = "dlTBox.h", name = "tHead")
     protected DLTree tHead;
     /** head of the rule as a BP */
+    @PortedFrom(file = "dlTBox.h", name = "bpHead")
     int bpHead;
 
     public SimpleRule(List<Concept> body, DLTree head) {

@@ -16,7 +16,9 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomValueOf")
 public class AxiomValueOf extends AxiomIndividual {
+    @PortedFrom(file = "tDLAxiom.h", name = "A")
     private DataRoleExpression dataRoleExpression;
+    @PortedFrom(file = "tDLAxiom.h", name = "V")
     private Literal<?> value;
 
     public AxiomValueOf(OWLAxiom ax, IndividualExpression i, DataRoleExpression a,

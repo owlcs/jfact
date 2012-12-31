@@ -9,6 +9,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "ELFExpressionChecker.h", name = "ELFExpressionChecker")
 public class ELFExpressionChecker implements DLExpressionVisitor {
+    @PortedFrom(file = "ELFExpressionChecker.h", name = "value")
     boolean value;
 
     /** get DLTree corresponding to an expression EXPR */

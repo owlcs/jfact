@@ -17,13 +17,20 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "CWDArray.h", name = "CWDArray")
 public class CWDArray {
+    @Original
     private static double distribution = 0.025;
     /** array of concepts together with dep-sets */
+    @PortedFrom(file = "CWDArray.h", name = "Base")
     private List<ConceptWDep> base = new ArrayList<ConceptWDep>();
+    @Original
     private BitSet cache;
+    @Original
     private ArrayIntMap indexes = new ArrayIntMap();
+    @Original
     private boolean createCache = false;
+    @Original
     private static int cacheLimit = 1;
+    @Original
     private int size = 0;
 
     /** init/clear label */

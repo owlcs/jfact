@@ -13,16 +13,22 @@ import conformance.PortedFrom;
 @PortedFrom(file = "AtomicDecomposer.h", name = "AtomicDecomposer")
 public class AtomicDecomposer {
     /** atomic structure to build */
+    @PortedFrom(file = "AtomicDecomposer.h", name = "AOS")
     AOStructure AOS = null;
     /** modularizer to build modules */
+    @PortedFrom(file = "AtomicDecomposer.h", name = "pModularizer")
     TModularizer Modularizer;
     /** tautologies of the ontology */
+    @PortedFrom(file = "AtomicDecomposer.h", name = "Tautologies")
     List<Axiom> Tautologies = new ArrayList<Axiom>();
     /** progress indicator */
+    @PortedFrom(file = "AtomicDecomposer.h", name = "PI")
     ProgressIndicatorInterface PI = null;
     /** fake atom that represents the whole ontology */
+    @PortedFrom(file = "AtomicDecomposer.h", name = "rootAtom")
     TOntologyAtom rootAtom = null;
     /** module type for current AOS creation */
+    @PortedFrom(file = "AtomicDecomposer.h", name = "type")
     ModuleType type;
 
     public AtomicDecomposer(TModularizer c) {

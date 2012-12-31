@@ -6,8 +6,10 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ELFReasoner.h", name = "CExistSubRule")
 public class CExistSubRule extends TELFRule {
     /** filler of an existential */
+    @PortedFrom(file = "ELFReasoner.h", name = "Filler")
     TELFConcept Filler;
     /** super of an axiom concept; it would be added to S(C) */
+    @PortedFrom(file = "ELFReasoner.h", name = "Sup")
     TELFConcept Sup;
 
     /** init c'tor: remember D */

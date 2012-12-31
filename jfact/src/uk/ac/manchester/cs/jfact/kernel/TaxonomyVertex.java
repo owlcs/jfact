@@ -11,28 +11,37 @@ import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "taxVertex.h", name = "TaxonomyVertex")
 public class TaxonomyVertex {
     // TODO check if they need to be list
     /** immediate parents and children */
+    @PortedFrom(file = "taxVertex.h", name = "Links")
     private List<TaxonomyVertex> linksParent = new ArrayList<TaxonomyVertex>();
+    @PortedFrom(file = "taxVertex.h", name = "Links")
     private List<TaxonomyVertex> linksChild = new ArrayList<TaxonomyVertex>();
     /** entry corresponding to current tax vertex */
+    @PortedFrom(file = "taxVertex.h", name = "sample")
     private ClassifiableEntry sample = null;
     // TODO this can be a set, but there is no advantage
     /** synonyms of the sample entry */
+    @PortedFrom(file = "taxVertex.h", name = "synonyms")
     private Set<ClassifiableEntry> synonyms = new LinkedHashSet<ClassifiableEntry>();
     // labels for different purposes. all for 2 directions: top-down and
     // bottom-up search
     /** flag if given vertex was checked; connected with checkLab */
+    @PortedFrom(file = "taxVertex.h", name = "checked")
     private long checked;
     /** flag if given vertex has value; connected with valuedLab */
+    @Original
     private long isValued;
     /** number of common parents of a node */
+    @PortedFrom(file = "taxVertex.h", name = "common")
     private int common;
     /** satisfiability value of a valued vertex */
+    @PortedFrom(file = "taxVertex.h", name = "checkValue")
     private boolean checkValue;
 
     /** mark vertex as the one corresponding to a given ENTRY */

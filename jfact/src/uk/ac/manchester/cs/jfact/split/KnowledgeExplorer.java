@@ -16,20 +16,28 @@ import conformance.PortedFrom;
 @PortedFrom(file = "KnowledgeExplorer.h", name = "KnowledgeExplorer")
 public class KnowledgeExplorer {
     /** map concept into set of its synonyms */
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "Cs")
     MultiMap<NamedEntity, Concept> Cs = new MultiMap<NamedEntity, Concept>();
     /** map individual into set of its synonyms */
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "Is")
     MultiMap<NamedEntity, Individual> Is = new MultiMap<NamedEntity, Individual>();
     /** map object role to the set of its super-roles (self included) */
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "ORs")
     MultiMap<NamedEntity, Role> ORs = new MultiMap<NamedEntity, Role>();
     /** map data role to the set of its super-roles (self included) */
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "DRs")
     MultiMap<NamedEntity, Role> DRs = new MultiMap<NamedEntity, Role>();
     /** dag-2-interface translator used in knowledge exploration */
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "D2I")
     TDag2Interface D2I;
     /** node vector to return */
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "Nodes")
     List<DlCompletionTree> Nodes = new ArrayList<DlCompletionTree>();
     /** role set to return */
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "Roles")
     Set<RoleExpression> Roles = new HashSet<RoleExpression>();
     /** concept vector to return */
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "Concepts")
     List<Expression> Concepts = new ArrayList<Expression>();
 
     /** adds an entity as a synonym to a map MAP */

@@ -8,6 +8,7 @@ import conformance.PortedFrom;
 /** general QR conjunctions of atoms */
 @PortedFrom(file = "QR.h", name = "QRSetAtoms")
 class QRSetAtoms {
+    @PortedFrom(file = "QR.h", name = "Base")
     List<QRAtom> Base = new ArrayList<QRAtom>();
 
     /** add atom to a set */

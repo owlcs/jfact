@@ -6,6 +6,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "QR.h", name = "QRVariable")
 class QRVariable extends QRiObject {
     /** name of a var */
+    @PortedFrom(file = "QR.h", name = "Name")
     String Name;
 
     /** empty c'tor */

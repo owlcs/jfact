@@ -17,11 +17,15 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDag2Interface.h", name = "TDag2Interface")
 public class TDag2Interface {
     /** DAG to be translated */
+    @PortedFrom(file = "tDag2Interface.h", name = "Dag")
     private DLDag Dag;
     /** expression manager */
+    @PortedFrom(file = "tDag2Interface.h", name = "Manager")
     private ExpressionManager Manager;
     /** vector of cached expressions */
+    @PortedFrom(file = "tDag2Interface.h", name = "TransC")
     private List<ConceptExpression> TransConcept = new ArrayList<ConceptExpression>();
+    @PortedFrom(file = "tDag2Interface.h", name = "TransD")
     private List<DataExpression> TransData = new ArrayList<DataExpression>();
 
     /** // create concept name by named entry */

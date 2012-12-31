@@ -11,13 +11,16 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpressionArg;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptDataValue")
 public class ConceptDataValue implements ConceptDataRoleExpression,
         DataExpressionArg<Literal<?>> {
     /** data expression argument */
+    @PortedFrom(file = "tDLAxiom.h", name = "Expr")
     protected Literal<?> dataValue;
+    @Original
     private DataRoleExpression delegate;
 
     public ConceptDataValue(DataRoleExpression R, Literal<?> V) {

@@ -15,7 +15,9 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomRelatedTo")
 public class AxiomRelatedTo extends AxiomIndividual {
+    @PortedFrom(file = "tDLAxiom.h", name = "J")
     private IndividualExpression individualExpression;
+    @PortedFrom(file = "tDLAxiom.h", name = "R")
     private ObjectRoleExpression objectRoleExpression;
 
     public AxiomRelatedTo(OWLAxiom ax, IndividualExpression i, ObjectRoleExpression r,

@@ -10,11 +10,14 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectValue")
 public class ConceptObjectValue implements ConceptObjectRoleExpression {
+    @Original
     private ObjectRoleExpression delegate;
+    @PortedFrom(file = "tDLExpression.h", name = "I")
     private IndividualExpression individualExpression;
 
     public ConceptObjectValue(ObjectRoleExpression R, IndividualExpression I) {

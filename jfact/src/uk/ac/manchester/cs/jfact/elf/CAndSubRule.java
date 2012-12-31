@@ -9,8 +9,10 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ELFReasoner.h", name = "CAndSubRule")
 public class CAndSubRule extends TELFRule {
     /** concept to find in order to fire a rule */
+    @PortedFrom(file = "ELFReasoner.h", name = "Conj")
     TELFConcept Conj;
     /** super of a concept; it would be added to S(C) */
+    @PortedFrom(file = "ELFReasoner.h", name = "Sup")
     TELFConcept Sup;
 
     /** init c'tor: remember D */

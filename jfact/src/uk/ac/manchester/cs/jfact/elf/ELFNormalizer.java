@@ -20,15 +20,20 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ELFNormalizer.h", name = "ELFNormalizer")
 public class ELFNormalizer extends DLAxiomVisitorAdapter {
     /** expression manager to build aux expressions */
+    @PortedFrom(file = "ELFNormalizer.h", name = "pEM")
     ExpressionManager pEM;
     // TLISPOntologyPrinter LP;
     /** set of new/procesed axioms */
+    @PortedFrom(file = "ELFNormalizer.h", name = "Axioms")
     List<Axiom> Axioms = new ArrayList<Axiom>();
     /** index of a freah variable */
+    @PortedFrom(file = "ELFNormalizer.h", name = "index")
     int index;
     /** true iff the axiom was changed after visiting */
+    @PortedFrom(file = "ELFNormalizer.h", name = "changed")
     boolean changed;
     /** true iff RHS is in a form \ER.C */
+    @PortedFrom(file = "ELFNormalizer.h", name = "eRHS")
     boolean eRHS;
 
     /** process the axiom and mark it unused if necessary */

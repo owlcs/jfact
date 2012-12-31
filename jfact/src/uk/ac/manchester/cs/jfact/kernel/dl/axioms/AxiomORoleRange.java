@@ -15,8 +15,10 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomORoleRange")
 public class AxiomORoleRange extends AxiomSingleORole {
+    @PortedFrom(file = "tDLAxiom.h", name = "Range")
     private ConceptExpression range;
 
+    @PortedFrom(file = "tDLAxiom.h", name = "Range")
     public AxiomORoleRange(OWLAxiom ax, ObjectRoleExpression role, ConceptExpression range) {
         super(ax, role);
         this.range = range;

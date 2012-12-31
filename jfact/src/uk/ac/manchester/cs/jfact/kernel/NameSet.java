@@ -12,6 +12,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tNameSet.h", name = "TNameSet")
 public class NameSet<T> extends HashMap<String, T> {
     /** creator of new name */
+    @PortedFrom(file = "tNameSet.h", name = "Creator")
     private NameCreator<T> creator;
 
     public NameSet(NameCreator<T> p) {

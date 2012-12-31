@@ -14,6 +14,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomRoleInverse")
 public class AxiomRoleInverse extends AxiomSingleORole {
+    @PortedFrom(file = "tDLAxiom.h", name = "InvRole")
     private ObjectRoleExpression inverseRole;
 
     public AxiomRoleInverse(OWLAxiom ax, ObjectRoleExpression dirRole,

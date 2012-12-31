@@ -44,24 +44,33 @@ import conformance.PortedFrom;
 @PortedFrom(file = "Kernel.h", name = "ReasoningKernel")
 public class ReasoningKernel {
     /** options for the kernel and all related substructures */
+    @PortedFrom(file = "Kernel.h", name = "KernelOptions")
     private JFactReasonerConfiguration kernelOptions;
     /** local TBox (to be created) */
+    @PortedFrom(file = "Kernel.h", name = "pTBox")
     private TBox pTBox;
     /** set of axioms */
+    @PortedFrom(file = "Kernel.h", name = "Ontology")
     private Ontology ontology = new Ontology();
     /** expression translator to work with queries */
+    @PortedFrom(file = "Kernel.h", name = "pET")
     private ExpressionTranslator pET;
     // Top/Bottom role names: if set, they will appear in all hierarchy-related
     // output
     /** top object role name */
+    @PortedFrom(file = "Kernel.h", name = "topORoleName")
     private String topORoleName;
     /** bottom object role name */
+    @PortedFrom(file = "Kernel.h", name = "botORoleName")
     private String botORoleName;
     /** top data role name */
+    @PortedFrom(file = "Kernel.h", name = "topDRoleName")
     private String topDRoleName;
     /** bottom data role name */
+    @PortedFrom(file = "Kernel.h", name = "botDRoleName")
     private String botDRoleName;
     // values to propagate to the new KB in case of clearance
+    @Original
     private AtomicBoolean interrupted;
 
     @Original
@@ -71,38 +80,54 @@ public class ReasoningKernel {
 
     // reasoning cache
     /** cache level */
+    @PortedFrom(file = "Kernel.h", name = "cacheLevel")
     private CacheStatus cacheLevel;
     /** cached query concept description */
+    @PortedFrom(file = "Kernel.h", name = "cachedQueryTree")
     private DLTree cachedQueryTree;
     /** cached concept (either defConcept or existing one) */
+    @PortedFrom(file = "Kernel.h", name = "cachedConcept")
     private Concept cachedConcept;
     /** cached query result (taxonomy position) */
+    @PortedFrom(file = "Kernel.h", name = "cachedVertex")
     private TaxonomyVertex cachedVertex;
     // internal flags
     /** set if TBox throws an exception during preprocessing/classification */
+    @PortedFrom(file = "Kernel.h", name = "reasoningFailed")
     private boolean reasoningFailed;
     /** trace vector for the last operation (set from the TBox trace-sets) */
+    @PortedFrom(file = "Kernel.h", name = "TraceVec")
     private List<Axiom> traceVec = new ArrayList<Axiom>();
     /** flag to gather trace information for the next reasoner's call */
+    @PortedFrom(file = "Kernel.h", name = "NeedTracing")
     private boolean needTracing;
+    @Original
     private DatatypeFactory datatypeFactory;
     // types for knowledge exploration
     /** dag-2-interface translator used in knowledge exploration */
     // TDag2Interface D2I;
     /** knowledge exploration support */
+    @PortedFrom(file = "Kernel.h", name = "KE")
     KnowledgeExplorer KE;
     /** atomic decomposer */
+    @PortedFrom(file = "Kernel.h", name = "AD")
     AtomicDecomposer AD;
     /** syntactic locality based module extractor */
+    @PortedFrom(file = "Kernel.h", name = "ModSyn")
     TModularizer ModSyn = null;
     /** semantic locality based module extractor */
+    @PortedFrom(file = "Kernel.h", name = "ModSem")
     TModularizer ModSem = null;
     /** set to return by the locality checking procedure */
+    @PortedFrom(file = "Kernel.h", name = "Result")
     Set<Axiom> Result = new HashSet<Axiom>();
     /** cached query input description */
+    @PortedFrom(file = "Kernel.h", name = "cachedQuery")
     ConceptExpression cachedQuery;
+    @PortedFrom(file = "Kernel.h", name = "useAxiomSplitting")
     private boolean useAxiomSplitting;
     /** ignore cache for the TExpr* (useful for semantic AD) */
+    @PortedFrom(file = "Kernel.h", name = "ignoreExprCache")
     boolean ignoreExprCache = false;
 
     // -----------------------------------------------------------------------------

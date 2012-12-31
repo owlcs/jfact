@@ -9,6 +9,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ELFReasoner.h", name = "RBotRule")
 public class RBotRule extends TELFRule {
     /** remember the Bottom concept */
+    @PortedFrom(file = "ELFReasoner.h", name = "CBot")
     TELFConcept ConceptBot;
 
     /** init c'tor: remember E */

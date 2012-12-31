@@ -10,7 +10,12 @@ import conformance.PortedFrom;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 @PortedFrom(file = "tKBFlags.h", name = "TKBFlags")
 public class KBFlags {
-    private boolean GCI, RnD, Reflexive;
+    @Original
+    private boolean GCI;
+    @Original
+    private boolean RnD;
+    @Original
+    private boolean Reflexive;
 
     /** flag for GCIs */
     @Original

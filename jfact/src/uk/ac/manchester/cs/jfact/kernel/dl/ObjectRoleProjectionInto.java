@@ -8,12 +8,15 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLExpression.h", name = "TDLObjectRoleProjectionInto")
 public class ObjectRoleProjectionInto implements ObjectRoleComplexExpression,
         ObjectRoleArg, ConceptArg {
+    @Original
     private ConceptExpression delegate;
+    @Original
     private ObjectRoleExpression roleDelegate;
 
     public ObjectRoleProjectionInto(ObjectRoleExpression R, ConceptExpression C) {

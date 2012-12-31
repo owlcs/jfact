@@ -6,8 +6,10 @@ import conformance.PortedFrom;
 @PortedFrom(file = "QR.h", name = "QR2ArgAtom")
 class QR2ArgAtom extends QRAtom {
     /** argument 1 */
+    @PortedFrom(file = "QR.h", name = "Arg1")
     QRiObject Arg1;
     /** argument 2 */
+    @PortedFrom(file = "QR.h", name = "Arg2")
     QRiObject Arg2;
 
     QR2ArgAtom(QRiObject A1, QRiObject A2) {

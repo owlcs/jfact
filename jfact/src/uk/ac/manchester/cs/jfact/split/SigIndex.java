@@ -8,22 +8,30 @@ import org.semanticweb.owlapi.util.MultiMap;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "SigIndex.h", name = "SigIndex")
 public class SigIndex {
     /** map between entities and axioms that contains them in their signature */
+    @PortedFrom(file = "SigIndex.h", name = "Base")
     MultiMap<NamedEntity, Axiom> Base = new MultiMap<NamedEntity, Axiom>();
     /** locality checker */
+    @PortedFrom(file = "SigIndex.h", name = "Checker")
     LocalityChecker Checker;
     /** sets of axioms non-local wrt the empty signature */
+    @Original
     Set<Axiom> NonLocalTrue = new HashSet<Axiom>();
+    @Original
     Set<Axiom> NonLocalFalse = new HashSet<Axiom>();
     /** empty signature to test the non-locality */
+    @PortedFrom(file = "SigIndex.h", name = "emptySig")
     TSignature emptySig = new TSignature();
     /** number of registered axioms */
+    @PortedFrom(file = "SigIndex.h", name = "nRegistered")
     int nRegistered = 0;
     /** number of registered axioms */
+    @PortedFrom(file = "SigIndex.h", name = "nUnregistered")
     int nUnregistered = 0;
 
     // access to statistics

@@ -21,6 +21,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ReasonerNom.h", name = "NominalReasoner")
 public class NominalReasoner extends DlSatTester {
     /** all nominals defined in TBox */
+    @PortedFrom(file = "ReasonerNom.h", name = "Nominals")
     protected List<Individual> nominals = new ArrayList<Individual>();
 
     /** there are nominals */

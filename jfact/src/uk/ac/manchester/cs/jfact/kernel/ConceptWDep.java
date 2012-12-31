@@ -11,8 +11,10 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ConceptWithDep.h", name = "Concept")
 public class ConceptWDep {
     /** "pointer" to a concept in DAG */
+    @PortedFrom(file = "ConceptWithDep.h", name = "Concept")
     private int concept;
     /** dep-set for a concept */
+    @PortedFrom(file = "ConceptWithDep.h", name = "depSet")
     private DepSet depSet;
 
     /** c'tor with empty dep-set */

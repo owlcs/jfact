@@ -17,13 +17,18 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tOntology.h", name = "TOntology")
 public class Ontology {
     /** all the axioms */
+    @PortedFrom(file = "tOntology.h", name = "Axioms")
     private List<Axiom> axioms = new ArrayList<Axiom>();
     /** expression manager that builds all the expressions for the axioms */
+    @PortedFrom(file = "tOntology.h", name = "EManager")
     private ExpressionManager expressionManager = new ExpressionManager();
     /** id to be given to the next axiom */
+    @PortedFrom(file = "tOntology.h", name = "axiomId")
     private int axiomId;
     /** true iff ontology was changed */
+    @PortedFrom(file = "tOntology.h", name = "changed")
     private boolean changed;
+    @PortedFrom(file = "tOntology.h", name = "Splits")
     public TSplitVars Splits = new TSplitVars();
 
     public Ontology() {

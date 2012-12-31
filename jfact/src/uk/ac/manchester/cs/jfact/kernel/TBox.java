@@ -36,91 +36,129 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "dlTBox.h", name = "TBox")
 public class TBox {
+    @PortedFrom(file = "dlTBox.h", name = "relevance")
     private long relevance = 1;
+    @PortedFrom(file = "dlTBox.h", name = "DLHeap")
     private DLDag dlHeap;
     /** reasoner for TBox-related queries w/o nominals */
+    @PortedFrom(file = "dlTBox.h", name = "stdReasoner")
     private DlSatTester stdReasoner = null;
     /** use this macro to do the same action with all available reasoners */
     // # define REASONERS_DO(ACT) do { \
     // nomReasoner.ACT; \
     // stdReasoner.ACT; } while(0)
     /** reasoner for TBox-related queries with nominals */
+    @PortedFrom(file = "dlTBox.h", name = "nomReasoner")
     private NominalReasoner nomReasoner;
     /** taxonomy structure of a TBox */
+    @PortedFrom(file = "dlTBox.h", name = "pTax")
     private DLConceptTaxonomy pTax;
     /** DataType center */
     // private DataTypeCenter datatypeCenter = new DataTypeCenter();
     /** set of reasoning options */
+    @Original
     private JFactReasonerConfiguration config;
     /** status of the KB */
+    @PortedFrom(file = "dlTBox.h", name = "Status")
     private KBStatus kbStatus;
     /** global KB features */
+    @PortedFrom(file = "dlTBox.h", name = "KBFeatures")
     private LogicFeatures KBFeatures = new LogicFeatures();
     /** GCI features */
+    @PortedFrom(file = "dlTBox.h", name = "GCIFeatures")
     private LogicFeatures GCIFeatures = new LogicFeatures();
     /** nominal cloud features */
+    @PortedFrom(file = "dlTBox.h", name = "NCFeatures")
     private LogicFeatures nominalCloudFeatures = new LogicFeatures();
     /** aux features */
+    @PortedFrom(file = "dlTBox.h", name = "auxFeatures")
     private LogicFeatures auxFeatures = new LogicFeatures();
     /** pointer to current feature (in case of local ones) */
+    @PortedFrom(file = "dlTBox.h", name = "curFeature")
     private LogicFeatures curFeature = null;
     /** concept representing temporary one that can not be used anywhere in the
      * ontology */
+    @PortedFrom(file = "dlTBox.h", name = "pTemp")
     private Concept pTemp;
     /** temporary concept that represents query */
+    @PortedFrom(file = "dlTBox.h", name = "pQuery")
     private Concept pQuery;
     /** all named concepts */
+    @PortedFrom(file = "dlTBox.h", name = "concepts")
     private NamedEntryCollection<Concept> concepts;
     /** all named individuals/nominals */
+    @PortedFrom(file = "dlTBox.h", name = "individuals")
     private NamedEntryCollection<Individual> individuals;
     /** "normal" (object) roles */
+    @PortedFrom(file = "dlTBox.h", name = "ORM")
     private RoleMaster objectRoleMaster;
     /** data roles */
+    @PortedFrom(file = "dlTBox.h", name = "DRM")
     private RoleMaster dataRoleMaster;
     /** set of GCIs */
+    @PortedFrom(file = "dlTBox.h", name = "Axioms")
     private AxiomSet axioms;
     /** given individual-individual relations */
+    @PortedFrom(file = "dlTBox.h", name = "RelatedI")
     private List<Related> relatedIndividuals = new ArrayList<Related>();
     /** known disjoint sets of individuals */
+    @PortedFrom(file = "dlTBox.h", name = "DifferentIndividuals")
     private List<List<Individual>> differentIndividuals = new ArrayList<List<Individual>>();
     /** all simple rules in KB */
+    @PortedFrom(file = "dlTBox.h", name = "SimpleRules")
     private List<SimpleRule> simpleRules = new ArrayList<SimpleRule>();
     /** split rules */
+    @PortedFrom(file = "dlTBox.h", name = "SplitRules")
     final TSplitRules SplitRules;
     /** internalisation of a general axioms */
+    @PortedFrom(file = "dlTBox.h", name = "T_G")
     private int internalisedGeneralAxiom;
     /** KB flags about GCIs */
+    @PortedFrom(file = "dlTBox.h", name = "GCIs")
     private KBFlags GCIs = new KBFlags();
     /** cache for the \forall R.C replacements during absorption */
+    @PortedFrom(file = "dlTBox.h", name = "RCCache")
     private Map<DLTree, Concept> forall_R_C_Cache = new HashMap<DLTree, Concept>();
     /** current aux concept's ID */
+    @PortedFrom(file = "dlTBox.h", name = "auxConceptID")
     private int auxConceptID = 0;
     /** how many times nominals were found during translation to DAG; local to
      * BuildDAG */
+    @PortedFrom(file = "dlTBox.h", name = "nNominalReferences")
     private int nNominalReferences;
     /** searchable stack for the told subsumers */
+    @PortedFrom(file = "dlTBox.h", name = "CInProcess")
     private Set<Concept> conceptInProcess = new HashSet<Concept>();
     /** fairness constraints */
+    @PortedFrom(file = "dlTBox.h", name = "Fairness")
     private List<Concept> fairness = new ArrayList<Concept>();
     // ---------------------------------------------------------------------------
     // Reasoner's members: there are many reasoner classes, some members are
     // shared
     // ---------------------------------------------------------------------------
     /** flag for switching semantic branching */
+    @PortedFrom(file = "dlTBox.h", name = "useSemanticBranching")
     boolean useSemanticBranching;
     /** flag for switching backjumping */
+    @PortedFrom(file = "dlTBox.h", name = "useBackjumping")
     boolean useBackjumping;
     /** whether or not check blocking status as late as possible */
+    @PortedFrom(file = "dlTBox.h", name = "useLazyBlocking")
     boolean useLazyBlocking;
     /** flag for switching between Anywhere and Ancestor blockings */
+    @PortedFrom(file = "dlTBox.h", name = "useAnywhereBlocking")
     boolean useAnywhereBlocking;
     /** flag to use caching during completion tree construction */
+    @PortedFrom(file = "dlTBox.h", name = "useNodeCache")
     boolean useNodeCache;
     /** let reasoner know that we are in the classificaton (for splits) */
+    @PortedFrom(file = "dlTBox.h", name = "duringClassification")
     boolean duringClassification;
     /** how many nodes skip before block; work only with FAIRNESS */
+    @PortedFrom(file = "dlTBox.h", name = "nSkipBeforeBlock")
     int nSkipBeforeBlock;
     /** use special domains as GCIs */
+    @PortedFrom(file = "dlTBox.h", name = "useSpecialDomains")
     boolean useSpecialDomains;
     // Flags section
     /** flag for full/short KB */
@@ -135,30 +173,41 @@ public class TBox {
     // Internally defined flags
     // ---------------------------------------------------------------------------
     /** whether we use sorted reasoning; depends on some simplifications */
+    @PortedFrom(file = "dlTBox.h", name = "useSortedReasoning")
     private boolean useSortedReasoning;
     /** flag whether TBox is GALEN-like */
+    @PortedFrom(file = "dlTBox.h", name = "isLikeGALEN")
     private boolean isLikeGALEN;
     /** flag whether TBox is WINE-like */
+    @PortedFrom(file = "dlTBox.h", name = "isLikeWINE")
     private boolean isLikeWINE;
     /** flag whether precompletion should be used */
     // private boolean usePrecompletion;
     /** whether KB is consistent */
+    @PortedFrom(file = "dlTBox.h", name = "consistent")
     private boolean consistent;
     /** whether KB(ABox) is precompleted */
     // private boolean precompleted;
     /** time spend for preprocessing */
+    @PortedFrom(file = "dlTBox.h", name = "preprocTime")
     private long preprocTime;
     /** time spend for consistency checking */
+    @PortedFrom(file = "dlTBox.h", name = "consistTime")
     private long consistTime;
     /** number of concepts and individuals; used to set index for modelCache */
+    @PortedFrom(file = "dlTBox.h", name = "nC")
     protected int nC = 0;
     /** number of all distinct roles; used to set index for modelCache */
+    @PortedFrom(file = "dlTBox.h", name = "nR")
     protected int nR = 0;
     /** maps from concept index to concept itself */
+    @PortedFrom(file = "dlTBox.h", name = "ConceptMap")
     private List<Concept> ConceptMap = new ArrayList<Concept>();
     /** map to show the possible equivalence between individuals */
+    @PortedFrom(file = "dlTBox.h", name = "SameI")
     Map<Concept, Pair<Individual, Boolean>> sameIndividuals = new HashMap<Concept, Pair<Individual, Boolean>>();
     /** all the synonyms in the told subsumers' cycle */
+    @PortedFrom(file = "dlTBox.h", name = "ToldSynonyms")
     Set<Concept> toldSynonyms = new HashSet<Concept>();
 
     /** RW begin() for individuals */
@@ -434,11 +483,8 @@ public class TBox {
             return;
         }
         o.print("Axioms:\nT [=");
-        depth = 0;
         printDagEntry(o, internalisedGeneralAxiom);
     }
-
-    int depth;
 
     /** check if the role R is irreflexive */
     @PortedFrom(file = "dlTBox.h", name = "isIrreflexive")
@@ -1195,8 +1241,12 @@ public class TBox {
         }
     }
 
-    private List<Concept> arrayCD = new ArrayList<Concept>(),
-            arrayNoCD = new ArrayList<Concept>(), arrayNP = new ArrayList<Concept>();
+    @PortedFrom(file = "dlTBox.h", name = "arrayCD")
+    private List<Concept> arrayCD = new ArrayList<Concept>();
+    @PortedFrom(file = "dlTBox.h", name = "arrayNoCD")
+    private List<Concept> arrayNoCD = new ArrayList<Concept>();
+    @PortedFrom(file = "dlTBox.h", name = "arrayNP")
+    private List<Concept> arrayNP = new ArrayList<Concept>();
 
     @PortedFrom(file = "dlTBox.h", name = "fillArrays")
     public <T extends Concept> int fillArrays(List<T> begin) {
@@ -1222,8 +1272,11 @@ public class TBox {
         return n;
     }
 
+    @Original
     private int nItems = 0;
+    @Original
     private AtomicBoolean interrupted;
+    @Original
     private DatatypeFactory datatypeFactory;
 
     @Original
@@ -1393,7 +1446,9 @@ public class TBox {
         return C;
     }
 
+    @PortedFrom(file = "dlTBox.h", name = "top")
     private Concept top;
+    @PortedFrom(file = "dlTBox.h", name = "bottom")
     private Concept bottom;
 
     @PortedFrom(file = "dlTBox.h", name = "initTopBottom")
@@ -1680,7 +1735,6 @@ public class TBox {
 
     @PortedFrom(file = "dlTBox.h", name = "PrintDagEntry")
     public void printDagEntry(LogAdapter o, int p) {
-        depth++;
         assert isValid(p);
         if (p == bpTOP) {
             o.print(" *TOP*");
@@ -1767,7 +1821,6 @@ public class TBox {
             o.print(".", p.getName(), " [", p.getTsDepth(), "] ", p.isPrimitive() ? "[="
                     : "=");
             if (isValid(p.getpBody())) {
-                depth = 0;
                 printDagEntry(o, p.getpBody());
             }
             if (p.getDescription() != null) {
@@ -2585,7 +2638,9 @@ public class TBox {
         // }
     }
 
+    @PortedFrom(file = "dlTBox.h", name = "nRelevantCCalls")
     private long nRelevantCCalls;
+    @PortedFrom(file = "dlTBox.h", name = "nRelevantBCalls")
     private long nRelevantBCalls;
 
     /** set relevance for a DLVertex */

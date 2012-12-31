@@ -10,12 +10,15 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptObjectRCExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectForall")
 public class ConceptObjectForall implements ConceptObjectRCExpression {
     /** concept argument */
+    @PortedFrom(file = "tDLExpression.h", name = "C")
     private ConceptExpression conceptExpression;
+    @Original
     private ObjectRoleExpression delegate;
 
     public ConceptObjectForall(ObjectRoleExpression R, ConceptExpression C) {

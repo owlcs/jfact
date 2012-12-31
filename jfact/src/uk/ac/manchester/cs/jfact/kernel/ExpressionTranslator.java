@@ -31,9 +31,11 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tExpressionTranslator.h", name = "TExpressionTranslator")
 public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
     /** TBox to get access to the named entities */
+    @PortedFrom(file = "tExpressionTranslator.h", name = "kb")
     private TBox tbox;
     /** signature of non-trivial entities; used in semantic locality checkers */
     // only
+    @PortedFrom(file = "tExpressionTranslator.h", name = "sig")
     TSignature sig;
 
     /** @return true iff ENTRY is not in signature */

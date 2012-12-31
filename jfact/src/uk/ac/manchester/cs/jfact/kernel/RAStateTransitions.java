@@ -10,22 +10,30 @@ import java.util.BitSet;
 import java.util.List;
 
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
+import conformance.Original;
 import conformance.PortedFrom;
 
 /** class to represent transitions from a single state in an automaton */
 @PortedFrom(file = "RAutomaton.h", name = "RAStateTransitions")
 public class RAStateTransitions {
     /** all transitions */
+    @PortedFrom(file = "RAutomaton.h", name = "Base")
     protected List<RATransition> base = new ArrayList<RATransition>();
     /** check whether there is an empty transition going from this state */
+    @PortedFrom(file = "RAutomaton.h", name = "EmptyTransition")
     protected boolean emptyTransition;
+    @PortedFrom(file = "RAutomaton.h", name = "ApplicableRoles")
     private BitSet applicableRoles = new BitSet();
     /** state from which all the transition starts */
+    @PortedFrom(file = "RAutomaton.h", name = "from")
     private int from;
     /** flag whether the role is data or not (valid only for simple automata) */
+    @PortedFrom(file = "RAutomaton.h", name = "DataRole")
     private boolean dataRole;
+    @Original
     private int size = 0;
     // / true iff there is a top transition going from this state
+    @PortedFrom(file = "RAutomaton.h", name = "TopTransition")
     boolean TopTransition;
 
     /** RW begin */

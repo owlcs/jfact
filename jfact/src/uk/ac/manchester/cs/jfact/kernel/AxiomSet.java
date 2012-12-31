@@ -18,8 +18,10 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tAxiomSet.h", name = "TAxiomSet")
 public class AxiomSet {
     /** host TBox that holds all concepts/etc */
+    @PortedFrom(file = "tAxiomSet.h", name = "Host")
     protected TBox tboxHost;
     /** set of axioms that accumilates incoming (and newly created) axioms; Tg */
+    @PortedFrom(file = "tAxiomSet.h", name = "Accum")
     private List<Axiom> accumulator = new ArrayList<Axiom>();
 
     private interface Abs {
@@ -27,6 +29,7 @@ public class AxiomSet {
     }
 
     /** set of absorption action, in order */
+    @PortedFrom(file = "tAxiomSet.h", name = "ActionVector")
     private List<Abs> actions = new ArrayList<AxiomSet.Abs>();
 
     /** add already built GCI p */

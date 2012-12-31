@@ -12,6 +12,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomIndividual")
 abstract class AxiomIndividual extends AxiomImpl {
+    @PortedFrom(file = "tDLAxiom.h", name = "I")
     private IndividualExpression individualExpression;
 
     protected AxiomIndividual(OWLAxiom ax, IndividualExpression i) {

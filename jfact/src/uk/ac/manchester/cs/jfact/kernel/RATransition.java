@@ -8,14 +8,18 @@ package uk.ac.manchester.cs.jfact.kernel;
 import java.util.*;
 
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "RAutomaton.h", name = "RATransition")
 public class RATransition {
     /** set of roles that may affect the transition */
+    @PortedFrom(file = "RAutomaton.h", name = "label")
     private Set<Role> label;
+    @Original
     BitSet cache = null;
     /** state of the transition */
+    @PortedFrom(file = "RAutomaton.h", name = "state")
     private int state;
 
     /** create a transition to given state */

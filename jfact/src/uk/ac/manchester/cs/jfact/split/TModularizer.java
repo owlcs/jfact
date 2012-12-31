@@ -8,29 +8,39 @@ import java.util.List;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import conformance.Original;
 import conformance.PortedFrom;
 
 /** class to create modules of an ontology wrt module type */
 @PortedFrom(file = "Modularity.h", name = "TModularizer")
 public class TModularizer {
     /** shared signature signature */
+    @PortedFrom(file = "Modularity.h", name = "sig")
     TSignature sig;
     /** internal syntactic locality checker */
+    @PortedFrom(file = "Modularity.h", name = "Checker")
     LocalityChecker Checker;
     /** signature updater */
     // TSignatureUpdater Updater;
     /** module as a list of axioms */
+    @PortedFrom(file = "Modularity.h", name = "Module")
     List<Axiom> Module = new ArrayList<Axiom>();
     /** pointer to a sig index; if not NULL then use optimized algo */
+    @PortedFrom(file = "Modularity.h", name = "sigIndex")
     SigIndex sigIndex = null;
     // / true if no atoms are processed ATM
+    @PortedFrom(file = "Modularity.h", name = "noAtomsProcessing")
     boolean noAtomsProcessing;
     /** queue of unprocessed entities */
+    @PortedFrom(file = "Modularity.h", name = "WorkQueue")
     List<NamedEntity> WorkQueue = new ArrayList<NamedEntity>();
     /** number of locality check calls */
+    @PortedFrom(file = "Modularity.h", name = "nChecks")
     long nChecks;
     /** number of non-local axioms */
+    @PortedFrom(file = "Modularity.h", name = "nNonLocal")
     long nNonLocal;
+    @Original
     private JFactReasonerConfiguration config;
 
     /** update SIG wrt the axiom signature */

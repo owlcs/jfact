@@ -11,13 +11,17 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NumberArg;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectExactCardinality")
 public class ConceptObjectExactCardinality implements ConceptObjectCardinalityExpression,
         NumberArg {
+    @Original
     private ConceptExpression delegate;
+    @PortedFrom(file = "tDLExpression.h", name = "N")
     private int N;
+    @Original
     private ObjectRoleExpression roleDelegate;
 
     public ConceptObjectExactCardinality(int n, ObjectRoleExpression R,

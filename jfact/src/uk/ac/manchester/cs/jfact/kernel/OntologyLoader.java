@@ -29,8 +29,10 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tOntologyLoader.h", name = "TOntologyLoader")
 public class OntologyLoader implements DLAxiomVisitor {
     /** KB to load the ontology */
+    @PortedFrom(file = "tOntologyLoader.h", name = "kb")
     private TBox tbox;
     /** Transforms TDLExpression hierarchy to the DLTree */
+    @PortedFrom(file = "tOntologyLoader.h", name = "ETrans")
     private ExpressionTranslator expressionTranslator;
 
     /** get role by the DLTree; throw exception if unable */

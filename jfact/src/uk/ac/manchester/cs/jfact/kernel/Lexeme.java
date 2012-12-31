@@ -10,9 +10,12 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tLexeme.h", name = "TLexeme")
 public class Lexeme {
     /** Lexeme's Token */
+    @PortedFrom(file = "tLexeme.h", name = "token")
     private Token token;
     /** pointer to information (for names) */
+    @PortedFrom(file = "tLexeme.h", name = "pNE")
     private NamedEntry pName;
+    @PortedFrom(file = "tLexeme.h", name = "data")
     int data;
 
     private Lexeme(Token tok, NamedEntry e, int i) {

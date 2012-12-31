@@ -12,8 +12,10 @@ import conformance.PortedFrom;
 @PortedFrom(file = "SyntacticLocalityChecker.h", name = "TopEquivalenceEvaluator")
 public class TopEquivalenceEvaluator extends SigAccessor implements DLExpressionVisitor {
     /** corresponding bottom evaluator */
+    @PortedFrom(file = "SyntacticLocalityChecker.h", name = "BotEval")
     BotEquivalenceEvaluator BotEval = null;
     /** keep the value here */
+    @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isTopEq")
     boolean isTopEq = false;
 
     /** check whether the expression is top-equivalent */

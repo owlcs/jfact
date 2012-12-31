@@ -14,6 +14,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptNot")
 public class ConceptNot implements ConceptExpression, ConceptArg {
     /** concept argument */
+    @PortedFrom(file = "tDLExpression.h", name = "C")
     private ConceptExpression conceptExpression;
 
     public ConceptNot(ConceptExpression C) {

@@ -15,6 +15,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomInstanceOf")
 public class AxiomInstanceOf extends AxiomIndividual {
+    @PortedFrom(file = "tDLAxiom.h", name = "C")
     private ConceptExpression conceptExpression;
 
     public AxiomInstanceOf(OWLAxiom ax, IndividualExpression i, ConceptExpression c) {

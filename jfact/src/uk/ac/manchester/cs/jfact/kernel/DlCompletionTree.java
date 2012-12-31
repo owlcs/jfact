@@ -18,6 +18,7 @@ import uk.ac.manchester.cs.jfact.helpers.*;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.kernel.state.DLCompletionTreeSaveState;
 import uk.ac.manchester.cs.jfact.kernel.state.SaveList;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "dlCompletionTree.h", name = "DlCompletionTree")
@@ -120,6 +121,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree> {
     private boolean affected = true;
     /** level of a nominal node; 0 means blockable one */
     private int nominalLevel;
+    @Original
     private JFactReasonerConfiguration options;
 
     /** check if B2 holds for given DL vertex with C=V */

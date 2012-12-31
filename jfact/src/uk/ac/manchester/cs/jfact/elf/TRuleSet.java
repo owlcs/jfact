@@ -12,6 +12,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ELFReasoner.h", name = "TRuleSet")
 class TRuleSet {
     /** set of rules to apply on change */
+    @PortedFrom(file = "ELFReasoner.h", name = "Rules")
     List<TELFRule> Rules = new ArrayList<TELFRule>();
 
     /** apply all rules with a single argument */

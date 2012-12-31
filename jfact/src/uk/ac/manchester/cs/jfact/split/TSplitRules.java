@@ -14,6 +14,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.split.TSplitVar.Entry;
+import conformance.Original;
 import conformance.PortedFrom;
 
 /** all split rules: vector of rules with init and access methods */
@@ -107,11 +108,15 @@ public class TSplitRules {
     }
 
     /** all known rules */
+    @PortedFrom(file = "tSplitExpansionRules.h", name = "Base")
     List<TSplitRule> Base = new ArrayList<TSplitRule>();
     /** all entities that appears in all the splits in a set */
+    @PortedFrom(file = "tSplitExpansionRules.h", name = "PossibleSignature")
     Set<NamedEntity> PossibleSignature = new HashSet<NamedEntity>();
     /** map between BP and TNamedEntities */
+    @PortedFrom(file = "tSplitExpansionRules.h", name = "EntityMap")
     List<NamedEntity> EntityMap = new ArrayList<NamedEntity>();
+    @Original
     private JFactReasonerConfiguration config;
 
     public TSplitRules(JFactReasonerConfiguration options) {

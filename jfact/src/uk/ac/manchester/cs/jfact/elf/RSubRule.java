@@ -9,6 +9,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ELFReasoner.h", name = "RSubRule")
 public class RSubRule extends TELFRule {
     /** role to add the pair */
+    @PortedFrom(file = "ELFReasoner.h", name = "S")
     TELFRole S;
 
     /** init c'tor: remember S */

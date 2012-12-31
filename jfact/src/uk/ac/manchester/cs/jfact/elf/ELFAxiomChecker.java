@@ -1,7 +1,5 @@
 package uk.ac.manchester.cs.jfact.elf;
 
-import java.util.*;
-
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
@@ -12,7 +10,9 @@ import conformance.PortedFrom;
 // XXX verify unused parameters
 @PortedFrom(file = "ELFAxiomChecker.h", name = "ELFAxiomChecker")
 public class ELFAxiomChecker extends DLAxiomVisitorAdapter {
+    @PortedFrom(file = "ELFAxiomChecker.h", name = "eCh")
     ELFExpressionChecker eCh = new ELFExpressionChecker();
+    @PortedFrom(file = "ELFAxiomChecker.h", name = "value")
     boolean value;
 
     @PortedFrom(file = "ELFAxiomChecker.h", name = "v")

@@ -7,8 +7,10 @@ import conformance.PortedFrom;
 @PortedFrom(file = "QR.h", name = "QRConceptAtom")
 class QRConceptAtom extends QRAtom {
     /** pointer to a concept (named one atm) */
+    @PortedFrom(file = "QR.h", name = "Concept")
     ConceptExpression Concept;
     /** argument */
+    @PortedFrom(file = "QR.h", name = "Arg")
     QRiObject Arg;
 
     /** init c'tor */

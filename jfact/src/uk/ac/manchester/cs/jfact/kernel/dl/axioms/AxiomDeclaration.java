@@ -14,6 +14,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDeclaration")
 public class AxiomDeclaration extends AxiomImpl {
+    @PortedFrom(file = "tDLAxiom.h", name = "D")
     private Expression expression;
 
     public AxiomDeclaration(OWLAxiom ax, Expression d) {

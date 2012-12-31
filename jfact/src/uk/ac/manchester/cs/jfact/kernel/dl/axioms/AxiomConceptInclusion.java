@@ -14,7 +14,9 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomConceptInclusion")
 public class AxiomConceptInclusion extends AxiomImpl {
+    @PortedFrom(file = "tDLAxiom.h", name = "Sub")
     private ConceptExpression subConcept;
+    @PortedFrom(file = "tDLAxiom.h", name = "Sup")
     private ConceptExpression superConcept;
 
     public AxiomConceptInclusion(OWLAxiom ax, ConceptExpression sub, ConceptExpression sup) {

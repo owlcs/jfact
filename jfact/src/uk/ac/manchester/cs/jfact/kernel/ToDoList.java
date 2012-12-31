@@ -20,9 +20,13 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "ToDoList.h", name = "ToDoList")
 public class ToDoList {
+    @Original
     static int limit = 500;
+    @Original
     protected TODOListSaveState[] states = new TODOListSaveState[limit];
+    @Original
     protected int nextState = 0;
+    @Original
     volatile boolean change = true;
 
     /** the entry of Todo table */
@@ -241,6 +245,7 @@ public class ToDoList {
         /** save state of all regular queues */
         protected int[][] backup = new int[nRegularOptions][2];
         /** save number-of-entries to do */
+        @PortedFrom(file = "ToDoList.h", name = "noe")
         protected int noe;
 
         TODOListSaveState() {}
@@ -317,16 +322,22 @@ public class ToDoList {
     }
 
     /** waiting ops queue for IDs */
+    @PortedFrom(file = "ToDoList.h", name = "queueID")
     private ArrayQueue queueID = new ArrayQueue();
     /** waiting ops queue for <= ops in nominal nodes */
+    @PortedFrom(file = "ToDoList.h", name = "queueNN")
     private QueueQueue queueNN = new QueueQueue();
     /** waiting ops queues */
+    @PortedFrom(file = "ToDoList.h", name = "Wait")
     private List<ArrayQueue> waitQueue = new ArrayList<ArrayQueue>(nRegularOptions);
     /** stack of saved states */
+    @PortedFrom(file = "ToDoList.h", name = "SaveStack")
     private SaveStack<TODOListSaveState> saveStack = new SaveStack<TODOListSaveState>();
     /** priority matrix */
+    @PortedFrom(file = "ToDoList.h", name = "Matrix")
     private ToDoPriorMatrix matrix = new ToDoPriorMatrix();
     /** number of un-processed entries */
+    @PortedFrom(file = "ToDoList.h", name = "noe")
     private int noe;
 
     /** save current Todo table content to given saveState entry */

@@ -12,6 +12,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "modelCacheInterface.h", name = "modelCacheInterface")
 public abstract class ModelCacheInterface {
     /** flag to show that model contains nominals */
+    @PortedFrom(file = "modelCacheInterface.h", name = "hasNominalNode")
     private boolean hasNominalNode;
 
     /** Create cache model with given precense of nominals */

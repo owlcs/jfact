@@ -10,8 +10,10 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ELFReasoner.h", name = "TELFConcept")
 class TELFConcept extends TRuleSet {
     /** original concept (if any) */
+    @PortedFrom(file = "ELFReasoner.h", name = "Origin")
     ConceptExpression Origin;
     /** set of supers (built during classification) */
+    @PortedFrom(file = "ELFReasoner.h", name = "Supers")
     Set<TELFConcept> Supers = new HashSet<TELFConcept>();
 
     /** add C to supers */

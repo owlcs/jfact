@@ -7,6 +7,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "QR.h", name = "QRIndividual")
 class QRIndividual extends QRiObject {
     /** original individual from Expression Manager */
+    @PortedFrom(file = "QR.h", name = "Ind")
     IndividualName Ind;
 
     /** init c'tor */

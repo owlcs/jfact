@@ -11,6 +11,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tSignatureUpdater.h", name = "TExpressionSignatureUpdater")
 class TExpressionSignatureUpdater implements DLExpressionVisitor {
     /** Signature to be filled */
+    @PortedFrom(file = "tSignatureUpdater.h", name = "sig")
     TSignature sig;
 
     /** helper for concept arguments */

@@ -56,6 +56,7 @@ public class DepSet {
         return new DepSet(delegate);
     }
 
+    @Original
     private FastSetSimple delegate = null;
 
     protected DepSet() {}

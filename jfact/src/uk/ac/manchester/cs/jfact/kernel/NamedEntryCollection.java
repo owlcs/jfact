@@ -12,6 +12,7 @@ import org.semanticweb.owlapi.reasoner.FreshEntityPolicy;
 
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import conformance.Original;
 
 /** class for collect TNamedEntry'es together. Template parameter should be
  * inherited from TNamedEntry. Implemented as vector of T*, with Base[i].getId()
@@ -25,6 +26,7 @@ public class NamedEntryCollection<T extends NamedEntry> {
     private String typeName;
     /** flag to lock the nameset (ie, prohibit to add new names there) */
     private boolean locked;
+    @Original
     private JFactReasonerConfiguration options;
 
     /** abstract method for additional tuning of newly created element */

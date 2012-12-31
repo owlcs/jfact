@@ -13,14 +13,18 @@ import conformance.PortedFrom;
 @PortedFrom(file = "taxNamEntry.h", name = "ClassifiableEntry")
 public class ClassifiableEntry extends NamedEntry {
     /** link to taxonomy entry for current entry */
+    @PortedFrom(file = "taxNamEntry.h", name = "taxVertex")
     protected TaxonomyVertex taxVertex = null;
     /** links to 'told subsumers' (entries that are direct super-entries for
      * current) */
+    @PortedFrom(file = "taxNamEntry.h", name = "toldSubsumers")
     protected Set<ClassifiableEntry> toldSubsumers = new LinkedHashSet<ClassifiableEntry>();
     /** pointer to synonym (entry which contains whole information the same as
      * current) */
+    @PortedFrom(file = "taxNamEntry.h", name = "pSynonym")
     protected ClassifiableEntry pSynonym;
     /** index as a vertex in the SubsumptionMap */
+    @PortedFrom(file = "taxNamEntry.h", name = "Index")
     protected int index;
 
     protected ClassifiableEntry(String name) {

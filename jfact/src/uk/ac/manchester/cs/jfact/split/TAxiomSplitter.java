@@ -44,16 +44,27 @@ public class TAxiomSplitter {
         }
     }
 
+    @PortedFrom(file = "AxiomSplitter.h", name = "SubNames")
     protected Set<ConceptName> SubNames = new HashSet<ConceptName>();
+    @PortedFrom(file = "AxiomSplitter.h", name = "Rejects")
     protected Set<ConceptName> Rejects = new HashSet<ConceptName>();
-    protected List<TRecord> Renames = new ArrayList<TRecord>(),
-            R2 = new ArrayList<TRecord>();
+    @PortedFrom(file = "AxiomSplitter.h", name = "Renames")
+    protected List<TRecord> Renames = new ArrayList<TRecord>();
+    @PortedFrom(file = "AxiomSplitter.h", name = "R2")
+    protected List<TRecord> R2 = new ArrayList<TRecord>();
+    @PortedFrom(file = "AxiomSplitter.h", name = "ImpRens")
     protected Map<ConceptName, TRecord> ImpRens = new HashMap<ConceptName, TRecord>();
+    @PortedFrom(file = "AxiomSplitter.h", name = "ImplNames")
     protected Map<ConceptName, Set<AxiomConceptInclusion>> ImplNames = new HashMap<ConceptName, Set<AxiomConceptInclusion>>();
+    @PortedFrom(file = "AxiomSplitter.h", name = "newNameId")
     private int newNameId;
+    @PortedFrom(file = "AxiomSplitter.h", name = "sig")
     protected TSignature sig = new TSignature(); // seed signature
+    @PortedFrom(file = "AxiomSplitter.h", name = "mod")
     protected TModularizer mod = null;
+    @PortedFrom(file = "AxiomSplitter.h", name = "RejSplits")
     protected Set<TSplitVar> RejSplits = new HashSet<TSplitVar>();
+    @PortedFrom(file = "AxiomSplitter.h", name = "O")
     protected Ontology O;
 
     /** rename old concept into a new one with a fresh name */

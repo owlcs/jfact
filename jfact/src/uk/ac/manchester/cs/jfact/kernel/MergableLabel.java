@@ -10,6 +10,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "mergableLabel.h", name = "mergableLabel")
 public class MergableLabel {
     /** sample for all equivalent labels */
+    @PortedFrom(file = "mergableLabel.h", name = "pSample")
     private MergableLabel pSample;
 
     public MergableLabel() {

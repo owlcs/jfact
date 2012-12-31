@@ -3,7 +3,6 @@ package uk.ac.manchester.cs.jfact.elf;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import conformance.PortedFrom;
@@ -12,8 +11,10 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ELFReasoner.h", name = "TELFRole")
 class TELFRole extends TRuleSet {
     /** original role (if any) */
+    @PortedFrom(file = "ELFReasoner.h", name = "Origin")
     ObjectRoleExpression Origin;
     /** map itself */
+    @PortedFrom(file = "ELFReasoner.h", name = "PredMap")
     Map<TELFConcept, Set<TELFConcept>> PredMap = new HashMap<TELFConcept, Set<TELFConcept>>();
 
     /** add (C,D) to label */

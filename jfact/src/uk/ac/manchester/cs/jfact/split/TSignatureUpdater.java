@@ -13,6 +13,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tSignatureUpdater.h", name = "TSignatureUpdater")
 public class TSignatureUpdater implements DLAxiomVisitor {
     /** helper with expressions */
+    @PortedFrom(file = "tSignatureUpdater.h", name = "Updater")
     TExpressionSignatureUpdater Updater;
 
     /** helper for the expression processing */

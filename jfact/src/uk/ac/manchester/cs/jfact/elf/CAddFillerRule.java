@@ -12,8 +12,10 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ELFReasoner.h", name = "CAddFillerRule")
 public class CAddFillerRule extends TELFRule {
     /** role to add the pair */
+    @PortedFrom(file = "ELFReasoner.h", name = "R")
     TELFRole R;
     /** super (E) of the existential */
+    @PortedFrom(file = "ELFReasoner.h", name = "Sup")
     TELFConcept Sup;
 
     /** init c'tor: remember E */

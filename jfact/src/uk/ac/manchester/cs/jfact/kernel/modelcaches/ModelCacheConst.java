@@ -14,6 +14,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "modelCacheConst.h", name = "modelCacheConst")
 public class ModelCacheConst extends ModelCacheInterface {
     /** the itself */
+    @PortedFrom(file = "modelCacheConst.h", name = "isTop")
     private boolean isTop;
 
     /** c'tor: no nominals can be here */

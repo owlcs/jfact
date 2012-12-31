@@ -28,8 +28,10 @@ public class CGLabel {
     }
 
     /** all simple concepts, labelled a node */
+    @PortedFrom(file = "CGLabel.h", name = "scLabel")
     private CWDArray scLabel;
     /** all complex concepts (ie, FORALL, GE), labelled a node */
+    @PortedFrom(file = "CGLabel.h", name = "ccLabel")
     private CWDArray ccLabel;
     @Original
     private int id;
@@ -95,6 +97,7 @@ public class CGLabel {
         return id;
     }
 
+    @Original
     private Set<CGLabel> lesserEquals = Collections
             .newSetFromMap(new IdentityHashMap<CGLabel, Boolean>());
 

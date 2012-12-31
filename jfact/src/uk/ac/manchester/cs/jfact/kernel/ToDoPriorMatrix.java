@@ -8,21 +8,30 @@ import conformance.PortedFrom;
 @PortedFrom(file = "PriorityMatrix.h", name = "ToDoPriorMatrix")
 class ToDoPriorMatrix {
     // regular operation indexes
+    @PortedFrom(file = "PriorityMatrix.h", name = "iAnd")
     private int indexAnd;
+    @PortedFrom(file = "PriorityMatrix.h", name = "iOr")
     private int indexOr;
+    @PortedFrom(file = "PriorityMatrix.h", name = "iExists")
     private int indexExists;
+    @PortedFrom(file = "PriorityMatrix.h", name = "iForAll")
     private int indexForall;
+    @PortedFrom(file = "PriorityMatrix.h", name = "iLE")
     private int indexLE;
+    @PortedFrom(file = "PriorityMatrix.h", name = "iGE")
     private int indexGE;
 
     public ToDoPriorMatrix() {}
 
     /** number of regular options (o- and NN-rules are not included) */
+    @PortedFrom(file = "PriorityMatrix.h", name = "nRegularOps")
     protected static final int nRegularOptions = 7;
     /** priority index for o- and ID operations (note that these ops have the
      * highest priority) */
+    @PortedFrom(file = "PriorityMatrix.h", name = "iId")
     protected static final int priorityIndexID = nRegularOptions + 1;
     /** priority index for <= operation in nominal node */
+    @PortedFrom(file = "PriorityMatrix.h", name = "iNN")
     protected static final int priorityIndexNominalNode = nRegularOptions + 2;
 
     /** Auxiliary class to get priorities on operations */

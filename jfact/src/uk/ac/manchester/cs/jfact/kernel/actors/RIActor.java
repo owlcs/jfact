@@ -16,6 +16,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "Kernel.cpp", name = "RIActor")
 public class RIActor implements Actor {
+    @PortedFrom(file = "Kernel.cpp", name = "acc")
     private List<Individual> acc = new ArrayList<Individual>();
 
     @PortedFrom(file = "Kernel.cpp", name = "tryEntry")

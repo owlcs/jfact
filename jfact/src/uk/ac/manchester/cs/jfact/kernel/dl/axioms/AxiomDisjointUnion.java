@@ -18,6 +18,7 @@ import conformance.PortedFrom;
 /** Disjoint Union axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDisjointUnion")
 public class AxiomDisjointUnion extends AbstractNaryAxiom<ConceptExpression> {
+    @PortedFrom(file = "tDLAxiom.h", name = "C")
     private ConceptExpression conceptExpression;
 
     public AxiomDisjointUnion(OWLAxiom ax, ConceptExpression c, Collection<Expression> v) {

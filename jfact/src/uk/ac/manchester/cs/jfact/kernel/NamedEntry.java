@@ -12,9 +12,12 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tNamedEntry.h", name = "TNamedEntry")
 public abstract class NamedEntry {
     /** name of the entry */
+    @PortedFrom(file = "tNamedEntry.h", name = "extName")
     protected String extName;
     /** entry identifier */
+    @PortedFrom(file = "tNamedEntry.h", name = "extId")
     protected int extId;
+    @PortedFrom(file = "tNamedEntry.h", name = "entity")
     protected NamedEntity entity = null;
 
     // protected BitSet bits = new BitSet();
@@ -74,6 +77,7 @@ public abstract class NamedEntry {
                 + top;
     }
 
+    @Original
     private boolean system;
 
     /** a System flag */
@@ -87,6 +91,7 @@ public abstract class NamedEntry {
         system = true;
     }
 
+    @Original
     private boolean top = false;
 
     // hierarchy interface
@@ -101,6 +106,7 @@ public abstract class NamedEntry {
         top = true;
     }
 
+    @Original
     private boolean bottom;
 
     /** a Bottom-of-the-hierarchy flag */

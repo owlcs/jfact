@@ -19,6 +19,7 @@ import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "RoleMaster.h", name = "RoleMaster")
@@ -31,24 +32,35 @@ public class RoleMaster {
     }
 
     /** number of the last registered role */
+    @PortedFrom(file = "RoleMaster.h", name = "newRoleId")
     private int newRoleId;
     /** all registered roles */
+    @PortedFrom(file = "RoleMaster.h", name = "Roles")
     private List<Role> roles = new ArrayList<Role>();
     /** internal empty role (bottom in the taxonomy) */
+    @PortedFrom(file = "RoleMaster.h", name = "emptyRole")
     private Role emptyRole;
     /** internal universal role (top in the taxonomy) */
+    @PortedFrom(file = "RoleMaster.h", name = "universalRole")
     private Role universalRole;
     /** roles nameset */
+    @PortedFrom(file = "RoleMaster.h", name = "roleNS")
     private NameSet<Role> roleNS;
     /** Taxonomy of roles */
+    @PortedFrom(file = "RoleMaster.h", name = "pTax")
     private Taxonomy pTax;
     /** two halves of disjoint roles axioms */
+    @PortedFrom(file = "RoleMaster.h", name = "DJRolesA")
     private List<Role> disjointRolesA = new ArrayList<Role>();
+    @PortedFrom(file = "RoleMaster.h", name = "DJRolesB")
     private List<Role> disjointRolesB = new ArrayList<Role>();
     /** flag whether to create data roles or not */
+    @PortedFrom(file = "RoleMaster.h", name = "DataRoles")
     private boolean dataRoles;
     /** flag if it is possible to introduce new names */
+    @PortedFrom(file = "RoleMaster.h", name = "useUndefinedNames")
     private boolean useUndefinedNames;
+    @Original
     private static int firstRoleIndex = 2;
 
     /** TRole and it's inverse in RoleBox */

@@ -14,6 +14,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectSelf")
 public class ConceptObjectSelf implements ConceptObjectRoleExpression {
     /** object role argument */
+    @PortedFrom(file = "tDLExpression.h", name = "OR")
     private ObjectRoleExpression objectRoleExpression;
 
     public ConceptObjectSelf(ObjectRoleExpression R) {

@@ -75,22 +75,31 @@ public class Concept extends ClassifiableEntry {
     }
 
     /** label to use in relevant-only checks */
+    @PortedFrom(file = "tConcept.h", name = "rel")
     private long rel;
     /** classification type of concept: completely defined (true- or like-), no
      * TS, other */
+    @PortedFrom(file = "tConcept.h", name = "classTag")
     private CTTag classTag;
     /** depth of the concept wrt told subsumers */
+    @PortedFrom(file = "tConcept.h", name = "tsDepth")
     private int tsDepth;
     /** pointer to the entry in DAG with concept name */
+    @PortedFrom(file = "tConcept.h", name = "pName")
     private int pName;
     /** pointer to the entry in DAG with concept definition */
+    @PortedFrom(file = "tConcept.h", name = "pBody")
     private int pBody;
     /** features for C */
+    @PortedFrom(file = "tConcept.h", name = "posFeatures")
     private LogicFeatures posFeatures = new LogicFeatures();
     /** features for ~C */
+    @PortedFrom(file = "tConcept.h", name = "negFeatures")
     private LogicFeatures negFeatures = new LogicFeatures();
     /** all extra rules for a given concept */
+    @PortedFrom(file = "tConcept.h", name = "erSet")
     private FastSet extraRules = FastSetFactory.create();
+    @PortedFrom(file = "tConcept.h", name = "Description")
     protected DLTree description;
 
     /** adds concept as a told subsumer of current one; @return value for CDC
@@ -326,6 +335,7 @@ public class Concept extends ClassifiableEntry {
         return CTTag.cttTrueCompletelyDefined;
     }
 
+    @Original
     private static EnumSet<Token> replacements = EnumSet.of(CNAME, INAME, RNAME, DNAME);
 
     @Original
@@ -505,6 +515,7 @@ public class Concept extends ClassifiableEntry {
     }
 
     @Original
+    @PortedFrom(file = "tConcept.h", name = "classTag")
     private void setClassTag(CTTag classTag) {
         this.classTag = classTag;
     }

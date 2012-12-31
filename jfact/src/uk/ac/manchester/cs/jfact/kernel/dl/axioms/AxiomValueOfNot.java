@@ -16,7 +16,9 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomValueOfNot")
 public class AxiomValueOfNot extends AxiomIndividual {
+    @PortedFrom(file = "tDLAxiom.h", name = "A")
     private DataRoleExpression dataRoleExpression;
+    @PortedFrom(file = "tDLAxiom.h", name = "V")
     private Literal<?> value;
 
     public AxiomValueOfNot(OWLAxiom ax, IndividualExpression i, DataRoleExpression a,

@@ -11,12 +11,16 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleArg;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptDataExists")
 public class ConceptDataExists implements ConceptDataRVExpression, DataRoleArg {
     /** data role argument */
+    @PortedFrom(file = "tDLExpression.h", name = "DR")
+    @Original
     private DataRoleExpression dataRoleExpression;
+    @Original
     private DataExpression delegate;
 
     public ConceptDataExists(DataRoleExpression R, DataExpression E) {

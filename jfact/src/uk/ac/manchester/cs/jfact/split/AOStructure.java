@@ -13,6 +13,7 @@ public class AOStructure {
     /** vector of atoms as a type */
     // typedef std::vector<TOntologyAtom*> AtomVec;
     /** all the atoms */
+    @PortedFrom(file = "AtomicDecomposer.h", name = "Atoms")
     List<TOntologyAtom> Atoms = new ArrayList<TOntologyAtom>();
 
     /** create a new atom and get a pointer to it */

@@ -10,6 +10,7 @@ import conformance.PortedFrom;
 // ---------------------------------------------------------
 @PortedFrom(file = "QR.h", name = "VariableFactory")
 class VariableFactory {
+    @PortedFrom(file = "QR.h", name = "Base")
     List<QRVariable> Base = new ArrayList<QRVariable>();
 
     /** get fresh variable */

@@ -6,8 +6,11 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "CWDArray.cpp", name = "UnMerge")
 class UnMerge extends Restorer {
+    @PortedFrom(file = "CWDArray.cpp", name = "label")
     private CWDArray label;
+    @PortedFrom(file = "CWDArray.cpp", name = "offset")
     private int offset;
+    @PortedFrom(file = "CWDArray.cpp", name = "dep")
     private FastSetSimple dep;
 
     UnMerge(CWDArray lab, ConceptWDep p, int offset) {

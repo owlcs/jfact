@@ -8,8 +8,10 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ELFReasoner.h", name = "RChainRRule")
 public class RChainRRule extends TELFRule {
     /** role to check the chain */
+    @PortedFrom(file = "ELFReasoner.h", name = "R")
     TELFRole R;
     /** role to add the pair */
+    @PortedFrom(file = "ELFReasoner.h", name = "T")
     TELFRole T;
 
     /** init c'tor: remember R and T */

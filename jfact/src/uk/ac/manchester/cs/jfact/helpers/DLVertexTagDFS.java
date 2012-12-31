@@ -6,24 +6,34 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "dlVertex.h", name = "DLVertexTagDFS")
 class DLVertexTagDFS {
+    @PortedFrom(file = "dlVertex.h", name = "Op")
     protected DagTag op; // 17 types
     /** aux field for DFS in presence of cycles */
+    @PortedFrom(file = "dlVertex.h", name = "VisitedPos")
     protected boolean visitedPos = false;
     /** aux field for DFS in presence of cycles */
+    @PortedFrom(file = "dlVertex.h", name = "ProcessedPos")
     protected boolean processedPos = false;
     /** true iff node is involved in cycle */
+    @PortedFrom(file = "dlVertex.h", name = "inCyclePos")
     protected boolean inCyclePos = false;
     /** aux field for DFS in presence of cycles */
+    @PortedFrom(file = "dlVertex.h", name = "VisitedNeg")
     protected boolean visitedNeg = false;
     /** aux field for DFS in presence of cycles */
+    @PortedFrom(file = "dlVertex.h", name = "ProcessedNeg")
     protected boolean processedNeg = false;
     /** true iff node is involved in cycle */
+    @PortedFrom(file = "dlVertex.h", name = "inCycleNeg")
     protected boolean inCycleNeg = false;
     /** cache for the positive entry */
+    @PortedFrom(file = "dlVertex.h", name = "pCache")
     protected ModelCacheInterface pCache = null;
     /** cache for the negative entry */
+    @PortedFrom(file = "dlVertex.h", name = "nCache")
     protected ModelCacheInterface nCache = null;
 
+    @PortedFrom(file = "dlVertex.h", name = "Op")
     protected DLVertexTagDFS(DagTag op) {
         this.op = op;
     }

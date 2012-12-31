@@ -9,10 +9,13 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ELFReasoner.h", name = "ELFAction")
 class ELFAction {
     /** role R corresponded to R(C,D) */
+    @PortedFrom(file = "ELFReasoner.h", name = "R")
     TELFRole R = null;
     /** concept C; to add */
+    @PortedFrom(file = "ELFReasoner.h", name = "C")
     TELFConcept C = null;
     /** concept D; to add */
+    @PortedFrom(file = "ELFReasoner.h", name = "D")
     TELFConcept D = null;
 
     /** init c'tor for C action */

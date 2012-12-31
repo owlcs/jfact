@@ -6,8 +6,10 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ProgressIndicatorInterface.h", name = "ProgressIndicatorInterface")
 abstract class ProgressIndicatorInterface {
     /** limit of the progress: indicate [0..uLimit] */
+    @PortedFrom(file = "ProgressIndicatorInterface.h", name = "uLimit")
     long uLimit;
     /** current value of an indicator */
+    @PortedFrom(file = "ProgressIndicatorInterface.h", name = "uCurrent")
     long uCurrent;
 
     /** initial exposure method: can be overriden in derived classes */

@@ -12,8 +12,10 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ELFReasoner.h", name = "RChainLRule")
 public class RChainLRule extends TELFRule {
     /** role to check the chain */
+    @PortedFrom(file = "ELFReasoner.h", name = "S")
     TELFRole S;
     /** role to add the pair */
+    @PortedFrom(file = "ELFReasoner.h", name = "T")
     TELFRole T;
 
     /** init c'tor: remember S and T */

@@ -15,10 +15,13 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tSignature.h", name = "TSignature")
 public class TSignature {
     /** set to keep all the elements in signature */
+    @PortedFrom(file = "tSignature.h", name = "Set")
     private Set<NamedEntity> set = new HashSet<NamedEntity>();
     /** true if concept TOP-locality; false if concept BOTTOM-locality */
+    @PortedFrom(file = "tSignature.h", name = "topCLocality")
     private boolean topCLocality = false;
     /** true if role TOP-locality; false if role BOTTOM-locality */
+    @PortedFrom(file = "tSignature.h", name = "topRLocality")
     private boolean topRLocality = false;
 
     public TSignature() {}

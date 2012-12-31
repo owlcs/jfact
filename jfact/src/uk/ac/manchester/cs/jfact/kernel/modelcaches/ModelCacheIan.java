@@ -13,33 +13,47 @@ import java.util.List;
 
 import uk.ac.manchester.cs.jfact.helpers.*;
 import uk.ac.manchester.cs.jfact.kernel.*;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "modelCacheIan.h", name = "modelCacheIan")
 public class ModelCacheIan extends ModelCacheInterface {
     // sets for the cache
     /** named concepts that appears positively det-lly in a root node of a cache */
+    @PortedFrom(file = "modelCacheIan.h", name = "posDConcepts")
     public BitSet posDConcepts = new BitSet();
     /** named concepts that appears positively non-det in a root node of a cache */
+    @PortedFrom(file = "modelCacheIan.h", name = "posNConcepts")
     public BitSet posNConcepts = new BitSet();
     /** named concepts that appears negatively det-lly in a root node of a cache */
+    @PortedFrom(file = "modelCacheIan.h", name = "negDConcepts")
     public BitSet negDConcepts = new BitSet();
     /** named concepts that appears negatively non-det in a root node of a cache */
+    @PortedFrom(file = "modelCacheIan.h", name = "negNConcepts")
     public BitSet negNConcepts = new BitSet();
     /** extra det-lly concepts that are (partial) Simple Rule applications */
+    @PortedFrom(file = "modelCacheIan.h", name = "extraDConcepts")
     public FastSet extraDConcepts = FastSetFactory.create();
     /** extra non-det concepts that are (partial) Simple Rule applications */
+    @PortedFrom(file = "modelCacheIan.h", name = "extraNConcepts")
     public FastSet extraNConcepts = FastSetFactory.create();
     /** role names that are labels of the outgoing edges from the root node */
+    @PortedFrom(file = "modelCacheIan.h", name = "existsRoles")
     public FastSet existsRoles = FastSetFactory.create();
     /** role names that appears in the \A restrictions in the root node */
+    @PortedFrom(file = "modelCacheIan.h", name = "forallRoles")
     public FastSet forallRoles = FastSetFactory.create();
     /** role names that appears in the atmost restrictions in the root node */
+    @PortedFrom(file = "modelCacheIan.h", name = "funcRoles")
     public FastSet funcRoles = FastSetFactory.create();
     /** current state of cache model; recalculates on every change */
+    @PortedFrom(file = "modelCacheIan.h", name = "curState")
     public ModelCacheState curState;
+    // XXX these two fields should be used somehow
     public int nC;
     public int nR;
+    // XXX move to config
+    @Original
     private boolean simpleRules;
 
     /** process CT label in given interval; set Deterministic accordingly */

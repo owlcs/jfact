@@ -17,6 +17,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "LogicFeature.h", name = "LogicFeatures")
 public class LogicFeatures {
     /** all flags in one long */
+    @PortedFrom(file = "LogicFeature.h", name = "flags")
     private BitSet flags = new BitSet();
 
     /** set any flag */
@@ -198,23 +199,38 @@ public class LogicFeatures {
 
     // private static int lfInvalid = 0;
     // role description
+    @PortedFrom(file = "LogicFeature.h", name = "lfTransitiveRoles")
     private static int lfTransitiveRoles = 1;
+    @PortedFrom(file = "LogicFeature.h", name = "lfRolesSubsumption")
     private static int lfRolesSubsumption = 2;
+    @PortedFrom(file = "LogicFeature.h", name = "lfDirectRoles")
     private static int lfDirectRoles = 3;
+    @PortedFrom(file = "LogicFeature.h", name = "lfInverseRoles")
     private static int lfInverseRoles = 4;
+    @PortedFrom(file = "LogicFeature.h", name = "lfRangeAndDomain")
     private static int lfRangeAndDomain = 5;
+    @PortedFrom(file = "LogicFeature.h", name = "lfFunctionalRoles")
     private static int lfFunctionalRoles = 6;
     // concept description
+    @PortedFrom(file = "LogicFeature.h", name = "lfSomeConstructor")
     private static int lfSomeConstructor = 7;
+    @PortedFrom(file = "LogicFeature.h", name = "lfFConstructor")
     private static int lfFConstructor = 8;
+    @PortedFrom(file = "LogicFeature.h", name = "lfNConstructor")
     private static int lfNConstructor = 9;
+    @PortedFrom(file = "LogicFeature.h", name = "lfQConstructor")
     private static int lfQConstructor = 10;
+    @PortedFrom(file = "LogicFeature.h", name = "lfSingleton")
     private static int lfSingleton = 11;
     // global description
+    @PortedFrom(file = "LogicFeature.h", name = "lfGeneralAxioms")
     private static int lfGeneralAxioms = 12;
+    @PortedFrom(file = "LogicFeature.h", name = "lfBothRoles")
     private static int lfBothRoles = 13;
     // new constructions
+    @PortedFrom(file = "LogicFeature.h", name = "lfSelfRef")
     private static int lfSelfRef = 14;
+    @PortedFrom(file = "LogicFeature.h", name = "lfTopRole")
     private static int lfTopRole = 15;
     // private int value;
     //

@@ -13,35 +13,50 @@ import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.actors.Actor;
 import uk.ac.manchester.cs.jfact.kernel.actors.SupConceptActor;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "Taxonomy.h", name = "Taxonomy")
 public class Taxonomy {
     /** array of taxonomy verteces */
+    @PortedFrom(file = "Taxonomy.h", name = "Graph")
     private List<TaxonomyVertex> graph = new ArrayList<TaxonomyVertex>();
+    @PortedFrom(file = "Taxonomy.h", name = "Syns")
     List<ClassifiableEntry> Syns = new ArrayList<ClassifiableEntry>();
     /** aux. vertex to be included to taxonomy */
+    @PortedFrom(file = "Taxonomy.h", name = "Current")
     protected TaxonomyVertex current;
     /** vertex with parent Top and child Bot, represents the fresh entity */
+    @PortedFrom(file = "Taxonomy.h", name = "FreshNode")
     TaxonomyVertex FreshNode = new TaxonomyVertex();
     /** pointer to currently classified entry */
+    @PortedFrom(file = "Taxonomy.h", name = "curEntry")
     protected ClassifiableEntry curEntry;
     /** number of tested entryes */
+    @PortedFrom(file = "Taxonomy.h", name = "nEntries")
     protected int nEntries;
     /** number of completely-defined entries */
+    @PortedFrom(file = "Taxonomy.h", name = "nCDEntries")
     protected long nCDEntries;
     /** optimisation flag: if entry is completely defined by it's told subsumers,
      * no other classification required */
+    @PortedFrom(file = "Taxonomy.h", name = "useCompletelyDefined")
     protected boolean useCompletelyDefined;
     /** behaviour flag: if true, insert temporary vertex into taxonomy */
+    @PortedFrom(file = "Taxonomy.h", name = "willInsertIntoTaxonomy")
     protected boolean willInsertIntoTaxonomy;
     /** stack for Taxonomy creation */
+    @PortedFrom(file = "Taxonomy.h", name = "waitStack")
     private LinkedList<ClassifiableEntry> waitStack = new LinkedList<ClassifiableEntry>();
     /** told subsumers corresponding to a given entry */
+    @PortedFrom(file = "Taxonomy.h", name = "ksStack")
     protected LinkedList<KnownSubsumers> ksStack = new LinkedList<KnownSubsumers>();
     /** labellers for marking taxonomy */
+    @PortedFrom(file = "Taxonomy.h", name = "checkLabel")
     protected long checkLabel = 1;
+    @PortedFrom(file = "Taxonomy.h", name = "valueLabel")
     protected long valueLabel = 1;
+    @Original
     private JFactReasonerConfiguration options;
 
     /** apply ACTOR to subgraph starting from NODE as defined by flags; this

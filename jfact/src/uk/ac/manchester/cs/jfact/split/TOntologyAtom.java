@@ -6,10 +6,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
+import conformance.Original;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "tOntologyAtom.h", name = "TOntologyAtom")
 public class TOntologyAtom {
+    @Original
     static Comparator<TOntologyAtom> comparator = new Comparator<TOntologyAtom>() {
         @Override
         public int compare(TOntologyAtom arg0, TOntologyAtom arg1) {
@@ -17,14 +19,19 @@ public class TOntologyAtom {
         }
     };
     /** set of axioms in the atom */
+    @PortedFrom(file = "tOntologyAtom.h", name = "AtomAxioms")
     Set<Axiom> AtomAxioms = new HashSet<Axiom>();
     /** set of axioms in the module (Atom's ideal) */
+    @PortedFrom(file = "tOntologyAtom.h", name = "ModuleAxioms")
     Set<Axiom> ModuleAxioms = new HashSet<Axiom>();
     /** set of atoms current one depends on */
+    @PortedFrom(file = "tOntologyAtom.h", name = "DepAtoms")
     Set<TOntologyAtom> DepAtoms = new HashSet<TOntologyAtom>();
     /** set of all atoms current one depends on */
+    @PortedFrom(file = "tOntologyAtom.h", name = "AllDepAtoms")
     Set<TOntologyAtom> AllDepAtoms = new HashSet<TOntologyAtom>();
     /** unique atom's identifier */
+    @PortedFrom(file = "tOntologyAtom.h", name = "Id")
     int Id = 0;
 
     /** remove all atoms in AllDepAtoms from DepAtoms */

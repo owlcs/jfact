@@ -12,6 +12,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "LocalityChecker.h", name = "SigAccessor")
 public class SigAccessor extends DLExpressionVisitorAdapter {
     /** signature of a module */
+    @PortedFrom(file = "LocalityChecker.h", name = "sig")
     TSignature sig;
 
     @Original

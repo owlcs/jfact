@@ -53,49 +53,72 @@ public class Role extends ClassifiableEntry {
     }
 
     /** role that are inverse of given one */
+    @PortedFrom(file = "tRole.h", name = "Inverse")
     private Role inverse;
     /** Domain of role as a concept description; default null */
+    @PortedFrom(file = "tRole.h", name = "pDomain")
     private DLTree pDomain;
     /** Domain of role as a concept description; default NULL */
+    @PortedFrom(file = "tRole.h", name = "pSpecialDomain")
     private DLTree pSpecialDomain;
     /** domain in the form AR.Range for the complex roles */
+    @PortedFrom(file = "tRole.h", name = "bpSpecialDomain")
     private int bpSpecialDomain;
     /** Domain of role as a pointer to DAG entry */
+    @PortedFrom(file = "tRole.h", name = "bpDomain")
     private int bpDomain;
     /** pointer to role's functional definition DAG entry (or just TOP) */
+    @PortedFrom(file = "tRole.h", name = "Functional")
     private int functional;
     /** is role relevant to current query */
+    @PortedFrom(file = "tRole.h", name = "rel")
     private long rel;
     /** label of a domain (inverse role is used for a range label) */
+    @PortedFrom(file = "tRole.h", name = "domLabel")
     private MergableLabel domLabel = new MergableLabel();
     // for later filling
+    @PortedFrom(file = "tRole.h", name = "Ancestor")
     private List<Role> ancestorRoles = new ArrayList<Role>();
+    @PortedFrom(file = "tRole.h", name = "Descendant")
     private List<Role> descendantRoles = new ArrayList<Role>();
     /** set of the most functional super-roles */
+    @PortedFrom(file = "tRole.h", name = "TopFunc")
     private List<Role> topFunctionalRoles = new ArrayList<Role>();
     /** set of the roles that are disjoint with a given one */
+    @PortedFrom(file = "tRole.h", name = "Disjoint")
     private Set<Role> disjointRoles = new HashSet<Role>();
     /** all compositions in the form R1*R2*\ldots*Rn [= R */
+    @PortedFrom(file = "tRole.h", name = "subCompositions")
     private List<List<Role>> subCompositions = new ArrayList<List<Role>>();
     /** bit-vector of all parents */
+    @PortedFrom(file = "tRole.h", name = "AncMap")
     private FastSet ancestorMap = FastSetFactory.create();
     /** bit-vector of all roles disjoint with current */
+    @PortedFrom(file = "tRole.h", name = "DJRoles")
     private FastSet disjointRolesIndex = FastSetFactory.create();
     /** automaton for role */
+    @PortedFrom(file = "tRole.h", name = "automaton")
     private RoleAutomaton automaton = new RoleAutomaton();
     /** value for functionality */
+    @PortedFrom(file = "tRole.h", name = "Functionality")
     private KnownValue functionality = new KnownValue();
     /** value for symmetry */
+    @PortedFrom(file = "tRole.h", name = "Symmetry")
     private KnownValue symmetry = new KnownValue();
     /** value for asymmetricity */
+    @PortedFrom(file = "tRole.h", name = "Asymmetry")
     private KnownValue asymmetry = new KnownValue();
     /** value for transitivity */
+    @PortedFrom(file = "tRole.h", name = "Transitivity")
     private KnownValue transitivity = new KnownValue();
     /** value for reflexivity */
+    @PortedFrom(file = "tRole.h", name = "Reflexivity")
     private KnownValue reflexivity = new KnownValue();
     /** value for reflexivity */
+    @PortedFrom(file = "tRole.h", name = "Irreflexivity")
     private KnownValue irreflexivity = new KnownValue();
     /** flag to show that this role needs special R&D processing */
+    @PortedFrom(file = "tRole.h", name = "SpecialDomain")
     private boolean specialDomain;
 
     /** add automaton of a sub-role to a given one */

@@ -11,7 +11,9 @@ import conformance.PortedFrom;
 /** set of all known var splits with access by name */
 @PortedFrom(file = "tSplitVars.h", name = "TSplitVars")
 public class TSplitVars {
+    @PortedFrom(file = "tSplitVars.h", name = "Base")
     protected List<TSplitVar> Base = new ArrayList<TSplitVar>();
+    @PortedFrom(file = "tSplitVars.h", name = "Index")
     protected Map<ConceptName, TSplitVar> Index = new HashMap<ConceptName, TSplitVar>();
 
     public TSplitVars() {}

@@ -7,6 +7,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "QR.h", name = "QRRoleAtom")
 class QRRoleAtom extends QR2ArgAtom {
     /** role between two i-objects */
+    @PortedFrom(file = "QR.h", name = "Role")
     ObjectRoleExpression Role;
 
     QRRoleAtom(ObjectRoleExpression R, QRiObject A1, QRiObject A2) {

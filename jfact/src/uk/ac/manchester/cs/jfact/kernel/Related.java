@@ -11,8 +11,11 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "tRelated.h", name = "TRelated")
 public class Related {
+    @PortedFrom(file = "tRelated.h", name = "a")
     private Individual a;
+    @PortedFrom(file = "tRelated.h", name = "b")
     private Individual b;
+    @PortedFrom(file = "tRelated.h", name = "R")
     private Role R;
 
     public Related(Individual a_, Individual b_, Role R_) {

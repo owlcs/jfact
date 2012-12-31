@@ -14,6 +14,7 @@ import conformance.PortedFrom;
 /** actor that accumulates primers */
 @PortedFrom(file = "tRole.cpp", name = "AddRoleActor")
 public class AddRoleActor implements Actor {
+    @PortedFrom(file = "tRole.cpp", name = "rset")
     private List<Role> rset;
 
     // TODO check other actors

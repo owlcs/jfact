@@ -8,6 +8,7 @@ import conformance.PortedFrom;
 class TELFRule {
     /** reasoner that is used to add actions. The number of rules = the number of
      * axioms, so the price is not too bad memory-wise. */
+    @PortedFrom(file = "ELFReasoner.h", name = "ER")
     ELFReasoner ER;
 
     /** init c'tor */

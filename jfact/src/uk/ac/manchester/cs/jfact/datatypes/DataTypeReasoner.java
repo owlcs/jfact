@@ -24,9 +24,12 @@ import conformance.PortedFrom;
 @PortedFrom(file = "DataReasoning.h", name = "DataTypeReasoner")
 public final class DataTypeReasoner {
     /** map Type.pName.Type appearance */
+    @PortedFrom(file = "DataReasoning.h", name = "Map")
     private final Map<Datatype<?>, DataTypeSituation<?>> map = new HashMap<Datatype<?>, DataTypeSituation<?>>();
     /** dep-set for the clash for *all* the types */
+    @PortedFrom(file = "DataReasoning.h", name = "clashDep")
     private final Reference<DepSet> clashDep = new Reference<DepSet>();
+    @Original
     private final JFactReasonerConfiguration options;
 
     /** set clash dep-set to DEP, report with given REASON */

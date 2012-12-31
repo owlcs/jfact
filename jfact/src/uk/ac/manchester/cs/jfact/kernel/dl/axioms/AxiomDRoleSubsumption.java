@@ -14,8 +14,10 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDRoleSubsumption")
 public class AxiomDRoleSubsumption extends AxiomSingleDRole {
+    @PortedFrom(file = "tDLAxiom.h", name = "SubRole")
     private DataRoleExpression subRole;
 
+    @PortedFrom(file = "tDLAxiom.h", name = "SubRole")
     public AxiomDRoleSubsumption(OWLAxiom ax, DataRoleExpression subRole,
             DataRoleExpression supRole) {
         super(ax, supRole);

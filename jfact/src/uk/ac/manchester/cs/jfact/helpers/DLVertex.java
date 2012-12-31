@@ -113,18 +113,25 @@ public class DLVertex extends DLVertexTagDFS {
     }
 
     /** set of arguments (CEs, numbers for NR) */
+    @PortedFrom(file = "dlVertex.h", name = "Child")
     private ChildSet child = new ChildSet();
     /** pointer to concept-like entry (for PConcept, etc) */
+    @PortedFrom(file = "dlVertex.h", name = "Concept")
     private NamedEntry concept = null;
     /** pointer to role (for E\A, NR) */
+    @PortedFrom(file = "dlVertex.h", name = "Role")
     private Role role;
     /** projection role (used for projection op only) */
+    @PortedFrom(file = "dlVertex.h", name = "ProjRole")
     private Role projRole;
     /** C if available */
+    @PortedFrom(file = "dlVertex.h", name = "C")
     private int conceptIndex;
     /** n if available */
+    @PortedFrom(file = "dlVertex.h", name = "n")
     private int n;
     /** maximal depth, size and frequency of reference of the expression */
+    @PortedFrom(file = "dlVertex.h", name = "Sort")
     private MergableLabel sort = new MergableLabel();
 
     /** get RW access to the label
@@ -395,6 +402,7 @@ public class DLVertex extends DLVertexTagDFS {
     }
 
     /** maximal depth, size and frequency of reference of the expression */
+    @PortedFrom(file = "dlVertex.h", name = "stat")
     protected int[] stat = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
     /** add-up all stat values at once by explicit values
@@ -447,7 +455,9 @@ public class DLVertex extends DLVertexTagDFS {
     }
 
     /** usage statistic for pos- and neg occurences of a vertex */
+    @PortedFrom(file = "dlVertex.h", name = "posUsage")
     protected long posUsage = 0;
+    @PortedFrom(file = "dlVertex.h", name = "negUsage")
     protected long negUsage = 0;
 
     /** get access to a usage wrt POS

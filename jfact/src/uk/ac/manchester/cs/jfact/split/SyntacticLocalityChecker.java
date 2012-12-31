@@ -15,10 +15,13 @@ import conformance.PortedFrom;
 public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisitor,
         LocalityChecker {
     /** top evaluator */
+    @PortedFrom(file = "SyntacticLocalityChecker.h", name = "TopEval")
     TopEquivalenceEvaluator TopEval;
     /** bottom evaluator */
+    @PortedFrom(file = "SyntacticLocalityChecker.h", name = "BotEval")
     BotEquivalenceEvaluator BotEval;
     /** remember the axiom locality value here */
+    @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isLocal")
     boolean isLocal;
 
     /** @return true iff EXPR is top equivalent */

@@ -12,6 +12,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "tSaveStack.h", name = "TSaveStack")
 public class SaveStack<T> {
+    @Original
     protected LinkedList<T> list = new LinkedList<T>();
 
     /** get an object from a fixed depth */

@@ -20,19 +20,36 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ELFReasoner.h", name = "ELFReasoner")
 public class ELFReasoner {
     /** S(C) structure */
+    @PortedFrom(file = "ELFReasoner.h", name = "CVec")
     List<TELFConcept> CVec;
     /** set or all concepts */
+    @PortedFrom(file = "ELFReasoner.h", name = "CMap")
     Map<ConceptExpression, TELFConcept> CMap;
     /** TOP Concept */
+    @PortedFrom(file = "ELFReasoner.h", name = "CTop")
     TELFConcept CTop = null;
     /** BOTTOM Concept */
+    @PortedFrom(file = "ELFReasoner.h", name = "CBot")
     TELFConcept CBot = null;
     /** map between roles and structures */
+    @PortedFrom(file = "ELFReasoner.h", name = "RMap")
     Map<ObjectRoleExpression, TELFRole> RMap;
     /** queue of actions to perform */
+    @PortedFrom(file = "ELFReasoner.h", name = "queue")
     List<ELFAction> queue;
     /** stat counters */
-    int nC2C, nA2C, nC2E, nE2C, nR2R, nC2R;
+    @PortedFrom(file = "ELFReasoner.h", name = "nC2R")
+    int nC2C;
+    @PortedFrom(file = "ELFReasoner.h", name = "nA2C")
+    int nA2C;
+    @PortedFrom(file = "ELFReasoner.h", name = "nC2E")
+    int nC2E;
+    @PortedFrom(file = "ELFReasoner.h", name = "nE2C")
+    int nE2C;
+    @PortedFrom(file = "ELFReasoner.h", name = "nR2R")
+    int nR2R;
+    @PortedFrom(file = "ELFReasoner.h", name = "nC2R")
+    int nC2R;
 
     /** get concept (expression) corresponding to a given DL expression */
     @PortedFrom(file = "ELFReasoner.h", name = "getC")

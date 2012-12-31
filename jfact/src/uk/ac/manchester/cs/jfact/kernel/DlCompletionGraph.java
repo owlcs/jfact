@@ -18,51 +18,72 @@ import conformance.PortedFrom;
 @PortedFrom(file = "dlCompletionGraph.h", name = "DlCompletionGraph")
 public class DlCompletionGraph {
     /** initial value of IR level */
+    @PortedFrom(file = "dlCompletionGraph.h", name = "initIRLevel")
     private static final int initIRLevel = 0;
     // XXX is this actually used?
     /** allocator for edges */
+    @PortedFrom(file = "dlCompletionGraph.h", name = "CTEdgeHeap")
     private List<DlCompletionTreeArc> ctEdgeHeap = new ArrayList<DlCompletionTreeArc>();
     /** heap itself */
+    @PortedFrom(file = "dlCompletionGraph.h", name = "NodeBase")
     private List<DlCompletionTree> nodeBase;
     /** nodes, saved on current branching level */
+    @PortedFrom(file = "dlCompletionGraph.h", name = "SavedNodes")
     private List<DlCompletionTree> savedNodes = new ArrayList<DlCompletionTree>();
     /** host reasoner */
+    @PortedFrom(file = "dlCompletionGraph.h", name = "pReasoner")
     private DlSatTester pReasoner;
     /** remember the last generated ID for the node */
+    @PortedFrom(file = "dlCompletionGraph.h", name = "nodeId")
     private int nodeId = 0;
     /** index of the next unallocated entry */
+    @PortedFrom(file = "dlCompletionGraph.h", name = "endUsed")
     private int endUsed;
     /** current branching level (synchronised with resoner's one) */
+    @PortedFrom(file = "dlCompletionGraph.h", name = "branchingLevel")
     private int branchingLevel;
     /** current IR level (should be valid BP) */
+    @PortedFrom(file = "dlCompletionGraph.h", name = "IRLevel")
     private int irLevel;
     /** stack for rarely changed information */
+    @PortedFrom(file = "dlCompletionGraph.h", name = "RareStack")
     private SaveStackRare rareStack = new SaveStackRare();
     /** stack for usual saving/restoring */
+    @PortedFrom(file = "dlCompletionGraph.h", name = "Stack")
     private SaveStack<DLCompletionGraphSaveState> stack = new SaveStack<DLCompletionGraphSaveState>();
     // helpers for the output
     /** bitmap to remember which node was printed */
     // TODO change to regular
+    @PortedFrom(file = "dlCompletionGraph.h", name = "CPGFlag")
     private FastSet cgpFlag = FastSetFactory.create();
     /** indent to print CGraph nodes */
+    @PortedFrom(file = "dlCompletionGraph.h", name = "CPGIndent")
     private int cgpIndent;
     // statistical members
     /** number of node' saves */
+    @PortedFrom(file = "dlCompletionGraph.h", name = "nNodeSaves")
     private int nNodeSaves;
     /** number of node' saves */
+    @PortedFrom(file = "dlCompletionGraph.h", name = "nNodeRestores")
     private int nNodeRestores;
     // / maximal size of the graph
+    @PortedFrom(file = "dlCompletionGraph.h", name = "maxGraphSize")
     int maxGraphSize = 0;
     // flags
     /** how many nodes skip before block; work only with FAIRNESS */
+    @PortedFrom(file = "dlCompletionGraph.h", name = "nSkipBeforeBlock")
     private int nSkipBeforeBlock = 0;
     /** use or not lazy blocking (ie test blocking only expanding exists) */
+    @PortedFrom(file = "dlCompletionGraph.h", name = "useLazyBlocking")
     private boolean useLazyBlocking;
     /** whether to use Anywhere blocking as opposed to an ancestor one */
+    @PortedFrom(file = "dlCompletionGraph.h", name = "useAnywhereBlocking")
     private boolean useAnywhereBlocking;
     /** check if session has inverse roles */
+    @PortedFrom(file = "dlCompletionGraph.h", name = "sessionHasInverseRoles")
     private boolean sessionHasInverseRoles;
     /** check if session has number restrictions */
+    @PortedFrom(file = "dlCompletionGraph.h", name = "sessionHasNumberRestrictions")
     private boolean sessionHasNumberRestrictions;
 
     /** init vector [B,E) with new objects T */
