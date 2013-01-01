@@ -80,7 +80,8 @@ public class TOntologyAtom {
         }
     }
 
-    /** get all the atoms the current one depends on; build this set if necessary */
+    /** get all the atoms the current one depends on; build this set if */
+    // necessary
     @PortedFrom(file = "tOntologyAtom.h", name = "getAllDepAtoms")
     public Set<TOntologyAtom> getAllDepAtoms(Set<TOntologyAtom> checked) {
         if (checked.contains(this)) {

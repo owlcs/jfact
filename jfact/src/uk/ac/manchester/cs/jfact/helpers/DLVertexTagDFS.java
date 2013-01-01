@@ -7,7 +7,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "dlVertex.h", name = "DLVertexTagDFS")
 class DLVertexTagDFS {
     @PortedFrom(file = "dlVertex.h", name = "Op")
-    protected DagTag op;
+    protected DagTag op; // 17 types
     /** aux field for DFS in presence of cycles */
     @PortedFrom(file = "dlVertex.h", name = "VisitedPos")
     protected boolean visitedPos = false;

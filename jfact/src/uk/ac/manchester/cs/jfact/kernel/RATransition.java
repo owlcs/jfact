@@ -93,7 +93,7 @@ public class RATransition {
         o.print(final_state());
     }
 
-    /** check whether transition is TopRole one */
+    // / check whether transition is TopRole one
     @PortedFrom(file = "RAutomaton.h", name = "isTop")
     boolean isTop() {
         return label.size() == 1 && label.iterator().next().isTop();

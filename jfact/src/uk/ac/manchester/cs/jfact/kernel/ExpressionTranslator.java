@@ -75,6 +75,7 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
             if (entry == null) {
                 entry = matchEntry(tbox.getConcept(expr.getName()), expr);
             }
+            // tree = createEntry(CNAME,entry);
             return DLTreeFactory.buildTree(new Lexeme(CNAME, entry));
         }
     }
@@ -88,6 +89,12 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
         return entry;
     }
 
+    // private Lexeme setEntry(Token cname, NamedEntry expr, NamedEntity e) {
+    // if (expr.getEntity() == null) {
+    // expr.setEntity(e);
+    // }
+    // return new Lexeme(cname, expr);
+    // }
     @Override
     public DLTree visit(ConceptNot expr) {
         return DLTreeFactory.createSNFNot(expr.getConcept().accept(this));
@@ -216,6 +223,7 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
         if (entry == null) {
             entry = matchEntry(tbox.getIndividual(expr.getName()), expr);
         }
+        // tree = createEntry(INAME,entry);
         return DLTreeFactory.buildTree(new Lexeme(INAME, entry));
     }
 
@@ -244,6 +252,7 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
                 role = matchEntry(RM.ensureRoleName(expr.getName()), expr);
             }
         }
+        // tree = createEntry(RNAME,role);
         return DLTreeFactory.buildTree(new Lexeme(RNAME, role));
     }
 
@@ -302,12 +311,14 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
         if (nc(expr)) {
             role = sig.topRLocal() ? RM.getTopRole() : RM.getBotRole();
         } else
- {
+        // role = RM.ensureRoleName(expr.getName());
+        {
             role = expr.getEntry();
             if (role == null) {
                 role = matchEntry(RM.ensureRoleName(expr.getName()), expr);
             }
         }
+        // tree = createEntry(DNAME,role);
         return DLTreeFactory.buildTree(new Lexeme(DNAME, role));
     }
 

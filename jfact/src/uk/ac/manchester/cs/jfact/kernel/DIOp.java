@@ -8,7 +8,8 @@ enum DIOp {
     diInv,
     // individual expressions
     diOneOf,
-
+    // wrong operation
+    // diErrorOp(9),
     // end of the enum
     diEndOp,
     // wrong axiom

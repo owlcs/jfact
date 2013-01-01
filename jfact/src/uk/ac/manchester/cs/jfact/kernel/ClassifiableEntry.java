@@ -161,8 +161,7 @@ public class ClassifiableEntry extends NamedEntry {
     /** add entry's synonym */
     @PortedFrom(file = "taxNamEntry.h", name = "setSynonym")
     public void setSynonym(ClassifiableEntry syn) {
-        // do it only once
-        assert pSynonym == null;
+        assert pSynonym == null; // do it only once
         // check there are no cycles
         Set<ClassifiableEntry> set = new HashSet<ClassifiableEntry>();
         set.add(this);
@@ -173,6 +172,10 @@ public class ClassifiableEntry extends NamedEntry {
         }
         if (!set.contains(runner.pSynonym)) {
             // then adding this synonym would cause a loop
+            // System.out
+            // .println("ClassifiableEntry.setSynonym(): warning: assigning this synonym would create a loop; ignored\nignored synonym: "
+            // + this + " -> " + syn + "\nPrevious synonyms: " + set);
+            // } else {
             pSynonym = syn;
             canonicaliseSynonym();
         }

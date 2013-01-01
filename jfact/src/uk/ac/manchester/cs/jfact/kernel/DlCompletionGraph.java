@@ -66,7 +66,7 @@ public class DlCompletionGraph {
     /** number of node' saves */
     @PortedFrom(file = "dlCompletionGraph.h", name = "nNodeRestores")
     private int nNodeRestores;
-    /** maximal size of the graph */
+    // / maximal size of the graph
     @PortedFrom(file = "dlCompletionGraph.h", name = "maxGraphSize")
     int maxGraphSize = 0;
     // flags
@@ -306,9 +306,10 @@ public class DlCompletionGraph {
                     updateDBlockedStatus(p);
                 }
             }
-            /** we need to repeat the thing if something became unblocked and
-             * then blocked again, in case one of the blockers became blocked
-             * itself; see tModal3 for such an example */
+            // we need to repeat the thing if something became unblocked and
+            // then blocked again,
+            // in case one of the blockers became blocked itself; see tModal3
+            // for such an example
             repeat = false;
             for (int i = 0; i < endUsed; i++) {
                 DlCompletionTree p = nodeBase.get(i);
@@ -320,8 +321,8 @@ public class DlCompletionGraph {
         } while (repeat);
     }
 
-    /** @return true if a fairness constraint C is violated in one of the loops in
-     *         the CGraph */
+    /** @return true if a fairness constraint C is violated in one of the */
+    // loops in the CGraph
     @PortedFrom(file = "dlCompletionGraph.h", name = "getFCViolator")
     DlCompletionTree getFCViolator(int C) {
         for (DlCompletionTree p : nodeBase) {
@@ -378,15 +379,15 @@ public class DlCompletionGraph {
     }
 
     // role/node
-    /** add role R with dep-set DEP to the label of the TO arc
-     * 
-     * @param r
-     *            name of role (arc label)
-     * @param dep
-     *            dep-set of the arc label */
+    /** add role R with dep-set DEP to the label of the TO arc */
     @PortedFrom(file = "dlCompletionGraph.h", name = "addRoleLabel")
     public DlCompletionTreeArc addRoleLabel(DlCompletionTree from, DlCompletionTree to,
-            boolean isPredEdge, Role R, DepSet dep)
+            boolean isPredEdge, Role R, // name
+                                        // of
+                                        // role
+                                        // (arc
+                                        // label)
+            DepSet dep) // dep-set of the arc label
     {
         // check if GCraph already has FROM.TO edge labelled with RNAME
         DlCompletionTreeArc ret = from.getEdgeLabelled(R, to);
@@ -400,16 +401,15 @@ public class DlCompletionGraph {
         return ret;
     }
 
-    /** Create an empty R-neighbour of FROM;
-     * 
-     * @param r
-     *            name of role (arc label)
-     * @param dep
-     *            dep-set of the arc label
-     * @return an edge to created node */
+    /** Create an empty R-neighbour of FROM; @return an edge to created node */
     @PortedFrom(file = "dlCompletionGraph.h", name = "createNeighbour")
     public DlCompletionTreeArc createNeighbour(DlCompletionTree from, boolean isPredEdge,
-            Role r, DepSet dep)
+            Role r, // name
+                    // of
+                    // role
+                    // (arc
+                    // label)
+            DepSet dep) // dep-set of the arc label
     {
         if (pReasoner.getOptions().isRKG_IMPROVE_SAVE_RESTORE_DEPSET()) {
             assert branchingLevel == dep.level() + 1;

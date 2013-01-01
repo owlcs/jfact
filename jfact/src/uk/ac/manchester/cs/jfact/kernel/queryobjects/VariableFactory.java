@@ -5,7 +5,9 @@ import java.util.List;
 
 import conformance.PortedFrom;
 
+// ---------------------------------------------------------
 // var factory
+// ---------------------------------------------------------
 @PortedFrom(file = "QR.h", name = "VariableFactory")
 class VariableFactory {
     @PortedFrom(file = "QR.h", name = "Base")

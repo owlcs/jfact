@@ -146,6 +146,7 @@ public class CGLabel {
     public void restore(SaveState ss, int level) {
         scLabel.restore(ss.getSc(), level);
         ccLabel.restore(ss.getCc(), level);
+        // _clearCache();
         clearOthersCache();
     }
 

@@ -98,9 +98,8 @@ public class NamedEntryCollection<T extends NamedEntry> {
     /** remove given entry from the collection; @return true iff it was NOT the
      * last entry. */
     public boolean remove(T p) {
-        if (!isRegistered(p.getName()))
+        if (!isRegistered(p.getName())) // not in a name-set: just delete it
         {
-            // not in a name-set: just delete it
             return false;
         }
         // we might delete vars in order (6,7), so the resize should be done to

@@ -20,10 +20,11 @@ public abstract class NamedEntry {
     @PortedFrom(file = "tNamedEntry.h", name = "entity")
     protected NamedEntity entity = null;
 
+    // protected BitSet bits = new BitSet();
     public NamedEntry(String name) {
         assert name != null;
         extName = name;
-        extId = 0;
+        extId = 0; // sets local id
         if (extName.equals("TOP")) {
             top = true;
         }

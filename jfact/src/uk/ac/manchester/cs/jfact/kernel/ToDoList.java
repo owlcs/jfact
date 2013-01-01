@@ -150,12 +150,10 @@ public class ToDoList {
 
         /** add entry to a queue */
         void add(DlCompletionTree Node, ConceptWDep offset) {
-
+            // try {
             ToDoEntry e = new ToDoEntry(Node, offset);
-            // no problems with empty queue and if no priority
-            // clashes
-            if (isEmpty()
-                    ||
+            if (isEmpty() || // no problems with empty queue and if no priority
+                             // clashes
                     _Wait.get(size - 1).getNode().getNominalLevel() <= Node
                             .getNominalLevel()) {
                 _Wait.add(e);
@@ -163,15 +161,22 @@ public class ToDoList {
                 return;
             }
             // here we need to put e on the proper place
+            // int n = _Wait.size();
             int n = size;
+            // _Wait.add(sPointer, e);
+            // _Wait.add(e); // will be rewritten
             while (n > sPointer
                     && _Wait.get(n - 1).getNode().getNominalLevel() > Node
                             .getNominalLevel()) {
+                // _Wait.set(n, _Wait.get(n - 1));
                 --n;
             }
             _Wait.add(n, e);
             queueBroken = true;
             size++;
+            // } finally {
+            // size = _Wait.size();
+            // }
         }
 
         /** clear queue */
@@ -204,8 +209,7 @@ public class ToDoList {
                 // save just end pointer
                 tss.ep = size;
             }
-            // clear flag for the next session
-            queueBroken = false;
+            queueBroken = false; // clear flag for the next session
         }
 
         /** restore queue content from the given entry */
@@ -265,7 +269,7 @@ public class ToDoList {
             change = true;
             return toReturn;
         } else {
-
+            // System.err.println("ToDoList.SaveState.getInstance() STILL waiting...");
             if (!isSaveStateGenerationStarted()) {
                 startSaveStateGeneration();
             }
@@ -427,7 +431,7 @@ public class ToDoList {
 
     @PortedFrom(file = "ToDoList.h", name = "getNextEntry")
     public ToDoEntry getNextEntry() {
-        assert !isEmpty();
+        assert !isEmpty(); // safety check
         // decrease amount of elements-to-process
         --noe;
         // check ID queue

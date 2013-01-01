@@ -56,6 +56,7 @@ public class ArrayIntMap {
     }
 
     public void put(int e, int v) {
+        // cache.resetNotContained();
         int pos = -1;
         if (values == null) {
             init();
@@ -93,11 +94,25 @@ public class ArrayIntMap {
     public void clear() {
         values = null;
         size = 0;
+        // cache.resetContained();
+        // cache.resetNotContained();
     }
 
+    // IntCache cache = new IntCache();
     public boolean containsKey(int o) {
         if (values != null) {
+            // if (cache.isContained(o)) {
+            // return true;
+            // }
+            // if (cache.isNotContained(o)) {
+            // return false;
+            // }
             boolean b = insertionIndex(o) > -1;
+            // if (b) {
+            // cache.hit(o);
+            // } else {
+            // cache.miss(o);
+            // }
             return b;
         }
         return false;
@@ -164,6 +179,7 @@ public class ArrayIntMap {
         if (values == null) {
             return;
         }
+        // cache.resetContained();
         int i = insertionIndex(o);
         removeAt(i);
     }

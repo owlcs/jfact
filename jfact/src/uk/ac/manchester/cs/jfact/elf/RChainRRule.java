@@ -25,10 +25,12 @@ public class RChainRRule extends TELFRule {
     @Override
     @PortedFrom(file = "ELFReasoner.h", name = "apply")
     void apply(TELFConcept addedC, TELFConcept addedD) {
-        // we have S(C,D); so for all E in domain(R), if R(E,C) then add T(E,D)
+        // we have S(C,D); so for all E in domain(R), if R(E,C) then add
+        // T(E,D)
         Set<TELFConcept> SupSet = R.getPredSet(addedC);
         if (!SupSet.isEmpty()) {
             for (TELFConcept p : SupSet) {
+                // if ( !T.hasLabel ( *p, addedD ) )
                 ER.addAction(new ELFAction(T, p, addedD));
             }
         }

@@ -32,7 +32,7 @@ public class RAStateTransitions {
     private boolean dataRole;
     @Original
     private int size = 0;
-    /** true iff there is a top transition going from this state */
+    // / true iff there is a top transition going from this state
     @PortedFrom(file = "RAutomaton.h", name = "TopTransition")
     boolean TopTransition;
 
@@ -59,7 +59,7 @@ public class RAStateTransitions {
         }
     }
 
-    /** @return true iff there is a top-role transition from the state */
+    // / @return true iff there is a top-role transition from the state
     @PortedFrom(file = "RAutomaton.h", name = "hasTopTransition")
     boolean hasTopTransition() {
         return TopTransition;
@@ -107,8 +107,9 @@ public class RAStateTransitions {
         for (int i = 0; i < size; i++) {
             RATransition p = base.get(i);
             // TODO index in Base
-            if (p.final_state() == to && p.isEmpty() == tEmpty) {
-                // found existing transition
+            if (p.final_state() == to && p.isEmpty() == tEmpty) { // found
+                                                                  // existing
+                                                                  // transition
                 p.add(trans);
                 return true;
             }

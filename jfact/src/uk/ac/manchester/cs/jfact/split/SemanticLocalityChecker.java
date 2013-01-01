@@ -28,8 +28,8 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
     @PortedFrom(file = "SemanticLocalityChecker.h", name = "ExprMap")
     Map<Axiom, ConceptExpression> ExprMap = new HashMap<Axiom, ConceptExpression>();
 
-    /** @return expression necessary to build query for a given type of an axiom; @return
-     *         NULL if none necessary */
+    /** @return expression necessary to build query for a given type of an */
+    // axiom; @return NULL if none necessary
     @PortedFrom(file = "SemanticLocalityChecker.h", name = "getExpr")
     protected ConceptExpression getExpr(Axiom axiom) {
         if (axiom instanceof AxiomRelatedTo) {
@@ -239,8 +239,8 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
         isLocal = false;
     }
 
-    /** there is no such axiom in OWL API, but I hope nobody would use Fairness
-     * here */
+    /** there is no such axiom in OWL API, but I hope nobody would use Fairness */
+    // here
     @Override
     public void visit(AxiomFairnessConstraint axiom) {
         isLocal = true;

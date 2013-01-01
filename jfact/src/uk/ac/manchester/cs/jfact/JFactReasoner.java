@@ -150,6 +150,13 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return root;
     }
 
+    /** Handles raw ontology changes. If the reasoner is a buffering reasoner
+     * then the changes will be stored in a buffer. If the reasoner is a
+     * non-buffering reasoner then the changes will be automatically flushed
+     * through to the change filter and passed on to the reasoner.
+     * 
+     * @param changes
+     *            The list of raw changes. */
     private synchronized void handleRawOntologyChanges(
             List<? extends OWLOntologyChange> changes) {
         rawChanges.addAll(changes);
@@ -184,6 +191,11 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return Collections.emptySet();
     }
 
+    /** Flushes the pending changes from the pending change list. The changes
+     * will be analysed to dermine which axioms have actually been added and
+     * removed from the imports closure of the root ontology and then the
+     * reasoner will be asked to handle these changes via the
+     * {@link #handleChanges(java.util.Set, java.util.Set)} method. */
     @Override
     public synchronized void flush() {
         // Process the changes
@@ -893,11 +905,14 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
                 list.add(ex);
             }
         }
+        // System.out.println("JFactReasoner.getModule() " + list);
         List<Axiom> axioms = kernel.getModule(list, useSemantic, moduletype);
         Set<OWLAxiom> toReturn = new HashSet<OWLAxiom>();
         for (Axiom ax : axioms) {
             if (ax.getOWLAxiom() != null) {
                 toReturn.add(ax.getOWLAxiom());
+                // } else {
+                // System.out.println("JFactReasoner.getModule() " + ax);
             }
         }
         return toReturn;

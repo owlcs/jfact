@@ -67,8 +67,8 @@ class ToDoPriorMatrix {
             case dtForall:
             case dtIrr: // process local (ir-)reflexivity as a FORALL
                 return Sign ? indexForall : indexExists;
-            case dtProj:
-                // it should be the lowest priority but now just OR's one
+            case dtProj: // it should be the lowest priority but now just OR's
+                         // one
             case dtChoose:
                 return indexOr;
             case dtLE:

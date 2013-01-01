@@ -121,7 +121,7 @@ public class ExpressionManager {
     /** cache for the role inverses */
     @PortedFrom(file = "tExpressionManager.h", name = "InverseRoleCache")
     private InverseRoleCache inverseRoleCache = new InverseRoleCache();
-    /** cache for the one-of singletons */
+    // / cache for the one-of singletons
     @PortedFrom(file = "tExpressionManager.h", name = "OneOfCache")
     private Map<IndividualExpression, ConceptExpression> OneOfCache = new HashMap<IndividualExpression, ConceptExpression>();
 

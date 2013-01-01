@@ -28,6 +28,18 @@ public class TDag2Interface {
     @PortedFrom(file = "tDag2Interface.h", name = "TransD")
     private List<DataExpression> TransData = new ArrayList<DataExpression>();
 
+    /** // create concept name by named entry */
+    // static ConceptName CName ( NamedEntry p ) { return dynamic_cast<const
+    // TDLConceptName*>(p->getEntity()); }
+    /** // create individual name by named entry */
+    // static IndividualName IName ( NamedEntry p ) { return dynamic_cast<const
+    // TDLIndividualName*>(p->getEntity()); }
+    /** // create object role name by named entry */
+    // static ObjectRoleName ORName ( NamedEntry p ) { return dynamic_cast<const
+    // TDLObjectRoleName*>(p->getEntity()); }
+    /** // create data role name by named entry */
+    // static DataRoleName DRName ( NamedEntry p ) { return dynamic_cast<const
+    // TDLDataRoleName*>(p->getEntity()); }
     /** build concept expression by a vertex V */
     @PortedFrom(file = "tDag2Interface.h", name = "buildCExpr")
     public ConceptExpression buildCExpr(DLVertex v) {
@@ -72,8 +84,8 @@ public class TDag2Interface {
             case dtProj:
             case dtNN:
             case dtChoose:
-            case dtSplitConcept:
-                // these are artificial constructions and shouldn't be visible
+            case dtSplitConcept: // these are artificial constructions and
+                                 // shouldn't be visible
                 return Manager.top();
             default:
                 throw new UnreachableSituationException();
@@ -121,7 +133,8 @@ public class TDag2Interface {
         return Manager.objectRole(r.getName());
     }
 
-    /** make sure that size of expression cache is the same as the size of a DAG */
+    /** make sure that size of expression cache is the same as the size of a */
+    // DAG
     @PortedFrom(file = "tDag2Interface.h", name = "ensureDagSize")
     public void ensureDagSize() {
         int ds = Dag.size(), ts = TransConcept.size();

@@ -4,9 +4,11 @@ import java.util.Set;
 
 import conformance.PortedFrom;
 
+// -------------------------------------------------------------
 // Rules for \Er.C [= D case; CR4
-/** rule that checks an addition of C to S(Y) and checks whether there is X s.t.
- * R(X,Y) */
+// -------------------------------------------------------------
+/** rule that checks an addition of C to S(Y) and checks whether there is X */
+// s.t. R(X,Y)
 @PortedFrom(file = "ELFReasoner.h", name = "CAddFillerRule")
 public class CAddFillerRule extends TELFRule {
     /** role to add the pair */

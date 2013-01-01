@@ -140,8 +140,8 @@ public class KnowledgeExplorer {
         return Roles;
     }
 
-    /** build the set of object neighbours of a NODE; incoming edges are counted
-     * iff NEEDINCOMING is true */
+    /** build the set of object neighbours of a NODE; incoming edges are */
+    // counted iff NEEDINCOMING is true
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getObjectRoles")
     public Set<RoleExpression> getObjectRoles(DlCompletionTree node, boolean onlyDet,
             boolean needIncoming) {
@@ -158,8 +158,8 @@ public class KnowledgeExplorer {
         return Roles;
     }
 
-    /** build the set of neighbours of a NODE via role ROLE; put the resulting
-     * list into RESULT */
+    /** build the set of neighbours of a NODE via role ROLE; put the resulting */
+    // list into RESULT
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getNeighbours")
     public List<DlCompletionTree> getNeighbours(DlCompletionTree node, Role R) {
         Nodes.clear();

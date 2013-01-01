@@ -38,7 +38,8 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
         TopEval = eval;
     }
 
-    /** @return true iff an EXPRession is equivalent to bottom wrt defined policy */
+    /** @return true iff an EXPRession is equivalent to bottom wrt defined */
+    // policy
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isBotEquivalent")
     boolean isBotEquivalent(Expression expr) {
         expr.accept(this);

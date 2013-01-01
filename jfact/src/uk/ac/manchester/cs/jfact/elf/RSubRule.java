@@ -2,7 +2,9 @@ package uk.ac.manchester.cs.jfact.elf;
 
 import conformance.PortedFrom;
 
+// -------------------------------------------------------------
 // Rule for R [= S case; CR10
+// -------------------------------------------------------------
 /** the rule for R [= S case */
 @PortedFrom(file = "ELFReasoner.h", name = "RSubRule")
 public class RSubRule extends TELFRule {
@@ -20,6 +22,7 @@ public class RSubRule extends TELFRule {
     @Override
     @PortedFrom(file = "ELFReasoner.h", name = "apply")
     void apply(TELFConcept addedC, TELFConcept addedD) {
+        // if ( !S.hasLabel ( addedC, addedD ) )
         ER.addAction(new ELFAction(S, addedC, addedD));
     }
 }

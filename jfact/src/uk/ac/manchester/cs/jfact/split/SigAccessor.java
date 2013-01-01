@@ -26,14 +26,25 @@ public class SigAccessor extends DLExpressionVisitorAdapter {
         return expr instanceof DataTop;
     }
 
+    /** // @return true iff EXPR is a top datatype or a built-in datatype; FIXME */
+    // for now -- just top
+    // static boolean isTopOrBuiltInDT( Expression expr) {
+    // return isTopDT(expr);
+    // }
+    //
+    /** // @return true iff EXPR is a top datatype or an infinite built-in */
+    // datatype; FIXME for now -- just top
+    // static boolean isTopOrBuiltInInfDT( Expression expr) {
+    // return isTopDT(expr);
+    // }
     /** @return true iff EXPR is a top datatype or a built-in datatype; */
     @Original
     public boolean isTopOrBuiltInDataType(Expression expr) {
         return isTopDT(expr) || expr instanceof Datatype<?>;
     }
 
-    /** @return true iff EXPR is a top datatype or an infinite built-in datatype;
-     *         FIXME add real/fraction later */
+    /** @return true iff EXPR is a top datatype or an infinite built-in */
+    // datatype; FIXME add real/fraction later
     @Original
     public boolean isTopOrBuiltInInfDataType(Expression expr) {
         if (isTopDT(expr)) {

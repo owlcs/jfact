@@ -123,6 +123,7 @@ public class Taxonomy {
         queue.add(node.neigh(upDirection));
         while (queue.size() > 0) {
             List<TaxonomyVertex> neigh = queue.remove();
+            // node.neigh(upDirection);
             int size = neigh.size();
             for (int i = 0; i < size; i++) {
                 TaxonomyVertex _node = neigh.get(i);
@@ -225,8 +226,8 @@ public class Taxonomy {
         nCDEntries = 0;
         useCompletelyDefined = false;
         willInsertIntoTaxonomy = true;
-        graph.add(new TaxonomyVertex(pBottom));
-        graph.add(new TaxonomyVertex(pTop));
+        graph.add(new TaxonomyVertex(pBottom)); // bottom
+        graph.add(new TaxonomyVertex(pTop)); // top
         // set up fresh node
         FreshNode.addNeighbour(true, getTopVertex());
         FreshNode.addNeighbour(false, getBottomVertex());
@@ -272,8 +273,7 @@ public class Taxonomy {
                 getBottomVertex().addNeighbour(!upDirection, p);
             }
         }
-        willInsertIntoTaxonomy = false;
-        // after finalisation one shouldn't add
+        willInsertIntoTaxonomy = false; // after finalisation one shouldn't add
                                         // new entries to taxonomy
     }
 
@@ -324,11 +324,10 @@ public class Taxonomy {
 
     @PortedFrom(file = "Taxonomy.h", name = "insertCurrentNode")
     void insertCurrentNode() {
-        current.setSample(curEntry, true);
-        // put curEntry as a representative of Current
-        if (!queryMode())
+        current.setSample(curEntry, true); // put curEntry as a representative
+                                           // of Current
+        if (!queryMode()) // insert node into taxonomy
         {
-            // insert node into taxonomy
             current.incorporate(options);
             graph.add(current);
             // we used the Current so need to create a new one
@@ -336,8 +335,8 @@ public class Taxonomy {
         }
     }
 
-    /** @return true if taxonomy works in a query mode (no need to insert query
-     *         vertex) */
+    /** @return true if taxonomy works in a query mode (no need to insert query */
+    // vertex)
     @PortedFrom(file = "Taxonomy.h", name = "queryMode")
     public boolean queryMode() {
         return !willInsertIntoTaxonomy;
@@ -406,7 +405,7 @@ public class Taxonomy {
         if (syn.equals(curEntry)) {
             return false;
         }
-      //  assert willInsertIntoTaxonomy;
+        // assert willInsertIntoTaxonomy;
         assert syn.getTaxVertex() != null;
         addCurrentToSynonym(syn.getTaxVertex());
         return true;
@@ -427,6 +426,16 @@ public class Taxonomy {
             if (isDirectParent(par)) {
                 current.addNeighbour(true, par);
             }
+            // boolean stillParent = true;
+            // for (TaxonomyVertex q : par.neigh(false)) {
+            // if (q.isValued(valueLabel)) {
+            // stillParent = false;
+            // break;
+            // }
+            // }
+            // if (stillParent) {
+            // current.addNeighbour(true, par);
+            // }
         }
     }
 
@@ -444,7 +453,7 @@ public class Taxonomy {
                 propagateTrueUp(p.getTaxVertex());
             }
         }
-        // XXX this is misleading: in the C++ code the only implementation
+        // XXX this is misleading: in the C++ code the only imple,emtnation
         // available will always say that top is empty here even if it never is.
         // if (!top.isEmpty() && needLogging()) {
         // LL.print(" and possibly ");
@@ -454,8 +463,8 @@ public class Taxonomy {
         // }
     }
 
-    /** ensure that all TS of the top entry are classified. @return the reason of
-     * cycle or NULL. */
+    /** ensure that all TS of the top entry are classified. @return the reason */
+    // of cycle or NULL.
     @PortedFrom(file = "Taxonomy.h", name = "prepareTS")
     ClassifiableEntry prepareTS(ClassifiableEntry cur) {
         // we just found that TS forms a cycle -- return stop-marker
@@ -468,9 +477,8 @@ public class Taxonomy {
         boolean cycleFound = false;
         // for all the told subsumers...
         for (ClassifiableEntry p : ksStack.peek().s_begin()) {
-            if (!p.isClassified())
+            if (!p.isClassified()) // need to classify it first
             {
-                // need to classify it first
                 if (p.isNonClassifiable()) {
                     continue;
                 }
@@ -480,9 +488,8 @@ public class Taxonomy {
                 if (v == null) {
                     continue;
                 }
-                if (v == cur)
+                if (v == cur) // current cycle is finished, all saved in Syns
                 {
-                    // current cycle is finished, all saved in Syns
                     // after classification of CUR we need to mark all the Syns
                     // as synonyms
                     cycleFound = true;
@@ -521,8 +528,34 @@ public class Taxonomy {
             return;
         }
         prepareTS(p);
+        // addTop(p);
+        // while (!waitStack.isEmpty()) {
+        // if (checkToldSubsumers()) {
+        // classifyTop();
+        // } else {
+        // classifyCycle();
+        // }
+        // }
     }
 
+    // private boolean checkToldSubsumers() {
+    // assert !waitStack.isEmpty();
+    // boolean ret = true;
+    // for (ClassifiableEntry r : ksStack.peek().s_begin()) {
+    // assert r != null;
+    // if (!r.isClassified()) {
+    // if (waitStack.contains(r)) {
+    // addTop(r);
+    // ret = false;
+    // break;
+    // }
+    // addTop(r);
+    // ret = checkToldSubsumers();
+    // break;
+    // }
+    // }
+    // return ret;
+    // }
     @PortedFrom(file = "Taxonomy.h", name = "classifyTop")
     private void classifyTop() {
         assert !waitStack.isEmpty();
@@ -539,6 +572,24 @@ public class Taxonomy {
         }
         removeTop();
     }
+
+    // private void classifyCycle() {
+    // assert !waitStack.isEmpty();
+    // ClassifiableEntry p = waitStack.peek();
+    // classifyTop();
+    // StringBuilder b = new
+    // StringBuilder("\n* Concept definitions cycle found: ");
+    // b.append(p.getName());
+    // b.append('\n');
+    // while (!waitStack.isEmpty()) {
+    // b.append(", ");
+    // b.append(waitStack.peek().getName());
+    // b.append('\n');
+    // waitStack.peek().setTaxVertex(p.getTaxVertex());
+    // removeTop();
+    // }
+    // throw new ReasonerInternalException(b.toString());
+    // }
     @PortedFrom(file = "Taxonomy.h", name = "propagateTrueUp")
     protected void propagateTrueUp(TaxonomyVertex node) {
         // if taxonomy class already checked -- do nothing

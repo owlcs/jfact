@@ -199,7 +199,8 @@ public class RoleAutomaton {
                 trans.add(p);
                 // try to merge transitions going to the original state
                 if (to == 1 && RST.addToExisting(trans)) {
-} else {
+                    // delete trans;
+                } else {
                     RST.add(trans);
                 }
             }
@@ -217,8 +218,7 @@ public class RoleAutomaton {
         map[0] = initialRA;
         // fills the state; if it is not known -- adjust newState
         if (fRA >= size()) {
-            // make sure we don't create an extra unused state
-            fRA = size();
+            fRA = size(); // make sure we don't create an extra unused state
             ++newState;
         }
         map[1] = fRA;
@@ -262,7 +262,7 @@ public class RoleAutomaton {
     @PortedFrom(file = "RAutomaton.h", name = "Complete")
     private boolean Complete;
 
-    /** mark an automaton as completed */
+    // / mark an automaton as completed
     @PortedFrom(file = "RAutomaton.h", name = "setCompleted")
     void setCompleted() {
         Complete = true;
@@ -273,13 +273,13 @@ public class RoleAutomaton {
         Complete = b;
     }
 
-    /** check whether automaton is completed */
+    // / check whether automaton is completed
     @PortedFrom(file = "RAutomaton.h", name = "isCompleted")
     boolean isCompleted() {
         return Complete;
     }
 
-    /** @return true iff the automaton is simple */
+    // / @return true iff the automaton is simple
     @PortedFrom(file = "RAutomaton.h", name = "isSimple")
     boolean isSimple() {
         assert isCompleted();

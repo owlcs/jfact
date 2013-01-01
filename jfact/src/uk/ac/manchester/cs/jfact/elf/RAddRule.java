@@ -2,7 +2,9 @@ package uk.ac.manchester.cs.jfact.elf;
 
 import conformance.PortedFrom;
 
+// -------------------------------------------------------------
 // Rule for C [= \Er.D case; CR3
+// -------------------------------------------------------------
 /** the rule for C [= \ER.D case */
 @PortedFrom(file = "ELFReasoner.h", name = "RAddRule")
 public class RAddRule extends TELFRule {
@@ -24,6 +26,7 @@ public class RAddRule extends TELFRule {
     @Override
     @PortedFrom(file = "ELFReasoner.h", name = "apply")
     void apply(TELFConcept Source) {
+        // if ( !R.hasLabel ( Source, Filler ) )
         ER.addAction(new ELFAction(R, Source, Filler));
     }
 }

@@ -138,10 +138,8 @@ public class Role extends ClassifiableEntry {
     /** get an automaton by a (possibly synonymical) role */
     @PortedFrom(file = "tRole.h", name = "completeAutomatonByRole")
     private RoleAutomaton completeAutomatonByRole(Role R, Set<Role> RInProcess) {
-        // no synonyms here
-        assert !R.isSynonym();
-        // no case ...*S*... [= S
-        assert R != this;
+        assert !R.isSynonym(); // no synonyms here
+        assert R != this; // no case ...*S*... [= S
         R.completeAutomaton(RInProcess);
         return R.automaton;
     }
@@ -791,7 +789,7 @@ public class Role extends ClassifiableEntry {
 
     @PortedFrom(file = "tRole.h", name = "initADbyTaxonomy")
     public void initADbyTaxonomy(Taxonomy pTax, int nRoles) {
-        assert isClassified();
+        assert isClassified(); // safety check
         assert ancestorRoles.isEmpty() && descendantRoles.isEmpty();
         // Note that Top/Bottom are not connected to taxonomy yet.
         // fills ancestors by the taxonomy
@@ -960,8 +958,7 @@ public class Role extends ClassifiableEntry {
         // make sure the role chain contain at least one element
         assert p <= p_last;
         // create a chain
-        boolean oSafe = false;
-        // we couldn't assume that the current role
+        boolean oSafe = false; // we couldn't assume that the current role
                                // automaton is i- or o-safe
         automaton.initChain(from);
         for (; p != p_last; ++p) {

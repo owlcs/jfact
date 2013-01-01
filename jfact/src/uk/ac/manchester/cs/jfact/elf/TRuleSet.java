@@ -5,7 +5,9 @@ import java.util.List;
 
 import conformance.PortedFrom;
 
+// -------------------------------------------------------------
 // Concepts and roles, i.e. S(C) and R(C,D)
+// -------------------------------------------------------------
 /** aux class to support set of rules and rule applications */
 @PortedFrom(file = "ELFReasoner.h", name = "TRuleSet")
 class TRuleSet {
