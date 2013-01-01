@@ -109,7 +109,8 @@ public class Concept extends ClassifiableEntry {
         if (p != this) {
             addParentIfNew(p);
             if (p.isSingleton() || p.isHasSP()) {
-                setHasSP(true); // this has singleton parent
+                setHasSP(true);
+                // this has singleton parent
             }
         }
         // if non-primitive concept was found in a description, it's not CD
@@ -210,9 +211,8 @@ public class Concept extends ClassifiableEntry {
         if (isPrimitive() && description != null && description.isTOP()) {
             removeDescription();
         }
-        boolean CD = !hasExtraRules() && isPrimitive(); // not a completely
-                                                        // defined if there are
-                                                        // extra rules
+        boolean CD = !hasExtraRules() && isPrimitive();
+        // not a completely defined if there are extra rules
         if (description != null) {
             CD &= this.initToldSubsumers(description, new HashSet<Role>());
         }
@@ -238,7 +238,8 @@ public class Concept extends ClassifiableEntry {
                 return r.resolveId();
             }
         }
-        return pName; // return concept's name
+        // return concept's name
+        return pName;
     }
 
     @PortedFrom(file = "tConcept.h", name = "addDesc")
@@ -271,7 +272,7 @@ public class Concept extends ClassifiableEntry {
 
     @Original
     public void addLeaves(Collection<DLTree> Desc) {
-        // assert this.isPrimitive();
+       // assert isPrimitive();
         if (description == null) {
             description = DLTreeFactory.createSNFAnd(Desc);
         } else {

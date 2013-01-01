@@ -104,8 +104,6 @@ public class ReasoningKernel {
     @Original
     private DatatypeFactory datatypeFactory;
     // types for knowledge exploration
-    /** dag-2-interface translator used in knowledge exploration */
-    // TDag2Interface D2I;
     /** knowledge exploration support */
     @PortedFrom(file = "Kernel.h", name = "KE")
     KnowledgeExplorer KE;
@@ -130,13 +128,13 @@ public class ReasoningKernel {
     @PortedFrom(file = "Kernel.h", name = "ignoreExprCache")
     boolean ignoreExprCache = false;
 
-    // -----------------------------------------------------------------------------
+
     // -- internal query cache manipulation
-    // -----------------------------------------------------------------------------
+
     /** clear query cache */
     @PortedFrom(file = "Kernel.h", name = "clearQueryCache")
     void clearQueryCache() {
-        cachedQuery = null; // deleteTree(cachedQueryTree);
+        cachedQuery = null;
         cachedQueryTree = null;
     }
 
@@ -266,9 +264,7 @@ public class ReasoningKernel {
         return I.getRelatedCache(R);
     }
 
-    // -----------------------------------------------------------------------------
     // -- internal reasoning methods
-    // -----------------------------------------------------------------------------
     /** @return true iff C is satisfiable */
     @PortedFrom(file = "Kernel.h", name = "checkSatTree")
     private boolean checkSatTree(DLTree C) {
@@ -378,11 +374,12 @@ public class ReasoningKernel {
         if (D.getpName() == 0) // D is fresh
         {
             if (C.getpName() == 0) {
-                return C == D; // 2 fresh concepts subsumes one another iff they
-                               // are the same
+                return C == D;
+                // 2 fresh concepts subsumes one another iff they are the same
             } else {
                 // C is known
-                return !getTBox().isSatisfiable(C); // C [= D iff C=\bottom
+                return !getTBox().isSatisfiable(C);
+                // C [= D iff C=\bottom
             }
         } else {
             // D is known
@@ -543,7 +540,8 @@ public class ReasoningKernel {
      * TBox */
     @PortedFrom(file = "Kernel.h", name = "writeReasoningResult")
     public void writeReasoningResult(LogAdapter o, long time) {
-        getTBox().clearQueryConcept(); // get rid of the query leftovers
+        // get rid of the query leftovers
+        getTBox().clearQueryConcept();
         getTBox().writeReasoningResult(time);
     }
 
@@ -563,8 +561,6 @@ public class ReasoningKernel {
     @PortedFrom(file = "Kernel.h", name = "getFunctionality")
     private boolean getFunctionality(Role R) {
         if (!R.isFunctionalityKnown()) {
-            // DLTreeFactory.buildTree(new Lexeme(R
-            // .isDataRole() ? Token.DNAME : Token.RNAME,
             R.setFunctional(checkFunctionality(R));
         }
         return R.isFunctional();
@@ -603,18 +599,7 @@ public class ReasoningKernel {
         return !checkSatTree(tmp);
     }
 
-    /** @return true if R [= S wrt ontology */
-    // bool checkRoleSubsumption ( TRole* R, TRole* S )
-    // {
-    // if ( unlikely ( R->isDataRole() != S->isDataRole() ) )
-    // return false;
-    /** / R [= S iff \ER.C and \AS.(not C) is unsatisfiable */
-    // DLTree* tmp = createSNFForall ( createRole(S),
-    // createSNFNot(getFreshFiller(S)) );
-    // tmp = createSNFAnd ( createSNFExists ( createRole(R), getFreshFiller(R)
-    // ), tmp );
-    // return !checkSatTree(tmp);
-    // }
+
     @PortedFrom(file = "Kernel.h", name = "checkRoleSubsumption")
     private boolean checkRoleSubsumption(Role R, Role S) {
         if (R.isDataRole() != S.isDataRole()) {
@@ -921,13 +906,16 @@ public class ReasoningKernel {
     /** @return true iff object role is functional */
     @PortedFrom(file = "Kernel.h", name = "isFunctional")
     public boolean isFunctional(ObjectRoleExpression R) {
-        preprocessKB(); // ensure KB is ready to answer the query
+        // ensure KB is ready to answer the query
+        preprocessKB();
         Role r = getRole(R, "Role expression expected in isFunctional()");
         if (r.isTop()) {
-            return true; // universal role is symmetric
+            // universal role is symmetric
+            return true;
         }
         if (r.isBottom()) {
-            return true; // empty role is symmetric
+            // empty role is symmetric
+            return true;
         }
         return getFunctionality(r);
     }
@@ -935,13 +923,16 @@ public class ReasoningKernel {
     /** @return true iff data role is functional */
     @PortedFrom(file = "Kernel.h", name = "isFunctional")
     public boolean isFunctional(DataRoleExpression R) {
-        preprocessKB(); // ensure KB is ready to answer the query
+        // ensure KB is ready to answer the query
+        preprocessKB();
         Role r = getRole(R, "Role expression expected in isFunctional()");
         if (r.isTop()) {
-            return true; // universal role is symmetric
+            // universal role is symmetric
+            return true;
         }
         if (r.isBottom()) {
-            return true; // empty role is symmetric
+            // empty role is symmetric
+            return true;
         }
         return getFunctionality(r);
     }
@@ -949,14 +940,17 @@ public class ReasoningKernel {
     /** @return true iff role is inverse-functional */
     @PortedFrom(file = "Kernel.h", name = "isInverseFunctional")
     public boolean isInverseFunctional(ObjectRoleExpression R) {
-        preprocessKB(); // ensure KB is ready to answer the query
+        // ensure KB is ready to answer the query
+        preprocessKB();
         Role r = getRole(R, "Role expression expected in isInverseFunctional()")
                 .inverse();
         if (r.isTop()) {
-            return true; // universal role is symmetric
+            // universal role is symmetric
+            return true;
         }
         if (r.isBottom()) {
-            return true; // empty role is symmetric
+            // empty role is symmetric
+            return true;
         }
         return getFunctionality(r);
     }
@@ -964,13 +958,16 @@ public class ReasoningKernel {
     /** @return true iff role is transitive */
     @PortedFrom(file = "Kernel.h", name = "isTransitive")
     public boolean isTransitive(ObjectRoleExpression R) {
-        preprocessKB(); // ensure KB is ready to answer the query
+        // ensure KB is ready to answer the query
+        preprocessKB();
         Role r = getRole(R, "Role expression expected in isTransitive()");
         if (r.isTop()) {
-            return true; // universal role is symmetric
+            // universal role is symmetric
+            return true;
         }
+        // empty role is symmetric
         if (r.isBottom()) {
-            return true; // empty role is symmetric
+            return true;
         }
         if (!r.isTransitivityKnown()) {
             r.setTransitive(checkTransitivity(e(R)));
@@ -981,13 +978,13 @@ public class ReasoningKernel {
     /** @return true iff role is symmetric */
     @PortedFrom(file = "Kernel.h", name = "isSymmetric")
     public boolean isSymmetric(ObjectRoleExpression R) {
-        preprocessKB(); // ensure KB is ready to answer the query
+        preprocessKB();
         Role r = getRole(R, "Role expression expected in isSymmetric()");
         if (r.isTop()) {
-            return true; // universal role is symmetric
+            return true;
         }
         if (r.isBottom()) {
-            return true; // empty role is symmetric
+            return true;
         }
         if (!r.isSymmetryKnown()) {
             r.setSymmetric(checkSymmetry(e(R)));
@@ -998,13 +995,13 @@ public class ReasoningKernel {
     /** @return true iff role is asymmetric */
     @PortedFrom(file = "Kernel.h", name = "isAsymmetric")
     public boolean isAsymmetric(ObjectRoleExpression R) {
-        preprocessKB(); // ensure KB is ready to answer the query
+        preprocessKB();
         Role r = getRole(R, "Role expression expected in isAsymmetric()");
         if (r.isTop()) {
-            return true; // universal role is symmetric
+            return true;
         }
         if (r.isBottom()) {
-            return true; // empty role is symmetric
+            return true;
         }
         if (!r.isAsymmetryKnown()) {
             r.setAsymmetric(getTBox().isDisjointRoles(r, r.inverse()));
@@ -1015,13 +1012,13 @@ public class ReasoningKernel {
     /** @return true iff role is reflexive */
     @PortedFrom(file = "Kernel.h", name = "isReflexive")
     public boolean isReflexive(ObjectRoleExpression R) {
-        preprocessKB(); // ensure KB is ready to answer the query
+        preprocessKB();
         Role r = getRole(R, "Role expression expected in isReflexive()");
         if (r.isTop()) {
-            return true; // universal role is symmetric
+            return true;
         }
         if (r.isBottom()) {
-            return true; // empty role is symmetric
+            return true;
         }
         if (!r.isReflexivityKnown()) {
             r.setReflexive(checkReflexivity(e(R)));
@@ -1032,13 +1029,13 @@ public class ReasoningKernel {
     /** @return true iff role is irreflexive */
     @PortedFrom(file = "Kernel.h", name = "isIrreflexive")
     public boolean isIrreflexive(ObjectRoleExpression R) {
-        preprocessKB(); // ensure KB is ready to answer the query
+        preprocessKB();
         Role r = getRole(R, "Role expression expected in isIrreflexive()");
         if (r.isTop()) {
-            return true; // universal role is symmetric
+            return true;
         }
         if (r.isBottom()) {
-            return true; // empty role is symmetric
+            return true;
         }
         if (!r.isIrreflexivityKnown()) {
             r.setIrreflexive(getTBox().isIrreflexive(r));
@@ -1049,14 +1046,16 @@ public class ReasoningKernel {
     /** @return true iff two roles are disjoint */
     @PortedFrom(file = "Kernel.h", name = "isDisjointRoles")
     public boolean isDisjointRoles(ObjectRoleExpression R, ObjectRoleExpression S) {
-        preprocessKB(); // ensure KB is ready to answer the query
+        preprocessKB();
         Role r = getRole(R, "Role expression expected in isDisjointRoles()");
         Role s = getRole(S, "Role expression expected in isDisjointRoles()");
         if (r.isTop() || s.isTop()) {
-            return false; // universal role is not disjoint with anything
+            // universal role is not disjoint with anything
+            return false;
         }
+        // empty role is disjoint with everything
         if (r.isBottom() || s.isBottom()) {
-            return true; // empty role is disjoint with everything
+            return true;
         }
         return getTBox().isDisjointRoles(r, s);
     }
@@ -1064,14 +1063,14 @@ public class ReasoningKernel {
     /** @return true iff two roles are disjoint */
     @PortedFrom(file = "Kernel.h", name = "isDisjointRoles")
     public boolean isDisjointRoles(DataRoleExpression R, DataRoleExpression S) {
-        preprocessKB(); // ensure KB is ready to answer the query
+        preprocessKB();
         Role r = getRole(R, "Role expression expected in isDisjointRoles()");
         Role s = getRole(S, "Role expression expected in isDisjointRoles()");
         if (r.isTop() || s.isTop()) {
-            return false; // universal role is not disjoint with anything
+            return false;
         }
         if (r.isBottom() || s.isBottom()) {
-            return true; // empty role is disjoint with everything
+            return true;
         }
         return getTBox().isDisjointRoles(r, s);
     }
@@ -1079,22 +1078,26 @@ public class ReasoningKernel {
     /** @return true if R is a sub-role of S */
     @PortedFrom(file = "Kernel.h", name = "isSubRoles")
     public boolean isSubRoles(ObjectRoleComplexExpression R, ObjectRoleExpression S) {
-        preprocessKB(); // ensure KB is ready to answer the query
+        preprocessKB();
         Role r = getRole(R, "Role expression expected in isSubRoles()");
         Role s = getRole(S, "Role expression expected in isSubRoles()");
         if (r.isBottom() || s.isTop()) {
-            return true; // \bot [= X [= \top
+            // \bot [= X [= \top
+            return true;
         }
         if (r.isTop() && s.isBottom()) {
-            return false; // as \top [= \bot leads to inconsistent ontology
+            // as \top [= \bot leads to inconsistent ontology
+            return false;
         }
         if (getExpressionManager().isEmptyRole(R)
                 || getExpressionManager().isUniversalRole(S)) {
-            return true; // \bot [= X [= \top
+            // \bot [= X [= \top
+            return true;
         }
         if (getExpressionManager().isUniversalRole(R)
                 && getExpressionManager().isEmptyRole(S)) {
-            return false; // as \top [= \bot leads to inconsistent ontology
+            // as \top [= \bot leads to inconsistent ontology
+            return false;
         }
         // told case first
         if (!r.isTop() && !s.isBottom() && r.lesserequal(s)) {
@@ -1102,7 +1105,6 @@ public class ReasoningKernel {
         }
         // check the general case
         // FIXME!! cache it later
-        // DLTree r = e(R), s = e(S);
         return checkRoleSubsumption(r, s);
     }
 
@@ -1132,8 +1134,6 @@ public class ReasoningKernel {
         }
         DLTree nD = DLTreeFactory.createSNFNot(e(D));
         return !checkSatTree(DLTreeFactory.createSNFAnd(e(C), nD));
-        // return !this.checkSat(this.getExpressionManager().and(C,
-        // this.getExpressionManager().not(D)));
     }
 
     /** @return true iff C is disjoint with D; that is, C [= \not D holds */
@@ -1149,12 +1149,14 @@ public class ReasoningKernel {
             return true;
         }
         preprocessKB();
-        if (isKBClassified()) { // try to detect C=D wrt named concepts
+        if (isKBClassified()) {
+            // try to detect C=D wrt named concepts
             if (this.isNameOrConst(D) && this.isNameOrConst(C)) {
                 TaxonomyVertex cV = getTBox().getCI(e(C)).getTaxVertex();
                 TaxonomyVertex dV = getTBox().getCI(e(D)).getTaxVertex();
                 if (cV == null && dV == null) {
-                    return false; // 2 different fresh names
+                    // 2 different fresh names
+                    return false;
                 }
                 return cV == dV;
             }
@@ -1167,7 +1169,7 @@ public class ReasoningKernel {
     /** apply actor__apply() to all DIRECT super-concepts of [complex] C */
     @PortedFrom(file = "Kernel.h", name = "getSupConcepts")
     public void getSupConcepts(ConceptExpression C, boolean direct, Actor actor) {
-        classifyKB(); // ensure KB is ready to answer the query
+        classifyKB();
         this.setUpCache(C, csClassified);
         Taxonomy tax = getCTaxonomy();
         if (direct) {
@@ -1180,7 +1182,7 @@ public class ReasoningKernel {
     /** apply actor__apply() to all DIRECT sub-concepts of [complex] C */
     @PortedFrom(file = "Kernel.h", name = "getSubConcepts")
     public void getSubConcepts(ConceptExpression C, boolean direct, Actor actor) {
-        classifyKB(); // ensure KB is ready to answer the query
+        classifyKB();
         this.setUpCache(C, csClassified);
         Taxonomy tax = getCTaxonomy();
         tax.getRelativesInfo(cachedVertex, actor, false, direct, false);
@@ -1189,7 +1191,7 @@ public class ReasoningKernel {
     /** apply actor__apply() to all synonyms of [complex] C */
     @PortedFrom(file = "Kernel.h", name = "getEquivalentConcepts")
     public void getEquivalentConcepts(ConceptExpression C, Actor actor) {
-        classifyKB(); // ensure KB is ready to answer the query
+        classifyKB();
         this.setUpCache(C, csClassified);
         actor.apply(cachedVertex);
     }
@@ -1197,11 +1199,10 @@ public class ReasoningKernel {
     /** apply actor::apply() to all named concepts disjoint with [complex] C */
     @PortedFrom(file = "Kernel.h", name = "getDisjointConcepts")
     public void getDisjointConcepts(ConceptExpression C, Actor actor) {
-        classifyKB(); // ensure KB is ready to answer the query
+        classifyKB();
         this.setUpCache(getExpressionManager().not(C), csClassified);
         Taxonomy tax = getCTaxonomy();
-        // we are looking for all sub-concepts of (not C) (including synonyms to
-        // it)
+        // we are looking for all sub-concepts of (not C) (including synonyms)
         tax.getRelativesInfo(cachedVertex, actor, true, false, false);
     }
 
@@ -1218,7 +1219,7 @@ public class ReasoningKernel {
     /** apply actor__apply() to all DIRECT sub-roles of [complex] R */
     @PortedFrom(file = "Kernel.h", name = "getSubRoles")
     public void getSubRoles(RoleExpression r, boolean direct, Actor actor) {
-        preprocessKB(); // ensure KB is ready to answer the query
+        preprocessKB();
         Role R = getRole(r, "Role expression expected in getSubRoles()");
         Taxonomy tax = getTaxonomy(R);
         tax.getRelativesInfo(getTaxVertex(R), actor, false, direct, false);
@@ -1227,7 +1228,7 @@ public class ReasoningKernel {
     /** apply actor__apply() to all synonyms of [complex] R */
     @PortedFrom(file = "Kernel.h", name = "getEquivalentRoles")
     public void getEquivalentRoles(RoleExpression r, Actor actor) {
-        preprocessKB(); // ensure KB is ready to answer the query
+        preprocessKB();
         Role R = getRole(r, "Role expression expected in getEquivalentRoles()");
         actor.apply(getTaxVertex(R));
     }
@@ -1237,19 +1238,18 @@ public class ReasoningKernel {
      * R */
     @PortedFrom(file = "Kernel.h", name = "getORoleDomain")
     public void getORoleDomain(ObjectRoleExpression r, boolean direct, Actor actor) {
-        classifyKB(); // ensure KB is ready to answer the query
+        classifyKB();
         this.setUpCache(getExpressionManager().exists(r, getExpressionManager().top()),
                 csClassified);
         Taxonomy tax = getCTaxonomy();
         tax.getRelativesInfo(cachedVertex, actor, true, direct, true);
     }
 
-    /** apply actor::apply() to all DIRECT NC that are in the domain of data */
-    // role R
-    // template<class Actor>
+    /** apply actor::apply() to all DIRECT NC that are in the domain of data role
+     * R */
     @PortedFrom(file = "Kernel.h", name = "getDRoleDomain")
     void getDRoleDomain(DataRoleExpression r, boolean direct, Actor actor) {
-        classifyKB(); // ensure KB is ready to answer the query
+        classifyKB();
         this.setUpCache(getExpressionManager()
                 .exists(r, getExpressionManager().dataTop()), csClassified);
         Taxonomy tax = getCTaxonomy();
@@ -1281,7 +1281,7 @@ public class ReasoningKernel {
     /** apply actor__apply() to all direct instances of given [complex] C */
     @PortedFrom(file = "Kernel.h", name = "getDirectInstances")
     public void getDirectInstances(ConceptExpression C, Actor actor) {
-        realiseKB(); // ensure KB is ready to answer the query
+        realiseKB();
         this.setUpCache(C, csClassified);
         // implement 1-level check by hand
         // if the root vertex contains individuals -- we are done
@@ -1298,12 +1298,13 @@ public class ReasoningKernel {
 
     /** apply actor__apply() to all instances of given [complex] C */
     @PortedFrom(file = "Kernel.h", name = "getInstances")
-    public void getInstances(ConceptExpression C, Actor actor) { // FIXME!!
+    public void getInstances(ConceptExpression C, Actor actor) {
+        // FIXME!!
                                                                  // check
                                                                  // for
                                                                  // Racer's/IS
                                                                  // approach
-        realiseKB(); // ensure KB is ready to answer the query
+        realiseKB();
         this.setUpCache(C, csClassified);
         Taxonomy tax = getCTaxonomy();
         tax.getRelativesInfo(cachedVertex, actor, true, false, false);
@@ -1313,7 +1314,7 @@ public class ReasoningKernel {
      * individual I */
     @PortedFrom(file = "Kernel.h", name = "getTypes")
     public void getTypes(IndividualExpression I, boolean direct, Actor actor) {
-        realiseKB(); // ensure KB is ready to answer the query
+        realiseKB();
         this.setUpCache(getExpressionManager().oneOf(I), csClassified);
         Taxonomy tax = getCTaxonomy();
         tax.getRelativesInfo(cachedVertex, actor, true, direct, true);
@@ -1322,7 +1323,7 @@ public class ReasoningKernel {
     /** apply actor__apply() to all synonyms of an individual I */
     @PortedFrom(file = "Kernel.h", name = "getSameAs")
     public void getSameAs(IndividualExpression I, Actor actor) {
-        realiseKB(); // ensure KB is ready to answer the query
+        realiseKB();
         getEquivalentConcepts(getExpressionManager().oneOf(I), actor);
     }
 
@@ -1340,8 +1341,8 @@ public class ReasoningKernel {
     // ----------------------------------------------------------------------------------
     // knowledge exploration queries
     // ----------------------------------------------------------------------------------
-    /** build a completion tree for a concept expression C (no caching as it */
-    // breaks the idea of KE). @return the root node
+    /** build a completion tree for a concept expression C (no caching as it
+     * breaks the idea of KE). @return the root node */
     @PortedFrom(file = "Kernel.h", name = "buildCompletionTree")
     public DlCompletionTree buildCompletionTree(ConceptExpression C) {
         preprocessKB();
@@ -1352,7 +1353,6 @@ public class ReasoningKernel {
             KE = new KnowledgeExplorer(getTBox(), getExpressionManager());
         }
         return ret;
-        // return getTBox().buildCompletionTree(cachedConcept);
     }
 
     @Original
@@ -1367,8 +1367,8 @@ public class ReasoningKernel {
         return KE.getDataRoles(node, onlyDet);
     }
 
-    /** build the set of object neighbours of a NODE, put the set of object */
-    // roles and inverses into the RESULT variable
+    /** build the set of object neighbours of a NODE, put the set of object roles
+     * and inverses into the RESULT variable */
     @PortedFrom(file = "Kernel.h", name = "getObjectRoles")
     public Set<RoleExpression> getObjectRoles(DlCompletionTree node, boolean onlyDet,
             boolean needIncoming) {
@@ -1396,13 +1396,13 @@ public class ReasoningKernel {
         return KE.getDataLabel(node, onlyDet);
     }
 
-    // ----------------------------------------------------------------------------------
+
     // atomic decomposition queries
-    // ----------------------------------------------------------------------------------
+
     /** @return true iff individual I is instance of given [complex] C */
     @PortedFrom(file = "Kernel.h", name = "isInstance")
     public boolean isInstance(IndividualExpression I, ConceptExpression C) {
-        realiseKB(); // ensure KB is ready to answer the query
+        realiseKB();
         getIndividual(I, "individual name expected in the isInstance()");
         // FIXME!! this way a new concept is created; could be done more optimal
         return isSubsumedBy(getExpressionManager().oneOf(I), C);
@@ -1438,19 +1438,6 @@ public class ReasoningKernel {
     private void forceReload() {
         clearTBox();
         newKB();
-        // Protege (as the only user of non-trivial monitors with reload) does
-        // not accept multiple usage of a monitor
-        // so switch it off after the 1st usage
-        // if (kernelOptions.isUseELReasoner()) {
-        // ELFAxiomChecker ac = new ELFAxiomChecker();
-        // ac.visitOntology(ontology);
-        // if (ac.value()) {
-        // ELFNormalizer normalizer = new ELFNormalizer(getExpressionManager());
-        // normalizer.visitOntology(ontology);
-        // ELFReasoner reasoner = new ELFReasoner(ontology);
-        // reasoner.classify();
-        // }
-        // }
         // split ontological axioms
         if (kernelOptions.isSplits()) {
             TAxiomSplitter AxiomSplitter = new TAxiomSplitter(kernelOptions, ontology);
@@ -1461,11 +1448,9 @@ public class ReasoningKernel {
         ontology.setProcessed();
     }
 
-    // ----------------------------------------------------------------------------------
+
     // knowledge exploration queries
-    // ----------------------------------------------------------------------------------
-    /** add the role R and all its supers to a set RESULT */
-    // void addRoleWithSupers ( Role R, TCGRoleSet Result );
+
     @PortedFrom(file = "Kernel.h", name = "processKB")
     private void processKB(KBStatus status) {
         assert status.ordinal() >= kbCChecked.ordinal();
@@ -1475,7 +1460,8 @@ public class ReasoningKernel {
                     "Can't classify KB because of previous errors");
         }
         // check if something have to be done
-        if (getStatus().ordinal() >= status.ordinal()) { // nothing to do;
+        if (getStatus().ordinal() >= status.ordinal()) {
+            // nothing to do;
                                                          // but make sure
                                                          // that we are
                                                          // consistent
@@ -1489,18 +1475,22 @@ public class ReasoningKernel {
         switch (getStatus()) {
             case kbEmpty:
             case kbLoading:
-                break; // need to do the whole cycle -- just after the switch
+                break;
+            // need to do the whole cycle -- just after the switch
             case kbCChecked: {
                 classify(status);
                 stillGo = false;
-                break; // do classification
+                break;
+                // do classification
             }
             case kbClassified: {
                 realise();
                 stillGo = false;
                 break;
-            } // do realisation
-            default: // nothing should be here
+                // do realisation
+            }
+            default:
+                // nothing should be here
                 throw new UnreachableSituationException();
         }
         if (stillGo) {
@@ -1545,11 +1535,11 @@ public class ReasoningKernel {
         pTBox.performRealisation();
     }
 
-    // -----------------------------------------------------------------------------
+
     // -- query caching support
-    // -----------------------------------------------------------------------------
-    /** classify query; cache is ready at the point. NAMED means whether */
-    // concept is just a name
+
+    /** classify query; cache is ready at the point. NAMED means whether concept
+     * is just a name */
     @PortedFrom(file = "Kernel.h", name = "classifyQuery")
     void classifyQuery(boolean named) {
         // make sure KB is classified
@@ -1569,16 +1559,16 @@ public class ReasoningKernel {
         // we should catch it before
         assert !ontology.isChanged();
         // check if the query is already cached
-        if (this.checkQueryCache(query)) { // ... with the same level -- nothing
-                                           // to do
-                                           // deleteTree(query);
-                                           // query=null;
+        if (this.checkQueryCache(query)) {
+            // ... with the same level -- nothing to do
             if (level.ordinal() <= cacheLevel.ordinal()) {
                 return;
-            } else { // concept was defined but not classified yet
+            } else {
+                // concept was defined but not classified yet
                 assert level == csClassified && cacheLevel != csClassified;
-                if (cacheLevel == csSat) // already check satisfiability
+                if (cacheLevel == csSat)
                 {
+                    // already check satisfiability
                     classifyQuery(cachedQueryTree.isCN());
                     return;
                 }
@@ -1593,9 +1583,9 @@ public class ReasoningKernel {
         // check if concept-to-cache is defined in ontology
         if (cachedQueryTree.isCN()) {
             cachedConcept = getTBox().getCI(cachedQueryTree);
-        } else // case of complex query
+        } else
         {
-            // getTBox().clearQueryConcept();
+            // case of complex query
             cachedConcept = getTBox().createQueryConcept(cachedQueryTree);
         }
         assert cachedConcept != null;
@@ -1615,14 +1605,16 @@ public class ReasoningKernel {
         // we should catch it before
         assert !ontology.isChanged();
         // check if the query is already cached
-        if (this.checkQueryCache(query)) { // ... with the same level -- nothing
-                                           // to do
+        if (this.checkQueryCache(query)) {
+            // ... with the same level -- nothing to do
             if (level.ordinal() <= cacheLevel.ordinal()) {
                 return;
-            } else { // concept was defined but not classified yet
+            } else {
+                // concept was defined but not classified yet
                 assert level == csClassified && cacheLevel != csClassified;
-                if (cacheLevel == csSat) // already check satisfiability
+                if (cacheLevel == csSat)
                 {
+                    // already check satisfiability
                     classifyQuery(this.isNameOrConst(cachedQuery));
                     return;
                 }
@@ -1637,10 +1629,10 @@ public class ReasoningKernel {
         // check if concept-to-cache is defined in ontology
         if (this.isNameOrConst(cachedQuery)) {
             cachedConcept = getTBox().getCI(e(cachedQuery));
-        } else // case of complex query
+        } else
         {
+            // case of complex query
             // need to clear the query before transform it into DLTree
-            // getTBox().clearQueryConcept();
             // ... as if fresh names appears there, they would be cleaned up
             cachedConcept = getTBox().createQueryConcept(e(cachedQuery));
         }
@@ -1655,11 +1647,11 @@ public class ReasoningKernel {
         }
     }
 
-    // ----------------------------------------------------------------------------------
+
     // atomic decomposition queries
-    // ----------------------------------------------------------------------------------
-    /** create new atomic decomposition of the loaded ontology using TYPE. */
-    // @return size of the AD
+
+    /** create new atomic decomposition of the loaded ontology using TYPE. @return
+     * size of the AD */
     @PortedFrom(file = "Kernel.h", name = "getAtomicDecompositionSize")
     public int getAtomicDecompositionSize(boolean useSemantics, ModuleType type) {
         // init AD field
@@ -1680,8 +1672,8 @@ public class ReasoningKernel {
         return AD.getTautologies();
     }
 
-    /** get a set of axioms that corresponds to the module of the atom with the */
-    // id INDEX
+    /** get a set of axioms that corresponds to the module of the atom with the
+     * id INDEX */
     @PortedFrom(file = "Kernel.h", name = "getAtomModule")
     public Set<Axiom> getAtomModule(int index) {
         return AD.getAOS().get(index).getModule();
@@ -1693,9 +1685,9 @@ public class ReasoningKernel {
         return AD.getAOS().get(index).getDepAtoms();
     }
 
-    // ----------------------------------------------------------------------------------
+
     // knowledge exploration queries
-    // ----------------------------------------------------------------------------------
+
     /** @return true iff the chain contained in the arg-list is a sub-property of
      *         R */
     @PortedFrom(file = "Kernel.h", name = "checkSubChain")
@@ -1721,10 +1713,11 @@ public class ReasoningKernel {
     @PortedFrom(file = "Kernel.h", name = "isSubChain")
     public boolean
             isSubChain(ObjectRoleComplexExpression R, List<ObjectRoleExpression> l) {
-        preprocessKB(); // ensure KB is ready to answer the query
+        preprocessKB();
         Role r = getRole(R, "Role expression expected in isSubChain()");
         if (r.isTop()) {
-            return true; // universal role is a super of any chain
+            // universal role is a super of any chain
+            return true;
         }
         return checkSubChain(r, l);
     }
@@ -1732,14 +1725,16 @@ public class ReasoningKernel {
     /** @return true if R is a sub-role of S */
     @PortedFrom(file = "Kernel.h", name = "isSubRoles")
     public boolean isSubRoles(DataRoleExpression R, DataRoleExpression S) {
-        preprocessKB(); // ensure KB is ready to answer the query
+        preprocessKB();
         if (getExpressionManager().isEmptyRole(R)
                 || getExpressionManager().isUniversalRole(S)) {
-            return true; // \bot [= X [= \top
+            // \bot [= X [= \top
+            return true;
         }
         if (getExpressionManager().isUniversalRole(R)
                 && getExpressionManager().isEmptyRole(S)) {
-            return false; // as \top [= \bot leads to inconsistent ontology
+            // as \top [= \bot leads to inconsistent ontology
+            return false;
         }
         // told case first
         uk.ac.manchester.cs.jfact.kernel.Role r = getRole(R,
@@ -1761,10 +1756,12 @@ public class ReasoningKernel {
         List<Role> Roles = new ArrayList<Role>(l.size());
         for (RoleExpression p : l) {
             if (getExpressionManager().isUniversalRole(p)) {
-                return false; // universal role is not disjoint with anything
+                // universal role is not disjoint with anything
+                return false;
             }
             if (getExpressionManager().isEmptyRole(p)) {
-                continue; // empty role is disjoint with everything
+                // empty role is disjoint with everything
+                continue;
             }
             Roles.add(getRole(p, "Role expression expected in isDisjointRoles()"));
         }

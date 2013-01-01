@@ -34,7 +34,8 @@ public class DLTreeFactory {
         }
         if (R.token() == RNAME) {
             if (isTopRole(R) || isBotRole(R)) {
-                return R; // top/bottom roles are inverses of themselves
+                // top/bottom roles are inverses of themselves
+                return R;
             }
             return new ONEDLTree(new Lexeme(INV), R);
         }
@@ -42,20 +43,20 @@ public class DLTreeFactory {
     }
 
     // Semantic Locality checking support. DO NOT used in usual reasoning
-    /** @return true iff a data range DR is semantically equivalent to TOP. */
-    // FIXME!! good approximation for now
+    /** @return true iff a data range DR is semantically equivalent to TOP.
+     *         FIXME!! good approximation for now */
     static boolean isSemanticallyDataTop(DLTree dr) {
         return dr.elem().getToken() == TOP;
     }
 
-    /** @return true iff a data range DR is semantically equivalent to BOTTOM. */
-    // FIXME!! good approximation for now
+    /** @return true iff a data range DR is semantically equivalent to BOTTOM.
+     *         FIXME!! good approximation for now */
     static boolean isSemanticallyDataBottom(DLTree dr) {
         return dr.elem().getToken() == BOTTOM;
     }
 
-    /** @return true iff the cardinality of a given data range DR is greater */
-    // than N. FIXME!! good approximation for now
+    /** @return true iff the cardinality of a given data range DR is greater than
+     *         N. FIXME!! good approximation for now */
     static boolean isDataRangeBigEnough(DLTree dr, int n) {
         return true;
     }
@@ -196,7 +197,8 @@ public class DLTreeFactory {
 
     /** create at-most (LE) restriction of given formulas (<= n R.C) */
     public static DLTree createSNFLE(int n, DLTree R, DLTree C) {
-        if (C.isBOTTOM()) { // <= n R.F -> T;
+        if (C.isBOTTOM()) {
+            // <= n R.F -> T;
             return createTop();
         }
         if (n == 0) {
@@ -224,10 +226,12 @@ public class DLTreeFactory {
     /** create SELF restriction for role R */
     public static DLTree createSNFSelf(DLTree R) {
         if (isBotRole(R)) {
-            return createBottom(); // loop on bottom role is always unsat
+            return createBottom();
+            // loop on bottom role is always unsat
         }
         if (isTopRole(R)) {
-            return createTop(); // top role is reflexive
+            return createTop();
+            // top role is reflexive
         }
         return new ONEDLTree(new Lexeme(SELF), R);
     }

@@ -95,7 +95,7 @@ public class SigIndex {
         }
     }
 
-    // / preprocess given set of axioms
+    /** preprocess given set of axioms */
     @PortedFrom(file = "SigIndex.h", name = "preprocessOntology")
     public void preprocessOntology(Collection<Axiom> axioms) {
         for (Axiom ax : axioms) {
@@ -103,7 +103,7 @@ public class SigIndex {
         }
     }
 
-    // / clear internal structures
+    /** clear internal structures */
     @PortedFrom(file = "SigIndex.h", name = "clear")
     public void clear() {
         Base.clear();
@@ -112,8 +112,8 @@ public class SigIndex {
     }
 
     // get the set by the index
-    /** given an entity, return a set of all axioms that tontain this entity in */
-    // a signature
+    /** given an entity, return a set of all axioms that tontain this entity in a
+     * signature */
     @PortedFrom(file = "SigIndex.h", name = "getAxioms")
     public Collection<Axiom> getAxioms(NamedEntity entity) {
         final Collection<Axiom> collection = Base.get(entity);

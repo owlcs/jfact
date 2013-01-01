@@ -2,9 +2,7 @@ package uk.ac.manchester.cs.jfact.elf;
 
 import conformance.PortedFrom;
 
-// -------------------------------------------------------------
 // Rule for R(C,D) with \bot\in S(D) case; CR5
-// -------------------------------------------------------------
 // rule that checks whether for R(C,D) S(D) contains \bot
 @PortedFrom(file = "ELFReasoner.h", name = "RBotRule")
 public class RBotRule extends TELFRule {
@@ -22,8 +20,8 @@ public class RBotRule extends TELFRule {
     @Override
     @PortedFrom(file = "ELFReasoner.h", name = "apply")
     void apply(TELFConcept addedC, TELFConcept addedD) {
-        // it seems like every other pair is already processed, either via
-        // that rule or via add(\bot)
+        // it seems like every other pair is already processed, either via that
+        // rule or via add(\bot)
         if (addedD.hasSuper(ConceptBot) && !addedC.hasSuper(ConceptBot)) {
             ER.addAction(new ELFAction(addedC, ConceptBot));
         }

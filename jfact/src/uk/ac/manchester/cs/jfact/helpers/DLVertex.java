@@ -73,7 +73,7 @@ public class DLVertex extends DLVertexTagDFS {
                 sorted = new int[set.size()];
                 if (sorter == null) {
                     for (int i = 0; i < set.size(); i++) {
-                        // if the re is no sorting, use the original insertion
+                        // if there is no sorting, use the original insertion
                         // order
                         sorted[i] = original.get(i);
                     }

@@ -38,11 +38,7 @@ public class DLDag {
     /** size of sort array */
     @PortedFrom(file = "dlDag.h", name = "sortArraySize")
     private int sortArraySize;
-    // tunable flags (set by readConfig)
-    /** sort strings: option[0] for SAT/cache tests, option[1] for SUB/classify
-     * tests */
-    // private String orSortSat;
-    // private String orSortSub;
+
     /** sort index (if necessary). Possible values are Size, Depth, Freq */
     @PortedFrom(file = "dlDag.h", name = "iSort")
     private int iSort;
@@ -216,7 +212,7 @@ public class DLDag {
     @PortedFrom(file = "dlDag.h", name = "haveSameSort")
     public boolean haveSameSort(int p, int q) {
         if (options.isRKG_USE_SORTED_REASONING()) {
-            assert p > 0 && q > 0; // sanity check
+            assert p > 0 && q > 0;
             // everything has the same label as TOP
             if (p == 1 || q == 1) {
                 return true;
@@ -421,26 +417,33 @@ public class DLDag {
         switch (v.getType()) {
             case dtAnd:
                 if (!pos) {
-                    ++b; // OR is branching
+                    ++b;
+                    // OR is branching
                 }
                 break;
             case dtForall:
-                ++d; // increase depth
+                ++d;
+                // increase depth
                 if (!pos) {
-                    ++g; // SOME is generating
+                    ++g;
+                    // SOME is generating
                 }
                 break;
             case dtLE:
-                ++d; // increase depth
+                ++d;
+                // increase depth
                 if (!pos) {
-                    ++g; // >= is generating
+                    ++g;
+                    // >= is generating
                 } else if (v.getNumberLE() != 1) {
-                    ++b; // <= is branching
+                    ++b;
+                    // <= is branching
                 }
                 break;
             case dtProj:
                 if (pos) {
-                    ++b; // projection sometimes involves branching
+                    ++b;
+                    // projection sometimes involves branching
                 }
                 break;
             default:
@@ -457,7 +460,8 @@ public class DLDag {
         if (v.isVisited(pos)) {
             return;
         }
-        v.incFreqValue(pos); // increment frequence of current vertex
+        // increment frequence of current vertex
+        v.incFreqValue(pos);
         v.setVisited(pos);
         if (v.getType().omitStat(pos)) {
             return;
@@ -537,8 +541,10 @@ public class DLDag {
 
     @PortedFrom(file = "dlDag.h", name = "PrintDAGUsage")
     public void printDAGUsage(LogAdapter o) {
-        int n = 0; // number of no-used DAG entries
-        int total = heap.size() * 2 - 2; // number of total DAG entries
+        // number of no-used DAG entries
+        int n = 0;
+        // number of total DAG entries
+        int total = heap.size() * 2 - 2;
         for (DLVertex i : heap) {
             if (i.getUsage(true) == 0) {
                 ++n;
@@ -621,17 +627,19 @@ public class DLDag {
         switch (v.getType()) {
             case dtLE: // set R&D for role
             case dtForall:
-                v.merge(v.getRole().getDomainLabel()); // domain(role)=cur
+                // domain(role)=cur
+                v.merge(v.getRole().getDomainLabel());
                 merge(v.getRole().getRangeLabel(), v.getConceptIndex());
                 break;
-            case dtProj: // projection: equate R&D of R and ProjR, and D(R) with
-                         // C
+            case dtProj:
+                // projection: equate R&D of R and ProjR, and D(R) with C
                 v.merge(v.getRole().getDomainLabel());
                 v.merge(v.getProjRole().getDomainLabel());
                 merge(v.getRole().getDomainLabel(), v.getConceptIndex());
                 v.getRole().getRangeLabel().merge(v.getProjRole().getRangeLabel());
                 break;
-            case dtIrr: // equate R&D for role
+            case dtIrr:
+                // equate R&D for role
                 v.merge(v.getRole().getDomainLabel());
                 v.merge(v.getRole().getRangeLabel());
                 break;

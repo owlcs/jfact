@@ -2,9 +2,7 @@ package uk.ac.manchester.cs.jfact.elf;
 
 import conformance.PortedFrom;
 
-// -------------------------------------------------------------
 // Rule for C [= D case; CR1
-// -------------------------------------------------------------
 /** the rule for C [= D case */
 @PortedFrom(file = "ELFReasoner.h", name = "CSubRule")
 public class CSubRule extends TELFRule {

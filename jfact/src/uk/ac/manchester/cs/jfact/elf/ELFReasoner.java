@@ -133,9 +133,7 @@ public class ELFReasoner {
         }
     }
 
-    // -------------------------------------------------------------
     // inline ELFReasoner implementation
-    // -------------------------------------------------------------
     /** process axiom C [= D */
     @PortedFrom(file = "ELFReasoner.h", name = "processC2C")
     void processC2C(TELFConcept C, TELFConcept D) {

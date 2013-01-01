@@ -24,8 +24,8 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tAxiom.h", name = "TAxiom")
 public class Axiom {
     // NS for different DLTree matchers for trees in axiom
-    /** absorb into negation of a concept; @return true if absorption is */
-    // performed
+    /** absorb into negation of a concept; @return true if absorption is
+     * performed */
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoNegConcept")
     public boolean absorbIntoNegConcept(TBox KB) {
         List<DLTree> Cons = new ArrayList<DLTree>();
@@ -140,12 +140,10 @@ public class Axiom {
                 KB.getOptions().getAbsorptionLog()
                         .print(" split AND espression ", p.getChild());
                 acc = this.split(acc, p, p.getChildren().iterator().next());
-                // no need to split more than once:
-                // every extra splits would be together with unsplitted parts
-                // like: (A or B) and (C or D) would be transform into
-                // A and (C or D), B and (C or D), (A or B) and C, (A or B) and
-                // D
-                // so just return here
+                /** no need to split more than once: every extra splits would be
+                 * together with unsplitted parts like: (A or B) and (C or D)
+                 * would be transform into A and (C or D), B and (C or D), (A or
+                 * B) and C, (A or B) and D so just return here */
                 return acc;
             }
         }
@@ -156,7 +154,8 @@ public class Axiom {
     @PortedFrom(file = "tAxiom.h", name = "add")
     public void add(DLTree p) {
         if (InAx.isBot(p)) {
-            return; // nothing to do
+            // nothing to do
+            return;
         }
         // flatten the disjunctions on the fly
         if (InAx.isOr(p)) {
@@ -206,22 +205,23 @@ public class Axiom {
     @PortedFrom(file = "tAxiom.h", name = "simplifyForall")
     private Axiom simplifyForall(DLTree pos, TBox KB) {
         SAbsRepForall();
-        DLTree pAll = pos.getChild(); // (all R ~C)
+        // (all R ~C)
+        DLTree pAll = pos.getChild();
         KB.getOptions().getAbsorptionLog().print(" simplify ALL expression", pAll);
         Axiom ret = copy(pos);
         ret.add(KB.getTree(KB.replaceForall(pAll.copy())));
         return ret;
     }
 
-    /** create a concept expression corresponding to a given GCI; ignore SKIP */
-    // entry
+    /** create a concept expression corresponding to a given GCI; ignore SKIP
+     * entry */
     @PortedFrom(file = "tAxiom.h", name = "createAnAxiom")
     public DLTree createAnAxiom(DLTree replaced) {
         // XXX check if this is correct
         if (disjuncts.isEmpty()) {
             return DLTreeFactory.createBottom();
         }
-        // assert !this.disjuncts.isEmpty();
+        //assert !disjuncts.isEmpty();
         List<DLTree> leaves = new ArrayList<DLTree>();
         for (DLTree d : disjuncts) {
             if (!d.equals(replaced)) {

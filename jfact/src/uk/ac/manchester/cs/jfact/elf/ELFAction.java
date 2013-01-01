@@ -2,9 +2,7 @@ package uk.ac.manchester.cs.jfact.elf;
 
 import conformance.PortedFrom;
 
-// -------------------------------------------------------------
 // Action class
-// -------------------------------------------------------------
 /** single algorithm action (application of a rule) */
 @PortedFrom(file = "ELFReasoner.h", name = "ELFAction")
 class ELFAction {

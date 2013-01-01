@@ -75,8 +75,7 @@ public class DepSet {
     }
 
     protected DepSet(int i) {
-        // only case in which the delegate is modified instead of a copy being
-        // made
+        // only case in which the delegate is modified
         delegate = new FastSetSimple();
         delegate.add(i);
     }

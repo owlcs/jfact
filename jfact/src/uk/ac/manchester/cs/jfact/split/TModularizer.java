@@ -20,15 +20,13 @@ public class TModularizer {
     /** internal syntactic locality checker */
     @PortedFrom(file = "Modularity.h", name = "Checker")
     LocalityChecker Checker;
-    /** signature updater */
-    // TSignatureUpdater Updater;
     /** module as a list of axioms */
     @PortedFrom(file = "Modularity.h", name = "Module")
     List<Axiom> Module = new ArrayList<Axiom>();
     /** pointer to a sig index; if not NULL then use optimized algo */
     @PortedFrom(file = "Modularity.h", name = "sigIndex")
     SigIndex sigIndex = null;
-    // / true if no atoms are processed ATM
+    /** true if no atoms are processed ATM */
     @PortedFrom(file = "Modularity.h", name = "noAtomsProcessing")
     boolean noAtomsProcessing;
     /** queue of unprocessed entities */
@@ -157,7 +155,7 @@ public class TModularizer {
         sigIndex.preprocessOntology(vec);
     }
 
-    // / @return true iff the axiom AX is a tautology wrt given type
+    /** @return true iff the axiom AX is a tautology wrt given type */
     @PortedFrom(file = "Modularity.h", name = "isTautology")
     boolean isTautology(Axiom ax, ModuleType type) {
         boolean topLocality = type == ModuleType.M_TOP;
@@ -173,8 +171,7 @@ public class TModularizer {
         return Checker.local(ax);
     }
 
-    // / get RW access to the sigIndex (mainly to (un-)register axioms on the
-    // fly)
+    /** get RW access to the sigIndex (mainly to (un-)register axioms on the fly) */
     @PortedFrom(file = "Modularity.h", name = "getSigIndex")
     public SigIndex getSigIndex() {
         return sigIndex;
@@ -191,8 +188,7 @@ public class TModularizer {
         this.extract(Collections.singletonList(begin), signature, type);
     }
 
-    /** extract module wrt SIGNATURE and TYPE from the set of axioms */
-    // [BEGIN,END)
+    /** extract module wrt SIGNATURE and TYPE from the set of axioms [BEGIN,END) */
     @PortedFrom(file = "Modularity.h", name = "extract")
     public void extract(Collection<Axiom> begin, TSignature signature, ModuleType type) {
         boolean topLocality = type == ModuleType.M_TOP;

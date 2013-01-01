@@ -8,23 +8,31 @@ package uk.ac.manchester.cs.jfact.kernel;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 public enum Token {
-    AND("and"), OR("or"), NOT("not"), INV("inv"), RCOMPOSITION("compose"), // role
-                                                                           // composition
-    PROJINTO("project_into"), // role projection into
-    PROJFROM("project_from"), // role projection from
-    SELF("self-ref"), TOP("*TOP*"), BOTTOM("*BOTTOM*"), EXISTS("some"), FORALL("all"), GE(
+    AND("and"), OR("or"), NOT("not"), INV("inv"),
+    /** role composition */
+    RCOMPOSITION("compose"),
+    /** role projection into */
+    PROJINTO("project_into"),
+    /** role projection from */
+    PROJFROM("project_from"), SELF("self-ref"), TOP("*TOP*"), BOTTOM("*BOTTOM*"), EXISTS(
+            "some"), FORALL("all"),
+    /** ATLEAST = GE */
+    GE(
             "at-least"),
-    // ATLEAST = GE,
+    /** ATMOST = LE */
     LE("at-most"),
-    // ATMOST = LE,
     // common metasymbols
-    DATAEXPR("dataexpr"), // any data expression: data value, [constrained]
-                          // datatype
+    /** any data expression: data value, [constrained] datatype */
+    DATAEXPR("dataexpr"),
     // more precise ID's discretion
-    CNAME("cname"), // name of a concept
-    INAME("one-of"), // name of a singleton
-    RNAME("rname"), // name of a role
-    DNAME("dname"); // name of a data role
+    /** name of a concept */
+    CNAME("cname"),
+    /** name of a singleton */
+    INAME("one-of"),
+    /** name of a role */
+    RNAME("rname"),
+    /** name of a data role */
+    DNAME("dname");
     // FaCT commands
     private String s;
 

@@ -14,18 +14,20 @@ import conformance.PortedFrom;
 public class TSplitVar {
     // types
     public class Entry {
-        public ConceptName name; // entry name
-        public Concept concept; // internal name
+        // entry name
+        public ConceptName name;
+        // internal name
+        public Concept concept;
         public TSignature sig;
         public Set<Axiom> Module;
     }
 
-    // members
-    public ConceptName oldName; // name of split concept
-    public Concept C; // split concept itself
+    // name of split concept
+    public ConceptName oldName;
+    // split concept itself
+    public Concept C;
     private List<Entry> Entries = new ArrayList<Entry>();
 
-    // methods
     void addEntry(ConceptName name, TSignature sig, Set<Axiom> mod) {
         Entry e = new Entry();
         e.name = name;

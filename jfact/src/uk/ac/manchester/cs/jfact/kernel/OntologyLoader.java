@@ -59,7 +59,7 @@ public class OntologyLoader implements DLAxiomVisitor {
      * ones */
     @PortedFrom(file = "tOntologyLoader.h", name = "ensureNames")
     public void ensureNames(Expression Expr) {
-        assert Expr != null; // FORNOW
+        assert Expr != null; // temporarily
     }
 
     /** prepare arguments for the [begin,end) interval */
@@ -87,7 +87,8 @@ public class OntologyLoader implements DLAxiomVisitor {
     @Override
     public void visit(AxiomDeclaration axiom) {
         ensureNames(axiom.getDeclaration());
-        axiom.getDeclaration().accept(expressionTranslator); // names in the KB
+        // names in the KB
+        axiom.getDeclaration().accept(expressionTranslator);
     }
 
     // n-ary axioms
@@ -246,7 +247,6 @@ public class OntologyLoader implements DLAxiomVisitor {
         ensureNames(axiom.getRole());
         Role role = getRole(axiom.getRole(),
                 "Role expression expected in Role Transitivity axiom");
-        // if (!isUniversalRole(axiom.getRole())) {
         if (!role.isTop() && !role.isBottom()) {
             role.setTransitive();
         }
@@ -261,7 +261,6 @@ public class OntologyLoader implements DLAxiomVisitor {
             throw new InconsistentOntologyException();
         }
         if (!role.isTop()) {
-            // if (!isUniversalRole(axiom.getRole())) {
             role.setReflexive(true);
         }
     }
@@ -269,9 +268,6 @@ public class OntologyLoader implements DLAxiomVisitor {
     @Override
     public void visit(AxiomRoleIrreflexive axiom) {
         ensureNames(axiom.getRole());
-        // if (isUniversalRole(axiom.getRole())) {
-        // throw new InconsistentOntologyException();
-        // }
         Role R = getRole(axiom.getRole(),
                 "Role expression expected in Role Irreflexivity axiom");
         if (R.isTop()) {
@@ -291,7 +287,6 @@ public class OntologyLoader implements DLAxiomVisitor {
         ensureNames(axiom.getRole());
         Role R = getRole(axiom.getRole(),
                 "Role expression expected in Role Symmetry axiom");
-        // if (!isUniversalRole(axiom.getRole())) {
         if (!R.isTop() && !R.isBottom()) {
             R.setSymmetric(true);
             tbox.getORM().addRoleParentProper(R, R.inverse());
@@ -304,7 +299,6 @@ public class OntologyLoader implements DLAxiomVisitor {
         Role R = getRole(axiom.getRole(),
                 "Role expression expected in Role Asymmetry axiom");
         if (R.isTop()) {
-            // if (isUniversalRole(axiom.getRole())) {
             throw new InconsistentOntologyException();
         }
         if (!R.isBottom()) {
@@ -319,7 +313,6 @@ public class OntologyLoader implements DLAxiomVisitor {
         Role role = getRole(axiom.getRole(),
                 "Role expression expected in Object Role Functionality axiom");
         if (role.isTop()) {
-            // if (isUniversalRole(axiom.getRole())) {
             throw new InconsistentOntologyException();
         }
         if (!role.isBottom()) {
@@ -333,7 +326,6 @@ public class OntologyLoader implements DLAxiomVisitor {
         Role role = getRole(axiom.getRole(),
                 "Role expression expected in Data Role Functionality axiom");
         if (role.isTop()) {
-            // if (isUniversalRole(axiom.getRole())) {
             throw new InconsistentOntologyException();
         }
         if (!role.isBottom()) {
@@ -346,7 +338,6 @@ public class OntologyLoader implements DLAxiomVisitor {
         ensureNames(axiom.getRole());
         Role role = getRole(axiom.getRole(),
                 "Role expression expected in Role Inverse Functionality axiom");
-        // if (isUniversalRole(axiom.getRole())) {
         if (role.isTop()) {
             throw new InconsistentOntologyException();
         }
@@ -386,9 +377,6 @@ public class OntologyLoader implements DLAxiomVisitor {
             throw new InconsistentOntologyException();
         }
         if (!R.isTop()) {
-            // if (!isUniversalRole(axiom.getRelation())) // nothing to do for
-            // universal role
-            // {
             Individual I = getIndividual(axiom.getIndividual(),
                     "Individual expected in Related To axiom");
             Individual J = getIndividual(axiom.getRelatedIndividual(),
@@ -406,7 +394,6 @@ public class OntologyLoader implements DLAxiomVisitor {
                 "Role expression expected in Related To Not axiom");
         if (R.isTop()) {
             // inconsistent ontology
-            // if (isUniversalRole(axiom.getRelation())) {
             throw new InconsistentOntologyException();
         }
         if (!R.isBottom()) {
@@ -452,7 +439,6 @@ public class OntologyLoader implements DLAxiomVisitor {
         Role R = getRole(axiom.getAttribute(),
                 "Role expression expected in Value Of Not axiom");
         if (R.isTop()) {
-            // if (isUniversalRole(axiom.getAttribute())) {
             throw new InconsistentOntologyException();
         }
         if (!R.isBottom()) {

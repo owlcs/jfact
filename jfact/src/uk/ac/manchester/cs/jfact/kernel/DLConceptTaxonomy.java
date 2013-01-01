@@ -22,16 +22,9 @@ import conformance.PortedFrom;
 public class DLConceptTaxonomy extends Taxonomy {
     /** all the derived subsumers of a class (came from the model) */
     class DerivedSubsumers extends KnownSubsumers {
-        // protected: // typedefs
-        /** set of the subsumers */
-        // typedef Taxonomy::SubsumerSet SubsumerSet;
-        /** SS RW iterator */
-        // typedef SubsumerSet::iterator ss_iterator;
-        // protected: // members
         /** set of sure- and possible subsumers */
         protected List<ClassifiableEntry> Sure, Possible;
 
-        // public: // interface
         /** c'tor: copy given sets */
         public DerivedSubsumers(List<ClassifiableEntry> sure,
                 List<ClassifiableEntry> possible) {
@@ -39,7 +32,6 @@ public class DLConceptTaxonomy extends Taxonomy {
             Possible = new ArrayList<ClassifiableEntry>(possible);
         }
 
-        // iterators
         /** begin of the Sure subsumers interval */
         @Override
         public List<ClassifiableEntry> s_begin() {
@@ -129,8 +121,8 @@ public class DLConceptTaxonomy extends Taxonomy {
             if (isEqualToTop()) {
                 return;
             }
-            if (!willInsertIntoTaxonomy) { // after classification -- bottom set
-                                           // up already
+            if (!willInsertIntoTaxonomy) {
+                // after classification -- bottom set up already
                 searchBaader(true, getBottomVertex());
                 return;
             }
@@ -176,8 +168,6 @@ public class DLConceptTaxonomy extends Taxonomy {
         nCachedPositive = 0;
         nCachedNegative = 0;
         nSortedNegative = 0;
-        // flagNeedBottomUp = GCIs.isGCI() || GCIs.isReflexive() &&
-        // GCIs.isRnD();
         inSplitCheck = false;
     }
 
@@ -256,9 +246,9 @@ public class DLConceptTaxonomy extends Taxonomy {
     private boolean testSub(Concept p, Concept q) {
         assert p != null;
         assert q != null;
-        if (q.isSingleton() // singleton on the RHS is useless iff...
-                && q.isPrimitive() // it is primitive
+        if (q.isSingleton() && q.isPrimitive()
                 && !q.isNominal()) {
+            // singleton on the RHS is useless iff it is primitive
             return false;
         }
         if (inSplitCheck) {
@@ -339,7 +329,7 @@ public class DLConceptTaxonomy extends Taxonomy {
             }
         }
         // in case current node is unchecked (no BOTTOM node) -- check it
-        // explicitely
+        // explicitly
         if (!cur.isValued(valueLabel)) {
             cur.setValued(testSubsumption(upDirection, cur), valueLabel);
         }
@@ -424,7 +414,8 @@ public class DLConceptTaxonomy extends Taxonomy {
         nCommon = 1;
         List<TaxonomyVertex> list = current.neigh(upDirection);
         int size = list.size();
-        assert size > 0; // there is at least one parent (TOP)
+        assert size > 0;
+        // there is at least one parent (TOP)
         TaxonomyVertex p = list.get(0);
         // define possible successors of the node
         propagateOneCommon(p);
@@ -481,8 +472,8 @@ public class DLConceptTaxonomy extends Taxonomy {
         }
         if (curConcept().isSingleton()) {
             Individual curI = (Individual) curConcept();
-            if (tBox.isBlockedInd(curI)) { // check whether current entry is the
-                                           // same as another individual
+            if (tBox.isBlockedInd(curI)) {
+                // check whether current entry is the same as another individual
                 Individual syn = tBox.getBlockingInd(curI);
                 assert syn.getTaxVertex() != null;
                 if (tBox.isBlockingDet(curI)) {
@@ -506,8 +497,8 @@ public class DLConceptTaxonomy extends Taxonomy {
         return false;
     }
 
-    /** after merging, check whether there are extra neighbours that should be */
-    // taken into account
+    /** after merging, check whether there are extra neighbours that should be
+     * taken into account */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "checkExtraParents")
     void checkExtraParents() {
         inSplitCheck = true;
