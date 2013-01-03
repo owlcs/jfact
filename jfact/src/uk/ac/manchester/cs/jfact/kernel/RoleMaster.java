@@ -164,8 +164,6 @@ public class RoleMaster {
     @PortedFrom(file = "RoleMaster.h", name = "addRoleSynonym")
     public void addRoleSynonym(Role role, Role syn) {
         // no synonyms
-        // role = resolveSynonym(role);
-        // syn = resolveSynonym(syn);
         // FIXME!! 1st call can make one of them a synonym of a const
         addRoleParentProper(ClassifiableEntry.resolveSynonym(role),
                 ClassifiableEntry.resolveSynonym(syn));

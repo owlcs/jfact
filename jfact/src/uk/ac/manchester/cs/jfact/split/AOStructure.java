@@ -10,8 +10,6 @@ import conformance.PortedFrom;
 /** atomical ontology structure */
 @PortedFrom(file = "AtomicDecomposer.h", name = "AOStructure")
 public class AOStructure {
-    /** vector of atoms as a type */
-    // typedef std::vector<TOntologyAtom*> AtomVec;
     /** all the atoms */
     @PortedFrom(file = "AtomicDecomposer.h", name = "Atoms")
     List<TOntologyAtom> Atoms = new ArrayList<TOntologyAtom>();

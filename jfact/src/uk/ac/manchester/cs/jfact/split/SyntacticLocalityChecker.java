@@ -149,16 +149,19 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
         for (ConceptExpression p : axiom.getArguments()) {
             if (!isBotEquivalent(p)) {
                 if (!topLoc) {
-                    return; // non-local straight away
+                    return;
+                    // non-local straight away
                 }
                 if (isTopEquivalent(p)) {
                     if (topEqDesc) {
-                        return; // 2nd top in there -- non-local
+                        return;
+                        // 2nd top in there -- non-local
                     } else {
                         topEqDesc = true;
                     }
                 } else {
-                    return; // non-local
+                    return;
+                    // non-local
                 }
             }
         }
@@ -203,7 +206,8 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
         for (ObjectRoleExpression p : axiom.getArguments()) {
             if (!isREquivalent(p)) {
                 if (hasNBE) {
-                    return; // false here
+                    return;
+                    // false here
                 } else {
                     hasNBE = true;
                 }
@@ -222,7 +226,8 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
         for (DataRoleExpression p : axiom.getArguments()) {
             if (!isREquivalent(p)) {
                 if (hasNBE) {
-                    return; // false here
+                    return;
+                    // false here
                 } else {
                     hasNBE = true;
                 }
@@ -241,8 +246,8 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
         isLocal = false;
     }
 
-    /** there is no such axiom in OWL API, but I hope nobody would use Fairness */
-    // here
+    /** there is no such axiom in OWL API, but I hope nobody would use Fairness
+     * here */
     @Override
     public void visit(AxiomFairnessConstraint axiom) {
         isLocal = true;

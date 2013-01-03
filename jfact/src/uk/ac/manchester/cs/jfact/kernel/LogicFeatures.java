@@ -197,7 +197,6 @@ public class LogicFeatures {
                 hasSingletons() ? "" : NO);
     }
 
-    // private static int lfInvalid = 0;
     // role description
     @PortedFrom(file = "LogicFeature.h", name = "lfTransitiveRoles")
     private static int lfTransitiveRoles = 1;
@@ -232,14 +231,5 @@ public class LogicFeatures {
     private static int lfSelfRef = 14;
     @PortedFrom(file = "LogicFeature.h", name = "lfTopRole")
     private static int lfTopRole = 15;
-    // private int value;
-    //
-    // LFEnum(int v) {
-    // value = v;
-    // }
-    //
-    // protected int getValue() {
-    // return value;
-    // }
-    // }
+
 }

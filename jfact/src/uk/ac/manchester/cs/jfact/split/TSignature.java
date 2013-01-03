@@ -83,12 +83,6 @@ public class TSignature {
         return set.hashCode();
     }
 
-    /** check whether 2 signatures are the same */
-    // boolean operator == ( TSignature& sig ) { return Set == sig.Set; }
-    /** check whether 2 signatures are different */
-    // boolean operator != ( TSignature& sig ) { return Set != sig.Set; }
-    /** operator < */
-    // boolean operator < ( TSignature& sig ) { return Set < sig.Set; }
     /** @return true iff signature contains given element */
     @Original
     public boolean containsNamedEntity(NamedEntity p) {

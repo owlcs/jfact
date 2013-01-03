@@ -10,10 +10,8 @@ class NodeCompare implements Comparator<DlCompletionTree>, Serializable {
     @Override
     @PortedFrom(file = "Tactic.cpp", name = "compare")
     public int compare(DlCompletionTree o1, DlCompletionTree o2) {
-        // TODO Auto-generated method stub
         return 0;
-        // XXX implement this properly
-        // bool operator() ( DlCompletionTree* p, DlCompletionTree* q )
-        // const { return *p < *q; }
+       //XXX doubtful
+       // return o1.getId() - o2.getId();
     }
 }

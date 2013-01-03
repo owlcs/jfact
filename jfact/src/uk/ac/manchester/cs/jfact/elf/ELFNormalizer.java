@@ -22,7 +22,6 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
     /** expression manager to build aux expressions */
     @PortedFrom(file = "ELFNormalizer.h", name = "pEM")
     ExpressionManager pEM;
-    // TLISPOntologyPrinter LP;
     /** set of new/procesed axioms */
     @PortedFrom(file = "ELFNormalizer.h", name = "Axioms")
     List<Axiom> Axioms = new ArrayList<Axiom>();
@@ -39,8 +38,6 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
     /** process the axiom and mark it unused if necessary */
     @PortedFrom(file = "ELFNormalizer.h", name = "v")
     void v(Axiom ax) {
-        // std::cout << "Processing ";
-        // ax.accept(LP);
         ax.accept(this);
         if (changed) {
             ax.setUsed(false);
@@ -50,8 +47,6 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
     /** add axiom to a list */
     @PortedFrom(file = "ELFNormalizer.h", name = "addAxiom")
     void addAxiom(Axiom ax) {
-        // std::cout << "Adding ";
-        // ax.accept(LP);
         Axioms.add(ax);
     }
 
@@ -75,16 +70,16 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
         return true;
     }
 
-    /** transform RHS into normalized one. @return a normalized RHS. Set the */
-    // eRHS flag if it is an existential
+    /** transform RHS into normalized one. @return a normalized RHS. Set the eRHS
+     * flag if it is an existential */
     @PortedFrom(file = "ELFNormalizer.h", name = "transformExists")
     ConceptExpression transformExists(OWLAxiom ax, ConceptExpression D) {
         eRHS = false;
         // RHS now contains only Bot, A, \E R.C
         if (!(D instanceof ConceptObjectExists)) {
             assert D instanceof ConceptName || D instanceof ConceptBottom
-                    || D instanceof ConceptTop; // for
-                                                // LHS
+                    || D instanceof ConceptTop;
+            // for LHS
             return D;
         }
         ConceptObjectExists exists = (ConceptObjectExists) D;
@@ -108,8 +103,8 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
         return pEM.exists(exists.getOR(), B);
     }
 
-    /** transform conjunction into the binary one with named concepts in it; */
-    // simplify
+    /** transform conjunction into the binary one with named concepts in it;
+     * simplify */
     @PortedFrom(file = "ELFNormalizer.h", name = "normalizeLHSAnd")
     ConceptExpression normalizeLHSAnd(OWLAxiom ax, ConceptAnd C) {
         if (C == null) {
@@ -119,7 +114,8 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
         // check for bottom argument
         for (ConceptExpression p : C.getArguments()) {
             if (p instanceof ConceptBottom) {
-                return p; // all And is equivalent to bottom
+                return p;
+                // all And is equivalent to bottom
             }
         }
         // preprocess conjunctions
@@ -127,10 +123,12 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
         for (ConceptExpression p : C.getArguments()) {
             if (p instanceof ConceptTop) {
                 change = true;
-                continue; // skip Tops there
+                continue;
+                // skip Tops there
             }
             if (p instanceof ConceptName) {
-                args.add(p); // keep concept name
+                args.add(p);
+                // keep concept name
             } else {
                 // complex expression -- replace with new name
                 ConceptExpression A = buildFreshName();
@@ -145,7 +143,6 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
             return C;
         }
         // make conjunction binary
-        // std::cout << "Args.size()==" << args.size() << "\n";
         ConceptExpression B = args.get(0);
         // check the corner case: singleton conjunction
         if (args.size() == 1) {
@@ -229,17 +226,21 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
     /** the only legal one contains a single element, so is C = D */
     @Override
     public void visit(AxiomDisjointUnion axiom) {
-        changed = true; // replace it anyway
+        changed = true;
+        // replace it anyway
         switch (axiom.size()) {
-            case 0: // strange, but...
+            case 0:
+                // strange, but...
                 return;
-            case 1: // single element, use C=D processing
+            case 1:
+                // single element, use C=D processing
                 addAxiom(new AxiomConceptInclusion(axiom.getOWLAxiom(), axiom.getC(),
                         axiom.getArguments().get(0)));
                 addAxiom(new AxiomConceptInclusion(axiom.getOWLAxiom(), axiom
                         .getArguments().get(0), axiom.getC()));
                 break;
-            default: // impossible here
+            default:
+                // impossible here
                 throw new UnreachableSituationException();
         }
     }
@@ -324,7 +325,6 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
 
     public ELFNormalizer(ExpressionManager p) {
         pEM = p;
-        // LP(std::cout);
         index = 0;
     }
 }

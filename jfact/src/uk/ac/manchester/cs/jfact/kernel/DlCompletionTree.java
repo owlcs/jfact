@@ -107,7 +107,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree> {
     /** dep-set for Purge op */
     protected DepSet pDep = DepSet.create();
     // save state information
-    protected int curLevel; // current level
+    protected int curLevel;
     /** is given node a data node */
     private boolean flagDataNode = false;
     /** flag if node is Cached */
@@ -424,7 +424,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree> {
         if (blocker.isLabelledBy(c)) {
             return true;
         }
-        int n = 1; // Blocker is the 1st node in the loop
+        // Blocker is the 1st node in the loop
+        int n = 1;
         for (DlCompletionTree p = getParentNode(); p.hasParent() && p != blocker; p = p
                 .getParentNode()) {
             if (p.isLabelledBy(c)) {
@@ -502,12 +503,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree> {
     /** init IR with given entry and dep-set; @return true if IR already has this
      * label */
     public boolean initIR(int level, DepSet ds) {
-        Reference<DepSet> dummy = new Reference<DepSet>(DepSet.create()); // we
-                                                                          // don't
-                                                                          // need
-                                                                          // a
-                                                                          // clash-set
-                                                                          // here
+        Reference<DepSet> dummy = new Reference<DepSet>(DepSet.create());
+        // we don't need a clash-set here
         if (inIRwithC(level, ds, dummy)) {
             return true;
         }
@@ -643,7 +640,6 @@ public class DlCompletionTree implements Comparable<DlCompletionTree> {
     private boolean B2Simple(RAStateTransitions RST, int C) {
         DlCompletionTree parent = getParentNode();
         CGLabel parLab = parent.label();
-        // boolean toReturn = false;
         if (parLab.contains(C)) {
             return true;
         }
@@ -862,17 +858,13 @@ public class DlCompletionTree implements Comparable<DlCompletionTree> {
     public void printBody(LogAdapter o) {
         o.print(id);
         if (isNominalNode()) {
-            o.print("o");
-            o.print(nominalLevel);
+            o.print("o").print(nominalLevel);
         }
-        o.print("(");
-        o.print(curLevel);
-        o.print(")");
+        o.print("(").print(curLevel).print(")");
         if (isDataNode()) {
             o.print("d");
         }
-        o.print(label);
-        o.print(logNodeBStatus());
+        o.print(label).print(logNodeBStatus());
     }
 
     @Override
@@ -880,22 +872,18 @@ public class DlCompletionTree implements Comparable<DlCompletionTree> {
         StringBuilder o = new StringBuilder();
         o.append(id);
         if (isNominalNode()) {
-            o.append("o");
-            o.append(nominalLevel);
+            o.append("o").append(nominalLevel);
         }
-        o.append("(");
-        o.append(curLevel);
-        o.append(")");
+        o.append("(").append(curLevel).append(")");
         if (isDataNode()) {
             o.append("d");
         }
-        o.append(label);
-        o.append(logNodeBStatus());
+        o.append(label).append(logNodeBStatus());
         return o.toString();
     }
 
-    /** check if the NODE's and current node's IR are labelled with the same */
-    // level
+    /** check if the NODE's and current node's IR are labelled with the same
+     * level */
     public boolean nonMergable(DlCompletionTree node, Reference<DepSet> dep) {
         if (inequalityRelation.isEmpty() || node.inequalityRelation.isEmpty()) {
             return false;

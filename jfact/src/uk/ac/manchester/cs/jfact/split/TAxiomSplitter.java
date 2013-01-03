@@ -15,14 +15,15 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "AxiomSplitter.h", name = "TAxiomSplitter")
 public class TAxiomSplitter {
-    /** keep the single rename: named concept C in an axiom (C=D or C[=D) into */
-    // a new name C' and new axiom C'=D or C'[=D
+    /** keep the single rename: named concept C in an axiom (C=D or C[=D) into a
+     * new name C' and new axiom C'=D or C'[=D */
     protected class TRecord {
         ConceptName oldName, newName;
         List<Axiom> oldAxioms = new ArrayList<Axiom>();
         Axiom newAxiom = null;
         TSignature newAxSig = null;
-        Set<Axiom> Module = new HashSet<Axiom>(); // module for a new axiom
+        // module for a new axiom
+        Set<Axiom> Module = new HashSet<Axiom>();
 
         /** set old axiom as an equivalent AX; create a new one */
         void setEqAx(AxiomEquivalentConcepts ax) {
@@ -58,8 +59,9 @@ public class TAxiomSplitter {
     protected Map<ConceptName, Set<AxiomConceptInclusion>> ImplNames = new HashMap<ConceptName, Set<AxiomConceptInclusion>>();
     @PortedFrom(file = "AxiomSplitter.h", name = "newNameId")
     private int newNameId;
+    // seed signature
     @PortedFrom(file = "AxiomSplitter.h", name = "sig")
-    protected TSignature sig = new TSignature(); // seed signature
+    protected TSignature sig = new TSignature();
     @PortedFrom(file = "AxiomSplitter.h", name = "mod")
     protected TModularizer mod = null;
     @PortedFrom(file = "AxiomSplitter.h", name = "RejSplits")
@@ -78,7 +80,7 @@ public class TAxiomSplitter {
         return null;
     }
 
-    // / process (register/unregister) axioms in a record REC
+    /** process (register/unregister) axioms in a record REC */
     @PortedFrom(file = "AxiomSplitter.h", name = "processRec")
     public void processRec(TRecord rec) {
         mod.getSigIndex().preprocessOntology(rec.oldAxioms);
@@ -110,13 +112,9 @@ public class TAxiomSplitter {
     protected void buildSig(TRecord rec) {
         sig = rec.newAxiom.getSignature();
         mod.extract(O.getAxioms(), sig, ModuleType.M_STAR);
-        // build a
-        // module/signature
-        // for the axiom
+        // build a module/signature for the axiom
         rec.newAxSig = mod.getSignature();
-        // FIXME!! check that SIG wouldn't
-        // change after some axiom
-        // retractions
+        // FIXME!! check that SIG wouldn't change after some axiom retractions
         rec.Module.clear();
         rec.Module.addAll(mod.getModule());
     }
@@ -125,10 +123,7 @@ public class TAxiomSplitter {
     @PortedFrom(file = "AxiomSplitter.h", name = "addSingleCI")
     protected void addSingleCI(AxiomConceptInclusion ci) {
         if (ci != null && !(ci.getSupConcept() instanceof ConceptTop)) {
-            // skip
-            // axioms
-            // with
-            // RHS=TOP
+            // skip axioms with RHS=TOP
             if (ci.getSubConcept() instanceof ConceptName) {
                 ConceptName name = (ConceptName) ci.getSubConcept();
                 SubNames.add(name);
@@ -152,8 +147,8 @@ public class TAxiomSplitter {
         }
     }
 
-    /** check whether an equivalent axiom is splittable; @return split name or */
-    // NULL if not splittable
+    /** check whether an equivalent axiom is splittable; @return split name or
+     * NULL if not splittable */
     @PortedFrom(file = "AxiomSplitter.h", name = "getEqSplit")
     protected ConceptName getEqSplit(AxiomEquivalentConcepts ce) {
         // check whether it is not a synonym definition
@@ -162,8 +157,8 @@ public class TAxiomSplitter {
         for (ConceptExpression q : ce.getArguments()) {
             if (q instanceof ConceptName) {
                 name = (ConceptName) q;
-                if (SubNames.contains(name)) { // found a split candidate; save
-                                               // the name
+                if (SubNames.contains(name)) {
+                    // found a split candidate; save the name
                     if (splitName == null) {
                         splitName = name;
                     } else {
@@ -197,9 +192,6 @@ public class TAxiomSplitter {
         registerRec(rec);
         // register rec
         Renames.add(rec);
-        // std::cout << "split " << splitName.getName() << " into " <<
-        // rec.newName.getName() << "\n";
-        // ce.accept(pr); rec.newAxiom.accept(pr);
     }
 
     /** split all possible EQ axioms */
@@ -217,22 +209,16 @@ public class TAxiomSplitter {
     @PortedFrom(file = "AxiomSplitter.h", name = "makeImpSplit")
     protected TRecord makeImpSplit(ConceptName oldName) {
         ConceptName newName = rename(oldName);
-        // std::cout << "split " << oldName.getName() << " into " <<
-        // newName.getName() << "\n";
         TRecord rec = new TRecord();
         rec.oldName = oldName;
         rec.newName = newName;
         List<Expression> args = new ArrayList<Expression>();
-        // O.getExpressionManager().newArgList();
         for (AxiomConceptInclusion s : ImplNames.get(oldName)) {
             rec.oldAxioms.add(s);
-            // O.getExpressionManager().addArg((s).getSupConcept());
             args.add(s.getSupConcept());
-            // (*s).accept(pr);
         }
         rec.setImpAx(O.getExpressionManager().and(args));
         registerRec(rec);
-        // rec.newAxiom.accept(pr);
         return rec;
     }
 
@@ -264,12 +250,13 @@ public class TAxiomSplitter {
         }
     }
 
-    /** check whether the record is independent wrt modularity; @return true */
-    // iff split was incorrect
+    /** check whether the record is independent wrt modularity; @return true iff
+     * split was incorrect */
     @PortedFrom(file = "AxiomSplitter.h", name = "checkSplitCorrectness")
     protected boolean checkSplitCorrectness(TRecord rec) {
         if (Rejects.contains(rec.oldName)) {
-            // unsplit: // restore the old axiom, get rid of the new one
+            // unsplit:
+            // restore the old axiom, get rid of the new one
             unregisterRec(rec);
             return true;
         }
@@ -285,8 +272,9 @@ public class TAxiomSplitter {
             unregisterRec(imp);
             unregisterRec(rec);
             return true;
-        } else // keep the split
+        } else
         {
+            // keep the split
             R2.add(rec);
             return false;
         }
@@ -338,7 +326,7 @@ public class TAxiomSplitter {
     }
 
     public TAxiomSplitter(JFactReasonerConfiguration config, Ontology o) {
-        // pr(std::cout);
+
         newNameId = 0;
         O = o;
         mod = new TModularizer(config, new SyntacticLocalityChecker());

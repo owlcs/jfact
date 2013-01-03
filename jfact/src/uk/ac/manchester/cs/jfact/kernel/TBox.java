@@ -44,17 +44,12 @@ public class TBox {
     @PortedFrom(file = "dlTBox.h", name = "stdReasoner")
     private DlSatTester stdReasoner = null;
     /** use this macro to do the same action with all available reasoners */
-    // # define REASONERS_DO(ACT) do { \
-    // nomReasoner.ACT; \
-    // stdReasoner.ACT; } while(0)
     /** reasoner for TBox-related queries with nominals */
     @PortedFrom(file = "dlTBox.h", name = "nomReasoner")
     private NominalReasoner nomReasoner;
     /** taxonomy structure of a TBox */
     @PortedFrom(file = "dlTBox.h", name = "pTax")
     private DLConceptTaxonomy pTax;
-    /** DataType center */
-    // private DataTypeCenter datatypeCenter = new DataTypeCenter();
     /** set of reasoning options */
     @Original
     private JFactReasonerConfiguration config;
@@ -132,10 +127,8 @@ public class TBox {
     /** fairness constraints */
     @PortedFrom(file = "dlTBox.h", name = "Fairness")
     private List<Concept> fairness = new ArrayList<Concept>();
-    // ---------------------------------------------------------------------------
     // Reasoner's members: there are many reasoner classes, some members are
     // shared
-    // ---------------------------------------------------------------------------
     /** flag for switching semantic branching */
     @PortedFrom(file = "dlTBox.h", name = "useSemanticBranching")
     boolean useSemanticBranching;
@@ -160,18 +153,7 @@ public class TBox {
     /** use special domains as GCIs */
     @PortedFrom(file = "dlTBox.h", name = "useSpecialDomains")
     boolean useSpecialDomains;
-    // Flags section
-    /** flag for full/short KB */
-    // private boolean useRelevantOnly;
-    /** flag for creating taxonomy */
-    // private boolean useCompletelyDefined;
-    /** flag for dumping TBox relevant to query */
-    // private boolean dumpQuery;
-    /** shall we prefer C=D axioms to C[=E in definition of concepts */
-    // private boolean alwaysPreferEquals;
-    // ---------------------------------------------------------------------------
     // Internally defined flags
-    // ---------------------------------------------------------------------------
     /** whether we use sorted reasoning; depends on some simplifications */
     @PortedFrom(file = "dlTBox.h", name = "useSortedReasoning")
     private boolean useSortedReasoning;
@@ -181,13 +163,11 @@ public class TBox {
     /** flag whether TBox is WINE-like */
     @PortedFrom(file = "dlTBox.h", name = "isLikeWINE")
     private boolean isLikeWINE;
-    /** flag whether precompletion should be used */
-    // private boolean usePrecompletion;
+
     /** whether KB is consistent */
     @PortedFrom(file = "dlTBox.h", name = "consistent")
     private boolean consistent;
-    /** whether KB(ABox) is precompleted */
-    // private boolean precompleted;
+
     /** time spend for preprocessing */
     @PortedFrom(file = "dlTBox.h", name = "preprocTime")
     private long preprocTime;
@@ -261,13 +241,16 @@ public class TBox {
     @PortedFrom(file = "dlTBox.h", name = "checkEarlySynonym")
     public void checkEarlySynonym(Concept p) {
         if (p.isSynonym()) {
-            return; // nothing to do
+            // nothing to do
+            return;
         }
         if (p.isPrimitive()) {
-            return; // couldn't be a synonym
+            // couldn't be a synonym
+            return;
         }
         if (!p.getDescription().isCN()) {
-            return; // complex expression -- not a synonym(imm.)
+            // complex expression -- not a synonym(imm.)
+            return;
         }
         p.setSynonym(getCI(p.getDescription()));
         p.initToldSubsumers();
@@ -543,7 +526,7 @@ public class TBox {
                 this.collectLogicFeature(pc);
                 setRelevant(pc.getpBody());
             }
-            // setRelevant(pc);
+
         }
         for (Individual pi : individuals.getList()) {
             if (!pi.isRelevant(relevance)) {
@@ -552,7 +535,7 @@ public class TBox {
                 this.collectLogicFeature(pi);
                 setRelevant(pi.getpBody());
             }
-            // setRelevant(pi);
+
         }
         markGCIsRelevant();
     }
@@ -744,7 +727,6 @@ public class TBox {
         for (DLTree beg : c) {
             if (beg.isName()) {
                 fairness.add(getCI(beg));
-                // deleteTree(beg);
             } else {
                 // build a flag for a FC
                 Concept fc = getAuxConcept(null);
@@ -811,7 +793,7 @@ public class TBox {
         }
     }
 
-    // / check if the relevant part of KB contains top role
+    /** check if the relevant part of KB contains top role */
     @PortedFrom(file = "dlTBox.h", name = "testHasTopRole")
     public boolean testHasTopRole() {
         if (curFeature != null) {
@@ -901,17 +883,12 @@ public class TBox {
     public void buildDAG() {
         nNominalReferences = 0;
         // init concept indexing
-        nC = 1; // start with 1 to make index 0 an indicator of "not processed"
+        // start with 1 to make index 0 an indicator of "not processed"
+        nC = 1;
         ConceptMap.add(null);
         // make fresh concept and datatype
         concept2dag(pTemp);
-        // DLTree freshDT = datatypeCenter.getFreshDataType();
-        // NamedEntry ne = freshDT.elem().getNE();
-        // if (ne instanceof Datatype) {
-        // addDataExprToHeap(((Datatype) ne).getDatatype());
-        // } else {
-        // addDataExprToHeap((DataEntry) ne);
-        // }
+
         for (Concept pc : concepts.getList()) {
             concept2dag(pc);
         }
@@ -987,7 +964,7 @@ public class TBox {
                 DLTree dom = R.getTDomain();
                 int bp = bpTOP;
                 if (dom != null) {
-                    // i=0;
+
                     bp = tree2dag(dom);
                     GCIs.setRnD();
                 }
@@ -995,7 +972,7 @@ public class TBox {
                 // special domain for R is AR.Range
                 R.initSpecialDomain();
                 if (R.hasSpecialDomain()) {
-                    // i=0;
+
                     R.setSpecialDomain(tree2dag(R.getTSpecialDomain()));
                 }
             }
@@ -1103,7 +1080,6 @@ public class TBox {
         }
         Lexeme cur = t.elem();
         int ret = bpINVALID;
-        // int index = 0;
         switch (cur.getToken()) {
             case BOTTOM:
                 ret = bpBOTTOM;
@@ -1289,20 +1265,15 @@ public class TBox {
         boolean needConcept = !needIndividual;
         // if there were SAT queries before -- the query concept is in there.
         // Delete it
-        // if (defConcept != null) {
         clearQueryConcept();
-        // defConcept = null;
-        // }
         // here we sure that ontology is consistent
         // FIXME!! distinguish later between the 1st run and the following runs
-        // if (pTax == null) {
+
         dlHeap.setSubOrder();
         // initTaxonomy();
         pTax.setBottomUp(GCIs);
         needConcept |= needIndividual;
-        // } else {
-        // return;
-        // }
+
         if (config.getverboseOutput()) {
             config.getLog().print("Processing query...\n");
         }
@@ -1318,18 +1289,12 @@ public class TBox {
             config.getProgressMonitor().reasonerTaskStarted(
                     ReasonerProgressMonitor.CLASSIFYING);
         }
-        // stdReasoner.setDuringClassification(true);
-        // if (nomReasoner != null) {
-        // nomReasoner.setDuringClassification(true);
-        // }
+
         duringClassification = true;
         classifyConcepts(arrayCD, true, "completely defined");
         classifyConcepts(arrayNoCD, false, "regular");
         classifyConcepts(arrayNP, false, "non-primitive");
-        // stdReasoner.setDuringClassification(false);
-        // if (nomReasoner != null) {
-        // nomReasoner.setDuringClassification(false);
-        // }
+
         duringClassification = false;
         pTax.processSplits();
         if (config.getProgressMonitor() != null) {
@@ -1375,9 +1340,7 @@ public class TBox {
     void classifyEntry(Concept entry) {
         if (isBlockedInd(entry)) {
             classifyEntry(getBlockingInd(entry));
-            // make sure that the possible
-            // synonym is already
-            // classified
+            // make sure that the possible synonym is already classified
         }
         if (!entry.isClassified()) {
             pTax.classifyEntry(entry);
@@ -1418,7 +1381,7 @@ public class TBox {
         isLikeGALEN = false;
         isLikeWINE = false;
         consistent = true;
-        // precompleted = false;
+
         preprocTime = 0;
         consistTime = 0;
         config.getLog().printTemplate(Templates.READ_CONFIG,
@@ -1427,7 +1390,7 @@ public class TBox {
         if (axioms.initAbsorptionFlags(config.getabsorptionFlags())) {
             throw new ReasonerInternalException("Incorrect absorption flags given");
         }
-        // setToDoPriorities();
+
         initTopBottom();
         setForbidUndefinedNames(false);
         pTax = new DLConceptTaxonomy(top, bottom, this);
@@ -1442,7 +1405,8 @@ public class TBox {
         C.setNonClassifiable();
         C.setPrimitive(true);
         C.addDesc(desc);
-        C.initToldSubsumers(); // it is created after this is done centrally
+        // it is created after this is done centrally
+        C.initToldSubsumers();
         return C;
     }
 
@@ -1510,8 +1474,8 @@ public class TBox {
         // set cache for BOTTOM entry
         initConstCache(bpBOTTOM);
         // set all the caches for the temp concept
-        initSingletonCache(pTemp, /* pos= */true);
-        initSingletonCache(pTemp, /* pos= */false);
+        initSingletonCache(pTemp, true);
+        initSingletonCache(pTemp, false);
         // inapplicable if KB contains CGIs in any form
         if (GCIs.isGCI() || GCIs.isReflexive()) {
             return;
@@ -1614,13 +1578,11 @@ public class TBox {
             }
             // here this means that one of the individuals is a fresh name
             return false;
-            // throw new ReasonerInternalException(
-            // "isSameIndividuals() query with non-realised ontology: "+a+" "+b);
+
         }
         // TODO equals for TaxonomyVertex
         return a.getTaxVertex().equals(b.getTaxVertex());
-        // return
-        // a.getNode().resolvePBlocker().equals(b.getNode().resolvePBlocker());
+
     }
 
     @PortedFrom(file = "dlTBox.h", name = "isDisjointRoles")
@@ -1654,11 +1616,6 @@ public class TBox {
         addConceptToHeap(query);
         // gather statistics about the concept
         setConceptRelevant(query);
-        // DEBUG_ONLY: print the DAG info
-        // std::ofstream debugPrint ( defConceptName,
-        // std::ios::app|std::ios::out );
-        // Print (debugPrint);
-        // debugPrint << std::endl;
         // check satisfiability of the concept
         initCache(query, false);
     }
@@ -1679,8 +1636,8 @@ public class TBox {
     }
 
     /** knowledge exploration: build a model and return a link to the root */
-    /** build a completion tree for a concept C (no caching as it breaks the */
-    // idea of KE). @return the root node
+    /** build a completion tree for a concept C (no caching as it breaks the idea
+     * of KE). @return the root node */
     @PortedFrom(file = "dlTBox.h", name = "buildCompletionTree")
     DlCompletionTree buildCompletionTree(Concept pConcept) {
         DlCompletionTree ret = null;
@@ -2201,7 +2158,7 @@ public class TBox {
         int size = l.size();
         for (int i = 0; i < size; i++) {
             if (DLTreeFactory.isTopRole(l.get(i))) {
-                // if (DLTreeFactory.isUniversalRole(l.get(i))) {
+                
                 throw new ReasonerInternalException(
                         "Universal role in the disjoint roles axiom");
             }
@@ -2252,9 +2209,7 @@ public class TBox {
         transformSingletonHierarchy();
         absorbAxioms();
         setToldTop();
-        // if (usePrecompletion) {
-        // performPrecompletion();
-        // }
+
         buildDAG();
         buildSplitRules();
         fillsClassificationTag();
@@ -2281,22 +2236,10 @@ public class TBox {
 
     @PortedFrom(file = "dlTBox.h", name = "setAllIndexes")
     private void setAllIndexes() {
-        // nC = 1; // start with 1 to make index 0 an indicator of
-        // "not processed"
-        // ConceptMap.add(null);
-        // pTemp.setIndex(nC++);
-        // for (Concept pc : concepts.getList()) {
-        // if (!pc.isSynonym()) {
-        // pc.setIndex(nC++);
-        // }
-        // }
-        // for (Individual pi : individuals.getList()) {
-        // if (!pi.isSynonym()) {
-        // pi.setIndex(nC++);
-        // }
-        // }
-        ++nC; // place for the query concept
-        nR = 1; // start with 1 to make index 0 an indicator of "not processed"
+        // place for the query concept
+        ++nC;
+        // start with 1 to make index 0 an indicator of "not processed"
+        nR = 1;
         for (Role r : objectRoleMaster.getRoles()) {
             if (!r.isSynonym()) {
                 r.setIndex(nR++);
@@ -2472,10 +2415,7 @@ public class TBox {
         return i;
     }
 
-    // public void performPrecompletion() {
-    // Precompletor PC = new Precompletor(this);
-    // PC.performPrecompletion();
-    // }
+
     @PortedFrom(file = "dlTBox.h", name = "determineSorts")
     public void determineSorts() {
         if (config.isRKG_USE_SORTED_REASONING()) {
@@ -2628,14 +2568,12 @@ public class TBox {
     @PortedFrom(file = "dlTBox.h", name = "initReasoner")
     public void initReasoner() {
         assert !reasonersInited();
-        // if (stdReasoner == null) {
-        // assert nomReasoner == null;
         stdReasoner = new DlSatTester(this, config, datatypeFactory);
         if (nominalCloudFeatures.hasSingletons()) {
             nomReasoner = new NominalReasoner(this, config, datatypeFactory);
         }
         setToDoPriorities();
-        // }
+
     }
 
     @PortedFrom(file = "dlTBox.h", name = "nRelevantCCalls")
@@ -2677,14 +2615,14 @@ public class TBox {
                         ++nRelevantCCalls;
                         concept.setRelevant(relevance);
                         this.collectLogicFeature(concept);
-                        // setRelevant(concept.getpBody());
+
                         queue.add(concept.getpBody());
                     }
-                    // setRelevant((Concept) v.getConcept());
+
                     break;
                 case dtForall:
                 case dtLE:
-                // setRelevant(v.getRole());
+
                 {
                     Role _role = v.getRole();
                     List<Role> rolesToExplore = new LinkedList<Role>();
@@ -2728,7 +2666,7 @@ public class TBox {
                 case dtCollection:
                 case dtSplitConcept:
                     for (int q : v.begin()) {
-                        // setRelevant(q);
+
                         queue.add(q);
                     }
                     break;

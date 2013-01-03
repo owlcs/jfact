@@ -29,28 +29,7 @@ public class TSplitRules {
         /** pointer to split vertex to activate */
         int bpSplit;
 
-        /** // check whether set SUB contains in the set SUP */
-        // static boolean containsIn ( Set< NamedEntity> Sub, Set< NamedEntity>
-        // Sup )
-        // { return includes ( Sup.begin(), Sup.end(), Sub.begin(), Sub.end() );
-        // }
-        /** // check whether set S1 intersects with the set S2 */
-        // static boolean intersectsWith ( Set< NamedEntity> S1, Set<
-        // NamedEntity> S2 )
-        // {
-        // SigSet::const_iterator q = S1.begin(), q_end = S1.end(), p =
-        // S2.begin(), p_end = S2.end();
-        // while ( p != p_end && q != q_end )
-        // {
-        // if ( *p == *q )
-        // return true;
-        // if ( *p < *q )
-        // ++p;
-        // else
-        // ++q;
-        // }
-        // return false;
-        // }
+
         TSplitRule() {}
 
         /** init c'tor */
@@ -71,8 +50,8 @@ public class TSplitRules {
             return bpSplit;
         }
 
-        /** check whether signatures of a rule are related to current signature */
-        // in such a way that allows rule to fire
+        /** check whether signatures of a rule are related to current signature
+         * in such a way that allows rule to fire */
         public boolean canFire(Set<NamedEntity> CurrentSig) {
             return CurrentSig.containsAll(eqSig) && intersectsWith(impSig, CurrentSig);
         }
@@ -184,14 +163,11 @@ public class TSplitRules {
     @PortedFrom(file = "tSplitExpansionRules.h", name = "buildSet")
     Set<NamedEntity> buildSet(TSignature sig, NamedEntity entity) {
         Set<NamedEntity> set = new HashSet<NamedEntity>();
-        // std::cout << "Building set for " << entity.getName() << "\n";
         for (NamedEntity p : sig.begin()) {
             if (p != entity && p instanceof ConceptName) {
-                // std::cout << "In the set: " << (*p).getName() << "\n";
                 set.add(p);
             }
         }
-        // std::cout << "done\n";
         // register all elements in the set in PossibleSignature
         PossibleSignature.addAll(set);
         return set;
@@ -200,12 +176,10 @@ public class TSplitRules {
     /** init split as a set-of-sets */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "initSplit")
     void initSplit(TSplitVar split) {
-        // std::cout << "Processing split for " << split.oldName.getName() <<
-        // ":\n";
         Entry p = split.getEntries().get(0);
         Set<NamedEntity> impSet = buildSet(p.sig, p.name);
-        int bp = split.C.getpBody() + 1; // choose-rule stays next to a
-                                         // split-definition of C
+        int bp = split.C.getpBody() + 1;
+        // choose-rule stays next to a split-definition of C
         for (int i = 1; i < split.getEntries().size(); i++) {
             p = split.getEntries().get(i);
             if (p.Module.size() == 1) {
@@ -215,8 +189,6 @@ public class TSplitRules {
                 Set<TSignature> Out = new HashSet<TSignature>();
                 // prepare vector of available entities
                 List<NamedEntity> Allowed = new ArrayList<NamedEntity>();
-                // std::cout << "\n\n\nMaking split for module with " <<
-                // p.name.getName();
                 List<Axiom> Module = new ArrayList<Axiom>(p.Module);
                 // prepare signature for the process
                 TSignature sig = p.sig;
@@ -269,7 +241,6 @@ public class TSplitRules {
             List<Axiom> Module, Set<TSignature> Out) {
         // copy the signature
         TSignature sig = StartSig;
-        // std::cout << "\nBuilding seed signatures:";
         // create a set of allowed entities for the next round
         List<NamedEntity> RecAllowed = new ArrayList<NamedEntity>();
         List<NamedEntity> Keepers = new ArrayList<NamedEntity>();
@@ -278,22 +249,19 @@ public class TSplitRules {
         for (NamedEntity p : Allowed) {
             if (sig.containsNamedEntity(p)) {
                 sig.remove(p);
-                // std::cout << "\nTrying " << (*p).getName() << ": ";
                 outModule.addAll(mod.extractModule(Module, sig, ModuleType.M_STAR));
-                if (mod.getModule().size() == Module.size()) { // possible to
-                                                               // remove one
-                    // std::cout << "remove";
+                if (mod.getModule().size() == Module.size()) {
+                    // possible to remove one
                     RecAllowed.add(p);
                 } else {
-                    // std::cout << "keep";
                     Keepers.add(p);
                 }
                 sig.add(p);
             }
         }
-        // std::cout << "\nDone with " << RecAllowed.size() << " sigs left";
-        if (RecAllowed.isEmpty()) // minimal seed signature
+        if (RecAllowed.isEmpty())
         {
+            // minimal seed signature
             Out.add(StartSig);
             return;
         }

@@ -19,11 +19,6 @@ public class SaveState {
         cc = Integer.MAX_VALUE;
     }
 
-    /** copy c'tor */
-    // public SaveState(SaveState ss) {
-    // sc = ss.sc;
-    // cc = ss.cc;
-    // }
     public int getSc() {
         return sc;
     }

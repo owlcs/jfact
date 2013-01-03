@@ -43,9 +43,10 @@ public class NominalReasoner extends DlSatTester {
     protected boolean initNominalNode(Individual nom) {
         DlCompletionTree node = cGraph.getNewNode();
         node.setNominalLevel();
-        nom.setNode(node); // init nominal with associated node
-        return initNewNode(node, DepSet.create(), nom.getpName()); // ABox is
-                                                                   // inconsistent
+        // init nominal with associated node
+        nom.setNode(node);
+        // ABox is inconsistent
+        return initNewNode(node, DepSet.create(), nom.getpName());
     }
 
     /** use classification information for the nominal P */
@@ -79,7 +80,8 @@ public class NominalReasoner extends DlSatTester {
         options.getLog().print("\nInitNominalReasoner:");
         restore(1);
         // check whether branching op is not a barrier...
-        if (!(bContext instanceof BCBarrier)) { // replace it with a barrier
+        if (!(bContext instanceof BCBarrier)) {
+            // replace it with a barrier
             stack.pop();
             createBCBarrier();
         }
