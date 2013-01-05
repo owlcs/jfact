@@ -10,11 +10,12 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 
 @SuppressWarnings("javadoc")
 public class TopObjectPropertyTest {
+    OWLDataFactory df = OWLManager.getOWLDataFactory();
+
     @Test
     public void testReasoner3() throws OWLOntologyCreationException {
         OWLOntologyManager mngr = OWLManager.createOWLOntologyManager();
         OWLOntology ont = mngr.createOntology();
-        OWLDataFactory df = mngr.getOWLDataFactory();
         OWLDataProperty p = df.getOWLDataProperty(IRI.create("http://example.com/p"));
         // just so p is known in the ontology
         mngr.applyChange(new AddAxiom(ont, df.getOWLFunctionalDataPropertyAxiom(p)));
@@ -34,19 +35,4 @@ public class TopObjectPropertyTest {
         assertFalse(r.getTopDataPropertyNode().getEntities().isEmpty());
     }
 
-    @Test
-    public void testReasoner5() throws OWLOntologyCreationException {
-        OWLOntologyManager mngr = OWLManager.createOWLOntologyManager();
-        OWLOntology ont = mngr.createOntology();
-        mngr.addAxiom(
-                ont,
-                mngr.getOWLDataFactory().getOWLDataPropertyDomainAxiom(
-                        mngr.getOWLDataFactory().getOWLDataProperty(
-                                IRI.create("urn:test:datap1")),
-                        mngr.getOWLDataFactory().getOWLNothing()));
-        OWLReasonerFactory fac = Factory.factory();
-        OWLReasoner r = fac.createNonBufferingReasoner(ont);
-        assertFalse(r.getBottomDataPropertyNode().getEntities().isEmpty());
-        assertTrue(r.getBottomDataPropertyNode().getEntities().size() == 2);
-    }
 }

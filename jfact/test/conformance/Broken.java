@@ -6,30 +6,55 @@ import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 
 @SuppressWarnings("javadoc")
 public class Broken {
     @Test
-    public void testBugFix() throws OWLOntologyCreationException {
-        OWLOntologyManager m = OWLManager.createOWLOntologyManager();
-        OWLOntology o = m.createOntology();
-        OWLDataFactory f = m.getOWLDataFactory();
-        OWLDataProperty p = f.getOWLDataProperty(IRI.create("urn:t:t#p"));
-        OWLNamedIndividual i = f.getOWLNamedIndividual(IRI.create("urn:t:t#i"));
-        m.addAxiom(o, f.getOWLDeclarationAxiom(p));
-        m.addAxiom(o, f.getOWLDeclarationAxiom(i));
-        OWLDataOneOf owlDataOneOf = f.getOWLDataOneOf(f.getOWLLiteral(1),
-                f.getOWLLiteral(2), f.getOWLLiteral(3), f.getOWLLiteral(4));
-        OWLDataOneOf owlDataOneOf2 = f.getOWLDataOneOf(f.getOWLLiteral(4),
-                f.getOWLLiteral(5), f.getOWLLiteral(6));
-        m.addAxiom(o, f.getOWLDataPropertyRangeAxiom(p, owlDataOneOf));
-        m.addAxiom(o, f.getOWLDataPropertyRangeAxiom(p, owlDataOneOf2));
-        m.addAxiom(o, f.getOWLClassAssertionAxiom(f.getOWLDataMinCardinality(1, p), i));
-        OWLReasoner r = Factory.factory().createReasoner(o);
-        OWLDataPropertyAssertionAxiom ass = f.getOWLDataPropertyAssertionAxiom(p, i, 4);
-        boolean entailed = r.isEntailed(ass);
-        assertTrue(entailed);
+    public void testReasoner5() throws OWLOntologyCreationException {
+        OWLOntologyManager mngr = OWLManager.createOWLOntologyManager();
+        OWLOntology ont = mngr.createOntology();
+        OWLDataFactory df = OWLManager.getOWLDataFactory();
+        OWLDataProperty dp = df.getOWLDataProperty(IRI.create("urn:test:datap1"));
+        mngr.addAxiom(ont, df.getOWLDataPropertyDomainAxiom(dp, df.getOWLNothing()));
+        OWLReasonerFactory fac = Factory.factory();
+        OWLReasoner r = fac.createNonBufferingReasoner(ont);
+        assertEquals(2, r.getBottomDataPropertyNode().getEntities().size());
     }
+
+    @Test
+    public void testReasoner6() throws OWLOntologyCreationException,
+            OWLOntologyStorageException {
+        OWLOntologyManager mngr = OWLManager.createOWLOntologyManager();
+        OWLOntology ont = mngr.createOntology();
+        OWLReasonerFactory fac = Factory.factory();
+        OWLReasoner r = fac.createReasoner(ont);
+        System.out.println("TopObjectPropertyTest.testReasoner6() "
+                + r.getBottomDataPropertyNode().getEntities());
+        assertEquals(1, r.getBottomDataPropertyNode().getEntities().size());
+    }
+
+    @Test
+    public void testContradicting_datatype_Restrictions() {
+        String premise = "Prefix(:=<http://example.org/>)\nPrefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+                + "Ontology(\n"
+                + "  Declaration(NamedIndividual(:a))\n"
+                + "  Declaration(DataProperty(:dp))\n"
+                + "  Declaration(Class(:A))\n"
+                + "  SubClassOf(:A DataAllValuesFrom(:dp DataOneOf(\"3\"^^xsd:integer \"4\"^^xsd:integer))) \n"
+                + "  SubClassOf(:A DataAllValuesFrom(:dp DataOneOf(\"2\"^^xsd:integer \"3\"^^xsd:integer)))\n"
+                + "  SubClassOf(:A DataSomeValuesFrom(:dp DatatypeRestriction(xsd:integer xsd:minInclusive \"4\"^^xsd:integer)))\n"
+                + "  ClassAssertion(:A :a))";
+        String conclusion = "";
+        String id = "Contradicting_datatype_Restrictions";
+        TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
+        String d = "The individual a is in A and thus must have a dp filler that is an integer >= 4. Furthermore the dp fillers must be in the set {3, 4} and in the set {2, 3}. Although 3 is in both sets, 3 is not >= 4, which causes the inconsistency.";
+        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        r.setReasonerFactory(Factory.factory());
+        r.run();
+    }
+
+
 
     @Test
     public void testContradicting_dateTime_restrictions() {

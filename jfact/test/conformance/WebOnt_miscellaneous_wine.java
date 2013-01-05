@@ -23,20 +23,16 @@ public class WebOnt_miscellaneous_wine {
                 + "  <owl:Class rdf:about=\"#ConsumableThing\" />\n"
                 + "    <owl:ObjectProperty  rdf:about=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent002#madeFromFruit\" />\n"
                 + "  <owl:Class rdf:about=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent002#PotableLiquid\" />\n"
-                + "\n"
                 + "  <owl:Class rdf:about=\"#NonConsumableThing\">\n"
                 + "    <owl:complementOf rdf:resource=\"#ConsumableThing\" />\n"
                 + "  </owl:Class>\n"
-                + "\n"
                 + "  <owl:Class rdf:about=\"#EdibleThing\">\n"
                 + "    <rdfs:subClassOf rdf:resource=\"#ConsumableThing\" />\n"
                 + "  </owl:Class>\n"
-                + "  \n"
                 + "  <owl:Class rdf:about=\"#PotableLiquid\">\n"
                 + "    <rdfs:subClassOf rdf:resource=\"#ConsumableThing\" />\n"
                 + "    <owl:disjointWith rdf:resource=\"#EdibleThing\" />\n"
                 + "  </owl:Class>\n"
-                + "  \n"
                 + "  <owl:Class rdf:about=\"#Wine\"/>\n"
                 + "  <owl:Class rdf:about=\"&food;Grape\"/>\n"
                 + "\n"
@@ -1783,6 +1779,7 @@ public class WebOnt_miscellaneous_wine {
         String d = "Wine example taken from the guide. Note that this is the same as the ontology http://www.w3.org/2002/03owlt/miscellaneous/consistent002 imported in other tests.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
+        // r.getConfiguration().setLoggingActive(true);
         r.run();
     }
 }
