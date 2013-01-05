@@ -532,9 +532,9 @@ public class DLDag {
         int key1 = v1.getStat(iSort);
         int key2 = v2.getStat(iSort);
         if (sortAscend) {
-            return key1 < key2;
+            return key1 <= key2;
         } else {
-            return key2 < key1;
+            return key2 <= key1;
         }
     }
 

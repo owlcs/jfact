@@ -29,6 +29,7 @@ public class DLVertex extends DLVertexTagDFS {
             @Override
             @PortedFrom(file = "dlVertex.h", name = "compare")
             public int compare(Integer o1, Integer o2) {
+
                 if (o1.equals(o2)) {
                     return 0;
                 }
@@ -73,7 +74,7 @@ public class DLVertex extends DLVertexTagDFS {
                 sorted = new int[set.size()];
                 if (sorter == null) {
                     for (int i = 0; i < set.size(); i++) {
-                        // if the re is no sorting, use the original insertion
+                        // if there is no sorting, use the original insertion
                         // order
                         sorted[i] = original.get(i);
                     }
