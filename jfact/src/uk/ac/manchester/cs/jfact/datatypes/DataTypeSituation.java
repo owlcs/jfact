@@ -118,7 +118,7 @@ public class DataTypeSituation<R extends Comparable<R>> {
         if (!this.type.isCompatible(other.type)) {
             return false;
         }
-        if (this.emptyConstraints() || other.emptyConstraints()) {
+        if (this.emptyConstraints() && other.emptyConstraints()) {
             return true;
         }
         List<Literal<?>> allLiterals = new ArrayList<Literal<?>>(this.literals);

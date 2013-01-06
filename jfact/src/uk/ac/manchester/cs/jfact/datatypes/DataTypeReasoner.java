@@ -81,17 +81,7 @@ public final class DataTypeReasoner {
             DepSet dep) {
         switch (type) {
             case dtDataType: {
-                Datatype<?> t = ((DatatypeEntry) entry).getDatatype();
-                if (options.isLoggingActive()) {
-                    options.getLog().printTemplate(Templates.INTERVAL,
-                            positive ? "+" : "-", entry.getName(), "", "", "");
-                }
-                if (positive) {
-                    this.getType(t).setPType(dep);
-                } else {
-                    this.getType(t).setNType(dep);
-                }
-                return false;
+                return dataType(positive, ((DatatypeEntry) entry).getDatatype(), dep);
             }
             case dtDataValue:
                 return this.dataValue(positive, ((LiteralEntry) entry).getLiteral(), dep);
@@ -117,6 +107,21 @@ public final class DataTypeReasoner {
         options.getLog().printTemplate(Templates.INTERVAL, positive ? "+" : "-", c, "",
                 "", "");
         return this.getType(c).addInterval(positive, c, dep);
+    }
+
+    @Original
+    private <R extends Comparable<R>> boolean dataType(boolean positive, Datatype<R> c,
+            DepSet dep) {
+        if (options.isLoggingActive()) {
+            options.getLog().printTemplate(Templates.INTERVAL, positive ? "+" : "-", c,
+                    "", "", "");
+        }
+        if (positive) {
+            this.getType(c).setPType(dep);
+        } else {
+            this.getType(c).setNType(dep);
+        }
+        return false;// this.getType(c).addInterval(positive, c, dep);
     }
 
     @PortedFrom(file = "DataReasoning.h", name = "dataValue")
