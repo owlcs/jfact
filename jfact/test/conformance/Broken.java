@@ -56,30 +56,6 @@ public class Broken {
 
 
 
-    @Test
-    public void testContradicting_dateTime_restrictions() {
-        String premise = "Prefix(:=<http://example.org/>)\n"
-                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
-                + "Ontology(\n"
-                + "  Declaration(NamedIndividual(:a))\n"
-                + "  Declaration(DataProperty(:dp))\n"
-                + "  Declaration(Class(:A))\n"
-                + "  SubClassOf(:A \n"
-                + "    DataHasValue(:dp \"2007-10-08T20:44:11.656+01:00\"^^xsd:dateTime)) \n"
-                + "  SubClassOf(:A \n"
-                + "    DataAllValuesFrom(:dp DatatypeRestriction(\n"
-                + "      xsd:dateTime \n"
-                + "      xsd:minInclusive \"2008-07-08T20:44:11.656+01:00\"^^xsd:dateTime \n"
-                + "      xsd:maxInclusive \"2008-10-08T20:44:11.656+01:00\"^^xsd:dateTime)\n"
-                + "    )\n" + "  ) \n" + "  ClassAssertion(:A :a)\n" + ")";
-        String conclusion = "";
-        String id = "Contradicting_dateTime_restrictions";
-        TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        String d = "The individual a must have a dp filler that is a date from 2007, but the restrictions on dp allow only values from 2008, which makes the ontology inconsistent.";
-        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
-        r.run();
-    }
 
     @Test
     public void testDatatype_Float_Discrete_001() {
@@ -113,90 +89,8 @@ public class Broken {
         r.run();
     }
 
-    @Test
-    public void testInconsistent_Byte_Filler() {
-        String premise = "Prefix(:=<http://example.org/>)\n"
-                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n" + "Ontology(\n"
-                + "  Declaration(NamedIndividual(:a))\n"
-                + "  Declaration(DataProperty(:dp))\n" + "  Declaration(Class(:A))\n"
-                + "  SubClassOf(:A DataAllValuesFrom(:dp xsd:byte))  \n"
-                + "  ClassAssertion(:A :a)\n" + "  ClassAssertion(\n"
-                + "    DataSomeValuesFrom(:dp DataOneOf(\"6542145\"^^xsd:integer)) :a\n"
-                + "  )\n" + ")";
-        String conclusion = "";
-        String id = "Inconsistent_Byte_Filler";
-        TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        String d = "The individual a must have the integer 6542145 as dp filler, but all fillers must also be bytes. Since 6542145 is not byte, the ontology is inconsistent.";
-        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
-        r.run();
-    }
 
-    @Test
-    public void testInconsistent_Data_Complement_with_the_Restrictions() {
-        String premise = "Prefix(:=<http://example.org/>)\n"
-                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n" + "Ontology(\n"
-                + "  Declaration(NamedIndividual(:a))\n"
-                + "  Declaration(DataProperty(:dp))\n" + "  Declaration(Class(:A))\n"
-                + "  SubClassOf(:A DataAllValuesFrom(:dp \n"
-                + "    DataOneOf(\"3\"^^xsd:integer \"4\"^^xsd:integer))\n" + "  ) \n"
-                + "  SubClassOf(:A DataAllValuesFrom(:dp \n"
-                + "    DataOneOf(\"2\"^^xsd:integer \"3\"^^xsd:integer))\n" + "  )\n"
-                + "  ClassAssertion(:A :a)\n"
-                + "  ClassAssertion(DataSomeValuesFrom(:dp\n"
-                + "  DataComplementOf(DataOneOf(\"3\"^^xsd:integer))) :a)\n" + ")";
-        String conclusion = "";
-        String id = "Inconsistent_Data_Complement_with_the_Restrictions";
-        TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        String d = "The individual a must have dp fillers that are in the sets {3, 4} and {2, 3}, but at the same time 3 is not allowed as a dp filler for a, which causes the inconsistency.";
-        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
-        r.run();
-    }
 
-    @Test
-    public void testPlus_and_Minus_Zero_are_Distinct() {
-        String premise = "Prefix(:=<http://example.org/>)\n"
-                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
-                + "Ontology(\n"
-                + "  Declaration(NamedIndividual(:Meg))\n"
-                + "  Declaration(DataProperty(:numberOfChildren))\n"
-                + "  DataPropertyAssertion(:numberOfChildren :Meg \"+0.0\"^^xsd:float) \n"
-                + "  DataPropertyAssertion(:numberOfChildren :Meg \"-0.0\"^^xsd:float) \n"
-                + "  FunctionalDataProperty(:numberOfChildren)\n" + ")";
-        String conclusion = "";
-        String id = "Plus_and_Minus_Zero_are_Distinct";
-        TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        String d = "For floats and double, +0.0 and -0.0 are distinct values, which contradicts the functionality for numberOfChildren.";
-        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
-        r.run();
-    }
-
-    @Test
-    public void testQualified_cardinality_boolean() {
-        String premise = "Prefix( : = <http://example.org/test#> )\n"
-                + "Prefix( xsd: = <http://www.w3.org/2001/XMLSchema#> )\n"
-                + "\n"
-                + "Ontology(<http://owl.semanticweb.org/page/Special:GetOntology/Qualified-cardinality-boolean?m=p>\n"
-                + "  Declaration(NamedIndividual(:a))\n" + "  Declaration(Class(:A))\n"
-                + "  Declaration(DataProperty(:dp))\n" + "\n"
-                + "  SubClassOf(:A DataExactCardinality(2 :dp xsd:boolean))\n" + "\n"
-                + "  ClassAssertion(:A :a)\n" + ")";
-        String conclusion = "Prefix( : = <http://example.org/test#> )\n"
-                + "Prefix( xsd: = <http://www.w3.org/2001/XMLSchema#> )\n"
-                + "\n"
-                + "Ontology(<http://owl.semanticweb.org/page/Special:GetOntology/Qualified-cardinality-boolean?m=c>\n"
-                + "  Declaration(DataProperty(:dp))\n" + "\n"
-                + "  DataPropertyAssertion(:dp :a \"true\"^^xsd:boolean)\n"
-                + "  DataPropertyAssertion(:dp :a \"false\"^^xsd:boolean)\n" + ")";
-        String id = "Qualified_cardinality_boolean";
-        TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "According to qualified cardinality restriction individual a should have two boolean values. Since there are only two boolean values, the data property assertions can be entailed.";
-        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
-        r.run();
-    }
 
     @Test
     public void testWebOnt_I5_8_009() {
@@ -311,29 +205,6 @@ public class Broken {
         r.run();
     }
 
-    @Test
-    public void testWebOnt_oneOf_004() {
-        String premise = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
-                + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\nPrefix(xml:=<http://www.w3.org/XML/1998/namespace>)\nPrefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\nPrefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)\n"
-                + "Ontology(\nDeclaration(DataProperty(<urn:t:p#p>))\n"
-                + "DataPropertyRange(<urn:t:p#p> DataOneOf(\"1\"^^xsd:integer \"2\"^^xsd:integer \"3\"^^xsd:integer \"4\"^^xsd:integer))\n"
-                + "DataPropertyRange(<urn:t:p#p> DataOneOf(\"4\"^^xsd:integer \"5\"^^xsd:integer \"6\"^^xsd:integer))\n"
-                + "ClassAssertion(owl:Thing <urn:t:p#i>)\n"
-                + "ClassAssertion(DataMinCardinality(1 <urn:t:p#p>) <urn:t:p#i>)\n"
-                // +"DataPropertyAssertion(<urn:t:p#p> <urn:t:p#i> \"4\"^^xsd:integer)"
-                + ")";
-        String conclusion = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
-                + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\nPrefix(xml:=<http://www.w3.org/XML/1998/namespace>)\nPrefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\nPrefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)\n"
-                + "Ontology(\nDeclaration(DataProperty(<urn:t:p#p>))\n"
-                + "ClassAssertion(owl:Thing <urn:t:p#i>)\n"
-                + "DataPropertyAssertion(<urn:t:p#p> <urn:t:p#i> \"4\"^^xsd:integer))";
-        String id = "WebOnt_oneOf_004";
-        TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "This test illustrates the use of dataRange in OWL DL. This test combines some of the ugliest features of XML, RDF and OWL.";
-        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
-        r.run();
-    }
 
     @Test
     public void testWebOnt_someValuesFrom_003() {
