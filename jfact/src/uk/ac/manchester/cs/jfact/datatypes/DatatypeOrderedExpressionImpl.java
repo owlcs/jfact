@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.*;
 import static uk.ac.manchester.cs.jfact.datatypes.Facets.*;
 
 import java.math.BigDecimal;
@@ -28,10 +29,89 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
 
     @Override
     public boolean isInValueSpace(O l) {
-        if (!this.host.isInValueSpace(l)) {
+        if (this.hasMinExclusive()) {
+            // to be in value space, ex min must be smaller than l
+            if (l.compareTo(this.getMin()) <= 0) {
+                return false;
+            }
+        }
+        if (this.hasMinInclusive()) {
+            // to be in value space, min must be smaller or equal to l
+            if (l.compareTo(this.getMin()) < 0) {
+                return false;
+            }
+        }
+        if (this.hasMaxExclusive()) {
+            // to be in value space, ex max must be bigger than l
+            if (l.compareTo(this.getMax()) >= 0) {
+                return false;
+            }
+        }
+        if (this.hasMaxInclusive()) {
+            // to be in value space, ex min must be smaller than l
+            if (l.compareTo(this.getMax()) > 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean isCompatible(Datatype<?> type) {
+        // if (!super.isCompatible(type)) {
+        // return false;
+        // }
+        if (type.equals(LITERAL)) {
+            return true;
+        }
+        // if(isSubType(type)||type.isSubType(this)) {
+        // return true;
+        // }
+        if (type.isOrderedDatatype()) {
+            OrderedDatatype<O> wrapper = type.asOrderedDatatype();
+            if (wrapper == null) {
+                System.out.println("DatatypeOrderedExpressionImpl.isCompatible()");
+            }
+            // if both have no max or both have no min -> there is an
+            // overlap
+            // if one has no max, then min must be smaller than max of the
+            // other
+            // if one has no min, the max must be larger than min of the
+            // other
+            // if one has neither max nor min, they are compatible
+            if (!this.hasMax() && !this.hasMin()) {
+                return true;
+            }
+            if (!wrapper.hasMax() && !wrapper.hasMin()) {
+                return true;
+            }
+            if (!this.hasMax() && !wrapper.hasMax()) {
+                return true;
+            }
+            if (!this.hasMin() && !wrapper.hasMin()) {
+                return true;
+            }
+            if (!this.hasMin()) {
+                return this.overlapping(this, wrapper);
+            }
+            if (!this.hasMax()) {
+                return this.overlapping(wrapper, this);
+            }
+            if (!wrapper.hasMin()) {
+                return this.overlapping(wrapper, this);
+            }
+            if (!wrapper.hasMax()) {
+                return this.overlapping(this, wrapper);
+            }
+            // compare their range facets:
+            // disjoint if:
+            // exclusives:
+            // one minInclusive/exclusive is strictly larger than the other
+            // maxinclusive/exclusive
+            return this.overlapping(this, wrapper) || this.overlapping(wrapper, this);
+        } else {
             return false;
         }
-        return this.host.isInValueSpace(l);
     }
 
     @Override
@@ -175,10 +255,18 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
     @Override
     public O getMin() {
         if (this.hasMinInclusive()) {
-            return (O) knownFacetValues.get(minInclusive);
+            Object object = knownFacetValues.get(minInclusive);
+            if (object instanceof Literal) {
+                return ((Literal<O>) object).typedValue();
+            }
+            return (O) object;
         }
         if (this.hasMinExclusive()) {
-            return (O) knownFacetValues.get(minExclusive);
+            Object object = knownFacetValues.get(minExclusive);
+            if (object instanceof Literal) {
+                return ((Literal<O>) object).typedValue();
+            }
+            return (O) object;
         }
         return null;
     }
@@ -186,10 +274,18 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
     @Override
     public O getMax() {
         if (this.hasMaxInclusive()) {
-            return (O) knownFacetValues.get(maxInclusive);
+            Object object = knownFacetValues.get(maxInclusive);
+            if (object instanceof Literal) {
+                return ((Literal<O>) object).typedValue();
+            }
+            return (O) object;
         }
         if (this.hasMaxExclusive()) {
-            return (O) knownFacetValues.get(maxExclusive);
+            Object object = knownFacetValues.get(maxExclusive);
+            if (object instanceof Literal) {
+                return ((Literal<O>) object).typedValue();
+            }
+            return (O) object;
         }
         return null;
     }

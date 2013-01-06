@@ -447,24 +447,32 @@ public class DatatypeFactory {
         }
 
         @Override
-        public boolean isInValueSpace(R l) {
+        public boolean isInValueSpace(R _l) {
             if (this.hasMinExclusive()) {
-                if (this.getMin().compareTo((BigDecimal) minExclusive.parseNumber(l)) <= 0) {
+                // to be in value space, ex min must be smaller than l
+                BigDecimal l = (BigDecimal) minExclusive.parseNumber(_l);
+                if (l.compareTo(this.getMin()) <= 0) {
                     return false;
                 }
             }
             if (this.hasMinInclusive()) {
-                if (this.getMin().compareTo((BigDecimal) minInclusive.parseNumber(l)) < 0) {
+                BigDecimal l = (BigDecimal) minExclusive.parseNumber(_l);
+                // to be in value space, min must be smaller or equal to l
+                if (l.compareTo(this.getMin()) < 0) {
                     return false;
                 }
             }
             if (this.hasMaxExclusive()) {
-                if (this.getMax().compareTo((BigDecimal) maxExclusive.parseNumber(l)) >= 0) {
+                BigDecimal l = (BigDecimal) minExclusive.parseNumber(_l);
+                // to be in value space, ex max must be bigger than l
+                if (l.compareTo(this.getMax()) >= 0) {
                     return false;
                 }
             }
             if (this.hasMaxInclusive()) {
-                if (this.getMax().compareTo((BigDecimal) maxInclusive.parseNumber(l)) > 0) {
+                BigDecimal l = (BigDecimal) minExclusive.parseNumber(_l);
+                // to be in value space, ex min must be smaller than l
+                if (l.compareTo(this.getMax()) > 0) {
                     return false;
                 }
             }

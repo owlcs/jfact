@@ -105,6 +105,7 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
             R value = parseValue(l.value());
             return this.isInValueSpace(value);
         } catch (RuntimeException e) {
+            System.err.println(e.getMessage());
             // parsing exceptions will be caught here
             return false;
         }
