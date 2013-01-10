@@ -554,7 +554,11 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
 
     @Override
     public Node<OWLDataProperty> getBottomDataPropertyNode() {
-        return getEquivalentDataProperties(df.getOWLBottomDataProperty());
+        OWLDataPropertyNode toReturn = new OWLDataPropertyNode();
+        toReturn.add(df.getOWLBottomDataProperty());
+        return toReturn;
+        // XXX both this and the previous method look like hacks
+        // return getEquivalentDataProperties(df.getOWLBottomDataProperty());
     }
 
     @Override
