@@ -2120,7 +2120,11 @@ public class DlSatTester {
         if (options.getuseSemanticBranching()) {
             for (int i : bcOr.getApplicableOrEntriesConcepts()) {
                 if (addToDoEntry(curNode, -i, dep, "sb")) {
-                    throw new UnreachableSituationException(curNode.toString());
+                    return true;
+                    // XXX should throw an exception only when debugging, but
+                    // this is hard to figure out
+                    // throw new
+                    // UnreachableSituationException(curNode.toString());
                     // Both Exists and Clash are errors
                 }
             }
