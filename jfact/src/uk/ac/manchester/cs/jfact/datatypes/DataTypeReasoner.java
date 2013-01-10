@@ -5,10 +5,8 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.math.BigInteger;
+import java.util.*;
 
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.Reference;
@@ -194,6 +192,27 @@ public final class DataTypeReasoner {
                         clashDep.setReference(plus);
                         return true;
                     }
+                    // what if the supertype is an enum?
+                    if (ds1.getType().isSubType(ds2.getType())) {
+                        // check that values in the supertype are acceptable for
+                        // the subtype
+                        if (!ds1.checkCompatibleValue(ds2)) {
+                            options.getLog().print(" DT-TT");
+                            DepSet plus = DepSet.plus(ds1.getPType(), ds2.getNType());
+                            clashDep.setReference(plus);
+                            return true;
+                        }
+                    }
+                    if (ds2.getType().isSubType(ds1.getType())) {
+                        // check that values in the supertype are acceptable for
+                        // the subtype
+                        if (!ds2.checkCompatibleValue(ds1)) {
+                            options.getLog().print(" DT-TT");
+                            DepSet plus = DepSet.plus(ds1.getPType(), ds2.getNType());
+                            clashDep.setReference(plus);
+                            return true;
+                        }
+                    }
                     // they're disjoint: they can't be both positive (but can be
                     // both negative)
                     if (ds1.hasPType() && ds2.hasPType()) {
@@ -205,6 +224,30 @@ public final class DataTypeReasoner {
                             clashDep.setReference(DepSet.plus(ds1.getPType(),
                                     ds2.getPType()));
                             return true;
+                        } else {
+                            // in this case, disjoint datatypes which have some
+                            // common values do not rise a clash, but they are
+                            // determining a new interval that should be added
+                            // to the reasoner.
+                            // XXX need to design a proper general solution
+                            if (ds1.getType().equals(DatatypeFactory.NONNEGATIVEINTEGER)
+                                    && ds2.getType().equals(
+                                            DatatypeFactory.NONPOSITIVEINTEGER)
+                                    || ds2.getType().equals(
+                                            DatatypeFactory.NONNEGATIVEINTEGER)
+                                    && ds1.getType().equals(
+                                            DatatypeFactory.NONPOSITIVEINTEGER)) {
+                                map.remove(ds1.getType());
+                                map.remove(ds2.getType());
+                                this.dataExpression(
+                                        true,
+                                        new DatatypeEnumeration<BigInteger>(
+                                                DatatypeFactory.INTEGER, Arrays
+                                                        .asList(DatatypeFactory.INTEGER
+                                                                .buildLiteral("0"))),
+                                        DepSet.plus(ds1.getPType(), ds2.getPType()));
+                                return checkClash();
+                            }
                         }
                     }
                 }

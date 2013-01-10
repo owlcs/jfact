@@ -134,17 +134,30 @@ public class DataTypeSituation<R extends Comparable<R>> {
                 allRestrictions.add(d.e);
             }
         }
+        boolean toReturn = compareLiterals(other, allLiterals, allRestrictions);
+        // if signs are the same, return the comparison
+        if (hasNType() == other.hasNType() || hasPType() == other.hasPType()) {
+            return toReturn;
+        }
+        // otherwise signs differ; return the opposite
+        // example: -short and {0}
+        return !toReturn;
+    }
+
+    private boolean compareLiterals(DataTypeSituation<?> other,
+            List<Literal<?>> allLiterals, List<Datatype<?>> allRestrictions) {
+        boolean toReturn = true;
         for (Literal<?> l : allLiterals) {
             if (!this.type.isCompatible(l) || !other.type.isCompatible(l)) {
-                return false;
+                toReturn = false;
             }
             for (Datatype<?> d : allRestrictions) {
                 if (!d.isCompatible(l)) {
-                    return false;
+                    toReturn = false;
                 }
             }
         }
-        return true;
+        return toReturn;
     }
 
     /** data interval with dep-sets */
