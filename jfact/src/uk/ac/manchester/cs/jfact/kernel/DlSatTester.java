@@ -2018,6 +2018,13 @@ public class DlSatTester {
         Individual C = (Individual) cur.getConcept();
         assert C.getNode() != null;
         DepSet dep = DepSet.create(curConceptDepSet);
+        // blank nodes are set to be non classifiable and not initialized in
+        // initNominalCloud
+        // XXX not sure how it should be fixed, just trying to avoid null
+        // pointer here
+        if (C.isNonClassifiable()) {
+            return true;
+        }
         DlCompletionTree realNode = C.getNode().resolvePBlocker(dep);
         if (!realNode.equals(curNode)) {
             return merge(curNode, realNode, dep);
