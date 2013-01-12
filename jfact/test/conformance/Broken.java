@@ -2,6 +2,7 @@ package conformance;
 
 import static org.junit.Assert.*;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
@@ -91,7 +92,7 @@ public class Broken {
 
 
 
-
+    @Ignore
     @Test
     public void testWebOnt_I5_8_009() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
@@ -114,6 +115,9 @@ public class Broken {
         String d = "0 is the only <code>xsd:nonNegativeInteger</code> which is\n"
                 + "also an <code>xsd:nonPositiveInteger</code>. 0 is an\n"
                 + "<code>xsd:short</code>.";
+        // XXX while it is true, I don't see why the zero should be a short
+        // instead of a oneof from int or integer or any of the types in the
+        // middle.
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -125,16 +129,14 @@ public class Broken {
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.8/premises008\" >\n"
                 + "  <owl:Ontology/>\n"
                 + "  <owl:DatatypeProperty rdf:ID=\"p\">\n"
-                + "    <rdfs:range rdf:resource=\n"
-                + "  \"http://www.w3.org/2001/XMLSchema#short\" />\n"
-                + "    <rdfs:range rdf:resource=\n"
-                + "  \"http://www.w3.org/2001/XMLSchema#unsignedInt\" /></owl:DatatypeProperty></rdf:RDF>";
+                + "    <rdfs:range rdf:resource=\"http://www.w3.org/2001/XMLSchema#short\" />\n"
+                + "    <rdfs:range rdf:resource=\"http://www.w3.org/2001/XMLSchema#unsignedInt\" />"
+                + "</owl:DatatypeProperty></rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.8/conclusions008\" >\n"
                 + "  <owl:Ontology/>\n"
                 + "  <owl:DatatypeProperty rdf:about=\"premises008#p\">\n"
-                + "    <rdfs:range rdf:resource=\n"
-                + "  \"http://www.w3.org/2001/XMLSchema#unsignedShort\" /></owl:DatatypeProperty>\n"
+                + "    <rdfs:range rdf:resource=\"http://www.w3.org/2001/XMLSchema#unsignedShort\" /></owl:DatatypeProperty>\n"
                 + "\n" + "</rdf:RDF>";
         String id = "WebOnt_I5_8_008";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
@@ -144,6 +146,8 @@ public class Broken {
                 + "an <code>xsd:unsignedShort</code>; but there are no\n"
                 + "<code>xsd:unsignedShort</code> which are neither\n"
                 + "<code>xsd:short</code> nor\n" + "<code>xsd:unsignedInt</code>";
+        // TODO to make this work, the datatype reasoner must be able to infer
+        // sort and unsigned int equivalent unsigned short
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -151,40 +155,7 @@ public class Broken {
 
     @Test
     public void testWebOnt_I5_8_010() {
-        // String premise = "<rdf:RDF\n"
-        // + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-        // + "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n"
-        // + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-        // +
-        // "    xml:base=\"http://www.w3.org/2002/03owlt/I5.8/premises010\" >\n"
-        // + "  <owl:Ontology/>\n"
-        // + "  <owl:DatatypeProperty rdf:ID=\"p\">\n"
-        // +
-        // "    <rdfs:range rdf:resource=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\" />\n"
-        // + "  </owl:DatatypeProperty>\n"
-        // + "  <rdf:Description rdf:ID=\"john\">\n"
-        // + "    <rdf:type>\n"
-        // + "      <owl:Restriction>\n"
-        // + "        <owl:onProperty rdf:resource=\"#p\"/>\n"
-        // +
-        // "        <owl:someValuesFrom rdf:resource=\"http://www.w3.org/2001/XMLSchema#nonPositiveInteger\" />\n"
-        // + "      </owl:Restriction>\n"
-        // + "   </rdf:type>\n"
-        // + "  </rdf:Description>\n</rdf:RDF>";
-        // String conclusion = "<rdf:RDF\n"
-        // + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-        // + "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n"
-        // + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-        // +
-        // "    xmlns:first=\"http://www.w3.org/2002/03owlt/I5.8/premises010#\"\n"
-        // +
-        // "    xml:base=\"http://www.w3.org/2002/03owlt/I5.8/conclusions010\" >\n"
-        // + "  <owl:Ontology/>\n"
-        // + "  <owl:DatatypeProperty rdf:about=\"premises010#p\"/>\n"
-        // + "  <owl:Thing rdf:about=\"premises010#john\">\n"
-        // +
-        // "    <first:p rdf:datatype=\"http://www.w3.org/2001/XMLSchema#int\">0</first:p>\n"
-        // + "  </owl:Thing></rdf:RDF>";
+
         String premise = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
                 + "Ontology(\n"
                 + "Declaration(DataProperty(<urn:t#p>))\n"
@@ -205,7 +176,7 @@ public class Broken {
         r.run();
     }
 
-
+    @Ignore
     @Test
     public void testWebOnt_someValuesFrom_003() {
         String premise = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
@@ -262,15 +233,17 @@ public class Broken {
         // +
         // "<first:parent><owl:Thing><first:parent><owl:Thing/></first:parent></owl:Thing>\n"
         // + "     </first:parent>\n" + "   </owl:Thing>\n" + "</rdf:RDF>";
+        // XXX I do not understand these blank nodes used as existential
+        // variables
         String id = "WebOnt_someValuesFrom_003";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "A simple infinite loop for implementors to avoid.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
-        // r.printPremise();System.out.println("WebOnt_someValuesFrom_003.testWebOnt_someValuesFrom_003()");r.printConsequence();
         r.run();
     }
 
+    @Ignore
     @Test
     public void testsomevaluesfrom2bnode() throws OWLOntologyCreationException {
         // String premise =
@@ -309,6 +282,8 @@ public class Broken {
         // r.printPremise();
         // r.printConsequence();
         // r.run();
+        // XXX I do not understand these blank nodes used as existential
+        // variables
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLDataFactory f = m.getOWLDataFactory();
         OWLOntology o = m.createOntology();

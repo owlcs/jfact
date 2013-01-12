@@ -1,5 +1,6 @@
 package conformance;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")
@@ -709,8 +710,11 @@ public class NewFeatures {
         r.run();
     }
 
+    @Ignore
     @Test
     public void testrdfbased_sem_char_inversefunc_data() {
+        // XXX not OWL 2 DL - data properties cannt be inverse functional
+        // properties
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:InverseFunctionalProperty rdf:about=\"http://www.example.org#p\">\n"
                 + "    <rdf:type rdf:resource=\"http://www.w3.org/2002/07/owl#DatatypeProperty\"/></owl:InverseFunctionalProperty>\n"
@@ -718,7 +722,7 @@ public class NewFeatures {
                 + "    <ex:p>data</ex:p>\n"
                 + "  </rdf:Description>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x2\">\n"
-                + "    <ex:p>data</ex:p>\n" + "  </rdf:Description>\n" + "</rdf:RDF>";
+                + "    <ex:p>data</ex:p>\n" + "  </rdf:Description></rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x1\">\n"
                 + "    <owl:sameAs rdf:resource=\"http://www.example.org#x2\"/></rdf:Description></rdf:RDF>";
