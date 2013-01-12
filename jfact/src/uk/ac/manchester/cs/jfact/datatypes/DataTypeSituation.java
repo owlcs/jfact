@@ -139,7 +139,11 @@ public class DataTypeSituation<R extends Comparable<R>> {
         if (hasNType() == other.hasNType() || hasPType() == other.hasPType()) {
             return toReturn;
         }
-        // otherwise signs differ; return the opposite
+        if (!allRestrictions.isEmpty()) {
+            return toReturn;
+        }
+        // otherwise signs differ and there are no constraints; return the
+        // opposite
         // example: -short and {0}
         return !toReturn;
     }
