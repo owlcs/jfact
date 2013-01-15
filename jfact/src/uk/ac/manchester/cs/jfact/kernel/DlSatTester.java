@@ -1555,9 +1555,6 @@ public class DlSatTester {
         int size = concepts.size();
         // shortcut: if only one non-and argument is passed and it's Literal,
         // return false without bothering
-        if (size == 1) {
-            return false;
-        }
         DataTypeReasoner datatypeReasoner = new DataTypeReasoner(options);
         for (int i = 0; i < size; i++) {
             ConceptWDep r = concepts.get(i);
@@ -2321,9 +2318,6 @@ public class DlSatTester {
     private boolean commonTacticBodySome(DLVertex cur) {
         Role R = cur.getRole();
         int C = -cur.getConceptIndex();
-        if (R.isTop()) {
-            return commonTacticBodySomeUniv(cur);
-        }
         if (R.isTop()) {
             return commonTacticBodySomeUniv(cur);
         }
