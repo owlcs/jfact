@@ -255,23 +255,28 @@ public class ToDoList {
 
     @Original
     public TODOListSaveState getInstance() {
-        // return new TODOListSaveState();
-        if (nextState == limit) {
-            nextState = 0;
-        }
-        TODOListSaveState toReturn = states[nextState];
-        if (toReturn != null) {
-            states[nextState++] = null;
-            change = true;
-            return toReturn;
-        } else {
-
-            if (!isSaveStateGenerationStarted()) {
-                startSaveStateGeneration();
-            }
-            return new TODOListSaveState();
-        }
+        return new TODOListSaveState();
     }
+
+    // @Original
+    // public TODOListSaveState getInstance() {
+    // // return new TODOListSaveState();
+    // if (nextState == limit) {
+    // nextState = 0;
+    // }
+    // TODOListSaveState toReturn = states[nextState];
+    // if (toReturn != null) {
+    // states[nextState++] = null;
+    // change = true;
+    // return toReturn;
+    // } else {
+    //
+    // if (!isSaveStateGenerationStarted()) {
+    // startSaveStateGeneration();
+    // }
+    // return new TODOListSaveState();
+    // }
+    // }
 
     @Original
     protected boolean saveStateGenerationStarted = false;
