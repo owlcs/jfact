@@ -3,19 +3,23 @@ package conformance;
 import static org.junit.Assert.*;
 import static org.semanticweb.owlapi.api.test.OWLFunctionalSyntaxFactory.*;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.semanticweb.owlapi.vocab.OWLFacet;
 import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
 @SuppressWarnings("javadoc")
 public class Fixed {
+
     @Test
     public void testConsistent_but_all_unsat() {
         String premise = "<?xml version=\"1.0\"?>\n"
@@ -116,6 +120,142 @@ public class Fixed {
         OWLReasoner r = Factory.factory().createReasoner(o);
         assertFalse("Ontology was supposed to be inconsistent!\n" + o.getLogicalAxioms(),
                 r.isConsistent());
+    }
+
+    @Test
+    public void testReasoner6() throws OWLOntologyCreationException,
+            OWLOntologyStorageException {
+        OWLOntologyManager mngr = OWLManager.createOWLOntologyManager();
+        OWLOntology ont = mngr.createOntology();
+        OWLReasonerFactory fac = Factory.factory();
+        OWLReasoner r = fac.createReasoner(ont);
+        System.out.println("TopObjectPropertyTest.testReasoner6() "
+                + r.getBottomDataPropertyNode().getEntities());
+        assertEquals(1, r.getBottomDataPropertyNode().getEntities().size());
+    }
+
+    @Test
+    public void testContradicting_datatype_Restrictions() {
+        String premise = "Prefix(:=<http://example.org/>)\nPrefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+                + "Ontology(\n"
+                + "  Declaration(NamedIndividual(:a))\n"
+                + "  Declaration(DataProperty(:dp))\n"
+                + "  Declaration(Class(:A))\n"
+                + "  SubClassOf(:A DataAllValuesFrom(:dp DataOneOf(\"3\"^^xsd:integer \"4\"^^xsd:integer))) \n"
+                + "  SubClassOf(:A DataAllValuesFrom(:dp DataOneOf(\"2\"^^xsd:integer \"3\"^^xsd:integer)))\n"
+                + "  SubClassOf(:A DataSomeValuesFrom(:dp DatatypeRestriction(xsd:integer xsd:minInclusive \"4\"^^xsd:integer)))\n"
+                + "  ClassAssertion(:A :a))";
+        String conclusion = "";
+        String id = "Contradicting_datatype_Restrictions";
+        TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
+        String d = "The individual a is in A and thus must have a dp filler that is an integer >= 4. Furthermore the dp fillers must be in the set {3, 4} and in the set {2, 3}. Although 3 is in both sets, 3 is not >= 4, which causes the inconsistency.";
+        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        r.setReasonerFactory(Factory.factory());
+        r.run();
+    }
+
+    @Test
+    public void testDatatype_Float_Discrete_001() throws OWLOntologyCreationException {
+        // XXX old test appears to use the wrong value...
+        // String premise = "<?xml version=\"1.0\"?>\n"
+        // + "<rdf:RDF\n"
+        // +
+        // "  xml:base  = \"http://example.org/ontology/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs= \"http://www.w3.org/2000/01/rdf-schema#\" xmlns:xsd = \"http://www.w3.org/2001/XMLSchema#\" >\n"
+        // + "\n"
+        // + "<owl:Ontology/>\n"
+        // + "\n"
+        // + "<owl:DatatypeProperty rdf:about=\"dp\" />\n"
+        // + "\n"
+        // + "<rdf:Description rdf:about=\"a\">\n"
+        // + "  <rdf:type>\n"
+        // + "    <owl:Restriction>\n"
+        // + "      <owl:onProperty rdf:resource=\"dp\" />\n"
+        // + "      <owl:someValuesFrom>\n"
+        // + "        <rdfs:Datatype>\n"
+        // +
+        // "          <owl:onDatatype rdf:resource=\"http://www.w3.org/2001/XMLSchema#float\" />\n"
+        // + "          <owl:withRestrictions rdf:parseType=\"Collection\">\n"
+        // + "            <rdf:Description>\n"
+        // +
+        // "              <xsd:minExclusive rdf:datatype=\"http://www.w3.org/2001/XMLSchema#float\">0.0</xsd:minExclusive></rdf:Description>\n"
+        // + "            <rdf:Description>\n"
+        // +
+        // "              <xsd:maxExclusive rdf:datatype=\"http://www.w3.org/2001/XMLSchema#float\">1.401298464324817e-45</xsd:maxExclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></owl:someValuesFrom></owl:Restriction></rdf:type>\n"
+        // + "</rdf:Description>\n" + "</rdf:RDF>";
+        // String conclusion = "";
+        // String id = "Datatype_Float_Discrete_001";
+        // TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
+        // String d =
+        // "The value space of xsd:float is discrete, shown with range defined on 0x00000000 and 0x00000001";
+        // JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        // r.setReasonerFactory(Factory.factory());
+        // r.printPremise();
+        // r.getConfiguration().setLoggingActive(true);
+        // r.run();
+        OWLDataProperty dp = DataProperty(IRI("http://example.org/ontology/dp"));
+        OWLDatatype f = Datatype(OWL2Datatype.XSD_FLOAT.getIRI());
+        OWLAxiom ax1 = Declaration(dp);
+        OWLLiteral f0 = Literal(0F);
+        OWLLiteral f1 = Literal(Float.MIN_NORMAL);
+        OWLFacetRestriction min = FacetRestriction(OWLFacet.MIN_EXCLUSIVE, f0);
+        OWLFacetRestriction max = FacetRestriction(OWLFacet.MAX_EXCLUSIVE, f1);
+        OWLDataSomeValuesFrom superClass = DataSomeValuesFrom(dp,
+                DatatypeRestriction(f, min, max));
+        OWLClass c = Class(IRI("http://example.org/ontology/c"));
+        OWLAxiom ax3 = SubClassOf(c, superClass);
+        OWLAxiom ax2 = ClassAssertion(c,
+                NamedIndividual(IRI("http://example.org/ontology/a")));
+        OWLOntology o = OWLManager.createOWLOntologyManager().createOntology(
+                new HashSet<OWLAxiom>(Arrays.asList(ax1, ax2, ax3)));
+        // JFactReasonerConfiguration config = new JFactReasonerConfiguration();
+        // config.setLoggingActive(true);
+        // OWLReasoner r = Factory.factory().createReasoner(o, config);
+        OWLReasoner r = Factory.factory().createReasoner(o);
+        assertFalse(r.isConsistent());
+    }
+
+    @Ignore
+    @Test
+    public void testConsistent_owl_real_range_with_DataOneOf() {
+        // XX integers, float and reals do not share a value space
+        String premise = "Prefix(:=<http://example.org/>)\n"
+                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+                + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
+                + "Ontology(\n"
+                + "  Declaration(NamedIndividual(:a))\n"
+                + "  Declaration(DataProperty(:dp))\n"
+                + "  Declaration(Class(:A))\n"
+                + "  SubClassOf(:A DataAllValuesFrom(:dp owl:real)) \n"
+                + "  SubClassOf(:A DataSomeValuesFrom(:dp DataOneOf(\"-INF\"^^xsd:float \"-0\"^^xsd:integer))\n)\n  ClassAssertion(:A :a)\n)";
+        String conclusion = "";
+        String id = "Consistent_owl_real_range_with_DataOneOf";
+        TestClasses tc = TestClasses.valueOf("CONSISTENCY");
+        String d = "The individual a must have either negative Infinity or 0 (-0 as integer is 0) as dp fillers and all dp successors must be from owl:real, which excludes negative infinity, but allows 0.";
+        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        r.getConfiguration().setLoggingActive(true);
+        r.setReasonerFactory(Factory.factory());
+        r.run();
+    }
+    @Test
+    public void testWebOnt_I5_8_010() {
+        String premise = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+                + "Ontology(\n"
+                + "Declaration(DataProperty(<urn:t#p>))\n"
+                + "DataPropertyRange(<urn:t#p> xsd:nonNegativeInteger)\n"
+                + "ClassAssertion(DataSomeValuesFrom(<urn:t#p> xsd:nonPositiveInteger) <urn:t#john>)\n)";
+        String conclusion = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+                + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
+                + "Ontology(\nDeclaration(DataProperty(<urn:t#p>))\n"
+                + "ClassAssertion(owl:Thing <urn:t#john>)\n"
+                + "DataPropertyAssertion(<urn:t#p> <urn:t#john> \"0\"^^xsd:int)\n)";
+        String id = "WebOnt_I5_8_010";
+        TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
+        String d = "0 is the only <code>xsd:nonNegativeInteger</code> which is\n"
+                + "also an <code>xsd:nonPositiveInteger</code>.";
+        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        r.setReasonerFactory(Factory.factory());
+        // r.getConfiguration().setLoggingActive(true);
+        r.run();
     }
 
     @Test
