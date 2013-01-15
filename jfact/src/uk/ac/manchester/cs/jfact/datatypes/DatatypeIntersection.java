@@ -1,14 +1,13 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 /** @author ignazio */
-public class DatatypeIntersection implements
-        DatatypeCombination<DatatypeIntersection, Datatype<?>> {
-    private final Set<Datatype<?>> basics = new HashSet<Datatype<?>>();
+public class DatatypeIntersection<T extends Comparable<T>> implements
+        DatatypeCombination<DatatypeIntersection<T>, Datatype<T>> {
+    private final Set<Datatype<T>> basics = new HashSet<Datatype<T>>();
     private final String uri;
-    private final Datatype<?> host;
+    private final Datatype<T> host;
 
     /** @param c
      * @return datatype host for a set of datatypes */
@@ -46,16 +45,16 @@ public class DatatypeIntersection implements
     }
 
     /** @param host */
-    public DatatypeIntersection(Datatype<?> host) {
+    public DatatypeIntersection(Datatype<T> host) {
         uri = "intersection#a" + DatatypeFactory.getIndex();
         this.host = host;
     }
 
     /** @param host
      * @param list */
-    public DatatypeIntersection(Datatype<?> host, Iterable<Datatype<?>> list) {
+    public DatatypeIntersection(Datatype<T> host, Iterable<Datatype<T>> list) {
         this(host);
-        for (Datatype<?> d : list) {
+        for (Datatype<T> d : list) {
             basics.add(d);
         }
     }
@@ -66,13 +65,13 @@ public class DatatypeIntersection implements
     }
 
     @Override
-    public Iterable<Datatype<?>> getList() {
+    public Iterable<Datatype<T>> getList() {
         return basics;
     }
 
     @Override
-    public DatatypeIntersection add(Datatype<?> d) {
-        DatatypeIntersection toReturn = new DatatypeIntersection(host, basics);
+    public DatatypeIntersection<T> add(Datatype<T> d) {
+        DatatypeIntersection<T> toReturn = new DatatypeIntersection<T>(host, basics);
         toReturn.basics.add(d);
         return toReturn;
     }
@@ -118,32 +117,32 @@ public class DatatypeIntersection implements
         if (!host.getNumeric()) {
             return false;
         }
-        BigDecimal min = null;
-        BigDecimal max = null;
+        Comparable min = null;
+        Comparable max = null;
         // all intervals must intersect - i.e., the interval with max min
         // (excluded if any interval excludes it), min max (excluded if any
         // interval excludes it) must contain at least one element
         // get max minimum value
         boolean minExclusive = false;
         boolean maxExclusive = false;
-        for (Datatype<?> dt : basics) {
-            NumericDatatype<?> d = dt.asNumericDatatype();
-            BigDecimal facetValue = d.getMin();
+        for (Datatype<T> dt : basics) {
+            Comparable facetValue = dt
+                    .asNumericDatatype().getMin();
             if (facetValue != null) {
                 if (min == null || min.compareTo(facetValue) < 0) {
                     min = facetValue;
                 }
             }
-            facetValue = d.getMax();
+            facetValue = dt.asNumericDatatype().getMax();
             if (facetValue != null) {
                 if (max == null || facetValue.compareTo(max) < 0) {
                     max = facetValue;
                 }
             }
-            if (d.hasMinExclusive()) {
+            if (dt.asNumericDatatype().hasMinExclusive()) {
                 minExclusive = true;
             }
-            if (d.hasMaxExclusive()) {
+            if (dt.asNumericDatatype().hasMaxExclusive()) {
                 maxExclusive = true;
             }
         }

@@ -1,7 +1,5 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
-import java.math.BigDecimal;
-
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.ABSTRACT_NUMERIC_DATATYPE;
 
 class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
@@ -17,7 +15,8 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
             this.host = b;
         }
         ancestors = Utils.generateAncestors(this.host);
-        knownFacetValues.putAll(b.getKnownFacetValues());
+        knownNumericFacetValues.putAll(b.getKnownNumericFacetValues());
+        knownNonNumericFacetValues.putAll(b.getKnownNonNumericFacetValues());
     }
 
     @Override
@@ -31,7 +30,8 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
     }
 
     @Override
-    public DatatypeExpression<O> addFacet(Facet f, Object value) {
+    public DatatypeExpression<O> addNumericFacet(Facet f,
+ Comparable value) {
         if (!facets.contains(f)) {
             throw new IllegalArgumentException("Facet " + f
                     + " not allowed tor datatype " + this.getHostType());
@@ -43,26 +43,42 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
             throw new IllegalArgumentException("Not a valid value for this expression: "
                     + f + "\t" + value + " for: " + this);
         }
-        Object v;
-        if (f.isNumberFacet()) {
-            v = f.parseNumber(value);
-        } else {
-            v = f.parse(value);
-        }
         DatatypeNumericExpressionImpl<O> toReturn = new DatatypeNumericExpressionImpl<O>(
                 this.host);
-        toReturn.knownFacetValues.putAll(knownFacetValues);
+        toReturn.knownNumericFacetValues.putAll(knownNumericFacetValues);
+        toReturn.knownNonNumericFacetValues.putAll(knownNonNumericFacetValues);
         // cannot have noth min/maxInclusive and min/maxExclusive values, so
         // remove them if the feature is min/max
         if (f.equals(Facets.minExclusive) || f.equals(Facets.minInclusive)) {
-            toReturn.knownFacetValues.remove(Facets.minExclusive);
-            toReturn.knownFacetValues.remove(Facets.minInclusive);
+            toReturn.knownNumericFacetValues.remove(Facets.minExclusive);
+            toReturn.knownNumericFacetValues.remove(Facets.minInclusive);
         }
         if (f.equals(Facets.maxExclusive) || f.equals(Facets.maxInclusive)) {
-            toReturn.knownFacetValues.remove(Facets.maxExclusive);
-            toReturn.knownFacetValues.remove(Facets.maxInclusive);
+            toReturn.knownNumericFacetValues.remove(Facets.maxExclusive);
+            toReturn.knownNumericFacetValues.remove(Facets.maxInclusive);
         }
-        toReturn.knownFacetValues.put(f, v);
+        toReturn.knownNumericFacetValues.put(f, value);
+        return toReturn;
+    }
+
+    @Override
+    public DatatypeExpression<O> addNonNumericFacet(Facet f, Comparable value) {
+        if (!facets.contains(f)) {
+            throw new IllegalArgumentException("Facet " + f
+                    + " not allowed tor datatype " + this.getHostType());
+        }
+        if (value == null) {
+            throw new IllegalArgumentException("Value cannot be null");
+        }
+        if (value instanceof Literal && !this.host.isCompatible((Literal<?>) value)) {
+            throw new IllegalArgumentException("Not a valid value for this expression: "
+                    + f + "\t" + value + " for: " + this);
+        }
+        DatatypeNumericExpressionImpl<O> toReturn = new DatatypeNumericExpressionImpl<O>(
+                this.host);
+        toReturn.knownNumericFacetValues.putAll(knownNumericFacetValues);
+        toReturn.knownNonNumericFacetValues.putAll(knownNonNumericFacetValues);
+        toReturn.knownNonNumericFacetValues.put(f, value);
         return toReturn;
     }
 
@@ -79,14 +95,14 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
             // remember whether it's inclusive or exclusive - needed to know if
             // the two extremes can be the same or not
             int excluded = 0;
-            BigDecimal min = (BigDecimal) getFacetValue(Facets.minInclusive);
+            Comparable min = getNumericFacetValue(Facets.minInclusive);
             if (min == null) {
-                min = (BigDecimal) getFacetValue(Facets.minExclusive);
+                min = getNumericFacetValue(Facets.minExclusive);
                 excluded++;
             }
-            BigDecimal max = (BigDecimal) getFacetValue(Facets.maxInclusive);
+            Comparable max = getNumericFacetValue(Facets.maxInclusive);
             if (max == null) {
-                max = (BigDecimal) getFacetValue(Facets.maxExclusive);
+                max = getNumericFacetValue(Facets.maxExclusive);
                 excluded++;
             }
             return DatatypeFactory.nonEmptyInterval(min, max, excluded);
@@ -110,7 +126,7 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
     }
 
     @Override
-    public OrderedDatatype<BigDecimal> asOrderedDatatype() {
+    public OrderedDatatype<O> asOrderedDatatype() {
         return this;
     }
 

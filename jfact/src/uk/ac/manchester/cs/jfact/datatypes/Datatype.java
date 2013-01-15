@@ -1,6 +1,5 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -36,7 +35,10 @@ public interface Datatype<Representation extends Comparable<Representation>> ext
     Set<Facet> getFacets();
 
     /** @return the known values for a subset of the available facets */
-    Map<Facet, Object> getKnownFacetValues();
+    Map<Facet, Comparable> getKnownNumericFacetValues();
+
+    /** @return the known values for a subset of the available facets */
+    Map<Facet, Comparable> getKnownNonNumericFacetValues();
 
     /** @param f
      * @return known value for f, or null if there is no known value for the
@@ -45,7 +47,7 @@ public interface Datatype<Representation extends Comparable<Representation>> ext
 
     /** @param f
      * @return numeric value */
-    BigDecimal getNumericFacetValue(Facet f);
+    Comparable getNumericFacetValue(Facet f);
 
     /** @return true if this datatype is numeric */
     boolean getNumeric();
@@ -69,6 +71,10 @@ public interface Datatype<Representation extends Comparable<Representation>> ext
      *         included in the value space of this datatype; its datatype must
      *         be this datatype */
     boolean isInValueSpace(Representation l);
+
+    /** @return true if this datatype expression is limited in such a way that
+     *         there are no valid values */
+    boolean emptyValueSpace();
 
     /** @param s
      *            parses a literal form to a value in the datatype value space;
@@ -104,5 +110,5 @@ public interface Datatype<Representation extends Comparable<Representation>> ext
     boolean isOrderedDatatype();
 
     /** @return cast as ordered datatype */
-    <O extends Comparable<O>> OrderedDatatype<O> asOrderedDatatype();
+    OrderedDatatype<Representation> asOrderedDatatype();
 }

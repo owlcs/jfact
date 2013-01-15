@@ -71,6 +71,10 @@ public class DataTypeSituation<R extends Comparable<R>> {
      * @param dep
      * @return true if clash occurs */
     public boolean addInterval(boolean pos, Datatype<R> interval, DepSet dep) {
+        if (interval.emptyValueSpace()) {
+            this.reasoner.reportClash(this.accDep, "Empty_interval");
+            return true;
+        }
         if (interval instanceof DatatypeEnumeration) {
             this.literals.addAll(interval.listValues());
         }
@@ -196,8 +200,13 @@ public class DataTypeSituation<R extends Comparable<R>> {
                     // cannot update an enumeration
                     return false;
                 }
-                for (Map.Entry<Facet, Object> f : value.getKnownFacetValues().entrySet()) {
-                    this.e = this.e.addFacet(f.getKey(), f.getValue());
+                for (Map.Entry<Facet, Comparable> f : value
+                        .getKnownNumericFacetValues().entrySet()) {
+                    this.e = this.e.addNumericFacet(f.getKey(), f.getValue());
+                }
+                for (Map.Entry<Facet, Comparable> f : value
+                        .getKnownNonNumericFacetValues().entrySet()) {
+                    this.e = this.e.addNonNumericFacet(f.getKey(), f.getValue());
                 }
             }
             // TODO needs to return false if the new expression has the same

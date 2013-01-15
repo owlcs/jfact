@@ -3,6 +3,7 @@ package uk.ac.manchester.cs.jfact.datatypes;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import org.semanticweb.owlapi.model.OWLRuntimeException;
@@ -47,7 +48,8 @@ public class Facets {
         }
 
         @Override
-        public BigDecimal parseNumber(Object value) {
+        public Comparable parseNumber(
+                Object value) {
             if (!isNumberFacet()) {
                 throw new UnsupportedOperationException(
                         "Only number facets can parse numbers");
@@ -55,8 +57,8 @@ public class Facets {
             if (value == null) {
                 throw new IllegalArgumentException("Cannot parse a null value");
             }
-            if (value instanceof BigDecimal) {
-                return (BigDecimal) value;
+            if (value instanceof Comparable) {
+                return (Comparable) value;
             }
             try {
                 if (value instanceof String) {
@@ -65,8 +67,14 @@ public class Facets {
                 if (value instanceof Literal) {
                     Object typedValue = ((Literal<?>) value).typedValue();
                     if (typedValue instanceof Number) {
-                        return new BigDecimal(typedValue.toString());
+                        return (Comparable) typedValue;
                     }
+                    if (typedValue instanceof Calendar) {
+                        return (Comparable) typedValue;
+                    }
+                    // if (typedValue instanceof Number) {
+                    // return new BigDecimal(typedValue.toString());
+                    // }
                     // else it's not parseable anyway...
                 }
                 // any other type, its string form must be parseable by
@@ -79,8 +87,8 @@ public class Facets {
         }
 
         @Override
-        public Comparable<?> parse(Object o) {
-            return (Comparable<?>) o;
+        public Comparable parse(Object o) {
+            return (Comparable) o;
         }
     }
 

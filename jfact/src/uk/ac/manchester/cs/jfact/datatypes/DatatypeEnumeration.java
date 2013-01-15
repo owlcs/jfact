@@ -1,6 +1,5 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
@@ -85,8 +84,13 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     }
 
     @Override
-    public Map<Facet, Object> getKnownFacetValues() {
-        return this.host.getKnownFacetValues();
+    public Map<Facet, Comparable> getKnownNonNumericFacetValues() {
+        return this.host.getKnownNonNumericFacetValues();
+    }
+
+    @Override
+    public Map<Facet, Comparable> getKnownNumericFacetValues() {
+        return this.host.getKnownNumericFacetValues();
     }
 
     @Override
@@ -95,7 +99,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     }
 
     @Override
-    public BigDecimal getNumericFacetValue(Facet f) {
+    public Comparable getNumericFacetValue(Facet f) {
         return this.host.getNumericFacetValue(f);
     }
 
@@ -197,7 +201,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     }
 
     @Override
-    public <O extends Comparable<O>> OrderedDatatype<O> asOrderedDatatype() {
+    public OrderedDatatype<R> asOrderedDatatype() {
         return null;
     }
 
@@ -228,7 +232,15 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     }
 
     @Override
-    public DatatypeExpression<R> addFacet(Facet f, Object value) {
+    public DatatypeExpression<R> addNumericFacet(Facet f,
+ Comparable value) {
+        System.out
+                .println("DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object");
+        return this;
+    }
+
+    @Override
+    public DatatypeExpression<R> addNonNumericFacet(Facet f, Comparable value) {
         System.out
                 .println("DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object");
         return this;

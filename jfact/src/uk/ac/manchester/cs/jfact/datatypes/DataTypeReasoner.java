@@ -96,7 +96,8 @@ public final class DataTypeReasoner {
     @Original
     private <R extends Comparable<R>> boolean dataExpression(boolean positive,
             DatatypeExpression<R> c, DepSet dep) {
-        if (c.getKnownFacetValues().isEmpty()) {
+        if (c.getKnownNonNumericFacetValues().isEmpty()
+                && c.getKnownNumericFacetValues().isEmpty()) {
             return false;
         }
         if (positive) {

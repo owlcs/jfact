@@ -1,13 +1,11 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
-public class DatatypeNegation<R extends Comparable<R>> implements Datatype<R>,
-        DatatypeExpression<R> {
+public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpression<R> {
     private final Datatype<R> host;
     private final String uri;
 
@@ -47,8 +45,18 @@ public class DatatypeNegation<R extends Comparable<R>> implements Datatype<R>,
     }
 
     @Override
-    public Map<Facet, Object> getKnownFacetValues() {
-        return host.getKnownFacetValues();
+    public boolean emptyValueSpace() {
+        return !host.emptyValueSpace();
+    }
+
+    @Override
+    public Map<Facet, Comparable> getKnownNumericFacetValues() {
+        return host.getKnownNumericFacetValues();
+    }
+
+    @Override
+    public Map<Facet, Comparable> getKnownNonNumericFacetValues() {
+        return host.getKnownNonNumericFacetValues();
     }
 
     @Override
@@ -57,7 +65,7 @@ public class DatatypeNegation<R extends Comparable<R>> implements Datatype<R>,
     }
 
     @Override
-    public BigDecimal getNumericFacetValue(Facet f) {
+    public Comparable getNumericFacetValue(Facet f) {
         return host.getNumericFacetValue(f);
     }
 
@@ -149,8 +157,8 @@ public class DatatypeNegation<R extends Comparable<R>> implements Datatype<R>,
     }
 
     @Override
-    public <O extends Comparable<O>> OrderedDatatype<O> asOrderedDatatype() {
-        return (OrderedDatatype<O>) this;
+    public OrderedDatatype<R> asOrderedDatatype() {
+        return (OrderedDatatype<R>) this;
     }
 
     @Override
@@ -164,19 +172,17 @@ public class DatatypeNegation<R extends Comparable<R>> implements Datatype<R>,
     }
 
     @Override
-    public DatatypeExpression<R> addFacet(Facet f, Object value) {
+    public DatatypeExpression<R> addNumericFacet(Facet f,
+ Comparable value) {
         System.out
                 .println("DatatypeNegation.addFacet() Cannot add a facet to a negation; modify the base type and rebuild a new negation. Returning the same object");
         return this;
     }
 
     @Override
-    public boolean emptyValueSpace() {
-        if (!host.isExpression()) {
-            return true;
-        }
-        // TODO verify the cases where restrictions on the host actually bracket
-        // the value space, so its opposite is empty
-        return false;
+    public DatatypeExpression<R> addNonNumericFacet(Facet f, Comparable value) {
+        System.out
+                .println("DatatypeNegation.addFacet() Cannot add a facet to a negation; modify the base type and rebuild a new negation. Returning the same object");
+        return this;
     }
 }

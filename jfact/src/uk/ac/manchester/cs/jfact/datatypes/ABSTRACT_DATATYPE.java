@@ -1,6 +1,5 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
@@ -9,7 +8,8 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R> {
     protected final Set<Facet> facets;
     protected Set<Datatype<?>> ancestors;
-    protected final Map<Facet, Object> knownFacetValues = new HashMap<Facet, Object>();
+    protected final Map<Facet, Comparable> knownNumericFacetValues = new HashMap<Facet, Comparable>();
+    protected final Map<Facet, Comparable> knownNonNumericFacetValues = new HashMap<Facet, Comparable>();
     protected final String uri;
 
     public ABSTRACT_DATATYPE(String u, Set<Facet> f) {
@@ -49,30 +49,26 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
     }
 
     @Override
-    public Map<Facet, Object> getKnownFacetValues() {
-        return new HashMap<Facet, Object>(this.knownFacetValues);
+    public Map<Facet, Comparable> getKnownNumericFacetValues() {
+        return this.knownNumericFacetValues;
     }
 
     @Override
-    public Comparable<?> getFacetValue(Facet f) {
-        if (this.knownFacetValues.containsKey(f)) {
-            if (f.isNumberFacet()) {
-                return this.getNumericFacetValue(f);
-            } else {
-                return f.parse(this.knownFacetValues.get(f));
-            }
-        }
-        return null;
+    public Map<Facet, Comparable> getKnownNonNumericFacetValues() {
+        return this.knownNonNumericFacetValues;
     }
 
     @Override
-    public BigDecimal getNumericFacetValue(Facet f) {
-        if (this.knownFacetValues.containsKey(f)) {
-            if (f.isNumberFacet()) {
-                return (BigDecimal) f.parseNumber(this.knownFacetValues.get(f));
-            }
+    public Comparable getFacetValue(Facet f) {
+        if (f.isNumberFacet()) {
+            return this.getNumericFacetValue(f);
         }
-        return null;
+        return this.knownNonNumericFacetValues.get(f);
+    }
+
+    @Override
+    public Comparable getNumericFacetValue(Facet f) {
+        return this.knownNumericFacetValues.get(f);
     }
 
     @Override
@@ -204,7 +200,12 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
     }
 
     @Override
-    public <O extends Comparable<O>> OrderedDatatype<O> asOrderedDatatype() {
+    public OrderedDatatype<R> asOrderedDatatype() {
         return null;
+    }
+
+    @Override
+    public boolean emptyValueSpace() {
+        return false;
     }
 }

@@ -1,10 +1,9 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
-import java.math.BigDecimal;
 
 /** all Datatypes whose getNumeric() method returns true implement this interface */
 public interface NumericDatatype<R extends Comparable<R>> extends Datatype<R>,
-        OrderedDatatype<BigDecimal> {
+        OrderedDatatype<R> {
     @Override
     boolean hasMinExclusive();
 
@@ -24,8 +23,8 @@ public interface NumericDatatype<R extends Comparable<R>> extends Datatype<R>,
     boolean hasMax();
 
     @Override
-    BigDecimal getMin();
+    R getMin();
 
     @Override
-    BigDecimal getMax();
+    R getMax();
 }

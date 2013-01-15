@@ -21,9 +21,7 @@ public interface DatatypeExpression<Representation extends Comparable<Representa
      *            a valid facet for the host datatype
      * @param value
      *            the value for the facet */
-    DatatypeExpression<Representation> addFacet(Facet f, Object value);
+    DatatypeExpression<Representation> addNonNumericFacet(Facet f, Comparable value);
 
-    /** @return true if this datatype expression is limited in such a way that
-     *         there are no valid values */
-    boolean emptyValueSpace();
+    DatatypeExpression<Representation> addNumericFacet(Facet f, Comparable value);
 }

@@ -1,6 +1,5 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
-import java.math.BigDecimal;
 import java.util.Collection;
 
 public class DatatypeNumericEnumeration<R extends Comparable<R>> extends
@@ -73,24 +72,24 @@ public class DatatypeNumericEnumeration<R extends Comparable<R>> extends
     }
 
     @Override
-    public BigDecimal getMin() {
+    public R getMin() {
         if (literals.isEmpty()) {
             return null;
         }
-        return (BigDecimal) Facets.minInclusive.parseNumber(literals.get(0));
+        return Facets.minInclusive.parseNumber(literals.get(0));
     }
 
     @Override
-    public BigDecimal getMax() {
+    public R getMax() {
         if (literals.isEmpty()) {
             return null;
         }
-        return (BigDecimal) Facets.maxInclusive
+        return Facets.maxInclusive
                 .parseNumber(literals.get(literals.size() - 1));
     }
 
     @Override
-    public OrderedDatatype<BigDecimal> asOrderedDatatype() {
+    public OrderedDatatype<R> asOrderedDatatype() {
         return this;
     }
 }

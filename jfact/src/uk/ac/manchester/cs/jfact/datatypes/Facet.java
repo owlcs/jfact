@@ -1,6 +1,5 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
-import java.math.BigDecimal;
 
 /** @author ignazio */
 public interface Facet {
@@ -10,11 +9,11 @@ public interface Facet {
      * 
      * @param value
      * @return value that is assigned to this facet */
-    Comparable<BigDecimal> parseNumber(Object value);
+    <T extends Comparable<T>> T parseNumber(Object value);
 
     /** @param value
      * @return the typed value for value */
-    Comparable<?> parse(Object value);
+    Comparable parse(Object value);
 
     /** @return true if number facet */
     boolean isNumberFacet();

@@ -1258,7 +1258,12 @@ public class TranslationMachinery {
             }
             for (OWLFacetRestriction restriction : facetRestrictions) {
                 Literal<?> dv = toDataValuePointer(restriction.getFacetValue());
-                toReturn = toReturn.addFacet(Facets.parse(restriction.getFacet()), dv);
+                Facet facet = Facets.parse(restriction.getFacet());
+                if (facet.isNumberFacet()) {
+                    toReturn = toReturn.addNumericFacet(facet, dv.typedValue());
+                } else {
+                    toReturn = toReturn.addNonNumericFacet(facet, dv.typedValue());
+                }
             }
             return toReturn;
         }

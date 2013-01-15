@@ -2,7 +2,6 @@ package uk.ac.manchester.cs.jfact.datatypes;
 
 import static uk.ac.manchester.cs.jfact.datatypes.Facets.*;
 
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -11,7 +10,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype<O>,
-        OrderedDatatype<BigDecimal> {
+        OrderedDatatype<O> {
     private final Datatype<O> d;
 
     public NumericDatatypeWrapper(Datatype<O> d) {
@@ -50,8 +49,13 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype
     }
 
     @Override
-    public Map<Facet, Object> getKnownFacetValues() {
-        return this.d.getKnownFacetValues();
+    public Map<Facet, Comparable> getKnownNonNumericFacetValues() {
+        return this.d.getKnownNonNumericFacetValues();
+    }
+
+    @Override
+    public Map<Facet, Comparable> getKnownNumericFacetValues() {
+        return this.d.getKnownNumericFacetValues();
     }
 
     @Override
@@ -60,7 +64,7 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype
     }
 
     @Override
-    public BigDecimal getNumericFacetValue(Facet f) {
+    public Comparable getNumericFacetValue(Facet f) {
         return this.d.getNumericFacetValue(f);
     }
 
@@ -155,23 +159,23 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype
     }
 
     @Override
-    public BigDecimal getMin() {
+    public O getMin() {
         if (this.hasMinExclusive()) {
-            return this.d.getNumericFacetValue(minExclusive);
+            return (O) this.d.getNumericFacetValue(minExclusive);
         }
         if (this.hasMinInclusive()) {
-            return this.d.getNumericFacetValue(minInclusive);
+            return (O) this.d.getNumericFacetValue(minInclusive);
         }
         return null;
     }
 
     @Override
-    public BigDecimal getMax() {
+    public O getMax() {
         if (this.hasMaxExclusive()) {
-            return this.d.getNumericFacetValue(maxExclusive);
+            return (O) this.d.getNumericFacetValue(maxExclusive);
         }
         if (this.hasMaxInclusive()) {
-            return this.d.getNumericFacetValue(maxInclusive);
+            return (O) this.d.getNumericFacetValue(maxInclusive);
         }
         return null;
     }
@@ -192,7 +196,12 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype
     }
 
     @Override
-    public OrderedDatatype<BigDecimal> asOrderedDatatype() {
+    public OrderedDatatype<O> asOrderedDatatype() {
         return this;
+    }
+
+    @Override
+    public boolean emptyValueSpace() {
+        return d.emptyValueSpace();
     }
 }
