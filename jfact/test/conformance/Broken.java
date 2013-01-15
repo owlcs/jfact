@@ -147,7 +147,7 @@ public class Broken {
                 + "<code>xsd:unsignedShort</code> which are neither\n"
                 + "<code>xsd:short</code> nor\n" + "<code>xsd:unsignedInt</code>";
         // TODO to make this work, the datatype reasoner must be able to infer
-        // sort and unsigned int equivalent unsigned short
+        // short and unsigned int equivalent unsigned short
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -295,4 +295,25 @@ public class Broken {
         assertTrue(r.isEntailed(f.getOWLObjectPropertyAssertionAxiom(p, a,
                 f.getOWLAnonymousIndividual())));
     }
+
+    @Test
+    public void testConsistent_owl_real_range_with_DataOneOf() {
+        String premise = "Prefix(:=<http://example.org/>)\n"
+                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+                + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
+                + "Ontology(\n"
+                + "  Declaration(NamedIndividual(:a))\n"
+                + "  Declaration(DataProperty(:dp))\n"
+                + "  Declaration(Class(:A))\n"
+                + "  SubClassOf(:A DataAllValuesFrom(:dp owl:real)) \n"
+                + "  SubClassOf(:A DataSomeValuesFrom(:dp DataOneOf(\"-INF\"^^xsd:float \"-0\"^^xsd:integer))\n)\n  ClassAssertion(:A :a)\n)";
+        String conclusion = "";
+        String id = "Consistent_owl_real_range_with_DataOneOf";
+        TestClasses tc = TestClasses.valueOf("CONSISTENCY");
+        String d = "The individual a must have either negative Infinity or 0 (-0 as integer is 0) as dp fillers and all dp successors must be from owl:real, which excludes negative infinity, but allows 0.";
+        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        r.setReasonerFactory(Factory.factory());
+        r.run();
+    }
+
 }

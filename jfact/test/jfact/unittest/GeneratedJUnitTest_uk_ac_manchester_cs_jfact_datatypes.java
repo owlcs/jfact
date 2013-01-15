@@ -2,10 +2,8 @@ package jfact.unittest;
 
 import static org.mockito.Mockito.*;
 
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.junit.Test;
@@ -32,9 +30,8 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
         Collection result4 = testSubject0.getAncestors();
         boolean result5 = testSubject0.getBounded();
         Set result6 = testSubject0.getFacets();
-        Map result7 = testSubject0.getKnownFacetValues();
+
         Comparable result8 = testSubject0.getFacetValue(mock(Facet.class));
-        BigDecimal result9 = testSubject0.getNumericFacetValue(mock(Facet.class));
         boolean result10 = testSubject0.getNumeric();
         ordered result11 = testSubject0.getOrdered();
         boolean result12 = testSubject0.isCompatible(mock(Datatype.class));
@@ -106,9 +103,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
         Collection result9 = testSubject0.getAncestors();
         boolean result10 = testSubject0.getBounded();
         Set result11 = testSubject0.getFacets();
-        Map result12 = testSubject0.getKnownFacetValues();
         Comparable result13 = testSubject0.getFacetValue(mock(Facet.class));
-        BigDecimal result14 = testSubject0.getNumericFacetValue(mock(Facet.class));
         boolean result15 = testSubject0.getNumeric();
         ordered result16 = testSubject0.getOrdered();
         boolean result17 = testSubject0.isCompatible(mock(Datatype.class));
@@ -124,8 +119,6 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
         OrderedDatatype result27 = testSubject0.asOrderedDatatype();
         Iterable result28 = testSubject0.getList();
         Datatype result29 = testSubject0.getHostType();
-        DatatypeExpression result30 = testSubject0.addFacet(mock(Facet.class),
-                mock(Object.class));
         boolean result31 = testSubject0.emptyValueSpace();
     }
 
@@ -133,8 +126,6 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
     public void shouldTestInterfaceDatatypeExpression() throws Exception {
         DatatypeExpression testSubject0 = mock(DatatypeExpression.class);
         Datatype result0 = testSubject0.getHostType();
-        DatatypeExpression result1 = testSubject0.addFacet(mock(Facet.class),
-                mock(Object.class));
         boolean result2 = testSubject0.emptyValueSpace();
         Comparable result3 = testSubject0.parseValue(mock(String.class));
         cardinality result4 = testSubject0.getCardinality();
@@ -143,9 +134,8 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
         Collection result7 = testSubject0.getAncestors();
         boolean result8 = testSubject0.getBounded();
         Set result9 = testSubject0.getFacets();
-        Map result10 = testSubject0.getKnownFacetValues();
+
         Comparable result11 = testSubject0.getFacetValue(mock(Facet.class));
-        BigDecimal result12 = testSubject0.getNumericFacetValue(mock(Facet.class));
         boolean result13 = testSubject0.getNumeric();
         ordered result14 = testSubject0.getOrdered();
         boolean result15 = testSubject0.isCompatible(mock(Datatype.class));
@@ -173,8 +163,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
         Collection result3 = testSubject0.getKnownDatatypes();
         Datatype result4 = testSubject0.getKnownDatatype(mock(String.class));
         boolean result5 = testSubject0.isKnownDatatype(mock(String.class));
-        boolean result6 = DatatypeFactory.nonEmptyInterval(mock(BigDecimal.class),
-                mock(BigDecimal.class), 1);
+
         DatatypeExpression result7 = DatatypeFactory
                 .getNumericDatatypeExpression(mock(NumericDatatype.class));
         DatatypeExpression result8 = DatatypeFactory
@@ -212,9 +201,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
         Collection result6 = testSubject0.getAncestors();
         boolean result7 = testSubject0.getBounded();
         Set result8 = testSubject0.getFacets();
-        Map result9 = testSubject0.getKnownFacetValues();
         Comparable result10 = testSubject0.getFacetValue(mock(Facet.class));
-        BigDecimal result11 = testSubject0.getNumericFacetValue(mock(Facet.class));
         boolean result12 = testSubject0.getNumeric();
         ordered result13 = testSubject0.getOrdered();
         boolean result14 = testSubject0.isCompatible(mock(Literal.class));
@@ -229,8 +216,6 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
         boolean result23 = testSubject0.isOrderedDatatype();
         OrderedDatatype result24 = testSubject0.asOrderedDatatype();
         Datatype result25 = testSubject0.getHostType();
-        DatatypeExpression result26 = testSubject0.addFacet(mock(Facet.class),
-                mock(Object.class));
         boolean result27 = testSubject0.emptyValueSpace();
     }
 
@@ -250,10 +235,8 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
         OrderedDatatype result5 = testSubject0.asOrderedDatatype();
         boolean result6 = testSubject0.hasMaxInclusive();
         boolean result7 = testSubject0.hasMinInclusive();
-        BigDecimal result8 = testSubject0.getMax();
         Comparable result9 = testSubject0.getMax();
         Comparable result10 = testSubject0.getMin();
-        BigDecimal result11 = testSubject0.getMin();
         boolean result12 = testSubject0.hasMaxExclusive();
         boolean result13 = testSubject0.hasMinExclusive();
         boolean result14 = testSubject0.hasMin();
@@ -270,9 +253,8 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
         Collection result24 = testSubject0.getAncestors();
         boolean result25 = testSubject0.getBounded();
         Set result26 = testSubject0.getFacets();
-        Map result27 = testSubject0.getKnownFacetValues();
+
         Comparable result28 = testSubject0.getFacetValue(mock(Facet.class));
-        BigDecimal result29 = testSubject0.getNumericFacetValue(mock(Facet.class));
         boolean result30 = testSubject0.getNumeric();
         ordered result31 = testSubject0.getOrdered();
         boolean result32 = testSubject0.isCompatible(mock(Datatype.class));
@@ -284,8 +266,7 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
         Collection result38 = testSubject0.listValues();
         Iterable result39 = testSubject0.getList();
         Datatype result40 = testSubject0.getHostType();
-        DatatypeExpression result41 = testSubject0.addFacet(mock(Facet.class),
-                mock(Object.class));
+
         boolean result42 = testSubject0.emptyValueSpace();
     }
 
@@ -337,7 +318,6 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
         Facet testSubject0 = mock(Facet.class);
         Comparable result0 = testSubject0.parse(mock(Object.class));
         boolean result1 = testSubject0.isNumberFacet();
-        Comparable result2 = testSubject0.parseNumber(mock(Object.class));
         String result3 = testSubject0.getURI();
     }
 
@@ -389,8 +369,6 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
         NumericDatatype testSubject0 = mock(NumericDatatype.class);
         boolean result0 = testSubject0.hasMaxInclusive();
         boolean result1 = testSubject0.hasMinInclusive();
-        BigDecimal result2 = testSubject0.getMax();
-        BigDecimal result3 = testSubject0.getMin();
         boolean result4 = testSubject0.hasMaxExclusive();
         boolean result5 = testSubject0.hasMinExclusive();
         boolean result6 = testSubject0.hasMin();
@@ -402,9 +380,8 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
         Collection result12 = testSubject0.getAncestors();
         boolean result13 = testSubject0.getBounded();
         Set result14 = testSubject0.getFacets();
-        Map result15 = testSubject0.getKnownFacetValues();
+
         Comparable result16 = testSubject0.getFacetValue(mock(Facet.class));
-        BigDecimal result17 = testSubject0.getNumericFacetValue(mock(Facet.class));
         boolean result18 = testSubject0.getNumeric();
         ordered result19 = testSubject0.getOrdered();
         boolean result20 = testSubject0.isCompatible(mock(Datatype.class));
@@ -420,8 +397,6 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
         OrderedDatatype result30 = testSubject0.asOrderedDatatype();
         testSubject0.accept(mock(DLExpressionVisitor.class));
         Object result31 = testSubject0.accept(mock(DLExpressionVisitorEx.class));
-        Comparable result32 = testSubject0.getMax();
-        Comparable result33 = testSubject0.getMin();
     }
 
     @Test
@@ -454,8 +429,8 @@ public class GeneratedJUnitTest_uk_ac_manchester_cs_jfact_datatypes {
         OrderedDatatype testSubject0 = mock(OrderedDatatype.class);
         boolean result0 = testSubject0.hasMaxInclusive();
         boolean result1 = testSubject0.hasMinInclusive();
-        Comparable result2 = testSubject0.getMax();
-        Comparable result3 = testSubject0.getMin();
+        Object result2 = testSubject0.getMax();
+        Object result3 = testSubject0.getMin();
         boolean result4 = testSubject0.hasMaxExclusive();
         boolean result5 = testSubject0.hasMinExclusive();
         boolean result6 = testSubject0.hasMin();
