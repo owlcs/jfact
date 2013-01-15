@@ -105,7 +105,7 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
                 max = getNumericFacetValue(Facets.maxExclusive);
                 excluded++;
             }
-            return DatatypeFactory.nonEmptyInterval(min, max, excluded);
+            return !DatatypeFactory.nonEmptyInterval(min, max, excluded);
         }
         return false;
     }

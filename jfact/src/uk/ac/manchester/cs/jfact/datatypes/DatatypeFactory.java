@@ -395,7 +395,8 @@ public class DatatypeFactory {
         // representation
         if (excluded == 2) {
             Comparable increased = increase((Number) min);
-            return increased.compareTo(max) < 0;
+            int compareTo = increased.compareTo(max);
+            return compareTo < 0;
         }
         return false;
     }
