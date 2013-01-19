@@ -11,6 +11,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 
 @SuppressWarnings("javadoc")
 public class Broken {
+    @Ignore
     @Test
     public void testReasoner5() throws OWLOntologyCreationException {
         OWLOntologyManager mngr = OWLManager.createOWLOntologyManager();
@@ -59,6 +60,7 @@ public class Broken {
         r.run();
     }
 
+    @Ignore
     @Test
     public void testWebOnt_I5_8_008() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"

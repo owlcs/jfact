@@ -4,6 +4,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")
+@Ignore
 public class NewFeatures {
     @Test
     public void testInconsistent_Disjoint_Dataproperties() {

@@ -1,7 +1,7 @@
 package conformance;
 
 import static org.junit.Assert.*;
-import static org.semanticweb.owlapi.api.test.OWLFunctionalSyntaxFactory.*;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -1570,7 +1570,7 @@ public class Fixed {
     public void testContradicting_dateTime_restrictions_programmatic()
             throws OWLOntologyStorageException, OWLOntologyCreationException {
         Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
-        OWLClass A = Class("http://example.org/A");
+        OWLClass A = Class(IRI("http://example.org/A"));
         OWLNamedIndividual a = NamedIndividual(IRI("http://example.org/a"));
         OWLDataProperty dp = DataProperty(IRI("http://example.org/dp"));
         OWLDatatype type = Datatype(OWL2Datatype.XSD_DATE_TIME.getIRI());
@@ -1594,7 +1594,7 @@ public class Fixed {
     public void testContradicting_int_restrictions() throws OWLOntologyStorageException,
             OWLOntologyCreationException {
         Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
-        OWLClass A = Class("http://example.org/A");
+        OWLClass A = Class(IRI("http://example.org/A"));
         OWLNamedIndividual a = NamedIndividual(IRI("http://example.org/a"));
         OWLDataProperty dp = DataProperty(IRI("http://example.org/dp"));
         OWLDatatype type = Datatype(OWL2Datatype.XSD_INT.getIRI());

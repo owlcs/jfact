@@ -81,6 +81,10 @@ public class RoleAutomaton {
     /** add RA from a subrole to given one */
     @PortedFrom(file = "RAutomaton.h", name = "addRA")
     public void addRA(RoleAutomaton RA) {
+        // XXX not sure about this
+        if (isCompleted()) {
+            return;
+        }
         assert !isCompleted();
         if (RA.isSimple()) {
             boolean ok = base.get(initial).addToExisting(
@@ -282,7 +286,7 @@ public class RoleAutomaton {
     /** @return true iff the automaton is simple */
     @PortedFrom(file = "RAutomaton.h", name = "isSimple")
     boolean isSimple() {
-        assert isCompleted();
+        // assert isCompleted();
         return size() == 2 && inputSafe && outputSafe;
     }
 }
