@@ -925,11 +925,13 @@ public class Role extends ClassifiableEntry {
         }
         // here automaton is complete
         automaton.setCompleted(true);
+        if (!isBottom()) {
         for (ClassifiableEntry p : toldSubsumers) {
             Role R = (Role) resolveSynonym(p);
             R.addSubRoleAutomaton(this);
             if (hasSpecialDomain()) {
                 R.specialDomain = true;
+            }
             }
         }
         // finish processing role
