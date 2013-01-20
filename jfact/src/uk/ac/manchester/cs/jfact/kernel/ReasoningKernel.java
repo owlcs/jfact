@@ -1043,6 +1043,45 @@ public class ReasoningKernel {
         return r.isIrreflexive();
     }
 
+    // all-disjoint query implementation
+    @PortedFrom(file = "Kernel.h", name = "isDisjointRoles")
+    public boolean isDisjointRoles(List<? extends RoleExpression> l) {
+        int nTopRoles = 0;
+        List<Role> Roles = new ArrayList<Role>(l.size());
+        for (RoleExpression p : l) {
+            uk.ac.manchester.cs.jfact.kernel.Role role = getRole(p,
+                    "Role expression expected in isDisjointRoles()");
+            if (role.isTop()) {
+                // universal role is not disjoint with anything
+                ++nTopRoles;
+            }
+            if (role.isBottom()) {
+                // empty role is disjoint with everything
+                continue;
+            }
+            Roles.add(role);
+        }
+        // deal with top-roles
+        if (nTopRoles > 0) {
+            if (nTopRoles > 1 || !Roles.isEmpty()) {
+                return false;
+                // universal role is not disjoint with anything but the bottom
+                // role
+            } else {
+                return true;
+            }
+        }
+        // test pair-wise disjointness
+        for (int i = 0; i < Roles.size() - 1; i++) {
+            for (int j = i + 1; j < Roles.size(); j++) {
+                if (!getTBox().isDisjointRoles(Roles.get(i), Roles.get(j))) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     /** @return true iff two roles are disjoint */
     @PortedFrom(file = "Kernel.h", name = "isDisjointRoles")
     public boolean isDisjointRoles(ObjectRoleExpression R, ObjectRoleExpression S) {
@@ -1749,32 +1788,7 @@ public class ReasoningKernel {
         return checkRoleSubsumption(r, s);
     }
 
-    // all-disjoint query implementation
-    @PortedFrom(file = "Kernel.h", name = "isDisjointRoles")
-    public boolean isDisjointRoles(List<? extends RoleExpression> l) {
-        // grab all roles from the arg-list
-        List<Role> Roles = new ArrayList<Role>(l.size());
-        for (RoleExpression p : l) {
-            if (getExpressionManager().isUniversalRole(p)) {
-                // universal role is not disjoint with anything
-                return false;
-            }
-            if (getExpressionManager().isEmptyRole(p)) {
-                // empty role is disjoint with everything
-                continue;
-            }
-            Roles.add(getRole(p, "Role expression expected in isDisjointRoles()"));
-        }
-        // test pair-wise disjointness
-        for (int i = 0; i < Roles.size() - 1; i++) {
-            for (int j = i + 1; j < Roles.size(); j++) {
-                if (!getTBox().isDisjointRoles(Roles.get(i), Roles.get(j))) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
+
 
     @PortedFrom(file = "Kernel.h", name = "buildRelatedCache")
     private List<Individual> buildRelatedCache(Individual I, Role R) {
