@@ -8,17 +8,17 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
 import java.util.List;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptOneOf")
-public class ConceptOneOf extends NAryExpressionImpl<IndividualName> implements
-        NAryExpression<IndividualName>, ConceptExpression {
+public class ConceptOneOf<I extends IndividualExpression> extends NAryExpressionImpl<I>
+        implements NAryExpression<I>, ConceptExpression {
     /** create one-of from individuals in the given array */
-    public ConceptOneOf(List<Expression> v) {
+    public ConceptOneOf(List<I> v) {
         add(v);
     }
 

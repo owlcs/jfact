@@ -181,9 +181,24 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
         isLocal = true;
     }
 
-    /** FIXME!! fornow */
     @Override
     public void visit(AxiomDisjointUnion axiom) {
+        isLocal = false;
+        // check A = (or C1... Cn)
+        List<ConceptExpression> arguments = axiom.getArguments();
+        if (!Kernel.isEquivalent(axiom.getC(), pEM.or(arguments))) {
+            return;
+
+        }
+        // check disjoint(C1...Cn)
+        int size = arguments.size();
+        for (int i = 0; i < size; i++) {
+            for ( int j=i+1;j<size;j++ ) {
+                if ( !Kernel.isDisjoint ( arguments.get(i), arguments.get(j) ) ) {
+                    return;
+                }
+            }
+        }
         isLocal = true;
     }
 

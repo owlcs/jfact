@@ -18,11 +18,11 @@ public interface NAryExpression<Argument extends Expression> {
 
     /** add a single element to the array */
     @PortedFrom(file = "tDLExpression.h", name = "add")
-    void add(Expression p);
+    void add(Argument p);
 
     /** add a vector */
     @PortedFrom(file = "tDLExpression.h", name = "add")
-    void add(Collection<Expression> v);
+    void add(Collection<Argument> v);
 
     /** access to members */
     @PortedFrom(file = "tDLExpression.h", name = "begin")

@@ -45,8 +45,8 @@ public class TaxonomyVertex {
     private boolean checkValue;
 
     /** mark vertex as the one corresponding to a given ENTRY */
-    @PortedFrom(file = "taxVertex.h", name = "setHostVertex")
-    public void setHostVertex(ClassifiableEntry entry) {
+    @PortedFrom(file = "taxVertex.h", name = "setVertexAsHost")
+    public void setVertexAsHost(ClassifiableEntry entry) {
         entry.setTaxVertex(this);
     }
 
@@ -142,6 +142,23 @@ public class TaxonomyVertex {
     public TaxonomyVertex(ClassifiableEntry p) {
         initFlags();
         setSample(p, true);
+    }
+
+    // / copy c'tor
+    public TaxonomyVertex(TaxonomyVertex v) {
+        sample = v.sample;
+        synonyms = new HashSet<ClassifiableEntry>(v.synonyms);
+        checked = v.checked;
+        isValued = v.isValued;
+        common = v.common;
+        checkValue = v.checkValue;
+        // , inUse(v.inUse)
+        linksChild = v.linksChild;
+        linksParent = v.linksParent;
+    }
+
+    protected Object clone() throws CloneNotSupportedException {
+        return new TaxonomyVertex(this);
     }
 
     /** add P as a synonym to curent vertex */

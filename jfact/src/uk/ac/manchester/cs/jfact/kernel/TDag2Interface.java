@@ -42,7 +42,7 @@ public class TDag2Interface {
                 return Manager.oneOf(Manager.individual(v.getConcept().getName()));
             case dtAnd:
             case dtCollection: {
-                List<Expression> list = new ArrayList<Expression>();
+                List<ConceptExpression> list = new ArrayList<ConceptExpression>();
                 for (int p : v.begin()) {
                     list.add(getCExpr(p));
                 }
@@ -92,7 +92,7 @@ public class TDag2Interface {
                 return Manager.dataTop();
             case dtAnd:
             case dtCollection: {
-                List<Expression> list = new ArrayList<Expression>();
+                List<DataExpression> list = new ArrayList<DataExpression>();
                 for (int p : v.begin()) {
                     list.add(getDExpr(p));
                 }

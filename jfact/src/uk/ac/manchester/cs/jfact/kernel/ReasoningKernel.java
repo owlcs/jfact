@@ -33,6 +33,7 @@ import uk.ac.manchester.cs.jfact.kernel.actors.SupConceptActor;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptBottom;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptTop;
+import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
@@ -251,7 +252,8 @@ public class ReasoningKernel {
 
     /** axiom C = C1 or ... or Cn; C1 != ... != Cn */
     @PortedFrom(file = "Kernel.h", name = "disjointUnion")
-    public Axiom disjointUnion(OWLAxiom ax, ConceptExpression C, List<Expression> l) {
+    public Axiom
+            disjointUnion(OWLAxiom ax, ConceptExpression C, List<ConceptExpression> l) {
         return ontology.add(new AxiomDisjointUnion(ax, C, l));
     }
 
@@ -666,13 +668,13 @@ public class ReasoningKernel {
 
     /** axiom C1 = ... = Cn */
     @PortedFrom(file = "Kernel.h", name = "equalConcepts")
-    public Axiom equalConcepts(OWLAxiom ax, List<Expression> l) {
+    public Axiom equalConcepts(OWLAxiom ax, List<ConceptExpression> l) {
         return ontology.add(new AxiomEquivalentConcepts(ax, l));
     }
 
     /** axiom C1 != ... != Cn */
     @PortedFrom(file = "Kernel.h", name = "disjointConcepts")
-    public Axiom disjointConcepts(OWLAxiom ax, List<Expression> l) {
+    public Axiom disjointConcepts(OWLAxiom ax, List<ConceptExpression> l) {
         return ontology.add(new AxiomDisjointConcepts(ax, l));
     }
 
@@ -699,25 +701,25 @@ public class ReasoningKernel {
 
     /** axiom R1 = R2 = ... */
     @PortedFrom(file = "Kernel.h", name = "equalORoles")
-    public Axiom equalORoles(OWLAxiom ax, List<Expression> l) {
+    public Axiom equalORoles(OWLAxiom ax, List<ObjectRoleExpression> l) {
         return ontology.add(new AxiomEquivalentORoles(ax, l));
     }
 
     /** axiom R1 = R2 = ... */
     @PortedFrom(file = "Kernel.h", name = "equalDRoles")
-    public Axiom equalDRoles(OWLAxiom ax, List<Expression> l) {
+    public Axiom equalDRoles(OWLAxiom ax, List<DataRoleExpression> l) {
         return ontology.add(new AxiomEquivalentDRoles(ax, l));
     }
 
     /** axiom R1 != R2 != ... */
     @PortedFrom(file = "Kernel.h", name = "disjointORoles")
-    public Axiom disjointORoles(OWLAxiom ax, List<Expression> l) {
+    public Axiom disjointORoles(OWLAxiom ax, List<ObjectRoleExpression> l) {
         return ontology.add(new AxiomDisjointORoles(ax, l));
     }
 
     /** axiom R1 != R2 != ... */
     @PortedFrom(file = "Kernel.h", name = "disjointDRoles")
-    public Axiom disjointDRoles(OWLAxiom ax, List<Expression> l) {
+    public Axiom disjointDRoles(OWLAxiom ax, List<DataRoleExpression> l) {
         return ontology.add(new AxiomDisjointDRoles(ax, l));
     }
 
@@ -830,19 +832,19 @@ public class ReasoningKernel {
 
     /** same individuals */
     @PortedFrom(file = "Kernel.h", name = "processSame")
-    public Axiom processSame(OWLAxiom ax, List<Expression> l) {
+    public Axiom processSame(OWLAxiom ax, List<IndividualExpression> l) {
         return ontology.add(new AxiomSameIndividuals(ax, l));
     }
 
     /** different individuals */
     @PortedFrom(file = "Kernel.h", name = "processDifferent")
-    public Axiom processDifferent(OWLAxiom ax, List<Expression> l) {
+    public Axiom processDifferent(OWLAxiom ax, List<IndividualExpression> l) {
         return ontology.add(new AxiomDifferentIndividuals(ax, l));
     }
 
     /** let all concept expressions in the ArgQueue to be fairness constraints */
     @PortedFrom(file = "Kernel.h", name = "setFairnessConstraint")
-    public Axiom setFairnessConstraint(OWLAxiom ax, List<Expression> l) {
+    public Axiom setFairnessConstraint(OWLAxiom ax, List<ConceptExpression> l) {
         return ontology.add(new AxiomFairnessConstraint(ax, l));
     }
 
@@ -1352,7 +1354,7 @@ public class ReasoningKernel {
     /** apply actor__apply() to all DIRECT concepts that are types of an
      * individual I */
     @PortedFrom(file = "Kernel.h", name = "getTypes")
-    public void getTypes(IndividualExpression I, boolean direct, Actor actor) {
+    public void getTypes(IndividualName I, boolean direct, Actor actor) {
         realiseKB();
         this.setUpCache(getExpressionManager().oneOf(I), csClassified);
         Taxonomy tax = getCTaxonomy();
@@ -1361,7 +1363,7 @@ public class ReasoningKernel {
 
     /** apply actor__apply() to all synonyms of an individual I */
     @PortedFrom(file = "Kernel.h", name = "getSameAs")
-    public void getSameAs(IndividualExpression I, Actor actor) {
+    public void getSameAs(IndividualName I, Actor actor) {
         realiseKB();
         getEquivalentConcepts(getExpressionManager().oneOf(I), actor);
     }

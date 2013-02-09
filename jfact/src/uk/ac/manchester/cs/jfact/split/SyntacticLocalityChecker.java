@@ -140,31 +140,36 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
 
     @Override
     public void visit(AxiomDisjointUnion axiom) {
+     // DisjointUnion(A, C1,..., Cn) is local if
+        //    (1) A and all of Ci are bot-equivalent,
+        // or (2) A and one Ci are top-equivalent and the remaining Cj are bot-equivalent
         isLocal = false;
-        boolean topLoc = sig.topCLocal();
-        if (!(topLoc ? isTopEquivalent(axiom.getC()) : isBotEquivalent(axiom.getC()))) {
+        boolean lhsIsTopEq;
+        if ( isTopEquivalent(axiom.getC()) ) {
+            lhsIsTopEq = true;
+        } else if ( isBotEquivalent(axiom.getC()) ) {
+            lhsIsTopEq = false;
+        } else {
             return;
-        }
+        }             // neither (1) nor (2)
+
         boolean topEqDesc = false;
         for (ConceptExpression p : axiom.getArguments()) {
-            if (!isBotEquivalent(p)) {
-                if (!topLoc) {
-                    return;
-                    // non-local straight away
-                }
-                if (isTopEquivalent(p)) {
-                    if (topEqDesc) {
+            if (!isBotEquivalent(p))
+            {
+                if (lhsIsTopEq && isTopEquivalent(p))
+                {
+                    if ( topEqDesc ) {
                         return;
-                        // 2nd top in there -- non-local
                     } else {
                         topEqDesc = true;
                     }
                 } else {
                     return;
-                    // non-local
                 }
             }
         }
+
         isLocal = true;
     }
 
@@ -260,44 +265,31 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
 
     @Override
     public void visit(AxiomORoleSubsumption axiom) {
-        isLocal = isREquivalent(sig.topRLocal() ? axiom.getRole() : axiom.getSubRole());
+        isLocal = isTopEquivalent(axiom.getRole()) || isBotEquivalent(axiom.getSubRole());
     }
 
     @Override
     public void visit(AxiomDRoleSubsumption axiom) {
-        isLocal = isREquivalent(sig.topRLocal() ? axiom.getRole() : axiom.getSubRole());
+        isLocal = isTopEquivalent(axiom.getRole()) || isBotEquivalent(axiom.getSubRole());
     }
 
     @Override
     public void visit(AxiomORoleDomain axiom) {
-        isLocal = isTopEquivalent(axiom.getDomain());
-        if (!sig.topRLocal()) {
-            isLocal |= isBotEquivalent(axiom.getRole());
-        }
+        isLocal = isTopEquivalent(axiom.getDomain()) || isBotEquivalent(axiom.getRole());
     }
 
     @Override
     public void visit(AxiomDRoleDomain axiom) {
-        isLocal = isTopEquivalent(axiom.getDomain());
-        if (!sig.topRLocal()) {
-            isLocal |= isBotEquivalent(axiom.getRole());
-        }
+        isLocal = isTopEquivalent(axiom.getDomain()) || isBotEquivalent(axiom.getRole());
     }
 
     @Override
     public void visit(AxiomORoleRange axiom) {
-        isLocal = isTopEquivalent(axiom.getRange());
-        if (!sig.topRLocal()) {
-            isLocal |= isBotEquivalent(axiom.getRole());
-        }
+        isLocal = isTopEquivalent(axiom.getRange()) || isBotEquivalent(axiom.getRole());
     }
-
     @Override
     public void visit(AxiomDRoleRange axiom) {
-        isLocal = isTopDT(axiom.getRange());
-        if (!sig.topRLocal()) {
-            isLocal |= isBotEquivalent(axiom.getRole());
-        }
+        isLocal = isTopEquivalent(axiom.getRange()) || isBotEquivalent(axiom.getRole());
     }
 
     @Override
@@ -313,7 +305,7 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
 
     @Override
     public void visit(AxiomRoleIrreflexive axiom) {
-        isLocal = !sig.topRLocal();
+        isLocal = isBotEquivalent(axiom.getRole());
     }
 
     @Override
@@ -323,22 +315,22 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
 
     @Override
     public void visit(AxiomRoleAsymmetric axiom) {
-        isLocal = !sig.topRLocal();
+        isLocal = isBotEquivalent(axiom.getRole());
     }
 
     @Override
     public void visit(AxiomORoleFunctional axiom) {
-        isLocal = !sig.topRLocal() && isBotEquivalent(axiom.getRole());
+        isLocal = isBotEquivalent(axiom.getRole());
     }
 
     @Override
     public void visit(AxiomDRoleFunctional axiom) {
-        isLocal = !sig.topRLocal() && isBotEquivalent(axiom.getRole());
+        isLocal = isBotEquivalent(axiom.getRole());
     }
 
     @Override
     public void visit(AxiomRoleInverseFunctional axiom) {
-        isLocal = !sig.topRLocal() && isBotEquivalent(axiom.getRole());
+        isLocal = isBotEquivalent(axiom.getRole());
     }
 
     @Override
@@ -354,22 +346,22 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
 
     @Override
     public void visit(AxiomRelatedTo axiom) {
-        isLocal = sig.topRLocal() && isTopEquivalent(axiom.getRelation());
+        isLocal = isTopEquivalent(axiom.getRelation());
     }
 
     @Override
     public void visit(AxiomRelatedToNot axiom) {
-        isLocal = !sig.topRLocal() && isBotEquivalent(axiom.getRelation());
+        isLocal = isBotEquivalent(axiom.getRelation());
     }
 
     @Override
     public void visit(AxiomValueOf axiom) {
-        isLocal = sig.topRLocal() && isTopEquivalent(axiom.getAttribute());
+        isLocal = isTopEquivalent(axiom.getAttribute());
     }
 
     @Override
     public void visit(AxiomValueOfNot axiom) {
-        isLocal = !sig.topRLocal() && isBotEquivalent(axiom.getAttribute());
+        isLocal = isBotEquivalent(axiom.getAttribute());
     }
 
     @Override

@@ -8,7 +8,6 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
 import java.util.List;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
@@ -18,7 +17,7 @@ import conformance.PortedFrom;
 public class ConceptOr extends NAryExpressionImpl<ConceptExpression> implements
         NAryExpression<ConceptExpression>, ConceptExpression {
     /** create OR of expressions from the given array */
-    public ConceptOr(List<Expression> v) {
+    public ConceptOr(List<ConceptExpression> v) {
         add(v);
     }
 

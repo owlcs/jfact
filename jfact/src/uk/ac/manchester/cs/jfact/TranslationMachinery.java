@@ -17,6 +17,7 @@ import org.semanticweb.owlapi.reasoner.impl.*;
 import uk.ac.manchester.cs.jfact.datatypes.*;
 import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
 import uk.ac.manchester.cs.jfact.kernel.ReasoningKernel;
+import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 import uk.ac.manchester.cs.jfact.kernel.voc.Vocabulary;
 
@@ -114,7 +115,7 @@ public class TranslationMachinery {
                 .asOWLDataProperty());
     }
 
-    protected synchronized IndividualExpression toIndividualPointer(
+    protected synchronized IndividualName toIndividualPointer(
             OWLIndividual individual) {
         if (!individual.isAnonymous()) {
             return individualTranslator.getPointerFromEntity(individual
@@ -145,9 +146,9 @@ public class TranslationMachinery {
             Iterable<IndividualExpression> pointers) {
         OWLNamedIndividualNodeSet ns = new OWLNamedIndividualNodeSet();
         for (IndividualExpression pointer : pointers) {
-            if (pointer != null) {
+            if (pointer != null && pointer instanceof IndividualName) {
                 OWLNamedIndividual ind = individualTranslator
-                        .getEntityFromPointer(pointer);
+                        .getEntityFromPointer((IndividualName) pointer);
                 // XXX skipping anonymous individuals - counterintuitive but
                 // that's the specs for you
                 if (ind != null) {
@@ -158,9 +159,9 @@ public class TranslationMachinery {
         return ns;
     }
 
-    protected synchronized List<Expression>
+    protected synchronized List<IndividualExpression>
             translateIndividualSet(Set<OWLIndividual> inds) {
-        List<Expression> l = new ArrayList<Expression>();
+        List<IndividualExpression> l = new ArrayList<IndividualExpression>();
         for (OWLIndividual ind : inds) {
             l.add(toIndividualPointer(ind));
         }
@@ -715,9 +716,9 @@ public class TranslationMachinery {
                     translateClassExpressionSet(axiom.getClassExpressions()));
         }
 
-        private List<Expression> translateClassExpressionSet(
+        private List<ConceptExpression> translateClassExpressionSet(
                 Set<OWLClassExpression> classExpressions) {
-            List<Expression> l = new ArrayList<Expression>();
+            List<ConceptExpression> l = new ArrayList<ConceptExpression>();
             for (OWLClassExpression ce : classExpressions) {
                 l.add(toClassPointer(ce));
             }
@@ -742,9 +743,9 @@ public class TranslationMachinery {
                     translateObjectPropertySet(axiom.getProperties()));
         }
 
-        private List<Expression> translateObjectPropertySet(
+        private List<ObjectRoleExpression> translateObjectPropertySet(
                 Collection<OWLObjectPropertyExpression> properties) {
-            List<Expression> l = new ArrayList<Expression>();
+            List<ObjectRoleExpression> l = new ArrayList<ObjectRoleExpression>();
             for (OWLObjectPropertyExpression property : properties) {
                 l.add(toObjectPropertyPointer(property));
             }
@@ -770,9 +771,9 @@ public class TranslationMachinery {
                     translateDataPropertySet(axiom.getProperties()));
         }
 
-        private List<Expression> translateDataPropertySet(
+        private List<DataRoleExpression> translateDataPropertySet(
                 Set<OWLDataPropertyExpression> properties) {
-            List<Expression> l = new ArrayList<Expression>();
+            List<DataRoleExpression> l = new ArrayList<DataRoleExpression>();
             for (OWLDataPropertyExpression property : properties) {
                 l.add(toDataPropertyPointer(property));
             }
@@ -1015,9 +1016,9 @@ public class TranslationMachinery {
             return em.and(translateClassExpressionSet(desc.getOperands()));
         }
 
-        private List<Expression> translateClassExpressionSet(
+        private List<ConceptExpression> translateClassExpressionSet(
                 Set<OWLClassExpression> classExpressions) {
-            List<Expression> l = new ArrayList<Expression>();
+            List<ConceptExpression> l = new ArrayList<ConceptExpression>();
             for (OWLClassExpression ce : classExpressions) {
                 l.add(ce.accept(this));
             }
@@ -1209,7 +1210,7 @@ public class TranslationMachinery {
 
         @Override
         public DataExpression visit(OWLDataOneOf node) {
-            List<Expression> l = new ArrayList<Expression>();
+            List<Literal<?>> l = new ArrayList<Literal<?>>();
             for (OWLLiteral literal : node.getValues()) {
                 l.add(toDataValuePointer(literal));
             }
@@ -1226,8 +1227,8 @@ public class TranslationMachinery {
             return em.dataAnd(translateDataRangeSet(node.getOperands()));
         }
 
-        private List<Expression> translateDataRangeSet(Set<OWLDataRange> dataRanges) {
-            List<Expression> l = new ArrayList<Expression>();
+        private List<DataExpression> translateDataRangeSet(Set<OWLDataRange> dataRanges) {
+            List<DataExpression> l = new ArrayList<DataExpression>();
             for (OWLDataRange op : dataRanges) {
                 l.add(op.accept(this));
             }
@@ -1270,21 +1271,21 @@ public class TranslationMachinery {
     }
 
     class IndividualTranslator extends
-            OWLEntityTranslator<OWLNamedIndividual, IndividualExpression> {
+            OWLEntityTranslator<OWLNamedIndividual, IndividualName> {
         public IndividualTranslator() {}
 
         @Override
-        protected IndividualExpression getTopEntityPointer() {
+        protected IndividualName getTopEntityPointer() {
             return null;
         }
 
         @Override
-        protected IndividualExpression getBottomEntityPointer() {
+        protected IndividualName getBottomEntityPointer() {
             return null;
         }
 
         @Override
-        protected IndividualExpression createPointerForEntity(OWLNamedIndividual entity) {
+        protected IndividualName createPointerForEntity(OWLNamedIndividual entity) {
             return em.individual(entity.toStringID());
         }
 

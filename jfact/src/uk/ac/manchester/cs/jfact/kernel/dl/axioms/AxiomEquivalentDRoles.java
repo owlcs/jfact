@@ -10,7 +10,6 @@ import java.util.List;
 import org.semanticweb.owlapi.model.OWLAxiom;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
@@ -18,7 +17,7 @@ import conformance.PortedFrom;
 /** Data Role equivalence axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomEquivalentDRoles")
 public class AxiomEquivalentDRoles extends AbstractNaryAxiom<DataRoleExpression> {
-    public AxiomEquivalentDRoles(OWLAxiom ax, List<Expression> v) {
+    public AxiomEquivalentDRoles(OWLAxiom ax, List<DataRoleExpression> v) {
         super(ax, v);
     }
 

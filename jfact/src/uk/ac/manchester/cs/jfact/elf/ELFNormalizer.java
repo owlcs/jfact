@@ -12,7 +12,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorAdapter;
 import conformance.PortedFrom;
@@ -96,7 +95,7 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
         }
         // complex filler: replace C with new B and the axiom B = C
         ConceptExpression B = buildFreshName();
-        List<Expression> args = new ArrayList<Expression>();
+        List<ConceptExpression> args = new ArrayList<ConceptExpression>();
         args.add(B);
         args.add(C);
         addAxiom(new AxiomEquivalentConcepts(ax, args));

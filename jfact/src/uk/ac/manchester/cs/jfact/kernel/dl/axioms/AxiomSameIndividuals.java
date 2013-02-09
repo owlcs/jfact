@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.semanticweb.owlapi.model.OWLAxiom;
 
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
@@ -18,7 +17,7 @@ import conformance.PortedFrom;
 /** Same individuals axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomSameIndividuals")
 public class AxiomSameIndividuals extends AbstractNaryAxiom<IndividualExpression> {
-    public AxiomSameIndividuals(OWLAxiom ax, List<Expression> v) {
+    public AxiomSameIndividuals(OWLAxiom ax, List<IndividualExpression> v) {
         super(ax, v);
     }
 

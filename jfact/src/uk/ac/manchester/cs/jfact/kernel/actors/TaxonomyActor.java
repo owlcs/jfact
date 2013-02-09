@@ -12,6 +12,7 @@ import java.util.List;
 import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
 import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
 import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
+import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 
 public class TaxonomyActor implements Actor {
@@ -50,11 +51,11 @@ public class TaxonomyActor implements Actor {
         return toReturn;
     }
 
-    public Collection<IndividualExpression> getIndividualSynonyms() {
-        Collection<IndividualExpression> toReturn = new ArrayList<IndividualExpression>();
+    public Collection<IndividualName> getIndividualSynonyms() {
+        Collection<IndividualName> toReturn = new ArrayList<IndividualName>();
         if (!acc.isEmpty()) {
             for (Expression e : acc.get(0)) {
-                toReturn.add((IndividualExpression) e);
+                toReturn.add((IndividualName) e);
             }
         }
         return toReturn;

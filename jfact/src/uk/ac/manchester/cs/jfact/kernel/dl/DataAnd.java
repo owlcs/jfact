@@ -8,7 +8,6 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
 import java.util.List;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
@@ -18,7 +17,7 @@ import conformance.PortedFrom;
 public class DataAnd extends NAryExpressionImpl<DataExpression> implements
         NAryExpression<DataExpression>, DataExpression {
     /** create AND of expressions from the given array */
-    public DataAnd(List<Expression> v) {
+    public DataAnd(List<DataExpression> v) {
         add(v);
     }
 

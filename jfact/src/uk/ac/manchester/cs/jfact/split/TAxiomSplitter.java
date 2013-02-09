@@ -9,7 +9,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomConceptInclusion;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomEquivalentConcepts;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import conformance.PortedFrom;
 
@@ -28,7 +27,7 @@ public class TAxiomSplitter {
         /** set old axiom as an equivalent AX; create a new one */
         void setEqAx(AxiomEquivalentConcepts ax) {
             oldAxioms.add(ax);
-            List<Expression> copy = new ArrayList<Expression>();
+            List<ConceptExpression> copy = new ArrayList<ConceptExpression>();
             for (ConceptExpression p : ax.getArguments()) {
                 if (p.equals(oldName)) {
                     copy.add(newName);
@@ -212,7 +211,7 @@ public class TAxiomSplitter {
         TRecord rec = new TRecord();
         rec.oldName = oldName;
         rec.newName = newName;
-        List<Expression> args = new ArrayList<Expression>();
+        List<ConceptExpression> args = new ArrayList<ConceptExpression>();
         for (AxiomConceptInclusion s : ImplNames.get(oldName)) {
             rec.oldAxioms.add(s);
             args.add(s.getSupConcept());

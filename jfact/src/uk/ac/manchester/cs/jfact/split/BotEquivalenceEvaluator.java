@@ -1,9 +1,10 @@
 package uk.ac.manchester.cs.jfact.split;
 
+import uk.ac.manchester.cs.jfact.datatypes.Datatype;
+import uk.ac.manchester.cs.jfact.datatypes.Literal;
+import uk.ac.manchester.cs.jfact.datatypes.cardinality;
 import uk.ac.manchester.cs.jfact.kernel.dl.*;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import conformance.PortedFrom;
 
@@ -21,14 +22,50 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
 
     /** check whether the expression is top-equivalent */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isTopEquivalent")
-    boolean isTopEquivalent(Expression expr) {
+    private boolean isTopEquivalent(Expression expr) {
         return TopEval.isTopEquivalent(expr);
     }
 
     /** @return true iff role expression in equivalent to const wrt locality */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isREquivalent")
-    boolean isREquivalent(Expression expr) {
+    private boolean isREquivalent(Expression expr) {
         return sig.topRLocal() ? isTopEquivalent(expr) : isBotEquivalent(expr);
+    }
+
+    // non-empty Concept/Data expression
+    // / @return true iff C^I is non-empty
+    private boolean isBotDistinct(Expression C) {
+        // TOP is non-empty
+        if (isTopEquivalent(C)) {
+            return true;
+        }
+        // built-in DT are non-empty
+        // FIXME!! that's it for now
+        return C instanceof Datatype;
+    }
+
+    // cardinality of a concept/data expression interpretation
+    // / @return true if #C^I > n
+    private boolean isCardLargerThan(Expression C, int n) {
+        if (n == 0) {
+            return isBotDistinct(C);
+        }
+        if (C instanceof Datatype) {   // string/time are infinite DT
+            return ((Datatype) C).getCardinality() == cardinality.COUNTABLYINFINITE;
+        }
+        // FIXME!! try to be more precise
+        return false;
+    }
+
+    // QCRs
+    // / @return true iff (>= n R.C) is botEq
+    private boolean isMinBotEquivalent(int n, RoleExpression R, Expression C) {
+        return n > 0 && (isBotEquivalent(R) || isBotEquivalent(C));
+    }
+
+    // / @return true iff (<= n R.C) is botEq
+    private boolean isMaxBotEquivalent(int n, RoleExpression R, Expression C) {
+        return isTopEquivalent(R) && isCardLargerThan(C, n);
     }
 
     // set fields
@@ -59,19 +96,13 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
     // equivalent to R(x,y) and C(x), so copy behaviour from ER.X
     @Override
     public void visit(ObjectRoleProjectionFrom expr) {
-        isBotEq = isBotEquivalent(expr.getConcept());
-        if (!topRLocal()) {
-            isBotEq |= isBotEquivalent(expr.getOR());
-        }
+        isBotEq = isMinBotEquivalent(1, expr.getOR(), expr.getConcept());
     }
 
     // equivalent to R(x,y) and C(y), so copy behaviour from ER.X
     @Override
     public void visit(ObjectRoleProjectionInto expr) {
-        isBotEq = isBotEquivalent(expr.getConcept());
-        if (!topRLocal()) {
-            isBotEq |= isBotEquivalent(expr.getOR());
-        }
+        isBotEq = isMinBotEquivalent(1, expr.getOR(), expr.getConcept());
     }
 
     @Override
@@ -111,25 +142,22 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
 
     @Override
     public void visit(ConceptObjectSelf expr) {
-        isBotEq = !sig.topRLocal() && isBotEquivalent(expr.getOR());
+        isBotEq = isBotEquivalent(expr.getOR());
     }
 
     @Override
     public void visit(ConceptObjectValue expr) {
-        isBotEq = !sig.topRLocal() && isBotEquivalent(expr.getOR());
+        isBotEq = isBotEquivalent(expr.getOR());
     }
 
     @Override
     public void visit(ConceptObjectExists expr) {
-        isBotEq = isBotEquivalent(expr.getConcept());
-        if (!sig.topRLocal()) {
-            isBotEq |= isBotEquivalent(expr.getOR());
-        }
+        isBotEq = isMinBotEquivalent(1, expr.getOR(), expr.getConcept());
     }
 
     @Override
     public void visit(ConceptObjectForall expr) {
-        isBotEq = sig.topRLocal() && isTopEquivalent(expr.getOR())
+        isBotEq = isTopEquivalent(expr.getOR())
                 && isBotEquivalent(expr.getConcept());
     }
 
@@ -148,25 +176,26 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
 
     @Override
     public void visit(ConceptObjectExactCardinality expr) {
-        isBotEq = expr.getCardinality() > 0
-                && (isBotEquivalent(expr.getConcept()) || isREquivalent(expr.getOR())
-                        && (sig.topRLocal() ? isTopEquivalent(expr.getConcept()) : true));
+        int n = expr.getCardinality();
+        ObjectRoleExpression R = expr.getOR();
+        ConceptExpression C = expr.getConcept();
+        isBotEq = isMinBotEquivalent(n, R, C) || isMaxBotEquivalent(n, R, C);
     }
 
     @Override
     public void visit(ConceptDataValue expr) {
-        isBotEq = !sig.topRLocal() && isBotEquivalent(expr.getDataRoleExpression());
+        isBotEq = isBotEquivalent(expr.getDataRoleExpression());
     }
 
     @Override
     public void visit(ConceptDataExists expr) {
-        isBotEq = !sig.topRLocal() && isBotEquivalent(expr.getDataRoleExpression());
+        isBotEq = isMinBotEquivalent(1, expr.getDataRoleExpression(), expr.getExpr());
     }
 
     @Override
     public void visit(ConceptDataForall expr) {
-        isBotEq = sig.topRLocal() && isTopEquivalent(expr.getDataRoleExpression())
-                && !isTopDT(expr.getExpr());
+        isBotEq = isTopEquivalent(expr.getDataRoleExpression())
+                && !isTopEquivalent(expr.getExpr());
     }
 
     @Override
@@ -214,6 +243,7 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
 
     @Override
     public void visit(ObjectRoleChain expr) {
+        isBotEq = true;
         for (ObjectRoleExpression p : expr.getArguments()) {
             if (isBotEquivalent(p)) {
                 return;
@@ -237,4 +267,55 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
     public void visit(DataRoleName expr) {
         isBotEq = !sig.topRLocal() && !sig.contains(expr);
     }
+    
+
+    // data expressions
+    @Override
+    public void visit ( DataTop      arg) { isBotEq = false; }
+
+    @Override
+    public void visit(DataBottom arg) {
+        isBotEq = true;
+    }
+
+    @Override
+    public void visit(Datatype<?> arg) {
+        isBotEq = false;
+    }
+
+    @Override
+    public void visit(Literal<?> arg) {
+        isBotEq = false;
+    }
+
+    @Override
+    public void visit(DataNot expr) {
+        isBotEq = isTopEquivalent(expr.getExpr());
+    }
+
+    @Override
+    public void visit(DataAnd expr)
+    {
+        for (DataExpression p : expr.getArguments()) {
+            if ( isBotEquivalent(p) ) {
+                return;
+            }
+        }
+        isBotEq = false;
+    }
+
+    @Override
+    public void visit(DataOr expr)
+    {
+        for (DataExpression p : expr.getArguments()) {
+            if ( !isBotEquivalent(p) ) {
+                return;
+            }
+        }
+        isBotEq = true;
+    }
+
+    @Override
+   public  void visit ( DataOneOf expr ) { isBotEq = expr.isEmpty(); }
+
 }

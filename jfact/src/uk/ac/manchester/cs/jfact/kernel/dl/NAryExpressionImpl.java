@@ -22,7 +22,7 @@ public class NAryExpressionImpl<Argument extends Expression> implements
     public NAryExpressionImpl() {}
 
     @Override
-    public void add(Collection<Expression> v) {
+    public void add(Collection<Argument> v) {
         for (Expression e : v) {
             add(e);
         }

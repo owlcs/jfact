@@ -10,7 +10,6 @@ import java.util.List;
 import org.semanticweb.owlapi.model.OWLAxiom;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
@@ -18,7 +17,7 @@ import conformance.PortedFrom;
 /** Concept disjointness axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDisjointConcepts")
 public class AxiomDisjointConcepts extends AbstractNaryAxiom<ConceptExpression> {
-    public AxiomDisjointConcepts(OWLAxiom ax, List<Expression> v) {
+    public AxiomDisjointConcepts(OWLAxiom ax, List<ConceptExpression> v) {
         super(ax, v);
     }
 

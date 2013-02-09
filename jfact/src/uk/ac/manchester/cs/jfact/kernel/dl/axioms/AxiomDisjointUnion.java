@@ -10,7 +10,6 @@ import java.util.Collection;
 import org.semanticweb.owlapi.model.OWLAxiom;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
@@ -21,7 +20,8 @@ public class AxiomDisjointUnion extends AbstractNaryAxiom<ConceptExpression> {
     @PortedFrom(file = "tDLAxiom.h", name = "C")
     private ConceptExpression conceptExpression;
 
-    public AxiomDisjointUnion(OWLAxiom ax, ConceptExpression c, Collection<Expression> v) {
+    public AxiomDisjointUnion(OWLAxiom ax, ConceptExpression c,
+            Collection<ConceptExpression> v) {
         super(ax, v);
         conceptExpression = c;
     }

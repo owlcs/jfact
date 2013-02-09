@@ -212,35 +212,35 @@ public class ExpressionManager {
     /** get an n-ary conjunction expression; take the arguments from the last
      * argument list */
     @PortedFrom(file = "tExpressionManager.h", name = "and")
-    public ConceptExpression and(List<Expression> l) {
+    public ConceptExpression and(List<ConceptExpression> l) {
         return new ConceptAnd(l);
     }
 
     /** @return C and D */
     @PortedFrom(file = "tExpressionManager.h", name = "and")
     public ConceptExpression and(ConceptExpression C, ConceptExpression D) {
-        return and(Arrays.<Expression> asList(C, D));
+        return and(Arrays.<ConceptExpression> asList(C, D));
     }
 
     /** @return C or D */
     @PortedFrom(file = "tExpressionManager.h", name = "or")
     public ConceptExpression or(ConceptExpression C, ConceptExpression D) {
-        return or(Arrays.<Expression> asList(C, D));
+        return or(Arrays.<ConceptExpression> asList(C, D));
     }
 
     /** get an n-ary disjunction expression; take the arguments from the last
      * argument list */
     @PortedFrom(file = "tExpressionManager.h", name = "or")
-    public ConceptExpression or(List<Expression> l) {
+    public ConceptExpression or(List<ConceptExpression> l) {
         return new ConceptOr(l);
     }
 
     /** get an n-ary one-of expression; take the arguments from the last argument
      * list */
     @PortedFrom(file = "tExpressionManager.h", name = "OneOf")
-    public ConceptExpression oneOf(List<Expression> l) {
+    public ConceptExpression oneOf(List<IndividualExpression> l) {
         if (l.size() == 1) {
-            IndividualExpression i = (IndividualExpression) l.get(0);
+            IndividualExpression i = l.get(0);
             ConceptExpression c = OneOfCache.get(i);
             if (c == null) {
                 c = new ConceptOneOf(l);
@@ -259,7 +259,7 @@ public class ExpressionManager {
     /** @return concept {I} for the individual I */
     @PortedFrom(file = "tExpressionManager.h", name = "OneOf")
     public ConceptExpression oneOf(IndividualExpression I) {
-        return oneOf(Arrays.<Expression> asList(I));
+        return oneOf(Arrays.<IndividualExpression> asList(I));
     }
 
     /** get self-reference restriction of an object role R */
@@ -354,7 +354,7 @@ public class ExpressionManager {
     // individuals
     /** get named individual */
     @PortedFrom(file = "tExpressionManager.h", name = "individual")
-    public IndividualExpression individual(String name) {
+    public IndividualName individual(String name) {
         return individualNameset.insert(name);
     }
 
@@ -380,12 +380,13 @@ public class ExpressionManager {
     /** get a role chain corresponding to R1 o ... o Rn; take the arguments from
      * the last argument list */
     @PortedFrom(file = "tExpressionManager.h", name = "Compose")
-    public ObjectRoleComplexExpression compose(List<Expression> l) {
+    public ObjectRoleComplexExpression compose(List<ObjectRoleExpression> l) {
         return new ObjectRoleChain(l);
     }
 
     @PortedFrom(file = "tExpressionManager.h", name = "Compose")
-    public ObjectRoleComplexExpression compose(Expression e1, Expression e2) {
+    public ObjectRoleComplexExpression compose(ObjectRoleExpression e1,
+            ObjectRoleExpression e2) {
         return new ObjectRoleChain(Arrays.asList(e1, e2));
     }
 
@@ -450,19 +451,19 @@ public class ExpressionManager {
 
     /** get an n-ary data conjunction expression */
     @PortedFrom(file = "tExpressionManager.h", name = "DataAnd")
-    public DataExpression dataAnd(List<Expression> l) {
+    public DataExpression dataAnd(List<DataExpression> l) {
         return new DataAnd(l);
     }
 
     /** get an n-ary data disjunction expression */
     @PortedFrom(file = "tExpressionManager.h", name = "DataOr")
-    public DataExpression dataOr(List<Expression> l) {
+    public DataExpression dataOr(List<DataExpression> l) {
         return new DataOr(l);
     }
 
     /** get an n-ary data one-of expression */
     @PortedFrom(file = "tExpressionManager.h", name = "DataOneOf")
-    public DataExpression dataOneOf(List<Expression> l) {
+    public DataExpression dataOneOf(List<Literal<?>> l) {
         return new DataOneOf(l);
     }
 

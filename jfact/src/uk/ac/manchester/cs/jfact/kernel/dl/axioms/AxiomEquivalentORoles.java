@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.semanticweb.owlapi.model.OWLAxiom;
 
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
@@ -18,7 +17,7 @@ import conformance.PortedFrom;
 /** Object Role equivalence axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomEquivalentORoles")
 public class AxiomEquivalentORoles extends AbstractNaryAxiom<ObjectRoleExpression> {
-    public AxiomEquivalentORoles(OWLAxiom ax, List<Expression> v) {
+    public AxiomEquivalentORoles(OWLAxiom ax, List<ObjectRoleExpression> v) {
         super(ax, v);
     }
 

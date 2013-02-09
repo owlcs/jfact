@@ -314,7 +314,7 @@ public class Taxonomy {
     public void addCurrentToSynonym(TaxonomyVertex syn) {
         if (queryMode()) {
             // no need to insert; just mark SYN as a host to curEntry
-            syn.setHostVertex(curEntry);
+            syn.setVertexAsHost(curEntry);
         } else {
             syn.addSynonym(curEntry);
             options.getLog().print("\nTAX:set ", curEntry.getName(), " equal ",

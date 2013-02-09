@@ -23,14 +23,14 @@ public abstract class AbstractNaryAxiom<I extends Expression> extends AxiomImpl 
         Axiom, NAryExpression<I> {
     private NAryExpressionImpl<I> delegate;
 
-    public AbstractNaryAxiom(OWLAxiom ax, Collection<Expression> v) {
+    public AbstractNaryAxiom(OWLAxiom ax, Collection<I> v) {
         super(ax);
         delegate = new NAryExpressionImpl<I>();
         delegate.add(v);
     }
 
     @Override
-    public final void add(Collection<Expression> v) {
+    public final void add(Collection<I> v) {
         delegate.add(v);
     }
 
