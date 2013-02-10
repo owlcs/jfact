@@ -69,9 +69,6 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
         // }
         if (type.isOrderedDatatype()) {
             OrderedDatatype<O> wrapper = (OrderedDatatype<O>) type.asOrderedDatatype();
-            if (wrapper == null) {
-                System.out.println("DatatypeOrderedExpressionImpl.isCompatible()");
-            }
             // if both have no max or both have no min -> there is an
             // overlap
             // if one has no max, then min must be smaller than max of the

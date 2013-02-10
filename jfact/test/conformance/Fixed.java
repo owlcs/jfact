@@ -129,8 +129,6 @@ public class Fixed {
         OWLOntology ont = mngr.createOntology();
         OWLReasonerFactory fac = Factory.factory();
         OWLReasoner r = fac.createReasoner(ont);
-        System.out.println("TopObjectPropertyTest.testReasoner6() "
-                + r.getBottomDataPropertyNode().getEntities());
         assertEquals(1, r.getBottomDataPropertyNode().getEntities().size());
     }
 

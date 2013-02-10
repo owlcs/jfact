@@ -806,7 +806,6 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
                 .getClassExpressionTranslator().getNodeFromPointers(
                         kernel.getObjectLabel((DlCompletionTree) object.getNode(),
                                 deterministicOnly));
-        System.out.println("JFactReasoner.getObjectLabel() " + nodeFromPointers);
         return nodeFromPointers;
     }
 
