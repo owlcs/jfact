@@ -9,6 +9,7 @@ import java.util.LinkedList;
 
 import conformance.PortedFrom;
 
+/** save list */
 @PortedFrom(file = "tSaveList.h", name = "TSaveList")
 public class SaveList extends LinkedList<DLCompletionTreeSaveState> {
     @Override
@@ -20,7 +21,8 @@ public class SaveList extends LinkedList<DLCompletionTreeSaveState> {
         return null;
     }
 
-    /** get element from stack with given level */
+    /** @param level
+     * @return element from stack with given level */
     @PortedFrom(file = "tSaveList.h", name = "pop")
     public DLCompletionTreeSaveState pop(int level) {
         DLCompletionTreeSaveState p = isEmpty() ? null : peek();

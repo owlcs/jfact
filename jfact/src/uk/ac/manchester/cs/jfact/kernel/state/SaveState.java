@@ -14,23 +14,28 @@ public class SaveState {
     private int sc;
     private int cc;
 
+    @SuppressWarnings("javadoc")
     public SaveState() {
         sc = Integer.MAX_VALUE;
         cc = Integer.MAX_VALUE;
     }
 
+    /** @return sc */
     public int getSc() {
         return sc;
     }
 
+    /** @return cc */
     public int getCc() {
         return cc;
     }
 
+    /** @param sc */
     public void setSc(int sc) {
         this.sc = sc;
     }
 
+    /** @param cc */
     public void setCc(int cc) {
         this.cc = cc;
     }

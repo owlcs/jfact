@@ -17,32 +17,41 @@ public class DLCompletionGraphSaveState {
     /** number of used edges */
     private int nEdges;
 
+    /**
+     * 
+     */
     public DLCompletionGraphSaveState() {
         nNodes = 0;
         sNodes = 0;
         nEdges = 0;
     }
 
+    /** @return nNodes */
     public int getnNodes() {
         return nNodes;
     }
 
+    /** @param nNodes */
     public void setnNodes(int nNodes) {
         this.nNodes = nNodes;
     }
 
+    /** @return s nodes */
     public int getsNodes() {
         return sNodes;
     }
 
+    /** @param sNodes */
     public void setsNodes(int sNodes) {
         this.sNodes = sNodes;
     }
 
+    /** @return n edges */
     public int getnEdges() {
         return nEdges;
     }
 
+    /** @param nEdges */
     public void setnEdges(int nEdges) {
         this.nEdges = nEdges;
     }

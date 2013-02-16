@@ -17,31 +17,39 @@ public class DLCompletionTreeSaveState {
     /** amount of neighbours */
     private int nNeighbours;
 
+    /**
+     * 
+     */
     public DLCompletionTreeSaveState() {
         lab = new SaveState();
     }
 
-    /** get level of a saved node */
+    /** @return level of a saved node */
     public int level() {
         return curLevel;
     }
 
+    /** @return save state label */
     public SaveState getLab() {
         return lab;
     }
 
+    /** @return current level */
     public int getCurLevel() {
         return curLevel;
     }
 
+    /** @return neighbors */
     public int getnNeighbours() {
         return nNeighbours;
     }
 
+    /** @param curLevel */
     public void setCurLevel(int curLevel) {
         this.curLevel = curLevel;
     }
 
+    /** @param nNeighbours */
     public void setnNeighbours(int nNeighbours) {
         this.nNeighbours = nNeighbours;
     }
