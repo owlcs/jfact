@@ -16,6 +16,7 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** taxonomy */
 @PortedFrom(file = "Taxonomy.h", name = "Taxonomy")
 public class Taxonomy {
     /** array of taxonomy verteces */
@@ -61,7 +62,14 @@ public class Taxonomy {
 
     /** apply ACTOR to subgraph starting from NODE as defined by flags; this
      * version is intended to work only with SupConceptActor, which requires the
-     * method to return as soon as the apply() method returns false */
+     * method to return as soon as the apply() method returns false
+     * 
+     * @param node
+     * @param actor
+     * @param needCurrent
+     * @param onlyDirect
+     * @param upDirection
+     * @return false if actor does not apply */
     @PortedFrom(file = "Taxonomy.h", name = "getRelativesInfo")
     public boolean getRelativesInfo(TaxonomyVertex node, SupConceptActor actor,
             boolean needCurrent, boolean onlyDirect, boolean upDirection) {
@@ -108,7 +116,13 @@ public class Taxonomy {
         return true;
     }
 
-    /** apply ACTOR to subgraph starting from NODE as defined by flags; */
+    /** apply ACTOR to subgraph starting from NODE as defined by flags;
+     * 
+     * @param node
+     * @param actor
+     * @param needCurrent
+     * @param onlyDirect
+     * @param upDirection */
     @PortedFrom(file = "Taxonomy.h", name = "getRelativesInfo")
     public void getRelativesInfo(TaxonomyVertex node, Actor actor, boolean needCurrent,
             boolean onlyDirect, boolean upDirection) {
@@ -216,6 +230,9 @@ public class Taxonomy {
         return true;
     }
 
+    /** @param pTop
+     * @param pBottom
+     * @param c */
     public Taxonomy(ClassifiableEntry pTop, ClassifiableEntry pBottom,
             JFactReasonerConfiguration c) {
         options = c;
@@ -232,28 +249,31 @@ public class Taxonomy {
         FreshNode.addNeighbour(false, getBottomVertex());
     }
 
-    /** special access to TOP of taxonomy */
+    /** @return TOP of taxonomy */
     @PortedFrom(file = "Taxonomy.h", name = "getTopVertex")
     public TaxonomyVertex getTopVertex() {
         return graph.get(1);
     }
 
-    /** special access to BOTTOM of taxonomy */
+    /** @return BOTTOM of taxonomy */
     @PortedFrom(file = "Taxonomy.h", name = "getBottomVertex")
     public TaxonomyVertex getBottomVertex() {
         return graph.get(0);
     }
 
-    /** get node for fresh entity E */
+    /** @param e
+     * @return node for fresh entity E */
     @PortedFrom(file = "Taxonomy.h", name = "getFreshVertex")
-    TaxonomyVertex getFreshVertex(ClassifiableEntry e) {
+    public TaxonomyVertex getFreshVertex(ClassifiableEntry e) {
         FreshNode.setSample(e, false);
         return FreshNode;
     }
 
     // -- classification interface
     // flags interface
-    /** set Completely Defined flag */
+    /** set Completely Defined flag
+     * 
+     * @param use */
     @PortedFrom(file = "Taxonomy.h", name = "setCompletelyDefined")
     public void setCompletelyDefined(boolean use) {
         useCompletelyDefined = use;
@@ -310,6 +330,7 @@ public class Taxonomy {
         return o.toString();
     }
 
+    /** @param syn */
     @PortedFrom(file = "Taxonomy.h", name = "addCurrentToSynonym")
     public void addCurrentToSynonym(TaxonomyVertex syn) {
         if (queryMode()) {
@@ -454,8 +475,9 @@ public class Taxonomy {
         // }
     }
 
-    /** ensure that all TS of the top entry are classified. @return the reason of
-     * cycle or NULL. */
+    /** ensure that all TS of the top entry are classified.
+     * 
+     * @return the reason of cycle or NULL. */
     @PortedFrom(file = "Taxonomy.h", name = "prepareTS")
     ClassifiableEntry prepareTS(ClassifiableEntry cur) {
         // we just found that TS forms a cycle -- return stop-marker
@@ -513,6 +535,7 @@ public class Taxonomy {
         return null;
     }
 
+    /** @param p */
     @PortedFrom(file = "Taxonomy.h", name = "classifyEntry")
     public void classifyEntry(ClassifiableEntry p) {
         assert waitStack.isEmpty();

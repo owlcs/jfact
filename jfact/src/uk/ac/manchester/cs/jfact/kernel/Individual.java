@@ -10,6 +10,7 @@ import java.util.*;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** individual */
 @PortedFrom(file = "tIndividual.h", name = "TIndividual")
 public class Individual extends Concept {
     /** pointer to nominal node (works for singletons only) */
@@ -22,6 +23,7 @@ public class Individual extends Concept {
     @PortedFrom(file = "tIndividual.h", name = "pRelatedMap")
     private Map<Role, List<Individual>> pRelatedMap;
 
+    /** @param name */
     public Individual(String name) {
         super(name);
         node = null;
@@ -66,33 +68,42 @@ public class Individual extends Concept {
         return !relatedIndex.isEmpty();
     }
 
-    /** set individual related */
+    /** set individual related
+     * 
+     * @param p */
     @PortedFrom(file = "tIndividual.h", name = "addRelated")
     public void addRelated(Related p) {
         relatedIndex.add(p);
     }
 
-    /** add all the related elements from the given P */
+    /** add all the related elements from the given P
+     * 
+     * @param p */
     @PortedFrom(file = "tIndividual.h", name = "addRelated")
     public void addRelated(Individual p) {
         relatedIndex.addAll(p.relatedIndex);
     }
 
     // related map access
-    /** @return true if has cache for related individuals via role R */
+    /** @param R
+     * @return true if has cache for related individuals via role R */
     @PortedFrom(file = "tIndividual.h", name = "hasRelatedCache")
     public boolean hasRelatedCache(Role R) {
         return pRelatedMap.containsKey(R);
     }
 
-    /** get set of individuals related to THIS via R */
+    /** @param R
+     * @return set of individuals related to THIS via R */
     @PortedFrom(file = "tIndividual.h", name = "getRelatedCache")
     public List<Individual> getRelatedCache(Role R) {
         assert pRelatedMap.containsKey(R);
         return pRelatedMap.get(R);
     }
 
-    /** set the cache of individuals related to THIS via R */
+    /** set the cache of individuals related to THIS via R
+     * 
+     * @param R
+     * @param v */
     @PortedFrom(file = "tIndividual.h", name = "setRelatedCache")
     public void setRelatedCache(Role R, List<Individual> v) {
         assert !pRelatedMap.containsKey(R);
@@ -106,16 +117,19 @@ public class Individual extends Concept {
         updateTold(relatedIndex, RolesProcessed);
     }
 
+    /** @return completion tree node */
     @Original
     public DlCompletionTree getNode() {
         return node;
     }
 
+    /** @param node */
     @Original
     public void setNode(DlCompletionTree node) {
         this.node = node;
     }
 
+    /** @return list of related individuals */
     @Original
     public List<Related> getRelatedIndex() {
         return relatedIndex;

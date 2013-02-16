@@ -17,6 +17,7 @@ import uk.ac.manchester.cs.jfact.kernel.state.SaveState;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** Completion graph label */
 @PortedFrom(file = "CGLabel.h", name = "CGLabel")
 public class CGLabel {
     @Original
@@ -36,38 +37,50 @@ public class CGLabel {
     @Original
     private int id;
 
+    @SuppressWarnings("javadoc")
     public CGLabel() {
         scLabel = new CWDArray();
         ccLabel = new CWDArray();
         id = getnewId();
     }
 
+    /** @return simple concepts list */
     @Original
     public List<ConceptWDep> get_sc() {
         return scLabel.getBase();
     }
 
+    /** @return complext concepts list */
     @Original
     public List<ConceptWDep> get_cc() {
         return ccLabel.getBase();
     }
+
+    /** @return simple concepts map */
 
     @Original
     public ArrayIntMap get_sc_concepts() {
         return scLabel.getContainedConcepts();
     }
 
+    /** @return complex concepts map */
+
     @Original
     public ArrayIntMap get_cc_concepts() {
         return ccLabel.getContainedConcepts();
     }
 
-    /** get (RW) label associated with the concepts defined by TAG */
+    /** @param tag
+     * @return label associated with the concepts defined by TAG */
     @PortedFrom(file = "CGLabel.h", name = "getLabel")
     public CWDArray getLabel(DagTag tag) {
         return tag.isComplexConcept() ? ccLabel : scLabel;
     }
 
+    /** index p by tag, clear caches
+     * 
+     * @param tag
+     * @param p */
     @Original
     public void add(DagTag tag, ConceptWDep p) {
         getLabel(tag).private_add(p);
@@ -86,7 +99,8 @@ public class CGLabel {
         }
     }
 
-    /** check whether node is labelled by complex concept P */
+    /** @param p
+     * @return true if node is labelled by complex concept P */
     @PortedFrom(file = "CGLabel.h", name = "containsCC")
     public boolean containsCC(int p) {
         return ccLabel.contains(p);
@@ -101,6 +115,8 @@ public class CGLabel {
     private Set<CGLabel> lesserEquals = Collections
             .newSetFromMap(new IdentityHashMap<CGLabel, Boolean>());
 
+    /** @param label
+     * @return true if this label is less or equal than label */
     @PortedFrom(file = "CGLabel.h", name = "<=")
     public boolean lesserequal(CGLabel label) {
         if (this == label) {
@@ -134,14 +150,18 @@ public class CGLabel {
         return false;
     }
 
-    /** save label using given SS */
+    /** @param ss
+     *            save label using given SS */
     @PortedFrom(file = "CGLabel.h", name = "save")
     public void save(SaveState ss) {
         ss.setSc(scLabel.save());
         ss.setCc(ccLabel.save());
     }
 
-    /** restore label to given LEVEL using given SS */
+    /** restore label to given LEVEL using given SS
+     * 
+     * @param ss
+     * @param level */
     @PortedFrom(file = "CGLabel.h", name = "restore")
     public void restore(SaveState ss, int level) {
         scLabel.restore(ss.getSc(), level);
@@ -154,6 +174,8 @@ public class CGLabel {
         return scLabel.toString() + ccLabel.toString();
     }
 
+    /** init the node - this is not in the constructor because objecs will be
+     * reused */
     @PortedFrom(file = "CGLabel.h", name = "init")
     public void init() {
         clearOthersCache();
@@ -162,6 +184,8 @@ public class CGLabel {
         ccLabel.init();
     }
 
+    /** @param p
+     * @return true if p index is contained in simple or complex concepts. */
     @PortedFrom(file = "CGLabel.h", name = "contains")
     public boolean contains(int p) {
         assert isCorrect(p);
@@ -175,6 +199,8 @@ public class CGLabel {
         return b;
     }
 
+    /** @param bp
+     * @return concept with index bp */
     @PortedFrom(file = "CGLabel.h", name = "getConcept")
     public ConceptWDep getConceptWithBP(int bp) {
         ConceptWDep toReturn = scLabel.getConceptWithBP(bp);
@@ -185,11 +211,13 @@ public class CGLabel {
         return toReturn;
     }
 
+    /** @return number of all concepts */
     @Original
     public int baseSize() {
         return ccLabel.size() + scLabel.size();
     }
 
+    /** @return id for this label */
     @Original
     public int getId() {
         return id;

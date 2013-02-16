@@ -2,6 +2,7 @@ package uk.ac.manchester.cs.jfact.kernel;
 
 import org.semanticweb.owlapi.reasoner.OWLReasonerRuntimeException;
 
+@SuppressWarnings("javadoc")
 public class ReasonerFreshEntityException extends OWLReasonerRuntimeException {
     private String iri;
 

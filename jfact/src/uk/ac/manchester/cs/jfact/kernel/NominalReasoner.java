@@ -18,6 +18,7 @@ import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import conformance.PortedFrom;
 
+/** nominal reasoner */
 @PortedFrom(file = "ReasonerNom.h", name = "NominalReasoner")
 public class NominalReasoner extends DlSatTester {
     /** all nominals defined in TBox */
@@ -58,11 +59,14 @@ public class NominalReasoner extends DlSatTester {
             int bp = p.getNode().getBlocker().label().get_sc().get(0).getConcept();
             Individual blocker = (Individual) dlHeap.get(bp).getConcept();
             assert blocker.getNode().equals(p.getNode().getBlocker());
-            tBox.sameIndividuals.put(p, new Pair<Individual, Boolean>(blocker, p
+            tBox.addSameIndividuals(p, new Pair(blocker, p
                     .getNode().getPurgeDep().isEmpty()));
         }
     }
 
+    /** @param tbox
+     * @param Options
+     * @param datatypeFactory */
     public NominalReasoner(TBox tbox, JFactReasonerConfiguration Options,
             DatatypeFactory datatypeFactory) {
         super(tbox, Options, datatypeFactory);
@@ -91,7 +95,7 @@ public class NominalReasoner extends DlSatTester {
         resetSessionFlags();
     }
 
-    /** check whether ontology with nominals is consistent */
+    /** @return check whether ontology with nominals is consistent */
     @PortedFrom(file = "ReasonerNom.h", name = "consistentNominalCloud")
     public boolean consistentNominalCloud() {
         options.getLog().print(

@@ -9,28 +9,51 @@ import java.util.EnumSet;
 
 /** different Concept Expression tags */
 public enum DagTag {
-    // illegal entry
+    /** illegal entry */
     dtBad("bad-tag"),
-    // operations
-    dtTop("*TOP*"), dtAnd("and"), dtCollection("collection"), dtForall("all"), dtLE(
-            "at-most"),
-    // dtUAll("all U"), // \dall U.C
-    dtIrr("irreflexive"), // \neg\exists R.Self
-    dtProj("projection"), // aux vertex with Projection FROM the current node
-    dtNN("NN-stopper"), // NN-rule was applied
+    /** operations */
+    dtTop("*TOP*"),
+    /** operations */
+    dtAnd("and"),
+    /** operations */
+    dtCollection("collection"),
+    /** operations */
+    dtForall("all"),
+    /** operations */
+    dtLE("at-most"),
+    /** \neg\exists R.Self */
+    dtIrr("irreflexive"),
+    /** aux vertex with Projection FROM the current node */
+    dtProj("projection"),
+    /** NN-rule was applied */
+    dtNN("NN-stopper"),
     // ID's
-    dtPConcept("primconcept"), // primitive concept
-    dtNConcept("concept"), // non-primitive concept
-    dtPSingleton("prim-singleton"), dtNSingleton("singleton"), dtDataType("data-type"), dtDataValue(
-            "data-value"), dtDataExpr("data-expr"), dtChoose("choose"), dtSplitConcept(
-            "split-concept");
+    /** primitive concept */
+    dtPConcept("primconcept"),
+    /** non-primitive concept */
+    dtNConcept("concept"),
+    /** primitive singleton */
+    dtPSingleton("prim-singleton"),
+    /** non-primitive singleton */
+    dtNSingleton("singleton"),
+    /** datatype */
+    dtDataType("data-type"),
+    /** data value */
+    dtDataValue("data-value"),
+    /** data expression */
+    dtDataExpr("data-expr"),
+    /** choose */
+    dtChoose("choose"),
+    /** split concept */
+    dtSplitConcept("split-concept");
     private static EnumSet<DagTag> TRUE = EnumSet.of(dtDataType, dtDataValue, dtDataExpr,
             dtNN, dtBad, dtTop, dtChoose);
     private static EnumSet<DagTag> NotPos = EnumSet.of(dtPConcept, dtPSingleton,
             dtCollection, dtProj);
 
-    /** whether statistic's gathering should be omitted due to the type of a
-     * vertex */
+    /** @param pos
+     * @return whether statistic's gathering should be omitted due to the type
+     *         of a vertex */
     public boolean omitStat(boolean pos) {
         if (TRUE.contains(this)) {
             return true;
@@ -47,22 +70,25 @@ public enum DagTag {
         name = s;
     }
 
+    /** @return name */
     public String getName() {
         return name;
     }
 
     // data type with restrictions
-    /** check whether given DagTag is a primitive named concept-like entity */
+    /** @return check whether given DagTag is a primitive named concept-like
+     *         entity */
     public boolean isPNameTag() {
         return this == DagTag.dtPConcept || this == DagTag.dtPSingleton;
     }
 
-    /** check whether given DagTag is a non-primitive named concept-like entity */
+    /** @return check whether given DagTag is a non-primitive named concept-like
+     *         entity */
     public boolean isNNameTag() {
         return this == DagTag.dtNConcept || this == DagTag.dtNSingleton;
     }
 
-    /** check whether given DagTag is a named concept-like entity */
+    /** @return check whether given DagTag is a named concept-like entity */
     public boolean isCNameTag() {
         return isPNameTag() || isNNameTag();
     }

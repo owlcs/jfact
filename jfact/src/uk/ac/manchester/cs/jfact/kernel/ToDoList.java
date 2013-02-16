@@ -18,6 +18,7 @@ import uk.ac.manchester.cs.jfact.helpers.SaveStack;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** todo list */
 @PortedFrom(file = "ToDoList.h", name = "ToDoList")
 public class ToDoList {
     @Original
@@ -68,7 +69,10 @@ public class ToDoList {
         /** start pointer; points to the 1st element in the queue */
         int sPointer = 0;
 
-        /** add entry to a queue */
+        /** add entry to a queue
+         * 
+         * @param node
+         * @param offset */
         public void add(DlCompletionTree node, ConceptWDep offset) {
             Wait.add(new ToDoEntry(node, offset));
         }
@@ -80,25 +84,31 @@ public class ToDoList {
             Wait.clear();
         }
 
-        /** check if queue empty */
+        /** @return check if queue empty */
         @PortedFrom(file = "ToDoList.h", name = "empty")
         public boolean isEmpty() {
             return sPointer == Wait.size();
         }
 
-        /** get next entry from the queue; works for non-empty queues */
+        /** @return next entry from the queue; works for non-empty queues */
         public ToDoEntry get() {
             return Wait.get(sPointer++);
         }
 
-        /** save queue content to the given entry */
+        /** save queue content to the given entry
+         * 
+         * @param tss
+         * @param pos */
         @PortedFrom(file = "ToDoList.h", name = "save")
         public void save(int[][] tss, int pos) {
             tss[pos][0] = sPointer;
             tss[pos][1] = Wait.size();
         }
 
-        /** restore queue content from the given entry */
+        /** restore queue content from the given entry
+         * 
+         * @param tss
+         * @param pos */
         @PortedFrom(file = "ToDoList.h", name = "restore")
         public void restore(int[][] tss, int pos) {
             sPointer = tss[pos][0];
@@ -254,7 +264,7 @@ public class ToDoList {
     }
 
     @Original
-    public TODOListSaveState getInstance() {
+    TODOListSaveState getInstance() {
         return new TODOListSaveState();
     }
 
@@ -282,12 +292,12 @@ public class ToDoList {
     protected boolean saveStateGenerationStarted = false;
 
     @Original
-    public boolean isSaveStateGenerationStarted() {
+    boolean isSaveStateGenerationStarted() {
         return saveStateGenerationStarted;
     }
 
     @Original
-    public void startSaveStateGeneration() {
+    void startSaveStateGeneration() {
         saveStateGenerationStarted = true;
         Thread stateFiller = new Thread() {
             @Override
@@ -341,7 +351,9 @@ public class ToDoList {
     @PortedFrom(file = "ToDoList.h", name = "noe")
     private int noe;
 
-    /** save current Todo table content to given saveState entry */
+    /** save current Todo table content to given saveState entry
+     * 
+     * @param tss */
     @PortedFrom(file = "ToDoList.h", name = "saveState")
     public void saveState(TODOListSaveState tss) {
         tss.backupID_sp = queueID.sPointer;
@@ -353,7 +365,9 @@ public class ToDoList {
         tss.noe = noe;
     }
 
-    /** restore Todo table content from given saveState entry */
+    /** restore Todo table content from given saveState entry
+     * 
+     * @param tss */
     @PortedFrom(file = "ToDoList.h", name = "restoreState")
     public void restoreState(TODOListSaveState tss) {
         queueID.restore(tss.backupID_sp, tss.backupID_ep);
@@ -364,6 +378,7 @@ public class ToDoList {
         noe = tss.noe;
     }
 
+    @SuppressWarnings("javadoc")
     public ToDoList() {
         noe = 0;
         // Helper.resize(Wait, nRegularOps);
@@ -372,7 +387,9 @@ public class ToDoList {
         }
     }
 
-    /** init priorities via Options */
+    /** init priorities via Options
+     * 
+     * @param Options */
     @Original
     public void initPriorities(String Options) {
         matrix.initPriorities(Options, "IAOEFLG");
@@ -390,13 +407,17 @@ public class ToDoList {
         noe = 0;
     }
 
-    /** check if Todo table is empty */
+    /** @return check if Todo table is empty */
     public boolean isEmpty() {
         return noe == 0;
     }
 
     // work with entries
-    /** add entry with given NODE and CONCEPT with given OFFSET to the Todo table */
+    /** add entry with given NODE and CONCEPT with given OFFSET to the Todo table
+     * 
+     * @param node
+     * @param type
+     * @param C */
     @PortedFrom(file = "ToDoList.h", name = "addEntry")
     public void addEntry(DlCompletionTree node, DagTag type, ConceptWDep C) {
         int index = matrix.getIndex(type, C.getConcept() > 0, node.isNominalNode());
@@ -424,12 +445,15 @@ public class ToDoList {
         saveStack.push(state);
     }
 
-    /** restore state to the given level using internal stack */
+    /** restore state to the given level using internal stack
+     * 
+     * @param level */
     @PortedFrom(file = "ToDoList.h", name = "restore")
     public void restore(int level) {
         restoreState(saveStack.pop(level));
     }
 
+    /** @return next entry */
     @PortedFrom(file = "ToDoList.h", name = "getNextEntry")
     public ToDoEntry getNextEntry() {
         assert !isEmpty();

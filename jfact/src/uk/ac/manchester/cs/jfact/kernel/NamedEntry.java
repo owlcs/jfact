@@ -9,6 +9,7 @@ import conformance.PortedFrom;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+/** named entry */
 @PortedFrom(file = "tNamedEntry.h", name = "TNamedEntry")
 public abstract class NamedEntry {
     /** name of the entry */
@@ -20,6 +21,8 @@ public abstract class NamedEntry {
     @PortedFrom(file = "tNamedEntry.h", name = "entity")
     protected NamedEntity entity = null;
 
+    /** @param name
+     *            entry IRI */
     public NamedEntry(String name) {
         assert name != null;
         extName = name;
@@ -32,7 +35,7 @@ public abstract class NamedEntry {
         }
     }
 
-    /** gets name of given entry */
+    /** @return name of given entry */
     @PortedFrom(file = "tNamedEntry.h", name = "getName")
     public String getName() {
         return extName;
@@ -58,13 +61,15 @@ public abstract class NamedEntry {
         return extName.hashCode();
     }
 
-    /** set internal ID */
+    /** set internal ID
+     * 
+     * @param id */
     @PortedFrom(file = "tNamedEntry.h", name = "setId")
     public void setId(int id) {
         extId = id;
     }
 
-    /** get internal ID */
+    /** @return internal ID */
     @PortedFrom(file = "tNamedEntry.h", name = "getId")
     public int getId() {
         return extId;
@@ -79,12 +84,13 @@ public abstract class NamedEntry {
     @Original
     private boolean system;
 
-    /** a System flag */
+    /** @return System flag */
     @Original
     public boolean isSystem() {
         return system;
     }
 
+    /** set as system entry */
     @Original
     public void setSystem() {
         system = true;
@@ -94,12 +100,13 @@ public abstract class NamedEntry {
     private boolean top = false;
 
     // hierarchy interface
-    /** a Top-of-the-hierarchy flag */
+    /** @return Top-of-the-hierarchy flag */
     @Original
     public boolean isTop() {
         return top;
     }
 
+    /** set as top entity */
     @Original
     public void setTop() {
         top = true;
@@ -108,30 +115,35 @@ public abstract class NamedEntry {
     @Original
     private boolean bottom;
 
-    /** a Bottom-of-the-hierarchy flag */
+    /** @return Bottom-of-the-hierarchy */
     @Original
     public boolean isBottom() {
         return bottom;
     }
 
+    /** set as bottom entity */
     @Original
     public void setBottom() {
         bottom = true;
     }
 
+    /** @return entity */
     @PortedFrom(file = "tNamedEntry.h", name = "getEntity")
     public NamedEntity getEntity() {
         return entity;
     }
 
+    /** @param entity */
     @PortedFrom(file = "tNamedEntry.h", name = "setEntity")
     public void setEntity(NamedEntity entity) {
         this.entity = entity;
     }
 
+    /** @param i */
     @PortedFrom(file = "taxNamEntry.h", name = "setIndex")
     public abstract void setIndex(int i);
 
+    /** @return index */
     @PortedFrom(file = "taxNamEntry.h", name = "getIndex")
     public abstract int getIndex();
 }

@@ -7,12 +7,14 @@ import conformance.PortedFrom;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version. 
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+/** label that can be merged */
 @PortedFrom(file = "mergableLabel.h", name = "mergableLabel")
 public class MergableLabel {
     /** sample for all equivalent labels */
     @PortedFrom(file = "mergableLabel.h", name = "pSample")
     private MergableLabel pSample;
 
+    @SuppressWarnings("javadoc")
     public MergableLabel() {
         pSample = this;
     }
@@ -40,7 +42,9 @@ public class MergableLabel {
         return super.hashCode();
     }
 
-    /** make 2 labels equal */
+    /** make 2 labels equal
+     * 
+     * @param p */
     @PortedFrom(file = "mergableLabel.h", name = "merge")
     public void merge(MergableLabel p) {
         MergableLabel sample = p.resolve();
@@ -50,7 +54,9 @@ public class MergableLabel {
         }
     }
 
-    /** make label's depth <= 2; @return sample of the label */
+    /** make label's depth <= 2;
+     * 
+     * @return sample of the label */
     @PortedFrom(file = "mergableLabel.h", name = "resolve")
     public MergableLabel resolve() {
         // check if current node is itself sample
@@ -60,7 +66,7 @@ public class MergableLabel {
         return pSample;
     }
 
-    /** is given lable a sample label */
+    /** @return is given lable a sample label */
     @PortedFrom(file = "mergableLabel.h", name = "isSample")
     public boolean isSample() {
         return pSample.equals(this);

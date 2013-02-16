@@ -11,6 +11,7 @@ import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** role automaton transition */
 @PortedFrom(file = "RAutomaton.h", name = "RATransition")
 public class RATransition {
     /** set of roles that may affect the transition */
@@ -22,19 +23,26 @@ public class RATransition {
     @PortedFrom(file = "RAutomaton.h", name = "state")
     private int state;
 
-    /** create a transition to given state */
+    /** create a transition to given state
+     * 
+     * @param st */
     public RATransition(int st) {
         state = st;
         label = new LinkedHashSet<Role>();
     }
 
-    /** create a transition with a given label R to given state ST */
+    /** create a transition with a given label R to given state ST
+     * 
+     * @param st
+     * @param R */
     public RATransition(int st, Role R) {
         this(st);
         label.add(R);
     }
 
-    /** add label of transition TRANS to transition's label */
+    /** add label of transition TRANS to transition's label
+     * 
+     * @param trans */
     @PortedFrom(file = "RAutomaton.h", name = "add")
     public void add(RATransition trans) {
         label.addAll(trans.label);
@@ -42,19 +50,20 @@ public class RATransition {
     }
 
     // query the transition
-    /** get the 1st role in (multi-)transition */
+    /** @return the 1st role in (multi-)transition */
     @PortedFrom(file = "RAutomaton.h", name = "begin")
     public Collection<Role> begin() {
         return label;
     }
 
-    /** give a point of the transition */
+    /** @return a point of the transition */
     @PortedFrom(file = "RAutomaton.h", name = "final")
     public int final_state() {
         return state;
     }
 
-    /** check whether transition is applicable wrt role R */
+    /** @param R
+     * @return whether transition is applicable wrt role R */
     @PortedFrom(file = "RAutomaton.h", name = "applicable")
     public boolean applicable(Role R) {
         if (cache == null) {
@@ -66,13 +75,16 @@ public class RATransition {
         return cache.get(R.getAbsoluteIndex());
     }
 
-    /** check whether transition is empty */
+    /** @return whether transition is empty */
     @PortedFrom(file = "RAutomaton.h", name = "empty")
     public boolean isEmpty() {
         return label.isEmpty();
     }
 
-    /** print the transition starting from FROM */
+    /** print the transition starting from FROM
+     * 
+     * @param o
+     * @param from */
     @PortedFrom(file = "RAutomaton.h", name = "print")
     public void print(LogAdapter o, int from) {
         o.print("\n", from, " -- ");

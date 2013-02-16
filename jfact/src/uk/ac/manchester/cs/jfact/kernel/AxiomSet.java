@@ -15,6 +15,7 @@ import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import conformance.PortedFrom;
 
+/** set of axioms */
 @PortedFrom(file = "tAxiomSet.h", name = "TAxiomSet")
 public class AxiomSet {
     /** host TBox that holds all concepts/etc */
@@ -23,6 +24,7 @@ public class AxiomSet {
     /** set of axioms that accumilates incoming (and newly created) axioms; Tg */
     @PortedFrom(file = "tAxiomSet.h", name = "Accum")
     private List<Axiom> accumulator = new ArrayList<Axiom>();
+    private final LogAdapter absorptionLog;
 
     private interface Abs {
         boolean absMethod(Axiom ax);
@@ -40,7 +42,9 @@ public class AxiomSet {
         accumulator.add(p);
     }
 
-    /** insert GCI if new; @return true iff already exists */
+    /** insert GCI if new;
+     * 
+     * @return true iff already exists */
     @PortedFrom(file = "tAxiomSet.h", name = "insertIfNew")
     private boolean insertIfNew(Axiom q) {
         if (!accumulator.contains(q)) {
@@ -50,7 +54,9 @@ public class AxiomSet {
         return true;
     }
 
-    /** helper that inserts an axiom into Accum; @return bool if success */
+    /** helper that inserts an axiom into Accum;
+     * 
+     * @return bool if success */
     @PortedFrom(file = "tAxiomSet.h", name = "processNewAxiom")
     protected boolean processNewAxiom(Axiom q) {
         if (q == null) {
@@ -62,15 +68,20 @@ public class AxiomSet {
         return true;
     }
 
+    /** @param host */
     public AxiomSet(TBox host) {
         tboxHost = host;
+        absorptionLog = tboxHost.getOptions().getAbsorptionLog();
     }
 
-    /** add axiom for the GCI C [= D */
+    /** add axiom for the GCI C [= D
+     * 
+     * @param C
+     * @param D */
     @PortedFrom(file = "tAxiomSet.h", name = "addAxiom")
     public void addAxiom(DLTree C, DLTree D) {
         SAbsInput();
-        Axiom p = new Axiom();
+        Axiom p = new Axiom(absorptionLog);
         p.add(C);
         p.add(DLTreeFactory.createSNFNot(D));
         insertGCI(p);
@@ -89,7 +100,7 @@ public class AxiomSet {
         return InAx.created.containsKey(string);
     }
 
-    /** get GCI of all non-absorbed axioms */
+    /** @return GCI of all non-absorbed axioms */
     @PortedFrom(file = "tAxiomSet.h", name = "getGCI")
     public DLTree getGCI() {
         List<DLTree> l = new ArrayList<DLTree>();
@@ -99,10 +110,12 @@ public class AxiomSet {
         return DLTreeFactory.createSNFAnd(l);
     }
 
-    /** split given axiom */
+    /** split given axiom
+     * 
+     * @return true if any spit happens */
     @PortedFrom(file = "tAxiomSet.h", name = "split")
     protected boolean split(Axiom p) {
-        List<Axiom> splitted = p.split(tboxHost);
+        List<Axiom> splitted = p.split();
         if (splitted.isEmpty()) {
             // nothing to split
             return false;
@@ -120,6 +133,7 @@ public class AxiomSet {
         return true;
     }
 
+    /** @return new size */
     @PortedFrom(file = "tAxiomSet.h", name = "absorb")
     public int absorb() {
         // GCIs to process
@@ -154,6 +168,8 @@ public class AxiomSet {
         return false;
     }
 
+    /** @param flags
+     * @return false if no absorptions */
     @PortedFrom(file = "tAxiomSet.h", name = "initAbsorptionFlags")
     public boolean initAbsorptionFlags(String flags) {
         actions.clear();
@@ -163,7 +179,7 @@ public class AxiomSet {
                     actions.add(new Abs() {
                         @Override
                         public boolean absMethod(Axiom ax) {
-                            return ax.absorbIntoBottom(tboxHost);
+                            return ax.absorbIntoBottom();
                         }
                     });
                     break;
@@ -179,7 +195,7 @@ public class AxiomSet {
                     actions.add(new Abs() {
                         @Override
                         public boolean absMethod(Axiom ax) {
-                            return processNewAxiom(ax.simplifyCN(tboxHost));
+                            return processNewAxiom(ax.simplifyCN());
                         }
                     });
                     break;

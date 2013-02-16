@@ -18,6 +18,7 @@ import uk.ac.manchester.cs.jfact.kernel.actors.AddRoleActor;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** Role */
 @PortedFrom(file = "tRole.h", name = "Role")
 public class Role extends ClassifiableEntry {
     static class KnownValue {
@@ -165,33 +166,37 @@ public class Role extends ClassifiableEntry {
         }
     }
 
-    /** get inverse of given role (non- version) */
+    /** @return inverse of given role (non- version) */
     @PortedFrom(file = "tRole.h", name = "inverse")
     public Role inverse() {
         assert inverse != null;
         return resolveSynonym(inverse);
     }
 
-    /** get real inverse of a role (RO) */
+    /** @return real inverse of a role (RO) */
     @PortedFrom(file = "tRole.h", name = "realInverse")
     public Role realInverse() {
         assert inverse != null;
         return inverse;
     }
 
-    /** set inverse to given role */
+    /** set inverse to given role
+     * 
+     * @param p */
     @PortedFrom(file = "tRole.h", name = "setInverse")
     public void setInverse(Role p) {
         assert inverse == null;
         inverse = p;
     }
 
-    /** a Simple flag (not simple if role or any of its sub-roles is transitive) */
+    /** @return Simple flag (not simple if role or any of its sub-roles is
+     *         transitive) */
     @PortedFrom(file = "tRole.h", name = "isSimple")
     public boolean isSimple() {
         return automaton.isSimple();
     }
 
+    /** @return special domain */
     @PortedFrom(file = "tRole.h", name = "getTSpecialDomain")
     public DLTree getTSpecialDomain() {
         return pSpecialDomain;
@@ -216,7 +221,9 @@ public class Role extends ClassifiableEntry {
         }
     }
 
-    /** set the special domain value */
+    /** set the special domain value
+     * 
+     * @param bp */
     @PortedFrom(file = "tRole.h", name = "setSpecialDomain")
     public void setSpecialDomain(int bp) {
         bpSpecialDomain = bp;
@@ -225,40 +232,36 @@ public class Role extends ClassifiableEntry {
     @Original
     private boolean dataRole;
 
-    /** distinguish data- and non-data role */
+    /** @return distinguish data- and non-data role */
     @Original
     public boolean isDataRole() {
         return dataRole;
     }
 
-    @Original
-    public void setDataRole() {
-        dataRole = true;
-    }
 
-    @Original
-    public void clearDataRole() {
-        dataRole = false;
-    }
 
+    
+    /** @param action */
     @Original
     public void setDataRole(boolean action) {
         dataRole = action;
     }
 
-    /** test if role is functional (ie, have some functional ancestors) */
+    /** @return test if role is functional (ie, have some functional ancestors) */
     @PortedFrom(file = "tRole.h", name = "isFunctional")
     public boolean isFunctional() {
         return functionality.getValue();
     }
 
-    /** check whether the functionality of a role is known */
+    /** @return check whether the functionality of a role is known */
     @PortedFrom(file = "tRole.h", name = "isFunctionalityKnown")
     public boolean isFunctionalityKnown() {
         return functionality.isKnown();
     }
 
-    /** set role functionality value */
+    /** set role functionality value
+     * 
+     * @param value */
     @PortedFrom(file = "tRole.h", name = "setFunctional")
     public void setFunctional(boolean value) {
         functionality.setValue(value);
@@ -274,125 +277,118 @@ public class Role extends ClassifiableEntry {
     }
 
     // transitivity
-    /** check whether the role is transitive */
+    /** @return check whether the role is transitive */
     @PortedFrom(file = "tRole.h", name = "isTransitive")
     public boolean isTransitive() {
         return transitivity.getValue();
     }
 
-    /** check whether the transitivity of a role is known */
+    /** @return check whether the transitivity of a role is known */
     @PortedFrom(file = "tRole.h", name = "isTransitivityKnown")
     public boolean isTransitivityKnown() {
         return transitivity.isKnown();
     }
 
-    /** set the transitivity of both role and it's inverse */
+    /** set the transitivity of both role and it's inverse
+     * 
+     * @param value */
     @PortedFrom(file = "tRole.h", name = "setTransitive")
     public void setTransitive(boolean value) {
         transitivity.setValue(value);
         inverse().transitivity.setValue(value);
     }
 
-    @PortedFrom(file = "tRole.h", name = "setTransitive")
-    public void setTransitive() {
-        this.setTransitive(true);
-    }
 
     // symmetry
-    /** check whether the role is symmetric */
+    /** @return check whether the role is symmetric */
     @PortedFrom(file = "tRole.h", name = "isSymmetric")
     public boolean isSymmetric() {
         return symmetry.getValue();
     }
 
-    /** check whether the symmetry of a role is known */
+    /** @return check whether the symmetry of a role is known */
     @PortedFrom(file = "tRole.h", name = "isSymmetryKnown")
     public boolean isSymmetryKnown() {
         return symmetry.isKnown();
     }
 
-    /** set the symmetry of both role and it's inverse */
+    /** set the symmetry of both role and it's inverse
+     * 
+     * @param value */
     @PortedFrom(file = "tRole.h", name = "setSymmetric")
     public void setSymmetric(boolean value) {
         symmetry.setValue(value);
         inverse().symmetry.setValue(value);
     }
 
-    @PortedFrom(file = "tRole.h", name = "setSymmetric")
-    public void setSymmetric() {
-        this.setSymmetric(true);
-    }
-
     // asymmetry
-    /** check whether the role is asymmetric */
+    /** @return check whether the role is asymmetric */
     @PortedFrom(file = "tRole.h", name = "isAsymmetric")
     public boolean isAsymmetric() {
         return asymmetry.getValue();
     }
 
-    /** check whether the asymmetry of a role is known */
+    /** @return check whether the asymmetry of a role is known */
     @PortedFrom(file = "tRole.h", name = "isAsymmetryKnown")
     public boolean isAsymmetryKnown() {
         return asymmetry.isKnown();
     }
 
-    /** set the asymmetry of both role and it's inverse */
+    /** set the asymmetry of both role and it's inverse
+     * 
+     * @param value */
     @PortedFrom(file = "tRole.h", name = "setAsymmetric")
     public void setAsymmetric(boolean value) {
         asymmetry.setValue(value);
         inverse().asymmetry.setValue(value);
     }
 
-    /** check whether the role is reflexive */
+    /** @return check whether the role is reflexive */
     @PortedFrom(file = "tRole.h", name = "isReflexive")
     public boolean isReflexive() {
         return reflexivity.getValue();
     }
 
-    /** check whether the reflexivity of a role is known */
+    /** @return check whether the reflexivity of a role is known */
     @PortedFrom(file = "tRole.h", name = "isReflexivityKnown")
     public boolean isReflexivityKnown() {
         return reflexivity.isKnown();
     }
 
-    /** set the reflexivity of both role and it's inverse */
+    /** set the reflexivity of both role and it's inverse
+     * 
+     * @param value */
     @PortedFrom(file = "tRole.h", name = "setReflexive")
     public void setReflexive(boolean value) {
         reflexivity.setValue(value);
         inverse().reflexivity.setValue(value);
     }
 
-    @PortedFrom(file = "tRole.h", name = "setReflexive")
-    public void setReflexive() {
-        this.setReflexive(true);
-    }
-
     // irreflexivity
-    /** check whether the role is irreflexive */
+    /** @return check whether the role is irreflexive */
     @PortedFrom(file = "tRole.h", name = "isIrreflexive")
     public boolean isIrreflexive() {
         return irreflexivity.getValue();
     }
 
-    /** check whether the irreflexivity of a role is known */
+    /** @return check whether the irreflexivity of a role is known */
     @PortedFrom(file = "tRole.h", name = "isIrreflexivityKnown")
     public boolean isIrreflexivityKnown() {
         return irreflexivity.isKnown();
     }
 
-    /** set the irreflexivity of both role and it's inverse */
+    /** set the irreflexivity of both role and it's inverse
+     * 
+     * @param value */
     @PortedFrom(file = "tRole.h", name = "setIrreflexive")
     public void setIrreflexive(boolean value) {
         irreflexivity.setValue(value);
         inverse().irreflexivity.setValue(value);
     }
 
-    @PortedFrom(file = "tRole.h", name = "setIrreflexive")
-    public void setIrreflexive() {
-        this.setIrreflexive(true);
-    }
 
-    /** check if the role is topmost-functional (ie, has no functional ancestors) */
+    /** @return check if the role is topmost-functional (ie, has no functional
+     *         ancestors) */
     @PortedFrom(file = "tRole.h", name = "isTopFunc")
     public boolean isTopFunc() {
         // check for emptyness is here due to case where a role is determined to
@@ -400,45 +396,52 @@ public class Role extends ClassifiableEntry {
         return !topFunctionalRoles.isEmpty() && topFunctionalRoles.get(0).equals(this);
     }
 
-    /** set functional attribute to given value (functional DAG vertex) */
+    /** set functional attribute to given value (functional DAG vertex)
+     * 
+     * @param fNode */
     @PortedFrom(file = "tRole.h", name = "setFunctional")
     public void setFunctional(int fNode) {
         functional = fNode;
     }
 
-    /** get the Functional DAG vertex */
+    /** @return get the Functional DAG vertex */
     @PortedFrom(file = "tRole.h", name = "getFunctional")
     public int getFunctional() {
         return functional;
     }
 
     // relevance
-    /** is given role relevant to given Labeller's state */
+    /** @param lab
+     * @return is given role relevant to given Labeller's state */
     @PortedFrom(file = "tRole.h", name = "isRelevant")
     public boolean isRelevant(long lab) {
         return lab == rel;
     }
 
-    /** make given role relevant to given Labeller's state */
+    /** make given role relevant to given Labeller's state
+     * 
+     * @param lab */
     @PortedFrom(file = "tRole.h", name = "setRelevant")
     public void setRelevant(long lab) {
         rel = lab;
     }
 
     // Sorted reasoning interface
-    /** get label of the role's domain */
+    /** @return label of the role's domain */
     @PortedFrom(file = "tRole.h", name = "getDomainLabel")
     public MergableLabel getDomainLabel() {
         return domLabel;
     }
 
-    /** get label of the role's range */
+    /** @return label of the role's range */
     @PortedFrom(file = "tRole.h", name = "getRangeLabel")
     public MergableLabel getRangeLabel() {
         return inverse().domLabel;
     }
 
-    /** add p to domain of the role */
+    /** add p to domain of the role
+     * 
+     * @param p */
     @PortedFrom(file = "tRole.h", name = "setDomain")
     public void setDomain(DLTree p) {
         if (equalTrees(pDomain, p)) {
@@ -452,19 +455,21 @@ public class Role extends ClassifiableEntry {
         }
     }
 
-    /** add p to range of the role */
+    /** add p to range of the role
+     * 
+     * @param p */
     @PortedFrom(file = "tRole.h", name = "setRange")
     public void setRange(DLTree p) {
         inverse().setDomain(p);
     }
 
-    /** get domain-as-a-tree of the role */
+    /** @return domain-as-a-tree of the role */
     @PortedFrom(file = "tRole.h", name = "getTDomain")
     public DLTree getTDomain() {
         return pDomain;
     }
 
-    /** get range-as-a-tree of the role */
+    /** @return range-as-a-tree of the role */
     @PortedFrom(file = "tRole.h", name = "getTRange")
     private DLTree getTRange() {
         return inverse().pDomain;
@@ -478,19 +483,21 @@ public class Role extends ClassifiableEntry {
         }
     }
 
-    /** set domain-as-a-bipointer to a role */
+    /** set domain-as-a-bipointer to a role
+     * 
+     * @param p */
     @PortedFrom(file = "tRole.h", name = "setBPDomain")
     public void setBPDomain(int p) {
         bpDomain = p;
     }
 
-    /** get domain-as-a-bipointer of the role */
+    /** @return domain-as-a-bipointer of the role */
     @PortedFrom(file = "tRole.h", name = "getBPDomain")
     public int getBPDomain() {
         return bpDomain;
     }
 
-    /** get range-as-a-bipointer of the role */
+    /** @return range-as-a-bipointer of the role */
     @PortedFrom(file = "tRole.h", name = "getBPRange")
     public int getBPRange() {
         return inverse().bpDomain;
@@ -504,7 +511,9 @@ public class Role extends ClassifiableEntry {
     }
 
     // disjoint roles
-    /** set R and THIS as a disjoint; use it after Anc/Desc are determined */
+    /** set R and THIS as a disjoint; use it after Anc/Desc are determined
+     * 
+     * @param R */
     @PortedFrom(file = "tRole.h", name = "addDisjointRole")
     public void addDisjointRole(Role R) {
         disjointRoles.add(R);
@@ -523,13 +532,14 @@ public class Role extends ClassifiableEntry {
         }
     }
 
-    /** check whether a role is disjoint with anything */
+    /** @return check whether a role is disjoint with anything */
     @PortedFrom(file = "tRole.h", name = "isDisjoint")
     public boolean isDisjoint() {
         return !disjointRoles.isEmpty();
     }
 
-    /** check whether a role is disjoint with R */
+    /** @param r
+     * @return check whether a role is disjoint with R */
     @PortedFrom(file = "tRole.h", name = "isDisjoint")
     public boolean isDisjoint(Role r) {
         return disjointRolesIndex.contains(r.getAbsoluteIndex());
@@ -542,17 +552,20 @@ public class Role extends ClassifiableEntry {
                 && ancestorMap.contains(r.getAbsoluteIndex());
     }
 
+    /** @param r
+     * @return true if lesser or equal to r */
     @PortedFrom(file = "tRole.h", name = "<=")
     public boolean lesserequal(Role r) {
         return equals(r) || lesser(r);
     }
 
+    /** @return list of ancestor roles */
     @PortedFrom(file = "tRole.h", name = "begin_anc")
     public List<Role> getAncestor() {
         return ancestorRoles;
     }
 
-    /** get access to the func super-roles w/o func parents via iterator */
+    /** @return func super-roles w/o func parents via iterator */
     @PortedFrom(file = "tRole.h", name = "begin_topfunc")
     public List<Role> begin_topfunc() {
         return topFunctionalRoles;
@@ -566,7 +579,9 @@ public class Role extends ClassifiableEntry {
         }
     }
 
-    /** add composition to a role */
+    /** add composition to a role
+     * 
+     * @param tree */
     @PortedFrom(file = "tRole.h", name = "addComposition")
     public void addComposition(DLTree tree) {
         List<Role> RS = new ArrayList<Role>();
@@ -574,14 +589,16 @@ public class Role extends ClassifiableEntry {
         subCompositions.add(RS);
     }
 
-    /** get access to a RA for the role */
+    /** @return RA for the role */
     @PortedFrom(file = "tRole.h", name = "getAutomaton")
     public RoleAutomaton getAutomaton() {
         return automaton;
     }
 
     // completing internal constructions
-    /** eliminate told role cycle */
+    /** eliminate told role cycle
+     * 
+     * @return rewritten role */
     @PortedFrom(file = "tRole.h", name = "eliminateToldCycles")
     public Role eliminateToldCycles() {
         Set<Role> RInProcess = new HashSet<Role>();
@@ -589,7 +606,9 @@ public class Role extends ClassifiableEntry {
         return this.eliminateToldCycles(RInProcess, ToldSynonyms);
     }
 
-    /** complete role automaton */
+    /** complete role automaton
+     * 
+     * @param nRoles */
     @PortedFrom(file = "tRole.h", name = "completeAutomaton")
     public void completeAutomaton(int nRoles) {
         Set<Role> RInProcess = new HashSet<Role>();
@@ -633,7 +652,8 @@ public class Role extends ClassifiableEntry {
         }
     }
 
-    /** @return R or -R for T in the form (inv ... (inv R)...); remove synonyms */
+    /** @param t
+     * @return R or -R for T in the form (inv ... (inv R)...); remove synonyms */
     @PortedFrom(file = "tRole.h", name = "resolveRole")
     public static Role resolveRole(DLTree t) {
         return resolveSynonym(resolveRoleHelper(t));
@@ -654,7 +674,7 @@ public class Role extends ClassifiableEntry {
         addTrivialTransition(this);
     }
 
-    /** get (unsigned) unique index of the role */
+    /** @return (unsigned) unique index of the role */
     @PortedFrom(file = "tRole.h", name = "getIndex")
     public int getAbsoluteIndex() {
         int i = 2 * extId;
@@ -677,6 +697,7 @@ public class Role extends ClassifiableEntry {
         }
     }
 
+    /** add features */
     @PortedFrom(file = "tRole.h", name = "addFeaturesToSynonym")
     public void addFeaturesToSynonym() {
         if (!isSynonym()) {
@@ -687,13 +708,13 @@ public class Role extends ClassifiableEntry {
             syn.setFunctional();
         }
         if (isTransitive()) {
-            syn.setTransitive();
+            syn.setTransitive(true);
         }
         if (isReflexive()) {
-            syn.setReflexive();
+            syn.setReflexive(true);
         }
         if (isDataRole()) {
-            syn.setDataRole();
+            syn.setDataRole(true);
         }
         if (pDomain != null) {
             syn.setDomain(pDomain.copy());
@@ -746,6 +767,7 @@ public class Role extends ClassifiableEntry {
         return extName + " " + extId;
     }
 
+    /** @param o */
     @PortedFrom(file = "tRole.h", name = "print")
     public void print(LogAdapter o) {
         o.print("Role \"", getName(), "\"(", getId(), ")", isTransitive() ? "T" : "",
@@ -789,6 +811,8 @@ public class Role extends ClassifiableEntry {
         o.print("\n");
     }
 
+    /** @param pTax
+     * @param nRoles */
     @PortedFrom(file = "tRole.h", name = "initADbyTaxonomy")
     public void initADbyTaxonomy(Taxonomy pTax, int nRoles) {
         assert isClassified();
@@ -804,6 +828,7 @@ public class Role extends ClassifiableEntry {
         addAncestorsToBitMap(ancestorMap);
     }
 
+    /** post process */
     @PortedFrom(file = "tRole.h", name = "postProcess")
     public void postProcess() {
         initTopFunc();
@@ -886,7 +911,7 @@ public class Role extends ClassifiableEntry {
                 if (same) {
                     if (last == 1) {
                         RS.clear();
-                        this.setTransitive();
+                        setTransitive(true);
                         return;
                     } else {
                         throw new ReasonerInternalException("Cycle in RIA " + getName());
@@ -974,6 +999,7 @@ public class Role extends ClassifiableEntry {
         automaton.addToChain(completeAutomatonByRole(RS.get(p), RInProcess), oSafe, to);
     }
 
+    /** @return inverse */
     @Original
     public Role getInverse() {
         return inverse;

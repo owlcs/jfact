@@ -9,6 +9,7 @@ import static uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry.*;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** relation betweenindividuals */
 @PortedFrom(file = "tRelated.h", name = "TRelated")
 public class Related {
     @PortedFrom(file = "tRelated.h", name = "a")
@@ -18,6 +19,9 @@ public class Related {
     @PortedFrom(file = "tRelated.h", name = "R")
     private Role R;
 
+    /** @param a_
+     * @param b_
+     * @param R_ */
     public Related(Individual a_, Individual b_, Role R_) {
         a = a_;
         b = b_;
@@ -33,17 +37,19 @@ public class Related {
         a.addRelated(this);
     }
 
-    /** get access to role wrt the FROM direction */
+    /** @return role wrt the FROM direction */
     @PortedFrom(file = "tRelated.h", name = "getRole")
     public Role getRole() {
         return R;
     }
 
+    /** @return individual a */
     @Original
     public Individual getA() {
         return a;
     }
 
+    /** @return individual b */
     @Original
     public Individual getB() {
         return b;

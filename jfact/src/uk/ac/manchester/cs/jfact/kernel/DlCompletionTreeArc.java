@@ -10,6 +10,7 @@ import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 import conformance.PortedFrom;
 
+/** completion tree arc */
 @PortedFrom(file = "dlCompletionTreeArc.h", name = "DlCompletionTreeArc")
 public class DlCompletionTreeArc {
     /** pointer to "to" node */
@@ -58,12 +59,17 @@ public class DlCompletionTreeArc {
         }
     }
 
-    /** set given arc as a reverse of current */
+    /** set given arc as a reverse of current
+     * 
+     * @param v */
     public void setReverse(DlCompletionTreeArc v) {
         reverse = v;
         v.reverse = this;
     }
 
+    /** @param r
+     * @param dep
+     * @param n */
     public DlCompletionTreeArc(Role r, DepSet dep, DlCompletionTree n) {
         role = r;
         depSet = DepSet.create(dep);
@@ -71,17 +77,19 @@ public class DlCompletionTreeArc {
         reverse = null;
     }
 
-    /** get label of the edge */
+    /** @return label of the edge */
     public Role getRole() {
         return role;
     }
 
-    /** get dep-set of the edge */
+    /** @return dep-set of the edge */
     public DepSet getDep() {
         return depSet;
     }
 
-    /** set the successor field */
+    /** set the successor field
+     * 
+     * @param val */
     public void setSuccEdge(boolean val) {
         succEdge = val;
     }
@@ -96,22 +104,25 @@ public class DlCompletionTreeArc {
         return !succEdge;
     }
 
-    /** get (RW) access to the end of arc */
+    /** @return end of arc */
     public DlCompletionTree getArcEnd() {
         return node;
     }
 
-    /** get access to reverse arc */
+    /** @return reverse arc */
     public DlCompletionTreeArc getReverse() {
         return reverse;
     }
 
-    /** check if arc is labelled by a super-role of PROLE */
+    /** @param pRole
+     * @return check if arc is labelled by a super-role of PROLE */
     public boolean isNeighbour(Role pRole) {
         return role != null && role.lesserequal(pRole);
     }
 
-    /** same as above; fills DEP with current DEPSET if so */
+    /** @param pRole
+     * @param dep
+     * @return same as above; fills DEP with current DEPSET if so */
     public boolean isNeighbour(Role pRole, DepSet dep) {
         if (isNeighbour(pRole)) {
             dep.clear();
@@ -121,17 +132,19 @@ public class DlCompletionTreeArc {
         return false;
     }
 
-    /** is arc merged to another */
+    /** @return is arc merged to another */
     public boolean isIBlocked() {
         return role == null;
     }
 
-    /** check whether the edge is reflexive */
+    /** @return check whether the edge is reflexive */
     public boolean isReflexiveEdge() {
         return node.equals(reverse.node);
     }
 
-    /** save and invalidate arc (together with reverse arc) */
+    /** save and invalidate arc (together with reverse arc)
+     * 
+     * @return restorer */
     public Restorer save() {
         if (role == null) {
             throw new IllegalArgumentException();
@@ -142,7 +155,10 @@ public class DlCompletionTreeArc {
         return ret;
     }
 
-    /** add dep-set to an edge; return restorer */
+    /** add dep-set to an edge; return restorer
+     * 
+     * @param dep
+     * @return restorer */
     public Restorer addDep(DepSet dep) {
         if (dep.isEmpty()) {
             throw new IllegalArgumentException();
@@ -152,7 +168,9 @@ public class DlCompletionTreeArc {
         return ret;
     }
 
-    /** print current arc */
+    /** print current arc
+     * 
+     * @param o */
     public void print(LogAdapter o) {
         o.printTemplate(Templates.DLCOMPLETIONTREEARC,
                 isIBlocked() ? "-" : role.getName(), depSet);

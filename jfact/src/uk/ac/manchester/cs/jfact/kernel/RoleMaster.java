@@ -22,6 +22,7 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** role master */
 @PortedFrom(file = "RoleMaster.h", name = "RoleMaster")
 public class RoleMaster {
     protected static class RoleCreator implements NameCreator<Role> {
@@ -69,7 +70,7 @@ public class RoleMaster {
         assert r != null && r.getInverse() == null; // sanity check
         assert r.getId() == 0; // only call it for the new roles
         if (dataRoles) {
-            r.setDataRole();
+            r.setDataRole(true);
         }
         roles.add(r);
         r.setId(newRoleId);
@@ -96,12 +97,16 @@ public class RoleMaster {
         return ind >= firstRoleIndex && ind < roles.size() && roles.get(ind).equals(p);
     }
 
-    /** get number of roles */
+    /** @return number of roles */
     @PortedFrom(file = "RoleMaster.h", name = "size")
     public int size() {
         return roles.size() / 2 - 1;
     }
 
+    /** @param d
+     * @param TopRoleName
+     * @param BotRoleName
+     * @param c */
     public RoleMaster(boolean d, String TopRoleName, String BotRoleName,
             JFactReasonerConfiguration c) {
         newRoleId = 1;
@@ -131,7 +136,8 @@ public class RoleMaster {
         pTax = new Taxonomy(universalRole, emptyRole, c);
     }
 
-    /** create role entry with given name */
+    /** @param name
+     * @return role entry with given name */
     @PortedFrom(file = "RoleMaster.h", name = "ensureRoleName")
     public NamedEntry ensureRoleName(String name) {
         // check for the Top/Bottom names
@@ -160,7 +166,10 @@ public class RoleMaster {
         return p;
     }
 
-    /** add synonym to existing role */
+    /** add synonym to existing role
+     * 
+     * @param role
+     * @param syn */
     @PortedFrom(file = "RoleMaster.h", name = "addRoleSynonym")
     public void addRoleSynonym(Role role, Role syn) {
         // no synonyms
@@ -171,7 +180,10 @@ public class RoleMaster {
                 ClassifiableEntry.resolveSynonym(role));
     }
 
-    /** add parent for the input role */
+    /** add parent for the input role
+     * 
+     * @param role
+     * @param parent */
     @PortedFrom(file = "RoleMaster.h", name = "addRoleParentProper")
     public void addRoleParentProper(Role role, Role parent) {
         assert !role.isSynonym() && !parent.isSynonym();
@@ -202,7 +214,10 @@ public class RoleMaster {
         role.inverse().addParent(parent.inverse());
     }
 
-    /** a pair of disjoint roles */
+    /** a pair of disjoint roles
+     * 
+     * @param R
+     * @param S */
     @PortedFrom(file = "RoleMaster.h", name = "addDisjointRoles")
     public void addDisjointRoles(Role R, Role S) {
         // object- and data roles are always disjoint
@@ -213,23 +228,28 @@ public class RoleMaster {
         disjointRolesB.add(S);
     }
 
-    /** change the undefined names usage policy */
+    /** change the undefined names usage policy
+     * 
+     * @param val */
     @PortedFrom(file = "RoleMaster.h", name = "setUndefinedNames")
     public void setUndefinedNames(boolean val) {
         useUndefinedNames = val;
     }
 
+    /** @return list of roles */
     @PortedFrom(file = "RoleMaster.h", name = "begin")
     public List<Role> getRoles() {
         return roles.subList(firstRoleIndex, roles.size());
     }
 
-    /** get access to the taxonomy */
+    /** @return taxonomy */
     @PortedFrom(file = "RoleMaster.h", name = "getTaxonomy")
     public Taxonomy getTaxonomy() {
         return pTax;
     }
 
+    /** @param o
+     * @param type */
     @PortedFrom(file = "RoleMaster.h", name = "Print")
     public void print(LogAdapter o, String type) {
         if (size() == 0) {
@@ -243,6 +263,7 @@ public class RoleMaster {
         }
     }
 
+    /** @return true if there are reflexive roles */
     @PortedFrom(file = "RoleMaster.h", name = "hasReflexiveRoles")
     public boolean hasReflexiveRoles() {
         for (int i = firstRoleIndex; i < roles.size(); i++) {
@@ -254,6 +275,7 @@ public class RoleMaster {
         return false;
     }
 
+    /** @param RR */
     @PortedFrom(file = "RoleMaster.h", name = "fillReflexiveRoles")
     public void fillReflexiveRoles(List<Role> RR) {
         RR.clear();
@@ -265,6 +287,8 @@ public class RoleMaster {
         }
     }
 
+    /** @param tree
+     * @param parent */
     @PortedFrom(file = "RoleMaster.h", name = "addRoleParent")
     public void addRoleParent(DLTree tree, Role parent) {
         if (tree == null) {
@@ -302,6 +326,7 @@ public class RoleMaster {
         }
     }
 
+    /** init ancestor description */
     @PortedFrom(file = "RoleMaster.h", name = "initAncDesc")
     public void initAncDesc() {
         int nRoles = roles.size();

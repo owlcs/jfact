@@ -7,18 +7,32 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
+/** tokens */
 public enum Token {
-    AND("and"), OR("or"), NOT("not"), INV("inv"),
+    /** and */
+    AND("and"),
+    /** or */
+    OR("or"),
+    /** not */
+    NOT("not"),
+    /** inv */
+    INV("inv"),
     /** role composition */
     RCOMPOSITION("compose"),
     /** role projection into */
     PROJINTO("project_into"),
     /** role projection from */
-    PROJFROM("project_from"), SELF("self-ref"), TOP("*TOP*"), BOTTOM("*BOTTOM*"), EXISTS(
-            "some"), FORALL("all"),
+    PROJFROM("project_from"),
+    /** self */
+    SELF("self-ref"), /** top */
+    TOP("*TOP*"), /** bottom */
+    BOTTOM("*BOTTOM*"),
+    /** exists */
+    EXISTS("some"),
+    /** for all */
+    FORALL("all"),
     /** ATLEAST = GE */
-    GE(
-            "at-least"),
+    GE("at-least"),
     /** ATMOST = LE */
     LE("at-most"),
     // common metasymbols
@@ -40,6 +54,7 @@ public enum Token {
         this.s = s;
     }
 
+    /** @return name */
     public String getName() {
         if (s.length() > 0) {
             return s;

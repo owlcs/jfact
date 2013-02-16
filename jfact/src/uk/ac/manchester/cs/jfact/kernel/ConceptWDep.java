@@ -8,6 +8,7 @@ package uk.ac.manchester.cs.jfact.kernel;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import conformance.PortedFrom;
 
+/** concept and dependency set */
 @PortedFrom(file = "ConceptWithDep.h", name = "Concept")
 public class ConceptWDep {
     /** "pointer" to a concept in DAG */
@@ -17,36 +18,42 @@ public class ConceptWDep {
     @PortedFrom(file = "ConceptWithDep.h", name = "depSet")
     private DepSet depSet;
 
-    /** c'tor with empty dep-set */
+    /** c'tor with empty dep-set
+     * 
+     * @param p */
     public ConceptWDep(int p) {
         concept = p;
         depSet = DepSet.create();
     }
 
-    /** usual c'tor */
+    /** @param p
+     * @param dep */
     public ConceptWDep(int p, DepSet dep) {
         concept = p;
         depSet = DepSet.create(dep);
     }
 
+    /** @return concept */
     @PortedFrom(file = "ConceptWithDep.h", name = "getC")
     public int getConcept() {
         return concept;
     }
 
-    /** get dep-set part */
+    /** @return dep-set */
     @PortedFrom(file = "ConceptWithDep.h", name = "getDep")
     public DepSet getDep() {
         return depSet;
     }
 
-    /** add dep-set to a CWD */
+    /** add dep-set to a CWD
+     * 
+     * @param d */
     @PortedFrom(file = "ConceptWithDep.h", name = "addDep")
     public void addDep(DepSet d) {
         depSet.add(d);
     }
 
-    /** print concept and a dep-set */
+    /** @return print concept and a dep-set */
     @Override
     public String toString() {
         return concept + depSet.toString();

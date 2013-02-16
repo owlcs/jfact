@@ -28,6 +28,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** expression translator */
 @PortedFrom(file = "tExpressionTranslator.h", name = "TExpressionTranslator")
 public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
     /** TBox to get access to the named entities */
@@ -131,7 +132,8 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
 
     @Override
     public DLTree visit(ConceptObjectValue expr) {
-        return DLTreeFactory.createSNFExists(expr.getOR().accept(this), expr.getI()
+        return DLTreeFactory.createSNFExists(expr.getOR().accept(this), expr
+                .getIndividual()
                 .accept(this));
     }
 

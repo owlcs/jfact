@@ -8,17 +8,19 @@ package uk.ac.manchester.cs.jfact.kernel;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.split.TSplitVars;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
+import conformance.Original;
 import conformance.PortedFrom;
 
+/** ontology */
 @PortedFrom(file = "tOntology.h", name = "TOntology")
 public class Ontology {
     /** all the axioms */
     @PortedFrom(file = "tOntology.h", name = "Axioms")
-    private List<Axiom> axioms = new ArrayList<Axiom>();
+    private List<AxiomInterface> axioms = new ArrayList<AxiomInterface>();
     /** expression manager that builds all the expressions for the axioms */
     @PortedFrom(file = "tOntology.h", name = "EManager")
     private ExpressionManager expressionManager = new ExpressionManager();
@@ -29,15 +31,24 @@ public class Ontology {
     @PortedFrom(file = "tOntology.h", name = "changed")
     private boolean changed;
     @PortedFrom(file = "tOntology.h", name = "Splits")
-    public TSplitVars Splits = new TSplitVars();
+    private TSplitVars Splits = new TSplitVars();
 
+    @SuppressWarnings("javadoc")
     public Ontology() {
         axiomId = 0;
         changed = false;
     }
 
+    /** @return splits */
+    @Original
+    public TSplitVars getSplits() {
+        return Splits;
+    }
+
+    /** @param i
+     * @return axiom in position i */
     @PortedFrom(file = "tOntology.h", name = "get")
-    public Axiom get(int i) {
+    public AxiomInterface get(int i) {
         return axioms.get(i);
     }
 
@@ -53,18 +64,23 @@ public class Ontology {
         changed = false;
     }
 
-    /** add given axiom to the ontology */
+    /** add given axiom to the ontology
+     * 
+     * @param p
+     * @return p */
     @PortedFrom(file = "tOntology.h", name = "add")
-    public Axiom add(Axiom p) {
+    public AxiomInterface add(AxiomInterface p) {
         p.setId(++axiomId);
         axioms.add(p);
         changed = true;
         return p;
     }
 
-    /** retract given axiom to the ontology */
+    /** retract given axiom to the ontology
+     * 
+     * @param p */
     @PortedFrom(file = "tOntology.h", name = "retract")
-    public void retract(Axiom p) {
+    public void retract(AxiomInterface p) {
         if (p.getId() <= axioms.size() && axioms.get(p.getId() - 1).equals(p)) {
             changed = true;
             p.setUsed(false);
@@ -80,29 +96,31 @@ public class Ontology {
     }
 
     // access to axioms
-    /** get access to an expression manager */
+    /** @return expression manager */
     @PortedFrom(file = "tOntology.h", name = "getExpressionManager")
     public ExpressionManager getExpressionManager() {
         return expressionManager;
     }
 
-    /** RW begin() for the whole ontology */
+    /** @return axioms for the whole ontology */
     @PortedFrom(file = "tOntology.h", name = "getAxioms")
-    public List<Axiom> getAxioms() {
+    public List<AxiomInterface> getAxioms() {
         return axioms;
     }
 
-    /** size of the ontology */
+    /** @return size of the ontology */
     @PortedFrom(file = "tOntology.h", name = "size")
     public int size() {
         return axioms.size();
     }
 
-    /** accept method for the visitor pattern */
+    /** @param visitor */
     public void accept(DLAxiomVisitor visitor) {
         visitor.visitOntology(this);
     }
 
+    /** @param visitor
+     * @return visitor value */
     public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visitOntology(this);
     }

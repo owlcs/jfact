@@ -14,8 +14,10 @@ import uk.ac.manchester.cs.jfact.helpers.*;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** concept */
 @PortedFrom(file = "ConceptWithDep.h", name = "Concept")
 public class Concept extends ClassifiableEntry {
+    /** @return bottom concept */
     @Original
     public static Concept getBOTTOM() {
         Concept toReturn = new Concept("BOTTOM");
@@ -26,6 +28,7 @@ public class Concept extends ClassifiableEntry {
         return toReturn;
     }
 
+    /** @return top concept */
     @Original
     public static Concept getTOP() {
         Concept toReturn = new Concept("TOP");
@@ -38,6 +41,7 @@ public class Concept extends ClassifiableEntry {
         return toReturn;
     }
 
+    /** @return temporary concept */
     @Original
     public static Concept getTEMP() {
         Concept TEMP = new Concept(" ");
@@ -102,8 +106,9 @@ public class Concept extends ClassifiableEntry {
     @PortedFrom(file = "tConcept.h", name = "Description")
     protected DLTree description;
 
-    /** adds concept as a told subsumer of current one; @return value for CDC
-     * analisys */
+    /** adds concept as a told subsumer of current one;
+     * 
+     * @return value for CDC analisys */
     @PortedFrom(file = "tConcept.h", name = "addToldSubsumer")
     private boolean addToldSubsumer(Concept p) {
         if (p != this) {
@@ -117,6 +122,7 @@ public class Concept extends ClassifiableEntry {
         return p.isPrimitive();
     }
 
+    /** @param name */
     public Concept(String name) {
         super(name);
         rel = 0;
@@ -127,31 +133,34 @@ public class Concept extends ClassifiableEntry {
         setPrimitive(true);
     }
 
-    /** add index of a simple rule in TBox to the ER set */
+    /** add index of a simple rule in TBox to the ER set
+     * 
+     * @param p */
     @PortedFrom(file = "tConcept.h", name = "addExtraRule")
     public void addExtraRule(int p) {
         extraRules.add(p);
         setCompletelyDefined(false);
     }
 
-    /** check if a concept is in a disjoint relation with anything */
+    /** @return if a concept is in a disjoint relation with anything */
     @PortedFrom(file = "tConcept.h", name = "hasExtraRules")
     public boolean hasExtraRules() {
         return !extraRules.isEmpty();
     }
 
-    /** iterator for accessing DJ elements */
+    /** @return accessing DJ elements */
     @PortedFrom(file = "tConcept.h", name = "er_begin")
     public FastSet getExtraRules() {
         return extraRules;
     }
 
+    /** @return class tag */
     @Original
     public CTTag getClassTagPlain() {
         return classTag;
     }
 
-    /** get value of a tag; determine it if unset */
+    /** @return value of a tag; determine it if unset */
     @PortedFrom(file = "tConcept.h", name = "getClassTag")
     public CTTag getClassTag() {
         if (classTag == CTTag.cttUnspecified) {
@@ -173,8 +182,9 @@ public class Concept extends ClassifiableEntry {
         description = null;
     }
 
-    /** check whether it is possible to init this as a non-primitive concept with
-     * DESC */
+    /** @param desc
+     * @return whether it is possible to init this as a non-primitive concept
+     *         with DESC */
     @PortedFrom(file = "tConcept.h", name = "canInitNonPrim")
     public boolean canInitNonPrim(DLTree desc) {
         if (description == null) {
@@ -186,8 +196,10 @@ public class Concept extends ClassifiableEntry {
         return false;
     }
 
-    /** switch primitive concept to non-primitive with new definition; @return
-     * old definition */
+    /** switch primitive concept to non-primitive with new definition;
+     * 
+     * @param desc
+     * @return old definition */
     @PortedFrom(file = "tConcept.h", name = "makeNonPrimitive")
     public DLTree makeNonPrimitive(DLTree desc) {
         DLTree ret = description;
@@ -219,7 +231,9 @@ public class Concept extends ClassifiableEntry {
         setCompletelyDefined(CD);
     }
 
-    /** init TOP told subsumer if necessary */
+    /** init TOP told subsumer if necessary
+     * 
+     * @param top */
     @PortedFrom(file = "tConcept.h", name = "setToldTop")
     public void setToldTop(Concept top) {
         if (description == null && !hasToldSubsumers()) {
@@ -227,6 +241,7 @@ public class Concept extends ClassifiableEntry {
         }
     }
 
+    /** @return resolve synonym id */
     @PortedFrom(file = "tConcept.h", name = "resolveId")
     public int resolveId() {
         if (pName == bpINVALID) {
@@ -242,6 +257,7 @@ public class Concept extends ClassifiableEntry {
         return pName;
     }
 
+    /** @param Desc */
     @PortedFrom(file = "tConcept.h", name = "addDesc")
     public void addDesc(DLTree Desc) {
         if (Desc == null) {
@@ -270,6 +286,7 @@ public class Concept extends ClassifiableEntry {
         }
     }
 
+    /** @param Desc */
     @Original
     public void addLeaves(Collection<DLTree> Desc) {
        // assert isPrimitive();
@@ -339,6 +356,8 @@ public class Concept extends ClassifiableEntry {
     @Original
     private static EnumSet<Token> replacements = EnumSet.of(CNAME, INAME, RNAME, DNAME);
 
+    /** @param stack
+     * @param current */
     @Original
     public void push(LinkedList<DLTree> stack, DLTree current) {
         // push subtrees: stack size increases by one or two, or current is a
@@ -376,8 +395,11 @@ public class Concept extends ClassifiableEntry {
         return t;
     }
 
-    /** init told subsumers of the concept by given DESCription; @return TRUE iff
-     * concept is CD */
+    /** init told subsumers of the concept by given DESCription;
+     * 
+     * @param _desc
+     * @param RolesProcessed
+     * @return TRUE iff concept is CD */
     @PortedFrom(file = "tConcept.h", name = "initToldSubsumers")
     public boolean initToldSubsumers(DLTree _desc, Set<Role> RolesProcessed) {
         if (_desc == null || _desc.isTOP()) {
@@ -427,6 +449,8 @@ public class Concept extends ClassifiableEntry {
         this.initToldSubsumers(Domain, rolesProcessed);
     }
 
+    /** @param r
+     * @param RolesProcessed */
     @PortedFrom(file = "tConcept.h", name = "SearchTSbyRoleAndSupers")
     public void searchTSbyRoleAndSupers(Role r, Set<Role> RolesProcessed) {
         searchTSbyRole(r, RolesProcessed);
@@ -437,6 +461,7 @@ public class Concept extends ClassifiableEntry {
         }
     }
 
+    /** @return told subsumers depth */
     @PortedFrom(file = "tConcept.h", name = "calculateTSDepth")
     public int calculateTSDepth() {
         if (tsDepth > 0) {
@@ -470,31 +495,37 @@ public class Concept extends ClassifiableEntry {
         pName = pBody = bpINVALID;
     }
 
+    /** @return p name */
     @Original
     public int getpName() {
         return pName;
     }
 
+    /** @param pName */
     @Original
     public void setpName(int pName) {
         this.pName = pName;
     }
 
+    /** @return p body */
     @Original
     public int getpBody() {
         return pBody;
     }
 
+    /** @param pBody */
     @Original
     public void setpBody(int pBody) {
         this.pBody = pBody;
     }
 
+    /** @return description */
     @Original
     public DLTree getDescription() {
         return description;
     }
 
+    /** @return told subsumers depth */
     @Original
     public int getTsDepth() {
         return tsDepth;
@@ -505,11 +536,13 @@ public class Concept extends ClassifiableEntry {
         this.tsDepth = tsDepth;
     }
 
+    /** @return neg features */
     @Original
     public LogicFeatures getNegFeatures() {
         return negFeatures;
     }
 
+    /** @return pos features */
     @Original
     public LogicFeatures getPosFeatures() {
         return posFeatures;
@@ -524,11 +557,13 @@ public class Concept extends ClassifiableEntry {
     @Original
     private boolean primitive;
 
+    /** @return true if primitive */
     @Original
     public boolean isPrimitive() {
         return primitive;
     }
 
+    /** @param action */
     @Original
     public void setPrimitive(boolean action) {
         primitive = action;
@@ -537,12 +572,13 @@ public class Concept extends ClassifiableEntry {
     @Original
     private boolean hasSP;
 
-    /** a HasSingletonParent flag */
+    /** @return HasSingletonParent flag */
     @Original
     public boolean isHasSP() {
         return hasSP;
     }
 
+    /** @param action */
     @Original
     public void setHasSP(boolean action) {
         hasSP = action;
@@ -551,11 +587,13 @@ public class Concept extends ClassifiableEntry {
     @Original
     private boolean nominal;
 
+    /** @return nominal */
     @Original
     public boolean isNominal() {
         return nominal;
     }
 
+    /** @param action */
     @Original
     public void setNominal(boolean action) {
         nominal = action;
@@ -564,30 +602,37 @@ public class Concept extends ClassifiableEntry {
     @Original
     private boolean singleton;
 
+    /** @return singleton */
     @Original
     public boolean isSingleton() {
         return singleton;
     }
 
+    /** @param action */
     @Original
     public void setSingleton(boolean action) {
         singleton = action;
     }
 
     // relevance part
-    /** is given concept relevant to given Labeller's state */
+    /** @param lab
+     * @return is given concept relevant to given Labeller's state */
     @PortedFrom(file = "tConcept.h", name = "isRelevant")
     public boolean isRelevant(long lab) {
         return lab == rel;
     }
 
-    /** make given concept relevant to given Labeller's state */
+    /** make given concept relevant to given Labeller's state
+     * 
+     * @param lab */
     @PortedFrom(file = "tConcept.h", name = "setRelevant")
     public void setRelevant(long lab) {
         rel = lab;
     }
 
-    /** make given concept irrelevant to given Labeller's state */
+    /** make given concept irrelevant to given Labeller's state
+     * 
+     * @param lab */
     @PortedFrom(file = "tConcept.h", name = "dropRelevant")
     public void dropRelevant(long lab) {
         rel = 0;

@@ -28,7 +28,8 @@ public class TDag2Interface {
     @PortedFrom(file = "tDag2Interface.h", name = "TransD")
     private List<DataExpression> TransData = new ArrayList<DataExpression>();
 
-    /** build concept expression by a vertex V */
+    /** @param v
+     * @return build concept expression by a vertex V */
     @PortedFrom(file = "tDag2Interface.h", name = "buildCExpr")
     public ConceptExpression buildCExpr(DLVertex v) {
         switch (v.getType()) {
@@ -80,7 +81,8 @@ public class TDag2Interface {
         }
     }
 
-    /** build data expression by a vertex V */
+    /** @param v
+     * @return build data expression by a vertex V */
     @PortedFrom(file = "tDag2Interface.h", name = "buildDExpr")
     public DataExpression buildDExpr(DLVertex v) {
         switch (v.getType()) {
@@ -103,7 +105,10 @@ public class TDag2Interface {
         }
     }
 
-    /** init c'tor */
+    /** init c'tor
+     * 
+     * @param dag
+     * @param manager */
     public TDag2Interface(DLDag dag, ExpressionManager manager) {
         Dag = dag;
         Manager = manager;
@@ -111,11 +116,15 @@ public class TDag2Interface {
         Helper.resize(TransData, dag.size());
     }
 
+    /** @param r
+     * @return data role expression */
     @Original
     public RoleExpression getDataRoleExpression(Role r) {
         return Manager.dataRole(r.getName());
     }
 
+    /** @param r
+     * @return object role expression */
     @Original
     public RoleExpression getObjectRoleExpression(Role r) {
         return Manager.objectRole(r.getName());
@@ -132,7 +141,8 @@ public class TDag2Interface {
         Helper.resize(TransData, ds);
     }
 
-    /** get concept expression corresponding index of vertex */
+    /** @param p
+     * @return concept expression corresponding index of vertex */
     @PortedFrom(file = "tDag2Interface.h", name = "getCExpr")
     public ConceptExpression getCExpr(int p) {
         if (p < 0) {
@@ -144,7 +154,8 @@ public class TDag2Interface {
         return TransConcept.get(p);
     }
 
-    /** get data expression corresponding index of vertex */
+    /** @param p
+     * @return data expression corresponding index of vertex */
     @PortedFrom(file = "tDag2Interface.h", name = "getDExpr")
     public DataExpression getDExpr(int p) {
         if (p < 0) {
@@ -158,6 +169,9 @@ public class TDag2Interface {
         return expression;
     }
 
+    /** @param p
+     * @param data
+     * @return expression */
     @PortedFrom(file = "tDag2Interface.h", name = "getExpr")
     public Expression getExpr(int p, boolean data) {
         if (data) {

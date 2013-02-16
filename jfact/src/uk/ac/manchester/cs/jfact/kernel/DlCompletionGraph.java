@@ -15,6 +15,7 @@ import uk.ac.manchester.cs.jfact.helpers.*;
 import uk.ac.manchester.cs.jfact.kernel.state.DLCompletionGraphSaveState;
 import conformance.PortedFrom;
 
+/** completion graph */
 @PortedFrom(file = "dlCompletionGraph.h", name = "DlCompletionGraph")
 public class DlCompletionGraph {
     /** initial value of IR level */
@@ -212,7 +213,10 @@ public class DlCompletionGraph {
         }
     }
 
-    /** c'tor: make INIT_SIZE objects */
+    /** c'tor: make INIT_SIZE objects
+     * 
+     * @param initSize
+     * @param p */
     public DlCompletionGraph(int initSize, DlSatTester p) {
         nodeBase = new ArrayList<DlCompletionTree>();
         Helper.resize(nodeBase, initSize);
@@ -227,7 +231,11 @@ public class DlCompletionGraph {
     }
 
     // flag setting
-    /** set flags for blocking */
+    /** set flags for blocking
+     * 
+     * @param nSkip
+     * @param useLB
+     * @param useAB */
     @PortedFrom(file = "dlCompletionGraph.h", name = "initContext")
     public void initContext(int nSkip, boolean useLB, boolean useAB) {
         nSkipBeforeBlock = nSkip;
@@ -235,14 +243,21 @@ public class DlCompletionGraph {
         useAnywhereBlocking = useAB;
     }
 
-    /** set blocking method for a session */
+    /** set blocking method for a session
+     * 
+     * @param hasInverse
+     * @param hasQCR */
     @PortedFrom(file = "dlCompletionGraph.h", name = "setBlockingMethod")
     public void setBlockingMethod(boolean hasInverse, boolean hasQCR) {
         sessionHasInverseRoles = hasInverse;
         sessionHasNumberRestrictions = hasQCR;
     }
 
-    /** add concept C of a type TAG to NODE; call blocking check if appropriate */
+    /** add concept C of a type TAG to NODE; call blocking check if appropriate
+     * 
+     * @param node
+     * @param c
+     * @param tag */
     @PortedFrom(file = "dlCompletionGraph.h", name = "addConceptToNode")
     public void addConceptToNode(DlCompletionTree node, ConceptWDep c, DagTag tag) {
         node.addConcept(c, tag);
@@ -254,12 +269,14 @@ public class DlCompletionGraph {
     }
 
     // access to nodes
-    /** get a root node (non-const) */
+    /** @return root node (non-const) */
     @PortedFrom(file = "dlCompletionGraph.h", name = "getRoot")
     public DlCompletionTree getRoot() {
         return nodeBase.get(0).resolvePBlocker();
     }
 
+    /** @param i
+     * @return dl completion tree at index i */
     @PortedFrom(file = "dlCompletionGraph.h", name = "getNode")
     public DlCompletionTree getNode(int i) {
         if (i >= endUsed) {
@@ -268,7 +285,7 @@ public class DlCompletionGraph {
         return nodeBase.get(i);
     }
 
-    /** get new node (with internal level) */
+    /** @return new node (with internal level) */
     @PortedFrom(file = "dlCompletionGraph.h", name = "getNewNode")
     public DlCompletionTree getNewNode() {
         if (endUsed >= nodeBase.size()) {
@@ -280,7 +297,9 @@ public class DlCompletionGraph {
     }
 
     // blocking
-    /** update blocked status for d-blocked node */
+    /** update blocked status for d-blocked node
+     * 
+     * @param node */
     @PortedFrom(file = "dlCompletionGraph.h", name = "updateDBlockedStatus")
     public void updateDBlockedStatus(DlCompletionTree node) {
         if (!canBeUnBlocked(node)) {
@@ -342,7 +361,7 @@ public class DlCompletionGraph {
         }
     }
 
-    /** get number of nodes in the CGraph */
+    /** @return get number of nodes in the CGraph */
     @PortedFrom(file = "dlCompletionGraph.h", name = "maxSize")
     public int maxSize() {
         return maxGraphSize;
@@ -361,7 +380,9 @@ public class DlCompletionGraph {
         initRoot();
     }
 
-    /** save rarely appeared info if P is non-null */
+    /** save rarely appeared info if P is non-null
+     * 
+     * @param p */
     @PortedFrom(file = "dlCompletionGraph.h", name = "saveRareCond")
     public void saveRareCond(Restorer p) {
         if (p == null) {
@@ -370,6 +391,7 @@ public class DlCompletionGraph {
         rareStack.push(p);
     }
 
+    /** @param p */
     @PortedFrom(file = "dlCompletionGraph.h", name = "saveRareCond")
     public void saveRareCond(List<Restorer> p) {
         for (int i = 0; i < p.size(); i++) {
@@ -380,10 +402,14 @@ public class DlCompletionGraph {
     // role/node
     /** add role R with dep-set DEP to the label of the TO arc
      * 
-     * @param r
+     * @param from
+     * @param to
+     * @param isPredEdge
+     * @param R
      *            name of role (arc label)
      * @param dep
-     *            dep-set of the arc label */
+     *            dep-set of the arc label
+     * @return completion tree arc */
     @PortedFrom(file = "dlCompletionGraph.h", name = "addRoleLabel")
     public DlCompletionTreeArc addRoleLabel(DlCompletionTree from, DlCompletionTree to,
             boolean isPredEdge, Role R, DepSet dep)
@@ -402,6 +428,8 @@ public class DlCompletionGraph {
 
     /** Create an empty R-neighbour of FROM;
      * 
+     * @param from
+     * @param isPredEdge
      * @param r
      *            name of role (arc label)
      * @param dep
@@ -417,14 +445,22 @@ public class DlCompletionGraph {
         return createEdge(from, getNewNode(), isPredEdge, r, dep);
     }
 
-    /** Create an R-loop of NODE wrt dep-set DEP; @return a loop edge */
+    /** Create an R-loop of NODE wrt dep-set DEP;
+     * 
+     * @param node
+     * @param r
+     * @param dep
+     * @return a loop edge */
     @PortedFrom(file = "dlCompletionGraph.h", name = "createLoop")
     public DlCompletionTreeArc createLoop(DlCompletionTree node, Role r, DepSet dep) {
         return addRoleLabel(node, node, /* isPredEdge= */
                 false, r, dep);
     }
 
-    /** save given node wrt level */
+    /** save given node wrt level
+     * 
+     * @param node
+     * @param level */
     @PortedFrom(file = "dlCompletionGraph.h", name = "saveNode")
     public void saveNode(DlCompletionTree node, int level) {
         if (node.needSave(level)) {
@@ -474,6 +510,7 @@ public class DlCompletionGraph {
         return ret;
     }
 
+    /** @param node */
     @PortedFrom(file = "dlCompletionGraph.h", name = "detectBlockedStatus")
     public void detectBlockedStatus(DlCompletionTree node) {
         DlCompletionTree p = node;
@@ -544,6 +581,10 @@ public class DlCompletionGraph {
 
     /** Class for maintaining graph of CT nodes. Behaves like deleteless
      * allocator for nodes, plus some obvious features */
+    /** @param p
+     * @param q
+     * @param dep
+     * @return whether p and q can be merged */
     @PortedFrom(file = "dlCompletionGraph.h", name = "nonMergable")
     public boolean nonMergable(DlCompletionTree p, DlCompletionTree q,
             Reference<DepSet> dep) {
@@ -557,16 +598,25 @@ public class DlCompletionGraph {
         }
     }
 
+    /**
+     * 
+     */
     @PortedFrom(file = "dlCompletionGraph.h", name = "initIR")
     public void initIR() {
         ++irLevel;
     }
 
+    /** @param node
+     * @param ds
+     * @return true if IR alreadh has the label */
     @PortedFrom(file = "dlCompletionGraph.h", name = "setCurIR")
     public boolean setCurIR(DlCompletionTree node, DepSet ds) {
         return node.initIR(irLevel, ds);
     }
 
+    /**
+     * 
+     */
     @PortedFrom(file = "dlCompletionGraph.h", name = "finiIR")
     public void finiIR() {}
 
@@ -622,6 +672,10 @@ public class DlCompletionGraph {
         return addRoleLabel(node, to, isPredEdge, R, dep);
     }
 
+    /** @param from
+     * @param to
+     * @param dep
+     * @param edges */
     @PortedFrom(file = "dlCompletionGraph.h", name = "merge")
     public void merge(DlCompletionTree from, DlCompletionTree to, DepSet dep,
             List<DlCompletionTreeArc> edges) {
@@ -670,6 +724,9 @@ public class DlCompletionGraph {
         }
     }
 
+    /**
+     * 
+     */
     @PortedFrom(file = "dlCompletionGraph.h", name = "save")
     public void save() {
         DLCompletionGraphSaveState s = new DLCompletionGraphSaveState();
@@ -681,6 +738,7 @@ public class DlCompletionGraph {
         ++branchingLevel;
     }
 
+    /** @param level */
     @PortedFrom(file = "dlCompletionGraph.h", name = "restore")
     public void restore(int level) {
         assert level > 0;
@@ -705,6 +763,7 @@ public class DlCompletionGraph {
         Helper.resize(ctEdgeHeap, s.getnEdges());
     }
 
+    /** @param o */
     @PortedFrom(file = "dlCompletionGraph.h", name = "print")
     public void print(LogAdapter o) {
         cgpIndent = 0;

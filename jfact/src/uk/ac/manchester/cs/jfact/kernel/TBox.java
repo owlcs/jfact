@@ -28,12 +28,14 @@ import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheSingleton;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import uk.ac.manchester.cs.jfact.split.SplitVarEntry;
 import uk.ac.manchester.cs.jfact.split.TSplitRules;
 import uk.ac.manchester.cs.jfact.split.TSplitVar;
 import uk.ac.manchester.cs.jfact.split.TSplitVars;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** tbox */
 @PortedFrom(file = "dlTBox.h", name = "TBox")
 public class TBox {
     @PortedFrom(file = "dlTBox.h", name = "relevance")
@@ -185,28 +187,31 @@ public class TBox {
     private List<Concept> ConceptMap = new ArrayList<Concept>();
     /** map to show the possible equivalence between individuals */
     @PortedFrom(file = "dlTBox.h", name = "SameI")
-    Map<Concept, Pair<Individual, Boolean>> sameIndividuals = new HashMap<Concept, Pair<Individual, Boolean>>();
+    private Map<Concept, Pair> sameIndividuals = new HashMap<Concept, Pair>();
     /** all the synonyms in the told subsumers' cycle */
     @PortedFrom(file = "dlTBox.h", name = "ToldSynonyms")
     Set<Concept> toldSynonyms = new HashSet<Concept>();
 
-    /** RW begin() for individuals */
+    /** @return individuals */
     @PortedFrom(file = "dlTBox.h", name = "i_begin")
     public List<Individual> i_begin() {
         return individuals.getList();
     }
 
+    /** @return list of concepts */
     @PortedFrom(file = "dlTBox.h", name = "c_begin")
-    public List<Concept> c_begin() {
+    public List<Concept> getConcepts() {
         return concepts.getList();
     }
 
+    /** @return reasoner configuration */
     @Original
     public JFactReasonerConfiguration getOptions() {
         return config;
     }
 
-    /** get concept by it's BP (non- version) */
+    /** @param bp
+     * @return concept by it's BP (non- version) */
     @PortedFrom(file = "dlTBox.h", name = "getDataEntryByBP")
     public String getDataEntryByBP(int bp) {
         NamedEntry p = dlHeap.get(bp).getConcept();
@@ -219,7 +224,11 @@ public class TBox {
         return "";
     }
 
-    /** add description to a concept; @return true in case of error */
+    /** add description to a concept;
+     * 
+     * @param p
+     * @param desc
+     * @return true in case of error */
     @PortedFrom(file = "dlTBox.h", name = "initNonPrimitive")
     public boolean initNonPrimitive(Concept p, DLTree desc) {
         if (!p.canInitNonPrim(desc)) {
@@ -229,7 +238,11 @@ public class TBox {
         return false;
     }
 
-    /** make concept non-primitive; @return it's old description */
+    /** make concept non-primitive;
+     * 
+     * @param p
+     * @param desc
+     * @return it's old description */
     @PortedFrom(file = "dlTBox.h", name = "makeNonPrimitive")
     public DLTree makeNonPrimitive(Concept p, DLTree desc) {
         DLTree ret = p.makeNonPrimitive(desc);
@@ -237,7 +250,9 @@ public class TBox {
         return ret;
     }
 
-    /** checks if C is defined as C=D and set Synonyms accordingly */
+    /** checks if C is defined as C=D and set Synonyms accordingly
+     * 
+     * @param p */
     @PortedFrom(file = "dlTBox.h", name = "checkEarlySynonym")
     public void checkEarlySynonym(Concept p) {
         if (p.isSynonym()) {
@@ -256,7 +271,9 @@ public class TBox {
         p.initToldSubsumers();
     }
 
-    /** process a disjoint set [beg,end) in a usual manner */
+    /** process a disjoint set [beg,end) in a usual manner
+     * 
+     * @param beg */
     @PortedFrom(file = "dlTBox.h", name = "processDisjoint")
     public void processDisjoint(List<DLTree> beg) {
         while (beg.size() > 0) {
@@ -265,7 +282,8 @@ public class TBox {
         }
     }
 
-    /** create REFLEXIVE node */
+    /** @param R
+     * @return create REFLEXIVE node */
     @PortedFrom(file = "dlTBox.h", name = "reflexive2dag")
     public int reflexive2dag(Role R) {
         // input check: only simple roles are allowed in the reflexivity
@@ -277,19 +295,25 @@ public class TBox {
         return -dlHeap.add(new DLVertex(dtIrr, 0, R, bpINVALID, null));
     }
 
-    /** create forall node for data role */
+    /** @param R
+     * @param C
+     * @return create forall node for data role */
     @PortedFrom(file = "dlTBox.h", name = "dataForall2dag")
     public int dataForall2dag(Role R, int C) {
         return dlHeap.add(new DLVertex(dtForall, 0, R, C, null));
     }
 
-    /** create atmost node for data role */
+    /** @param n
+     * @param R
+     * @param C
+     * @return create atmost node for data role */
     @PortedFrom(file = "dlTBox.h", name = "dataAtMost2dag")
     public int dataAtMost2dag(int n, Role R, int C) {
         return dlHeap.add(new DLVertex(dtLE, n, R, C, null));
     }
 
-    /** @return a pointer to concept representation */
+    /** @param p
+     * @return a pointer to concept representation */
     @PortedFrom(file = "dlTBox.h", name = "concept2dag")
     public int concept2dag(Concept p) {
         if (p == null) {
@@ -301,7 +325,10 @@ public class TBox {
         return p.resolveId();
     }
 
-    /** try to absorb GCI C[=D; if not possible, just record this GCI */
+    /** try to absorb GCI C[=D; if not possible, just record this GCI
+     * 
+     * @param C
+     * @param D */
     @PortedFrom(file = "dlTBox.h", name = "processGCI")
     public void processGCI(DLTree C, DLTree D) {
         axioms.addAxiom(C, D);
@@ -374,7 +401,10 @@ public class TBox {
         return nSynonyms;
     }
 
-    /** init Extra Rule field in concepts given by a vector V with a given INDEX */
+    /** init Extra Rule field in concepts given by a vector V with a given INDEX
+     * 
+     * @param v
+     * @param index */
     @PortedFrom(file = "dlTBox.h", name = "initRuleFields")
     public void initRuleFields(List<Concept> v, int index) {
         for (Concept q : v) {
@@ -393,7 +423,9 @@ public class TBox {
         }
     }
 
-    /** set new concept index for given C wrt existing nC */
+    /** set new concept index for given C wrt existing nC
+     * 
+     * @param C */
     @PortedFrom(file = "dlTBox.h", name = "setConceptIndex")
     public void setConceptIndex(Concept C) {
         C.setIndex(nC);
@@ -407,7 +439,7 @@ public class TBox {
         return stdReasoner != null;
     }
 
-    /** get RW reasoner wrt nominal case */
+    /** @return reasoner wrt nominal case */
     @PortedFrom(file = "dlTBox.h", name = "getReasoner")
     public DlSatTester getReasoner() {
         assert curFeature != null;
@@ -418,7 +450,9 @@ public class TBox {
         }
     }
 
-    /** print all registered concepts */
+    /** print all registered concepts
+     * 
+     * @param o */
     @PortedFrom(file = "dlTBox.h", name = "PrintConcepts")
     public void printConcepts(LogAdapter o) {
         if (concepts.size() == 0) {
@@ -430,7 +464,9 @@ public class TBox {
         }
     }
 
-    /** print all registered individuals */
+    /** print all registered individuals
+     * 
+     * @param o */
     @PortedFrom(file = "dlTBox.h", name = "PrintIndividuals")
     public void printIndividuals(LogAdapter o) {
         if (individuals.size() == 0) {
@@ -442,6 +478,7 @@ public class TBox {
         }
     }
 
+    /** @param o */
     @PortedFrom(file = "dlTBox.h", name = "PrintSimpleRules")
     public void printSimpleRules(LogAdapter o) {
         if (simpleRules.isEmpty()) {
@@ -460,6 +497,7 @@ public class TBox {
         }
     }
 
+    /** @param o */
     @PortedFrom(file = "dlTBox.h", name = "PrintAxioms")
     public void printAxioms(LogAdapter o) {
         if (internalisedGeneralAxiom == bpTOP) {
@@ -469,7 +507,8 @@ public class TBox {
         printDagEntry(o, internalisedGeneralAxiom);
     }
 
-    /** check if the role R is irreflexive */
+    /** @param R
+     * @return check if the role R is irreflexive */
     @PortedFrom(file = "dlTBox.h", name = "isIrreflexive")
     public boolean isIrreflexive(Role R) {
         assert R != null;
@@ -546,7 +585,7 @@ public class TBox {
         relevance++;
     }
 
-    /** get fresh concept */
+    /** @return fresh concept */
     @PortedFrom(file = "dlTBox.h", name = "getFreshConcept")
     public DLTree getFreshConcept() {
         return DLTreeFactory.buildTree(new Lexeme(CNAME, pTemp));
@@ -585,25 +624,26 @@ public class TBox {
         curFeature = null;
     }
 
-    /** get RW access to used Role Master */
+    /** @return object Role Master */
     @PortedFrom(file = "dlTBox.h", name = "getORM")
     public RoleMaster getORM() {
         return objectRoleMaster;
     }
 
-    /** get RW access to used DataRole Master */
+    /** @return Data Role Master */
     @PortedFrom(file = "dlTBox.h", name = "getDRM")
     public RoleMaster getDRM() {
         return dataRoleMaster;
     }
 
-    /** get RW access to the RoleMaster depending of the R */
+    /** @param R
+     * @return RoleMaster depending of the R */
     @PortedFrom(file = "dlTBox.h", name = "getRM")
     public RoleMaster getRM(Role R) {
         return R.isDataRole() ? dataRoleMaster : objectRoleMaster;
     }
 
-    /** get RO access to DAG (needed for KE) */
+    /** @return DAG (needed for KE) */
     @PortedFrom(file = "dlTBox.h", name = "getDag")
     public DLDag getDag() {
         return dlHeap;
@@ -615,14 +655,19 @@ public class TBox {
         useNodeCache = val;
     }
 
-    /** return registered concept by given NAME; @return null if can't register */
+    /** return registered concept by given NAME;
+     * 
+     * @param name
+     * @return null if can't register */
     @PortedFrom(file = "dlTBox.h", name = "getConcept")
     public Concept getConcept(String name) {
         return concepts.get(name);
     }
 
-    /** return registered individual by given NAME; @return null if can't
-     * register */
+    /** return registered individual by given NAME;
+     * 
+     * @param name
+     * @return null if can't register */
     @PortedFrom(file = "dlTBox.h", name = "getIndividual")
     public Individual getIndividual(String name) {
         return individuals.get(name);
@@ -634,14 +679,16 @@ public class TBox {
         return individuals.isRegistered(name);
     }
 
-    /** @return true iff given TREE represents a registered individual */
+    /** @param tree
+     * @return true iff given TREE represents a registered individual */
     @PortedFrom(file = "dlTBox.h", name = "isIndividual")
     public boolean isIndividual(DLTree tree) {
         return tree.token() == INAME && this.isIndividual(tree.elem().getNE().getName());
     }
 
     // TODO move
-    /** get TOP/BOTTOM/CN/IN by the DLTree entry */
+    /** @param name
+     * @return TOP/BOTTOM/CN/IN by the DLTree entry */
     @PortedFrom(file = "dlTBox.h", name = "getCI")
     public Concept getCI(DLTree name) {
         if (name.isTOP()) {
@@ -660,7 +707,8 @@ public class TBox {
         }
     }
 
-    /** get a DL tree by a given concept-like C */
+    /** @param C
+     * @return a DL tree by a given concept-like C */
     @PortedFrom(file = "dlTBox.h", name = "getTree")
     public DLTree getTree(Concept C) {
         if (C == null) {
@@ -676,8 +724,10 @@ public class TBox {
                 : CNAME, C));
     }
 
-    /** set the flag that forbid usage of undefined names for concepts/roles; @return
-     * old value */
+    /** set the flag that forbid usage of undefined names for concepts/roles;
+     * 
+     * @param val
+     * @return old value */
     @PortedFrom(file = "dlTBox.h", name = "setForbidUndefinedNames")
     public boolean setForbidUndefinedNames(boolean val) {
         objectRoleMaster.setUndefinedNames(!val);
@@ -686,7 +736,11 @@ public class TBox {
         return concepts.setLocked(val);
     }
 
-    /** individual relation <a,b>:R */
+    /** individual relation <a,b>:R
+     * 
+     * @param a
+     * @param R
+     * @param b */
     @PortedFrom(file = "dlTBox.h", name = "RegisterIndividualRelation")
     public void registerIndividualRelation(NamedEntry a, NamedEntry R, NamedEntry b) {
         if (!this.isIndividual(a.getName()) || !this.isIndividual(b.getName())) {
@@ -697,13 +751,18 @@ public class TBox {
                 .inverse()));
     }
 
-    /** add axiom CN [= D for concept CN */
+    /** add axiom CN [= D for concept CN
+     * 
+     * @param C
+     * @param D */
     @PortedFrom(file = "dlTBox.h", name = "addSubsumeAxiom")
     public void addSubsumeAxiom(Concept C, DLTree D) {
         this.addSubsumeAxiom(getTree(C), D);
     }
 
-    /** add simple rule RULE to the TBox' rules */
+    /** add simple rule RULE to the TBox' rules
+     * 
+     * @param Rule */
     @PortedFrom(file = "dlTBox.h", name = "addSimpleRule")
     public void addSimpleRule(SimpleRule Rule) {
         initRuleFields(Rule.getBody(), simpleRules.size());
@@ -742,6 +801,7 @@ public class TBox {
         }
     }
 
+    /** @param l */
     @PortedFrom(file = "dlTBox.h", name = "setFairnessConstraint")
     public void setFairnessConstraintDLTrees(List<DLTree> l) {
         for (int i = 0; i < l.size(); i++) {
@@ -753,19 +813,20 @@ public class TBox {
         }
     }
 
-    /** GCI Axioms access */
+    /** @return GCI Axioms */
     @PortedFrom(file = "dlTBox.h", name = "getTG")
     public int getTG() {
         return internalisedGeneralAxiom;
     }
 
-    /** get simple rule by its INDEX */
+    /** @param index
+     * @return simple rule by its INDEX */
     @PortedFrom(file = "dlTBox.h", name = "getSimpleRule")
     public SimpleRule getSimpleRule(int index) {
         return simpleRules.get(index);
     }
 
-    /** check if the relevant part of KB contains inverse roles. */
+    /** @return check if the relevant part of KB contains inverse roles. */
     @PortedFrom(file = "dlTBox.h", name = "isIRinQuery")
     public boolean isIRinQuery() {
         if (curFeature != null) {
@@ -775,7 +836,7 @@ public class TBox {
         }
     }
 
-    /** check if the relevant part of KB contains number restrictions. */
+    /** @return check if the relevant part of KB contains number restrictions. */
     @PortedFrom(file = "dlTBox.h", name = "isNRinQuery")
     public boolean isNRinQuery() {
         LogicFeatures p = curFeature != null ? curFeature : KBFeatures;
@@ -783,7 +844,7 @@ public class TBox {
                 || p.hasQNumberRestriction();
     }
 
-    /** check if the relevant part of KB contains singletons */
+    /** @return check if the relevant part of KB contains singletons */
     @PortedFrom(file = "dlTBox.h", name = "testHasNominals")
     public boolean testHasNominals() {
         if (curFeature != null) {
@@ -793,7 +854,7 @@ public class TBox {
         }
     }
 
-    /** check if the relevant part of KB contains top role */
+    /** @return check if the relevant part of KB contains top role */
     @PortedFrom(file = "dlTBox.h", name = "testHasTopRole")
     public boolean testHasTopRole() {
         if (curFeature != null) {
@@ -803,7 +864,7 @@ public class TBox {
         }
     }
 
-    /** check if Sorted Reasoning is applicable */
+    /** @return check if Sorted Reasoning is applicable */
     @PortedFrom(file = "dlTBox.h", name = "canUseSortedReasoning")
     public boolean canUseSortedReasoning() {
         return useSortedReasoning && !GCIs.isGCI() && !GCIs.isReflexive();
@@ -821,26 +882,28 @@ public class TBox {
         createTaxonomy(true);
     }
 
-    /** get (READ-WRITE) access to internal Taxonomy of concepts */
+    /** @return internal Taxonomy of concepts */
     @PortedFrom(file = "dlTBox.h", name = "getTaxonomy")
     public DLConceptTaxonomy getTaxonomy() {
         return pTax;
     }
 
-    /** get status flag */
+    /** @return status flag */
     @PortedFrom(file = "dlTBox.h", name = "getStatus")
     public KBStatus getStatus() {
         return kbStatus;
     }
 
-    /** set consistency flag */
+    /** set consistency flag
+     * 
+     * @param val */
     @PortedFrom(file = "dlTBox.h", name = "setConsistency")
     public void setConsistency(boolean val) {
         kbStatus = kbCChecked;
         consistent = val;
     }
 
-    /** check if the ontology is consistent */
+    /** @return check if the ontology is consistent */
     @PortedFrom(file = "dlTBox.h", name = "isConsistent")
     public boolean isConsistent() {
         if (kbStatus.ordinal() < kbCChecked.ordinal()) {
@@ -852,7 +915,10 @@ public class TBox {
         return consistent;
     }
 
-    /** test if 2 concept non-subsumption can be determined by sorts checking */
+    /** @param p
+     * @param q
+     * @return test if 2 concept non-subsumption can be determined by sorts
+     *         checking */
     @PortedFrom(file = "dlTBox.h", name = "testSortedNonSubsumption")
     public boolean testSortedNonSubsumption(Concept p, Concept q) {
         // sorted reasoning doesn't work in presence of GCIs
@@ -879,6 +945,7 @@ public class TBox {
         config.getLog().print(dlHeap);
     }
 
+    /** build dag */
     @PortedFrom(file = "dlTBox.h", name = "buildDAG")
     public void buildDAG() {
         nNominalReferences = 0;
@@ -951,6 +1018,7 @@ public class TBox {
         dlHeap.setFinalSize();
     }
 
+    /** @param RM */
     @PortedFrom(file = "dlTBox.h", name = "initRangeDomain")
     public void initRangeDomain(RoleMaster RM) {
         for (Role p : RM.getRoles()) {
@@ -988,6 +1056,8 @@ public class TBox {
         }
     }
 
+    /** @param p
+     * @return index of new element */
     @PortedFrom(file = "dlTBox.h", name = "addDataExprToHeap")
     public int addDataExprToHeap(LiteralEntry p) {
         int toReturn = 0;
@@ -1007,6 +1077,8 @@ public class TBox {
         return toReturn;
     }
 
+    /** @param p
+     * @return index of new element */
     @PortedFrom(file = "dlTBox.h", name = "addDataExprToHeap")
     public int addDataExprToHeap(DatatypeEntry p) {
         int toReturn = 0;
@@ -1028,6 +1100,8 @@ public class TBox {
         return toReturn;
     }
 
+    /** @param p
+     * @return index of new element */
     @Original
     public int addDatatypeExpressionToHeap(Datatype<?> p) {
         int hostBP = 0;
@@ -1045,6 +1119,7 @@ public class TBox {
         return hostBP;
     }
 
+    /** @param pConcept */
     @PortedFrom(file = "dlTBox.h", name = "addConceptToHeap")
     public void addConceptToHeap(Concept pConcept) {
         // choose proper tag by concept
@@ -1073,6 +1148,8 @@ public class TBox {
         }
     }
 
+    /** @param t
+     * @return index of new element */
     @PortedFrom(file = "dlTBox.h", name = "tree2dag")
     public int tree2dag(DLTree t) {
         if (t == null) {
@@ -1132,7 +1209,11 @@ public class TBox {
         return ret;
     }
 
-    /** fills AND-like vertex V with an AND-like expression T; process result */
+    /** fills AND-like vertex V with an AND-like expression T; process result
+     * 
+     * @param v
+     * @param t
+     * @return heap size */
     @PortedFrom(file = "dlTBox.h", name = "and2dag")
     public int and2dag(DLVertex v, DLTree t) {
         int ret = bpBOTTOM;
@@ -1146,6 +1227,9 @@ public class TBox {
         return ret;
     }
 
+    /** @param R
+     * @param C
+     * @return index of new element */
     @PortedFrom(file = "dlTBox.h", name = "forall2dag")
     public int forall2dag(Role R, int C) {
         if (R.isDataRole()) {
@@ -1164,6 +1248,10 @@ public class TBox {
         return ret;
     }
 
+    /** @param n
+     * @param R
+     * @param C
+     * @return index of new element */
     @PortedFrom(file = "dlTBox.h", name = "atmost2dag")
     public int atmost2dag(int n, Role R, int C) {
         if (!R.isSimple()) {
@@ -1192,14 +1280,14 @@ public class TBox {
     @PortedFrom(file = "dlTBox.h", name = "split2dag")
     void split2dag(TSplitVar split) {
         DLVertex v = new DLVertex(dtSplitConcept);
-        for (TSplitVar.Entry p : split.getEntries()) {
+        for (SplitVarEntry p : split.getEntries()) {
             v.addChild(p.concept.getpName());
         }
-        split.C.setpBody(dlHeap.directAdd(v));
-        split.C.setPrimitive(false);
-        dlHeap.replaceVertex(split.C.getpName(), new DLVertex(dtNConcept, 0, null,
-                split.C.getpBody(), null), split.C);
-        dlHeap.directAdd(new DLVertex(dtChoose, 0, null, split.C.getpName(), null));
+        split.getC().setpBody(dlHeap.directAdd(v));
+        split.getC().setPrimitive(false);
+        dlHeap.replaceVertex(split.getC().getpName(), new DLVertex(dtNConcept, 0, null,
+                split.getC().getpBody(), null), split.getC());
+        dlHeap.directAdd(new DLVertex(dtChoose, 0, null, split.getC().getpName(), null));
     }
 
     @PortedFrom(file = "dlTBox.h", name = "fillANDVertex")
@@ -1224,6 +1312,8 @@ public class TBox {
     @PortedFrom(file = "dlTBox.h", name = "arrayNP")
     private List<Concept> arrayNP = new ArrayList<Concept>();
 
+    /** @param begin
+     * @return number of elements */
     @PortedFrom(file = "dlTBox.h", name = "fillArrays")
     public <T extends Concept> int fillArrays(List<T> begin) {
         int n = 0;
@@ -1255,11 +1345,13 @@ public class TBox {
     @Original
     private DatatypeFactory datatypeFactory;
 
+    /** @return n items */
     @Original
     public int getNItems() {
         return nItems;
     }
 
+    /** @param needIndividual */
     @PortedFrom(file = "dlTBox.h", name = "createTaxonomy")
     public void createTaxonomy(boolean needIndividual) {
         boolean needConcept = !needIndividual;
@@ -1317,6 +1409,9 @@ public class TBox {
         }
     }
 
+    /** @param collection
+     * @param curCompletelyDefined
+     * @param type */
     @PortedFrom(file = "dlTBox.h", name = "classifyConcepts")
     public void classifyConcepts(List<Concept> collection, boolean curCompletelyDefined,
             String type) {
@@ -1360,10 +1455,10 @@ public class TBox {
             AtomicBoolean interrupted) {
         this.datatypeFactory = datatypeFactory;
         this.interrupted = interrupted;
+        config = configuration;
         SplitRules = new TSplitRules(configuration);
         axioms = new AxiomSet(this);
         dlHeap = new DLDag(configuration);
-        config = configuration;
         kbStatus = kbLoading;
         pQuery = null;
         concepts = new NamedEntryCollection<Concept>("concept", new ConceptCreator(),
@@ -1402,7 +1497,7 @@ public class TBox {
         Concept C = getConcept(" aux" + ++auxConceptID);
         setForbidUndefinedNames(old);
         C.setSystem();
-        C.setNonClassifiable();
+        C.setNonClassifiable(true);
         C.setPrimitive(true);
         C.addDesc(desc);
         // it is created after this is done centrally
@@ -1426,6 +1521,7 @@ public class TBox {
         pQuery = p;
     }
 
+    /** prepare reasoning */
     @PortedFrom(file = "dlTBox.h", name = "prepareReasoning")
     public void prepareReasoning() {
         preprocess();
@@ -1453,6 +1549,8 @@ public class TBox {
         }
     }
 
+    /** @param pConcept
+     * @param qConcept */
     @PortedFrom(file = "dlTBox.h", name = "prepareFeatures")
     public void prepareFeatures(Concept pConcept, Concept qConcept) {
         auxFeatures = new LogicFeatures(GCIFeatures);
@@ -1469,6 +1567,9 @@ public class TBox {
         getReasoner().setBlockingMethod(isIRinQuery(), isNRinQuery());
     }
 
+    /**
+     * 
+     */
     @PortedFrom(file = "dlTBox.h", name = "buildSimpleCache")
     public void buildSimpleCache() {
         // set cache for BOTTOM entry
@@ -1494,6 +1595,7 @@ public class TBox {
         }
     }
 
+    /** @return true if consistent */
     @PortedFrom(file = "dlTBox.h", name = "performConsistencyCheck")
     public boolean performConsistencyCheck() {
         if (config.getverboseOutput()) {
@@ -1526,6 +1628,8 @@ public class TBox {
         return ret;
     }
 
+    /** @param pConcept
+     * @return true if satisfiable */
     @PortedFrom(file = "dlTBox.h", name = "isSatisfiable")
     public boolean isSatisfiable(Concept pConcept) {
         assert pConcept != null;
@@ -1544,6 +1648,9 @@ public class TBox {
         return result;
     }
 
+    /** @param pConcept
+     * @param qConcept
+     * @return true if subsumption holds */
     @PortedFrom(file = "dlTBox.h", name = "isSubHolds")
     public boolean isSubHolds(Concept pConcept, Concept qConcept) {
         assert pConcept != null && qConcept != null;
@@ -1558,6 +1665,9 @@ public class TBox {
         return result;
     }
 
+    /** @param _a
+     * @param _b
+     * @return true if same individual */
     @PortedFrom(file = "dlTBox.h", name = "isSameIndividuals")
     public boolean isSameIndividuals(Individual _a, Individual _b) {
         Individual a = resolveSynonym(_a);
@@ -1585,6 +1695,9 @@ public class TBox {
 
     }
 
+    /** @param R
+     * @param S
+     * @return true if disjoint roles */
     @PortedFrom(file = "dlTBox.h", name = "isDisjointRoles")
     public boolean isDisjointRoles(Role R, Role S) {
         assert R != null && S != null;
@@ -1598,6 +1711,8 @@ public class TBox {
         return result;
     }
 
+    /** @param desc
+     * @return query concept */
     @PortedFrom(file = "dlTBox.h", name = "createQueryConcept")
     public Concept createQueryConcept(DLTree desc) {
         assert desc != null;
@@ -1637,7 +1752,9 @@ public class TBox {
 
     /** knowledge exploration: build a model and return a link to the root */
     /** build a completion tree for a concept C (no caching as it breaks the idea
-     * of KE). @return the root node */
+     * of KE).
+     * 
+     * @return the root node */
     @PortedFrom(file = "dlTBox.h", name = "buildCompletionTree")
     DlCompletionTree buildCompletionTree(Concept pConcept) {
         DlCompletionTree ret = null;
@@ -1655,6 +1772,7 @@ public class TBox {
         return ret;
     }
 
+    /** @param time */
     @PortedFrom(file = "dlTBox.h", name = "writeReasoningResult")
     public void writeReasoningResult(long time) {
         LogAdapter o = config.getLog();
@@ -1690,6 +1808,8 @@ public class TBox {
         print();
     }
 
+    /** @param o
+     * @param p */
     @PortedFrom(file = "dlTBox.h", name = "PrintDagEntry")
     public void printDagEntry(LogAdapter o, int p) {
         assert isValid(p);
@@ -1768,6 +1888,8 @@ public class TBox {
         }
     }
 
+    /** @param o
+     * @param p */
     @PortedFrom(file = "dlTBox.h", name = "PrintConcept")
     public void printConcept(LogAdapter o, Concept p) {
         if (isValid(p.getpName())) {
@@ -1811,6 +1933,8 @@ public class TBox {
         dump.epilogue();
     }
 
+    /** @param dump
+     * @param p */
     @PortedFrom(file = "dlTBox.h", name = "dumpConcept")
     public void dumpConcept(DumpInterface dump, Concept p) {
         dump.startAx(DIOp.diDefineC);
@@ -1826,6 +1950,8 @@ public class TBox {
         }
     }
 
+    /** @param dump
+     * @param p */
     @PortedFrom(file = "dlTBox.h", name = "dumpRole")
     public void dumpRole(DumpInterface dump, Role p) {
         if (p.getId() > 0 || !p.inverse().isRelevant(relevance)) {
@@ -1867,6 +1993,8 @@ public class TBox {
         }
     }
 
+    /** @param dump
+     * @param p */
     @PortedFrom(file = "dlTBox.h", name = "dumpExpression")
     public void dumpExpression(DumpInterface dump, int p) {
         assert isValid(p);
@@ -1929,6 +2057,7 @@ public class TBox {
         }
     }
 
+    /** @param dump */
     @PortedFrom(file = "dlTBox.h", name = "dumpAllRoles")
     public void dumpAllRoles(DumpInterface dump) {
         for (Role p : objectRoleMaster.getRoles()) {
@@ -1945,6 +2074,8 @@ public class TBox {
         }
     }
 
+    /** @param sub
+     * @param sup */
     @PortedFrom(file = "dlTBox.h", name = "addSubsumeAxiom")
     public void addSubsumeAxiom(DLTree sub, DLTree sup) {
         if (equalTrees(sub, sup)) {
@@ -1967,6 +2098,9 @@ public class TBox {
         }
     }
 
+    /** @param D
+     * @param CN
+     * @return merged dltree */
     @PortedFrom(file = "dlTBox.h", name = "applyAxiomCToCN")
     public DLTree applyAxiomCToCN(DLTree D, DLTree CN) {
         Concept C = resolveSynonym(getCI(CN));
@@ -1984,6 +2118,9 @@ public class TBox {
         return null;
     }
 
+    /** @param CN
+     * @param D
+     * @return merged dltree */
     @PortedFrom(file = "dlTBox.h", name = "applyAxiomCNToC")
     public DLTree applyAxiomCNToC(DLTree CN, DLTree D) {
         Concept C = resolveSynonym(getCI(CN));
@@ -1999,6 +2136,8 @@ public class TBox {
         return null;
     }
 
+    /** @param C
+     * @param D */
     @PortedFrom(file = "dlTBox.h", name = "addSubsumeForDefined")
     public void addSubsumeForDefined(Concept C, DLTree D) {
         if (DLTreeFactory.isSubTree(D, C.getDescription())) {
@@ -2015,6 +2154,9 @@ public class TBox {
         this.addSubsumeAxiom(oldDesc, getTree(C));
     }
 
+    /** @param sub
+     * @param sup
+     * @return true if range can be set */
     @PortedFrom(file = "dlTBox.h", name = "axiomToRangeDomain")
     public boolean axiomToRangeDomain(DLTree sub, DLTree sup) {
         if (sub.isTOP() && sup.token() == FORALL) {
@@ -2047,6 +2189,9 @@ public class TBox {
         this.addSubsumeAxiom(right, left);
     }
 
+    /** @param left
+     * @param right
+     * @return true if definition is added */
     @PortedFrom(file = "dlTBox.h", name = "addNonprimitiveDefinition")
     public boolean addNonprimitiveDefinition(DLTree left, DLTree right) {
         Concept C = resolveSynonym(getCI(left));
@@ -2068,6 +2213,9 @@ public class TBox {
         return false;
     }
 
+    /** @param left
+     * @param right
+     * @return true if concept is made non primitive */
     @PortedFrom(file = "dlTBox.h", name = "switchToNonprimitive")
     public boolean switchToNonprimitive(DLTree left, DLTree right) {
         Concept C = resolveSynonym(getCI(left));
@@ -2085,6 +2233,7 @@ public class TBox {
         return false;
     }
 
+    /** @param beg */
     @PortedFrom(file = "dlTBox.h", name = "processDisjointC")
     public void processDisjointC(Collection<DLTree> beg) {
         List<DLTree> prim = new ArrayList<DLTree>();
@@ -2110,6 +2259,7 @@ public class TBox {
         }
     }
 
+    /** @param l */
     @PortedFrom(file = "dlTBox.h", name = "processEquivalentC")
     public void processEquivalentC(List<DLTree> l) {
         // TODO check if this is taking into account all combinations
@@ -2118,6 +2268,7 @@ public class TBox {
         }
     }
 
+    /** @param l */
     @PortedFrom(file = "dlTBox.h", name = "processDifferent")
     public void processDifferent(List<DLTree> l) {
         List<Individual> acc = new ArrayList<Individual>();
@@ -2135,6 +2286,7 @@ public class TBox {
         }
     }
 
+    /** @param l */
     @PortedFrom(file = "dlTBox.h", name = "processSame")
     public void processSame(List<DLTree> l) {
         int size = l.size();
@@ -2150,6 +2302,7 @@ public class TBox {
         }
     }
 
+    /** @param l */
     @PortedFrom(file = "dlTBox.h", name = "processDisjointR")
     public void processDisjointR(List<DLTree> l) {
         if (l.isEmpty()) {
@@ -2175,6 +2328,7 @@ public class TBox {
         }
     }
 
+    /** @param l */
     @PortedFrom(file = "dlTBox.h", name = "processEquivalentR")
     public void processEquivalentR(List<DLTree> l) {
         if (l.size() > 0) {
@@ -2187,6 +2341,7 @@ public class TBox {
         }
     }
 
+    /** preprocess tbox */
     @PortedFrom(file = "dlTBox.h", name = "preprocess")
     public void preprocess() {
         if (config.getverboseOutput()) {
@@ -2276,6 +2431,7 @@ public class TBox {
         }
     }
 
+    /** preprocess related individuals */
     @PortedFrom(file = "dlTBox.h", name = "preprocessRelated")
     public void preprocessRelated() {
         for (Related q : relatedIndividuals) {
@@ -2283,6 +2439,7 @@ public class TBox {
         }
     }
 
+    /** transform cycles */
     @PortedFrom(file = "dlTBox.h", name = "transformToldCycles")
     public void transformToldCycles() {
         int nSynonyms = countSynonyms();
@@ -2305,6 +2462,8 @@ public class TBox {
         }
     }
 
+    /** @param _p
+     * @return concpet with told cycle rewritten */
     @PortedFrom(file = "dlTBox.h", name = "checkToldCycle")
     public Concept checkToldCycle(Concept _p) {
         assert _p != null;
@@ -2371,6 +2530,7 @@ public class TBox {
         return ret;
     }
 
+    /** transform singleton hierarchy */
     @PortedFrom(file = "dlTBox.h", name = "transformSingletonHierarchy")
     public void transformSingletonHierarchy() {
         int nSynonyms = countSynonyms();
@@ -2391,6 +2551,8 @@ public class TBox {
         }
     }
 
+    /** @param p
+     * @return individual for concept */
     @PortedFrom(file = "dlTBox.h", name = "getSPForConcept")
     public Individual getSPForConcept(Concept p) {
         for (ClassifiableEntry r : p.getToldSubsumers()) {
@@ -2416,6 +2578,7 @@ public class TBox {
     }
 
 
+    /** determine sorts */
     @PortedFrom(file = "dlTBox.h", name = "determineSorts")
     public void determineSorts() {
         if (config.isRKG_USE_SORTED_REASONING()) {
@@ -2436,6 +2599,7 @@ public class TBox {
         }
     }
 
+    /** calculate statistics */
     @PortedFrom(file = "dlTBox.h", name = "CalculateStatistic")
     public void calculateStatistic() {
         int npFull = 0, nsFull = 0;
@@ -2491,6 +2655,7 @@ public class TBox {
                 " synonyms\nThere are ", nSing, " individuals or nominals used\n");
     }
 
+    /** remove extra descritpions */
     @PortedFrom(file = "dlTBox.h", name = "RemoveExtraDescriptions")
     public void removeExtraDescriptions() {
         for (Concept pc : concepts.getList()) {
@@ -2510,19 +2675,22 @@ public class TBox {
         }
     }
 
-    /** @return true iff individual C is known to be p-blocked by another one */
+    /** @param C
+     * @return true iff individual C is known to be p-blocked by another one */
     @PortedFrom(file = "dlTBox.h", name = "isBlockedInd")
     public boolean isBlockedInd(Concept C) {
         return sameIndividuals.containsKey(C);
     }
 
-    /** get individual that blocks C; works only for blocked individuals C */
+    /** @param C
+     * @return individual that blocks C; works only for blocked individuals C */
     @PortedFrom(file = "dlTBox.h", name = "getBlockingInd")
     public Individual getBlockingInd(Concept C) {
         return sameIndividuals.get(C).first;
     }
 
-    /** @return true iff an individual blocks C deterministically */
+    /** @param C
+     * @return true iff an individual blocks C deterministically */
     @PortedFrom(file = "dlTBox.h", name = "isBlockingDet")
     public boolean isBlockingDet(Concept C) {
         return sameIndividuals.get(C).second;
@@ -2541,6 +2709,9 @@ public class TBox {
                 createBiPointer(p.getIndex(), pos)));
     }
 
+    /** @param pConcept
+     * @param sub
+     * @return initialized cache */
     @PortedFrom(file = "dlTBox.h", name = "initCache")
     public ModelCacheInterface initCache(Concept pConcept, boolean sub) {
         int bp = sub ? -pConcept.getpName() : pConcept.getpName();
@@ -2557,7 +2728,11 @@ public class TBox {
         return cache;
     }
 
-    /** test if 2 concept non-subsumption can be determined by cache merging */
+    /** test if 2 concept non-subsumption can be determined by cache merging
+     * 
+     * @param p
+     * @param q
+     * @return cache state */
     @PortedFrom(file = "dlTBox.h", name = "testCachedNonSubsumption")
     public ModelCacheState testCachedNonSubsumption(Concept p, Concept q) {
         ModelCacheInterface pCache = initCache(p, /* sub= */false);
@@ -2565,6 +2740,7 @@ public class TBox {
         return pCache.canMerge(nCache);
     }
 
+    /** init reasoner */
     @PortedFrom(file = "dlTBox.h", name = "initReasoner")
     public void initReasoner() {
         assert !reasonersInited();
@@ -2722,6 +2898,7 @@ public class TBox {
         }
     }
 
+    /** print features */
     @PortedFrom(file = "dlTBox.h", name = "printFeatures")
     public void printFeatures() {
         KBFeatures.writeState(config.getLog());
@@ -2731,27 +2908,34 @@ public class TBox {
                 "range and domain restrictions\n");
     }
 
+    /** @return list of list of different individuals */
     @Original
     public List<List<Individual>> getDifferent() {
         return differentIndividuals;
     }
 
+    /** @return list of relted individuals */
     @Original
     public List<Related> getRelatedI() {
         return relatedIndividuals;
     }
 
+    /** @return the dl heap */
     @Original
     public DLDag getDLHeap() {
         return dlHeap;
     }
 
+    /** @return the GCIs */
     @Original
     public KBFlags getGCIs() {
         return GCIs;
     }
 
-    /** replace (AR:C) with X such that C [= AR^-:X for fresh X. @return X */
+    /** replace (AR:C) with X such that C [= AR^-:X for fresh X.
+     * 
+     * @param RC
+     * @return X */
     @PortedFrom(file = "dlTBox.h", name = "replaceForall")
     public Concept replaceForall(DLTree RC) {
         // check whether we already did this before for given R,C
@@ -2770,6 +2954,7 @@ public class TBox {
         return X;
     }
 
+    /** @return interrupted switch */
     @PortedFrom(file = "dlTBox.h", name = "isCancelled")
     public AtomicBoolean isCancelled() {
         return interrupted;
@@ -2780,8 +2965,15 @@ public class TBox {
         return getTaxonomy().getSplits();
     }
 
+    /** @return list of fairness concepts */
     @Original
     public List<Concept> getFairness() {
         return fairness;
+    }
+
+    /** @param p
+     * @param pair */
+    public void addSameIndividuals(Individual p, Pair pair) {
+        sameIndividuals.put(p, pair);
     }
 }

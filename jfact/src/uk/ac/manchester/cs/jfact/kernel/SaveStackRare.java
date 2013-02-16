@@ -22,18 +22,22 @@ class SaveStackRare {
         ++curLevel;
     }
 
-    /** check that stack is empty */
+    /** @return check that stack is empty */
     public boolean isEmpty() {
         return base.isEmpty();
     }
 
-    /** add a new object to the stack */
+    /** add a new object to the stack
+     * 
+     * @param p */
     public void push(Restorer p) {
         p.setRaresavestackLevel(curLevel);
         base.addLast(p);
     }
 
-    /** get all object from the top of the stack with levels >= LEVEL */
+    /** get all object from the top of the stack with levels >= LEVEL
+     * 
+     * @param level */
     @PortedFrom(file = "dlCompletionGraph.h", name = "restore")
     public void restore(int level) {
         curLevel = level;

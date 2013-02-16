@@ -21,6 +21,7 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** directed acyclic graph */
 @PortedFrom(file = "dlDag.h", name = "DLDag")
 public class DLDag {
     /** body of DAG */
@@ -55,14 +56,19 @@ public class DLDag {
     @Original
     private JFactReasonerConfiguration options;
 
-    /** replace existing vertex at index I with a vertex V */
+    /** replace existing vertex at index I with a vertex V
+     * 
+     * @param i
+     * @param v
+     * @param C */
     @PortedFrom(file = "dlDag.h", name = "replaceVertex")
     public void replaceVertex(int i, DLVertex v, NamedEntry C) {
         heap.set(i > 0 ? i : -i, v);
         v.setConcept(C);
     }
 
-    /** @return index of a vertex containing a concept */
+    /** @param c
+     * @return index of a vertex containing a concept */
     @PortedFrom(file = "dlDag.h", name = "index")
     public int index(NamedEntry c) {
         for (int i = 0; i < heap.size(); i++) {
@@ -107,7 +113,10 @@ public class DLDag {
         }
     }
 
-    /** update index corresponding to DLVertex's tag */
+    /** update index corresponding to DLVertex's tag
+     * 
+     * @param tag
+     * @param value */
     @PortedFrom(file = "dlDag.h", name = "updateIndex")
     public void updateIndex(DagTag tag, int value) {
         if (!indexes.containsKey(tag)) {
@@ -119,7 +128,10 @@ public class DLDag {
         }
     }
 
-    /** add vertex to the end of DAG and calculate it's statistic if necessary */
+    /** add vertex to the end of DAG and calculate it's statistic if necessary
+     * 
+     * @param v
+     * @return size of heap */
     @PortedFrom(file = "dlDag.h", name = "directAdd")
     public int directAdd(DLVertex v) {
         int index = index(v.getConcept());
@@ -132,7 +144,10 @@ public class DLDag {
     }
 
     /** add vertex to the end of DAG and calculate it's statistic if necessary;
-     * put it into cache */
+     * put it into cache
+     * 
+     * @param v
+     * @return size of heap */
     @PortedFrom(file = "dlDag.h", name = "directAddAndCache")
     public int directAddAndCache(DLVertex v) {
         int ret = directAdd(v);
@@ -142,33 +157,37 @@ public class DLDag {
         return ret;
     }
 
-    /** check if given index points to the last DAG entry */
+    /** @param p
+     * @return if given index points to the last DAG entry */
     @PortedFrom(file = "dlDag.h", name = "isLast")
     public boolean isLast(int p) {
         return p == heap.size() - 1 || -p == heap.size() - 1;
     }
 
     // access methods
-    /** whether to use cache for nodes */
+    /** whether to use cache for nodes
+     * 
+     * @param val */
     @PortedFrom(file = "dlDag.h", name = "setExpressionCache")
     public void setExpressionCache(boolean val) {
         useDLVCache = val;
     }
 
-    /** access by index */
+    /** @param i
+     * @return access by index */
     @PortedFrom(file = "dlDag.h", name = "get")
     public DLVertex get(int i) {
         assert isValid(i);
         return heap.get(i < 0 ? -i : i);
     }
 
-    /** get size of DAG */
+    /** @return get size of DAG */
     @PortedFrom(file = "dlDag.h", name = "size")
     public int size() {
         return heap.size();
     }
 
-    /** get approximation of the size after query is added */
+    /** @return approximation of the size after query is added */
     @PortedFrom(file = "dlDag.h", name = "maxSize")
     public int maxSize() {
         return size() + (size() < 220 ? 10 : size() / 20);
@@ -186,20 +205,27 @@ public class DLDag {
         setOrderOptions(options.getORSortSat());
     }
 
-    /** get cache for given BiPointer (may return null if no cache defined) */
+    /** @param p
+     * @return cache for given BiPointer (may return null if no cache defined) */
     @PortedFrom(file = "dlDag.h", name = "getCache")
     public ModelCacheInterface getCache(int p) {
         return get(p).getCache(p > 0);
     }
 
-    /** set cache for given BiPointer; @return given cache */
+    /** set cache for given BiPointer;
+     * 
+     * @param p
+     * @param cache */
     @PortedFrom(file = "dlDag.h", name = "setCache")
     public void setCache(int p, ModelCacheInterface cache) {
         get(p).setCache(p > 0, cache);
     }
 
     // sort interface
-    /** merge two given DAG entries */
+    /** merge two given DAG entries
+     * 
+     * @param ml
+     * @param p */
     @PortedFrom(file = "dlDag.h", name = "merge")
     public void merge(MergableLabel ml, int p) {
         if (p != bpINVALID && p != bpTOP && p != bpBOTTOM) {
@@ -207,7 +233,9 @@ public class DLDag {
         }
     }
 
-    /** check if two BPs are of the same sort */
+    /** @param p
+     * @param q
+     * @return check if two BPs are of the same sort */
     @PortedFrom(file = "dlDag.h", name = "haveSameSort")
     public boolean haveSameSort(int p, int q) {
         if (options.isRKG_USE_SORTED_REASONING()) {
@@ -228,7 +256,9 @@ public class DLDag {
     }
 
     // output interface
-    /** print DAG size and number of cache hits, together with DAG usage */
+    /** print DAG size and number of cache hits, together with DAG usage
+     * 
+     * @param o */
     @PortedFrom(file = "dlDag.h", name = "PrintStat")
     public void printStat(LogAdapter o) {
         o.printTemplate(Templates.PRINT_STAT, heap.size(), nCacheHits);
@@ -250,7 +280,8 @@ public class DLDag {
         return o.toString();
     }
 
-    // save/load interface; implementation is in SaveLoad.cpp
+    /** @param v
+     * @return bipolar pointer */
     @PortedFrom(file = "dlDag.h", name = "add")
     public int add(DLVertex v) {
         int ret = useDLVCache ? indexes.get(v.getType()).locate(v) : bpINVALID;
@@ -263,6 +294,7 @@ public class DLDag {
         return ret;
     }
 
+    /** @param Options */
     public DLDag(JFactReasonerConfiguration Options) {
         options = Options;
         /** hash-table for verteces (and, all, LE) fast search */
@@ -292,6 +324,7 @@ public class DLDag {
         setExpressionCache(false);
     }
 
+    /** clean query */
     @PortedFrom(file = "dlDag.h", name = "removeQuery")
     public void removeQuery() {
         for (int i = size() - 1; i >= finalDagSize; --i) {
@@ -315,6 +348,8 @@ public class DLDag {
         Helper.resize(heap, finalDagSize);
     }
 
+    /** @param defSat
+     * @param defSub */
     @PortedFrom(file = "dlDag.h", name = "setOrderDefaults")
     public void setOrderDefaults(String defSat, String defSub) {
         assert isCorrectOption(defSat) && isCorrectOption(defSub);
@@ -332,6 +367,7 @@ public class DLDag {
         options.getLog().print(", used=", options.getORSortSub(), "\n");
     }
 
+    /** @param opt */
     @PortedFrom(file = "dlDag.h", name = "setOrderOptions")
     public void setOrderOptions(String opt) {
         if (opt.charAt(0) == '0') {
@@ -493,6 +529,7 @@ public class DLDag {
         computeVertexFreq(createBiPointer(p, pos));
     }
 
+    /** stats collection */
     @PortedFrom(file = "dlDag.h", name = "gatherStatistic")
     public void gatherStatistic() {
         // gather main statistics for disjunctions
@@ -517,6 +554,9 @@ public class DLDag {
         }
     }
 
+    /** @param p1
+     * @param p2
+     * @return true if p1 dlvertex is smaller than p2 dlvertex */
     @PortedFrom(file = "dlDag.h", name = "less")
     public boolean less(int p1, int p2) {
         if (preferNonGen) {
@@ -538,6 +578,8 @@ public class DLDag {
         }
     }
 
+    /** @param o
+     *            debug dag usage */
     @PortedFrom(file = "dlDag.h", name = "PrintDAGUsage")
     public void printDAGUsage(LogAdapter o) {
         // number of no-used DAG entries
@@ -555,7 +597,10 @@ public class DLDag {
         o.printTemplate(Templates.PRINTDAGUSAGE, n, n * 100 / total, total);
     }
 
-    /** build the sort system for given TBox */
+    /** build the sort system for given TBox
+     * 
+     * @param ORM
+     * @param DRM */
     @PortedFrom(file = "dlDag.h", name = "determineSorts")
     public void determineSorts(RoleMaster ORM, RoleMaster DRM) {
         sortArraySize = heap.size();
@@ -664,7 +709,11 @@ public class DLDag {
         }
     }
 
-    /** update sorts for <a,b>:R construction */
+    /** update sorts for <a,b>:R construction
+     * 
+     * @param a
+     * @param R
+     * @param b */
     @PortedFrom(file = "dlDag.h", name = "updateSorts")
     public void updateSorts(int a, Role R, int b) {
         merge(R.getDomainLabel(), a);

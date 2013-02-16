@@ -14,6 +14,7 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** taxonomy vertex */
 @PortedFrom(file = "taxVertex.h", name = "TaxonomyVertex")
 public class TaxonomyVertex {
     // TODO check if they need to be list
@@ -43,14 +44,20 @@ public class TaxonomyVertex {
     /** satisfiability value of a valued vertex */
     @PortedFrom(file = "taxVertex.h", name = "checkValue")
     private boolean checkValue;
+    private TaxonomyVertex v;
 
-    /** mark vertex as the one corresponding to a given ENTRY */
+    /** mark vertex as the one corresponding to a given ENTRY
+     * 
+     * @param entry */
     @PortedFrom(file = "taxVertex.h", name = "setVertexAsHost")
     public void setVertexAsHost(ClassifiableEntry entry) {
         entry.setTaxVertex(this);
     }
 
-    /** set sample to ENTRY */
+    /** set sample to ENTRY
+     * 
+     * @param entry
+     * @param linkBack */
     @PortedFrom(file = "taxVertex.h", name = "setSample")
     public void setSample(ClassifiableEntry entry, boolean linkBack) {
         sample = entry;
@@ -59,34 +66,44 @@ public class TaxonomyVertex {
         }
     }
 
-    /** indirect RW access to Links */
+    /** @param upDirection
+     * @return Links */
     @PortedFrom(file = "taxVertex.h", name = "neigh")
     public List<TaxonomyVertex> neigh(boolean upDirection) {
         return upDirection ? linksParent : linksChild;
     }
 
     // checked part
+    /** @param checkLab
+     * @return true if checked */
     @PortedFrom(file = "taxVertex.h", name = "isChecked")
     public boolean isChecked(long checkLab) {
         return checkLab == checked;
     }
 
+    /** @param checkLab */
     @PortedFrom(file = "taxVertex.h", name = "setChecked")
     public void setChecked(long checkLab) {
         checked = checkLab;
     }
 
     // value part
+    /** @param valueLab
+     * @return true if values */
     @PortedFrom(file = "taxVertex.h", name = "isValued")
     public boolean isValued(long valueLab) {
         return valueLab == isValued;
     }
 
+    /** @return value */
     @PortedFrom(file = "taxVertex.h", name = "getValue")
     public boolean getValue() {
         return checkValue;
     }
 
+    /** @param val
+     * @param valueLab
+     * @return val */
     @PortedFrom(file = "taxVertex.h", name = "setValued")
     public boolean setValued(boolean val, long valueLab) {
         isValued = valueLab;
@@ -95,22 +112,28 @@ public class TaxonomyVertex {
     }
 
     // common part
+    /** @return true if common not 0 */
     @PortedFrom(file = "taxVertex.h", name = "isCommon")
     public boolean isCommon() {
         return common != 0;
     }
 
+    /** increment common */
     @PortedFrom(file = "taxVertex.h", name = "setCommon")
     public void setCommon() {
         ++common;
     }
 
+    /** zero common */
     @PortedFrom(file = "taxVertex.h", name = "clearCommon")
     public void clearCommon() {
         common = 0;
     }
 
-    /** keep COMMON flag iff both flags are set; @return true if it is the case */
+    /** keep COMMON flag iff both flags are set;
+     * 
+     * @param n
+     * @return true if it is the case */
     @PortedFrom(file = "taxVertex.h", name = "correctCommon")
     public boolean correctCommon(int n) {
         if (common == n) {
@@ -129,23 +152,28 @@ public class TaxonomyVertex {
     }
 
     // get info about taxonomy structure
+    /** @return synonyms */
     @PortedFrom(file = "taxVertex.h", name = "begin_syn")
     public Set<ClassifiableEntry> begin_syn() {
         return synonyms;
     }
 
+    @SuppressWarnings("javadoc")
     public TaxonomyVertex() {
         initFlags();
     }
 
-    /** init c'tor; use it only for Top/Bot initialisations */
+    /** init c'tor; use it only for Top/Bot initialisations
+     * 
+     * @param p */
     public TaxonomyVertex(ClassifiableEntry p) {
         initFlags();
         setSample(p, true);
     }
 
-    // / copy c'tor
+    /** @param v */
     public TaxonomyVertex(TaxonomyVertex v) {
+        this.v = v;
         sample = v.sample;
         synonyms = new HashSet<ClassifiableEntry>(v.synonyms);
         checked = v.checked;
@@ -157,11 +185,14 @@ public class TaxonomyVertex {
         linksParent = v.linksParent;
     }
 
+    @Override
     protected Object clone() throws CloneNotSupportedException {
         return new TaxonomyVertex(this);
     }
 
-    /** add P as a synonym to curent vertex */
+    /** add P as a synonym to curent vertex
+     * 
+     * @param p */
     @PortedFrom(file = "taxVertex.h", name = "addSynonym")
     public void addSynonym(ClassifiableEntry p) {
         synonyms.add(p);
@@ -177,12 +208,16 @@ public class TaxonomyVertex {
         initFlags();
     }
 
+    /** @return primer */
     @PortedFrom(file = "taxVertex.h", name = "getPrimer")
     public ClassifiableEntry getPrimer() {
         return sample;
     }
 
-    /** add link in given direction to vertex */
+    /** add link in given direction to vertex
+     * 
+     * @param upDirection
+     * @param p */
     @PortedFrom(file = "taxVertex.h", name = "addNeighbour")
     public void addNeighbour(boolean upDirection, TaxonomyVertex p) {
         if (p == null) {
@@ -191,14 +226,14 @@ public class TaxonomyVertex {
         neigh(upDirection).add(p);
     }
 
-    /** check if vertex has no neighbours in given direction */
+    /** @param upDirection
+     * @return check if vertex has no neighbours in given direction */
     @PortedFrom(file = "taxVertex.h", name = "noNeighbours")
     public boolean noNeighbours(boolean upDirection) {
         return neigh(upDirection).isEmpty();
     }
 
-    /** @return v if node represents a synonym (v=Up[i]==Down[j]); @return null
-     *         otherwise */
+    /** @return v if node represents a synonym (v=Up[i]==Down[j]); null otherwise */
     @PortedFrom(file = "taxVertex.h", name = "getSynonymNode")
     public TaxonomyVertex getSynonymNode() {
         // try to find Vertex such that Vertex\in Up and Vertex\in Down
@@ -212,18 +247,25 @@ public class TaxonomyVertex {
         return null;
     }
 
-    /** remove latest link (usually to the BOTTOM node) */
+    /** remove latest link (usually to the BOTTOM node)
+     * 
+     * @param upDirection */
     @PortedFrom(file = "taxVertex.h", name = "removeLastLink")
     public void removeLastLink(boolean upDirection) {
         Helper.resize(neigh(upDirection), neigh(upDirection).size() - 1);
     }
 
-    /** clear all links in a given direction */
+    /** clear all links in a given direction
+     * 
+     * @param upDirection */
     @PortedFrom(file = "taxVertex.h", name = "clearLinks")
     public void clearLinks(boolean upDirection) {
         neigh(upDirection).clear();
     }
 
+    /** @param upDirection
+     * @param p
+     * @return true if link removed */
     @PortedFrom(file = "taxVertex.h", name = "removeLink")
     public boolean removeLink(boolean upDirection, TaxonomyVertex p) {
         List<TaxonomyVertex> begin = neigh(upDirection);
@@ -237,6 +279,7 @@ public class TaxonomyVertex {
     }
 
     // TODO does not work with synonyms
+    /** @param c */
     @PortedFrom(file = "taxVertex.h", name = "incorporate")
     public void incorporate(JFactReasonerConfiguration c) {
         // setup links
@@ -301,6 +344,7 @@ public class TaxonomyVertex {
         }
     }
 
+    /** @return synonyms debug print */
     @PortedFrom(file = "taxVertex.h", name = "printSynonyms")
     public String printSynonyms() {
         assert sample != null;
@@ -321,6 +365,8 @@ public class TaxonomyVertex {
         return o.toString();
     }
 
+    /** @param upDirection
+     * @return neighbours debug print */
     @PortedFrom(file = "taxVertex.h", name = "printNeighbours")
     public String printNeighbours(boolean upDirection) {
         StringBuilder o = new StringBuilder();

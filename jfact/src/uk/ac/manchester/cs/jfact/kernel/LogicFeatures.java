@@ -14,6 +14,7 @@ import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 import conformance.PortedFrom;
 
+/** logic features */
 @PortedFrom(file = "LogicFeature.h", name = "LogicFeatures")
 public class LogicFeatures {
     /** all flags in one long */
@@ -35,17 +36,22 @@ public class LogicFeatures {
     /** default c'tor */
     public LogicFeatures() {}
 
-    /** copy c'tor */
+    /** copy c'tor
+     * 
+     * @param lf */
     public LogicFeatures(LogicFeatures lf) {
         flags.or(lf.flags);
     }
 
-    /** operator add */
+    /** operator add
+     * 
+     * @param lf */
     @PortedFrom(file = "LogicFeature.h", name = "or")
     public void or(LogicFeatures lf) {
         flags.or(lf.flags);
     }
 
+    /** @return true if there are inverse roles */
     @PortedFrom(file = "LogicFeature.h", name = "hasInverseRole")
     public boolean hasInverseRole() {
         return getX(lfBothRoles);
@@ -61,43 +67,50 @@ public class LogicFeatures {
         return getX(lfTransitiveRoles);
     }
 
+    /** @return true if some or all restrictions are present */
     @PortedFrom(file = "LogicFeature.h", name = "hasSomeAll")
     public boolean hasSomeAll() {
         return getX(lfSomeConstructor);
     }
 
+    /** @return true if there are functional restrictions */
     @PortedFrom(file = "LogicFeature.h", name = "hasFunctionalRestriction")
     public boolean hasFunctionalRestriction() {
         return getX(lfFConstructor) || getX(lfFunctionalRoles);
     }
 
+    /** @return true if there are number restrictions */
     @PortedFrom(file = "LogicFeature.h", name = "hasNumberRestriction")
     public boolean hasNumberRestriction() {
         return getX(lfNConstructor);
     }
 
+    /** @return true if there are qualified number restrictions */
     @PortedFrom(file = "LogicFeature.h", name = "hasQNumberRestriction")
     public boolean hasQNumberRestriction() {
         return getX(lfQConstructor);
     }
 
+    /** @return true if there are singletons */
     @PortedFrom(file = "LogicFeature.h", name = "hasSingletons")
     public boolean hasSingletons() {
         return getX(lfSingleton);
     }
 
+    /** @return true if there are self references */
     @PortedFrom(file = "LogicFeature.h", name = "hasSelfRef")
     public boolean hasSelfRef() {
         return getX(lfSelfRef);
     }
 
+    /** @return true if there is a top role */
     @PortedFrom(file = "LogicFeature.h", name = "hasTopRole")
     public boolean hasTopRole() {
         return getX(lfTopRole);
     }
 
     // overall state
-    /** check whether no flags are set */
+    /** @return whether no flags are set */
     @PortedFrom(file = "LogicFeature.h", name = "empty")
     public boolean isEmpty() {
         return flags.isEmpty();
@@ -117,6 +130,9 @@ public class LogicFeatures {
         setX(lfBothRoles);
     }
 
+    /** @param f1
+     * @param f2
+     * @return combination of the two objects */
     @PortedFrom(file = "LogicFeature.h", name = "+")
     public static LogicFeatures plus(LogicFeatures f1, LogicFeatures f2) {
         LogicFeatures f = new LogicFeatures(f1);
@@ -124,6 +140,7 @@ public class LogicFeatures {
         return f;
     }
 
+    /** @param p */
     @PortedFrom(file = "LogicFeature.h", name = "fillConceptData")
     public void fillConceptData(Concept p) {
         if (p.isSingleton()) {
@@ -131,6 +148,8 @@ public class LogicFeatures {
         }
     }
 
+    /** @param p
+     * @param both */
     @PortedFrom(file = "LogicFeature.h", name = "fillRoleData")
     public void fillRoleData(Role p, boolean both) {
         if (p.isTop()) {
@@ -161,6 +180,8 @@ public class LogicFeatures {
         }
     }
 
+    /** @param v
+     * @param pos */
     @PortedFrom(file = "LogicFeature.h", name = "fillDAGData")
     public void fillDAGData(DLVertex v, boolean pos) {
         switch (v.getType()) {
@@ -185,6 +206,7 @@ public class LogicFeatures {
         }
     }
 
+    /** @param l */
     @PortedFrom(file = "LogicFeature.h", name = "writeState")
     public void writeState(LogAdapter l) {
         String NO = "NO ";

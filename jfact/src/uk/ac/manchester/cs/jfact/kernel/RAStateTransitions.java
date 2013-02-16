@@ -36,17 +36,20 @@ public class RAStateTransitions {
     @PortedFrom(file = "RAutomaton.h", name = "TopTransition")
     boolean TopTransition;
 
-    /** RW begin */
+    /** @return begin */
     @PortedFrom(file = "RAutomaton.h", name = "begin")
     public List<RATransition> begin() {
         return base;
     }
 
+    @SuppressWarnings("javadoc")
     public RAStateTransitions() {
         emptyTransition = false;
     }
 
-    /** add a transition from a given state */
+    /** add a transition from a given state
+     * 
+     * @param trans */
     @PortedFrom(file = "RAutomaton.h", name = "add")
     public void add(RATransition trans) {
         base.add(trans);
@@ -77,7 +80,9 @@ public class RAStateTransitions {
         return emptyTransition;
     }
 
-    /** print all the transitions starting from the state FROM */
+    /** print all the transitions starting from the state FROM
+     * 
+     * @param o */
     @PortedFrom(file = "RAutomaton.h", name = "print")
     public void print(LogAdapter o) {
         for (int i = 0; i < size; i++) {
@@ -85,7 +90,11 @@ public class RAStateTransitions {
         }
     }
 
-    /** set up state transitions: no more additions to the structure */
+    /** set up state transitions: no more additions to the structure
+     * 
+     * @param state
+     * @param nRoles
+     * @param data */
     @PortedFrom(file = "RAutomaton.h", name = "setup")
     public void setup(int state, int nRoles, boolean data) {
         from = state;
@@ -99,7 +108,10 @@ public class RAStateTransitions {
     }
 
     /** add information from TRANS to existing transition between the same
-     * states. @return false if no such transition found */
+     * states.
+     * 
+     * @param trans
+     * @return false if no such transition found */
     @PortedFrom(file = "RAutomaton.h", name = "addToExisting")
     public boolean addToExisting(RATransition trans) {
         int to = trans.final_state();
@@ -117,6 +129,8 @@ public class RAStateTransitions {
         return false;
     }
 
+    /** @param R
+     * @return true if R is an applicable data role */
     @PortedFrom(file = "RAutomaton.h", name = "recognise")
     public boolean recognise(Role R) {
         if (R == null) {

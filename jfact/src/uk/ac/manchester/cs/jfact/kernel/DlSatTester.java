@@ -29,6 +29,7 @@ import uk.ac.manchester.cs.jfact.split.TSplitRules.TSplitRule;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** sat tester */
 @PortedFrom(file = "Reasoner.h", name = "DlSatTester")
 public class DlSatTester {
     private class LocalFastSet implements FastSet {
@@ -622,7 +623,7 @@ public class DlSatTester {
     }
 
     // -- internal nominal reasoning interface
-    /** check whether reasoning with nominals is performed */
+    /** @return check whether reasoning with nominals is performed */
     @PortedFrom(file = "Reasoner.h", name = "hasNominals")
     public boolean hasNominals() {
         return false;
@@ -922,7 +923,10 @@ public class DlSatTester {
         this.setClashSet(getBranchDep());
     }
 
-    /** re-apply all the relevant expantion rules to a given unblocked NODE */
+    /** re-apply all the relevant expantion rules to a given unblocked NODE
+     * 
+     * @param node
+     * @param direct */
     @PortedFrom(file = "Reasoner.h", name = "repeatUnblockedNode")
     public void repeatUnblockedNode(DlCompletionTree node, boolean direct) {
         if (direct) {
@@ -933,14 +937,13 @@ public class DlSatTester {
         }
     }
 
-    /** get access to the DAG associated with it (necessary for the blocking
-     * support) */
+    /** @return DAG associated with it (necessary for the blocking support) */
     @PortedFrom(file = "Reasoner.h", name = "getDAG")
     public DLDag getDAG() {
         return tBox.getDLHeap();
     }
 
-    /** get the ROOT node of the completion graph */
+    /** @return the ROOT node of the completion graph */
     @PortedFrom(file = "Reasoner.h", name = "getRootNode")
     public DlCompletionTree getRootNode() {
         return cGraph.getRoot();
@@ -955,13 +958,17 @@ public class DlSatTester {
         TODO.initPriorities(iaoeflg);
     }
 
-    /** set blocking method for a session */
+    /** set blocking method for a session
+     * 
+     * @param hasInverse
+     * @param hasQCR */
     @PortedFrom(file = "Reasoner.h", name = "setBlockingMethod")
     public void setBlockingMethod(boolean hasInverse, boolean hasQCR) {
         cGraph.setBlockingMethod(hasInverse, hasQCR);
     }
 
-    /** create model cache for the just-classified entry */
+    /** @param sat
+     * @return create model cache for the just-classified entry */
     @PortedFrom(file = "Reasoner.h", name = "buildCacheByCGraph")
     public ModelCacheInterface buildCacheByCGraph(boolean sat) {
         if (sat) {
@@ -972,6 +979,7 @@ public class DlSatTester {
         }
     }
 
+    /** @param o */
     @PortedFrom(file = "Reasoner.h", name = "writeTotalStatistic")
     public void writeTotalStatistic(LogAdapter o) {
         if (options.isUSE_REASONING_STATISTICS()) {
@@ -982,6 +990,9 @@ public class DlSatTester {
         o.print("\n");
     }
 
+    /** @param p
+     * @param f
+     * @return new cache */
     @PortedFrom(file = "Reasoner.h", name = "createCache")
     public ModelCacheInterface createCache(int p, FastSet f) {
         assert Helper.isValid(p);
@@ -1127,6 +1138,9 @@ public class DlSatTester {
         return false;
     }
 
+    /** @param p
+     * @param q
+     * @return true if satisfiable */
     @PortedFrom(file = "Reasoner.h", name = "runSat")
     public boolean runSat(int p, int q) {
         prepareReasoner();
@@ -1144,6 +1158,9 @@ public class DlSatTester {
         return result;
     }
 
+    /** @param R
+     * @param S
+     * @return true if not satisfiable */
     @PortedFrom(file = "Reasoner.h", name = "checkDisjointRoles")
     public boolean checkDisjointRoles(Role R, Role S) {
         prepareReasoner();
@@ -1169,6 +1186,8 @@ public class DlSatTester {
         return !this.runSat();
     }
 
+    /** @param R
+     * @return true if not satisfiable */
     @PortedFrom(file = "Reasoner.h", name = "checkIrreflexivity")
     public boolean checkIrreflexivity(Role R) {
         prepareReasoner();
@@ -1289,6 +1308,7 @@ public class DlSatTester {
         resetSessionFlags();
     }
 
+    /** @return configuration options */
     @Original
     public JFactReasonerConfiguration getOptions() {
         return options;
@@ -1309,15 +1329,19 @@ public class DlSatTester {
     }
 
     /** try to add a concept to a label given by TAG; ~C can't appear in the
-     * label */
+     * label
+     * 
+     * @param label
+     * @param p
+     * @return true if label contains p */
     @PortedFrom(file = "Reasoner.h", name = "findConcept")
-    public boolean findConcept(CWDArray lab, int p) {
+    public boolean findConcept(CWDArray label, int p) {
         assert Helper.isCorrect(p); // sanity checking
         // constants are not allowed here
         assert p != Helper.bpTOP;
         assert p != Helper.bpBOTTOM;
         stats.getnLookups().inc();
-        return lab.contains(p);
+        return label.contains(p);
     }
 
     @PortedFrom(file = "Reasoner.h", name = "checkAddedConcept")
@@ -1650,7 +1674,9 @@ public class DlSatTester {
     }
 
     /** perform all the actions that should be done once, after all normal rules
-     * are not applicable. @return true if the concept is unsat */
+     * are not applicable.
+     * 
+     * @return true if the concept is unsat */
     @PortedFrom(file = "Reasoner.h", name = "performAfterReasoning")
     boolean performAfterReasoning() {
         // make sure all blocked nodes are still blocked
@@ -1699,9 +1725,11 @@ public class DlSatTester {
 
     // split code implementation
 
-    /** apply split rule RULE to a reasoner. @return true if clash was found */
+    /** apply split rule RULE to a reasoner.
+     * 
+     * @return true if clash was found */
     @PortedFrom(file = "Reasoner.h", name = "applySplitRule")
-    boolean applySplitRule(TSplitRule rule) {
+    private boolean applySplitRule(TSplitRule rule) {
         DepSet dep = rule.fireDep(SessionSignature, SessionSigDepSet);
         int bp = rule.bp() - 1;
         // p.bp points to Choose(C) node, p.bp-1 -- to the split node
@@ -1716,10 +1744,11 @@ public class DlSatTester {
         return false;
     }
 
-    /** check whether any split rules should be run and do it. @return true iff
-     * clash was found */
+    /** check whether any split rules should be run and do it.
+     * 
+     * @return true iff clash was found */
     @PortedFrom(file = "Reasoner.h", name = "checkSplitRules")
-    boolean checkSplitRules() {
+    private boolean checkSplitRules() {
         if (splitRuleLevel == 0)
         {
             // 1st application OR return was made before previous set
@@ -1840,6 +1869,8 @@ public class DlSatTester {
         }
     }
 
+    /** @param o
+     * @return reasoning time */
     @PortedFrom(file = "Reasoner.h", name = "printReasoningTime")
     public float printReasoningTime(LogAdapter o) {
         o.print("\n     SAT takes ", satTimer, " seconds\n     SUB takes ", subTimer,
@@ -2540,6 +2571,10 @@ public class DlSatTester {
         }
     }
 
+    /** @param pA
+     * @param dep
+     * @param flags
+     * @return false if all done */
     @PortedFrom(file = "Reasoner.h", name = "setupEdge")
     public boolean setupEdge(DlCompletionTreeArc pA, DepSet dep, int flags) {
         DlCompletionTree child = pA.getArcEnd();
@@ -3335,7 +3370,7 @@ public class DlSatTester {
 
     /** apply choose-rule for all vertices (necessary for Top role in QCR) */
     @PortedFrom(file = "Reasoner.h", name = "applyChooseRuleGlobally")
-    boolean applyChooseRuleGlobally(int C) {
+    private boolean applyChooseRuleGlobally(int C) {
         int i = 0;
         DlCompletionTree p = cGraph.getNode(i++);
         while (p != null) {

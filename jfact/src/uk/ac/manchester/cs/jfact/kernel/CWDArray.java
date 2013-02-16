@@ -15,6 +15,7 @@ import uk.ac.manchester.cs.jfact.helpers.Helper;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** List of concepts with dependencies */
 @PortedFrom(file = "CWDArray.h", name = "CWDArray")
 public class CWDArray {
     @Original
@@ -43,11 +44,13 @@ public class CWDArray {
         size = 0;
     }
 
+    /** @return list of concepts */
     @PortedFrom(file = "CWDArray.h", name = "begin")
     public List<ConceptWDep> getBase() {
         return base;
     }
 
+    /** @return contained concept map */
     @Original
     public ArrayIntMap getContainedConcepts() {
         return indexes;
@@ -70,7 +73,8 @@ public class CWDArray {
         createCache = size > cacheLimit && (double) size / (span + 1) > distribution;
     }
 
-    /** check whether label contains BP (ignoring dep-set) */
+    /** @param bp
+     * @return true if label contains BP (ignoring dep-set) */
     @PortedFrom(file = "CWDArray.h", name = "contains")
     public boolean contains(int bp) {
         if (cache == null && createCache) {
@@ -92,10 +96,12 @@ public class CWDArray {
     }
 
     @Original
-    int asPositive(int p) {
+    private int asPositive(int p) {
         return p >= 0 ? 2 * p : 1 - 2 * p;
     }
 
+    /** @param bp
+     * @return index of given bp */
     @PortedFrom(file = "CWDArray.h", name = "index")
     public int index(int bp) {
         // check that the index actually exist: quicker
@@ -105,6 +111,8 @@ public class CWDArray {
         return indexes.get(bp);
     }
 
+    /** @param bp
+     * @return depset for given bp */
     @PortedFrom(file = "CWDArray.h", name = "get")
     public DepSet get(int bp) {
         // check that the index actually exist: quicker
@@ -118,6 +126,8 @@ public class CWDArray {
         return base.get(i).getDep();
     }
 
+    /** @param bp
+     * @return concept with given bp */
     @Original
     public ConceptWDep getConceptWithBP(int bp) {
         // check that the index actually exist: quicker
@@ -131,11 +141,14 @@ public class CWDArray {
         return base.get(i);
     }
 
+    /** @return size of list */
     @PortedFrom(file = "CWDArray.h", name = "size")
     public int size() {
         return size;
     }
 
+    /** @param label
+     * @return true if this list is lesser or equal label */
     @PortedFrom(file = "CWDArray.h", name = "<=")
     public boolean lesserequal(CWDArray label) {
         // use the cache on the label if there is one
@@ -171,12 +184,17 @@ public class CWDArray {
         return false;
     }
 
-    /** save label using given SS */
+    /** save label using given SS
+     * 
+     * @return save level */
     @PortedFrom(file = "CWDArray.h", name = "save")
     public int save() {
         return size;
     }
 
+    /** @param index
+     * @param dep
+     * @return restorer for saved dep set */
     @PortedFrom(file = "CWDArray.h", name = "updateDepSet")
     public Restorer updateDepSet(int index, DepSet dep) {
         if (dep.isEmpty()) {
@@ -187,6 +205,8 @@ public class CWDArray {
         return ret;
     }
 
+    /** @param dep
+     * @return restorer for saved dep set */
     @PortedFrom(file = "CWDArray.h", name = "updateDepSet")
     public List<Restorer> updateDepSet(DepSet dep) {
         if (dep.isEmpty()) {
@@ -201,6 +221,8 @@ public class CWDArray {
         return toReturn;
     }
 
+    /** @param ss
+     * @param level */
     @PortedFrom(file = "CWDArray.h", name = "restore")
     public void restore(int ss, int level) {
         for (int i = ss; i < size; i++) {

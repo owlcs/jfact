@@ -10,6 +10,7 @@ import java.util.*;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** classifiable entry */
 @PortedFrom(file = "taxNamEntry.h", name = "ClassifiableEntry")
 public class ClassifiableEntry extends NamedEntry {
     /** link to taxonomy entry for current entry */
@@ -33,19 +34,21 @@ public class ClassifiableEntry extends NamedEntry {
         index = 0;
     }
 
-    /** is current entry classified */
+    /** @return is current entry classified */
     @PortedFrom(file = "taxNamEntry.h", name = "isClassified")
     public boolean isClassified() {
         return taxVertex != null;
     }
 
-    /** set up given entry */
+    /** set up given entry
+     * 
+     * @param vertex */
     @PortedFrom(file = "taxNamEntry.h", name = "setTaxVertex")
     public void setTaxVertex(TaxonomyVertex vertex) {
         taxVertex = vertex;
     }
 
-    /** get taxonomy vertex of the entry */
+    /** @return taxonomy vertex of the entry */
     @PortedFrom(file = "taxNamEntry.h", name = "getTaxVertex")
     public TaxonomyVertex getTaxVertex() {
         return taxVertex;
@@ -55,17 +58,13 @@ public class ClassifiableEntry extends NamedEntry {
     private boolean completelyDefined;
 
     // completely defined interface
-    /** a Completely Defined flag */
+    /** @return a Completely Defined flag */
     @Original
     public boolean isCompletelyDefined() {
         return completelyDefined;
     }
 
-    @Original
-    public void clearCompletelyDefined() {
-        completelyDefined = false;
-    }
-
+    /** @param action */
     @Original
     public void setCompletelyDefined(boolean action) {
         completelyDefined = action;
@@ -74,46 +73,41 @@ public class ClassifiableEntry extends NamedEntry {
     @Original
     private boolean nonClassifiable;
 
-    /** a non-classifiable flag */
+    /** @return non classifiable? */
     @Original
     public boolean isNonClassifiable() {
         return nonClassifiable;
     }
 
-    @Original
-    public void setNonClassifiable() {
-        nonClassifiable = true;
-    }
-
-    @Original
-    public void clearNonClassifiable() {
-        nonClassifiable = false;
-    }
-
+    /** @param action */
     @Original
     public void setNonClassifiable(boolean action) {
         nonClassifiable = action;
     }
 
-    /** told subsumers */
+    /** @return told subsumers */
     @PortedFrom(file = "taxNamEntry.h", name = "told_begin")
     public Collection<ClassifiableEntry> getToldSubsumers() {
         return toldSubsumers;
     }
 
-    /** check whether entry ihas any TS */
+    /** @return whether entry ihas any TS */
     @PortedFrom(file = "taxNamEntry.h", name = "hasToldSubsumers")
     public boolean hasToldSubsumers() {
         return !toldSubsumers.isEmpty();
     }
 
-    /** add told subsumer of entry (duplications possible) */
+    /** add told subsumer of entry (duplications possible)
+     * 
+     * @param parent */
     @PortedFrom(file = "taxNamEntry.h", name = "addParent")
     public void addParent(ClassifiableEntry parent) {
         toldSubsumers.add(parent);
     }
 
-    /** add all parents (with duplicates) from the range to current node */
+    /** add all parents (with duplicates) from the range to current node
+     * 
+     * @param entries */
     @PortedFrom(file = "taxNamEntry.h", name = "addParents")
     public void addParents(Collection<ClassifiableEntry> entries) {
         for (ClassifiableEntry c : entries) {
@@ -122,7 +116,7 @@ public class ClassifiableEntry extends NamedEntry {
     }
 
     // index interface
-    /** get the index value */
+    // /** get the index value */
     @Override
     @PortedFrom(file = "taxNamEntry.h", name = "getIndex")
     public int getIndex() {
@@ -137,13 +131,13 @@ public class ClassifiableEntry extends NamedEntry {
     }
 
     // synonym interface
-    /** check if current entry is a synonym */
+    /** @return if current entry is a synonym */
     @PortedFrom(file = "taxNamEntry.h", name = "isSynonym")
     public boolean isSynonym() {
         return pSynonym != null;
     }
 
-    /** get synonym of current entry */
+    /** @return synonym of current entry */
     @PortedFrom(file = "taxNamEntry.h", name = "getSynonym")
     public ClassifiableEntry getSynonym() {
         return pSynonym;
@@ -158,7 +152,9 @@ public class ClassifiableEntry extends NamedEntry {
         }
     }
 
-    /** add entry's synonym */
+    /** add entry's synonym
+     * 
+     * @param syn */
     @PortedFrom(file = "taxNamEntry.h", name = "setSynonym")
     public void setSynonym(ClassifiableEntry syn) {
         // do it only once
@@ -190,11 +186,14 @@ public class ClassifiableEntry extends NamedEntry {
         toldSubsumers.removeAll(toRemove);
     }
 
+    /** @param p
+     * @return resolved synonym */
     @PortedFrom(file = "taxNamEntry.h", name = "resolveSynonym")
     public static <T extends ClassifiableEntry> T resolveSynonym(T p) {
         return p == null ? null : p.isSynonym() ? resolveSynonym((T) p.pSynonym) : p;
     }
 
+    /** @param parent */
     @PortedFrom(file = "taxNamEntry.h", name = "addParentIfNew")
     public void addParentIfNew(ClassifiableEntry parent) {
         // resolve synonyms

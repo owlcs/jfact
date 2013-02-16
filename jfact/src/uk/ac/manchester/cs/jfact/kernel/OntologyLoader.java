@@ -18,14 +18,16 @@ import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
+import uk.ac.manchester.cs.jfact.split.SplitVarEntry;
 import uk.ac.manchester.cs.jfact.split.TSplitVar;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import conformance.PortedFrom;
 
+/** ontology loader */
 @PortedFrom(file = "tOntologyLoader.h", name = "TOntologyLoader")
 public class OntologyLoader implements DLAxiomVisitor {
     /** KB to load the ontology */
@@ -45,7 +47,9 @@ public class OntologyLoader implements DLAxiomVisitor {
         }
     }
 
-    /** get an individual be the DLTree; throw exception if unable */
+    /** @param I
+     * @param reason
+     * @return an individual be the DLTree; throw exception if unable */
     @PortedFrom(file = "tOntologyLoader.h", name = "getIndividual")
     public Individual getIndividual(IndividualExpression I, String reason) {
         DLTree i = I.accept(expressionTranslator);
@@ -56,7 +60,9 @@ public class OntologyLoader implements DLAxiomVisitor {
     }
 
     /** ensure that the expression EXPR has its named entities linked to the KB
-     * ones */
+     * ones
+     * 
+     * @param Expr */
     @PortedFrom(file = "tOntologyLoader.h", name = "ensureNames")
     public void ensureNames(Expression Expr) {
         assert Expr != null; // temporarily
@@ -75,9 +81,9 @@ public class OntologyLoader implements DLAxiomVisitor {
 
     @PortedFrom(file = "tOntologyLoader.h", name = "fillSplit")
     void fillSplit(TSplitVar sv) {
-        sv.C = tbox.getConcept(sv.oldName.getName());
-        sv.C.setNonClassifiable();
-        for (TSplitVar.Entry p : sv.getEntries()) {
+        sv.setC(tbox.getConcept(sv.getOldName().getName()));
+        sv.getC().setNonClassifiable(true);
+        for (SplitVarEntry p : sv.getEntries()) {
             Concept C = tbox.getConcept(p.name.getName());
             C.setSystem();
             p.concept = C;
@@ -128,8 +134,8 @@ public class OntologyLoader implements DLAxiomVisitor {
         tbox.processDisjointC(prepareArgList(axiom.getArguments()));
         // now define C as a union-of axiom
         List<DLTree> ArgList = new ArrayList<DLTree>();
-        ensureNames(axiom.getC());
-        ArgList.add(axiom.getC().accept(expressionTranslator));
+        ensureNames(axiom.getConcept());
+        ArgList.add(axiom.getConcept().accept(expressionTranslator));
         List<DLTree> list = new ArrayList<DLTree>();
         for (Expression p : axiom.getArguments()) {
             list.add(p.accept(expressionTranslator));
@@ -248,7 +254,7 @@ public class OntologyLoader implements DLAxiomVisitor {
         Role role = getRole(axiom.getRole(),
                 "Role expression expected in Role Transitivity axiom");
         if (!role.isTop() && !role.isBottom()) {
-            role.setTransitive();
+            role.setTransitive(true);
         }
     }
 
@@ -451,6 +457,7 @@ public class OntologyLoader implements DLAxiomVisitor {
         }
     }
 
+    /** @param KB */
     public OntologyLoader(TBox KB) {
         tbox = KB;
         expressionTranslator = new ExpressionTranslator(KB);
@@ -460,15 +467,15 @@ public class OntologyLoader implements DLAxiomVisitor {
     @Override
     @PortedFrom(file = "tOntologyLoader.h", name = "visitOntology")
     public void visitOntology(Ontology ontology) {
-        for (Axiom p : ontology.getAxioms()) {
+        for (AxiomInterface p : ontology.getAxioms()) {
             if (p.isUsed()) {
                 p.accept(this);
             }
         }
-        for (TSplitVar q : ontology.Splits.getEntries()) {
+        for (TSplitVar q : ontology.getSplits().getEntries()) {
             fillSplit(q);
         }
-        tbox.getTaxonomy().setSplitVars(ontology.Splits);
+        tbox.getTaxonomy().setSplitVars(ontology.getSplits());
         tbox.finishLoading();
     }
 }

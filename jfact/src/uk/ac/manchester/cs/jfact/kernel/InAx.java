@@ -11,6 +11,7 @@ import java.util.Map;
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import conformance.PortedFrom;
 
+/** DLTREE utils */
 @PortedFrom(file = "tAxiom.h", name = "InAx")
 public class InAx {
     /** build an RW concept from a given [C|I]NAME-rooted DLTree */

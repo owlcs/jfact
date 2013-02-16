@@ -14,10 +14,12 @@ import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.Concept.CTTag;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState;
+import uk.ac.manchester.cs.jfact.split.SplitVarEntry;
 import uk.ac.manchester.cs.jfact.split.TSplitVar;
 import uk.ac.manchester.cs.jfact.split.TSplitVars;
 import conformance.PortedFrom;
 
+/** Concept taxonomy */
 @PortedFrom(file = "DLConceptTaxonomy.h", name = "DLConceptTaxonomy")
 public class DLConceptTaxonomy extends Taxonomy {
     /** all the derived subsumers of a class (came from the model) */
@@ -25,7 +27,10 @@ public class DLConceptTaxonomy extends Taxonomy {
         /** set of sure- and possible subsumers */
         protected List<ClassifiableEntry> Sure, Possible;
 
-        /** c'tor: copy given sets */
+        /** c'tor: copy given sets
+         * 
+         * @param sure
+         * @param possible */
         public DerivedSubsumers(List<ClassifiableEntry> sure,
                 List<ClassifiableEntry> possible) {
             Sure = new ArrayList<ClassifiableEntry>(sure);
@@ -154,7 +159,11 @@ public class DLConceptTaxonomy extends Taxonomy {
         return true;
     }
 
-    /** the only c'tor */
+    /** the only c'tor
+     * 
+     * @param pTop
+     * @param pBottom
+     * @param kb */
     public DLConceptTaxonomy(Concept pTop, Concept pBottom, TBox kb) {
         super(pTop, pBottom, kb.getOptions());
         tBox = kb;
@@ -195,7 +204,9 @@ public class DLConceptTaxonomy extends Taxonomy {
         return Splits;
     }
 
-    /** set bottom-up flag */
+    /** set bottom-up flag
+     * 
+     * @param GCIs */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "setBottomUp")
     public void setBottomUp(KBFlags GCIs) {
         flagNeedBottomUp = GCIs.isGCI() || GCIs.isReflexive() && GCIs.isRnD();
@@ -525,12 +536,12 @@ public class DLConceptTaxonomy extends Taxonomy {
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "mergeSplitVars")
     void mergeSplitVars(TSplitVar split) {
         Set<TaxonomyVertex> splitVertices = new HashSet<TaxonomyVertex>();
-        TaxonomyVertex v = split.C.getTaxVertex();
+        TaxonomyVertex v = split.getC().getTaxVertex();
         boolean cIn = v != null;
         if (v != null) {
             splitVertices.add(v);
         }
-        for (TSplitVar.Entry q : split.getEntries()) {
+        for (SplitVarEntry q : split.getEntries()) {
             splitVertices.add(q.concept.getTaxVertex());
         }
         // set V to be a node-to-add
@@ -540,11 +551,11 @@ public class DLConceptTaxonomy extends Taxonomy {
         } else if (splitVertices.contains(getTopVertex())) {
             v = getTopVertex();
         } else {
-            setCurrentEntry(split.C);
+            setCurrentEntry(split.getC());
             v = current;
         }
         if (!v.equals(current) && !cIn) {
-            v.addSynonym(split.C);
+            v.addSynonym(split.getC());
         }
         for (TaxonomyVertex p : splitVertices) {
             mergeVertex(v, p, splitVertices);

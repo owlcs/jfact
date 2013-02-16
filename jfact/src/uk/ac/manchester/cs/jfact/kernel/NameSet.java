@@ -9,18 +9,24 @@ import java.util.HashMap;
 
 import conformance.PortedFrom;
 
+/** name set
+ * 
+ * @param <T> */
 @PortedFrom(file = "tNameSet.h", name = "TNameSet")
 public class NameSet<T> extends HashMap<String, T> {
     /** creator of new name */
     @PortedFrom(file = "tNameSet.h", name = "Creator")
     private NameCreator<T> creator;
 
+    /** @param p */
     public NameSet(NameCreator<T> p) {
         creator = p;
     }
 
-    /** unconditionally add new element with name ID to the set; return new
-     * element */
+    /** unconditionally add new element with name ID to the set;
+     * 
+     * @param id
+     * @return new element */
     @PortedFrom(file = "tNameSet.h", name = "add")
     public T add(String id) {
         T pne = creator.makeEntry(id);
@@ -28,8 +34,10 @@ public class NameSet<T> extends HashMap<String, T> {
         return pne;
     }
 
-    /** Insert id to a nameset (if necessary); @return pointer to id structure
-     * created by external creator */
+    /** Insert id to a nameset (if necessary);
+     * 
+     * @param id
+     * @return pointer to id structure created by external creator */
     @PortedFrom(file = "tNameSet.h", name = "insert")
     public T insert(String id) {
         T pne = get(id);

@@ -45,7 +45,10 @@ class DumpInterface {
     @PortedFrom(file = "dumpInterface.h", name = "startOp")
     public void startOp(DIOp Op) {}
 
-    /** start operation >=/<= with number */
+    /** start operation >=/<= with number
+     * 
+     * @param Op
+     * @param n */
     @SuppressWarnings("unused")
     @PortedFrom(file = "dumpInterface.h", name = "startOp")
     public void startOp(DIOp Op, int n) {}
@@ -70,18 +73,24 @@ class DumpInterface {
     @PortedFrom(file = "dumpInterface.h", name = "finishAx")
     public void finishAx(DIOp Ax) {}
 
-    /** obtain name by the named entry */
+    /** obtain name by the named entry
+     * 
+     * @param p */
     @PortedFrom(file = "dumpInterface.h", name = "dumpName")
     public void dumpName(NamedEntry p) {
         o.print(p.getName());
     }
 
-    /** dump concept atom (as used in expression) */
+    /** dump concept atom (as used in expression)
+     * 
+     * @param p */
     @SuppressWarnings("unused")
     @PortedFrom(file = "dumpInterface.h", name = "dumpConcept")
     public void dumpConcept(Concept p) {}
 
-    /** dump role atom (as used in expression) */
+    /** dump role atom (as used in expression)
+     * 
+     * @param p */
     @SuppressWarnings("unused")
     @PortedFrom(file = "dumpInterface.h", name = "dumpRole")
     public void dumpRole(Role p) {}

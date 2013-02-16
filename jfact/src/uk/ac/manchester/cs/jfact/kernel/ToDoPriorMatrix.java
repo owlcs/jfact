@@ -34,7 +34,10 @@ class ToDoPriorMatrix {
     @PortedFrom(file = "PriorityMatrix.h", name = "iNN")
     protected static final int priorityIndexNominalNode = nRegularOptions + 2;
 
-    /** Auxiliary class to get priorities on operations */
+    /** Auxiliary class to get priorities on operations
+     * 
+     * @param options
+     * @param optionName */
     @PortedFrom(file = "PriorityMatrix.h", name = "initPriorities")
     public void initPriorities(String options, String optionName) {
         // check for correctness
