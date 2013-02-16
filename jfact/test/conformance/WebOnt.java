@@ -3444,8 +3444,7 @@ public class WebOnt {
     }
 
     @Test
-    public void testWebOnt_description_logic_602() throws OWLOntologyCreationException,
-            OWLOntologyStorageException {
+    public void testWebOnt_description_logic_602() throws OWLOntologyCreationException {
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLDataFactory f = m.getOWLDataFactory();
         OWLOntology o = m.createOntology();
@@ -6154,8 +6153,7 @@ public class WebOnt {
     }
 
     @Test
-    public void testWebOnt_imports_011() throws OWLOntologyStorageException,
-            OWLOntologyCreationException {
+    public void testWebOnt_imports_011() {
         String premise = "<rdf:RDF "
                 + "xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' "
                 + "xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#' "

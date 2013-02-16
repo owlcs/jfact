@@ -1,15 +1,12 @@
 package conformance;
 
 import org.junit.Test;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 
 
 @SuppressWarnings("javadoc")
 public class WebOnt_miscellaneous_wine {
     @Test
-    public void testWebOnt_miscellaneous_001() throws OWLOntologyStorageException,
-            OWLOntologyCreationException {
+    public void testWebOnt_miscellaneous_001() {
         // XXX invalid OWL 2
         String premise1 = "<!DOCTYPE owl [ "
                 + "<!ENTITY vin  \"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#\" > "

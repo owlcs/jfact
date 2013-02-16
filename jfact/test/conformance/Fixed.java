@@ -123,8 +123,7 @@ public class Fixed {
     }
 
     @Test
-    public void testReasoner6() throws OWLOntologyCreationException,
-            OWLOntologyStorageException {
+    public void testReasoner6() throws OWLOntologyCreationException {
         OWLOntologyManager mngr = OWLManager.createOWLOntologyManager();
         OWLOntology ont = mngr.createOntology();
         OWLReasonerFactory fac = Factory.factory();
@@ -1566,7 +1565,7 @@ public class Fixed {
 
     @Test
     public void testContradicting_dateTime_restrictions_programmatic()
-            throws OWLOntologyStorageException, OWLOntologyCreationException {
+            throws OWLOntologyCreationException {
         Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
         OWLClass A = Class(IRI("http://example.org/A"));
         OWLNamedIndividual a = NamedIndividual(IRI("http://example.org/a"));
@@ -1589,7 +1588,7 @@ public class Fixed {
     }
 
     @Test
-    public void testContradicting_int_restrictions() throws OWLOntologyStorageException,
+    public void testContradicting_int_restrictions() throws
             OWLOntologyCreationException {
         Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
         OWLClass A = Class(IRI("http://example.org/A"));
@@ -1613,8 +1612,7 @@ public class Fixed {
     }
 
     @Test
-    public void testContradicting_dateTime_restrictions()
-            throws OWLOntologyStorageException, OWLOntologyCreationException {
+    public void testContradicting_dateTime_restrictions() {
         String premise = "Prefix(:=<http://example.org/>)\n"
                 + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
                 + "Ontology(\n"

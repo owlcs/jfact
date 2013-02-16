@@ -1,6 +1,13 @@
 package conformance;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.io.StringDocumentSource;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
+
+import uk.ac.manchester.cs.jfact.JFactFactory;
 
 @SuppressWarnings("javadoc")
 public class WebOnt_miscellaneous_002 {
@@ -14,6 +21,19 @@ public class WebOnt_miscellaneous_002 {
                 conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
+    }
+
+    @Test
+    public void _testWebOnt_miscellaneous_002() throws Exception {
+        String conclusion = "";
+        String id = "WebOnt_miscellaneous_002";
+        TestClasses tc = TestClasses.valueOf("CONSISTENCY");
+        String d = "Food example taken from the guide. Note that this is the same as the ontology http://www.w3.org/2002/03owlt/miscellaneous/consistent002 imported in other tests.";
+        String input = premise1 + premise2 + premise3 + premise4;
+        OWLReasoner r = new JFactFactory().createReasoner(OWLManager
+                .createOWLOntologyManager().loadOntologyFromOntologyDocument(
+                        new StringDocumentSource(input)));
+        assertTrue(r.isConsistent());
     }
 
     // public void _testWebOnt_miscellaneous_002(String s1, String s2)
