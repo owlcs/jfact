@@ -3,6 +3,7 @@ package uk.ac.manchester.cs.jfact.visitors;
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
 
+/** adapter for null visitor */
 public class DLAxiomVisitorAdapter implements DLAxiomVisitor {
     @Override
     public void visit(AxiomDeclaration axiom) {}
