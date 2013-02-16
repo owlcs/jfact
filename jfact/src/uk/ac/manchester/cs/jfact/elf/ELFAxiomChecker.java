@@ -2,12 +2,13 @@ package uk.ac.manchester.cs.jfact.elf;
 
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorAdapter;
 import conformance.PortedFrom;
 
 // XXX verify unused parameters
+/** ELF axiom checker */
 @PortedFrom(file = "ELFAxiomChecker.h", name = "ELFAxiomChecker")
 public class ELFAxiomChecker extends DLAxiomVisitorAdapter {
     @PortedFrom(file = "ELFAxiomChecker.h", name = "eCh")
@@ -209,17 +210,20 @@ public class ELFAxiomChecker extends DLAxiomVisitorAdapter {
     @PortedFrom(file = "ELFAxiomChecker.h", name = "visitOntology")
     public void visitOntology(Ontology ontology) {
         value = true;
-        for (Axiom p : ontology.getAxioms()) {
+        for (AxiomInterface p : ontology.getAxioms()) {
             if (p.isUsed()) {
                 p.accept(this);
             }
         }
     }
 
+    @SuppressWarnings("javadoc")
     public ELFAxiomChecker() {
         value = true;
     }
 
+    /** @return true if check successful */
+    // TODO turn into a visitorEx
     @PortedFrom(file = "ELFAxiomChecker.h", name = "value")
     public boolean value() {
         return value;

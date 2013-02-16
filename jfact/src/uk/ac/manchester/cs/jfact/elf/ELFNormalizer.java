@@ -10,33 +10,34 @@ import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorAdapter;
 import conformance.PortedFrom;
 
+/** elf normalizer */
 @PortedFrom(file = "ELFNormalizer.h", name = "ELFNormalizer")
 public class ELFNormalizer extends DLAxiomVisitorAdapter {
     /** expression manager to build aux expressions */
     @PortedFrom(file = "ELFNormalizer.h", name = "pEM")
-    ExpressionManager pEM;
+    private ExpressionManager pEM;
     /** set of new/procesed axioms */
     @PortedFrom(file = "ELFNormalizer.h", name = "Axioms")
-    List<Axiom> Axioms = new ArrayList<Axiom>();
+    private List<AxiomInterface> Axioms = new ArrayList<AxiomInterface>();
     /** index of a freah variable */
     @PortedFrom(file = "ELFNormalizer.h", name = "index")
-    int index;
+    private int index;
     /** true iff the axiom was changed after visiting */
     @PortedFrom(file = "ELFNormalizer.h", name = "changed")
-    boolean changed;
+    private boolean changed;
     /** true iff RHS is in a form \ER.C */
     @PortedFrom(file = "ELFNormalizer.h", name = "eRHS")
-    boolean eRHS;
+    private boolean eRHS;
 
     /** process the axiom and mark it unused if necessary */
     @PortedFrom(file = "ELFNormalizer.h", name = "v")
-    void v(Axiom ax) {
+    private void v(AxiomInterface ax) {
         ax.accept(this);
         if (changed) {
             ax.setUsed(false);
@@ -45,20 +46,20 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
 
     /** add axiom to a list */
     @PortedFrom(file = "ELFNormalizer.h", name = "addAxiom")
-    void addAxiom(Axiom ax) {
+    private void addAxiom(AxiomInterface ax) {
         Axioms.add(ax);
     }
 
     /** create a new name */
     @PortedFrom(file = "ELFNormalizer.h", name = "buildFreshName")
-    ConceptExpression buildFreshName() {
+    private ConceptExpression buildFreshName() {
         // TODO check: should the string start with a space?
         return pEM.concept(" ELF_aux_" + index);
     }
 
     /** split C [= D1 \and \and Dn into C [= D1, C [= Dn */
     @PortedFrom(file = "ELFNormalizer.h", name = "splitAndRHS")
-    boolean splitAndRHS(OWLAxiom ax, ConceptExpression C, ConceptAnd D) {
+    private boolean splitAndRHS(OWLAxiom ax, ConceptExpression C, ConceptAnd D) {
         if (D == null) {
             return false;
         }
@@ -69,10 +70,11 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
         return true;
     }
 
-    /** transform RHS into normalized one. @return a normalized RHS. Set the eRHS
-     * flag if it is an existential */
+    /** transform RHS into normalized one.
+     * 
+     * @return a normalized RHS. Set the eRHS flag if it is an existential */
     @PortedFrom(file = "ELFNormalizer.h", name = "transformExists")
-    ConceptExpression transformExists(OWLAxiom ax, ConceptExpression D) {
+    private ConceptExpression transformExists(OWLAxiom ax, ConceptExpression D) {
         eRHS = false;
         // RHS now contains only Bot, A, \E R.C
         if (!(D instanceof ConceptObjectExists)) {
@@ -105,7 +107,7 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
     /** transform conjunction into the binary one with named concepts in it;
      * simplify */
     @PortedFrom(file = "ELFNormalizer.h", name = "normalizeLHSAnd")
-    ConceptExpression normalizeLHSAnd(OWLAxiom ax, ConceptAnd C) {
+    private ConceptExpression normalizeLHSAnd(OWLAxiom ax, ConceptAnd C) {
         if (C == null) {
             return null;
         }
@@ -163,9 +165,11 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
         return eRHS ? B : pEM.and(B, args.get(i));
     }
 
-    /** transform LHS into normalized one. @return a normalized LHS */
+    /** transform LHS into normalized one.
+     * 
+     * @return a normalized LHS */
     @PortedFrom(file = "ELFNormalizer.h", name = "transformLHS")
-    ConceptExpression transformLHS(OWLAxiom ax, ConceptExpression C) {
+    private ConceptExpression transformLHS(OWLAxiom ax, ConceptExpression C) {
         // here C is Top, A, AND and Exists
         // first normalize LHS And to contain only 2 names (or less)
         ConceptExpression And = normalizeLHSAnd(ax, (ConceptAnd) C);
@@ -233,10 +237,10 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
                 return;
             case 1:
                 // single element, use C=D processing
-                addAxiom(new AxiomConceptInclusion(axiom.getOWLAxiom(), axiom.getC(),
+                addAxiom(new AxiomConceptInclusion(axiom.getOWLAxiom(), axiom.getConcept(),
                         axiom.getArguments().get(0)));
                 addAxiom(new AxiomConceptInclusion(axiom.getOWLAxiom(), axiom
-                        .getArguments().get(0), axiom.getC()));
+                        .getArguments().get(0), axiom.getConcept()));
                 break;
             default:
                 // impossible here
@@ -303,7 +307,7 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
     @Override
     @PortedFrom(file = "ELFNormalizer.h", name = "visitOntology")
     public void visitOntology(Ontology ontology) {
-        for (Axiom p : ontology.getAxioms()) {
+        for (AxiomInterface p : ontology.getAxioms()) {
             if (p.isUsed()) {
                 v(p);
             }
@@ -322,6 +326,7 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
         }
     }
 
+    /** @param p */
     public ELFNormalizer(ExpressionManager p) {
         pEM = p;
         index = 0;

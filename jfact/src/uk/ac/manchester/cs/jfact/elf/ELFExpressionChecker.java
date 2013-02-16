@@ -7,6 +7,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import conformance.PortedFrom;
 
+/** elf expression checker */
 @PortedFrom(file = "ELFExpressionChecker.h", name = "ELFExpressionChecker")
 public class ELFExpressionChecker implements DLExpressionVisitor {
     @PortedFrom(file = "ELFExpressionChecker.h", name = "value")

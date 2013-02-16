@@ -11,12 +11,13 @@ import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleChain;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomConceptInclusion;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDeclaration;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleSubsumption;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import conformance.PortedFrom;
 
+/** elf reasoner */
 @PortedFrom(file = "ELFReasoner.h", name = "ELFReasoner")
 public class ELFReasoner {
     /** S(C) structure */
@@ -78,7 +79,10 @@ public class ELFReasoner {
 
     // process different normalized axioms
     // process original axioms
-    /** c'tor: take the ontology and init internal structures */
+    /** c'tor: take the ontology and init internal structures
+     * 
+     * @param c
+     * @param ont */
     public ELFReasoner(JFactReasonerConfiguration c, Ontology ont) {
         nC2C = 0;
         nA2C = 0;
@@ -89,7 +93,7 @@ public class ELFReasoner {
         // init top- and bottom entities
         CBot = getC(ont.getExpressionManager().bottom());
         CTop = getC(ont.getExpressionManager().top());
-        for (Axiom p : ont.getAxioms()) {
+        for (AxiomInterface p : ont.getAxioms()) {
             if (p.isUsed()) {
                 if (p instanceof AxiomConceptInclusion) {
                     processCI((AxiomConceptInclusion) p);

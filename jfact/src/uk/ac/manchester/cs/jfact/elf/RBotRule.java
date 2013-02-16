@@ -4,6 +4,7 @@ import conformance.PortedFrom;
 
 // Rule for R(C,D) with \bot\in S(D) case; CR5
 // rule that checks whether for R(C,D) S(D) contains \bot
+/** r bot rule */
 @PortedFrom(file = "ELFReasoner.h", name = "RBotRule")
 public class RBotRule extends TELFRule {
     /** remember the Bottom concept */
