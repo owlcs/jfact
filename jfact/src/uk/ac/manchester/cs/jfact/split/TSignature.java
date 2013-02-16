@@ -24,21 +24,27 @@ public class TSignature {
     @PortedFrom(file = "tSignature.h", name = "topRLocality")
     private boolean topRLocality = false;
 
+    @SuppressWarnings("javadoc")
     public TSignature() {}
 
+    /** @param copy */
     public TSignature(TSignature copy) {
         set.addAll(copy.set);
         topCLocality = copy.topCLocality;
         topRLocality = copy.topRLocality;
     }
 
-    /** add names to signature */
+    /** add names to signature
+     * 
+     * @param p */
     @PortedFrom(file = "tSignature.h", name = "add")
     public void add(NamedEntity p) {
         set.add(p);
     }
 
-    /** remove given element from a signature */
+    /** remove given element from a signature
+     * 
+     * @param p */
     @PortedFrom(file = "tSignature.h", name = "remove")
     public void remove(NamedEntity p) {
         set.remove(p);
@@ -50,13 +56,18 @@ public class TSignature {
         set.addAll(Sig.set);
     }
 
-    /** set new locality polarity */
+    /** set new locality polarity
+     * 
+     * @param top */
     @PortedFrom(file = "tSignature.h", name = "setLocality")
     public void setLocality(boolean top) {
         this.setLocality(top, top);
     }
 
-    /** set new locality polarity */
+    /** set new locality polarity
+     * 
+     * @param topC
+     * @param topR */
     @PortedFrom(file = "tSignature.h", name = "setLocality")
     public void setLocality(boolean topC, boolean topR) {
         topCLocality = topC;
@@ -83,13 +94,15 @@ public class TSignature {
         return set.hashCode();
     }
 
-    /** @return true iff signature contains given element */
+    /** @param p
+     * @return true iff signature contains given element */
     @Original
     public boolean containsNamedEntity(NamedEntity p) {
         return set.contains(p);
     }
 
-    /** @return true iff signature contains given element */
+    /** @param p
+     * @return true iff signature contains given element */
     @PortedFrom(file = "tSignature.h", name = "contains")
     public boolean contains(Expression p) {
         if (p instanceof NamedEntity) {
@@ -113,6 +126,7 @@ public class TSignature {
         set.clear();
     }
 
+    /** @return named entites */
     @PortedFrom(file = "tSignature.h", name = "begin")
     public Set<NamedEntity> begin() {
         return set;
@@ -130,6 +144,8 @@ public class TSignature {
         return topRLocality;
     }
 
+    /** @param s2
+     * @return true if this and s2 intersect */
     @Original
     public List<NamedEntity> intersect(TSignature s2) {
         List<NamedEntity> ret = new ArrayList<NamedEntity>();

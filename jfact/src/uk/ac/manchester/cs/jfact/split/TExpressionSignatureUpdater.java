@@ -100,7 +100,7 @@ class TExpressionSignatureUpdater implements DLExpressionVisitor {
     @Override
     public void visit(ConceptObjectValue expr) {
         vOR(expr);
-        vI(expr.getI());
+        vI(expr.getIndividual());
     }
 
     @Override

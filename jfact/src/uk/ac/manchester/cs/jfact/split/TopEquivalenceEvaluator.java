@@ -45,7 +45,7 @@ public class TopEquivalenceEvaluator extends SigAccessor implements DLExpression
     
  // non-empty Concept/Data expression
 
-    /// @return true iff C^I is non-empty
+    /** @return true iff C^I is non-empty */
     private boolean isBotDistinct(Expression C)
 {
     // TOP is non-empty
@@ -59,7 +59,7 @@ public class TopEquivalenceEvaluator extends SigAccessor implements DLExpression
 
 // cardinality of a concept/data expression interpretation
 
-    /// @return true if #C^I > n
+    /** @return true if #C^I > n */
     private boolean isCardLargerThan(Expression C, int n)
 {
     if ( n == 0 ) {
@@ -76,10 +76,11 @@ public class TopEquivalenceEvaluator extends SigAccessor implements DLExpression
 }
 //QCRs
 
-/// @return true iff (>= n R.C) is topEq
+    /** @return true iff (>= n R.C) is topEq */
     private boolean isMinTopEquivalent(int n, RoleExpression R, Expression C)
 { return n == 0 || isTopEquivalent(R) && isCardLargerThan ( C, n-1 ); }
-/// @return true iff (<= n R.C) is topEq
+
+    /** @return true iff (<= n R.C) is topEq */
     private boolean isMaxTopEquivalent(int n, RoleExpression R, Expression C)
 { return isBotEquivalent(R) || isBotEquivalent(C); }
 

@@ -6,30 +6,22 @@ import java.util.Set;
 
 import uk.ac.manchester.cs.jfact.kernel.Concept;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import conformance.PortedFrom;
 
 /** this is to keep the track of new vars/axioms for C >< C0, C1, ..., Cn */
 @PortedFrom(file = "tSplitVars.h", name = "TSplitVar")
 public class TSplitVar {
     // types
-    public class Entry {
-        // entry name
-        public ConceptName name;
-        // internal name
-        public Concept concept;
-        public TSignature sig;
-        public Set<Axiom> Module;
-    }
 
     // name of split concept
-    public ConceptName oldName;
+    private ConceptName oldName;
     // split concept itself
-    public Concept C;
-    private List<Entry> Entries = new ArrayList<Entry>();
+    private Concept C;
+    private List<SplitVarEntry> Entries = new ArrayList<SplitVarEntry>();
 
-    void addEntry(ConceptName name, TSignature sig, Set<Axiom> mod) {
-        Entry e = new Entry();
+    void addEntry(ConceptName name, TSignature sig, Set<AxiomInterface> mod) {
+        SplitVarEntry e = new SplitVarEntry();
         e.name = name;
         e.concept = null;
         e.sig = sig;
@@ -37,7 +29,28 @@ public class TSplitVar {
         Entries.add(e);
     }
 
-    public List<Entry> getEntries() {
+    /** @return list of entries */
+    public List<SplitVarEntry> getEntries() {
         return Entries;
+    }
+
+    /** @return old concept name */
+    public ConceptName getOldName() {
+        return oldName;
+    }
+
+    /** @param oldName */
+    public void setOldName(ConceptName oldName) {
+        this.oldName = oldName;
+    }
+
+    /** @return concept */
+    public Concept getC() {
+        return C;
+    }
+
+    /** @param c */
+    public void setC(Concept c) {
+        C = c;
     }
 }

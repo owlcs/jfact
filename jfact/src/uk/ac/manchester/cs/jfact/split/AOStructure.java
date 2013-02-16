@@ -14,7 +14,7 @@ public class AOStructure {
     @PortedFrom(file = "AtomicDecomposer.h", name = "Atoms")
     List<TOntologyAtom> Atoms = new ArrayList<TOntologyAtom>();
 
-    /** create a new atom and get a pointer to it */
+    /** @return a new atom */
     @PortedFrom(file = "AtomicDecomposer.h", name = "newAtom")
     public TOntologyAtom newAtom() {
         TOntologyAtom ret = new TOntologyAtom();
@@ -32,19 +32,20 @@ public class AOStructure {
         }
     }
 
-    /** RW iterator begin */
+    /** @return atoms */
     @PortedFrom(file = "AtomicDecomposer.h", name = "begin")
     public List<TOntologyAtom> begin() {
         return Atoms;
     }
 
-    /** get RW atom by its index */
+    /** @param index
+     * @return atom by its index */
     @PortedFrom(file = "AtomicDecomposer.h", name = "get")
     public TOntologyAtom get(int index) {
         return Atoms.get(index);
     }
 
-    /** size of the structure */
+    /** @return size of the structure */
     @PortedFrom(file = "AtomicDecomposer.h", name = "size")
     public int size() {
         return Atoms.size();

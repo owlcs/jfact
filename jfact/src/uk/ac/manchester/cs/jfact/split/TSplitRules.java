@@ -9,11 +9,10 @@ import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomConceptInclusion;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomEquivalentConcepts;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
-import uk.ac.manchester.cs.jfact.split.TSplitVar.Entry;
 import conformance.Original;
 import conformance.PortedFrom;
 
@@ -45,18 +44,23 @@ public class TSplitRules {
         }
 
         // access methods
-        /** get bipolar pointer of the rule */
+        /** @return bipolar pointer of the rule */
         public int bp() {
             return bpSplit;
         }
 
-        /** check whether signatures of a rule are related to current signature
-         * in such a way that allows rule to fire */
+        /** @param CurrentSig
+         * @return check whether signatures of a rule are related to current
+         *         signature in such a way that allows rule to fire */
         public boolean canFire(Set<NamedEntity> CurrentSig) {
             return CurrentSig.containsAll(eqSig) && intersectsWith(impSig, CurrentSig);
         }
 
-        /** calculates dep-set for a rule that can fire, write it to DEP. */
+        /** calculates dep-set for a rule that can fire, write it to DEP.
+         * 
+         * @param CurrentSig
+         * @param SigDep
+         * @return updated dep set */
         public DepSet
                 fireDep(Set<NamedEntity> CurrentSig, Map<NamedEntity, DepSet> SigDep) {
             DepSet dep = DepSet.create();
@@ -98,10 +102,12 @@ public class TSplitRules {
     @Original
     private JFactReasonerConfiguration config;
 
+    /** @param options */
     public TSplitRules(JFactReasonerConfiguration options) {
         config = options;
     }
 
+    /** @return split rules */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "begin")
     public List<TSplitRule> getRules() {
         return Base;
@@ -125,7 +131,9 @@ public class TSplitRules {
         return PossibleSignature.contains(ret) ? ret : null;
     }
 
-    /** create all the split rules by given split set SPLITS */
+    /** create all the split rules by given split set SPLITS
+     * 
+     * @param Splits */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "createSplitRules")
     public void createSplitRules(TSplitVars Splits) {
         for (TSplitVar p : Splits.getEntries()) {
@@ -134,20 +142,25 @@ public class TSplitRules {
     }
 
     /** ensure that Map has the same size as DAG, so there would be no access
-     * violation */
+     * violation
+     * 
+     * @param dagSize */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "ensureDagSize")
     public void ensureDagSize(int dagSize) {
         Helper.resize(EntityMap, dagSize);
     }
 
-    /** @return named entity corresponding to a given bp */
+    /** @param bp
+     * @return named entity corresponding to a given bp */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "getEntity")
     public NamedEntity getEntity(int bp) {
         return EntityMap.get(bp > 0 ? bp : -bp);
     }
 
     /** init entity map using given DAG. note that this should be done AFTER rule
-     * splits are created! */
+     * splits are created!
+     * 
+     * @param Dag */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "initEntityMap")
     public void initEntityMap(DLDag Dag) {
         int size = Dag.size();
@@ -176,9 +189,9 @@ public class TSplitRules {
     /** init split as a set-of-sets */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "initSplit")
     void initSplit(TSplitVar split) {
-        Entry p = split.getEntries().get(0);
+        SplitVarEntry p = split.getEntries().get(0);
         Set<NamedEntity> impSet = buildSet(p.sig, p.name);
-        int bp = split.C.getpBody() + 1;
+        int bp = split.getC().getpBody() + 1;
         // choose-rule stays next to a split-definition of C
         for (int i = 1; i < split.getEntries().size(); i++) {
             p = split.getEntries().get(i);
@@ -189,7 +202,7 @@ public class TSplitRules {
                 Set<TSignature> Out = new HashSet<TSignature>();
                 // prepare vector of available entities
                 List<NamedEntity> Allowed = new ArrayList<NamedEntity>();
-                List<Axiom> Module = new ArrayList<Axiom>(p.Module);
+                List<AxiomInterface> Module = new ArrayList<AxiomInterface>(p.Module);
                 // prepare signature for the process
                 TSignature sig = p.sig;
                 prepareStartSig(Module, sig, Allowed);
@@ -204,9 +217,9 @@ public class TSplitRules {
 
     /** prepare start signature */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "prepareStartSig")
-    void prepareStartSig(List<Axiom> Module, TSignature sig, List<NamedEntity> Allowed) {
+    void prepareStartSig(List<AxiomInterface> Module, TSignature sig, List<NamedEntity> Allowed) {
         // remove all defined concepts from signature
-        for (Axiom p : Module) {
+        for (AxiomInterface p : Module) {
             if (p instanceof AxiomEquivalentConcepts) {
                 // we don't need class names here
                 for (ConceptExpression q : ((AxiomEquivalentConcepts) p).getArguments()) {
@@ -238,13 +251,13 @@ public class TSplitRules {
     /** build all the seed signatures */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "BuildAllSeedSigs")
     void BuildAllSeedSigs(List<NamedEntity> Allowed, TSignature StartSig,
-            List<Axiom> Module, Set<TSignature> Out) {
+            List<AxiomInterface> Module, Set<TSignature> Out) {
         // copy the signature
         TSignature sig = StartSig;
         // create a set of allowed entities for the next round
         List<NamedEntity> RecAllowed = new ArrayList<NamedEntity>();
         List<NamedEntity> Keepers = new ArrayList<NamedEntity>();
-        Set<Axiom> outModule = new HashSet<Axiom>();
+        Set<AxiomInterface> outModule = new HashSet<AxiomInterface>();
         TModularizer mod = new TModularizer(config, new SyntacticLocalityChecker());
         for (NamedEntity p : Allowed) {
             if (sig.containsNamedEntity(p)) {

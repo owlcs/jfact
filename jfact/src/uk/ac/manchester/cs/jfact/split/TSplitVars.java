@@ -16,6 +16,7 @@ public class TSplitVars {
     @PortedFrom(file = "tSplitVars.h", name = "Index")
     protected Map<ConceptName, TSplitVar> Index = new HashMap<ConceptName, TSplitVar>();
 
+    @SuppressWarnings("javadoc")
     public TSplitVars() {}
 
     /** @return true iff the NAME has split in the set */
@@ -37,6 +38,7 @@ public class TSplitVars {
         Base.add(split);
     }
 
+    /** @return list of split var entries */
     @PortedFrom(file = "tSplitVars.h", name = "begin")
     public List<TSplitVar> getEntries() {
         return Base;

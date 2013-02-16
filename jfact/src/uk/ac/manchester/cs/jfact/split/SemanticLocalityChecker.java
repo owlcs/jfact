@@ -26,12 +26,12 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
     ExpressionManager pEM;
     /** map between axioms and concept expressions */
     @PortedFrom(file = "SemanticLocalityChecker.h", name = "ExprMap")
-    Map<Axiom, ConceptExpression> ExprMap = new HashMap<Axiom, ConceptExpression>();
+    Map<AxiomInterface, ConceptExpression> ExprMap = new HashMap<AxiomInterface, ConceptExpression>();
 
     /** @return expression necessary to build query for a given type of an axiom; @return
      *         NULL if none necessary */
     @PortedFrom(file = "SemanticLocalityChecker.h", name = "getExpr")
-    protected ConceptExpression getExpr(Axiom axiom) {
+    protected ConceptExpression getExpr(AxiomInterface axiom) {
         if (axiom instanceof AxiomRelatedTo) {
             return pEM.value(((AxiomRelatedTo) axiom).getRelation(),
                     ((AxiomRelatedTo) axiom).getRelatedIndividual());
@@ -88,7 +88,9 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
     @PortedFrom(file = "SemanticLocalityChecker.h", name = "isLocal")
     boolean isLocal;
 
-    /** init c'tor */
+    /** init c'tor
+     * 
+     * @param k */
     public SemanticLocalityChecker(ReasoningKernel k) {
         Kernel = k;
         isLocal = true;
@@ -104,7 +106,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
     /** @return true iff an AXIOM is local wrt defined policy */
     @Override
     @Original
-    public boolean local(Axiom axiom) {
+    public boolean local(AxiomInterface axiom) {
         axiom.accept(this);
         return isLocal;
     }
@@ -112,10 +114,10 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
     /** init kernel with the ontology signature */
     @Override
     @PortedFrom(file = "SemanticLocalityChecker.h", name = "preprocessOntology")
-    public void preprocessOntology(Collection<Axiom> axioms) {
+    public void preprocessOntology(Collection<AxiomInterface> axioms) {
         TSignature s = new TSignature();
         ExprMap.clear();
-        for (Axiom q : axioms) {
+        for (AxiomInterface q : axioms) {
             ExprMap.put(q, getExpr(q));
             s.add(q.getSignature());
         }
@@ -137,7 +139,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
     @Override
     @PortedFrom(file = "SemanticLocalityChecker.h", name = "visitOntology")
     public void visitOntology(Ontology ontology) {
-        for (Axiom p : ontology.getAxioms()) {
+        for (AxiomInterface p : ontology.getAxioms()) {
             if (p.isUsed()) {
                 p.accept(this);
             }
@@ -186,7 +188,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker 
         isLocal = false;
         // check A = (or C1... Cn)
         List<ConceptExpression> arguments = axiom.getArguments();
-        if (!Kernel.isEquivalent(axiom.getC(), pEM.or(arguments))) {
+        if (!Kernel.isEquivalent(axiom.getConcept(), pEM.or(arguments))) {
             return;
 
         }

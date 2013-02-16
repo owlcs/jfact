@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import conformance.Original;
@@ -22,7 +22,7 @@ public class TModularizer {
     LocalityChecker Checker;
     /** module as a list of axioms */
     @PortedFrom(file = "Modularity.h", name = "Module")
-    List<Axiom> Module = new ArrayList<Axiom>();
+    List<AxiomInterface> Module = new ArrayList<AxiomInterface>();
     /** pointer to a sig index; if not NULL then use optimized algo */
     @PortedFrom(file = "Modularity.h", name = "sigIndex")
     SigIndex sigIndex = null;
@@ -43,7 +43,7 @@ public class TModularizer {
 
     /** update SIG wrt the axiom signature */
     @PortedFrom(file = "Modularity.h", name = "addAxiomSig")
-    void addAxiomSig(Axiom axiom) {
+    void addAxiomSig(AxiomInterface axiom) {
         TSignature axiomSig = axiom.getSignature();
         if (sigIndex != null) {
             for (NamedEntity p : axiomSig.begin()) {
@@ -57,7 +57,7 @@ public class TModularizer {
 
     /** add an axiom to a module */
     @PortedFrom(file = "Modularity.h", name = "addAxiomToModule")
-    void addAxiomToModule(Axiom axiom) {
+    void addAxiomToModule(AxiomInterface axiom) {
         axiom.setInModule(true);
         Module.add(axiom);
         // update the signature
@@ -66,7 +66,7 @@ public class TModularizer {
 
     /** @return true iff an AXiom is non-local */
     @PortedFrom(file = "Modularity.h", name = "isNonLocal")
-    boolean isNonLocal(Axiom ax) {
+    boolean isNonLocal(AxiomInterface ax) {
         ++nChecks;
         if (Checker.local(ax)) {
             return false;
@@ -77,7 +77,7 @@ public class TModularizer {
 
     /** add an axiom if it is non-local (or if noCheck is true) */
     @PortedFrom(file = "Modularity.h", name = "addNonLocal")
-    void addNonLocal(Axiom ax, boolean noCheck) {
+    void addNonLocal(AxiomInterface ax, boolean noCheck) {
         if (noCheck || isNonLocal(ax)) {
             addAxiomToModule(ax);
             if (config.isRKG_USE_AD_IN_MODULE_EXTRACTION()) {
@@ -92,8 +92,8 @@ public class TModularizer {
 
     /** add all the non-local axioms from given axiom-set AxSet */
     @PortedFrom(file = "Modularity.h", name = "addNonLocal")
-    void addNonLocal(Collection<Axiom> AxSet, boolean noCheck) {
-        for (Axiom q : AxSet) {
+    void addNonLocal(Collection<AxiomInterface> AxSet, boolean noCheck) {
+        for (AxiomInterface q : AxSet) {
             if (!q.isInModule() && q.isInSS()) {
                 this.addNonLocal(q, noCheck);
             }
@@ -120,24 +120,27 @@ public class TModularizer {
 
     /** extract module wrt presence of a sig index */
     @PortedFrom(file = "Modularity.h", name = "extractModule")
-    void extractModule(Collection<Axiom> args) {
+    void extractModule(Collection<AxiomInterface> args) {
         Module.clear();
         // clear the module flag in the input
-        for (Axiom p : args) {
+        for (AxiomInterface p : args) {
             p.setInModule(false);
         }
-        for (Axiom p : args) {
+        for (AxiomInterface p : args) {
             if (p.isUsed()) {
                 p.setInSS(true);
             }
         }
         extractModuleQueue();
-        for (Axiom p : args) {
+        for (AxiomInterface p : args) {
             p.setInSS(false);
         }
     }
 
-    /** init c'tor */
+    /** init c'tor
+     * 
+     * @param config
+     * @param c */
     public TModularizer(JFactReasonerConfiguration config, LocalityChecker c) {
         this.config = config;
         Checker = c;
@@ -147,9 +150,11 @@ public class TModularizer {
         nNonLocal = 0;
     }
 
-    /** allow the checker to preprocess an ontology if necessary */
+    /** allow the checker to preprocess an ontology if necessary
+     * 
+     * @param vec */
     @PortedFrom(file = "Modularity.h", name = "preprocessOntology")
-    public void preprocessOntology(Collection<Axiom> vec) {
+    public void preprocessOntology(Collection<AxiomInterface> vec) {
         Checker.preprocessOntology(vec);
         sigIndex.clear();
         sigIndex.preprocessOntology(vec);
@@ -157,7 +162,7 @@ public class TModularizer {
 
     /** @return true iff the axiom AX is a tautology wrt given type */
     @PortedFrom(file = "Modularity.h", name = "isTautology")
-    boolean isTautology(Axiom ax, ModuleType type) {
+    boolean isTautology(AxiomInterface ax, ModuleType type) {
         boolean topLocality = type == ModuleType.M_TOP;
         sig = ax.getSignature();
         sig.setLocality(topLocality);
@@ -171,26 +176,30 @@ public class TModularizer {
         return Checker.local(ax);
     }
 
-    /** get RW access to the sigIndex (mainly to (un-)register axioms on the fly) */
+    /** @return sigIndex (mainly to (un-)register axioms on the fly) */
     @PortedFrom(file = "Modularity.h", name = "getSigIndex")
     public SigIndex getSigIndex() {
         return sigIndex;
     }
 
-    /** get access to the Locality checker */
+    /** @return Locality checker */
     @PortedFrom(file = "Modularity.h", name = "getLocalityChecker")
     public LocalityChecker getLocalityChecker() {
         return Checker;
     }
 
     @PortedFrom(file = "Modularity.h", name = "extract")
-    void extract(Axiom begin, TSignature signature, ModuleType type) {
+    void extract(AxiomInterface begin, TSignature signature, ModuleType type) {
         this.extract(Collections.singletonList(begin), signature, type);
     }
 
-    /** extract module wrt SIGNATURE and TYPE from the set of axioms [BEGIN,END) */
+    /** extract module wrt SIGNATURE and TYPE from the set of axioms [BEGIN,END)
+     * 
+     * @param begin
+     * @param signature
+     * @param type */
     @PortedFrom(file = "Modularity.h", name = "extract")
-    public void extract(Collection<Axiom> begin, TSignature signature, ModuleType type) {
+    public void extract(Collection<AxiomInterface> begin, TSignature signature, ModuleType type) {
         boolean topLocality = type == ModuleType.M_TOP;
         sig = signature;
         Checker.setSignatureValue(sig);
@@ -201,7 +210,7 @@ public class TModularizer {
         }
         // here there is a star: do the cycle until stabilization
         int size;
-        List<Axiom> oldModule = new ArrayList<Axiom>();
+        List<AxiomInterface> oldModule = new ArrayList<AxiomInterface>();
         do {
             size = Module.size();
             oldModule.clear();
@@ -225,21 +234,26 @@ public class TModularizer {
         return nNonLocal;
     }
 
-    /** extract module wrt SIGNATURE and TYPE from O; @return result in the Set */
+    /** extract module wrt SIGNATURE and TYPE from O;
+     * 
+     * @param list
+     * @param signature
+     * @param type
+     * @return result in the Set */
     @PortedFrom(file = "Modularity.h", name = "extractModule")
-    public List<Axiom> extractModule(List<Axiom> list, TSignature signature,
+    public List<AxiomInterface> extractModule(List<AxiomInterface> list, TSignature signature,
             ModuleType type) {
         this.extract(list, signature, type);
         return Module;
     }
 
-    /** get the last computed module */
+    /** @return the last computed module */
     @PortedFrom(file = "Modularity.h", name = "getModule")
-    public List<Axiom> getModule() {
+    public List<AxiomInterface> getModule() {
         return Module;
     }
 
-    /** get access to a signature */
+    /** @return signature */
     @PortedFrom(file = "Modularity.h", name = "getSignature")
     public TSignature getSignature() {
         return sig;

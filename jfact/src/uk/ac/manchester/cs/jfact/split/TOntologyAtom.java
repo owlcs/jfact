@@ -5,10 +5,11 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** ontology atom */
 @PortedFrom(file = "tOntologyAtom.h", name = "TOntologyAtom")
 public class TOntologyAtom {
     @Original
@@ -20,10 +21,10 @@ public class TOntologyAtom {
     };
     /** set of axioms in the atom */
     @PortedFrom(file = "tOntologyAtom.h", name = "AtomAxioms")
-    Set<Axiom> AtomAxioms = new HashSet<Axiom>();
+    Set<AxiomInterface> AtomAxioms = new HashSet<AxiomInterface>();
     /** set of axioms in the module (Atom's ideal) */
     @PortedFrom(file = "tOntologyAtom.h", name = "ModuleAxioms")
-    Set<Axiom> ModuleAxioms = new HashSet<Axiom>();
+    Set<AxiomInterface> ModuleAxioms = new HashSet<AxiomInterface>();
     /** set of atoms current one depends on */
     @PortedFrom(file = "tOntologyAtom.h", name = "DepAtoms")
     Set<TOntologyAtom> DepAtoms = new HashSet<TOntologyAtom>();
@@ -42,7 +43,9 @@ public class TOntologyAtom {
         }
     }
 
-    /** build all dep atoms; filter them from DepAtoms */
+    /** build all dep atoms; filter them from DepAtoms
+     * 
+     * @param checked */
     @PortedFrom(file = "tOntologyAtom.h", name = "buildAllDepAtoms")
     public void buildAllDepAtoms(Set<TOntologyAtom> checked) {
         // first gather all dep atoms from all known dep atoms
@@ -59,20 +62,26 @@ public class TOntologyAtom {
     }
 
     // fill in the sets
-    /** set the module axioms */
+    /** set the module axioms
+     * 
+     * @param module */
     @PortedFrom(file = "tOntologyAtom.h", name = "setModule")
-    public void setModule(Collection<Axiom> module) {
-        ModuleAxioms = new HashSet<Axiom>(module);
+    public void setModule(Collection<AxiomInterface> module) {
+        ModuleAxioms = new HashSet<AxiomInterface>(module);
     }
 
-    /** add axiom AX to an atom */
+    /** add axiom AX to an atom
+     * 
+     * @param ax */
     @PortedFrom(file = "tOntologyAtom.h", name = "addAxiom")
-    public void addAxiom(Axiom ax) {
+    public void addAxiom(AxiomInterface ax) {
         AtomAxioms.add(ax);
         ax.setAtom(this);
     }
 
-    /** add atom to the dependency set */
+    /** add atom to the dependency set
+     * 
+     * @param atom */
     @PortedFrom(file = "tOntologyAtom.h", name = "addDepAtom")
     public void addDepAtom(TOntologyAtom atom) {
         if (atom != null && atom != this) {
@@ -80,7 +89,9 @@ public class TOntologyAtom {
         }
     }
 
-    /** get all the atoms the current one depends on; build this set if necessary */
+    /** @param checked
+     * @return all the atoms the current one depends on; build this set if
+     *         necessary */
     @PortedFrom(file = "tOntologyAtom.h", name = "getAllDepAtoms")
     public Set<TOntologyAtom> getAllDepAtoms(Set<TOntologyAtom> checked) {
         if (checked.contains(this)) {
@@ -90,31 +101,33 @@ public class TOntologyAtom {
     }
 
     // access to axioms
-    /** get all the atom's axioms */
+    /** @return all the atom's axioms */
     @PortedFrom(file = "tOntologyAtom.h", name = "getAtomAxioms")
-    public Set<Axiom> getAtomAxioms() {
+    public Set<AxiomInterface> getAtomAxioms() {
         return AtomAxioms;
     }
 
-    /** get all the module axioms */
+    /** @return all the module axioms */
     @PortedFrom(file = "tOntologyAtom.h", name = "getModule")
-    public Set<Axiom> getModule() {
+    public Set<AxiomInterface> getModule() {
         return ModuleAxioms;
     }
 
-    /** get atoms a given one depends on */
+    /** @return atoms a given one depends on */
     @PortedFrom(file = "tOntologyAtom.h", name = "getDepAtoms")
     public Set<TOntologyAtom> getDepAtoms() {
         return DepAtoms;
     }
 
-    /** get the value of the id */
+    /** @return the value of the id */
     @PortedFrom(file = "tOntologyAtom.h", name = "getId")
     public int getId() {
         return Id;
     }
 
-    /** set the value of the id to ID */
+    /** set the value of the id to ID
+     * 
+     * @param id */
     @PortedFrom(file = "tOntologyAtom.h", name = "setId")
     public void setId(int id) {
         Id = id;

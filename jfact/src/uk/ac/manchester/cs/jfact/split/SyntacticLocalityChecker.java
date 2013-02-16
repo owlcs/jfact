@@ -69,7 +69,7 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
     /** @return true iff an AXIOM is local wrt defined policy */
     @Override
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "local")
-    public boolean local(Axiom axiom) {
+    public boolean local(AxiomInterface axiom) {
         axiom.accept(this);
         return isLocal;
     }
@@ -78,7 +78,7 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
     @Override
     @Original
     public void visitOntology(Ontology ontology) {
-        for (Axiom p : ontology.getAxioms()) {
+        for (AxiomInterface p : ontology.getAxioms()) {
             if (p.isUsed()) {
                 p.accept(this);
             }
@@ -145,9 +145,9 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
         // or (2) A and one Ci are top-equivalent and the remaining Cj are bot-equivalent
         isLocal = false;
         boolean lhsIsTopEq;
-        if ( isTopEquivalent(axiom.getC()) ) {
+        if ( isTopEquivalent(axiom.getConcept()) ) {
             lhsIsTopEq = true;
-        } else if ( isBotEquivalent(axiom.getC()) ) {
+        } else if ( isBotEquivalent(axiom.getConcept()) ) {
             lhsIsTopEq = false;
         } else {
             return;
@@ -366,9 +366,9 @@ public class SyntacticLocalityChecker extends SigAccessor implements DLAxiomVisi
 
     @Override
     @Original
-    public void preprocessOntology(Collection<Axiom> s) {
+    public void preprocessOntology(Collection<AxiomInterface> s) {
         sig = new TSignature();
-        for (Axiom ax : s) {
+        for (AxiomInterface ax : s) {
             sig.add(ax.getSignature());
         }
     }

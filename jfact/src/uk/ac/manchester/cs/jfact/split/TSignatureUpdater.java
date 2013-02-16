@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import conformance.PortedFrom;
@@ -47,7 +47,7 @@ public class TSignatureUpdater implements DLAxiomVisitor {
 
     @Override
     public void visit(AxiomDisjointUnion axiom) {
-        v(axiom.getC());
+        v(axiom.getConcept());
         v(axiom.getArguments());
     }
 
@@ -206,6 +206,7 @@ public class TSignatureUpdater implements DLAxiomVisitor {
         v(axiom.getAttribute());
     }
 
+    /** @param sig */
     public TSignatureUpdater(TSignature sig) {
         Updater = new TExpressionSignatureUpdater(sig);
     }
@@ -214,7 +215,7 @@ public class TSignatureUpdater implements DLAxiomVisitor {
     @Override
     @PortedFrom(file = "tSignatureUpdater.h", name = "visitOntology")
     public void visitOntology(Ontology ontology) {
-        for (Axiom p : ontology.getAxioms()) {
+        for (AxiomInterface p : ontology.getAxioms()) {
             if (p.isUsed()) {
                 p.accept(this);
             }

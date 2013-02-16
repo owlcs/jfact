@@ -7,22 +7,23 @@ import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptTop;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomConceptInclusion;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomEquivalentConcepts;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import conformance.PortedFrom;
 
+/** axiom splitter */
 @PortedFrom(file = "AxiomSplitter.h", name = "TAxiomSplitter")
 public class TAxiomSplitter {
     /** keep the single rename: named concept C in an axiom (C=D or C[=D) into a
      * new name C' and new axiom C'=D or C'[=D */
     protected class TRecord {
         ConceptName oldName, newName;
-        List<Axiom> oldAxioms = new ArrayList<Axiom>();
-        Axiom newAxiom = null;
+        List<AxiomInterface> oldAxioms = new ArrayList<AxiomInterface>();
+        AxiomInterface newAxiom = null;
         TSignature newAxSig = null;
         // module for a new axiom
-        Set<Axiom> Module = new HashSet<Axiom>();
+        Set<AxiomInterface> Module = new HashSet<AxiomInterface>();
 
         /** set old axiom as an equivalent AX; create a new one */
         void setEqAx(AxiomEquivalentConcepts ax) {
@@ -79,7 +80,9 @@ public class TAxiomSplitter {
         return null;
     }
 
-    /** process (register/unregister) axioms in a record REC */
+    /** process (register/unregister) axioms in a record REC
+     * 
+     * @param rec */
     @PortedFrom(file = "AxiomSplitter.h", name = "processRec")
     public void processRec(TRecord rec) {
         mod.getSigIndex().preprocessOntology(rec.oldAxioms);
@@ -89,7 +92,7 @@ public class TAxiomSplitter {
     /** register a record in the ontology */
     @PortedFrom(file = "AxiomSplitter.h", name = "registerRec")
     void registerRec(TRecord rec) {
-        for (Axiom p : rec.oldAxioms) {
+        for (AxiomInterface p : rec.oldAxioms) {
             O.retract(p);
         }
         O.add(rec.newAxiom);
@@ -99,7 +102,7 @@ public class TAxiomSplitter {
     /** unregister a record */
     @PortedFrom(file = "AxiomSplitter.h", name = "unregisterRec")
     void unregisterRec(TRecord rec) {
-        for (Axiom p : rec.oldAxioms) {
+        for (AxiomInterface p : rec.oldAxioms) {
             p.setUsed(true);
         }
         rec.newAxiom.setUsed(false);
@@ -139,7 +142,7 @@ public class TAxiomSplitter {
     protected void registerCIs() {
         // FIXME!! check for the case (not D) [= (not C) later
         // FIXME!! disjoints here as well
-        for (Axiom p : O.getAxioms()) {
+        for (AxiomInterface p : O.getAxioms()) {
             if (p.isUsed() && p instanceof AxiomConceptInclusion) {
                 addSingleCI((AxiomConceptInclusion) p);
             }
@@ -299,15 +302,15 @@ public class TAxiomSplitter {
     @PortedFrom(file = "AxiomSplitter.h", name = "splitImplicationsFor")
     protected TSplitVar splitImplicationsFor(ConceptName oldName) {
         // check whether we already did translation for such a name
-        if (O.Splits.hasCN(oldName)) {
-            return O.Splits.get(oldName);
+        if (O.getSplits().hasCN(oldName)) {
+            return O.getSplits().get(oldName);
         }
         TRecord rec = getImpRec(oldName);
         // create new split
         TSplitVar split = new TSplitVar();
-        split.oldName = oldName;
+        split.setOldName(oldName);
         split.addEntry(rec.newName, rec.newAxSig, rec.Module);
-        O.Splits.set(oldName, split);
+        O.getSplits().set(oldName, split);
         return split;
     }
 
@@ -324,6 +327,8 @@ public class TAxiomSplitter {
         }
     }
 
+    /** @param config
+     * @param o */
     public TAxiomSplitter(JFactReasonerConfiguration config, Ontology o) {
 
         newNameId = 0;
@@ -331,6 +336,7 @@ public class TAxiomSplitter {
         mod = new TModularizer(config, new SyntacticLocalityChecker());
     }
 
+    /** build splits */
     @PortedFrom(file = "AxiomSplitter.h", name = "buildSplit")
     public void buildSplit() {
         // first make a set of named concepts C s.t. C [= D is in the ontology

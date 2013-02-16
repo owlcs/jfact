@@ -33,7 +33,7 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
     }
 
     // non-empty Concept/Data expression
-    // / @return true iff C^I is non-empty
+    /** @return true iff C^I is non-empty */
     private boolean isBotDistinct(Expression C) {
         // TOP is non-empty
         if (isTopEquivalent(C)) {
@@ -45,7 +45,7 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
     }
 
     // cardinality of a concept/data expression interpretation
-    // / @return true if #C^I > n
+    /** @return true if #C^I > n */
     private boolean isCardLargerThan(Expression C, int n) {
         if (n == 0) {
             return isBotDistinct(C);
@@ -58,12 +58,12 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
     }
 
     // QCRs
-    // / @return true iff (>= n R.C) is botEq
+    /** @return true iff (>= n R.C) is botEq */
     private boolean isMinBotEquivalent(int n, RoleExpression R, Expression C) {
         return n > 0 && (isBotEquivalent(R) || isBotEquivalent(C));
     }
 
-    // / @return true iff (<= n R.C) is botEq
+    /** @return true iff (<= n R.C) is botEq */
     private boolean isMaxBotEquivalent(int n, RoleExpression R, Expression C) {
         return isTopEquivalent(R) && isCardLargerThan(C, n);
     }

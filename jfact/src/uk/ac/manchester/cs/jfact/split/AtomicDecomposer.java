@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import conformance.Original;
 import conformance.PortedFrom;
 
@@ -20,7 +20,7 @@ public class AtomicDecomposer {
     TModularizer Modularizer;
     /** tautologies of the ontology */
     @PortedFrom(file = "AtomicDecomposer.h", name = "Tautologies")
-    List<Axiom> Tautologies = new ArrayList<Axiom>();
+    List<AxiomInterface> Tautologies = new ArrayList<AxiomInterface>();
     /** progress indicator */
     @PortedFrom(file = "AtomicDecomposer.h", name = "PI")
     ProgressIndicatorInterface PI = null;
@@ -31,6 +31,8 @@ public class AtomicDecomposer {
     @PortedFrom(file = "AtomicDecomposer.h", name = "type")
     ModuleType type;
 
+    /** @param c
+     *            modularizer */
     public AtomicDecomposer(TModularizer c) {
         Modularizer = c;
     }
@@ -38,7 +40,7 @@ public class AtomicDecomposer {
     /** restore all tautologies back */
     @PortedFrom(file = "AtomicDecomposer.h", name = "restoreTautologies")
     void restoreTautologies() {
-        for (Axiom p : Tautologies) {
+        for (AxiomInterface p : Tautologies) {
             p.setUsed(true);
         }
     }
@@ -56,7 +58,7 @@ public class AtomicDecomposer {
         // we might use it for another decomposition
         Tautologies.clear();
         long nAx = 0;
-        for (Axiom p : O.getAxioms()) {
+        for (AxiomInterface p : O.getAxioms()) {
             if (p.isUsed()) {
                 // check whether an axiom is local wrt its own signature
                 Modularizer.extract(p, p.getSignature(), type);
@@ -79,7 +81,7 @@ public class AtomicDecomposer {
     TOntologyAtom buildModule(TSignature sig, TOntologyAtom parent) {
         // build a module for a given signature
         Modularizer.extract(parent.getModule(), sig, type);
-        List<Axiom> Module = Modularizer.getModule();
+        List<AxiomInterface> Module = Modularizer.getModule();
         // if module is empty (empty bottom atom) -- do nothing
         if (Module.isEmpty()) {
             return null;
@@ -102,7 +104,7 @@ public class AtomicDecomposer {
     /** create atom for given axiom AX; use parent atom's module as a base for
      * the module search */
     @PortedFrom(file = "AtomicDecomposer.h", name = "createAtom")
-    TOntologyAtom createAtom(Axiom ax, TOntologyAtom parent) {
+    TOntologyAtom createAtom(AxiomInterface ax, TOntologyAtom parent) {
         // check whether axiom already has an atom
         if (ax.getAtom() != null) {
             return ax.getAtom();
@@ -119,7 +121,7 @@ public class AtomicDecomposer {
         }
         // not the same as parent: for all atom's axioms check their atoms and
         // make ATOM depend on them
-        for (Axiom q : atom.getModule()) {
+        for (AxiomInterface q : atom.getModule()) {
             if (!q.equals(ax)) {
                 atom.addDepAtom(createAtom(q, atom));
             }
@@ -127,17 +129,21 @@ public class AtomicDecomposer {
         return atom;
     }
 
+    /** @return all tautologies */
     @Original
-    public List<Axiom> getTautologies() {
-        return new ArrayList<Axiom>(Tautologies);
+    public List<AxiomInterface> getTautologies() {
+        return new ArrayList<AxiomInterface>(Tautologies);
     }
 
+    /** @return the atom structure */
     @PortedFrom(file = "AtomicDecomposer.h", name = "getAOS")
     public AOStructure getAOS() {
         return AOS;
     }
 
-    /** get the atomic structure for given module type T */
+    /** @param O
+     * @param t
+     * @return the atomic structure for given module type T */
     @PortedFrom(file = "AtomicDecomposer.h", name = "getAOS")
     public AOStructure getAOS(Ontology O, ModuleType t) {
         // remember the type of the module
@@ -150,16 +156,16 @@ public class AtomicDecomposer {
         removeTautologies(O);
         // init the root atom
         rootAtom = new TOntologyAtom();
-        rootAtom.setModule(new HashSet<Axiom>(O.getAxioms()));
+        rootAtom.setModule(new HashSet<AxiomInterface>(O.getAxioms()));
         // build the "bottom" atom for an empty signature
         TOntologyAtom BottomAtom = buildModule(new TSignature(), rootAtom);
         if (BottomAtom != null) {
-            for (Axiom q : BottomAtom.getModule()) {
+            for (AxiomInterface q : BottomAtom.getModule()) {
                 BottomAtom.addAxiom(q);
             }
         }
         // create atoms for all the axioms in the ontology
-        for (Axiom p : O.getAxioms()) {
+        for (AxiomInterface p : O.getAxioms()) {
             if (p.isUsed() && p.getAtom() == null) {
                 createAtom(p, rootAtom);
             }

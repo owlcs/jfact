@@ -13,6 +13,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 import conformance.PortedFrom;
 
+/** knowledge explorer */
 @PortedFrom(file = "KnowledgeExplorer.h", name = "KnowledgeExplorer")
 public class KnowledgeExplorer {
     /** map concept into set of its synonyms */
@@ -49,10 +50,12 @@ public class KnowledgeExplorer {
         }
     }
 
+    /** @param box
+     * @param pEM */
     public KnowledgeExplorer(TBox box, ExpressionManager pEM) {
         D2I = new TDag2Interface(box.getDag(), pEM);
         // init all concepts
-        for (Concept c : box.c_begin()) {
+        for (Concept c : box.getConcepts()) {
             Cs.put(c.getEntity(), c);
             if (c.isSynonym()) {
                 Cs.put(c.getSynonym().getEntity(), c);
@@ -125,6 +128,9 @@ public class KnowledgeExplorer {
         Concepts.add(e);
     }
 
+    /** @param node
+     * @param onlyDet
+     * @return set of data roles */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getDataRoles")
     public Set<RoleExpression> getDataRoles(DlCompletionTree node, boolean onlyDet) {
         Roles.clear();
@@ -140,8 +146,11 @@ public class KnowledgeExplorer {
         return Roles;
     }
 
-    /** build the set of object neighbours of a NODE; incoming edges are counted
-     * iff NEEDINCOMING is true */
+    /** @param node
+     * @param onlyDet
+     * @param needIncoming
+     * @return set of object neighbours of a NODE; incoming edges are counted
+     *         iff NEEDINCOMING is true */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getObjectRoles")
     public Set<RoleExpression> getObjectRoles(DlCompletionTree node, boolean onlyDet,
             boolean needIncoming) {
@@ -158,8 +167,10 @@ public class KnowledgeExplorer {
         return Roles;
     }
 
-    /** build the set of neighbours of a NODE via role ROLE; put the resulting
-     * list into RESULT */
+    /** @param node
+     * @param R
+     * @return set of neighbours of a NODE via role ROLE; put the resulting list
+     *         into RESULT */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getNeighbours")
     public List<DlCompletionTree> getNeighbours(DlCompletionTree node, Role R) {
         Nodes.clear();
@@ -171,7 +182,9 @@ public class KnowledgeExplorer {
         return Nodes;
     }
 
-    /** put into RESULT all the data expressions from the NODE label */
+    /** @param node
+     * @param onlyDet
+     * @return all the data expressions from the NODE label */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getLabel")
     public List<ConceptExpression> getObjectLabel(DlCompletionTree node, boolean onlyDet) {
         // prepare D2I translator
@@ -197,6 +210,9 @@ public class KnowledgeExplorer {
         return toReturn;
     }
 
+    /** @param node
+     * @param onlyDet
+     * @return list of data labels */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getLabel")
     public List<DataExpression> getDataLabel(DlCompletionTree node, boolean onlyDet) {
         // prepare D2I translator

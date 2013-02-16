@@ -15,6 +15,7 @@ public class SigAccessor extends DLExpressionVisitorAdapter {
     @PortedFrom(file = "LocalityChecker.h", name = "sig")
     TSignature sig;
 
+    /** @param s */
     @Original
     public void setSignature(TSignature s) {
         sig = s;
@@ -26,13 +27,15 @@ public class SigAccessor extends DLExpressionVisitorAdapter {
         return expr instanceof DataTop;
     }
 
-    /** @return true iff EXPR is a top datatype or a built-in datatype; */
+    /** @param expr
+     * @return true iff EXPR is a top datatype or a built-in datatype; */
     @Original
     public boolean isTopOrBuiltInDataType(Expression expr) {
         return isTopDT(expr) || expr instanceof Datatype<?>;
     }
 
-    /** @return true iff EXPR is a top datatype or an infinite built-in datatype;
+    /** @param expr
+     * @return true iff EXPR is a top datatype or an infinite built-in datatype;
      *         FIXME add real/fraction later */
     @Original
     public boolean isTopOrBuiltInInfDataType(Expression expr) {
