@@ -10,8 +10,10 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
+/** named concept */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptName")
 public class ConceptName extends NamedEntityImpl implements ConceptExpression {
+    /** @param name */
     public ConceptName(String name) {
         super(name);
     }

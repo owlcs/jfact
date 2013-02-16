@@ -14,10 +14,13 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
+/** object role chain */
 @PortedFrom(file = "tDLExpression.h", name = "TDLObjectRoleChain")
 public class ObjectRoleChain extends NAryExpressionImpl<ObjectRoleExpression> implements
         NAryExpression<ObjectRoleExpression>, ObjectRoleComplexExpression {
-    /** create role chain from given array */
+    /** create role chain from given array
+     * 
+     * @param v */
     public ObjectRoleChain(List<ObjectRoleExpression> v) {
         add(v);
     }

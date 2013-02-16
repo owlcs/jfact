@@ -13,6 +13,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** object value restriction */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectValue")
 public class ConceptObjectValue implements ConceptObjectRoleExpression {
     @Original
@@ -20,6 +21,8 @@ public class ConceptObjectValue implements ConceptObjectRoleExpression {
     @PortedFrom(file = "tDLExpression.h", name = "I")
     private IndividualExpression individualExpression;
 
+    /** @param R
+     * @param I */
     public ConceptObjectValue(ObjectRoleExpression R, IndividualExpression I) {
         individualExpression = I;
         delegate = R;
@@ -37,8 +40,9 @@ public class ConceptObjectValue implements ConceptObjectRoleExpression {
         return visitor.visit(this);
     }
 
+    /** @return individual */
     @PortedFrom(file = "tDLExpression.h", name = "getI")
-    public IndividualExpression getI() {
+    public IndividualExpression getIndividual() {
         return individualExpression;
     }
 

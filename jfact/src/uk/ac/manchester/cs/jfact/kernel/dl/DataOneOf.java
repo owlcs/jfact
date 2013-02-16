@@ -14,10 +14,13 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
+/** data one of */
 @PortedFrom(file = "tDLExpression.h", name = "TDLDataOneOf")
 public class DataOneOf extends NAryExpressionImpl<Literal<?>> implements
         NAryExpression<Literal<?>>, DataExpression {
-    /** create one-of from individuals in the given array */
+    /** create one-of from individuals in the given array
+     * 
+     * @param v */
     public DataOneOf(List<Literal<?>> v) {
         add(v);
     }

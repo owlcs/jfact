@@ -14,6 +14,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** forall data restriction */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptDataForall")
 public class ConceptDataForall implements ConceptDataRVExpression, DataRoleArg {
     /** data role argument */
@@ -22,6 +23,8 @@ public class ConceptDataForall implements ConceptDataRVExpression, DataRoleArg {
     @Original
     private DataExpression delegate;
 
+    /** @param R
+     * @param E */
     public ConceptDataForall(DataRoleExpression R, DataExpression E) {
         dataRoleExpression = R;
         delegate = E;

@@ -10,6 +10,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
+/** data bottom concept */
 @PortedFrom(file = "tDLExpression.h", name = "TDLDataBottom")
 public class DataBottom implements DataExpression {
     @Override

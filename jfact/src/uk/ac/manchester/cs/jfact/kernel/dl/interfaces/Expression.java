@@ -9,12 +9,17 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
+/** expression */
 @PortedFrom(file = "tNAryQueue.h", name = "Expression")
 public interface Expression extends Entity {
-    /** accept method for the visitor pattern */
+    /** accept method for the visitor pattern
+     * 
+     * @param visitor */
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     void accept(DLExpressionVisitor visitor);
 
+    /** @param visitor
+     * @return visitor value */
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     <O> O accept(DLExpressionVisitorEx<O> visitor);
 }

@@ -13,11 +13,15 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
 
+/** data role range */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDRoleRange")
 public class AxiomDRoleRange extends AxiomSingleDRole {
     @PortedFrom(file = "tDLAxiom.h", name = "Range")
     private DataExpression range;
 
+    /** @param ax
+     * @param role
+     * @param range */
     @PortedFrom(file = "tDLAxiom.h", name = "Range")
     public AxiomDRoleRange(OWLAxiom ax, DataRoleExpression role, DataExpression range) {
         super(ax, role);
@@ -36,7 +40,7 @@ public class AxiomDRoleRange extends AxiomSingleDRole {
         return visitor.visit(this);
     }
 
-    /** access */
+    /** @return range */
     @PortedFrom(file = "tDLAxiom.h", name = "getRange")
     public DataExpression getRange() {
         return range;

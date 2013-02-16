@@ -14,6 +14,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** object exact cardinality */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectExactCardinality")
 public class ConceptObjectExactCardinality implements ConceptObjectCardinalityExpression,
         NumberArg {
@@ -24,6 +25,9 @@ public class ConceptObjectExactCardinality implements ConceptObjectCardinalityEx
     @Original
     private ObjectRoleExpression roleDelegate;
 
+    /** @param n
+     * @param R
+     * @param C */
     public ConceptObjectExactCardinality(int n, ObjectRoleExpression R,
             ConceptExpression C) {
         N = n;

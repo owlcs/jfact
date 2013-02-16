@@ -14,6 +14,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
 
+/** negation of data hasvalue axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomValueOfNot")
 public class AxiomValueOfNot extends AxiomIndividual {
     @PortedFrom(file = "tDLAxiom.h", name = "A")
@@ -21,6 +22,10 @@ public class AxiomValueOfNot extends AxiomIndividual {
     @PortedFrom(file = "tDLAxiom.h", name = "V")
     private Literal<?> value;
 
+    /** @param ax
+     * @param i
+     * @param a
+     * @param v */
     public AxiomValueOfNot(OWLAxiom ax, IndividualExpression i, DataRoleExpression a,
             Literal<?> v) {
         super(ax, i);
@@ -40,13 +45,13 @@ public class AxiomValueOfNot extends AxiomIndividual {
         return visitor.visit(this);
     }
 
-    /** access to role */
+    /** @return role */
     @PortedFrom(file = "tDLAxiom.h", name = "getAttribute")
     public DataRoleExpression getAttribute() {
         return dataRoleExpression;
     }
 
-    /** access to value */
+    /** @return value */
     @PortedFrom(file = "tDLAxiom.h", name = "getValue")
     public Literal<?> getValue() {
         return value;

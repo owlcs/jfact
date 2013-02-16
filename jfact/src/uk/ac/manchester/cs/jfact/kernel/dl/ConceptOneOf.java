@@ -14,10 +14,15 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
+/** object nominal
+ * 
+ * @param <I> */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptOneOf")
 public class ConceptOneOf<I extends IndividualExpression> extends NAryExpressionImpl<I>
         implements NAryExpression<I>, ConceptExpression {
-    /** create one-of from individuals in the given array */
+    /** create one-of from individuals in the given array
+     * 
+     * @param v */
     public ConceptOneOf(List<I> v) {
         add(v);
     }

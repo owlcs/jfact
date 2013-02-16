@@ -17,6 +17,8 @@ import conformance.PortedFrom;
 /** Fairness constraint axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomFairnessConstraint")
 public class AxiomFairnessConstraint extends AbstractNaryAxiom<ConceptExpression> {
+    /** @param ax
+     * @param v */
     public AxiomFairnessConstraint(OWLAxiom ax, List<ConceptExpression> v) {
         super(ax, v);
     }

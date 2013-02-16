@@ -10,6 +10,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
+/** data role top */
 @PortedFrom(file = "tDLExpression.h", name = "TDLDataRoleTop")
 public class DataRoleTop implements DataRoleExpression {
     @Override

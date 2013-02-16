@@ -12,8 +12,11 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
 
+/** functional data role */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDRoleFunctional")
 public class AxiomDRoleFunctional extends AxiomSingleDRole {
+    /** @param ax
+     * @param role */
     public AxiomDRoleFunctional(OWLAxiom ax, DataRoleExpression role) {
         super(ax, role);
     }

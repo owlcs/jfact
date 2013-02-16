@@ -12,11 +12,14 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
 
+/** declaration */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDeclaration")
 public class AxiomDeclaration extends AxiomImpl {
     @PortedFrom(file = "tDLAxiom.h", name = "D")
     private Expression expression;
 
+    /** @param ax
+     * @param d */
     public AxiomDeclaration(OWLAxiom ax, Expression d) {
         super(ax);
         expression = d;
@@ -34,6 +37,7 @@ public class AxiomDeclaration extends AxiomImpl {
         return visitor.visit(this);
     }
 
+    /** @return the declared expression */
     @PortedFrom(file = "tDLAxiom.h", name = "getDeclaration")
     public Expression getDeclaration() {
         return expression;

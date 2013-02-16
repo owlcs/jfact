@@ -11,12 +11,14 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
+/** self object restriction */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectSelf")
 public class ConceptObjectSelf implements ConceptObjectRoleExpression {
     /** object role argument */
     @PortedFrom(file = "tDLExpression.h", name = "OR")
     private ObjectRoleExpression objectRoleExpression;
 
+    /** @param R */
     public ConceptObjectSelf(ObjectRoleExpression R) {
         objectRoleExpression = R;
     }

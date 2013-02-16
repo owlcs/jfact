@@ -10,8 +10,10 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
+/** individual name */
 @PortedFrom(file = "tDLExpression.h", name = "TDLIndividualName")
 public class IndividualName extends NamedEntityImpl implements IndividualExpression {
+    /** @param name */
     public IndividualName(String name) {
         super(name);
     }

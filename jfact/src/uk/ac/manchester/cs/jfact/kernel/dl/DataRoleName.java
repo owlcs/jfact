@@ -11,9 +11,11 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
+/** data role name */
 @PortedFrom(file = "tDLExpression.h", name = "TDLDataRoleName")
 public class DataRoleName extends NamedEntityImpl implements DataRoleExpression,
         NamedEntity {
+    /** @param name */
     public DataRoleName(String name) {
         super(name);
     }

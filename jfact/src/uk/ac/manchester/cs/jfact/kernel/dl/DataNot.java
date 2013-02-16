@@ -11,12 +11,14 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
+/** data negation */
 @PortedFrom(file = "tDLExpression.h", name = "TDLDataNot")
 public class DataNot implements DataExpression, DataExpressionArg<DataExpression> {
     /** data expression argument */
     @PortedFrom(file = "tDLExpression.h", name = "Expr")
     protected DataExpression Expr;
 
+    /** @param E */
     public DataNot(DataExpression E) {
         Expr = E;
     }

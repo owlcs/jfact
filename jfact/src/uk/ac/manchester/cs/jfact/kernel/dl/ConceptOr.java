@@ -13,10 +13,13 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
+/** concept union */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptOr")
 public class ConceptOr extends NAryExpressionImpl<ConceptExpression> implements
         NAryExpression<ConceptExpression>, ConceptExpression {
-    /** create OR of expressions from the given array */
+    /** create OR of expressions from the given array
+     * 
+     * @param v */
     public ConceptOr(List<ConceptExpression> v) {
         add(v);
     }

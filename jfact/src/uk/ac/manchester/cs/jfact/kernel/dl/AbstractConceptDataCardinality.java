@@ -12,6 +12,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** base class for data cardinality */
 @Original
 public abstract class AbstractConceptDataCardinality implements
         ConceptDataCardinalityExpression, DataRoleArg {

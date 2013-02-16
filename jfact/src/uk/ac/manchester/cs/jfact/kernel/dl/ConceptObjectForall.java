@@ -13,6 +13,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** forall object restriction */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectForall")
 public class ConceptObjectForall implements ConceptObjectRCExpression {
     /** concept argument */
@@ -21,6 +22,8 @@ public class ConceptObjectForall implements ConceptObjectRCExpression {
     @Original
     private ObjectRoleExpression delegate;
 
+    /** @param R
+     * @param C */
     public ConceptObjectForall(ObjectRoleExpression R, ConceptExpression C) {
         conceptExpression = C;
         delegate = R;

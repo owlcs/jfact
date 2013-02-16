@@ -10,27 +10,37 @@ import java.util.List;
 
 import conformance.PortedFrom;
 
+/** nary expression
+ * 
+ * @param <Argument> */
 @PortedFrom(file = "tDLExpression.h", name = "TDLNAryExpression")
 public interface NAryExpression<Argument extends Expression> {
-    /** transform general expression into the argument one */
+    /** @param arg
+     * @return transform general expression into the argument one */
     @PortedFrom(file = "tDLExpression.h", name = "transform")
     Argument transform(Expression arg);
 
-    /** add a single element to the array */
+    /** add a single element to the array
+     * 
+     * @param p */
     @PortedFrom(file = "tDLExpression.h", name = "add")
     void add(Argument p);
 
-    /** add a vector */
+    /** add a vector
+     * 
+     * @param v */
     @PortedFrom(file = "tDLExpression.h", name = "add")
     void add(Collection<Argument> v);
 
-    /** access to members */
+    /** @return members */
     @PortedFrom(file = "tDLExpression.h", name = "begin")
     List<Argument> getArguments();
 
+    /** @return true if empty */
     @PortedFrom(file = "tDLExpression.h", name = "empty")
     boolean isEmpty();
 
+    /** @return size of members */
     @PortedFrom(file = "tDLExpression.h", name = "size")
     int size();
 }

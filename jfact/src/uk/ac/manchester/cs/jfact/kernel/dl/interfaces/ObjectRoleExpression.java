@@ -8,6 +8,7 @@ package uk.ac.manchester.cs.jfact.kernel.dl.interfaces;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import conformance.PortedFrom;
 
+/** object role expression */
 @PortedFrom(file = "tDLExpression.h", name = "TDLObjectRoleExpression")
 public interface ObjectRoleExpression extends ObjectRoleComplexExpression {
     @Override

@@ -9,6 +9,7 @@ import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import conformance.PortedFrom;
 
+/** named entity base class */
 @PortedFrom(file = "tDLExpression.h", name = "TNamedEntity")
 public abstract class NamedEntityImpl implements NamedEntity {
     /** name of the entity */
@@ -25,6 +26,7 @@ public abstract class NamedEntityImpl implements NamedEntity {
         entry = e;
     }
 
+    /** @param name */
     public NamedEntityImpl(String name) {
         this.name = name;
     }

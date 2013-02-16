@@ -11,6 +11,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** object role projection from */
 @PortedFrom(file = "tDLExpression.h", name = "TDLObjectRoleProjectionFrom")
 public class ObjectRoleProjectionFrom implements ObjectRoleComplexExpression,
         ObjectRoleArg, ConceptArg {
@@ -19,6 +20,8 @@ public class ObjectRoleProjectionFrom implements ObjectRoleComplexExpression,
     @Original
     private ObjectRoleExpression roleDelegate;
 
+    /** @param R
+     * @param C */
     public ObjectRoleProjectionFrom(ObjectRoleExpression R, ConceptExpression C) {
         roleDelegate = R;
         delegate = C;

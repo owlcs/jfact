@@ -10,6 +10,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
+/** data top */
 @PortedFrom(file = "tDLExpression.h", name = "TDLDataTop")
 public class DataTop implements DataExpression {
     @Override

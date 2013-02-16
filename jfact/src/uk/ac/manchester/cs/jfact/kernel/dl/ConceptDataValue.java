@@ -14,6 +14,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** concept data value */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptDataValue")
 public class ConceptDataValue implements ConceptDataRoleExpression,
         DataExpressionArg<Literal<?>> {
@@ -23,6 +24,8 @@ public class ConceptDataValue implements ConceptDataRoleExpression,
     @Original
     private DataRoleExpression delegate;
 
+    /** @param R
+     * @param V */
     public ConceptDataValue(DataRoleExpression R, Literal<?> V) {
         dataValue = V;
         delegate = R;

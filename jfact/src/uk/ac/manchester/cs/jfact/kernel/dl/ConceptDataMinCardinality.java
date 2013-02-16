@@ -11,8 +11,12 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
+/** data min cardinality */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptDataMinCardinality")
 public class ConceptDataMinCardinality extends AbstractConceptDataCardinality {
+    /** @param n
+     * @param R
+     * @param E */
     public ConceptDataMinCardinality(int n, DataRoleExpression R, DataExpression E) {
         super(n, R, E);
     }

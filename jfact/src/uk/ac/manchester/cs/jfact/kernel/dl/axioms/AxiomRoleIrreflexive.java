@@ -12,8 +12,11 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
 
+/** irreflexive object role */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomRoleIrreflexive")
 public class AxiomRoleIrreflexive extends AxiomSingleORole {
+    /** @param ax
+     * @param role */
     public AxiomRoleIrreflexive(OWLAxiom ax, ObjectRoleExpression role) {
         super(ax, role);
     }

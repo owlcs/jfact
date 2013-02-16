@@ -12,8 +12,11 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
 
+/** inverse functional object role */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomRoleInverseFunctional")
 public class AxiomRoleInverseFunctional extends AxiomSingleORole {
+    /** @param ax
+     * @param role */
     public AxiomRoleInverseFunctional(OWLAxiom ax, ObjectRoleExpression role) {
         super(ax, role);
     }

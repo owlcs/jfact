@@ -14,8 +14,11 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
 
+/** equivalent concepts */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomEquivalentConcepts")
 public class AxiomEquivalentConcepts extends AbstractNaryAxiom<ConceptExpression> {
+    /** @param ax
+     * @param v */
     public AxiomEquivalentConcepts(OWLAxiom ax, List<ConceptExpression> v) {
         super(ax, v);
     }

@@ -10,6 +10,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
+/** data bottom property */
 @PortedFrom(file = "tDLExpression.h", name = "TDLDataRoleBottom")
 public class DataRoleBottom implements DataRoleExpression {
     @Override

@@ -11,8 +11,12 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
+/** data max cardinality */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptDataMaxCardinality")
 public class ConceptDataMaxCardinality extends AbstractConceptDataCardinality {
+    /** @param n
+     * @param R
+     * @param E */
     public ConceptDataMaxCardinality(int n, DataRoleExpression R, DataExpression E) {
         super(n, R, E);
     }

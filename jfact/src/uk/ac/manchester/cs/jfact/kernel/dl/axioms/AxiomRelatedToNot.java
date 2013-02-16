@@ -13,6 +13,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
 
+/** negated object role assertion */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomRelatedToNot")
 public class AxiomRelatedToNot extends AxiomIndividual {
     @PortedFrom(file = "tDLAxiom.h", name = "J")
@@ -20,6 +21,10 @@ public class AxiomRelatedToNot extends AxiomIndividual {
     @PortedFrom(file = "tDLAxiom.h", name = "R")
     private ObjectRoleExpression objectRoleExpression;
 
+    /** @param ax
+     * @param i
+     * @param r
+     * @param j */
     public AxiomRelatedToNot(OWLAxiom ax, IndividualExpression i, ObjectRoleExpression r,
             IndividualExpression j) {
         super(ax, i);
@@ -39,13 +44,13 @@ public class AxiomRelatedToNot extends AxiomIndividual {
         return visitor.visit(this);
     }
 
-    /** access */
+    /** @return individual */
     @PortedFrom(file = "tDLAxiom.h", name = "getRelatedIndividual")
     public IndividualExpression getRelatedIndividual() {
         return individualExpression;
     }
 
-    /** access */
+    /** @return object property */
     @PortedFrom(file = "tDLAxiom.h", name = "getRelation")
     public ObjectRoleExpression getRelation() {
         return objectRoleExpression;

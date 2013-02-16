@@ -13,10 +13,13 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
+/** concept intersection */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptAnd")
 public class ConceptAnd extends NAryExpressionImpl<ConceptExpression> implements
         NAryExpression<ConceptExpression>, ConceptExpression {
-    /** create AND of expressions from the given array */
+    /** create AND of expressions from the given array
+     * 
+     * @param v */
     public ConceptAnd(List<ConceptExpression> v) {
         add(v);
     }

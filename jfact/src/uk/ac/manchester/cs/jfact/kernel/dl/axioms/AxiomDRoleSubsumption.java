@@ -12,11 +12,15 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
 
+/** data role subsumption */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDRoleSubsumption")
 public class AxiomDRoleSubsumption extends AxiomSingleDRole {
     @PortedFrom(file = "tDLAxiom.h", name = "SubRole")
     private DataRoleExpression subRole;
 
+    /** @param ax
+     * @param subRole
+     * @param supRole */
     @PortedFrom(file = "tDLAxiom.h", name = "SubRole")
     public AxiomDRoleSubsumption(OWLAxiom ax, DataRoleExpression subRole,
             DataRoleExpression supRole) {
@@ -36,7 +40,7 @@ public class AxiomDRoleSubsumption extends AxiomSingleDRole {
         return visitor.visit(this);
     }
 
-    /** access to role */
+    /** @return role */
     @PortedFrom(file = "tDLAxiom.h", name = "getSubRole")
     public DataRoleExpression getSubRole() {
         return subRole;

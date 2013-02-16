@@ -14,53 +14,65 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** Axiom interface */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiom")
-public interface Axiom extends Entity {
+public interface AxiomInterface extends Entity {
+    /** @return original owl axiom */
     @Original
     OWLAxiom getOWLAxiom();
 
-    /** set the id */
+    /** @param Id */
     @PortedFrom(file = "tDLAxiom.h", name = "setId")
     void setId(int Id);
 
-    /** get the id */
+    /** @return the id */
     @PortedFrom(file = "tDLAxiom.h", name = "getId")
     int getId();
 
-    /** set the used flag */
+    /** @param Used */
     @PortedFrom(file = "tDLAxiom.h", name = "setUsed")
     void setUsed(boolean Used);
 
-    /** get the value of the used flag */
+    /** @return the value of the used flag */
     @PortedFrom(file = "tDLAxiom.h", name = "isUsed")
     boolean isUsed();
 
+    /** @return true if in module */
     @PortedFrom(file = "tDLAxiom.h", name = "isInModule")
     boolean isInModule();
 
+    /** @param inModule */
     @PortedFrom(file = "tDLAxiom.h", name = "setInModule")
     void setInModule(boolean inModule);
 
-    /** accept method for the visitor pattern */
+    /** accept method for the visitor pattern
+     * 
+     * @param visitor */
     @PortedFrom(file = "tDLAxiom.h", name = "accept")
     void accept(DLAxiomVisitor visitor);
 
+    /** @param visitor
+     * @return visitor result */
     @PortedFrom(file = "tDLAxiom.h", name = "accept")
     <O> O accept(DLAxiomVisitorEx<O> visitor);
 
+    /** @param flag */
     @PortedFrom(file = "tDLAxiom.h", name = "setInSS")
     void setInSS(boolean flag);
 
-    /** get the value of the isSearchSpace flag */
+    /** @return the value of the isSearchSpace flag */
     @PortedFrom(file = "tDLAxiom.h", name = "isInSS")
     boolean isInSS();
 
+    /** @return signature */
     @PortedFrom(file = "tDLAxiom.h", name = "getSignature")
     TSignature getSignature();
 
+    /** @return atom for axiom */
     @PortedFrom(file = "tDLAxiom.h", name = "getAtom")
     TOntologyAtom getAtom();
 
+    /** @param atom */
     @PortedFrom(file = "tDLAxiom.h", name = "setAtom")
     void setAtom(TOntologyAtom atom);
 }

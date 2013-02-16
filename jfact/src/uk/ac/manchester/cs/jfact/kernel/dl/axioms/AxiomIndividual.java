@@ -20,7 +20,7 @@ abstract class AxiomIndividual extends AxiomImpl {
         individualExpression = i;
     }
 
-    /** access */
+    /** @return individual */
     @PortedFrom(file = "tDLAxiom.h", name = "getIndividual")
     public IndividualExpression getIndividual() {
         return individualExpression;

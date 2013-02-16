@@ -14,6 +14,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** object min cardinality */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectMinCardinality")
 public class ConceptObjectMinCardinality implements ConceptObjectCardinalityExpression,
         NumberArg {
@@ -24,6 +25,9 @@ public class ConceptObjectMinCardinality implements ConceptObjectCardinalityExpr
     @Original
     private ObjectRoleExpression roleDelegate;
 
+    /** @param n
+     * @param R
+     * @param C */
     public ConceptObjectMinCardinality(int n, ObjectRoleExpression R, ConceptExpression C) {
         N = n;
         delegate = C;

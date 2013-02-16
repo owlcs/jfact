@@ -12,11 +12,15 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
 
+/** inverse object property */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomRoleInverse")
 public class AxiomRoleInverse extends AxiomSingleORole {
     @PortedFrom(file = "tDLAxiom.h", name = "InvRole")
     private ObjectRoleExpression inverseRole;
 
+    /** @param ax
+     * @param dirRole
+     * @param invRole */
     public AxiomRoleInverse(OWLAxiom ax, ObjectRoleExpression dirRole,
             ObjectRoleExpression invRole) {
         super(ax, dirRole);
@@ -35,7 +39,7 @@ public class AxiomRoleInverse extends AxiomSingleORole {
         return visitor.visit(this);
     }
 
-    /** access to role */
+    /** @return inverse role */
     @PortedFrom(file = "tDLAxiom.h", name = "getInvRole")
     public ObjectRoleExpression getInvRole() {
         return inverseRole;

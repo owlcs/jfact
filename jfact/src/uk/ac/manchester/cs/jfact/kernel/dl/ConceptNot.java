@@ -11,12 +11,14 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
+/** concept negation */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptNot")
 public class ConceptNot implements ConceptExpression, ConceptArg {
     /** concept argument */
     @PortedFrom(file = "tDLExpression.h", name = "C")
     private ConceptExpression conceptExpression;
 
+    /** @param C */
     public ConceptNot(ConceptExpression C) {
         conceptExpression = C;
     }

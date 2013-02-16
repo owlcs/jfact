@@ -12,8 +12,11 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
 
+/** transitive object role */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomRoleTransitive")
 public class AxiomRoleTransitive extends AxiomSingleORole {
+    /** @param ax
+     * @param role */
     public AxiomRoleTransitive(OWLAxiom ax, ObjectRoleExpression role) {
         super(ax, role);
     }

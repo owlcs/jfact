@@ -20,6 +20,9 @@ public class AxiomDisjointUnion extends AbstractNaryAxiom<ConceptExpression> {
     @PortedFrom(file = "tDLAxiom.h", name = "C")
     private ConceptExpression conceptExpression;
 
+    /** @param ax
+     * @param c
+     * @param v */
     public AxiomDisjointUnion(OWLAxiom ax, ConceptExpression c,
             Collection<ConceptExpression> v) {
         super(ax, v);
@@ -38,8 +41,9 @@ public class AxiomDisjointUnion extends AbstractNaryAxiom<ConceptExpression> {
         return visitor.visit(this);
     }
 
+    /** @return right hand concept expression */
     @PortedFrom(file = "tDLAxiom.h", name = "getC")
-    public ConceptExpression getC() {
+    public ConceptExpression getConcept() {
         return conceptExpression;
     }
 }

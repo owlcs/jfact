@@ -13,11 +13,15 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
 
+/** class assertion */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomInstanceOf")
 public class AxiomInstanceOf extends AxiomIndividual {
     @PortedFrom(file = "tDLAxiom.h", name = "C")
     private ConceptExpression conceptExpression;
 
+    /** @param ax
+     * @param i
+     * @param c */
     public AxiomInstanceOf(OWLAxiom ax, IndividualExpression i, ConceptExpression c) {
         super(ax, i);
         conceptExpression = c;
@@ -35,7 +39,7 @@ public class AxiomInstanceOf extends AxiomIndividual {
         return visitor.visit(this);
     }
 
-    /** access */
+    /** @return concept */
     @PortedFrom(file = "tDLAxiom.h", name = "getC")
     public ConceptExpression getC() {
         return conceptExpression;

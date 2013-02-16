@@ -10,6 +10,7 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 import conformance.PortedFrom;
 
+/** data role axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomSingleDRole")
 public abstract class AxiomSingleDRole extends AxiomImpl {
     @PortedFrom(file = "tDLAxiom.h", name = "Role")
@@ -21,7 +22,7 @@ public abstract class AxiomSingleDRole extends AxiomImpl {
         this.role = role;
     }
 
-    /** access to role */
+    /** @return role */
     @PortedFrom(file = "tDLAxiom.h", name = "getRole")
     public DataRoleExpression getRole() {
         return role;

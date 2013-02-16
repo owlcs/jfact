@@ -12,8 +12,11 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
 
+/** asymmetric object role */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomRoleAsymmetric")
 public class AxiomRoleAsymmetric extends AxiomSingleORole {
+    /** @param ax
+     * @param role */
     public AxiomRoleAsymmetric(OWLAxiom ax, ObjectRoleExpression role) {
         super(ax, role);
     }

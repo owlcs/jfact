@@ -11,8 +11,12 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
+/** data exact cardinality */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptDataExactCardinality")
 public class ConceptDataExactCardinality extends AbstractConceptDataCardinality {
+    /** @param n
+     * @param R
+     * @param E */
     public ConceptDataExactCardinality(int n, DataRoleExpression R, DataExpression E) {
         super(n, R, E);
     }

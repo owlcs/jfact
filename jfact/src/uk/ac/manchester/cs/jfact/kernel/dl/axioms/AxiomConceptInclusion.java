@@ -12,6 +12,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.PortedFrom;
 
+/** SubClassOf */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomConceptInclusion")
 public class AxiomConceptInclusion extends AxiomImpl {
     @PortedFrom(file = "tDLAxiom.h", name = "Sub")
@@ -19,6 +20,9 @@ public class AxiomConceptInclusion extends AxiomImpl {
     @PortedFrom(file = "tDLAxiom.h", name = "Sup")
     private ConceptExpression superConcept;
 
+    /** @param ax
+     * @param sub
+     * @param sup */
     public AxiomConceptInclusion(OWLAxiom ax, ConceptExpression sub, ConceptExpression sup) {
         super(ax);
         subConcept = sub;
@@ -37,11 +41,13 @@ public class AxiomConceptInclusion extends AxiomImpl {
         return visitor.visit(this);
     }
 
+    /** @return sub concept */
     @PortedFrom(file = "tDLAxiom.h", name = "getSubC")
     public ConceptExpression getSubConcept() {
         return subConcept;
     }
 
+    /** @return super concept */
     @PortedFrom(file = "tDLAxiom.h", name = "getSupC")
     public ConceptExpression getSupConcept() {
         return superConcept;

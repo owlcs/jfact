@@ -13,12 +13,16 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import conformance.PortedFrom;
 
+/** nary expression base
+ * 
+ * @param <Argument> */
 @PortedFrom(file = "tDLExpression.h", name = "TDLNAryExpression")
 public class NAryExpressionImpl<Argument extends Expression> implements
         NAryExpression<Argument> {
     /** set of equivalent concept descriptions */
     private List<Argument> Base = new ArrayList<Argument>();
 
+    @SuppressWarnings("javadoc")
     public NAryExpressionImpl() {}
 
     @Override

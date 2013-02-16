@@ -13,6 +13,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** object exist restriction */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectExists")
 public class ConceptObjectExists implements ConceptObjectRCExpression {
     /** concept argument */
@@ -21,6 +22,8 @@ public class ConceptObjectExists implements ConceptObjectRCExpression {
     @Original
     private ObjectRoleExpression delegate;
 
+    /** @param R
+     * @param C */
     public ConceptObjectExists(ObjectRoleExpression R, ConceptExpression C) {
         conceptExpression = C;
         delegate = R;

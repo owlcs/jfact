@@ -13,10 +13,13 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
+/** data union */
 @PortedFrom(file = "tDLExpression.h", name = "TDLDataOr")
 public class DataOr extends NAryExpressionImpl<DataExpression> implements
         NAryExpression<DataExpression>, DataExpression {
-    /** create OR of expressions from the given array */
+    /** create OR of expressions from the given array
+     * 
+     * @param v */
     public DataOr(List<DataExpression> v) {
         add(v);
     }

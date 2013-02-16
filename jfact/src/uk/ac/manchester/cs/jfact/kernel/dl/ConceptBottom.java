@@ -10,6 +10,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
+/** bottom */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptBottom")
 public class ConceptBottom implements ConceptExpression {
     @Override
