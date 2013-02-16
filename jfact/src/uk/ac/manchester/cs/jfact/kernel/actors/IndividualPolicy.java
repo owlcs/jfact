@@ -14,6 +14,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 public class IndividualPolicy implements Policy {
     private boolean plain;
 
+    /** @param plain */
     public IndividualPolicy(boolean plain) {
         this.plain = plain;
     }

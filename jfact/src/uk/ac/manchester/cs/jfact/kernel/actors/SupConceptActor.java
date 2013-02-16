@@ -15,6 +15,7 @@ public class SupConceptActor implements Actor {
     @PortedFrom(file = "Kernel.cpp", name = "pe")
     protected ClassifiableEntry pe;
 
+    /** @param q */
     public SupConceptActor(ClassifiableEntry q) {
         pe = q;
     }

@@ -15,6 +15,7 @@ import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
 import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 
+/** taxonomy actor */
 public class TaxonomyActor implements Actor {
     private ExpressionManager expressionManager;
     /** 2D array to return */
@@ -23,7 +24,8 @@ public class TaxonomyActor implements Actor {
     private List<Expression> plain = new ArrayList<Expression>();
     private Policy policy;
 
-    /** try current entry */
+    /** @param p
+     * @return try current entry */
     public List<Expression> tryEntry(ClassifiableEntry p) {
         List<Expression> toReturn = new ArrayList<Expression>();
         if (p.isSystem()) {
@@ -35,12 +37,14 @@ public class TaxonomyActor implements Actor {
         return toReturn;
     }
 
+    /** @param em
+     * @param policy */
     public TaxonomyActor(ExpressionManager em, Policy policy) {
         expressionManager = em;
         this.policy = policy;
     }
 
-    /** get single vector of synonyms (necessary for Equivalents, for example) */
+    /** @return single vector of synonyms (necessary for Equivalents, for example) */
     public Collection<ConceptExpression> getClassSynonyms() {
         Collection<ConceptExpression> toReturn = new ArrayList<ConceptExpression>();
         if (!acc.isEmpty()) {
@@ -51,6 +55,7 @@ public class TaxonomyActor implements Actor {
         return toReturn;
     }
 
+    /** @return individual synonyms */
     public Collection<IndividualName> getIndividualSynonyms() {
         Collection<IndividualName> toReturn = new ArrayList<IndividualName>();
         if (!acc.isEmpty()) {
@@ -61,6 +66,7 @@ public class TaxonomyActor implements Actor {
         return toReturn;
     }
 
+    /** @return object property synonyms */
     public Collection<ObjectRoleExpression> getObjectPropertySynonyms() {
         Collection<ObjectRoleExpression> toReturn = new ArrayList<ObjectRoleExpression>();
         if (!acc.isEmpty()) {
@@ -71,6 +77,7 @@ public class TaxonomyActor implements Actor {
         return toReturn;
     }
 
+    /** @return data property synonyms */
     public Collection<DataRoleExpression> getDataPropertySynonyms() {
         Collection<DataRoleExpression> toReturn = new ArrayList<DataRoleExpression>();
         if (!acc.isEmpty()) {
@@ -81,6 +88,7 @@ public class TaxonomyActor implements Actor {
         return toReturn;
     }
 
+    /** @return plain individual */
     public Collection<IndividualExpression> getPlainIndividualElements() {
         Collection<IndividualExpression> toReturn = new ArrayList<IndividualExpression>(
                 plain.size());
@@ -90,6 +98,7 @@ public class TaxonomyActor implements Actor {
         return toReturn;
     }
 
+    /** @return plain class */
     public Collection<ConceptExpression> getPlainClassElements() {
         Collection<ConceptExpression> toReturn = new ArrayList<ConceptExpression>(
                 plain.size());
@@ -99,7 +108,7 @@ public class TaxonomyActor implements Actor {
         return toReturn;
     }
 
-    /** get 2D array of all required elements of the taxonomy */
+    /** @return 2D array of all required elements of the taxonomy */
     public Collection<Collection<ConceptExpression>> getClassElements() {
         Collection<Collection<ConceptExpression>> toReturn = new ArrayList<Collection<ConceptExpression>>();
         for (List<Expression> l : acc) {
@@ -112,7 +121,7 @@ public class TaxonomyActor implements Actor {
         return toReturn;
     }
 
-    /** get 2D array of all required elements of the taxonomy */
+    /** @return 2D array of all required elements of the taxonomy */
     public Collection<Collection<ObjectRoleExpression>> getObjectPropertyElements() {
         Collection<Collection<ObjectRoleExpression>> toReturn = new ArrayList<Collection<ObjectRoleExpression>>();
         for (List<Expression> l : acc) {
@@ -125,6 +134,7 @@ public class TaxonomyActor implements Actor {
         return toReturn;
     }
 
+    /** @return data properties */
     public Collection<Collection<DataRoleExpression>> getDataPropertyElements() {
         Collection<Collection<DataRoleExpression>> toReturn = new ArrayList<Collection<DataRoleExpression>>();
         for (List<Expression> l : acc) {
@@ -137,7 +147,7 @@ public class TaxonomyActor implements Actor {
         return toReturn;
     }
 
-    /** get 2D array of all required elements of the taxonomy */
+    /** @return 2D array of all required elements of the taxonomy */
     public Collection<Collection<IndividualExpression>> getIndividualElements() {
         Collection<Collection<IndividualExpression>> toReturn = new ArrayList<Collection<IndividualExpression>>();
         for (List<Expression> l : acc) {

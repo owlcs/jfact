@@ -14,6 +14,7 @@ import uk.ac.manchester.cs.jfact.kernel.Individual;
 import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
 import conformance.PortedFrom;
 
+/** RI actor */
 @PortedFrom(file = "Kernel.cpp", name = "RIActor")
 public class RIActor implements Actor {
     @PortedFrom(file = "Kernel.cpp", name = "acc")
@@ -28,8 +29,6 @@ public class RIActor implements Actor {
         return true;
     }
 
-    public RIActor() {}
-
     @Override
     @PortedFrom(file = "Kernel.cpp", name = "apply")
     public boolean apply(TaxonomyVertex v) {
@@ -40,6 +39,7 @@ public class RIActor implements Actor {
         return ret;
     }
 
+    /** @return list of accumulated individuals */
     @PortedFrom(file = "Kernel.cpp", name = "getAcc")
     public List<Individual> getAcc() {
         return acc;
