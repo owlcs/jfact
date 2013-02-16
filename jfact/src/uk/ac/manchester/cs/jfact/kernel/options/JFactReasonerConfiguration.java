@@ -2,7 +2,8 @@ package uk.ac.manchester.cs.jfact.kernel.options;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.semanticweb.owlapi.reasoner.*;
 
@@ -23,7 +24,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
      * action: (B)ottom Absorption), (T)op absorption, (E)quivalent concepts
      * replacement, (C)oncept absorption, (N)egated concept absorption, (F)orall
      * expression replacement, (R)ole absorption, (S)plit */
-    private static final Option absorptionFlags = getOption("absorptionFlags", "BTECFSR");
+    private static final StringOption absorptionFlags = getOption("absorptionFlags",
+            "BTECFSR");
     /** Option 'alwaysPreferEquals' allows user to enforce usage of C=D
      * definition instead of C[=D during absorption, even if implication
      * appeares earlier in stream of axioms. */
@@ -34,18 +36,18 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
      * and '0' for no sorting), 'o' is a order field (could be 'a' for ascending
      * and 'd' for descending mode), and 'p' is a preference field (could be 'p'
      * for preferencing non-generating rules and 'n' for not doing so). */
-    private static final Option orSortSub = getOption("orSortSub", "0");
+    private static final StringOption orSortSub = getOption("orSortSub", "0");
     /** Option 'orSortSat' define the sorting order of OR vertices in the DAG
      * used in satisfiability tests (used mostly in caching). Option has form of
      * string 'Mop', see orSortSub for details. */
-    private static final Option orSortSat = getOption("orSortSat", "0");
+    private static final StringOption orSortSat = getOption("orSortSat", "0");
     /** Option 'IAOEFLG' define the priorities of different operations in TODO
      * list. Possible values are 7-digit strings with ony possible digit are
      * 0-6. The digits on the places 1, 2, ..., 7 are for priority of Id, And,
      * Or, Exists, Forall, LE and GE operations respectively. The smaller number
      * means the higher priority. All other constructions (TOP, BOTTOM, etc) has
      * priority 0. */
-    private static final Option IAOEFLG = getOption("IAOEFLG", "1263005");
+    private static final StringOption IAOEFLG = getOption("IAOEFLG", "1263005");
     /** Option 'useSemanticBranching' switch semantic branching on and off. The
      * usage of semantic branching usually leads to faster reasoning, but
      * sometime could give small overhead. */
@@ -69,21 +71,17 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
     private boolean useSpecialDomains = true;
     /** Internal use only. Option 'skipBeforeBlock' allow user to skip given
      * number of nodes before make a block. */
-    private static final Option skipBeforeBlock = getOption("skipBeforeBlock", 0);
-    private static final List<Option> defaults = new ArrayList<Option>(Arrays.asList(
-            absorptionFlags, IAOEFLG, orSortSat, orSortSub, skipBeforeBlock));
+    // private static final Option skipBeforeBlock =
+    // getOption("skipBeforeBlock", 0);
+
     /** set of all avaliable (given) options */
-    private final Map<String, Option> base = new HashMap<String, Option>();
+    private final Map<String, StringOption> base = new HashMap<String, StringOption>();
 
-    public static Option getOption(String name, long l) {
-        return new LongOption(name, l);
-    }
-
-    public static Option getOption(String name, String s) {
+    public static StringOption getOption(String name, String s) {
         return new StringOption(name, s);
     }
 
-    private void registerOption(Option defVal) {
+    private void registerOption(StringOption defVal) {
         base.put(defVal.getOptionName(), defVal);
     }
 
@@ -165,9 +163,10 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
     private long timeOut = Long.MAX_VALUE;
 
     public JFactReasonerConfiguration() {
-        for (Option o : defaults) {
-            base.put(o.getOptionName(), o);
-        }
+        base.put(absorptionFlags.getOptionName(), absorptionFlags);
+        base.put(IAOEFLG.getOptionName(), IAOEFLG);
+        base.put(orSortSat.getOptionName(), orSortSat);
+        base.put(orSortSub.getOptionName(), orSortSub);
     }
 
     public JFactReasonerConfiguration(OWLReasonerConfiguration source) {
@@ -200,6 +199,25 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
 
     public void setverboseOutput(boolean b) {
         verboseOutput = b;
+    }
+
+    static class StringOption {
+        /** option name */
+        private String optionName;
+        private String value;
+
+        public StringOption(String name, String defVal) {
+            optionName = name;
+            value = defVal;
+        }
+
+        public String getOptionName() {
+            return optionName;
+        }
+
+        public <O> O getValue() {
+            return (O) value;
+        }
     }
 
     boolean USE_LOGGING = false;
