@@ -22,7 +22,6 @@ import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.kernel.*;
 import uk.ac.manchester.cs.jfact.kernel.actors.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Axiom;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.kernel.voc.Vocabulary;
 import uk.ac.manchester.cs.jfact.split.ModuleType;
@@ -52,18 +51,24 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     @Original
     private final JFactReasonerConfiguration configuration;
     private final OWLDataFactory df;
-    private TranslationMachinery translationMachinery;
+    protected TranslationMachinery translationMachinery;
     // holds the consistency status: true for consistent, false for
     // inconsistent, null for not verified (or changes received)
     private Boolean consistencyVerified = null;
     private final Set<OWLEntity> knownEntities = new HashSet<OWLEntity>();
     private final DatatypeFactory datatypeFactory;
 
+    /** @param o
+     * @param c
+     * @param b */
     public JFactReasoner(OWLOntology o, OWLReasonerConfiguration c, BufferingMode b) {
         this(o, c instanceof JFactReasonerConfiguration ? (JFactReasonerConfiguration) c
                 : new JFactReasonerConfiguration(c), b);
     }
 
+    /** @param rootOntology
+     * @param config
+     * @param bufferingMode */
     public JFactReasoner(OWLOntology rootOntology, JFactReasonerConfiguration config,
             BufferingMode bufferingMode) {
         configuration = config;
@@ -116,10 +121,6 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         }
         return translationMachinery.getClassExpressionTranslator().getNodeFromPointers(
                 pointers);
-    }
-
-    public DatatypeFactory getDatatypeFactory() {
-        return datatypeFactory;
     }
 
     private boolean isFreshName(OWLClassExpression ce) {
@@ -392,11 +393,10 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     }
 
     // tracing
-    /*
-     * Return tracing set (set of axioms that were participate in achieving
-     * result) for a given entailment. Return empty set if the axiom is not
-     * entailed.
-     */
+    /** @param axiom
+     * @return tracing set (set of axioms that were participate in achieving
+     *         result) for a given entailment. Return empty set if the axiom is
+     *         not entailed. */
     public synchronized Set<OWLAxiom> getTrace(OWLAxiom axiom) {
         kernel.needTracing();
         if (this.isEntailed(axiom)) {
@@ -706,6 +706,8 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         kernel = null;
     }
 
+    /** @param pw
+     * @param includeBottomNode */
     public void dumpClassHierarchy(LogAdapter pw, boolean includeBottomNode) {
         dumpSubClasses(getTopClassNode(), pw, 0, includeBottomNode);
     }
@@ -731,6 +733,8 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return actor.getClassElements();
     }
 
+    /** @param o
+     * @param time */
     public synchronized void writeReasoningResult(LogAdapter o, long time) {
         kernel.writeReasoningResult(o, time);
     }
@@ -817,13 +821,17 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
                         deterministicOnly));
     }
 
+    /** @param useSemantics
+     * @param type
+     * @return number of atoms */
     public int getAtomicDecompositionSize(boolean useSemantics, ModuleType type) {
         return kernel.getAtomicDecompositionSize(useSemantics, type);
     }
 
+    /** @return set of tautologies */
     public Set<OWLAxiom> getTautologies() {
         Set<OWLAxiom> toReturn = new HashSet<OWLAxiom>();
-        for (Axiom ax : kernel.getTautologies()) {
+        for (AxiomInterface ax : kernel.getTautologies()) {
             if (ax.getOWLAxiom() != null) {
                 toReturn.add(ax.getOWLAxiom());
             }
@@ -831,10 +839,11 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return toReturn;
     }
 
-    /** get a set of axioms that corresponds to the atom with the id INDEX */
+    /** @param index
+     * @return set of axioms that corresponds to the atom with the id INDEX */
     public Set<OWLAxiom> getAtomAxioms(int index) {
         Set<OWLAxiom> toReturn = new HashSet<OWLAxiom>();
-        for (Axiom ax : kernel.getAtomAxioms(index)) {
+        for (AxiomInterface ax : kernel.getAtomAxioms(index)) {
             if (ax.getOWLAxiom() != null) {
                 toReturn.add(ax.getOWLAxiom());
             }
@@ -842,18 +851,20 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return toReturn;
     }
 
-    /** get a set of axioms that corresponds to the module of the atom with the */
-    // id INDEX
-    public Set<Axiom> getAtomModule(int index) {
+    /** @param index
+     * @return set of axioms that corresponds to the module of the atom with the
+     *         id INDEX */
+    public Set<AxiomInterface> getAtomModule(int index) {
         return kernel.getAtomModule(index);
     }
 
-    /** get a set of atoms on which atom with index INDEX depends */
+    /** @param index
+     * @return set of atoms on which atom with index INDEX depends */
     public Set<TOntologyAtom> getAtomDependents(int index) {
         return kernel.getAtomDependents(index);
     }
 
-    private class EntityVisitorEx implements OWLEntityVisitorEx<Expression> {
+    class EntityVisitorEx implements OWLEntityVisitorEx<Expression> {
         @Override
         public Expression visit(OWLClass cls) {
             return translationMachinery.toClassPointer(cls);
@@ -887,6 +898,10 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
 
     EntityVisitorEx entityTranslator = new EntityVisitorEx();
 
+    /** @param signature
+     * @param useSemantic
+     * @param moduletype
+     * @return set of axioms in the module */
     public Set<OWLAxiom> getModule(Set<OWLEntity> signature, boolean useSemantic,
             ModuleType moduletype) {
         List<Expression> list = new ArrayList<Expression>();
@@ -896,9 +911,9 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
                 list.add(ex);
             }
         }
-        List<Axiom> axioms = kernel.getModule(list, useSemantic, moduletype);
+        List<AxiomInterface> axioms = kernel.getModule(list, useSemantic, moduletype);
         Set<OWLAxiom> toReturn = new HashSet<OWLAxiom>();
-        for (Axiom ax : axioms) {
+        for (AxiomInterface ax : axioms) {
             if (ax.getOWLAxiom() != null) {
                 toReturn.add(ax.getOWLAxiom());
             }
@@ -906,6 +921,10 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return toReturn;
     }
 
+    /** @param signature
+     * @param useSemantic
+     * @param moduletype
+     * @return set of non local axioms */
     public Set<OWLAxiom> getNonLocal(Set<OWLEntity> signature, boolean useSemantic,
             ModuleType moduletype) {
         List<Expression> list = new ArrayList<Expression>();
@@ -915,9 +934,9 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
                 list.add(ex);
             }
         }
-        Set<Axiom> axioms = kernel.getNonLocal(list, useSemantic, moduletype);
+        Set<AxiomInterface> axioms = kernel.getNonLocal(list, useSemantic, moduletype);
         Set<OWLAxiom> toReturn = new HashSet<OWLAxiom>();
-        for (Axiom ax : axioms) {
+        for (AxiomInterface ax : axioms) {
             if (ax.getOWLAxiom() != null) {
                 toReturn.add(ax.getOWLAxiom());
             }

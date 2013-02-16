@@ -9,6 +9,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.*;
 
+/** JFact factory */
 public class JFactFactory implements OWLReasonerFactory {
     @Override
     public String getReasonerName() {
