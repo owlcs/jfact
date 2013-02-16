@@ -11,31 +11,38 @@ import java.util.Collection;
 
 import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 
+/** literal */
 public class LiteralEntry extends NamedEntry {
     private Literal<?> literal;
     /** DAG index of the entry */
     private int pName;
 
-    /** create data entry with given name */
+    /** create data entry with given name
+     * 
+     * @param name */
     public LiteralEntry(String name) {
         super(name);
         pName = bpINVALID;
     }
 
-    /** set host data type for the data value */
+    /** set host data type for the data value
+     * 
+     * @param l */
     public void setLiteral(Literal<?> l) {
         literal = l;
     }
 
+    /** @return literal */
     public Literal<?> getLiteral() {
         return literal;
     }
 
-    /** get host type */
+    /** @return host type */
     public Datatype<?> getType() {
         return literal.getDatatypeExpression();
     }
 
+    /** @return set of facets */
     public Collection<Facet> getFacet() {
         return literal.getDatatypeExpression().getFacets();
     }

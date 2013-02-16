@@ -2,7 +2,8 @@ package uk.ac.manchester.cs.jfact.datatypes;
 
 import java.util.*;
 
-/** @author ignazio */
+/** @author ignazio
+ * @param <T> */
 public class DatatypeIntersection<T extends Comparable<T>> implements
         DatatypeCombination<DatatypeIntersection<T>, Datatype<T>> {
     private final Set<Datatype<T>> basics = new HashSet<Datatype<T>>();

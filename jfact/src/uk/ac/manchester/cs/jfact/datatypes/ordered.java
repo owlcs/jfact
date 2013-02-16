@@ -1,8 +1,15 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
-//equal facet: implemented by the equals() method on values
+/** ordered */
 public enum ordered {
-    FALSE("false"), PARTIAL("partial"), TOTAL("total");
+    /** not ordered */
+    FALSE("false"),
+    /** partially ordered */
+    PARTIAL("partial"),
+    /** totally ordered */
+    TOTAL("total");
+    /** @param string
+     * @return ordered */
     public static ordered parse(String string) {
         for (ordered o : values()) {
             if (o.name.equals(string)) {

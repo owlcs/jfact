@@ -8,7 +8,9 @@ import conformance.Original;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** Represents an extended datatype - intersection, union or further
- * restrictions. All implementations must be immutable */
+ * restrictions. All implementations must be immutable
+ * 
+ * @param <Representation> */
 @Original
 public interface DatatypeExpression<Representation extends Comparable<Representation>>
         extends Datatype<Representation> {
@@ -20,8 +22,12 @@ public interface DatatypeExpression<Representation extends Comparable<Representa
      * @param f
      *            a valid facet for the host datatype
      * @param value
-     *            the value for the facet */
+     *            the value for the facet
+     * @return modified expression */
     DatatypeExpression<Representation> addNonNumericFacet(Facet f, Comparable value);
 
+    /** @param f
+     * @param value
+     * @return modified expression */
     DatatypeExpression<Representation> addNumericFacet(Facet f, Comparable value);
 }

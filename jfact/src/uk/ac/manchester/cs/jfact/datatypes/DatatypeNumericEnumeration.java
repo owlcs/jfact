@@ -2,17 +2,25 @@ package uk.ac.manchester.cs.jfact.datatypes;
 
 import java.util.Collection;
 
+/** numeric enumeration
+ * 
+ * @param <R> */
 public class DatatypeNumericEnumeration<R extends Comparable<R>> extends
         DatatypeEnumeration<R> implements NumericDatatype<R> {
+    /** @param d */
     public DatatypeNumericEnumeration(NumericDatatype<R> d) {
         super(d);
     }
 
+    /** @param d
+     * @param l */
     public DatatypeNumericEnumeration(NumericDatatype<R> d, Literal<R> l) {
         this(d);
         literals.add(l);
     }
 
+    /** @param d
+     * @param c */
     public DatatypeNumericEnumeration(NumericDatatype<R> d, Collection<Literal<R>> c) {
         this(d);
         literals.addAll(c);

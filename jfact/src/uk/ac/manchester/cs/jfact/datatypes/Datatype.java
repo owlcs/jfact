@@ -15,10 +15,7 @@ public interface Datatype<Representation extends Comparable<Representation>> ext
     /** @return true if this datatype is an expression */
     boolean isExpression();
 
-    /** @return this datatype as a datatype expression, if it is an expression.
-     * @throws UnsupportedOperationException
-     *             if this datatype is not an expression (isExpression() returns
-     *             false) */
+    /** @return this datatype as a datatype expression, if it is an expression. */
     DatatypeExpression<Representation> asExpression();
 
     /** @return the known ancestors of this datatype */

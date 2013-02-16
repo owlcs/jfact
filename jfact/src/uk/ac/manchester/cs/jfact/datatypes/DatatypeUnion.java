@@ -4,11 +4,13 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+/** datatype union */
 public class DatatypeUnion implements DatatypeCombination<DatatypeUnion, Datatype<?>> {
     private final Set<Datatype<?>> basics = new HashSet<Datatype<?>>();
     private final String uri;
     private final Datatype<?> host;
 
+    /** @param host */
     public DatatypeUnion(Datatype<?> host) {
         uri = "union#a" + DatatypeFactory.getIndex();
         this.host = host;
@@ -19,6 +21,8 @@ public class DatatypeUnion implements DatatypeCombination<DatatypeUnion, Datatyp
         return host;
     }
 
+    /** @param host
+     * @param list */
     public DatatypeUnion(Datatype<?> host, Collection<Datatype<?>> list) {
         this(host);
         basics.addAll(list);

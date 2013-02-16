@@ -12,30 +12,34 @@ import java.util.Collection;
 import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 import conformance.PortedFrom;
 
+/** datatype entry */
 public class DatatypeEntry extends NamedEntry {
     /** corresponding type (Type has null in the field) */
     private final Datatype<?> type;
     /** DAG index of the entry */
     private int pName;
 
-    /** create data entry with given name */
+    /** create data entry with given name
+     * 
+     * @param type */
     public DatatypeEntry(Datatype<?> type) {
         super(type.getDatatypeURI());
         this.type = type;
         pName = bpINVALID;
     }
 
-    /** check if data entry represents basic data type */
+    /** @return check if data entry represents basic data type */
     public boolean isBasicDataType() {
         return type != null && !type.isExpression();
     }
 
+    /** @return datatype */
     public Datatype<?> getDatatype() {
         return type;
     }
 
     // facet part
-    /** get RW access to constraints of the DE */
+    /** @return constraints of the DE */
     public Collection<Facet> getFacet() {
         return type.getFacets();
     }

@@ -1,7 +1,9 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
 
-/** all Datatypes whose getNumeric() method returns true implement this interface */
+/** all Datatypes whose getNumeric() method returns true implement this interface
+ * 
+ * @param <R> */
 public interface NumericDatatype<R extends Comparable<R>> extends Datatype<R>,
         OrderedDatatype<R> {
     @Override
