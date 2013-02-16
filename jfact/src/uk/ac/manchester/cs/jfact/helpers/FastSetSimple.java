@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.helpers;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.Arrays;
 
+/** int set implementation */
 public class FastSetSimple extends AbstractFastSet {
     protected int[] values;
     protected int size = 0;
@@ -47,8 +48,11 @@ public class FastSetSimple extends AbstractFastSet {
         return -lowerbound - 1;
     }
 
+    @SuppressWarnings("javadoc")
     public FastSetSimple() {}
 
+    /** @param c1
+     * @param c2 */
     public FastSetSimple(FastSetSimple c1, FastSetSimple c2) {
         values = new int[(c1.size + c2.size) / defaultSize * defaultSize + defaultSize];
         int i = 0;

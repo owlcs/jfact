@@ -158,10 +158,15 @@ public abstract class DLTree {
         return elem.hashCode() + (children == null ? 0 : children.hashCode());
     }
 
+    /** @param v */
     public abstract void accept(DLTreeVisitor v);
 
+    /** @param v
+     * @return visitor value */
     public abstract <O> O accept(DLTreeVisitorEx<O> v);
 
+    /** @param toReplace
+     * @param replacement */
     public abstract void replace(DLTree toReplace, DLTree replacement);
 
     /** @return list of children */

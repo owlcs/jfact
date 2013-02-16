@@ -7,7 +7,10 @@ package uk.ac.manchester.cs.jfact.helpers;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.List;
 
+/** static methods */
 public class Helper {
+    /** @param l
+     * @param n */
     public static void resize(List<?> l, int n) {
         if (l.size() > n) {
             while (l.size() > n) {
@@ -20,6 +23,9 @@ public class Helper {
         }
     }
 
+    /** @param l
+     * @param n
+     * @param filler */
     public static <T> void resize(List<T> l, int n, T filler) {
         if (l.size() > n) {
             while (l.size() > n) {
@@ -32,19 +38,30 @@ public class Helper {
         }
     }
 
+    /** brancing level value */
     public static int InitBranchingLevelValue = 1;
+    /** invalid bipolar pointer */
     public static int bpINVALID = 0;
+    /** top bipolar pointer */
     public static int bpTOP = 1;
+    /** bottom bipolar pointer */
     public static int bpBOTTOM = -1;
 
+    /** @param index
+     * @param pos
+     * @return bipolar pointer */
     public static int createBiPointer(int index, boolean pos) {
         return pos ? index : -index;
     }
 
+    /** @param p
+     * @return true if correct */
     public static boolean isCorrect(int p) {
         return p != bpINVALID;
     }
 
+    /** @param p
+     * @return true if valid */
     public static boolean isValid(int p) {
         return p != bpINVALID;
     }

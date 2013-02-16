@@ -10,19 +10,24 @@ import java.util.LinkedList;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** save stack
+ * 
+ * @param <T> */
 @PortedFrom(file = "tSaveStack.h", name = "TSaveStack")
 public class SaveStack<T> {
     @Original
     protected LinkedList<T> list = new LinkedList<T>();
 
-    /** get an object from a fixed depth */
+    /** @param depth
+     * @return an object from a fixed depth */
     @PortedFrom(file = "tSaveStack.h", name = "pop")
     public T pop(int depth) {
         top(depth);
         return pop();
     }
 
-    /** get an object from a fixed depth */
+    /** @param depth
+     * @return an object from a fixed depth */
     @PortedFrom(file = "tSaveStack.h", name = "top")
     public T top(int depth) {
         assert list.size() >= depth;
@@ -32,11 +37,13 @@ public class SaveStack<T> {
         return list.peek();
     }
 
+    /** @return top of stack */
     @PortedFrom(file = "tSaveStack.h", name = "top")
     public T top() {
         return list.peek();
     }
 
+    /** @return pop stack */
     @PortedFrom(file = "tSaveStack.h", name = "pop")
     public T pop() {
         assert !list.isEmpty();
@@ -44,21 +51,25 @@ public class SaveStack<T> {
         return pop;
     }
 
+    /** @param e */
     @PortedFrom(file = "tSaveStack.h", name = "push")
     public void push(T e) {
         list.push(e);
     }
 
+    /** clear the stack */
     @Original
     public void clear() {
         list.clear();
     }
 
+    /** @return true if is empty */
     @PortedFrom(file = "tSaveStack.h", name = "empty")
     public boolean isEmpty() {
         return list.isEmpty();
     }
 
+    /** @return size of stack */
     @Original
     public int size() {
         return list.size();
