@@ -17,6 +17,7 @@ public class ModelCacheSingleton extends ModelCacheInterface {
     @PortedFrom(file = "modelCacheSingleton.h", name = "Singleton")
     private int singleton;
 
+    /** @param bp */
     public ModelCacheSingleton(int bp) {
         super(false);
         singleton = bp;
@@ -29,14 +30,16 @@ public class ModelCacheSingleton extends ModelCacheInterface {
         return ModelCacheState.csValid;
     }
 
-    /** access to internal value */
+    /** @return internal value */
     @PortedFrom(file = "modelCacheSingleton.h", name = "getValue")
     public int getValue() {
         return singleton;
     }
 
     // mergable part
-    /** check whether two caches can be merged; @return state of "merged" model */
+    /** check whether two caches can be merged;
+     * 
+     * @return state of "merged" model */
     @Override
     @PortedFrom(file = "modelCacheSingleton.h", name = "canMerge")
     public ModelCacheState canMerge(ModelCacheInterface p) {

@@ -16,6 +16,7 @@ import uk.ac.manchester.cs.jfact.kernel.*;
 import conformance.Original;
 import conformance.PortedFrom;
 
+/** model cache Ian (Horrocks) */
 @PortedFrom(file = "modelCacheIan.h", name = "modelCacheIan")
 public class ModelCacheIan extends ModelCacheInterface {
     // sets for the cache
@@ -50,8 +51,8 @@ public class ModelCacheIan extends ModelCacheInterface {
     @PortedFrom(file = "modelCacheIan.h", name = "curState")
     public ModelCacheState curState;
     // XXX these two fields should be used somehow
-    public int nC;
-    public int nR;
+    private int nC;
+    private int nR;
     // XXX move to config
     @Original
     private boolean simpleRules;
@@ -73,7 +74,14 @@ public class ModelCacheIan extends ModelCacheInterface {
         processLabelInterval(DLHeap, pCT.beginl_cc());
     }
 
-    /** Create cache model of given CompletionTree using given HEAP */
+    /** Create cache model of given CompletionTree using given HEAP
+     * 
+     * @param heap
+     * @param p
+     * @param flagNominals
+     * @param nC
+     * @param nR
+     * @param simpleRules */
     public ModelCacheIan(DLDag heap, DlCompletionTree p, boolean flagNominals, int nC,
             int nR, boolean simpleRules) {
         this(flagNominals, nC, nR, simpleRules);
@@ -81,7 +89,10 @@ public class ModelCacheIan extends ModelCacheInterface {
         initRolesFromArcs(p);
     }
 
-    /** empty c'tor */
+    /** @param flagNominals
+     * @param nC
+     * @param nR
+     * @param simpleRules */
     public ModelCacheIan(boolean flagNominals, int nC, int nR, boolean simpleRules) {
         super(flagNominals);
         curState = csValid;
@@ -114,7 +125,9 @@ public class ModelCacheIan extends ModelCacheInterface {
     }
 
     /** init existRoles from arcs; can be used to create pseudo-cache with deps
-     * of CT edges */
+     * of CT edges
+     * 
+     * @param pCT */
     @PortedFrom(file = "modelCacheIan.h", name = "initRolesFromArcs")
     public void initRolesFromArcs(DlCompletionTree pCT) {
         List<DlCompletionTreeArc> list = pCT.getNeighbour();
@@ -157,6 +170,9 @@ public class ModelCacheIan extends ModelCacheInterface {
         curState = csValid;
     }
 
+    /** @param cur
+     * @param pos
+     * @param det */
     @PortedFrom(file = "modelCacheIan.h", name = "processConcept")
     public void processConcept(DLVertex cur, boolean pos, boolean det) {
         switch (cur.getType()) {
@@ -194,6 +210,7 @@ public class ModelCacheIan extends ModelCacheInterface {
         }
     }
 
+    /** @param cur */
     @PortedFrom(file = "modelCacheIan.h", name = "processAutomaton")
     public void processAutomaton(DLVertex cur) {
         RAStateTransitions RST = cur.getRole().getAutomaton().getBase()
@@ -251,6 +268,10 @@ public class ModelCacheIan extends ModelCacheInterface {
         }
     }
 
+    /** @param Singleton
+     * @param pos
+     * @return invalid, failed or valid depending on whether singleton is
+     *         included */
     @PortedFrom(file = "modelCacheIan.h", name = "isMergableSingleton")
     public ModelCacheState isMergableSingleton(int Singleton, boolean pos) {
         assert Singleton != 0;
@@ -263,6 +284,8 @@ public class ModelCacheIan extends ModelCacheInterface {
         return csValid;
     }
 
+    /** @param q
+     * @return invalid, failed or valid */
     @PortedFrom(file = "modelCacheIan.h", name = "isMergableIan")
     public ModelCacheState isMergableIan(ModelCacheIan q) {
         if (posDConcepts.intersects(q.negDConcepts)
@@ -300,6 +323,8 @@ public class ModelCacheIan extends ModelCacheInterface {
         }
     }
 
+    /** @param p
+     * @return invalid, failed or valid */
     @PortedFrom(file = "modelCacheIan.h", name = "merge")
     public ModelCacheState merge(ModelCacheInterface p) {
         assert p != null;
