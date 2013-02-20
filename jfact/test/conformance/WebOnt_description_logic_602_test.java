@@ -9,8 +9,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
-import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
@@ -39,8 +37,7 @@ public class WebOnt_description_logic_602_test {
                 f.getOWLEquivalentClassesAxiom(D, f.getOWLObjectMaxCardinality(0, p)));
         m.addAxiom(o,
                 f.getOWLEquivalentClassesAxiom(B, f.getOWLObjectMinCardinality(1, p)));
-        m.saveOntology(o, new OWLFunctionalSyntaxOntologyFormat(),
-                new SystemOutDocumentTarget());
+
         OWLReasoner reasoner = Factory.factory().createReasoner(o);
         assertTrue("cannot infer disjoint",
                 reasoner.isEntailed(f.getOWLDisjointClassesAxiom(D, B)));
