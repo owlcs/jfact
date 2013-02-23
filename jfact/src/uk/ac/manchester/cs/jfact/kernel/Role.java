@@ -503,13 +503,6 @@ public class Role extends ClassifiableEntry {
         return inverse().bpDomain;
     }
 
-    @Override
-    @PortedFrom(file = "tRole.h", name = "getIndex")
-    public int getIndex() {
-        // TODO Auto-generated method stub
-        return super.getIndex();
-    }
-
     // disjoint roles
     /** set R and THIS as a disjoint; use it after Anc/Desc are determined
      * 
