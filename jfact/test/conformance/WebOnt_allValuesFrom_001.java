@@ -90,7 +90,6 @@ public class WebOnt_allValuesFrom_001 {
         String d = "This shows that insignificant whitespace in an rdf:XMLLiteral is not significant within OWL.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
-        // r.getConfiguration().setLoggingActive(true);
         r.run();
     }
 

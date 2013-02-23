@@ -5,18 +5,12 @@ package conformance;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static org.junit.Assert.*;
-
 import org.junit.Test;
-import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.io.StringDocumentSource;
-import org.semanticweb.owlapi.reasoner.OWLReasoner;
-
-import uk.ac.manchester.cs.jfact.JFactFactory;
 
 @SuppressWarnings("javadoc")
 public class WebOnt_miscellaneous_002 {
     @Test
+    @Changed
     public void testWebOnt_miscellaneous_002() {
         String conclusion = "";
         String id = "WebOnt_miscellaneous_002";
@@ -28,18 +22,6 @@ public class WebOnt_miscellaneous_002 {
         r.run();
     }
 
-    @Test
-    public void _testWebOnt_miscellaneous_002() throws Exception {
-        String conclusion = "";
-        String id = "WebOnt_miscellaneous_002";
-        TestClasses tc = TestClasses.valueOf("CONSISTENCY");
-        String d = "Food example taken from the guide. Note that this is the same as the ontology http://www.w3.org/2002/03owlt/miscellaneous/consistent002 imported in other tests.";
-        String input = premise1 + premise2 + premise3 + premise4;
-        OWLReasoner r = new JFactFactory().createReasoner(OWLManager
-                .createOWLOntologyManager().loadOntologyFromOntologyDocument(
-                        new StringDocumentSource(input)));
-        assertTrue(r.isConsistent());
-    }
 
     // public void _testWebOnt_miscellaneous_002(String s1, String s2)
     // throws OWLOntologyCreationException {
@@ -99,7 +81,6 @@ public class WebOnt_miscellaneous_002 {
             + "      http://ontolingua.stanford.edu/doc/chimaera/ontologies/wines.daml\n"
             + "      Substantially modified.</rdfs:comment> "
             + "</owl:Ontology>\n"
-            // XXX added
             + "  <owl:Class rdf:about=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#WineFlavor\"/>"
             + "  <owl:ObjectProperty rdf:about=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#hasBody\"/>"
             + "  <owl:ObjectProperty rdf:about=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#hasSugar\"/>"
@@ -111,7 +92,6 @@ public class WebOnt_miscellaneous_002 {
             + "  <owl:Class rdf:about=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#Winery\"/>"
             + "  <owl:Class rdf:about=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#Region\"/>"
             + "  <owl:Class rdf:about=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#Wine\"/>"
-            // XXX end added
             + "  <owl:Class rdf:about=\"#Wine\"><rdfs:subClassOf rdf:resource=\"&food;PotableLiquid\" /><rdfs:subClassOf><owl:Restriction><owl:onProperty rdf:resource=\"#hasMaker\" />\n"
             + " <owl:cardinality rdf:datatype=\"&xsd;nonNegativeInteger\">1</owl:cardinality></owl:Restriction></rdfs:subClassOf><rdfs:subClassOf><owl:Restriction><owl:onProperty rdf:resource=\"#hasMaker\" />\n"
             + " <owl:allValuesFrom rdf:resource=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent002#Winery\" /></owl:Restriction></rdfs:subClassOf><rdfs:subClassOf><owl:Restriction><owl:onProperty rdf:resource=\"#madeFromGrape\" />\n"

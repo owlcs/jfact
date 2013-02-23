@@ -230,16 +230,11 @@ public class WebOnt {
     }
 
     @Test
+    @Changed
     public void testWebOnt_I5_26_005() {
-        // TODO not specs compliant
-        String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-                + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.26/consistent005\" >\n"
-                + "   <owl:Ontology/>\n"
-                + "   <owl:Class rdf:nodeID=\"B\"><owl:intersectionOf rdf:parseType=\"Collection\">\n"
-                // TODO added
-                + "        <owl:Class rdf:ID=\"A\"/>\n"
-                // TODO end added
-                + "        <owl:Class rdf:ID=\"B\"/></owl:intersectionOf><owl:disjointWith><owl:Class rdf:ID=\"C\"/></owl:disjointWith><owl:equivalentClass><owl:Class rdf:ID=\"D\"/></owl:equivalentClass></owl:Class></rdf:RDF>";
+        String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xml:base=\"http://www.w3.org/2002/03owlt/I5.26/consistent005\" ><owl:Ontology/>\n"
+                + "   <owl:Class rdf:nodeID=\"B\"><owl:intersectionOf rdf:parseType=\"Collection\"><owl:Class rdf:ID=\"A\"/><owl:Class rdf:ID=\"B\"/>"
+                + "</owl:intersectionOf><owl:disjointWith><owl:Class rdf:ID=\"C\"/></owl:disjointWith><owl:equivalentClass><owl:Class rdf:ID=\"D\"/></owl:equivalentClass></owl:Class></rdf:RDF>";
         String conclusion = "";
         String id = "WebOnt_I5_26_005";
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
@@ -251,9 +246,8 @@ public class WebOnt {
     }
 
     @Test
+    @Changed(reason = "test doesn't make sense; This code does the test in a meaningful way")
     public void testWebOnt_I5_26_009() throws OWLOntologyCreationException {
-        // TODO test doesn't make sense
-        // This code does the test in a meaningful way
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLOntology o = m.createOntology();
         OWLDataFactory f = m.getOWLDataFactory();

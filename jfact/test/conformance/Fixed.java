@@ -24,7 +24,6 @@ import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
 @SuppressWarnings("javadoc")
 public class Fixed {
-
     @Test
     public void testConsistent_but_all_unsat() {
         String premise = "<?xml version=\"1.0\"?>\n"
@@ -66,9 +65,6 @@ public class Fixed {
         r.setReasonerFactory(Factory.factory());
         r.run();
     }
-
-
-
 
     @Test
     public void testPlus_and_Minus_Zero_Integer() {
@@ -157,8 +153,8 @@ public class Fixed {
     }
 
     @Test
+    @Changed(reason = "old test appears to use the wrong value")
     public void testDatatype_Float_Discrete_001() throws OWLOntologyCreationException {
-        // XXX old test appears to use the wrong value...
         // String premise = "<?xml version=\"1.0\"?>\n"
         // + "<rdf:RDF\n"
         // +
@@ -238,6 +234,7 @@ public class Fixed {
         r.setReasonerFactory(Factory.factory());
         r.run();
     }
+
     @Test
     public void testWebOnt_I5_8_010() {
         String premise = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
@@ -344,8 +341,8 @@ public class Fixed {
     }
 
     @Test
+    @Changed(reason = "changed to fix it")
     public void testone_two() {
-        // TODO changed to fix it
         String premise = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
                 + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
                 + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
@@ -429,28 +426,21 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_bool_intersection_inst_comp() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#x\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#y\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
-                // end added
                 + "  <ex:x rdf:about=\"http://www.example.org#z\"><rdf:type rdf:resource=\"http://www.example.org#y\"/></ex:x>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#c\">\n"
-                // added
                 + "<owl:equivalentClass><owl:Class>"
-                // end added
                 + "    <owl:intersectionOf rdf:parseType=\"Collection\"><rdf:Description rdf:about=\"http://www.example.org#x\"/><rdf:Description rdf:about=\"http://www.example.org#y\"/></owl:intersectionOf>\n"
-                // added
                 + "</owl:Class></owl:equivalentClass>"
-                // end added
-                + "  </rdf:Description>\n" + "</rdf:RDF>";
+                + "  </rdf:Description>\n"
+                + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
-                // end added
                 + "  <ex:c rdf:about=\"http://www.example.org#z\"/>\n" + "</rdf:RDF>";
         String id = "rdfbased_sem_bool_intersection_inst_comp";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
@@ -461,29 +451,22 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_bool_intersection_term() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#y\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#c\">\n"
-                // added
                 + "<rdfs:subClassOf><owl:Class>"
-                // end added
                 + "    <owl:intersectionOf rdf:parseType=\"Collection\"><rdf:Description rdf:about=\"http://www.example.org#x\"/><rdf:Description rdf:about=\"http://www.example.org#y\"/></owl:intersectionOf>\n"
-                // added
                 + "</owl:Class></rdfs:subClassOf>"
-                // end added
-                + "  </rdf:Description>\n" + "</rdf:RDF>";
+                + "  </rdf:Description>\n"
+                + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#y\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#c\"><rdfs:subClassOf rdf:resource=\"http://www.example.org#x\"/><rdfs:subClassOf rdf:resource=\"http://www.example.org#y\"/></rdf:Description></rdf:RDF>";
         String id = "rdfbased_sem_bool_intersection_term";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
@@ -494,29 +477,21 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_bool_union_inst_comp() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#x\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#y\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p\"/>\n"
-                // end added
                 + "  <ex:x rdf:about=\"http://www.example.org#z\"/>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#c\">\n"
-                // added
                 + "<owl:equivalentClass><owl:Class>"
-                // end added
                 + "    <owl:unionOf rdf:parseType=\"Collection\"><rdf:Description rdf:about=\"http://www.example.org#x\"/><rdf:Description rdf:about=\"http://www.example.org#y\"/></owl:unionOf>\n"
-                // added
-                + "</owl:Class></owl:equivalentClass>" +
-                // end added
-                "  </rdf:Description>\n</rdf:RDF>";
+                + "</owl:Class></owl:equivalentClass>"
+                + "  </rdf:Description>\n</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
-                // end added
                 + "  <ex:c rdf:about=\"http://www.example.org#z\"/>\n" + "</rdf:RDF>";
         String id = "rdfbased_sem_bool_union_inst_comp";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
@@ -527,29 +502,22 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_bool_union_term() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#y\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#c\">\n"
-                // added
                 + "<owl:equivalentClass><owl:Class>"
-                // end added
                 + "    <owl:unionOf rdf:parseType=\"Collection\"><rdf:Description rdf:about=\"http://www.example.org#x\"/><rdf:Description rdf:about=\"http://www.example.org#y\"/></owl:unionOf>\n"
-                // added
                 + "</owl:Class></owl:equivalentClass>"
-                // end added
-                + "  </rdf:Description>\n" + "</rdf:RDF>";
+                + "  </rdf:Description>\n"
+                + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#y\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x\"><rdfs:subClassOf rdf:resource=\"http://www.example.org#c\"/></rdf:Description>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#y\"><rdfs:subClassOf rdf:resource=\"http://www.example.org#c\"/></rdf:Description></rdf:RDF>";
         String id = "rdfbased_sem_bool_union_term";
@@ -561,12 +529,10 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_char_functional_inst() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p\"/>\n"
-                // end added
                 + "  <owl:FunctionalProperty rdf:about=\"http://www.example.org#p\"/>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x\"><ex:p rdf:resource=\"http://www.example.org#y1\"/><ex:p rdf:resource=\"http://www.example.org#y2\"/></rdf:Description></rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
@@ -580,17 +546,13 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_enum_inst_included() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#e\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#e\"><owl:oneOf rdf:parseType=\"Collection\"><rdf:Description rdf:about=\"http://www.example.org#x\"/><rdf:Description rdf:about=\"http://www.example.org#y\"/></owl:oneOf></rdf:Description></rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#e\"/>\n"
-                // end added
                 + "  <ex:e rdf:about=\"http://www.example.org#x\"/>\n"
                 + "  <ex:e rdf:about=\"http://www.example.org#y\"/>\n" + "</rdf:RDF>";
         String id = "rdfbased_sem_enum_inst_included";
@@ -602,14 +564,12 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_eqdis_different_irrflxv() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "<owl:Thing rdf:about=\"http://www.example.org#x\"/>\n"
                 + "<owl:Thing rdf:about=\"http://www.example.org#z\"/>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#z\"><owl:sameAs rdf:resource=\"http://www.example.org#x\"/></rdf:Description>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x\"><owl:differentFrom rdf:resource=\"http://www.example.org#z\"/></rdf:Description></rdf:RDF>";
         String conclusion = "";
         String id = "rdfbased_sem_eqdis_different_irrflxv";
@@ -621,14 +581,12 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_eqdis_disclass_irrflxv() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#fake\"/>\n"
                 + "  <owl:Thing rdf:about=\"http://www.example.org#x\"/>\n"
-                // end added
                 + "  <ex:c rdf:about=\"http://www.example.org#x\"/>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#c\"><owl:disjointWith rdf:resource=\"http://www.example.org#fake\"/></rdf:Description>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#fake\"><owl:equivalentClass rdf:resource=\"http://www.example.org#c\"/></rdf:Description></rdf:RDF>";
@@ -642,13 +600,11 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_eqdis_disprop_eqprop() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p1\"/>\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p2\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#s2\"><ex:p2 rdf:resource=\"http://www.example.org#o2\"/></rdf:Description>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#s1\"><ex:p1 rdf:resource=\"http://www.example.org#o1\"/></rdf:Description>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#p1\"><owl:equivalentProperty rdf:resource=\"http://www.example.org#p2\"/><owl:propertyDisjointWith rdf:resource=\"http://www.example.org#p2\"/></rdf:Description></rdf:RDF>";
@@ -662,13 +618,11 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_eqdis_disprop_inst() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p1\"/>\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p2\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#s\"><ex:p1 rdf:resource=\"http://www.example.org#o\"/><ex:p2 rdf:resource=\"http://www.example.org#o\"/></rdf:Description>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#p1\"><owl:propertyDisjointWith rdf:resource=\"http://www.example.org#p2\"/></rdf:Description></rdf:RDF>";
         String conclusion = "";
@@ -681,13 +635,11 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_eqdis_disprop_irrflxv() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p\"/>\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#q\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#s\"><ex:p rdf:resource=\"http://www.example.org#o\"/></rdf:Description>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#q\"><owl:equivalentProperty rdf:resource=\"http://www.example.org#p\"/></rdf:Description>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#p\"><owl:propertyDisjointWith rdf:resource=\"http://www.example.org#q\"/></rdf:Description></rdf:RDF>";
@@ -701,19 +653,15 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_eqdis_eqclass_subclass_1() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#c1\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c2\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#c1\"><owl:equivalentClass rdf:resource=\"http://www.example.org#c2\"/></rdf:Description></rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#c1\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c2\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#c2\"><rdfs:subClassOf><rdf:Description rdf:about=\"http://www.example.org#c1\"><rdfs:subClassOf rdf:resource=\"http://www.example.org#c2\"/></rdf:Description></rdfs:subClassOf></rdf:Description></rdf:RDF>";
         String id = "rdfbased_sem_eqdis_eqclass_subclass_1";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
@@ -724,27 +672,19 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_eqdis_sameas_subst() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "<owl:ObjectProperty rdf:about=\"http://www.example.org#p1\"/>\n"
                 + "<owl:ObjectProperty rdf:about=\"http://www.example.org#p2\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#s2\"><owl:sameAs><rdf:Description rdf:about=\"http://www.example.org#s1\"><ex:p1 rdf:resource=\"http://www.example.org#o1\"/></rdf:Description></owl:sameAs></rdf:Description>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#o2\"><owl:sameAs rdf:resource=\"http://www.example.org#o1\"/></rdf:Description>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#p2\"><owl:sameAs rdf:resource=\"http://www.example.org#p1\"/></rdf:Description>\n"
-                +
-                // added
-                "  <rdf:Description rdf:about=\"http://www.example.org#p2\"><owl:equivalentProperty rdf:resource=\"http://www.example.org#p1\"/></rdf:Description>\n"
-                +
-                // end added
-                "</rdf:RDF>";
+                + "  <rdf:Description rdf:about=\"http://www.example.org#p2\"><owl:equivalentProperty rdf:resource=\"http://www.example.org#p1\"/></rdf:Description>\n"
+                + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "<owl:ObjectProperty rdf:about=\"http://www.example.org#p1\"/>\n"
                 + "<owl:ObjectProperty rdf:about=\"http://www.example.org#p2\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#s2\"><ex:p1 rdf:resource=\"http://www.example.org#o1\"/></rdf:Description>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#s1\"><ex:p2 rdf:resource=\"http://www.example.org#o1\"/><ex:p1 rdf:resource=\"http://www.example.org#o2\"/></rdf:Description></rdf:RDF>";
         String id = "rdfbased_sem_eqdis_sameas_subst";
@@ -756,19 +696,15 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_eqdis_sameas_sym() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "<owl:Thing rdf:about=\"http://www.example.org#x\"/>\n"
                 + "<owl:Thing rdf:about=\"http://www.example.org#y\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x\"><owl:sameAs rdf:resource=\"http://www.example.org#y\"/></rdf:Description></rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "<owl:Thing rdf:about=\"http://www.example.org#x\"/>\n"
                 + "<owl:Thing rdf:about=\"http://www.example.org#y\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#y\"><owl:sameAs rdf:resource=\"http://www.example.org#x\"/></rdf:Description></rdf:RDF>";
         String id = "rdfbased_sem_eqdis_sameas_sym";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
@@ -793,16 +729,12 @@ public class Fixed {
     }
 
     @Test
+    @Changed(reason = "without declarations, some properties default to datatype properties and some to annotation properties")
     public void testrdfbased_sem_ndis_alldisjointproperties_fw() {
-        // XXX test modified because of ontology not compliant with OWL 2
-        // XXX without declarations, some properties default to datatype
-        // properties and some to annotation properties
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p1\"/>\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p2\"/>\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p3\"/>\n"
-                // end added
                 + "  <owl:AllDisjointProperties rdf:about=\"http://www.example.org#z\"><owl:members rdf:parseType=\"Collection\"><rdf:Description rdf:about=\"http://www.example.org#p1\"/><rdf:Description rdf:about=\"http://www.example.org#p2\"/><rdf:Description rdf:about=\"http://www.example.org#p3\"/></owl:members></owl:AllDisjointProperties>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#s\"><ex:p1 rdf:resource=\"http://www.example.org#o\"/><ex:p2 rdf:resource=\"http://www.example.org#o\"/></rdf:Description></rdf:RDF>";
         String conclusion = "";
@@ -815,19 +747,12 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_npa_dat_fw() {
-        // XXX test modified because of ontology not compliant with OWL 2
-        // NegativeDataPropertyAssertion( DPE a lt ) _:x rdf:type
-        // owl:NegativePropertyAssertion .
-        // _:x owl:sourceIndividual T(a) .
-        // _:x owl:assertionProperty T(DPE) .
-        // _:x owl:targetValue T(lt) .
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#z\"/>\n"
                 + "  <owl:Thing rdf:about=\"http://www.example.org#s\"/>\n"
                 + "  <owl:DatatypeProperty rdf:about=\"http://www.example.org#p\"/><rdf:Description rdf:about=\"http://www.example.org#s\"><ex:p>data</ex:p></rdf:Description>\n"
-                // end added
                 + "  <owl:NegativePropertyAssertion><owl:sourceIndividual rdf:resource=\"http://www.example.org#s\"/><owl:assertionProperty rdf:resource=\"http://www.example.org#p\"/><owl:targetValue>data</owl:targetValue></owl:NegativePropertyAssertion></rdf:RDF>";
         String conclusion = "";
         String id = "rdfbased_sem_npa_dat_fw";
@@ -839,19 +764,15 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_rdfs_domain_cond() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#u\"><ex:p rdf:resource=\"http://www.example.org#v\"/></rdf:Description>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#p\"><rdfs:domain rdf:resource=\"http://www.example.org#c\"/></rdf:Description></rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
-                // end added
                 + "  <ex:c rdf:about=\"http://www.example.org#u\"/>\n" + "</rdf:RDF>";
         String id = "rdfbased_sem_rdfs_domain_cond";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
@@ -862,19 +783,15 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_rdfs_range_cond() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#u\"><ex:p rdf:resource=\"http://www.example.org#v\"/></rdf:Description>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#p\"><rdfs:range rdf:resource=\"http://www.example.org#c\"/></rdf:Description></rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
-                // end added
                 + "  <ex:c rdf:about=\"http://www.example.org#v\"/>\n" + "</rdf:RDF>";
         String id = "rdfbased_sem_rdfs_range_cond";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
@@ -885,39 +802,28 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_restrict_allvalues_cmp_class() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#c1\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c2\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x2\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x1\"/>\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x1\">\n"
-                // added
                 + "<owl:equivalentClass><owl:Restriction>"
-                // end added
                 + "    <owl:allValuesFrom><rdf:Description rdf:about=\"http://www.example.org#c1\"><rdfs:subClassOf rdf:resource=\"http://www.example.org#c2\"/></rdf:Description></owl:allValuesFrom><owl:onProperty rdf:resource=\"http://www.example.org#p\"/>\n"
-                // added
                 + "</owl:Restriction></owl:equivalentClass>"
-                // end added
                 + "  </rdf:Description>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x2\">\n"
-                // added
                 + "<owl:equivalentClass><owl:Restriction>"
-                // end added
                 + "    <owl:allValuesFrom rdf:resource=\"http://www.example.org#c2\"/><owl:onProperty rdf:resource=\"http://www.example.org#p\"/>\n"
-                // added
                 + "</owl:Restriction></owl:equivalentClass>"
-                // end added
-                + "  </rdf:Description>\n" + "</rdf:RDF>";
+                + "  </rdf:Description>\n"
+                + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#x1\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x2\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x1\"><rdfs:subClassOf rdf:resource=\"http://www.example.org#x2\"/></rdf:Description></rdf:RDF>";
         String id = "rdfbased_sem_restrict_allvalues_cmp_class";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
@@ -928,39 +834,28 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_restrict_allvalues_cmp_prop() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p1\"/>\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p2\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x1\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x2\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x1\">\n"
-                // added
                 + "<owl:equivalentClass><owl:Restriction>"
-                // end added
                 + "    <owl:allValuesFrom rdf:resource=\"http://www.example.org#c\"/><owl:onProperty><rdf:Description rdf:about=\"http://www.example.org#p1\"><rdfs:subPropertyOf rdf:resource=\"http://www.example.org#p2\"/></rdf:Description></owl:onProperty>\n"
-                // added
                 + "</owl:Restriction></owl:equivalentClass>"
-                // end added
                 + "  </rdf:Description>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x2\">\n"
-                // added
                 + "<owl:equivalentClass><owl:Restriction>"
-                // end added
                 + "    <owl:allValuesFrom rdf:resource=\"http://www.example.org#c\"/><owl:onProperty rdf:resource=\"http://www.example.org#p2\"/>\n"
-                // added
                 + "</owl:Restriction></owl:equivalentClass>"
-                // end added
-                + "  </rdf:Description>\n" + "</rdf:RDF>";
+                + "  </rdf:Description>\n"
+                + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#x1\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x2\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x2\"><rdfs:subClassOf rdf:resource=\"http://www.example.org#x1\"/></rdf:Description></rdf:RDF>";
         String id = "rdfbased_sem_restrict_allvalues_cmp_prop";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
@@ -971,28 +866,21 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_restrict_allvalues_inst_obj() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "<owl:Class rdf:about=\"http://www.example.org#z\"/>\n"
                 + "<owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
                 + "<owl:ObjectProperty rdf:about=\"http://www.example.org#p\"/>\n"
-                // end added
                 + "  <ex:z rdf:about=\"http://www.example.org#w\"><ex:p rdf:resource=\"http://www.example.org#x\"/></ex:z>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#z\">\n"
-                // added
                 + "<rdfs:subClassOf><owl:Restriction>"
-                // end added
                 + "    <owl:allValuesFrom rdf:resource=\"http://www.example.org#c\"/><owl:onProperty rdf:resource=\"http://www.example.org#p\"/>\n"
-                // added
                 + "</owl:Restriction></rdfs:subClassOf>"
-                // end added
-                + "  </rdf:Description>\n" + "</rdf:RDF>";
+                + "  </rdf:Description>\n"
+                + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "<owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
-                // end added
                 + "  <ex:c rdf:about=\"http://www.example.org#x\"/>\n" + "</rdf:RDF>";
         String id = "rdfbased_sem_restrict_allvalues_inst_obj";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
@@ -1003,38 +891,27 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_restrict_hasvalue_cmp_prop() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#x1\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x2\"/>\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p1\"/>\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p2\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x1\">\n"
-                // added
                 + "<owl:equivalentClass><owl:Restriction>"
-                // end added
                 + "    <owl:hasValue rdf:resource=\"http://www.example.org#v\"/><owl:onProperty><rdf:Description rdf:about=\"http://www.example.org#p1\"><rdfs:subPropertyOf rdf:resource=\"http://www.example.org#p2\"/></rdf:Description></owl:onProperty>\n"
-                // added
                 + "</owl:Restriction></owl:equivalentClass>"
-                // end added
                 + "  </rdf:Description>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x2\">\n"
-                // added
                 + "<owl:equivalentClass><owl:Restriction>"
-                // end added
                 + "    <owl:hasValue rdf:resource=\"http://www.example.org#v\"/><owl:onProperty rdf:resource=\"http://www.example.org#p2\"/>\n"
-                // added
                 + "</owl:Restriction></owl:equivalentClass>"
-                // end added
-                + "  </rdf:Description>\n" + "</rdf:RDF>";
+                + "  </rdf:Description>\n"
+                + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#x1\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x2\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x1\"><rdfs:subClassOf rdf:resource=\"http://www.example.org#x2\"/></rdf:Description></rdf:RDF>";
         String id = "rdfbased_sem_restrict_hasvalue_cmp_prop";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
@@ -1045,29 +922,22 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_restrict_hasvalue_inst_obj() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "<owl:Class rdf:about=\"http://www.example.org#z\"/>\n"
                 // TODO this is a bug, should not be needed by the reasoner
                 + "<owl:Thing rdf:about=\"http://www.example.org#u\"/>\n"
                 + "<owl:ObjectProperty rdf:about=\"http://www.example.org#p\"/>\n"
-                // end added
                 + "  <ex:z rdf:about=\"http://www.example.org#w\"/>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#z\">\n"
-                // added
                 + "<owl:equivalentClass><owl:Restriction>"
-                // end added
                 + "    <owl:hasValue rdf:resource=\"http://www.example.org#u\"/><owl:onProperty rdf:resource=\"http://www.example.org#p\"/>\n"
-                // added
                 + "</owl:Restriction></owl:equivalentClass>"
-                // end added
-                + "  </rdf:Description>\n" + "</rdf:RDF>";
+                + "  </rdf:Description>\n"
+                + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "<owl:ObjectProperty rdf:about=\"http://www.example.org#p\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#w\"><ex:p rdf:resource=\"http://www.example.org#u\"/></rdf:Description></rdf:RDF>";
         String id = "rdfbased_sem_restrict_hasvalue_inst_obj";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
@@ -1098,27 +968,19 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_restrict_hasvalue_inst_subj() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#z\"/>\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#z\">\n"
-                // added
                 + "<owl:equivalentClass><owl:Restriction>"
-                // end added
                 + "    <owl:hasValue rdf:resource=\"http://www.example.org#u\"/><owl:onProperty rdf:resource=\"http://www.example.org#p\"/>\n"
-                // added
                 + "</owl:Restriction></owl:equivalentClass>"
-                // end added
                 + "  </rdf:Description>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#w\"><ex:p rdf:resource=\"http://www.example.org#u\"/></rdf:Description></rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#z\"/>\n"
-                // end added
                 + "  <ex:z rdf:about=\"http://www.example.org#w\"/>\n" + "</rdf:RDF>";
         String id = "rdfbased_sem_restrict_hasvalue_inst_subj";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
@@ -1129,23 +991,18 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_restrict_maxcard_inst_obj_one() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#z\"/>\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p\"/>\n"
-                // end added
                 + "  <ex:z rdf:about=\"http://www.example.org#w\"><ex:p rdf:resource=\"http://www.example.org#x1\"/><ex:p rdf:resource=\"http://www.example.org#x2\"/></ex:z>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#z\">\n"
-                // added
                 + "  <rdfs:subClassOf>\n"
                 + "  <owl:Restriction>\n"
-                // end added
                 + "    <owl:maxCardinality rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\">1</owl:maxCardinality><owl:onProperty rdf:resource=\"http://www.example.org#p\"/>\n"
-                // added
-                + "  </owl:Restriction>\n" + "  </rdfs:subClassOf>\n"
-                // end added
+                + "  </owl:Restriction>\n"
+                + "  </rdfs:subClassOf>\n"
                 + "  </rdf:Description>\n" + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x1\"><owl:sameAs rdf:resource=\"http://www.example.org#x2\"/></rdf:Description></rdf:RDF>";
@@ -1158,19 +1015,15 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_restrict_maxcard_inst_obj_zero() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "<owl:Class rdf:about=\"http://www.example.org#z\"/>"
                 + "<owl:ObjectProperty rdf:about=\"http://www.example.org#p\"/>"
-                // end add
                 + "  <ex:z rdf:about=\"http://www.example.org#w\"><ex:p rdf:resource=\"http://www.example.org#x\"/></ex:z>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#z\">\n"
-                // added
                 + "<rdfs:subClassOf><rdf:Description>"
                 + "<rdf:type rdf:resource=\"http://www.w3.org/2002/07/owl#Restriction\"/>"
-                // end add
                 + "    <owl:maxCardinality rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\">0</owl:maxCardinality><owl:onProperty rdf:resource=\"http://www.example.org#p\"/></rdf:Description>\n</rdfs:subClassOf></rdf:Description></rdf:RDF>";
         String conclusion = "";
         String id = "rdfbased_sem_restrict_maxcard_inst_obj_zero";
@@ -1182,26 +1035,21 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_restrict_maxqcr_inst_obj_one() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#z\"/>\n"
                 + "  <owl:Thing rdf:about=\"http://www.example.org#x1\"/>\n"
                 + "  <owl:Thing rdf:about=\"http://www.example.org#x2\"/>\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p\"/>\n"
-                // end added
                 + "  <ex:z rdf:about=\"http://www.example.org#w\"><ex:p><ex:c rdf:about=\"http://www.example.org#x1\"/></ex:p><ex:p><ex:c rdf:about=\"http://www.example.org#x2\"/></ex:p></ex:z>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#z\">\n"
-                // added
                 + "<owl:equivalentClass><owl:Restriction>"
-                // end added
                 + "    <owl:maxQualifiedCardinality rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\">1</owl:maxQualifiedCardinality><owl:onProperty rdf:resource=\"http://www.example.org#p\"/><owl:onClass rdf:resource=\"http://www.example.org#c\"/>\n"
-                // added
                 + "</owl:Restriction></owl:equivalentClass>"
-                // end added
-                + "  </rdf:Description>\n" + "</rdf:RDF>";
+                + "  </rdf:Description>\n"
+                + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x1\"><owl:sameAs rdf:resource=\"http://www.example.org#x2\"/></rdf:Description></rdf:RDF>";
         String id = "rdfbased_sem_restrict_maxqcr_inst_obj_one";
@@ -1213,24 +1061,19 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_restrict_maxqcr_inst_obj_zero() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#z\"/>\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p\"/>\n"
-                // end added
                 + "  <ex:z rdf:about=\"http://www.example.org#w\"><ex:p><ex:c rdf:about=\"http://www.example.org#x\"/></ex:p></ex:z>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#z\">\n"
-                // added
                 + "<owl:equivalentClass><owl:Restriction>"
-                // end added
                 + "    <owl:maxQualifiedCardinality rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\">0</owl:maxQualifiedCardinality><owl:onProperty rdf:resource=\"http://www.example.org#p\"/><owl:onClass rdf:resource=\"http://www.example.org#c\"/>\n"
-                // added
                 + "</owl:Restriction></owl:equivalentClass>"
-                // end added
-                + "  </rdf:Description>\n" + "</rdf:RDF>";
+                + "  </rdf:Description>\n"
+                + "</rdf:RDF>";
         String conclusion = "";
         String id = "rdfbased_sem_restrict_maxqcr_inst_obj_zero";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -1241,39 +1084,28 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_restrict_somevalues_cmp_class() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#c1\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c2\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x1\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x2\"/>\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x1\">\n"
-                // added
                 + "<rdfs:subClassOf><owl:Restriction>"
-                // end added
                 + "    <owl:someValuesFrom><rdf:Description rdf:about=\"http://www.example.org#c1\"><rdfs:subClassOf rdf:resource=\"http://www.example.org#c2\"/></rdf:Description></owl:someValuesFrom><owl:onProperty rdf:resource=\"http://www.example.org#p\"/>\n"
-                // added
                 + "</owl:Restriction></rdfs:subClassOf>"
-                // end added
                 + "  </rdf:Description>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x2\">\n"
-                // added
                 + "<owl:equivalentClass><owl:Restriction>"
-                // end added
                 + "    <owl:someValuesFrom rdf:resource=\"http://www.example.org#c2\"/><owl:onProperty rdf:resource=\"http://www.example.org#p\"/>\n"
-                // added
                 + "</owl:Restriction></owl:equivalentClass>"
-                // end added
-                + "  </rdf:Description>\n" + "</rdf:RDF>";
+                + "  </rdf:Description>\n"
+                + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#x1\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x2\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x1\"><rdfs:subClassOf rdf:resource=\"http://www.example.org#x2\"/></rdf:Description></rdf:RDF>";
         String id = "rdfbased_sem_restrict_somevalues_cmp_class";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
@@ -1284,39 +1116,28 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_restrict_somevalues_cmp_prop() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#x1\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x2\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p1\"/>\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p2\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x1\">\n"
-                // added
                 + "<owl:equivalentClass><owl:Restriction>"
-                // end added
                 + "    <owl:someValuesFrom rdf:resource=\"http://www.example.org#c\"/><owl:onProperty><rdf:Description rdf:about=\"http://www.example.org#p1\"><rdfs:subPropertyOf rdf:resource=\"http://www.example.org#p2\"/></rdf:Description></owl:onProperty>\n"
-                // added
                 + "</owl:Restriction></owl:equivalentClass>"
-                // end added
                 + "  </rdf:Description>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x2\">\n"
-                // added
                 + "<owl:equivalentClass><owl:Restriction>"
-                // end added
                 + "    <owl:someValuesFrom rdf:resource=\"http://www.example.org#c\"/><owl:onProperty rdf:resource=\"http://www.example.org#p2\"/>\n"
-                // added
                 + "</owl:Restriction></owl:equivalentClass>"
-                // end added
-                + "  </rdf:Description>\n" + "</rdf:RDF>";
+                + "  </rdf:Description>\n"
+                + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Class rdf:about=\"http://www.example.org#x1\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x2\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x1\"><rdfs:subClassOf rdf:resource=\"http://www.example.org#x2\"/></rdf:Description></rdf:RDF>";
         String id = "rdfbased_sem_restrict_somevalues_cmp_prop";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
@@ -1327,30 +1148,22 @@ public class Fixed {
     }
 
     @Test
+    @Changed
     public void testrdfbased_sem_restrict_somevalues_inst_subj() {
-        // XXX test modified because of ontology not compliant with OWL 2
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Thing rdf:about=\"http://www.example.org#x\"/>\n"
                 + "<owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
                 + "<owl:Class rdf:about=\"http://www.example.org#z\"/>\n"
                 + "<owl:ObjectProperty rdf:about=\"http://www.example.org#p\"/>\n"
-                // end added
                 + "  <rdf:Description rdf:about=\"http://www.example.org#z\">\n"
-                // added
                 + "<owl:equivalentClass><owl:Restriction>"
-                // end added
                 + "    <owl:someValuesFrom rdf:resource=\"http://www.example.org#c\"/><owl:onProperty rdf:resource=\"http://www.example.org#p\"/>\n"
-                // added
                 + "</owl:Restriction></owl:equivalentClass>\n"
-                // end added
                 + "  </rdf:Description>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#w\"><ex:p><ex:c rdf:about=\"http://www.example.org#x\"/></ex:p></rdf:Description></rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                // added
                 + "  <owl:Thing rdf:about=\"http://www.example.org#w\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#z\"/>\n"
-                // end added
                 + "  <ex:z rdf:about=\"http://www.example.org#w\"/>\n" + "</rdf:RDF>";
         String id = "rdfbased_sem_restrict_somevalues_inst_subj";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
@@ -1593,8 +1406,7 @@ public class Fixed {
     }
 
     @Test
-    public void testContradicting_int_restrictions() throws
-            OWLOntologyCreationException {
+    public void testContradicting_int_restrictions() throws OWLOntologyCreationException {
         Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
         OWLClass A = Class(IRI("http://example.org/A"));
         OWLNamedIndividual a = NamedIndividual(IRI("http://example.org/a"));

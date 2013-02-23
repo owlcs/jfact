@@ -591,39 +591,30 @@ public class OWL2 {
     }
 
     @Test
+    @Changed
     public void testNew_Feature_ObjectPropertyChain_001() {
-        // XXX test modified because of ontology not compliant with OWL 2
+
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
-                + "<owl:Ontology/>\n"
-                + "\n"
-                + "<owl:ObjectProperty rdf:about=\"hasMother\" />\n"
+                + "<owl:Ontology/><owl:ObjectProperty rdf:about=\"hasMother\" />\n"
                 + "<owl:ObjectProperty rdf:about=\"hasSister\" />\n"
                 + "<owl:ObjectProperty rdf:about=\"hasAunt\" />\n"
-                + "\n"
                 + "<rdf:Description rdf:about=\"hasAunt\">\n"
                 + "  <owl:propertyChainAxiom rdf:parseType=\"Collection\">\n"
                 + "    <rdf:Description rdf:about=\"hasMother\" />\n"
                 + "    <rdf:Description rdf:about=\"hasSister\" /></owl:propertyChainAxiom></rdf:Description>\n"
-                + "\n" + "<rdf:Description rdf:about=\"Stewie\">\n"
+                + "<rdf:Description rdf:about=\"Stewie\">\n"
                 + "  <hasMother rdf:resource=\"Lois\" />\n" + "</rdf:Description>\n"
-                + "\n" + "<rdf:Description rdf:about=\"Lois\">\n"
+                + "<rdf:Description rdf:about=\"Lois\">\n"
                 + "  <hasSister rdf:resource=\"Carol\" />\n" + "</rdf:Description>\n"
-                + "\n" + "</rdf:RDF>";
+                + "</rdf:RDF>";
         String conclusion = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
                 + "<owl:Ontology/>\n"
-                + "\n"
-                // added
                 + "<owl:ObjectProperty rdf:about=\"hasAunt\" />\n"
-                // end added
-                + "<rdf:Description rdf:about=\"Stewie\">\n"
-                + "  <hasAunt rdf:resource=\"Carol\" />\n" + "</rdf:Description>\n"
-                + "\n" + "</rdf:RDF>";
+                + "<rdf:Description rdf:about=\"Stewie\"><hasAunt rdf:resource=\"Carol\" /></rdf:Description></rdf:RDF>";
         String id = "New_Feature_ObjectPropertyChain_001";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Demonstrates an object property chain in a subproperty axiom based on the example in the Structural Specification and Functional-Style Syntax document.";

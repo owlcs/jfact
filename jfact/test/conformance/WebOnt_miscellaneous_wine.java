@@ -11,8 +11,9 @@ import org.junit.Test;
 @SuppressWarnings("javadoc")
 public class WebOnt_miscellaneous_wine {
     @Test
+    @Changed
     public void testWebOnt_miscellaneous_001() {
-        // XXX invalid OWL 2
+
         String premise1 = "<!DOCTYPE owl [ "
                 + "<!ENTITY vin  \"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#\" > "
                 + "<!ENTITY food \"http://www.w3.org/2002/03owlt/miscellaneous/consistent002#\" > "
@@ -20,7 +21,6 @@ public class WebOnt_miscellaneous_wine {
                 + "<!ENTITY xsd  \"http://www.w3.org/2001/XMLSchema#\" > ]>\n"
                 + "<rdf:RDF xmlns     = \"&vin;\" xmlns:vin = \"&vin;\" xml:base  = \"&vin;\" xmlns:food= \"&food;\" xmlns:owl = \"&owl;\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs= \"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Ontology rdf:about=\"\"><rdfs:comment>An example OWL ontology</rdfs:comment><owl:priorVersion><owl:Ontology rdf:about=\"http://www.example.org/wine-020303\"/></owl:priorVersion><rdfs:comment>Derived from the DAML Wine ontology at  http://ontolingua.stanford.edu/doc/chimaera/ontologies/wines.daml  Substantially changed, in particular the Region based relations.</rdfs:comment><rdfs:label>Wine Ontology</rdfs:label></owl:Ontology>\n"
-                // added
                 + "    <owl:Class  rdf:about=\"#WineDescriptor\" />\n"
                 + "  <owl:Class rdf:about=\"#ConsumableThing\" /><owl:ObjectProperty  rdf:about=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent002#madeFromFruit\" />\n"
                 + "  <owl:Class rdf:about=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent002#PotableLiquid\" />\n"
@@ -137,7 +137,7 @@ public class WebOnt_miscellaneous_wine {
                 + "  <PastaWithHeavyCreamSauce rdf:about=\"#FettucineAlfRedo\" />\n"
                 + "  <PastaWithSpicyRedSauce rdf:about=\"#FraDiavolo\" />\n"
                 + "  <CheeseNutsDessert rdf:about=\"#Cheese\" />\n";
-                // end added
+
         String premise2 = "  <owl:Class rdf:about=\"#Wine\"><rdfs:subClassOf rdf:resource=\"&food;PotableLiquid\" /><rdfs:subClassOf><owl:Restriction><owl:onProperty rdf:resource=\"#hasMaker\" />\n"
                 + " <owl:cardinality rdf:datatype=\"&xsd;nonNegativeInteger\">1</owl:cardinality></owl:Restriction></rdfs:subClassOf><rdfs:subClassOf><owl:Restriction><owl:onProperty rdf:resource=\"#hasMaker\" />\n"
                 + " <owl:allValuesFrom rdf:resource=\"#Winery\" /></owl:Restriction></rdfs:subClassOf><rdfs:subClassOf><owl:Restriction><owl:onProperty rdf:resource=\"#madeFromGrape\" />\n"
@@ -406,9 +406,7 @@ public class WebOnt_miscellaneous_wine {
         String d = "Wine example taken from the guide. Note that this is the same as the ontology http://www.w3.org/2002/03owlt/miscellaneous/consistent002 imported in other tests.";
         JUnitRunner r = new JUnitRunner(premise1 + premise2 + premise3 + premise4,
                 conclusion, id, tc, d);
-        // r.printPremise();
         r.setReasonerFactory(Factory.factory());
-        // r.getConfiguration().setLoggingActive(true);
         r.run();
     }
 }
