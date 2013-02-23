@@ -44,8 +44,7 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype
 
     @Override
     public cardinality getCardinality() {
-        // TODO Auto-generated method stub
-        return null;
+        return d.getCardinality();
     }
 
     @Override
