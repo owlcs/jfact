@@ -241,4 +241,10 @@ public class KnowledgeExplorer {
         }
         return toReturn;
     }
+
+    /** @return blocker of a blocked node NODE or NULL if node is not blocked */
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "getBlocker")
+    public DlCompletionTree getBlocker(DlCompletionTree node) {
+        return node.getBlocker();
+    }
 }

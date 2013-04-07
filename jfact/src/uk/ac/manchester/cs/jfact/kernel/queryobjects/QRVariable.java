@@ -22,6 +22,11 @@ class QRVariable extends QRiObject {
         Name = name;
     }
 
+    @Override
+    public QRVariable clone() {
+        return new QRVariable(Name);
+    }
+
     @PortedFrom(file = "QR.h", name = "getName")
     String getName() {
         return Name;

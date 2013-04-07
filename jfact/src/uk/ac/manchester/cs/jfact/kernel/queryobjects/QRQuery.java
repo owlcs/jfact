@@ -20,6 +20,22 @@ class QRQuery {
     @PortedFrom(file = "QR.h", name = "FreeVars")
     Set<QRVariable> FreeVars = new HashSet<QRVariable>();
 
+    public QRQuery() {
+        // TODO Auto-generated constructor stub
+    }
+
+    public QRQuery(QRQuery q) {
+        Body = new QRSetAtoms(q.Body);
+        for (QRVariable v : q.FreeVars) {
+            FreeVars.add(v.clone());
+        }
+    }
+
+    /** @return true if VAR is a free var */
+    boolean isFreeVar(QRVariable var) {
+        return FreeVars.contains(var);
+    }
+
     /** add atom to a query body */
     @PortedFrom(file = "QR.h", name = "addAtom")
     void addAtom(QRAtom atom) {

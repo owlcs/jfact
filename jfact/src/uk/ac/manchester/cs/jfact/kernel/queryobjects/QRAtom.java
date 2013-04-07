@@ -11,4 +11,6 @@ import conformance.PortedFrom;
 
 /** general atom interface */
 @PortedFrom(file = "QR.h", name = "QRAtom")
-class QRAtom {}
+abstract class QRAtom implements Cloneable {
+    public abstract QRAtom clone();
+}

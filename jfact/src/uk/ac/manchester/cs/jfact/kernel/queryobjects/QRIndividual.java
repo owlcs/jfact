@@ -20,6 +20,15 @@ class QRIndividual extends QRiObject {
         Ind = ind;
     }
 
+    public QRIndividual(QRIndividual i) {
+        this(i.Ind);
+    }
+
+    @Override
+    public QRIndividual clone() {
+        return new QRIndividual(this);
+    }
+
     /** get the name */
     @PortedFrom(file = "QR.h", name = "getIndividual")
     IndividualName getIndividual() {

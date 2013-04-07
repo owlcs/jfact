@@ -16,6 +16,27 @@ class QRSetAtoms {
     @PortedFrom(file = "QR.h", name = "Base")
     List<QRAtom> Base = new ArrayList<QRAtom>();
 
+    public QRSetAtoms() {
+        // TODO Auto-generated constructor stub
+    }
+
+    public QRSetAtoms(QRSetAtoms q) {
+        for (QRAtom a : q.Base) {
+            Base.add(a.clone());
+        }
+    }
+
+    /** replace an atom at a position P with NEWATOM;
+     * 
+     * @param i
+     *            position of the element to replace
+     * @param newAtom
+     *            element to replace
+     * @return a replaced atom */
+    public QRAtom replaceAtom(int i, QRAtom newAtom) {
+        return Base.set(i, newAtom);
+    }
+
     /** add atom to a set */
     @PortedFrom(file = "QR.h", name = "addAtom")
     void addAtom(QRAtom atom) {

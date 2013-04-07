@@ -1646,6 +1646,13 @@ public class ReasoningKernel {
         return KE.getDataLabel(node, onlyDet);
     }
 
+    /** @param node
+     * @return blocker of a blocked node NODE or NULL if node is not blocked */
+    @PortedFrom(file = "Kernel.h", name = "getBlocker")
+    public DlCompletionTree getBlocker(DlCompletionTree node) {
+        return KE.getBlocker(node);
+    }
+
     // atomic decomposition queries
     /** @param I
      * @param C

@@ -821,6 +821,11 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
                         deterministicOnly));
     }
 
+    @Override
+    public RootNode getBlocker(RootNode object) {
+        return new RootNodeImpl(kernel.getBlocker((DlCompletionTree) object.getNode()));
+    }
+
     /** @param useSemantics
      * @param type
      * @return number of atoms */

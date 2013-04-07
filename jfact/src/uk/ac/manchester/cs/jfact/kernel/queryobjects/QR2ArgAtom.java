@@ -22,6 +22,15 @@ class QR2ArgAtom extends QRAtom {
         Arg2 = A2;
     }
 
+    public QR2ArgAtom(QR2ArgAtom q) {
+        this(q.Arg1, q.Arg2);
+    }
+
+    @Override
+    public QR2ArgAtom clone() {
+        return new QR2ArgAtom(this);
+    }
+
     // access
     /** get first i-object */
     @PortedFrom(file = "QR.h", name = "getArg1")

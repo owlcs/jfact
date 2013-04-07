@@ -20,6 +20,15 @@ class QRRoleAtom extends QR2ArgAtom {
         Role = R;
     }
 
+    QRRoleAtom(QRRoleAtom q) {
+        this(q.Role, q.Arg1, q.Arg2);
+    }
+
+    @Override
+    public QRRoleAtom clone() {
+        return new QRRoleAtom(this);
+    }
+
     // access
     /** get role expression */
     @PortedFrom(file = "QR.h", name = "getRole")

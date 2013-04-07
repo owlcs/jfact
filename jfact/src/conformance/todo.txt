@@ -1,0 +1,35 @@
+//-------------------------------------------------------------
+// Kernel management (like newKB/curKB/releaseKB)
+//-------------------------------------------------------------
+
+/// try to load configuration from FILE; @return false if successful
+bool loadConfiguration ( ReasoningKernel* K, const char* file )
+{
+	Configuration Config;
+
+	if ( Config.Load(file) )
+		return true;
+	if ( K->getOptions()->initByConfigure ( Config, "Tuning" ) )
+		return true;
+	std::cerr << "Using options from file " << file << "\n";
+	return false;
+}
+
+/*
+ * Class:     uk_ac_manchester_cs_factplusplus_FaCTPlusPlus
+ * Method:    initKernel
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_uk_ac_manchester_cs_factplusplus_FaCTPlusPlus_initKernel
+  (JNIEnv * env, jobject obj)
+{
+	// create new kernel and save it in an FaCTPlusPlus object
+	ReasoningKernel* Kernel = new ReasoningKernel();
+	env->SetLongField ( obj, KernelFID, (jlong)Kernel );
+
+	// try to load configuration
+	if ( loadConfiguration ( Kernel, ".fpp-options" ) )
+		loadConfiguration ( Kernel, "fpp-options.txt" );
+
+		
+		
