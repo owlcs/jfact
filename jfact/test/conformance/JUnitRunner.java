@@ -89,8 +89,8 @@ public class JUnitRunner {
     public void run() {
         OWLOntology premiseOntology = null;
         OWLOntology conclusionOntology = null;
-        OWLOntologyManager m = OWLManager.createOWLOntologyManager();
-        m.setSilentMissingImportsHandling(true);
+        // OWLOntologyManager m = OWLManager.createOWLOntologyManager();
+        // m.setSilentMissingImportsHandling(true);
         try {
             if (premise != null) {
                 premiseOntology = getPremise();

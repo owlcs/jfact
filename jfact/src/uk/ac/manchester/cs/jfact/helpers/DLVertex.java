@@ -29,14 +29,7 @@ public class DLVertex extends DLVertexTagDFS {
             @Override
             @PortedFrom(file = "dlVertex.h", name = "compare")
             public int compare(Integer o1, Integer o2) {
-
-                if (o1.equals(o2)) {
-                    return 0;
-                }
-                if (sorter.less(o1, o2)) {
-                    return -1;
-                }
-                return 1;
+                return sorter.compare(o1, o2);
             }
         };
         FastSet set = FastSetFactory.create();
@@ -83,7 +76,13 @@ public class DLVertex extends DLVertexTagDFS {
                     for (int i = 0; i < set.size(); ++i) {
                         l.add(set.get(i));
                     }
-                    Collections.sort(l, c);
+                    try {
+                        Collections.sort(l, c);
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                        System.out.println("DLVertex.ChildSet.sorted()\n" + l);
+                        throw e;
+                    }
                     for (int i = 0; i < sorted.length; ++i) {
                         sorted[i] = l.get(i);
                     }

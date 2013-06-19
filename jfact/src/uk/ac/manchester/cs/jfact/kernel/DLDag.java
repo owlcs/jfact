@@ -558,23 +558,29 @@ public class DLDag {
      * @param p2
      * @return true if p1 dlvertex is smaller than p2 dlvertex */
     @PortedFrom(file = "dlDag.h", name = "less")
-    public boolean less(int p1, int p2) {
+    public int compare(int p1, int p2) {
+        if (p1 == p2) {
+            return 0;
+        }
         if (preferNonGen) {
             if (p1 < 0 && p2 > 0) {
-                return true;
+                return -1;
             }
             if (p1 > 0 && p2 < 0) {
-                return false;
+                return 1;
             }
         }
         DLVertex v1 = get(p1);
         DLVertex v2 = get(p2);
         int key1 = v1.getStat(iSort);
         int key2 = v2.getStat(iSort);
+        if (key1 == key2) {
+            return 0;
+        }
         if (sortAscend) {
-            return key1 <= key2;
+            return key1 - key2;
         } else {
-            return key2 <= key1;
+            return key2 - key1;
         }
     }
 
