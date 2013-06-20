@@ -810,10 +810,8 @@ public class DlSatTester {
             String reason) {
         if (options.isLoggingActive()) {
             LogAdapter logAdapter = options.getLog();
-            logAdapter.print(" ", action);
-            logAdapter.print("(");
-            logAdapter.print(n.logNode());
-            logAdapter.print(",", bp, dep, ")");
+            logAdapter.print(" ").print(action).print("(").print(n.logNode()).print(",")
+                    .print(bp).print(dep, ")");
             if (reason != null) {
                 logAdapter.print(reason);
             }
@@ -1069,7 +1067,7 @@ public class DlSatTester {
     private ModelCacheInterface buildCache(int p) {
         LogAdapter logAdapter = options.getLog();
         if (options.isLoggingActive()) {
-            logAdapter.print("\nChecking satisfiability of DAG entry ", p);
+            logAdapter.print("\nChecking satisfiability of DAG entry ").print(p);
             tBox.printDagEntry(logAdapter, p);
             logAdapter.print(":\n");
         }
@@ -1603,7 +1601,8 @@ public class DlSatTester {
         testTimer.start();
         boolean result = checkSatisfiability();
         testTimer.stop();
-        options.getLog().print("\nChecking time was ", testTimer.getResultTime(),
+        options.getLog().print("\nChecking time was ").print(testTimer.getResultTime())
+                .print(
                 " milliseconds");
         testTimer.reset();
         finaliseStatistic();
@@ -3262,7 +3261,7 @@ public class DlSatTester {
             // if there is an edge that require to run the rule, then we need it
             if (p.isPredEdge() && suspect.isBlockableNode() && p.isNeighbour(r)
                     && suspect.isLabelledBy(C)) {
-                options.getLog().print(" NN(", suspect.getId(), ")");
+                options.getLog().print(" NN(").print(suspect.getId()).print(")");
                 return true;
             }
         }

@@ -255,7 +255,7 @@ public class RoleMaster {
         if (size() == 0) {
             return;
         }
-        o.print(type, " Roles (", size(), "):\n");
+        o.print(type, " Roles (").print(size()).print("):\n");
         o.print(emptyRole);
         for (int i = firstRoleIndex; i < roles.size(); i++) {
             Role p = roles.get(i);

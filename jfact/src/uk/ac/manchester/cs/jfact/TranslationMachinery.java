@@ -367,7 +367,7 @@ public class TranslationMachinery {
             } else {
                 for (OWLAxiom ax : axiom.asOWLSubClassOfAxioms()) {
                     if (!ax.accept(this)) {
-                        return false;
+                        return Boolean.FALSE;
                     }
                 }
                 return Boolean.TRUE;

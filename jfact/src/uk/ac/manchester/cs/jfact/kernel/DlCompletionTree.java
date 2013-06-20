@@ -468,7 +468,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree> {
                 ++n;
             }
         }
-        options.getLog().print(" loop(", n, ")");
+        options.getLog().print(" loop(").print(n).print(")");
         return false;
     }
 

@@ -113,12 +113,13 @@ public class ELFReasoner {
         // so do domain)
         initBotRules();
         // dump statistics
-        c.getLog().print("\nELFReasoner.ELFReasoner() \nFound ", nC2C,
-                " axioms in the form C [= D\nFound ", nA2C,
-                " axioms in the form C1/\\C2 [= D\nFound ", nC2E,
-                " axioms in the form C [= ER.D\nFound ", nE2C,
-                " axioms in the form ER.C [= D\nFound ", nR2R,
-                " axioms in the form R [= S\nFound ", nC2R,
+        c.getLog().print("\nELFReasoner.ELFReasoner() \nFound ").print(nC2C)
+                .print(" axioms in the form C [= D\nFound ").print(nA2C)
+                .print(" axioms in the form C1/\\C2 [= D\nFound ").print(nC2E)
+                .print(" axioms in the form C [= ER.D\nFound ").print(nE2C)
+                .print(" axioms in the form ER.C [= D\nFound ").print(nR2R)
+                .print(" axioms in the form R [= S\nFound ").print(nC2R)
+                .print(
                 " axioms in the form R o S [= T\n");
     }
 

@@ -11,5 +11,6 @@ import conformance.PortedFrom;
 /** i-object (from SWRL proposal), which is variable or an individual */
 @PortedFrom(file = "QR.h", name = "QRiObject")
 abstract class QRiObject implements Cloneable {
+    @Override
     public abstract QRiObject clone();
 }

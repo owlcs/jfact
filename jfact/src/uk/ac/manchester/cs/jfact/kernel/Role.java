@@ -763,7 +763,9 @@ public class Role extends ClassifiableEntry {
     /** @param o */
     @PortedFrom(file = "tRole.h", name = "print")
     public void print(LogAdapter o) {
-        o.print("Role \"", getName(), "\"(", getId(), ")", isTransitive() ? "T" : "",
+        o.print("Role \"", getName(), "\"(")
+                .print(getId())
+                .print(")", isTransitive() ? "T" : "",
                 isReflexive() ? "R" : "", isTopFunc() ? "t" : "", isFunctional() ? "F"
                         : "", isDataRole() ? "D" : "");
         if (isSynonym()) {
@@ -793,12 +795,14 @@ public class Role extends ClassifiableEntry {
             o.print("\"}");
         }
         if (pDomain != null) {
-            o.print(" Domain=(", bpDomain, ")=", pDomain);
+            o.print(" Domain=(").print(bpDomain).print(")=", pDomain);
         }
         if (getTRange() != null) {
-            o.print(" Range=(", getBPRange(), ")=", getTRange());
+            o.print(" Range=(").print(getBPRange()).print(")=", getTRange());
         }
-        o.print("\nAutomaton (size ", automaton.size(), "): ", automaton.isISafe() ? "I"
+        o.print("\nAutomaton (size ")
+                .print(automaton.size())
+                .print("): ", automaton.isISafe() ? "I"
                 : "i", automaton.isOSafe() ? "O" : "o");
         automaton.print(o);
         o.print("\n");

@@ -146,7 +146,8 @@ public class Stats {
                     " cached unsatisfiable nodes");
         }
         if (!needLocal) {
-            o.print("\nThe maximal graph size is ", CGraph.maxSize(), " nodes");
+            o.print("\nThe maximal graph size is ").print(CGraph.maxSize())
+                    .print(" nodes");
         }
     }
 

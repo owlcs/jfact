@@ -174,7 +174,7 @@ public class NominalReasoner extends DlSatTester {
             DlCompletionTree suspect = p.getArcEnd();
             if (p.isPredEdge() && suspect.isBlockableNode() && p.isNeighbour(r)
                     && suspect.isLabelledBy(C)) {
-                options.getLog().printTemplate(Templates.NN, suspect.getId());
+                options.getLog().printTemplate(Templates.NN).print(suspect.getId());
                 return true;
             }
         }

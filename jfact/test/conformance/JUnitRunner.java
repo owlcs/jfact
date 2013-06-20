@@ -5,7 +5,8 @@ package conformance;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import junit.framework.Assert;
+
+import static org.junit.Assert.*;
 
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
@@ -141,7 +142,7 @@ public class JUnitRunner {
             case CONSISTENCY: {
                 boolean consistent = isConsistent(reasoner, true);
                 if (!consistent) {
-                    Assert.assertEquals(
+                    assertEquals(
                             b.toString()
                                     + logTroubles(premiseOntology, true, consistent,
                                             null, t, null), true, consistent);
@@ -151,7 +152,7 @@ public class JUnitRunner {
             case INCONSISTENCY: {
                 boolean consistent = isConsistent(reasoner, false);
                 if (consistent) {
-                    Assert.assertEquals(
+                    assertEquals(
                             b.toString()
                                     + logTroubles(premiseOntology, false, consistent,
                                             null, t, null), false, consistent);
@@ -161,7 +162,7 @@ public class JUnitRunner {
             case NEGATIVE_IMPL: {
                 boolean consistent = isConsistent(reasoner, true);
                 if (!consistent) {
-                    Assert.assertEquals(
+                    assertEquals(
                             b.toString()
                                     + logTroubles(premiseOntology, true, consistent,
                                             null, t, null), true, consistent);
@@ -174,13 +175,13 @@ public class JUnitRunner {
                         b.append(logTroubles(premiseOntology, false, entailed, ax, t, ax));
                     }
                 }
-                Assert.assertEquals(b.toString(), false, entailed);
+                assertEquals(b.toString(), false, entailed);
             }
                 break;
             case POSITIVE_IMPL: {
                 boolean consistent = isConsistent(reasoner, true);
                 if (!consistent) {
-                    Assert.assertEquals(
+                    assertEquals(
                             b.toString()
                                     + logTroubles(premiseOntology, true, consistent,
                                             null, t, null), true, consistent);
@@ -193,7 +194,7 @@ public class JUnitRunner {
                         b.append(logTroubles(premiseOntology, true, entailed, ax, t, ax));
                     }
                 }
-                Assert.assertEquals(b.toString(), true, entailed);
+                assertEquals(b.toString(), true, entailed);
             }
                 break;
             default:

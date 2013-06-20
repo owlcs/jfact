@@ -28,8 +28,8 @@ import conformance.Original;
 @Original
 public class DatatypeFactory {
     static final String namespace = "http://www.w3.org/2001/XMLSchema#";
-    private static final Comparable NUMBER_EXPRESSION = "[\\-+]?[0-9]+";
-    private static final Comparable WHITESPACE = whitespace.collapse;
+    static final Comparable NUMBER_EXPRESSION = "[\\-+]?[0-9]+";
+    static final Comparable WHITESPACE = whitespace.collapse;
     static final Facet[] minmax = new Facet[] { maxInclusive, maxExclusive, minInclusive,
             minExclusive };
     static final Facet[] pew = new Facet[] { pattern, enumeration, whiteSpace };
@@ -153,7 +153,7 @@ public class DatatypeFactory {
     public static final Datatype<Long> UNSIGNEDINT = new UNSIGNEDINT_DATATYPE<Long>() {
         @Override
         public Long parseValue(String s) {
-            Long parseInt = Long.parseLong(s);
+            long parseInt = Long.parseLong(s);
             if (parseInt < 0) {
                 throw new ArithmeticException("Unsigned int required, but found: " + s);
             }
@@ -163,7 +163,7 @@ public class DatatypeFactory {
     public static final Datatype<Integer> UNSIGNEDSHORT = new UNSIGNEDSHORT_DATATYPE<Integer>() {
         @Override
         public Integer parseValue(String s) {
-            Integer parseShort = Integer.parseInt(s);
+            int parseShort = Integer.parseInt(s);
             if (parseShort < 0) {
                 throw new ArithmeticException("Unsigned short required, but found: " + s);
             }
@@ -173,7 +173,7 @@ public class DatatypeFactory {
     public static final Datatype<Short> UNSIGNEDBYTE = new UNSIGNEDBYTE_DATATYPE<Short>() {
         @Override
         public Short parseValue(String s) {
-            Short parseByte = Short.parseShort(s);
+            short parseByte = Short.parseShort(s);
             if (parseByte < 0) {
                 throw new ArithmeticException("Unsigned short required, but found: " + s);
             }
@@ -1551,6 +1551,7 @@ knownNumericFacetValues
             knownNumericFacetValues.putAll(LITERAL.getKnownNumericFacetValues());
         }
 
+        @Override
         public String parseValue(String s) {
             // XXX sort of arbitrary decision; the specs say it depends on the
             // XML datatype whitespace normalization policy, but that's not

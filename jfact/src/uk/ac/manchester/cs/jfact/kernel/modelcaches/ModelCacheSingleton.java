@@ -69,6 +69,6 @@ public class ModelCacheSingleton extends ModelCacheInterface {
     @Override
     @PortedFrom(file = "modelCacheSingleton.h", name = "logCacheEntry")
     public void logCacheEntry(int level, LogAdapter l) {
-        l.print("\nSingleton cache: element ", singleton);
+        l.print("\nSingleton cache: element ").print(singleton);
     }
 }

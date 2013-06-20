@@ -2648,11 +2648,13 @@ public class TBox {
                 ++nNoTold;
             }
         }
-        config.getLog().print("There are ", nPC, " primitive concepts used\n of which ",
-                npFull, " completely defined\n      and ", nNoTold,
-                " has no told subsumers\nThere are ", nNC,
-                " non-primitive concepts used\n of which ", nsFull,
-                " synonyms\nThere are ", nSing, " individuals or nominals used\n");
+        config.getLog().print("There are ").print(nPC)
+                .print(" primitive concepts used\n of which ").print(npFull)
+                .print(" completely defined\n      and ").print(nNoTold)
+                .print(" has no told subsumers\nThere are ").print(nNC)
+                .print(" non-primitive concepts used\n of which ").print(nsFull)
+                .print(" synonyms\nThere are ").print(nSing)
+                .print(" individuals or nominals used\n");
     }
 
     /** remove extra descritpions */
@@ -2842,7 +2844,6 @@ public class TBox {
                 case dtCollection:
                 case dtSplitConcept:
                     for (int q : v.begin()) {
-
                         queue.add(q);
                     }
                     break;

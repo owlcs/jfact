@@ -87,7 +87,7 @@ public class RATransition {
      * @param from */
     @PortedFrom(file = "RAutomaton.h", name = "print")
     public void print(LogAdapter o, int from) {
-        o.print("\n", from, " -- ");
+        o.print("\n").print(from).print(" -- ");
         if (isEmpty()) {
             o.print("e");
         } else {
