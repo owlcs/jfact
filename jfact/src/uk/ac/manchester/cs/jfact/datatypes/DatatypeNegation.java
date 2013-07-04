@@ -194,4 +194,10 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
                 .println("DatatypeNegation.addFacet() Cannot add a facet to a negation; modify the base type and rebuild a new negation. Returning the same object");
         return this;
     }
+
+    @Override
+    public String getName() {
+        return toString();
+    }
+
 }

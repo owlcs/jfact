@@ -10,7 +10,7 @@ import conformance.PortedFrom;
 
 /** concept atom: C(x) */
 @PortedFrom(file = "QR.h", name = "QRConceptAtom")
-class QRConceptAtom extends QRAtom {
+public class QRConceptAtom extends QRAtom {
     /** pointer to a concept (named one atm) */
     @PortedFrom(file = "QR.h", name = "Concept")
     ConceptExpression Concept;
@@ -19,12 +19,12 @@ class QRConceptAtom extends QRAtom {
     QRiObject Arg;
 
     /** init c'tor */
-    QRConceptAtom(ConceptExpression C, QRiObject A) {
+    public QRConceptAtom(ConceptExpression C, QRiObject A) {
         Concept = C;
         Arg = A;
     }
 
-    QRConceptAtom(QRConceptAtom q) {
+    public QRConceptAtom(QRConceptAtom q) {
         this(q.Concept, q.Arg);
     }
 
@@ -36,13 +36,13 @@ class QRConceptAtom extends QRAtom {
     // access
     /** get concept expression */
     @PortedFrom(file = "QR.h", name = "getConcept")
-    ConceptExpression getConcept() {
+    public ConceptExpression getConcept() {
         return Concept;
     }
 
     /** get i-object */
     @PortedFrom(file = "QR.h", name = "getArg")
-    QRiObject getArg() {
+    public QRiObject getArg() {
         return Arg;
     }
 }

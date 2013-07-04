@@ -53,4 +53,10 @@ public class ConceptObjectForall implements ConceptObjectRCExpression {
     public ObjectRoleExpression getOR() {
         return delegate;
     }
+
+    @Override
+    public String getName() {
+        return toString();
+    }
+
 }

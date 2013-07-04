@@ -10,17 +10,17 @@ import conformance.PortedFrom;
 
 /** role atom R(x,y) */
 @PortedFrom(file = "QR.h", name = "QRRoleAtom")
-class QRRoleAtom extends QR2ArgAtom {
+public class QRRoleAtom extends QR2ArgAtom {
     /** role between two i-objects */
     @PortedFrom(file = "QR.h", name = "Role")
     ObjectRoleExpression Role;
 
-    QRRoleAtom(ObjectRoleExpression R, QRiObject A1, QRiObject A2) {
+    public QRRoleAtom(ObjectRoleExpression R, QRiObject A1, QRiObject A2) {
         super(A1, A2);
         Role = R;
     }
 
-    QRRoleAtom(QRRoleAtom q) {
+    public QRRoleAtom(QRRoleAtom q) {
         this(q.Role, q.Arg1, q.Arg2);
     }
 
@@ -32,7 +32,7 @@ class QRRoleAtom extends QR2ArgAtom {
     // access
     /** get role expression */
     @PortedFrom(file = "QR.h", name = "getRole")
-    ObjectRoleExpression getRole() {
+    public ObjectRoleExpression getRole() {
         return Role;
     }
 }

@@ -64,4 +64,10 @@ public class ConceptObjectExactCardinality implements ConceptObjectCardinalityEx
     public ObjectRoleExpression getOR() {
         return roleDelegate;
     }
+
+    @Override
+    public String getName() {
+        return toString();
+    }
+
 }

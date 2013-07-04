@@ -8,16 +8,18 @@ package uk.ac.manchester.cs.jfact.kernel.queryobjects;
 import java.util.HashSet;
 import java.util.Set;
 
+import conformance.Original;
 import conformance.PortedFrom;
 
 /** class for the queries */
 @PortedFrom(file = "QR.h", name = "QRQuery")
-class QRQuery {
+public class QRQuery {
     /** query as a set of atoms */
     @PortedFrom(file = "QR.h", name = "Body")
     QRSetAtoms Body = new QRSetAtoms();
     /** set of free variables */
     @PortedFrom(file = "QR.h", name = "FreeVars")
+    private
     Set<QRVariable> FreeVars = new HashSet<QRVariable>();
 
     public QRQuery() {
@@ -26,25 +28,38 @@ class QRQuery {
 
     public QRQuery(QRQuery q) {
         Body = new QRSetAtoms(q.Body);
-        for (QRVariable v : q.FreeVars) {
-            FreeVars.add(v.clone());
+        for (QRVariable v : q.getFreeVars()) {
+            getFreeVars().add(v.clone());
         }
     }
 
     /** @return true if VAR is a free var */
-    boolean isFreeVar(QRVariable var) {
-        return FreeVars.contains(var);
+    public boolean isFreeVar(QRVariable var) {
+        return getFreeVars().contains(var);
     }
 
     /** add atom to a query body */
     @PortedFrom(file = "QR.h", name = "addAtom")
-    void addAtom(QRAtom atom) {
+    public void addAtom(QRAtom atom) {
         Body.addAtom(atom);
     }
 
     /** mark a variable as a free one */
     @PortedFrom(file = "QR.h", name = "setVarFree")
-    void setVarFree(QRVariable var) {
-        FreeVars.add(var);
+    public void setVarFree(QRVariable var) {
+        getFreeVars().add(var);
+    }
+
+    @Original
+    public QRSetAtoms getBody() {
+        return Body;
+    }
+
+    public Set<QRVariable> getFreeVars() {
+        return FreeVars;
+    }
+
+    public void setFreeVars(Set<QRVariable> freeVars) {
+        FreeVars = freeVars;
     }
 }

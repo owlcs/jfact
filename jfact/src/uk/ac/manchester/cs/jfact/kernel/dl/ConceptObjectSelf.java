@@ -41,4 +41,10 @@ public class ConceptObjectSelf implements ConceptObjectRoleExpression {
     public ObjectRoleExpression getOR() {
         return objectRoleExpression;
     }
+
+    @Override
+    public String getName() {
+        return toString();
+    }
+
 }

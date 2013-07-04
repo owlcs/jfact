@@ -16,12 +16,8 @@ import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 
 /** taxonomy actor */
-public class TaxonomyActor implements Actor {
+public class TaxonomyActor extends ActorImpl<Expression> implements Actor {
     private ExpressionManager expressionManager;
-    /** 2D array to return */
-    private List<List<Expression>> acc = new ArrayList<List<Expression>>();
-    /** 1D array to return */
-    private List<Expression> plain = new ArrayList<Expression>();
     private Policy policy;
 
     /** @param p

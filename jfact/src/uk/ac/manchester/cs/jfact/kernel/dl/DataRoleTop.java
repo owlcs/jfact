@@ -27,6 +27,11 @@ public class DataRoleTop implements DataRoleExpression {
 
     @Override
     public String toString() {
+        return getName();
+    }
+
+    @Override
+    public String getName() {
         return this.getClass().getSimpleName() + "(TOP)";
     }
 }

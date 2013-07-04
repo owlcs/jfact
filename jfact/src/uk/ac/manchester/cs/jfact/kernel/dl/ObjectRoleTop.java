@@ -26,7 +26,13 @@ public class ObjectRoleTop implements ObjectRoleExpression {
     }
 
     @Override
-    public String toString() {
+    public String getName() {
         return this.getClass().getSimpleName() + "(TOP)";
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
+
 }

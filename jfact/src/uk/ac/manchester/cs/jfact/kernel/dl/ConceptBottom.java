@@ -29,4 +29,10 @@ public class ConceptBottom implements ConceptExpression {
     public String toString() {
         return this.getClass().getSimpleName() + "(BOTTOM)";
     }
+
+    @Override
+    public String getName() {
+        return toString();
+    }
+
 }

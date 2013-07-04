@@ -41,4 +41,10 @@ public class ConceptNot implements ConceptExpression, ConceptArg {
     public ConceptExpression getConcept() {
         return conceptExpression;
     }
+
+    @Override
+    public String getName() {
+        return toString();
+    }
+
 }

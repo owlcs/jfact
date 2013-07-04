@@ -29,4 +29,9 @@ public class DataTop implements DataExpression {
     public String toString() {
         return this.getClass().getSimpleName() + "(TOP)";
     }
+
+    @Override
+    public String getName() {
+        return toString();
+    }
 }

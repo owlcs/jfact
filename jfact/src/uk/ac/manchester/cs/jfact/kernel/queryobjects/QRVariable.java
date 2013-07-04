@@ -9,16 +9,16 @@ import conformance.PortedFrom;
 
 /** QR variable replacing the individual */
 @PortedFrom(file = "QR.h", name = "QRVariable")
-class QRVariable extends QRiObject {
+public class QRVariable extends QRiObject {
     /** name of a var */
     @PortedFrom(file = "QR.h", name = "Name")
     String Name;
 
     /** empty c'tor */
-    QRVariable() {}
+    public QRVariable() {}
 
     /** init c'tor */
-    QRVariable(String name) {
+    public QRVariable(String name) {
         Name = name;
     }
 
@@ -28,6 +28,7 @@ class QRVariable extends QRiObject {
     }
 
     @PortedFrom(file = "QR.h", name = "getName")
+    public
     String getName() {
         return Name;
     }

@@ -53,4 +53,10 @@ public class ConceptDataForall implements ConceptDataRVExpression, DataRoleArg {
     public DataExpression getExpr() {
         return delegate;
     }
+
+    @Override
+    public String getName() {
+        return toString();
+    }
+
 }

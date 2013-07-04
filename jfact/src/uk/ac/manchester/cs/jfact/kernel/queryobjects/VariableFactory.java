@@ -12,7 +12,7 @@ import conformance.PortedFrom;
 
 // var factory
 @PortedFrom(file = "QR.h", name = "VariableFactory")
-class VariableFactory {
+public class VariableFactory {
     @PortedFrom(file = "QR.h", name = "Base")
     List<QRVariable> Base = new ArrayList<QRVariable>();
 
@@ -20,7 +20,7 @@ class VariableFactory {
      *            variable name
      * @return fresh variable */
     @PortedFrom(file = "QR.h", name = "getNewVar")
-    QRVariable getNewVar(String name) {
+    public QRVariable getNewVar(String name) {
         QRVariable ret = new QRVariable(name);
         Base.add(ret);
         return ret;

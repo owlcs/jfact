@@ -24,4 +24,14 @@ public class DataRoleBottom implements DataRoleExpression {
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
+
+    @Override
+    public String getName() {
+        return this.getClass().getSimpleName() + "(BOTTOM)";
+    }
 }

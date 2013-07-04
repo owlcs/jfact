@@ -38,4 +38,10 @@ public class ConceptOneOf<I extends IndividualExpression> extends NAryExpression
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
+
+    @Override
+    public String getName() {
+        return toString();
+    }
+
 }

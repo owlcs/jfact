@@ -28,6 +28,11 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
     }
 
     @Override
+    public String getName() {
+        return toString();
+    }
+
+    @Override
     public int hashCode() {
         return this.uri.hashCode();
     }

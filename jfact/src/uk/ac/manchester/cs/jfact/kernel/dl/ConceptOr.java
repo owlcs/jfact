@@ -35,4 +35,10 @@ public class ConceptOr extends NAryExpressionImpl<ConceptExpression> implements
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
+
+    @Override
+    public String getName() {
+        return toString();
+    }
+
 }

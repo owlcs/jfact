@@ -54,4 +54,10 @@ public class ConceptDataValue implements ConceptDataRoleExpression,
     public Literal<?> getExpr() {
         return dataValue;
     }
+
+    @Override
+    public String getName() {
+        return toString();
+    }
+
 }

@@ -250,4 +250,10 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
                 .println("DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object");
         return this;
     }
+
+    @Override
+    public String getName() {
+        return toString();
+    }
+
 }

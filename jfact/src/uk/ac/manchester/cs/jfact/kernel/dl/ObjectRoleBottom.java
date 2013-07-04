@@ -26,7 +26,13 @@ public class ObjectRoleBottom implements ObjectRoleExpression {
     }
 
     @Override
-    public String toString() {
+    public String getName() {
         return this.getClass().getSimpleName() + "(BOTTOM)";
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
+
 }

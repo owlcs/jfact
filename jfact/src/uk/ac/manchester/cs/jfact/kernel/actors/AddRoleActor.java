@@ -7,13 +7,14 @@ package uk.ac.manchester.cs.jfact.kernel.actors;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.List;
 
+import uk.ac.manchester.cs.jfact.kernel.HasName;
 import uk.ac.manchester.cs.jfact.kernel.Role;
 import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
 import conformance.PortedFrom;
 
 /** actor that accumulates primers */
 @PortedFrom(file = "tRole.cpp", name = "AddRoleActor")
-public class AddRoleActor implements Actor {
+public class AddRoleActor extends ActorImpl<HasName> {
     @PortedFrom(file = "tRole.cpp", name = "rset")
     private List<Role> rset;
 

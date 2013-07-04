@@ -11,7 +11,7 @@ import conformance.PortedFrom;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** named entry */
 @PortedFrom(file = "tNamedEntry.h", name = "TNamedEntry")
-public abstract class NamedEntry {
+public abstract class NamedEntry implements HasName {
     /** name of the entry */
     @PortedFrom(file = "tNamedEntry.h", name = "extName")
     protected String extName;
@@ -35,7 +35,7 @@ public abstract class NamedEntry {
         }
     }
 
-    /** @return name of given entry */
+    @Override
     @PortedFrom(file = "tNamedEntry.h", name = "getName")
     public String getName() {
         return extName;

@@ -36,4 +36,9 @@ public class ObjectRoleChain extends NAryExpressionImpl<ObjectRoleExpression> im
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
+
+    @Override
+    public String getName() {
+        return toString();
+    }
 }

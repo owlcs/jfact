@@ -208,4 +208,10 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype
     public boolean emptyValueSpace() {
         return d.emptyValueSpace();
     }
+
+    @Override
+    public String getName() {
+        return toString();
+    }
+
 }

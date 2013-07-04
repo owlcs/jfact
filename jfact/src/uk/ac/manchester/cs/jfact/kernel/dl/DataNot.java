@@ -41,4 +41,10 @@ public class DataNot implements DataExpression, DataExpressionArg<DataExpression
     public DataExpression getExpr() {
         return Expr;
     }
+
+    @Override
+    public String getName() {
+        return toString();
+    }
+
 }

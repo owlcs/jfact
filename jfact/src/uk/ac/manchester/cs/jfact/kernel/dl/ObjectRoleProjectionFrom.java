@@ -50,4 +50,9 @@ public class ObjectRoleProjectionFrom implements ObjectRoleComplexExpression,
     public ObjectRoleExpression getOR() {
         return roleDelegate;
     }
+
+    @Override
+    public String getName() {
+        return toString();
+    }
 }

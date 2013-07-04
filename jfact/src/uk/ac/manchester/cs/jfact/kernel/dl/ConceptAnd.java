@@ -54,4 +54,10 @@ public class ConceptAnd extends NAryExpressionImpl<ConceptExpression> implements
         }
         return false;
     }
+
+    @Override
+    public String getName() {
+        return toString();
+    }
+
 }

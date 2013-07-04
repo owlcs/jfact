@@ -51,4 +51,10 @@ public class ConceptObjectValue implements ConceptObjectRoleExpression {
     public ObjectRoleExpression getOR() {
         return delegate;
     }
+
+    @Override
+    public String getName() {
+        return toString();
+    }
+
 }

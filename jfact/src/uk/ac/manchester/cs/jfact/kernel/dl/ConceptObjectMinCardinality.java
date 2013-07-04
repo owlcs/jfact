@@ -63,4 +63,10 @@ public class ConceptObjectMinCardinality implements ConceptObjectCardinalityExpr
     public ObjectRoleExpression getOR() {
         return roleDelegate;
     }
+
+    @Override
+    public String getName() {
+        return toString();
+    }
+
 }

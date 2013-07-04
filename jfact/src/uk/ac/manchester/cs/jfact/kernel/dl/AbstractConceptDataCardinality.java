@@ -47,4 +47,10 @@ public abstract class AbstractConceptDataCardinality implements
     public DataExpression getExpr() {
         return expression;
     }
+
+    @Override
+    public String getName() {
+        return toString();
+    }
+
 }
