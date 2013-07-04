@@ -125,8 +125,7 @@ public class TranslationMachinery {
                 .asOWLDataProperty());
     }
 
-    protected synchronized IndividualName toIndividualPointer(
-            OWLIndividual individual) {
+    protected synchronized IndividualName toIndividualPointer(OWLIndividual individual) {
         if (!individual.isAnonymous()) {
             return individualTranslator.getPointerFromEntity(individual
                     .asOWLNamedIndividual());
@@ -169,8 +168,8 @@ public class TranslationMachinery {
         return ns;
     }
 
-    protected synchronized List<IndividualExpression>
-            translateIndividualSet(Set<OWLIndividual> inds) {
+    protected synchronized List<IndividualExpression> translateIndividualSet(
+            Set<OWLIndividual> inds) {
         List<IndividualExpression> l = new ArrayList<IndividualExpression>();
         for (OWLIndividual ind : inds) {
             l.add(toIndividualPointer(ind));

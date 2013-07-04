@@ -17,8 +17,7 @@ import conformance.PortedFrom;
 /** syntactic locality checker for DL axioms */
 @PortedFrom(file = "GeneralSyntacticLocalityChecker.h", name = "GeneralSyntacticLocalityChecker")
 public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implements
-        DLAxiomVisitor,
-        LocalityChecker {
+        DLAxiomVisitor, LocalityChecker {
     /** top evaluator */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "TopEval")
     protected TopEquivalenceEvaluator TopEval;
@@ -127,26 +126,24 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
 
     @Override
     public void visit(AxiomDisjointUnion axiom) {
-     // DisjointUnion(A, C1,..., Cn) is local if
-        //    (1) A and all of Ci are bot-equivalent,
-        // or (2) A and one Ci are top-equivalent and the remaining Cj are bot-equivalent
+        // DisjointUnion(A, C1,..., Cn) is local if
+        // (1) A and all of Ci are bot-equivalent,
+        // or (2) A and one Ci are top-equivalent and the remaining Cj are
+        // bot-equivalent
         isLocal = false;
         boolean lhsIsTopEq;
-        if ( isTopEquivalent(axiom.getConcept()) ) {
+        if (isTopEquivalent(axiom.getConcept())) {
             lhsIsTopEq = true;
-        } else if ( isBotEquivalent(axiom.getConcept()) ) {
+        } else if (isBotEquivalent(axiom.getConcept())) {
             lhsIsTopEq = false;
         } else {
             return;
         }             // neither (1) nor (2)
-
         boolean topEqDesc = false;
         for (ConceptExpression p : axiom.getArguments()) {
-            if (!isBotEquivalent(p))
-            {
-                if (lhsIsTopEq && isTopEquivalent(p))
-                {
-                    if ( topEqDesc ) {
+            if (!isBotEquivalent(p)) {
+                if (lhsIsTopEq && isTopEquivalent(p)) {
+                    if (topEqDesc) {
                         return;
                     } else {
                         topEqDesc = true;
@@ -156,7 +153,6 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
                 }
             }
         }
-
         isLocal = true;
     }
 
@@ -274,6 +270,7 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
     public void visit(AxiomORoleRange axiom) {
         isLocal = isTopEquivalent(axiom.getRange()) || isBotEquivalent(axiom.getRole());
     }
+
     @Override
     public void visit(AxiomDRoleRange axiom) {
         isLocal = isTopEquivalent(axiom.getRange()) || isBotEquivalent(axiom.getRole());

@@ -58,5 +58,4 @@ public class ConceptObjectForall implements ConceptObjectRCExpression {
     public String getName() {
         return toString();
     }
-
 }

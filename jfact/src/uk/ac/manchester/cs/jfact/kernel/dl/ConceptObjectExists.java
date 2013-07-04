@@ -58,5 +58,4 @@ public class ConceptObjectExists implements ConceptObjectRCExpression {
     public String getName() {
         return toString();
     }
-
 }

@@ -19,8 +19,7 @@ public class QRQuery {
     QRSetAtoms Body = new QRSetAtoms();
     /** set of free variables */
     @PortedFrom(file = "QR.h", name = "FreeVars")
-    private
-    Set<QRVariable> FreeVars = new HashSet<QRVariable>();
+    private Set<QRVariable> FreeVars = new HashSet<QRVariable>();
 
     public QRQuery() {
         // TODO Auto-generated constructor stub

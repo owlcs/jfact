@@ -162,8 +162,7 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
 
     @Override
     public void visit(ConceptObjectForall expr) {
-        isBotEq = isTopEquivalent(expr.getOR())
-                && isBotEquivalent(expr.getConcept());
+        isBotEq = isTopEquivalent(expr.getOR()) && isBotEquivalent(expr.getConcept());
     }
 
     @Override
@@ -272,11 +271,12 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
     public void visit(DataRoleName expr) {
         isBotEq = !sig.topRLocal() && !sig.contains(expr);
     }
-    
 
     // data expressions
     @Override
-    public void visit ( DataTop      arg) { isBotEq = false; }
+    public void visit(DataTop arg) {
+        isBotEq = false;
+    }
 
     @Override
     public void visit(DataBottom arg) {
@@ -299,10 +299,9 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
     }
 
     @Override
-    public void visit(DataAnd expr)
-    {
+    public void visit(DataAnd expr) {
         for (DataExpression p : expr.getArguments()) {
-            if ( isBotEquivalent(p) ) {
+            if (isBotEquivalent(p)) {
                 return;
             }
         }
@@ -310,10 +309,9 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
     }
 
     @Override
-    public void visit(DataOr expr)
-    {
+    public void visit(DataOr expr) {
         for (DataExpression p : expr.getArguments()) {
-            if ( !isBotEquivalent(p) ) {
+            if (!isBotEquivalent(p)) {
                 return;
             }
         }
@@ -321,6 +319,7 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
     }
 
     @Override
-   public  void visit ( DataOneOf expr ) { isBotEq = expr.isEmpty(); }
-
+    public void visit(DataOneOf expr) {
+        isBotEq = expr.isEmpty();
+    }
 }

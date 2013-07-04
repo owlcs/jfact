@@ -200,8 +200,8 @@ public class DataTypeSituation<R extends Comparable<R>> {
                     // cannot update an enumeration
                     return false;
                 }
-                for (Map.Entry<Facet, Comparable> f : value
-                        .getKnownNumericFacetValues().entrySet()) {
+                for (Map.Entry<Facet, Comparable> f : value.getKnownNumericFacetValues()
+                        .entrySet()) {
                     this.e = this.e.addNumericFacet(f.getKey(), f.getValue());
                 }
                 for (Map.Entry<Facet, Comparable> f : value

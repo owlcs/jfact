@@ -46,5 +46,4 @@ public class ConceptNot implements ConceptExpression, ConceptArg {
     public String getName() {
         return toString();
     }
-
 }

@@ -78,7 +78,6 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
      * number of nodes before make a block. */
     // private static final Option skipBeforeBlock =
     // getOption("skipBeforeBlock", 0);
-
     /** set of all avaliable (given) options */
     private final Map<String, StringOption> base = new HashMap<String, StringOption>();
 

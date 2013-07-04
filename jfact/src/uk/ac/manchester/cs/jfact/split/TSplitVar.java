@@ -18,7 +18,6 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tSplitVars.h", name = "TSplitVar")
 public class TSplitVar {
     // types
-
     // name of split concept
     private ConceptName oldName;
     // split concept itself

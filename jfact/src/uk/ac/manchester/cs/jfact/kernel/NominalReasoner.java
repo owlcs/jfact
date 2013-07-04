@@ -59,8 +59,8 @@ public class NominalReasoner extends DlSatTester {
             int bp = p.getNode().getBlocker().label().get_sc().get(0).getConcept();
             Individual blocker = (Individual) dlHeap.get(bp).getConcept();
             assert blocker.getNode().equals(p.getNode().getBlocker());
-            tBox.addSameIndividuals(p, new Pair(blocker, p
-                    .getNode().getPurgeDep().isEmpty()));
+            tBox.addSameIndividuals(p, new Pair(blocker, p.getNode().getPurgeDep()
+                    .isEmpty()));
         }
     }
 

@@ -160,13 +160,11 @@ public class ToDoList {
 
         /** add entry to a queue */
         void add(DlCompletionTree Node, ConceptWDep offset) {
-
             ToDoEntry e = new ToDoEntry(Node, offset);
             // no problems with empty queue and if no priority
             // clashes
             if (isEmpty()
-                    ||
-                    _Wait.get(size - 1).getNode().getNominalLevel() <= Node
+                    || _Wait.get(size - 1).getNode().getNominalLevel() <= Node
                             .getNominalLevel()) {
                 _Wait.add(e);
                 size++;
@@ -287,7 +285,6 @@ public class ToDoList {
     // return new TODOListSaveState();
     // }
     // }
-
     @Original
     protected boolean saveStateGenerationStarted = false;
 

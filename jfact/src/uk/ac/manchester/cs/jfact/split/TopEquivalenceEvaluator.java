@@ -33,62 +33,59 @@ public class TopEquivalenceEvaluator extends SigAccessor implements DLExpression
     // equivalent to R(x,y) and C(x), so copy behaviour from ER.X
     @Override
     public void visit(ObjectRoleProjectionFrom expr) {
-        isTopEq = isMinTopEquivalent ( 1, expr.getOR(), expr.getConcept() );
+        isTopEq = isMinTopEquivalent(1, expr.getOR(), expr.getConcept());
     }
 
     // equivalent to R(x,y) and C(y), so copy behaviour from ER.X
     @Override
     public void visit(ObjectRoleProjectionInto expr) {
-        isTopEq = isMinTopEquivalent ( 1, expr.getOR(), expr.getConcept());
+        isTopEq = isMinTopEquivalent(1, expr.getOR(), expr.getConcept());
     }
 
     /** @return true iff role expression in equivalent to const wrt locality */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isREquivalent")
-  private  boolean isREquivalent(Expression expr) {
+    private boolean isREquivalent(Expression expr) {
         return topRLocal() ? isTopEquivalent(expr) : isBotEquivalent(expr);
     }
-    
- // non-empty Concept/Data expression
 
+    // non-empty Concept/Data expression
     /** @return true iff C^I is non-empty */
-    private boolean isBotDistinct(Expression C)
-{
-    // TOP is non-empty
-    if ( isTopEquivalent(C) ) {
-        return true;
-    }
-    // built-in DT are non-empty
-    // FIXME!! that's it for now
+    private boolean isBotDistinct(Expression C) {
+        // TOP is non-empty
+        if (isTopEquivalent(C)) {
+            return true;
+        }
+        // built-in DT are non-empty
+        // FIXME!! that's it for now
         return C instanceof Datatype;
-}
+    }
 
-// cardinality of a concept/data expression interpretation
-
+    // cardinality of a concept/data expression interpretation
     /** @return true if #C^I > n */
-    private boolean isCardLargerThan(Expression C, int n)
-{
-    if ( n == 0 ) {
-        return isBotDistinct(C);
-    }
+    private boolean isCardLargerThan(Expression C, int n) {
+        if (n == 0) {
+            return isBotDistinct(C);
+        }
         if (C instanceof DataExpression && isTopEquivalent(C)) {
-        return true;
-    }
+            return true;
+        }
         if (C instanceof Datatype) {
             return ((Datatype) C).getCardinality() == cardinality.COUNTABLYINFINITE;
+        }
+        // FIXME!! try to be more precise
+        return false;
     }
-    // FIXME!! try to be more precise
-    return false;
-}
-//QCRs
 
+    // QCRs
     /** @return true iff (>= n R.C) is topEq */
-    private boolean isMinTopEquivalent(int n, RoleExpression R, Expression C)
-{ return n == 0 || isTopEquivalent(R) && isCardLargerThan ( C, n-1 ); }
+    private boolean isMinTopEquivalent(int n, RoleExpression R, Expression C) {
+        return n == 0 || isTopEquivalent(R) && isCardLargerThan(C, n - 1);
+    }
 
     /** @return true iff (<= n R.C) is topEq */
-    private boolean isMaxTopEquivalent(int n, RoleExpression R, Expression C)
-{ return isBotEquivalent(R) || isBotEquivalent(C); }
-
+    private boolean isMaxTopEquivalent(int n, RoleExpression R, Expression C) {
+        return isBotEquivalent(R) || isBotEquivalent(C);
+    }
 
     // set fields
     /** set the corresponding bottom evaluator */
@@ -157,12 +154,12 @@ public class TopEquivalenceEvaluator extends SigAccessor implements DLExpression
 
     @Override
     public void visit(ConceptObjectValue expr) {
-        isTopEq =  isTopEquivalent(expr.getOR());
+        isTopEq = isTopEquivalent(expr.getOR());
     }
 
     @Override
     public void visit(ConceptObjectExists expr) {
-        isTopEq = isMinTopEquivalent ( 1, expr.getOR(), expr.getConcept());
+        isTopEq = isMinTopEquivalent(1, expr.getOR(), expr.getConcept());
     }
 
     @Override
@@ -197,12 +194,13 @@ public class TopEquivalenceEvaluator extends SigAccessor implements DLExpression
 
     @Override
     public void visit(ConceptDataExists expr) {
-        isTopEq = isMinTopEquivalent ( 1, expr.getDataRoleExpression(), expr.getExpr() );
+        isTopEq = isMinTopEquivalent(1, expr.getDataRoleExpression(), expr.getExpr());
     }
 
     @Override
     public void visit(ConceptDataForall expr) {
-        isTopEq = isTopEquivalent(expr.getExpr()) || isBotEquivalent(expr.getDataRoleExpression());
+        isTopEq = isTopEquivalent(expr.getExpr())
+                || isBotEquivalent(expr.getDataRoleExpression());
     }
 
     @Override
@@ -249,7 +247,7 @@ public class TopEquivalenceEvaluator extends SigAccessor implements DLExpression
 
     @Override
     public void visit(ObjectRoleChain expr) {
-        isTopEq=false;
+        isTopEq = false;
         for (ObjectRoleExpression p : expr.getArguments()) {
             if (!isTopEquivalent(p)) {
                 return;
@@ -273,6 +271,7 @@ public class TopEquivalenceEvaluator extends SigAccessor implements DLExpression
     public void visit(DataRoleName expr) {
         isTopEq = sig.topRLocal() && !sig.contains(expr);
     }
+
     // data expressions
     @Override
     public void visit(DataTop arg) {
@@ -300,10 +299,9 @@ public class TopEquivalenceEvaluator extends SigAccessor implements DLExpression
     }
 
     @Override
-    public void visit(DataAnd expr)
-    {
+    public void visit(DataAnd expr) {
         for (DataExpression p : expr.getArguments()) {
-            if ( !isTopEquivalent(p) ) {
+            if (!isTopEquivalent(p)) {
                 return;
             }
         }
@@ -311,10 +309,9 @@ public class TopEquivalenceEvaluator extends SigAccessor implements DLExpression
     }
 
     @Override
-    public void visit(DataOr expr)
-    {
+    public void visit(DataOr expr) {
         for (DataExpression p : expr.getArguments()) {
-            if ( isTopEquivalent(p) ) {
+            if (isTopEquivalent(p)) {
                 return;
             }
         }
@@ -325,5 +322,4 @@ public class TopEquivalenceEvaluator extends SigAccessor implements DLExpression
     public void visit(DataOneOf arg) {
         isTopEq = false;
     }
-
 }

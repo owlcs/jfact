@@ -238,9 +238,6 @@ public class Role extends ClassifiableEntry {
         return dataRole;
     }
 
-
-
-    
     /** @param action */
     @Original
     public void setDataRole(boolean action) {
@@ -297,7 +294,6 @@ public class Role extends ClassifiableEntry {
         transitivity.setValue(value);
         inverse().transitivity.setValue(value);
     }
-
 
     // symmetry
     /** @return check whether the role is symmetric */
@@ -385,7 +381,6 @@ public class Role extends ClassifiableEntry {
         irreflexivity.setValue(value);
         inverse().irreflexivity.setValue(value);
     }
-
 
     /** @return check if the role is topmost-functional (ie, has no functional
      *         ancestors) */
@@ -765,9 +760,9 @@ public class Role extends ClassifiableEntry {
     public void print(LogAdapter o) {
         o.print("Role \"", getName(), "\"(")
                 .print(getId())
-                .print(")", isTransitive() ? "T" : "",
-                isReflexive() ? "R" : "", isTopFunc() ? "t" : "", isFunctional() ? "F"
-                        : "", isDataRole() ? "D" : "");
+                .print(")", isTransitive() ? "T" : "", isReflexive() ? "R" : "",
+                        isTopFunc() ? "t" : "", isFunctional() ? "F" : "",
+                        isDataRole() ? "D" : "");
         if (isSynonym()) {
             o.print(" = \"", getSynonym().getName(), "\"\n");
             return;
@@ -802,8 +797,8 @@ public class Role extends ClassifiableEntry {
         }
         o.print("\nAutomaton (size ")
                 .print(automaton.size())
-                .print("): ", automaton.isISafe() ? "I"
-                : "i", automaton.isOSafe() ? "O" : "o");
+                .print("): ", automaton.isISafe() ? "I" : "i",
+                        automaton.isOSafe() ? "O" : "o");
         automaton.print(o);
         o.print("\n");
     }
@@ -948,12 +943,12 @@ public class Role extends ClassifiableEntry {
         // here automaton is complete
         automaton.setCompleted(true);
         if (!isBottom()) {
-        for (ClassifiableEntry p : toldSubsumers) {
-            Role R = (Role) resolveSynonym(p);
-            R.addSubRoleAutomaton(this);
-            if (hasSpecialDomain()) {
-                R.specialDomain = true;
-            }
+            for (ClassifiableEntry p : toldSubsumers) {
+                Role R = (Role) resolveSynonym(p);
+                R.addSubRoleAutomaton(this);
+                if (hasSpecialDomain()) {
+                    R.specialDomain = true;
+                }
             }
         }
         // finish processing role
@@ -986,7 +981,7 @@ public class Role extends ClassifiableEntry {
         // create a chain
         boolean oSafe = false;
         // we couldn't assume that the current role
-                               // automaton is i- or o-safe
+        // automaton is i- or o-safe
         automaton.initChain(from);
         for (; p != p_last; ++p) {
             oSafe = automaton.addToChain(completeAutomatonByRole(RS.get(p), RInProcess),

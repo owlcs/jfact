@@ -412,8 +412,7 @@ public class DlCompletionGraph {
      * @return completion tree arc */
     @PortedFrom(file = "dlCompletionGraph.h", name = "addRoleLabel")
     public DlCompletionTreeArc addRoleLabel(DlCompletionTree from, DlCompletionTree to,
-            boolean isPredEdge, Role R, DepSet dep)
-    {
+            boolean isPredEdge, Role R, DepSet dep) {
         // check if GCraph already has FROM.TO edge labelled with RNAME
         DlCompletionTreeArc ret = from.getEdgeLabelled(R, to);
         if (ret == null) {
@@ -437,8 +436,7 @@ public class DlCompletionGraph {
      * @return an edge to created node */
     @PortedFrom(file = "dlCompletionGraph.h", name = "createNeighbour")
     public DlCompletionTreeArc createNeighbour(DlCompletionTree from, boolean isPredEdge,
-            Role r, DepSet dep)
-    {
+            Role r, DepSet dep) {
         if (pReasoner.getOptions().isRKG_IMPROVE_SAVE_RESTORE_DEPSET()) {
             assert branchingLevel == dep.level() + 1;
         }

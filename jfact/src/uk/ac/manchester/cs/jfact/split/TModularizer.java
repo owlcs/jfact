@@ -204,7 +204,8 @@ public class TModularizer {
      * @param signature
      * @param type */
     @PortedFrom(file = "Modularity.h", name = "extract")
-    public void extract(Collection<AxiomInterface> begin, TSignature signature, ModuleType type) {
+    public void extract(Collection<AxiomInterface> begin, TSignature signature,
+            ModuleType type) {
         boolean topLocality = type == ModuleType.M_TOP;
         sig = signature;
         Checker.setSignatureValue(sig);
@@ -246,8 +247,8 @@ public class TModularizer {
      * @param type
      * @return result in the Set */
     @PortedFrom(file = "Modularity.h", name = "extractModule")
-    public List<AxiomInterface> extractModule(List<AxiomInterface> list, TSignature signature,
-            ModuleType type) {
+    public List<AxiomInterface> extractModule(List<AxiomInterface> list,
+            TSignature signature, ModuleType type) {
         this.extract(list, signature, type);
         return Module;
     }

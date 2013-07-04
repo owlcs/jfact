@@ -68,5 +68,4 @@ public class ConceptObjectMaxCardinality implements ConceptObjectCardinalityExpr
     public String getName() {
         return toString();
     }
-
 }

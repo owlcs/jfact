@@ -58,5 +58,4 @@ public class ConceptDataForall implements ConceptDataRVExpression, DataRoleArg {
     public String getName() {
         return toString();
     }
-
 }

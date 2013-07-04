@@ -497,31 +497,27 @@ public class DatatypeFactory {
         public boolean isInValueSpace(R _l) {
             if (this.hasMinExclusive()) {
                 // to be in value space, ex min must be smaller than l
-                Comparable<R> l = (Comparable<R>) minExclusive
-                        .parseNumber(_l);
+                Comparable<R> l = (Comparable<R>) minExclusive.parseNumber(_l);
                 if (l.compareTo(this.getMin()) <= 0) {
                     return false;
                 }
             }
             if (this.hasMinInclusive()) {
-                Comparable<R> l = (Comparable<R>) minExclusive
-                        .parseNumber(_l);
+                Comparable<R> l = (Comparable<R>) minExclusive.parseNumber(_l);
                 // to be in value space, min must be smaller or equal to l
                 if (l.compareTo(this.getMin()) < 0) {
                     return false;
                 }
             }
             if (this.hasMaxExclusive()) {
-                Comparable<R> l = (Comparable<R>) minExclusive
-                        .parseNumber(_l);
+                Comparable<R> l = (Comparable<R>) minExclusive.parseNumber(_l);
                 // to be in value space, ex max must be bigger than l
                 if (l.compareTo(this.getMax()) >= 0) {
                     return false;
                 }
             }
             if (this.hasMaxInclusive()) {
-                Comparable<R> l = (Comparable<R>) minExclusive
-                        .parseNumber(_l);
+                Comparable<R> l = (Comparable<R>) minExclusive.parseNumber(_l);
                 // to be in value space, ex min must be smaller than l
                 if (l.compareTo(this.getMax()) > 0) {
                     return false;
@@ -656,12 +652,10 @@ public class DatatypeFactory {
         @Override
         public R getMax() {
             if (this.hasMaxExclusive()) {
-                return (R) knownNumericFacetValues
-                        .get(maxExclusive);
+                return (R) knownNumericFacetValues.get(maxExclusive);
             }
             if (this.hasMaxInclusive()) {
-                return (R) knownNumericFacetValues
-                        .get(maxInclusive);
+                return (R) knownNumericFacetValues.get(maxInclusive);
             }
             return null;
         }
@@ -746,8 +740,7 @@ public class DatatypeFactory {
 
         @Override
         public Boolean parseValue(String s) {
-            whitespace facet = (whitespace) whiteSpace.parse(
-knownNumericFacetValues
+            whitespace facet = (whitespace) whiteSpace.parse(knownNumericFacetValues
                     .get(whiteSpace));
             return Boolean.parseBoolean(facet.normalize(s));
         }
@@ -1174,8 +1167,7 @@ knownNumericFacetValues
                     return true;
                 }
                 // if diff is larger than 0, check
-                return getMax().compareTo(
-(Float) increase(getMin())) < 0;
+                return getMax().compareTo((Float) increase(getMin())) < 0;
                 // return getMin().equals(getMax());
             }
             return getMax().compareTo(getMin()) < 0;
@@ -1184,8 +1176,6 @@ knownNumericFacetValues
 
     static abstract class BYTE_DATATYPE<R extends Comparable<R>> extends
             SHORT_DATATYPE<R> {
-
-
         BYTE_DATATYPE() {
             super(namespace + "byte");
             ancestors = Utils.generateAncestors(SHORT);
@@ -1228,8 +1218,7 @@ knownNumericFacetValues
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
-            knownNonNumericFacetValues.put(fractionDigits,
- 0);
+            knownNonNumericFacetValues.put(fractionDigits, 0);
         }
     }
 
@@ -1322,8 +1311,6 @@ knownNumericFacetValues
     }
 
     static abstract class SHORT_DATATYPE<R extends Comparable<R>> extends INT_DATATYPE<R> {
-
-
         SHORT_DATATYPE() {
             this(namespace + "short");
         }
@@ -1493,8 +1480,7 @@ knownNumericFacetValues
             knownNonNumericFacetValues.putAll(super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
-            knownNonNumericFacetValues
-.put(pattern, "\\c+");
+            knownNonNumericFacetValues.put(pattern, "\\c+");
         }
 
         @Override

@@ -229,8 +229,7 @@ public class RoleAutomaton {
                 checkTransition(from, trans.final_state());
                 trans.add(p);
                 // try to merge transitions going to the original state
-                if (to == 1 && RST.addToExisting(trans)) {
-} else {
+                if (to == 1 && RST.addToExisting(trans)) {} else {
                     RST.add(trans);
                 }
             }

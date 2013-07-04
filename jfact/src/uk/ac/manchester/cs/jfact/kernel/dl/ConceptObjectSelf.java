@@ -46,5 +46,4 @@ public class ConceptObjectSelf implements ConceptObjectRoleExpression {
     public String getName() {
         return toString();
     }
-
 }

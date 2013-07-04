@@ -40,5 +40,4 @@ public class DataAnd extends NAryExpressionImpl<DataExpression> implements
     public String getName() {
         return toString();
     }
-
 }

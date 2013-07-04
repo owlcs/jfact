@@ -34,5 +34,4 @@ public class ConceptBottom implements ConceptExpression {
     public String getName() {
         return toString();
     }
-
 }

@@ -181,8 +181,7 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
     }
 
     @Override
-    public DatatypeExpression<R> addNumericFacet(Facet f,
- Comparable value) {
+    public DatatypeExpression<R> addNumericFacet(Facet f, Comparable value) {
         System.out
                 .println("DatatypeNegation.addFacet() Cannot add a facet to a negation; modify the base type and rebuild a new negation. Returning the same object");
         return this;
@@ -199,5 +198,4 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
     public String getName() {
         return toString();
     }
-
 }

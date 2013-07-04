@@ -16,13 +16,14 @@ public abstract class ModelCacheInterface {
     @PortedFrom(file = "modelCacheInterface.h", name = "hasNominalNode")
     private boolean hasNominalNode;
 
-    /** Create cache model with given precense of nominals 
+    /** Create cache model with given precense of nominals
+     * 
      * @param flagNominals */
     public ModelCacheInterface(boolean flagNominals) {
         setHasNominalNode(flagNominals);
     }
 
-    /** @param p 
+    /** @param p
      * @return check whether both models have nominals; in this case, merge is
      *         impossible */
     @PortedFrom(file = "modelCacheInterface.h", name = "hasNominalClash")
@@ -30,7 +31,8 @@ public abstract class ModelCacheInterface {
         return isHasNominalNode() && p.isHasNominalNode();
     }
 
-    /** update knoweledge about nominals in the model after merging 
+    /** update knoweledge about nominals in the model after merging
+     * 
      * @param p */
     @PortedFrom(file = "modelCacheInterface.h", name = "updateNominalStatus")
     public void updateNominalStatus(ModelCacheInterface p) {
@@ -43,8 +45,8 @@ public abstract class ModelCacheInterface {
     public abstract ModelCacheState getState();
 
     /** check whether two caches can be merged;
-     * @param p 
      * 
+     * @param p
      * @return state of "merged" model */
     @PortedFrom(file = "modelCacheInterface.h", name = "canMerge")
     public abstract ModelCacheState canMerge(ModelCacheInterface p);

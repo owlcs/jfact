@@ -725,8 +725,7 @@ public class DlSatTester {
         for (int i = 0; i < list.size(); i++) {
             ConceptWDep q = list.get(i);
             // need at-least restriction
-            if (q.getConcept() < 0
-                    && isNRClash(dlHeap.get(q.getConcept()), atmost, q)) {
+            if (q.getConcept() < 0 && isNRClash(dlHeap.get(q.getConcept()), atmost, q)) {
                 return true;
             }
         }
@@ -740,8 +739,7 @@ public class DlSatTester {
         for (int i = 0; i < list.size(); i++) {
             ConceptWDep q = list.get(i);
             // need at-most restriction
-            if (q.getConcept() > 0
-                    && isNRClash(atleast, dlHeap.get(q.getConcept()), q)) {
+            if (q.getConcept() > 0 && isNRClash(atleast, dlHeap.get(q.getConcept()), q)) {
                 return true;
             }
         }
@@ -1175,8 +1173,8 @@ public class DlSatTester {
         // have been done yet.
         if (initNewNode(edgeR.getArcEnd(), dummy, Helper.bpTOP)
                 || initNewNode(edgeS.getArcEnd(), dummy, Helper.bpTOP)
-                || setupEdge(edgeR, dummy, 0) || setupEdge(edgeS, dummy,
-                        0) || merge(edgeS.getArcEnd(), edgeR.getArcEnd(), dummy)) {
+                || setupEdge(edgeR, dummy, 0) || setupEdge(edgeS, dummy, 0)
+                || merge(edgeS.getArcEnd(), edgeR.getArcEnd(), dummy)) {
             return true;
         }
         // 2 roles are disjoint if current setting is unsatisfiable
@@ -1200,8 +1198,8 @@ public class DlSatTester {
         // init new nodes/edges. No need to apply restrictions, as no reasoning
         // have been done yet.
         if (initNewNode(edgeR.getArcEnd(), dummy, Helper.bpTOP)
-                || setupEdge(edgeR, dummy,
-                        0) || merge(edgeR.getArcEnd(), cGraph.getRoot(), dummy)) {
+                || setupEdge(edgeR, dummy, 0)
+                || merge(edgeR.getArcEnd(), cGraph.getRoot(), dummy)) {
             return true;
         }
         // R is irreflexive if current setting is unsatisfiable
@@ -1246,11 +1244,9 @@ public class DlSatTester {
     private boolean commonTacticBodyAll(DLVertex cur) {
         assert curConceptConcept > 0 && cur.getType() == dtForall;
         if (cur.getRole().isTop()) {
-
             stats.getnAllCalls().inc();
             return addSessionGCI(cur.getConceptIndex(), curConceptDepSet);
         }
-
         // can't skip singleton models for complex roles due to empty
         // transitions
         if (cur.getRole().isSimple()) {
@@ -1602,8 +1598,7 @@ public class DlSatTester {
         boolean result = checkSatisfiability();
         testTimer.stop();
         options.getLog().print("\nChecking time was ").print(testTimer.getResultTime())
-                .print(
-                " milliseconds");
+                .print(" milliseconds");
         testTimer.reset();
         finaliseStatistic();
         if (result) {
@@ -1630,7 +1625,6 @@ public class DlSatTester {
 
     @PortedFrom(file = "Reasoner.h", name = "checkSatisfiability")
     private boolean checkSatisfiability() {
-
         int loop = 0;
         for (;;) {
             if (curNode == null) {
@@ -1723,7 +1717,6 @@ public class DlSatTester {
     }
 
     // split code implementation
-
     /** apply split rule RULE to a reasoner.
      * 
      * @return true if clash was found */
@@ -1748,8 +1741,7 @@ public class DlSatTester {
      * @return true iff clash was found */
     @PortedFrom(file = "Reasoner.h", name = "checkSplitRules")
     private boolean checkSplitRules() {
-        if (splitRuleLevel == 0)
-        {
+        if (splitRuleLevel == 0) {
             // 1st application OR return was made before previous set
             ActiveSplits.clear();
             SessionSignature.clear();
@@ -2023,8 +2015,7 @@ public class DlSatTester {
         for (int i = 0; i < er_begin.size(); i++) {
             SimpleRule rule = tBox.getSimpleRule(er_begin.get(i));
             stats.getnSRuleAdd().inc();
-            if (rule.applicable(this))
-            {
+            if (rule.applicable(this)) {
                 // apply the rule's head
                 stats.getnSRuleFire().inc();
                 if (addToDoEntry(curNode, rule.getBpHead(), clashSet, null)) {
@@ -2744,8 +2735,7 @@ public class DlSatTester {
                 // add dep-set from labels
                 if (C == bpTOP) {
                     setClashSet(dep.getReference());
-                } else
-                {
+                } else {
                     // QCR: update dep-set wrt C
                     // here we know that C is in both labels; set a proper
                     // clash-set
@@ -2826,7 +2816,6 @@ public class DlSatTester {
     }
 
     // Func/LE/GE with top role processing
-
     @PortedFrom(file = "Reasoner.h", name = "processTopRoleFunc")
     boolean processTopRoleFunc(DLVertex cur) {
         // for <=1 R concepts
@@ -2875,9 +2864,9 @@ public class DlSatTester {
             }
         } else {
             // if we are here that it IS first LE call
-        if (isQuickClashLE(cur)) {
-            return true;
-        }
+            if (isQuickClashLE(cur)) {
+                return true;
+            }
         }
         // initial phase: choose-rule, NN-rule
         if (needInit) {
@@ -3124,9 +3113,8 @@ public class DlSatTester {
             if (q.getRole().isDisjoint()
                     && checkDisjointRoleClash(q.getReverse().getArcEnd(), q.getArcEnd(),
                             q.getRole(), depF)) {
-
                 {
-                // XXX dubious
+                    // XXX dubious
                     return true;
                 }
             }

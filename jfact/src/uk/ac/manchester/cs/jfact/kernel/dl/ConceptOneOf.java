@@ -43,5 +43,4 @@ public class ConceptOneOf<I extends IndividualExpression> extends NAryExpression
     public String getName() {
         return toString();
     }
-
 }

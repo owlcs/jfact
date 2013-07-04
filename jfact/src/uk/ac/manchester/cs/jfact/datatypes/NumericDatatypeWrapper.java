@@ -213,5 +213,4 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype
     public String getName() {
         return toString();
     }
-
 }

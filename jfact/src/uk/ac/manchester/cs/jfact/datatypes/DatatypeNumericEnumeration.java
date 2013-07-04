@@ -97,8 +97,7 @@ public class DatatypeNumericEnumeration<R extends Comparable<R>> extends
         if (literals.isEmpty()) {
             return null;
         }
-        return Facets.maxInclusive
-                .parseNumber(literals.get(literals.size() - 1));
+        return Facets.maxInclusive.parseNumber(literals.get(literals.size() - 1));
     }
 
     @Override

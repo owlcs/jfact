@@ -242,8 +242,8 @@ public class ELFNormalizer extends DLAxiomVisitorAdapter {
                 return;
             case 1:
                 // single element, use C=D processing
-                addAxiom(new AxiomConceptInclusion(axiom.getOWLAxiom(), axiom.getConcept(),
-                        axiom.getArguments().get(0)));
+                addAxiom(new AxiomConceptInclusion(axiom.getOWLAxiom(),
+                        axiom.getConcept(), axiom.getArguments().get(0)));
                 addAxiom(new AxiomConceptInclusion(axiom.getOWLAxiom(), axiom
                         .getArguments().get(0), axiom.getConcept()));
                 break;

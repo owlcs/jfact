@@ -16,7 +16,6 @@ import conformance.PortedFrom;
 /** RI actor */
 @PortedFrom(file = "Kernel.cpp", name = "RIActor")
 public class RIActor extends ActorImpl<Individual> {
-
     @PortedFrom(file = "Kernel.cpp", name = "tryEntry")
     private boolean tryEntry(ClassifiableEntry p) {
         if (p.isSystem() || !((Concept) p).isSingleton()) {

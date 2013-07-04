@@ -680,7 +680,8 @@ public class DLDag {
                 v.merge(v.getRole().getDomainLabel()); // domain(role)=cur
                 merge(v.getRole().getRangeLabel(), v.getConceptIndex());
                 break;
-            case dtProj: // projection: equate R&D of R and ProjR, and D(R) with C
+            case dtProj: // projection: equate R&D of R and ProjR, and D(R) with
+                         // C
                 v.merge(v.getRole().getDomainLabel());
                 v.merge(v.getProjRole().getDomainLabel());
                 merge(v.getRole().getDomainLabel(), v.getConceptIndex());

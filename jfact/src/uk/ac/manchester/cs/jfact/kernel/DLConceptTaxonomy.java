@@ -257,8 +257,7 @@ public class DLConceptTaxonomy extends Taxonomy {
     private boolean testSub(Concept p, Concept q) {
         assert p != null;
         assert q != null;
-        if (q.isSingleton() && q.isPrimitive()
-                && !q.isNominal()) {
+        if (q.isSingleton() && q.isPrimitive() && !q.isNominal()) {
             // singleton on the RHS is useless iff it is primitive
             return false;
         }

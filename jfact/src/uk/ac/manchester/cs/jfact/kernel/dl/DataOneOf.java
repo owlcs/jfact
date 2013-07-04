@@ -41,5 +41,4 @@ public class DataOneOf extends NAryExpressionImpl<Literal<?>> implements
     public String getName() {
         return toString();
     }
-
 }

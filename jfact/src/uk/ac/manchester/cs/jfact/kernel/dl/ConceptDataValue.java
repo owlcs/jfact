@@ -59,5 +59,4 @@ public class ConceptDataValue implements ConceptDataRoleExpression,
     public String getName() {
         return toString();
     }
-
 }

@@ -57,14 +57,12 @@ public class CGLabel {
     }
 
     /** @return simple concepts map */
-
     @Original
     public ArrayIntMap get_sc_concepts() {
         return scLabel.getContainedConcepts();
     }
 
     /** @return complex concepts map */
-
     @Original
     public ArrayIntMap get_cc_concepts() {
         return ccLabel.getContainedConcepts();

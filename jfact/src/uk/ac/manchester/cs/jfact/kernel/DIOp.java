@@ -13,7 +13,6 @@ enum DIOp {
     diInv,
     // individual expressions
     diOneOf,
-
     // end of the enum
     diEndOp,
     // wrong axiom

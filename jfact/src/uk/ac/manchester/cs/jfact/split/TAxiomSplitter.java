@@ -279,8 +279,7 @@ public class TAxiomSplitter {
             unregisterRec(imp);
             unregisterRec(rec);
             return true;
-        } else
-        {
+        } else {
             // keep the split
             R2.add(rec);
             return false;
@@ -335,7 +334,6 @@ public class TAxiomSplitter {
     /** @param config
      * @param o */
     public TAxiomSplitter(JFactReasonerConfiguration config, Ontology o) {
-
         newNameId = 0;
         O = o;
         mod = new TModularizer(config, new SyntacticLocalityChecker());

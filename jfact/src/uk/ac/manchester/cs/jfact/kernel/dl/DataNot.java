@@ -46,5 +46,4 @@ public class DataNot implements DataExpression, DataExpressionArg<DataExpression
     public String getName() {
         return toString();
     }
-
 }

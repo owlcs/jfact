@@ -40,5 +40,4 @@ public class ConceptOr extends NAryExpressionImpl<ConceptExpression> implements
     public String getName() {
         return toString();
     }
-
 }

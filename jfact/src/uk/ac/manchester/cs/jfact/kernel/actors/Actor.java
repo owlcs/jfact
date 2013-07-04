@@ -18,7 +18,7 @@ public interface Actor {
      * @return true if applied */
     @PortedFrom(file = "Actor.h", name = "apply")
     boolean apply(TaxonomyVertex v);
-    
+
     /** @return get 1-d NULL-terminated array of synonyms of the 1st
      *         entry(necessary for Equivalents, for example) */
     @PortedFrom(file = "Actor.h", name = "getSynonyms")

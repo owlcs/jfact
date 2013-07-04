@@ -133,8 +133,7 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
     @Override
     public DLTree visit(ConceptObjectValue expr) {
         return DLTreeFactory.createSNFExists(expr.getOR().accept(this), expr
-                .getIndividual()
-                .accept(this));
+                .getIndividual().accept(this));
     }
 
     @Override
@@ -303,8 +302,7 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
         NamedEntry role;
         if (nc(expr)) {
             role = sig.topRLocal() ? RM.getTopRole() : RM.getBotRole();
-        } else
-        {
+        } else {
             role = expr.getEntry();
             if (role == null) {
                 role = matchEntry(RM.ensureRoleName(expr.getName()), expr);

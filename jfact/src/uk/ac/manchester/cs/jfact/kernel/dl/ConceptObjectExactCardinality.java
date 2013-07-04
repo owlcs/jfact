@@ -69,5 +69,4 @@ public class ConceptObjectExactCardinality implements ConceptObjectCardinalityEx
     public String getName() {
         return toString();
     }
-
 }

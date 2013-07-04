@@ -116,7 +116,7 @@ public class ClassifiableEntry extends NamedEntry {
     }
 
     // index interface
-    // /** get the index value */
+    /** get the index value */
     @Override
     @PortedFrom(file = "taxNamEntry.h", name = "getIndex")
     public int getIndex() {

@@ -57,7 +57,6 @@ class LiteralImpl<T extends Comparable<T>> implements Literal<T> {
         return toString();
     }
 
-
     @Override
     public boolean equals(Object obj) {
         if (super.equals(obj)) {

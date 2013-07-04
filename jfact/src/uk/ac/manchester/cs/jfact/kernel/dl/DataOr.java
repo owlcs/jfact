@@ -40,5 +40,4 @@ public class DataOr extends NAryExpressionImpl<DataExpression> implements
     public String getName() {
         return toString();
     }
-
 }

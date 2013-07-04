@@ -65,8 +65,7 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<
     }
 
     @Override
-    public DatatypeExpression<O> addNumericFacet(Facet f,
- Comparable value) {
+    public DatatypeExpression<O> addNumericFacet(Facet f, Comparable value) {
         if (!facets.contains(f)) {
             throw new IllegalArgumentException("Facet " + f
                     + " not allowed tor datatype " + this.getHostType());

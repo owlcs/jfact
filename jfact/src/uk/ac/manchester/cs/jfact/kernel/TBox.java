@@ -165,11 +165,9 @@ public class TBox {
     /** flag whether TBox is WINE-like */
     @PortedFrom(file = "dlTBox.h", name = "isLikeWINE")
     private boolean isLikeWINE;
-
     /** whether KB is consistent */
     @PortedFrom(file = "dlTBox.h", name = "consistent")
     private boolean consistent;
-
     /** time spend for preprocessing */
     @PortedFrom(file = "dlTBox.h", name = "preprocTime")
     private long preprocTime;
@@ -565,7 +563,6 @@ public class TBox {
                 this.collectLogicFeature(pc);
                 setRelevant(pc.getpBody());
             }
-
         }
         for (Individual pi : individuals.getList()) {
             if (!pi.isRelevant(relevance)) {
@@ -574,7 +571,6 @@ public class TBox {
                 this.collectLogicFeature(pi);
                 setRelevant(pi.getpBody());
             }
-
         }
         markGCIsRelevant();
     }
@@ -955,7 +951,6 @@ public class TBox {
         ConceptMap.add(null);
         // make fresh concept and datatype
         concept2dag(pTemp);
-
         for (Concept pc : concepts.getList()) {
             concept2dag(pc);
         }
@@ -1032,7 +1027,6 @@ public class TBox {
                 DLTree dom = R.getTDomain();
                 int bp = bpTOP;
                 if (dom != null) {
-
                     bp = tree2dag(dom);
                     GCIs.setRnD();
                 }
@@ -1040,7 +1034,6 @@ public class TBox {
                 // special domain for R is AR.Range
                 R.initSpecialDomain();
                 if (R.hasSpecialDomain()) {
-
                     R.setSpecialDomain(tree2dag(R.getTSpecialDomain()));
                 }
             }
@@ -1360,12 +1353,10 @@ public class TBox {
         clearQueryConcept();
         // here we sure that ontology is consistent
         // FIXME!! distinguish later between the 1st run and the following runs
-
         dlHeap.setSubOrder();
         // initTaxonomy();
         pTax.setBottomUp(GCIs);
         needConcept |= needIndividual;
-
         if (config.getverboseOutput()) {
             config.getLog().print("Processing query...\n");
         }
@@ -1381,12 +1372,10 @@ public class TBox {
             config.getProgressMonitor().reasonerTaskStarted(
                     ReasonerProgressMonitor.CLASSIFYING);
         }
-
         duringClassification = true;
         classifyConcepts(arrayCD, true, "completely defined");
         classifyConcepts(arrayNoCD, false, "regular");
         classifyConcepts(arrayNP, false, "non-primitive");
-
         duringClassification = false;
         pTax.processSplits();
         if (config.getProgressMonitor() != null) {
@@ -1476,7 +1465,6 @@ public class TBox {
         isLikeGALEN = false;
         isLikeWINE = false;
         consistent = true;
-
         preprocTime = 0;
         consistTime = 0;
         config.getLog().printTemplate(Templates.READ_CONFIG,
@@ -1485,7 +1473,6 @@ public class TBox {
         if (axioms.initAbsorptionFlags(config.getabsorptionFlags())) {
             throw new ReasonerInternalException("Incorrect absorption flags given");
         }
-
         initTopBottom();
         setForbidUndefinedNames(false);
         pTax = new DLConceptTaxonomy(top, bottom, this);
@@ -1688,11 +1675,9 @@ public class TBox {
             }
             // here this means that one of the individuals is a fresh name
             return false;
-
         }
         // TODO equals for TaxonomyVertex
         return a.getTaxVertex().equals(b.getTaxVertex());
-
     }
 
     /** @param R
@@ -2311,7 +2296,6 @@ public class TBox {
         int size = l.size();
         for (int i = 0; i < size; i++) {
             if (DLTreeFactory.isTopRole(l.get(i))) {
-                
                 throw new ReasonerInternalException(
                         "Universal role in the disjoint roles axiom");
             }
@@ -2364,7 +2348,6 @@ public class TBox {
         transformSingletonHierarchy();
         absorbAxioms();
         setToldTop();
-
         buildDAG();
         buildSplitRules();
         fillsClassificationTag();
@@ -2577,7 +2560,6 @@ public class TBox {
         return i;
     }
 
-
     /** determine sorts */
     @PortedFrom(file = "dlTBox.h", name = "determineSorts")
     public void determineSorts() {
@@ -2751,7 +2733,6 @@ public class TBox {
             nomReasoner = new NominalReasoner(this, config, datatypeFactory);
         }
         setToDoPriorities();
-
     }
 
     @PortedFrom(file = "dlTBox.h", name = "nRelevantCCalls")
@@ -2793,15 +2774,11 @@ public class TBox {
                         ++nRelevantCCalls;
                         concept.setRelevant(relevance);
                         this.collectLogicFeature(concept);
-
                         queue.add(concept.getpBody());
                     }
-
                     break;
                 case dtForall:
-                case dtLE:
-
-                {
+                case dtLE: {
                     Role _role = v.getRole();
                     List<Role> rolesToExplore = new LinkedList<Role>();
                     rolesToExplore.add(_role);

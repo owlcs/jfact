@@ -116,8 +116,7 @@ public class NamedEntryCollection<T extends NamedEntry> {
      * @param p
      * @return true iff it was NOT the last entry. */
     public boolean remove(T p) {
-        if (!isRegistered(p.getName()))
-        {
+        if (!isRegistered(p.getName())) {
             // not in a name-set: just delete it
             return false;
         }

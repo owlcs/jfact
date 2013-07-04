@@ -68,5 +68,4 @@ public class ConceptObjectMinCardinality implements ConceptObjectCardinalityExpr
     public String getName() {
         return toString();
     }
-
 }

@@ -237,8 +237,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     }
 
     @Override
-    public DatatypeExpression<R> addNumericFacet(Facet f,
- Comparable value) {
+    public DatatypeExpression<R> addNumericFacet(Facet f, Comparable value) {
         System.out
                 .println("DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object");
         return this;
@@ -255,5 +254,4 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     public String getName() {
         return toString();
     }
-
 }

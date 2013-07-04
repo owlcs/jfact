@@ -68,8 +68,8 @@ public class Axiom {
             if (Cons.size() > 1) {
                 absorptionLog.print(" (other options are");
                 for (int j = 1; j < Cons.size(); ++j) {
-                    absorptionLog.print(" ",
-                            InAx.getConcept(Cons.get(j).getChild()).getName());
+                    absorptionLog.print(" ", InAx.getConcept(Cons.get(j).getChild())
+                            .getName());
                 }
                 absorptionLog.print(")");
             }
@@ -107,8 +107,7 @@ public class Axiom {
         Axiom ret = copy(pos);
         ret.add(DLTreeFactory.createSNFNot(InAx.getConcept(pos.getChild())
                 .getDescription().copy()));
-        absorptionLog
-                .print(" simplify CN expression for ", pos.getChild());
+        absorptionLog.print(" simplify CN expression for ", pos.getChild());
         return ret;
     }
 
@@ -149,8 +148,7 @@ public class Axiom {
         for (DLTree p : disjuncts) {
             if (InAx.isAnd(p)) {
                 SAbsSplit();
-                absorptionLog
-                        .print(" split AND espression ", p.getChild());
+                absorptionLog.print(" split AND espression ", p.getChild());
                 acc = this.split(acc, p, p.getChildren().iterator().next());
                 /** no need to split more than once: every extra splits would be
                  * together with unsplitted parts like: (A or B) and (C or D)
@@ -246,7 +244,7 @@ public class Axiom {
         if (disjuncts.isEmpty()) {
             return DLTreeFactory.createBottom();
         }
-        //assert !disjuncts.isEmpty();
+        // assert !disjuncts.isEmpty();
         List<DLTree> leaves = new ArrayList<DLTree>();
         for (DLTree d : disjuncts) {
             if (!d.equals(replaced)) {
@@ -284,8 +282,7 @@ public class Axiom {
             for (DLTree s : Pos) {
                 if (q.equals(s)) {
                     SAbsBApply();
-                    absorptionLog
-                            .print(" Absorb into BOTTOM due to (not", q, ") and", s);
+                    absorptionLog.print(" Absorb into BOTTOM due to (not", q, ") and", s);
                     return true;
                 }
             }
@@ -322,8 +319,7 @@ public class Axiom {
             if (Cons.size() > 1) {
                 absorptionLog.print(" (other options are");
                 for (int j = 1; j < Cons.size(); ++j) {
-                    absorptionLog.print(" ", InAx.getConcept(Cons.get(j))
-                            .getName());
+                    absorptionLog.print(" ", InAx.getConcept(Cons.get(j)).getName());
                 }
                 absorptionLog.print(")");
             }
@@ -364,8 +360,7 @@ public class Axiom {
             role = Role.resolveRole(Cons.get(0).getChild().getLeft());
         }
         if (KB.getOptions().isAbsorptionLoggingActive()) {
-            absorptionLog.print(" R-Absorb GCI to the domain of role ",
-                    role.getName());
+            absorptionLog.print(" R-Absorb GCI to the domain of role ", role.getName());
             if (Cons.size() > 1) {
                 absorptionLog.print(" (other options are");
                 for (int j = 1; j < Cons.size(); ++j) {

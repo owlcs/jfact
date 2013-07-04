@@ -53,8 +53,7 @@ public class Facets {
         }
 
         @Override
-        public Comparable parseNumber(
-                Object value) {
+        public Comparable parseNumber(Object value) {
             if (!isNumberFacet()) {
                 throw new UnsupportedOperationException(
                         "Only number facets can parse numbers");

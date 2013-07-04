@@ -52,5 +52,4 @@ public abstract class AbstractConceptDataCardinality implements
     public String getName() {
         return toString();
     }
-
 }

@@ -56,5 +56,4 @@ public class ConceptObjectValue implements ConceptObjectRoleExpression {
     public String getName() {
         return toString();
     }
-
 }

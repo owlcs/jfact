@@ -253,5 +253,4 @@ public class LogicFeatures {
     private static int lfSelfRef = 14;
     @PortedFrom(file = "LogicFeature.h", name = "lfTopRole")
     private static int lfTopRole = 15;
-
 }

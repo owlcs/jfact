@@ -33,7 +33,6 @@ public class TSplitRules {
         /** pointer to split vertex to activate */
         int bpSplit;
 
-
         TSplitRule() {}
 
         /** init c'tor */
@@ -222,7 +221,8 @@ public class TSplitRules {
 
     /** prepare start signature */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "prepareStartSig")
-    void prepareStartSig(List<AxiomInterface> Module, TSignature sig, List<NamedEntity> Allowed) {
+    void prepareStartSig(List<AxiomInterface> Module, TSignature sig,
+            List<NamedEntity> Allowed) {
         // remove all defined concepts from signature
         for (AxiomInterface p : Module) {
             if (p instanceof AxiomEquivalentConcepts) {
@@ -277,8 +277,7 @@ public class TSplitRules {
                 sig.add(p);
             }
         }
-        if (RecAllowed.isEmpty())
-        {
+        if (RecAllowed.isEmpty()) {
             // minimal seed signature
             Out.add(StartSig);
             return;

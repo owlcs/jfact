@@ -34,5 +34,4 @@ public class ConceptTop implements ConceptExpression {
     public String getName() {
         return toString();
     }
-
 }

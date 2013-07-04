@@ -289,7 +289,7 @@ public class Concept extends ClassifiableEntry {
     /** @param Desc */
     @Original
     public void addLeaves(Collection<DLTree> Desc) {
-       // assert isPrimitive();
+        // assert isPrimitive();
         if (description == null) {
             description = DLTreeFactory.createSNFAnd(Desc);
         } else {

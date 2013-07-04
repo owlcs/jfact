@@ -34,5 +34,4 @@ public class ObjectRoleTop implements ObjectRoleExpression {
     public String toString() {
         return getName();
     }
-
 }

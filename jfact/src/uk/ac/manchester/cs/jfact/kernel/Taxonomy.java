@@ -294,7 +294,7 @@ public class Taxonomy {
         }
         willInsertIntoTaxonomy = false;
         // after finalisation one shouldn't add
-                                        // new entries to taxonomy
+        // new entries to taxonomy
     }
 
     @PortedFrom(file = "Taxonomy.h", name = "setupTopDown")
@@ -347,8 +347,7 @@ public class Taxonomy {
     void insertCurrentNode() {
         current.setSample(curEntry, true);
         // put curEntry as a representative of Current
-        if (!queryMode())
-        {
+        if (!queryMode()) {
             // insert node into taxonomy
             current.incorporate(options);
             graph.add(current);
@@ -427,7 +426,7 @@ public class Taxonomy {
         if (syn.equals(curEntry)) {
             return false;
         }
-      //  assert willInsertIntoTaxonomy;
+        // assert willInsertIntoTaxonomy;
         assert syn.getTaxVertex() != null;
         addCurrentToSynonym(syn.getTaxVertex());
         return true;
@@ -490,8 +489,7 @@ public class Taxonomy {
         boolean cycleFound = false;
         // for all the told subsumers...
         for (ClassifiableEntry p : ksStack.peek().s_begin()) {
-            if (!p.isClassified())
-            {
+            if (!p.isClassified()) {
                 // need to classify it first
                 if (p.isNonClassifiable()) {
                     continue;
@@ -502,8 +500,7 @@ public class Taxonomy {
                 if (v == null) {
                     continue;
                 }
-                if (v == cur)
-                {
+                if (v == cur) {
                     // current cycle is finished, all saved in Syns
                     // after classification of CUR we need to mark all the Syns
                     // as synonyms
@@ -562,6 +559,7 @@ public class Taxonomy {
         }
         removeTop();
     }
+
     @PortedFrom(file = "Taxonomy.h", name = "propagateTrueUp")
     protected void propagateTrueUp(TaxonomyVertex node) {
         // if taxonomy class already checked -- do nothing

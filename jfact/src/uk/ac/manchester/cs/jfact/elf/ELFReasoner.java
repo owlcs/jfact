@@ -119,8 +119,7 @@ public class ELFReasoner {
                 .print(" axioms in the form C [= ER.D\nFound ").print(nE2C)
                 .print(" axioms in the form ER.C [= D\nFound ").print(nR2R)
                 .print(" axioms in the form R [= S\nFound ").print(nC2R)
-                .print(
-                " axioms in the form R o S [= T\n");
+                .print(" axioms in the form R o S [= T\n");
     }
 
     /** add action to a queue */

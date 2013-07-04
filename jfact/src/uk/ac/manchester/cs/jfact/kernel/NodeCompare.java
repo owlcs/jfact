@@ -16,7 +16,7 @@ class NodeCompare implements Comparator<DlCompletionTree>, Serializable {
     @PortedFrom(file = "Tactic.cpp", name = "compare")
     public int compare(DlCompletionTree o1, DlCompletionTree o2) {
         return 0;
-       //XXX doubtful
-       // return o1.getId() - o2.getId();
+        // XXX doubtful
+        // return o1.getId() - o2.getId();
     }
 }
