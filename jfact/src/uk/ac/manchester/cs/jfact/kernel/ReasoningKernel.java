@@ -19,6 +19,7 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
+import org.semanticweb.owlapi.util.MultiMap;
 
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
@@ -2069,5 +2070,13 @@ public class ReasoningKernel {
             }
         }
         return false;
+    }
+
+    private ConjunctiveQueryFolding conjunctiveQueryFolding = new ConjunctiveQueryFolding();
+
+    /** call to underlying conjunctive query folding */
+    @Original
+    public void evaluateQuery(MultiMap<String, ConceptExpression> query) {
+        conjunctiveQueryFolding.evaluateQuery(query, this);
     }
 }
