@@ -1,7 +1,7 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicLong;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
@@ -16,7 +16,7 @@ public class TermAssigner {
      */
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "PassedVertice")
-    private Set<QRVariable> PassedVertice;
+    private Set<QRVariable> PassedVertice = new TreeSet<QRVariable>();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Query")
     private QRQuery Query;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Factory")
@@ -83,7 +83,7 @@ public class TermAssigner {
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "DeleteFictiveVariables")
     public void DeleteFictiveVariables() {
-        Set<QRVariable> RealFreeVars = new HashSet<QRVariable>();
+        Set<QRVariable> RealFreeVars = new TreeSet<QRVariable>();
         for (QRAtom atomIterator : Query.getBody().begin()) {
             if (atomIterator instanceof QRRoleAtom) {
                 QRRoleAtom atom = (QRRoleAtom) atomIterator;

@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.jfact.kernel.queryobjects;
 
+import uk.ac.manchester.cs.jfact.kernel.HasName;
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -9,7 +10,7 @@ import conformance.PortedFrom;
 
 /** QR variable replacing the individual */
 @PortedFrom(file = "QR.h", name = "QRVariable")
-public class QRVariable extends QRiObject {
+public class QRVariable extends QRiObject implements Comparable<QRVariable>, HasName {
     /** name of a var */
     @PortedFrom(file = "QR.h", name = "Name")
     private String Name;
@@ -27,6 +28,7 @@ public class QRVariable extends QRiObject {
         return new QRVariable(Name);
     }
 
+    @Override
     @PortedFrom(file = "QR.h", name = "getName")
     public String getName() {
         return Name;
@@ -35,5 +37,10 @@ public class QRVariable extends QRiObject {
     @Override
     public String toString() {
         return Name;
+    }
+
+    @Override
+    public int compareTo(QRVariable o) {
+        return Name.compareTo(o.getName());
     }
 }

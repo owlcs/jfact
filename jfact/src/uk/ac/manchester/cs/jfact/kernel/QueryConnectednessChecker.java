@@ -1,7 +1,7 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import uk.ac.manchester.cs.jfact.kernel.queryobjects.*;
@@ -14,7 +14,7 @@ public class QueryConnectednessChecker {
      */
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "PassedVertice")
-    private Set<QRVariable> PassedVertice = new HashSet<QRVariable>();
+    private Set<QRVariable> PassedVertice = new TreeSet<QRVariable>();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Query")
     private QRQuery Query;
 
