@@ -7,7 +7,6 @@ import org.semanticweb.owlapi.util.MultiMap;
 import uk.ac.manchester.cs.jfact.kernel.actors.Actor;
 import uk.ac.manchester.cs.jfact.kernel.actors.RIActor;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
-import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.queryobjects.*;
@@ -113,62 +112,17 @@ public class ConjunctiveQueryFolding {
         return query;
     }
 
-    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "printAtom")
-    public void printAtom(QRAtom queryAtom) {
-        if (queryAtom == null) {
-            System.out.println("NULL\n");
-        } else {
-            QRRoleAtom atom = (QRRoleAtom) queryAtom;
-            QRVariable arg1 = (QRVariable) atom.getArg1();
-            QRVariable arg2 = (QRVariable) atom.getArg2();
-            System.out.println("ReasoningKernel.printAtom() "
-                    + ((ObjectRoleName) atom.getRole()).getName() + "  " + arg1.getName()
-                    + " (" + arg1 + ") " + arg2.getName() + " (" + arg2 + ")\n");
-        }
-    }
-
-    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "printQuery")
-    public void printQuery(QRQuery query) {
-        for (QRAtom _atom : query.getBody().begin()) {
-            if (_atom instanceof QRRoleAtom) {
-                QRRoleAtom atom = (QRRoleAtom) _atom;
-                QRVariable arg1 = (QRVariable) atom.getArg1();
-                QRVariable arg2 = (QRVariable) atom.getArg2();
-                System.out.println(((ObjectRoleName) atom.getRole()).getName() + "  ");
-                System.out.println(arg1.getName() + " (" + arg1 + ") ");
-                System.out.println(arg2.getName() + " (" + arg2 + ") ");
-                System.out.println("\n");
-            }
-            if (_atom instanceof QRConceptAtom) {
-                QRConceptAtom atom = (QRConceptAtom) _atom;
-                QRVariable arg = (QRVariable) atom.getArg();
-                System.out.println(((ConceptName) atom.getConcept()).getName() + "  ");
-                System.out.println(arg.getName() + " (" + arg + ") ");
-                System.out.println("\n");
-            }
-        }
-        System.out.println("END OF PRINT QUERY\n");
-    }
-
-    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "printVariable")
-    public void printVariable(QRVariable var) {
-        System.out.println("ReasoningKernel.printVariable()" + var.getName() + " (" + var
-                + ") ");
-    }
-
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "PossiblyReplaceAtom")
     private boolean PossiblyReplaceAtom(QRQuery query, int atomIterator, QRAtom newAtom,
             QRVariable newArg, Set<QRAtom> passedAtoms) {
-        System.out.println("Modified code starts here!\nBefore replacing in copy.");
-        printQuery(query);
+        System.out.println("Modified code starts here!\nBefore replacing in copy.\n"+query);
         QRAtom oldAtom = query.getBody().replaceAtom(atomIterator, newAtom);
         query.setVarFree(newArg);
         System.out.println("Running Checker");
         QueryConnectednessChecker checker = new QueryConnectednessChecker(this, query);
         boolean ret;
         if (checker.isConnected()) {
-            System.out.println("Connected\nAfter replacing in Query");
-            printQuery(query);
+            System.out.println("Connected\nAfter replacing in Query\n"+query);
             ret = true;
         } else {
             System.out.println("Disconnected");
@@ -241,10 +195,8 @@ public class ConjunctiveQueryFolding {
     public ConceptExpression transformQueryPhase2(QRQuery query) {
         TermAssigner assigner = new TermAssigner(this, query);
         assigner.DeleteFictiveVariables();
-        System.out.println("Assigner initialised; var: ");
         QRVariable next = query.getFreeVars().iterator().next();
-        printVariable(next);
-        System.out.println("\n");
+        System.out.println("Assigner initialised; var: "+next);
         return assigner.Assign(null, next);
     }
 
@@ -265,8 +217,7 @@ public class ConjunctiveQueryFolding {
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "doQuery")
     private void doQuery(QRQuery query, ReasoningKernel kernel) {
-        System.out.println("Next query: ");
-        printQuery(query);
+        System.out.println("Next query: "+query);
         QueryConnectednessChecker cc1 = new QueryConnectednessChecker(this, query);
         System.out.println("Connected? " + cc1.isConnected());
         TQueryToConceptsTransformer transformer = new TQueryToConceptsTransformer(this,

@@ -35,4 +35,9 @@ public class QRRoleAtom extends QR2ArgAtom {
     public ObjectRoleExpression getRole() {
         return Role;
     }
+
+    @Override
+    public String toString() {
+        return Role.getName() + "(" + getArg1() + "," + getArg2() + ")";
+    }
 }

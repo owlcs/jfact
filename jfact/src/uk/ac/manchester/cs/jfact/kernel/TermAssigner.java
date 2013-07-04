@@ -32,11 +32,7 @@ public class TermAssigner {
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Assign")
     public ConceptExpression Assign(QRAtom previousAtom, QRVariable v) {
-        System.out.println("Assign:\n variable: ");
-        conjunctiveQueryFolding.printVariable(v);
-        System.out.println("\n atom:");
-        conjunctiveQueryFolding.printAtom(previousAtom);
-        System.out.println();
+        System.out.println("Assign:\n variable: " + v + "\n atom:" + previousAtom);
         PassedVertice.add(v);
         ConceptExpression t;
         if (Query.isFreeVar(conjunctiveQueryFolding.getNewVarMap().get(v))) {

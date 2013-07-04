@@ -45,4 +45,9 @@ public class QRConceptAtom extends QRAtom {
     public QRiObject getArg() {
         return Arg;
     }
+
+    @Override
+    public String toString() {
+        return Concept.getName() + "(" + getArg() + ")";
+    }
 }
