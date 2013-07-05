@@ -140,8 +140,18 @@ public class ConjunctiveQueryFolding {
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "initVarMap")
     private void initVarMap(QRQuery query) {
         NewVarMap.clear();
-        for (QRVariable p : query.getFreeVars()) {
-            NewVarMap.put(p, p);
+        for (QRAtom p : query.getBody().begin()) {
+            if (p instanceof QRRoleAtom) {
+                QRRoleAtom atom = (QRRoleAtom) p;
+                if (atom.getArg1() instanceof QRVariable) {
+                    NewVarMap.put((QRVariable) atom.getArg1(),
+                            (QRVariable) atom.getArg1());
+                }
+                if (atom.getArg2() instanceof QRVariable) {
+                    NewVarMap.put((QRVariable) atom.getArg2(),
+                            (QRVariable) atom.getArg2());
+                }
+            }
         }
     }
 
