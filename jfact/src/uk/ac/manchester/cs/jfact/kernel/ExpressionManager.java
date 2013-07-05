@@ -229,6 +229,15 @@ public class ExpressionManager {
      * @return C and D */
     @PortedFrom(file = "tExpressionManager.h", name = "and")
     public ConceptExpression and(ConceptExpression C, ConceptExpression D) {
+        if (C.equals(D)) {
+            return C;
+        }
+        if (C instanceof ConceptTop) {
+            return D;
+        }
+        if (D instanceof ConceptTop) {
+            return C;
+        }
         return and(Arrays.<ConceptExpression> asList(C, D));
     }
 
