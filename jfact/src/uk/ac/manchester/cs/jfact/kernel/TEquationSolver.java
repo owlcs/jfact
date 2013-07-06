@@ -30,7 +30,7 @@ class TEquationSolver {
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Solve")
     public void Solve() {
-        while (!conjunctiveQueryFolding.IsNominal(LeftPart)) {
+        while (!conjunctiveQueryFolding.isNominal(LeftPart)) {
             if (LeftPart instanceof ConceptObjectExists) {
                 ConceptObjectExists leftDiamond = (ConceptObjectExists) LeftPart;
                 ObjectRoleInverse invRole = (ObjectRoleInverse) leftDiamond.getOR();

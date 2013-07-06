@@ -7,6 +7,7 @@ import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import uk.ac.manchester.cs.jfact.kernel.queryobjects.*;
 import conformance.PortedFrom;
 
+/** connectivity checker */
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "QueryConnectednessChecker")
 public class QueryConnectednessChecker {
     /**

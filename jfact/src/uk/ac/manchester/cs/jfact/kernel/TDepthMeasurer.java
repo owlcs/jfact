@@ -33,7 +33,7 @@ public class TDepthMeasurer extends DLExpressionVisitorAdapter {
 
     @Override
     public void visit(ConceptName expr) {
-        if (this.conjunctiveQueryFolding.IsNominal(expr)) {
+        if (conjunctiveQueryFolding.isNominal(expr)) {
             DepthOfNominalOccurences.put(expr, CurrentDepth);
             ++TotalNominalOccurences;
         }

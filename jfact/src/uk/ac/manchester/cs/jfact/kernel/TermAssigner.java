@@ -30,18 +30,23 @@ public class TermAssigner {
         Query = new QRQuery(query);
     }
 
+    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "createVar")
+    protected ConceptExpression createVar(QRVariable v) {
+        if (Query.isFreeVar(conjunctiveQueryFolding.getNewVarMap().get(v))) {
+            ConceptExpression concept = conjunctiveQueryFolding.getpEM().concept(
+                    conjunctiveQueryFolding.getNewVarMap().get(v).getName() + ":"
+                            + Factory.incrementAndGet());
+            conjunctiveQueryFolding.addNominal(concept);
+            return concept;
+        }
+        return conjunctiveQueryFolding.getpEM().top();
+    }
+
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Assign")
     public ConceptExpression Assign(QRAtom previousAtom, QRVariable v) {
         System.out.println("Assign:\n variable: " + v + "\n atom:" + previousAtom);
         PassedVertice.add(v);
-        ConceptExpression t;
-        if (Query.isFreeVar(conjunctiveQueryFolding.getNewVarMap().get(v))) {
-            t = conjunctiveQueryFolding.getpEM().concept(
-                    conjunctiveQueryFolding.getNewVarMap().get(v).getName() + ":"
-                            + Factory.incrementAndGet());
-        } else {
-            t = conjunctiveQueryFolding.getpEM().top();
-        }
+        ConceptExpression t = createVar(v);
         ConceptExpression s = conjunctiveQueryFolding.getpEM().top();
         for (QRAtom atomIterator : Query.getBody().begin()) {
             if (atomIterator instanceof QRRoleAtom) {
@@ -54,17 +59,14 @@ public class TermAssigner {
                 }
                 if (arg1 == v) {
                     ConceptExpression p = Assign(atomIterator, arg2);
-                    ConceptExpression p1 = conjunctiveQueryFolding.getpEM().exists(role,
-                            p);
-                    ConceptExpression newS = conjunctiveQueryFolding.getpEM().and(s, p1);
-                    s = newS;
+                    p = conjunctiveQueryFolding.getpEM().exists(role, p);
+                    s = conjunctiveQueryFolding.getpEM().and(s, p);
                 }
                 if (arg2 == v) {
                     ConceptExpression p = Assign(atomIterator, arg1);
-                    ConceptExpression p1 = conjunctiveQueryFolding.getpEM().exists(
+                    p = conjunctiveQueryFolding.getpEM().exists(
                             conjunctiveQueryFolding.getpEM().inverse(role), p);
-                    ConceptExpression newS = conjunctiveQueryFolding.getpEM().and(s, p1);
-                    s = newS;
+                    s = conjunctiveQueryFolding.getpEM().and(s, p);
                 }
             }
             if (atomIterator instanceof QRConceptAtom) {
@@ -72,9 +74,8 @@ public class TermAssigner {
                 ConceptExpression concept = atom.getConcept();
                 QRVariable arg = (QRVariable) atom.getArg();
                 if (arg == v) {
-                    ConceptExpression newS = conjunctiveQueryFolding.getpEM().and(s,
+                    s = conjunctiveQueryFolding.getpEM().and(s,
                             concept);
-                    s = newS;
                 }
             }
         }

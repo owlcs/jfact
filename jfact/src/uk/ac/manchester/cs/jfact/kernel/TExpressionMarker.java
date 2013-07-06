@@ -45,12 +45,12 @@ class TExpressionMarker extends DLExpressionVisitorAdapter {
 
     @Override
     public void visit(ConceptName expr) {
-        SimpleTerms.put(expr, this.conjunctiveQueryFolding.IsNominal(expr));
+        SimpleTerms.put(expr, conjunctiveQueryFolding.isNominal(expr));
         if (expr == Nominal) {
             GoodTerms.put(expr, true);
             Path.add(expr);
         } else {
-            GoodTerms.put(expr, !this.conjunctiveQueryFolding.IsNominal(expr));
+            GoodTerms.put(expr, !conjunctiveQueryFolding.isNominal(expr));
         }
     }
 

@@ -6,10 +6,10 @@ import org.semanticweb.owlapi.util.MultiMap;
 
 import uk.ac.manchester.cs.jfact.kernel.actors.Actor;
 import uk.ac.manchester.cs.jfact.kernel.actors.RIActor;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.queryobjects.*;
+import conformance.Original;
 import conformance.PortedFrom;
 
 /** conjunctive query folding */
@@ -22,6 +22,19 @@ public class ConjunctiveQueryFolding {
     /** map between new vars and original vars */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "NewVarMap")
     private Map<QRVariable, QRVariable> NewVarMap = new HashMap<QRVariable, QRVariable>();
+    /** query to term transformation support */
+    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "NewNominals")
+    private Set<ConceptExpression> NewNominals = new HashSet<ConceptExpression>();
+
+    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "isNominal")
+    public boolean isNominal(ConceptExpression expr) {
+        return NewNominals.contains(expr);
+    }
+
+    @Original
+    public void addNominal(ConceptExpression concept) {
+        NewNominals.add(concept);
+    }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "buildQueryFigure2")
     private void buildQueryFigure2(QRQuery query) {
@@ -112,6 +125,7 @@ public class ConjunctiveQueryFolding {
         return query;
     }
 
+    /** support for query decycling */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "PossiblyReplaceAtom")
     private boolean PossiblyReplaceAtom(QRQuery query, int atomIterator, QRAtom newAtom,
             QRVariable newArg, Set<QRAtom> passedAtoms) {
@@ -203,26 +217,12 @@ public class ConjunctiveQueryFolding {
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "transformQueryPhase2")
     public ConceptExpression transformQueryPhase2(QRQuery query) {
+        NewNominals.clear();
         TermAssigner assigner = new TermAssigner(this, query);
         assigner.DeleteFictiveVariables();
         QRVariable next = query.getFreeVars().iterator().next();
         System.out.println("Assigner initialised; var: "+next);
         return assigner.Assign(null, next);
-    }
-
-    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "IsNominal")
-    public boolean IsNominal(ConceptExpression expr) {
-        if (expr instanceof ConceptName) {
-            ConceptName conceptName = (ConceptName) expr;
-            if (conceptName.getName().charAt(0) >= 'a'
-                    && conceptName.getName().charAt(0) <= 'z') {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "doQuery")

@@ -34,7 +34,7 @@ public class QRQuery {
 
     /** @return true if VAR is a free var */
     public boolean isFreeVar(QRVariable var) {
-        return getFreeVars().contains(var);
+        return var != null && getFreeVars().contains(var);
     }
 
     /** add atom to a query body */
