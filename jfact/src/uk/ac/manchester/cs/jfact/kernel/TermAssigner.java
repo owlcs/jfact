@@ -32,7 +32,7 @@ public class TermAssigner {
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "createVar")
     protected ConceptExpression createVar(QRVariable v) {
-        if (Query.isFreeVar(conjunctiveQueryFolding.getNewVarMap().get(v))) {
+        if (Query.isFreeVar(v)) {
             ConceptExpression concept = conjunctiveQueryFolding.getpEM().concept(
                     conjunctiveQueryFolding.getNewVarMap().get(v).getName() + ":"
                             + Factory.incrementAndGet());
