@@ -4,8 +4,7 @@ import java.util.*;
 
 import org.semanticweb.owlapi.util.MultiMap;
 
-import uk.ac.manchester.cs.jfact.kernel.actors.Actor;
-import uk.ac.manchester.cs.jfact.kernel.actors.RIActor;
+import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.queryobjects.*;
@@ -268,7 +267,7 @@ public class ConjunctiveQueryFolding {
             return;
         }
         // for every var: create an expression of vars
-        List<ConceptExpression> Concepts = new ArrayList<ConceptExpression>();
+        List<DLTree> Concepts = new ArrayList<DLTree>();
         System.out.println("Tuple <");
         for (int i = 0; i < I2Var.size(); ++i) {
             String var = I2Var.get(i);
@@ -278,22 +277,14 @@ public class ConjunctiveQueryFolding {
             System.out.println(var);
             List<ConceptExpression> list = new ArrayList<ConceptExpression>(
                     query.get(var));
-            Concepts.add(pEM.and(list));
+            Concepts.add(kernel.e(pEM.and(list)));
         }
         System.out.println(">\n");
-        if (I2Var.size() == 1) {
-            // tree-like query
-            Actor a = new RIActor();
-            a.needIndividuals();
-            kernel.getInstances(Concepts.get(Concepts.size() - 1), a);
-            List<String> names = a.getElements1D();
-            for (String name : names) {
-                System.out.println(name + "\n");
-            }
-            System.out.println();
-            return;
+        if (Concepts.size() == 1) {
+            kernel.getTBox().answerQuery(Concepts);
         }
     }
+
 
     public ExpressionManager getpEM() {
         return pEM;

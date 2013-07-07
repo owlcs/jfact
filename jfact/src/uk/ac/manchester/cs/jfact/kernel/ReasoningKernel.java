@@ -185,10 +185,9 @@ public class ReasoningKernel {
         }
         return pTBox.getStatus();
     }
-
     /** get DLTree corresponding to an expression EXPR */
     @PortedFrom(file = "Kernel.h", name = "e")
-    private DLTree e(Expression expr) {
+    public DLTree e(Expression expr) {
         return expr.accept(pET);
     }
 
@@ -438,7 +437,7 @@ public class ReasoningKernel {
 
     /** get RW access to TBox */
     @PortedFrom(file = "Kernel.h", name = "getTBox")
-    private TBox getTBox() {
+    public TBox getTBox() {
         checkTBox();
         return pTBox;
     }

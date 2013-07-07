@@ -2954,4 +2954,106 @@ public class TBox {
     public void addSameIndividuals(Individual p, Pair pair) {
         sameIndividuals.put(p, pair);
     }
+
+    // public void answerQuery(List<DLTree> concepts2) {
+    // if (I2Var.size() == 1) {
+    // // tree-like query
+    // Actor a = new RIActor();
+    // a.needIndividuals();
+    // kernel.getInstances(Concepts.get(Concepts.size() - 1), a);
+    // List<String> names = a.getElements1D();
+    // for (String name : names) {
+    // System.out.println(name + "\n");
+    // }
+    // System.out.println();
+    // return;
+    // }
+    // }
+    public void answerQuery(List<DLTree> Cs) {
+        List<Integer> concepts = new ArrayList<Integer>();
+        for (DLTree q : Cs) {
+            concepts.add(tree2dag(q));
+        }
+        List<Integer> Sample = new ArrayList<Integer>();
+        for (int i = 0; i < Cs.size(); i++) {
+            Sample.add(i);
+        }
+        IterableVec<Integer> IVint = new IterableVec<Integer>();
+        for (int i = 0; i < Cs.size(); i++) {
+            IVint.add(new IterableElem<Integer>(Sample));
+        }
+        do {
+            for (int i = 0; i < IVint.size(); i++) {
+                System.out.print(IVint.get(i) + " ");
+            }
+            System.out.println();
+        } while (!IVint.next());
+    }
+
+    class IterableElem<Elem> {
+        List<Elem> Elems = new ArrayList<Elem>();
+        int pBeg, pEnd, pCur;
+
+        // / init c'tor
+        IterableElem(List<Elem> Init) {
+            Elems = Init;
+            pBeg = 0;
+            pEnd = Elems.size();
+            pCur = 0;
+            if (Elems.isEmpty()) {
+                throw new IllegalArgumentException("no empties allowed");
+            }
+        }
+
+        Elem getCur() {
+            return Elems.get(pCur);
+        }
+
+        boolean next() {
+            if (++pCur >= pEnd) {
+                pCur = pBeg;
+                return true;
+            }
+            return false;
+        }
+    }
+
+    class IterableVec<Elem> {
+        // / cached size of a vec
+        int last;
+
+        // / move I'th iterable forward; deal with end-case
+        boolean next(int i) {
+            if (Base.get(i).next()) {
+                return i == 0 ? true : next(i - 1);
+            }
+            return false;
+        }
+
+        List<IterableElem<Elem>> Base = new ArrayList<TBox.IterableElem<Elem>>();
+
+        // / empty c'tor
+        IterableVec() {
+            last = -1;
+        }
+
+        // / add a new iteralbe to a vec
+        void add(IterableElem<Elem> It) {
+            Base.add(It);
+            last++;
+        }
+
+        // / get next position
+        boolean next() {
+            return next(last);
+        }
+
+        int size() {
+            return Base.size();
+        }
+
+        Elem get(int i) {
+            return Base.get(i).getCur();
+        }
+    }
 }
