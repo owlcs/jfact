@@ -199,4 +199,17 @@ public class NominalReasoner extends DlSatTester {
     private void createBCBarrier() {
         bContext = stack.pushBarrier();
     }
+
+    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "checkExtraCond")
+    public boolean checkExtraCond() {
+        prepareReasoner();
+        DepSet dummy = DepSet.create();
+        for (int i = 0; i < tBox.IV.size(); i++) {
+            if (addToDoEntry(tBox.IV.get(i).getNode(),
+                    tBox.conceptsForQueryAnswering.get(i), dummy, "QA")) {
+                return true;
+            }
+        }
+        return runSat();
+    }
 }

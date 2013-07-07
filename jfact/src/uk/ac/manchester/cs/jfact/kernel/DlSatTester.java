@@ -1394,7 +1394,7 @@ public class DlSatTester {
     }
 
     @PortedFrom(file = "Reasoner.h", name = "addToDoEntry")
-    private boolean addToDoEntry(DlCompletionTree n, int bp, DepSet dep, String reason) {
+    protected boolean addToDoEntry(DlCompletionTree n, int bp, DepSet dep, String reason) {
         if (bp == Helper.bpTOP) {
             return false;
         }

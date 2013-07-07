@@ -2955,41 +2955,6 @@ public class TBox {
         sameIndividuals.put(p, pair);
     }
 
-    // public void answerQuery(List<DLTree> concepts2) {
-    // if (I2Var.size() == 1) {
-    // // tree-like query
-    // Actor a = new RIActor();
-    // a.needIndividuals();
-    // kernel.getInstances(Concepts.get(Concepts.size() - 1), a);
-    // List<String> names = a.getElements1D();
-    // for (String name : names) {
-    // System.out.println(name + "\n");
-    // }
-    // System.out.println();
-    // return;
-    // }
-    // }
-    public void answerQuery(List<DLTree> Cs) {
-        List<Integer> concepts = new ArrayList<Integer>();
-        for (DLTree q : Cs) {
-            concepts.add(tree2dag(q));
-        }
-        List<Integer> Sample = new ArrayList<Integer>();
-        for (int i = 0; i < Cs.size(); i++) {
-            Sample.add(i);
-        }
-        IterableVec<Integer> IVint = new IterableVec<Integer>();
-        for (int i = 0; i < Cs.size(); i++) {
-            IVint.add(new IterableElem<Integer>(Sample));
-        }
-        do {
-            for (int i = 0; i < IVint.size(); i++) {
-                System.out.print(IVint.get(i) + " ");
-            }
-            System.out.println();
-        } while (!IVint.next());
-    }
-
     class IterableElem<Elem> {
         List<Elem> Elems = new ArrayList<Elem>();
         int pBeg, pEnd, pCur;
@@ -3022,6 +2987,9 @@ public class TBox {
         // / cached size of a vec
         int last;
 
+        void clear() {
+            Base.clear();
+        }
         // / move I'th iterable forward; deal with end-case
         boolean next(int i) {
             if (Base.get(i).next()) {
@@ -3056,4 +3024,41 @@ public class TBox {
             return Base.get(i).getCur();
         }
     }
+
+    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "IV")
+    IterableVec<Individual> IV = new IterableVec<Individual>();
+    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "concepts")
+    List<Integer> conceptsForQueryAnswering = new ArrayList<Integer>();
+
+    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "answerQuery")
+public void
+ answerQuery ( List<DLTree> Cs )
+{
+    // create BPs for all the concepts
+   conceptsForQueryAnswering.clear();
+        for (DLTree q : Cs) {
+            conceptsForQueryAnswering.add(tree2dag(q));
+        }
+
+    // all individuals to go thru
+        List<Individual> AllInd = new ArrayList<Individual>(i_begin());
+
+        int size = Cs.size();
+    IV.clear();
+        for (int j = 0; j < size; j++) {
+        IV.add(new IterableElem<Individual>(AllInd));
+    }
+
+    do
+    {
+            if (nomReasoner.checkExtraCond())
+        {
+                for (int k = 0; k < size; k++) {
+                    System.out.print(IV.get(k).getName() + " ");
+                }
+                System.out.println();
+        }
+    } while ( !IV.next() );
+}
+
 }
