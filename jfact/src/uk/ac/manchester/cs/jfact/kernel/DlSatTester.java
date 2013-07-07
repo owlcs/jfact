@@ -1624,7 +1624,7 @@ public class DlSatTester {
     }
 
     @PortedFrom(file = "Reasoner.h", name = "checkSatisfiability")
-    private boolean checkSatisfiability() {
+    protected boolean checkSatisfiability() {
         int loop = 0;
         for (;;) {
             if (curNode == null) {

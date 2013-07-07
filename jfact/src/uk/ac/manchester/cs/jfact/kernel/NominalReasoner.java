@@ -210,6 +210,6 @@ public class NominalReasoner extends DlSatTester {
                 return true;
             }
         }
-        return runSat();
+        return !checkSatisfiability();
     }
 }
