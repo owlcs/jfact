@@ -2984,8 +2984,6 @@ public class TBox {
     }
 
     class IterableVec<Elem> {
-        // / cached size of a vec
-        int last;
 
         void clear() {
             Base.clear();
@@ -3002,18 +3000,16 @@ public class TBox {
 
         // / empty c'tor
         IterableVec() {
-            last = -1;
         }
 
         // / add a new iteralbe to a vec
         void add(IterableElem<Elem> It) {
             Base.add(It);
-            last++;
         }
 
         // / get next position
         boolean next() {
-            return next(last);
+            return next(Base.size() - 1);
         }
 
         int size() {
@@ -3034,23 +3030,32 @@ public class TBox {
 public void
  answerQuery ( List<DLTree> Cs )
 {
+        dlHeap.removeQuery();
+        System.out.print("Transforming concepts...");
+        
     // create BPs for all the concepts
    conceptsForQueryAnswering.clear();
         for (DLTree q : Cs) {
             conceptsForQueryAnswering.add(tree2dag(q));
         }
+        System.out.println(" done \nFilling all individuals...");
 
     // all individuals to go thru
         List<Individual> AllInd = new ArrayList<Individual>(i_begin());
-
+        System.out.println(" done with " + AllInd.size()
+                + " individuals\nCreating iterables...");
         int size = Cs.size();
     IV.clear();
         for (int j = 0; j < size; j++) {
         IV.add(new IterableElem<Individual>(AllInd));
     }
+        System.out.println(" done\nRun consistency checks...");
+        int n = 0;
 
-    do
-    {
+        do {
+            if (n++ % 1000 == 0) {
+                System.out.println("TBox.answerQuery() " + n);
+            }
             if (nomReasoner.checkExtraCond())
         {
                 for (int k = 0; k < size; k++) {

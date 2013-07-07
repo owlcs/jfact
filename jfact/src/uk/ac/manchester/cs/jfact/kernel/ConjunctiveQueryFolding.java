@@ -280,9 +280,7 @@ public class ConjunctiveQueryFolding {
             Concepts.add(kernel.e(pEM.and(list)));
         }
         System.out.println(">\n");
-        if (Concepts.size() == 1) {
             kernel.getTBox().answerQuery(Concepts);
-        }
     }
 
 
