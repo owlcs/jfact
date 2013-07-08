@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel.actors;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.List;
 
+import uk.ac.manchester.cs.jfact.kernel.Individual;
 import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
 import conformance.PortedFrom;
 
@@ -54,4 +55,7 @@ public interface Actor {
      *            set the interrupt parameter to VALUE */
     @PortedFrom(file = "Actor.h", name = "setInterruptAfterFirstFound")
     void setInterruptAfterFirstFound(boolean value);
+
+    @PortedFrom(file = "Actor.cpp", name = "getPlain")
+    List<Individual> getPlain();
 }

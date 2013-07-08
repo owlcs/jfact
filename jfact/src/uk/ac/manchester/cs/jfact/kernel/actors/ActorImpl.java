@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.manchester.cs.jfact.kernel.HasName;
+import uk.ac.manchester.cs.jfact.kernel.Individual;
 import conformance.Original;
 import conformance.PortedFrom;
 
@@ -89,5 +90,20 @@ public abstract class ActorImpl<T extends HasName> implements Actor {
     @Override
     public void setInterruptAfterFirstFound(boolean value) {
         interrupt = value;
+    }
+
+    @PortedFrom(file = "Actor.cpp", name = "getPlain")
+    @Override
+    public List<Individual> getPlain() {
+        assert !isRole && !isStandard;
+        List<Individual> vec = new ArrayList<Individual>();
+        for (List<T> p : acc) {
+            for (T q : p) {
+                if (q instanceof Individual) {
+                    vec.add((Individual) q);
+                }
+            }
+        }
+        return vec;
     }
 }

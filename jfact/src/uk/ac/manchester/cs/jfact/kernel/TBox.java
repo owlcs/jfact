@@ -2955,7 +2955,7 @@ public class TBox {
         sameIndividuals.put(p, pair);
     }
 
-    class IterableElem<Elem> {
+    static class IterableElem<Elem> {
         List<Elem> Elems = new ArrayList<Elem>();
         int pBeg, pEnd, pCur;
 
@@ -2983,7 +2983,7 @@ public class TBox {
         }
     }
 
-    class IterableVec<Elem> {
+    static class IterableVec<Elem> {
 
         void clear() {
             Base.clear();
@@ -3043,13 +3043,9 @@ public void
     // all individuals to go thru
         List<Individual> AllInd = new ArrayList<Individual>(i_begin());
         System.out.println(" done with " + AllInd.size()
-                + " individuals\nCreating iterables...");
+ + " individuals");
         int size = Cs.size();
-    IV.clear();
-        for (int j = 0; j < size; j++) {
-        IV.add(new IterableElem<Individual>(AllInd));
-    }
-        System.out.println(" done\nRun consistency checks...");
+        System.out.println("Run consistency checks...");
         int n = 0;
 
         do {
