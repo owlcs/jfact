@@ -2965,6 +2965,7 @@ public class TBox {
             pBeg = 0;
             pEnd = Elems.size();
             pCur = 0;
+            System.out.println("TBox.IterableElem.IterableElem() " + Elems.size());
             if (Elems.isEmpty()) {
                 throw new IllegalArgumentException("no empties allowed");
             }
