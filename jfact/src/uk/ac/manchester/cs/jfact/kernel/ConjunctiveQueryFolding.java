@@ -254,14 +254,34 @@ public class ConjunctiveQueryFolding {
         return query;
     }
 
+    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "deleteFictiveVariables")
+    public void deleteFictiveVariables(QRQuery query) {
+        Set<QRVariable> RealFreeVars = new TreeSet<QRVariable>();
+        for (QRAtom atomIterator : query.getBody().begin()) {
+            if (atomIterator instanceof QRRoleAtom) {
+                QRRoleAtom atom = (QRRoleAtom) atomIterator;
+                QRVariable arg1 = (QRVariable) atom.getArg1();
+                QRVariable arg2 = (QRVariable) atom.getArg2();
+                if (query.isFreeVar(arg1)) {
+                    RealFreeVars.add(arg1);
+                }
+                if (query.isFreeVar(arg2)) {
+                    RealFreeVars.add(arg2);
+                }
+            }
+        }
+        query.setFreeVars(RealFreeVars);
+    }
+
+
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "transformQueryPhase2")
     public ConceptExpression transformQueryPhase2(QRQuery query) {
         NewNominals.clear();
         TermAssigner assigner = new TermAssigner(this, query);
-        assigner.DeleteFictiveVariables();
+        deleteFictiveVariables(query);
         QRVariable next = query.getFreeVars().iterator().next();
         System.out.println("Assigner initialised; var: " + next);
-        return assigner.Assign(null, next);
+        return assigner.Assign(query, null, next);
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "doQuery")
