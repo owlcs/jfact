@@ -64,9 +64,13 @@ public class QRQuery {
 
     @Override
     public String toString() {
-        StringBuilder b = new StringBuilder("Query = {");
+        StringBuilder b = new StringBuilder("FreeVars = {");
+        for (QRVariable v : FreeVars) {
+            b.append('\n').append(v.getName());
+        }
+        b.append("}\nQuery = {");
         for (QRAtom p : Body.begin()) {
-            b.append("\n").append(p);
+            b.append('\n').append(p);
         }
         b.append(" }\n");
         return b.toString();
