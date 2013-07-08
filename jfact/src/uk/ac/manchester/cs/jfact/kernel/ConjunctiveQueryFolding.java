@@ -273,6 +273,22 @@ public class ConjunctiveQueryFolding {
         query.setFreeVars(RealFreeVars);
     }
 
+    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "BuildAproximation")
+    void buildApproximation(QRQuery query) {
+        QueryApproximation app = new QueryApproximation(this, query);
+        Map<QRVariable, ConceptExpression> approx = new HashMap<QRVariable, ConceptExpression>();
+        for (QRVariable p : NewVarMap.values()) {
+            approx.put(p, pEM.top());
+        }
+        for (QRVariable v : query.getFreeVars()) {
+            QRVariable var = NewVarMap.get(v);
+            approx.put(var, pEM.and(approx.get(var), app.Assign(query, null, v)));
+        }
+        for (Map.Entry<QRVariable, ConceptExpression> e : approx.entrySet()) {
+            VarRestrictions.put(e.getKey().getName(),
+                    pEM.and(VarRestrictions.get(e.getKey().getName()), e.getValue()));
+        }
+    }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "transformQueryPhase2")
     public ConceptExpression transformQueryPhase2(QRQuery query) {

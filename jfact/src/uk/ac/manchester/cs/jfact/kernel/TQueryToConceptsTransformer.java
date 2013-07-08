@@ -33,6 +33,7 @@ class TQueryToConceptsTransformer {
         Query = conjunctiveQueryFolding.transformQueryPhase1(Query);
         System.out.println("After Phase 1\n" + Query);
         ConceptExpression term = conjunctiveQueryFolding.transformQueryPhase2(Query);
+        conjunctiveQueryFolding.buildApproximation(Query);
         String propositionalVariable = null;
         String lastNominal = null;
         for (int i = 1; true; ++i) {
