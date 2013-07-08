@@ -30,7 +30,7 @@ class TQueryToConceptsTransformer {
     /** main method to do the work */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Run")
     public void Run() {
-        conjunctiveQueryFolding.transformQueryPhase1(Query);
+        Query = conjunctiveQueryFolding.transformQueryPhase1(Query);
         System.out.println("After Phase 1\n" + Query);
         ConceptExpression term = conjunctiveQueryFolding.transformQueryPhase2(Query);
         String propositionalVariable = null;

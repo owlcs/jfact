@@ -216,7 +216,7 @@ public class ConjunctiveQueryFolding {
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "transformQueryPhase1")
-    public void transformQueryPhase1(QRQuery query) {
+    public QRQuery transformQueryPhase1(QRQuery query) {
         Set<QRAtom> passedAtoms = new HashSet<QRAtom>();
         int n = 0;
         // remove C's
@@ -251,7 +251,7 @@ public class ConjunctiveQueryFolding {
                 }
             }
         }
-        // #endif
+        return query;
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "transformQueryPhase2")
