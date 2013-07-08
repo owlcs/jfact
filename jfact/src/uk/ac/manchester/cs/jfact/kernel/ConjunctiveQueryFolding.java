@@ -273,6 +273,11 @@ public class ConjunctiveQueryFolding {
         query.setFreeVars(RealFreeVars);
     }
 
+    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "createConceptByVar")
+    public ConceptExpression createConceptByVar(QRVariable v) {
+        return VarRestrictions.get(NewVarMap.get(v).getName());
+    }
+
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "BuildAproximation")
     void buildApproximation(QRQuery query) {
         QueryApproximation app = new QueryApproximation(this, query);

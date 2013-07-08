@@ -2985,10 +2985,10 @@ public class TBox {
     }
 
     static class IterableVec<Elem> {
-
         void clear() {
             Base.clear();
         }
+
         // / move I'th iterable forward; deal with end-case
         boolean next(int i) {
             if (Base.get(i).next()) {
@@ -3000,8 +3000,7 @@ public class TBox {
         List<IterableElem<Elem>> Base = new ArrayList<TBox.IterableElem<Elem>>();
 
         // / empty c'tor
-        IterableVec() {
-        }
+        IterableVec() {}
 
         // / add a new iteralbe to a vec
         void add(IterableElem<Elem> It) {
@@ -3028,39 +3027,31 @@ public class TBox {
     List<Integer> conceptsForQueryAnswering = new ArrayList<Integer>();
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "answerQuery")
-public void
- answerQuery ( List<DLTree> Cs )
-{
+    public void answerQuery(List<DLTree> Cs) {
         dlHeap.removeQuery();
         System.out.print("Transforming concepts...");
-        
-    // create BPs for all the concepts
-   conceptsForQueryAnswering.clear();
+        // create BPs for all the concepts
+        conceptsForQueryAnswering.clear();
         for (DLTree q : Cs) {
             conceptsForQueryAnswering.add(tree2dag(q));
         }
         System.out.println(" done \nFilling all individuals...");
-
-    // all individuals to go thru
+        // all individuals to go thru
         List<Individual> AllInd = new ArrayList<Individual>(i_begin());
-        System.out.println(" done with " + AllInd.size()
- + " individuals");
+        System.out.println(" done with " + AllInd.size() + " individuals");
         int size = Cs.size();
         System.out.println("Run consistency checks...");
         int n = 0;
-
         do {
             if (n++ % 1000 == 0) {
                 System.out.println("TBox.answerQuery() " + n);
             }
-            if (nomReasoner.checkExtraCond())
-        {
+            if (nomReasoner.checkExtraCond()) {
                 for (int k = 0; k < size; k++) {
                     System.out.print(IV.get(k).getName() + " ");
                 }
                 System.out.println();
-        }
-    } while ( !IV.next() );
-}
-
+            }
+        } while (!IV.next());
+    }
 }

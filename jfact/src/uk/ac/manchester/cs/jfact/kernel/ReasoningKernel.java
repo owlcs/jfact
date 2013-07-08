@@ -185,6 +185,7 @@ public class ReasoningKernel {
         }
         return pTBox.getStatus();
     }
+
     /** get DLTree corresponding to an expression EXPR */
     @PortedFrom(file = "Kernel.h", name = "e")
     public DLTree e(Expression expr) {

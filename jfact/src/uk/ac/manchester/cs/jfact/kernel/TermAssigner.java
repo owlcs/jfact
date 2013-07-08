@@ -7,11 +7,8 @@ import uk.ac.manchester.cs.jfact.kernel.queryobjects.QRQuery;
 import uk.ac.manchester.cs.jfact.kernel.queryobjects.QRVariable;
 import conformance.PortedFrom;
 
-
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TermAssigner")
-
 public class TermAssigner extends BuildELIOConcept {
-
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "N")
     private int N = 0;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Factory")
@@ -33,6 +30,4 @@ public class TermAssigner extends BuildELIOConcept {
         }
         return conjunctiveQueryFolding.getpEM().top();
     }
-
-
 }
