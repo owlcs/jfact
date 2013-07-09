@@ -423,7 +423,7 @@ public class ReasoningKernel {
         if (tax.getRelativesInfo(C.getTaxVertex(), actor, true, false, true)) {
             return false;
         } else {
-            tax.clearCheckedLabel();
+            tax.clearVisited();
             return true;
         }
     }

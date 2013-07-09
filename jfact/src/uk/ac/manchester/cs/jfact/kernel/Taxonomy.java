@@ -52,9 +52,10 @@ public class Taxonomy {
     /** told subsumers corresponding to a given entry */
     @PortedFrom(file = "Taxonomy.h", name = "ksStack")
     protected LinkedList<KnownSubsumers> ksStack = new LinkedList<KnownSubsumers>();
-    /** labellers for marking taxonomy */
+    /** labeller for marking nodes as checked */
     @PortedFrom(file = "Taxonomy.h", name = "checkLabel")
     protected long checkLabel = 1;
+    /** labeller for marking nodes with a label wrt classification */
     @PortedFrom(file = "Taxonomy.h", name = "valueLabel")
     protected long valueLabel = 1;
     @Original
@@ -93,9 +94,9 @@ public class Taxonomy {
             for (int i = 0; i < size; i++) {
                 TaxonomyVertex _node = neigh.get(i);
                 // recursive applicability checking
-                if (!_node.isChecked(checkLabel)) {
+                if (!isVisited(_node)) {
                     // label node as visited
-                    _node.setChecked(checkLabel);
+                    setVisited(_node);
                     // if current node processed OK and there is no need to
                     // continue -- exit
                     // if node is NOT processed for some reasons -- go to
@@ -112,7 +113,7 @@ public class Taxonomy {
                 }
             }
         }
-        clearCheckedLabel();
+        clearVisited();
         return true;
     }
 
@@ -141,9 +142,9 @@ public class Taxonomy {
             for (int i = 0; i < size; i++) {
                 TaxonomyVertex _node = neigh.get(i);
                 // recursive applicability checking
-                if (!_node.isChecked(checkLabel)) {
+                if (!isVisited(_node)) {
                     // label node as visited
-                    _node.setChecked(checkLabel);
+                    setVisited(_node);
                     // if current node processed OK and there is no need to
                     // continue -- exit
                     // if node is NOT processed for some reasons -- go to
@@ -157,12 +158,24 @@ public class Taxonomy {
                 }
             }
         }
-        clearCheckedLabel();
+        clearVisited();
+    }
+
+    /** set node NODE as checked within taxonomy */
+    @PortedFrom(file = "Taxonomy.h", name = "setVisited")
+    void setVisited(TaxonomyVertex node) {
+        node.setChecked(checkLabel);
+    }
+
+    /** check whether NODE is checked within taxonomy */
+    @PortedFrom(file = "Taxonomy.h", name = "isVisited")
+    public boolean isVisited(TaxonomyVertex node) {
+        return node.isChecked(checkLabel);
     }
 
     /** clear the CHECKED label from all the taxonomy vertex */
     @PortedFrom(file = "Taxonomy.h", name = "clearCheckedLabel")
-    protected void clearCheckedLabel() {
+    protected void clearVisited() {
         checkLabel++;
     }
 
@@ -176,6 +189,7 @@ public class Taxonomy {
     @PortedFrom(file = "Taxonomy.h", name = "setCurrentEntry")
     protected void setCurrentEntry(ClassifiableEntry p) {
         current.clear();
+        current.setSample(p, true);
         curEntry = p;
     }
 
@@ -333,19 +347,19 @@ public class Taxonomy {
     /** @param syn */
     @PortedFrom(file = "Taxonomy.h", name = "addCurrentToSynonym")
     public void addCurrentToSynonym(TaxonomyVertex syn) {
+        ClassifiableEntry currentEntry = current.getPrimer();
         if (queryMode()) {
             // no need to insert; just mark SYN as a host to curEntry
-            syn.setVertexAsHost(curEntry);
+            syn.setVertexAsHost(currentEntry);
         } else {
-            syn.addSynonym(curEntry);
-            options.getLog().print("\nTAX:set ", curEntry.getName(), " equal ",
+            syn.addSynonym(currentEntry);
+            options.getLog().print("\nTAX:set ", currentEntry.getName(), " equal ",
                     syn.getPrimer().getName());
         }
     }
 
     @PortedFrom(file = "Taxonomy.h", name = "insertCurrentNode")
-    void insertCurrentNode() {
-        current.setSample(curEntry, true);
+    public void insertCurrentNode() {
         // put curEntry as a representative of Current
         if (!queryMode()) {
             // insert node into taxonomy
@@ -394,12 +408,7 @@ public class Taxonomy {
         // perform main classification
         generalTwoPhaseClassification();
         // create new vertex
-        TaxonomyVertex syn = current.getSynonymNode();
-        if (syn != null) {
-            addCurrentToSynonym(syn);
-        } else {
-            insertCurrentNode();
-        }
+        finishCurrentNode();
         // clear all labels
         clearLabels();
     }
@@ -422,15 +431,9 @@ public class Taxonomy {
 
     @PortedFrom(file = "Taxonomy.h", name = "classifySynonym")
     protected boolean classifySynonym() {
-        ClassifiableEntry syn = resolveSynonym(curEntry);
-        if (syn.equals(curEntry)) {
-            return false;
-        }
-        // assert willInsertIntoTaxonomy;
-        assert syn.getTaxVertex() != null;
-        addCurrentToSynonym(syn.getTaxVertex());
-        return true;
+        return processSynonym();
     }
+
 
     @PortedFrom(file = "Taxonomy.h", name = "setNonRedundantCandidates")
     private void setNonRedundantCandidates() {
@@ -439,14 +442,10 @@ public class Taxonomy {
         }
         options.getLog().print(" completely defines concept ");
         options.getLog().print(curEntry.getName());
+        // test if some "told subsumer" is not an immediate TS (ie, not a border
+        // element)
         for (ClassifiableEntry p : ksStack.peek().s_begin()) {
-            TaxonomyVertex par = p.getTaxVertex();
-            if (par == null) {
-                continue;
-            }
-            if (isDirectParent(par)) {
-                current.addNeighbour(true, par);
-            }
+            addPossibleParent(p.getTaxVertex());
         }
     }
 
@@ -532,6 +531,42 @@ public class Taxonomy {
         return null;
     }
 
+    // ------------------------------------------------------------------------------
+    // -- classification support
+    // ------------------------------------------------------------------------------
+
+    /** @return true if current entry is a synonym of an already classified one */
+    @PortedFrom(file = "Taxonomy.cpp", name = "processSynonym")
+    protected boolean processSynonym() {
+        ClassifiableEntry currentEntry = current.getPrimer();
+        ClassifiableEntry syn = resolveSynonym(currentEntry);
+        if (syn.equals(currentEntry)) {
+            return false;
+        }
+        // assert willInsertIntoTaxonomy;
+        assert syn.getTaxVertex() != null;
+        addCurrentToSynonym(syn.getTaxVertex());
+        return true;
+    }
+
+    /** add PARENT as a parent if it exists and is direct parent */
+    @PortedFrom(file = "Taxonomy.h", name = "addPossibleParent")
+    public void addPossibleParent(TaxonomyVertex parent) {
+        if (parent != null && isDirectParent(parent)) {
+            current.addNeighbour(true, parent);
+        }
+    }
+
+    /** insert current node either directly or as a synonym */
+    @PortedFrom(file = "Taxonomy.h", name = "finishCurrentNode")
+    public void finishCurrentNode() {
+        TaxonomyVertex syn = current.getSynonymNode();
+        if (syn != null) {
+            addCurrentToSynonym(syn);
+        } else {
+            insertCurrentNode();
+        }
+    }
     /** @param p */
     @PortedFrom(file = "Taxonomy.h", name = "classifyEntry")
     public void classifyEntry(ClassifiableEntry p) {

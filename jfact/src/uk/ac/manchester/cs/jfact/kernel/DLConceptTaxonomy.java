@@ -324,7 +324,7 @@ public class DLConceptTaxonomy extends Taxonomy {
 
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "searchBaader")
     private void searchBaader(boolean upDirection, TaxonomyVertex cur) {
-        cur.setChecked(checkLabel);
+        setVisited(cur);
         ++nSearchCalls;
         boolean noPosSucc = true;
         List<TaxonomyVertex> neigh = cur.neigh(upDirection);
@@ -332,7 +332,7 @@ public class DLConceptTaxonomy extends Taxonomy {
         for (int i = 0; i < size; i++) {
             TaxonomyVertex p = neigh.get(i);
             if (enhancedSubs(upDirection, p)) {
-                if (!p.isChecked(checkLabel)) {
+                if (!isVisited(p)) {
                     searchBaader(upDirection, p);
                 }
                 noPosSucc = false;
@@ -402,11 +402,11 @@ public class DLConceptTaxonomy extends Taxonomy {
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "propagateOneCommon")
     private void propagateOneCommon(TaxonomyVertex node) {
         // checked if node already was visited this session
-        if (node.isChecked(checkLabel)) {
+        if (isVisited(node)) {
             return;
         }
         // mark node visited
-        node.setChecked(checkLabel);
+        setVisited(node);
         node.setCommon();
         if (node.correctCommon(nCommon)) {
             common.add(node);
@@ -429,7 +429,7 @@ public class DLConceptTaxonomy extends Taxonomy {
         TaxonomyVertex p = list.get(0);
         // define possible successors of the node
         propagateOneCommon(p);
-        clearCheckedLabel();
+        clearVisited();
         for (int i = 1; i < size; i++) {
             p = list.get(i);
             if (p.noNeighbours(!upDirection)) {
@@ -442,7 +442,7 @@ public class DLConceptTaxonomy extends Taxonomy {
             List<TaxonomyVertex> aux = new ArrayList<TaxonomyVertex>(common);
             common.clear();
             propagateOneCommon(p);
-            clearCheckedLabel();
+            clearVisited();
             int auxSize = aux.size();
             for (int j = 0; j < auxSize; j++) {
                 aux.get(j).correctCommon(nCommon);
