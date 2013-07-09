@@ -52,6 +52,10 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
     // cardinality of a concept/data expression interpretation
     /** @return true if #C^I > n */
     private boolean isCardLargerThan(Expression C, int n) {
+        // data top is infinite
+        if (C instanceof DataExpression && isTopEquivalent(C)) {
+            return true;
+        }
         if (n == 0) {
             return isBotDistinct(C);
         }
@@ -98,13 +102,15 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
         isBotEq = true;
     }
 
-    // equivalent to R(x,y) and C(x), so copy behaviour from ER.X
+    // FaCT++ extension: equivalent to R(x,y) and C(x), so copy behaviour from
+    // ER.X
     @Override
     public void visit(ObjectRoleProjectionFrom expr) {
         isBotEq = isMinBotEquivalent(1, expr.getOR(), expr.getConcept());
     }
 
-    // equivalent to R(x,y) and C(y), so copy behaviour from ER.X
+    // FaCT++ extension: equivalent to R(x,y) and C(y), so copy behaviour from
+    // ER.X
     @Override
     public void visit(ObjectRoleProjectionInto expr) {
         isBotEq = isMinBotEquivalent(1, expr.getOR(), expr.getConcept());

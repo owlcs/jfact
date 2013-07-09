@@ -30,13 +30,15 @@ public class TopEquivalenceEvaluator extends SigAccessor implements DLExpression
         return BotEval.isBotEquivalent(expr);
     }
 
-    // equivalent to R(x,y) and C(x), so copy behaviour from ER.X
+    // FaCT++ extension: equivalent to R(x,y) and C(x), so copy behaviour from
+    // ER.X
     @Override
     public void visit(ObjectRoleProjectionFrom expr) {
         isTopEq = isMinTopEquivalent(1, expr.getOR(), expr.getConcept());
     }
 
-    // equivalent to R(x,y) and C(y), so copy behaviour from ER.X
+    // FaCT++ extension: equivalent to R(x,y) and C(y), so copy behaviour from
+    // ER.X
     @Override
     public void visit(ObjectRoleProjectionInto expr) {
         isTopEq = isMinTopEquivalent(1, expr.getOR(), expr.getConcept());
@@ -66,6 +68,7 @@ public class TopEquivalenceEvaluator extends SigAccessor implements DLExpression
         if (n == 0) {
             return isBotDistinct(C);
         }
+        // data top is infinite
         if (C instanceof DataExpression && isTopEquivalent(C)) {
             return true;
         }

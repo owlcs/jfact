@@ -10,7 +10,9 @@ import java.util.List;
 
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import conformance.Original;
 import conformance.PortedFrom;
@@ -113,7 +115,7 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
     @Override
     public void visit(AxiomEquivalentConcepts axiom) {
         // 1 element => local
-        if (axiom.size() == 1) {
+        if (axiom.size() <= 1) {
             isLocal = true;
             return;
         }
@@ -128,10 +130,7 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
                     }
                 }
             } else {
-                if (!isTopEquivalent(args.get(0))) {
-                    return;
-                }
-                for (int i = 1; i < args.size(); i++) {
+                for (int i = 0; i < args.size(); i++) {
                     if (!isTopEquivalent(args.get(i))) {
                         return;
                     }
@@ -145,17 +144,17 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
     public void visit(AxiomDisjointConcepts axiom) {
         // local iff at most 1 concept is not bot-equiv
         boolean hasNBE = false;
-        isLocal = true;
+        isLocal = false;
         for (ConceptExpression p : axiom.getArguments()) {
             if (!isBotEquivalent(p)) {
                 if (hasNBE) {
-                    isLocal = false;
-                    break;
+                    return;
                 } else {
                     hasNBE = true;
                 }
             }
         }
+        isLocal = true;
     }
 
     @Override
@@ -192,44 +191,62 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
 
     @Override
     public void visit(AxiomEquivalentORoles axiom) {
-        isLocal = true;
+        // 1 element => local
         if (axiom.size() <= 1) {
+            isLocal = true;
             return;
         }
-        for (ObjectRoleExpression p : axiom.getArguments()) {
-            if (!isREquivalent(p)) {
-                isLocal = false;
-                break;
+        // axiom is local iff all the elements are either top- or bot-local
+        if (isBotEquivalent(axiom.getArguments().get(0))) {
+            for (int i = 1; i < axiom.getArguments().size(); i++) {
+                if (!isBotEquivalent(axiom.getArguments().get(i))) {
+                    return;
+                }
+            }
+        } else {
+            for (int i = 0; i < axiom.getArguments().size(); i++) {
+                if ( !isTopEquivalent(axiom.getArguments().get(i)) ) {
+                    return;
+                }
             }
         }
+        isLocal = true;
     }
 
     @Override
     public void visit(AxiomEquivalentDRoles axiom) {
-        isLocal = true;
+        // 1 element => local
         if (axiom.size() <= 1) {
+            isLocal = true;
             return;
         }
-        for (DataRoleExpression p : axiom.getArguments()) {
-            if (!isREquivalent(p)) {
-                isLocal = false;
-                break;
+        // axiom is local iff all the elements are either top- or bot-local
+        if (isBotEquivalent(axiom.getArguments().get(0))) {
+            for (int i = 1; i < axiom.getArguments().size(); i++) {
+                if (!isBotEquivalent(axiom.getArguments().get(i))) {
+                    return;
+                }
+            }
+        } else {
+            for (int i = 0; i < axiom.getArguments().size(); i++) {
+                if (!isTopEquivalent(axiom.getArguments().get(i))) {
+                    return;
+                }
             }
         }
+        isLocal = true;
     }
 
     @Override
     public void visit(AxiomDisjointORoles axiom) {
-        isLocal = false;
-        if (sig.topRLocal()) {
-            return;
-        }
+        // XXX check on number of arguments
+        // local iff at most 1 element is not bot-equiv
         boolean hasNBE = false;
-        for (ObjectRoleExpression p : axiom.getArguments()) {
-            if (!isREquivalent(p)) {
+        isLocal = false;
+        for (int i = 0; i < axiom.getArguments().size(); i++) {
+            if (!isBotEquivalent(axiom.getArguments().get(i))) {
                 if (hasNBE) {
                     return;
-                    // false here
                 } else {
                     hasNBE = true;
                 }
@@ -240,16 +257,14 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
 
     @Override
     public void visit(AxiomDisjointDRoles axiom) {
-        isLocal = false;
-        if (sig.topRLocal()) {
-            return;
-        }
+        // XXX check on number of arguments
+        // local iff at most 1 element is not bot-equiv
         boolean hasNBE = false;
-        for (DataRoleExpression p : axiom.getArguments()) {
-            if (!isREquivalent(p)) {
+        isLocal = false;
+        for (int i = 0; i < axiom.getArguments().size(); i++) {
+            if (!isBotEquivalent(axiom.getArguments().get(i))) {
                 if (hasNBE) {
                     return;
-                    // false here
                 } else {
                     hasNBE = true;
                 }
@@ -268,8 +283,8 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
         isLocal = false;
     }
 
-    /** there is no such axiom in OWL API, but I hope nobody would use Fairness
-     * here */
+    /** FaCT++ extension: there is no such axiom in OWL API, but I hope nobody
+     * would use Fairness here */
     @Override
     public void visit(AxiomFairnessConstraint axiom) {
         isLocal = true;
@@ -277,7 +292,9 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
 
     @Override
     public void visit(AxiomRoleInverse axiom) {
-        isLocal = isREquivalent(axiom.getRole()) && isREquivalent(axiom.getInvRole());
+        isLocal = isBotEquivalent(axiom.getRole()) && isBotEquivalent(axiom.getInvRole())
+                || isTopEquivalent(axiom.getRole())
+                && isTopEquivalent(axiom.getInvRole());
     }
 
     @Override
@@ -312,7 +329,7 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
 
     @Override
     public void visit(AxiomRoleTransitive axiom) {
-        isLocal = isREquivalent(axiom.getRole());
+        isLocal = isBotEquivalent(axiom.getRole()) || isTopEquivalent(axiom.getRole());
     }
 
     /** as BotRole is irreflexive, the only local axiom is topEquivalent(R) */
@@ -328,12 +345,13 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
 
     @Override
     public void visit(AxiomRoleSymmetric axiom) {
-        isLocal = isREquivalent(axiom.getRole());
+        isLocal = isBotEquivalent(axiom.getRole()) || isTopEquivalent(axiom.getRole());
     }
 
     @Override
     public void visit(AxiomRoleAsymmetric axiom) {
-        isLocal = isBotEquivalent(axiom.getRole());
+        // XXX why is this necessarily non local?
+        isLocal = false;
     }
 
     @Override
