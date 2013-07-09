@@ -99,6 +99,12 @@ public class TSignature {
         return set.hashCode();
     }
 
+    /** @return true iff SIGnature does NOT contain given entity */
+    @PortedFrom(file = "LocalityChecker.h", name = "nc")
+    public boolean nc(NamedEntity entity) {
+        return !containsNamedEntity(entity);
+    }
+
     /** @param p
      * @return true iff signature contains given element */
     @Original
@@ -147,6 +153,18 @@ public class TSignature {
     @PortedFrom(file = "tSignature.h", name = "topRLocal")
     public boolean topRLocal() {
         return topRLocality;
+    }
+
+    /** @return true iff concepts are treated as TOPs */
+    @PortedFrom(file = "tSignature.h", name = "botCLocal")
+    public boolean botCLocal() {
+        return !topCLocal();
+    }
+
+    /** @return true iff roles are treated as TOPs */
+    @PortedFrom(file = "tSignature.h", name = "botRLocal")
+    public boolean botRLocal() {
+        return !topRLocal();
     }
 
     /** @param s2

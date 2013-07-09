@@ -26,6 +26,14 @@ public class SigAccessor extends DLExpressionVisitorAdapter {
         sig = s;
     }
 
+    public SigAccessor() {
+        // TODO Auto-generated constructor stub
+    }
+
+    public SigAccessor(TSignature s) {
+        setSignature(s);
+    }
+
     /** @return true iff EXPR is a top datatype */
     @Original
     static boolean isTopDT(Expression expr) {

@@ -5,6 +5,7 @@ package uk.ac.manchester.cs.jfact.split;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import java.util.Collection;
 import java.util.List;
 
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
@@ -30,28 +31,61 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
 
     /** @return true iff EXPR is top equivalent */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isTopEquivalent")
-    public boolean isTopEquivalent(Expression expr) {
+    protected boolean isTopEquivalent(Expression expr) {
         return TopEval.isTopEquivalent(expr);
     }
 
     /** @return true iff EXPR is bottom equivalent */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isBotEquivalent")
-    public boolean isBotEquivalent(Expression expr) {
+    protected boolean isBotEquivalent(Expression expr) {
         return BotEval.isBotEquivalent(expr);
     }
 
     /** @return true iff role expression in equivalent to const wrt locality */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isREquivalent")
-    public boolean isREquivalent(Expression expr) {
+    protected boolean isREquivalent(Expression expr) {
         return sig.topRLocal() ? isTopEquivalent(expr) : isBotEquivalent(expr);
     }
 
+    /** @return true iff an AXIOM is local wrt defined policy */
+    @Override
+    @PortedFrom(file = "SyntacticLocalityChecker.h", name = "local")
+    public boolean local(AxiomInterface axiom) {
+        axiom.accept(this);
+        return isLocal;
+    }
+
+    /** set a new value of a signature (without changing a locality parameters) */
+    @Override
+    @Original
+    public void setSignatureValue(TSignature Sig) {
+        sig = Sig;
+        TopEval.sig = sig;
+        BotEval.sig = sig;
+    }
+
+    // set fields
+    @Override
+    @Original
+    public void preprocessOntology(Collection<AxiomInterface> s) {
+        sig = new TSignature();
+        for (AxiomInterface ax : s) {
+            sig.add(ax.getSignature());
+        }
+    }
+
     /** init c'tor */
-    public GeneralSyntacticLocalityChecker() {
+    public GeneralSyntacticLocalityChecker(TSignature sig) {
+        this.sig = sig;
         TopEval = new TopEquivalenceEvaluator();
         BotEval = new BotEquivalenceEvaluator();
         TopEval.setBotEval(BotEval);
         BotEval.setTopEval(TopEval);
+    }
+
+    /** init c'tor */
+    public GeneralSyntacticLocalityChecker() {
+        this(null);
     }
 
     @Override
