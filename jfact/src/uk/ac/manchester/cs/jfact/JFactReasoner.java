@@ -870,6 +870,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     public long getLocCheckNumber() {
         return kernel.getLocCheckNumber();
     }
+
     /** @param index
      * @return set of atoms on which atom with index INDEX depends */
     public Set<TOntologyAtom> getAtomDependents(int index) {
@@ -918,9 +919,11 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             ModuleType moduletype) {
         List<Expression> list = new ArrayList<Expression>();
         for (OWLEntity entity : signature) {
-            Expression ex = entity.accept(entityTranslator);
-            if (ex != null) {
-                list.add(ex);
+            if (entity instanceof OWLLogicalEntity) {
+                Expression ex = entity.accept(entityTranslator);
+                if (ex != null) {
+                    list.add(ex);
+                }
             }
         }
         List<AxiomInterface> axioms = kernel.getModule(list, useSemantic, moduletype);
@@ -941,9 +944,11 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             ModuleType moduletype) {
         List<Expression> list = new ArrayList<Expression>();
         for (OWLEntity entity : signature) {
-            Expression ex = entity.accept(entityTranslator);
-            if (ex != null) {
-                list.add(ex);
+            if (entity instanceof OWLLogicalEntity) {
+                Expression ex = entity.accept(entityTranslator);
+                if (ex != null) {
+                    list.add(ex);
+                }
             }
         }
         Set<AxiomInterface> axioms = kernel.getNonLocal(list, useSemantic, moduletype);
@@ -955,5 +960,4 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         }
         return toReturn;
     }
-
 }
