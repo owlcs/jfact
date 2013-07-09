@@ -163,6 +163,7 @@ public class TModularizer {
         Checker.preprocessOntology(vec);
         sigIndex.clear();
         sigIndex.preprocessOntology(vec);
+        nChecks += 2 * vec.size();
     }
 
     /** @return true iff the axiom AX is a tautology wrt given type */

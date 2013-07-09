@@ -181,4 +181,10 @@ public class AtomicDecomposer {
         AOS.reduceGraph();
         return AOS;
     }
+
+    /** get number of performed locality checks */
+    @PortedFrom(file = "AtomicDecomposer.h", name = "getLocChekNumber")
+    public long getLocChekNumber() {
+        return Modularizer.getNChecks();
+    }
 }

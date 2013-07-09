@@ -639,13 +639,13 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
         this.useAxiomSplitting = useAxiomSplitting;
     }
 
-    private boolean useADInModuleExtraction;
+    private boolean useADInModuleExtraction = true;
 
     public boolean isRKG_USE_AD_IN_MODULE_EXTRACTION() {
         return useADInModuleExtraction;
     }
 
     public void setRKG_USE_AD_IN_MODULE_EXTRACTION(boolean value) {
-        useADInModuleExtraction = false;
+        useADInModuleExtraction = value;
     }
 }

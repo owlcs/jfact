@@ -1948,6 +1948,12 @@ public class ReasoningKernel {
         return AD.getAOS().get(index).getDepAtoms();
     }
 
+    /** get a number of locality checks performed for creating an AD */
+    @PortedFrom(file = "Kernel.cpp", name = "getLocCheckNumber")
+    public long getLocCheckNumber() {
+        return AD.getLocChekNumber();
+    }
+
     // knowledge exploration queries
     /** @return true iff the chain contained in the arg-list is a sub-property of
      *         R */

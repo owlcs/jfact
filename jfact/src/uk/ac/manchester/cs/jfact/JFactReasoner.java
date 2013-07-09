@@ -847,8 +847,12 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     /** @param index
      * @return set of axioms that corresponds to the atom with the id INDEX */
     public Set<OWLAxiom> getAtomAxioms(int index) {
+        return axiomsToSet(kernel.getAtomAxioms(index));
+    }
+
+    private Set<OWLAxiom> axiomsToSet(Collection<AxiomInterface> index) {
         Set<OWLAxiom> toReturn = new HashSet<OWLAxiom>();
-        for (AxiomInterface ax : kernel.getAtomAxioms(index)) {
+        for (AxiomInterface ax : index) {
             if (ax.getOWLAxiom() != null) {
                 toReturn.add(ax.getOWLAxiom());
             }
@@ -859,10 +863,13 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     /** @param index
      * @return set of axioms that corresponds to the module of the atom with the
      *         id INDEX */
-    public Set<AxiomInterface> getAtomModule(int index) {
-        return kernel.getAtomModule(index);
+    public Set<OWLAxiom> getAtomModule(int index) {
+        return axiomsToSet(kernel.getAtomModule(index));
     }
 
+    public long getLocCheckNumber() {
+        return kernel.getLocCheckNumber();
+    }
     /** @param index
      * @return set of atoms on which atom with index INDEX depends */
     public Set<TOntologyAtom> getAtomDependents(int index) {
@@ -948,4 +955,5 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         }
         return toReturn;
     }
+
 }
