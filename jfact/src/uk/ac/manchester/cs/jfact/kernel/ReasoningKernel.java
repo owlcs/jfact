@@ -9,10 +9,7 @@ import static uk.ac.manchester.cs.jfact.helpers.DLTree.*;
 import static uk.ac.manchester.cs.jfact.kernel.CacheStatus.*;
 import static uk.ac.manchester.cs.jfact.kernel.KBStatus.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -1897,6 +1894,69 @@ public class ReasoningKernel {
         if (level == csClassified) {
             classifyQuery(this.isNameOrConst(cachedQuery));
         }
+    }
+
+    @PortedFrom(file = "Kernel.cpp", name = "isEq")
+    boolean isEq(DlCompletionTree p, DlCompletionTree q) {
+        return false;
+    }
+
+    @PortedFrom(file = "Kernel.cpp", name = "isLt")
+    boolean isLt(DlCompletionTree p, DlCompletionTree q) {
+        return false;
+    }
+
+    @PortedFrom(file = "Kernel.cpp", name = "checkDataRelation")
+    boolean checkDataRelation(DlCompletionTree vR, DlCompletionTree vS, int op) {
+        switch (op) {
+            case 0: // =
+                return isEq(vR, vS);
+            case 1: // !=
+                return !isEq(vR, vS);
+            case 2: // <
+                return isLt(vR, vS);
+            case 3: // <=
+                return isLt(vR, vS) || isEq(vR, vS);
+            case 4: // >
+                return isLt(vS, vR);
+            case 5: // >=
+                return isLt(vS, vR) || isEq(vR, vS);
+            default:
+                throw new ReasonerInternalException(
+                        "Illegal operation in checkIndividualValues()");
+        }
+    }
+
+    /** set RESULT into set of instances of A such that they do have data roles R
+     * and S */
+    @PortedFrom(file = "Kernel.cpp", name = "getDataRelatedIndividuals")
+    public Collection<IndividualName> getDataRelatedIndividuals(RoleExpression R,
+            RoleExpression S, int op, Collection<IndividualExpression> individuals) {
+        realiseKB();    // ensure KB is ready to answer the query
+        List<IndividualName> toReturn = new ArrayList<IndividualName>();
+        Role r = getRole(R, "Role expression expected in the getIndividualsWith()");
+        Role s = getRole(S, "Role expression expected in the getIndividualsWith()");
+        // vector of individuals
+        for (IndividualExpression q : individuals) {
+            Individual ind = getIndividual(q,
+                    "individual name expected in getDataRelatedIndividuals()");
+            DlCompletionTree vR = null;
+            DlCompletionTree vS = null;
+            for (DlCompletionTreeArc edge : ind.getNode().getNeighbour()) {
+                if (edge.isNeighbour(r)) {
+                    vR = edge.getArcEnd();
+                } else if (edge.isNeighbour(s)) {
+                    vS = edge.getArcEnd();
+                }
+                if (vR != null && vS != null && checkDataRelation(vR, vS, op)) {
+                    if (q instanceof IndividualName) {
+                        toReturn.add((IndividualName) q);
+                    }
+                    break;
+                }
+            }
+        }
+        return toReturn;
     }
 
     // atomic decomposition queries

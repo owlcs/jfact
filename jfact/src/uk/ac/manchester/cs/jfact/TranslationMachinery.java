@@ -24,15 +24,15 @@ import uk.ac.manchester.cs.jfact.kernel.voc.Vocabulary;
 // XXX verify unused parameters
 /** translation stuff */
 public class TranslationMachinery {
-    private volatile AxiomTranslator axiomTranslator;
-    private volatile ClassExpressionTranslator classExpressionTranslator;
-    private volatile DataRangeTranslator dataRangeTranslator;
-    private volatile ObjectPropertyTranslator objectPropertyTranslator;
-    private volatile DataPropertyTranslator dataPropertyTranslator;
-    private volatile IndividualTranslator individualTranslator;
-    private volatile EntailmentChecker entailmentChecker;
-    private Map<OWLAxiom, AxiomInterface> axiom2PtrMap = new HashMap<OWLAxiom, AxiomInterface>();
-    private Map<AxiomInterface, OWLAxiom> ptr2AxiomMap = new HashMap<AxiomInterface, OWLAxiom>();
+    private final AxiomTranslator axiomTranslator;
+    private final ClassExpressionTranslator classExpressionTranslator;
+    private final DataRangeTranslator dataRangeTranslator;
+    private final ObjectPropertyTranslator objectPropertyTranslator;
+    private final DataPropertyTranslator dataPropertyTranslator;
+    private final IndividualTranslator individualTranslator;
+    private final EntailmentChecker entailmentChecker;
+    private final Map<OWLAxiom, AxiomInterface> axiom2PtrMap = new HashMap<OWLAxiom, AxiomInterface>();
+    private final Map<AxiomInterface, OWLAxiom> ptr2AxiomMap = new HashMap<AxiomInterface, OWLAxiom>();
     protected ReasoningKernel kernel;
     protected ExpressionManager em;
     protected OWLDataFactory df;
@@ -168,7 +168,7 @@ public class TranslationMachinery {
         return ns;
     }
 
-    protected synchronized List<IndividualExpression> translateIndividualSet(
+    public synchronized List<IndividualExpression> translateIndividualSet(
             Set<OWLIndividual> inds) {
         List<IndividualExpression> l = new ArrayList<IndividualExpression>();
         for (OWLIndividual ind : inds) {

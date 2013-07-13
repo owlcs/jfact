@@ -960,4 +960,31 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         }
         return toReturn;
     }
+
+/**
+     * get all individuals from the set individuals that has r-successor and
+     * s-successor and those are related via OP: r op s
+     *
+     * @param individuals
+     *            set of individuals to choose from
+     * @param r
+     *            first operand of the comparison
+     * @param s
+     *            second operand of the comparison
+     * @param op
+     *            comparison operation: 0 means "==", 1 means "!=", 2 means "<", 3 means
+     *            "<=", 4 means ">", 5 means ">="
+     * @return
+     */
+    public Node<OWLNamedIndividual> getDataRelatedIndividuals(
+            Set<OWLIndividual> individuals, OWLDataProperty r, OWLDataProperty s, int op) {
+        checkConsistency();
+        // load all the individuals as parameters
+
+        return translationMachinery.getIndividualTranslator().getNodeFromPointers(
+                kernel.getDataRelatedIndividuals(
+                        translationMachinery.toDataPropertyPointer(r),
+                        translationMachinery.toDataPropertyPointer(s), op,
+                        translationMachinery.translateIndividualSet(individuals)));
+    }
 }
