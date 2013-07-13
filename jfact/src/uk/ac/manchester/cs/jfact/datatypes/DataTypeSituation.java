@@ -191,6 +191,8 @@ public class DataTypeSituation<R extends Comparable<R>> {
                 } else {
                     this.e = DatatypeFactory.getDatatypeExpression(value);
                 }
+                // XXX new FaCT++ code has += here rather than =; check if it's
+                // correct
                 this.locDep = dep == null ? null : dep.getDelegate();
                 return false;
             } else {
@@ -211,6 +213,8 @@ public class DataTypeSituation<R extends Comparable<R>> {
             }
             // TODO needs to return false if the new expression has the same
             // value space as the old one
+            // XXX new FaCT++ code has += here rather than =; check if it's
+            // correct
             this.locDep = dep == null ? null : dep.getDelegate();
             return true;
         }
