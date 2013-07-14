@@ -475,7 +475,7 @@ public class OntologyLoader implements DLAxiomVisitor {
         for (TSplitVar q : ontology.getSplits().getEntries()) {
             fillSplit(q);
         }
-        tbox.getTaxonomy().setSplitVars(ontology.getSplits());
+        tbox.setSplitVars(ontology.getSplits());
         tbox.finishLoading();
     }
 }

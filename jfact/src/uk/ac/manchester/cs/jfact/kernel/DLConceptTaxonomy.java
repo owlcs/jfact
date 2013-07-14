@@ -16,7 +16,6 @@ import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState;
 import uk.ac.manchester.cs.jfact.split.SplitVarEntry;
 import uk.ac.manchester.cs.jfact.split.TSplitVar;
-import uk.ac.manchester.cs.jfact.split.TSplitVars;
 import conformance.PortedFrom;
 
 /** Concept taxonomy */
@@ -180,29 +179,14 @@ public class DLConceptTaxonomy extends Taxonomy {
         inSplitCheck = false;
     }
 
-    /** set of split vars */
-    @PortedFrom(file = "dlTBox.h", name = "Splits")
-    TSplitVars Splits;
-
     /** process all splits */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "processSplits")
     void processSplits() {
-        for (TSplitVar v : Splits.getEntries()) {
+        for (TSplitVar v : tBox.getSplits().getEntries()) {
             mergeSplitVars(v);
         }
     }
 
-    /** set split vars */
-    @PortedFrom(file = "dlTBox.h", name = "setSplitVars")
-    void setSplitVars(TSplitVars s) {
-        Splits = s;
-    }
-
-    /** get access to split vars */
-    @PortedFrom(file = "dlTBox.h", name = "getSplitVars")
-    TSplitVars getSplits() {
-        return Splits;
-    }
 
     /** set bottom-up flag
      * 

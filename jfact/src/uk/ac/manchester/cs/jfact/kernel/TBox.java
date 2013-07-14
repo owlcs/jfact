@@ -51,7 +51,10 @@ public class TBox {
     private NominalReasoner nomReasoner;
     /** taxonomy structure of a TBox */
     @PortedFrom(file = "dlTBox.h", name = "pTax")
-    private DLConceptTaxonomy pTax;
+    private Taxonomy pTax;
+    /** classifier */
+    @PortedFrom(file = "dlTBox.h", name = "pTaxCreator")
+    private DLConceptTaxonomy pTaxCreator;
     /** set of reasoning options */
     @Original
     private JFactReasonerConfiguration config;
@@ -188,7 +191,24 @@ public class TBox {
     private Map<Concept, Pair> sameIndividuals = new HashMap<Concept, Pair>();
     /** all the synonyms in the told subsumers' cycle */
     @PortedFrom(file = "dlTBox.h", name = "ToldSynonyms")
-    Set<Concept> toldSynonyms = new HashSet<Concept>();
+    private Set<Concept> toldSynonyms = new HashSet<Concept>();
+    /** set of split vars */
+    @PortedFrom(file = "dlTBox.h", name = "Splits")
+    private TSplitVars Splits;
+
+    /** @param s
+     *            split vars */
+    @PortedFrom(file = "dlTBox.h", name = "setSplitVars")
+    public void setSplitVars(TSplitVars s) {
+        Splits = s;
+    }
+
+    /** @return split vars */
+    @PortedFrom(file = "dlTBox.h", name = "getSplitVars")
+    public TSplitVars getSplits() {
+        return Splits;
+    }
+
 
     /** @return individuals */
     @PortedFrom(file = "dlTBox.h", name = "i_begin")
@@ -880,7 +900,7 @@ public class TBox {
 
     /** @return internal Taxonomy of concepts */
     @PortedFrom(file = "dlTBox.h", name = "getTaxonomy")
-    public DLConceptTaxonomy getTaxonomy() {
+    public Taxonomy getTaxonomy() {
         return pTax;
     }
 
@@ -1355,7 +1375,7 @@ public class TBox {
         // FIXME!! distinguish later between the 1st run and the following runs
         dlHeap.setSubOrder();
         // initTaxonomy();
-        pTax.setBottomUp(GCIs);
+        pTaxCreator.setBottomUp(GCIs);
         needConcept |= needIndividual;
         if (config.getverboseOutput()) {
             config.getLog().print("Processing query...\n");
@@ -1377,7 +1397,7 @@ public class TBox {
         classifyConcepts(arrayNoCD, false, "regular");
         classifyConcepts(arrayNP, false, "non-primitive");
         duringClassification = false;
-        pTax.processSplits();
+        pTaxCreator.processSplits();
         if (config.getProgressMonitor() != null) {
             config.getProgressMonitor().reasonerTaskStopped();
         }
@@ -2735,6 +2755,10 @@ public class TBox {
         setToDoPriorities();
     }
 
+    /** init taxonomy and classifier */
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "initTaxonomy")
+    public void initTaxonomy() {}
+
     @PortedFrom(file = "dlTBox.h", name = "nRelevantCCalls")
     private long nRelevantCCalls;
     @PortedFrom(file = "dlTBox.h", name = "nRelevantBCalls")
@@ -2936,11 +2960,6 @@ public class TBox {
     @PortedFrom(file = "dlTBox.h", name = "isCancelled")
     public AtomicBoolean isCancelled() {
         return interrupted;
-    }
-
-    @PortedFrom(file = "dlTBox.h", name = "getSplits")
-    TSplitVars getSplits() {
-        return getTaxonomy().getSplits();
     }
 
     /** @return list of fairness concepts */
