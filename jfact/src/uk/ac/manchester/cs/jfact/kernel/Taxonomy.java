@@ -29,10 +29,10 @@ public class Taxonomy {
     protected boolean willInsertIntoTaxonomy = true;
     /** vertex with parent Top and child Bot, represents the fresh entity */
     @PortedFrom(file = "Taxonomy.h", name = "FreshNode")
-    TaxonomyVertex FreshNode = new TaxonomyVertex();
+    protected TaxonomyVertex FreshNode = new TaxonomyVertex();
     /** labeller for marking nodes as checked */
     @PortedFrom(file = "Taxonomy.h", name = "checkLabel")
-    protected long checkLabel = 1;
+    protected long visitedLabel = 1;
     @Original
     private JFactReasonerConfiguration options;
 
@@ -145,19 +145,19 @@ public class Taxonomy {
     /** set node NODE as checked within taxonomy */
     @PortedFrom(file = "Taxonomy.h", name = "setVisited")
     void setVisited(TaxonomyVertex node) {
-        node.setChecked(checkLabel);
+        node.setChecked(visitedLabel);
     }
 
     /** check whether NODE is checked within taxonomy */
     @PortedFrom(file = "Taxonomy.h", name = "isVisited")
     public boolean isVisited(TaxonomyVertex node) {
-        return node.isChecked(checkLabel);
+        return node.isChecked(visitedLabel);
     }
 
     /** clear the CHECKED label from all the taxonomy vertex */
     @PortedFrom(file = "Taxonomy.h", name = "clearCheckedLabel")
     protected void clearVisited() {
-        checkLabel++;
+        visitedLabel++;
     }
 
     /** @param pTop
@@ -197,7 +197,6 @@ public class Taxonomy {
         return FreshNode;
     }
 
-
     @Override
     public String toString() {
         StringBuilder o = new StringBuilder();
@@ -217,8 +216,6 @@ public class Taxonomy {
         o.append(getBottomVertex());
         return o.toString();
     }
-
-
 
     /** remove node from the taxonomy; assume no references to the node */
     @PortedFrom(file = "Taxonomy.h", name = "removeNode")
@@ -266,15 +263,21 @@ public class Taxonomy {
         }
     }
 
-    @PortedFrom(file = "Taxonomy.h", name = "insertCurrentNode")
-    public void insertCurrentNode() {
-        // put curEntry as a representative of Current
-        if (!queryMode()) {
-            // insert node into taxonomy
-            current.incorporate(options);
-            graph.add(current);
-            // we used the Current so need to create a new one
-            current = new TaxonomyVertex();
+    /** insert current node either directly or as a synonym */
+    @PortedFrom(file = "Taxonomy.h", name = "finishCurrentNode")
+    public void finishCurrentNode() {
+        TaxonomyVertex syn = current.getSynonymNode();
+        if (syn != null) {
+            addCurrentToSynonym(syn);
+        } else {
+            // put curEntry as a representative of Current
+            if (!queryMode()) {
+                // insert node into taxonomy
+                current.incorporate(options);
+                graph.add(current);
+                // we used the Current so need to create a new one
+                current = new TaxonomyVertex();
+            }
         }
     }
 
@@ -295,19 +298,7 @@ public class Taxonomy {
         return true;
     }
 
-    /** insert current node either directly or as a synonym */
-    @PortedFrom(file = "Taxonomy.h", name = "finishCurrentNode")
-    public void finishCurrentNode() {
-        TaxonomyVertex syn = current.getSynonymNode();
-        if (syn != null) {
-            addCurrentToSynonym(syn);
-        } else {
-            insertCurrentNode();
-        }
-    }
-
     public void clearLabels() {
-        checkLabel++;
+        visitedLabel++;
     }
-
 }

@@ -100,10 +100,10 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "enhancedSubs")
     private boolean enhancedSubs(boolean upDirection, TaxonomyVertex cur) {
         ++nSubCalls;
-        if (cur.isValued(valueLabel)) {
-            return cur.getValue();
+        if (isValued(cur)) {
+            return getValue(cur);
         } else {
-            return cur.setValued(enhancedSubs2(upDirection, cur), valueLabel);
+            return setValue(cur, enhancedSubs2(upDirection, cur));
         }
     }
 
@@ -324,8 +324,8 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         }
         // in case current node is unchecked (no BOTTOM node) -- check it
         // explicitly
-        if (!cur.isValued(valueLabel)) {
-            cur.setValued(testSubsumption(upDirection, cur), valueLabel);
+        if (!isValued(cur)) {
+            setValue(cur, testSubsumption(upDirection, cur));
         }
         if (noPosSucc && cur.getValue()) {
             pTax.getCurrent().addNeighbour(!upDirection, cur);
@@ -545,7 +545,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         }
         if (v == pTax.current) {
             checkExtraParents();
-            pTax.insertCurrentNode();
+            pTax.finishCurrentNode();
         }
     }
 

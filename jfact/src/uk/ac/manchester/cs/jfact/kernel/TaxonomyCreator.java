@@ -161,13 +161,13 @@ public class TaxonomyCreator {
     private void generalTwoPhaseClassification() {
         setupTopDown();
         if (needTopDown()) {
-            pTax.getTopVertex().setValued(true, valueLabel);
-            pTax.getBottomVertex().setValued(false, valueLabel);
+            setValue(pTax.getTopVertex(), true);
+            setValue(pTax.getBottomVertex(), false);
             runTopDown();
         }
         clearLabels();
         if (needBottomUp()) {
-            pTax.getBottomVertex().setValued(true, valueLabel);
+            setValue(pTax.getBottomVertex(), true);
             runBottomUp();
         }
         clearLabels();
@@ -177,7 +177,7 @@ public class TaxonomyCreator {
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "isDirectParent")
     boolean isDirectParent(TaxonomyVertex v) {
         for (TaxonomyVertex q : v.neigh(false)) {
-            if (q.isValued(valueLabel) && q.getValue()) {
+            if (isValued(q) && getValue(q)) {
                 return false;
             }
         }
@@ -221,12 +221,12 @@ public class TaxonomyCreator {
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "propagateTrueUp")
     protected void propagateTrueUp(TaxonomyVertex node) {
         // if taxonomy class already checked -- do nothing
-        if (node.isValued(valueLabel)) {
-            assert node.getValue();
+        if (isValued(node)) {
+            assert getValue(node);
             return;
         }
         // overwise -- value it...
-        node.setValued(true, valueLabel);
+        setValue(node, true);
         // ... and value all parents
         List<TaxonomyVertex> list = node.neigh(true);
         for (int i = 0; i < list.size(); i++) {
@@ -344,8 +344,29 @@ public class TaxonomyCreator {
         return null;
     }
 
+    // -----------------------------------------------------------------
+    // -- DFS-based classification
+    // -----------------------------------------------------------------
 
+    /** @return true if a NODE has been valued during current classification pass */
+    @PortedFrom(file = "TaxonomyCreator.h", name = "isValued")
+    public boolean isValued(TaxonomyVertex node) {
+        return node.isValued(valueLabel);
+    }
 
+    /** @return the subsumption value of a NODE wrt currently classified one */
+    @PortedFrom(file = "TaxonomyCreator.h", name = "getValue")
 
-    // -- classification interface
+    public boolean getValue(TaxonomyVertex node) {
+        return node.getValue();
+    }
+
+    /** set the classification value of a NODE to VALUE
+     * 
+     * @return val */
+    @PortedFrom(file = "TaxonomyCreator.h", name = "setValue")
+    public boolean setValue(TaxonomyVertex node, boolean value) {
+        return node.setValued(value, valueLabel);
+    }
+
 }
