@@ -1694,6 +1694,26 @@ public class ReasoningKernel {
     /** incrementally classify changes */
     @PortedFrom(file = "Kernel.h", name = "doIncremental")
     public void doIncremental() {
+        // fill in M^+ and M^- sets
+        LocalityChecker lc = getModExtractor(false).getModularizer().getLocalityChecker();
+        // TODO: add new sig here
+        List<ClassifiableEntry> MPlus = new ArrayList<ClassifiableEntry>();
+        List<ClassifiableEntry> MMinus = new ArrayList<ClassifiableEntry>();
+        for (Map.Entry<ClassifiableEntry, TSignature> p : Name2Sig.entrySet()) {
+            lc.setSignatureValue(p.getValue());
+            for (AxiomInterface notProcessed : ontology.getAxioms()) {
+                if (!lc.local(notProcessed)) {
+                    MPlus.add(p.getKey());
+                    break;
+                }
+            }
+            for (AxiomInterface retracted : ontology.getRetracted()) {
+                if (!lc.local(retracted)) {
+                    MMinus.add(p.getKey());
+                    break;
+                }
+            }
+        }
         forceReload();
     }
 

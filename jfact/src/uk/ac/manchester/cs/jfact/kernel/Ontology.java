@@ -21,6 +21,9 @@ public class Ontology {
     /** all the axioms */
     @PortedFrom(file = "tOntology.h", name = "Axioms")
     private List<AxiomInterface> axioms = new ArrayList<AxiomInterface>();
+    /** all the axioms */
+    @PortedFrom(file = "tOntology.h", name = "Retracted")
+    private List<AxiomInterface> retracted = new ArrayList<AxiomInterface>();
     /** expression manager that builds all the expressions for the axioms */
     @PortedFrom(file = "tOntology.h", name = "EManager")
     private ExpressionManager expressionManager = new ExpressionManager();
@@ -61,6 +64,7 @@ public class Ontology {
     /** set the processed marker to the end of the ontology */
     @PortedFrom(file = "tOntology.h", name = "setProcessed")
     public void setProcessed() {
+        retracted.clear();
         changed = false;
     }
 
@@ -83,6 +87,7 @@ public class Ontology {
     public void retract(AxiomInterface p) {
         if (p.getId() <= axioms.size() && axioms.get(p.getId() - 1).equals(p)) {
             changed = true;
+            retracted.add(p);
             p.setUsed(false);
         }
     }
@@ -91,6 +96,7 @@ public class Ontology {
     @PortedFrom(file = "tOntology.h", name = "clear")
     public void clear() {
         axioms.clear();
+        retracted.clear();
         expressionManager.clear();
         changed = false;
     }
@@ -123,5 +129,9 @@ public class Ontology {
      * @return visitor value */
     public <O> O accept(DLAxiomVisitorEx<O> visitor) {
         return visitor.visitOntology(this);
+    }
+
+    public List<AxiomInterface> getRetracted() {
+        return retracted;
     }
 }
