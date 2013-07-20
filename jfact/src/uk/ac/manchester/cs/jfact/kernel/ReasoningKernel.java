@@ -461,10 +461,10 @@ public class ReasoningKernel {
     /** get access to the concept hierarchy */
     @PortedFrom(file = "Kernel.h", name = "getCTaxonomy")
     private Taxonomy getCTaxonomy() {
-        if (!isKBClassified()) {
-            throw new ReasonerInternalException(
-                    "No access to concept taxonomy: ontology not classified");
-        }
+        // if (!isKBClassified()) {
+        // throw new ReasonerInternalException(
+        // "No access to concept taxonomy: ontology not classified");
+        // }
         return getTBox().getTaxonomy();
     }
 
@@ -1718,38 +1718,33 @@ public class ReasoningKernel {
             }
         }
         // fill in an order to
-        List<TaxonomyVertex> queue=new ArrayList<TaxonomyVertex>();
-        List<TaxonomyVertex> toProcess=new ArrayList<TaxonomyVertex>();
+        List<TaxonomyVertex> queue = new ArrayList<TaxonomyVertex>();
+        List<TaxonomyVertex> toProcess = new ArrayList<TaxonomyVertex>();
         Taxonomy tax = getCTaxonomy();
         queue.add(tax.getTopVertex());
-        while ( !queue.isEmpty() )
-        {
+        while (!queue.isEmpty()) {
             TaxonomyVertex cur = queue.remove(0);
-            if ( tax.isVisited(cur) ) {
+            if (tax.isVisited(cur)) {
                 continue;
             }
             tax.setVisited(cur);
-ClassifiableEntry entry = cur.getPrimer();
-            if ( MPlus.contains(entry)  || MMinus.contains(entry) ) {
+            ClassifiableEntry entry = cur.getPrimer();
+            if (MPlus.contains(entry) || MMinus.contains(entry)) {
                 toProcess.add(cur);
             }
-            for ( TaxonomyVertex p : cur.neigh(/*upDirection=*/false) ) {
+            for (TaxonomyVertex p : cur.neigh(/* upDirection= */false)) {
                 queue.add(p);
             }
         }
         tax.clearVisited();
-
-  
-    for ( TaxonomyVertex p : toProcess)
-    {
-         ClassifiableEntry entry = p.getPrimer();
-        reclassifyNode ( p, MPlus.contains(entry), MMinus.contains(entry));
+        for (TaxonomyVertex p : toProcess) {
+            ClassifiableEntry entry = p.getPrimer();
+            reclassifyNode(p, MPlus.contains(entry), MMinus.contains(entry));
+        }
+        getOntology().setProcessed();
     }
-//  forceReload();
-}
 
-    class ConceptActor extends ActorImpl<ClassifiableEntry>
-{
+    class ConceptActor extends ActorImpl<ClassifiableEntry> {
         ConceptActor() {
             needConcepts();
         }
@@ -1763,36 +1758,51 @@ ClassifiableEntry entry = cur.getPrimer();
             // TODO Auto-generated method stub
             return false;
         }
-}
-/** reclassify (incrementally) NODE wrt ADDED or REMOVED flags*/
+    }
+
+    /** reclassify (incrementally) NODE wrt ADDED or REMOVED flags */
     @PortedFrom(file = "Incremental.cpp", name = "reclassifyNode")
-public void
- reclassifyNode(TaxonomyVertex node, boolean added, boolean removed)
-{
+    public void reclassifyNode(TaxonomyVertex node, boolean added, boolean removed) {
         ClassifiableEntry entry = node.getPrimer();
         NamedEntity entity = entry.getEntity();
         TSignature sig = new TSignature();
-    sig.add(entity);
+        sig.add(entity);
         List<AxiomInterface> Module = getModExtractor(false).getModule(sig,
                 ModuleType.M_BOT);
-    // update Name2Sig
-        Name2Sig.put(entry, new TSignature(getModExtractor(false).getModularizer()
-                .getSignature()));
+        // update Name2Sig
+        TSignature ModSig = getModExtractor(false).getModularizer().getSignature();
+        Name2Sig.put(entry, new TSignature(ModSig));
+        // renew all signature-2-entry map
+        Map<NamedEntity, NamedEntry> KeepMap = new HashMap<NamedEntity, NamedEntry>();
+        for (NamedEntity e : ModSig.begin()) {
+            KeepMap.put(e, e.getEntry());
+            e.setEntry(null);
+        }
         for (AxiomInterface p : Module) {
-        getOntology().add(p);
-    }
-    // update top links
+            getOntology().add(p);
+        }
+        // update top links
         node.clearLinks(/* upDirection= */true);
         ConceptActor actor = new ConceptActor();
         getSupConcepts((ConceptName) entity, /* direct= */true, actor);
         for (List<ClassifiableEntry> q : actor.getNodes()) {
-            node.addNeighbour( /* upDirection= */true, q.get(0).getTaxVertex());
-        }    // clear an ontology FIXME!! later
+            ClassifiableEntry parentCE = q.get(0);
+            // this CE is of the Reasoner
+            NamedEntity parent = parentCE.getEntity();
+            // note that the entity maps to the Reasoner, so we need to use
+            // saved map
+            NamedEntry localNE = KeepMap.get(parent);
+            node.addNeighbour( /* upDirection= */true,
+                    ((ClassifiableEntry) localNE).getTaxVertex());
+        }
+        // clear an ontology
         getOntology().safeClear();
-}
+        // restore all signature-2-entry map
+        for (NamedEntity s : ModSig.begin()) {
+            s.setEntry(KeepMap.get(s));
+        }
+    }
 
-
-    
     /** force the re-classification of the changed ontology */
     @PortedFrom(file = "Kernel.h", name = "forceReload")
     private void forceReload() {
@@ -1876,6 +1886,7 @@ public void
                 forceReload();
             } else {
                 doIncremental();
+                return;
             }
             // do the consistency check
             pTBox.isConsistent();
