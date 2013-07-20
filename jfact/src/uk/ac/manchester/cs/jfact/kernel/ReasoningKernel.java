@@ -112,10 +112,10 @@ public class ReasoningKernel {
     AtomicDecomposer AD;
     /** syntactic locality based module extractor */
     @PortedFrom(file = "Kernel.h", name = "ModSyn")
-    TModularizer ModSyn = null;
+    OntologyBasedModularizer ModSyn = null;
     /** semantic locality based module extractor */
     @PortedFrom(file = "Kernel.h", name = "ModSem")
-    TModularizer ModSem = null;
+    OntologyBasedModularizer ModSem = null;
     /** set to return by the locality checking procedure */
     @PortedFrom(file = "Kernel.h", name = "Result")
     Set<AxiomInterface> Result = new HashSet<AxiomInterface>();
@@ -246,9 +246,9 @@ public class ReasoningKernel {
         }
     }
 
-    /** get RW access to the ontology */
+    /** @return the ontology */
     @PortedFrom(file = "Kernel.h", name = "getOntology")
-    Ontology getOntology() {
+    public Ontology getOntology() {
         return ontology;
     }
 
@@ -318,21 +318,17 @@ public class ReasoningKernel {
     /** @param useSemantic
      * @return module extractor */
     @PortedFrom(file = "Kernel.h", name = "getModExtractor")
-    public TModularizer getModExtractor(boolean useSemantic) {
+    public OntologyBasedModularizer getModExtractor(boolean useSemantic) {
         if (useSemantic) {
             if (ModSem == null) {
-                TModularizer Mod = new TModularizer(kernelOptions,
-                        new SemanticLocalityChecker(this));
-                Mod.preprocessOntology(getOntology().getAxioms());
-                ModSem = Mod;
+                ModSem = new OntologyBasedModularizer(ontology,
+                        OntologyBasedModularizer.buildTModularizer(useSemantic, this));
             }
             return ModSem;
         }
         if (ModSyn == null) {
-            TModularizer Mod = new TModularizer(kernelOptions,
-                    new SyntacticLocalityChecker());
-            Mod.preprocessOntology(getOntology().getAxioms());
-            ModSyn = Mod;
+            ModSyn = new OntologyBasedModularizer(ontology,
+                    OntologyBasedModularizer.buildTModularizer(useSemantic, this));
         }
         return ModSyn;
     }
@@ -352,9 +348,7 @@ public class ReasoningKernel {
                 Sig.add((NamedEntity) q);
             }
         }
-        TModularizer Mod = getModExtractor(useSemantic);
-        Mod.extract(getOntology().getAxioms(), Sig, type);
-        return Mod.getModule();
+        return getModExtractor(useSemantic).getModule(Sig, type);
     }
 
     /** @param signature
@@ -373,7 +367,8 @@ public class ReasoningKernel {
             }
         }
         // do check
-        LocalityChecker LC = getModExtractor(useSemantic).getLocalityChecker();
+        LocalityChecker LC = getModExtractor(useSemantic).getModularizer()
+                .getLocalityChecker();
         LC.setSignatureValue(Sig);
         Result.clear();
         for (AxiomInterface p : getOntology().getAxioms()) {
@@ -520,7 +515,7 @@ public class ReasoningKernel {
     }
 
     @PortedFrom(file = "Kernel.h", name = "getOptions")
-    private JFactReasonerConfiguration getOptions() {
+    public JFactReasonerConfiguration getOptions() {
         return kernelOptions;
     }
 
@@ -1969,7 +1964,7 @@ public class ReasoningKernel {
     public int getAtomicDecompositionSize(boolean useSemantics, ModuleType type) {
         // init AD field
         if (AD == null) {
-            AD = new AtomicDecomposer(getModExtractor(useSemantics));
+            AD = new AtomicDecomposer(getModExtractor(useSemantics).getModularizer());
         }
         return AD.getAOS(ontology, type).size();
     }
