@@ -26,6 +26,7 @@ import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import uk.ac.manchester.cs.jfact.kernel.actors.Actor;
+import uk.ac.manchester.cs.jfact.kernel.actors.ActorImpl;
 import uk.ac.manchester.cs.jfact.kernel.actors.RIActor;
 import uk.ac.manchester.cs.jfact.kernel.actors.SupConceptActor;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptBottom;
@@ -1692,7 +1693,7 @@ public class ReasoningKernel {
     }
 
     /** incrementally classify changes */
-    @PortedFrom(file = "Kernel.h", name = "doIncremental")
+    @PortedFrom(file = "Incremental.cpp", name = "doIncremental")
     public void doIncremental() {
         // fill in M^+ and M^- sets
         LocalityChecker lc = getModExtractor(false).getModularizer().getLocalityChecker();
@@ -1714,9 +1715,82 @@ public class ReasoningKernel {
                 }
             }
         }
-        forceReload();
-    }
+        // fill in an order to
+        List<TaxonomyVertex> queue=new ArrayList<TaxonomyVertex>();
+        List<TaxonomyVertex> toProcess=new ArrayList<TaxonomyVertex>();
+        Taxonomy tax = getCTaxonomy();
+        queue.add(tax.getTopVertex());
+        while ( !queue.isEmpty() )
+        {
+            TaxonomyVertex cur = queue.remove(0);
+            if ( tax.isVisited(cur) ) {
+                continue;
+            }
+            tax.setVisited(cur);
+ClassifiableEntry entry = cur.getPrimer();
+            if ( MPlus.contains(entry)  || MMinus.contains(entry) ) {
+                toProcess.add(cur);
+            }
+            for ( TaxonomyVertex p : cur.neigh(/*upDirection=*/false) ) {
+                queue.add(p);
+            }
+        }
+        tax.clearVisited();
 
+  
+    for ( TaxonomyVertex p : toProcess)
+    {
+         ClassifiableEntry entry = p.getPrimer();
+        reclassifyNode ( p, MPlus.contains(entry), MMinus.contains(entry));
+    }
+//  forceReload();
+}
+
+    class MyActor extends ActorImpl<ClassifiableEntry>
+{
+    MyActor(){ needConcepts(); }
+
+        List<List<ClassifiableEntry>> getNodes() {
+            return acc;
+        }
+
+        @Override
+        public boolean apply(TaxonomyVertex v) {
+            // TODO Auto-generated method stub
+            return false;
+        }
+}
+/** reclassify (incrementally) NODE wrt ADDED or REMOVED flags*/
+    @PortedFrom(file = "Incremental.cpp", name = "reclassifyNode")
+public void
+ reclassifyNode(TaxonomyVertex node, boolean added, boolean removed)
+{
+        ClassifiableEntry entry = node.getPrimer();
+        NamedEntity entity = entry.getEntity();
+        TSignature sig = new TSignature();
+    sig.add(entity);
+        List<AxiomInterface> Module = getModExtractor(false).getModule(sig,
+                ModuleType.M_BOT);
+    // update Name2Sig
+        Name2Sig.put(entry, new TSignature(getModExtractor(false).getModularizer()
+                .getSignature()));
+        for (AxiomInterface p : Module) {
+        getOntology().add(p);
+    }
+    // update top links
+        node.clearLinks(/* upDirection= */true);
+        MyActor actor = new MyActor();
+        getSupConcepts((ConceptName) entity, /* direct= */true, actor);
+        for (List<ClassifiableEntry> l : actor.getNodes()) {
+            for (ClassifiableEntry q : l) {
+                node.addNeighbour( /* upDirection= */true, q.getTaxVertex());
+            }
+        }    // clear an ontology FIXME!! later
+//  reasoner.getOntology().clear();
+}
+
+
+    
     /** force the re-classification of the changed ontology */
     @PortedFrom(file = "Kernel.h", name = "forceReload")
     private void forceReload() {
