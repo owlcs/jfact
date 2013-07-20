@@ -32,6 +32,9 @@ public class TaxonomyCreator {
      * subsumers, no other classification required */
     @PortedFrom(file = "TaxonomyCreator.h", name = "useCompletelyDefined")
     protected boolean useCompletelyDefined = false;
+    /** session flag: shows the direction of the search */
+    @PortedFrom(file = "TaxonomyCreator.h", name = "upDirection")
+    protected boolean upDirection;
     /** stack for Taxonomy creation */
     @PortedFrom(file = "TaxonomyCreator.h", name = "waitStack")
     private LinkedList<ClassifiableEntry> waitStack = new LinkedList<ClassifiableEntry>();
@@ -163,11 +166,14 @@ public class TaxonomyCreator {
         if (needTopDown()) {
             setValue(pTax.getTopVertex(), true);
             setValue(pTax.getBottomVertex(), false);
+            upDirection = false;
             runTopDown();
+
         }
         clearLabels();
         if (needBottomUp()) {
             setValue(pTax.getBottomVertex(), true);
+            upDirection = true;
             runBottomUp();
         }
         clearLabels();

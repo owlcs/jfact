@@ -98,12 +98,12 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     }
 
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "enhancedSubs")
-    private boolean enhancedSubs(boolean upDirection, TaxonomyVertex cur) {
+    private boolean enhancedSubs(TaxonomyVertex cur) {
         ++nSubCalls;
         if (isValued(cur)) {
             return getValue(cur);
         } else {
-            return setValue(cur, enhancedSubs2(upDirection, cur));
+            return setValue(cur, enhancedSubs2(cur));
         }
     }
 
@@ -111,7 +111,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     @Override
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "runTopDown")
     public void runTopDown() {
-        searchBaader(false, pTax.getTopVertex());
+        searchBaader(pTax.getTopVertex());
     }
 
     /** explicitely run BU phase */
@@ -127,14 +127,14 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
             }
             if (pTax.queryMode()) {
                 // after classification -- bottom set up already
-                searchBaader(true, pTax.getBottomVertex());
+                searchBaader(pTax.getBottomVertex());
                 return;
             }
             // during classification -- have to find leaf nodes
             for (int i = 0; i < common.size(); i++) {
                 TaxonomyVertex p = common.get(i);
                 if (p.noNeighbours(false)) {
-                    searchBaader(true, p);
+                    searchBaader(p);
                 }
             }
         } finally {
@@ -307,7 +307,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     }
 
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "searchBaader")
-    private void searchBaader(boolean upDirection, TaxonomyVertex cur) {
+    private void searchBaader(TaxonomyVertex cur) {
         pTax.setVisited(cur);
         ++nSearchCalls;
         boolean noPosSucc = true;
@@ -315,9 +315,9 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         int size = neigh.size();
         for (int i = 0; i < size; i++) {
             TaxonomyVertex p = neigh.get(i);
-            if (enhancedSubs(upDirection, p)) {
+            if (enhancedSubs(p)) {
                 if (!pTax.isVisited(p)) {
-                    searchBaader(upDirection, p);
+                    searchBaader(p);
                 }
                 noPosSucc = false;
             }
@@ -325,7 +325,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         // in case current node is unchecked (no BOTTOM node) -- check it
         // explicitly
         if (!isValued(cur)) {
-            setValue(cur, testSubsumption(upDirection, cur));
+            setValue(cur, testSubsumption(cur));
         }
         if (noPosSucc && cur.getValue()) {
             pTax.getCurrent().addNeighbour(!upDirection, cur);
@@ -333,21 +333,21 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     }
 
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "enhancedSubs1")
-    private boolean enhancedSubs1(boolean upDirection, TaxonomyVertex cur) {
+    private boolean enhancedSubs1(TaxonomyVertex cur) {
         ++nNonTrivialSubCalls;
         List<TaxonomyVertex> neigh = cur.neigh(!upDirection);
         int size = neigh.size();
         for (int i = 0; i < size; i++) {
-            if (!enhancedSubs(upDirection, neigh.get(i))) {
+            if (!enhancedSubs(neigh.get(i))) {
                 return false;
             }
         }
-        return testSubsumption(upDirection, cur);
+        return testSubsumption(cur);
     }
 
     /** short-cuf from ENHANCED_SUBS */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "enhancedSubs2")
-    private boolean enhancedSubs2(boolean upDirection, TaxonomyVertex cur) {
+    private boolean enhancedSubs2(TaxonomyVertex cur) {
         // if bottom-up search and CUR is not a successor of checking entity --
         // return false
         if (upDirection && !cur.isCommon()) {
@@ -358,7 +358,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
                 return false;
             }
         }
-        return enhancedSubs1(upDirection, cur);
+        return enhancedSubs1(cur);
     }
 
     /** test whether a node could be a super-node of CUR */
@@ -374,7 +374,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     }
 
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "testSubsumption")
-    private boolean testSubsumption(boolean upDirection, TaxonomyVertex cur) {
+    private boolean testSubsumption(TaxonomyVertex cur) {
         Concept testC = (Concept) cur.getPrimer();
         if (upDirection) {
             return testSub(testC, curConcept());
@@ -404,7 +404,6 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
 
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "propagateUp")
     private boolean propagateUp() {
-        boolean upDirection = true;
         nCommon = 1;
         List<TaxonomyVertex> list = pTax.getCurrent().neigh(upDirection);
         int size = list.size();
