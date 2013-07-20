@@ -55,7 +55,7 @@ public class ReasoningKernel {
     @PortedFrom(file = "Kernel.h", name = "pET")
     private ExpressionTranslator pET;
     @PortedFrom(file = "Kernel.h", name = "Name2Sig")
-    private Map<NamedEntity, TSignature> Name2Sig = new HashMap<NamedEntity, TSignature>();
+    private Map<ClassifiableEntry, TSignature> Name2Sig = new HashMap<ClassifiableEntry, TSignature>();
     // Top/Bottom role names: if set, they will appear in all hierarchy-related
     // output
     /** top object role name */
@@ -1709,6 +1709,23 @@ public class ReasoningKernel {
         }
         OntologyLoader OntologyLoader = new OntologyLoader(getTBox());
         OntologyLoader.visitOntology(ontology);
+        if (kernelOptions.isUseIncrementalReasoning()) {
+            OntologyBasedModularizer ModExtractor = getModExtractor(false);
+            // fill the module signatures of the concepts
+            for (Concept p : getTBox().getConcepts()) {
+                NamedEntity entity = p.getEntity();
+                if (entity == null) {
+                    continue;
+                }
+                TSignature sig = new TSignature();
+                sig.add(entity);
+                ModExtractor.getModule(sig, ModuleType.M_BOT);
+                Name2Sig.put(p, new TSignature(ModExtractor.getModularizer()
+                        .getSignature()));
+            }
+            getTBox().setNameSigMap(Name2Sig);
+        }
+        // after loading ontology became processed completely
         ontology.setProcessed();
     }
 
