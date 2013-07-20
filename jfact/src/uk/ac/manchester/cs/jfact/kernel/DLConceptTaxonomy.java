@@ -20,7 +20,7 @@ import conformance.PortedFrom;
 
 /** Concept taxonomy */
 @PortedFrom(file = "DLConceptTaxonomy.h", name = "DLConceptTaxonomy")
-public class DLConceptTaxonomy extends Taxonomy {
+public class DLConceptTaxonomy extends TaxonomyCreator {
     /** all the derived subsumers of a class (came from the model) */
     class DerivedSubsumers extends KnownSubsumers {
         /** set of sure- and possible subsumers */
@@ -111,7 +111,7 @@ public class DLConceptTaxonomy extends Taxonomy {
     @Override
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "runTopDown")
     public void runTopDown() {
-        searchBaader(false, getTopVertex());
+        searchBaader(false, pTax.getTopVertex());
     }
 
     /** explicitely run BU phase */
@@ -125,9 +125,9 @@ public class DLConceptTaxonomy extends Taxonomy {
             if (isEqualToTop()) {
                 return;
             }
-            if (!willInsertIntoTaxonomy) {
+            if (pTax.queryMode()) {
                 // after classification -- bottom set up already
-                searchBaader(true, getBottomVertex());
+                searchBaader(true, pTax.getBottomVertex());
                 return;
             }
             // during classification -- have to find leaf nodes
@@ -163,9 +163,9 @@ public class DLConceptTaxonomy extends Taxonomy {
      * @param pTop
      * @param pBottom
      * @param kb */
-    public DLConceptTaxonomy(Concept pTop, Concept pBottom, TBox kb) {
-        super(pTop, pBottom, kb.getOptions());
-        tBox = kb;
+    public DLConceptTaxonomy(Taxonomy pTax, TBox tbox) {
+        super(pTax);
+        tBox = tbox;
         nConcepts = 0;
         nTries = 0;
         nPositives = 0;
@@ -202,7 +202,7 @@ public class DLConceptTaxonomy extends Taxonomy {
         if (tBox.isSatisfiable(p)) {
             return false;
         }
-        addCurrentToSynonym(getBottomVertex());
+        pTax.addCurrentToSynonym(pTax.getBottomVertex());
         return true;
     }
 
@@ -308,7 +308,7 @@ public class DLConceptTaxonomy extends Taxonomy {
 
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "searchBaader")
     private void searchBaader(boolean upDirection, TaxonomyVertex cur) {
-        setVisited(cur);
+        pTax.setVisited(cur);
         ++nSearchCalls;
         boolean noPosSucc = true;
         List<TaxonomyVertex> neigh = cur.neigh(upDirection);
@@ -316,7 +316,7 @@ public class DLConceptTaxonomy extends Taxonomy {
         for (int i = 0; i < size; i++) {
             TaxonomyVertex p = neigh.get(i);
             if (enhancedSubs(upDirection, p)) {
-                if (!isVisited(p)) {
+                if (!pTax.isVisited(p)) {
                     searchBaader(upDirection, p);
                 }
                 noPosSucc = false;
@@ -328,7 +328,7 @@ public class DLConceptTaxonomy extends Taxonomy {
             cur.setValued(testSubsumption(upDirection, cur), valueLabel);
         }
         if (noPosSucc && cur.getValue()) {
-            current.addNeighbour(!upDirection, cur);
+            pTax.getCurrent().addNeighbour(!upDirection, cur);
         }
     }
 
@@ -386,11 +386,11 @@ public class DLConceptTaxonomy extends Taxonomy {
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "propagateOneCommon")
     private void propagateOneCommon(TaxonomyVertex node) {
         // checked if node already was visited this session
-        if (isVisited(node)) {
+        if (pTax.isVisited(node)) {
             return;
         }
         // mark node visited
-        setVisited(node);
+        pTax.setVisited(node);
         node.setCommon();
         if (node.correctCommon(nCommon)) {
             common.add(node);
@@ -406,14 +406,14 @@ public class DLConceptTaxonomy extends Taxonomy {
     private boolean propagateUp() {
         boolean upDirection = true;
         nCommon = 1;
-        List<TaxonomyVertex> list = current.neigh(upDirection);
+        List<TaxonomyVertex> list = pTax.getCurrent().neigh(upDirection);
         int size = list.size();
         assert size > 0;
         // there is at least one parent (TOP)
         TaxonomyVertex p = list.get(0);
         // define possible successors of the node
         propagateOneCommon(p);
-        clearVisited();
+        pTax.clearVisited();
         for (int i = 1; i < size; i++) {
             p = list.get(i);
             if (p.noNeighbours(!upDirection)) {
@@ -426,7 +426,7 @@ public class DLConceptTaxonomy extends Taxonomy {
             List<TaxonomyVertex> aux = new ArrayList<TaxonomyVertex>(common);
             common.clear();
             propagateOneCommon(p);
-            clearVisited();
+            pTax.clearVisited();
             int auxSize = aux.size();
             for (int j = 0; j < auxSize; j++) {
                 aux.get(j).correctCommon(nCommon);
@@ -453,7 +453,7 @@ public class DLConceptTaxonomy extends Taxonomy {
             return false;
         }
         // here concept = TOP
-        current.addNeighbour(false, getTopVertex());
+        pTax.current.addNeighbour(false, pTax.getTopVertex());
         return true;
     }
 
@@ -472,7 +472,7 @@ public class DLConceptTaxonomy extends Taxonomy {
                 assert syn.getTaxVertex() != null;
                 if (tBox.isBlockingDet(curI)) {
                     // deterministic merge => curI = syn
-                    addCurrentToSynonym(syn.getTaxVertex());
+                    pTax.addCurrentToSynonym(syn.getTaxVertex());
                     return true;
                 } else {
                     // non-det merge: check whether it is the same
@@ -482,7 +482,7 @@ public class DLConceptTaxonomy extends Taxonomy {
                                     syn.getName(), "'... ");
                     if (testSubTBox(curI, syn)) {
                         // they are actually the same
-                        addCurrentToSynonym(syn.getTaxVertex());
+                        pTax.addCurrentToSynonym(syn.getTaxVertex());
                         return true;
                     }
                 }
@@ -496,20 +496,20 @@ public class DLConceptTaxonomy extends Taxonomy {
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "checkExtraParents")
     void checkExtraParents() {
         inSplitCheck = true;
-        for (TaxonomyVertex p : current.neigh(true)) {
+        for (TaxonomyVertex p : pTax.current.neigh(true)) {
             propagateTrueUp(p);
         }
-        current.clearLinks(true);
+        pTax.current.clearLinks(true);
         runTopDown();
         List<TaxonomyVertex> vec = new ArrayList<TaxonomyVertex>();
-        for (TaxonomyVertex p : current.neigh(true)) {
+        for (TaxonomyVertex p : pTax.current.neigh(true)) {
             if (!isDirectParent(p)) {
                 vec.add(p);
             }
         }
         for (TaxonomyVertex p : vec) {
-            p.removeLink(false, current);
-            current.removeLink(true, p);
+            p.removeLink(false, pTax.current);
+            pTax.current.removeLink(true, p);
         }
         clearLabels();
         inSplitCheck = false;
@@ -529,23 +529,23 @@ public class DLConceptTaxonomy extends Taxonomy {
         }
         // set V to be a node-to-add
         // FIXME!! check later the case whether both TOP and BOT are there
-        if (splitVertices.contains(getBottomVertex())) {
-            v = getBottomVertex();
-        } else if (splitVertices.contains(getTopVertex())) {
-            v = getTopVertex();
+        if (splitVertices.contains(pTax.getBottomVertex())) {
+            v = pTax.getBottomVertex();
+        } else if (splitVertices.contains(pTax.getTopVertex())) {
+            v = pTax.getTopVertex();
         } else {
             setCurrentEntry(split.getC());
-            v = current;
+            v = pTax.current;
         }
-        if (!v.equals(current) && !cIn) {
+        if (!v.equals(pTax.current) && !cIn) {
             v.addSynonym(split.getC());
         }
         for (TaxonomyVertex p : splitVertices) {
             mergeVertex(v, p, splitVertices);
         }
-        if (v == current) {
+        if (v == pTax.current) {
             checkExtraParents();
-            insertCurrentNode();
+            pTax.insertCurrentNode();
         }
     }
 
@@ -554,7 +554,7 @@ public class DLConceptTaxonomy extends Taxonomy {
     void mergeVertex(TaxonomyVertex cur, TaxonomyVertex v, Set<TaxonomyVertex> excludes) {
         if (!cur.equals(v)) {
             cur.mergeIndepNode(v, excludes, curEntry);
-            removeNode(v);
+            pTax.removeNode(v);
         }
     }
 }

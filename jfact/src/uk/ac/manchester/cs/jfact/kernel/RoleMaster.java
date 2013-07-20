@@ -356,11 +356,12 @@ public class RoleMaster {
                 p.addParent(universalRole);
             }
         }
-        pTax.setCompletelyDefined(true);
+        TaxonomyCreator taxCreator = new TaxonomyCreator(pTax);
+        taxCreator.setCompletelyDefined(true);
         for (int i = firstRoleIndex; i < roles.size(); i++) {
             Role p = roles.get(i);
             if (!p.isClassified()) {
-                pTax.classifyEntry(p);
+                taxCreator.classifyEntry(p);
             }
         }
         for (int i = firstRoleIndex; i < roles.size(); i++) {

@@ -1424,7 +1424,7 @@ public class TBox {
     @PortedFrom(file = "dlTBox.h", name = "classifyConcepts")
     public void classifyConcepts(List<Concept> collection, boolean curCompletelyDefined,
             String type) {
-        pTax.setCompletelyDefined(curCompletelyDefined);
+        pTaxCreator.setCompletelyDefined(curCompletelyDefined);
         config.getLog().printTemplate(Templates.CLASSIFY_CONCEPTS, type);
         int n = 0;
         for (Concept q : collection) {
@@ -1447,7 +1447,7 @@ public class TBox {
             // make sure that the possible synonym is already classified
         }
         if (!entry.isClassified()) {
-            pTax.classifyEntry(entry);
+            pTaxCreator.classifyEntry(entry);
         }
     }
 
@@ -1495,7 +1495,8 @@ public class TBox {
         }
         initTopBottom();
         setForbidUndefinedNames(false);
-        pTax = new DLConceptTaxonomy(top, bottom, this);
+        pTax = new Taxonomy(top, bottom, config);
+        pTaxCreator = new DLConceptTaxonomy(pTax, this);
     }
 
     @PortedFrom(file = "dlTBox.h", name = "getAuxConcept")
@@ -1751,8 +1752,8 @@ public class TBox {
     public void classifyQueryConcept() {
         pQuery.initToldSubsumers();
         assert pTax != null;
-        pTax.setCompletelyDefined(false);
-        pTax.classifyEntry(pQuery);
+        pTaxCreator.setCompletelyDefined(false);
+        pTaxCreator.classifyEntry(pQuery);
     }
 
     /** knowledge exploration: build a model and return a link to the root */
