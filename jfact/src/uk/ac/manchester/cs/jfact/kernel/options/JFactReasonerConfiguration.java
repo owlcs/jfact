@@ -74,6 +74,9 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
     /** Option 'useSpecialDomains' (development) controls the special processing
      * of R&D for non-simple roles. Should always be set to true. */
     private boolean useSpecialDomains = true;
+    /** Option 'useIncrementalReasoning' (development) allows one to reason
+     * efficiently about small changes in the ontology. */
+    private boolean useIncrementalReasoning = false;
     /** Internal use only. Option 'skipBeforeBlock' allow user to skip given
      * number of nodes before make a block. */
     // private static final Option skipBeforeBlock =
@@ -224,26 +227,26 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
         }
     }
 
-    boolean USE_LOGGING = false;
-    boolean RKG_DEBUG_ABSORPTION = false;
-    boolean RKG_IMPROVE_SAVE_RESTORE_DEPSET = false;
-    boolean RKG_PRINT_DAG_USAGE = false;
-    boolean RKG_USE_SIMPLE_RULES = false;
-    boolean RKG_USE_SORTED_REASONING = false;
-    boolean USE_REASONING_STATISTICS = false;
-    boolean RKG_UPDATE_RND_FROM_SUPERROLES = false;
-    boolean USE_BLOCKING_STATISTICS = false;
-    boolean RKG_USE_DYNAMIC_BACKJUMPING = false;
-    boolean TMP_PRINT_TAXONOMY_INFO = false;
-    boolean DEBUG_SAVE_RESTORE = false;
-    boolean RKG_USE_FAIRNESS = false;
-    boolean FPP_DEBUG_SPLIT_MODULES = false;
-    boolean splits = false;
+    private boolean USE_LOGGING = false;
+    private boolean RKG_DEBUG_ABSORPTION = false;
+    private boolean RKG_IMPROVE_SAVE_RESTORE_DEPSET = false;
+    private boolean RKG_PRINT_DAG_USAGE = false;
+    private boolean RKG_USE_SIMPLE_RULES = false;
+    private boolean RKG_USE_SORTED_REASONING = false;
+    private boolean USE_REASONING_STATISTICS = false;
+    private boolean RKG_UPDATE_RND_FROM_SUPERROLES = false;
+    private boolean USE_BLOCKING_STATISTICS = false;
+    private boolean RKG_USE_DYNAMIC_BACKJUMPING = false;
+    private boolean TMP_PRINT_TAXONOMY_INFO = false;
+    private boolean DEBUG_SAVE_RESTORE = false;
+    private boolean RKG_USE_FAIRNESS = false;
+    private boolean FPP_DEBUG_SPLIT_MODULES = false;
+    private boolean splits = false;
     /** whether EL polynomial reasoner should be used */
-    boolean useELReasoner = false;
+    private boolean useELReasoner = false;
     /** allow reasoner to use undefined names in queries */
-    boolean useUndefinedNames = true;
-    boolean useAxiomSplitting = false;
+    private boolean useUndefinedNames = true;
+    private boolean useAxiomSplitting = false;
 
     public boolean isLoggingActive() {
         return USE_LOGGING;
@@ -647,5 +650,13 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
 
     public void setRKG_USE_AD_IN_MODULE_EXTRACTION(boolean value) {
         useADInModuleExtraction = value;
+    }
+
+    public boolean isUseIncrementalReasoning() {
+        return useIncrementalReasoning;
+    }
+
+    public void setUseIncrementalReasoning(boolean useIncrementalReasoning) {
+        this.useIncrementalReasoning = useIncrementalReasoning;
     }
 }

@@ -1673,16 +1673,26 @@ public class ReasoningKernel {
         useAxiomSplitting = false;
     }
 
-    /** try to perform the incremental reasoning on the changed ontology */
-    @PortedFrom(file = "Kernel.h", name = "tryIncremental")
-    private boolean tryIncremental() {
+    /** check whether it is necessary to reload the ontology */
+    @PortedFrom(file = "Kernel.h", name = "needForceReload")
+    private boolean needForceReload() {
         if (pTBox == null) {
             return true;
         }
         if (!ontology.isChanged()) {
             return false;
         }
-        return true;
+        // no incremental required -- nothing to do
+        if (!kernelOptions.isUseIncrementalReasoning()) {
+            return true;
+        }
+        return false;
+    }
+
+    /** incrementally classify changes */
+    @PortedFrom(file = "Kernel.h", name = "doIncremental")
+    public void doIncremental() {
+        forceReload();
     }
 
     /** force the re-classification of the changed ontology */
@@ -1747,8 +1757,10 @@ public class ReasoningKernel {
             // start with loading and preprocessing -- here might be a failures
             reasoningFailed = true;
             // load the axioms from the ontology to the TBox
-            if (tryIncremental()) {
+            if (needForceReload()) {
                 forceReload();
+            } else {
+                doIncremental();
             }
             // do the consistency check
             pTBox.isConsistent();
