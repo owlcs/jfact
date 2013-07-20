@@ -485,7 +485,7 @@ class UpperBoundComplementEvaluator extends CardinalityEvaluatorBase {
     protected <C extends Expression> int getAndValue(NAryExpression<C> expr) {
         int sum = 0, n;
         for (C p : expr.getArguments()) {
-            n = getUpperBoundDirect(p);
+            n = getUpperBoundComplement(p);
             if (n == getNoneValue()) {
                 return getNoneValue();
             }
@@ -500,7 +500,7 @@ class UpperBoundComplementEvaluator extends CardinalityEvaluatorBase {
         // we are looking for the maximal value here; -1 will be dealt with
         // automagically
         for (C p : expr.getArguments()) {
-            max = Math.max(max, getUpperBoundDirect(p));
+            max = Math.max(max, getUpperBoundComplement(p));
         }
         return max;
     }
