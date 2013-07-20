@@ -21,7 +21,7 @@ public abstract class ActorImpl<T extends HasName> implements Actor {
     protected List<T> plain = new ArrayList<T>();
     /** temporary vector to keep synonyms */
     @PortedFrom(file = "Actor.h", name = "syn")
-    protected List<T> syn;
+    protected List<T> syn = new ArrayList<T>();
     /** flag to look at concept-like or role-like entities */
     @PortedFrom(file = "Actor.h", name = "isRole")
     boolean isRole;
