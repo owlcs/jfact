@@ -1695,6 +1695,8 @@ public class ReasoningKernel {
     /** incrementally classify changes */
     @PortedFrom(file = "Incremental.cpp", name = "doIncremental")
     public void doIncremental() {
+        // re-set the modularizer to use updated ontology
+        ModSyn = null;
         // fill in M^+ and M^- sets
         LocalityChecker lc = getModExtractor(false).getModularizer().getLocalityChecker();
         // TODO: add new sig here
@@ -1746,9 +1748,11 @@ ClassifiableEntry entry = cur.getPrimer();
 //  forceReload();
 }
 
-    class MyActor extends ActorImpl<ClassifiableEntry>
+    class ConceptActor extends ActorImpl<ClassifiableEntry>
 {
-    MyActor(){ needConcepts(); }
+        ConceptActor() {
+            needConcepts();
+        }
 
         List<List<ClassifiableEntry>> getNodes() {
             return acc;
@@ -1779,14 +1783,12 @@ public void
     }
     // update top links
         node.clearLinks(/* upDirection= */true);
-        MyActor actor = new MyActor();
+        ConceptActor actor = new ConceptActor();
         getSupConcepts((ConceptName) entity, /* direct= */true, actor);
-        for (List<ClassifiableEntry> l : actor.getNodes()) {
-            for (ClassifiableEntry q : l) {
-                node.addNeighbour( /* upDirection= */true, q.getTaxVertex());
-            }
+        for (List<ClassifiableEntry> q : actor.getNodes()) {
+            node.addNeighbour( /* upDirection= */true, q.get(0).getTaxVertex());
         }    // clear an ontology FIXME!! later
-//  reasoner.getOntology().clear();
+        getOntology().safeClear();
 }
 
 

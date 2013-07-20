@@ -101,6 +101,12 @@ public class Ontology {
         changed = false;
     }
 
+    /** safe clear the ontology (do not remove axioms) */
+    @PortedFrom(file = "tOntology.h", name = "safeClear")
+    public void safeClear() {
+        axioms.clear();
+    }
+
     // access to axioms
     /** @return expression manager */
     @PortedFrom(file = "tOntology.h", name = "getExpressionManager")
