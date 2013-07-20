@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import uk.ac.manchester.cs.jfact.helpers.Templates;
+import uk.ac.manchester.cs.jfact.split.TSignature;
 import conformance.PortedFrom;
 
 /**taxonomy creator for DL*/
@@ -41,6 +42,9 @@ public class TaxonomyCreator {
     /** told subsumers corresponding to a given entry */
     @PortedFrom(file = "TaxonomyCreator.h", name = "ksStack")
     protected LinkedList<KnownSubsumers> ksStack = new LinkedList<KnownSubsumers>();
+    /** signature of a \bot-module corresponding to a given entry */
+    @PortedFrom(file = "TaxonomyCreator.h", name = "sigStack")
+    protected LinkedList<TSignature> sigStack = new LinkedList<TSignature>();
 
 
     public TaxonomyCreator(Taxonomy pTax2) {
@@ -196,6 +200,7 @@ public class TaxonomyCreator {
     private void addTop(ClassifiableEntry p) {
         waitStack.push(p);
         ksStack.push(new ToldSubsumers(p.getToldSubsumers()));
+        sigStack.push(buildSignature(p));
     }
 
     /** remove top entry */
@@ -203,6 +208,7 @@ public class TaxonomyCreator {
     protected void removeTop() {
         waitStack.pop();
         ksStack.pop();
+        sigStack.pop();
     }
 
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "classifyTop")
@@ -375,4 +381,9 @@ public class TaxonomyCreator {
         return node.setValued(value, valueLabel);
     }
 
+    /** prepare signature for given entry */
+    @PortedFrom(file = "TaxonomyCreator.h", name = "buildSignature")
+    protected TSignature buildSignature(ClassifiableEntry p) {
+        return null;
+    }
 }

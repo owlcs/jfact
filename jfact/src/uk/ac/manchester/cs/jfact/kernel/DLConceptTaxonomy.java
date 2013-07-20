@@ -12,9 +12,11 @@ import java.util.Set;
 
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.Concept.CTTag;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState;
 import uk.ac.manchester.cs.jfact.split.SplitVarEntry;
+import uk.ac.manchester.cs.jfact.split.TSignature;
 import uk.ac.manchester.cs.jfact.split.TSplitVar;
 import conformance.PortedFrom;
 
@@ -51,7 +53,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
 
     /** flag shows that subsumption check could be simplified */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "inSplitCheck")
-    boolean inSplitCheck;
+    private boolean inSplitCheck = false;
     /** host tBox */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "tBox")
     private TBox tBox;
@@ -60,28 +62,31 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     private List<TaxonomyVertex> common = new ArrayList<TaxonomyVertex>();
     // statistic counters
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "nConcepts")
-    private long nConcepts;
+    private long nConcepts = 0;
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "nTries")
-    private long nTries;
+    private long nTries = 0;
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "nPositives")
-    private long nPositives;
+    private long nPositives = 0;
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "nNegatives")
-    private long nNegatives;
+    private long nNegatives = 0;
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "nSearchCalls")
-    private long nSearchCalls;
+    private long nSearchCalls = 0;
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "nSubCalls")
-    private long nSubCalls;
+    private long nSubCalls = 0;
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "nNonTrivialSubCalls")
-    private long nNonTrivialSubCalls;
+    private long nNonTrivialSubCalls = 0;
     /** number of positive cached subsumptions */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "nCachedPositive")
-    private long nCachedPositive;
+    private long nCachedPositive = 0;
     /** number of negative cached subsumptions */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "nCachedNegative")
-    private long nCachedNegative;
+    private long nCachedNegative = 0;
     /** number of non-subsumptions detected by a sorted reasoning */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "nSortedNegative")
-    private long nSortedNegative;
+    private long nSortedNegative = 0;
+    /** number of non-subsumptions because of module reasons */
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nModuleNegative")
+    private long nModuleNegative = 0;
     // flags
     /** flag to use Bottom-Up search */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "flagNeedBottomUp")
@@ -166,17 +171,6 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     public DLConceptTaxonomy(Taxonomy pTax, TBox tbox) {
         super(pTax);
         tBox = tbox;
-        nConcepts = 0;
-        nTries = 0;
-        nPositives = 0;
-        nNegatives = 0;
-        nSearchCalls = 0;
-        nSubCalls = 0;
-        nNonTrivialSubCalls = 0;
-        nCachedPositive = 0;
-        nCachedNegative = 0;
-        nSortedNegative = 0;
-        inSplitCheck = false;
     }
 
     /** process all splits */
@@ -186,7 +180,6 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
             mergeSplitVars(v);
         }
     }
-
 
     /** set bottom-up flag
      * 
@@ -258,6 +251,11 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
             ++nSortedNegative;
             return false;
         }
+        if (isNotInModule(q.getEntity())) {
+            tBox.getOptions().getLog().print("NOT holds (module result)");
+            ++nModuleNegative;
+            return false;
+        }
         switch (tBox.testCachedNonSubsumption(p, q)) {
             case csValid:
                 tBox.getOptions().getLog().print("NOT holds (cached result)");
@@ -274,6 +272,18 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         return testSubTBox(p, q);
     }
 
+    /** @return true if non-subsumption is due to ENTITY is not in the \bot-module */
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "isNotInModule")
+    boolean isNotInModule(NamedEntity entity) {
+        if (upDirection) {
+            return false;
+        }
+        TSignature sig = sigStack.peek();
+        if (sig != null && entity != null && !sig.containsNamedEntity(entity)) {
+            return true;
+        }
+        return false;
+    }
     /** test subsumption via TBox explicitely */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "testSubTBox")
     private boolean testSubTBox(Concept p, Concept q) {
@@ -300,7 +310,9 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
                 nCachedNegative,
                 nSortedNegative > 0 ? String.format(
                         "Sorted reasoning deals with %s non-subsumptions\n",
-                        nSortedNegative) : "", nSearchCalls, nSubCalls,
+                        nSortedNegative) : "",
+                nModuleNegative > 0 ? "Modular reasoning deals with " + nModuleNegative
+                        + " non-subsumptions\n" : "", nSearchCalls, nSubCalls,
                 nNonTrivialSubCalls, nEntries * (nEntries - 1) / Math.max(1, nTries)));
         o.append(super.toString());
         return o.toString();
