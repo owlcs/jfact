@@ -54,6 +54,8 @@ public class ReasoningKernel {
     /** expression translator to work with queries */
     @PortedFrom(file = "Kernel.h", name = "pET")
     private ExpressionTranslator pET;
+    @PortedFrom(file = "Kernel.h", name = "Name2Sig")
+    private Map<NamedEntity, TSignature> Name2Sig = new HashMap<NamedEntity, TSignature>();
     // Top/Bottom role names: if set, they will appear in all hierarchy-related
     // output
     /** top object role name */

@@ -199,6 +199,11 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         return true;
     }
 
+    /** prepare signature for given entry */
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "buildSignature")
+    public TSignature buildSignature(ClassifiableEntry p) {
+        return tBox.getSignature(p);
+    }
     @Override
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "immediatelyClassified")
     protected boolean immediatelyClassified() {

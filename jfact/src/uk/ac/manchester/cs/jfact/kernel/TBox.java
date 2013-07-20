@@ -28,10 +28,7 @@ import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheSingleton;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
-import uk.ac.manchester.cs.jfact.split.SplitVarEntry;
-import uk.ac.manchester.cs.jfact.split.TSplitRules;
-import uk.ac.manchester.cs.jfact.split.TSplitVar;
-import uk.ac.manchester.cs.jfact.split.TSplitVars;
+import uk.ac.manchester.cs.jfact.split.*;
 import conformance.Original;
 import conformance.PortedFrom;
 
@@ -55,6 +52,9 @@ public class TBox {
     /** classifier */
     @PortedFrom(file = "dlTBox.h", name = "pTaxCreator")
     private DLConceptTaxonomy pTaxCreator;
+    /** name-signature map */
+    @PortedFrom(file = "dlTBox.h", name = "pName2Sig")
+    private Map<ClassifiableEntry, TSignature> pName2Sig;
     /** set of reasoning options */
     @Original
     private JFactReasonerConfiguration config;
@@ -2759,6 +2759,20 @@ public class TBox {
     /** init taxonomy and classifier */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "initTaxonomy")
     public void initTaxonomy() {}
+
+    /** set NameSigMap */
+    @PortedFrom(file = "dlTBox.h", name = "setNameSigMap")
+    public void setNameSigMap(Map<ClassifiableEntry, TSignature> p) {
+        pName2Sig = p;
+    }
+
+    @Original
+    public TSignature getSignature(ClassifiableEntry c) {
+        if (pName2Sig == null) {
+            return null;
+        }
+        return pName2Sig.get(c);
+    }
 
     @PortedFrom(file = "dlTBox.h", name = "nRelevantCCalls")
     private long nRelevantCCalls;
