@@ -57,6 +57,9 @@ public class ReasoningKernel {
     private ExpressionTranslator pET;
     @PortedFrom(file = "Kernel.h", name = "Name2Sig")
     private Map<ClassifiableEntry, TSignature> Name2Sig = new HashMap<ClassifiableEntry, TSignature>();
+    /** ontology signature (used in incremental) */
+    @PortedFrom(file = "Kernel.h", name = "OntoSig")
+    private TSignature OntoSig;
     // Top/Bottom role names: if set, they will appear in all hierarchy-related
     // output
     /** top object role name */
@@ -1698,6 +1701,7 @@ public class ReasoningKernel {
         System.out.println("Incremental!");
         // re-set the modularizer to use updated ontology
         ModSyn = null;
+        OntoSig = ontology.getSignature();
         // fill in M^+ and M^- sets
         LocalityChecker lc = getModExtractor(false).getModularizer().getLocalityChecker();
         if (!ontology.getAxioms().isEmpty()) {
@@ -1855,6 +1859,7 @@ public class ReasoningKernel {
             Name2Sig.put(p, new TSignature(ModExtractor.getModularizer().getSignature()));
         }
         getTBox().setNameSigMap(Name2Sig);
+        OntoSig = ontology.getSignature();
     }
 
     // knowledge exploration queries

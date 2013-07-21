@@ -76,7 +76,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
     private boolean useSpecialDomains = true;
     /** Option 'useIncrementalReasoning' (development) allows one to reason
      * efficiently about small changes in the ontology. */
-    private boolean useIncrementalReasoning = false;
+    private boolean useIncrementalReasoning = true;
     /** Internal use only. Option 'skipBeforeBlock' allow user to skip given
      * number of nodes before make a block. */
     // private static final Option skipBeforeBlock =

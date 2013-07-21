@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
+import uk.ac.manchester.cs.jfact.split.TSignature;
 import uk.ac.manchester.cs.jfact.split.TSplitVars;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
@@ -135,7 +136,20 @@ public class Ontology {
         return visitor.visitOntology(this);
     }
 
+    @Original
     public List<AxiomInterface> getRetracted() {
         return retracted;
+    }
+
+    /** @return signature of all ontology axioms */
+    @PortedFrom(file = "tOntology.h", name = "getSignature")
+    public TSignature getSignature() {
+        TSignature sig = new TSignature();
+        for (AxiomInterface p : axioms) {
+            if (p.isUsed()) {
+                sig.add(p.getSignature());
+            }
+        }
+        return sig;
     }
 }

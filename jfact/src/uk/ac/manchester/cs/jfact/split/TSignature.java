@@ -57,7 +57,7 @@ public class TSignature {
 
     /** add another signature to a given one */
     @PortedFrom(file = "tSignature.h", name = "add")
-    void add(TSignature Sig) {
+    public void add(TSignature Sig) {
         set.addAll(Sig.set);
     }
 
