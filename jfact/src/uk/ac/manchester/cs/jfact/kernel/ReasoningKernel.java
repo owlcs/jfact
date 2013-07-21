@@ -1833,23 +1833,28 @@ public class ReasoningKernel {
         OntologyLoader OntologyLoader = new OntologyLoader(getTBox());
         OntologyLoader.visitOntology(ontology);
         if (kernelOptions.isUseIncrementalReasoning()) {
-            OntologyBasedModularizer ModExtractor = getModExtractor(false);
-            // fill the module signatures of the concepts
-            for (Concept p : getTBox().getConcepts()) {
-                NamedEntity entity = p.getEntity();
-                if (entity == null) {
-                    continue;
-                }
-                TSignature sig = new TSignature();
-                sig.add(entity);
-                ModExtractor.getModule(sig, ModuleType.M_BOT);
-                Name2Sig.put(p, new TSignature(ModExtractor.getModularizer()
-                        .getSignature()));
-            }
-            getTBox().setNameSigMap(Name2Sig);
+            initIncremental();
         }
         // after loading ontology became processed completely
         ontology.setProcessed();
+    }
+
+    /** initialise the incremental bits on full reload */
+    @PortedFrom(file = "Incremental.cpp", name = "initIncremental")
+    public void initIncremental() {
+        OntologyBasedModularizer ModExtractor = getModExtractor(false);
+        // fill the module signatures of the concepts
+        for (Concept p : getTBox().getConcepts()) {
+            NamedEntity entity = p.getEntity();
+            if (entity == null) {
+                continue;
+            }
+            TSignature sig = new TSignature();
+            sig.add(entity);
+            ModExtractor.getModule(sig, ModuleType.M_BOT);
+            Name2Sig.put(p, new TSignature(ModExtractor.getModularizer().getSignature()));
+        }
+        getTBox().setNameSigMap(Name2Sig);
     }
 
     // knowledge exploration queries
