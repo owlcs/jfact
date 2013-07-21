@@ -295,6 +295,9 @@ public class TaxonomyVertex {
                     u.removeLink(false, d);
                 }
             }
+            d.removeLink(/* upDirection= */true, this);  // safe in general case,
+                                                        // crucial for
+                                                        // incremental
             d.addNeighbour(true, this);
         }
         for (TaxonomyVertex u : truelist) {

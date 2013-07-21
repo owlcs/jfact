@@ -249,6 +249,18 @@ public class Taxonomy {
         // new entries to taxonomy
     }
 
+    /** unlink the bottom from the taxonomy */
+    @PortedFrom(file = "Taxonomy.h", name = "deFinalise")
+    public void deFinalise() {
+        boolean upDirection = true;
+        TaxonomyVertex bot = getBottomVertex();
+        for (TaxonomyVertex p : bot.neigh(upDirection)) {
+            p.removeLink(!upDirection, bot);
+        }
+        bot.clearLinks(upDirection);
+        willInsertIntoTaxonomy = true;  // it's possible again to add entries
+    }
+
     /** @param syn */
     @PortedFrom(file = "Taxonomy.h", name = "addCurrentToSynonym")
     public void addCurrentToSynonym(TaxonomyVertex syn) {

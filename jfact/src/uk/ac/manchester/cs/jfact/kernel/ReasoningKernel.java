@@ -1701,6 +1701,10 @@ public class ReasoningKernel {
         System.out.println("Incremental!");
         // re-set the modularizer to use updated ontology
         ModSyn = null;
+        Taxonomy tax = getCTaxonomy();
+        System.out.println("Original Taxonomy:" + tax);
+        Set<ClassifiableEntry> MPlus = new HashSet<ClassifiableEntry>();
+        Set<ClassifiableEntry> MMinus = new HashSet<ClassifiableEntry>();
         TSignature NewSig = ontology.getSignature();
         Set<NamedEntity> RemovedEntities = new HashSet<NamedEntity>(OntoSig.begin());
         RemovedEntities.removeAll(NewSig.begin());
@@ -1717,7 +1721,25 @@ public class ReasoningKernel {
             }
         }
         // deal with added concepts
-        for (NamedEntity e : AddedEntities) {}
+        tax.deFinalise();
+        for (NamedEntity e : AddedEntities) {
+            if (e instanceof ConceptName) {
+                ConceptName cName = (ConceptName) e;
+                // register the name in TBox
+                e(cName);
+                // create sig for it
+                Concept C = (Concept) cName.getEntry();
+                setupSig(C);
+                // init the taxonomy element
+                TaxonomyVertex cur = tax.getCurrent();
+                cur.clear();
+                cur.setSample(C, true);
+                cur.addNeighbour( /* upDirection= */true, tax.getTopVertex());
+                tax.finishCurrentNode();
+                System.out.println("Insert " + C.getName());
+            }
+        }
+        tax.finalise();
         OntoSig = NewSig;
         // fill in M^+ and M^- sets
         LocalityChecker lc = getModExtractor(false).getModularizer().getLocalityChecker();
@@ -1728,8 +1750,6 @@ public class ReasoningKernel {
             System.out.println("Del:" + ontology.getRetracted());
         }
         // TODO: add new sig here
-        List<ClassifiableEntry> MPlus = new ArrayList<ClassifiableEntry>();
-        List<ClassifiableEntry> MMinus = new ArrayList<ClassifiableEntry>();
         for (Map.Entry<ClassifiableEntry, TSignature> p : Name2Sig.entrySet()) {
             lc.setSignatureValue(p.getValue());
             for (AxiomInterface notProcessed : ontology.getAxioms()) {
@@ -1754,7 +1774,6 @@ public class ReasoningKernel {
         // fill in an order to
         List<TaxonomyVertex> queue = new ArrayList<TaxonomyVertex>();
         List<TaxonomyVertex> toProcess = new ArrayList<TaxonomyVertex>();
-        Taxonomy tax = getCTaxonomy();
         queue.add(tax.getTopVertex());
         while (!queue.isEmpty()) {
             TaxonomyVertex cur = queue.remove(0);
@@ -1771,9 +1790,11 @@ public class ReasoningKernel {
             }
         }
         tax.clearVisited();
+        System.out.println("Add/Del names Taxonomy:" + tax);
         for (TaxonomyVertex p : toProcess) {
             ClassifiableEntry entry = p.getPrimer();
             reclassifyNode(p, MPlus.contains(entry), MMinus.contains(entry));
+            System.out.println(tax);
         }
         getOntology().setProcessed();
     }
@@ -1814,6 +1835,7 @@ public class ReasoningKernel {
             getOntology().add(p);
             System.out.println(p);
         }
+        node.removeLinks(true);
         // update top links
         node.clearLinks(/* upDirection= */true);
         ConceptActor actor = new ConceptActor();
@@ -1829,6 +1851,8 @@ public class ReasoningKernel {
             node.addNeighbour( /* upDirection= */true,
                     ((ClassifiableEntry) localNE).getTaxVertex());
         }
+        // actually add node
+        node.incorporate(kernelOptions);
         // clear an ontology
         getOntology().safeClear();
         // restore all signature-2-entry map
