@@ -1701,14 +1701,31 @@ public class ReasoningKernel {
         System.out.println("Incremental!");
         // re-set the modularizer to use updated ontology
         ModSyn = null;
-        OntoSig = ontology.getSignature();
+        TSignature NewSig = ontology.getSignature();
+        Set<NamedEntity> RemovedEntities = new HashSet<NamedEntity>(OntoSig.begin());
+        RemovedEntities.removeAll(NewSig.begin());
+        Set<NamedEntity> AddedEntities = new HashSet<NamedEntity>(NewSig.begin());
+        AddedEntities.removeAll(OntoSig.begin());
+        // deal with removed concepts
+        for (NamedEntity e : RemovedEntities) {
+            if (e.getEntry() instanceof Concept) {
+                Concept C = (Concept) e.getEntry();
+                // remove all links
+                C.getTaxVertex().remove();
+                // update Name2Sig
+                Name2Sig.remove(C);
+            }
+        }
+        // deal with added concepts
+        for (NamedEntity e : AddedEntities) {}
+        OntoSig = NewSig;
         // fill in M^+ and M^- sets
         LocalityChecker lc = getModExtractor(false).getModularizer().getLocalityChecker();
         if (!ontology.getAxioms().isEmpty()) {
-            System.out.println(ontology.getAxioms());
+            System.out.println("Add:" + ontology.getAxioms());
         }
         if (!ontology.getRetracted().isEmpty()) {
-            System.out.println(ontology.getRetracted());
+            System.out.println("Del:" + ontology.getRetracted());
         }
         // TODO: add new sig here
         List<ClassifiableEntry> MPlus = new ArrayList<ClassifiableEntry>();

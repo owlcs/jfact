@@ -45,6 +45,9 @@ public class TaxonomyVertex {
     @PortedFrom(file = "taxVertex.h", name = "checkValue")
     private boolean checkValue;
     private TaxonomyVertex v;
+    /** flag to check whether the vertex is in use */
+    @PortedFrom(file = "taxVertex.h", name = "inUse")
+    private boolean inUse = true;
 
     /** mark vertex as the one corresponding to a given ENTRY
      * 
@@ -180,7 +183,7 @@ public class TaxonomyVertex {
         isValued = v.isValued;
         common = v.common;
         checkValue = v.checkValue;
-        // , inUse(v.inUse)
+        inUse = v.inUse;
         linksChild = v.linksChild;
         linksParent = v.linksParent;
     }
@@ -317,9 +320,38 @@ public class TaxonomyVertex {
         }
     }
 
+    /** remove one half of a given node from a graph */
+    @PortedFrom(file = "taxVertex.h", name = "removeLinks")
+    public void removeLinks(boolean upDirection) {
+        for (TaxonomyVertex p : neigh(upDirection)) {
+            p.removeLink(!upDirection, this);
+        }
+        clearLinks(upDirection);
+    }
+
+    /** remove given node from a graph */
+    @PortedFrom(file = "taxVertex.h", name = "remove")
+    public void remove() {
+        removeLinks(true);
+        removeLinks(false);
+        setInUse(false);
+    }
+
+    /** @return true iff the node is in use */
+    @PortedFrom(file = "taxVertex.h", name = "isInUse")
+    public boolean isInUse() {
+        return inUse;
+    }
+
+    /** set the inUse value of the node */
+    @PortedFrom(file = "taxVertex.h", name = "setInUse")
+    public void setInUse(boolean value) {
+        inUse = value;
+    }
+
     /** merge NODE which is independent to THIS */
     @PortedFrom(file = "taxVertex.h", name = "mergeIndepNode")
-    void mergeIndepNode(TaxonomyVertex node, Set<TaxonomyVertex> excludes,
+    public void mergeIndepNode(TaxonomyVertex node, Set<TaxonomyVertex> excludes,
             ClassifiableEntry curEntry) {
         // copy synonyms here
         if (!node.getPrimer().equals(curEntry)) {
