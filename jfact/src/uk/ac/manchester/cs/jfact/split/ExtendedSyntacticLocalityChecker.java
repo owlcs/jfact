@@ -1210,8 +1210,6 @@ public class ExtendedSyntacticLocalityChecker extends GeneralSyntacticLocalityCh
         return UBD.getUpperBoundDirect(expr) == 0;
     }
 
-
-
     // / init c'tor
     public ExtendedSyntacticLocalityChecker(TSignature s) {
         super(s);

@@ -205,7 +205,7 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
             }
         } else {
             for (int i = 0; i < axiom.getArguments().size(); i++) {
-                if ( !isTopEquivalent(axiom.getArguments().get(i)) ) {
+                if (!isTopEquivalent(axiom.getArguments().get(i))) {
                     return;
                 }
             }

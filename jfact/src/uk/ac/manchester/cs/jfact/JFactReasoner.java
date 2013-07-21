@@ -980,7 +980,6 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             Set<OWLIndividual> individuals, OWLDataProperty r, OWLDataProperty s, int op) {
         checkConsistency();
         // load all the individuals as parameters
-
         return translationMachinery.getIndividualTranslator().getNodeFromPointers(
                 kernel.getDataRelatedIndividuals(
                         translationMachinery.toDataPropertyPointer(r),

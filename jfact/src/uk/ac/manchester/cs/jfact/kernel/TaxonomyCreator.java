@@ -9,10 +9,9 @@ import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.split.TSignature;
 import conformance.PortedFrom;
 
-/**taxonomy creator for DL*/
+/** taxonomy creator for DL */
 @PortedFrom(file = "TaxonomyCreator.h", name = "TaxonomyCreator")
 public class TaxonomyCreator {
-    
     @PortedFrom(file = "TaxonomyCreator.h", name = "pTax")
     protected Taxonomy pTax;
     @PortedFrom(file = "TaxonomyCreator.h", name = "Syns")
@@ -29,8 +28,8 @@ public class TaxonomyCreator {
     /** number of completely-defined entries */
     @PortedFrom(file = "TaxonomyCreator.h", name = "nCDEntries")
     protected long nCDEntries = 0;
-    /** optimisation flag: if entry is completely defined by it's told
-     * subsumers, no other classification required */
+    /** optimisation flag: if entry is completely defined by it's told subsumers,
+     * no other classification required */
     @PortedFrom(file = "TaxonomyCreator.h", name = "useCompletelyDefined")
     protected boolean useCompletelyDefined = false;
     /** session flag: shows the direction of the search */
@@ -45,7 +44,6 @@ public class TaxonomyCreator {
     /** signature of a \bot-module corresponding to a given entry */
     @PortedFrom(file = "TaxonomyCreator.h", name = "sigStack")
     protected LinkedList<TSignature> sigStack = new LinkedList<TSignature>();
-
 
     public TaxonomyCreator(Taxonomy pTax2) {
         pTax = pTax2;
@@ -74,8 +72,7 @@ public class TaxonomyCreator {
             if (p.isClassified()) {
                 if (needLogging()) {
                     pTax.getOptions().getLog()
-                            .printTemplate(Templates.TOLD_SUBSUMERS,
-                            p.getName());
+                            .printTemplate(Templates.TOLD_SUBSUMERS, p.getName());
                 }
                 propagateTrueUp(p.getTaxVertex());
             }
@@ -172,7 +169,6 @@ public class TaxonomyCreator {
             setValue(pTax.getBottomVertex(), false);
             upDirection = false;
             runTopDown();
-
         }
         clearLabels();
         if (needBottomUp()) {
@@ -220,8 +216,8 @@ public class TaxonomyCreator {
             pTax.getOptions()
                     .getLog()
                     .print("\nTrying classify",
-                    curEntry.isCompletelyDefined() ? " CD " : " ",
-                    curEntry.getName(), "... ");
+                            curEntry.isCompletelyDefined() ? " CD " : " ",
+                            curEntry.getName(), "... ");
         }
         performClassification();
         if (pTax.getOptions().isTMP_PRINT_TAXONOMY_INFO()) {
@@ -359,7 +355,6 @@ public class TaxonomyCreator {
     // -----------------------------------------------------------------
     // -- DFS-based classification
     // -----------------------------------------------------------------
-
     /** @return true if a NODE has been valued during current classification pass */
     @PortedFrom(file = "TaxonomyCreator.h", name = "isValued")
     public boolean isValued(TaxonomyVertex node) {
@@ -368,7 +363,6 @@ public class TaxonomyCreator {
 
     /** @return the subsumption value of a NODE wrt currently classified one */
     @PortedFrom(file = "TaxonomyCreator.h", name = "getValue")
-
     public boolean getValue(TaxonomyVertex node) {
         return node.getValue();
     }

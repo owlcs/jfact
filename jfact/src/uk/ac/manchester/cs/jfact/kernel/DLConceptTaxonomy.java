@@ -204,6 +204,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     public TSignature buildSignature(ClassifiableEntry p) {
         return tBox.getSignature(p);
     }
+
     @Override
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "immediatelyClassified")
     protected boolean immediatelyClassified() {
@@ -289,6 +290,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         }
         return false;
     }
+
     /** test subsumption via TBox explicitely */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "testSubTBox")
     private boolean testSubTBox(Concept p, Concept q) {

@@ -85,11 +85,9 @@ public class Ontology {
      * @param p */
     @PortedFrom(file = "tOntology.h", name = "retract")
     public void retract(AxiomInterface p) {
-        if (p.getId() <= axioms.size() && axioms.get(p.getId() - 1).equals(p)) {
-            changed = true;
-            retracted.add(p);
-            p.setUsed(false);
-        }
+        changed = true;
+        retracted.add(p);
+        p.setUsed(false);
     }
 
     /** clear the ontology */

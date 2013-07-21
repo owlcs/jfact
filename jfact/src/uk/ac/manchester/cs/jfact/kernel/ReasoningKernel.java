@@ -1695,10 +1695,17 @@ public class ReasoningKernel {
     /** incrementally classify changes */
     @PortedFrom(file = "Incremental.cpp", name = "doIncremental")
     public void doIncremental() {
+        System.out.println("Incremental!");
         // re-set the modularizer to use updated ontology
         ModSyn = null;
         // fill in M^+ and M^- sets
         LocalityChecker lc = getModExtractor(false).getModularizer().getLocalityChecker();
+        if (!ontology.getAxioms().isEmpty()) {
+            System.out.println(ontology.getAxioms());
+        }
+        if (!ontology.getRetracted().isEmpty()) {
+            System.out.println(ontology.getRetracted());
+        }
         // TODO: add new sig here
         List<ClassifiableEntry> MPlus = new ArrayList<ClassifiableEntry>();
         List<ClassifiableEntry> MMinus = new ArrayList<ClassifiableEntry>();
@@ -1707,12 +1714,18 @@ public class ReasoningKernel {
             for (AxiomInterface notProcessed : ontology.getAxioms()) {
                 if (!lc.local(notProcessed)) {
                     MPlus.add(p.getKey());
+                    System.out.println("Non-local NP axiom ");
+                    System.out.println(notProcessed);
+                    System.out.println(" wrt " + p.getKey().getName());
                     break;
                 }
             }
             for (AxiomInterface retracted : ontology.getRetracted()) {
                 if (!lc.local(retracted)) {
                     MMinus.add(p.getKey());
+                    System.out.println("Non-local RT axiom ");
+                    System.out.println(retracted);
+                    System.out.println(" wrt " + p.getKey().getName());
                     break;
                 }
             }
@@ -1765,6 +1778,7 @@ public class ReasoningKernel {
     public void reclassifyNode(TaxonomyVertex node, boolean added, boolean removed) {
         ClassifiableEntry entry = node.getPrimer();
         NamedEntity entity = entry.getEntity();
+        System.out.println("Reclassify " + entity.getName());
         TSignature sig = new TSignature();
         sig.add(entity);
         List<AxiomInterface> Module = getModExtractor(false).getModule(sig,
@@ -1778,8 +1792,10 @@ public class ReasoningKernel {
             KeepMap.put(e, e.getEntry());
             e.setEntry(null);
         }
+        System.out.println("Module: ");
         for (AxiomInterface p : Module) {
             getOntology().add(p);
+            System.out.println(p);
         }
         // update top links
         node.clearLinks(/* upDirection= */true);
@@ -1792,6 +1808,7 @@ public class ReasoningKernel {
             // note that the entity maps to the Reasoner, so we need to use
             // saved map
             NamedEntry localNE = KeepMap.get(parent);
+            System.out.println("Set parent " + localNE.getName());
             node.addNeighbour( /* upDirection= */true,
                     ((ClassifiableEntry) localNE).getTaxVertex());
         }
@@ -1886,6 +1903,7 @@ public class ReasoningKernel {
                 forceReload();
             } else {
                 doIncremental();
+                reasoningFailed = false;
                 return;
             }
             // do the consistency check

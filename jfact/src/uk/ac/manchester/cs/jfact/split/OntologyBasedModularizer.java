@@ -18,17 +18,16 @@ public class OntologyBasedModularizer {
         this.ontology = ontology;
         Modularizer = mod;
     }
-    
+
     public static TModularizer buildTModularizer(boolean useSemantic,
             ReasoningKernel kernel) {
         TModularizer Mod = null;
         if (useSemantic) {
-            Mod = new TModularizer(kernel.getOptions(),
-                        new SemanticLocalityChecker(kernel));
-                Mod.preprocessOntology(kernel.getOntology().getAxioms());
+            Mod = new TModularizer(kernel.getOptions(), new SemanticLocalityChecker(
+                    kernel));
+            Mod.preprocessOntology(kernel.getOntology().getAxioms());
         } else {
-            Mod = new TModularizer(kernel.getOptions(),
-                    new SyntacticLocalityChecker());
+            Mod = new TModularizer(kernel.getOptions(), new SyntacticLocalityChecker());
             Mod.preprocessOntology(kernel.getOntology().getAxioms());
         }
         return Mod;

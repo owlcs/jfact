@@ -209,7 +209,6 @@ public class TBox {
         return Splits;
     }
 
-
     /** @return individuals */
     @PortedFrom(file = "dlTBox.h", name = "i_begin")
     public List<Individual> i_begin() {
