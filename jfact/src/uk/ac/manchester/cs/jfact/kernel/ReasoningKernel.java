@@ -1800,13 +1800,9 @@ public class ReasoningKernel {
         ClassifiableEntry entry = node.getPrimer();
         NamedEntity entity = entry.getEntity();
         System.out.println("Reclassify " + entity.getName());
-        TSignature sig = new TSignature();
-        sig.add(entity);
-        List<AxiomInterface> Module = getModExtractor(false).getModule(sig,
-                ModuleType.M_BOT);
+        List<AxiomInterface> Module = setupSig(entry);
         // update Name2Sig
         TSignature ModSig = getModExtractor(false).getModularizer().getSignature();
-        Name2Sig.put(entry, new TSignature(ModSig));
         // renew all signature-2-entry map
         Map<NamedEntity, NamedEntry> KeepMap = new HashMap<NamedEntity, NamedEntry>();
         for (NamedEntity e : ModSig.begin()) {
@@ -1860,20 +1856,34 @@ public class ReasoningKernel {
         ontology.setProcessed();
     }
 
+    /** setup Name2Sig for a given name C; @return a \bot-module for C */
+    @PortedFrom(file = "Incremental.cpp", name = "setupSig")
+    public List<AxiomInterface> setupSig(ClassifiableEntry C) {
+        List<AxiomInterface> ret = new ArrayList<AxiomInterface>();
+        // get the entity; do nothing if doesn't exist
+        NamedEntity entity = C.getEntity();
+        if (entity == null) {
+            return ret;
+        }
+
+        // prepare a place to update
+        TSignature sig = new TSignature();
+        // calculate a module
+        sig.add(entity);
+        ret = getModExtractor(false).getModule(sig, ModuleType.M_BOT);
+        // perform update
+        Name2Sig.put(C, new TSignature(getModExtractor(false).getModularizer()
+                .getSignature()));
+        return ret;
+    }
+
     /** initialise the incremental bits on full reload */
     @PortedFrom(file = "Incremental.cpp", name = "initIncremental")
     public void initIncremental() {
         OntologyBasedModularizer ModExtractor = getModExtractor(false);
         // fill the module signatures of the concepts
         for (Concept p : getTBox().getConcepts()) {
-            NamedEntity entity = p.getEntity();
-            if (entity == null) {
-                continue;
-            }
-            TSignature sig = new TSignature();
-            sig.add(entity);
-            ModExtractor.getModule(sig, ModuleType.M_BOT);
-            Name2Sig.put(p, new TSignature(ModExtractor.getModularizer().getSignature()));
+            setupSig(p);
         }
         getTBox().setNameSigMap(Name2Sig);
         OntoSig = ontology.getSignature();
