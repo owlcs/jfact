@@ -11,22 +11,31 @@ import conformance.PortedFrom;
 
 /** class for exploring concept taxonomy to find super classes */
 @PortedFrom(file = "Kernel.cpp", name = "SupConceptActor")
-public class SupConceptActor extends ActorImpl<ClassifiableEntry> {
+public class SupConceptActor implements Actor {
     @PortedFrom(file = "Kernel.cpp", name = "pe")
     protected ClassifiableEntry pe;
 
-    /** @param q */
-    public SupConceptActor(ClassifiableEntry q) {
-        pe = q;
-        syn.add(pe);
+    @PortedFrom(file = "Kernel.cpp", name = "entry")
+    protected boolean entry(ClassifiableEntry q) {
+        return !pe.equals(q);
     }
 
-    @Override
+    public SupConceptActor(ClassifiableEntry q) {
+        pe = q;
+    }
+
     @PortedFrom(file = "Kernel.cpp", name = "apply")
     public boolean apply(TaxonomyVertex v) {
-        if (pe.equals(v.getPrimer()) || v.begin_syn().contains(pe)) {
+        if (!entry(v.getPrimer())) {
             return false;
+        }
+        for (ClassifiableEntry p : v.begin_syn()) {
+            if (!entry(p)) {
+                return false;
+            }
         }
         return true;
     }
+
+    public void clear() {}
 }

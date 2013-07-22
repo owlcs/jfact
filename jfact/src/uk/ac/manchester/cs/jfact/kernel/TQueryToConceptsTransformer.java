@@ -88,7 +88,7 @@ class TQueryToConceptsTransformer {
                         conjunctiveQueryFolding.getpEM().concept(propositionalVariable)));
     }
 
-    /** get the result */
+    /** @return the result */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "getResult")
     public MultiMap<String, ConceptExpression> getResult() {
         return Result;

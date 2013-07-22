@@ -2759,7 +2759,9 @@ public class TBox {
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "initTaxonomy")
     public void initTaxonomy() {}
 
-    /** set NameSigMap */
+    /** set NameSigMap
+     * 
+     * @param p */
     @PortedFrom(file = "dlTBox.h", name = "setNameSigMap")
     public void setNameSigMap(Map<ClassifiableEntry, TSignature> p) {
         pName2Sig = p;

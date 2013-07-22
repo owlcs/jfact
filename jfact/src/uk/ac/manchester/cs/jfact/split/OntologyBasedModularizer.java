@@ -19,6 +19,9 @@ public class OntologyBasedModularizer {
         Modularizer = mod;
     }
 
+    /** @param useSemantic
+     * @param kernel
+     * @return */
     public static TModularizer buildTModularizer(boolean useSemantic,
             ReasoningKernel kernel) {
         TModularizer Mod = null;
@@ -33,7 +36,9 @@ public class OntologyBasedModularizer {
         return Mod;
     }
 
-    /** @return module */
+    /** @param sig
+     * @param type
+     * @return module */
     @PortedFrom(file = "OntologyBasedModularizer.h", name = "getModule")
     public List<AxiomInterface> getModule(TSignature sig, ModuleType type) {
         Modularizer.extract(ontology.getAxioms(), sig, type);

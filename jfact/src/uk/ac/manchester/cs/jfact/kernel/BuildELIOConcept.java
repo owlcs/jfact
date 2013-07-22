@@ -8,6 +8,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.queryobjects.*;
 import conformance.PortedFrom;
 
+@SuppressWarnings("javadoc")
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "BuildELIOConcept")
 public abstract class BuildELIOConcept {
     protected final ConjunctiveQueryFolding conjunctiveQueryFolding;

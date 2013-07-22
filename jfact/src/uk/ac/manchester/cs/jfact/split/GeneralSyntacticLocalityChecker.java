@@ -76,7 +76,9 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
         }
     }
 
-    /** init c'tor */
+    /** init c'tor
+     * 
+     * @param sig */
     public GeneralSyntacticLocalityChecker(TSignature sig) {
         this.sig = sig;
         TopEval = new TopEquivalenceEvaluator();

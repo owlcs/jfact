@@ -6,8 +6,7 @@ import org.semanticweb.owlapi.util.MultiMap;
 
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.kernel.TBox.IterableElem;
-import uk.ac.manchester.cs.jfact.kernel.actors.Actor;
-import uk.ac.manchester.cs.jfact.kernel.actors.RIActor;
+import uk.ac.manchester.cs.jfact.kernel.actors.ActorImpl;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.queryobjects.*;
@@ -40,7 +39,10 @@ public class ConjunctiveQueryFolding {
         NewNominals.add(concept);
     }
 
-    /** concept removal */
+    /** concept removal
+     * 
+     * @param query
+     * @return */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "RemoveCFromQuery")
     public QRQuery RemoveCFromQuery(QRQuery query) {
         // init VR with \top for all free vars
@@ -170,7 +172,7 @@ public class ConjunctiveQueryFolding {
         QRAtom oldAtom = query.getBody().replaceAtom(atomIterator, newAtom);
         query.setVarFree(newArg);
         System.out.println("Running Checker");
-        QueryConnectednessChecker checker = new QueryConnectednessChecker(this, query);
+        QueryConnectednessChecker checker = new QueryConnectednessChecker(query);
         boolean ret;
         if (checker.isConnected()) {
             System.out.println("Connected\nAfter replacing in Query\n" + query);
@@ -308,7 +310,7 @@ public class ConjunctiveQueryFolding {
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "doQuery")
     private void doQuery(QRQuery query, ReasoningKernel kernel) {
         System.out.println("Next query: " + query);
-        QueryConnectednessChecker cc1 = new QueryConnectednessChecker(this, query);
+        QueryConnectednessChecker cc1 = new QueryConnectednessChecker(query);
         System.out.println("Connected? " + cc1.isConnected());
         TQueryToConceptsTransformer transformer = new TQueryToConceptsTransformer(this,
                 query);
@@ -373,10 +375,14 @@ public class ConjunctiveQueryFolding {
             // The i'th var is I2Var[i]; get its concept
             ConceptExpression C = VarRestrictions.get(I2Var.get(i));
             // get all instances of C
-            Actor a = new RIActor();
+            ActorImpl a = new ActorImpl();
             a.needIndividuals();
             kernel.getInstances(C, a);
-            kernel.getTBox().IV.add(new IterableElem<Individual>(a.getPlain()));
+            List<Individual> individuals = new ArrayList<Individual>();
+            for (ClassifiableEntry e : a.getElements1D()) {
+                individuals.add((Individual) e);
+            }
+            kernel.getTBox().IV.add(new IterableElem<Individual>(individuals));
         }
         System.out.println(" done");
     }

@@ -55,7 +55,9 @@ public class TSignature {
         set.remove(p);
     }
 
-    /** add another signature to a given one */
+    /** add another signature to a given one
+     * 
+     * @param Sig */
     @PortedFrom(file = "tSignature.h", name = "add")
     public void add(TSignature Sig) {
         set.addAll(Sig.set);
@@ -99,7 +101,8 @@ public class TSignature {
         return set.hashCode();
     }
 
-    /** @return true iff SIGnature does NOT contain given entity */
+    /** @param entity
+     * @return true iff SIGnature does NOT contain given entity */
     @PortedFrom(file = "LocalityChecker.h", name = "nc")
     public boolean nc(NamedEntity entity) {
         return !containsNamedEntity(entity);

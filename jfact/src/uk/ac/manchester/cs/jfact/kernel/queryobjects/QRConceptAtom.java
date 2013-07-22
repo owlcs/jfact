@@ -18,12 +18,16 @@ public class QRConceptAtom extends QRAtom {
     @PortedFrom(file = "QR.h", name = "Arg")
     QRiObject Arg;
 
-    /** init c'tor */
+    /** init c'tor
+     * 
+     * @param C
+     * @param A */
     public QRConceptAtom(ConceptExpression C, QRiObject A) {
         Concept = C;
         Arg = A;
     }
 
+    /** @param q */
     public QRConceptAtom(QRConceptAtom q) {
         this(q.Concept, q.Arg);
     }
@@ -34,13 +38,13 @@ public class QRConceptAtom extends QRAtom {
     }
 
     // access
-    /** get concept expression */
+    /** @return concept expression */
     @PortedFrom(file = "QR.h", name = "getConcept")
     public ConceptExpression getConcept() {
         return Concept;
     }
 
-    /** get i-object */
+    /** @return i-object */
     @PortedFrom(file = "QR.h", name = "getArg")
     public QRiObject getArg() {
         return Arg;

@@ -148,7 +148,10 @@ public class Taxonomy {
         node.setChecked(visitedLabel);
     }
 
-    /** check whether NODE is checked within taxonomy */
+    /** check whether NODE is checked within taxonomy
+     * 
+     * @param node
+     * @return */
     @PortedFrom(file = "Taxonomy.h", name = "isVisited")
     public boolean isVisited(TaxonomyVertex node) {
         return node.isChecked(visitedLabel);

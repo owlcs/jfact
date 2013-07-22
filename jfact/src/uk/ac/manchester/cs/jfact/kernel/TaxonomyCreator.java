@@ -45,6 +45,7 @@ public class TaxonomyCreator {
     @PortedFrom(file = "TaxonomyCreator.h", name = "sigStack")
     protected LinkedList<TSignature> sigStack = new LinkedList<TSignature>();
 
+    /** @param pTax2 */
     public TaxonomyCreator(Taxonomy pTax2) {
         pTax = pTax2;
     }
@@ -248,7 +249,9 @@ public class TaxonomyCreator {
         return true;
     }
 
-    /** add PARENT as a parent if it exists and is direct parent */
+    /** add PARENT as a parent if it exists and is direct parent
+     * 
+     * @param parent */
     @PortedFrom(file = "TaxonomyCreator.h", name = "addPossibleParent")
     public void addPossibleParent(TaxonomyVertex parent) {
         if (parent != null && isDirectParent(parent)) {
@@ -355,13 +358,15 @@ public class TaxonomyCreator {
     // -----------------------------------------------------------------
     // -- DFS-based classification
     // -----------------------------------------------------------------
-    /** @return true if a NODE has been valued during current classification pass */
+    /** @param node
+     * @return true if a NODE has been valued during current classification pass */
     @PortedFrom(file = "TaxonomyCreator.h", name = "isValued")
     public boolean isValued(TaxonomyVertex node) {
         return node.isValued(valueLabel);
     }
 
-    /** @return the subsumption value of a NODE wrt currently classified one */
+    /** @param node
+     * @return the subsumption value of a NODE wrt currently classified one */
     @PortedFrom(file = "TaxonomyCreator.h", name = "getValue")
     public boolean getValue(TaxonomyVertex node) {
         return node.getValue();
@@ -369,13 +374,17 @@ public class TaxonomyCreator {
 
     /** set the classification value of a NODE to VALUE
      * 
+     * @param node
+     * @param value
      * @return val */
     @PortedFrom(file = "TaxonomyCreator.h", name = "setValue")
     public boolean setValue(TaxonomyVertex node, boolean value) {
         return node.setValued(value, valueLabel);
     }
 
-    /** prepare signature for given entry */
+    /** prepare signature for given entry
+     * 
+     * @param p */
     @PortedFrom(file = "TaxonomyCreator.h", name = "buildSignature")
     protected TSignature buildSignature(ClassifiableEntry p) {
         return null;

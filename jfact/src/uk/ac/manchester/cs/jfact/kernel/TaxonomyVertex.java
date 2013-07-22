@@ -44,7 +44,6 @@ public class TaxonomyVertex {
     /** satisfiability value of a valued vertex */
     @PortedFrom(file = "taxVertex.h", name = "checkValue")
     private boolean checkValue;
-    private TaxonomyVertex v;
     /** flag to check whether the vertex is in use */
     @PortedFrom(file = "taxVertex.h", name = "inUse")
     private boolean inUse = true;
@@ -176,7 +175,6 @@ public class TaxonomyVertex {
 
     /** @param v */
     public TaxonomyVertex(TaxonomyVertex v) {
-        this.v = v;
         sample = v.sample;
         synonyms = new HashSet<ClassifiableEntry>(v.synonyms);
         checked = v.checked;
@@ -323,7 +321,9 @@ public class TaxonomyVertex {
         }
     }
 
-    /** remove one half of a given node from a graph */
+    /** remove one half of a given node from a graph
+     * 
+     * @param upDirection */
     @PortedFrom(file = "taxVertex.h", name = "removeLinks")
     public void removeLinks(boolean upDirection) {
         for (TaxonomyVertex p : neigh(upDirection)) {
@@ -346,13 +346,19 @@ public class TaxonomyVertex {
         return inUse;
     }
 
-    /** set the inUse value of the node */
+    /** set the inUse value of the node
+     * 
+     * @param value */
     @PortedFrom(file = "taxVertex.h", name = "setInUse")
     public void setInUse(boolean value) {
         inUse = value;
     }
 
-    /** merge NODE which is independent to THIS */
+    /** merge NODE which is independent to THIS
+     * 
+     * @param node
+     * @param excludes
+     * @param curEntry */
     @PortedFrom(file = "taxVertex.h", name = "mergeIndepNode")
     public void mergeIndepNode(TaxonomyVertex node, Set<TaxonomyVertex> excludes,
             ClassifiableEntry curEntry) {

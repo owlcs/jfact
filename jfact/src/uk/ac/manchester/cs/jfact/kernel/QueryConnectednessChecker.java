@@ -10,22 +10,18 @@ import conformance.PortedFrom;
 /** connectivity checker */
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "QueryConnectednessChecker")
 public class QueryConnectednessChecker {
-    /**
-     * 
-     */
-    private final ConjunctiveQueryFolding conjunctiveQueryFolding;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "PassedVertice")
     private Set<QRVariable> PassedVertice = new TreeSet<QRVariable>();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Query")
     private QRQuery Query;
 
+    /** @param query */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "QueryConnectednessChecker")
-    public QueryConnectednessChecker(ConjunctiveQueryFolding conjunctiveQueryFolding,
-            QRQuery query) {
-        this.conjunctiveQueryFolding = conjunctiveQueryFolding;
+    public QueryConnectednessChecker(QRQuery query) {
         Query = new QRQuery(query);
     }
 
+    /** @return true if connected */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "isConnected")
     public boolean isConnected() {
         QRAtom a = Query.getBody().begin().iterator().next();
@@ -57,6 +53,7 @@ public class QueryConnectednessChecker {
         return true;
     }
 
+    /** @param var */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "MarkVertex")
     public void MarkVertex(QRVariable var) {
         PassedVertice.add(var);

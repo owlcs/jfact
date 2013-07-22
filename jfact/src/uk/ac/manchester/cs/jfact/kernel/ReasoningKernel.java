@@ -189,7 +189,10 @@ public class ReasoningKernel {
         return pTBox.getStatus();
     }
 
-    /** get DLTree corresponding to an expression EXPR */
+    /** get DLTree corresponding to an expression EXPR
+     * 
+     * @param expr
+     * @return */
     @PortedFrom(file = "Kernel.h", name = "e")
     public DLTree e(Expression expr) {
         return expr.accept(pET);
@@ -434,7 +437,9 @@ public class ReasoningKernel {
         }
     }
 
-    /** get RW access to TBox */
+    /** get RW access to TBox
+     * 
+     * @return */
     @PortedFrom(file = "Kernel.h", name = "getTBox")
     public TBox getTBox() {
         checkTBox();
@@ -1352,6 +1357,7 @@ public class ReasoningKernel {
     public void getSupConcepts(ConceptExpression C, boolean direct, Actor actor) {
         classifyKB();
         this.setUpCache(C, csClassified);
+        actor.clear();
         Taxonomy tax = getCTaxonomy();
         if (direct) {
             tax.getRelativesInfo(cachedVertex, actor, false, true, true);
@@ -1369,6 +1375,7 @@ public class ReasoningKernel {
     public void getSubConcepts(ConceptExpression C, boolean direct, Actor actor) {
         classifyKB();
         this.setUpCache(C, csClassified);
+        actor.clear();
         Taxonomy tax = getCTaxonomy();
         tax.getRelativesInfo(cachedVertex, actor, false, direct, false);
     }
@@ -1381,6 +1388,7 @@ public class ReasoningKernel {
     public void getEquivalentConcepts(ConceptExpression C, Actor actor) {
         classifyKB();
         this.setUpCache(C, csClassified);
+        actor.clear();
         actor.apply(cachedVertex);
     }
 
@@ -1392,6 +1400,7 @@ public class ReasoningKernel {
     public void getDisjointConcepts(ConceptExpression C, Actor actor) {
         classifyKB();
         this.setUpCache(getExpressionManager().not(C), csClassified);
+        actor.clear();
         Taxonomy tax = getCTaxonomy();
         // we are looking for all sub-concepts of (not C) (including synonyms)
         tax.getRelativesInfo(cachedVertex, actor, true, false, false);
@@ -1407,6 +1416,7 @@ public class ReasoningKernel {
     public void getSupRoles(RoleExpression r, boolean direct, Actor actor) {
         preprocessKB(); // ensure KB is ready to answer the query
         Role R = getRole(r, "Role expression expected in getSupRoles()");
+        actor.clear();
         Taxonomy tax = getTaxonomy(R);
         tax.getRelativesInfo(getTaxVertex(R), actor, false, direct, true);
     }
@@ -1420,6 +1430,7 @@ public class ReasoningKernel {
     public void getSubRoles(RoleExpression r, boolean direct, Actor actor) {
         preprocessKB();
         Role R = getRole(r, "Role expression expected in getSubRoles()");
+        actor.clear();
         Taxonomy tax = getTaxonomy(R);
         tax.getRelativesInfo(getTaxVertex(R), actor, false, direct, false);
     }
@@ -1432,6 +1443,7 @@ public class ReasoningKernel {
     public void getEquivalentRoles(RoleExpression r, Actor actor) {
         preprocessKB();
         Role R = getRole(r, "Role expression expected in getEquivalentRoles()");
+        actor.clear();
         actor.apply(getTaxVertex(R));
     }
 
@@ -1447,17 +1459,23 @@ public class ReasoningKernel {
         classifyKB();
         this.setUpCache(getExpressionManager().exists(r, getExpressionManager().top()),
                 csClassified);
+        actor.clear();
         Taxonomy tax = getCTaxonomy();
         tax.getRelativesInfo(cachedVertex, actor, true, direct, true);
     }
 
     /** apply actor::apply() to all DIRECT NC that are in the domain of data role
-     * R */
+     * R
+     * 
+     * @param r
+     * @param direct
+     * @param actor */
     @PortedFrom(file = "Kernel.h", name = "getDRoleDomain")
-    void getDRoleDomain(DataRoleExpression r, boolean direct, Actor actor) {
+    public void getDRoleDomain(DataRoleExpression r, boolean direct, Actor actor) {
         classifyKB();
         this.setUpCache(getExpressionManager()
                 .exists(r, getExpressionManager().dataTop()), csClassified);
+        actor.clear();
         Taxonomy tax = getCTaxonomy();
         if (direct) {
             tax.getRelativesInfo(cachedVertex, actor, true, true, true);
@@ -1499,6 +1517,7 @@ public class ReasoningKernel {
     public void getDirectInstances(ConceptExpression C, Actor actor) {
         realiseKB();
         this.setUpCache(C, csClassified);
+        actor.clear();
         // implement 1-level check by hand
         // if the root vertex contains individuals -- we are done
         if (actor.apply(cachedVertex)) {
@@ -1522,6 +1541,7 @@ public class ReasoningKernel {
         // check for Racer's/IS approach
         realiseKB();
         this.setUpCache(C, csClassified);
+        actor.clear();
         Taxonomy tax = getCTaxonomy();
         tax.getRelativesInfo(cachedVertex, actor, true, false, false);
     }
@@ -1536,6 +1556,7 @@ public class ReasoningKernel {
     public void getTypes(IndividualName I, boolean direct, Actor actor) {
         realiseKB();
         this.setUpCache(getExpressionManager().oneOf(I), csClassified);
+        actor.clear();
         Taxonomy tax = getCTaxonomy();
         tax.getRelativesInfo(cachedVertex, actor, true, direct, true);
     }
@@ -1799,23 +1820,11 @@ public class ReasoningKernel {
         getOntology().setProcessed();
     }
 
-    class ConceptActor extends ActorImpl<ClassifiableEntry> {
-        ConceptActor() {
-            needConcepts();
-        }
-
-        List<List<ClassifiableEntry>> getNodes() {
-            return acc;
-        }
-
-        @Override
-        public boolean apply(TaxonomyVertex v) {
-            // TODO Auto-generated method stub
-            return false;
-        }
-    }
-
-    /** reclassify (incrementally) NODE wrt ADDED or REMOVED flags */
+    /** reclassify (incrementally) NODE wrt ADDED or REMOVED flags
+     * 
+     * @param node
+     * @param added
+     * @param removed */
     @PortedFrom(file = "Incremental.cpp", name = "reclassifyNode")
     public void reclassifyNode(TaxonomyVertex node, boolean added, boolean removed) {
         ClassifiableEntry entry = node.getPrimer();
@@ -1838,9 +1847,10 @@ public class ReasoningKernel {
         node.removeLinks(true);
         // update top links
         node.clearLinks(/* upDirection= */true);
-        ConceptActor actor = new ConceptActor();
+        ActorImpl actor = new ActorImpl();
+        actor.needConcepts();
         getSupConcepts((ConceptName) entity, /* direct= */true, actor);
-        for (List<ClassifiableEntry> q : actor.getNodes()) {
+        for (List<ClassifiableEntry> q : actor.getElements2D()) {
             ClassifiableEntry parentCE = q.get(0);
             // this CE is of the Reasoner
             NamedEntity parent = parentCE.getEntity();
@@ -1880,7 +1890,10 @@ public class ReasoningKernel {
         ontology.setProcessed();
     }
 
-    /** setup Name2Sig for a given name C; @return a \bot-module for C */
+    /** setup Name2Sig for a given name C; @return a \bot-module for C
+     * 
+     * @param C
+     * @return */
     @PortedFrom(file = "Incremental.cpp", name = "setupSig")
     public List<AxiomInterface> setupSig(ClassifiableEntry C) {
         List<AxiomInterface> ret = new ArrayList<AxiomInterface>();
@@ -1889,7 +1902,6 @@ public class ReasoningKernel {
         if (entity == null) {
             return ret;
         }
-
         // prepare a place to update
         TSignature sig = new TSignature();
         // calculate a module
@@ -2140,7 +2152,13 @@ public class ReasoningKernel {
     }
 
     /** set RESULT into set of instances of A such that they do have data roles R
-     * and S */
+     * and S
+     * 
+     * @param R
+     * @param S
+     * @param op
+     * @param individuals
+     * @return */
     @PortedFrom(file = "Kernel.cpp", name = "getDataRelatedIndividuals")
     public Collection<IndividualName> getDataRelatedIndividuals(RoleExpression R,
             RoleExpression S, int op, Collection<IndividualExpression> individuals) {
@@ -2220,7 +2238,7 @@ public class ReasoningKernel {
         return AD.getAOS().get(index).getDepAtoms();
     }
 
-    /** get a number of locality checks performed for creating an AD */
+    /** @return a number of locality checks performed for creating an AD */
     @PortedFrom(file = "Kernel.cpp", name = "getLocCheckNumber")
     public long getLocCheckNumber() {
         return AD.getLocChekNumber();
@@ -2352,7 +2370,9 @@ public class ReasoningKernel {
 
     private ConjunctiveQueryFolding conjunctiveQueryFolding = new ConjunctiveQueryFolding();
 
-    /** call to underlying conjunctive query folding */
+    /** call to underlying conjunctive query folding
+     * 
+     * @param query */
     @Original
     public void evaluateQuery(MultiMap<String, ConceptExpression> query) {
         conjunctiveQueryFolding.evaluateQuery(query, this);

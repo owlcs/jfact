@@ -12,158 +12,84 @@ import java.util.List;
 import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
 import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
 import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
-import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
+import conformance.PortedFrom;
 
-/** taxonomy actor */
-public class TaxonomyActor extends ActorImpl<Expression> implements Actor {
-    private ExpressionManager expressionManager;
+/** class for acting with concept taxonomy
+ * 
+ * @param <T> */
+@PortedFrom(file = "JNIActor.h", name = "TaxonomyActor")
+public class TaxonomyActor<T extends Expression> implements Actor {
     private Policy policy;
+    private ExpressionManager expressionManager;
+    /** 2D array to return */
+    @PortedFrom(file = "JNIActor.h", name = "acc")
+    private List<List<T>> acc = new ArrayList<List<T>>();
+    /** 1D array to return */
+    @PortedFrom(file = "JNIActor.h", name = "plain")
+    private List<T> plain = new ArrayList<T>();
+    /** temporary vector to keep synonyms */
+    @PortedFrom(file = "JNIActor.h", name = "syn")
+    private List<T> syn = new ArrayList<T>();
 
-    /** @param p
-     * @return try current entry */
-    public List<Expression> tryEntry(ClassifiableEntry p) {
-        List<Expression> toReturn = new ArrayList<Expression>();
+    /** try current entry
+     * 
+     * @param p */
+    @PortedFrom(file = "JNIActor.h", name = "tryEntry")
+    protected void tryEntry(ClassifiableEntry p) {
         if (p.isSystem()) {
-            return toReturn;
+            return;
         }
         if (policy.applicable(p)) {
-            toReturn.add(policy.buildTree(expressionManager, p));
+            syn.add((T) policy.buildTree(expressionManager, p));
         }
-        return toReturn;
     }
 
     /** @param em
-     * @param policy */
-    public TaxonomyActor(ExpressionManager em, Policy policy) {
+     * @param p */
+    @PortedFrom(file = "JNIActor.h", name = "TaxonomyActor")
+    public TaxonomyActor(ExpressionManager em, Policy p) {
         expressionManager = em;
-        this.policy = policy;
+        policy = p;
     }
 
+    @PortedFrom(file = "JNIActor.h", name = "clear")
+    public void clear() {
+        acc.clear();
+        plain.clear();
+    }
+
+    // return values
     /** @return single vector of synonyms (necessary for Equivalents, for example) */
-    public Collection<ConceptExpression> getClassSynonyms() {
-        Collection<ConceptExpression> toReturn = new ArrayList<ConceptExpression>();
-        if (!acc.isEmpty()) {
-            for (Expression e : acc.get(0)) {
-                toReturn.add((ConceptExpression) e);
-            }
-        }
-        return toReturn;
-    }
-
-    /** @return individual synonyms */
-    public Collection<IndividualName> getIndividualSynonyms() {
-        Collection<IndividualName> toReturn = new ArrayList<IndividualName>();
-        if (!acc.isEmpty()) {
-            for (Expression e : acc.get(0)) {
-                toReturn.add((IndividualName) e);
-            }
-        }
-        return toReturn;
-    }
-
-    /** @return object property synonyms */
-    public Collection<ObjectRoleExpression> getObjectPropertySynonyms() {
-        Collection<ObjectRoleExpression> toReturn = new ArrayList<ObjectRoleExpression>();
-        if (!acc.isEmpty()) {
-            for (Expression e : acc.get(0)) {
-                toReturn.add((ObjectRoleExpression) e);
-            }
-        }
-        return toReturn;
-    }
-
-    /** @return data property synonyms */
-    public Collection<DataRoleExpression> getDataPropertySynonyms() {
-        Collection<DataRoleExpression> toReturn = new ArrayList<DataRoleExpression>();
-        if (!acc.isEmpty()) {
-            for (Expression e : acc.get(0)) {
-                toReturn.add((DataRoleExpression) e);
-            }
-        }
-        return toReturn;
-    }
-
-    /** @return plain individual */
-    public Collection<IndividualExpression> getPlainIndividualElements() {
-        Collection<IndividualExpression> toReturn = new ArrayList<IndividualExpression>(
-                plain.size());
-        for (Expression e : plain) {
-            toReturn.add((IndividualExpression) e);
-        }
-        return toReturn;
-    }
-
-    /** @return plain class */
-    public Collection<ConceptExpression> getPlainClassElements() {
-        Collection<ConceptExpression> toReturn = new ArrayList<ConceptExpression>(
-                plain.size());
-        for (Expression e : plain) {
-            toReturn.add((ConceptExpression) e);
-        }
-        return toReturn;
+    @PortedFrom(file = "JNIActor.h", name = "getSynonyms")
+    public Collection<T> getSynonyms() {
+        return acc.isEmpty() ? syn : acc.get(0);
     }
 
     /** @return 2D array of all required elements of the taxonomy */
-    public Collection<Collection<ConceptExpression>> getClassElements() {
-        Collection<Collection<ConceptExpression>> toReturn = new ArrayList<Collection<ConceptExpression>>();
-        for (List<Expression> l : acc) {
-            List<ConceptExpression> list = new ArrayList<ConceptExpression>();
-            for (Expression e : l) {
-                list.add((ConceptExpression) e);
+    @PortedFrom(file = "JNIActor.h", name = "getElements")
+    public Collection<Collection<T>> getElements() {
+        Collection<Collection<T>> toReturn = new ArrayList<Collection<T>>();
+        if (policy.needPlain()) {
+            toReturn.add(plain);
+        } else {
+            for (int i = 0; i < acc.size(); ++i) {
+                toReturn.add(acc.get(i));
             }
-            toReturn.add(list);
         }
         return toReturn;
     }
 
-    /** @return 2D array of all required elements of the taxonomy */
-    public Collection<Collection<ObjectRoleExpression>> getObjectPropertyElements() {
-        Collection<Collection<ObjectRoleExpression>> toReturn = new ArrayList<Collection<ObjectRoleExpression>>();
-        for (List<Expression> l : acc) {
-            List<ObjectRoleExpression> list = new ArrayList<ObjectRoleExpression>();
-            for (Expression e : l) {
-                list.add((ObjectRoleExpression) e);
-            }
-            toReturn.add(list);
-        }
-        return toReturn;
-    }
-
-    /** @return data properties */
-    public Collection<Collection<DataRoleExpression>> getDataPropertyElements() {
-        Collection<Collection<DataRoleExpression>> toReturn = new ArrayList<Collection<DataRoleExpression>>();
-        for (List<Expression> l : acc) {
-            List<DataRoleExpression> list = new ArrayList<DataRoleExpression>();
-            for (Expression e : l) {
-                list.add((DataRoleExpression) e);
-            }
-            toReturn.add(list);
-        }
-        return toReturn;
-    }
-
-    /** @return 2D array of all required elements of the taxonomy */
-    public Collection<Collection<IndividualExpression>> getIndividualElements() {
-        Collection<Collection<IndividualExpression>> toReturn = new ArrayList<Collection<IndividualExpression>>();
-        for (List<Expression> l : acc) {
-            List<IndividualExpression> list = new ArrayList<IndividualExpression>();
-            for (Expression e : l) {
-                list.add((IndividualExpression) e);
-            }
-            toReturn.add(list);
-        }
-        return toReturn;
-    }
-
-    /** taxonomy walking method. */
-    /** @return true if node was processed, and there is no need to go further,
+    /** taxonomy walking method.
+     * 
+     * @return true if node was processed, and there is no need to go further,
      *         false if node can not be processed in current settings */
-    @Override
+    @PortedFrom(file = "JNIActor.h", name = "apply")
     public boolean apply(TaxonomyVertex v) {
-        List<Expression> syn = tryEntry(v.getPrimer());
+        syn.clear();
+        tryEntry(v.getPrimer());
         for (ClassifiableEntry p : v.begin_syn()) {
-            syn.addAll(tryEntry(p));
+            tryEntry(p);
         }
         /** no applicable elements were found */
         if (syn.isEmpty()) {

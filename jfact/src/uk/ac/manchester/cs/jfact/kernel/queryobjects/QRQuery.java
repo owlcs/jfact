@@ -32,18 +32,23 @@ public class QRQuery {
         }
     }
 
-    /** @return true if VAR is a free var */
+    /** @param var
+     * @return true if VAR is a free var */
     public boolean isFreeVar(QRVariable var) {
         return var != null && getFreeVars().contains(var);
     }
 
-    /** add atom to a query body */
+    /** add atom to a query body
+     * 
+     * @param atom */
     @PortedFrom(file = "QR.h", name = "addAtom")
     public void addAtom(QRAtom atom) {
         Body.addAtom(atom);
     }
 
-    /** mark a variable as a free one */
+    /** mark a variable as a free one
+     * 
+     * @param var */
     @PortedFrom(file = "QR.h", name = "setVarFree")
     public void setVarFree(QRVariable var) {
         getFreeVars().add(var);

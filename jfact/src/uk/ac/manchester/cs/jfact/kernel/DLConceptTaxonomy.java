@@ -165,9 +165,8 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
 
     /** the only c'tor
      * 
-     * @param pTop
-     * @param pBottom
-     * @param kb */
+     * @param pTax
+     * @param tbox */
     public DLConceptTaxonomy(Taxonomy pTax, TBox tbox) {
         super(pTax);
         tBox = tbox;

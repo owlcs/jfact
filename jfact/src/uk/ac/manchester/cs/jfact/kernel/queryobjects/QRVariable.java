@@ -18,7 +18,9 @@ public class QRVariable extends QRiObject implements Comparable<QRVariable>, Has
     /** empty c'tor */
     public QRVariable() {}
 
-    /** init c'tor */
+    /** init c'tor
+     * 
+     * @param name */
     public QRVariable(String name) {
         Name = name;
     }

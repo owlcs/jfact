@@ -3,106 +3,149 @@ package uk.ac.manchester.cs.jfact.kernel.actors;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.ac.manchester.cs.jfact.kernel.HasName;
-import uk.ac.manchester.cs.jfact.kernel.Individual;
+import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
+import uk.ac.manchester.cs.jfact.kernel.Concept;
+import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
 import conformance.Original;
 import conformance.PortedFrom;
 
-/** @author ignazio
- * @param <T> */
+/** @author ignazio */
 @Original
-public abstract class ActorImpl<T extends HasName> implements Actor {
-    // XXX verify if subclasses should use these structures
-    /** 2D array to return */
-    @PortedFrom(file = "Actor.h", name = "acc")
-    protected List<List<T>> acc = new ArrayList<List<T>>();
-    /** 1D array to return */
-    @PortedFrom(file = "Actor.h", name = "plain")
-    protected List<T> plain = new ArrayList<T>();
-    /** temporary vector to keep synonyms */
-    @PortedFrom(file = "Actor.h", name = "syn")
-    protected List<T> syn = new ArrayList<T>();
+public class ActorImpl implements Actor {
+    /** vertices that satisfy the condition */
+    @PortedFrom(file = "Actor.h", name = "found")
+    protected List<TaxonomyVertex> found = new ArrayList<TaxonomyVertex>();
     /** flag to look at concept-like or role-like entities */
     @PortedFrom(file = "Actor.h", name = "isRole")
-    boolean isRole;
+    protected boolean isRole;
     /** flag to look at concepts or object roles */
     @PortedFrom(file = "Actor.h", name = "isStandard")
-    boolean isStandard;
+    protected boolean isStandard;
     /** flag to throw exception at the 1st found */
     @PortedFrom(file = "Actor.h", name = "interrupt")
-    boolean interrupt;
+    protected boolean interrupt;
 
-    protected List<String> buildArray(List<T> vec) {
-        List<String> ret = new ArrayList<String>(vec.size());
-        for (int i = 0; i < vec.size(); ++i) {
-            ret.add(vec.get(i).getName());
+    @PortedFrom(file = "Actor.h", name = "clear")
+    public void clear() {
+        found.clear();
+    }
+
+    /** taxonomy walking method.
+     * 
+     * @return true if node was processed, false if node can not be processed in
+     *         current settings */
+    @PortedFrom(file = "Actor.h", name = "apply")
+    public boolean apply(TaxonomyVertex v) {
+        if (tryVertex(v)) {
+            found.add(v);
+            return true;
         }
-        return ret;
+        return false;
     }
 
-    @Override
-    public List<String> getSynonyms() {
-        return buildArray(acc.isEmpty() ? syn : acc.get(0));
-    }
-
-    @Override
-    public List<List<String>> getElements2D() {
-        List<List<String>> ret = new ArrayList<List<String>>();
-        for (int i = 0; i < acc.size(); ++i) {
-            ret.add(buildArray(acc.get(i)));
+    /** check whether actor is applicable to the ENTRY */
+    @PortedFrom(file = "Actor.h", name = "applicable")
+    protected boolean applicable(ClassifiableEntry entry) {
+        if (isRole)   // object- or data-role
+        {
+            if (isStandard) {
+                return true;
+            } else {
+                // data role -- need only direct ones
+                return entry.getId() > 0;
+            }
+        } else {
+            // concept or individual: standard are concepts
+            return ((Concept) entry).isSingleton() != isStandard;
         }
-        return ret;
     }
 
-    @Override
-    public List<String> getElements1D() {
-        List<T> vec = new ArrayList<T>();
-        for (List<T> p : acc) {
-            vec.addAll(p);
+    /** fills an array with all suitable data from the vertex */
+    @PortedFrom(file = "Actor.h", name = "fillArray")
+    protected List<ClassifiableEntry> fillArray(TaxonomyVertex v) {
+        List<ClassifiableEntry> array = new ArrayList<ClassifiableEntry>();
+        if (tryEntry(v.getPrimer())) {
+            array.add(v.getPrimer());
         }
-        return buildArray(vec);
+        for (ClassifiableEntry p : v.begin_syn()) {
+            if (tryEntry(p)) {
+                array.add(p);
+            }
+        }
+        return array;
     }
 
-    @Override
+    /** @return true iff current entry is visible */
+    protected boolean tryEntry(ClassifiableEntry p) {
+        return !p.isSystem() && applicable(p);
+    }
+
+    /** @return true if at least one entry of a vertex V is visible */
+    protected boolean tryVertex(TaxonomyVertex v) {
+        if (tryEntry(v.getPrimer())) {
+            return true;
+        }
+        for (ClassifiableEntry p : v.begin_syn()) {
+            if (tryEntry(p)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** set the actor to look for classes */
+    @PortedFrom(file = "Actor.h", name = "needConcepts")
     public void needConcepts() {
         isRole = false;
         isStandard = true;
     }
 
-    @Override
+    /** set the actor to look for individuals */
+    @PortedFrom(file = "Actor.h", name = "needIndividuals")
     public void needIndividuals() {
         isRole = false;
         isStandard = false;
     }
 
-    @Override
+    /** set the actor to look for object properties */
+    @PortedFrom(file = "Actor.h", name = "needObjectRoles")
     public void needObjectRoles() {
         isRole = true;
         isStandard = true;
     }
 
-    @Override
+    /** set the actor to look for individuals */
+    @PortedFrom(file = "Actor.h", name = "needDataRoles")
     public void needDataRoles() {
         isRole = true;
         isStandard = false;
     }
 
-    @Override
+    /** @param value
+     *            set the interrupt parameter to VALUE */
+    @PortedFrom(file = "Actor.h", name = "setInterruptAfterFirstFound")
     public void setInterruptAfterFirstFound(boolean value) {
         interrupt = value;
     }
 
-    @PortedFrom(file = "Actor.cpp", name = "getPlain")
-    @Override
-    public List<Individual> getPlain() {
-        assert !isRole && !isStandard;
-        List<Individual> vec = new ArrayList<Individual>();
-        for (List<T> p : acc) {
-            for (T q : p) {
-                if (q instanceof Individual) {
-                    vec.add((Individual) q);
-                }
-            }
+    /** @return get NULL-terminated 2D array of all required elements of the
+     *         taxonomy */
+    @PortedFrom(file = "Actor.h", name = "getElements2D")
+    public List<List<ClassifiableEntry>> getElements2D() {
+        List<List<ClassifiableEntry>> ret = new ArrayList<List<ClassifiableEntry>>();
+        for (int i = 0; i < found.size(); ++i) {
+            ret.add(fillArray(found.get(i)));
+        }
+        return ret;
+    }
+
+    /** @return get NULL-terminated 1D array of all required elements of the
+     *         taxonomy */
+    @PortedFrom(file = "Actor.h", name = "getElements1D")
+    public List<ClassifiableEntry> getElements1D() {
+        List<ClassifiableEntry> vec = new ArrayList<ClassifiableEntry>();
+        for (TaxonomyVertex p : found) {
+            vec.addAll(fillArray(p));
         }
         return vec;
     }
