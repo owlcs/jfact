@@ -112,27 +112,29 @@ public class ReasoningKernel {
     // types for knowledge exploration
     /** knowledge exploration support */
     @PortedFrom(file = "Kernel.h", name = "KE")
-    KnowledgeExplorer KE;
+    private KnowledgeExplorer KE;
     /** atomic decomposer */
     @PortedFrom(file = "Kernel.h", name = "AD")
-    AtomicDecomposer AD;
+    private AtomicDecomposer AD;
     /** syntactic locality based module extractor */
     @PortedFrom(file = "Kernel.h", name = "ModSyn")
-    OntologyBasedModularizer ModSyn = null;
+    private OntologyBasedModularizer ModSyn = null;
     /** semantic locality based module extractor */
     @PortedFrom(file = "Kernel.h", name = "ModSem")
-    OntologyBasedModularizer ModSem = null;
+    private OntologyBasedModularizer ModSem = null;
     /** set to return by the locality checking procedure */
     @PortedFrom(file = "Kernel.h", name = "Result")
-    Set<AxiomInterface> Result = new HashSet<AxiomInterface>();
+    private Set<AxiomInterface> Result = new HashSet<AxiomInterface>();
     /** cached query input description */
     @PortedFrom(file = "Kernel.h", name = "cachedQuery")
-    ConceptExpression cachedQuery;
+    private ConceptExpression cachedQuery;
     @PortedFrom(file = "Kernel.h", name = "useAxiomSplitting")
     private boolean useAxiomSplitting;
     /** ignore cache for the TExpr* (useful for semantic AD) */
     @PortedFrom(file = "Kernel.h", name = "ignoreExprCache")
-    boolean ignoreExprCache = false;
+    private boolean ignoreExprCache = false;
+    private uk.ac.manchester.cs.jfact.helpers.Timer moduleTimer = new uk.ac.manchester.cs.jfact.helpers.Timer();
+    private uk.ac.manchester.cs.jfact.helpers.Timer subCheckTimer = new uk.ac.manchester.cs.jfact.helpers.Timer();
 
     // -- internal query cache manipulation
     /** clear query cache */
@@ -1723,7 +1725,7 @@ public class ReasoningKernel {
         // re-set the modularizer to use updated ontology
         ModSyn = null;
         Taxonomy tax = getCTaxonomy();
-        System.out.println("Original Taxonomy:" + tax);
+        // System.out.println("Original Taxonomy:" + tax);
         Set<ClassifiableEntry> MPlus = new HashSet<ClassifiableEntry>();
         Set<ClassifiableEntry> MMinus = new HashSet<ClassifiableEntry>();
         Set<ClassifiableEntry> MAll = new HashSet<ClassifiableEntry>();
@@ -1802,6 +1804,8 @@ public class ReasoningKernel {
             System.out.println(tax);
         }
         getOntology().setProcessed();
+        System.out.println("Total modularization time: " + moduleTimer
+                + "\nTotal reasoning time: " + subCheckTimer);
     }
 
     /** reclassify (incrementally) NODE wrt ADDED or REMOVED flags
@@ -1824,10 +1828,11 @@ public class ReasoningKernel {
             e.setEntry(null);
         }
         ReasoningKernel reasoner = new ReasoningKernel(kernelOptions, datatypeFactory);
-        System.out.println("Module: ");
+        subCheckTimer.start();
+        // System.out.println("Module: ");
         for (AxiomInterface p : Module) {
             reasoner.getOntology().add(p);
-            System.out.println(p);
+            // System.out.println(p);
         }
         node.removeLinks(true);
         // update top links
@@ -1835,6 +1840,7 @@ public class ReasoningKernel {
         ActorImpl actor = new ActorImpl();
         actor.needConcepts();
         reasoner.getSupConcepts((ConceptName) entity, /* direct= */true, actor);
+        subCheckTimer.stop();
         for (List<ClassifiableEntry> q : actor.getElements2D()) {
             ClassifiableEntry parentCE = q.get(0);
             if (parentCE.equals(reasoner.getCTaxonomy().getTopVertex().getPrimer())) {
@@ -1888,6 +1894,7 @@ public class ReasoningKernel {
     @PortedFrom(file = "Incremental.cpp", name = "setupSig")
     public List<AxiomInterface> setupSig(ClassifiableEntry C) {
         List<AxiomInterface> ret = new ArrayList<AxiomInterface>();
+        moduleTimer.start();
         // get the entity; do nothing if doesn't exist
         NamedEntity entity = C.getEntity();
         if (entity == null) {
@@ -1901,6 +1908,7 @@ public class ReasoningKernel {
         // perform update
         Name2Sig.put(C, new TSignature(getModExtractor(false).getModularizer()
                 .getSignature()));
+        moduleTimer.stop();
         return ret;
     }
 
@@ -1914,6 +1922,7 @@ public class ReasoningKernel {
         }
         getTBox().setNameSigMap(Name2Sig);
         OntoSig = ontology.getSignature();
+        System.out.println("Initial module time: " + moduleTimer);
     }
 
     // knowledge exploration queries
