@@ -39,10 +39,8 @@ public class ConjunctiveQueryFolding {
         NewNominals.add(concept);
     }
 
-    /** concept removal
-     * 
-     * @param query
-     * @return */
+    /** @param query
+     * @return concept removal */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "RemoveCFromQuery")
     public QRQuery RemoveCFromQuery(QRQuery query) {
         // init VR with \top for all free vars

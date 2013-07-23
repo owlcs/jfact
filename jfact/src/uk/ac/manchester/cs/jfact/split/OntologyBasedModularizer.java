@@ -21,7 +21,7 @@ public class OntologyBasedModularizer {
 
     /** @param useSemantic
      * @param kernel
-     * @return */
+     * @return modularizer */
     public static TModularizer buildTModularizer(boolean useSemantic,
             ReasoningKernel kernel) {
         TModularizer Mod = null;

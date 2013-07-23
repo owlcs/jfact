@@ -192,10 +192,8 @@ public class ReasoningKernel {
         return pTBox.getStatus();
     }
 
-    /** get DLTree corresponding to an expression EXPR
-     * 
-     * @param expr
-     * @return */
+    /** @param expr
+     * @return get DLTree corresponding to an expression EXPR */
     @PortedFrom(file = "Kernel.h", name = "e")
     public DLTree e(Expression expr) {
         return expr.accept(pET);
@@ -440,9 +438,7 @@ public class ReasoningKernel {
         }
     }
 
-    /** get RW access to TBox
-     * 
-     * @return */
+    /** @return get RW access to TBox */
     @PortedFrom(file = "Kernel.h", name = "getTBox")
     public TBox getTBox() {
         checkTBox();
@@ -1916,10 +1912,10 @@ public class ReasoningKernel {
         ontology.setProcessed();
     }
 
-    /** setup Name2Sig for a given name C; @return a \bot-module for C
+    /** setup Name2Sig for a given name C;
      * 
      * @param C
-     * @return */
+     * @return a \bot-module for C */
     @PortedFrom(file = "Incremental.cpp", name = "setupSig")
     public List<AxiomInterface> setupSig(ClassifiableEntry C) {
         List<AxiomInterface> ret = new ArrayList<AxiomInterface>();
@@ -2188,7 +2184,7 @@ public class ReasoningKernel {
      * @param S
      * @param op
      * @param individuals
-     * @return */
+     * @return related individuals */
     @PortedFrom(file = "Kernel.cpp", name = "getDataRelatedIndividuals")
     public Collection<IndividualName> getDataRelatedIndividuals(RoleExpression R,
             RoleExpression S, int op, Collection<IndividualExpression> individuals) {

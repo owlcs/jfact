@@ -15,7 +15,7 @@ public class TaxonomyCreator {
     @PortedFrom(file = "TaxonomyCreator.h", name = "pTax")
     protected Taxonomy pTax;
     @PortedFrom(file = "TaxonomyCreator.h", name = "Syns")
-    List<ClassifiableEntry> Syns = new ArrayList<ClassifiableEntry>();
+    protected List<ClassifiableEntry> Syns = new ArrayList<ClassifiableEntry>();
     /** labeller for marking nodes with a label wrt classification */
     @PortedFrom(file = "TaxonomyCreator.h", name = "valueLabel")
     protected long valueLabel = 1;
