@@ -137,7 +137,6 @@ public class ReasoningKernel {
     private ReasoningKernel Reasoner = null;
     private TSignature OldSig = null;
 
-
     // -- internal query cache manipulation
     /** clear query cache */
     @PortedFrom(file = "Kernel.h", name = "clearQueryCache")
@@ -1821,8 +1820,22 @@ public class ReasoningKernel {
                 + toProcess.size() + "): done in " + t);
         System.out.println("Add/Del names Taxonomy:" + tax);
         Classifier = new IncrementalClassifier(tax);
-        for (ClassifiableEntry p : toProcess) {
-            reclassifyNode(p, MPlus.contains(p), MMinus.contains(p));
+        Set<ClassifiableEntry> Processed = new HashSet<ClassifiableEntry>();
+        for (int i = 0; i < toProcess.size(); i++) {
+            ClassifiableEntry p = toProcess.get(i);
+            if (!Processed.contains(p)) {
+                Processed.add(p);
+                reclassifyNode(p, MPlus.contains(p), MMinus.contains(p));
+                for (int j = i + 1; j < toProcess.size(); j++) {
+                    ClassifiableEntry q = toProcess.get(j);
+                    if (!Processed.contains(q)
+                            && OldSig.containsNamedEntity(q.getEntity())) {
+                        // same module
+                        reclassifyNode(q, MPlus.contains(q), MMinus.contains(q));
+                        Processed.add(q);
+                    }
+                }
+            }
         }
         tax.finalise();
         getOntology().setProcessed();
@@ -1839,17 +1852,16 @@ public class ReasoningKernel {
     public void reclassifyNode(ClassifiableEntry entry, boolean added, boolean removed) {
         TaxonomyVertex node = entry.getTaxVertex();
         NamedEntity entity = entry.getEntity();
-        System.out.println("Reclassify " + entity.getName() + " (" + (added?"Added":"") +
-                (removed?" Removed":"")+ ")");
-
-        Timer timer=new Timer();
+        System.out.println("Reclassify " + entity.getName() + " ("
+                + (added ? "Added" : "") + (removed ? " Removed" : "") + ")");
+        Timer timer = new Timer();
         timer.start();
-
         List<AxiomInterface> Module = setupSig(entry);
         // update Name2Sig
         TSignature ModSig = getModExtractor(false).getModularizer().getSignature();
         timer.stop();
-System.out.println( "Creating module (" + Module.size() + " axioms) time: " + timer);
+        System.out.println("Creating module (" + Module.size() + " axioms) time: "
+                + timer);
         timer.reset();
         // renew all signature-2-entry map
         Map<NamedEntity, NamedEntry> KeepMap = new HashMap<NamedEntity, NamedEntry>();
@@ -1857,32 +1869,29 @@ System.out.println( "Creating module (" + Module.size() + " axioms) time: " + ti
             KeepMap.put(e, e.getEntry());
             e.setEntry(null);
         }
-        
         timer.start();
         if (!ModSig.subset(OldSig, false)) // create new reasoner
         {
             // create new reasoner
             OldSig = ModSig;
-            JFactReasonerConfiguration conf=new JFactReasonerConfiguration( kernelOptions);
+            JFactReasonerConfiguration conf = new JFactReasonerConfiguration(
+                    kernelOptions);
             conf.setUseIncrementalReasoning(false);
-        Reasoner = new ReasoningKernel(conf, datatypeFactory);
-        subCheckTimer.start();
-        for (AxiomInterface p : Module) {
-            Reasoner.getOntology().add(p);
+            Reasoner = new ReasoningKernel(conf, datatypeFactory);
+            subCheckTimer.start();
+            for (AxiomInterface p : Module) {
+                Reasoner.getOntology().add(p);
+            }
+            Reasoner.isKBConsistent();
+            timer.stop();
+            System.out.println("; init reasoner time: " + timer);
         }
-        
-        Reasoner.isKBConsistent();
+        timer.reset();
+        timer.start();
+        Classifier.reclassify();
         timer.stop();
-        System.out.println( "; init reasoner time: " + timer);
-    }
-
-    timer.reset();
-    timer.start();
-        
-    Classifier.reclassify();
-    timer.stop();
-    System.out.println( "; reclassification time: " + timer );
-    // clear an ontology
+        System.out.println("; reclassification time: " + timer);
+        // clear an ontology
         Reasoner.getOntology().safeClear();
         // restore all signature-2-entry map
         for (NamedEntity s : ModSig.begin()) {
