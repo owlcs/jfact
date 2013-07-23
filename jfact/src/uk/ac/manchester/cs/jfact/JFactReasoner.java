@@ -221,23 +221,17 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
      *            The logical axioms that have been removed from the imports
      *            closure of the reasoner root ontology */
     private synchronized void computeDiff(Set<OWLAxiom> added, Set<OWLAxiom> removed) {
-        for (OWLOntology ont : root.getImportsClosure()) {
-            for (OWLAxiom ax : ont.getLogicalAxioms()) {
+        for (OWLOntologyChange change : rawChanges) {
+            if (change.isAddAxiom()) {
+                OWLAxiom ax = change.getAxiom();
                 if (!reasonerAxioms.contains(ax.getAxiomWithoutAnnotations())) {
                     added.add(ax);
                 }
-            }
-            for (OWLAxiom ax : ont.getAxioms(AxiomType.DECLARATION)) {
-                if (!reasonerAxioms.contains(ax.getAxiomWithoutAnnotations())) {
-                    added.add(ax);
-                }
+            } else if (change.isRemoveAxiom()) {
+                removed.add(change.getAxiom());
             }
         }
-        for (OWLAxiom ax : reasonerAxioms) {
-            if (!root.containsAxiomIgnoreAnnotations(ax, true)) {
-                removed.add(ax);
-            }
-        }
+        added.removeAll(removed);
     }
 
     @Override
