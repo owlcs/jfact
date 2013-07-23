@@ -21,10 +21,8 @@ import org.semanticweb.owlapi.util.MultiMap;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
-import uk.ac.manchester.cs.jfact.helpers.DLTree;
-import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
-import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
-import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
+import uk.ac.manchester.cs.jfact.helpers.*;
+import uk.ac.manchester.cs.jfact.helpers.Timer;
 import uk.ac.manchester.cs.jfact.kernel.actors.Actor;
 import uk.ac.manchester.cs.jfact.kernel.actors.ActorImpl;
 import uk.ac.manchester.cs.jfact.kernel.actors.RIActor;
@@ -135,6 +133,7 @@ public class ReasoningKernel {
     private boolean ignoreExprCache = false;
     private uk.ac.manchester.cs.jfact.helpers.Timer moduleTimer = new uk.ac.manchester.cs.jfact.helpers.Timer();
     private uk.ac.manchester.cs.jfact.helpers.Timer subCheckTimer = new uk.ac.manchester.cs.jfact.helpers.Timer();
+    private int nModule = 0;
 
     // -- internal query cache manipulation
     /** clear query cache */
@@ -1766,6 +1765,8 @@ public class ReasoningKernel {
         tax.finalise();
         OntoSig = NewSig;
         // fill in M^+ and M^- sets
+        uk.ac.manchester.cs.jfact.helpers.Timer t = new Timer();
+        t.start();
         LocalityChecker lc = getModExtractor(false).getModularizer().getLocalityChecker();
         if (!ontology.getAxioms().isEmpty()) {
             System.out.println("Add:" + ontology.getAxioms());
@@ -1780,9 +1781,6 @@ public class ReasoningKernel {
                 if (!lc.local(notProcessed)) {
                     MPlus.add(p.getKey());
                     MAll.add(p.getKey());
-                    System.out.println("Non-local NP axiom ");
-                    System.out.println(notProcessed);
-                    System.out.println(" wrt " + p.getKey().getName());
                     break;
                 }
             }
@@ -1790,14 +1788,13 @@ public class ReasoningKernel {
                 if (!lc.local(retracted)) {
                     MMinus.add(p.getKey());
                     MAll.add(p.getKey());
-                    System.out.println("Non-local RT axiom ");
-                    System.out.println(retracted);
-                    System.out.println(" wrt " + p.getKey().getName());
                     break;
                 }
             }
         }
-
+        t.stop();
+        System.out.println("Determine concepts that need reclassification ("
+                + MAll.size() + "): done in " + t);
         System.out.println("Add/Del names Taxonomy:" + tax);
         for (ClassifiableEntry p : MAll) {
             reclassifyNode(p.getTaxVertex(), MPlus.contains(p), MMinus.contains(p));
@@ -1854,7 +1851,6 @@ public class ReasoningKernel {
             // note that the entity maps to the Reasoner, so we need to use
             // saved map
             NamedEntry localNE = KeepMap.get(parent);
-            System.out.println("Set parent " + localNE.getName());
             node.addNeighbour( /* upDirection= */true,
                     ((ClassifiableEntry) localNE).getTaxVertex());
         }
@@ -1905,6 +1901,7 @@ public class ReasoningKernel {
         // calculate a module
         sig.add(entity);
         ret = getModExtractor(false).getModule(sig, ModuleType.M_BOT);
+        nModule++;
         // perform update
         Name2Sig.put(C, new TSignature(getModExtractor(false).getModularizer()
                 .getSignature()));
@@ -1922,7 +1919,7 @@ public class ReasoningKernel {
         }
         getTBox().setNameSigMap(Name2Sig);
         OntoSig = ontology.getSignature();
-        System.out.println("Initial module time: " + moduleTimer);
+        System.out.println("Init modules (" + nModule + ") time: " + moduleTimer);
     }
 
     // knowledge exploration queries
