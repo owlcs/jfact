@@ -1870,29 +1870,27 @@ public class ReasoningKernel {
             e.setEntry(null);
         }
         timer.start();
-        if (!ModSig.subset(OldSig, false)) // create new reasoner
-        {
+        if (!ModSig.subset(OldSig, false)) {
             // create new reasoner
             OldSig = ModSig;
             JFactReasonerConfiguration conf = new JFactReasonerConfiguration(
                     kernelOptions);
             conf.setUseIncrementalReasoning(false);
             Reasoner = new ReasoningKernel(conf, datatypeFactory);
-            subCheckTimer.start();
             for (AxiomInterface p : Module) {
                 Reasoner.getOntology().add(p);
             }
             Reasoner.isKBConsistent();
             timer.stop();
             System.out.println("; init reasoner time: " + timer);
+            // clear an ontology
+            Reasoner.getOntology().safeClear();
         }
         timer.reset();
         timer.start();
         Classifier.reclassify();
         timer.stop();
         System.out.println("; reclassification time: " + timer);
-        // clear an ontology
-        Reasoner.getOntology().safeClear();
         // restore all signature-2-entry map
         for (NamedEntity s : ModSig.begin()) {
             s.setEntry(KeepMap.get(s));

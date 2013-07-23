@@ -94,7 +94,7 @@ public class Ontology {
     /** clear the ontology */
     @PortedFrom(file = "tOntology.h", name = "clear")
     public void clear() {
-        axioms.clear();
+        safeClear();
         retracted.clear();
         expressionManager.clear();
         changed = false;
