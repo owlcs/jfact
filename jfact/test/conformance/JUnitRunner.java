@@ -23,7 +23,7 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
 @SuppressWarnings("javadoc")
 public class JUnitRunner {
-    private static final int _10000 = 100000;
+    private static final int _10000 = 1000000;
     private final TestClasses t;
     private OWLReasonerFactory f;
     private final String testId;

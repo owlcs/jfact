@@ -15,8 +15,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 @SuppressWarnings("javadoc")
 public class WebOnt_description_logic_602_test {
     @Test
-    public void testWebOnt_description_logic_602() throws OWLOntologyCreationException,
-            OWLOntologyStorageException {
+    public void testWebOnt_description_logic_602() throws OWLOntologyCreationException {
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLDataFactory f = m.getOWLDataFactory();
         OWLOntology o = m.createOntology();
