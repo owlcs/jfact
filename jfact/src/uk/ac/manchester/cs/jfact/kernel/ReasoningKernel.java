@@ -24,7 +24,6 @@ import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
 import uk.ac.manchester.cs.jfact.helpers.*;
 import uk.ac.manchester.cs.jfact.helpers.Timer;
 import uk.ac.manchester.cs.jfact.kernel.actors.Actor;
-import uk.ac.manchester.cs.jfact.kernel.actors.ActorImpl;
 import uk.ac.manchester.cs.jfact.kernel.actors.RIActor;
 import uk.ac.manchester.cs.jfact.kernel.actors.SupConceptActor;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptBottom;
@@ -134,6 +133,10 @@ public class ReasoningKernel {
     private uk.ac.manchester.cs.jfact.helpers.Timer moduleTimer = new uk.ac.manchester.cs.jfact.helpers.Timer();
     private uk.ac.manchester.cs.jfact.helpers.Timer subCheckTimer = new uk.ac.manchester.cs.jfact.helpers.Timer();
     private int nModule = 0;
+    private IncrementalClassifier Classifier = null;
+    private ReasoningKernel Reasoner = null;
+    private TSignature OldSig = null;
+
 
     // -- internal query cache manipulation
     /** clear query cache */
@@ -1723,6 +1726,8 @@ public class ReasoningKernel {
         System.out.println("Incremental!");
         // re-set the modularizer to use updated ontology
         ModSyn = null;
+        Reasoner = new ReasoningKernel(kernelOptions, datatypeFactory);
+        OldSig = new TSignature();
         Taxonomy tax = getCTaxonomy();
         // System.out.println("Original Taxonomy:" + tax);
         Set<ClassifiableEntry> MPlus = new HashSet<ClassifiableEntry>();
@@ -1762,7 +1767,6 @@ public class ReasoningKernel {
                 System.out.println("Insert " + C.getName());
             }
         }
-        tax.finalise();
         OntoSig = NewSig;
         // fill in M^+ and M^- sets
         uk.ac.manchester.cs.jfact.helpers.Timer t = new Timer();
@@ -1780,28 +1784,49 @@ public class ReasoningKernel {
             for (AxiomInterface notProcessed : ontology.getAxioms()) {
                 if (!lc.local(notProcessed)) {
                     MPlus.add(p.getKey());
-                    MAll.add(p.getKey());
                     break;
                 }
             }
             for (AxiomInterface retracted : ontology.getRetracted()) {
                 if (!lc.local(retracted)) {
                     MMinus.add(p.getKey());
-                    MAll.add(p.getKey());
+                    TaxonomyVertex v = p.getKey().getTaxVertex();
+                    if (v.noNeighbours(true)) {
+                        v.addNeighbour(true, tax.getTopVertex());
+                        tax.getTopVertex().addNeighbour(false, v);
+                    }
                     break;
                 }
             }
         }
         t.stop();
-        System.out.println("Determine concepts that need reclassification ("
-                + MAll.size() + "): done in " + t);
-        System.out.println("Add/Del names Taxonomy:" + tax);
-        for (ClassifiableEntry p : MAll) {
-            reclassifyNode(p.getTaxVertex(), MPlus.contains(p), MMinus.contains(p));
-            System.out.println(tax);
+        // fill in an order to
+        LinkedList<TaxonomyVertex> queue = new LinkedList<TaxonomyVertex>();
+        List<ClassifiableEntry> toProcess = new ArrayList<ClassifiableEntry>();
+        queue.add(tax.getTopVertex());
+        while (!queue.isEmpty()) {
+            TaxonomyVertex cur = queue.remove(0);
+            if (tax.isVisited(cur)) {
+                continue;
+            }
+            tax.setVisited(cur);
+            ClassifiableEntry entry = cur.getPrimer();
+            if (MPlus.contains(entry) || MMinus.contains(entry)) {
+                toProcess.add(entry);
+            }
+            queue.addAll(cur.neigh(false));
         }
+        tax.clearVisited();
+        System.out.println("Determine concepts that need reclassification ("
+                + toProcess.size() + "): done in " + t);
+        System.out.println("Add/Del names Taxonomy:" + tax);
+        Classifier = new IncrementalClassifier(tax);
+        for (ClassifiableEntry p : toProcess) {
+            reclassifyNode(p, MPlus.contains(p), MMinus.contains(p));
+        }
+        tax.finalise();
         getOntology().setProcessed();
-        System.out.println("Total modularization time: " + moduleTimer
+        System.out.println("Total modularization (" + nModule + ") time: " + moduleTimer
                 + "\nTotal reasoning time: " + subCheckTimer);
     }
 
@@ -1811,53 +1836,54 @@ public class ReasoningKernel {
      * @param added
      * @param removed */
     @PortedFrom(file = "Incremental.cpp", name = "reclassifyNode")
-    public void reclassifyNode(TaxonomyVertex node, boolean added, boolean removed) {
-        ClassifiableEntry entry = node.getPrimer();
+    public void reclassifyNode(ClassifiableEntry entry, boolean added, boolean removed) {
+        TaxonomyVertex node = entry.getTaxVertex();
         NamedEntity entity = entry.getEntity();
-        System.out.println("Reclassify " + entity.getName());
+        System.out.println("Reclassify " + entity.getName() + " (" + (added?"Added":"") +
+                (removed?" Removed":"")+ ")");
+
+        Timer timer=new Timer();
+        timer.start();
+
         List<AxiomInterface> Module = setupSig(entry);
         // update Name2Sig
         TSignature ModSig = getModExtractor(false).getModularizer().getSignature();
+        timer.stop();
+System.out.println( "Creating module (" + Module.size() + " axioms) time: " + timer);
+        timer.reset();
         // renew all signature-2-entry map
         Map<NamedEntity, NamedEntry> KeepMap = new HashMap<NamedEntity, NamedEntry>();
         for (NamedEntity e : ModSig.begin()) {
             KeepMap.put(e, e.getEntry());
             e.setEntry(null);
         }
-        ReasoningKernel reasoner = new ReasoningKernel(kernelOptions, datatypeFactory);
+        
+        timer.start();
+        if (!ModSig.subset(OldSig, false)) // create new reasoner
+        {
+            // create new reasoner
+            OldSig = ModSig;
+            JFactReasonerConfiguration conf=new JFactReasonerConfiguration( kernelOptions);
+            conf.setUseIncrementalReasoning(false);
+        Reasoner = new ReasoningKernel(conf, datatypeFactory);
         subCheckTimer.start();
-        // System.out.println("Module: ");
         for (AxiomInterface p : Module) {
-            reasoner.getOntology().add(p);
-            // System.out.println(p);
+            Reasoner.getOntology().add(p);
         }
-        node.removeLinks(true);
-        // update top links
-        node.clearLinks(/* upDirection= */true);
-        ActorImpl actor = new ActorImpl();
-        actor.needConcepts();
-        reasoner.getSupConcepts((ConceptName) entity, /* direct= */true, actor);
-        subCheckTimer.stop();
-        for (List<ClassifiableEntry> q : actor.getElements2D()) {
-            ClassifiableEntry parentCE = q.get(0);
-            if (parentCE.equals(reasoner.getCTaxonomy().getTopVertex().getPrimer())) {
-                // special case it
-                // FIXME!! re-think after a proper taxonomy change
-                node.addNeighbour(true, getCTaxonomy().getTopVertex());
-                break;
-            }
-            // this CE is of the Reasoner
-            NamedEntity parent = parentCE.getEntity();
-            // note that the entity maps to the Reasoner, so we need to use
-            // saved map
-            NamedEntry localNE = KeepMap.get(parent);
-            node.addNeighbour( /* upDirection= */true,
-                    ((ClassifiableEntry) localNE).getTaxVertex());
-        }
-        // actually add node
-        node.incorporate(kernelOptions);
-        // clear an ontology
-        reasoner.getOntology().safeClear();
+        
+        Reasoner.isKBConsistent();
+        timer.stop();
+        System.out.println( "; init reasoner time: " + timer);
+    }
+
+    timer.reset();
+    timer.start();
+        
+    Classifier.reclassify();
+    timer.stop();
+    System.out.println( "; reclassification time: " + timer );
+    // clear an ontology
+        Reasoner.getOntology().safeClear();
         // restore all signature-2-entry map
         for (NamedEntity s : ModSig.begin()) {
             s.setEntry(KeepMap.get(s));

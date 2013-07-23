@@ -184,6 +184,47 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
         timeOut = source.getTimeOut();
     }
 
+    public JFactReasonerConfiguration(JFactReasonerConfiguration source) {
+        this();
+        progressMonitor = source.getProgressMonitor();
+        freshEntityPolicy = source.getFreshEntityPolicy();
+        individualNodeSetPolicy = source.getIndividualNodeSetPolicy();
+        timeOut = source.getTimeOut();
+        alwaysPreferEquals = source.alwaysPreferEquals;
+        DEBUG_SAVE_RESTORE = source.DEBUG_SAVE_RESTORE;
+        dumpQuery = source.dumpQuery;
+        FPP_DEBUG_SPLIT_MODULES = source.FPP_DEBUG_SPLIT_MODULES;
+        freshEntityPolicy = source.freshEntityPolicy;
+        individualNodeSetPolicy = source.individualNodeSetPolicy;
+        RKG_DEBUG_ABSORPTION = source.RKG_DEBUG_ABSORPTION;
+        RKG_IMPROVE_SAVE_RESTORE_DEPSET = source.RKG_IMPROVE_SAVE_RESTORE_DEPSET;
+        RKG_PRINT_DAG_USAGE = source.RKG_PRINT_DAG_USAGE;
+        RKG_UPDATE_RND_FROM_SUPERROLES = source.RKG_UPDATE_RND_FROM_SUPERROLES;
+        RKG_USE_DYNAMIC_BACKJUMPING = source.RKG_USE_DYNAMIC_BACKJUMPING;
+        RKG_USE_FAIRNESS = source.RKG_USE_FAIRNESS;
+        RKG_USE_SIMPLE_RULES = source.RKG_USE_SIMPLE_RULES;
+        RKG_USE_SORTED_REASONING = source.RKG_USE_SORTED_REASONING;
+        splits = source.splits;
+        timeOut = source.timeOut;
+        TMP_PRINT_TAXONOMY_INFO = source.TMP_PRINT_TAXONOMY_INFO;
+        USE_BLOCKING_STATISTICS = source.USE_BLOCKING_STATISTICS;
+        USE_LOGGING = source.USE_LOGGING;
+        USE_REASONING_STATISTICS = source.USE_REASONING_STATISTICS;
+        useADInModuleExtraction = source.useADInModuleExtraction;
+        useAnywhereBlocking = source.useAnywhereBlocking;
+        useAxiomSplitting = source.useAxiomSplitting;
+        useBackjumping = source.useBackjumping;
+        useCompletelyDefined = source.useCompletelyDefined;
+        useELReasoner = source.useELReasoner;
+        useIncrementalReasoning = source.useIncrementalReasoning;
+        useLazyBlocking = source.useLazyBlocking;
+        useRelevantOnly = source.useRelevantOnly;
+        useSemanticBranching = source.useSemanticBranching;
+        useSpecialDomains = source.useSpecialDomains;
+        useUndefinedNames = source.useUndefinedNames;
+        verboseOutput = source.verboseOutput;
+    }
+
     @Override
     public FreshEntityPolicy getFreshEntityPolicy() {
         return freshEntityPolicy;

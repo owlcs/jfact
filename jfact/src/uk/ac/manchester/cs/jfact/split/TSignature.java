@@ -183,11 +183,21 @@ public class TSignature {
 
     /** @return true if *THIS \subseteq SIG (\subset if IMPROPER = false ) */
     @PortedFrom(file = "tSignature.h", name = "subset")
-    boolean subset(TSignature sig, boolean improper) {
+    public boolean subset(TSignature sig, boolean improper) {
         boolean subset = sig.set.containsAll(set);
         if (improper) {
             return subset && sig.set.size() != set.size();
         }
         return subset;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder("[");
+        for (NamedEntity p : set) {
+            b.append(p.getName()).append(" ");
+        }
+        b.append("]");
+        return b.toString();
     }
 }

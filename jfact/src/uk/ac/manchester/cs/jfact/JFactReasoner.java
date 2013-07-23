@@ -48,7 +48,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     private final OWLOntology root;
     private final BufferingMode bufferingMode;
     private final List<OWLOntologyChange> rawChanges = new ArrayList<OWLOntologyChange>();
-    private final List<OWLAxiom> reasonerAxioms = new ArrayList<OWLAxiom>();
+    private final Set<OWLAxiom> reasonerAxioms = new LinkedHashSet<OWLAxiom>();
     @Original
     private final JFactReasonerConfiguration configuration;
     private final OWLDataFactory df;
