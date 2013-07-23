@@ -54,7 +54,7 @@ public class TBox {
     private DLConceptTaxonomy pTaxCreator;
     /** name-signature map */
     @PortedFrom(file = "dlTBox.h", name = "pName2Sig")
-    private Map<ClassifiableEntry, TSignature> pName2Sig;
+    private Map<String, TSignature> pName2Sig;
     /** set of reasoning options */
     @Original
     private JFactReasonerConfiguration config;
@@ -2763,7 +2763,7 @@ public class TBox {
      * 
      * @param p */
     @PortedFrom(file = "dlTBox.h", name = "setNameSigMap")
-    public void setNameSigMap(Map<ClassifiableEntry, TSignature> p) {
+    public void setNameSigMap(Map<String, TSignature> p) {
         pName2Sig = p;
     }
 
@@ -2772,7 +2772,7 @@ public class TBox {
         if (pName2Sig == null) {
             return null;
         }
-        return pName2Sig.get(c);
+        return pName2Sig.get(c.getName());
     }
 
     @PortedFrom(file = "dlTBox.h", name = "nRelevantCCalls")
@@ -3088,5 +3088,10 @@ public class TBox {
                 System.out.println();
             }
         } while (!IV.next());
+    }
+
+    public void reclassify(TaxonomyVertex node, TSignature s, boolean added,
+            boolean removed) {
+        pTaxCreator.reclassify(node, s, added, removed);
     }
 }

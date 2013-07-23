@@ -12,10 +12,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.split.TSignature;
 
 /** Taxonomy of named DL concepts (and mapped individuals) */
-public class IncrementalClassifier extends TaxonomyCreator
-{
-
-
+public class IncrementalClassifier extends TaxonomyCreator {
     /** delegate reasoner */
     protected ReasoningKernel reasoner = null;
     /** session signature */
@@ -28,8 +25,7 @@ public class IncrementalClassifier extends TaxonomyCreator
     protected Set<TaxonomyVertex> candidates = new HashSet<TaxonomyVertex>();
     /** whether look into it */
     protected boolean useCandidates;
-
-	// statistic counters
+    // statistic counters
     protected long nConcepts = 0;
     protected long nTries = 0;
     protected long nPositives = 0;
@@ -37,10 +33,8 @@ public class IncrementalClassifier extends TaxonomyCreator
     protected long nSearchCalls = 0;
     protected long nSubCalls = 0;
     protected long nNonTrivialSubCalls = 0;
-
     /** number of non-subsumptions because of module reasons */
     protected long nModuleNegative = 0;
-
     /** indicator of taxonomy creation progress */
     protected ProgressMonitor pTaxProgress = null;
 
@@ -48,10 +42,10 @@ public class IncrementalClassifier extends TaxonomyCreator
     protected static ConceptName getCName(ClassifiableEntry entry) {
         return (ConceptName) entry.getEntity();
     }
-	//-----------------------------------------------------------------
-	//--	General support for DL concept classification
-	//-----------------------------------------------------------------
 
+    // -----------------------------------------------------------------
+    // -- General support for DL concept classification
+    // -----------------------------------------------------------------
     /** test whether Current [= q */
     protected boolean testSub(Concept q) {
         assert q != null;
@@ -75,24 +69,19 @@ public class IncrementalClassifier extends TaxonomyCreator
     }
 
     /** test subsumption via TBox explicitely */
-    protected boolean testSubTBox(Concept q)
-	{
+    protected boolean testSubTBox(Concept q) {
         boolean res = reasoner.isSubsumedBy(Current, getCName(q));
-
-		// update statistic
-		++nTries;
-
-		if ( res ) {
+        // update statistic
+        ++nTries;
+        if (res) {
             ++nPositives;
         } else {
             ++nNegatives;
         }
+        return res;
+    }
 
-		return res;
-	}
-
-	// interface from BAADER paper
-
+    // interface from BAADER paper
     /** SEARCH procedure from Baader et al paper */
     protected void searchBaader(TaxonomyVertex cur) {
         // label 'visited'
@@ -135,24 +124,22 @@ public class IncrementalClassifier extends TaxonomyCreator
     }
 
     /** short-cut from ENHANCED_SUBS */
-    protected boolean enhancedSubs2(TaxonomyVertex cur)
-	{
+    protected boolean enhancedSubs2(TaxonomyVertex cur) {
         if (useCandidates && candidates.contains(cur)) {
             return false;
         }
-		return enhancedSubs1(cur);
-	}
-		// wrapper for the ENHANCED_SUBS
-    protected boolean enhancedSubs(TaxonomyVertex cur)
-	{
-		++nSubCalls;
+        return enhancedSubs1(cur);
+    }
 
-		if ( isValued(cur) ) {
+    // wrapper for the ENHANCED_SUBS
+    protected boolean enhancedSubs(TaxonomyVertex cur) {
+        ++nSubCalls;
+        if (isValued(cur)) {
             return getValue(cur);
         } else {
-            return setValue ( cur, enhancedSubs2(cur) );
+            return setValue(cur, enhancedSubs2(cur));
         }
-	}
+    }
 
     /** explicitly test appropriate subsumption relation */
     protected boolean testSubsumption(TaxonomyVertex cur) {
@@ -189,10 +176,9 @@ public class IncrementalClassifier extends TaxonomyCreator
         return true;
     }
 
-	//-----------------------------------------------------------------
-	//--	Tunable methods (depending on taxonomy type)
-	//-----------------------------------------------------------------
-
+    // -----------------------------------------------------------------
+    // -- Tunable methods (depending on taxonomy type)
+    // -----------------------------------------------------------------
     /** check if no BU classification is required as C=TOP */
     protected boolean isEqualToTop() {
         return false;
@@ -209,19 +195,17 @@ public class IncrementalClassifier extends TaxonomyCreator
     }
 
     /** check if it is possible to skip BU phase */
-    protected boolean needBottomUp()
-	{
-		return false;
-	}
+    protected boolean needBottomUp() {
+        return false;
+    }
 
     /** actions that to be done BEFORE entry will be classified */
-    protected void preClassificationActions()
-	{
-		++nConcepts;
+    protected void preClassificationActions() {
+        ++nConcepts;
         if (pTaxProgress != null) {
             pTaxProgress.setProgress(1);
         }
-	}
+    }
 
     /** check if it is necessary to log taxonomy action */
     protected boolean needLogging() {
@@ -234,8 +218,7 @@ public class IncrementalClassifier extends TaxonomyCreator
     }
 
     public void reclassify(TaxonomyVertex node, ReasoningKernel r, TSignature s,
-            boolean added, boolean removed)
-	{
+            boolean added, boolean removed) {
         reasoner = r;
         sig = s;
         curNode = node;
@@ -287,10 +270,7 @@ public class IncrementalClassifier extends TaxonomyCreator
         searchBaader(pTax.getTopVertex());
         curNode.incorporate(pTax.getOptions());
         clearLabels();
-	}
-
-
-
+    }
 
     @Override
     public String toString() {
@@ -312,6 +292,5 @@ public class IncrementalClassifier extends TaxonomyCreator
                 .append(nEntries * (nEntries - 1) / n).append("\n");
         b.append(super.toString());
         return b.toString();
-}
-
+    }
 }

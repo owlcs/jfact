@@ -42,6 +42,12 @@ public class Taxonomy {
         return current;
     }
 
+    /** set current to a given node */
+    @PortedFrom(file = "Taxonomy.h", name = "setCurrent")
+    public void setCurrent(TaxonomyVertex cur) {
+        current = cur;
+    }
+
     /** apply ACTOR to subgraph starting from NODE as defined by flags; this
      * version is intended to work only with SupConceptActor, which requires the
      * method to return as soon as the apply() method returns false

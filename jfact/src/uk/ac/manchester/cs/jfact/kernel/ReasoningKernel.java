@@ -9,6 +9,7 @@ import static uk.ac.manchester.cs.jfact.helpers.DLTree.*;
 import static uk.ac.manchester.cs.jfact.kernel.CacheStatus.*;
 import static uk.ac.manchester.cs.jfact.kernel.KBStatus.*;
 
+import java.io.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -45,7 +46,7 @@ public class ReasoningKernel {
     private JFactReasonerConfiguration kernelOptions;
     /** local TBox (to be created) */
     @PortedFrom(file = "Kernel.h", name = "pTBox")
-    private TBox pTBox;
+    protected TBox pTBox;
     /** set of axioms */
     @PortedFrom(file = "Kernel.h", name = "Ontology")
     private Ontology ontology = new Ontology();
@@ -53,7 +54,7 @@ public class ReasoningKernel {
     @PortedFrom(file = "Kernel.h", name = "pET")
     private ExpressionTranslator pET;
     @PortedFrom(file = "Kernel.h", name = "Name2Sig")
-    private Map<ClassifiableEntry, TSignature> Name2Sig = new HashMap<ClassifiableEntry, TSignature>();
+    private Map<String, TSignature> Name2Sig = new HashMap<String, TSignature>();
     /** ontology signature (used in incremental) */
     @PortedFrom(file = "Kernel.h", name = "OntoSig")
     private TSignature OntoSig;
@@ -1715,7 +1716,10 @@ public class ReasoningKernel {
         return false;
     }
 
-    /** incrementally classify changes */
+    /** incrementally classify changes
+     * 
+     * @throws IOException
+     * @throws ClassNotFoundException */
     @PortedFrom(file = "Incremental.cpp", name = "doIncremental")
     public void doIncremental() {
         System.out.println("Incremental!");
@@ -1723,24 +1727,26 @@ public class ReasoningKernel {
         ModSyn = null;
         Reasoner = new ReasoningKernel(kernelOptions, datatypeFactory);
         OldSig = new TSignature();
-        Taxonomy tax = getCTaxonomy();
         // System.out.println("Original Taxonomy:" + tax);
-        Set<ClassifiableEntry> MPlus = new HashSet<ClassifiableEntry>();
-        Set<ClassifiableEntry> MMinus = new HashSet<ClassifiableEntry>();
-        Set<ClassifiableEntry> MAll = new HashSet<ClassifiableEntry>();
+        Set<String> MPlus = new HashSet<String>();
+        Set<String> MMinus = new HashSet<String>();
+        Set<String> MAll = new HashSet<String>();
         TSignature NewSig = ontology.getSignature();
         Set<NamedEntity> RemovedEntities = new HashSet<NamedEntity>(OntoSig.begin());
         RemovedEntities.removeAll(NewSig.begin());
         Set<NamedEntity> AddedEntities = new HashSet<NamedEntity>(NewSig.begin());
         AddedEntities.removeAll(OntoSig.begin());
+        Taxonomy tax = getCTaxonomy();
+        Set<Concept> excluded = new HashSet<Concept>();
         // deal with removed concepts
         for (NamedEntity e : RemovedEntities) {
             if (e.getEntry() instanceof Concept) {
                 Concept C = (Concept) e.getEntry();
+                excluded.add(C);
                 // remove all links
                 C.getTaxVertex().remove();
                 // update Name2Sig
-                Name2Sig.remove(C);
+                Name2Sig.remove(C.getName());
             }
         }
         // deal with added concepts
@@ -1767,14 +1773,8 @@ public class ReasoningKernel {
         uk.ac.manchester.cs.jfact.helpers.Timer t = new Timer();
         t.start();
         LocalityChecker lc = getModExtractor(false).getModularizer().getLocalityChecker();
-        if (!ontology.getAxioms().isEmpty()) {
-            System.out.println("Add:" + ontology.getAxioms());
-        }
-        if (!ontology.getRetracted().isEmpty()) {
-            System.out.println("Del:" + ontology.getRetracted());
-        }
         // TODO: add new sig here
-        for (Map.Entry<ClassifiableEntry, TSignature> p : Name2Sig.entrySet()) {
+        for (Map.Entry<String, TSignature> p : Name2Sig.entrySet()) {
             lc.setSignatureValue(p.getValue());
             for (AxiomInterface notProcessed : ontology.getAxioms()) {
                 if (!lc.local(notProcessed)) {
@@ -1785,7 +1785,8 @@ public class ReasoningKernel {
             for (AxiomInterface retracted : ontology.getRetracted()) {
                 if (!lc.local(retracted)) {
                     MMinus.add(p.getKey());
-                    TaxonomyVertex v = p.getKey().getTaxVertex();
+                    // FIXME!! only concepts for now
+                    TaxonomyVertex v = pTBox.getConcept(p.getKey()).getTaxVertex();
                     if (v.noNeighbours(true)) {
                         v.addNeighbour(true, tax.getTopVertex());
                         tax.getTopVertex().addNeighbour(false, v);
@@ -1795,6 +1796,18 @@ public class ReasoningKernel {
             }
         }
         t.stop();
+        tax.finalise();
+        // save the taxonomy
+        byte[] saved = save(pTBox);
+        // do actual change
+        kernelOptions.setUseIncrementalReasoning(false);
+        forceReload();
+        pTBox.isConsistent();
+        kernelOptions.setUseIncrementalReasoning(true);
+        // load the taxonomy
+        pTBox = load(saved);
+        tax = getCTaxonomy();
+        tax.deFinalise();
         // fill in an order to
         LinkedList<TaxonomyVertex> queue = new LinkedList<TaxonomyVertex>();
         List<ClassifiableEntry> toProcess = new ArrayList<ClassifiableEntry>();
@@ -1806,7 +1819,7 @@ public class ReasoningKernel {
             }
             tax.setVisited(cur);
             ClassifiableEntry entry = cur.getPrimer();
-            if (MPlus.contains(entry) || MMinus.contains(entry)) {
+            if (MPlus.contains(entry.getName()) || MMinus.contains(entry.getName())) {
                 toProcess.add(entry);
             }
             queue.addAll(cur.neigh(false));
@@ -1814,20 +1827,22 @@ public class ReasoningKernel {
         tax.clearVisited();
         System.out.println("Determine concepts that need reclassification ("
                 + toProcess.size() + "): done in " + t);
-        System.out.println("Add/Del names Taxonomy:" + tax);
+        // System.out.println("Add/Del names Taxonomy:" + tax);
         Classifier = new IncrementalClassifier(tax);
         Set<ClassifiableEntry> Processed = new HashSet<ClassifiableEntry>();
         for (int i = 0; i < toProcess.size(); i++) {
             ClassifiableEntry p = toProcess.get(i);
             if (!Processed.contains(p)) {
                 Processed.add(p);
-                reclassifyNode(p, MPlus.contains(p), MMinus.contains(p));
+                reclassifyNode(p, MPlus.contains(p.getName()),
+                        MMinus.contains(p.getName()));
                 for (int j = i + 1; j < toProcess.size(); j++) {
                     ClassifiableEntry q = toProcess.get(j);
                     if (!Processed.contains(q)
                             && OldSig.containsNamedEntity(q.getEntity())) {
                         // same module
-                        reclassifyNode(q, MPlus.contains(q), MMinus.contains(q));
+                        reclassifyNode(q, MPlus.contains(q.getName()),
+                                MMinus.contains(q.getName()));
                         Processed.add(q);
                     }
                 }
@@ -1837,6 +1852,34 @@ public class ReasoningKernel {
         getOntology().setProcessed();
         System.out.println("Total modularization (" + nModule + ") time: " + moduleTimer
                 + "\nTotal reasoning time: " + subCheckTimer);
+    }
+
+    private byte[] save(TBox tbox) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ObjectOutputStream oout;
+        try {
+            oout = new ObjectOutputStream(out);
+            // save taxonomy
+            oout.writeObject(tbox);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return out.toByteArray();
+    }
+
+    private TBox load(byte[] tbox) {
+        try {
+            return (TBox) new ObjectInputStream(new ByteArrayInputStream(tbox))
+                    .readObject();
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /** reclassify (incrementally) NODE wrt ADDED or REMOVED flags
@@ -1860,37 +1903,38 @@ public class ReasoningKernel {
                 + timer);
         timer.reset();
         // renew all signature-2-entry map
-        Map<NamedEntity, NamedEntry> KeepMap = new HashMap<NamedEntity, NamedEntry>();
-        for (NamedEntity e : ModSig.begin()) {
-            KeepMap.put(e, e.getEntry());
-            e.setEntry(null);
-        }
+        // Map<NamedEntity, NamedEntry> KeepMap = new HashMap<NamedEntity,
+        // NamedEntry>();
+        // for (NamedEntity e : ModSig.begin()) {
+        // KeepMap.put(e, e.getEntry());
+        // e.setEntry(null);
+        // }
         timer.start();
-        if (!ModSig.subset(OldSig, false)) {
-            // create new reasoner
-            OldSig = ModSig;
-            JFactReasonerConfiguration conf = new JFactReasonerConfiguration(
-                    kernelOptions);
-            conf.setUseIncrementalReasoning(false);
-            Reasoner = new ReasoningKernel(conf, datatypeFactory);
-            for (AxiomInterface p : Module) {
-                Reasoner.getOntology().add(p);
-            }
-            Reasoner.isKBConsistent();
-            timer.stop();
-            System.out.println("; init reasoner time: " + timer);
-            // clear an ontology
-            Reasoner.getOntology().safeClear();
-        }
+        // if (!ModSig.subset(OldSig, false)) {
+        // // create new reasoner
+        // OldSig = ModSig;
+        // JFactReasonerConfiguration conf = new JFactReasonerConfiguration(
+        // kernelOptions);
+        // conf.setUseIncrementalReasoning(false);
+        // Reasoner = new ReasoningKernel(conf, datatypeFactory);
+        // for (AxiomInterface p : Module) {
+        // Reasoner.getOntology().add(p);
+        // }
+        // Reasoner.isKBConsistent();
+        // timer.stop();
+        // System.out.println("; init reasoner time: " + timer);
+        // // clear an ontology
+        // Reasoner.getOntology().safeClear();
+        // }
         timer.reset();
         timer.start();
-        Classifier.reclassify();
+        getTBox().reclassify(node, ModSig, added, removed);
         timer.stop();
         System.out.println("; reclassification time: " + timer);
         // restore all signature-2-entry map
-        for (NamedEntity s : ModSig.begin()) {
-            s.setEntry(KeepMap.get(s));
-        }
+        // for (NamedEntity s : ModSig.begin()) {
+        // s.setEntry(KeepMap.get(s));
+        // }
     }
 
     /** force the re-classification of the changed ontology */
@@ -1932,7 +1976,7 @@ public class ReasoningKernel {
         ret = getModExtractor(false).getModule(sig, ModuleType.M_BOT);
         nModule++;
         // perform update
-        Name2Sig.put(C, new TSignature(getModExtractor(false).getModularizer()
+        Name2Sig.put(C.getName(), new TSignature(getModExtractor(false).getModularizer()
                 .getSignature()));
         moduleTimer.stop();
         return ret;

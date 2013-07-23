@@ -94,6 +94,10 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     /** number of processed common parents */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "nCommon")
     protected int nCommon = 1;
+    /** set of possible parents */
+    protected Set<TaxonomyVertex> candidates = new HashSet<TaxonomyVertex>();
+    /** whether look into it */
+    protected boolean useCandidates = false;
 
     // -- General support for DL concept classification
     /** get access to curEntry as a TConcept */
@@ -371,10 +375,15 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         if (upDirection && !cur.isCommon()) {
             return false;
         }
-        if (tBox.getOptions().isSplits()) {
-            if (!inSplitCheck && !upDirection && !possibleSub(cur)) {
-                return false;
-            }
+        // for top-down search it's enough to look at defined concepts and
+        // non-det ones
+        // if (tBox.getOptions().isSplits()) {
+        // if (!inSplitCheck && !upDirection && !possibleSub(cur)) {
+        // return false;
+        // }
+        // }
+        if (useCandidates && candidates.contains(cur)) {
+            return false;
         }
         return enhancedSubs1(cur);
     }
@@ -573,5 +582,78 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
             cur.mergeIndepNode(v, excludes, curEntry);
             pTax.removeNode(v);
         }
+    }
+
+    /** fill candidates */
+    public void fillCandidates(TaxonomyVertex cur) {
+        if (isValued(cur)) {
+            if (getValue(cur)) {
+                // positive value -- nothing to do
+                return;
+            }
+        } else {
+            candidates.add(cur);
+        }
+        for (TaxonomyVertex p : cur.neigh(true)) {
+            fillCandidates(p);
+        }
+    }
+
+    public void reclassify(TaxonomyVertex node, TSignature s, boolean added,
+            boolean removed) {
+        upDirection = false;
+        sigStack.add(s);
+        curEntry = node.getPrimer();
+        TaxonomyVertex oldCur = pTax.getCurrent();
+        pTax.setCurrent(node);
+        // FIXME!! check the unsatisfiability later
+        assert added || removed;
+        clearLabels();
+        if (node.noNeighbours(true)) {
+            node.addNeighbour(true, pTax.getTopVertex());
+        }
+        // we use candidates set if nothing was added (so no need to look
+        // further from current subs)
+        useCandidates = !added;
+        candidates.clear();
+        if (removed) {
+            // re-check all parents
+            List<TaxonomyVertex> pos = new ArrayList<TaxonomyVertex>();
+            List<TaxonomyVertex> neg = new ArrayList<TaxonomyVertex>();
+            for (TaxonomyVertex p : node.neigh(true)) {
+                boolean sub = testSubsumption(p);
+                setValue(p, sub);
+                if (sub) {
+                    pos.add(p);
+                    propagateTrueUp(p);
+                } else {
+                    neg.add(p);
+                }
+            }
+            node.removeLinks(true);
+            for (TaxonomyVertex q : pos) {
+                node.addNeighbour(true, q);
+            }
+            if (useCandidates) {
+                for (TaxonomyVertex q : neg) {
+                    fillCandidates(q);
+                }
+            }
+        } else    // all parents are there
+        {
+            for (TaxonomyVertex p : node.neigh(true)) {
+                setValue(p, true);
+                propagateTrueUp(p);
+            }
+            node.removeLinks(true);
+        }
+        // FIXME!! for now. later check the equivalence etc
+        setValue(node, false);
+        // the landscape is prepared
+        searchBaader(pTax.getTopVertex());
+        node.incorporate(pTax.getOptions());
+        clearLabels();
+        sigStack.pop();
+        pTax.setCurrent(oldCur);
     }
 }
