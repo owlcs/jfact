@@ -180,4 +180,14 @@ public class TSignature {
         ret.addAll(s);
         return ret;
     }
+
+    /** @return true if *THIS \subseteq SIG (\subset if IMPROPER = false ) */
+    @PortedFrom(file = "tSignature.h", name = "subset")
+    boolean subset(TSignature sig, boolean improper) {
+        boolean subset = sig.set.containsAll(set);
+        if (improper) {
+            return subset && sig.set.size() != set.size();
+        }
+        return subset;
+    }
 }
