@@ -1726,6 +1726,7 @@ public class ReasoningKernel {
         System.out.println("Original Taxonomy:" + tax);
         Set<ClassifiableEntry> MPlus = new HashSet<ClassifiableEntry>();
         Set<ClassifiableEntry> MMinus = new HashSet<ClassifiableEntry>();
+        Set<ClassifiableEntry> MAll = new HashSet<ClassifiableEntry>();
         TSignature NewSig = ontology.getSignature();
         Set<NamedEntity> RemovedEntities = new HashSet<NamedEntity>(OntoSig.begin());
         RemovedEntities.removeAll(NewSig.begin());
@@ -1776,6 +1777,7 @@ public class ReasoningKernel {
             for (AxiomInterface notProcessed : ontology.getAxioms()) {
                 if (!lc.local(notProcessed)) {
                     MPlus.add(p.getKey());
+                    MAll.add(p.getKey());
                     System.out.println("Non-local NP axiom ");
                     System.out.println(notProcessed);
                     System.out.println(" wrt " + p.getKey().getName());
@@ -1785,6 +1787,7 @@ public class ReasoningKernel {
             for (AxiomInterface retracted : ontology.getRetracted()) {
                 if (!lc.local(retracted)) {
                     MMinus.add(p.getKey());
+                    MAll.add(p.getKey());
                     System.out.println("Non-local RT axiom ");
                     System.out.println(retracted);
                     System.out.println(" wrt " + p.getKey().getName());
@@ -1792,29 +1795,10 @@ public class ReasoningKernel {
                 }
             }
         }
-        // fill in an order to
-        List<TaxonomyVertex> queue = new ArrayList<TaxonomyVertex>();
-        List<TaxonomyVertex> toProcess = new ArrayList<TaxonomyVertex>();
-        queue.add(tax.getTopVertex());
-        while (!queue.isEmpty()) {
-            TaxonomyVertex cur = queue.remove(0);
-            if (tax.isVisited(cur)) {
-                continue;
-            }
-            tax.setVisited(cur);
-            ClassifiableEntry entry = cur.getPrimer();
-            if (MPlus.contains(entry) || MMinus.contains(entry)) {
-                toProcess.add(cur);
-            }
-            for (TaxonomyVertex p : cur.neigh(/* upDirection= */false)) {
-                queue.add(p);
-            }
-        }
-        tax.clearVisited();
+
         System.out.println("Add/Del names Taxonomy:" + tax);
-        for (TaxonomyVertex p : toProcess) {
-            ClassifiableEntry entry = p.getPrimer();
-            reclassifyNode(p, MPlus.contains(entry), MMinus.contains(entry));
+        for (ClassifiableEntry p : MAll) {
+            reclassifyNode(p.getTaxVertex(), MPlus.contains(p), MMinus.contains(p));
             System.out.println(tax);
         }
         getOntology().setProcessed();
@@ -1839,9 +1823,10 @@ public class ReasoningKernel {
             KeepMap.put(e, e.getEntry());
             e.setEntry(null);
         }
+        ReasoningKernel reasoner = new ReasoningKernel(kernelOptions, datatypeFactory);
         System.out.println("Module: ");
         for (AxiomInterface p : Module) {
-            getOntology().add(p);
+            reasoner.getOntology().add(p);
             System.out.println(p);
         }
         node.removeLinks(true);
@@ -1849,9 +1834,15 @@ public class ReasoningKernel {
         node.clearLinks(/* upDirection= */true);
         ActorImpl actor = new ActorImpl();
         actor.needConcepts();
-        getSupConcepts((ConceptName) entity, /* direct= */true, actor);
+        reasoner.getSupConcepts((ConceptName) entity, /* direct= */true, actor);
         for (List<ClassifiableEntry> q : actor.getElements2D()) {
             ClassifiableEntry parentCE = q.get(0);
+            if (parentCE.equals(reasoner.getCTaxonomy().getTopVertex().getPrimer())) {
+                // special case it
+                // FIXME!! re-think after a proper taxonomy change
+                node.addNeighbour(true, getCTaxonomy().getTopVertex());
+                break;
+            }
             // this CE is of the Reasoner
             NamedEntity parent = parentCE.getEntity();
             // note that the entity maps to the Reasoner, so we need to use
@@ -1864,7 +1855,7 @@ public class ReasoningKernel {
         // actually add node
         node.incorporate(kernelOptions);
         // clear an ontology
-        getOntology().safeClear();
+        reasoner.getOntology().safeClear();
         // restore all signature-2-entry map
         for (NamedEntity s : ModSig.begin()) {
             s.setEntry(KeepMap.get(s));
