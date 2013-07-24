@@ -1585,13 +1585,13 @@ public class DlSatTester {
                 return true;
             }
         }
-        return false;
+        boolean checkClash = datatypeReasoner.checkClash();
+        if (checkClash) {
+            this.setClashSet(datatypeReasoner.getClashSet());
+        }
+        return checkClash;
         // XXX not sure about this change
-        // boolean checkClash = datatypeReasoner.checkClash();
-        // if (checkClash) {
-        // this.setClashSet(datatypeReasoner.getClashSet());
-        // }
-        // return checkClash;
+        // return false;
     }
 
     @PortedFrom(file = "Reasoner.h", name = "runSat")

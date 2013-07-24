@@ -1716,10 +1716,7 @@ public class ReasoningKernel {
         return false;
     }
 
-    /** incrementally classify changes
-     * 
-     * @throws IOException
-     * @throws ClassNotFoundException */
+    /** incrementally classify changes */
     @PortedFrom(file = "Incremental.cpp", name = "doIncremental")
     public void doIncremental() {
         // System.out.println("Incremental!");

@@ -1494,8 +1494,7 @@ public class TBox {
         }
         initTopBottom();
         setForbidUndefinedNames(false);
-        pTax = new Taxonomy(top, bottom, config);
-        pTaxCreator = new DLConceptTaxonomy(pTax, this);
+        initTaxonomy();
     }
 
     @PortedFrom(file = "dlTBox.h", name = "getAuxConcept")
@@ -2757,7 +2756,10 @@ public class TBox {
 
     /** init taxonomy and classifier */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "initTaxonomy")
-    public void initTaxonomy() {}
+    public void initTaxonomy() {
+        pTax = new Taxonomy(top, bottom, config);
+        pTaxCreator = new DLConceptTaxonomy(pTax, this);
+    }
 
     /** set NameSigMap
      * 
