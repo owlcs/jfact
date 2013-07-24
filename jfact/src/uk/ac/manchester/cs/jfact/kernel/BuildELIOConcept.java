@@ -25,7 +25,8 @@ public abstract class BuildELIOConcept {
     /** assign the concept to a term */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Assign")
     public ConceptExpression Assign(QRQuery query, QRAtom previousAtom, QRVariable v) {
-        System.out.println("Assign:\n variable: " + v + "\n atom:" + previousAtom);
+        // System.out.println("Assign:\n variable: " + v + "\n atom:" +
+        // previousAtom);
         PassedVertice.add(v);
         ConceptExpression t = createConceptByVar(v);
         ConceptExpression s = conjunctiveQueryFolding.getpEM().top();

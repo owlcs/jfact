@@ -50,7 +50,8 @@ public class ConjunctiveQueryFolding {
             ret.setVarFree(v);
             VarRestrictions.put(v.getName(), pEM.top());
         }
-        System.out.println("Remove C atoms from the query: before\n" + query);
+        // System.out.println("Remove C atoms from the query: before\n" +
+        // query);
         // remove C(v) for free vars
         for (QRAtom p : query.getBody().begin()) {
             if (p instanceof QRConceptAtom) {
@@ -68,7 +69,7 @@ public class ConjunctiveQueryFolding {
                 ret.addAtom(p.clone());
             }
         }
-        System.out.println("after\n" + ret);
+        // System.out.println("after\n" + ret);
         return ret;
     }
 
@@ -165,18 +166,19 @@ public class ConjunctiveQueryFolding {
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "PossiblyReplaceAtom")
     private boolean PossiblyReplaceAtom(QRQuery query, int atomIterator, QRAtom newAtom,
             QRVariable newArg, Set<QRAtom> passedAtoms) {
-        System.out.println("Modified code starts here!\nBefore replacing in copy.\n"
-                + query);
+        // System.out.println("Modified code starts here!\nBefore replacing in copy.\n"
+        // + query);
         QRAtom oldAtom = query.getBody().replaceAtom(atomIterator, newAtom);
         query.setVarFree(newArg);
-        System.out.println("Running Checker");
+        // System.out.println("Running Checker");
         QueryConnectednessChecker checker = new QueryConnectednessChecker(query);
         boolean ret;
         if (checker.isConnected()) {
-            System.out.println("Connected\nAfter replacing in Query\n" + query);
+            // System.out.println("Connected\nAfter replacing in Query\n" +
+            // query);
             ret = true;
         } else {
-            System.out.println("Disconnected");
+            // System.out.println("Disconnected");
             // restore the old query
             newAtom = oldAtom;
             oldAtom = query.getBody().replaceAtom(atomIterator, oldAtom);
@@ -223,7 +225,7 @@ public class ConjunctiveQueryFolding {
         query = RemoveCFromQuery(query);
         // clear the map and make identities
         initVarMap(query);
-        System.out.println("Phase 1 starts");
+        // System.out.println("Phase 1 starts");
         List<QRAtom> body = query.getBody().begin();
         for (int i = 0; i < body.size(); i++) {
             QRRoleAtom atom = null;
@@ -301,15 +303,15 @@ public class ConjunctiveQueryFolding {
         TermAssigner assigner = new TermAssigner(this, query);
         deleteFictiveVariables(query);
         QRVariable next = query.getFreeVars().iterator().next();
-        System.out.println("Assigner initialised; var: " + next);
+        // System.out.println("Assigner initialised; var: " + next);
         return assigner.Assign(query, null, next);
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "doQuery")
     private void doQuery(QRQuery query, ReasoningKernel kernel) {
-        System.out.println("Next query: " + query);
+        // System.out.println("Next query: " + query);
         QueryConnectednessChecker cc1 = new QueryConnectednessChecker(query);
-        System.out.println("Connected? " + cc1.isConnected());
+        // System.out.println("Connected? " + cc1.isConnected());
         TQueryToConceptsTransformer transformer = new TQueryToConceptsTransformer(this,
                 query);
         transformer.Run();
@@ -344,30 +346,30 @@ public class ConjunctiveQueryFolding {
         // make index of all vars
         fillVarIndex(query);
         if (I2Var.isEmpty()) {
-            System.out.println("No query variables\n");
+            // System.out.println("No query variables\n");
             return;
         }
         // for every var: create an expression of vars
         List<DLTree> Concepts = new ArrayList<DLTree>();
-        System.out.println("Tuple <");
+        // System.out.println("Tuple <");
         for (int i = 0; i < I2Var.size(); ++i) {
             String var = I2Var.get(i);
             if (i != 0) {
-                System.out.println(", ");
+                // System.out.println(", ");
             }
-            System.out.println(var);
+            // System.out.println(var);
             List<ConceptExpression> list = new ArrayList<ConceptExpression>(
                     query.get(var));
             Concepts.add(kernel.e(pEM.and(list)));
         }
-        System.out.println(">\n");
+        // System.out.println(">\n");
         fillIVec(kernel);
         kernel.getTBox().answerQuery(Concepts);
     }
 
     @PortedFrom(file = "ConjunctiveQuery.cpp", name = "fillIVec")
     void fillIVec(ReasoningKernel kernel) {
-        System.out.print("Creating iterables...");
+        // System.out.print("Creating iterables...");
         kernel.getTBox().IV.clear();
         for (int i = 0; i < I2Var.size(); i++) {
             // The i'th var is I2Var[i]; get its concept
@@ -382,7 +384,7 @@ public class ConjunctiveQueryFolding {
             }
             kernel.getTBox().IV.add(new IterableElem<Individual>(individuals));
         }
-        System.out.println(" done");
+        // System.out.println(" done");
     }
 
     public ExpressionManager getpEM() {

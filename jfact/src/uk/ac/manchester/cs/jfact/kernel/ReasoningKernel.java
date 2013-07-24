@@ -1722,7 +1722,7 @@ public class ReasoningKernel {
      * @throws ClassNotFoundException */
     @PortedFrom(file = "Incremental.cpp", name = "doIncremental")
     public void doIncremental() {
-        System.out.println("Incremental!");
+        // System.out.println("Incremental!");
         // re-set the modularizer to use updated ontology
         ModSyn = null;
         Reasoner = new ReasoningKernel(kernelOptions, datatypeFactory);
@@ -1765,7 +1765,7 @@ public class ReasoningKernel {
                 cur.setSample(C, true);
                 cur.addNeighbour( /* upDirection= */true, tax.getTopVertex());
                 tax.finishCurrentNode();
-                System.out.println("Insert " + C.getName());
+                // System.out.println("Insert " + C.getName());
             }
         }
         OntoSig = NewSig;
@@ -1825,8 +1825,8 @@ public class ReasoningKernel {
             queue.addAll(cur.neigh(false));
         }
         tax.clearVisited();
-        System.out.println("Determine concepts that need reclassification ("
-                + toProcess.size() + "): done in " + t);
+        // System.out.println("Determine concepts that need reclassification ("
+        // + toProcess.size() + "): done in " + t);
         // System.out.println("Add/Del names Taxonomy:" + tax);
         Classifier = new IncrementalClassifier(tax);
         Set<ClassifiableEntry> Processed = new HashSet<ClassifiableEntry>();
@@ -1850,8 +1850,9 @@ public class ReasoningKernel {
         }
         tax.finalise();
         getOntology().setProcessed();
-        System.out.println("Total modularization (" + nModule + ") time: " + moduleTimer
-                + "\nTotal reasoning time: " + subCheckTimer);
+        // System.out.println("Total modularization (" + nModule + ") time: " +
+        // moduleTimer
+        // + "\nTotal reasoning time: " + subCheckTimer);
     }
 
     private byte[] save(TBox tbox) {
@@ -1891,16 +1892,17 @@ public class ReasoningKernel {
     public void reclassifyNode(ClassifiableEntry entry, boolean added, boolean removed) {
         TaxonomyVertex node = entry.getTaxVertex();
         NamedEntity entity = entry.getEntity();
-        System.out.println("Reclassify " + entity.getName() + " ("
-                + (added ? "Added" : "") + (removed ? " Removed" : "") + ")");
+        // System.out.println("Reclassify " + entity.getName() + " ("
+        // + (added ? "Added" : "") + (removed ? " Removed" : "") + ")");
         Timer timer = new Timer();
         timer.start();
         List<AxiomInterface> Module = setupSig(entry);
         // update Name2Sig
         TSignature ModSig = getModExtractor(false).getModularizer().getSignature();
         timer.stop();
-        System.out.println("Creating module (" + Module.size() + " axioms) time: "
-                + timer);
+        // System.out.println("Creating module (" + Module.size() +
+        // " axioms) time: "
+        // + timer);
         timer.reset();
         // renew all signature-2-entry map
         // Map<NamedEntity, NamedEntry> KeepMap = new HashMap<NamedEntity,
@@ -1930,7 +1932,7 @@ public class ReasoningKernel {
         timer.start();
         getTBox().reclassify(node, ModSig, added, removed);
         timer.stop();
-        System.out.println("; reclassification time: " + timer);
+        // System.out.println("; reclassification time: " + timer);
         // restore all signature-2-entry map
         // for (NamedEntity s : ModSig.begin()) {
         // s.setEntry(KeepMap.get(s));
@@ -1992,7 +1994,8 @@ public class ReasoningKernel {
         }
         getTBox().setNameSigMap(Name2Sig);
         OntoSig = ontology.getSignature();
-        System.out.println("Init modules (" + nModule + ") time: " + moduleTimer);
+        // System.out.println("Init modules (" + nModule + ") time: " +
+        // moduleTimer);
     }
 
     // knowledge exploration queries

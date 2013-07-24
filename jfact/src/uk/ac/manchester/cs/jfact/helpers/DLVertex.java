@@ -76,13 +76,7 @@ public class DLVertex extends DLVertexTagDFS {
                     for (int i = 0; i < set.size(); ++i) {
                         l.add(set.get(i));
                     }
-                    try {
                         Collections.sort(l, c);
-                    } catch (IllegalArgumentException e) {
-                        e.printStackTrace();
-                        System.out.println("DLVertex.ChildSet.sorted()\n" + l);
-                        throw e;
-                    }
                     for (int i = 0; i < sorted.length; ++i) {
                         sorted[i] = l.get(i);
                     }

@@ -3000,7 +3000,8 @@ public class TBox {
             pBeg = 0;
             pEnd = Elems.size();
             pCur = 0;
-            System.out.println("TBox.IterableElem.IterableElem() " + Elems.size());
+            // System.out.println("TBox.IterableElem.IterableElem() " +
+            // Elems.size());
             if (Elems.isEmpty()) {
                 throw new IllegalArgumentException("no empties allowed");
             }
@@ -3064,30 +3065,30 @@ public class TBox {
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "answerQuery")
     public void answerQuery(List<DLTree> Cs) {
         dlHeap.removeQuery();
-        System.out.print("Transforming concepts...");
+        // System.out.print("Transforming concepts...");
         // create BPs for all the concepts
         conceptsForQueryAnswering.clear();
         for (DLTree q : Cs) {
             conceptsForQueryAnswering.add(tree2dag(q));
         }
-        System.out.println(" done \nFilling all individuals...");
+        // System.out.println(" done \nFilling all individuals...");
         // all individuals to go thru
         List<Individual> AllInd = new ArrayList<Individual>(i_begin());
-        System.out.println(" done with " + AllInd.size() + " individuals");
+        // System.out.println(" done with " + AllInd.size() + " individuals");
         int size = Cs.size();
-        System.out.println("Run consistency checks...");
-        int n = 0;
-        do {
-            if (n++ % 1000 == 0) {
-                System.out.println("TBox.answerQuery() " + n);
-            }
-            if (nomReasoner.checkExtraCond()) {
-                for (int k = 0; k < size; k++) {
-                    System.out.print(IV.get(k).getName() + " ");
-                }
-                System.out.println();
-            }
-        } while (!IV.next());
+        // System.out.println("Run consistency checks...");
+        // int n = 0;
+        // do {
+        // if (n++ % 1000 == 0) {
+        // System.out.println("TBox.answerQuery() " + n);
+        // }
+        // if (nomReasoner.checkExtraCond()) {
+        // for (int k = 0; k < size; k++) {
+        // System.out.print(IV.get(k).getName() + " ");
+        // }
+        // System.out.println();
+        // }
+        // } while (!IV.next());
     }
 
     public void reclassify(TaxonomyVertex node, TSignature s, boolean added,
