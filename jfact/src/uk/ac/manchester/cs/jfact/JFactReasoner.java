@@ -134,7 +134,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     }
 
     @Override
-    public void ontologiesChanged(List<? extends OWLOntologyChange> changes)
+    public void ontologiesChanged(List<? extends OWLOntologyChange<?>> changes)
             throws OWLException {
         handleRawOntologyChanges(changes);
     }
