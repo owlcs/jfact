@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static uk.ac.manchester.cs.jfact.kernel.InAx.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,8 @@ import conformance.PortedFrom;
 
 /** set of axioms */
 @PortedFrom(file = "tAxiomSet.h", name = "TAxiomSet")
-public class AxiomSet {
+public class AxiomSet implements Serializable {
+    private static final long serialVersionUID = 11000L;
     /** host TBox that holds all concepts/etc */
     @PortedFrom(file = "tAxiomSet.h", name = "Host")
     protected TBox tboxHost;

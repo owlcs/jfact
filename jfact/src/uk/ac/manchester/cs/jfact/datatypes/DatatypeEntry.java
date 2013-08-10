@@ -14,6 +14,7 @@ import conformance.PortedFrom;
 
 /** datatype entry */
 public class DatatypeEntry extends NamedEntry {
+    private static final long serialVersionUID = 11000L;
     /** corresponding type (Type has null in the field) */
     private final Datatype<?> type;
     /** DAG index of the entry */

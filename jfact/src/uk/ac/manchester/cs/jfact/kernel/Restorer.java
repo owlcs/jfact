@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
+import java.io.Serializable;
+
 import conformance.PortedFrom;
 
 /* This file is part of the JFact DL reasoner
@@ -9,7 +11,8 @@ import conformance.PortedFrom;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** restorer */
 @PortedFrom(file = "tRestorer.h", name = "TRestorer")
-public abstract class Restorer {
+public abstract class Restorer implements Serializable {
+    private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tRestorer.h", name = "lev")
     private int raresavestackLevel;
 

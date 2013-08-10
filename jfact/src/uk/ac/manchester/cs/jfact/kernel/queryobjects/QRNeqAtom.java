@@ -9,7 +9,7 @@ import conformance.PortedFrom;
 
 /** inequality atom x!=y */
 @PortedFrom(file = "QR.h", name = "QRNeqAtom")
-public class QRNeqAtom extends QR2ArgAtom {
+public class QRNeqAtom extends QR2ArgAtom { private static final long serialVersionUID=11000L;
     QRNeqAtom(QRiObject A1, QRiObject A2) {
         super(A1, A2);
     }

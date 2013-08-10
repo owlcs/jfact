@@ -13,7 +13,7 @@ import conformance.PortedFrom;
 
 /** concept, set S(C) and aux things */
 @PortedFrom(file = "ELFReasoner.h", name = "TELFConcept")
-class TELFConcept extends TRuleSet {
+class TELFConcept extends TRuleSet { private static final long serialVersionUID=11000L;
     /** original concept (if any) */
     @PortedFrom(file = "ELFReasoner.h", name = "Origin")
     ConceptExpression Origin;

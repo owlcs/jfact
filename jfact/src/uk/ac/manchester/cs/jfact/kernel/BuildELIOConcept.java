@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
+import java.io.Serializable;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -10,7 +11,8 @@ import conformance.PortedFrom;
 
 @SuppressWarnings("javadoc")
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "BuildELIOConcept")
-public abstract class BuildELIOConcept {
+public abstract class BuildELIOConcept implements Serializable {
+    private static final long serialVersionUID = 11000L;
     protected final ConjunctiveQueryFolding conjunctiveQueryFolding;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Query")
     protected QRQuery Query;

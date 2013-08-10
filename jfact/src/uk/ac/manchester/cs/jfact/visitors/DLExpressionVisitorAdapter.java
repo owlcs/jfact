@@ -5,12 +5,16 @@ package uk.ac.manchester.cs.jfact.visitors;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import java.io.Serializable;
+
 import uk.ac.manchester.cs.jfact.datatypes.Datatype;
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.kernel.dl.*;
 
 @SuppressWarnings("javadoc")
-public abstract class DLExpressionVisitorAdapter implements DLExpressionVisitor {
+public abstract class DLExpressionVisitorAdapter implements DLExpressionVisitor,
+        Serializable {
+    private static final long serialVersionUID = 11000L;
     @Override
     public void visit(ConceptTop expr) {}
 
@@ -30,7 +34,7 @@ public abstract class DLExpressionVisitorAdapter implements DLExpressionVisitor 
     public void visit(ConceptOr expr) {}
 
     @Override
-    public void visit(ConceptOneOf expr) {}
+    public void visit(ConceptOneOf<?> expr) {}
 
     @Override
     public void visit(ConceptObjectSelf expr) {}

@@ -15,7 +15,7 @@ import conformance.PortedFrom;
 
 /** object role subsumption */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomORoleSubsumption")
-public class AxiomORoleSubsumption extends AxiomSingleORole {
+public class AxiomORoleSubsumption extends AxiomSingleORole { private static final long serialVersionUID=11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "SubRole")
     private ObjectRoleComplexExpression complexRole;
 

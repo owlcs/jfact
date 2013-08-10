@@ -15,7 +15,7 @@ import conformance.PortedFrom;
 
 /** object role assertion */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomRelatedTo")
-public class AxiomRelatedTo extends AxiomIndividual {
+public class AxiomRelatedTo extends AxiomIndividual { private static final long serialVersionUID=11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "J")
     private IndividualExpression individualExpression;
     @PortedFrom(file = "tDLAxiom.h", name = "R")

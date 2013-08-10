@@ -22,9 +22,9 @@ import conformance.PortedFrom;
 
 /** Concept taxonomy */
 @PortedFrom(file = "DLConceptTaxonomy.h", name = "DLConceptTaxonomy")
-public class DLConceptTaxonomy extends TaxonomyCreator {
+public class DLConceptTaxonomy extends TaxonomyCreator { private static final long serialVersionUID=11000L;
     /** all the derived subsumers of a class (came from the model) */
-    class DerivedSubsumers extends KnownSubsumers {
+    class DerivedSubsumers extends KnownSubsumers { private static final long serialVersionUID=11000L;
         /** set of sure- and possible subsumers */
         protected List<ClassifiableEntry> Sure, Possible;
 

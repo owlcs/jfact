@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
+import java.io.Serializable;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -9,7 +10,8 @@ import conformance.PortedFrom;
 
 /** connectivity checker */
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "QueryConnectednessChecker")
-public class QueryConnectednessChecker {
+public class QueryConnectednessChecker implements Serializable {
+    private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "PassedVertice")
     private Set<QRVariable> PassedVertice = new TreeSet<QRVariable>();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Query")

@@ -1,15 +1,16 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
+import java.io.Serializable;
+
 import uk.ac.manchester.cs.jfact.kernel.dl.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TEquationSolver")
-class TEquationSolver {
-    /**
-     * 
-     */
+class TEquationSolver implements Serializable {
+    private static final long serialVersionUID = 11000L;
+
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "LeftPart")
     private ConceptExpression LeftPart;

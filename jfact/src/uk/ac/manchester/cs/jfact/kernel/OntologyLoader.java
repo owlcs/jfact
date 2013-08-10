@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static uk.ac.manchester.cs.jfact.kernel.Role.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -29,7 +30,8 @@ import conformance.PortedFrom;
 
 /** ontology loader */
 @PortedFrom(file = "tOntologyLoader.h", name = "TOntologyLoader")
-public class OntologyLoader implements DLAxiomVisitor {
+public class OntologyLoader implements DLAxiomVisitor, Serializable {
+    private static final long serialVersionUID = 11000L;
     /** KB to load the ontology */
     @PortedFrom(file = "tOntologyLoader.h", name = "kb")
     private TBox tbox;

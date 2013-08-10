@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +17,8 @@ import uk.ac.manchester.cs.jfact.helpers.FastSetFactory;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "dlVHash.h", name = "dlVHashTable")
-class DLVTable {
+class DLVTable implements Serializable {
+    private static final long serialVersionUID = 11000L;
     /** host DAG that contains actual nodes; */
     private DLDag host;
     /** HT for nodes */

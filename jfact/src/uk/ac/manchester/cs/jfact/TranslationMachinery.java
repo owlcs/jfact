@@ -5,6 +5,7 @@ package uk.ac.manchester.cs.jfact;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import java.io.Serializable;
 import java.util.*;
 
 import org.semanticweb.owlapi.model.*;
@@ -23,7 +24,8 @@ import uk.ac.manchester.cs.jfact.kernel.voc.Vocabulary;
 
 // XXX verify unused parameters
 /** translation stuff */
-public class TranslationMachinery {
+public class TranslationMachinery implements Serializable {
+    private static final long serialVersionUID = 11000L;
     private final AxiomTranslator axiomTranslator;
     private final ClassExpressionTranslator classExpressionTranslator;
     private final DataRangeTranslator dataRangeTranslator;
@@ -177,7 +179,8 @@ public class TranslationMachinery {
         return l;
     }
 
-    class EntailmentChecker implements OWLAxiomVisitorEx<Boolean> {
+    class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>, Serializable {
+        private static final long serialVersionUID = 11000L;
         public EntailmentChecker() {}
 
         @Override
@@ -472,7 +475,9 @@ public class TranslationMachinery {
         }
     }
 
-    abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity> {
+    abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity> implements
+            Serializable {
+        private static final long serialVersionUID = 11000L;
         private Map<E, T> entity2dlentity = new HashMap<E, T>();
         private Map<T, E> dlentity2entity = new HashMap<T, E>();
 
@@ -543,6 +548,7 @@ public class TranslationMachinery {
 
     class ObjectPropertyTranslator extends
             OWLEntityTranslator<OWLObjectPropertyExpression, ObjectRoleExpression> {
+        private static final long serialVersionUID = 11000L;
         public ObjectPropertyTranslator() {}
 
         @Override
@@ -601,6 +607,7 @@ public class TranslationMachinery {
 
     class ComplexObjectPropertyTranslator extends
             OWLEntityTranslator<OWLObjectPropertyExpression, ObjectRoleComplexExpression> {
+        private static final long serialVersionUID = 11000L;
         public ComplexObjectPropertyTranslator() {}
 
         @Override
@@ -653,7 +660,9 @@ public class TranslationMachinery {
         }
     }
 
-    protected class DeclarationVisitorEx implements OWLEntityVisitorEx<AxiomInterface> {
+    protected class DeclarationVisitorEx implements OWLEntityVisitorEx<AxiomInterface>,
+            Serializable {
+        private static final long serialVersionUID = 11000L;
         @Override
         public AxiomInterface visit(OWLClass cls) {
             return kernel.declare(df.getOWLDeclarationAxiom(cls), toClassPointer(cls));
@@ -689,7 +698,8 @@ public class TranslationMachinery {
         }
     }
 
-    class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface> {
+    class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>, Serializable {
+        private static final long serialVersionUID = 11000L;
         private DeclarationVisitorEx v;
 
         public AxiomTranslator() {
@@ -980,6 +990,7 @@ public class TranslationMachinery {
     class ClassExpressionTranslator extends
             OWLEntityTranslator<OWLClass, ConceptExpression> implements
             OWLClassExpressionVisitorEx<ConceptExpression> {
+        private static final long serialVersionUID = 11000L;
         public ClassExpressionTranslator() {}
 
         @Override
@@ -1004,6 +1015,7 @@ public class TranslationMachinery {
 
         @Override
         protected ConceptExpression createPointerForEntity(OWLClass entity) {
+            // XXX many entities would cause a lot of wasted memory
             return em.concept(entity.getIRI().toString());
         }
 
@@ -1137,6 +1149,7 @@ public class TranslationMachinery {
 
     class DataPropertyTranslator extends
             OWLEntityTranslator<OWLDataProperty, DataRoleExpression> {
+        private static final long serialVersionUID = 11000L;
         public DataPropertyTranslator() {}
 
         @Override
@@ -1177,6 +1190,7 @@ public class TranslationMachinery {
 
     class DataRangeTranslator extends OWLEntityTranslator<OWLDatatype, DataExpression>
             implements OWLDataRangeVisitorEx<DataExpression> {
+        private static final long serialVersionUID = 11000L;
         public DataRangeTranslator() {}
 
         @Override
@@ -1283,6 +1297,7 @@ public class TranslationMachinery {
 
     class IndividualTranslator extends
             OWLEntityTranslator<OWLNamedIndividual, IndividualName> {
+        private static final long serialVersionUID = 11000L;
         public IndividualTranslator() {}
 
         @Override

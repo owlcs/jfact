@@ -12,6 +12,7 @@ import java.util.Collection;
 
 class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<O>
         implements DatatypeExpression<O>, OrderedDatatype<O> {
+    private static final long serialVersionUID = 11000L;
     // TODO handle all value space restrictions in the delegations
     private final Datatype<O> host;
 

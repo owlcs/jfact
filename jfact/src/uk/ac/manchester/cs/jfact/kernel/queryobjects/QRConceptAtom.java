@@ -10,7 +10,7 @@ import conformance.PortedFrom;
 
 /** concept atom: C(x) */
 @PortedFrom(file = "QR.h", name = "QRConceptAtom")
-public class QRConceptAtom extends QRAtom {
+public class QRConceptAtom extends QRAtom { private static final long serialVersionUID=11000L;
     /** pointer to a concept (named one atm) */
     @PortedFrom(file = "QR.h", name = "Concept")
     ConceptExpression Concept;

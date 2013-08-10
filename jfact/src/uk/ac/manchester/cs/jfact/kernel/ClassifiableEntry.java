@@ -12,7 +12,7 @@ import conformance.PortedFrom;
 
 /** classifiable entry */
 @PortedFrom(file = "taxNamEntry.h", name = "ClassifiableEntry")
-public class ClassifiableEntry extends NamedEntry {
+public class ClassifiableEntry extends NamedEntry { private static final long serialVersionUID=11000L;
     /** link to taxonomy entry for current entry */
     @PortedFrom(file = "taxNamEntry.h", name = "taxVertex")
     protected TaxonomyVertex taxVertex = null;

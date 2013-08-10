@@ -14,7 +14,7 @@ import conformance.PortedFrom;
 
 /** role, set R(C,D) */
 @PortedFrom(file = "ELFReasoner.h", name = "TELFRole")
-class TELFRole extends TRuleSet {
+class TELFRole extends TRuleSet { private static final long serialVersionUID=11000L;
     /** original role (if any) */
     @PortedFrom(file = "ELFReasoner.h", name = "Origin")
     ObjectRoleExpression Origin;

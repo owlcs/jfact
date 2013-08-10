@@ -12,7 +12,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.split.TSignature;
 
 /** Taxonomy of named DL concepts (and mapped individuals) */
-public class IncrementalClassifier extends TaxonomyCreator {
+public class IncrementalClassifier extends TaxonomyCreator { private static final long serialVersionUID=11000L;
     /** delegate reasoner */
     protected ReasoningKernel reasoner = null;
     /** session signature */

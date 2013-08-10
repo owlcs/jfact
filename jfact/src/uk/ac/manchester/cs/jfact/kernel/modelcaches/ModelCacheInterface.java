@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.kernel.modelcaches;
 
+import java.io.Serializable;
+
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import conformance.Original;
 import conformance.PortedFrom;
@@ -11,7 +13,8 @@ import conformance.PortedFrom;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** model cache */
 @PortedFrom(file = "modelCacheInterface.h", name = "modelCacheInterface")
-public abstract class ModelCacheInterface {
+public abstract class ModelCacheInterface implements Serializable {
+    private static final long serialVersionUID = 11000L;
     /** flag to show that model contains nominals */
     @PortedFrom(file = "modelCacheInterface.h", name = "hasNominalNode")
     private boolean hasNominalNode;

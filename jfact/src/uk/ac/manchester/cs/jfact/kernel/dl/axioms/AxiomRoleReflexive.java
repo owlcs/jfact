@@ -14,7 +14,7 @@ import conformance.PortedFrom;
 
 /** reflexive object role */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomRoleReflexive")
-public class AxiomRoleReflexive extends AxiomSingleORole {
+public class AxiomRoleReflexive extends AxiomSingleORole { private static final long serialVersionUID=11000L;
     /** @param ax
      * @param role */
     public AxiomRoleReflexive(OWLAxiom ax, ObjectRoleExpression role) {

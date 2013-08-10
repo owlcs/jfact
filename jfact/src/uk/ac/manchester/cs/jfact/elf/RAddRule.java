@@ -10,7 +10,7 @@ import conformance.PortedFrom;
 // Rule for C [= \Er.D case; CR3
 /** the rule for C [= \ER.D case */
 @PortedFrom(file = "ELFReasoner.h", name = "RAddRule")
-public class RAddRule extends TELFRule {
+public class RAddRule extends TELFRule { private static final long serialVersionUID=11000L;
     /** role to add the pair */
     @PortedFrom(file = "ELFReasoner.h", name = "R")
     TELFRole R;

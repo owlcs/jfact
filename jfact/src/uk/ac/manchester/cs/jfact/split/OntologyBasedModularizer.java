@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.jfact.split;
 
+import java.io.Serializable;
 import java.util.List;
 
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
@@ -8,7 +9,8 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "OntologyBasedModularizer.h", name = "OntologyBasedModularizer")
-public class OntologyBasedModularizer {
+public class OntologyBasedModularizer implements Serializable {
+    private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "OntologyBasedModularizer.h", name = "Ontology")
     private Ontology ontology;
     private TModularizer Modularizer;

@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
+import java.io.Serializable;
+
 import org.semanticweb.owlapi.util.MultiMap;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
@@ -7,10 +9,9 @@ import uk.ac.manchester.cs.jfact.kernel.queryobjects.QRQuery;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TQueryToConceptsTransformer")
-class TQueryToConceptsTransformer {
-    /**
-     * 
-     */
+class TQueryToConceptsTransformer implements Serializable {
+    private static final long serialVersionUID = 11000L;
+
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
     /** query to transform */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Query")

@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
+import java.io.Serializable;
 import java.util.*;
 
 import org.semanticweb.owlapi.util.MultiMap;
@@ -15,7 +16,8 @@ import conformance.PortedFrom;
 
 /** conjunctive query folding */
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "ConjunctiveQueryFolding")
-public class ConjunctiveQueryFolding {
+public class ConjunctiveQueryFolding implements Serializable {
+    private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "pEM")
     private ExpressionManager pEM = new ExpressionManager();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "VarFact")

@@ -5,6 +5,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -19,9 +20,11 @@ import conformance.PortedFrom;
 
 /** expression factory */
 @PortedFrom(file = "tExpressionManager.h", name = "TExpressionManager")
-public class ExpressionManager {
+public class ExpressionManager implements Serializable {
+    private static final long serialVersionUID = 11000L;
     /** Cache for the inverse roles */
-    protected class InverseRoleCache {
+    protected class InverseRoleCache implements Serializable {
+        private static final long serialVersionUID = 11000L;
         /** map tail into an object head(tail) */
         private Map<ObjectRoleExpression, ObjectRoleExpression> map;
 
@@ -53,28 +56,36 @@ public class ExpressionManager {
         }
     }
 
-    protected static class DataroleNameCreator implements NameCreator<DataRoleName> {
+    protected static class DataroleNameCreator implements NameCreator<DataRoleName>,
+            Serializable {
+        private static final long serialVersionUID = 11000L;
         @Override
         public DataRoleName makeEntry(String name) {
             return new DataRoleName(name);
         }
     }
 
-    protected static class ObjectroleNameCreator implements NameCreator<ObjectRoleName> {
+    protected static class ObjectroleNameCreator implements NameCreator<ObjectRoleName>,
+            Serializable {
+        private static final long serialVersionUID = 11000L;
         @Override
         public ObjectRoleName makeEntry(String name) {
             return new ObjectRoleName(name);
         }
     }
 
-    protected static class IndividualNameCreator implements NameCreator<IndividualName> {
+    protected static class IndividualNameCreator implements NameCreator<IndividualName>,
+            Serializable {
+        private static final long serialVersionUID = 11000L;
         @Override
         public IndividualName makeEntry(String name) {
             return new IndividualName(name);
         }
     }
 
-    protected static class ConceptNameCreator implements NameCreator<ConceptName> {
+    protected static class ConceptNameCreator implements NameCreator<ConceptName>,
+            Serializable {
+        private static final long serialVersionUID = 11000L;
         @Override
         public ConceptName makeEntry(String name) {
             return new ConceptName(name);

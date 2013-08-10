@@ -10,7 +10,7 @@ import conformance.PortedFrom;
 // Rule for C1 and C2 [= D case; CR2
 /** the rule for C1 and C2 [= D case */
 @PortedFrom(file = "ELFReasoner.h", name = "CAndSubRule")
-public class CAndSubRule extends TELFRule {
+public class CAndSubRule extends TELFRule { private static final long serialVersionUID=11000L;
     /** concept to find in order to fire a rule */
     @PortedFrom(file = "ELFReasoner.h", name = "Conj")
     TELFConcept Conj;

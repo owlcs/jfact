@@ -11,7 +11,7 @@ import conformance.PortedFrom;
 
 /** named entity base class */
 @PortedFrom(file = "tDLExpression.h", name = "TNamedEntity")
-public abstract class NamedEntityImpl implements NamedEntity {
+public abstract class NamedEntityImpl implements NamedEntity { private static final long serialVersionUID=11000L;
     /** name of the entity */
     protected String name;
     private NamedEntry entry;

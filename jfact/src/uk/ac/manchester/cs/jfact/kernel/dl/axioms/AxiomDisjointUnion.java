@@ -16,7 +16,7 @@ import conformance.PortedFrom;
 
 /** Disjoint Union axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDisjointUnion")
-public class AxiomDisjointUnion extends AbstractNaryAxiom<ConceptExpression> {
+public class AxiomDisjointUnion extends AbstractNaryAxiom<ConceptExpression> { private static final long serialVersionUID=11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "C")
     private ConceptExpression conceptExpression;
 

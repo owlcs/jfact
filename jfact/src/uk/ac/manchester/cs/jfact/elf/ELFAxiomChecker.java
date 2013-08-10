@@ -15,7 +15,7 @@ import conformance.PortedFrom;
 // XXX verify unused parameters
 /** ELF axiom checker */
 @PortedFrom(file = "ELFAxiomChecker.h", name = "ELFAxiomChecker")
-public class ELFAxiomChecker extends DLAxiomVisitorAdapter {
+public class ELFAxiomChecker extends DLAxiomVisitorAdapter { private static final long serialVersionUID=11000L;
     @PortedFrom(file = "ELFAxiomChecker.h", name = "eCh")
     ELFExpressionChecker eCh = new ELFExpressionChecker();
     @PortedFrom(file = "ELFAxiomChecker.h", name = "value")

@@ -31,7 +31,7 @@ public interface DLExpressionVisitor {
 
     public void visit(ConceptOr expr);
 
-    public void visit(ConceptOneOf expr);
+    public void visit(ConceptOneOf<?> expr);
 
     public void visit(ConceptObjectSelf expr);
 

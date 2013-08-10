@@ -5,6 +5,7 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,8 +17,11 @@ import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 import org.semanticweb.owlapi.vocab.OWLFacet;
 
 @SuppressWarnings("javadoc")
-public class Facets {
-    private static abstract class AbstractFacet implements Facet {
+public class Facets implements Serializable {
+    private static final long serialVersionUID = 11000L;
+
+    private static abstract class AbstractFacet implements Facet, Serializable {
+        private static final long serialVersionUID = 11000L;
         final String uri;
         final String fragment;
 
@@ -96,7 +100,7 @@ public class Facets {
         }
     }
 
-    private static class LimitFacet extends AbstractFacet {
+    private static class LimitFacet extends AbstractFacet { private static final long serialVersionUID=11000L;
         public LimitFacet(String u) {
             super(u);
         }
@@ -174,6 +178,7 @@ public class Facets {
     public static Facet totalDigits = new LimitFacet("totalDigits");
     public static Facet fractionDigits = new LimitFacet("fractionDigits");
     public static Facet whiteSpace = new AbstractFacet("whiteSpace") {
+        private static final long serialVersionUID = 11000L;
         @Override
         public boolean isNumberFacet() {
             return false;
@@ -192,6 +197,7 @@ public class Facets {
         }
     };
     public static Facet pattern = new AbstractFacet("pattern") {
+        private static final long serialVersionUID = 11000L;
         @Override
         public boolean isNumberFacet() {
             return false;
@@ -203,30 +209,35 @@ public class Facets {
         }
     };
     public static Facet enumeration = new AbstractFacet("enumeration") {
+        private static final long serialVersionUID = 11000L;
         @Override
         public boolean isNumberFacet() {
             return false;
         }
     };
     public static Facet maxInclusive = new LimitFacet("maxInclusive") {
+        private static final long serialVersionUID = 11000L;
         @Override
         public String toString() {
             return "]";
         }
     };
     public static Facet maxExclusive = new LimitFacet("maxExclusive") {
+        private static final long serialVersionUID = 11000L;
         @Override
         public String toString() {
             return ")";
         }
     };
     public static Facet minInclusive = new LimitFacet("minInclusive") {
+        private static final long serialVersionUID = 11000L;
         @Override
         public String toString() {
             return "[";
         }
     };
     public static Facet minExclusive = new LimitFacet("minExclusive") {
+        private static final long serialVersionUID = 11000L;
         @Override
         public String toString() {
             return "(";

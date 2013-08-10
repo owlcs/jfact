@@ -13,7 +13,7 @@ import conformance.PortedFrom;
 // Rules for R o S [= T case; CR11
 /** the rule for R in R o S [= T case */
 @PortedFrom(file = "ELFReasoner.h", name = "RChainLRule")
-public class RChainLRule extends TELFRule {
+public class RChainLRule extends TELFRule { private static final long serialVersionUID=11000L;
     /** role to check the chain */
     @PortedFrom(file = "ELFReasoner.h", name = "S")
     TELFRole S;

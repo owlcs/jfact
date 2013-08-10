@@ -13,7 +13,7 @@ import conformance.PortedFrom;
 /** rule that checks an addition of C to S(Y) and checks whether there is X s.t.
  * R(X,Y) */
 @PortedFrom(file = "ELFReasoner.h", name = "CAddFillerRule")
-public class CAddFillerRule extends TELFRule {
+public class CAddFillerRule extends TELFRule { private static final long serialVersionUID=11000L;
     /** role to add the pair */
     @PortedFrom(file = "ELFReasoner.h", name = "R")
     TELFRole R;

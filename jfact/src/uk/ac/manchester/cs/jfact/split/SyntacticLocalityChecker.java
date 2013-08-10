@@ -9,6 +9,6 @@ import conformance.PortedFrom;
 
 /** syntactic locality checker for DL axioms */
 @PortedFrom(file = "SyntacticLocalityChecker.h", name = "SyntacticLocalityChecker")
-public class SyntacticLocalityChecker extends GeneralSyntacticLocalityChecker {
+public class SyntacticLocalityChecker extends GeneralSyntacticLocalityChecker { private static final long serialVersionUID=11000L;
     // XXX candidate for deletion
 }

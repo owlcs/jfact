@@ -10,10 +10,8 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorAdapter;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TDepthMeasurer")
-public class TDepthMeasurer extends DLExpressionVisitorAdapter {
-    /**
-     * 
-     */
+public class TDepthMeasurer extends DLExpressionVisitorAdapter { private static final long serialVersionUID=11000L;
+
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
 
     /** @param conjunctiveQueryFolding */

@@ -7,6 +7,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 
 abstract class CardinalityEvaluatorBase extends SigAccessor {
+    private static final long serialVersionUID = 11000L;
     protected UpperBoundDirectEvaluator UBD;
     protected LowerBoundDirectEvaluator LBD;
     protected UpperBoundComplementEvaluator UBC;
@@ -191,6 +192,7 @@ abstract class CardinalityEvaluatorBase extends SigAccessor {
 
 // / determine how many instances can an expression have
 class UpperBoundDirectEvaluator extends CardinalityEvaluatorBase {
+    private static final long serialVersionUID = 11000L;
     // / define a special value for concepts that are not in C^{<= n}
     protected int getNoneValue() {
         return -1;
@@ -316,7 +318,7 @@ class UpperBoundDirectEvaluator extends CardinalityEvaluatorBase {
     }
 
     @Override
-    public void visit(ConceptOneOf expr) {
+    public void visit(ConceptOneOf<?> expr) {
         value = expr.size();
     }
 
@@ -413,9 +415,10 @@ class UpperBoundDirectEvaluator extends CardinalityEvaluatorBase {
     public void visit(DataOneOf expr) {
         value = expr.size();
     }
-}; // UpperBoundDirectEvaluator
+}
 
 class UpperBoundComplementEvaluator extends CardinalityEvaluatorBase {
+    private static final long serialVersionUID = 11000L;
     // / define a special value for concepts that are not in C^{<= n}
     protected int getNoneValue() {
         return -1;
@@ -537,7 +540,7 @@ class UpperBoundComplementEvaluator extends CardinalityEvaluatorBase {
     }
 
     @Override
-    public void visit(ConceptOneOf c) {
+    public void visit(ConceptOneOf<?> c) {
         value = getNoneValue();
     }
 
@@ -641,9 +644,10 @@ class UpperBoundComplementEvaluator extends CardinalityEvaluatorBase {
     public void visit(DataOneOf c) {
         value = getNoneValue();
     }
-}; // UpperBoundComplementEvaluator
+}
 
 class LowerBoundDirectEvaluator extends CardinalityEvaluatorBase {
+    private static final long serialVersionUID = 11000L;
     // / define a special value for concepts that are not in C^{>= n}
     protected int getNoneValue() {
         return 0;
@@ -817,7 +821,7 @@ class LowerBoundDirectEvaluator extends CardinalityEvaluatorBase {
     }
 
     @Override
-    public void visit(ConceptOneOf expr) {
+    public void visit(ConceptOneOf<?> expr) {
         value = expr.size() > 0 ? 1 : getNoneValue();
     }
 
@@ -924,6 +928,7 @@ class LowerBoundDirectEvaluator extends CardinalityEvaluatorBase {
 }
 
 class LowerBoundComplementEvaluator extends CardinalityEvaluatorBase {
+    private static final long serialVersionUID = 11000L;
     // / define a special value for concepts that are not in C^{>= n}
     protected int getNoneValue() {
         return 0;
@@ -1093,7 +1098,7 @@ class LowerBoundComplementEvaluator extends CardinalityEvaluatorBase {
     }
 
     @Override
-    public void visit(ConceptOneOf c) {
+    public void visit(ConceptOneOf<?> c) {
         value = getNoneValue();
     }
 
@@ -1193,6 +1198,7 @@ class LowerBoundComplementEvaluator extends CardinalityEvaluatorBase {
 
 /** syntactic locality checker for DL axioms */
 public class ExtendedSyntacticLocalityChecker extends GeneralSyntacticLocalityChecker {
+    private static final long serialVersionUID = 11000L;
     protected UpperBoundDirectEvaluator UBD;
     protected LowerBoundDirectEvaluator LBD;
     protected UpperBoundComplementEvaluator UBC;

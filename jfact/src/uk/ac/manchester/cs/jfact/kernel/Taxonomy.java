@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry.*;
 
+import java.io.Serializable;
 import java.util.*;
 
 import uk.ac.manchester.cs.jfact.kernel.actors.Actor;
@@ -17,7 +18,8 @@ import conformance.PortedFrom;
 
 /** taxonomy */
 @PortedFrom(file = "Taxonomy.h", name = "Taxonomy")
-public class Taxonomy {
+public class Taxonomy implements Serializable {
+    private static final long serialVersionUID = 11000L;
     /** array of taxonomy verteces */
     @PortedFrom(file = "Taxonomy.h", name = "Graph")
     private List<TaxonomyVertex> graph = new ArrayList<TaxonomyVertex>();

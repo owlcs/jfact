@@ -19,7 +19,7 @@ import conformance.Original;
  * == i.
  * 
  * @param <T> **/
-public class NamedEntryCollection<T extends NamedEntry> {
+public class NamedEntryCollection<T extends NamedEntry> { private static final long serialVersionUID=11000L;
     /** vector of elements */
     private List<T> base = new ArrayList<T>();
     /** nameset to hold the elements */

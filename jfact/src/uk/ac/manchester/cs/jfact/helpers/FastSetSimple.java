@@ -8,7 +8,7 @@ package uk.ac.manchester.cs.jfact.helpers;
 import java.util.Arrays;
 
 /** int set implementation */
-public class FastSetSimple extends AbstractFastSet {
+public class FastSetSimple extends AbstractFastSet { private static final long serialVersionUID=11000L;
     protected int[] values;
     protected int size = 0;
     protected static int defaultSize = 16;

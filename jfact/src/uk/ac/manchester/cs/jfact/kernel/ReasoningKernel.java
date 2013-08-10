@@ -40,7 +40,8 @@ import conformance.PortedFrom;
 
 /** Reasoning kernel */
 @PortedFrom(file = "Kernel.h", name = "ReasoningKernel")
-public class ReasoningKernel {
+public class ReasoningKernel implements Serializable {
+    private static final long serialVersionUID = 11000L;
     /** options for the kernel and all related substructures */
     @PortedFrom(file = "Kernel.h", name = "KernelOptions")
     private JFactReasonerConfiguration kernelOptions;

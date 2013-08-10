@@ -12,10 +12,8 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorAdapter;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TReplacer")
-class TReplacer extends DLExpressionVisitorAdapter {
-    /**
-         * 
-         */
+class TReplacer extends DLExpressionVisitorAdapter { private static final long serialVersionUID=11000L;
+
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "ReplaceResult")
     private Map<ConceptExpression, ConceptExpression> ReplaceResult;

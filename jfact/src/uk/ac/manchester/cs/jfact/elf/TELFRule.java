@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.elf;
 
+import java.io.Serializable;
+
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -10,7 +12,8 @@ import conformance.PortedFrom;
 /** pattern for the rule. Contains apply() method with updates of the monitored
  * set */
 @PortedFrom(file = "ELFReasoner.h", name = "TELFRule")
-class TELFRule {
+class TELFRule implements Serializable {
+    private static final long serialVersionUID = 11000L;
     /** reasoner that is used to add actions. The number of rules = the number of
      * axioms, so the price is not too bad memory-wise. */
     @PortedFrom(file = "ELFReasoner.h", name = "ER")

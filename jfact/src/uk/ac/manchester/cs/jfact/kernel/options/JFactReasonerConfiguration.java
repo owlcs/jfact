@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel.options;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +17,8 @@ import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 
 @SuppressWarnings("javadoc")
-public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
+public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Serializable {
+    private static final long serialVersionUID = 11000L;
     /** Option 'useRelevantOnly' is used when creating internal DAG
      * representation for externally given TBox. If true, DAG contains only
      * concepts, relevant to query. It is safe to leave this option false. */
@@ -249,7 +251,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
         verboseOutput = b;
     }
 
-    static class StringOption {
+    static class StringOption implements Serializable {
+        private static final long serialVersionUID = 11000L;
         /** option name */
         private String optionName;
         private String value;
@@ -444,7 +447,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
         logAbsorptionAdapterStream = new LogAdapterStream(o);
     }
 
-    static class LogAdapterStream implements LogAdapter {
+    static class LogAdapterStream implements LogAdapter, Serializable {
+        private static final long serialVersionUID = 11000L;
         private OutputStream out;
 
         public LogAdapterStream(OutputStream o) {
@@ -577,7 +581,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration {
         }
     }
 
-    static class LogAdapterImpl implements LogAdapter {
+    static class LogAdapterImpl implements LogAdapter, Serializable {
+        private static final long serialVersionUID = 11000L;
         @Override
         public LogAdapter printTemplate(Templates t, Object... strings) {
             return this;

@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static uk.ac.manchester.cs.jfact.kernel.ToDoPriorMatrix.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +21,8 @@ import conformance.PortedFrom;
 
 /** todo list */
 @PortedFrom(file = "ToDoList.h", name = "ToDoList")
-public class ToDoList {
+public class ToDoList implements Serializable {
+    private static final long serialVersionUID = 11000L;
     @Original
     static int limit = 500;
     @Original
@@ -31,7 +33,8 @@ public class ToDoList {
     volatile boolean change = true;
 
     /** the entry of Todo table */
-    public static class ToDoEntry {
+    public static class ToDoEntry implements Serializable {
+        private static final long serialVersionUID = 11000L;
         /** node to include concept */
         private DlCompletionTree node;
         private int concept;
@@ -63,7 +66,8 @@ public class ToDoList {
     }
 
     /** class to represent single queue */
-    static class ArrayQueue {
+    static class ArrayQueue implements Serializable {
+        private static final long serialVersionUID = 11000L;
         /** waiting ops queue */
         List<ToDoEntry> Wait = new ArrayList<ToDoEntry>(50);
         /** start pointer; points to the 1st element in the queue */
@@ -137,7 +141,8 @@ public class ToDoList {
     }
 
     /** class for saving/restoring priority queue Todo */
-    static class QueueQueueSaveState {
+    static class QueueQueueSaveState implements Serializable {
+        private static final long serialVersionUID = 11000L;
         /** save whole array */
         protected List<ToDoEntry> waitingQueue;
         /** save start point of queue of entries */
@@ -149,7 +154,8 @@ public class ToDoList {
     }
 
     /** class to represent single priority queue */
-    static class QueueQueue {
+    static class QueueQueue implements Serializable {
+        private static final long serialVersionUID = 11000L;
         /** waiting ops queue */
         private List<ToDoEntry> _Wait = new ArrayList<ToDoEntry>();
         /** start pointer; points to the 1st element in the queue */
@@ -241,7 +247,8 @@ public class ToDoList {
     }
 
     /** class for saving/restoring array Todo table */
-    static class TODOListSaveState {
+    static class TODOListSaveState implements Serializable {
+        private static final long serialVersionUID = 11000L;
         protected int backupID_sp;
         protected int backupID_ep;
         /** save state for queueNN */

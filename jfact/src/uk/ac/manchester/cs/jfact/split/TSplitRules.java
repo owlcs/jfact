@@ -5,6 +5,7 @@ package uk.ac.manchester.cs.jfact.split;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import java.io.Serializable;
 import java.util.*;
 
 import uk.ac.manchester.cs.jfact.dep.DepSet;
@@ -23,9 +24,11 @@ import conformance.PortedFrom;
 
 /** all split rules: vector of rules with init and access methods */
 @PortedFrom(file = "tSplitExpansionRules.h", name = "TSplitRules")
-public class TSplitRules {
+public class TSplitRules implements Serializable {
+    private static final long serialVersionUID = 11000L;
     /** class to check whether there is a need to unsplit splitted var */
-    public class TSplitRule {
+    public class TSplitRule implements Serializable {
+        private static final long serialVersionUID = 11000L;
         /** signature of equivalent part of the split */
         Set<NamedEntity> eqSig;
         /** signature of subsumption part of the split */

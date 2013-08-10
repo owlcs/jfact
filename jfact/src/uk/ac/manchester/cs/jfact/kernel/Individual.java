@@ -12,7 +12,7 @@ import conformance.PortedFrom;
 
 /** individual */
 @PortedFrom(file = "tIndividual.h", name = "TIndividual")
-public class Individual extends Concept {
+public class Individual extends Concept { private static final long serialVersionUID=11000L;
     /** pointer to nominal node (works for singletons only) */
     @PortedFrom(file = "tIndividual.h", name = "node")
     private DlCompletionTree node;

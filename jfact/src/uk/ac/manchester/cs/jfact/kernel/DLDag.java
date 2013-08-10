@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -23,7 +24,8 @@ import conformance.PortedFrom;
 
 /** directed acyclic graph */
 @PortedFrom(file = "dlDag.h", name = "DLDag")
-public class DLDag {
+public class DLDag implements Serializable {
+    private static final long serialVersionUID = 11000L;
     /** body of DAG */
     @PortedFrom(file = "dlDag.h", name = "Heap")
     private List<DLVertex> heap = new ArrayList<DLVertex>();

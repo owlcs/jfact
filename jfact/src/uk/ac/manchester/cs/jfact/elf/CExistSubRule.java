@@ -9,7 +9,7 @@ import conformance.PortedFrom;
 
 /** rule that checks the addition of (X,Y) to R and finds a C in S(Y) */
 @PortedFrom(file = "ELFReasoner.h", name = "CExistSubRule")
-public class CExistSubRule extends TELFRule {
+public class CExistSubRule extends TELFRule { private static final long serialVersionUID=11000L;
     /** filler of an existential */
     @PortedFrom(file = "ELFReasoner.h", name = "Filler")
     TELFConcept Filler;

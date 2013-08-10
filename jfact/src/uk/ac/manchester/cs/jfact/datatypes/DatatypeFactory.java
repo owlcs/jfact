@@ -8,6 +8,7 @@ package uk.ac.manchester.cs.jfact.datatypes;
 import static uk.ac.manchester.cs.jfact.datatypes.Facets.*;
 
 import java.io.ByteArrayInputStream;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
@@ -26,7 +27,8 @@ import conformance.Original;
 
 @SuppressWarnings("javadoc")
 @Original
-public class DatatypeFactory {
+public class DatatypeFactory implements Serializable {
+    private static final long serialVersionUID = 11000L;
     static final String namespace = "http://www.w3.org/2001/XMLSchema#";
     static final Comparable NUMBER_EXPRESSION = "[\\-+]?[0-9]+";
     static final Comparable WHITESPACE = whitespace.collapse;
@@ -46,12 +48,14 @@ public class DatatypeFactory {
     public static final Datatype<String> STRING = new STRING_DATATYPE();
     public static final Datatype<String> PLAINLITERAL = new PLAINLITERAL_DATATYPE();
     public static final Datatype<BigDecimal> REAL = new REAL_DATATYPE<BigDecimal>() {
+        private static final long serialVersionUID = 11000L;
         @Override
         public BigDecimal parseValue(String s) {
             return new BigDecimal(s);
         }
     };
     public static final Datatype<BigDecimal> RATIONAL = new RATIONAL_DATATYPE<BigDecimal>() {
+        private static final long serialVersionUID = 11000L;
         @Override
         public BigDecimal parseValue(String s) {
             return new BigDecimal(s);
@@ -59,12 +63,14 @@ public class DatatypeFactory {
     };
     public static final Datatype<Calendar> DATETIMESTAMP = new DATETIMESTAMP_DATATYPE();
     public static final Datatype<BigDecimal> DECIMAL = new DECIMAL_DATATYPE<BigDecimal>() {
+        private static final long serialVersionUID = 11000L;
         @Override
         public BigDecimal parseValue(String s) {
             return new BigDecimal(s);
         }
     };
     public static final Datatype<BigInteger> INTEGER = new INTEGER_DATATYPE<BigInteger>() {
+        private static final long serialVersionUID = 11000L;
         @Override
         public BigInteger parseValue(String s) {
             return new BigInteger(s);
@@ -73,6 +79,7 @@ public class DatatypeFactory {
     public static final Datatype<Double> DOUBLE = new DOUBLE_DATATYPE();
     public static final Datatype<Float> FLOAT = new FLOAT_DATATYPE();
     public static final Datatype<BigInteger> NONPOSITIVEINTEGER = new NONPOSITIVEINTEGER_DATATYPE<BigInteger>() {
+        private static final long serialVersionUID = 11000L;
         @Override
         public BigInteger parseValue(String s) {
             BigInteger parse = new BigInteger(s);
@@ -84,6 +91,7 @@ public class DatatypeFactory {
         }
     };
     public static final Datatype<BigInteger> NEGATIVEINTEGER = new NEGATIVEINTEGER_DATATYPE<BigInteger>() {
+        private static final long serialVersionUID = 11000L;
         @Override
         public BigInteger parseValue(String s) {
             BigInteger parse = new BigInteger(s);
@@ -95,6 +103,7 @@ public class DatatypeFactory {
         }
     };
     public static final Datatype<BigInteger> NONNEGATIVEINTEGER = new NONNEGATIVEINTEGER_DATATYPE<BigInteger>() {
+        private static final long serialVersionUID = 11000L;
         @Override
         public BigInteger parseValue(String s) {
             BigInteger parseValue = new BigInteger(s);
@@ -106,6 +115,7 @@ public class DatatypeFactory {
         }
     };
     public static final Datatype<BigInteger> POSITIVEINTEGER = new POSITIVEINTEGER_DATATYPE<BigInteger>() {
+        private static final long serialVersionUID = 11000L;
         @Override
         public BigInteger parseValue(String s) {
             BigInteger parseValue = new BigInteger(s);
@@ -117,30 +127,35 @@ public class DatatypeFactory {
         }
     };
     public static final Datatype<Long> LONG = new LONG_DATATYPE<Long>() {
+        private static final long serialVersionUID = 11000L;
         @Override
         public Long parseValue(String s) {
             return Long.parseLong(s);
         }
     };
     public static final Datatype<Integer> INT = new INT_DATATYPE<Integer>() {
+        private static final long serialVersionUID = 11000L;
         @Override
         public Integer parseValue(String s) {
             return Integer.parseInt(s);
         }
     };
     public static final Datatype<Short> SHORT = new SHORT_DATATYPE<Short>() {
+        private static final long serialVersionUID = 11000L;
         @Override
         public Short parseValue(String s) {
             return Short.parseShort(s);
         }
     };
     public static final Datatype<Byte> BYTE = new BYTE_DATATYPE<Byte>() {
+        private static final long serialVersionUID = 11000L;
         @Override
         public Byte parseValue(String s) {
             return Byte.parseByte(s);
         }
     };
     public static final Datatype<BigInteger> UNSIGNEDLONG = new UNSIGNEDLONG_DATATYPE<BigInteger>() {
+        private static final long serialVersionUID = 11000L;
         @Override
         public BigInteger parseValue(String s) {
             BigInteger b = new BigInteger(s);
@@ -151,6 +166,7 @@ public class DatatypeFactory {
         }
     };
     public static final Datatype<Long> UNSIGNEDINT = new UNSIGNEDINT_DATATYPE<Long>() {
+        private static final long serialVersionUID = 11000L;
         @Override
         public Long parseValue(String s) {
             long parseInt = Long.parseLong(s);
@@ -161,6 +177,7 @@ public class DatatypeFactory {
         }
     };
     public static final Datatype<Integer> UNSIGNEDSHORT = new UNSIGNEDSHORT_DATATYPE<Integer>() {
+        private static final long serialVersionUID = 11000L;
         @Override
         public Integer parseValue(String s) {
             int parseShort = Integer.parseInt(s);
@@ -171,6 +188,7 @@ public class DatatypeFactory {
         }
     };
     public static final Datatype<Short> UNSIGNEDBYTE = new UNSIGNEDBYTE_DATATYPE<Short>() {
+        private static final long serialVersionUID = 11000L;
         @Override
         public Short parseValue(String s) {
             short parseByte = Short.parseShort(s);
@@ -459,6 +477,7 @@ public class DatatypeFactory {
 
     static abstract class ABSTRACT_NUMERIC_DATATYPE<R extends Comparable<R>> extends
             ABSTRACT_DATATYPE<R> implements NumericDatatype<R> {
+        private static final long serialVersionUID = 11000L;
         public ABSTRACT_NUMERIC_DATATYPE(String uri, Set<Facet> f) {
             super(uri, f);
         }
@@ -661,7 +680,7 @@ public class DatatypeFactory {
         }
     }
 
-    static class ANYURI_DATATYPE extends ABSTRACT_DATATYPE<String> {
+    static class ANYURI_DATATYPE extends ABSTRACT_DATATYPE<String> { private static final long serialVersionUID=11000L;
         ANYURI_DATATYPE() {
             super(namespace + "anyURI", StringFacets);
             ancestors = Utils.generateAncestors(LITERAL);
@@ -686,7 +705,7 @@ public class DatatypeFactory {
         }
     }
 
-    static class BASE64BINARY_DATATYPE extends ABSTRACT_DATATYPE<String> {
+    static class BASE64BINARY_DATATYPE extends ABSTRACT_DATATYPE<String> { private static final long serialVersionUID=11000L;
         BASE64BINARY_DATATYPE() {
             super(namespace + "base64Binary", StringFacets);
             ancestors = Utils.generateAncestors(LITERAL);
@@ -714,7 +733,7 @@ public class DatatypeFactory {
         }
     }
 
-    static class BOOLEAN_DATATYPE extends ABSTRACT_DATATYPE<Boolean> {
+    static class BOOLEAN_DATATYPE extends ABSTRACT_DATATYPE<Boolean> { private static final long serialVersionUID=11000L;
         BOOLEAN_DATATYPE() {
             super(namespace + "boolean", Utils.getFacets(pattern, whiteSpace));
             ancestors = Utils.generateAncestors(LITERAL);
@@ -748,6 +767,7 @@ public class DatatypeFactory {
 
     static class DATETIME_DATATYPE extends ABSTRACT_DATATYPE<Calendar> implements
             OrderedDatatype<Calendar> {
+        private static final long serialVersionUID = 11000L;
         DATETIME_DATATYPE() {
             this(namespace + "dateTime");
         }
@@ -916,7 +936,7 @@ public class DatatypeFactory {
         }
     }
 
-    static class HEXBINARY_DATATYPE extends ABSTRACT_DATATYPE<String> {
+    static class HEXBINARY_DATATYPE extends ABSTRACT_DATATYPE<String> { private static final long serialVersionUID=11000L;
         HEXBINARY_DATATYPE() {
             super(namespace + "hexBinary", StringFacets);
             ancestors = Utils.generateAncestors(LITERAL);
@@ -943,7 +963,7 @@ public class DatatypeFactory {
         }
     }
 
-    static class LITERAL_DATATYPE extends ABSTRACT_DATATYPE<String> {
+    static class LITERAL_DATATYPE extends ABSTRACT_DATATYPE<String> { private static final long serialVersionUID=11000L;
         LITERAL_DATATYPE() {
             super("http://www.w3.org/2000/01/rdf-schema#Literal", Collections
                     .<Facet> emptySet());
@@ -956,7 +976,7 @@ public class DatatypeFactory {
         }
     }
 
-    static class PLAINLITERAL_DATATYPE extends ABSTRACT_DATATYPE<String> {
+    static class PLAINLITERAL_DATATYPE extends ABSTRACT_DATATYPE<String> { private static final long serialVersionUID=11000L;
         PLAINLITERAL_DATATYPE() {
             super("http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral", Utils
                     .getFacets(length, minLength, maxLength, pattern, enumeration));
@@ -973,6 +993,7 @@ public class DatatypeFactory {
 
     abstract static class REAL_DATATYPE<R extends Comparable<R>> extends
             ABSTRACT_NUMERIC_DATATYPE<R> {
+        private static final long serialVersionUID = 11000L;
         public REAL_DATATYPE() {
             this("http://www.w3.org/2002/07/owl#real");
         }
@@ -1022,7 +1043,7 @@ public class DatatypeFactory {
         }
     }
 
-    static class STRING_DATATYPE extends ABSTRACT_DATATYPE<String> {
+    static class STRING_DATATYPE extends ABSTRACT_DATATYPE<String> { private static final long serialVersionUID=11000L;
         public STRING_DATATYPE() {
             this(namespace + "string");
         }
@@ -1041,7 +1062,7 @@ public class DatatypeFactory {
         }
     }
 
-    static class DATETIMESTAMP_DATATYPE extends DATETIME_DATATYPE {
+    static class DATETIMESTAMP_DATATYPE extends DATETIME_DATATYPE { private static final long serialVersionUID=11000L;
         DATETIMESTAMP_DATATYPE() {
             super(namespace + "dateTimeStamp");
             ancestors = Utils.generateAncestors(DATETIME);
@@ -1051,6 +1072,7 @@ public class DatatypeFactory {
 
     static abstract class DECIMAL_DATATYPE<R extends Comparable<R>> extends
             RATIONAL_DATATYPE<R> {
+        private static final long serialVersionUID = 11000L;
         DECIMAL_DATATYPE() {
             this(namespace + "decimal");
         }
@@ -1069,7 +1091,7 @@ public class DatatypeFactory {
         }
     }
 
-    static class DOUBLE_DATATYPE extends ABSTRACT_NUMERIC_DATATYPE<Double> {
+    static class DOUBLE_DATATYPE extends ABSTRACT_NUMERIC_DATATYPE<Double> { private static final long serialVersionUID=11000L;
         DOUBLE_DATATYPE() {
             super(namespace + "double", Utils.getFacets(pew, minmax));
             ancestors = Utils.generateAncestors(LITERAL);
@@ -1109,7 +1131,7 @@ public class DatatypeFactory {
         }
     }
 
-    static class FLOAT_DATATYPE extends ABSTRACT_NUMERIC_DATATYPE<Float> {
+    static class FLOAT_DATATYPE extends ABSTRACT_NUMERIC_DATATYPE<Float> { private static final long serialVersionUID=11000L;
         FLOAT_DATATYPE() {
             super(namespace + "float", FACETS4);
             ancestors = Utils.generateAncestors(LITERAL);
@@ -1176,6 +1198,7 @@ public class DatatypeFactory {
 
     static abstract class BYTE_DATATYPE<R extends Comparable<R>> extends
             SHORT_DATATYPE<R> {
+        private static final long serialVersionUID = 11000L;
         BYTE_DATATYPE() {
             super(namespace + "byte");
             ancestors = Utils.generateAncestors(SHORT);
@@ -1188,7 +1211,7 @@ public class DatatypeFactory {
         }
     }
 
-    static abstract class INT_DATATYPE<R extends Comparable<R>> extends LONG_DATATYPE<R> {
+    static abstract class INT_DATATYPE<R extends Comparable<R>> extends LONG_DATATYPE<R> { private static final long serialVersionUID=11000L;
         INT_DATATYPE() {
             this(namespace + "int");
         }
@@ -1207,6 +1230,7 @@ public class DatatypeFactory {
 
     static abstract class INTEGER_DATATYPE<R extends Comparable<R>> extends
             DECIMAL_DATATYPE<R> {
+        private static final long serialVersionUID = 11000L;
         INTEGER_DATATYPE() {
             this(namespace + "integer");
         }
@@ -1224,6 +1248,7 @@ public class DatatypeFactory {
 
     static abstract class LONG_DATATYPE<R extends Comparable<R>> extends
             INTEGER_DATATYPE<R> {
+        private static final long serialVersionUID = 11000L;
         LONG_DATATYPE() {
             this(namespace + "long");
         }
@@ -1252,6 +1277,7 @@ public class DatatypeFactory {
 
     static abstract class NEGATIVEINTEGER_DATATYPE<R extends Comparable<R>> extends
             NONPOSITIVEINTEGER_DATATYPE<R> {
+        private static final long serialVersionUID = 11000L;
         NEGATIVEINTEGER_DATATYPE() {
             super(namespace + "negativeInteger");
             ancestors = Utils.generateAncestors(NONPOSITIVEINTEGER);
@@ -1265,6 +1291,7 @@ public class DatatypeFactory {
 
     static abstract class NONNEGATIVEINTEGER_DATATYPE<R extends Comparable<R>> extends
             INTEGER_DATATYPE<R> {
+        private static final long serialVersionUID = 11000L;
         NONNEGATIVEINTEGER_DATATYPE() {
             this(namespace + "nonNegativeInteger");
         }
@@ -1282,6 +1309,7 @@ public class DatatypeFactory {
 
     static abstract class NONPOSITIVEINTEGER_DATATYPE<R extends Comparable<R>> extends
             INTEGER_DATATYPE<R> {
+        private static final long serialVersionUID = 11000L;
         NONPOSITIVEINTEGER_DATATYPE() {
             this(namespace + "nonPositiveInteger");
         }
@@ -1299,6 +1327,7 @@ public class DatatypeFactory {
 
     static abstract class POSITIVEINTEGER_DATATYPE<R extends Comparable<R>> extends
             NONNEGATIVEINTEGER_DATATYPE<R> {
+        private static final long serialVersionUID = 11000L;
         POSITIVEINTEGER_DATATYPE() {
             super(namespace + "positiveInteger");
             ancestors = Utils.generateAncestors(NONNEGATIVEINTEGER);
@@ -1310,7 +1339,7 @@ public class DatatypeFactory {
         }
     }
 
-    static abstract class SHORT_DATATYPE<R extends Comparable<R>> extends INT_DATATYPE<R> {
+    static abstract class SHORT_DATATYPE<R extends Comparable<R>> extends INT_DATATYPE<R> { private static final long serialVersionUID=11000L;
         SHORT_DATATYPE() {
             this(namespace + "short");
         }
@@ -1329,6 +1358,7 @@ public class DatatypeFactory {
 
     static abstract class UNSIGNEDBYTE_DATATYPE<R extends Comparable<R>> extends
             UNSIGNEDSHORT_DATATYPE<R> {
+        private static final long serialVersionUID = 11000L;
         UNSIGNEDBYTE_DATATYPE() {
             super(namespace + "unsignedByte");
             ancestors = Utils.generateAncestors(UNSIGNEDSHORT);
@@ -1343,6 +1373,7 @@ public class DatatypeFactory {
 
     static abstract class UNSIGNEDINT_DATATYPE<R extends Comparable<R>> extends
             UNSIGNEDLONG_DATATYPE<R> {
+        private static final long serialVersionUID = 11000L;
         UNSIGNEDINT_DATATYPE() {
             this(namespace + "unsignedInt");
         }
@@ -1361,6 +1392,7 @@ public class DatatypeFactory {
 
     static abstract class UNSIGNEDLONG_DATATYPE<R extends Comparable<R>> extends
             NONNEGATIVEINTEGER_DATATYPE<R> {
+        private static final long serialVersionUID = 11000L;
         UNSIGNEDLONG_DATATYPE() {
             this(namespace + "unsignedLong");
         }
@@ -1390,6 +1422,7 @@ public class DatatypeFactory {
 
     static abstract class UNSIGNEDSHORT_DATATYPE<R extends Comparable<R>> extends
             UNSIGNEDINT_DATATYPE<R> {
+        private static final long serialVersionUID = 11000L;
         UNSIGNEDSHORT_DATATYPE() {
             this(namespace + "unsignedShort");
         }
@@ -1408,6 +1441,7 @@ public class DatatypeFactory {
 
     static abstract class RATIONAL_DATATYPE<R extends Comparable<R>> extends
             REAL_DATATYPE<R> {
+        private static final long serialVersionUID = 11000L;
         RATIONAL_DATATYPE(String uri, Set<Facet> f) {
             super(uri, f);
             ancestors = Utils.generateAncestors(REAL);
@@ -1427,7 +1461,7 @@ public class DatatypeFactory {
         }
     }
 
-    static class LANGUAGE_DATATYPE extends TOKEN_DATATYPE {
+    static class LANGUAGE_DATATYPE extends TOKEN_DATATYPE { private static final long serialVersionUID=11000L;
         LANGUAGE_DATATYPE() {
             super(namespace + "language");
             ancestors = Utils.generateAncestors(TOKEN);
@@ -1438,7 +1472,7 @@ public class DatatypeFactory {
         }
     }
 
-    static class NAME_DATATYPE extends TOKEN_DATATYPE {
+    static class NAME_DATATYPE extends TOKEN_DATATYPE { private static final long serialVersionUID=11000L;
         public NAME_DATATYPE() {
             this(namespace + "Name");
         }
@@ -1453,7 +1487,7 @@ public class DatatypeFactory {
         }
     }
 
-    static class NCNAME_DATATYPE extends NAME_DATATYPE {
+    static class NCNAME_DATATYPE extends NAME_DATATYPE { private static final long serialVersionUID=11000L;
         NCNAME_DATATYPE() {
             super(namespace + "NCName");
             ancestors = Utils.generateAncestors(NAME);
@@ -1469,7 +1503,7 @@ public class DatatypeFactory {
         }
     }
 
-    static class NMTOKEN_DATATYPE extends TOKEN_DATATYPE {
+    static class NMTOKEN_DATATYPE extends TOKEN_DATATYPE { private static final long serialVersionUID=11000L;
         NMTOKEN_DATATYPE() {
             this(namespace + "NMTOKEN");
         }
@@ -1489,7 +1523,7 @@ public class DatatypeFactory {
         }
     }
 
-    static class NMTOKENS_DATATYPE extends NMTOKEN_DATATYPE {
+    static class NMTOKENS_DATATYPE extends NMTOKEN_DATATYPE { private static final long serialVersionUID=11000L;
         NMTOKENS_DATATYPE() {
             super(namespace + "NMTOKENS");
             ancestors = Utils.generateAncestors(NMTOKEN);
@@ -1500,7 +1534,7 @@ public class DatatypeFactory {
         }
     }
 
-    static class NORMALIZEDSTRING_DATATYPE extends STRING_DATATYPE {
+    static class NORMALIZEDSTRING_DATATYPE extends STRING_DATATYPE { private static final long serialVersionUID=11000L;
         public NORMALIZEDSTRING_DATATYPE() {
             this(namespace + "normalizedString");
         }
@@ -1514,7 +1548,7 @@ public class DatatypeFactory {
         }
     }
 
-    static class TOKEN_DATATYPE extends NORMALIZEDSTRING_DATATYPE {
+    static class TOKEN_DATATYPE extends NORMALIZEDSTRING_DATATYPE { private static final long serialVersionUID=11000L;
         TOKEN_DATATYPE() {
             this(namespace + "token");
         }
@@ -1528,7 +1562,7 @@ public class DatatypeFactory {
         }
     }
 
-    static class XMLLITERAL_DATATYPE extends ABSTRACT_DATATYPE<String> {
+    static class XMLLITERAL_DATATYPE extends ABSTRACT_DATATYPE<String> { private static final long serialVersionUID=11000L;
         XMLLITERAL_DATATYPE() {
             super("http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral", Collections
                     .<Facet> emptySet());

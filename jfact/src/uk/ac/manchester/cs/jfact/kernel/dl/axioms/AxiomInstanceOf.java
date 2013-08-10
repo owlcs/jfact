@@ -15,7 +15,7 @@ import conformance.PortedFrom;
 
 /** class assertion */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomInstanceOf")
-public class AxiomInstanceOf extends AxiomIndividual {
+public class AxiomInstanceOf extends AxiomIndividual { private static final long serialVersionUID=11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "C")
     private ConceptExpression conceptExpression;
 

@@ -10,7 +10,7 @@ import conformance.PortedFrom;
 // Rule for R [= S case; CR10
 /** the rule for R [= S case */
 @PortedFrom(file = "ELFReasoner.h", name = "RSubRule")
-public class RSubRule extends TELFRule {
+public class RSubRule extends TELFRule { private static final long serialVersionUID=11000L;
     /** role to add the pair */
     @PortedFrom(file = "ELFReasoner.h", name = "S")
     TELFRole S;

@@ -21,6 +21,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "GeneralSyntacticLocalityChecker.h", name = "GeneralSyntacticLocalityChecker")
 public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implements
         DLAxiomVisitor, LocalityChecker {
+    private static final long serialVersionUID = 11000L;
     /** top evaluator */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "TopEval")
     protected TopEquivalenceEvaluator TopEval;

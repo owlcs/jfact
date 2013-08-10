@@ -29,7 +29,7 @@ public interface DLExpressionVisitorEx<O> {
 
     O visit(ConceptOr expr);
 
-    O visit(ConceptOneOf expr);
+    O visit(ConceptOneOf<?> expr);
 
     O visit(ConceptObjectSelf expr);
 

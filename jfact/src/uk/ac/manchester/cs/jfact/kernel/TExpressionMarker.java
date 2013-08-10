@@ -13,10 +13,8 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorAdapter;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TExpressionMarker")
-class TExpressionMarker extends DLExpressionVisitorAdapter {
-    /**
-     * 
-     */
+class TExpressionMarker extends DLExpressionVisitorAdapter { private static final long serialVersionUID=11000L;
+
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "GoodTerms")
     private Map<ConceptExpression, Boolean> GoodTerms = new HashMap<ConceptExpression, Boolean>();

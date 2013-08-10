@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +25,11 @@ import conformance.PortedFrom;
 
 /** role master */
 @PortedFrom(file = "RoleMaster.h", name = "RoleMaster")
-public class RoleMaster {
-    protected static class RoleCreator implements NameCreator<Role> {
+public class RoleMaster implements Serializable {
+    private static final long serialVersionUID = 11000L;
+
+    protected static class RoleCreator implements NameCreator<Role>, Serializable {
+        private static final long serialVersionUID = 11000L;
         @Override
         public Role makeEntry(String name) {
             return new Role(name);

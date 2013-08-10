@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.jfact.kernel.actors;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,8 @@ import conformance.PortedFrom;
 
 /** @author ignazio */
 @Original
-public class ActorImpl implements Actor {
+public class ActorImpl implements Actor, Serializable {
+    private static final long serialVersionUID = 11000L;
     /** vertices that satisfy the condition */
     @PortedFrom(file = "Actor.h", name = "found")
     protected List<TaxonomyVertex> found = new ArrayList<TaxonomyVertex>();

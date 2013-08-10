@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.split;
 
+import java.io.Serializable;
+
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -9,7 +11,8 @@ import conformance.PortedFrom;
 
 /** interface of the progress indicator */
 @PortedFrom(file = "ProgressIndicatorInterface.h", name = "ProgressIndicatorInterface")
-abstract class ProgressIndicatorInterface {
+abstract class ProgressIndicatorInterface implements Serializable {
+    private static final long serialVersionUID = 11000L;
     /** limit of the progress: indicate [0..uLimit] */
     @PortedFrom(file = "ProgressIndicatorInterface.h", name = "uLimit")
     long uLimit;

@@ -15,7 +15,7 @@ import conformance.PortedFrom;
 
 /** helper class to set signature and locality class */
 @PortedFrom(file = "LocalityChecker.h", name = "SigAccessor")
-public class SigAccessor extends DLExpressionVisitorAdapter {
+public class SigAccessor extends DLExpressionVisitorAdapter { private static final long serialVersionUID=11000L;
     /** signature of a module */
     @PortedFrom(file = "LocalityChecker.h", name = "sig")
     TSignature sig;

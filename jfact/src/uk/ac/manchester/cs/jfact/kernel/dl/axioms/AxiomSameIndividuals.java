@@ -16,7 +16,7 @@ import conformance.PortedFrom;
 
 /** Same individuals axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomSameIndividuals")
-public class AxiomSameIndividuals extends AbstractNaryAxiom<IndividualExpression> {
+public class AxiomSameIndividuals extends AbstractNaryAxiom<IndividualExpression> { private static final long serialVersionUID=11000L;
     /** @param ax
      * @param v */
     public AxiomSameIndividuals(OWLAxiom ax, List<IndividualExpression> v) {

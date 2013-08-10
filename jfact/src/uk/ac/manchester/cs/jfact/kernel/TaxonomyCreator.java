@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -11,7 +12,8 @@ import conformance.PortedFrom;
 
 /** taxonomy creator for DL */
 @PortedFrom(file = "TaxonomyCreator.h", name = "TaxonomyCreator")
-public class TaxonomyCreator {
+public class TaxonomyCreator implements Serializable {
+    private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "TaxonomyCreator.h", name = "pTax")
     protected Taxonomy pTax;
     @PortedFrom(file = "TaxonomyCreator.h", name = "Syns")

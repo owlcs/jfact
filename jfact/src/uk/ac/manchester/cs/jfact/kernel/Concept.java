@@ -16,7 +16,7 @@ import conformance.PortedFrom;
 
 /** concept */
 @PortedFrom(file = "ConceptWithDep.h", name = "Concept")
-public class Concept extends ClassifiableEntry {
+public class Concept extends ClassifiableEntry { private static final long serialVersionUID=11000L;
     /** @return bottom concept */
     @Original
     public static Concept getBOTTOM() {

@@ -9,7 +9,7 @@ import conformance.PortedFrom;
 
 /** interface for general 2-arg atom */
 @PortedFrom(file = "QR.h", name = "QR2ArgAtom")
-class QR2ArgAtom extends QRAtom {
+class QR2ArgAtom extends QRAtom { private static final long serialVersionUID=11000L;
     /** argument 1 */
     @PortedFrom(file = "QR.h", name = "Arg1")
     QRiObject Arg1;

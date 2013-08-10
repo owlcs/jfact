@@ -8,6 +8,7 @@ package uk.ac.manchester.cs.jfact.kernel;
 import static uk.ac.manchester.cs.jfact.kernel.InAx.*;
 import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -23,7 +24,8 @@ import conformance.PortedFrom;
 
 /** inner axiom class */
 @PortedFrom(file = "tAxiom.h", name = "TAxiom")
-public class Axiom {
+public class Axiom implements Serializable {
+    private static final long serialVersionUID = 11000L;
     private LogAdapter absorptionLog;
 
     /** @param l

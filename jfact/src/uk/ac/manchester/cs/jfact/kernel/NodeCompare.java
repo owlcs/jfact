@@ -11,7 +11,7 @@ import java.util.Comparator;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "Tactic.cpp", name = "NodeCompare")
-class NodeCompare implements Comparator<DlCompletionTree>, Serializable {
+class NodeCompare implements Comparator<DlCompletionTree>, Serializable { private static final long serialVersionUID=11000L;
     @Override
     @PortedFrom(file = "Tactic.cpp", name = "compare")
     public int compare(DlCompletionTree o1, DlCompletionTree o2) {

@@ -11,7 +11,7 @@ import conformance.PortedFrom;
 // rule that checks whether for R(C,D) S(D) contains \bot
 /** r bot rule */
 @PortedFrom(file = "ELFReasoner.h", name = "RBotRule")
-public class RBotRule extends TELFRule {
+public class RBotRule extends TELFRule { private static final long serialVersionUID=11000L;
     /** remember the Bottom concept */
     @PortedFrom(file = "ELFReasoner.h", name = "CBot")
     TELFConcept ConceptBot;

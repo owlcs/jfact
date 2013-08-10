@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,8 @@ import conformance.PortedFrom;
 
 /** expression translator */
 @PortedFrom(file = "tExpressionTranslator.h", name = "TExpressionTranslator")
-public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
+public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Serializable {
+    private static final long serialVersionUID = 11000L;
     /** TBox to get access to the named entities */
     @PortedFrom(file = "tExpressionTranslator.h", name = "kb")
     private TBox tbox;
@@ -115,7 +117,7 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree> {
     }
 
     @Override
-    public DLTree visit(ConceptOneOf expr) {
+    public DLTree visit(ConceptOneOf<?> expr) {
         return DLTreeFactory.createSNFOr(visitArgs(expr));
     }
 

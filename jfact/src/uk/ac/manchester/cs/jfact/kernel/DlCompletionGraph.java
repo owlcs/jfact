@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,8 @@ import conformance.PortedFrom;
 
 /** completion graph */
 @PortedFrom(file = "dlCompletionGraph.h", name = "DlCompletionGraph")
-public class DlCompletionGraph {
+public class DlCompletionGraph implements Serializable {
+    private static final long serialVersionUID = 11000L;
     /** initial value of IR level */
     @PortedFrom(file = "dlCompletionGraph.h", name = "initIRLevel")
     private static final int initIRLevel = 0;
@@ -596,9 +598,7 @@ public class DlCompletionGraph {
         }
     }
 
-    /**
-     * 
-     */
+    /** init IR */
     @PortedFrom(file = "dlCompletionGraph.h", name = "initIR")
     public void initIR() {
         ++irLevel;
@@ -612,9 +612,7 @@ public class DlCompletionGraph {
         return node.initIR(irLevel, ds);
     }
 
-    /**
-     * 
-     */
+    /** fini IR */
     @PortedFrom(file = "dlCompletionGraph.h", name = "finiIR")
     public void finiIR() {}
 
@@ -722,9 +720,7 @@ public class DlCompletionGraph {
         }
     }
 
-    /**
-     * 
-     */
+    /** save dl completion graph */
     @PortedFrom(file = "dlCompletionGraph.h", name = "save")
     public void save() {
         DLCompletionGraphSaveState s = new DLCompletionGraphSaveState();

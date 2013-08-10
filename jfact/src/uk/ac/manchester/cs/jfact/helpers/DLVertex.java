@@ -8,6 +8,7 @@ package uk.ac.manchester.cs.jfact.helpers;
 import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
 import static uk.ac.manchester.cs.jfact.kernel.DagTag.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -23,8 +24,10 @@ import conformance.PortedFrom;
  * 
  * @author ignazio */
 @PortedFrom(file = "dlVertex.h", name = "DLVertex")
-public class DLVertex extends DLVertexTagDFS {
-    static class ChildSet {
+public class DLVertex extends DLVertexTagDFS { private static final long serialVersionUID=11000L;
+
+    static class ChildSet implements Serializable {
+        private static final long serialVersionUID = 11000L;
         private Comparator<Integer> c = new Comparator<Integer>() {
             @Override
             @PortedFrom(file = "dlVertex.h", name = "compare")

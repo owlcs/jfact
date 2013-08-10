@@ -20,7 +20,7 @@ import conformance.PortedFrom;
 
 /** nominal reasoner */
 @PortedFrom(file = "ReasonerNom.h", name = "NominalReasoner")
-public class NominalReasoner extends DlSatTester {
+public class NominalReasoner extends DlSatTester { private static final long serialVersionUID=11000L;
     /** all nominals defined in TBox */
     @PortedFrom(file = "ReasonerNom.h", name = "Nominals")
     protected List<Individual> nominals = new ArrayList<Individual>();

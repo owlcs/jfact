@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.kernel.state;
 
+import java.io.Serializable;
+
 import conformance.PortedFrom;
 
 /* This file is part of the JFact DL reasoner
@@ -9,22 +11,14 @@ import conformance.PortedFrom;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** class for S/R local state */
 @PortedFrom(file = "dlCompletionGraph.h", name = "SaveState")
-public class DLCompletionGraphSaveState {
+public class DLCompletionGraphSaveState implements Serializable {
+    private static final long serialVersionUID = 11000L;
     /** number of valid nodes */
-    private int nNodes;
+    private int nNodes = 0;
     /** end pointer of saved nodes */
-    private int sNodes;
+    private int sNodes = 0;
     /** number of used edges */
-    private int nEdges;
-
-    /**
-     * 
-     */
-    public DLCompletionGraphSaveState() {
-        nNodes = 0;
-        sNodes = 0;
-        nEdges = 0;
-    }
+    private int nEdges = 0;
 
     /** @return nNodes */
     public int getnNodes() {

@@ -18,7 +18,7 @@ import conformance.PortedFrom;
 
 /** model cache Ian (Horrocks) */
 @PortedFrom(file = "modelCacheIan.h", name = "modelCacheIan")
-public class ModelCacheIan extends ModelCacheInterface {
+public class ModelCacheIan extends ModelCacheInterface { private static final long serialVersionUID=11000L;
     // sets for the cache
     /** named concepts that appears positively det-lly in a root node of a cache */
     @PortedFrom(file = "modelCacheIan.h", name = "posDConcepts")

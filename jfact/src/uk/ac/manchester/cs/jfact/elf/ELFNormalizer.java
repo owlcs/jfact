@@ -23,7 +23,7 @@ import conformance.PortedFrom;
 
 /** elf normalizer */
 @PortedFrom(file = "ELFNormalizer.h", name = "ELFNormalizer")
-public class ELFNormalizer extends DLAxiomVisitorAdapter {
+public class ELFNormalizer extends DLAxiomVisitorAdapter { private static final long serialVersionUID=11000L;
     /** expression manager to build aux expressions */
     @PortedFrom(file = "ELFNormalizer.h", name = "pEM")
     private ExpressionManager pEM;

@@ -16,7 +16,7 @@ import conformance.PortedFrom;
 /** check whether class expressions are equivalent to top wrt given locality
  * class */
 @PortedFrom(file = "SyntacticLocalityChecker.h", name = "TopEquivalenceEvaluator")
-public class TopEquivalenceEvaluator extends SigAccessor implements DLExpressionVisitor {
+public class TopEquivalenceEvaluator extends SigAccessor implements DLExpressionVisitor { private static final long serialVersionUID=11000L;
     /** corresponding bottom evaluator */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "BotEval")
     BotEquivalenceEvaluator BotEval = null;
@@ -146,7 +146,7 @@ public class TopEquivalenceEvaluator extends SigAccessor implements DLExpression
     }
 
     @Override
-    public void visit(ConceptOneOf expr) {
+    public void visit(ConceptOneOf<?> expr) {
         isTopEq = false;
     }
 

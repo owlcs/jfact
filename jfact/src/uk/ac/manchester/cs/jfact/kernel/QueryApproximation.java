@@ -6,7 +6,7 @@ import uk.ac.manchester.cs.jfact.kernel.queryobjects.QRVariable;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "QueryApproximation")
-public class QueryApproximation extends BuildELIOConcept {
+public class QueryApproximation extends BuildELIOConcept { private static final long serialVersionUID=11000L;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "QueryApproximation")
     public QueryApproximation(ConjunctiveQueryFolding conjunctiveQueryFolding,
             QRQuery query) {

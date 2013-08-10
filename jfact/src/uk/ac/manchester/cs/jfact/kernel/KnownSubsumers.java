@@ -1,9 +1,11 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
+import java.io.Serializable;
 import java.util.List;
 
 /** abstract class to represent the known subsumers of a concept */
-public abstract class KnownSubsumers {
+public abstract class KnownSubsumers implements Serializable {
+    private static final long serialVersionUID = 11000L;
     /** begin of the Sure subsumers interval */
     abstract List<ClassifiableEntry> s_begin();
 

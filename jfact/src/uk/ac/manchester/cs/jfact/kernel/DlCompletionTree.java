@@ -8,6 +8,7 @@ package uk.ac.manchester.cs.jfact.kernel;
 import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
 import static uk.ac.manchester.cs.jfact.kernel.DagTag.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,9 +24,10 @@ import conformance.PortedFrom;
 
 /** completion tree */
 @PortedFrom(file = "dlCompletionTree.h", name = "DlCompletionTree")
-public class DlCompletionTree implements Comparable<DlCompletionTree> {
+public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializable {
+    private static final long serialVersionUID = 11000L;
     /** restore blocked node */
-    static class UnBlock extends Restorer {
+    static class UnBlock extends Restorer { private static final long serialVersionUID=11000L;
         private DlCompletionTree p;
         private DlCompletionTree unblockBlocker;
         private DepSet dep;
@@ -50,7 +52,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree> {
     }
 
     /** restore (un)cached node */
-    static class CacheRestorer extends Restorer {
+    static class CacheRestorer extends Restorer { private static final long serialVersionUID=11000L;
         private DlCompletionTree p;
         private boolean isCached;
 
@@ -66,7 +68,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree> {
     }
 
     /** restore node after IR set change */
-    class IRRestorer extends Restorer {
+    class IRRestorer extends Restorer { private static final long serialVersionUID=11000L;
         private int n;
 
         public IRRestorer() {

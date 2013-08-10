@@ -9,6 +9,7 @@ import static uk.ac.manchester.cs.jfact.helpers.DLTree.*;
 import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
 import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 
+import java.io.Serializable;
 import java.util.*;
 
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
@@ -20,8 +21,10 @@ import conformance.PortedFrom;
 
 /** Role */
 @PortedFrom(file = "tRole.h", name = "Role")
-public class Role extends ClassifiableEntry {
-    static class KnownValue {
+public class Role extends ClassifiableEntry { private static final long serialVersionUID=11000L;
+
+    static class KnownValue implements Serializable {
+        private static final long serialVersionUID = 11000L;
         /** flag value */
         protected boolean value;
         /** whether flag set or not */

@@ -8,6 +8,7 @@ package uk.ac.manchester.cs.jfact.helpers;
 import static uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry.*;
 import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -16,7 +17,8 @@ import java.util.List;
 import uk.ac.manchester.cs.jfact.kernel.*;
 
 @SuppressWarnings("javadoc")
-public class DLTreeFactory {
+public class DLTreeFactory implements Serializable {
+    private static final long serialVersionUID = 11000L;
     private static EnumSet<Token> snfCalls = EnumSet.of(TOP, BOTTOM, CNAME, INAME, RNAME,
             DNAME, DATAEXPR, NOT, INV, AND, FORALL, LE, SELF, RCOMPOSITION, PROJFROM,
             PROJINTO);

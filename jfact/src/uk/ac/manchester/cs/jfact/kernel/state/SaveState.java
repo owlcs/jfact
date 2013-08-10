@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.kernel.state;
 
+import java.io.Serializable;
+
 import conformance.PortedFrom;
 
 /* This file is part of the JFact DL reasoner
@@ -9,7 +11,8 @@ import conformance.PortedFrom;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** class for save/restore */
 @PortedFrom(file = "CGLabel.h", name = "SaveState")
-public class SaveState {
+public class SaveState implements Serializable {
+    private static final long serialVersionUID = 11000L;
     /** states for simple-, complex- and extra labels */
     private int sc;
     private int cc;

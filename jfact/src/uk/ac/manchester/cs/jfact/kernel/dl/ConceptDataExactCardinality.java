@@ -13,7 +13,7 @@ import conformance.PortedFrom;
 
 /** data exact cardinality */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptDataExactCardinality")
-public class ConceptDataExactCardinality extends AbstractConceptDataCardinality {
+public class ConceptDataExactCardinality extends AbstractConceptDataCardinality { private static final long serialVersionUID=11000L;
     /** @param n
      * @param R
      * @param E */

@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -19,7 +20,8 @@ import conformance.PortedFrom;
 
 /** Completion graph label */
 @PortedFrom(file = "CGLabel.h", name = "CGLabel")
-public class CGLabel {
+public class CGLabel implements Serializable {
+    private static final long serialVersionUID = 11000L;
     @Original
     private static int idcounter = 0;
 

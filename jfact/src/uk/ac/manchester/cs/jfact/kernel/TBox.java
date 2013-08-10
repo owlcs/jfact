@@ -14,6 +14,7 @@ import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -34,7 +35,8 @@ import conformance.PortedFrom;
 
 /** tbox */
 @PortedFrom(file = "dlTBox.h", name = "TBox")
-public class TBox {
+public class TBox implements Serializable {
+    private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "dlTBox.h", name = "relevance")
     private long relevance = 1;
     @PortedFrom(file = "dlTBox.h", name = "DLHeap")
@@ -1047,7 +1049,7 @@ public class TBox {
                 int bp = bpTOP;
                 if (dom != null) {
                     bp = tree2dag(dom);
-                    GCIs.setRnD();
+                    GCIs.setRnD(true);
                 }
                 R.setBPDomain(bp);
                 // special domain for R is AR.Range
@@ -1573,9 +1575,7 @@ public class TBox {
         getReasoner().setBlockingMethod(isIRinQuery(), isNRinQuery());
     }
 
-    /**
-     * 
-     */
+    /** build simple cache */
     @PortedFrom(file = "dlTBox.h", name = "buildSimpleCache")
     public void buildSimpleCache() {
         // set cache for BOTTOM entry
@@ -2992,7 +2992,8 @@ public class TBox {
         sameIndividuals.put(p, pair);
     }
 
-    static class IterableElem<Elem> {
+    static class IterableElem<Elem> implements Serializable {
+        private static final long serialVersionUID = 11000L;
         List<Elem> Elems = new ArrayList<Elem>();
         int pBeg, pEnd, pCur;
 
@@ -3022,7 +3023,8 @@ public class TBox {
         }
     }
 
-    static class IterableVec<Elem> {
+    static class IterableVec<Elem> implements Serializable {
+        private static final long serialVersionUID = 11000L;
         void clear() {
             Base.clear();
         }

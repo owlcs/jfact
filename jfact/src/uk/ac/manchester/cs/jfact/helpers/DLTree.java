@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.helpers;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -23,7 +24,8 @@ import conformance.PortedFrom;
  * 
  * @author ignazio */
 @PortedFrom(file = "dltree.h", name = "TsTTree")
-public abstract class DLTree {
+public abstract class DLTree implements Serializable {
+    private static final long serialVersionUID = 11000L;
     private static final CloningVisitor cloner = new CloningVisitor();
     /** element in the tree node */
     protected Lexeme elem;
@@ -246,7 +248,8 @@ interface DLTreeVisitorEx<O> {
 }
 
 @Original
-class CloningVisitor implements DLTreeVisitorEx<DLTree> {
+class CloningVisitor implements DLTreeVisitorEx<DLTree>, Serializable {
+    private static final long serialVersionUID = 11000L;
     @Override
     public DLTree visit(LEAFDLTree t) {
         return new LEAFDLTree(new Lexeme(t.elem));
@@ -274,7 +277,8 @@ class CloningVisitor implements DLTreeVisitorEx<DLTree> {
 }
 
 @Original
-class ReverseCloningVisitor implements DLTreeVisitorEx<DLTree> {
+class ReverseCloningVisitor implements DLTreeVisitorEx<DLTree>, Serializable {
+    private static final long serialVersionUID = 11000L;
     @Override
     public DLTree visit(LEAFDLTree t) {
         return DLTreeFactory.inverseComposition(t);
@@ -305,7 +309,7 @@ class ReverseCloningVisitor implements DLTreeVisitorEx<DLTree> {
 
 /** things that have no children */
 @Original
-class LEAFDLTree extends DLTree {
+class LEAFDLTree extends DLTree { private static final long serialVersionUID=11000L;
     LEAFDLTree(Lexeme l) {
         super(l);
     }
@@ -348,7 +352,7 @@ class LEAFDLTree extends DLTree {
 
 /** covers trees with only one child, i.e., inverse, not */
 @Original
-class ONEDLTree extends DLTree {
+class ONEDLTree extends DLTree { private static final long serialVersionUID=11000L;
     DLTree child;
 
     ONEDLTree(Lexeme l, DLTree t) {
@@ -402,7 +406,7 @@ class ONEDLTree extends DLTree {
 
 /** covers trees with two and only two children */
 @Original
-class TWODLTree extends DLTree {
+class TWODLTree extends DLTree { private static final long serialVersionUID=11000L;
     TWODLTree(Lexeme l, DLTree t1, DLTree t2) {
         super(l);
         children = new ArrayList<DLTree>(2);
@@ -448,7 +452,7 @@ class TWODLTree extends DLTree {
 }
 
 @Original
-class NDLTree extends DLTree {
+class NDLTree extends DLTree { private static final long serialVersionUID=11000L;
     public NDLTree(Lexeme l, Collection<DLTree> trees) {
         super(l);
         children = new ArrayList<DLTree>();

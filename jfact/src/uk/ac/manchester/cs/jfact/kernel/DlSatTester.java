@@ -9,6 +9,7 @@ import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
 import static uk.ac.manchester.cs.jfact.kernel.DagTag.*;
 import static uk.ac.manchester.cs.jfact.kernel.Redo.*;
 
+import java.io.Serializable;
 import java.util.*;
 
 import org.semanticweb.owlapi.reasoner.TimeOutException;
@@ -31,8 +32,11 @@ import conformance.PortedFrom;
 
 /** sat tester */
 @PortedFrom(file = "Reasoner.h", name = "DlSatTester")
-public class DlSatTester {
-    private class LocalFastSet implements FastSet {
+public class DlSatTester implements Serializable {
+    private static final long serialVersionUID = 11000L;
+
+    private class LocalFastSet implements FastSet, Serializable {
+        private static final long serialVersionUID = 11000L;
         BitSet pos = new BitSet();
 
         public LocalFastSet() {}
@@ -125,7 +129,8 @@ public class DlSatTester {
     }
 
     /** Enum for usage the Tactics to a ToDoEntry */
-    abstract class BranchingContext {
+    abstract class BranchingContext implements Serializable {
+        private static final long serialVersionUID = 11000L;
         /** currently processed node */
         protected DlCompletionTree node;
         /** currently processed concept */
@@ -155,10 +160,10 @@ public class DlSatTester {
         }
     }
 
-    abstract class BCChoose extends BranchingContext {}
+    abstract class BCChoose extends BranchingContext { private static final long serialVersionUID=11000L;}
 
     /** stack to keep BContext */
-    class BCStack extends SaveStack<BranchingContext> {
+    class BCStack extends SaveStack<BranchingContext> { private static final long serialVersionUID=11000L;
         /** single entry for the barrier (good for nominal reasoner) */
         private BCBarrier bcBarrier;
 
@@ -206,6 +211,7 @@ public class DlSatTester {
         /** get BC for Choose-rule */
         protected BCChoose pushCh() {
             BCChoose c = new BCChoose() {
+                private static final long serialVersionUID = 11000L;
                 @Override
                 public void nextOption() {}
 
@@ -223,7 +229,7 @@ public class DlSatTester {
         }
     }
 
-    class BCBarrier extends BranchingContext {
+    class BCBarrier extends BranchingContext { private static final long serialVersionUID=11000L;
         @Override
         public void init() {}
 
@@ -231,7 +237,7 @@ public class DlSatTester {
         public void nextOption() {}
     }
 
-    class BCLE<I> extends BranchingContext {
+    class BCLE<I> extends BranchingContext { private static final long serialVersionUID=11000L;
         /** current branching index; used in several branching rules */
         private int branchIndex;
         /** index of a merge-candidate (in LE concept) */
@@ -295,7 +301,7 @@ public class DlSatTester {
         }
     }
 
-    class BCNN extends BranchingContext {
+    class BCNN extends BranchingContext { private static final long serialVersionUID=11000L;
         /** current branching index; used in several branching rules */
         private int branchIndex;
 
@@ -326,7 +332,7 @@ public class DlSatTester {
         }
     }
 
-    class BCOr extends BranchingContext {
+    class BCOr extends BranchingContext { private static final long serialVersionUID=11000L;
         /** current branching index; used in several branching rules */
         private int branchIndex;
         private int size = 0;
@@ -394,7 +400,8 @@ public class DlSatTester {
     }
 
     /** class to check whether there is a need to unsplit splitted var */
-    class SingleSplit {
+    class SingleSplit implements Serializable {
+        private static final long serialVersionUID = 11000L;
         /** signature of equivalent part of the split */
         Set<NamedEntity> eqSig;
         /** signature of subsumption part of the split */

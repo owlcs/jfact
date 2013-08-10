@@ -15,7 +15,7 @@ import conformance.PortedFrom;
 
 /** negated object role assertion */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomRelatedToNot")
-public class AxiomRelatedToNot extends AxiomIndividual {
+public class AxiomRelatedToNot extends AxiomIndividual { private static final long serialVersionUID=11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "J")
     private IndividualExpression individualExpression;
     @PortedFrom(file = "tDLAxiom.h", name = "R")
