@@ -24,7 +24,6 @@ import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
 @SuppressWarnings("javadoc")
 public class Fixed {
-    @Ignore
     // XXX this needs to be fixed
     @Test
     public void testConsistent_but_all_unsat() {
@@ -77,6 +76,25 @@ public class Fixed {
                 + "  Declaration(DataProperty(:dp))\nDeclaration(Class(:A))\n"
                 + "  SubClassOf(:A DataAllValuesFrom(:dp DataOneOf(\"0\"^^xsd:integer))\n  ) \n"
                 + "  ClassAssertion(:A :a)\n  ClassAssertion( DataSomeValuesFrom(:dp DataOneOf(\"-0\"^^xsd:integer)) :a\n  )\n)";
+        String conclusion = "";
+        String id = "Plus_and_Minus_Zero_Integer";
+        TestClasses tc = TestClasses.valueOf("CONSISTENCY");
+        String d = "For integers 0 and -0 are the same value, so the ontology is consistent.";
+        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        // r.getConfiguration().setLoggingActive(true);
+        r.setReasonerFactory(Factory.factory());
+        r.run();
+    }
+
+    @Test
+    public void testPlus_and_Minus_Zero_Integer_FORTEST() {
+        String premise = "Prefix(:=<http://example.org/>)\n"
+                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+                + "Ontology(\n"
+                + "  Declaration(NamedIndividual(:a))\n"
+                + "  Declaration(DataProperty(:dp))\nDeclaration(Class(:A))\n"
+                + "  SubClassOf(:A DataAllValuesFrom(:dp DataOneOf(\"0\"^^xsd:integer))\n  ) \n"
+                + "  ClassAssertion(:A :a)\n  ClassAssertion( DataSomeValuesFrom(:dp DataOneOf(\"0\"^^xsd:integer)) :a\n  )\n)";
         String conclusion = "";
         String id = "Plus_and_Minus_Zero_Integer";
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
@@ -217,7 +235,7 @@ public class Fixed {
     @Ignore
     @Test
     public void testConsistent_owl_real_range_with_DataOneOf() {
-        // XX integers, float and reals do not share a value space
+        // XXX integers, float and reals do not share a value space
         String premise = "Prefix(:=<http://example.org/>)\n"
                 + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
                 + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
@@ -342,7 +360,7 @@ public class Fixed {
         r.run();
     }
 
-    @Ignore
+
     // XXX this needs to be fixed
     @Test
     @Changed(reason = "changed to fix it")
@@ -951,7 +969,7 @@ public class Fixed {
         r.run();
     }
 
-    @Ignore
+
     // XXX this needs to be fixed
     @Test
     public void testBugFix() throws OWLOntologyCreationException {
@@ -969,6 +987,7 @@ public class Fixed {
         m.addAxiom(o, ClassAssertion(DataMinCardinality(1, p, TopDatatype()), i));
         OWLReasoner r = Factory.factory().createReasoner(o);
         OWLDataPropertyAssertionAxiom ass = DataPropertyAssertion(p, i, Literal(4));
+        assertTrue(r.isConsistent());
         boolean entailed = r.isEntailed(ass);
         assertTrue(entailed);
     }
@@ -1525,7 +1544,7 @@ public class Fixed {
         r.run();
     }
 
-    @Ignore
+
     // XXX this needs to be fixed
     @Test
     public void testWebOnt_oneOf_004() {

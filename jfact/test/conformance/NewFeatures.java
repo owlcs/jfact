@@ -690,7 +690,7 @@ public class NewFeatures {
         r.run();
     }
 
-    @Ignore
+
     @Test
     @Changed(reason = "not OWL 2 DL - data properties cannt be inverse functional properties")
     public void testrdfbased_sem_char_inversefunc_data() {

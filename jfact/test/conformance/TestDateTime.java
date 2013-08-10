@@ -8,10 +8,7 @@ package conformance;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.lang.management.ManagementFactory;
-import java.lang.management.ThreadMXBean;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
@@ -93,19 +90,18 @@ public class TestDateTime {
                 r.isEntailed(f.getOWLClassAssertionAxiom(c, x)));
     }
 
-    @Ignore
+
     @Test
     public void shouldPrecompute() throws OWLOntologyCreationException {
         OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
-        File base = new File("../JFact/robertstest");
+        File base = new File(".");
         File url = new File(base, "periodic.owl");
         AutoIRIMapper mapper = new AutoIRIMapper(base, true);
         ontologyManager.addIRIMapper(mapper);
         OWLOntology ontology = ontologyManager.loadOntology(IRI.create(url));
-        ThreadMXBean bean = ManagementFactory.getThreadMXBean();
         OWLReasoner reasoner = Factory.factory().createReasoner(ontology,
                 new SimpleConfiguration(new TimedConsoleProgressMonitor()));
-        reasoner.precomputeInferences(InferenceType.values());
+        reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
     }
 
     @Test

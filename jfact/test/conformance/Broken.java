@@ -15,8 +15,8 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 
 @SuppressWarnings("javadoc")
+@Ignore
 public class Broken {
-    @Ignore
     @Test
     public void testReasoner5() throws OWLOntologyCreationException {
         OWLOntologyManager mngr = OWLManager.createOWLOntologyManager();
@@ -29,12 +29,6 @@ public class Broken {
         assertEquals(2, r.getBottomDataPropertyNode().getEntities().size());
     }
 
-
-
-
-
-
-    @Ignore
     @Test
     public void testWebOnt_I5_8_009() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
@@ -65,7 +59,6 @@ public class Broken {
         r.run();
     }
 
-    @Ignore
     @Test
     public void testWebOnt_I5_8_008() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
@@ -91,7 +84,6 @@ public class Broken {
         r.run();
     }
 
-    @Ignore
     @Test
     public void testWebOnt_someValuesFrom_003() {
         String premise = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
@@ -158,7 +150,6 @@ public class Broken {
         r.run();
     }
 
-    @Ignore
     @Test
     public void testsomevaluesfrom2bnode() throws OWLOntologyCreationException {
         // String premise =
@@ -211,7 +202,6 @@ public class Broken {
                 f.getOWLAnonymousIndividual())));
     }
 
-    @Ignore
     @Test
     public void testConsistent_owl_real_range_with_DataOneOf() {
         // XXX integers, float and reals do not share a value space
@@ -232,5 +222,4 @@ public class Broken {
         r.setReasonerFactory(Factory.factory());
         r.run();
     }
-
 }
