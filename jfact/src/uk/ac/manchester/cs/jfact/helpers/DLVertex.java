@@ -26,19 +26,18 @@ import conformance.PortedFrom;
 @PortedFrom(file = "dlVertex.h", name = "DLVertex")
 public class DLVertex extends DLVertexTagDFS { private static final long serialVersionUID=11000L;
 
-    static class ChildSet implements Serializable {
+    static class ChildSet implements Comparator<Integer>, Serializable {
         private static final long serialVersionUID = 11000L;
-        private Comparator<Integer> c = new Comparator<Integer>() {
-            @Override
-            @PortedFrom(file = "dlVertex.h", name = "compare")
-            public int compare(Integer o1, Integer o2) {
-                return sorter.compare(o1, o2);
-            }
-        };
         FastSet set = FastSetFactory.create();
         private SortedIntList original = new SortedIntList();
         int[] sorted = null;
         protected DLDag sorter = null;
+
+        @Override
+        @PortedFrom(file = "dlVertex.h", name = "compare")
+        public int compare(Integer o1, Integer o2) {
+            return sorter.compare(o1, o2);
+        }
 
         @Override
         public boolean equals(Object arg0) {
@@ -79,7 +78,7 @@ public class DLVertex extends DLVertexTagDFS { private static final long serialV
                     for (int i = 0; i < set.size(); ++i) {
                         l.add(set.get(i));
                     }
-                        Collections.sort(l, c);
+                    Collections.sort(l, this);
                     for (int i = 0; i < sorted.length; ++i) {
                         sorted[i] = l.get(i);
                     }

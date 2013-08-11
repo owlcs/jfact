@@ -28,7 +28,7 @@ public class AxiomSet implements Serializable {
     private List<Axiom> accumulator = new ArrayList<Axiom>();
     private final LogAdapter absorptionLog;
 
-    private interface Abs {
+    private interface Abs extends Serializable {
         boolean absMethod(Axiom ax);
     }
 

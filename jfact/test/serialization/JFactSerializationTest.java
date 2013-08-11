@@ -1,3 +1,4 @@
+package serialization;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -180,13 +181,21 @@ public class JFactSerializationTest extends TestCase {
         // f.getOWLAnnotationAssertionAxiom(f.getOWLNamedIndividual(iri).getIRI(),
         // f.getOWLAnnotation(ap, owlannotationvalue)));
         OWLReasoner r = new JFactFactory().createReasoner(o);
+        assertNotNull(roundtrip(r));
+    }
+
+    private OWLReasoner roundtrip(OWLReasoner r) {
+        try {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         ObjectOutputStream stream = new ObjectOutputStream(out);
         stream.writeObject(r);
         stream.flush();
-        // System.out.println(out.toString());
         ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
         ObjectInputStream inStream = new ObjectInputStream(in);
-        OWLReasoner copy = (OWLReasoner) inStream.readObject();
+            return (OWLReasoner) inStream.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

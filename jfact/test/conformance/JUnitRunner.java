@@ -8,6 +8,11 @@ package conformance;
 
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
 import org.semanticweb.owlapi.io.StringDocumentSource;
@@ -129,7 +134,7 @@ public class JUnitRunner {
         this.run(premiseOntology, conclusionOntology);
     }
 
-    public void run(OWLOntology premiseOntology, OWLOntology conclusionOntology) {
+    protected void run(OWLOntology premiseOntology, OWLOntology conclusionOntology) {
         StringBuilder b = new StringBuilder();
         b.append("JUnitRunner.logTroubles() premise");
         b.append("\n");
@@ -138,6 +143,29 @@ public class JUnitRunner {
             b.append("\n");
         }
         OWLReasoner reasoner = f.createReasoner(premiseOntology, c);
+        actual(premiseOntology, conclusionOntology, b, reasoner);
+        reasoner = roundtrip(reasoner);
+        actual(premiseOntology, conclusionOntology, b, reasoner);
+        premiseOntology.getOWLOntologyManager().removeOntologyChangeListener(
+                (OWLOntologyChangeListener) reasoner);
+    }
+
+    private OWLReasoner roundtrip(OWLReasoner r) {
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ObjectOutputStream stream = new ObjectOutputStream(out);
+            stream.writeObject(r);
+            stream.flush();
+            ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+            ObjectInputStream inStream = new ObjectInputStream(in);
+            return (OWLReasoner) inStream.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    private void actual(OWLOntology premiseOntology, OWLOntology conclusionOntology,
+            StringBuilder b, OWLReasoner reasoner) {
         switch (t) {
             case CONSISTENCY: {
                 boolean consistent = isConsistent(reasoner, true);
@@ -200,8 +228,6 @@ public class JUnitRunner {
             default:
                 break;
         }
-        premiseOntology.getOWLOntologyManager().removeOntologyChangeListener(
-                (OWLOntologyChangeListener) reasoner);
     }
 
     public String logTroubles(OWLOntology o, boolean expected, boolean actual,

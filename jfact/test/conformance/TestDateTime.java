@@ -14,8 +14,6 @@ import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
-import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
-import org.semanticweb.owlapi.reasoner.TimedConsoleProgressMonitor;
 import org.semanticweb.owlapi.util.AutoIRIMapper;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.semanticweb.owlapi.vocab.OWLFacet;
@@ -92,15 +90,14 @@ public class TestDateTime {
 
 
     @Test
-    public void shouldPrecompute() throws OWLOntologyCreationException {
+    public void shouldPrecomputePeriodic() throws OWLOntologyCreationException {
         OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
         File base = new File(".");
         File url = new File(base, "periodic.owl");
         AutoIRIMapper mapper = new AutoIRIMapper(base, true);
         ontologyManager.addIRIMapper(mapper);
         OWLOntology ontology = ontologyManager.loadOntology(IRI.create(url));
-        OWLReasoner reasoner = Factory.factory().createReasoner(ontology,
-                new SimpleConfiguration(new TimedConsoleProgressMonitor()));
+        OWLReasoner reasoner = Factory.factory().createReasoner(ontology);
         reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
     }
 

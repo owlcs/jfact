@@ -12,8 +12,6 @@ import static uk.ac.manchester.cs.jfact.kernel.DagTag.*;
 import static uk.ac.manchester.cs.jfact.kernel.KBStatus.*;
 import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -1544,15 +1542,8 @@ public class TBox implements Serializable {
         if (config.getdumpQuery()) {
             // TODO
             markAllRelevant();
-            PrintStream of;
-            try {
-                of = new PrintStream("tbox");
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            DumpLisp lDump = new DumpLisp(of);
+            DumpLisp lDump = new DumpLisp(config.getLog());
             dump(lDump);
-            of.close();
             clearRelevanceInfo();
         }
     }

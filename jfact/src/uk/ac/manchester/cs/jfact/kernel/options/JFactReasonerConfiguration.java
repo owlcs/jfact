@@ -6,6 +6,7 @@ package uk.ac.manchester.cs.jfact.kernel.options;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -449,7 +450,14 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
 
     static class LogAdapterStream implements LogAdapter, Serializable {
         private static final long serialVersionUID = 11000L;
-        private OutputStream out;
+        private transient OutputStream out;
+
+        private void readObject(ObjectInputStream in) throws IOException,
+                ClassNotFoundException {
+            in.defaultReadObject();
+            out = System.out;
+        }
+
 
         public LogAdapterStream(OutputStream o) {
             out = o;
