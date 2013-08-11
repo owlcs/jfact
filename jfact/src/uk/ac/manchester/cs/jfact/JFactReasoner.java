@@ -35,7 +35,7 @@ import conformance.Original;
  * structures. inner private classes are not synchronized since methods from
  * those classes cannot be invoked from outsize synchronized methods. */
 public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
-        OWLKnowledgeExplorerReasoner {
+        OWLKnowledgeExplorerReasoner, Serializable {
     private static final String REASONER_NAME = "JFact";
     private static final Version VERSION = new Version(0, 0, 0, 0);
     protected final AtomicBoolean interrupted = new AtomicBoolean(false);

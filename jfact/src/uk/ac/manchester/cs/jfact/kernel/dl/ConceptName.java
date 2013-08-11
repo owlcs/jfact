@@ -17,6 +17,7 @@ import conformance.PortedFrom;
 public class ConceptName extends NamedEntityImpl implements ConceptExpression,
         Serializable {
     private static final long serialVersionUID = 11000L;
+
     /** @param name */
     public ConceptName(String name) {
         super(name);
