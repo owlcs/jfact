@@ -138,7 +138,7 @@ public class DlSatTester implements Serializable {
         /** dependences for branching clashes */
         protected DepSet branchDep = DepSet.create();
         /** size of a session GCIs vector */
-        int SGsize;
+        protected int SGsize;
 
         /** empty c'tor */
         public BranchingContext() {
@@ -160,12 +160,15 @@ public class DlSatTester implements Serializable {
         }
     }
 
-    abstract class BCChoose extends BranchingContext { private static final long serialVersionUID=11000L;}
+    abstract class BCChoose extends BranchingContext {
+        private static final long serialVersionUID = 11000L;
+    }
 
     /** stack to keep BContext */
-    class BCStack extends SaveStack<BranchingContext> { private static final long serialVersionUID=11000L;
+    class BCStack extends SaveStack<BranchingContext> {
+        private static final long serialVersionUID = 11000L;
         /** single entry for the barrier (good for nominal reasoner) */
-        private BCBarrier bcBarrier;
+        private final BCBarrier bcBarrier;
 
         /** push method to use */
         @Override
@@ -175,7 +178,7 @@ public class DlSatTester implements Serializable {
             super.push(p);
         }
 
-        BCStack() {
+        protected BCStack() {
             bcBarrier = new BCBarrier();
         }
 
@@ -212,6 +215,7 @@ public class DlSatTester implements Serializable {
         protected BCChoose pushCh() {
             BCChoose c = new BCChoose() {
                 private static final long serialVersionUID = 11000L;
+
                 @Override
                 public void nextOption() {}
 
@@ -229,7 +233,9 @@ public class DlSatTester implements Serializable {
         }
     }
 
-    class BCBarrier extends BranchingContext { private static final long serialVersionUID=11000L;
+    class BCBarrier extends BranchingContext {
+        private static final long serialVersionUID = 11000L;
+
         @Override
         public void init() {}
 
@@ -237,7 +243,8 @@ public class DlSatTester implements Serializable {
         public void nextOption() {}
     }
 
-    class BCLE<I> extends BranchingContext { private static final long serialVersionUID=11000L;
+    class BCLE<I> extends BranchingContext {
+        private static final long serialVersionUID = 11000L;
         /** current branching index; used in several branching rules */
         private int branchIndex;
         /** index of a merge-candidate (in LE concept) */
@@ -301,7 +308,8 @@ public class DlSatTester implements Serializable {
         }
     }
 
-    class BCNN extends BranchingContext { private static final long serialVersionUID=11000L;
+    class BCNN extends BranchingContext {
+        private static final long serialVersionUID = 11000L;
         /** current branching index; used in several branching rules */
         private int branchIndex;
 
@@ -332,7 +340,8 @@ public class DlSatTester implements Serializable {
         }
     }
 
-    class BCOr extends BranchingContext { private static final long serialVersionUID=11000L;
+    class BCOr extends BranchingContext {
+        private static final long serialVersionUID = 11000L;
         /** current branching index; used in several branching rules */
         private int branchIndex;
         private int size = 0;
@@ -403,15 +412,13 @@ public class DlSatTester implements Serializable {
     class SingleSplit implements Serializable {
         private static final long serialVersionUID = 11000L;
         /** signature of equivalent part of the split */
-        Set<NamedEntity> eqSig;
+        private final Set<NamedEntity> eqSig;
         /** signature of subsumption part of the split */
-        Set<NamedEntity> impSig;
+        private final Set<NamedEntity> impSig;
         /** pointer to split vertex to activate */
-        int bp;
+        private final int bp;
 
-        SingleSplit() {}
-
-        SingleSplit(Set<NamedEntity> es, Set<NamedEntity> is, int p) {
+        protected SingleSplit(Set<NamedEntity> es, Set<NamedEntity> is, int p) {
             eqSig = new HashSet<NamedEntity>(es);
             impSig = new HashSet<NamedEntity>(is);
             bp = p;
@@ -420,16 +427,16 @@ public class DlSatTester implements Serializable {
 
     /** GCIs local to session */
     @PortedFrom(file = "Reasoner.h", name = "SessionGCIs")
-    private List<Integer> SessionGCIs = new ArrayList<Integer>();
+    private final List<Integer> SessionGCIs = new ArrayList<Integer>();
     /** set of active splits */
     @PortedFrom(file = "Reasoner.h", name = "ActiveSplits")
-    private FastSet ActiveSplits = FastSetFactory.create();
+    private final FastSet ActiveSplits = FastSetFactory.create();
     /** concept signature of current CGraph */
     @PortedFrom(file = "Reasoner.h", name = "SessionSignature")
-    private Set<NamedEntity> SessionSignature = new HashSet<NamedEntity>();
+    private final Set<NamedEntity> SessionSignature = new HashSet<NamedEntity>();
     /** signature to dep-set map for current session */
     @PortedFrom(file = "Reasoner.h", name = "SessionSigDepSet")
-    private Map<NamedEntity, DepSet> SessionSigDepSet = new HashMap<NamedEntity, DepSet>();
+    private final Map<NamedEntity, DepSet> SessionSigDepSet = new HashMap<NamedEntity, DepSet>();
     /** nodes to merge in the TopRole-LE rules */
     @PortedFrom(file = "Reasoner.h", name = "NodesToMerge")
     private List<DlCompletionTree> NodesToMerge = new ArrayList<DlCompletionTree>();
@@ -439,19 +446,19 @@ public class DlSatTester implements Serializable {
     // CGraph-wide rules support
     /** @return true if node is valid for the reasoning */
     @PortedFrom(file = "Reasoner.h", name = "isNodeGloballyUsed")
-    boolean isNodeGloballyUsed(DlCompletionTree node) {
+    private boolean isNodeGloballyUsed(DlCompletionTree node) {
         return !(node.isDataNode() || node.isIBlocked() || node.isPBlocked());
     }
 
     /** @return true if node is valid for the reasoning */
     @PortedFrom(file = "Reasoner.h", name = "isObjectNodeUnblocked")
-    boolean isObjectNodeUnblocked(DlCompletionTree node) {
+    private boolean isObjectNodeUnblocked(DlCompletionTree node) {
         return isNodeGloballyUsed(node) && !node.isDBlocked();
     }
 
     /** put TODO entry for either BP or inverse(BP) in NODE's label */
     @PortedFrom(file = "Reasoner.h", name = "updateName")
-    void updateName(DlCompletionTree node, int bp) {
+    private void updateName(DlCompletionTree node, int bp) {
         CGLabel lab = node.label();
         ConceptWDep c = lab.getConceptWithBP(bp);
         if (c == null) {
@@ -464,7 +471,7 @@ public class DlSatTester implements Serializable {
 
     /** re-do every BP or inverse(BP) in labels of CGraph */
     @PortedFrom(file = "Reasoner.h", name = "updateName")
-    void updateName(int bp) {
+    private void updateName(int bp) {
         int n = 0;
         DlCompletionTree node = null;
         while ((node = cGraph.getNode(n++)) != null) {
@@ -476,40 +483,40 @@ public class DlSatTester implements Serializable {
 
     /** host TBox */
     @PortedFrom(file = "Reasoner.h", name = "tBox")
-    protected TBox tBox;
+    protected final TBox tBox;
     /** link to dag from TBox */
     @PortedFrom(file = "Reasoner.h", name = "DLHeap")
-    protected DLDag dlHeap;
+    protected final DLDag dlHeap;
     /** all the reflexive roles */
     @PortedFrom(file = "Reasoner.h", name = "ReflexiveRoles")
-    private List<Role> reflexiveRoles = new ArrayList<Role>();
+    private final List<Role> reflexiveRoles = new ArrayList<Role>();
     /** Completion Graph of tested concept(s) */
     @PortedFrom(file = "Reasoner.h", name = "CGraph")
-    protected DlCompletionGraph cGraph;
+    protected final DlCompletionGraph cGraph;
     /** Todo list */
     @PortedFrom(file = "Reasoner.h", name = "TODO")
-    private ToDoList TODO;
+    private final ToDoList TODO;
     @Original
-    private FastSet used = new LocalFastSet();
+    private final FastSet used = new LocalFastSet();
     /** GCI-related KB flags */
     @PortedFrom(file = "Reasoner.h", name = "GCIs")
-    private KBFlags gcis;
+    private final KBFlags gcis;
     /** record nodes that were processed during Cascaded Cache construction */
     @PortedFrom(file = "Reasoner.h", name = "inProcess")
-    private FastSet inProcess = FastSetFactory.create();
+    private final FastSet inProcess = FastSetFactory.create();
     /** timer for the SAT tests (ie, cache creation) */
     @PortedFrom(file = "Reasoner.h", name = "satTimer")
-    private Timer satTimer = new Timer();
+    private final Timer satTimer = new Timer();
     /** timer for the SUB tests (ie, general subsumption) */
     @PortedFrom(file = "Reasoner.h", name = "subTimer")
-    private Timer subTimer = new Timer();
+    private final Timer subTimer = new Timer();
     /** timer for a single test; use it as a timeout checker */
     @PortedFrom(file = "Reasoner.h", name = "testTimer")
-    private Timer testTimer = new Timer();
+    private final Timer testTimer = new Timer();
     // save/restore option
     /** stack for the local reasoner's state */
     @PortedFrom(file = "Reasoner.h", name = "Stack")
-    protected BCStack stack = new BCStack();
+    protected final BCStack stack = new BCStack();
     /** context from the restored branching rule */
     @PortedFrom(file = "Reasoner.h", name = "bContext")
     protected BranchingContext bContext;
@@ -541,7 +548,7 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "clashSet")
     private DepSet clashSet = DepSet.create();
     @Original
-    protected JFactReasonerConfiguration options;
+    protected final JFactReasonerConfiguration options;
     // session status flags:
     /** true if nominal-related expansion rule was fired during reasoning */
     @PortedFrom(file = "Reasoner.h", name = "encounterNominal")
@@ -551,14 +558,14 @@ public class DlSatTester implements Serializable {
     private boolean checkDataNode;
     /** cache for testing whether it's possible to non-expand newly created node */
     @PortedFrom(file = "Reasoner.h", name = "newNodeCache")
-    private ModelCacheIan newNodeCache;
+    private final ModelCacheIan newNodeCache;
     /** auxilliary cache that is built from the edges of newly created node */
     @PortedFrom(file = "Reasoner.h", name = "newNodeEdges")
-    private ModelCacheIan newNodeEdges;
+    private final ModelCacheIan newNodeEdges;
     @Original
-    private Stats stats = new Stats();
+    private final Stats stats = new Stats();
     @Original
-    protected DatatypeFactory datatypeFactory;
+    protected final DatatypeFactory datatypeFactory;
 
     /** Adds ToDo entry which already exists in label of NODE. There is no need
      * to add entry to label, but it is necessary to provide offset of existing
@@ -593,7 +600,7 @@ public class DlSatTester implements Serializable {
     private void ensureDAGSize() {
         if (dagSize < dlHeap.size()) {
             dagSize = dlHeap.maxSize();
-            tBox.SplitRules.ensureDagSize(dagSize);
+            tBox.getSplitRules().ensureDagSize(dagSize);
         }
     }
 
@@ -1015,11 +1022,12 @@ public class DlSatTester implements Serializable {
     }
 
     @Original
-    private static EnumSet<DagTag> handlecollection = EnumSet.of(dtAnd, dtCollection);
+    private final static EnumSet<DagTag> handlecollection = EnumSet.of(dtAnd,
+            dtCollection);
     @Original
-    private static EnumSet<DagTag> handleforallle = EnumSet.of(dtForall, dtLE);
+    private final static EnumSet<DagTag> handleforallle = EnumSet.of(dtForall, dtLE);
     @Original
-    private static EnumSet<DagTag> handlesingleton = EnumSet.of(dtPSingleton,
+    private final static EnumSet<DagTag> handlesingleton = EnumSet.of(dtPSingleton,
             dtNSingleton, dtNConcept, dtPConcept);
 
     @PortedFrom(file = "Reasoner.h", name = "prepareCascadedCache")
@@ -1086,19 +1094,19 @@ public class DlSatTester implements Serializable {
     // flags section
     /** @return true iff semantic branching is used */
     @PortedFrom(file = "Reasoner.h", name = "useSemanticBranching")
-    boolean useSemanticBranching() {
-        return tBox.useSemanticBranching;
+    private boolean useSemanticBranching() {
+        return tBox.isUseSemanticBranching();
     }
 
     /** @return true iff lazy blocking is used */
     @PortedFrom(file = "Reasoner.h", name = "useLazyBlocking")
-    boolean useLazyBlocking() {
-        return tBox.useLazyBlocking;
+    private boolean useLazyBlocking() {
+        return tBox.isUseLazyBlocking();
     }
 
     /** @return true iff active signature is in use */
     @PortedFrom(file = "Reasoner.h", name = "useActiveSignature")
-    boolean useActiveSignature() {
+    private boolean useActiveSignature() {
         return !tBox.getSplits().empty();
     }
 
@@ -1303,7 +1311,7 @@ public class DlSatTester implements Serializable {
             options.getLog().print(
                     "Fairness constraints: set useAnywhereBlocking = false\n");
         }
-        cGraph.initContext(tbox.nSkipBeforeBlock, options.getuseLazyBlocking(),
+        cGraph.initContext(tbox.getnSkipBeforeBlock(), options.getuseLazyBlocking(),
                 options.getuseAnywhereBlocking());
         tbox.getORM().fillReflexiveRoles(reflexiveRoles);
         resetSessionFlags();
@@ -1465,7 +1473,7 @@ public class DlSatTester implements Serializable {
         boolean shallow = true;
         int size = 0;
         // check whether node cache is allowed
-        if (!tBox.useNodeCache) {
+        if (!tBox.isUseNodeCache()) {
             return false;
         }
         // nominal nodes can not be cached
@@ -1680,7 +1688,7 @@ public class DlSatTester implements Serializable {
      * 
      * @return true if the concept is unsat */
     @PortedFrom(file = "Reasoner.h", name = "performAfterReasoning")
-    boolean performAfterReasoning() {
+    private boolean performAfterReasoning() {
         // make sure all blocked nodes are still blocked
         logIndentation();
         options.getLog().print("ub:");
@@ -1761,7 +1769,7 @@ public class DlSatTester implements Serializable {
         // the same entities
         this.updateSessionSignature();
         // now for every split expansion rule check whether it can be fired
-        for (TSplitRule p : tBox.SplitRules.getRules()) {
+        for (TSplitRule p : tBox.getSplitRules().getRules()) {
             if (!ActiveSplits.contains(p.bp() - 1) && p.canFire(SessionSignature)) {
                 if (applySplitRule(p)) {
                     return true;
@@ -1972,7 +1980,7 @@ public class DlSatTester implements Serializable {
 
     /** add entity.dep to a session structures */
     @PortedFrom(file = "Reasoner.h", name = "updateSessionSignature")
-    void updateSessionSignature(NamedEntity entity, DepSet dep) {
+    private void updateSessionSignature(NamedEntity entity, DepSet dep) {
         if (entity != null) {
             SessionSignature.add(entity);
             SessionSigDepSet.get(entity).add(dep);
@@ -1981,17 +1989,17 @@ public class DlSatTester implements Serializable {
 
     /** update session signature with all names from a given node */
     @PortedFrom(file = "Reasoner.h", name = "updateSignatureByNode")
-    void updateSignatureByNode(DlCompletionTree node) {
+    private void updateSignatureByNode(DlCompletionTree node) {
         CGLabel lab = node.label();
         for (ConceptWDep p : lab.get_sc()) {
-            this.updateSessionSignature(tBox.SplitRules.getEntity(p.getConcept()),
+            this.updateSessionSignature(tBox.getSplitRules().getEntity(p.getConcept()),
                     p.getDep());
         }
     }
 
     /** update session signature for all non-data nodes */
     @PortedFrom(file = "Reasoner.h", name = "updateSessionSignature")
-    void updateSessionSignature() {
+    private void updateSessionSignature() {
         int n = 0;
         DlCompletionTree node = null;
         while ((node = cGraph.getNode(n++)) != null) {
@@ -2490,7 +2498,7 @@ public class DlSatTester implements Serializable {
 
     /** expansion rule for the existential quantifier with universal role */
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodySomeUniv")
-    boolean commonTacticBodySomeUniv(DLVertex cur) {
+    private boolean commonTacticBodySomeUniv(DLVertex cur) {
         // check blocking conditions
         if (isCurNodeBlocked()) {
             return false;
@@ -2785,7 +2793,7 @@ public class DlSatTester implements Serializable {
     }
 
     @PortedFrom(file = "Reasoner.h", name = "initLEProcessing")
-    boolean initLEProcessing(DLVertex cur) {
+    private boolean initLEProcessing(DLVertex cur) {
         DepSet dep = DepSet.create();
         // check the amount of neighbours we have
         findNeighbours(cur.getRole(), cur.getConceptIndex(), dep);
@@ -2826,7 +2834,7 @@ public class DlSatTester implements Serializable {
 
     // Func/LE/GE with top role processing
     @PortedFrom(file = "Reasoner.h", name = "processTopRoleFunc")
-    boolean processTopRoleFunc(DLVertex cur) {
+    private boolean processTopRoleFunc(DLVertex cur) {
         // for <=1 R concepts
         assert curConceptConcept > 0 && isFunctionalVertex(cur);
         stats.getnFuncCalls().inc();
@@ -2859,7 +2867,7 @@ public class DlSatTester implements Serializable {
     }
 
     @PortedFrom(file = "Reasoner.h", name = "processTopRoleLE")
-    boolean processTopRoleLE(DLVertex cur) {
+    private boolean processTopRoleLE(DLVertex cur) {
         // for <=nR.C concepts
         assert curConceptConcept > 0 && cur.getType() == dtLE;
         int C = cur.getConceptIndex();
@@ -2942,7 +2950,7 @@ public class DlSatTester implements Serializable {
 
     // for >=nR.C concepts
     @PortedFrom(file = "Reasoner.h", name = "processTopRoleGE")
-    boolean processTopRoleGE(DLVertex cur) {
+    private boolean processTopRoleGE(DLVertex cur) {
         assert curConceptConcept < 0 && cur.getType() == dtLE;
         assert !isCurNodeBlocked();
         stats.getnGeCalls().inc();
@@ -2956,7 +2964,7 @@ public class DlSatTester implements Serializable {
     }
 
     @PortedFrom(file = "Reasoner.h", name = "initTopLEProcessing")
-    boolean initTopLEProcessing(DLVertex cur) {
+    private boolean initTopLEProcessing(DLVertex cur) {
         DepSet dep = DepSet.create();
         // check the amount of neighbours we have
         findCLabelledNodes(cur.getConceptIndex(), dep);
@@ -3349,7 +3357,7 @@ public class DlSatTester implements Serializable {
     /** expansion rule for split */
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodySplit")
     private boolean commonTacticBodySplit(DLVertex cur) {
-        if (tBox.duringClassification
+        if (tBox.isDuringClassification()
                 && !ActiveSplits.contains(curConceptConcept > 0 ? curConceptConcept
                         : -curConceptConcept)) {
             return false;
@@ -3381,7 +3389,7 @@ public class DlSatTester implements Serializable {
     }
 
     @PortedFrom(file = "Reasoner.h", name = "findCLabelledNodes")
-    void findCLabelledNodes(int C, DepSet Dep) {
+    private void findCLabelledNodes(int C, DepSet Dep) {
         NodesToMerge.clear();
         DagTag tag = dlHeap.get(C).getType();
         // FIXME!! do we need this for d-blocked nodes?

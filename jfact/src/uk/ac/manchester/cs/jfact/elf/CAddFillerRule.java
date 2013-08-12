@@ -13,16 +13,17 @@ import conformance.PortedFrom;
 /** rule that checks an addition of C to S(Y) and checks whether there is X s.t.
  * R(X,Y) */
 @PortedFrom(file = "ELFReasoner.h", name = "CAddFillerRule")
-public class CAddFillerRule extends TELFRule { private static final long serialVersionUID=11000L;
+public class CAddFillerRule extends TELFRule {
+    private static final long serialVersionUID = 11000L;
     /** role to add the pair */
     @PortedFrom(file = "ELFReasoner.h", name = "R")
-    TELFRole R;
+    private final TELFRole R;
     /** super (E) of the existential */
     @PortedFrom(file = "ELFReasoner.h", name = "Sup")
-    TELFConcept Sup;
+    private final TELFConcept Sup;
 
     /** init c'tor: remember E */
-    CAddFillerRule(ELFReasoner ER, TELFRole r, TELFConcept C) {
+    public CAddFillerRule(ELFReasoner ER, TELFRole r, TELFConcept C) {
         super(ER);
         R = r;
         Sup = C;
@@ -31,7 +32,7 @@ public class CAddFillerRule extends TELFRule { private static final long serialV
     /** apply a method with a given source S(C) */
     @Override
     @PortedFrom(file = "ELFReasoner.h", name = "apply")
-    void apply(TELFConcept Source) {
+    public void apply(TELFConcept Source) {
         Set<TELFConcept> SupSet = R.getPredSet(Source);
         if (!SupSet.isEmpty()) {
             for (TELFConcept p : SupSet) {

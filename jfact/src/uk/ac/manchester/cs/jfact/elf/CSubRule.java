@@ -10,13 +10,14 @@ import conformance.PortedFrom;
 // Rule for C [= D case; CR1
 /** the rule for C [= D case */
 @PortedFrom(file = "ELFReasoner.h", name = "CSubRule")
-public class CSubRule extends TELFRule { private static final long serialVersionUID=11000L;
+public class CSubRule extends TELFRule {
+    private static final long serialVersionUID = 11000L;
     /** super of a concept; it would be added to S(C) */
     @PortedFrom(file = "ELFReasoner.h", name = "Sup")
-    TELFConcept Sup = null;
+    private final TELFConcept Sup;
 
     /** init c'tor: remember D */
-    CSubRule(ELFReasoner ER, TELFConcept D) {
+    public CSubRule(ELFReasoner ER, TELFConcept D) {
         super(ER);
         Sup = D;
     }
@@ -24,7 +25,7 @@ public class CSubRule extends TELFRule { private static final long serialVersion
     /** apply a method with a given S(C) */
     @Override
     @PortedFrom(file = "ELFReasoner.h", name = "apply")
-    void apply(TELFConcept addedC) {
+    public void apply(TELFConcept addedC) {
         if (!addedC.hasSuper(Sup)) {
             ER.addAction(new ELFAction(addedC, Sup));
         }

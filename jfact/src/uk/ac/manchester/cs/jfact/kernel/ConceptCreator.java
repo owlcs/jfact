@@ -9,6 +9,7 @@ import java.io.Serializable;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 class ConceptCreator implements NameCreator<Concept>, Serializable {
     private static final long serialVersionUID = 11000L;
+
     @Override
     public Concept makeEntry(String name) {
         return new Concept(name);

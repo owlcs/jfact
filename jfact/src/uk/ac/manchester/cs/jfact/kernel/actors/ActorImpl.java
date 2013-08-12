@@ -16,7 +16,7 @@ public class ActorImpl implements Actor, Serializable {
     private static final long serialVersionUID = 11000L;
     /** vertices that satisfy the condition */
     @PortedFrom(file = "Actor.h", name = "found")
-    protected List<TaxonomyVertex> found = new ArrayList<TaxonomyVertex>();
+    protected final List<TaxonomyVertex> found = new ArrayList<TaxonomyVertex>();
     /** flag to look at concept-like or role-like entities */
     @PortedFrom(file = "Actor.h", name = "isRole")
     protected boolean isRole;

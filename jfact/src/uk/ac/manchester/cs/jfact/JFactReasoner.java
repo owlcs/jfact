@@ -39,7 +39,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     private static final String REASONER_NAME = "JFact";
     private static final Version VERSION = new Version(0, 0, 0, 0);
     protected final AtomicBoolean interrupted = new AtomicBoolean(false);
-    ReasoningKernel kernel;
+    private ReasoningKernel kernel;
     private final ExpressionManager em;
     private static final EnumSet<InferenceType> supportedInferenceTypes = EnumSet.of(
             InferenceType.CLASS_ASSERTIONS, InferenceType.CLASS_HIERARCHY,
@@ -886,6 +886,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
 
     class EntityVisitorEx implements OWLEntityVisitorEx<Expression>, Serializable {
         private static final long serialVersionUID = 11000L;
+
         @Override
         public Expression visit(OWLClass cls) {
             return translationMachinery.toClassPointer(cls);
@@ -917,7 +918,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         }
     }
 
-    EntityVisitorEx entityTranslator = new EntityVisitorEx();
+    private final EntityVisitorEx entityTranslator = new EntityVisitorEx();
 
     /** @param signature
      * @param useSemantic

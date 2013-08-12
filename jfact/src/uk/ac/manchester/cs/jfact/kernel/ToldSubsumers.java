@@ -6,9 +6,10 @@ import java.util.Collections;
 import java.util.List;
 
 /** class to represent the TS's */
-public class ToldSubsumers extends KnownSubsumers { private static final long serialVersionUID=11000L;
+public class ToldSubsumers extends KnownSubsumers {
+    private static final long serialVersionUID = 11000L;
     /** two iterators for the TS of a concept */
-    List<ClassifiableEntry> beg;
+    private final List<ClassifiableEntry> beg;
 
     public ToldSubsumers(Collection<ClassifiableEntry> b) {
         beg = new ArrayList<ClassifiableEntry>(b);

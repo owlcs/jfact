@@ -16,7 +16,7 @@ import conformance.PortedFrom;
 public abstract class NamedEntityImpl implements NamedEntity, Serializable {
     private static final long serialVersionUID = 11000L;
     /** name of the entity */
-    protected String name;
+    protected final String name;
     private NamedEntry entry;
 
     @Override

@@ -35,25 +35,25 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Seri
     private static final long serialVersionUID = 11000L;
     /** TBox to get access to the named entities */
     @PortedFrom(file = "tExpressionTranslator.h", name = "kb")
-    private TBox tbox;
+    private final TBox tbox;
     /** signature of non-trivial entities; used in semantic locality checkers */
     // only
     @PortedFrom(file = "tExpressionTranslator.h", name = "sig")
-    TSignature sig;
+    private TSignature sig;
 
     /** @return true iff ENTRY is not in signature */
     @PortedFrom(file = "tExpressionTranslator.h", name = "nc")
-    boolean nc(NamedEntity entity) {
+    private boolean nc(NamedEntity entity) {
         return sig != null && !sig.containsNamedEntity(entity);
     }
 
     /** set internal signature to a given signature S */
     @PortedFrom(file = "tExpressionTranslator.h", name = "setSignature")
-    void setSignature(TSignature s) {
+    public void setSignature(TSignature s) {
         sig = s;
     }
 
-    ExpressionTranslator(TBox kb) {
+    public ExpressionTranslator(TBox kb) {
         tbox = kb;
     }
 
@@ -85,7 +85,7 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Seri
     /** create DLTree of given TAG and named ENTRY; set the entry's ENTITY if */
     // necessary
     @PortedFrom(file = "tExpressionTranslator.h", name = "matchEntry")
-    NamedEntry matchEntry(NamedEntry entry, NamedEntity entity) {
+    private NamedEntry matchEntry(NamedEntry entry, NamedEntity entity) {
         entry.setEntity(entity);
         entity.setEntry(entry);
         return entry;

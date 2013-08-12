@@ -24,7 +24,7 @@ public enum ordered {
         return null;
     }
 
-    private String name;
+    private final String name;
 
     private ordered(String s) {
         name = s;

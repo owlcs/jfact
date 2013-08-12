@@ -12,6 +12,7 @@ import java.util.Set;
 /** @author ignazio */
 public class Utils implements Serializable {
     private static final long serialVersionUID = 11000L;
+
     /** @param facets
      * @return set of facets */
     public static Set<Facet> getFacets(Facet... facets) {

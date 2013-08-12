@@ -21,7 +21,8 @@ import conformance.PortedFrom;
 
 /** Role */
 @PortedFrom(file = "tRole.h", name = "Role")
-public class Role extends ClassifiableEntry { private static final long serialVersionUID=11000L;
+public class Role extends ClassifiableEntry {
+    private static final long serialVersionUID = 11000L;
 
     static class KnownValue implements Serializable {
         private static final long serialVersionUID = 11000L;
@@ -79,48 +80,48 @@ public class Role extends ClassifiableEntry { private static final long serialVe
     private long rel;
     /** label of a domain (inverse role is used for a range label) */
     @PortedFrom(file = "tRole.h", name = "domLabel")
-    private MergableLabel domLabel = new MergableLabel();
+    private final MergableLabel domLabel = new MergableLabel();
     // for later filling
     @PortedFrom(file = "tRole.h", name = "Ancestor")
-    private List<Role> ancestorRoles = new ArrayList<Role>();
+    private final List<Role> ancestorRoles = new ArrayList<Role>();
     @PortedFrom(file = "tRole.h", name = "Descendant")
-    private List<Role> descendantRoles = new ArrayList<Role>();
+    private final List<Role> descendantRoles = new ArrayList<Role>();
     /** set of the most functional super-roles */
     @PortedFrom(file = "tRole.h", name = "TopFunc")
-    private List<Role> topFunctionalRoles = new ArrayList<Role>();
+    private final List<Role> topFunctionalRoles = new ArrayList<Role>();
     /** set of the roles that are disjoint with a given one */
     @PortedFrom(file = "tRole.h", name = "Disjoint")
-    private Set<Role> disjointRoles = new HashSet<Role>();
+    private final Set<Role> disjointRoles = new HashSet<Role>();
     /** all compositions in the form R1*R2*\ldots*Rn [= R */
     @PortedFrom(file = "tRole.h", name = "subCompositions")
-    private List<List<Role>> subCompositions = new ArrayList<List<Role>>();
+    private final List<List<Role>> subCompositions = new ArrayList<List<Role>>();
     /** bit-vector of all parents */
     @PortedFrom(file = "tRole.h", name = "AncMap")
-    private FastSet ancestorMap = FastSetFactory.create();
+    private final FastSet ancestorMap = FastSetFactory.create();
     /** bit-vector of all roles disjoint with current */
     @PortedFrom(file = "tRole.h", name = "DJRoles")
-    private FastSet disjointRolesIndex = FastSetFactory.create();
+    private final FastSet disjointRolesIndex = FastSetFactory.create();
     /** automaton for role */
     @PortedFrom(file = "tRole.h", name = "automaton")
-    private RoleAutomaton automaton = new RoleAutomaton();
+    private final RoleAutomaton automaton = new RoleAutomaton();
     /** value for functionality */
     @PortedFrom(file = "tRole.h", name = "Functionality")
-    private KnownValue functionality = new KnownValue();
+    private final KnownValue functionality = new KnownValue();
     /** value for symmetry */
     @PortedFrom(file = "tRole.h", name = "Symmetry")
-    private KnownValue symmetry = new KnownValue();
+    private final KnownValue symmetry = new KnownValue();
     /** value for asymmetricity */
     @PortedFrom(file = "tRole.h", name = "Asymmetry")
-    private KnownValue asymmetry = new KnownValue();
+    private final KnownValue asymmetry = new KnownValue();
     /** value for transitivity */
     @PortedFrom(file = "tRole.h", name = "Transitivity")
-    private KnownValue transitivity = new KnownValue();
+    private final KnownValue transitivity = new KnownValue();
     /** value for reflexivity */
     @PortedFrom(file = "tRole.h", name = "Reflexivity")
-    private KnownValue reflexivity = new KnownValue();
+    private final KnownValue reflexivity = new KnownValue();
     /** value for reflexivity */
     @PortedFrom(file = "tRole.h", name = "Irreflexivity")
-    private KnownValue irreflexivity = new KnownValue();
+    private final KnownValue irreflexivity = new KnownValue();
     /** flag to show that this role needs special R&D processing */
     @PortedFrom(file = "tRole.h", name = "SpecialDomain")
     private boolean specialDomain;

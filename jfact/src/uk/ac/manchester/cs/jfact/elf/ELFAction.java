@@ -16,23 +16,21 @@ class ELFAction implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** role R corresponded to R(C,D) */
     @PortedFrom(file = "ELFReasoner.h", name = "R")
-    TELFRole R = null;
+    private final TELFRole R;
     /** concept C; to add */
     @PortedFrom(file = "ELFReasoner.h", name = "C")
-    TELFConcept C = null;
+    private final TELFConcept C;
     /** concept D; to add */
     @PortedFrom(file = "ELFReasoner.h", name = "D")
-    TELFConcept D = null;
+    private final TELFConcept D;
 
     /** init c'tor for C action */
-    ELFAction(TELFConcept c, TELFConcept d) {
-        R = null;
-        C = c;
-        D = d;
+    public ELFAction(TELFConcept c, TELFConcept d) {
+        this(null, c, d);
     }
 
     /** init c'tor for R action */
-    ELFAction(TELFRole r, TELFConcept c, TELFConcept d) {
+    public ELFAction(TELFRole r, TELFConcept c, TELFConcept d) {
         R = r;
         C = c;
         D = d;
@@ -40,7 +38,7 @@ class ELFAction implements Serializable {
 
     /** action itself, depending on the R state */
     @PortedFrom(file = "ELFReasoner.h", name = "apply")
-    void apply() {
+    public void apply() {
         if (R != null) {
             R.addR(C, D);
         } else {

@@ -15,10 +15,11 @@ import conformance.PortedFrom;
 
 /** helper class to set signature and locality class */
 @PortedFrom(file = "LocalityChecker.h", name = "SigAccessor")
-public class SigAccessor extends DLExpressionVisitorAdapter { private static final long serialVersionUID=11000L;
+public class SigAccessor extends DLExpressionVisitorAdapter {
+    private static final long serialVersionUID = 11000L;
     /** signature of a module */
     @PortedFrom(file = "LocalityChecker.h", name = "sig")
-    TSignature sig;
+    protected TSignature sig;
 
     /** @param s */
     @Original
@@ -36,7 +37,7 @@ public class SigAccessor extends DLExpressionVisitorAdapter { private static fin
 
     /** @return true iff EXPR is a top datatype */
     @Original
-    static boolean isTopDT(Expression expr) {
+    private static boolean isTopDT(Expression expr) {
         return expr instanceof DataTop;
     }
 

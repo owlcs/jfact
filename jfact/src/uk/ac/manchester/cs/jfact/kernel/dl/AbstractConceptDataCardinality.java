@@ -20,12 +20,12 @@ public abstract class AbstractConceptDataCardinality implements
         ConceptDataCardinalityExpression, DataRoleArg, Serializable {
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLExpression.h", name = "N")
-    private int cardinality;
+    private final int cardinality;
     /** data role argument */
     @PortedFrom(file = "tDLExpression.h", name = "DR")
-    private DataRoleExpression dataRoleExpression;
+    private final DataRoleExpression dataRoleExpression;
     @PortedFrom(file = "tDLExpression.h", name = "Expr")
-    private DataExpression expression;
+    private final DataExpression expression;
 
     protected AbstractConceptDataCardinality(int n, DataRoleExpression R, DataExpression E) {
         dataRoleExpression = R;

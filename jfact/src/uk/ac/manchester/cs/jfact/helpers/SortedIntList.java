@@ -12,7 +12,7 @@ class SortedIntList implements Serializable {
     private static final long serialVersionUID = 11000L;
     protected int[] values;
     protected int size = 0;
-    protected static int defaultSize = 16;
+    protected final static int defaultSize = 16;
 
     protected int insertionIndex(int key) {
         if (size == 0) {

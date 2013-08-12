@@ -28,12 +28,12 @@ public class DLDag implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** body of DAG */
     @PortedFrom(file = "dlDag.h", name = "Heap")
-    private List<DLVertex> heap = new ArrayList<DLVertex>();
+    private final List<DLVertex> heap = new ArrayList<DLVertex>();
     /** all the AND nodes (needs to recompute) */
     @PortedFrom(file = "dlDag.h", name = "listAnds")
-    private FastSet listAnds = FastSetFactory.create();
+    private final FastSet listAnds = FastSetFactory.create();
     @Original
-    private EnumMap<DagTag, DLVTable> indexes = new EnumMap<DagTag, DLVTable>(
+    private final EnumMap<DagTag, DLVTable> indexes = new EnumMap<DagTag, DLVTable>(
             DagTag.class);
     /** cache efficiency -- statistic purposes */
     @PortedFrom(file = "dlDag.h", name = "nCacheHits")
@@ -56,7 +56,7 @@ public class DLDag implements Serializable {
     @PortedFrom(file = "dlDag.h", name = "finalDagSize")
     private int finalDagSize;
     @Original
-    private JFactReasonerConfiguration options;
+    private final JFactReasonerConfiguration options;
 
     /** replace existing vertex at index I with a vertex V
      * 

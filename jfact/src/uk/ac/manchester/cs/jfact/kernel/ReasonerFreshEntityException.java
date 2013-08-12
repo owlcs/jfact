@@ -8,8 +8,9 @@ package uk.ac.manchester.cs.jfact.kernel;
 import org.semanticweb.owlapi.reasoner.OWLReasonerRuntimeException;
 
 @SuppressWarnings("javadoc")
-public class ReasonerFreshEntityException extends OWLReasonerRuntimeException { private static final long serialVersionUID=11000L;
-    private String iri;
+public class ReasonerFreshEntityException extends OWLReasonerRuntimeException {
+    private static final long serialVersionUID = 11000L;
+    private final String iri;
 
     public ReasonerFreshEntityException(String iri) {
         this.iri = iri;

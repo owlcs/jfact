@@ -23,9 +23,9 @@ public class ConceptDataValue implements ConceptDataRoleExpression,
     private static final long serialVersionUID = 11000L;
     /** data expression argument */
     @PortedFrom(file = "tDLAxiom.h", name = "Expr")
-    protected Literal<?> dataValue;
+    protected final Literal<?> dataValue;
     @Original
-    private DataRoleExpression delegate;
+    private final DataRoleExpression delegate;
 
     /** @param R
      * @param V */

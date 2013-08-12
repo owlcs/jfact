@@ -26,16 +26,16 @@ public class DlCompletionGraph implements Serializable {
     // XXX is this actually used?
     /** allocator for edges */
     @PortedFrom(file = "dlCompletionGraph.h", name = "CTEdgeHeap")
-    private List<DlCompletionTreeArc> ctEdgeHeap = new ArrayList<DlCompletionTreeArc>();
+    private final List<DlCompletionTreeArc> ctEdgeHeap = new ArrayList<DlCompletionTreeArc>();
     /** heap itself */
     @PortedFrom(file = "dlCompletionGraph.h", name = "NodeBase")
-    private List<DlCompletionTree> nodeBase;
+    private final List<DlCompletionTree> nodeBase;
     /** nodes, saved on current branching level */
     @PortedFrom(file = "dlCompletionGraph.h", name = "SavedNodes")
-    private List<DlCompletionTree> savedNodes = new ArrayList<DlCompletionTree>();
+    private final List<DlCompletionTree> savedNodes = new ArrayList<DlCompletionTree>();
     /** host reasoner */
     @PortedFrom(file = "dlCompletionGraph.h", name = "pReasoner")
-    private DlSatTester pReasoner;
+    private final DlSatTester pReasoner;
     /** remember the last generated ID for the node */
     @PortedFrom(file = "dlCompletionGraph.h", name = "nodeId")
     private int nodeId = 0;
@@ -50,15 +50,15 @@ public class DlCompletionGraph implements Serializable {
     private int irLevel;
     /** stack for rarely changed information */
     @PortedFrom(file = "dlCompletionGraph.h", name = "RareStack")
-    private SaveStackRare rareStack = new SaveStackRare();
+    private final SaveStackRare rareStack = new SaveStackRare();
     /** stack for usual saving/restoring */
     @PortedFrom(file = "dlCompletionGraph.h", name = "Stack")
-    private SaveStack<DLCompletionGraphSaveState> stack = new SaveStack<DLCompletionGraphSaveState>();
+    private final SaveStack<DLCompletionGraphSaveState> stack = new SaveStack<DLCompletionGraphSaveState>();
     // helpers for the output
     /** bitmap to remember which node was printed */
     // TODO change to regular
     @PortedFrom(file = "dlCompletionGraph.h", name = "CPGFlag")
-    private FastSet cgpFlag = FastSetFactory.create();
+    private final FastSet cgpFlag = FastSetFactory.create();
     /** indent to print CGraph nodes */
     @PortedFrom(file = "dlCompletionGraph.h", name = "CPGIndent")
     private int cgpIndent;
@@ -71,7 +71,7 @@ public class DlCompletionGraph implements Serializable {
     private int nNodeRestores;
     /** maximal size of the graph */
     @PortedFrom(file = "dlCompletionGraph.h", name = "maxGraphSize")
-    int maxGraphSize = 0;
+    private int maxGraphSize = 0;
     // flags
     /** how many nodes skip before block; work only with FAIRNESS */
     @PortedFrom(file = "dlCompletionGraph.h", name = "nSkipBeforeBlock")
@@ -344,7 +344,7 @@ public class DlCompletionGraph implements Serializable {
     /** @return true if a fairness constraint C is violated in one of the loops in
      *         the CGraph */
     @PortedFrom(file = "dlCompletionGraph.h", name = "getFCViolator")
-    DlCompletionTree getFCViolator(int C) {
+    public DlCompletionTree getFCViolator(int C) {
         for (DlCompletionTree p : nodeBase) {
             if (p.isDBlocked() && !p.isLoopLabelled(C)) {
                 return p.blocker;

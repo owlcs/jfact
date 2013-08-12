@@ -32,8 +32,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * action: (B)ottom Absorption), (T)op absorption, (E)quivalent concepts
      * replacement, (C)oncept absorption, (N)egated concept absorption, (F)orall
      * expression replacement, (R)ole absorption, (S)plit */
-    private static final StringOption absorptionFlags = getOption("absorptionFlags",
-            "BTECFSR");
+    private static StringOption absorptionFlags = getOption("absorptionFlags", "BTECFSR");
     /** Option 'alwaysPreferEquals' allows user to enforce usage of C=D
      * definition instead of C[=D during absorption, even if implication
      * appeares earlier in stream of axioms. */
@@ -44,18 +43,18 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * and '0' for no sorting), 'o' is a order field (could be 'a' for ascending
      * and 'd' for descending mode), and 'p' is a preference field (could be 'p'
      * for preferencing non-generating rules and 'n' for not doing so). */
-    private static final StringOption orSortSub = getOption("orSortSub", "0");
+    private static StringOption orSortSub = getOption("orSortSub", "0");
     /** Option 'orSortSat' define the sorting order of OR vertices in the DAG
      * used in satisfiability tests (used mostly in caching). Option has form of
      * string 'Mop', see orSortSub for details. */
-    private static final StringOption orSortSat = getOption("orSortSat", "0");
+    private static StringOption orSortSat = getOption("orSortSat", "0");
     /** Option 'IAOEFLG' define the priorities of different operations in TODO
      * list. Possible values are 7-digit strings with ony possible digit are
      * 0-6. The digits on the places 1, 2, ..., 7 are for priority of Id, And,
      * Or, Exists, Forall, LE and GE operations respectively. The smaller number
      * means the higher priority. All other constructions (TOP, BOTTOM, etc) has
      * priority 0. */
-    private static final StringOption IAOEFLG = getOption("IAOEFLG", "1263005");
+    private static StringOption IAOEFLG = getOption("IAOEFLG", "1263005");
     /** Option 'useSemanticBranching' switch semantic branching on and off. The
      * usage of semantic branching usually leads to faster reasoning, but
      * sometime could give small overhead. */
@@ -255,8 +254,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
     static class StringOption implements Serializable {
         private static final long serialVersionUID = 11000L;
         /** option name */
-        private String optionName;
-        private String value;
+        private final String optionName;
+        private final String value;
 
         public StringOption(String name, String defVal) {
             optionName = name;
@@ -435,7 +434,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
         }
     }
 
-    LogAdapter empty = new LogAdapterImpl();
+    final LogAdapter empty = new LogAdapterImpl();
     private LogAdapterStream logAdapterStream;
 
     public void setRegularLogOutputStream(OutputStream o) {
@@ -457,7 +456,6 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
             in.defaultReadObject();
             out = System.out;
         }
-
 
         public LogAdapterStream(OutputStream o) {
             out = o;
@@ -591,6 +589,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
 
     static class LogAdapterImpl implements LogAdapter, Serializable {
         private static final long serialVersionUID = 11000L;
+
         @Override
         public LogAdapter printTemplate(Templates t, Object... strings) {
             return this;

@@ -12,8 +12,8 @@ import conformance.PortedFrom;
 public class OntologyBasedModularizer implements Serializable {
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "OntologyBasedModularizer.h", name = "Ontology")
-    private Ontology ontology;
-    private TModularizer Modularizer;
+    private final Ontology ontology;
+    private final TModularizer Modularizer;
 
     @PortedFrom(file = "OntologyBasedModularizer.h", name = "OntologyBasedModularizer")
     public OntologyBasedModularizer(Ontology ontology, TModularizer mod) {

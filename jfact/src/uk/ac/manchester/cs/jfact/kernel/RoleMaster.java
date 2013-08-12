@@ -30,6 +30,7 @@ public class RoleMaster implements Serializable {
 
     protected static class RoleCreator implements NameCreator<Role>, Serializable {
         private static final long serialVersionUID = 11000L;
+
         @Override
         public Role makeEntry(String name) {
             return new Role(name);
@@ -41,32 +42,32 @@ public class RoleMaster implements Serializable {
     private int newRoleId;
     /** all registered roles */
     @PortedFrom(file = "RoleMaster.h", name = "Roles")
-    private List<Role> roles = new ArrayList<Role>();
+    private final List<Role> roles = new ArrayList<Role>();
     /** internal empty role (bottom in the taxonomy) */
     @PortedFrom(file = "RoleMaster.h", name = "emptyRole")
-    private Role emptyRole;
+    private final Role emptyRole;
     /** internal universal role (top in the taxonomy) */
     @PortedFrom(file = "RoleMaster.h", name = "universalRole")
-    private Role universalRole;
+    private final Role universalRole;
     /** roles nameset */
     @PortedFrom(file = "RoleMaster.h", name = "roleNS")
-    private NameSet<Role> roleNS;
+    private final NameSet<Role> roleNS;
     /** Taxonomy of roles */
     @PortedFrom(file = "RoleMaster.h", name = "pTax")
-    private Taxonomy pTax;
+    private final Taxonomy pTax;
     /** two halves of disjoint roles axioms */
     @PortedFrom(file = "RoleMaster.h", name = "DJRolesA")
-    private List<Role> disjointRolesA = new ArrayList<Role>();
+    private final List<Role> disjointRolesA = new ArrayList<Role>();
     @PortedFrom(file = "RoleMaster.h", name = "DJRolesB")
-    private List<Role> disjointRolesB = new ArrayList<Role>();
+    private final List<Role> disjointRolesB = new ArrayList<Role>();
     /** flag whether to create data roles or not */
     @PortedFrom(file = "RoleMaster.h", name = "DataRoles")
-    private boolean dataRoles;
+    private final boolean dataRoles;
     /** flag if it is possible to introduce new names */
     @PortedFrom(file = "RoleMaster.h", name = "useUndefinedNames")
     private boolean useUndefinedNames;
     @Original
-    private static int firstRoleIndex = 2;
+    private final static int firstRoleIndex = 2;
 
     /** TRole and it's inverse in RoleBox */
     @PortedFrom(file = "RoleMaster.h", name = "registerRole")
@@ -415,13 +416,13 @@ public class RoleMaster implements Serializable {
 
     /** @return pointer to a TOP role */
     @PortedFrom(file = "RoleMaster.h", name = "getTopRole")
-    Role getTopRole() {
+    public Role getTopRole() {
         return universalRole;
     }
 
     /** @return pointer to a BOTTOM role */
     @PortedFrom(file = "RoleMaster.h", name = "getBotRole")
-    Role getBotRole() {
+    public Role getBotRole() {
         return emptyRole;
     }
 }

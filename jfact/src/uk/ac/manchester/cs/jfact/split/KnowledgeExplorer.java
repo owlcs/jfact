@@ -25,32 +25,32 @@ public class KnowledgeExplorer implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** map concept into set of its synonyms */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "Cs")
-    MultiMap<NamedEntity, Concept> Cs = new MultiMap<NamedEntity, Concept>();
+    private final MultiMap<NamedEntity, Concept> Cs = new MultiMap<NamedEntity, Concept>();
     /** map individual into set of its synonyms */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "Is")
-    MultiMap<NamedEntity, Individual> Is = new MultiMap<NamedEntity, Individual>();
+    private final MultiMap<NamedEntity, Individual> Is = new MultiMap<NamedEntity, Individual>();
     /** map object role to the set of its super-roles (self included) */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "ORs")
-    MultiMap<NamedEntity, Role> ORs = new MultiMap<NamedEntity, Role>();
+    private final MultiMap<NamedEntity, Role> ORs = new MultiMap<NamedEntity, Role>();
     /** map data role to the set of its super-roles (self included) */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "DRs")
-    MultiMap<NamedEntity, Role> DRs = new MultiMap<NamedEntity, Role>();
+    private final MultiMap<NamedEntity, Role> DRs = new MultiMap<NamedEntity, Role>();
     /** dag-2-interface translator used in knowledge exploration */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "D2I")
-    TDag2Interface D2I;
+    private final TDag2Interface D2I;
     /** node vector to return */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "Nodes")
-    List<DlCompletionTree> Nodes = new ArrayList<DlCompletionTree>();
+    private final List<DlCompletionTree> Nodes = new ArrayList<DlCompletionTree>();
     /** role set to return */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "Roles")
-    Set<RoleExpression> Roles = new HashSet<RoleExpression>();
+    private final Set<RoleExpression> Roles = new HashSet<RoleExpression>();
     /** concept vector to return */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "Concepts")
-    List<Expression> Concepts = new ArrayList<Expression>();
+    private final List<Expression> Concepts = new ArrayList<Expression>();
 
     /** adds an entity as a synonym to a map MAP */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "addE")
-    <E extends ClassifiableEntry> void addE(MultiMap<E, E> map, E entry) {
+    private <E extends ClassifiableEntry> void addE(MultiMap<E, E> map, E entry) {
         map.put(entry, entry);
         if (entry.isSynonym()) {
             map.put((E) entry.getSynonym(), entry);
@@ -105,7 +105,7 @@ public class KnowledgeExplorer implements Serializable {
      */
     /** add concept-like entity E (possibly with synonyms) to CONCEPTS */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "addC")
-    void addC(Expression e) {
+    private void addC(Expression e) {
         // check named concepts
         if (e instanceof ConceptName) {
             ConceptName C = (ConceptName) e;

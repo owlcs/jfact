@@ -13,7 +13,9 @@ import conformance.PortedFrom;
 
 /** data min cardinality */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptDataMinCardinality")
-public class ConceptDataMinCardinality extends AbstractConceptDataCardinality { private static final long serialVersionUID=11000L;
+public class ConceptDataMinCardinality extends AbstractConceptDataCardinality {
+    private static final long serialVersionUID = 11000L;
+
     /** @param n
      * @param R
      * @param E */

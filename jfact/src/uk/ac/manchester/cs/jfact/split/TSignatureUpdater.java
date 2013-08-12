@@ -21,17 +21,17 @@ public class TSignatureUpdater implements DLAxiomVisitor, Serializable {
     private static final long serialVersionUID = 11000L;
     /** helper with expressions */
     @PortedFrom(file = "tSignatureUpdater.h", name = "Updater")
-    TExpressionSignatureUpdater Updater;
+    private final TExpressionSignatureUpdater Updater;
 
     /** helper for the expression processing */
     @PortedFrom(file = "tSignatureUpdater.h", name = "v")
-    void v(Expression E) {
+    private void v(Expression E) {
         E.accept(Updater);
     }
 
     /** helper for the [begin,end) interval */
     @PortedFrom(file = "tSignatureUpdater.h", name = "v")
-    void v(Collection<? extends Expression> arg) {
+    private void v(Collection<? extends Expression> arg) {
         for (Expression e : arg) {
             v(e);
         }

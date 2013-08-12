@@ -17,7 +17,7 @@ public abstract class NamedEntry implements HasName, Serializable {
     private static final long serialVersionUID = 11000L;
     /** name of the entry */
     @PortedFrom(file = "tNamedEntry.h", name = "extName")
-    protected String extName;
+    protected final String extName;
     /** entry identifier */
     @PortedFrom(file = "tNamedEntry.h", name = "extId")
     protected int extId;

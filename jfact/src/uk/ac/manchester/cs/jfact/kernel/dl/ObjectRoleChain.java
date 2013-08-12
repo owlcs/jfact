@@ -20,6 +20,7 @@ import conformance.PortedFrom;
 public class ObjectRoleChain extends NAryExpressionImpl<ObjectRoleExpression> implements
         NAryExpression<ObjectRoleExpression>, ObjectRoleComplexExpression, Serializable {
     private static final long serialVersionUID = 11000L;
+
     /** create role chain from given array
      * 
      * @param v */

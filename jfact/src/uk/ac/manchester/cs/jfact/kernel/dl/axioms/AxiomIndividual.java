@@ -11,9 +11,10 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomIndividual")
-abstract class AxiomIndividual extends AxiomImpl { private static final long serialVersionUID=11000L;
+abstract class AxiomIndividual extends AxiomImpl {
+    private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "I")
-    private IndividualExpression individualExpression;
+    private final IndividualExpression individualExpression;
 
     protected AxiomIndividual(OWLAxiom ax, IndividualExpression i) {
         super(ax);

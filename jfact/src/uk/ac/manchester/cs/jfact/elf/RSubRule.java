@@ -10,13 +10,14 @@ import conformance.PortedFrom;
 // Rule for R [= S case; CR10
 /** the rule for R [= S case */
 @PortedFrom(file = "ELFReasoner.h", name = "RSubRule")
-public class RSubRule extends TELFRule { private static final long serialVersionUID=11000L;
+public class RSubRule extends TELFRule {
+    private static final long serialVersionUID = 11000L;
     /** role to add the pair */
     @PortedFrom(file = "ELFReasoner.h", name = "S")
-    TELFRole S;
+    private final TELFRole S;
 
     /** init c'tor: remember S */
-    RSubRule(ELFReasoner ER, TELFRole s) {
+    public RSubRule(ELFReasoner ER, TELFRole s) {
         super(ER);
         S = s;
     }
@@ -24,7 +25,7 @@ public class RSubRule extends TELFRule { private static final long serialVersion
     /** apply a method with a given pair (C,D) */
     @Override
     @PortedFrom(file = "ELFReasoner.h", name = "apply")
-    void apply(TELFConcept addedC, TELFConcept addedD) {
+    public void apply(TELFConcept addedC, TELFConcept addedD) {
         ER.addAction(new ELFAction(S, addedC, addedD));
     }
 }

@@ -15,11 +15,12 @@ import conformance.PortedFrom;
 
 /** negated object role assertion */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomRelatedToNot")
-public class AxiomRelatedToNot extends AxiomIndividual { private static final long serialVersionUID=11000L;
+public class AxiomRelatedToNot extends AxiomIndividual {
+    private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "J")
-    private IndividualExpression individualExpression;
+    private final IndividualExpression individualExpression;
     @PortedFrom(file = "tDLAxiom.h", name = "R")
-    private ObjectRoleExpression objectRoleExpression;
+    private final ObjectRoleExpression objectRoleExpression;
 
     /** @param ax
      * @param i

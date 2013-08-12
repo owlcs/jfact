@@ -23,34 +23,34 @@ public class TModularizer implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** shared signature signature */
     @PortedFrom(file = "Modularity.h", name = "sig")
-    TSignature sig;
+    private TSignature sig;
     /** internal syntactic locality checker */
     @PortedFrom(file = "Modularity.h", name = "Checker")
-    LocalityChecker Checker;
+    private final LocalityChecker Checker;
     /** module as a list of axioms */
     @PortedFrom(file = "Modularity.h", name = "Module")
-    List<AxiomInterface> Module = new ArrayList<AxiomInterface>();
+    private final List<AxiomInterface> Module = new ArrayList<AxiomInterface>();
     /** pointer to a sig index; if not NULL then use optimized algo */
     @PortedFrom(file = "Modularity.h", name = "sigIndex")
-    SigIndex sigIndex = null;
+    private final SigIndex sigIndex;
     /** true if no atoms are processed ATM */
     @PortedFrom(file = "Modularity.h", name = "noAtomsProcessing")
-    boolean noAtomsProcessing;
+    private boolean noAtomsProcessing;
     /** queue of unprocessed entities */
     @PortedFrom(file = "Modularity.h", name = "WorkQueue")
-    List<NamedEntity> WorkQueue = new ArrayList<NamedEntity>();
+    private final List<NamedEntity> WorkQueue = new ArrayList<NamedEntity>();
     /** number of locality check calls */
     @PortedFrom(file = "Modularity.h", name = "nChecks")
-    long nChecks;
+    private long nChecks;
     /** number of non-local axioms */
     @PortedFrom(file = "Modularity.h", name = "nNonLocal")
-    long nNonLocal;
+    private long nNonLocal;
     @Original
-    private JFactReasonerConfiguration config;
+    private final JFactReasonerConfiguration config;
 
     /** update SIG wrt the axiom signature */
     @PortedFrom(file = "Modularity.h", name = "addAxiomSig")
-    void addAxiomSig(AxiomInterface axiom) {
+    private void addAxiomSig(AxiomInterface axiom) {
         TSignature axiomSig = axiom.getSignature();
         if (sigIndex != null) {
             for (NamedEntity p : axiomSig.begin()) {
@@ -64,7 +64,7 @@ public class TModularizer implements Serializable {
 
     /** add an axiom to a module */
     @PortedFrom(file = "Modularity.h", name = "addAxiomToModule")
-    void addAxiomToModule(AxiomInterface axiom) {
+    private void addAxiomToModule(AxiomInterface axiom) {
         axiom.setInModule(true);
         Module.add(axiom);
         // update the signature
@@ -73,7 +73,7 @@ public class TModularizer implements Serializable {
 
     /** @return true iff an AXiom is non-local */
     @PortedFrom(file = "Modularity.h", name = "isNonLocal")
-    boolean isNonLocal(AxiomInterface ax) {
+    private boolean isNonLocal(AxiomInterface ax) {
         ++nChecks;
         if (Checker.local(ax)) {
             return false;
@@ -84,7 +84,7 @@ public class TModularizer implements Serializable {
 
     /** add an axiom if it is non-local (or if noCheck is true) */
     @PortedFrom(file = "Modularity.h", name = "addNonLocal")
-    void addNonLocal(AxiomInterface ax, boolean noCheck) {
+    private void addNonLocal(AxiomInterface ax, boolean noCheck) {
         if (noCheck || isNonLocal(ax)) {
             addAxiomToModule(ax);
             if (config.isRKG_USE_AD_IN_MODULE_EXTRACTION()) {
@@ -99,7 +99,7 @@ public class TModularizer implements Serializable {
 
     /** add all the non-local axioms from given axiom-set AxSet */
     @PortedFrom(file = "Modularity.h", name = "addNonLocal")
-    void addNonLocal(Collection<AxiomInterface> AxSet, boolean noCheck) {
+    private void addNonLocal(Collection<AxiomInterface> AxSet, boolean noCheck) {
         for (AxiomInterface q : AxSet) {
             if (!q.isInModule() && q.isInSS()) {
                 this.addNonLocal(q, noCheck);
@@ -109,7 +109,7 @@ public class TModularizer implements Serializable {
 
     /** build a module traversing axioms by a signature */
     @PortedFrom(file = "Modularity.h", name = "extractModuleQueue")
-    void extractModuleQueue() {
+    private void extractModuleQueue() {
         // init queue with a sig
         for (NamedEntity p : sig.begin()) {
             WorkQueue.add(p);
@@ -127,7 +127,7 @@ public class TModularizer implements Serializable {
 
     /** extract module wrt presence of a sig index */
     @PortedFrom(file = "Modularity.h", name = "extractModule")
-    void extractModule(Collection<AxiomInterface> args) {
+    private void extractModule(Collection<AxiomInterface> args) {
         Module.clear();
         // clear the module flag in the input
         for (AxiomInterface p : args) {
@@ -170,7 +170,7 @@ public class TModularizer implements Serializable {
 
     /** @return true iff the axiom AX is a tautology wrt given type */
     @PortedFrom(file = "Modularity.h", name = "isTautology")
-    boolean isTautology(AxiomInterface ax, ModuleType type) {
+    public boolean isTautology(AxiomInterface ax, ModuleType type) {
         boolean topLocality = type == ModuleType.M_TOP;
         sig = ax.getSignature();
         sig.setLocality(topLocality);
@@ -197,7 +197,7 @@ public class TModularizer implements Serializable {
     }
 
     @PortedFrom(file = "Modularity.h", name = "extract")
-    void extract(AxiomInterface begin, TSignature signature, ModuleType type) {
+    public void extract(AxiomInterface begin, TSignature signature, ModuleType type) {
         this.extract(Collections.singletonList(begin), signature, type);
     }
 
@@ -233,13 +233,13 @@ public class TModularizer implements Serializable {
 
     /** get number of checks made */
     @PortedFrom(file = "Modularity.h", name = "getNChecks")
-    long getNChecks() {
+    public long getNChecks() {
         return nChecks;
     }
 
     /** get number of axioms that were local */
     @PortedFrom(file = "Modularity.h", name = "getNNonLocal")
-    long getNNonLocal() {
+    private long getNNonLocal() {
         return nNonLocal;
     }
 

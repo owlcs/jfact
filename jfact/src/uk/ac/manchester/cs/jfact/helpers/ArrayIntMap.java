@@ -13,7 +13,7 @@ public class ArrayIntMap implements Serializable {
     private static final long serialVersionUID = 11000L;
     private int[][] values;
     private int size = 0;
-    private static int defaultSize = 16;
+    private static final int defaultSize = 16;
 
     private int insertionIndex(int key) {
         if (size == 0) {

@@ -6,6 +6,8 @@ package uk.ac.manchester.cs.jfact.elf;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,35 +31,35 @@ public class ELFReasoner implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** S(C) structure */
     @PortedFrom(file = "ELFReasoner.h", name = "CVec")
-    List<TELFConcept> CVec;
+    private final List<TELFConcept> CVec = new ArrayList<TELFConcept>();
     /** set or all concepts */
     @PortedFrom(file = "ELFReasoner.h", name = "CMap")
-    Map<ConceptExpression, TELFConcept> CMap;
+    private final Map<ConceptExpression, TELFConcept> CMap = new HashMap<ConceptExpression, TELFConcept>();
     /** TOP Concept */
     @PortedFrom(file = "ELFReasoner.h", name = "CTop")
-    TELFConcept CTop = null;
+    private final TELFConcept CTop;
     /** BOTTOM Concept */
     @PortedFrom(file = "ELFReasoner.h", name = "CBot")
-    TELFConcept CBot = null;
+    private final TELFConcept CBot;
     /** map between roles and structures */
     @PortedFrom(file = "ELFReasoner.h", name = "RMap")
-    Map<ObjectRoleExpression, TELFRole> RMap;
+    private final Map<ObjectRoleExpression, TELFRole> RMap = new HashMap<ObjectRoleExpression, TELFRole>();
     /** queue of actions to perform */
     @PortedFrom(file = "ELFReasoner.h", name = "queue")
-    List<ELFAction> queue;
+    private final List<ELFAction> queue = new ArrayList<ELFAction>();
     /** stat counters */
     @PortedFrom(file = "ELFReasoner.h", name = "nC2R")
-    int nC2C;
+    private int nC2C;
     @PortedFrom(file = "ELFReasoner.h", name = "nA2C")
-    int nA2C;
+    private int nA2C;
     @PortedFrom(file = "ELFReasoner.h", name = "nC2E")
-    int nC2E;
+    private int nC2E;
     @PortedFrom(file = "ELFReasoner.h", name = "nE2C")
-    int nE2C;
+    private int nE2C;
     @PortedFrom(file = "ELFReasoner.h", name = "nR2R")
-    int nR2R;
+    private int nR2R;
     @PortedFrom(file = "ELFReasoner.h", name = "nC2R")
-    int nC2R;
+    private int nC2R;
 
     /** get concept (expression) corresponding to a given DL expression */
     @PortedFrom(file = "ELFReasoner.h", name = "getC")
@@ -74,7 +76,7 @@ public class ELFReasoner implements Serializable {
 
     /** get role (expression, but actually just a name) */
     @PortedFrom(file = "ELFReasoner.h", name = "getR")
-    TELFRole getR(ObjectRoleExpression p) {
+    private TELFRole getR(ObjectRoleExpression p) {
         TELFRole r = RMap.get(p);
         if (r != null) {
             return r;
@@ -126,7 +128,7 @@ public class ELFReasoner implements Serializable {
 
     /** add action to a queue */
     @PortedFrom(file = "ELFReasoner.h", name = "addAction")
-    void addAction(ELFAction action) {
+    public void addAction(ELFAction action) {
         queue.add(action);
     }
 
@@ -147,14 +149,14 @@ public class ELFReasoner implements Serializable {
     // inline ELFReasoner implementation
     /** process axiom C [= D */
     @PortedFrom(file = "ELFReasoner.h", name = "processC2C")
-    void processC2C(TELFConcept C, TELFConcept D) {
+    private void processC2C(TELFConcept C, TELFConcept D) {
         ++nC2C;
         C.addRule(new CSubRule(this, D));
     }
 
     /** process axiom C1 and C2 [= D */
     @PortedFrom(file = "ELFReasoner.h", name = "processA2C")
-    void processA2C(TELFConcept C1, TELFConcept C2, TELFConcept D) {
+    private void processA2C(TELFConcept C1, TELFConcept C2, TELFConcept D) {
         ++nA2C;
         C1.addRule(new CAndSubRule(this, C2, D));
         C2.addRule(new CAndSubRule(this, C1, D));
@@ -162,14 +164,14 @@ public class ELFReasoner implements Serializable {
 
     /** process axiom C [= \ER.D */
     @PortedFrom(file = "ELFReasoner.h", name = "processC2E")
-    void processC2E(TELFConcept C, TELFRole R, TELFConcept D) {
+    private void processC2E(TELFConcept C, TELFRole R, TELFConcept D) {
         ++nC2E;
         C.addRule(new RAddRule(this, R, D));
     }
 
     /** process axiom \ER.C [= D */
     @PortedFrom(file = "ELFReasoner.h", name = "processE2C")
-    void processE2C(TELFRole R, TELFConcept C, TELFConcept D) {
+    private void processE2C(TELFRole R, TELFConcept C, TELFConcept D) {
         ++nE2C;
         // C from existential will have a C-adder rule
         C.addRule(new CAddFillerRule(this, R, D));
@@ -179,14 +181,14 @@ public class ELFReasoner implements Serializable {
 
     /** process axiom R [= S */
     @PortedFrom(file = "ELFReasoner.h", name = "processR2R")
-    void processR2R(TELFRole R, TELFRole S) {
+    private void processR2R(TELFRole R, TELFRole S) {
         ++nR2R;
         R.addRule(new RSubRule(this, S));
     }
 
     /** process axiom R1 o R2 [= S */
     @PortedFrom(file = "ELFReasoner.h", name = "processC2R")
-    void processC2R(TELFRole R1, TELFRole R2, TELFRole S) {
+    private void processC2R(TELFRole R1, TELFRole R2, TELFRole S) {
         ++nC2R;
         R1.addRule(new RChainLRule(this, R2, S));
         R2.addRule(new RChainRRule(this, R1, S));
@@ -227,7 +229,7 @@ public class ELFReasoner implements Serializable {
 
     /** process role inclusion axiom into the internal structures */
     @PortedFrom(file = "ELFReasoner.h", name = "processRI")
-    void processRI(AxiomORoleSubsumption axiom) {
+    private void processRI(AxiomORoleSubsumption axiom) {
         TELFRole rhs = getR(axiom.getRole());
         if (axiom.getSubRole() instanceof ObjectRoleChain) // R o S [= T
         {
@@ -260,7 +262,7 @@ public class ELFReasoner implements Serializable {
 
     /** helper that inits \bot-related rules */
     @PortedFrom(file = "ELFReasoner.h", name = "initBotRules")
-    void initBotRules() {
+    private void initBotRules() {
         for (TELFRole i : RMap.values()) {
             // for every R add listener that checks whether for R(C,D) S(D)
             // contains \bot

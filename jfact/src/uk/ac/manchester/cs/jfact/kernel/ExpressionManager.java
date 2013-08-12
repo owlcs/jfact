@@ -22,6 +22,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tExpressionManager.h", name = "TExpressionManager")
 public class ExpressionManager implements Serializable {
     private static final long serialVersionUID = 11000L;
+
     /** Cache for the inverse roles */
     protected class InverseRoleCache implements Serializable {
         private static final long serialVersionUID = 11000L;
@@ -59,6 +60,7 @@ public class ExpressionManager implements Serializable {
     protected static class DataroleNameCreator implements NameCreator<DataRoleName>,
             Serializable {
         private static final long serialVersionUID = 11000L;
+
         @Override
         public DataRoleName makeEntry(String name) {
             return new DataRoleName(name);
@@ -68,6 +70,7 @@ public class ExpressionManager implements Serializable {
     protected static class ObjectroleNameCreator implements NameCreator<ObjectRoleName>,
             Serializable {
         private static final long serialVersionUID = 11000L;
+
         @Override
         public ObjectRoleName makeEntry(String name) {
             return new ObjectRoleName(name);
@@ -77,6 +80,7 @@ public class ExpressionManager implements Serializable {
     protected static class IndividualNameCreator implements NameCreator<IndividualName>,
             Serializable {
         private static final long serialVersionUID = 11000L;
+
         @Override
         public IndividualName makeEntry(String name) {
             return new IndividualName(name);
@@ -86,6 +90,7 @@ public class ExpressionManager implements Serializable {
     protected static class ConceptNameCreator implements NameCreator<ConceptName>,
             Serializable {
         private static final long serialVersionUID = 11000L;
+
         @Override
         public ConceptName makeEntry(String name) {
             return new ConceptName(name);
@@ -94,29 +99,29 @@ public class ExpressionManager implements Serializable {
 
     /** nameset for concepts */
     @PortedFrom(file = "tExpressionManager.h", name = "NS_C")
-    private NameSet<ConceptName> conceptNameset = new NameSet<ConceptName>(
+    private final NameSet<ConceptName> conceptNameset = new NameSet<ConceptName>(
             new ConceptNameCreator());
     /** nameset for individuals */
     @PortedFrom(file = "tExpressionManager.h", name = "NS_I")
-    private NameSet<IndividualName> individualNameset = new NameSet<IndividualName>(
+    private final NameSet<IndividualName> individualNameset = new NameSet<IndividualName>(
             new IndividualNameCreator());
     /** nameset for object roles */
     @PortedFrom(file = "tExpressionManager.h", name = "NS_OR")
-    private NameSet<ObjectRoleName> objectRoleNameset = new NameSet<ObjectRoleName>(
+    private final NameSet<ObjectRoleName> objectRoleNameset = new NameSet<ObjectRoleName>(
             new ObjectroleNameCreator());
     /** nameset for data roles */
     @PortedFrom(file = "tExpressionManager.h", name = "NS_DR")
-    private NameSet<DataRoleName> dataRoleNameset = new NameSet<DataRoleName>(
+    private final NameSet<DataRoleName> dataRoleNameset = new NameSet<DataRoleName>(
             new DataroleNameCreator());
     /** TOP concept */
     @PortedFrom(file = "tExpressionManager.h", name = "CTop")
-    private ConceptTop top = new ConceptTop();
+    private final ConceptTop top = new ConceptTop();
     /** BOTTOM concept */
     @PortedFrom(file = "tExpressionManager.h", name = "CBottom")
-    private ConceptBottom bottom = new ConceptBottom();
+    private final ConceptBottom bottom = new ConceptBottom();
     /** TOP data element */
     @PortedFrom(file = "tExpressionManager.h", name = "DTop")
-    private DataTop dataTop = new DataTop();
+    private final DataTop dataTop = new DataTop();
     /** TOP object role */
     @PortedFrom(file = "tExpressionManager.h", name = "ORTop")
     private ObjectRoleExpression objectRoleTop = new ObjectRoleTop();
@@ -130,13 +135,13 @@ public class ExpressionManager implements Serializable {
     @PortedFrom(file = "tExpressionManager.h", name = "DRBottom")
     private DataRoleExpression dataRoleBottom = new DataRoleBottom();
     @PortedFrom(file = "tExpressionManager.h", name = "DBottom")
-    private DataBottom dataBottom = new DataBottom();
+    private final DataBottom dataBottom = new DataBottom();
     /** cache for the role inverses */
     @PortedFrom(file = "tExpressionManager.h", name = "InverseRoleCache")
-    private InverseRoleCache inverseRoleCache = new InverseRoleCache();
+    private final InverseRoleCache inverseRoleCache = new InverseRoleCache();
     /** cache for the one-of singletons */
     @PortedFrom(file = "tExpressionManager.h", name = "OneOfCache")
-    private Map<IndividualExpression, ConceptExpression> OneOfCache = new HashMap<IndividualExpression, ConceptExpression>();
+    private final Map<IndividualExpression, ConceptExpression> OneOfCache = new HashMap<IndividualExpression, ConceptExpression>();
 
     /** set Top/Bot properties
      * 

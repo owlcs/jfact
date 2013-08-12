@@ -10,17 +10,17 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorAdapter;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TDepthMeasurer")
-public class TDepthMeasurer extends DLExpressionVisitorAdapter { private static final long serialVersionUID=11000L;
-
+public class TDepthMeasurer extends DLExpressionVisitorAdapter {
+    private static final long serialVersionUID = 11000L;
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
 
     /** @param conjunctiveQueryFolding */
-    TDepthMeasurer(ConjunctiveQueryFolding conjunctiveQueryFolding) {
+    public TDepthMeasurer(ConjunctiveQueryFolding conjunctiveQueryFolding) {
         this.conjunctiveQueryFolding = conjunctiveQueryFolding;
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "DepthOfNominalOccurences")
-    private Map<ConceptExpression, Integer> DepthOfNominalOccurences = new HashMap<ConceptExpression, Integer>();
+    private final Map<ConceptExpression, Integer> DepthOfNominalOccurences = new HashMap<ConceptExpression, Integer>();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "CurrentDepth")
     private int CurrentDepth = 0;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TotalNominalOccurences")

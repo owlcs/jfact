@@ -19,9 +19,9 @@ import uk.ac.manchester.cs.jfact.kernel.*;
 @SuppressWarnings("javadoc")
 public class DLTreeFactory implements Serializable {
     private static final long serialVersionUID = 11000L;
-    private static EnumSet<Token> snfCalls = EnumSet.of(TOP, BOTTOM, CNAME, INAME, RNAME,
-            DNAME, DATAEXPR, NOT, INV, AND, FORALL, LE, SELF, RCOMPOSITION, PROJFROM,
-            PROJINTO);
+    private final static EnumSet<Token> snfCalls = EnumSet.of(TOP, BOTTOM, CNAME, INAME,
+            RNAME, DNAME, DATAEXPR, NOT, INV, AND, FORALL, LE, SELF, RCOMPOSITION,
+            PROJFROM, PROJINTO);
 
     /** create BOTTOM element */
     public static DLTree createBottom() {
@@ -47,24 +47,24 @@ public class DLTreeFactory implements Serializable {
     // Semantic Locality checking support. DO NOT used in usual reasoning
     /** @return true iff a data range DR is semantically equivalent to TOP.
      *         FIXME!! good approximation for now */
-    static boolean isSemanticallyDataTop(DLTree dr) {
+    public static boolean isSemanticallyDataTop(DLTree dr) {
         return dr.elem().getToken() == TOP;
     }
 
     /** @return true iff a data range DR is semantically equivalent to BOTTOM.
      *         FIXME!! good approximation for now */
-    static boolean isSemanticallyDataBottom(DLTree dr) {
+    public static boolean isSemanticallyDataBottom(DLTree dr) {
         return dr.elem().getToken() == BOTTOM;
     }
 
     /** @return true iff the cardinality of a given data range DR is greater than
      *         N. FIXME!! good approximation for now */
-    static boolean isDataRangeBigEnough(DLTree dr, int n) {
+    public static boolean isDataRangeBigEnough(DLTree dr, int n) {
         return true;
     }
 
     /** simplify universal restriction with top data role */
-    static DLTree simplifyDataTopForall(DLTree dr) {
+    public static DLTree simplifyDataTopForall(DLTree dr) {
         // if the filler (dr) is TOP (syntactically or semantically), then the
         // forall is top
         if (isSemanticallyDataTop(dr)) {
@@ -75,7 +75,7 @@ public class DLTreeFactory implements Serializable {
     }
 
     /** simplify minimal cardinality restriction with top data role */
-    static DLTree simplifyDataTopLE(int n, DLTree dr) {
+    public static DLTree simplifyDataTopLE(int n, DLTree dr) {
         // if the filler (dr) is BOTTOM (syntactically or semantically), then
         // the LE is top
         if (isSemanticallyDataBottom(dr)) {

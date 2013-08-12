@@ -15,9 +15,9 @@ import conformance.PortedFrom;
 public class TaxonomyCreator implements Serializable {
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "TaxonomyCreator.h", name = "pTax")
-    protected Taxonomy pTax;
+    protected final Taxonomy pTax;
     @PortedFrom(file = "TaxonomyCreator.h", name = "Syns")
-    protected List<ClassifiableEntry> Syns = new ArrayList<ClassifiableEntry>();
+    protected final List<ClassifiableEntry> Syns = new ArrayList<ClassifiableEntry>();
     /** labeller for marking nodes with a label wrt classification */
     @PortedFrom(file = "TaxonomyCreator.h", name = "valueLabel")
     protected long valueLabel = 1;
@@ -39,13 +39,13 @@ public class TaxonomyCreator implements Serializable {
     protected boolean upDirection;
     /** stack for Taxonomy creation */
     @PortedFrom(file = "TaxonomyCreator.h", name = "waitStack")
-    private LinkedList<ClassifiableEntry> waitStack = new LinkedList<ClassifiableEntry>();
+    private final LinkedList<ClassifiableEntry> waitStack = new LinkedList<ClassifiableEntry>();
     /** told subsumers corresponding to a given entry */
     @PortedFrom(file = "TaxonomyCreator.h", name = "ksStack")
-    protected LinkedList<KnownSubsumers> ksStack = new LinkedList<KnownSubsumers>();
+    protected final LinkedList<KnownSubsumers> ksStack = new LinkedList<KnownSubsumers>();
     /** signature of a \bot-module corresponding to a given entry */
     @PortedFrom(file = "TaxonomyCreator.h", name = "sigStack")
-    protected LinkedList<TSignature> sigStack = new LinkedList<TSignature>();
+    protected final LinkedList<TSignature> sigStack = new LinkedList<TSignature>();
 
     /** @param pTax2 */
     public TaxonomyCreator(Taxonomy pTax2) {
@@ -184,7 +184,7 @@ public class TaxonomyCreator implements Serializable {
 
     /** @return true if V is a direct parent of current wrt labels */
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "isDirectParent")
-    boolean isDirectParent(TaxonomyVertex v) {
+    public boolean isDirectParent(TaxonomyVertex v) {
         for (TaxonomyVertex q : v.neigh(false)) {
             if (isValued(q) && getValue(q)) {
                 return false;

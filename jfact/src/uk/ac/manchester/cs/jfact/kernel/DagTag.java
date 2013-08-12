@@ -46,9 +46,9 @@ public enum DagTag {
     dtChoose("choose"),
     /** split concept */
     dtSplitConcept("split-concept");
-    private static EnumSet<DagTag> TRUE = EnumSet.of(dtDataType, dtDataValue, dtDataExpr,
-            dtNN, dtBad, dtTop, dtChoose);
-    private static EnumSet<DagTag> NotPos = EnumSet.of(dtPConcept, dtPSingleton,
+    private final static EnumSet<DagTag> TRUE = EnumSet.of(dtDataType, dtDataValue,
+            dtDataExpr, dtNN, dtBad, dtTop, dtChoose);
+    private final static EnumSet<DagTag> NotPos = EnumSet.of(dtPConcept, dtPSingleton,
             dtCollection, dtProj);
 
     /** @param pos
@@ -64,7 +64,7 @@ public enum DagTag {
         return false;
     }
 
-    private String name;
+    private final String name;
 
     private DagTag(String s) {
         name = s;
@@ -93,8 +93,8 @@ public enum DagTag {
         return isPNameTag() || isNNameTag();
     }
 
-    private static EnumSet<DagTag> complexConceptsEnumSet = EnumSet.of(DagTag.dtForall,
-            DagTag.dtLE, DagTag.dtIrr, DagTag.dtNN, DagTag.dtChoose);
+    private final static EnumSet<DagTag> complexConceptsEnumSet = EnumSet.of(
+            DagTag.dtForall, DagTag.dtLE, DagTag.dtIrr, DagTag.dtNN, DagTag.dtChoose);
 
     /** @return true iff TAG represents complex concept */
     public boolean isComplexConcept() {

@@ -24,9 +24,9 @@ public class TSplitVar implements Serializable {
     private ConceptName oldName;
     // split concept itself
     private Concept C;
-    private List<SplitVarEntry> Entries = new ArrayList<SplitVarEntry>();
+    private final List<SplitVarEntry> Entries = new ArrayList<SplitVarEntry>();
 
-    void addEntry(ConceptName name, TSignature sig, Set<AxiomInterface> mod) {
+    public void addEntry(ConceptName name, TSignature sig, Set<AxiomInterface> mod) {
         SplitVarEntry e = new SplitVarEntry();
         e.name = name;
         e.concept = null;

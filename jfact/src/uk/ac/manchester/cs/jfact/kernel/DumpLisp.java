@@ -10,7 +10,8 @@ import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "dumpLisp.h", name = "dumpLisp")
-class DumpLisp extends DumpInterface { private static final long serialVersionUID=11000L;
+class DumpLisp extends DumpInterface {
+    private static final long serialVersionUID = 11000L;
 
     public DumpLisp(LogAdapter oo) {
         super(oo);

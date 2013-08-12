@@ -8,7 +8,9 @@ package uk.ac.manchester.cs.jfact.helpers;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 @SuppressWarnings("javadoc")
-public class UnreachableSituationException extends ReasonerInternalException { private static final long serialVersionUID=11000L;
+public class UnreachableSituationException extends ReasonerInternalException {
+    private static final long serialVersionUID = 11000L;
+
     public UnreachableSituationException() {
         super("Unreachable situation!");
     }

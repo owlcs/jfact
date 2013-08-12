@@ -14,6 +14,7 @@ import org.semanticweb.owlapi.reasoner.*;
 /** JFact factory */
 public class JFactFactory implements OWLReasonerFactory, Serializable {
     private static final long serialVersionUID = 11000L;
+
     @Override
     public String getReasonerName() {
         return "JFact";

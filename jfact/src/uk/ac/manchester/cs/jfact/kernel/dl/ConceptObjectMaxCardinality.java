@@ -22,11 +22,11 @@ public class ConceptObjectMaxCardinality implements ConceptObjectCardinalityExpr
         NumberArg, Serializable {
     private static final long serialVersionUID = 11000L;
     @Original
-    private ConceptExpression delegate;
+    private final ConceptExpression delegate;
     @PortedFrom(file = "tDLExpression.h", name = "N")
-    private int N;
+    private final int N;
     @Original
-    private ObjectRoleExpression roleDelegate;
+    private final ObjectRoleExpression roleDelegate;
 
     /** @param n
      * @param R

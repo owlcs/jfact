@@ -14,6 +14,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "QR.h", name = "QRAtom")
 public abstract class QRAtom implements Cloneable, Serializable {
     private static final long serialVersionUID = 11000L;
+
     @Override
     public abstract QRAtom clone();
 }

@@ -12,7 +12,8 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.split.TSignature;
 
 /** Taxonomy of named DL concepts (and mapped individuals) */
-public class IncrementalClassifier extends TaxonomyCreator { private static final long serialVersionUID=11000L;
+public class IncrementalClassifier extends TaxonomyCreator {
+    private static final long serialVersionUID = 11000L;
     /** delegate reasoner */
     protected ReasoningKernel reasoner = null;
     /** session signature */
@@ -22,7 +23,7 @@ public class IncrementalClassifier extends TaxonomyCreator { private static fina
     /** tested concept */
     protected ConceptName Current = null;
     /** set of possible parents */
-    protected Set<TaxonomyVertex> candidates = new HashSet<TaxonomyVertex>();
+    protected final Set<TaxonomyVertex> candidates = new HashSet<TaxonomyVertex>();
     /** whether look into it */
     protected boolean useCandidates;
     // statistic counters
@@ -36,7 +37,7 @@ public class IncrementalClassifier extends TaxonomyCreator { private static fina
     /** number of non-subsumptions because of module reasons */
     protected long nModuleNegative = 0;
     /** indicator of taxonomy creation progress */
-    protected ProgressMonitor pTaxProgress = null;
+    protected final ProgressMonitor pTaxProgress = null;
 
     /** helper */
     protected static ConceptName getCName(ClassifiableEntry entry) {

@@ -24,10 +24,10 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
     private static final long serialVersionUID = 11000L;
     /** corresponding top evaluator */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "TopEval")
-    TopEquivalenceEvaluator TopEval = null;
+    private TopEquivalenceEvaluator TopEval = null;
     /** keep the value here */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isBotEq")
-    boolean isBotEq = false;
+    private boolean isBotEq = false;
 
     /** check whether the expression is top-equivalent */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isTopEquivalent")

@@ -14,7 +14,9 @@ import conformance.PortedFrom;
 
 /** symmetric object role */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomRoleSymmetric")
-public class AxiomRoleSymmetric extends AxiomSingleORole { private static final long serialVersionUID=11000L;
+public class AxiomRoleSymmetric extends AxiomSingleORole {
+    private static final long serialVersionUID = 11000L;
+
     /** @param ax
      * @param role */
     public AxiomRoleSymmetric(OWLAxiom ax, ObjectRoleExpression role) {

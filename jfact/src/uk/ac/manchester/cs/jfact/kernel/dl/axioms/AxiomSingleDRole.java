@@ -12,9 +12,10 @@ import conformance.PortedFrom;
 
 /** data role axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomSingleDRole")
-public abstract class AxiomSingleDRole extends AxiomImpl { private static final long serialVersionUID=11000L;
+public abstract class AxiomSingleDRole extends AxiomImpl {
+    private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "Role")
-    private DataRoleExpression role;
+    private final DataRoleExpression role;
 
     @PortedFrom(file = "tDLAxiom.h", name = "Role")
     protected AxiomSingleDRole(OWLAxiom ax, DataRoleExpression role) {

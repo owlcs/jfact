@@ -22,7 +22,7 @@ public class AxiomSet implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** host TBox that holds all concepts/etc */
     @PortedFrom(file = "tAxiomSet.h", name = "Host")
-    protected TBox tboxHost;
+    protected final TBox tboxHost;
     /** set of axioms that accumilates incoming (and newly created) axioms; Tg */
     @PortedFrom(file = "tAxiomSet.h", name = "Accum")
     private List<Axiom> accumulator = new ArrayList<Axiom>();
@@ -34,7 +34,7 @@ public class AxiomSet implements Serializable {
 
     /** set of absorption action, in order */
     @PortedFrom(file = "tAxiomSet.h", name = "ActionVector")
-    private List<Abs> actions = new ArrayList<AxiomSet.Abs>();
+    private final List<Abs> actions = new ArrayList<AxiomSet.Abs>();
 
     /** add already built GCI p */
     @PortedFrom(file = "tAxiomSet.h", name = "insertGCI")
@@ -179,6 +179,8 @@ public class AxiomSet implements Serializable {
             switch (c) {
                 case 'B':
                     actions.add(new Abs() {
+                        private static final long serialVersionUID = 11000L;
+
                         @Override
                         public boolean absMethod(Axiom ax) {
                             return ax.absorbIntoBottom();
@@ -187,6 +189,8 @@ public class AxiomSet implements Serializable {
                     break;
                 case 'T':
                     actions.add(new Abs() {
+                        private static final long serialVersionUID = 11000L;
+
                         @Override
                         public boolean absMethod(Axiom ax) {
                             return ax.absorbIntoTop(tboxHost);
@@ -195,6 +199,8 @@ public class AxiomSet implements Serializable {
                     break;
                 case 'E':
                     actions.add(new Abs() {
+                        private static final long serialVersionUID = 11000L;
+
                         @Override
                         public boolean absMethod(Axiom ax) {
                             return processNewAxiom(ax.simplifyCN());
@@ -203,6 +209,8 @@ public class AxiomSet implements Serializable {
                     break;
                 case 'C':
                     actions.add(new Abs() {
+                        private static final long serialVersionUID = 11000L;
+
                         @Override
                         public boolean absMethod(Axiom ax) {
                             return ax.absorbIntoConcept(tboxHost);
@@ -211,6 +219,8 @@ public class AxiomSet implements Serializable {
                     break;
                 case 'N':
                     actions.add(new Abs() {
+                        private static final long serialVersionUID = 11000L;
+
                         @Override
                         public boolean absMethod(Axiom ax) {
                             return ax.absorbIntoNegConcept(tboxHost);
@@ -219,6 +229,8 @@ public class AxiomSet implements Serializable {
                     break;
                 case 'F':
                     actions.add(new Abs() {
+                        private static final long serialVersionUID = 11000L;
+
                         @Override
                         public boolean absMethod(Axiom ax) {
                             return processNewAxiom(ax.simplifyForall(tboxHost));
@@ -227,6 +239,8 @@ public class AxiomSet implements Serializable {
                     break;
                 case 'R':
                     actions.add(new Abs() {
+                        private static final long serialVersionUID = 11000L;
+
                         @Override
                         public boolean absMethod(Axiom ax) {
                             return ax.absorbIntoDomain(tboxHost);
@@ -235,6 +249,8 @@ public class AxiomSet implements Serializable {
                     break;
                 case 'S':
                     actions.add(new Abs() {
+                        private static final long serialVersionUID = 11000L;
+
                         @Override
                         public boolean absMethod(Axiom ax) {
                             return split(ax);

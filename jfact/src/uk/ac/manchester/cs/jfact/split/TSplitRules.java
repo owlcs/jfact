@@ -26,17 +26,16 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tSplitExpansionRules.h", name = "TSplitRules")
 public class TSplitRules implements Serializable {
     private static final long serialVersionUID = 11000L;
+
     /** class to check whether there is a need to unsplit splitted var */
     public class TSplitRule implements Serializable {
         private static final long serialVersionUID = 11000L;
         /** signature of equivalent part of the split */
-        Set<NamedEntity> eqSig;
+        private final Set<NamedEntity> eqSig;
         /** signature of subsumption part of the split */
-        Set<NamedEntity> impSig;
+        private final Set<NamedEntity> impSig;
         /** pointer to split vertex to activate */
-        int bpSplit;
-
-        TSplitRule() {}
+        private final int bpSplit;
 
         /** init c'tor */
         TSplitRule(Set<NamedEntity> es, Set<NamedEntity> is, int p) {
@@ -99,15 +98,15 @@ public class TSplitRules implements Serializable {
 
     /** all known rules */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "Base")
-    List<TSplitRule> Base = new ArrayList<TSplitRule>();
+    private final List<TSplitRule> Base = new ArrayList<TSplitRule>();
     /** all entities that appears in all the splits in a set */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "PossibleSignature")
-    Set<NamedEntity> PossibleSignature = new HashSet<NamedEntity>();
+    private final Set<NamedEntity> PossibleSignature = new HashSet<NamedEntity>();
     /** map between BP and TNamedEntities */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "EntityMap")
-    List<NamedEntity> EntityMap = new ArrayList<NamedEntity>();
+    private final List<NamedEntity> EntityMap = new ArrayList<NamedEntity>();
     @Original
-    private JFactReasonerConfiguration config;
+    private final JFactReasonerConfiguration config;
 
     /** @param options */
     public TSplitRules(JFactReasonerConfiguration options) {
@@ -122,14 +121,14 @@ public class TSplitRules implements Serializable {
 
     /** add new split rule */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "addSplitRule")
-    void addSplitRule(Set<NamedEntity> eqSig, Set<NamedEntity> impSig, int bp) {
+    private void addSplitRule(Set<NamedEntity> eqSig, Set<NamedEntity> impSig, int bp) {
         Base.add(new TSplitRule(eqSig, impSig, bp));
     }
 
     /** calculate single entity based on a named entry ENTRY and possible
      * signature */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "getSingleEntity")
-    NamedEntity getSingleEntity(NamedEntry entry) {
+    private NamedEntity getSingleEntity(NamedEntry entry) {
         if (entry == null) {
             return null;
         }
@@ -181,7 +180,7 @@ public class TSplitRules implements Serializable {
 
     /** build a set out of signature SIG w/o given ENTITY */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "buildSet")
-    Set<NamedEntity> buildSet(TSignature sig, NamedEntity entity) {
+    private Set<NamedEntity> buildSet(TSignature sig, NamedEntity entity) {
         Set<NamedEntity> set = new HashSet<NamedEntity>();
         for (NamedEntity p : sig.begin()) {
             if (p != entity && p instanceof ConceptName) {
@@ -195,7 +194,7 @@ public class TSplitRules implements Serializable {
 
     /** init split as a set-of-sets */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "initSplit")
-    void initSplit(TSplitVar split) {
+    private void initSplit(TSplitVar split) {
         SplitVarEntry p = split.getEntries().get(0);
         Set<NamedEntity> impSet = buildSet(p.sig, p.name);
         int bp = split.getC().getpBody() + 1;
@@ -224,7 +223,7 @@ public class TSplitRules implements Serializable {
 
     /** prepare start signature */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "prepareStartSig")
-    void prepareStartSig(List<AxiomInterface> Module, TSignature sig,
+    private void prepareStartSig(List<AxiomInterface> Module, TSignature sig,
             List<NamedEntity> Allowed) {
         // remove all defined concepts from signature
         for (AxiomInterface p : Module) {
@@ -258,7 +257,7 @@ public class TSplitRules implements Serializable {
 
     /** build all the seed signatures */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "BuildAllSeedSigs")
-    void BuildAllSeedSigs(List<NamedEntity> Allowed, TSignature StartSig,
+    private void BuildAllSeedSigs(List<NamedEntity> Allowed, TSignature StartSig,
             List<AxiomInterface> Module, Set<TSignature> Out) {
         // copy the signature
         TSignature sig = StartSig;

@@ -24,7 +24,7 @@ enum DIOp {
             "implies_r"), diEqualsR("equal_r"), diDomainR("domain"), diRangeR("range"),
     // individual axioms
     diInstanceOf;
-    private String s;
+    private final String s;
 
     private DIOp() {
         s = "";

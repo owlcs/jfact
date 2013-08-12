@@ -15,9 +15,10 @@ import conformance.PortedFrom;
 
 /** object role domain */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomORoleDomain")
-public class AxiomORoleDomain extends AxiomSingleORole { private static final long serialVersionUID=11000L;
+public class AxiomORoleDomain extends AxiomSingleORole {
+    private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "Domain")
-    private ConceptExpression domain;
+    private final ConceptExpression domain;
 
     /** @param ax
      * @param role

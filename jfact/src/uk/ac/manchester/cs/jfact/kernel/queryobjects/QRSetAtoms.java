@@ -17,7 +17,7 @@ import conformance.PortedFrom;
 public class QRSetAtoms implements Serializable {
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "QR.h", name = "Base")
-    List<QRAtom> Base = new ArrayList<QRAtom>();
+    private final List<QRAtom> Base = new ArrayList<QRAtom>();
 
     public QRSetAtoms() {
         // TODO Auto-generated constructor stub

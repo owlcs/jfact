@@ -13,7 +13,9 @@ import conformance.PortedFrom;
 
 /** data max cardinality */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptDataMaxCardinality")
-public class ConceptDataMaxCardinality extends AbstractConceptDataCardinality { private static final long serialVersionUID=11000L;
+public class ConceptDataMaxCardinality extends AbstractConceptDataCardinality {
+    private static final long serialVersionUID = 11000L;
+
     /** @param n
      * @param R
      * @param E */

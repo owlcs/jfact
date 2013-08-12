@@ -19,6 +19,7 @@ import conformance.PortedFrom;
 public class ConceptAnd extends NAryExpressionImpl<ConceptExpression> implements
         NAryExpression<ConceptExpression>, ConceptExpression, Serializable {
     private static final long serialVersionUID = 11000L;
+
     /** create AND of expressions from the given array
      * 
      * @param v */

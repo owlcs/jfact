@@ -9,7 +9,9 @@ import conformance.PortedFrom;
 
 /** equality atom x=y */
 @PortedFrom(file = "QR.h", name = "QREqAtom")
-class QREqAtom extends QR2ArgAtom { private static final long serialVersionUID=11000L;
+class QREqAtom extends QR2ArgAtom {
+    private static final long serialVersionUID = 11000L;
+
     QREqAtom(QRiObject A1, QRiObject A2) {
         super(A1, A2);
     }

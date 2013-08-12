@@ -12,16 +12,17 @@ import conformance.PortedFrom;
 
 /** individual */
 @PortedFrom(file = "tIndividual.h", name = "TIndividual")
-public class Individual extends Concept { private static final long serialVersionUID=11000L;
+public class Individual extends Concept {
+    private static final long serialVersionUID = 11000L;
     /** pointer to nominal node (works for singletons only) */
     @PortedFrom(file = "tIndividual.h", name = "node")
     private DlCompletionTree node;
     /** index for axioms <this,C>:R */
     @PortedFrom(file = "tIndividual.h", name = "RelatedIndex")
-    private List<Related> relatedIndex = new ArrayList<Related>();
+    private final List<Related> relatedIndex = new ArrayList<Related>();
     /** map for the related individuals: Map[R]={i:R(this,i)} */
     @PortedFrom(file = "tIndividual.h", name = "pRelatedMap")
-    private Map<Role, List<Individual>> pRelatedMap;
+    private final Map<Role, List<Individual>> pRelatedMap;
 
     /** @param name */
     public Individual(String name) {

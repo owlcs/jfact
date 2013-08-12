@@ -18,7 +18,7 @@ import conformance.PortedFrom;
 public class SaveStack<T> implements Serializable {
     private static final long serialVersionUID = 11000L;
     @Original
-    protected LinkedList<T> list = new LinkedList<T>();
+    protected final LinkedList<T> list = new LinkedList<T>();
 
     /** @param depth
      * @return an object from a fixed depth */

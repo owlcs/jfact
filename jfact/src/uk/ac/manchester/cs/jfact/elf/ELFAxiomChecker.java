@@ -15,14 +15,15 @@ import conformance.PortedFrom;
 // XXX verify unused parameters
 /** ELF axiom checker */
 @PortedFrom(file = "ELFAxiomChecker.h", name = "ELFAxiomChecker")
-public class ELFAxiomChecker extends DLAxiomVisitorAdapter { private static final long serialVersionUID=11000L;
-    @PortedFrom(file = "ELFAxiomChecker.h", name = "eCh")
+public class ELFAxiomChecker extends DLAxiomVisitorAdapter {
+    private static final long serialVersionUID = 11000L;
+    final @PortedFrom(file = "ELFAxiomChecker.h", name = "eCh")
     ELFExpressionChecker eCh = new ELFExpressionChecker();
     @PortedFrom(file = "ELFAxiomChecker.h", name = "value")
     boolean value;
 
     @PortedFrom(file = "ELFAxiomChecker.h", name = "v")
-    boolean v(Expression expr) {
+    public boolean v(Expression expr) {
         value = eCh.v(expr);
         return value;
     }

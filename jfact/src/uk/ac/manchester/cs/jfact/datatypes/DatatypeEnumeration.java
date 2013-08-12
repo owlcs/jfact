@@ -15,7 +15,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 public class DatatypeEnumeration<R extends Comparable<R>> implements
         DatatypeCombination<DatatypeEnumeration<R>, Literal<R>>, DatatypeExpression<R> {
     private final String uri;
-    protected Datatype<R> host;
+    protected final Datatype<R> host;
     protected final List<Literal<R>> literals = new ArrayList<Literal<R>>();
 
     /** @param d */

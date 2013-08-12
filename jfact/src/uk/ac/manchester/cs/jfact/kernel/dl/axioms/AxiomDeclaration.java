@@ -14,9 +14,10 @@ import conformance.PortedFrom;
 
 /** declaration */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDeclaration")
-public class AxiomDeclaration extends AxiomImpl { private static final long serialVersionUID=11000L;
+public class AxiomDeclaration extends AxiomImpl {
+    private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "D")
-    private Expression expression;
+    private final Expression expression;
 
     /** @param ax
      * @param d */

@@ -32,12 +32,12 @@ public class CGLabel implements Serializable {
 
     /** all simple concepts, labelled a node */
     @PortedFrom(file = "CGLabel.h", name = "scLabel")
-    private CWDArray scLabel;
+    private final CWDArray scLabel;
     /** all complex concepts (ie, FORALL, GE), labelled a node */
     @PortedFrom(file = "CGLabel.h", name = "ccLabel")
-    private CWDArray ccLabel;
+    private final CWDArray ccLabel;
     @Original
-    private int id;
+    private final int id;
 
     @SuppressWarnings("javadoc")
     public CGLabel() {
@@ -112,7 +112,7 @@ public class CGLabel implements Serializable {
     }
 
     @Original
-    private Set<CGLabel> lesserEquals = Collections
+    private final Set<CGLabel> lesserEquals = Collections
             .newSetFromMap(new IdentityHashMap<CGLabel, Boolean>());
 
     /** @param label

@@ -6,7 +6,6 @@ package uk.ac.manchester.cs.jfact.dep;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
-import java.util.NoSuchElementException;
 
 import uk.ac.manchester.cs.jfact.helpers.FastSetSimple;
 import conformance.Original;
@@ -18,6 +17,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDepSet.h", name = "TDepSet")
 public class DepSet implements Serializable {
     private static final long serialVersionUID = 11000L;
+
     /** @return empty depset */
     @PortedFrom(file = "tDepSet.h", name = "create")
     public static DepSet create() {
@@ -98,13 +98,6 @@ public class DepSet implements Serializable {
         return delegate == null || delegate.isEmpty();
     }
 
-    /** @param level
-     * @return true if delegate contains level */
-    @PortedFrom(file = "tDepSet.h", name = "contains")
-    public boolean contains(int level) {
-        return delegate != null && delegate.contains(level);
-    }
-
     @Override
     public String toString() {
         if (delegate == null) {
@@ -150,17 +143,6 @@ public class DepSet implements Serializable {
     @PortedFrom(file = "tDepSet.h", name = "size")
     public int size() {
         return delegate == null ? 0 : delegate.size();
-    }
-
-    /** @param i
-     * @return element at position i; if no such element exists, throws
-     *         NoSuchElementExcepton */
-    @PortedFrom(file = "tDepSet.h", name = "get")
-    public int get(int i) {
-        if (isEmpty()) {
-            throw new NoSuchElementException("the index " + i + " is not valid");
-        }
-        return delegate.get(i);
     }
 
     /** @param level

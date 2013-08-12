@@ -17,18 +17,18 @@ class TELFRule implements Serializable {
     /** reasoner that is used to add actions. The number of rules = the number of
      * axioms, so the price is not too bad memory-wise. */
     @PortedFrom(file = "ELFReasoner.h", name = "ER")
-    ELFReasoner ER;
+    protected final ELFReasoner ER;
 
     /** init c'tor */
-    TELFRule(ELFReasoner er) {
+    protected TELFRule(ELFReasoner er) {
         ER = er;
     }
 
     /** apply rule with fresh class C added to watching part */
     @PortedFrom(file = "ELFReasoner.h", name = "apply")
-    void apply(TELFConcept addedC) {}
+    public void apply(TELFConcept addedC) {}
 
     /** apply rule with fresh pair (C,D) added to watching part */
     @PortedFrom(file = "ELFReasoner.h", name = "apply")
-    void apply(TELFConcept addedC, TELFConcept addedD) {}
+    public void apply(TELFConcept addedC, TELFConcept addedD) {}
 }

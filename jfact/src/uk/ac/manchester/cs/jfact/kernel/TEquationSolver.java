@@ -10,14 +10,13 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TEquationSolver")
 class TEquationSolver implements Serializable {
     private static final long serialVersionUID = 11000L;
-
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "LeftPart")
     private ConceptExpression LeftPart;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "RightPart")
     private ConceptExpression RightPart;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "ExpressionMarker")
-    private TExpressionMarker ExpressionMarker;
+    private final TExpressionMarker ExpressionMarker;
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TEquationSolver")
     public TEquationSolver(ConjunctiveQueryFolding conjunctiveQueryFolding,

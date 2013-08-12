@@ -21,16 +21,16 @@ abstract class AxiomImpl implements AxiomInterface, Serializable {
     /** id of the axiom */
     private int id;
     /** signature (built lazily on demand) */
-    TSignature sig = null;
+    private TSignature sig = null;
     /** flag to show whether or not the axiom is in the search space for the */
     // optimised modularization algorithm
-    boolean inSearchSpace = false;
+    private boolean inSearchSpace = false;
     /** flag to show whether or not the axiom is in the module */
-    boolean inModule;
+    private boolean inModule;
     /** flag to show whether it is used (to support retraction) */
     private boolean used;
     TOntologyAtom atom = null;
-    private OWLAxiom axiom;
+    private final OWLAxiom axiom;
 
     @Override
     @PortedFrom(file = "tDLAxiom.h", name = "getAtom")
@@ -67,7 +67,7 @@ abstract class AxiomImpl implements AxiomInterface, Serializable {
         return sig;
     }
 
-    void buildSignature() {
+    private void buildSignature() {
         sig = new TSignature();
         TSignatureUpdater Updater = new TSignatureUpdater(sig);
         this.accept(Updater);

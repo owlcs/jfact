@@ -18,44 +18,45 @@ import conformance.PortedFrom;
 
 /** model cache Ian (Horrocks) */
 @PortedFrom(file = "modelCacheIan.h", name = "modelCacheIan")
-public class ModelCacheIan extends ModelCacheInterface { private static final long serialVersionUID=11000L;
+public class ModelCacheIan extends ModelCacheInterface {
+    private static final long serialVersionUID = 11000L;
     // sets for the cache
     /** named concepts that appears positively det-lly in a root node of a cache */
     @PortedFrom(file = "modelCacheIan.h", name = "posDConcepts")
-    public BitSet posDConcepts = new BitSet();
+    private final BitSet posDConcepts = new BitSet();
     /** named concepts that appears positively non-det in a root node of a cache */
     @PortedFrom(file = "modelCacheIan.h", name = "posNConcepts")
-    public BitSet posNConcepts = new BitSet();
+    private final BitSet posNConcepts = new BitSet();
     /** named concepts that appears negatively det-lly in a root node of a cache */
     @PortedFrom(file = "modelCacheIan.h", name = "negDConcepts")
-    public BitSet negDConcepts = new BitSet();
+    private final BitSet negDConcepts = new BitSet();
     /** named concepts that appears negatively non-det in a root node of a cache */
     @PortedFrom(file = "modelCacheIan.h", name = "negNConcepts")
-    public BitSet negNConcepts = new BitSet();
+    private final BitSet negNConcepts = new BitSet();
     /** extra det-lly concepts that are (partial) Simple Rule applications */
     @PortedFrom(file = "modelCacheIan.h", name = "extraDConcepts")
-    public FastSet extraDConcepts = FastSetFactory.create();
+    private final FastSet extraDConcepts = FastSetFactory.create();
     /** extra non-det concepts that are (partial) Simple Rule applications */
     @PortedFrom(file = "modelCacheIan.h", name = "extraNConcepts")
-    public FastSet extraNConcepts = FastSetFactory.create();
+    private final FastSet extraNConcepts = FastSetFactory.create();
     /** role names that are labels of the outgoing edges from the root node */
     @PortedFrom(file = "modelCacheIan.h", name = "existsRoles")
-    public FastSet existsRoles = FastSetFactory.create();
+    private final FastSet existsRoles = FastSetFactory.create();
     /** role names that appears in the \A restrictions in the root node */
     @PortedFrom(file = "modelCacheIan.h", name = "forallRoles")
-    public FastSet forallRoles = FastSetFactory.create();
+    private final FastSet forallRoles = FastSetFactory.create();
     /** role names that appears in the atmost restrictions in the root node */
     @PortedFrom(file = "modelCacheIan.h", name = "funcRoles")
-    public FastSet funcRoles = FastSetFactory.create();
+    private final FastSet funcRoles = FastSetFactory.create();
     /** current state of cache model; recalculates on every change */
     @PortedFrom(file = "modelCacheIan.h", name = "curState")
-    public ModelCacheState curState;
+    private ModelCacheState curState;
     // XXX these two fields should be used somehow
-    private int nC;
-    private int nR;
+    private final int nC;
+    private final int nR;
     // XXX move to config
     @Original
-    private boolean simpleRules;
+    private final boolean simpleRules;
 
     /** process CT label in given interval; set Deterministic accordingly */
     @PortedFrom(file = "modelCacheIan.h", name = "processLabelInterval")

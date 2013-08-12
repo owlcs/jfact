@@ -22,17 +22,17 @@ import conformance.PortedFrom;
 @PortedFrom(file = "JNIActor.h", name = "TaxonomyActor")
 public class TaxonomyActor<T extends Expression> implements Actor, Serializable {
     private static final long serialVersionUID = 11000L;
-    private Policy policy;
-    private ExpressionManager expressionManager;
+    private final Policy policy;
+    private final ExpressionManager expressionManager;
     /** 2D array to return */
     @PortedFrom(file = "JNIActor.h", name = "acc")
-    private List<List<T>> acc = new ArrayList<List<T>>();
+    private final List<List<T>> acc = new ArrayList<List<T>>();
     /** 1D array to return */
     @PortedFrom(file = "JNIActor.h", name = "plain")
-    private List<T> plain = new ArrayList<T>();
+    private final List<T> plain = new ArrayList<T>();
     /** temporary vector to keep synonyms */
     @PortedFrom(file = "JNIActor.h", name = "syn")
-    private List<T> syn = new ArrayList<T>();
+    private final List<T> syn = new ArrayList<T>();
 
     /** try current entry
      * 

@@ -23,15 +23,15 @@ import conformance.Original;
 public class NamedEntryCollection<T extends NamedEntry> implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** vector of elements */
-    private List<T> base = new ArrayList<T>();
+    private final List<T> base = new ArrayList<T>();
     /** nameset to hold the elements */
-    private NameSet<T> nameset;
+    private final NameSet<T> nameset;
     /** name of the type */
-    private String typeName;
+    private final String typeName;
     /** flag to lock the nameset (ie, prohibit to add new names there) */
     private boolean locked;
     @Original
-    private JFactReasonerConfiguration options;
+    private final JFactReasonerConfiguration options;
 
     /** abstract method for additional tuning of newly created element
      * 

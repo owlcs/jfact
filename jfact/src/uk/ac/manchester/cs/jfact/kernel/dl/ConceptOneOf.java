@@ -22,6 +22,7 @@ import conformance.PortedFrom;
 public class ConceptOneOf<I extends IndividualExpression> extends NAryExpressionImpl<I>
         implements NAryExpression<I>, ConceptExpression, Serializable {
     private static final long serialVersionUID = 11000L;
+
     /** create one-of from individuals in the given array
      * 
      * @param v */

@@ -14,7 +14,7 @@ import conformance.PortedFrom;
 public class DLCompletionTreeSaveState implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** saving status of the label */
-    private SaveState lab = new SaveState();
+    private final SaveState lab = new SaveState();
     /** curLevel of the Node structure */
     private int curLevel;
     /** amount of neighbours */

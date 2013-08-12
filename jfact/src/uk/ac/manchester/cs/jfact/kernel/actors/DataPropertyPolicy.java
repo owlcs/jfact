@@ -14,6 +14,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 /** policy for data properties */
 public class DataPropertyPolicy implements Policy, Serializable {
     private static final long serialVersionUID = 11000L;
+
     @Override
     public boolean applicable(ClassifiableEntry p) {
         return p.getId() > 0;

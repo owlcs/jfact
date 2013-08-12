@@ -28,13 +28,13 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker,
     private static final long serialVersionUID = 11000L;
     /** Reasoner to detect the tautology */
     @PortedFrom(file = "SemanticLocalityChecker.h", name = "Kernel")
-    ReasoningKernel Kernel;
+    private final ReasoningKernel Kernel;
     /** Expression manager of a kernel */
     @PortedFrom(file = "SemanticLocalityChecker.h", name = "pEM")
-    ExpressionManager pEM;
+    private final ExpressionManager pEM;
     /** map between axioms and concept expressions */
     @PortedFrom(file = "SemanticLocalityChecker.h", name = "ExprMap")
-    Map<AxiomInterface, ConceptExpression> ExprMap = new HashMap<AxiomInterface, ConceptExpression>();
+    private final Map<AxiomInterface, ConceptExpression> ExprMap = new HashMap<AxiomInterface, ConceptExpression>();
 
     /** @return expression necessary to build query for a given type of an axiom; @return
      *         NULL if none necessary */
@@ -94,7 +94,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker,
 
     /** remember the axiom locality value here */
     @PortedFrom(file = "SemanticLocalityChecker.h", name = "isLocal")
-    boolean isLocal;
+    private boolean isLocal;
 
     /** init c'tor
      * 

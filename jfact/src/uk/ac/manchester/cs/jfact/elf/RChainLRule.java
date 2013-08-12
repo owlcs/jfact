@@ -13,16 +13,17 @@ import conformance.PortedFrom;
 // Rules for R o S [= T case; CR11
 /** the rule for R in R o S [= T case */
 @PortedFrom(file = "ELFReasoner.h", name = "RChainLRule")
-public class RChainLRule extends TELFRule { private static final long serialVersionUID=11000L;
+public class RChainLRule extends TELFRule {
+    private static final long serialVersionUID = 11000L;
     /** role to check the chain */
     @PortedFrom(file = "ELFReasoner.h", name = "S")
-    TELFRole S;
+    private final TELFRole S;
     /** role to add the pair */
     @PortedFrom(file = "ELFReasoner.h", name = "T")
-    TELFRole T;
+    private final TELFRole T;
 
     /** init c'tor: remember S and T */
-    RChainLRule(ELFReasoner ER, TELFRole s, TELFRole t) {
+    public RChainLRule(ELFReasoner ER, TELFRole s, TELFRole t) {
         super(ER);
         S = s;
         T = t;
@@ -31,7 +32,7 @@ public class RChainLRule extends TELFRule { private static final long serialVers
     /** apply a method with a given pair (C,D) */
     @Override
     @PortedFrom(file = "ELFReasoner.h", name = "apply")
-    void apply(TELFConcept addedC, TELFConcept addedD) {
+    public void apply(TELFConcept addedC, TELFConcept addedD) {
         // we have R(C,D); so for all E in range(S), if S(D,E) then add T(C,E)
         for (Map.Entry<TELFConcept, Set<TELFConcept>> i : S.begin()) {
             if (i.getValue().contains(addedD)) {

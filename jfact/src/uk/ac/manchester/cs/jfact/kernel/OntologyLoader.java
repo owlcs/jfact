@@ -5,8 +5,6 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static uk.ac.manchester.cs.jfact.kernel.Role.*;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,16 +32,16 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
     private static final long serialVersionUID = 11000L;
     /** KB to load the ontology */
     @PortedFrom(file = "tOntologyLoader.h", name = "kb")
-    private TBox tbox;
+    private final TBox tbox;
     /** Transforms TDLExpression hierarchy to the DLTree */
     @PortedFrom(file = "tOntologyLoader.h", name = "ETrans")
-    private ExpressionTranslator expressionTranslator;
+    private final ExpressionTranslator expressionTranslator;
 
     /** get role by the DLTree; throw exception if unable */
     @PortedFrom(file = "tOntologyLoader.h", name = "getRole")
     private Role getRole(RoleExpression r, String reason) {
         try {
-            return resolveRole(r.accept(expressionTranslator));
+            return Role.resolveRole(r.accept(expressionTranslator));
         } catch (OWLRuntimeException e) {
             throw new ReasonerInternalException(reason + "\t" + e.getMessage(), e);
         }
@@ -82,7 +80,7 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
     }
 
     @PortedFrom(file = "tOntologyLoader.h", name = "fillSplit")
-    void fillSplit(TSplitVar sv) {
+    private void fillSplit(TSplitVar sv) {
         sv.setC(tbox.getConcept(sv.getOldName().getName()));
         sv.getC().setNonClassifiable(true);
         for (SplitVarEntry p : sv.getEntries()) {

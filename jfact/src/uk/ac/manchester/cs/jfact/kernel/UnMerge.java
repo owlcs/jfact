@@ -10,13 +10,14 @@ import uk.ac.manchester.cs.jfact.helpers.FastSetSimple;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "CWDArray.cpp", name = "UnMerge")
-class UnMerge extends Restorer { private static final long serialVersionUID=11000L;
+class UnMerge extends Restorer {
+    private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "CWDArray.cpp", name = "label")
-    private CWDArray label;
+    private final CWDArray label;
     @PortedFrom(file = "CWDArray.cpp", name = "offset")
-    private int offset;
+    private final int offset;
     @PortedFrom(file = "CWDArray.cpp", name = "dep")
-    private FastSetSimple dep;
+    private final FastSetSimple dep;
 
     UnMerge(CWDArray lab, ConceptWDep p, int offset) {
         label = lab;

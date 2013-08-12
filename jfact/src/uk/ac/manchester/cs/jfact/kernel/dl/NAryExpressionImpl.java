@@ -22,7 +22,7 @@ public class NAryExpressionImpl<Argument extends Expression> implements
         NAryExpression<Argument>, Serializable {
     private static final long serialVersionUID = 11000L;
     /** set of equivalent concept descriptions */
-    private List<Argument> Base = new ArrayList<Argument>();
+    private final List<Argument> Base = new ArrayList<Argument>();
 
     @SuppressWarnings("javadoc")
     public NAryExpressionImpl() {}

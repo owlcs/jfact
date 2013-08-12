@@ -19,7 +19,7 @@ public class AOStructure implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** all the atoms */
     @PortedFrom(file = "AtomicDecomposer.h", name = "Atoms")
-    List<TOntologyAtom> Atoms = new ArrayList<TOntologyAtom>();
+    private final List<TOntologyAtom> Atoms = new ArrayList<TOntologyAtom>();
 
     /** @return a new atom */
     @PortedFrom(file = "AtomicDecomposer.h", name = "newAtom")

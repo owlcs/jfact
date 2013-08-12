@@ -173,9 +173,9 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
     /** data interval with dep-sets */
     static class DepInterval<R extends Comparable<R>> implements Serializable {
         private static final long serialVersionUID = 11000L;
-        DatatypeExpression<R> e;
+        private DatatypeExpression<R> e;
         /** local dep-set */
-        FastSetSimple locDep;
+        private FastSetSimple locDep;
 
         @Override
         public String toString() {

@@ -21,22 +21,22 @@ public class AtomicDecomposer implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** atomic structure to build */
     @PortedFrom(file = "AtomicDecomposer.h", name = "AOS")
-    AOStructure AOS = null;
+    private AOStructure AOS = null;
     /** modularizer to build modules */
     @PortedFrom(file = "AtomicDecomposer.h", name = "pModularizer")
-    TModularizer Modularizer;
+    private final TModularizer Modularizer;
     /** tautologies of the ontology */
     @PortedFrom(file = "AtomicDecomposer.h", name = "Tautologies")
-    List<AxiomInterface> Tautologies = new ArrayList<AxiomInterface>();
+    private final List<AxiomInterface> Tautologies = new ArrayList<AxiomInterface>();
     /** progress indicator */
     @PortedFrom(file = "AtomicDecomposer.h", name = "PI")
-    ProgressIndicatorInterface PI = null;
+    private ProgressIndicatorInterface PI = null;
     /** fake atom that represents the whole ontology */
     @PortedFrom(file = "AtomicDecomposer.h", name = "rootAtom")
-    TOntologyAtom rootAtom = null;
+    private TOntologyAtom rootAtom = null;
     /** module type for current AOS creation */
     @PortedFrom(file = "AtomicDecomposer.h", name = "type")
-    ModuleType type;
+    private ModuleType type;
 
     /** @param c
      *            modularizer */
@@ -46,7 +46,7 @@ public class AtomicDecomposer implements Serializable {
 
     /** restore all tautologies back */
     @PortedFrom(file = "AtomicDecomposer.h", name = "restoreTautologies")
-    void restoreTautologies() {
+    private void restoreTautologies() {
         for (AxiomInterface p : Tautologies) {
             p.setUsed(true);
         }
@@ -54,14 +54,14 @@ public class AtomicDecomposer implements Serializable {
 
     /** set progress indicator to be PI */
     @PortedFrom(file = "AtomicDecomposer.h", name = "setProgressIndicator")
-    void setProgressIndicator(ProgressIndicatorInterface pi) {
+    private void setProgressIndicator(ProgressIndicatorInterface pi) {
         PI = pi;
     }
 
     /** remove tautologies (axioms that are always local) from the ontology
      * temporarily */
     @PortedFrom(file = "AtomicDecomposer.h", name = "removeTautologies")
-    void removeTautologies(Ontology O) {
+    private void removeTautologies(Ontology O) {
         // we might use it for another decomposition
         Tautologies.clear();
         long nAx = 0;
@@ -85,7 +85,7 @@ public class AtomicDecomposer implements Serializable {
     /** build a module for given axiom AX; use parent atom's module as a base for
      * the module search */
     @PortedFrom(file = "AtomicDecomposer.h", name = "buildModule")
-    TOntologyAtom buildModule(TSignature sig, TOntologyAtom parent) {
+    private TOntologyAtom buildModule(TSignature sig, TOntologyAtom parent) {
         // build a module for a given signature
         Modularizer.extract(parent.getModule(), sig, type);
         List<AxiomInterface> Module = Modularizer.getModule();
@@ -111,7 +111,7 @@ public class AtomicDecomposer implements Serializable {
     /** create atom for given axiom AX; use parent atom's module as a base for
      * the module search */
     @PortedFrom(file = "AtomicDecomposer.h", name = "createAtom")
-    TOntologyAtom createAtom(AxiomInterface ax, TOntologyAtom parent) {
+    private TOntologyAtom createAtom(AxiomInterface ax, TOntologyAtom parent) {
         // check whether axiom already has an atom
         if (ax.getAtom() != null) {
             return ax.getAtom();

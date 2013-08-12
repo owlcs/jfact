@@ -14,11 +14,12 @@ import conformance.PortedFrom;
 
 /** SubClassOf */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomConceptInclusion")
-public class AxiomConceptInclusion extends AxiomImpl { private static final long serialVersionUID=11000L;
+public class AxiomConceptInclusion extends AxiomImpl {
+    private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "Sub")
-    private ConceptExpression subConcept;
+    private final ConceptExpression subConcept;
     @PortedFrom(file = "tDLAxiom.h", name = "Sup")
-    private ConceptExpression superConcept;
+    private final ConceptExpression superConcept;
 
     /** @param ax
      * @param sub

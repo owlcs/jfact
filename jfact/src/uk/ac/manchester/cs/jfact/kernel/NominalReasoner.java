@@ -20,10 +20,11 @@ import conformance.PortedFrom;
 
 /** nominal reasoner */
 @PortedFrom(file = "ReasonerNom.h", name = "NominalReasoner")
-public class NominalReasoner extends DlSatTester { private static final long serialVersionUID=11000L;
+public class NominalReasoner extends DlSatTester {
+    private static final long serialVersionUID = 11000L;
     /** all nominals defined in TBox */
     @PortedFrom(file = "ReasonerNom.h", name = "Nominals")
-    protected List<Individual> nominals = new ArrayList<Individual>();
+    protected final List<Individual> nominals = new ArrayList<Individual>();
 
     /** there are nominals */
     @Override
@@ -204,9 +205,9 @@ public class NominalReasoner extends DlSatTester { private static final long ser
     public boolean checkExtraCond() {
         prepareReasoner();
         DepSet dummy = DepSet.create();
-        for (int i = 0; i < tBox.IV.size(); i++) {
-            if (addToDoEntry(tBox.IV.get(i).getNode(),
-                    tBox.conceptsForQueryAnswering.get(i), dummy, "QA")) {
+        for (int i = 0; i < tBox.getIV().size(); i++) {
+            if (addToDoEntry(tBox.getIV().get(i).getNode(), tBox
+                    .getConceptsForQueryAnswering().get(i), dummy, "QA")) {
                 return true;
             }
         }

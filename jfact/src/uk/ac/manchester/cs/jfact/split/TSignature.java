@@ -23,7 +23,7 @@ public class TSignature implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** set to keep all the elements in signature */
     @PortedFrom(file = "tSignature.h", name = "Set")
-    private Set<NamedEntity> set = new HashSet<NamedEntity>();
+    private final Set<NamedEntity> set = new HashSet<NamedEntity>();
     /** true if concept TOP-locality; false if concept BOTTOM-locality */
     @PortedFrom(file = "tSignature.h", name = "topCLocality")
     private boolean topCLocality = false;

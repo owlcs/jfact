@@ -16,17 +16,18 @@ import conformance.PortedFrom;
 /** check whether class expressions are equivalent to top wrt given locality
  * class */
 @PortedFrom(file = "SyntacticLocalityChecker.h", name = "TopEquivalenceEvaluator")
-public class TopEquivalenceEvaluator extends SigAccessor implements DLExpressionVisitor { private static final long serialVersionUID=11000L;
+public class TopEquivalenceEvaluator extends SigAccessor implements DLExpressionVisitor {
+    private static final long serialVersionUID = 11000L;
     /** corresponding bottom evaluator */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "BotEval")
-    BotEquivalenceEvaluator BotEval = null;
+    private BotEquivalenceEvaluator BotEval = null;
     /** keep the value here */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isTopEq")
-    boolean isTopEq = false;
+    private boolean isTopEq = false;
 
     /** check whether the expression is top-equivalent */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isBotEquivalent")
-    boolean isBotEquivalent(Expression expr) {
+    private boolean isBotEquivalent(Expression expr) {
         return BotEval.isBotEquivalent(expr);
     }
 
@@ -93,13 +94,13 @@ public class TopEquivalenceEvaluator extends SigAccessor implements DLExpression
     // set fields
     /** set the corresponding bottom evaluator */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "setBotEval")
-    void setBotEval(BotEquivalenceEvaluator eval) {
+    public void setBotEval(BotEquivalenceEvaluator eval) {
         BotEval = eval;
     }
 
     /** @return true iff an EXPRession is equivalent to top wrt defined policy */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isTopEquivalent")
-    boolean isTopEquivalent(Expression expr) {
+    public boolean isTopEquivalent(Expression expr) {
         expr.accept(this);
         return isTopEq;
     }

@@ -22,16 +22,17 @@ import conformance.PortedFrom;
 @PortedFrom(file = "AxiomSplitter.h", name = "TAxiomSplitter")
 public class TAxiomSplitter implements Serializable {
     private static final long serialVersionUID = 11000L;
+
     /** keep the single rename: named concept C in an axiom (C=D or C[=D) into a
      * new name C' and new axiom C'=D or C'[=D */
     protected class TRecord implements Serializable {
         private static final long serialVersionUID = 11000L;
         ConceptName oldName, newName;
-        List<AxiomInterface> oldAxioms = new ArrayList<AxiomInterface>();
+        final List<AxiomInterface> oldAxioms = new ArrayList<AxiomInterface>();
         AxiomInterface newAxiom = null;
         TSignature newAxSig = null;
         // module for a new axiom
-        Set<AxiomInterface> Module = new HashSet<AxiomInterface>();
+        final Set<AxiomInterface> Module = new HashSet<AxiomInterface>();
 
         /** set old axiom as an equivalent AX; create a new one */
         void setEqAx(AxiomEquivalentConcepts ax) {
@@ -54,17 +55,17 @@ public class TAxiomSplitter implements Serializable {
     }
 
     @PortedFrom(file = "AxiomSplitter.h", name = "SubNames")
-    protected Set<ConceptName> SubNames = new HashSet<ConceptName>();
+    protected final Set<ConceptName> SubNames = new HashSet<ConceptName>();
     @PortedFrom(file = "AxiomSplitter.h", name = "Rejects")
-    protected Set<ConceptName> Rejects = new HashSet<ConceptName>();
+    protected final Set<ConceptName> Rejects = new HashSet<ConceptName>();
     @PortedFrom(file = "AxiomSplitter.h", name = "Renames")
-    protected List<TRecord> Renames = new ArrayList<TRecord>();
+    protected final List<TRecord> Renames = new ArrayList<TRecord>();
     @PortedFrom(file = "AxiomSplitter.h", name = "R2")
-    protected List<TRecord> R2 = new ArrayList<TRecord>();
+    protected final List<TRecord> R2 = new ArrayList<TRecord>();
     @PortedFrom(file = "AxiomSplitter.h", name = "ImpRens")
-    protected Map<ConceptName, TRecord> ImpRens = new HashMap<ConceptName, TRecord>();
+    protected final Map<ConceptName, TRecord> ImpRens = new HashMap<ConceptName, TRecord>();
     @PortedFrom(file = "AxiomSplitter.h", name = "ImplNames")
-    protected Map<ConceptName, Set<AxiomConceptInclusion>> ImplNames = new HashMap<ConceptName, Set<AxiomConceptInclusion>>();
+    protected final Map<ConceptName, Set<AxiomConceptInclusion>> ImplNames = new HashMap<ConceptName, Set<AxiomConceptInclusion>>();
     @PortedFrom(file = "AxiomSplitter.h", name = "newNameId")
     private int newNameId;
     // seed signature
@@ -73,9 +74,9 @@ public class TAxiomSplitter implements Serializable {
     @PortedFrom(file = "AxiomSplitter.h", name = "mod")
     protected TModularizer mod = null;
     @PortedFrom(file = "AxiomSplitter.h", name = "RejSplits")
-    protected Set<TSplitVar> RejSplits = new HashSet<TSplitVar>();
+    protected final Set<TSplitVar> RejSplits = new HashSet<TSplitVar>();
     @PortedFrom(file = "AxiomSplitter.h", name = "O")
-    protected Ontology O;
+    protected final Ontology O;
 
     /** rename old concept into a new one with a fresh name */
     @PortedFrom(file = "AxiomSplitter.h", name = "rename")
@@ -99,7 +100,7 @@ public class TAxiomSplitter implements Serializable {
 
     /** register a record in the ontology */
     @PortedFrom(file = "AxiomSplitter.h", name = "registerRec")
-    void registerRec(TRecord rec) {
+    protected void registerRec(TRecord rec) {
         for (AxiomInterface p : rec.oldAxioms) {
             O.retract(p);
         }
@@ -109,7 +110,7 @@ public class TAxiomSplitter implements Serializable {
 
     /** unregister a record */
     @PortedFrom(file = "AxiomSplitter.h", name = "unregisterRec")
-    void unregisterRec(TRecord rec) {
+    protected void unregisterRec(TRecord rec) {
         for (AxiomInterface p : rec.oldAxioms) {
             p.setUsed(true);
         }

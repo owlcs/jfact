@@ -14,9 +14,10 @@ import conformance.PortedFrom;
 
 /** data role subsumption */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDRoleSubsumption")
-public class AxiomDRoleSubsumption extends AxiomSingleDRole { private static final long serialVersionUID=11000L;
+public class AxiomDRoleSubsumption extends AxiomSingleDRole {
+    private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "SubRole")
-    private DataRoleExpression subRole;
+    private final DataRoleExpression subRole;
 
     /** @param ax
      * @param subRole

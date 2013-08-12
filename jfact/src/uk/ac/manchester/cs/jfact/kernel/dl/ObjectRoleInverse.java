@@ -21,7 +21,7 @@ public class ObjectRoleInverse implements ObjectRoleExpression, ObjectRoleArg,
     private static final long serialVersionUID = 11000L;
     /** object role argument */
     @Original
-    private ObjectRoleExpression objectRoleExpression;
+    private final ObjectRoleExpression objectRoleExpression;
 
     /** @param R */
     public ObjectRoleInverse(ObjectRoleExpression R) {

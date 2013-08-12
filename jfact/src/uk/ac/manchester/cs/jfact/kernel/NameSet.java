@@ -13,10 +13,11 @@ import conformance.PortedFrom;
  * 
  * @param <T> */
 @PortedFrom(file = "tNameSet.h", name = "TNameSet")
-public class NameSet<T> extends HashMap<String, T> { private static final long serialVersionUID=11000L;
+public class NameSet<T> extends HashMap<String, T> {
+    private static final long serialVersionUID = 11000L;
     /** creator of new name */
     @PortedFrom(file = "tNameSet.h", name = "Creator")
-    private NameCreator<T> creator;
+    private final NameCreator<T> creator;
 
     /** @param p */
     public NameSet(NameCreator<T> p) {

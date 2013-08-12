@@ -25,15 +25,15 @@ public class TDag2Interface implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** DAG to be translated */
     @PortedFrom(file = "tDag2Interface.h", name = "Dag")
-    private DLDag Dag;
+    private final DLDag Dag;
     /** expression manager */
     @PortedFrom(file = "tDag2Interface.h", name = "Manager")
-    private ExpressionManager Manager;
+    private final ExpressionManager Manager;
     /** vector of cached expressions */
     @PortedFrom(file = "tDag2Interface.h", name = "TransC")
-    private List<ConceptExpression> TransConcept = new ArrayList<ConceptExpression>();
+    private final List<ConceptExpression> TransConcept = new ArrayList<ConceptExpression>();
     @PortedFrom(file = "tDag2Interface.h", name = "TransD")
-    private List<DataExpression> TransData = new ArrayList<DataExpression>();
+    private final List<DataExpression> TransData = new ArrayList<DataExpression>();
 
     /** @param v
      * @return build concept expression by a vertex V */

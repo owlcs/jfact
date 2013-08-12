@@ -23,16 +23,17 @@ import conformance.PortedFrom;
 
 /** elf normalizer */
 @PortedFrom(file = "ELFNormalizer.h", name = "ELFNormalizer")
-public class ELFNormalizer extends DLAxiomVisitorAdapter { private static final long serialVersionUID=11000L;
+public class ELFNormalizer extends DLAxiomVisitorAdapter {
+    private static final long serialVersionUID = 11000L;
     /** expression manager to build aux expressions */
     @PortedFrom(file = "ELFNormalizer.h", name = "pEM")
-    private ExpressionManager pEM;
+    private final ExpressionManager pEM;
     /** set of new/procesed axioms */
     @PortedFrom(file = "ELFNormalizer.h", name = "Axioms")
-    private List<AxiomInterface> Axioms = new ArrayList<AxiomInterface>();
+    private final List<AxiomInterface> Axioms = new ArrayList<AxiomInterface>();
     /** index of a freah variable */
     @PortedFrom(file = "ELFNormalizer.h", name = "index")
-    private int index;
+    private final int index;
     /** true iff the axiom was changed after visiting */
     @PortedFrom(file = "ELFNormalizer.h", name = "changed")
     private boolean changed;

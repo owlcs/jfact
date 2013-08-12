@@ -19,9 +19,9 @@ public class ObjectRoleProjectionInto implements ObjectRoleComplexExpression,
         ObjectRoleArg, ConceptArg, Serializable {
     private static final long serialVersionUID = 11000L;
     @Original
-    private ConceptExpression delegate;
+    private final ConceptExpression delegate;
     @Original
-    private ObjectRoleExpression roleDelegate;
+    private final ObjectRoleExpression roleDelegate;
 
     /** @param R
      * @param C */

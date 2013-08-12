@@ -18,12 +18,12 @@ public class RATransition implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** set of roles that may affect the transition */
     @PortedFrom(file = "RAutomaton.h", name = "label")
-    private Set<Role> label;
+    private final Set<Role> label;
     @Original
-    BitSet cache = null;
+    private BitSet cache = null;
     /** state of the transition */
     @PortedFrom(file = "RAutomaton.h", name = "state")
-    private int state;
+    private final int state;
 
     /** create a transition to given state
      * 
@@ -109,7 +109,7 @@ public class RATransition implements Serializable {
 
     /** check whether transition is TopRole one */
     @PortedFrom(file = "RAutomaton.h", name = "isTop")
-    boolean isTop() {
+    public boolean isTop() {
         return label.size() == 1 && label.iterator().next().isTop();
     }
 }

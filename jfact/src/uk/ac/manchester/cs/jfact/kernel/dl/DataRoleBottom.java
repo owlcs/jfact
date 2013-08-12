@@ -16,6 +16,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDLExpression.h", name = "TDLDataRoleBottom")
 public class DataRoleBottom implements DataRoleExpression, Serializable {
     private static final long serialVersionUID = 11000L;
+
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     public void accept(DLExpressionVisitor visitor) {

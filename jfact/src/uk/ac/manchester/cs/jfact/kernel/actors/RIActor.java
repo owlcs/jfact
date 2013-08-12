@@ -19,7 +19,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "Kernel.cpp", name = "RIActor")
 public class RIActor implements Actor, Serializable {
     private static final long serialVersionUID = 11000L;
-    List<Individual> acc = new ArrayList<Individual>();
+    private final List<Individual> acc = new ArrayList<Individual>();
 
     /** process single entry in a vertex label */
     protected boolean tryEntry(ClassifiableEntry p) {

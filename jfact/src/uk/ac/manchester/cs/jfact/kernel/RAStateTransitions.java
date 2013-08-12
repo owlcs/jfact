@@ -20,12 +20,12 @@ public class RAStateTransitions implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** all transitions */
     @PortedFrom(file = "RAutomaton.h", name = "Base")
-    protected List<RATransition> base = new ArrayList<RATransition>();
+    protected final List<RATransition> base = new ArrayList<RATransition>();
     /** check whether there is an empty transition going from this state */
     @PortedFrom(file = "RAutomaton.h", name = "EmptyTransition")
     protected boolean emptyTransition;
     @PortedFrom(file = "RAutomaton.h", name = "ApplicableRoles")
-    private BitSet applicableRoles = new BitSet();
+    private final BitSet applicableRoles = new BitSet();
     /** state from which all the transition starts */
     @PortedFrom(file = "RAutomaton.h", name = "from")
     private int from;
@@ -66,7 +66,7 @@ public class RAStateTransitions implements Serializable {
 
     /** @return true iff there is a top-role transition from the state */
     @PortedFrom(file = "RAutomaton.h", name = "hasTopTransition")
-    boolean hasTopTransition() {
+    public boolean hasTopTransition() {
         return TopTransition;
     }
 

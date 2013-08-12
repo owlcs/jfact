@@ -35,10 +35,10 @@ public class TranslationMachinery implements Serializable {
     private final EntailmentChecker entailmentChecker;
     private final Map<OWLAxiom, AxiomInterface> axiom2PtrMap = new HashMap<OWLAxiom, AxiomInterface>();
     private final Map<AxiomInterface, OWLAxiom> ptr2AxiomMap = new HashMap<AxiomInterface, OWLAxiom>();
-    protected ReasoningKernel kernel;
-    protected ExpressionManager em;
-    protected OWLDataFactory df;
-    DatatypeFactory datatypefactory;
+    protected final ReasoningKernel kernel;
+    protected final ExpressionManager em;
+    protected final OWLDataFactory df;
+    private final DatatypeFactory datatypefactory;
 
     /** @param kernel
      * @param df
@@ -181,6 +181,7 @@ public class TranslationMachinery implements Serializable {
 
     class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>, Serializable {
         private static final long serialVersionUID = 11000L;
+
         public EntailmentChecker() {}
 
         @Override
@@ -478,8 +479,8 @@ public class TranslationMachinery implements Serializable {
     abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity> implements
             Serializable {
         private static final long serialVersionUID = 11000L;
-        private Map<E, T> entity2dlentity = new HashMap<E, T>();
-        private Map<T, E> dlentity2entity = new HashMap<T, E>();
+        private final Map<E, T> entity2dlentity = new HashMap<E, T>();
+        private final Map<T, E> dlentity2entity = new HashMap<T, E>();
 
         protected void fillMaps(E entity, T dlentity) {
             this.entity2dlentity.put(entity, dlentity);
@@ -549,6 +550,7 @@ public class TranslationMachinery implements Serializable {
     class ObjectPropertyTranslator extends
             OWLEntityTranslator<OWLObjectPropertyExpression, ObjectRoleExpression> {
         private static final long serialVersionUID = 11000L;
+
         public ObjectPropertyTranslator() {}
 
         @Override
@@ -608,6 +610,7 @@ public class TranslationMachinery implements Serializable {
     class ComplexObjectPropertyTranslator extends
             OWLEntityTranslator<OWLObjectPropertyExpression, ObjectRoleComplexExpression> {
         private static final long serialVersionUID = 11000L;
+
         public ComplexObjectPropertyTranslator() {}
 
         @Override
@@ -663,6 +666,7 @@ public class TranslationMachinery implements Serializable {
     protected class DeclarationVisitorEx implements OWLEntityVisitorEx<AxiomInterface>,
             Serializable {
         private static final long serialVersionUID = 11000L;
+
         @Override
         public AxiomInterface visit(OWLClass cls) {
             return kernel.declare(df.getOWLDeclarationAxiom(cls), toClassPointer(cls));
@@ -700,7 +704,7 @@ public class TranslationMachinery implements Serializable {
 
     class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>, Serializable {
         private static final long serialVersionUID = 11000L;
-        private DeclarationVisitorEx v;
+        private final DeclarationVisitorEx v;
 
         public AxiomTranslator() {
             v = new DeclarationVisitorEx();
@@ -991,6 +995,7 @@ public class TranslationMachinery implements Serializable {
             OWLEntityTranslator<OWLClass, ConceptExpression> implements
             OWLClassExpressionVisitorEx<ConceptExpression> {
         private static final long serialVersionUID = 11000L;
+
         public ClassExpressionTranslator() {}
 
         @Override
@@ -1150,6 +1155,7 @@ public class TranslationMachinery implements Serializable {
     class DataPropertyTranslator extends
             OWLEntityTranslator<OWLDataProperty, DataRoleExpression> {
         private static final long serialVersionUID = 11000L;
+
         public DataPropertyTranslator() {}
 
         @Override
@@ -1191,6 +1197,7 @@ public class TranslationMachinery implements Serializable {
     class DataRangeTranslator extends OWLEntityTranslator<OWLDatatype, DataExpression>
             implements OWLDataRangeVisitorEx<DataExpression> {
         private static final long serialVersionUID = 11000L;
+
         public DataRangeTranslator() {}
 
         @Override
@@ -1298,6 +1305,7 @@ public class TranslationMachinery implements Serializable {
     class IndividualTranslator extends
             OWLEntityTranslator<OWLNamedIndividual, IndividualName> {
         private static final long serialVersionUID = 11000L;
+
         public IndividualTranslator() {}
 
         @Override

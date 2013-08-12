@@ -20,17 +20,17 @@ class TExpressionSignatureUpdater implements DLExpressionVisitor, Serializable {
     private static final long serialVersionUID = 11000L;
     /** Signature to be filled */
     @PortedFrom(file = "tSignatureUpdater.h", name = "sig")
-    TSignature sig;
+    private final TSignature sig;
 
     /** helper for concept arguments */
     @PortedFrom(file = "tSignatureUpdater.h", name = "vC")
-    void vC(ConceptArg expr) {
+    private void vC(ConceptArg expr) {
         expr.getConcept().accept(this);
     }
 
     /** helper for individual arguments */
     @PortedFrom(file = "tSignatureUpdater.h", name = "vI")
-    void vI(IndividualExpression expr) {
+    private void vI(IndividualExpression expr) {
         // should no longer be needed: IndividualNames are NamedEntities
         // themselves
         if (expr instanceof NamedEntity) {
@@ -40,25 +40,25 @@ class TExpressionSignatureUpdater implements DLExpressionVisitor, Serializable {
 
     /** helper for object role arguments */
     @PortedFrom(file = "tSignatureUpdater.h", name = "vOR")
-    void vOR(ObjectRoleArg expr) {
+    private void vOR(ObjectRoleArg expr) {
         expr.getOR().accept(this);
     }
 
     /** helper for object role arguments */
     @PortedFrom(file = "tSignatureUpdater.h", name = "vDR")
-    void vDR(DataRoleArg expr) {
+    private void vDR(DataRoleArg expr) {
         expr.getDataRoleExpression().accept(this);
     }
 
     /** helper for the named entity */
     @PortedFrom(file = "tSignatureUpdater.h", name = "vE")
-    void vE(NamedEntity e) {
+    private void vE(NamedEntity e) {
         sig.add(e);
     }
 
     /** array helper */
     @PortedFrom(file = "tSignatureUpdater.h", name = "processArray")
-    void processArray(NAryExpression<? extends Expression> expr) {
+    private void processArray(NAryExpression<? extends Expression> expr) {
         for (Expression p : expr.getArguments()) {
             p.accept(this);
         }

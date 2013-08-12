@@ -19,7 +19,7 @@ public class ConceptNot implements ConceptExpression, ConceptArg, Serializable {
     private static final long serialVersionUID = 11000L;
     /** concept argument */
     @PortedFrom(file = "tDLExpression.h", name = "C")
-    private ConceptExpression conceptExpression;
+    private final ConceptExpression conceptExpression;
 
     /** @param C */
     public ConceptNot(ConceptExpression C) {

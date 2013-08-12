@@ -18,7 +18,7 @@ public class QRQuery implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** query as a set of atoms */
     @PortedFrom(file = "QR.h", name = "Body")
-    QRSetAtoms Body = new QRSetAtoms();
+    private QRSetAtoms Body = new QRSetAtoms();
     /** set of free variables */
     @PortedFrom(file = "QR.h", name = "FreeVars")
     private Set<QRVariable> FreeVars = new TreeSet<QRVariable>();

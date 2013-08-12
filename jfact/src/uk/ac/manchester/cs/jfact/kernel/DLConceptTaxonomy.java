@@ -22,11 +22,14 @@ import conformance.PortedFrom;
 
 /** Concept taxonomy */
 @PortedFrom(file = "DLConceptTaxonomy.h", name = "DLConceptTaxonomy")
-public class DLConceptTaxonomy extends TaxonomyCreator { private static final long serialVersionUID=11000L;
+public class DLConceptTaxonomy extends TaxonomyCreator {
+    private static final long serialVersionUID = 11000L;
+
     /** all the derived subsumers of a class (came from the model) */
-    class DerivedSubsumers extends KnownSubsumers { private static final long serialVersionUID=11000L;
+    class DerivedSubsumers extends KnownSubsumers {
+        private static final long serialVersionUID = 11000L;
         /** set of sure- and possible subsumers */
-        protected List<ClassifiableEntry> Sure, Possible;
+        protected final List<ClassifiableEntry> Sure, Possible;
 
         /** c'tor: copy given sets
          * 
@@ -56,10 +59,10 @@ public class DLConceptTaxonomy extends TaxonomyCreator { private static final lo
     private boolean inSplitCheck = false;
     /** host tBox */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "tBox")
-    private TBox tBox;
+    private final TBox tBox;
     /** common descendants of all parents of currently classified concept */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "Common")
-    private List<TaxonomyVertex> common = new ArrayList<TaxonomyVertex>();
+    private final List<TaxonomyVertex> common = new ArrayList<TaxonomyVertex>();
     // statistic counters
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "nConcepts")
     private long nConcepts = 0;
@@ -95,7 +98,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator { private static final lo
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "nCommon")
     protected int nCommon = 1;
     /** set of possible parents */
-    protected Set<TaxonomyVertex> candidates = new HashSet<TaxonomyVertex>();
+    protected final Set<TaxonomyVertex> candidates = new HashSet<TaxonomyVertex>();
     /** whether look into it */
     protected boolean useCandidates = false;
 
@@ -178,7 +181,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator { private static final lo
 
     /** process all splits */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "processSplits")
-    void processSplits() {
+    public void processSplits() {
         for (TSplitVar v : tBox.getSplits().getEntries()) {
             mergeSplitVars(v);
         }
@@ -283,7 +286,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator { private static final lo
 
     /** @return true if non-subsumption is due to ENTITY is not in the \bot-module */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "isNotInModule")
-    boolean isNotInModule(NamedEntity entity) {
+    private boolean isNotInModule(NamedEntity entity) {
         if (upDirection) {
             return false;
         }
@@ -520,7 +523,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator { private static final lo
     /** after merging, check whether there are extra neighbours that should be
      * taken into account */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "checkExtraParents")
-    void checkExtraParents() {
+    private void checkExtraParents() {
         inSplitCheck = true;
         for (TaxonomyVertex p : pTax.current.neigh(true)) {
             propagateTrueUp(p);
@@ -543,7 +546,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator { private static final lo
 
     /** merge vars came from a given SPLIT together */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "mergeSplitVars")
-    void mergeSplitVars(TSplitVar split) {
+    private void mergeSplitVars(TSplitVar split) {
         Set<TaxonomyVertex> splitVertices = new HashSet<TaxonomyVertex>();
         TaxonomyVertex v = split.getC().getTaxVertex();
         boolean cIn = v != null;
@@ -577,7 +580,8 @@ public class DLConceptTaxonomy extends TaxonomyCreator { private static final lo
 
     /** merge a single vertex V to a node represented by CUR */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "mergeVertex")
-    void mergeVertex(TaxonomyVertex cur, TaxonomyVertex v, Set<TaxonomyVertex> excludes) {
+    private void mergeVertex(TaxonomyVertex cur, TaxonomyVertex v,
+            Set<TaxonomyVertex> excludes) {
         if (!cur.equals(v)) {
             cur.mergeIndepNode(v, excludes, curEntry);
             pTax.removeNode(v);

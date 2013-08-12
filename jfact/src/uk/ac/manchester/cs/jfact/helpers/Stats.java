@@ -15,6 +15,7 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 @SuppressWarnings("javadoc")
 public class Stats implements Serializable {
     private static final long serialVersionUID = 11000L;
+
     public AccumulatedStatistic build(List<AccumulatedStatistic> list) {
         AccumulatedStatistic toReturn = new AccumulatedStatistic();
         list.add(toReturn);
@@ -29,7 +30,7 @@ public class Stats implements Serializable {
         private int local;
 
         /** c'tor: link itself to the list */
-        AccumulatedStatistic() {
+        public AccumulatedStatistic() {
             total = 0;
             local = 0;
         }
@@ -40,7 +41,7 @@ public class Stats implements Serializable {
         }
 
         /** add local value to a global one */
-        void accumulate() {
+        public void accumulate() {
             total += local;
             local = 0;
         }
@@ -58,38 +59,38 @@ public class Stats implements Serializable {
 
     // statistic elements
     /** all AccumulatedStatistic members are linked together */
-    private List<AccumulatedStatistic> root = new ArrayList<AccumulatedStatistic>();
-    private AccumulatedStatistic nTacticCalls = build(root);
-    private AccumulatedStatistic nUseless = build(root);
-    private AccumulatedStatistic nIdCalls = build(root);
-    private AccumulatedStatistic nSingletonCalls = build(root);
-    private AccumulatedStatistic nOrCalls = build(root);
-    private AccumulatedStatistic nOrBrCalls = build(root);
-    private AccumulatedStatistic nAndCalls = build(root);
-    private AccumulatedStatistic nSomeCalls = build(root);
-    private AccumulatedStatistic nAllCalls = build(root);
-    private AccumulatedStatistic nFuncCalls = build(root);
-    private AccumulatedStatistic nLeCalls = build(root);
-    private AccumulatedStatistic nGeCalls = build(root);
-    private AccumulatedStatistic nNNCalls = build(root);
-    private AccumulatedStatistic nMergeCalls = build(root);
-    private AccumulatedStatistic nAutoEmptyLookups = build(root);
-    private AccumulatedStatistic nAutoTransLookups = build(root);
-    private AccumulatedStatistic nSRuleAdd = build(root);
-    private AccumulatedStatistic nSRuleFire = build(root);
-    private AccumulatedStatistic nStateSaves = build(root);
-    private AccumulatedStatistic nStateRestores = build(root);
-    private AccumulatedStatistic nNodeSaves = build(root);
-    private AccumulatedStatistic nNodeRestores = build(root);
-    private AccumulatedStatistic nLookups = build(root);
-    private AccumulatedStatistic nFairnessViolations = build(root);
+    private final List<AccumulatedStatistic> root = new ArrayList<AccumulatedStatistic>();
+    private final AccumulatedStatistic nTacticCalls = build(root);
+    private final AccumulatedStatistic nUseless = build(root);
+    private final AccumulatedStatistic nIdCalls = build(root);
+    private final AccumulatedStatistic nSingletonCalls = build(root);
+    private final AccumulatedStatistic nOrCalls = build(root);
+    private final AccumulatedStatistic nOrBrCalls = build(root);
+    private final AccumulatedStatistic nAndCalls = build(root);
+    private final AccumulatedStatistic nSomeCalls = build(root);
+    private final AccumulatedStatistic nAllCalls = build(root);
+    private final AccumulatedStatistic nFuncCalls = build(root);
+    private final AccumulatedStatistic nLeCalls = build(root);
+    private final AccumulatedStatistic nGeCalls = build(root);
+    private final AccumulatedStatistic nNNCalls = build(root);
+    private final AccumulatedStatistic nMergeCalls = build(root);
+    private final AccumulatedStatistic nAutoEmptyLookups = build(root);
+    private final AccumulatedStatistic nAutoTransLookups = build(root);
+    private final AccumulatedStatistic nSRuleAdd = build(root);
+    private final AccumulatedStatistic nSRuleFire = build(root);
+    private final AccumulatedStatistic nStateSaves = build(root);
+    private final AccumulatedStatistic nStateRestores = build(root);
+    private final AccumulatedStatistic nNodeSaves = build(root);
+    private final AccumulatedStatistic nNodeRestores = build(root);
+    private final AccumulatedStatistic nLookups = build(root);
+    private final AccumulatedStatistic nFairnessViolations = build(root);
     // reasoning cache
-    private AccumulatedStatistic nCacheTry = build(root);
-    private AccumulatedStatistic nCacheFailedNoCache = build(root);
-    private AccumulatedStatistic nCacheFailedShallow = build(root);
-    private AccumulatedStatistic nCacheFailed = build(root);
-    private AccumulatedStatistic nCachedSat = build(root);
-    private AccumulatedStatistic nCachedUnsat = build(root);
+    private final AccumulatedStatistic nCacheTry = build(root);
+    private final AccumulatedStatistic nCacheFailedNoCache = build(root);
+    private final AccumulatedStatistic nCacheFailedShallow = build(root);
+    private final AccumulatedStatistic nCacheFailed = build(root);
+    private final AccumulatedStatistic nCachedSat = build(root);
+    private final AccumulatedStatistic nCachedUnsat = build(root);
 
     public void accumulate() {
         for (AccumulatedStatistic cur : root) {

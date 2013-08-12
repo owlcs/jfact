@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.FastSetSimple;
@@ -24,23 +25,23 @@ import conformance.PortedFrom;
 public class ToDoList implements Serializable {
     private static final long serialVersionUID = 11000L;
     @Original
-    static int limit = 500;
+    private final static int limit = 500;
     @Original
-    protected TODOListSaveState[] states = new TODOListSaveState[limit];
+    protected final TODOListSaveState[] states = new TODOListSaveState[limit];
     @Original
-    protected int nextState = 0;
+    protected final int nextState = 0;
     @Original
-    volatile boolean change = true;
+    private AtomicBoolean change = new AtomicBoolean();
 
     /** the entry of Todo table */
     public static class ToDoEntry implements Serializable {
         private static final long serialVersionUID = 11000L;
         /** node to include concept */
-        private DlCompletionTree node;
-        private int concept;
-        private FastSetSimple delegate;
+        private final DlCompletionTree node;
+        private final int concept;
+        private final FastSetSimple delegate;
 
-        ToDoEntry(DlCompletionTree n, ConceptWDep off) {
+        protected ToDoEntry(DlCompletionTree n, ConceptWDep off) {
             node = n;
             concept = off.getConcept();
             delegate = off.getDep().getDelegate();
@@ -69,9 +70,9 @@ public class ToDoList implements Serializable {
     static class ArrayQueue implements Serializable {
         private static final long serialVersionUID = 11000L;
         /** waiting ops queue */
-        List<ToDoEntry> Wait = new ArrayList<ToDoEntry>(50);
+        private final List<ToDoEntry> Wait = new ArrayList<ToDoEntry>(50);
         /** start pointer; points to the 1st element in the queue */
-        int sPointer = 0;
+        private int sPointer = 0;
 
         /** add entry to a queue
          * 
@@ -162,10 +163,10 @@ public class ToDoList implements Serializable {
         private int sPointer = 0;
         /** flag for checking whether queue was reordered */
         private boolean queueBroken = false;
-        int size = 0;
+        private int size = 0;
 
         /** add entry to a queue */
-        void add(DlCompletionTree Node, ConceptWDep offset) {
+        protected void add(DlCompletionTree Node, ConceptWDep offset) {
             ToDoEntry e = new ToDoEntry(Node, offset);
             // no problems with empty queue and if no priority
             // clashes
@@ -190,7 +191,7 @@ public class ToDoList implements Serializable {
 
         /** clear queue */
         @PortedFrom(file = "ToDoList.h", name = "clear")
-        void clear() {
+        protected void clear() {
             sPointer = 0;
             queueBroken = false;
             _Wait.clear();
@@ -198,18 +199,18 @@ public class ToDoList implements Serializable {
         }
 
         /** check if queue empty */
-        boolean isEmpty() {
+        protected boolean isEmpty() {
             return sPointer == size;
         }
 
         /** get next entry from the queue; works for non-empty queues */
-        ToDoEntry get() {
+        protected ToDoEntry get() {
             return _Wait.get(sPointer++);
         }
 
         /** save queue content to the given entry */
         @PortedFrom(file = "ToDoList.h", name = "save")
-        void save(QueueQueueSaveState tss) {
+        protected void save(QueueQueueSaveState tss) {
             tss.queueBroken = queueBroken;
             tss.sp = sPointer;
             if (queueBroken) {
@@ -224,7 +225,7 @@ public class ToDoList implements Serializable {
 
         /** restore queue content from the given entry */
         @PortedFrom(file = "ToDoList.h", name = "restore")
-        void restore(QueueQueueSaveState tss) {
+        protected void restore(QueueQueueSaveState tss) {
             queueBroken = tss.queueBroken;
             sPointer = tss.sp;
             if (queueBroken) {
@@ -252,14 +253,14 @@ public class ToDoList implements Serializable {
         protected int backupID_sp;
         protected int backupID_ep;
         /** save state for queueNN */
-        protected QueueQueueSaveState backupNN = new QueueQueueSaveState();
+        protected final QueueQueueSaveState backupNN = new QueueQueueSaveState();
         /** save state of all regular queues */
-        protected int[][] backup = new int[nRegularOptions][2];
+        protected final int[][] backup = new int[nRegularOptions][2];
         /** save number-of-entries to do */
         @PortedFrom(file = "ToDoList.h", name = "noe")
         protected int noe;
 
-        TODOListSaveState() {}
+        protected TODOListSaveState() {}
 
         @Override
         public String toString() {
@@ -269,7 +270,7 @@ public class ToDoList implements Serializable {
     }
 
     @Original
-    TODOListSaveState getInstance() {
+    protected TODOListSaveState getInstance() {
         return new TODOListSaveState();
     }
 
@@ -301,7 +302,7 @@ public class ToDoList implements Serializable {
     }
 
     @Original
-    void startSaveStateGeneration() {
+    protected void startSaveStateGeneration() {
         saveStateGenerationStarted = true;
         Thread stateFiller = new Thread() {
             @Override
@@ -310,13 +311,13 @@ public class ToDoList implements Serializable {
                 // timeout at one minute from last operation
                 while (System.currentTimeMillis() - last < 60000) {
                     for (int wait = 0; wait < 10000; wait++) {
-                        if (change) {
+                        if (change.get()) {
                             for (int i = 0; i < limit; i++) {
                                 if (states[i] == null) {
                                     states[i] = new TODOListSaveState();
                                 }
                             }
-                            change = false;
+                            change.set(false);
                             last = System.currentTimeMillis();
                         }
                         try {
@@ -338,19 +339,19 @@ public class ToDoList implements Serializable {
 
     /** waiting ops queue for IDs */
     @PortedFrom(file = "ToDoList.h", name = "queueID")
-    private ArrayQueue queueID = new ArrayQueue();
+    private final ArrayQueue queueID = new ArrayQueue();
     /** waiting ops queue for <= ops in nominal nodes */
     @PortedFrom(file = "ToDoList.h", name = "queueNN")
-    private QueueQueue queueNN = new QueueQueue();
+    private final QueueQueue queueNN = new QueueQueue();
     /** waiting ops queues */
     @PortedFrom(file = "ToDoList.h", name = "Wait")
-    private List<ArrayQueue> waitQueue = new ArrayList<ArrayQueue>(nRegularOptions);
+    private final List<ArrayQueue> waitQueue = new ArrayList<ArrayQueue>(nRegularOptions);
     /** stack of saved states */
     @PortedFrom(file = "ToDoList.h", name = "SaveStack")
-    private SaveStack<TODOListSaveState> saveStack = new SaveStack<TODOListSaveState>();
+    private final SaveStack<TODOListSaveState> saveStack = new SaveStack<TODOListSaveState>();
     /** priority matrix */
     @PortedFrom(file = "ToDoList.h", name = "Matrix")
-    private ToDoPriorMatrix matrix = new ToDoPriorMatrix();
+    private final ToDoPriorMatrix matrix = new ToDoPriorMatrix();
     /** number of un-processed entries */
     @PortedFrom(file = "ToDoList.h", name = "noe")
     private int noe;

@@ -5,8 +5,6 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry.*;
-
 import java.io.Serializable;
 import java.util.*;
 
@@ -22,7 +20,7 @@ public class Taxonomy implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** array of taxonomy verteces */
     @PortedFrom(file = "Taxonomy.h", name = "Graph")
-    private List<TaxonomyVertex> graph = new ArrayList<TaxonomyVertex>();
+    private final List<TaxonomyVertex> graph = new ArrayList<TaxonomyVertex>();
     /** aux. vertex to be included to taxonomy */
     @PortedFrom(file = "Taxonomy.h", name = "Current")
     protected TaxonomyVertex current = new TaxonomyVertex();
@@ -31,12 +29,12 @@ public class Taxonomy implements Serializable {
     protected boolean willInsertIntoTaxonomy = true;
     /** vertex with parent Top and child Bot, represents the fresh entity */
     @PortedFrom(file = "Taxonomy.h", name = "FreshNode")
-    protected TaxonomyVertex FreshNode = new TaxonomyVertex();
+    protected final TaxonomyVertex FreshNode = new TaxonomyVertex();
     /** labeller for marking nodes as checked */
     @PortedFrom(file = "Taxonomy.h", name = "checkLabel")
     protected long visitedLabel = 1;
     @Original
-    private JFactReasonerConfiguration options;
+    private final JFactReasonerConfiguration options;
 
     /** @return current */
     @PortedFrom(file = "Taxonomy.h", name = "getCurrent")
@@ -152,7 +150,7 @@ public class Taxonomy implements Serializable {
 
     /** set node NODE as checked within taxonomy */
     @PortedFrom(file = "Taxonomy.h", name = "setVisited")
-    void setVisited(TaxonomyVertex node) {
+    public void setVisited(TaxonomyVertex node) {
         node.setChecked(visitedLabel);
     }
 
@@ -228,7 +226,7 @@ public class Taxonomy implements Serializable {
 
     /** remove node from the taxonomy; assume no references to the node */
     @PortedFrom(file = "Taxonomy.h", name = "removeNode")
-    void removeNode(TaxonomyVertex node) {
+    public void removeNode(TaxonomyVertex node) {
         graph.remove(node);
     }
 
@@ -309,7 +307,7 @@ public class Taxonomy implements Serializable {
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "processSynonym")
     protected boolean processSynonym() {
         ClassifiableEntry currentEntry = current.getPrimer();
-        ClassifiableEntry syn = resolveSynonym(currentEntry);
+        ClassifiableEntry syn = ClassifiableEntry.resolveSynonym(currentEntry);
         if (syn.equals(currentEntry)) {
             return false;
         }

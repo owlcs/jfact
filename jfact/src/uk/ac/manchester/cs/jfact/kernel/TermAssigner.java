@@ -8,11 +8,12 @@ import uk.ac.manchester.cs.jfact.kernel.queryobjects.QRVariable;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TermAssigner")
-public class TermAssigner extends BuildELIOConcept { private static final long serialVersionUID=11000L;
+public class TermAssigner extends BuildELIOConcept {
+    private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "N")
-    private int N = 0;
+    private final int N = 0;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Factory")
-    private AtomicLong Factory = new AtomicLong();
+    private final AtomicLong Factory = new AtomicLong();
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TermAssigner")
     public TermAssigner(ConjunctiveQueryFolding conjunctiveQueryFolding, QRQuery query) {

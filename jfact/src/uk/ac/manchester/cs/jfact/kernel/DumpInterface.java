@@ -15,13 +15,13 @@ class DumpInterface implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** output stream */
     @PortedFrom(file = "dumpInterface.h", name = "o")
-    protected LogAdapter o;
+    protected final LogAdapter o;
     /** indentation level */
     @PortedFrom(file = "dumpInterface.h", name = "indent")
     private int indent;
     /** print every axiom on a single line (need for sorting, for example) */
     @PortedFrom(file = "dumpInterface.h", name = "oneliner")
-    private boolean oneliner;
+    private final boolean oneliner;
 
     @PortedFrom(file = "dumpInterface.h", name = "o")
     public DumpInterface(LogAdapter oo) {

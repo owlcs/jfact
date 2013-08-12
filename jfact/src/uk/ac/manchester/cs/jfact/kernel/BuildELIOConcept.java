@@ -15,11 +15,11 @@ public abstract class BuildELIOConcept implements Serializable {
     private static final long serialVersionUID = 11000L;
     protected final ConjunctiveQueryFolding conjunctiveQueryFolding;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Query")
-    protected QRQuery Query;
+    protected final QRQuery Query;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "PassedVertice")
-    private Set<QRVariable> PassedVertice = new TreeSet<QRVariable>();
+    private final Set<QRVariable> PassedVertice = new TreeSet<QRVariable>();
 
-    public BuildELIOConcept(ConjunctiveQueryFolding c, QRQuery query) {
+    protected BuildELIOConcept(ConjunctiveQueryFolding c, QRQuery query) {
         conjunctiveQueryFolding = c;
         Query = query;
     }

@@ -23,9 +23,9 @@ public class ConceptDataForall implements ConceptDataRVExpression, DataRoleArg,
     private static final long serialVersionUID = 11000L;
     /** data role argument */
     @PortedFrom(file = "tDLExpression.h", name = "DR")
-    private DataRoleExpression dataRoleExpression;
+    private final DataRoleExpression dataRoleExpression;
     @Original
-    private DataExpression delegate;
+    private final DataExpression delegate;
 
     /** @param R
      * @param E */

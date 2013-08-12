@@ -44,18 +44,18 @@ public class ReasoningKernel implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** options for the kernel and all related substructures */
     @PortedFrom(file = "Kernel.h", name = "KernelOptions")
-    private JFactReasonerConfiguration kernelOptions;
+    private final JFactReasonerConfiguration kernelOptions;
     /** local TBox (to be created) */
     @PortedFrom(file = "Kernel.h", name = "pTBox")
     protected TBox pTBox;
     /** set of axioms */
     @PortedFrom(file = "Kernel.h", name = "Ontology")
-    private Ontology ontology = new Ontology();
+    private final Ontology ontology = new Ontology();
     /** expression translator to work with queries */
     @PortedFrom(file = "Kernel.h", name = "pET")
     private ExpressionTranslator pET;
     @PortedFrom(file = "Kernel.h", name = "Name2Sig")
-    private Map<String, TSignature> Name2Sig = new HashMap<String, TSignature>();
+    private final Map<String, TSignature> Name2Sig = new HashMap<String, TSignature>();
     /** ontology signature (used in incremental) */
     @PortedFrom(file = "Kernel.h", name = "OntoSig")
     private TSignature OntoSig;
@@ -102,12 +102,12 @@ public class ReasoningKernel implements Serializable {
     private boolean reasoningFailed;
     /** trace vector for the last operation (set from the TBox trace-sets) */
     @PortedFrom(file = "Kernel.h", name = "TraceVec")
-    private List<AxiomInterface> traceVec = new ArrayList<AxiomInterface>();
+    private final List<AxiomInterface> traceVec = new ArrayList<AxiomInterface>();
     /** flag to gather trace information for the next reasoner's call */
     @PortedFrom(file = "Kernel.h", name = "NeedTracing")
     private boolean needTracing;
     @Original
-    private DatatypeFactory datatypeFactory;
+    private final DatatypeFactory datatypeFactory;
     // types for knowledge exploration
     /** knowledge exploration support */
     @PortedFrom(file = "Kernel.h", name = "KE")
@@ -123,17 +123,17 @@ public class ReasoningKernel implements Serializable {
     private OntologyBasedModularizer ModSem = null;
     /** set to return by the locality checking procedure */
     @PortedFrom(file = "Kernel.h", name = "Result")
-    private Set<AxiomInterface> Result = new HashSet<AxiomInterface>();
+    private final Set<AxiomInterface> Result = new HashSet<AxiomInterface>();
     /** cached query input description */
     @PortedFrom(file = "Kernel.h", name = "cachedQuery")
     private ConceptExpression cachedQuery;
     @PortedFrom(file = "Kernel.h", name = "useAxiomSplitting")
-    private boolean useAxiomSplitting;
+    private final boolean useAxiomSplitting;
     /** ignore cache for the TExpr* (useful for semantic AD) */
     @PortedFrom(file = "Kernel.h", name = "ignoreExprCache")
     private boolean ignoreExprCache = false;
-    private uk.ac.manchester.cs.jfact.helpers.Timer moduleTimer = new uk.ac.manchester.cs.jfact.helpers.Timer();
-    private uk.ac.manchester.cs.jfact.helpers.Timer subCheckTimer = new uk.ac.manchester.cs.jfact.helpers.Timer();
+    private final uk.ac.manchester.cs.jfact.helpers.Timer moduleTimer = new uk.ac.manchester.cs.jfact.helpers.Timer();
+    private final uk.ac.manchester.cs.jfact.helpers.Timer subCheckTimer = new uk.ac.manchester.cs.jfact.helpers.Timer();
     private int nModule = 0;
     private IncrementalClassifier Classifier = null;
     private ReasoningKernel Reasoner = null;
@@ -142,21 +142,21 @@ public class ReasoningKernel implements Serializable {
     // -- internal query cache manipulation
     /** clear query cache */
     @PortedFrom(file = "Kernel.h", name = "clearQueryCache")
-    void clearQueryCache() {
+    private void clearQueryCache() {
         cachedQuery = null;
         cachedQueryTree = null;
     }
 
     /** set query cache value to QUERY */
     @PortedFrom(file = "Kernel.h", name = "setQueryCache")
-    void setQueryCache(ConceptExpression query) {
+    private void setQueryCache(ConceptExpression query) {
         clearQueryCache();
         cachedQuery = query;
     }
 
     /** set query cache value to QUERY */
     @PortedFrom(file = "Kernel.h", name = "setQueryCache")
-    void setQueryCache(DLTree query) {
+    private void setQueryCache(DLTree query) {
         clearQueryCache();
         cachedQueryTree = query;
     }
@@ -171,13 +171,13 @@ public class ReasoningKernel implements Serializable {
 
     /** check whether query cache is the same as QUERY */
     @PortedFrom(file = "Kernel.h", name = "checkQueryCache")
-    boolean checkQueryCache(ConceptExpression query) {
+    private boolean checkQueryCache(ConceptExpression query) {
         return ignoreExprCache ? false : cachedQuery == query;
     }
 
     /** check whether query cache is the same as QUERY */
     @PortedFrom(file = "Kernel.h", name = "checkQueryCache")
-    boolean checkQueryCache(DLTree query) {
+    private boolean checkQueryCache(DLTree query) {
         return equalTrees(cachedQueryTree, query);
     }
 
@@ -215,7 +215,7 @@ public class ReasoningKernel implements Serializable {
 
     /** get role expression based on the R */
     @PortedFrom(file = "Kernel.h", name = "Role")
-    RoleExpression Role(Role R) {
+    private RoleExpression Role(Role R) {
         if (R.isDataRole()) {
             return getExpressionManager().dataRole(R.getName());
         } else {
@@ -299,7 +299,7 @@ public class ReasoningKernel implements Serializable {
 
     /** @return true iff C is satisfiable */
     @PortedFrom(file = "Kernel.h", name = "checkSat")
-    boolean checkSat(ConceptExpression C) {
+    private boolean checkSat(ConceptExpression C) {
         this.setUpCache(C, csSat);
         return getTBox().isSatisfiable(cachedConcept);
     }
@@ -308,19 +308,19 @@ public class ReasoningKernel implements Serializable {
      * 
      * @return true iff C is either named concept of Top/Bot */
     @PortedFrom(file = "Kernel.h", name = "isNameOrConst")
-    boolean isNameOrConst(ConceptExpression C) {
+    private boolean isNameOrConst(ConceptExpression C) {
         return C instanceof ConceptName || C instanceof ConceptTop
                 || C instanceof ConceptBottom;
     }
 
     @PortedFrom(file = "Kernel.h", name = "isNameOrConst")
-    boolean isNameOrConst(DLTree C) {
+    private boolean isNameOrConst(DLTree C) {
         return C.isBOTTOM() || C.isTOP() || C.isName();
     }
 
     /** @return true iff C [= D holds */
     @PortedFrom(file = "Kernel.h", name = "checkSub")
-    boolean checkSub(ConceptExpression C, ConceptExpression D) {
+    private boolean checkSub(ConceptExpression C, ConceptExpression D) {
         if (this.isNameOrConst(D) && this.isNameOrConst(C)) {
             return this.checkSub(getTBox().getCI(e(C)), getTBox().getCI(e(D)));
         }
@@ -2089,7 +2089,7 @@ public class ReasoningKernel implements Serializable {
     /** classify query; cache is ready at the point. NAMED means whether concept
      * is just a name */
     @PortedFrom(file = "Kernel.h", name = "classifyQuery")
-    void classifyQuery(boolean named) {
+    private void classifyQuery(boolean named) {
         // make sure KB is classified
         classifyKB();
         if (!named) {
@@ -2102,7 +2102,7 @@ public class ReasoningKernel implements Serializable {
     }
 
     @PortedFrom(file = "Kernel.h", name = "setUpCache")
-    void setUpCache(DLTree query, CacheStatus level) {
+    private void setUpCache(DLTree query, CacheStatus level) {
         // if KB was changed since it was classified,
         // we should catch it before
         assert !ontology.isChanged();
@@ -2146,7 +2146,7 @@ public class ReasoningKernel implements Serializable {
     }
 
     @PortedFrom(file = "Kernel.h", name = "setUpCache")
-    void setUpCache(ConceptExpression query, CacheStatus level) {
+    private void setUpCache(ConceptExpression query, CacheStatus level) {
         // if KB was changed since it was classified,
         // we should catch it before
         assert !ontology.isChanged();
@@ -2192,17 +2192,17 @@ public class ReasoningKernel implements Serializable {
     }
 
     @PortedFrom(file = "Kernel.cpp", name = "isEq")
-    boolean isEq(DlCompletionTree p, DlCompletionTree q) {
+    private boolean isEq(DlCompletionTree p, DlCompletionTree q) {
         return false;
     }
 
     @PortedFrom(file = "Kernel.cpp", name = "isLt")
-    boolean isLt(DlCompletionTree p, DlCompletionTree q) {
+    private boolean isLt(DlCompletionTree p, DlCompletionTree q) {
         return false;
     }
 
     @PortedFrom(file = "Kernel.cpp", name = "checkDataRelation")
-    boolean checkDataRelation(DlCompletionTree vR, DlCompletionTree vS, int op) {
+    private boolean checkDataRelation(DlCompletionTree vR, DlCompletionTree vS, int op) {
         switch (op) {
             case 0: // =
                 return isEq(vR, vS);
@@ -2439,7 +2439,7 @@ public class ReasoningKernel implements Serializable {
         return false;
     }
 
-    private ConjunctiveQueryFolding conjunctiveQueryFolding = new ConjunctiveQueryFolding();
+    private final ConjunctiveQueryFolding conjunctiveQueryFolding = new ConjunctiveQueryFolding();
 
     /** call to underlying conjunctive query folding
      * 

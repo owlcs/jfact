@@ -15,9 +15,10 @@ import conformance.PortedFrom;
 
 /** object role range */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomORoleRange")
-public class AxiomORoleRange extends AxiomSingleORole { private static final long serialVersionUID=11000L;
+public class AxiomORoleRange extends AxiomSingleORole {
+    private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "Range")
-    private ConceptExpression range;
+    private final ConceptExpression range;
 
     /** @param ax
      * @param role

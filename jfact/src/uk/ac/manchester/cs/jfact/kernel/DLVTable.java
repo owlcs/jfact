@@ -20,9 +20,9 @@ import conformance.PortedFrom;
 class DLVTable implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** host DAG that contains actual nodes; */
-    private DLDag host;
+    private final DLDag host;
     /** HT for nodes */
-    private Map<DLVertex, FastSet> table = new HashMap<DLVertex, FastSet>();
+    private final Map<DLVertex, FastSet> table = new HashMap<DLVertex, FastSet>();
 
     protected DLVTable(DLDag dag) {
         host = dag;

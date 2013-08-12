@@ -14,50 +14,51 @@ import conformance.PortedFrom;
 
 /** role, set R(C,D) */
 @PortedFrom(file = "ELFReasoner.h", name = "TELFRole")
-class TELFRole extends TRuleSet { private static final long serialVersionUID=11000L;
+class TELFRole extends TRuleSet {
+    private static final long serialVersionUID = 11000L;
     /** original role (if any) */
     @PortedFrom(file = "ELFReasoner.h", name = "Origin")
-    ObjectRoleExpression Origin;
+    private final ObjectRoleExpression Origin;
     /** map itself */
     @PortedFrom(file = "ELFReasoner.h", name = "PredMap")
-    Map<TELFConcept, Set<TELFConcept>> PredMap = new HashMap<TELFConcept, Set<TELFConcept>>();
+    private final Map<TELFConcept, Set<TELFConcept>> PredMap = new HashMap<TELFConcept, Set<TELFConcept>>();
 
     /** add (C,D) to label */
     @PortedFrom(file = "ELFReasoner.h", name = "addLabel")
-    void addLabel(TELFConcept C, TELFConcept D) {
+    public void addLabel(TELFConcept C, TELFConcept D) {
         PredMap.get(D).add(C);
     }
 
     /** empty c'tor */
-    TELFRole() {
+    public TELFRole() {
         Origin = null;
     }
 
     /** init c'tor */
-    TELFRole(ObjectRoleExpression origin) {
+    public TELFRole(ObjectRoleExpression origin) {
         Origin = origin;
     }
 
     /** get the (possibly empty) set of predecessors of given D */
     @PortedFrom(file = "ELFReasoner.h", name = "getPredSet")
-    Set<TELFConcept> getPredSet(TELFConcept D) {
+    public Set<TELFConcept> getPredSet(TELFConcept D) {
         return PredMap.get(D);
     }
 
     @PortedFrom(file = "ELFReasoner.h", name = "begin")
-    Iterable<Map.Entry<TELFConcept, Set<TELFConcept>>> begin() {
+    public Iterable<Map.Entry<TELFConcept, Set<TELFConcept>>> begin() {
         return PredMap.entrySet();
     }
 
     /** check whether (C,D) is in the R-set */
     @PortedFrom(file = "ELFReasoner.h", name = "hasLabel")
-    boolean hasLabel(TELFConcept C, TELFConcept D) {
+    public boolean hasLabel(TELFConcept C, TELFConcept D) {
         return PredMap.get(D).contains(C);
     }
 
     /** add pair (C,D) to a set */
     @PortedFrom(file = "ELFReasoner.h", name = "addR")
-    void addR(TELFConcept C, TELFConcept D) {
+    public void addR(TELFConcept C, TELFConcept D) {
         if (hasLabel(C, D)) {
             return;
         }

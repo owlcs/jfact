@@ -24,11 +24,11 @@ import conformance.PortedFrom;
 public abstract class AbstractNaryAxiom<I extends Expression> extends AxiomImpl implements
         AxiomInterface, NAryExpression<I> {
     private static final long serialVersionUID = 11000L;
-    private NAryExpressionImpl<I> delegate;
+    private final NAryExpressionImpl<I> delegate;
 
     /** @param ax
      * @param v */
-    public AbstractNaryAxiom(OWLAxiom ax, Collection<I> v) {
+    protected AbstractNaryAxiom(OWLAxiom ax, Collection<I> v) {
         super(ax);
         delegate = new NAryExpressionImpl<I>();
         delegate.add(v);

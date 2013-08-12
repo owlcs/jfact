@@ -21,9 +21,9 @@ public class ConceptObjectExists implements ConceptObjectRCExpression, Serializa
     private static final long serialVersionUID = 11000L;
     /** concept argument */
     @PortedFrom(file = "tDLExpression.h", name = "C")
-    private ConceptExpression conceptExpression;
+    private final ConceptExpression conceptExpression;
     @Original
-    private ObjectRoleExpression delegate;
+    private final ObjectRoleExpression delegate;
 
     /** @param R
      * @param C */

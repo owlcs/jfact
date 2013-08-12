@@ -11,7 +11,9 @@ import java.util.Comparator;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "tRole.cpp", name = "TRoleCompare")
-class RoleCompare implements Comparator<Role>, Serializable { private static final long serialVersionUID=11000L;
+class RoleCompare implements Comparator<Role>, Serializable {
+    private static final long serialVersionUID = 11000L;
+
     @Override
     @PortedFrom(file = "tRole.cpp", name = "compare")
     public int compare(Role p, Role q) {

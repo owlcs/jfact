@@ -15,6 +15,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
  * @param <A> */
 public class DLAxiomVisitorExAdapter<A> implements DLAxiomVisitorEx<A>, Serializable {
     private static final long serialVersionUID = 11000L;
+
     @Override
     public A visit(AxiomDeclaration axiom) {
         return null;

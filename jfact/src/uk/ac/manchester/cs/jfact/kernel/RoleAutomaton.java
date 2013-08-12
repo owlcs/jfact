@@ -21,7 +21,7 @@ public class RoleAutomaton implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** all transitions of the automaton, groupped by a starting state */
     @PortedFrom(file = "RAutomaton.h", name = "Base")
-    private List<RAStateTransitions> base = new ArrayList<RAStateTransitions>();
+    private final List<RAStateTransitions> base = new ArrayList<RAStateTransitions>();
     /** maps original automata state into the new ones (used in copyRA) */
     @PortedFrom(file = "RAutomaton.h", name = "map")
     private int[] map = new int[0];
@@ -168,10 +168,10 @@ public class RoleAutomaton implements Serializable {
 
     /** get the initial state */
     @Original
-    public static int initial = 0;
+    public final static int initial = 0;
     /** get the state */
     @PortedFrom(file = "RAutomaton.h", name = "final")
-    public static int final_state = 1;
+    public final static int final_state = 1;
 
     /** @return new state */
     @PortedFrom(file = "RAutomaton.h", name = "newState")
@@ -305,24 +305,24 @@ public class RoleAutomaton implements Serializable {
 
     /** mark an automaton as completed */
     @PortedFrom(file = "RAutomaton.h", name = "setCompleted")
-    void setCompleted() {
+    public void setCompleted() {
         Complete = true;
     }
 
     @PortedFrom(file = "RAutomaton.h", name = "setCompleted")
-    void setCompleted(boolean b) {
+    public void setCompleted(boolean b) {
         Complete = b;
     }
 
     /** check whether automaton is completed */
     @PortedFrom(file = "RAutomaton.h", name = "isCompleted")
-    boolean isCompleted() {
+    public boolean isCompleted() {
         return Complete;
     }
 
     /** @return true iff the automaton is simple */
     @PortedFrom(file = "RAutomaton.h", name = "isSimple")
-    boolean isSimple() {
+    public boolean isSimple() {
         // assert isCompleted();
         return size() == 2 && inputSafe && outputSafe;
     }

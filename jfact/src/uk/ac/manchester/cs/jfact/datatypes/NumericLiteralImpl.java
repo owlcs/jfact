@@ -11,6 +11,7 @@ package uk.ac.manchester.cs.jfact.datatypes;
 public class NumericLiteralImpl<R extends Comparable<R>> extends LiteralImpl<R> implements
         NumericLiteral<R> {
     private static final long serialVersionUID = 11000L;
+
     /** @param type
      * @param value */
     public NumericLiteralImpl(NumericDatatype<R> type, String value) {

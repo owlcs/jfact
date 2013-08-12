@@ -100,7 +100,9 @@ public class Facets implements Serializable {
         }
     }
 
-    private static class LimitFacet extends AbstractFacet { private static final long serialVersionUID=11000L;
+    private static class LimitFacet extends AbstractFacet {
+        private static final long serialVersionUID = 11000L;
+
         public LimitFacet(String u) {
             super(u);
         }
@@ -172,13 +174,14 @@ public class Facets implements Serializable {
         public abstract String normalize(String input);
     }
 
-    public static Facet length = new LimitFacet("length");
-    public static Facet minLength = new LimitFacet("minLength");
-    public static Facet maxLength = new LimitFacet("maxLength");
-    public static Facet totalDigits = new LimitFacet("totalDigits");
-    public static Facet fractionDigits = new LimitFacet("fractionDigits");
-    public static Facet whiteSpace = new AbstractFacet("whiteSpace") {
+    public final static Facet length = new LimitFacet("length");
+    public final static Facet minLength = new LimitFacet("minLength");
+    public final static Facet maxLength = new LimitFacet("maxLength");
+    public final static Facet totalDigits = new LimitFacet("totalDigits");
+    public final static Facet fractionDigits = new LimitFacet("fractionDigits");
+    public final static Facet whiteSpace = new AbstractFacet("whiteSpace") {
         private static final long serialVersionUID = 11000L;
+
         @Override
         public boolean isNumberFacet() {
             return false;
@@ -196,8 +199,9 @@ public class Facets implements Serializable {
                     + " as a whitespace enum value");
         }
     };
-    public static Facet pattern = new AbstractFacet("pattern") {
+    public final static Facet pattern = new AbstractFacet("pattern") {
         private static final long serialVersionUID = 11000L;
+
         @Override
         public boolean isNumberFacet() {
             return false;
@@ -208,36 +212,41 @@ public class Facets implements Serializable {
             return value.toString();
         }
     };
-    public static Facet enumeration = new AbstractFacet("enumeration") {
+    public final static Facet enumeration = new AbstractFacet("enumeration") {
         private static final long serialVersionUID = 11000L;
+
         @Override
         public boolean isNumberFacet() {
             return false;
         }
     };
-    public static Facet maxInclusive = new LimitFacet("maxInclusive") {
+    public final static Facet maxInclusive = new LimitFacet("maxInclusive") {
         private static final long serialVersionUID = 11000L;
+
         @Override
         public String toString() {
             return "]";
         }
     };
-    public static Facet maxExclusive = new LimitFacet("maxExclusive") {
+    public final static Facet maxExclusive = new LimitFacet("maxExclusive") {
         private static final long serialVersionUID = 11000L;
+
         @Override
         public String toString() {
             return ")";
         }
     };
-    public static Facet minInclusive = new LimitFacet("minInclusive") {
+    public final static Facet minInclusive = new LimitFacet("minInclusive") {
         private static final long serialVersionUID = 11000L;
+
         @Override
         public String toString() {
             return "[";
         }
     };
-    public static Facet minExclusive = new LimitFacet("minExclusive") {
+    public final static Facet minExclusive = new LimitFacet("minExclusive") {
         private static final long serialVersionUID = 11000L;
+
         @Override
         public String toString() {
             return "(";

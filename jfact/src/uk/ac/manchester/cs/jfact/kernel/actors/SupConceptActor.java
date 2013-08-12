@@ -16,7 +16,7 @@ import conformance.PortedFrom;
 public class SupConceptActor implements Actor, Serializable {
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "Kernel.cpp", name = "pe")
-    protected ClassifiableEntry pe;
+    protected final ClassifiableEntry pe;
 
     @PortedFrom(file = "Kernel.cpp", name = "entry")
     protected boolean entry(ClassifiableEntry q) {

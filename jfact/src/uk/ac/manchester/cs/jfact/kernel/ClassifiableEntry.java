@@ -12,14 +12,15 @@ import conformance.PortedFrom;
 
 /** classifiable entry */
 @PortedFrom(file = "taxNamEntry.h", name = "ClassifiableEntry")
-public class ClassifiableEntry extends NamedEntry { private static final long serialVersionUID=11000L;
+public class ClassifiableEntry extends NamedEntry {
+    private static final long serialVersionUID = 11000L;
     /** link to taxonomy entry for current entry */
     @PortedFrom(file = "taxNamEntry.h", name = "taxVertex")
     protected TaxonomyVertex taxVertex = null;
     /** links to 'told subsumers' (entries that are direct super-entries for
      * current) */
     @PortedFrom(file = "taxNamEntry.h", name = "toldSubsumers")
-    protected Set<ClassifiableEntry> toldSubsumers = new LinkedHashSet<ClassifiableEntry>();
+    protected final Set<ClassifiableEntry> toldSubsumers = new LinkedHashSet<ClassifiableEntry>();
     /** pointer to synonym (entry which contains whole information the same as
      * current) */
     @PortedFrom(file = "taxNamEntry.h", name = "pSynonym")

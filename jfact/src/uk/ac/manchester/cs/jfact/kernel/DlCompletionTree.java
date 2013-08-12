@@ -26,13 +26,15 @@ import conformance.PortedFrom;
 @PortedFrom(file = "dlCompletionTree.h", name = "DlCompletionTree")
 public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializable {
     private static final long serialVersionUID = 11000L;
+
     /** restore blocked node */
-    static class UnBlock extends Restorer { private static final long serialVersionUID=11000L;
-        private DlCompletionTree p;
-        private DlCompletionTree unblockBlocker;
-        private DepSet dep;
-        private boolean pBlocked;
-        private boolean dBlocked;
+    static class UnBlock extends Restorer {
+        private static final long serialVersionUID = 11000L;
+        private final DlCompletionTree p;
+        private final DlCompletionTree unblockBlocker;
+        private final DepSet dep;
+        private final boolean pBlocked;
+        private final boolean dBlocked;
 
         public UnBlock(DlCompletionTree q) {
             p = q;
@@ -52,9 +54,10 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     }
 
     /** restore (un)cached node */
-    static class CacheRestorer extends Restorer { private static final long serialVersionUID=11000L;
-        private DlCompletionTree p;
-        private boolean isCached;
+    static class CacheRestorer extends Restorer {
+        private static final long serialVersionUID = 11000L;
+        private final DlCompletionTree p;
+        private final boolean isCached;
 
         public CacheRestorer(DlCompletionTree q) {
             p = q;
@@ -68,8 +71,9 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     }
 
     /** restore node after IR set change */
-    class IRRestorer extends Restorer { private static final long serialVersionUID=11000L;
-        private int n;
+    class IRRestorer extends Restorer {
+        private static final long serialVersionUID = 11000L;
+        private final int n;
 
         public IRRestorer() {
             n = inequalityRelation.size();
@@ -90,19 +94,19 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     }
 
     /** label of a node */
-    private CGLabel label = new CGLabel();
+    private final CGLabel label = new CGLabel();
     // TODO check for better access
     /** inequality relation information respecting current node */
-    protected List<ConceptWDep> inequalityRelation = new ArrayList<ConceptWDep>();
-    protected Map<Integer, ConceptWDep> inequalityRelation_helper = new HashMap<Integer, ConceptWDep>();
+    protected final List<ConceptWDep> inequalityRelation = new ArrayList<ConceptWDep>();
+    protected final Map<Integer, ConceptWDep> inequalityRelation_helper = new HashMap<Integer, ConceptWDep>();
     // TODO check whether access should be improved
     /** Neighbours information */
-    private List<DlCompletionTreeArc> neighbour = new ArrayList<DlCompletionTreeArc>();
+    private final List<DlCompletionTreeArc> neighbour = new ArrayList<DlCompletionTreeArc>();
     private int neighbourSize = 0;
     /** pointer to last saved node */
-    private SaveList saves = new SaveList();
+    private final SaveList saves = new SaveList();
     /** ID of node (used in print) */
-    private int id;
+    private final int id;
     /** concept that init the newly created node */
     private int init;
     /** blocker of a node */
@@ -125,7 +129,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     /** level of a nominal node; 0 means blockable one */
     private int nominalLevel;
     @Original
-    private JFactReasonerConfiguration options;
+    private final JFactReasonerConfiguration options;
 
     /** check if B2 holds for given DL vertex with C=V */
     private boolean B2(DLVertex v, int C) {
@@ -607,13 +611,13 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     }
 
     /** restore node from the topmost entry */
-    void restore() {
+    private void restore() {
         assert !saves.isEmpty();
         restore(saves.pop());
     }
 
     /** restore node to given level */
-    void restore(int level) {
+    public void restore(int level) {
         restore(saves.pop(level));
     }
 
@@ -798,7 +802,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     }
 
     /** default level for the Blockable node */
-    public static int BLOCKABLE_LEVEL = Integer.MAX_VALUE;
+    public final static int BLOCKABLE_LEVEL = Integer.MAX_VALUE;
 
     /** @param level */
     public void init(int level) {

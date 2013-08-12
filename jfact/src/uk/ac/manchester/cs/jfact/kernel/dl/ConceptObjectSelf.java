@@ -19,7 +19,7 @@ public class ConceptObjectSelf implements ConceptObjectRoleExpression, Serializa
     private static final long serialVersionUID = 11000L;
     /** object role argument */
     @PortedFrom(file = "tDLExpression.h", name = "OR")
-    private ObjectRoleExpression objectRoleExpression;
+    private final ObjectRoleExpression objectRoleExpression;
 
     /** @param R */
     public ConceptObjectSelf(ObjectRoleExpression R) {

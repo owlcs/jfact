@@ -18,6 +18,7 @@ import conformance.PortedFrom;
 public class ObjectRoleName extends NamedEntityImpl implements ObjectRoleExpression,
         NamedEntity, Serializable {
     private static final long serialVersionUID = 11000L;
+
     /** @param name */
     public ObjectRoleName(String name) {
         super(name);

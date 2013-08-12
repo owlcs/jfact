@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptAnd;
@@ -12,15 +13,15 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorAdapter;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TReplacer")
-class TReplacer extends DLExpressionVisitorAdapter { private static final long serialVersionUID=11000L;
-
+class TReplacer extends DLExpressionVisitorAdapter {
+    private static final long serialVersionUID = 11000L;
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "ReplaceResult")
-    private Map<ConceptExpression, ConceptExpression> ReplaceResult;
+    private final Map<ConceptExpression, ConceptExpression> ReplaceResult = new HashMap<ConceptExpression, ConceptExpression>();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "ExpressionToReplace")
-    private ConceptExpression ExpressionToReplace;
+    private final ConceptExpression ExpressionToReplace;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "PropositionalVariable")
-    private ConceptExpression PropositionalVariable;
+    private final ConceptExpression PropositionalVariable;
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TReplacer")
     public TReplacer(ConjunctiveQueryFolding conjunctiveQueryFolding,

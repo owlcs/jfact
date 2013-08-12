@@ -19,11 +19,11 @@ import conformance.PortedFrom;
 public class ELFExpressionChecker implements DLExpressionVisitor, Serializable {
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "ELFExpressionChecker.h", name = "value")
-    boolean value;
+    private boolean value;
 
     /** get DLTree corresponding to an expression EXPR */
     @PortedFrom(file = "ELFExpressionChecker.h", name = "v")
-    boolean v(Expression expr) {
+    public boolean v(Expression expr) {
         expr.accept(this);
         return value;
     }

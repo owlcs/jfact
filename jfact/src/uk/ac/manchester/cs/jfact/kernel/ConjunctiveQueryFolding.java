@@ -19,17 +19,17 @@ import conformance.PortedFrom;
 public class ConjunctiveQueryFolding implements Serializable {
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "pEM")
-    private ExpressionManager pEM = new ExpressionManager();
+    private final ExpressionManager pEM = new ExpressionManager();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "VarFact")
-    private VariableFactory VarFact = new VariableFactory();
+    private final VariableFactory VarFact = new VariableFactory();
     /** map between new vars and original vars */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "NewVarMap")
-    private Map<QRVariable, QRVariable> NewVarMap = new HashMap<QRVariable, QRVariable>();
+    private final Map<QRVariable, QRVariable> NewVarMap = new HashMap<QRVariable, QRVariable>();
     /** query to term transformation support */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "NewNominals")
-    private Set<ConceptExpression> NewNominals = new HashSet<ConceptExpression>();
+    private final Set<ConceptExpression> NewNominals = new HashSet<ConceptExpression>();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "VarRestrictions")
-    private Map<String, ConceptExpression> VarRestrictions = new HashMap<String, ConceptExpression>();
+    private final Map<String, ConceptExpression> VarRestrictions = new HashMap<String, ConceptExpression>();
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "isNominal")
     public boolean isNominal(ConceptExpression expr) {
@@ -283,7 +283,7 @@ public class ConjunctiveQueryFolding implements Serializable {
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "BuildAproximation")
-    void buildApproximation(QRQuery query) {
+    public void buildApproximation(QRQuery query) {
         QueryApproximation app = new QueryApproximation(this, query);
         Map<QRVariable, ConceptExpression> approx = new HashMap<QRVariable, ConceptExpression>();
         for (QRVariable p : NewVarMap.values()) {
@@ -322,9 +322,9 @@ public class ConjunctiveQueryFolding implements Serializable {
     }
 
     @PortedFrom(file = "ConjunctiveQuery.cpp", name = "Var2I")
-    private Map<String, Integer> Var2I = new HashMap<String, Integer>();
+    private final Map<String, Integer> Var2I = new HashMap<String, Integer>();
     @PortedFrom(file = "ConjunctiveQuery.cpp", name = "I2Var")
-    private List<String> I2Var = new ArrayList<String>();
+    private final List<String> I2Var = new ArrayList<String>();
 
     /** fills in variable index */
     @PortedFrom(file = "ConjunctiveQuery.cpp", name = "fillVarIndex")
@@ -370,9 +370,9 @@ public class ConjunctiveQueryFolding implements Serializable {
     }
 
     @PortedFrom(file = "ConjunctiveQuery.cpp", name = "fillIVec")
-    void fillIVec(ReasoningKernel kernel) {
+    private void fillIVec(ReasoningKernel kernel) {
         // System.out.print("Creating iterables...");
-        kernel.getTBox().IV.clear();
+        kernel.getTBox().getIV().clear();
         for (int i = 0; i < I2Var.size(); i++) {
             // The i'th var is I2Var[i]; get its concept
             ConceptExpression C = VarRestrictions.get(I2Var.get(i));
@@ -384,7 +384,7 @@ public class ConjunctiveQueryFolding implements Serializable {
             for (ClassifiableEntry e : a.getElements1D()) {
                 individuals.add((Individual) e);
             }
-            kernel.getTBox().IV.add(new IterableElem<Individual>(individuals));
+            kernel.getTBox().getIV().add(new IterableElem<Individual>(individuals));
         }
         // System.out.println(" done");
     }

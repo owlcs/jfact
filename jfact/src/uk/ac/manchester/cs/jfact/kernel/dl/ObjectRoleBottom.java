@@ -16,6 +16,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDLExpression.h", name = "TDLObjectRoleBottom")
 public class ObjectRoleBottom implements ObjectRoleExpression, Serializable {
     private static final long serialVersionUID = 11000L;
+
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     public void accept(DLExpressionVisitor visitor) {

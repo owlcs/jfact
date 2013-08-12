@@ -11,7 +11,6 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TQueryToConceptsTransformer")
 class TQueryToConceptsTransformer implements Serializable {
     private static final long serialVersionUID = 11000L;
-
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
     /** query to transform */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Query")
@@ -19,7 +18,7 @@ class TQueryToConceptsTransformer implements Serializable {
     /** transformation result */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Result")
     // XXX verify the order is not important
-    private MultiMap<String, ConceptExpression> Result = new MultiMap<String, ConceptExpression>();
+    private final MultiMap<String, ConceptExpression> Result = new MultiMap<String, ConceptExpression>();
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TQueryToConceptsTransformer")
     public TQueryToConceptsTransformer(ConjunctiveQueryFolding conjunctiveQueryFolding,

@@ -21,7 +21,7 @@ public class LogicFeatures implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** all flags in one long */
     @PortedFrom(file = "LogicFeature.h", name = "flags")
-    private BitSet flags = new BitSet();
+    private final BitSet flags = new BitSet();
 
     /** set any flag */
     @PortedFrom(file = "LogicFeature.h", name = "setX")
@@ -223,36 +223,36 @@ public class LogicFeatures implements Serializable {
 
     // role description
     @PortedFrom(file = "LogicFeature.h", name = "lfTransitiveRoles")
-    private static int lfTransitiveRoles = 1;
+    private final static int lfTransitiveRoles = 1;
     @PortedFrom(file = "LogicFeature.h", name = "lfRolesSubsumption")
-    private static int lfRolesSubsumption = 2;
+    private final static int lfRolesSubsumption = 2;
     @PortedFrom(file = "LogicFeature.h", name = "lfDirectRoles")
-    private static int lfDirectRoles = 3;
+    private final static int lfDirectRoles = 3;
     @PortedFrom(file = "LogicFeature.h", name = "lfInverseRoles")
-    private static int lfInverseRoles = 4;
+    private final static int lfInverseRoles = 4;
     @PortedFrom(file = "LogicFeature.h", name = "lfRangeAndDomain")
-    private static int lfRangeAndDomain = 5;
+    private final static int lfRangeAndDomain = 5;
     @PortedFrom(file = "LogicFeature.h", name = "lfFunctionalRoles")
-    private static int lfFunctionalRoles = 6;
+    private final static int lfFunctionalRoles = 6;
     // concept description
     @PortedFrom(file = "LogicFeature.h", name = "lfSomeConstructor")
-    private static int lfSomeConstructor = 7;
+    private final static int lfSomeConstructor = 7;
     @PortedFrom(file = "LogicFeature.h", name = "lfFConstructor")
-    private static int lfFConstructor = 8;
+    private final static int lfFConstructor = 8;
     @PortedFrom(file = "LogicFeature.h", name = "lfNConstructor")
-    private static int lfNConstructor = 9;
+    private final static int lfNConstructor = 9;
     @PortedFrom(file = "LogicFeature.h", name = "lfQConstructor")
-    private static int lfQConstructor = 10;
+    private final static int lfQConstructor = 10;
     @PortedFrom(file = "LogicFeature.h", name = "lfSingleton")
-    private static int lfSingleton = 11;
+    private final static int lfSingleton = 11;
     // global description
     @PortedFrom(file = "LogicFeature.h", name = "lfGeneralAxioms")
-    private static int lfGeneralAxioms = 12;
+    private final static int lfGeneralAxioms = 12;
     @PortedFrom(file = "LogicFeature.h", name = "lfBothRoles")
-    private static int lfBothRoles = 13;
+    private final static int lfBothRoles = 13;
     // new constructions
     @PortedFrom(file = "LogicFeature.h", name = "lfSelfRef")
-    private static int lfSelfRef = 14;
+    private final static int lfSelfRef = 14;
     @PortedFrom(file = "LogicFeature.h", name = "lfTopRole")
-    private static int lfTopRole = 15;
+    private final static int lfTopRole = 15;
 }

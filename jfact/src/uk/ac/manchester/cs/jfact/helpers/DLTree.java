@@ -250,6 +250,7 @@ interface DLTreeVisitorEx<O> {
 @Original
 class CloningVisitor implements DLTreeVisitorEx<DLTree>, Serializable {
     private static final long serialVersionUID = 11000L;
+
     @Override
     public DLTree visit(LEAFDLTree t) {
         return new LEAFDLTree(new Lexeme(t.elem));
@@ -279,6 +280,7 @@ class CloningVisitor implements DLTreeVisitorEx<DLTree>, Serializable {
 @Original
 class ReverseCloningVisitor implements DLTreeVisitorEx<DLTree>, Serializable {
     private static final long serialVersionUID = 11000L;
+
     @Override
     public DLTree visit(LEAFDLTree t) {
         return DLTreeFactory.inverseComposition(t);
@@ -309,7 +311,9 @@ class ReverseCloningVisitor implements DLTreeVisitorEx<DLTree>, Serializable {
 
 /** things that have no children */
 @Original
-class LEAFDLTree extends DLTree { private static final long serialVersionUID=11000L;
+class LEAFDLTree extends DLTree {
+    private static final long serialVersionUID = 11000L;
+
     LEAFDLTree(Lexeme l) {
         super(l);
     }
@@ -352,8 +356,9 @@ class LEAFDLTree extends DLTree { private static final long serialVersionUID=110
 
 /** covers trees with only one child, i.e., inverse, not */
 @Original
-class ONEDLTree extends DLTree { private static final long serialVersionUID=11000L;
-    DLTree child;
+class ONEDLTree extends DLTree {
+    private static final long serialVersionUID = 11000L;
+    private DLTree child;
 
     ONEDLTree(Lexeme l, DLTree t) {
         super(l);
@@ -406,7 +411,9 @@ class ONEDLTree extends DLTree { private static final long serialVersionUID=1100
 
 /** covers trees with two and only two children */
 @Original
-class TWODLTree extends DLTree { private static final long serialVersionUID=11000L;
+class TWODLTree extends DLTree {
+    private static final long serialVersionUID = 11000L;
+
     TWODLTree(Lexeme l, DLTree t1, DLTree t2) {
         super(l);
         children = new ArrayList<DLTree>(2);
@@ -452,7 +459,9 @@ class TWODLTree extends DLTree { private static final long serialVersionUID=1100
 }
 
 @Original
-class NDLTree extends DLTree { private static final long serialVersionUID=11000L;
+class NDLTree extends DLTree {
+    private static final long serialVersionUID = 11000L;
+
     public NDLTree(Lexeme l, Collection<DLTree> trees) {
         super(l);
         children = new ArrayList<DLTree>();

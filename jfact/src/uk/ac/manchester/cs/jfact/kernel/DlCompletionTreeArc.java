@@ -17,7 +17,7 @@ import conformance.PortedFrom;
 public class DlCompletionTreeArc implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** pointer to "to" node */
-    private DlCompletionTree node;
+    private final DlCompletionTree node;
     /** role, labelling given arc */
     protected Role role;
     /** dep-set of the arc */
@@ -30,9 +30,10 @@ public class DlCompletionTreeArc implements Serializable {
     /** init an arc with R as a label and NODE on given LEVEL; use it inside
      * MAKEARCS only */
     /** class for restoring edge */
-    static class EdgeRestorer extends Restorer { private static final long serialVersionUID=11000L;
-        private DlCompletionTreeArc arc;
-        private Role role;
+    static class EdgeRestorer extends Restorer {
+        private static final long serialVersionUID = 11000L;
+        private final DlCompletionTreeArc arc;
+        private final Role role;
 
         public EdgeRestorer(DlCompletionTreeArc q) {
             arc = q;
@@ -47,9 +48,10 @@ public class DlCompletionTreeArc implements Serializable {
     }
 
     /** class for restoring dep-set */
-    static class EdgeDepRestorer extends Restorer { private static final long serialVersionUID=11000L;
-        private DlCompletionTreeArc arc;
-        private DepSet dep;
+    static class EdgeDepRestorer extends Restorer {
+        private static final long serialVersionUID = 11000L;
+        private final DlCompletionTreeArc arc;
+        private final DepSet dep;
 
         public EdgeDepRestorer(DlCompletionTreeArc q) {
             arc = q;

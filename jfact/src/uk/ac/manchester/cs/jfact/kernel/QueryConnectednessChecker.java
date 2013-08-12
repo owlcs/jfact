@@ -13,9 +13,9 @@ import conformance.PortedFrom;
 public class QueryConnectednessChecker implements Serializable {
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "PassedVertice")
-    private Set<QRVariable> PassedVertice = new TreeSet<QRVariable>();
+    private final Set<QRVariable> PassedVertice = new TreeSet<QRVariable>();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Query")
-    private QRQuery Query;
+    private final QRQuery Query;
 
     /** @param query */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "QueryConnectednessChecker")

@@ -16,10 +16,10 @@ public class ConceptWDep implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** "pointer" to a concept in DAG */
     @PortedFrom(file = "ConceptWithDep.h", name = "Concept")
-    private int concept;
+    private final int concept;
     /** dep-set for a concept */
     @PortedFrom(file = "ConceptWithDep.h", name = "depSet")
-    private DepSet depSet;
+    private final DepSet depSet;
 
     /** c'tor with empty dep-set
      * 

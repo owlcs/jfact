@@ -20,6 +20,7 @@ import conformance.PortedFrom;
 public class DataOneOf extends NAryExpressionImpl<Literal<?>> implements
         NAryExpression<Literal<?>>, DataExpression, Serializable {
     private static final long serialVersionUID = 11000L;
+
     /** create one-of from individuals in the given array
      * 
      * @param v */

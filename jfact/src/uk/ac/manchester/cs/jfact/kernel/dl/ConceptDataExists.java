@@ -24,9 +24,9 @@ public class ConceptDataExists implements ConceptDataRVExpression, DataRoleArg,
     /** data role argument */
     @PortedFrom(file = "tDLExpression.h", name = "DR")
     @Original
-    private DataRoleExpression dataRoleExpression;
+    private final DataRoleExpression dataRoleExpression;
     @Original
-    private DataExpression delegate;
+    private final DataExpression delegate;
 
     /** @param R
      * @param E */

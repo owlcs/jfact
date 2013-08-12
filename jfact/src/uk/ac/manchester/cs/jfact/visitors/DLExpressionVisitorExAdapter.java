@@ -15,6 +15,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.*;
 public abstract class DLExpressionVisitorExAdapter<A> implements
         DLExpressionVisitorEx<A>, Serializable {
     private static final long serialVersionUID = 11000L;
+
     @Override
     public A visit(ConceptTop expr) {
         return null;

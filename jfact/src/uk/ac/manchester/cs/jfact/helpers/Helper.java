@@ -11,6 +11,7 @@ import java.util.List;
 /** static methods */
 public class Helper implements Serializable {
     private static final long serialVersionUID = 11000L;
+
     /** @param l
      * @param n */
     public static void resize(List<?> l, int n) {
@@ -41,13 +42,13 @@ public class Helper implements Serializable {
     }
 
     /** brancing level value */
-    public static int InitBranchingLevelValue = 1;
+    public final static int InitBranchingLevelValue = 1;
     /** invalid bipolar pointer */
-    public static int bpINVALID = 0;
+    public final static int bpINVALID = 0;
     /** top bipolar pointer */
-    public static int bpTOP = 1;
+    public final static int bpTOP = 1;
     /** bottom bipolar pointer */
-    public static int bpBOTTOM = -1;
+    public final static int bpBOTTOM = -1;
 
     /** @param index
      * @param pos

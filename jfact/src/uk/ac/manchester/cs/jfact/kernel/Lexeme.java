@@ -15,12 +15,12 @@ public class Lexeme implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** Lexeme's Token */
     @PortedFrom(file = "tLexeme.h", name = "token")
-    private Token token;
+    private final Token token;
     /** pointer to information (for names) */
     @PortedFrom(file = "tLexeme.h", name = "pNE")
-    private NamedEntry pName;
+    private final NamedEntry pName;
     @PortedFrom(file = "tLexeme.h", name = "data")
-    int data;
+    private final int data;
 
     private Lexeme(Token tok, NamedEntry e, int i) {
         token = tok;

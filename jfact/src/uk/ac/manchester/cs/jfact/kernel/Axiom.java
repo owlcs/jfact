@@ -26,7 +26,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tAxiom.h", name = "TAxiom")
 public class Axiom implements Serializable {
     private static final long serialVersionUID = 11000L;
-    private LogAdapter absorptionLog;
+    private final LogAdapter absorptionLog;
 
     /** @param l
      *            absorption log */
@@ -86,7 +86,7 @@ public class Axiom implements Serializable {
 
     /** GCI is presented in the form (or Disjuncts); */
     @PortedFrom(file = "tAxiom.h", name = "Disjuncts")
-    private Set<DLTree> disjuncts = new LinkedHashSet<DLTree>();
+    private final Set<DLTree> disjuncts = new LinkedHashSet<DLTree>();
     @Original
     private TOntologyAtom atom;
 

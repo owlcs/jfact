@@ -23,13 +23,13 @@ public class Ontology implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** all the axioms */
     @PortedFrom(file = "tOntology.h", name = "Axioms")
-    private List<AxiomInterface> axioms = new ArrayList<AxiomInterface>();
+    private final List<AxiomInterface> axioms = new ArrayList<AxiomInterface>();
     /** all the axioms */
     @PortedFrom(file = "tOntology.h", name = "Retracted")
-    private List<AxiomInterface> retracted = new ArrayList<AxiomInterface>();
+    private final List<AxiomInterface> retracted = new ArrayList<AxiomInterface>();
     /** expression manager that builds all the expressions for the axioms */
     @PortedFrom(file = "tOntology.h", name = "EManager")
-    private ExpressionManager expressionManager = new ExpressionManager();
+    private final ExpressionManager expressionManager = new ExpressionManager();
     /** id to be given to the next axiom */
     @PortedFrom(file = "tOntology.h", name = "axiomId")
     private int axiomId;
@@ -37,7 +37,7 @@ public class Ontology implements Serializable {
     @PortedFrom(file = "tOntology.h", name = "changed")
     private boolean changed;
     @PortedFrom(file = "tOntology.h", name = "Splits")
-    private TSplitVars Splits = new TSplitVars();
+    private final TSplitVars Splits = new TSplitVars();
 
     @SuppressWarnings("javadoc")
     public Ontology() {

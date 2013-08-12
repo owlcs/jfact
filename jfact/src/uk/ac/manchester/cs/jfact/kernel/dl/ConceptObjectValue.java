@@ -20,9 +20,9 @@ import conformance.PortedFrom;
 public class ConceptObjectValue implements ConceptObjectRoleExpression, Serializable {
     private static final long serialVersionUID = 11000L;
     @Original
-    private ObjectRoleExpression delegate;
+    private final ObjectRoleExpression delegate;
     @PortedFrom(file = "tDLExpression.h", name = "I")
-    private IndividualExpression individualExpression;
+    private final IndividualExpression individualExpression;
 
     /** @param R
      * @param I */

@@ -16,7 +16,9 @@ import conformance.PortedFrom;
 
 /** concept */
 @PortedFrom(file = "ConceptWithDep.h", name = "Concept")
-public class Concept extends ClassifiableEntry { private static final long serialVersionUID=11000L;
+public class Concept extends ClassifiableEntry {
+    private static final long serialVersionUID = 11000L;
+
     /** @return bottom concept */
     @Original
     public static Concept getBOTTOM() {
@@ -67,7 +69,7 @@ public class Concept extends ClassifiableEntry { private static final long seria
         cttRegular('r'),
         /** any non-primitive concept (except synonyms) */
         cttNonPrimitive('n');
-        private char c;
+        private final char c;
 
         private CTTag(char c) {
             this.c = c;
@@ -96,13 +98,13 @@ public class Concept extends ClassifiableEntry { private static final long seria
     private int pBody;
     /** features for C */
     @PortedFrom(file = "tConcept.h", name = "posFeatures")
-    private LogicFeatures posFeatures = new LogicFeatures();
+    private final LogicFeatures posFeatures = new LogicFeatures();
     /** features for ~C */
     @PortedFrom(file = "tConcept.h", name = "negFeatures")
-    private LogicFeatures negFeatures = new LogicFeatures();
+    private final LogicFeatures negFeatures = new LogicFeatures();
     /** all extra rules for a given concept */
     @PortedFrom(file = "tConcept.h", name = "erSet")
-    private FastSet extraRules = FastSetFactory.create();
+    private final FastSet extraRules = FastSetFactory.create();
     @PortedFrom(file = "tConcept.h", name = "Description")
     protected DLTree description;
 
@@ -354,7 +356,8 @@ public class Concept extends ClassifiableEntry { private static final long seria
     }
 
     @Original
-    private static EnumSet<Token> replacements = EnumSet.of(CNAME, INAME, RNAME, DNAME);
+    private final static EnumSet<Token> replacements = EnumSet.of(CNAME, INAME, RNAME,
+            DNAME);
 
     /** @param stack
      * @param current */
@@ -481,7 +484,7 @@ public class Concept extends ClassifiableEntry { private static final long seria
     }
 
     @PortedFrom(file = "tConcept.h", name = "clear")
-    void clear() {
+    public void clear() {
         // TNamedEntry clean
         setId(0);
         // ClassifiableEntry clean

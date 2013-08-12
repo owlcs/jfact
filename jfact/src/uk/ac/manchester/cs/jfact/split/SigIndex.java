@@ -23,24 +23,24 @@ public class SigIndex implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** map between entities and axioms that contains them in their signature */
     @PortedFrom(file = "SigIndex.h", name = "Base")
-    MultiMap<NamedEntity, AxiomInterface> Base = new MultiMap<NamedEntity, AxiomInterface>();
+    private final MultiMap<NamedEntity, AxiomInterface> Base = new MultiMap<NamedEntity, AxiomInterface>();
     /** locality checker */
     @PortedFrom(file = "SigIndex.h", name = "Checker")
-    LocalityChecker Checker;
+    private final LocalityChecker Checker;
     /** sets of axioms non-local wrt the empty signature */
     @Original
-    Set<AxiomInterface> NonLocalTrue = new HashSet<AxiomInterface>();
+    private final Set<AxiomInterface> NonLocalTrue = new HashSet<AxiomInterface>();
     @Original
-    Set<AxiomInterface> NonLocalFalse = new HashSet<AxiomInterface>();
+    private final Set<AxiomInterface> NonLocalFalse = new HashSet<AxiomInterface>();
     /** empty signature to test the non-locality */
     @PortedFrom(file = "SigIndex.h", name = "emptySig")
-    TSignature emptySig = new TSignature();
+    private final TSignature emptySig = new TSignature();
     /** number of registered axioms */
     @PortedFrom(file = "SigIndex.h", name = "nRegistered")
-    int nRegistered = 0;
+    private int nRegistered = 0;
     /** number of registered axioms */
     @PortedFrom(file = "SigIndex.h", name = "nUnregistered")
-    int nUnregistered = 0;
+    private int nUnregistered = 0;
 
     // access to statistics
     /** @return number of ever processed axioms */

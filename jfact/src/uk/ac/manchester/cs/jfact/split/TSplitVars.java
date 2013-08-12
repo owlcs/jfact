@@ -19,9 +19,9 @@ import conformance.PortedFrom;
 public class TSplitVars implements Serializable {
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tSplitVars.h", name = "Base")
-    protected List<TSplitVar> Base = new ArrayList<TSplitVar>();
+    protected final List<TSplitVar> Base = new ArrayList<TSplitVar>();
     @PortedFrom(file = "tSplitVars.h", name = "Index")
-    protected Map<ConceptName, TSplitVar> Index = new HashMap<ConceptName, TSplitVar>();
+    protected final Map<ConceptName, TSplitVar> Index = new HashMap<ConceptName, TSplitVar>();
 
     @SuppressWarnings("javadoc")
     public TSplitVars() {}

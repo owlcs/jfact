@@ -24,10 +24,10 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
     private static final long serialVersionUID = 11000L;
     /** top evaluator */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "TopEval")
-    protected TopEquivalenceEvaluator TopEval;
+    protected final TopEquivalenceEvaluator TopEval;
     /** bottom evaluator */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "BotEval")
-    protected BotEquivalenceEvaluator BotEval;
+    protected final BotEquivalenceEvaluator BotEval;
     /** remember the axiom locality value here */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isLocal")
     protected boolean isLocal;

@@ -48,7 +48,7 @@ public enum Token {
     /** name of a data role */
     DNAME("dname");
     // FaCT commands
-    private String s;
+    private final String s;
 
     private Token(String s) {
         this.s = s;

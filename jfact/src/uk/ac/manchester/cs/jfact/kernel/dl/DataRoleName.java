@@ -18,6 +18,7 @@ import conformance.PortedFrom;
 public class DataRoleName extends NamedEntityImpl implements DataRoleExpression,
         NamedEntity, Serializable {
     private static final long serialVersionUID = 11000L;
+
     /** @param name */
     public DataRoleName(String name) {
         super(name);

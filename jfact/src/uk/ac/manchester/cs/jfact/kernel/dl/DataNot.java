@@ -20,7 +20,7 @@ public class DataNot implements DataExpression, DataExpressionArg<DataExpression
     private static final long serialVersionUID = 11000L;
     /** data expression argument */
     @PortedFrom(file = "tDLExpression.h", name = "Expr")
-    protected DataExpression Expr;
+    protected final DataExpression Expr;
 
     /** @param E */
     public DataNot(DataExpression E) {

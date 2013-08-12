@@ -18,11 +18,11 @@ class TRuleSet implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** set of rules to apply on change */
     @PortedFrom(file = "ELFReasoner.h", name = "Rules")
-    List<TELFRule> Rules = new ArrayList<TELFRule>();
+    private final List<TELFRule> Rules = new ArrayList<TELFRule>();
 
     /** apply all rules with a single argument */
     @PortedFrom(file = "ELFReasoner.h", name = "applyRules")
-    void applyRules(TELFConcept addedC) {
+    public void applyRules(TELFConcept addedC) {
         for (TELFRule p : Rules) {
             p.apply(addedC);
         }
@@ -30,7 +30,7 @@ class TRuleSet implements Serializable {
 
     /** apply all rules with two arguments */
     @PortedFrom(file = "ELFReasoner.h", name = "applyRules")
-    void applyRules(TELFConcept addedC, TELFConcept addedD) {
+    public void applyRules(TELFConcept addedC, TELFConcept addedD) {
         for (TELFRule p : Rules) {
             p.apply(addedC, addedD);
         }
@@ -38,7 +38,7 @@ class TRuleSet implements Serializable {
 
     /** add rule to a set */
     @PortedFrom(file = "ELFReasoner.h", name = "addRule")
-    void addRule(TELFRule rule) {
+    public void addRule(TELFRule rule) {
         Rules.add(rule);
     }
 }

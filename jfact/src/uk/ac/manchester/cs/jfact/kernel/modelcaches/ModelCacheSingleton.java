@@ -12,10 +12,11 @@ import conformance.PortedFrom;
  * one [negated] concept in completion tree. Reduced set of operations, but very
  * efficient. */
 @PortedFrom(file = "modelCacheSingleton.h", name = "modelCacheSingleton")
-public class ModelCacheSingleton extends ModelCacheInterface { private static final long serialVersionUID=11000L;
+public class ModelCacheSingleton extends ModelCacheInterface {
+    private static final long serialVersionUID = 11000L;
     /** the singleton itself */
     @PortedFrom(file = "modelCacheSingleton.h", name = "Singleton")
-    private int singleton;
+    private final int singleton;
 
     /** @param bp */
     public ModelCacheSingleton(int bp) {

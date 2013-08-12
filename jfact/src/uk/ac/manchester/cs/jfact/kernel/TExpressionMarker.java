@@ -13,19 +13,19 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorAdapter;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TExpressionMarker")
-class TExpressionMarker extends DLExpressionVisitorAdapter { private static final long serialVersionUID=11000L;
-
+class TExpressionMarker extends DLExpressionVisitorAdapter {
+    private static final long serialVersionUID = 11000L;
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "GoodTerms")
-    private Map<ConceptExpression, Boolean> GoodTerms = new HashMap<ConceptExpression, Boolean>();
+    private final Map<ConceptExpression, Boolean> GoodTerms = new HashMap<ConceptExpression, Boolean>();
     // A term is called good, if all of its subterms don't contain nominals
     // different from x
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "SimpleTerms")
-    private Map<ConceptExpression, Boolean> SimpleTerms = new HashMap<ConceptExpression, Boolean>();
+    private final Map<ConceptExpression, Boolean> SimpleTerms = new HashMap<ConceptExpression, Boolean>();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Path")
-    private List<ConceptExpression> Path = new ArrayList<ConceptExpression>();
+    private final List<ConceptExpression> Path = new ArrayList<ConceptExpression>();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Nominal")
-    private ConceptExpression Nominal;
+    private final ConceptExpression Nominal;
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TExpressionMarker")
     public TExpressionMarker(ConjunctiveQueryFolding conjunctiveQueryFolding,

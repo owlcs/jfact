@@ -11,13 +11,14 @@ import conformance.PortedFrom;
 // rule that checks whether for R(C,D) S(D) contains \bot
 /** r bot rule */
 @PortedFrom(file = "ELFReasoner.h", name = "RBotRule")
-public class RBotRule extends TELFRule { private static final long serialVersionUID=11000L;
+public class RBotRule extends TELFRule {
+    private static final long serialVersionUID = 11000L;
     /** remember the Bottom concept */
     @PortedFrom(file = "ELFReasoner.h", name = "CBot")
-    TELFConcept ConceptBot;
+    private final TELFConcept ConceptBot;
 
     /** init c'tor: remember E */
-    RBotRule(ELFReasoner ER, TELFConcept bot) {
+    public RBotRule(ELFReasoner ER, TELFConcept bot) {
         super(ER);
         ConceptBot = bot;
     }
@@ -25,7 +26,7 @@ public class RBotRule extends TELFRule { private static final long serialVersion
     /** apply a method with a given new pair (C,D) */
     @Override
     @PortedFrom(file = "ELFReasoner.h", name = "apply")
-    void apply(TELFConcept addedC, TELFConcept addedD) {
+    public void apply(TELFConcept addedC, TELFConcept addedD) {
         // it seems like every other pair is already processed, either via that
         // rule or via add(\bot)
         if (addedD.hasSuper(ConceptBot) && !addedC.hasSuper(ConceptBot)) {
