@@ -18,6 +18,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectExists;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleChain;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomConceptInclusion;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDeclaration;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomEquivalentConcepts;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleSubsumption;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
@@ -108,6 +109,16 @@ public class ELFReasoner implements Serializable {
                     processCI((AxiomConceptInclusion) p);
                 } else if (p instanceof AxiomORoleSubsumption) {
                     processRI((AxiomORoleSubsumption) p);
+                } else if (p instanceof AxiomEquivalentConcepts) {
+                    List<ConceptExpression> list = ((AxiomEquivalentConcepts) p)
+                            .getArguments();
+                    for (int i = 0; i < list.size() - 1; i++) {
+                        for (int j = i + 1; j < list.size(); j++) {
+                            AxiomConceptInclusion axiom = new AxiomConceptInclusion(
+                                    p.getOWLAxiom(), list.get(i), list.get(j));
+                            processCI(axiom);
+                        }
+                    }
                 } else {
                     processDeclaration((AxiomDeclaration) p);
                 }

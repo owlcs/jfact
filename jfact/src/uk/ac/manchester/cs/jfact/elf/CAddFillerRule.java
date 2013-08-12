@@ -34,7 +34,7 @@ public class CAddFillerRule extends TELFRule {
     @PortedFrom(file = "ELFReasoner.h", name = "apply")
     public void apply(TELFConcept Source) {
         Set<TELFConcept> SupSet = R.getPredSet(Source);
-        if (!SupSet.isEmpty()) {
+        if (SupSet != null && !SupSet.isEmpty()) {
             for (TELFConcept p : SupSet) {
                 if (!p.hasSuper(Sup)) {
                     ER.addAction(new ELFAction(p, Sup));

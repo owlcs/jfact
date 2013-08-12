@@ -108,6 +108,9 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         configuration.getProgressMonitor().reasonerTaskStopped();
     }
 
+    public Ontology getOntology() {
+        return kernel.getOntology();
+    }
     @Override
     public synchronized Node<OWLClass> getEquivalentClasses(OWLClassExpression ce)
             throws InconsistentOntologyException, ClassExpressionNotInProfileException,
