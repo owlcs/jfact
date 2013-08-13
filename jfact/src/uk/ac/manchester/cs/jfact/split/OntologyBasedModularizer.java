@@ -43,7 +43,16 @@ public class OntologyBasedModularizer implements Serializable {
      * @return module */
     @PortedFrom(file = "OntologyBasedModularizer.h", name = "getModule")
     public List<AxiomInterface> getModule(TSignature sig, ModuleType type) {
-        Modularizer.extract(ontology.getAxioms(), sig, type);
+        return getModule(ontology.getAxioms(), sig, type);
+    }
+
+    /** @param sig
+     * @param type
+     * @return module */
+    @PortedFrom(file = "OntologyBasedModularizer.h", name = "getModule")
+    public List<AxiomInterface> getModule(List<AxiomInterface> axioms, TSignature sig,
+            ModuleType type) {
+        Modularizer.extract(axioms, sig, type);
         return Modularizer.getModule();
     }
 

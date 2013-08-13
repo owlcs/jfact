@@ -1751,7 +1751,7 @@ public class ReasoningKernel implements Serializable {
                 e(cName);
                 // create sig for it
                 Concept C = (Concept) cName.getEntry();
-                setupSig(C.getEntity());
+                setupSig(C.getEntity(), ontology.getAxioms());
                 // init the taxonomy element
                 TaxonomyVertex cur = tax.getCurrent();
                 cur.clear();
@@ -1793,7 +1793,7 @@ public class ReasoningKernel implements Serializable {
             }
             if (changed) {
                 // FIXME!! check individuals later on
-                setupSig(p.getKey());
+                setupSig(p.getKey(), ontology.getAxioms());
                 // std::cout << "Creating module (" <<
                 // getModExtractor(false)->getModularizer()->getModule().size()
                 // << " axioms) time: " << timer;// << " sig: " << ModSig <<
@@ -1865,12 +1865,11 @@ public class ReasoningKernel implements Serializable {
         ontology.setProcessed();
     }
 
-    /** setup Name2Sig for a given name C;
+    /** setup Name2Sig for a given entity;
      * 
-     * @param C
-     * @return a \bot-module for C */
+     * @param entity */
     @PortedFrom(file = "Incremental.cpp", name = "setupSig")
-    public void setupSig(NamedEntity entity) {
+    public void setupSig(NamedEntity entity, List<AxiomInterface> Module) {
         moduleTimer.start();
         // do nothing if entity doesn't exist
         if (entity == null) {
@@ -1881,7 +1880,7 @@ public class ReasoningKernel implements Serializable {
         TSignature sig = new TSignature();
         // calculate a module
         sig.add(entity);
-        getModExtractor(false).getModule(sig, ModuleType.M_BOT);
+        getModExtractor(false).getModule(Module, sig, ModuleType.M_BOT);
         nModule++;
         // perform update
         Name2Sig.put(entity, new TSignature(getModExtractor(false)
@@ -1891,14 +1890,29 @@ public class ReasoningKernel implements Serializable {
         // return ret;
     }
 
+    /** build signature for ENTITY and all dependent entities from toProcess;
+     * look for modules in Module; */
+    @PortedFrom(file = "Incremental.cpp", name = "buildSignature")
+    public void buildSignature(NamedEntity entity, List<AxiomInterface> Module,
+            Set<NamedEntity> toProcess) {
+        toProcess.remove(entity);
+        setupSig(entity, Module);
+    }
+
     /** initialise the incremental bits on full reload */
     @PortedFrom(file = "Incremental.cpp", name = "initIncremental")
     public void initIncremental() {
         Name2Sig.clear();
+        // found all entities
+        Set<NamedEntity> toProcess = new HashSet<NamedEntity>();
         OntologyBasedModularizer ModExtractor = getModExtractor(false);
         // fill the module signatures of the concepts
         for (Concept p : getTBox().getConcepts()) {
-            setupSig(p.getEntity());
+            toProcess.add(p.getEntity());
+        }
+        // process all entries recursively
+        while (!toProcess.isEmpty()) {
+            buildSignature(toProcess.iterator().next(), ontology.getAxioms(), toProcess);
         }
         getTBox().setNameSigMap(Name2Sig);
         OntoSig = ontology.getSignature();
