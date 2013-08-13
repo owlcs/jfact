@@ -1806,41 +1806,15 @@ public class ReasoningKernel implements Serializable {
         // do actual change
         kernelOptions.setUseIncrementalReasoning(false);
         forceReload();
+        pTBox.setNameSigMap(Name2Sig);
         pTBox.isConsistent();
         kernelOptions.setUseIncrementalReasoning(true);
         // load the taxonomy
         pTBox = load(saved);
         tax = getCTaxonomy();
-        tax.deFinalise();
-        // fill in an order to
-        LinkedList<TaxonomyVertex> queue = new LinkedList<TaxonomyVertex>();
-        List<ClassifiableEntry> toProcess = new ArrayList<ClassifiableEntry>();
-        queue.add(tax.getTopVertex());
-        while (!queue.isEmpty()) {
-            TaxonomyVertex cur = queue.remove(0);
-            if (tax.isVisited(cur)) {
-                continue;
-            }
-            tax.setVisited(cur);
-            ClassifiableEntry entry = cur.getPrimer();
-            if (MPlus.contains(entry.getName()) || MMinus.contains(entry.getName())) {
-                toProcess.add(entry);
-            }
-            queue.addAll(cur.neigh(false));
-        }
-        tax.clearVisited();
-        // System.out.println("Determine concepts that need reclassification ("
-        // + toProcess.size() + "): done in " + t);
-        // System.out.println("Add/Del names Taxonomy:" + tax);
-        for (int i = 0; i < toProcess.size(); i++) {
-            ClassifiableEntry p = toProcess.get(i);
-            reclassifyNode(p, MPlus.contains(p.getName()), MMinus.contains(p.getName()));
-        }
-        tax.finalise();
+        pTBox.reclassify(MPlus, MMinus);
         getOntology().setProcessed();
-        // System.out.println("Total modularization (" + nModule + ") time: " +
-        // moduleTimer
-        // + "\nTotal reasoning time: " + subCheckTimer);
+
     }
 
     private byte[] save(TBox tbox) {
@@ -1869,17 +1843,6 @@ public class ReasoningKernel implements Serializable {
             e.printStackTrace();
         }
         return null;
-    }
-
-    /** reclassify (incrementally) NODE wrt ADDED or REMOVED flags
-     * 
-     * @param node
-     * @param added
-     * @param removed */
-    @PortedFrom(file = "Incremental.cpp", name = "reclassifyNode")
-    public void reclassifyNode(ClassifiableEntry entry, boolean added, boolean removed) {
-        TaxonomyVertex node = entry.getTaxVertex();
-        getTBox().reclassify(node, Name2Sig.get(entry.getName()), added, removed);
     }
 
     /** force the re-classification of the changed ontology */
@@ -1930,6 +1893,7 @@ public class ReasoningKernel implements Serializable {
     /** initialise the incremental bits on full reload */
     @PortedFrom(file = "Incremental.cpp", name = "initIncremental")
     public void initIncremental() {
+        Name2Sig.clear();
         OntologyBasedModularizer ModExtractor = getModExtractor(false);
         // fill the module signatures of the concepts
         for (Concept p : getTBox().getConcepts()) {

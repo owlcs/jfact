@@ -5,10 +5,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.Concept.CTTag;
@@ -101,6 +98,9 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     protected final Set<TaxonomyVertex> candidates = new HashSet<TaxonomyVertex>();
     /** whether look into it */
     protected boolean useCandidates = false;
+
+    protected Set<String> MPlus;
+    protected Set<String> MMinus;
 
     // -- General support for DL concept classification
     /** get access to curEntry as a TConcept */
@@ -603,14 +603,50 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         }
     }
 
-    public void reclassify(TaxonomyVertex node, TSignature s, boolean added,
-            boolean removed) {
+    public void reclassify(Set<String> plus, Set<String> minus) {
+        MPlus = plus;
+        MMinus = minus;
+        
+
+        pTax.deFinalise();
+        // fill in an order to
+        LinkedList<TaxonomyVertex> queue = new LinkedList<TaxonomyVertex>();
+        List<ClassifiableEntry> toProcess = new ArrayList<ClassifiableEntry>();
+        queue.add(pTax.getTopVertex());
+        while (!queue.isEmpty()) {
+            TaxonomyVertex cur = queue.remove(0);
+            if (pTax.isVisited(cur)) {
+                continue;
+            }
+            pTax.setVisited(cur);
+            ClassifiableEntry entry = cur.getPrimer();
+            if (MPlus.contains(entry.getName()) || MMinus.contains(entry.getName())) {
+                toProcess.add(entry);
+            }
+            queue.addAll(cur.neigh(false));
+        }
+        pTax.clearVisited();
+        // System.out.println("Determine concepts that need reclassification ("
+        // + toProcess.size() + "): done in " + t);
+        // System.out.println("Add/Del names Taxonomy:" + tax);
+        for (int i = 0; i < toProcess.size(); i++) {
+            ClassifiableEntry p = toProcess.get(i);
+            reclassify(p.getTaxVertex(), tBox.getSignature(p));
+        }
+        pTax.finalise();
+        
+
+    }
+
+    public void reclassify(TaxonomyVertex node, TSignature s) {
         upDirection = false;
         sigStack.add(s);
         curEntry = node.getPrimer();
         TaxonomyVertex oldCur = pTax.getCurrent();
         pTax.setCurrent(node);
         // FIXME!! check the unsatisfiability later
+        boolean added = MPlus.contains(curEntry.getName());
+        boolean removed = MMinus.contains(curEntry.getName());
         assert added || removed;
         clearLabels();
         if (node.noNeighbours(true)) {

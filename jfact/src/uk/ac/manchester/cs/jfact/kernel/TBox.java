@@ -3088,9 +3088,8 @@ public class TBox implements Serializable {
         // } while (!IV.next());
     }
 
-    public void reclassify(TaxonomyVertex node, TSignature s, boolean added,
-            boolean removed) {
-        pTaxCreator.reclassify(node, s, added, removed);
+    public void reclassify(Set<String> MPlus, Set<String> MMinus) {
+        pTaxCreator.reclassify(MPlus, MMinus);
     }
 
     public List<Integer> getConceptsForQueryAnswering() {
