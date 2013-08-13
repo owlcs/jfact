@@ -360,11 +360,16 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "enhancedSubs1")
     private boolean enhancedSubs1(TaxonomyVertex cur) {
         ++nNonTrivialSubCalls;
+        // need to be valued -- check all parents
+        // propagate false
+        // do this only if the concept is not it M-
+        if (!MMinus.contains(cur.getPrimer().getName())) {
         List<TaxonomyVertex> neigh = cur.neigh(!upDirection);
         int size = neigh.size();
         for (int i = 0; i < size; i++) {
             if (!enhancedSubs(neigh.get(i))) {
                 return false;
+            }
             }
         }
         return testSubsumption(cur);
