@@ -55,7 +55,7 @@ public class ReasoningKernel implements Serializable {
     @PortedFrom(file = "Kernel.h", name = "pET")
     private ExpressionTranslator pET;
     @PortedFrom(file = "Kernel.h", name = "Name2Sig")
-    private final Map<String, TSignature> Name2Sig = new HashMap<String, TSignature>();
+    private final Map<NamedEntity, TSignature> Name2Sig = new HashMap<NamedEntity, TSignature>();
     /** ontology signature (used in incremental) */
     @PortedFrom(file = "Kernel.h", name = "OntoSig")
     private TSignature OntoSig;
@@ -1721,8 +1721,8 @@ public class ReasoningKernel implements Serializable {
         // re-set the modularizer to use updated ontology
         ModSyn = null;
         // System.out.println("Original Taxonomy:" + tax);
-        Set<String> MPlus = new HashSet<String>();
-        Set<String> MMinus = new HashSet<String>();
+        Set<NamedEntity> MPlus = new HashSet<NamedEntity>();
+        Set<NamedEntity> MMinus = new HashSet<NamedEntity>();
         Set<String> MAll = new HashSet<String>();
         TSignature NewSig = ontology.getSignature();
         Set<NamedEntity> RemovedEntities = new HashSet<NamedEntity>(OntoSig.begin());
@@ -1739,7 +1739,7 @@ public class ReasoningKernel implements Serializable {
                 // remove all links
                 C.getTaxVertex().remove();
                 // update Name2Sig
-                Name2Sig.remove(C.getName());
+                Name2Sig.remove(C.getEntity());
             }
         }
         // deal with added concepts
@@ -1767,7 +1767,7 @@ public class ReasoningKernel implements Serializable {
         t.start();
         LocalityChecker lc = getModExtractor(false).getModularizer().getLocalityChecker();
 
-        for (Map.Entry<String, TSignature> p : Name2Sig.entrySet()) {
+        for (Map.Entry<NamedEntity, TSignature> p : Name2Sig.entrySet()) {
             lc.setSignatureValue(p.getValue());
             boolean changed = false;
             for (AxiomInterface notProcessed : ontology.getAxioms()) {
@@ -1782,7 +1782,8 @@ public class ReasoningKernel implements Serializable {
                     changed = true;
                     MMinus.add(p.getKey());
                     // FIXME!! only concepts for now
-                    TaxonomyVertex v = pTBox.getConcept(p.getKey()).getTaxVertex();
+                    TaxonomyVertex v = ((ClassifiableEntry) p.getKey().getEntry())
+                            .getTaxVertex();
                     if (v.noNeighbours(true)) {
                         v.addNeighbour(true, tax.getTopVertex());
                         tax.getTopVertex().addNeighbour(false, v);
@@ -1792,7 +1793,7 @@ public class ReasoningKernel implements Serializable {
             }
             if (changed) {
                 // FIXME!! check individuals later on
-                setupSig(getExpressionManager().concept(p.getKey()));
+                setupSig(p.getKey());
                 // std::cout << "Creating module (" <<
                 // getModExtractor(false)->getModularizer()->getModule().size()
                 // << " axioms) time: " << timer;// << " sig: " << ModSig <<
@@ -1883,7 +1884,7 @@ public class ReasoningKernel implements Serializable {
         getModExtractor(false).getModule(sig, ModuleType.M_BOT);
         nModule++;
         // perform update
-        Name2Sig.put(entity.getName(), new TSignature(getModExtractor(false)
+        Name2Sig.put(entity, new TSignature(getModExtractor(false)
                 .getModularizer()
                 .getSignature()));
         moduleTimer.stop();

@@ -98,9 +98,8 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     protected final Set<TaxonomyVertex> candidates = new HashSet<TaxonomyVertex>();
     /** whether look into it */
     protected boolean useCandidates = false;
-
-    protected Set<String> MPlus;
-    protected Set<String> MMinus;
+    protected Set<NamedEntity> MPlus;
+    protected Set<NamedEntity> MMinus;
 
     // -- General support for DL concept classification
     /** get access to curEntry as a TConcept */
@@ -363,13 +362,11 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         // need to be valued -- check all parents
         // propagate false
         // do this only if the concept is not it M-
-        if (!MMinus.contains(cur.getPrimer().getName())) {
         List<TaxonomyVertex> neigh = cur.neigh(!upDirection);
         int size = neigh.size();
         for (int i = 0; i < size; i++) {
             if (!enhancedSubs(neigh.get(i))) {
                 return false;
-            }
             }
         }
         return testSubsumption(cur);
@@ -608,11 +605,9 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         }
     }
 
-    public void reclassify(Set<String> plus, Set<String> minus) {
+    public void reclassify(Set<NamedEntity> plus, Set<NamedEntity> minus) {
         MPlus = plus;
         MMinus = minus;
-        
-
         pTax.deFinalise();
         // fill in an order to
         LinkedList<TaxonomyVertex> queue = new LinkedList<TaxonomyVertex>();
@@ -625,7 +620,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
             }
             pTax.setVisited(cur);
             ClassifiableEntry entry = cur.getPrimer();
-            if (MPlus.contains(entry.getName()) || MMinus.contains(entry.getName())) {
+            if (MPlus.contains(entry.getEntity()) || MMinus.contains(entry.getEntity())) {
                 toProcess.add(entry);
             }
             queue.addAll(cur.neigh(false));
@@ -639,8 +634,6 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
             reclassify(p.getTaxVertex(), tBox.getSignature(p));
         }
         pTax.finalise();
-        
-
     }
 
     public void reclassify(TaxonomyVertex node, TSignature s) {
@@ -650,8 +643,8 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         TaxonomyVertex oldCur = pTax.getCurrent();
         pTax.setCurrent(node);
         // FIXME!! check the unsatisfiability later
-        boolean added = MPlus.contains(curEntry.getName());
-        boolean removed = MMinus.contains(curEntry.getName());
+        boolean added = MPlus.contains(curEntry.getEntity());
+        boolean removed = MMinus.contains(curEntry.getEntity());
         assert added || removed;
         clearLabels();
         if (node.noNeighbours(true)) {

@@ -21,6 +21,7 @@ import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
 import uk.ac.manchester.cs.jfact.datatypes.*;
 import uk.ac.manchester.cs.jfact.helpers.*;
 import uk.ac.manchester.cs.jfact.helpers.Timer;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheConst;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheSingleton;
@@ -53,7 +54,7 @@ public class TBox implements Serializable {
     private DLConceptTaxonomy pTaxCreator;
     /** name-signature map */
     @PortedFrom(file = "dlTBox.h", name = "pName2Sig")
-    private Map<String, TSignature> pName2Sig;
+    private Map<NamedEntity, TSignature> pName2Sig;
     /** set of reasoning options */
     @Original
     private final JFactReasonerConfiguration config;
@@ -2755,7 +2756,7 @@ public class TBox implements Serializable {
      * 
      * @param p */
     @PortedFrom(file = "dlTBox.h", name = "setNameSigMap")
-    public void setNameSigMap(Map<String, TSignature> p) {
+    public void setNameSigMap(Map<NamedEntity, TSignature> p) {
         pName2Sig = p;
     }
 
@@ -2764,7 +2765,10 @@ public class TBox implements Serializable {
         if (pName2Sig == null) {
             return null;
         }
-        return pName2Sig.get(c.getName());
+        if (c.getEntity() == null) {
+            return null;
+        }
+        return pName2Sig.get(c.getEntity());
     }
 
     @PortedFrom(file = "dlTBox.h", name = "nRelevantCCalls")
@@ -3088,7 +3092,7 @@ public class TBox implements Serializable {
         // } while (!IV.next());
     }
 
-    public void reclassify(Set<String> MPlus, Set<String> MMinus) {
+    public void reclassify(Set<NamedEntity> MPlus, Set<NamedEntity> MMinus) {
         pTaxCreator.reclassify(MPlus, MMinus);
     }
 
