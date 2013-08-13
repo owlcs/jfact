@@ -229,6 +229,7 @@ public class TaxonomyCreator implements Serializable {
         removeTop();
     }
 
+    /** propagate the TRUE value of the KS subsumption up the hierarchy */
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "propagateTrueUp")
     protected void propagateTrueUp(TaxonomyVertex node) {
         // if taxonomy class already checked -- do nothing
@@ -245,6 +246,32 @@ public class TaxonomyCreator implements Serializable {
         }
     }
 
+    /** propagate the FALSE value of the KS subsumption down the hierarchy */
+    @PortedFrom(file = "TaxonomyCreator.cpp", name = "propagateFalseDown")
+    protected void propagateFalseDown(TaxonomyVertex node) {
+        // if taxonomy class already checked -- do nothing
+        if (isValued(node)) {
+            assert getValue(node) == false;
+            return;
+        }
+        // overwise -- value it...
+        setValue(node, false);
+        // ... and value all children
+        for (TaxonomyVertex p : node.neigh(false)) {
+            propagateFalseDown(p);
+        }
+    }
+
+    /** propagate constant VALUE into an appropriate direction */
+    @PortedFrom(file = "TaxonomyCreator.cpp", name = "setAndPropagate")
+    protected boolean setAndPropagate(TaxonomyVertex node, boolean value) {
+        if (value) {
+            propagateTrueUp(node);
+        } else {
+            propagateFalseDown(node);
+        }
+        return value;
+    }
     /** check if it is necessary to log taxonomy action */
     @PortedFrom(file = "TaxonomyCreator.h", name = "needLogging")
     protected boolean needLogging() {

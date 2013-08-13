@@ -647,6 +647,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         boolean removed = MMinus.contains(curEntry.getEntity());
         assert added || removed;
         clearLabels();
+        setValue(pTax.getTopVertex(), true);
         if (node.noNeighbours(true)) {
             node.addNeighbour(true, pTax.getTopVertex());
         }
@@ -663,11 +664,11 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
                     continue;
                 }
                 boolean sub = testSubsumption(p);
-                setValue(p, sub);
                 if (sub) {
                     pos.add(p);
                     propagateTrueUp(p);
                 } else {
+                    setValue(p, sub);
                     neg.add(p);
                 }
             }
@@ -683,14 +684,12 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         } else {
             // all parents are there
             for (TaxonomyVertex p : node.neigh(true)) {
-                setValue(p, true);
                 propagateTrueUp(p);
             }
             node.removeLinks(true);
         }
         // FIXME!! for now. later check the equivalence etc
         setValue(node, true);
-        setValue(pTax.getTopVertex(), true);
         // the landscape is prepared
         searchBaader(pTax.getTopVertex());
         node.incorporate(pTax.getOptions());
