@@ -1769,17 +1769,14 @@ public class ReasoningKernel implements Serializable {
 
         for (Map.Entry<NamedEntity, TSignature> p : Name2Sig.entrySet()) {
             lc.setSignatureValue(p.getValue());
-            boolean changed = false;
             for (AxiomInterface notProcessed : ontology.getAxioms()) {
                 if (!lc.local(notProcessed)) {
-                    changed = true;
                     MPlus.add(p.getKey());
                     break;
                 }
             }
             for (AxiomInterface retracted : ontology.getRetracted()) {
                 if (!lc.local(retracted)) {
-                    changed = true;
                     MMinus.add(p.getKey());
                     // FIXME!! only concepts for now
                     TaxonomyVertex v = ((ClassifiableEntry) p.getKey().getEntry())
@@ -1791,16 +1788,15 @@ public class ReasoningKernel implements Serializable {
                     break;
                 }
             }
-            if (changed) {
-                // FIXME!! check individuals later on
-                setupSig(p.getKey(), ontology.getAxioms());
-                // std::cout << "Creating module (" <<
-                // getModExtractor(false)->getModularizer()->getModule().size()
-                // << " axioms) time: " << timer;// << " sig: " << ModSig <<
-                // " old: " << OldSig;
-            }
         }
         t.stop();
+        // build changed modules
+        Set<NamedEntity> toProcess = new HashSet<NamedEntity>(MPlus);
+        toProcess.addAll(MMinus);
+        // process all entries recursively
+        while (!toProcess.isEmpty()) {
+            buildSignature(toProcess.iterator().next(), ontology.getAxioms(), toProcess);
+        }
         tax.finalise();
         // save the taxonomy
         byte[] saved = save(pTBox);
@@ -1897,6 +1893,19 @@ public class ReasoningKernel implements Serializable {
             Set<NamedEntity> toProcess) {
         toProcess.remove(entity);
         setupSig(entity, Module);
+        List<AxiomInterface> NewModule = getModExtractor(false).getModularizer()
+                .getModule();
+        if (Module.size() == NewModule.size()) {
+            return;
+        }
+        // smaller module: recurse
+        TSignature ModSig = getModExtractor(false).getModularizer().getSignature();
+        for (NamedEntity p : ModSig.begin()) {
+            if ( toProcess.contains(p) ) {  
+                // need to process
+                buildSignature ( p, NewModule, toProcess );
+            }
+        }
     }
 
     /** initialise the incremental bits on full reload */
