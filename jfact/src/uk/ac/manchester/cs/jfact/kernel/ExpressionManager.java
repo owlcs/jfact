@@ -208,20 +208,20 @@ public class ExpressionManager implements Serializable {
 
     /** @return TOP concept */
     @PortedFrom(file = "tExpressionManager.h", name = "top")
-    public ConceptExpression top() {
+    public ConceptTop top() {
         return top;
     }
 
     /** @return BOTTOM concept */
     @PortedFrom(file = "tExpressionManager.h", name = "bottom")
-    public ConceptExpression bottom() {
+    public ConceptBottom bottom() {
         return bottom;
     }
 
     /** @param name
      * @return named concept */
     @PortedFrom(file = "tExpressionManager.h", name = "concept")
-    public ConceptExpression concept(String name) {
+    public ConceptName concept(String name) {
         return conceptNameset.insert(name);
     }
 
@@ -448,7 +448,7 @@ public class ExpressionManager implements Serializable {
     /** @param name
      * @return named object role */
     @PortedFrom(file = "tExpressionManager.h", name = "ObjectRole")
-    public ObjectRoleExpression objectRole(String name) {
+    public ObjectRoleName objectRole(String name) {
         return objectRoleNameset.insert(name);
     }
 
@@ -503,7 +503,7 @@ public class ExpressionManager implements Serializable {
     /** @param name
      * @return named data role */
     @PortedFrom(file = "tExpressionManager.h", name = "DataRole")
-    public DataRoleExpression dataRole(String name) {
+    public DataRoleName dataRole(String name) {
         return dataRoleNameset.insert(name);
     }
 
