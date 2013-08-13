@@ -1,4 +1,4 @@
-package uk.ac.manchester.cs.jfact.kernel;
+package uk.ac.manchester.cs.jfact.kernel.todolist;
 
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
@@ -10,10 +10,11 @@ import java.io.Serializable;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
+import uk.ac.manchester.cs.jfact.kernel.DagTag;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "PriorityMatrix.h", name = "ToDoPriorMatrix")
-class ToDoPriorMatrix implements Serializable {
+public class ToDoPriorMatrix implements Serializable {
     private static final long serialVersionUID = 11000L;
     // regular operation indexes
     @PortedFrom(file = "PriorityMatrix.h", name = "iAnd")
@@ -29,7 +30,6 @@ class ToDoPriorMatrix implements Serializable {
     @PortedFrom(file = "PriorityMatrix.h", name = "iGE")
     private int indexGE;
 
-    public ToDoPriorMatrix() {}
 
     /** number of regular options (o- and NN-rules are not included) */
     @PortedFrom(file = "PriorityMatrix.h", name = "nRegularOps")
