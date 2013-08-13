@@ -20,10 +20,6 @@ import uk.ac.manchester.cs.jfact.helpers.Templates;
 @SuppressWarnings("javadoc")
 public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Serializable {
     private static final long serialVersionUID = 11000L;
-    /** Option 'useRelevantOnly' is used when creating internal DAG
-     * representation for externally given TBox. If true, DAG contains only
-     * concepts, relevant to query. It is safe to leave this option false. */
-    private boolean useRelevantOnly = false;
     /** Option 'dumpQuery' dumps sub-TBox relevant to given
      * satisfiability/subsumption query. */
     private boolean dumpQuery = false;
@@ -146,10 +142,6 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
         return useCompletelyDefined;
     }
 
-    public boolean getuseRelevantOnly() {
-        return useRelevantOnly;
-    }
-
     public boolean getalwaysPreferEquals() {
         return alwaysPreferEquals;
     }
@@ -220,7 +212,6 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
         useELReasoner = source.useELReasoner;
         useIncrementalReasoning = source.useIncrementalReasoning;
         useLazyBlocking = source.useLazyBlocking;
-        useRelevantOnly = source.useRelevantOnly;
         useSemanticBranching = source.useSemanticBranching;
         useSpecialDomains = source.useSpecialDomains;
         useUndefinedNames = source.useUndefinedNames;
