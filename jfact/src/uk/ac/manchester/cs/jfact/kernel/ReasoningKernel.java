@@ -1751,7 +1751,7 @@ public class ReasoningKernel implements Serializable {
                 e(cName);
                 // create sig for it
                 Concept C = (Concept) cName.getEntry();
-                setupSig(C);
+                setupSig(C.getEntity());
                 // init the taxonomy element
                 TaxonomyVertex cur = tax.getCurrent();
                 cur.clear();
@@ -1766,17 +1766,20 @@ public class ReasoningKernel implements Serializable {
         uk.ac.manchester.cs.jfact.helpers.Timer t = new Timer();
         t.start();
         LocalityChecker lc = getModExtractor(false).getModularizer().getLocalityChecker();
-        // TODO: add new sig here
+
         for (Map.Entry<String, TSignature> p : Name2Sig.entrySet()) {
             lc.setSignatureValue(p.getValue());
+            boolean changed = false;
             for (AxiomInterface notProcessed : ontology.getAxioms()) {
                 if (!lc.local(notProcessed)) {
+                    changed = true;
                     MPlus.add(p.getKey());
                     break;
                 }
             }
             for (AxiomInterface retracted : ontology.getRetracted()) {
                 if (!lc.local(retracted)) {
+                    changed = true;
                     MMinus.add(p.getKey());
                     // FIXME!! only concepts for now
                     TaxonomyVertex v = pTBox.getConcept(p.getKey()).getTaxVertex();
@@ -1786,6 +1789,14 @@ public class ReasoningKernel implements Serializable {
                     }
                     break;
                 }
+            }
+            if (changed) {
+                // FIXME!! check individuals later on
+                setupSig(getExpressionManager().concept(p.getKey()));
+                // std::cout << "Creating module (" <<
+                // getModExtractor(false)->getModularizer()->getModule().size()
+                // << " axioms) time: " << timer;// << " sig: " << ModSig <<
+                // " old: " << OldSig;
             }
         }
         t.stop();
@@ -1868,10 +1879,7 @@ public class ReasoningKernel implements Serializable {
     @PortedFrom(file = "Incremental.cpp", name = "reclassifyNode")
     public void reclassifyNode(ClassifiableEntry entry, boolean added, boolean removed) {
         TaxonomyVertex node = entry.getTaxVertex();
-        setupSig(entry);
-        // update Name2Sig
-        TSignature ModSig = getModExtractor(false).getModularizer().getSignature();
-        getTBox().reclassify(node, ModSig, added, removed);
+        getTBox().reclassify(node, Name2Sig.get(entry.getName()), added, removed);
     }
 
     /** force the re-classification of the changed ontology */
@@ -1898,13 +1906,13 @@ public class ReasoningKernel implements Serializable {
      * @param C
      * @return a \bot-module for C */
     @PortedFrom(file = "Incremental.cpp", name = "setupSig")
-    public void setupSig(ClassifiableEntry C) {
+    public void setupSig(NamedEntity entity) {
         moduleTimer.start();
-        // get the entity; do nothing if doesn't exist
-        NamedEntity entity = C.getEntity();
+        // do nothing if entity doesn't exist
         if (entity == null) {
             return;
         }
+        moduleTimer.start();
         // prepare a place to update
         TSignature sig = new TSignature();
         // calculate a module
@@ -1912,7 +1920,8 @@ public class ReasoningKernel implements Serializable {
         getModExtractor(false).getModule(sig, ModuleType.M_BOT);
         nModule++;
         // perform update
-        Name2Sig.put(C.getName(), new TSignature(getModExtractor(false).getModularizer()
+        Name2Sig.put(entity.getName(), new TSignature(getModExtractor(false)
+                .getModularizer()
                 .getSignature()));
         moduleTimer.stop();
         // return ret;
@@ -1924,7 +1933,7 @@ public class ReasoningKernel implements Serializable {
         OntologyBasedModularizer ModExtractor = getModExtractor(false);
         // fill the module signatures of the concepts
         for (Concept p : getTBox().getConcepts()) {
-            setupSig(p);
+            setupSig(p.getEntity());
         }
         getTBox().setNameSigMap(Name2Sig);
         OntoSig = ontology.getSignature();
