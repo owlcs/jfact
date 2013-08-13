@@ -105,7 +105,7 @@ public class IncrementalClassifier extends TaxonomyCreator {
             setValue(cur, testSubsumption(cur));
         }
         // mark labelled leaf node as a parent
-        if (noPosSucc && cur.getValue()) {
+        if (noPosSucc && cur.getValue() && !cur.equals(pTax.getCurrent())) {
             curNode.addNeighbour(!upDirection, cur);
         }
     }
@@ -126,7 +126,7 @@ public class IncrementalClassifier extends TaxonomyCreator {
 
     /** short-cut from ENHANCED_SUBS */
     protected boolean enhancedSubs2(TaxonomyVertex cur) {
-        if (useCandidates && candidates.contains(cur)) {
+        if (useCandidates && !candidates.contains(cur)) {
             return false;
         }
         return enhancedSubs1(cur);

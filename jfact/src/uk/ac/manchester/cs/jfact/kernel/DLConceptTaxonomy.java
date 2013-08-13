@@ -625,6 +625,9 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
             List<TaxonomyVertex> pos = new ArrayList<TaxonomyVertex>();
             List<TaxonomyVertex> neg = new ArrayList<TaxonomyVertex>();
             for (TaxonomyVertex p : node.neigh(true)) {
+                if (isValued(p) && getValue(p)) {
+                    continue;
+                }
                 boolean sub = testSubsumption(p);
                 setValue(p, sub);
                 if (sub) {
@@ -635,16 +638,16 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
                 }
             }
             node.removeLinks(true);
-            for (TaxonomyVertex q : pos) {
-                node.addNeighbour(true, q);
-            }
+            // for (TaxonomyVertex q : pos) {
+            // node.addNeighbour(true, q);
+            // }
             if (useCandidates) {
                 for (TaxonomyVertex q : neg) {
                     fillCandidates(q);
                 }
             }
-        } else    // all parents are there
-        {
+        } else {
+            // all parents are there
             for (TaxonomyVertex p : node.neigh(true)) {
                 setValue(p, true);
                 propagateTrueUp(p);
@@ -652,7 +655,8 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
             node.removeLinks(true);
         }
         // FIXME!! for now. later check the equivalence etc
-        setValue(node, false);
+        setValue(node, true);
+        setValue(pTax.getTopVertex(), true);
         // the landscape is prepared
         searchBaader(pTax.getTopVertex());
         node.incorporate(pTax.getOptions());
