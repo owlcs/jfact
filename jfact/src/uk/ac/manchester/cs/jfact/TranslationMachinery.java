@@ -950,7 +950,7 @@ public class TranslationMachinery implements Serializable {
             // .getObjectPropertyKey();
             // translateDataPropertySet(axiom.getDataPropertyExpressions());
             throw new ReasonerInternalException(
-                    "JFact Kernel: unsupported operation 'getDataPropertyKey'");
+                    "JFact Kernel: unsupported operation 'getDataPropertyKey' " + axiom);
             // TDLDataRoleExpression dataPropertyPointer = kernel
             // .getDataPropertyKey();
             // return kernel.tellHasKey(
@@ -961,7 +961,8 @@ public class TranslationMachinery implements Serializable {
         @Override
         public AxiomInterface visit(OWLDatatypeDefinitionAxiom axiom) {
             throw new ReasonerInternalException(
-                    "JFact Kernel: unsupported operation 'OWLDatatypeDefinitionAxiom'");
+                    "JFact Kernel: unsupported operation 'OWLDatatypeDefinitionAxiom' "
+                            + axiom);
             // kernel.getDataSubType(axiom.getDatatype().getIRI().toString(),
             // toDataTypeExpressionPointer(axiom.getDataRange()));
         }

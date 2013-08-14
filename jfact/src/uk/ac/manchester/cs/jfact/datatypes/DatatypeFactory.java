@@ -782,7 +782,7 @@ public class DatatypeFactory implements Serializable {
 
         @Override
         public Boolean parseValue(String s) {
-            whitespace facet = (whitespace) whiteSpace.parse(knownNumericFacetValues
+            whitespace facet = (whitespace) whiteSpace.parse(knownNonNumericFacetValues
                     .get(whiteSpace));
             return Boolean.parseBoolean(facet.normalize(s));
         }
