@@ -15,7 +15,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
-import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 import org.semanticweb.owlapi.util.MultiMap;
 
@@ -980,22 +979,16 @@ public class ReasoningKernel implements Serializable {
     /** @return consistency status of KB */
     @PortedFrom(file = "Kernel.h", name = "isKBConsistent")
     public boolean isKBConsistent() {
-        try {
             if (getStatus().ordinal() <= kbLoading.ordinal()) {
                 processKB(kbCChecked);
             }
             return getTBox().isConsistent();
-        } catch (InconsistentOntologyException e) {
-            return false;
-        }
     }
 
     /** ensure that KB is preprocessed/consistence checked */
     @PortedFrom(file = "Kernel.h", name = "preprocessKB")
     private void preprocessKB() {
-        if (!isKBConsistent()) {
-            throw new InconsistentOntologyException();
-        }
+        isKBConsistent();
     }
 
     /** ensure that KB is classified */
@@ -1004,9 +997,7 @@ public class ReasoningKernel implements Serializable {
         if (!isKBClassified()) {
             processKB(kbClassified);
         }
-        if (!isKBConsistent()) {
-            throw new InconsistentOntologyException();
-        }
+        isKBConsistent();
     }
 
     /** ensure that KB is realised */
@@ -1015,9 +1006,7 @@ public class ReasoningKernel implements Serializable {
         if (!isKBRealised()) {
             processKB(kbRealised);
         }
-        if (!isKBConsistent()) {
-            throw new InconsistentOntologyException();
-        }
+        isKBConsistent();
     }
 
     // role info retrieval
@@ -1940,13 +1929,8 @@ public class ReasoningKernel implements Serializable {
         }
         // check if something have to be done
         if (getStatus().ordinal() >= status.ordinal()) {
-            // nothing to do;
-            // but make sure
-            // that we are
-            // consistent
-            if (!isKBConsistent()) {
-                throw new InconsistentOntologyException();
-            }
+            // nothing to do; but make sure that we are consistent
+            isKBConsistent();
             return;
         }
         // here we have to do something: let's decide what to do

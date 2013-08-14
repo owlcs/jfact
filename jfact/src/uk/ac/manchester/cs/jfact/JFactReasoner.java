@@ -312,7 +312,11 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     public synchronized boolean isConsistent() throws ReasonerInterruptedException,
             TimeOutException {
         if (consistencyVerified == null) {
+            try {
             consistencyVerified = kernel.isKBConsistent();
+            } catch (InconsistentOntologyException e) {
+                consistencyVerified = Boolean.FALSE;
+            }
         }
         return consistencyVerified;
     }
