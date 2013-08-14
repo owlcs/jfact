@@ -19,10 +19,11 @@ import uk.ac.manchester.cs.jfact.JFactFactory;
 
 @SuppressWarnings("javadoc")
 public class SimplePrecomputeBenchmark {
-    private static File mainPath = new File("./test/benchmark/test.owl");
 
     public static void main(String[] args) throws IOException, InterruptedException,
+
             OWLOntologyCreationException {
+        File mainPath = new File("./test/benchmark/test.owl");
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         OWLOntology ontology = manager.loadOntologyFromOntologyDocument(mainPath);
         OWLReasoner reasoner = new JFactFactory().createNonBufferingReasoner(ontology);

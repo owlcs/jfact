@@ -18,8 +18,8 @@ import org.semanticweb.owlapi.vocab.OWLFacet;
 
 import uk.ac.manchester.cs.jfact.JFactFactory;
 
+@SuppressWarnings("javadoc")
 public class JFactSerializationTest extends TestCase {
-    private static final String MESSAGE = "Exception expected!";
     private static final OWLDataFactory f = OWLManager.getOWLDataFactory();
     OWL2Datatype owl2datatype = OWL2Datatype.XSD_INT;
     OWLDataPropertyExpression dp = f.getOWLDataProperty(IRI.create("urn:dp"));

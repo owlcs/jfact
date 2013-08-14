@@ -7,14 +7,10 @@ package conformance;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static org.junit.Assert.*;
 
-import java.io.File;
-
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
-import org.semanticweb.owlapi.util.AutoIRIMapper;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.semanticweb.owlapi.vocab.OWLFacet;
 import org.semanticweb.owlapi.vocab.XSDVocabulary;
@@ -86,19 +82,6 @@ public class TestDateTime {
         OWLReasoner r = Factory.factory().createReasoner(o);
         assertTrue("x was supposed to be an instance of c!\n" + o.getLogicalAxioms(),
                 r.isEntailed(f.getOWLClassAssertionAxiom(c, x)));
-    }
-
-
-    @Test
-    public void shouldPrecomputePeriodic() throws OWLOntologyCreationException {
-        OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
-        File base = new File(".");
-        File url = new File(base, "periodic.owl");
-        AutoIRIMapper mapper = new AutoIRIMapper(base, true);
-        ontologyManager.addIRIMapper(mapper);
-        OWLOntology ontology = ontologyManager.loadOntology(IRI.create(url));
-        OWLReasoner reasoner = Factory.factory().createReasoner(ontology);
-        reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
     }
 
     @Test
