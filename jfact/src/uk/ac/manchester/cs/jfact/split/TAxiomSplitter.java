@@ -73,8 +73,6 @@ public class TAxiomSplitter implements Serializable {
     protected TSignature sig = new TSignature();
     @PortedFrom(file = "AxiomSplitter.h", name = "mod")
     protected TModularizer mod = null;
-    @PortedFrom(file = "AxiomSplitter.h", name = "RejSplits")
-    protected final Set<TSplitVar> RejSplits = new HashSet<TSplitVar>();
     @PortedFrom(file = "AxiomSplitter.h", name = "O")
     protected final Ontology O;
 

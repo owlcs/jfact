@@ -17,14 +17,14 @@ public class ToldSubsumers extends KnownSubsumers {
 
     /** begin of the Sure subsumers interval */
     @Override
-    List<ClassifiableEntry> s_begin() {
+    public List<ClassifiableEntry> s_begin() {
         return beg;
     }
 
     /** end of the Sure subsumers interval */
     /** begin of the Possible subsumers interval */
     @Override
-    List<ClassifiableEntry> p_begin() {
+    public List<ClassifiableEntry> p_begin() {
         return Collections.emptyList();
     }
 }

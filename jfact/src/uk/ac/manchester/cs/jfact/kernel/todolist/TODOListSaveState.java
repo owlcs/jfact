@@ -7,7 +7,7 @@ import java.util.List;
 import conformance.PortedFrom;
 
 /** class for saving/restoring array Todo table */
-public  class TODOListSaveState implements Serializable {
+public class TODOListSaveState implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** save state of all regular queues */
     protected final int[][] backup;
@@ -32,7 +32,6 @@ public  class TODOListSaveState implements Serializable {
     @Override
     public String toString() {
         return "" + noe + " " + backupID_sp + "," + backupID_ep + " " + waitingQueue
-                + " " + sp + " " + ep + " " + queueBroken + " "
-                + Arrays.toString(backup);
+                + " " + sp + " " + ep + " " + queueBroken + " " + Arrays.toString(backup);
     }
 }

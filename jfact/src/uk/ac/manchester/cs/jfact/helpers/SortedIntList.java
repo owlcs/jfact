@@ -71,43 +71,6 @@ class SortedIntList implements Serializable {
         size++;
     }
 
-    public void clear() {
-        values = null;
-        size = 0;
-    }
-
-    public boolean contains(int o) {
-        if (values != null) {
-            int i = insertionIndex(o);
-            boolean toReturn = i > -1;
-            return toReturn;
-        }
-        return false;
-    }
-
-    public boolean isEmpty() {
-        return values == null;
-    }
-
-    public void remove(int o) {
-        if (values == null) {
-            return;
-        }
-        int i = insertionIndex(o);
-        removeAt(i);
-    }
-
-    public int size() {
-        return size;
-    }
-
-    public int[] toIntArray() {
-        if (values == null) {
-            return new int[0];
-        }
-        return Arrays.copyOf(values, size);
-    }
-
     public void removeAt(int i) {
         if (values == null) {
             return;

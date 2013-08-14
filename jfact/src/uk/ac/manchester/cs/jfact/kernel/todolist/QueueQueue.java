@@ -35,8 +35,7 @@ public class QueueQueue implements Serializable {
         // here we need to put e on the proper place
         int n = size;
         while (n > sPointer
-                && _Wait.get(n - 1).getNode().getNominalLevel() > Node
-                        .getNominalLevel()) {
+                && _Wait.get(n - 1).getNode().getNominalLevel() > Node.getNominalLevel()) {
             --n;
         }
         _Wait.add(n, e);

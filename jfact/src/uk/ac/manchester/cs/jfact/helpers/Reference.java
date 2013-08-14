@@ -26,10 +26,6 @@ public class Reference<E> implements Serializable {
         return e;
     }
 
-    public void delete() {
-        e = null;
-    }
-
     @Override
     public String toString() {
         if (e != null) {

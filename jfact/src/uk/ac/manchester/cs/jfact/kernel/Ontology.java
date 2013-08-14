@@ -12,8 +12,6 @@ import java.util.List;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.split.TSignature;
 import uk.ac.manchester.cs.jfact.split.TSplitVars;
-import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
-import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 import conformance.Original;
 import conformance.PortedFrom;
 
@@ -125,17 +123,6 @@ public class Ontology implements Serializable {
     @PortedFrom(file = "tOntology.h", name = "size")
     public int size() {
         return axioms.size();
-    }
-
-    /** @param visitor */
-    public void accept(DLAxiomVisitor visitor) {
-        visitor.visitOntology(this);
-    }
-
-    /** @param visitor
-     * @return visitor value */
-    public <O> O accept(DLAxiomVisitorEx<O> visitor) {
-        return visitor.visitOntology(this);
     }
 
     @Original

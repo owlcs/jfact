@@ -311,9 +311,6 @@ public class ConjunctiveQueryFolding implements Serializable {
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "doQuery")
     private void doQuery(QRQuery query, ReasoningKernel kernel) {
-        // System.out.println("Next query: " + query);
-        QueryConnectednessChecker cc1 = new QueryConnectednessChecker(query);
-        // System.out.println("Connected? " + cc1.isConnected());
         TQueryToConceptsTransformer transformer = new TQueryToConceptsTransformer(this,
                 query);
         transformer.Run();

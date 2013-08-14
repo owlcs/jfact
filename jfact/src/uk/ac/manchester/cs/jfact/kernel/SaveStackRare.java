@@ -29,11 +29,6 @@ class SaveStackRare implements Serializable {
         ++curLevel;
     }
 
-    /** @return check that stack is empty */
-    public boolean isEmpty() {
-        return base.isEmpty();
-    }
-
     /** add a new object to the stack
      * 
      * @param p */

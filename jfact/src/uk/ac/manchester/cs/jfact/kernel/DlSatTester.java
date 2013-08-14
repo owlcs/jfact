@@ -409,23 +409,6 @@ public class DlSatTester implements Serializable {
         }
     }
 
-    /** class to check whether there is a need to unsplit splitted var */
-    class SingleSplit implements Serializable {
-        private static final long serialVersionUID = 11000L;
-        /** signature of equivalent part of the split */
-        private final Set<NamedEntity> eqSig;
-        /** signature of subsumption part of the split */
-        private final Set<NamedEntity> impSig;
-        /** pointer to split vertex to activate */
-        private final int bp;
-
-        protected SingleSplit(Set<NamedEntity> es, Set<NamedEntity> is, int p) {
-            eqSig = new HashSet<NamedEntity>(es);
-            impSig = new HashSet<NamedEntity>(is);
-            bp = p;
-        }
-    }
-
     /** GCIs local to session */
     @PortedFrom(file = "Reasoner.h", name = "SessionGCIs")
     private final List<Integer> SessionGCIs = new ArrayList<Integer>();

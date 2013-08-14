@@ -12,7 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.manchester.cs.jfact.helpers.SaveStack;
-import uk.ac.manchester.cs.jfact.kernel.*;
+import uk.ac.manchester.cs.jfact.kernel.ConceptWDep;
+import uk.ac.manchester.cs.jfact.kernel.DagTag;
+import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
 import conformance.Original;
 import conformance.PortedFrom;
 
@@ -20,12 +22,6 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ToDoList.h", name = "ToDoList")
 public class ToDoList implements Serializable {
     private static final long serialVersionUID = 11000L;
-
-
-
-
-
-
     /** waiting ops queue for IDs */
     @PortedFrom(file = "ToDoList.h", name = "queueID")
     private final ArrayQueue queueID = new ArrayQueue();
@@ -86,7 +82,7 @@ public class ToDoList implements Serializable {
      * @param Options */
     @Original
     public void initPriorities(String Options) {
-        matrix.initPriorities(Options, "IAOEFLG");
+        matrix.initPriorities(Options);
     }
 
     /** clear Todo table */

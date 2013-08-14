@@ -421,23 +421,23 @@ class UpperBoundDirectEvaluator extends CardinalityEvaluatorBase {
 class UpperBoundComplementEvaluator extends CardinalityEvaluatorBase {
     private static final long serialVersionUID = 11000L;
 
-    // / define a special value for concepts that are not in C^{<= n}
+    /** define a special value for concepts that are not in C^{<= n} */
     protected int getNoneValue() {
         return -1;
     }
 
-    // / define a special value for concepts that are in C^{<= n} for all n
+    /** define a special value for concepts that are in C^{<= n} for all n */
     protected int getAllValue() {
         return 0;
     }
 
-    // / helper for entities TODO: checks only C top-locality, not R
+    /** helper for entities TODO: checks only C top-locality, not R */
     @Override
     protected int getEntityValue(NamedEntity entity) {
         return topCLocal() && sig.nc(entity) ? getAllValue() : getNoneValue();
     }
 
-    // / helper for All
+    /** helper for All */
     @Override
     protected int getForallValue(RoleExpression R, Expression C) {
         if (isBotEquivalent(R) || getUpperBoundComplement(C) == 0) {

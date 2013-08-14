@@ -8,7 +8,6 @@ package uk.ac.manchester.cs.jfact.split;
 import java.util.Collection;
 import java.util.List;
 
-import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
@@ -46,7 +45,7 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
 
     /** @return true iff role expression in equivalent to const wrt locality */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isREquivalent")
-    protected boolean isREquivalent(Expression expr) {
+    private boolean isREquivalent(Expression expr) {
         return sig.topRLocal() ? isTopEquivalent(expr) : isBotEquivalent(expr);
     }
 
@@ -97,17 +96,6 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
     @Original
     public TSignature getSignature() {
         return sig;
-    }
-
-    /** load ontology to a given KB */
-    @Override
-    @Original
-    public void visitOntology(Ontology ontology) {
-        for (AxiomInterface p : ontology.getAxioms()) {
-            if (p.isUsed()) {
-                p.accept(this);
-            }
-        }
     }
 
     @Override

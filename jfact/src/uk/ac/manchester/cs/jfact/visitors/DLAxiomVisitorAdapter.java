@@ -7,109 +7,172 @@ package uk.ac.manchester.cs.jfact.visitors;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
-import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 
 /** adapter for null visitor */
 public class DLAxiomVisitorAdapter implements DLAxiomVisitor, Serializable {
     private static final long serialVersionUID = 11000L;
 
-    @Override
-    public void visit(AxiomDeclaration axiom) {}
+    protected void doDefault(@SuppressWarnings("unused") AxiomInterface a) {}
 
     @Override
-    public void visit(AxiomEquivalentConcepts axiom) {}
+    public void visit(AxiomDeclaration axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomDisjointConcepts axiom) {}
+    public void visit(AxiomEquivalentConcepts axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomEquivalentORoles axiom) {}
+    public void visit(AxiomDisjointConcepts axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomEquivalentDRoles axiom) {}
+    public void visit(AxiomEquivalentORoles axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomDisjointORoles axiom) {}
+    public void visit(AxiomEquivalentDRoles axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomDisjointDRoles axiom) {}
+    public void visit(AxiomDisjointORoles axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomSameIndividuals axiom) {}
+    public void visit(AxiomDisjointDRoles axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomDifferentIndividuals axiom) {}
+    public void visit(AxiomSameIndividuals axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomFairnessConstraint axiom) {}
+    public void visit(AxiomDifferentIndividuals axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomRoleInverse axiom) {}
+    public void visit(AxiomFairnessConstraint axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomORoleSubsumption axiom) {}
+    public void visit(AxiomRoleInverse axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomDRoleSubsumption axiom) {}
+    public void visit(AxiomORoleSubsumption axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomORoleDomain axiom) {}
+    public void visit(AxiomDRoleSubsumption axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomDRoleDomain axiom) {}
+    public void visit(AxiomORoleDomain axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomORoleRange axiom) {}
+    public void visit(AxiomDRoleDomain axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomDRoleRange axiom) {}
+    public void visit(AxiomORoleRange axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomRoleTransitive axiom) {}
+    public void visit(AxiomDRoleRange axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomRoleReflexive axiom) {}
+    public void visit(AxiomRoleTransitive axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomRoleIrreflexive axiom) {}
+    public void visit(AxiomRoleReflexive axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomRoleSymmetric axiom) {}
+    public void visit(AxiomRoleIrreflexive axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomRoleAsymmetric axiom) {}
+    public void visit(AxiomRoleSymmetric axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomORoleFunctional axiom) {}
+    public void visit(AxiomRoleAsymmetric axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomDRoleFunctional axiom) {}
+    public void visit(AxiomORoleFunctional axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomRoleInverseFunctional axiom) {}
+    public void visit(AxiomDRoleFunctional axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomConceptInclusion axiom) {}
+    public void visit(AxiomRoleInverseFunctional axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomInstanceOf axiom) {}
+    public void visit(AxiomConceptInclusion axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomRelatedTo axiom) {}
+    public void visit(AxiomInstanceOf axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomRelatedToNot axiom) {}
+    public void visit(AxiomRelatedTo axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomValueOf axiom) {}
+    public void visit(AxiomRelatedToNot axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomValueOfNot axiom) {}
+    public void visit(AxiomValueOf axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visitOntology(Ontology ontology) {}
+    public void visit(AxiomValueOfNot axiom) {
+        doDefault(axiom);
+    }
 
     @Override
-    public void visit(AxiomDisjointUnion axiom) {}
+    public void visit(AxiomDisjointUnion axiom) {
+        doDefault(axiom);
+    }
 }

@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
-import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.ReasoningKernel;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleChain;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
@@ -141,17 +140,6 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker,
         // disallow usage of the expression cache as same expressions will lead
         // to different translations
         Kernel.setIgnoreExprCache(true);
-    }
-
-    /** load ontology to a given KB */
-    @Override
-    @PortedFrom(file = "SemanticLocalityChecker.h", name = "visitOntology")
-    public void visitOntology(Ontology ontology) {
-        for (AxiomInterface p : ontology.getAxioms()) {
-            if (p.isUsed()) {
-                p.accept(this);
-            }
-        }
     }
 
     @Override

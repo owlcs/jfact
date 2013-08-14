@@ -87,18 +87,22 @@ public class TopEquivalenceEvaluator extends SigAccessor implements DLExpression
     }
 
     /** @return true iff (<= n R.C) is topEq */
+    @SuppressWarnings("unused")
     private boolean isMaxTopEquivalent(int n, RoleExpression R, Expression C) {
         return isBotEquivalent(R) || isBotEquivalent(C);
     }
 
     // set fields
-    /** set the corresponding bottom evaluator */
+    /** set the corresponding bottom evaluator
+     * 
+     * @param eval */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "setBotEval")
     public void setBotEval(BotEquivalenceEvaluator eval) {
         BotEval = eval;
     }
 
-    /** @return true iff an EXPRession is equivalent to top wrt defined policy */
+    /** @param expr
+     * @return true iff an EXPRession is equivalent to top wrt defined policy */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isTopEquivalent")
     public boolean isTopEquivalent(Expression expr) {
         expr.accept(this);

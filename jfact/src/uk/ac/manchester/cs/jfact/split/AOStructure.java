@@ -41,7 +41,7 @@ public class AOStructure implements Serializable {
 
     /** @return atoms */
     @PortedFrom(file = "AtomicDecomposer.h", name = "begin")
-    public List<TOntologyAtom> begin() {
+    public List<TOntologyAtom> getAtoms() {
         return Atoms;
     }
 

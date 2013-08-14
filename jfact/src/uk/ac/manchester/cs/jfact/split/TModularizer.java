@@ -237,12 +237,6 @@ public class TModularizer implements Serializable {
         return nChecks;
     }
 
-    /** get number of axioms that were local */
-    @PortedFrom(file = "Modularity.h", name = "getNNonLocal")
-    private long getNNonLocal() {
-        return nNonLocal;
-    }
-
     /** extract module wrt SIGNATURE and TYPE from O;
      * 
      * @param list

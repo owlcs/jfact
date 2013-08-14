@@ -637,7 +637,7 @@ public class Concept extends ClassifiableEntry {
      * 
      * @param lab */
     @PortedFrom(file = "tConcept.h", name = "dropRelevant")
-    public void dropRelevant(long lab) {
+    public void dropRelevant() {
         rel = 0;
     }
 }

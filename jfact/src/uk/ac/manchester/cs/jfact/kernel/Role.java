@@ -629,26 +629,34 @@ public class Role extends ClassifiableEntry {
     }
 
     @Original
-    private static Role resolveRoleHelper(DLTree t) {
+    private static Role resolveRoleHelper(DLTree t, String r) {
         if (t == null) {
-            throw new ReasonerInternalException("Role expression expected");
+            throw new ReasonerInternalException("Role expression expected: " + r);
         }
         switch (t.token()) {
             case RNAME: // role name
             case DNAME: // data role name
                 return (Role) t.elem().getNE();
             case INV: // inversion
-                return resolveRoleHelper(t.getChild()).inverse();
+                return resolveRoleHelper(t.getChild(), r).inverse();
             default: // error
-                throw new ReasonerInternalException("Invalid role expression");
+                throw new ReasonerInternalException("Invalid role expression: " + r
+                        + " but got: " + t);
         }
     }
 
     /** @param t
      * @return R or -R for T in the form (inv ... (inv R)...); remove synonyms */
     @PortedFrom(file = "tRole.h", name = "resolveRole")
+    public static Role resolveRole(DLTree t, String r) {
+        return resolveSynonym(resolveRoleHelper(t, r));
+    }
+
+    /** @param t
+     * @return R or -R for T in the form (inv ... (inv R)...); remove synonyms */
+    @PortedFrom(file = "tRole.h", name = "resolveRole")
     public static Role resolveRole(DLTree t) {
-        return resolveSynonym(resolveRoleHelper(t));
+        return resolveSynonym(resolveRoleHelper(t, ""));
     }
 
     protected Role(String name) {

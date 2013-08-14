@@ -35,7 +35,7 @@ public abstract class DLTree implements Serializable {
 
     /** @param l
      *            element */
-    public DLTree(Lexeme l) {
+    protected DLTree(Lexeme l) {
         elem = l;
     }
 
@@ -116,11 +116,6 @@ public abstract class DLTree implements Serializable {
                 t.ancestor = this;
             }
         }
-    }
-
-    /** @param tok */
-    public DLTree(Token tok) {
-        this(new Lexeme(tok));
     }
 
     @Override

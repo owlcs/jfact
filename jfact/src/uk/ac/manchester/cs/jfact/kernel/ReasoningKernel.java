@@ -21,8 +21,10 @@ import org.semanticweb.owlapi.util.MultiMap;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
-import uk.ac.manchester.cs.jfact.helpers.*;
+import uk.ac.manchester.cs.jfact.helpers.DLTree;
+import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.helpers.Timer;
+import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import uk.ac.manchester.cs.jfact.kernel.actors.Actor;
 import uk.ac.manchester.cs.jfact.kernel.actors.RIActor;
 import uk.ac.manchester.cs.jfact.kernel.actors.SupConceptActor;
@@ -132,8 +134,6 @@ public class ReasoningKernel implements Serializable {
     @PortedFrom(file = "Kernel.h", name = "ignoreExprCache")
     private boolean ignoreExprCache = false;
     private final uk.ac.manchester.cs.jfact.helpers.Timer moduleTimer = new uk.ac.manchester.cs.jfact.helpers.Timer();
-    private final uk.ac.manchester.cs.jfact.helpers.Timer subCheckTimer = new uk.ac.manchester.cs.jfact.helpers.Timer();
-    private int nModule = 0;
 
     // -- internal query cache manipulation
     /** clear query cache */
@@ -507,7 +507,7 @@ public class ReasoningKernel implements Serializable {
     /** get role by the TRoleExpr */
     @PortedFrom(file = "Kernel.h", name = "getRole")
     private Role getRole(RoleExpression r, String reason) {
-        return Role.resolveRole(e(r));
+        return Role.resolveRole(e(r), reason);
     }
 
     /** get taxonomy of the property wrt it's name */
@@ -522,6 +522,7 @@ public class ReasoningKernel implements Serializable {
         return R.getTaxVertex();
     }
 
+    /** @return kernel configuration */
     @PortedFrom(file = "Kernel.h", name = "getOptions")
     public JFactReasonerConfiguration getOptions() {
         return kernelOptions;
@@ -564,10 +565,9 @@ public class ReasoningKernel implements Serializable {
     /** dump query processing TIME, reasoning statistics and a (preprocessed)
      * TBox
      * 
-     * @param o
      * @param time */
     @PortedFrom(file = "Kernel.h", name = "writeReasoningResult")
-    public void writeReasoningResult(LogAdapter o, long time) {
+    public void writeReasoningResult(long time) {
         // get rid of the query leftovers
         getTBox().clearQueryConcept();
         getTBox().writeReasoningResult(time);
@@ -957,7 +957,7 @@ public class ReasoningKernel implements Serializable {
      * @return let all concept expressions in the ArgQueue to be fairness
      *         constraints */
     @PortedFrom(file = "Kernel.h", name = "setFairnessConstraint")
-    public AxiomInterface setFairnessConstraint(OWLAxiom ax, List<ConceptExpression> l) {
+    private AxiomInterface setFairnessConstraint(OWLAxiom ax, List<ConceptExpression> l) {
         return ontology.add(new AxiomFairnessConstraint(ax, l));
     }
 
@@ -979,10 +979,10 @@ public class ReasoningKernel implements Serializable {
     /** @return consistency status of KB */
     @PortedFrom(file = "Kernel.h", name = "isKBConsistent")
     public boolean isKBConsistent() {
-            if (getStatus().ordinal() <= kbLoading.ordinal()) {
-                processKB(kbCChecked);
-            }
-            return getTBox().isConsistent();
+        if (getStatus().ordinal() <= kbLoading.ordinal()) {
+            processKB(kbCChecked);
+        }
+        return getTBox().isConsistent();
     }
 
     /** ensure that KB is preprocessed/consistence checked */
@@ -1458,7 +1458,7 @@ public class ReasoningKernel implements Serializable {
      * @param direct
      * @param actor */
     @PortedFrom(file = "Kernel.h", name = "getDRoleDomain")
-    public void getDRoleDomain(DataRoleExpression r, boolean direct, Actor actor) {
+    private void getDRoleDomain(DataRoleExpression r, boolean direct, Actor actor) {
         classifyKB();
         this.setUpCache(getExpressionManager()
                 .exists(r, getExpressionManager().dataTop()), csClassified);
@@ -1479,7 +1479,7 @@ public class ReasoningKernel implements Serializable {
      * @param direct
      * @param actor */
     @PortedFrom(file = "Kernel.h", name = "getRoleRange")
-    public void getRoleRange(ObjectRoleExpression r, boolean direct, Actor actor) {
+    private void getRoleRange(ObjectRoleExpression r, boolean direct, Actor actor) {
         getORoleDomain(getExpressionManager().inverse(r), direct, actor);
     }
 
@@ -1593,7 +1593,7 @@ public class ReasoningKernel implements Serializable {
 
     /** @return knowledge explorer */
     @Original
-    public KnowledgeExplorer getKnowledgeExplorer() {
+    private KnowledgeExplorer getKnowledgeExplorer() {
         return KE;
     }
 
@@ -1712,7 +1712,6 @@ public class ReasoningKernel implements Serializable {
         // System.out.println("Original Taxonomy:" + tax);
         Set<NamedEntity> MPlus = new HashSet<NamedEntity>();
         Set<NamedEntity> MMinus = new HashSet<NamedEntity>();
-        Set<String> MAll = new HashSet<String>();
         TSignature NewSig = ontology.getSignature();
         Set<NamedEntity> RemovedEntities = new HashSet<NamedEntity>(OntoSig.begin());
         RemovedEntities.removeAll(NewSig.begin());
@@ -1755,7 +1754,6 @@ public class ReasoningKernel implements Serializable {
         uk.ac.manchester.cs.jfact.helpers.Timer t = new Timer();
         t.start();
         LocalityChecker lc = getModExtractor(false).getModularizer().getLocalityChecker();
-
         for (Map.Entry<NamedEntity, TSignature> p : Name2Sig.entrySet()) {
             lc.setSignatureValue(p.getValue());
             for (AxiomInterface notProcessed : ontology.getAxioms()) {
@@ -1800,7 +1798,6 @@ public class ReasoningKernel implements Serializable {
         tax = getCTaxonomy();
         pTBox.reclassify(MPlus, MMinus);
         getOntology().setProcessed();
-
     }
 
     private byte[] save(TBox tbox) {
@@ -1841,8 +1838,8 @@ public class ReasoningKernel implements Serializable {
             TAxiomSplitter AxiomSplitter = new TAxiomSplitter(kernelOptions, ontology);
             AxiomSplitter.buildSplit();
         }
-        OntologyLoader OntologyLoader = new OntologyLoader(getTBox());
-        OntologyLoader.visitOntology(ontology);
+        OntologyLoader ontologyLoader = new OntologyLoader(getTBox());
+        ontologyLoader.visitOntology(ontology);
         if (kernelOptions.isUseIncrementalReasoning()) {
             initIncremental();
         }
@@ -1866,10 +1863,8 @@ public class ReasoningKernel implements Serializable {
         // calculate a module
         sig.add(entity);
         getModExtractor(false).getModule(Module, sig, ModuleType.M_BOT);
-        nModule++;
         // perform update
-        Name2Sig.put(entity, new TSignature(getModExtractor(false)
-                .getModularizer()
+        Name2Sig.put(entity, new TSignature(getModExtractor(false).getModularizer()
                 .getSignature()));
         moduleTimer.stop();
         // return ret;
@@ -1890,9 +1885,9 @@ public class ReasoningKernel implements Serializable {
         // smaller module: recurse
         TSignature ModSig = getModExtractor(false).getModularizer().getSignature();
         for (NamedEntity p : ModSig.begin()) {
-            if ( toProcess.contains(p) ) {  
+            if (toProcess.contains(p)) {
                 // need to process
-                buildSignature ( p, NewModule, toProcess );
+                buildSignature(p, NewModule, toProcess);
             }
         }
     }
@@ -1903,7 +1898,7 @@ public class ReasoningKernel implements Serializable {
         Name2Sig.clear();
         // found all entities
         Set<NamedEntity> toProcess = new HashSet<NamedEntity>();
-        OntologyBasedModularizer ModExtractor = getModExtractor(false);
+        getModExtractor(false);
         // fill the module signatures of the concepts
         for (Concept p : getTBox().getConcepts()) {
             toProcess.add(p.getEntity());
@@ -2108,13 +2103,15 @@ public class ReasoningKernel implements Serializable {
         }
     }
 
+    @SuppressWarnings("unused")
     @PortedFrom(file = "Kernel.cpp", name = "isEq")
-    private boolean isEq(DlCompletionTree p, DlCompletionTree q) {
+    protected boolean isEq(DlCompletionTree p, DlCompletionTree q) {
         return false;
     }
 
+    @SuppressWarnings("unused")
     @PortedFrom(file = "Kernel.cpp", name = "isLt")
-    private boolean isLt(DlCompletionTree p, DlCompletionTree q) {
+    protected boolean isLt(DlCompletionTree p, DlCompletionTree q) {
         return false;
     }
 
@@ -2338,7 +2335,7 @@ public class ReasoningKernel implements Serializable {
      * @param J
      * @return true if individuals related through R */
     @PortedFrom(file = "Kernel.h", name = "isRelated")
-    public boolean isRelated(IndividualExpression I, ObjectRoleExpression R,
+    private boolean isRelated(IndividualExpression I, ObjectRoleExpression R,
             IndividualExpression J) {
         realiseKB();
         Individual i = getIndividual(I, "Individual name expected in the isRelated()");

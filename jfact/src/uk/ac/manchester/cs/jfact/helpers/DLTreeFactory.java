@@ -59,7 +59,9 @@ public class DLTreeFactory implements Serializable {
 
     /** @return true iff the cardinality of a given data range DR is greater than
      *         N. FIXME!! good approximation for now */
+    @SuppressWarnings("unused")
     public static boolean isDataRangeBigEnough(DLTree dr, int n) {
+        // XXX bug
         return true;
     }
 

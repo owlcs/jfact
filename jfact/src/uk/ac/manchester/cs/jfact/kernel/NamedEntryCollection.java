@@ -36,7 +36,7 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
     /** abstract method for additional tuning of newly created element
      * 
      * @param p */
-    public void registerNew(T p) {}
+    public void registerNew(@SuppressWarnings("unused") T p) {}
 
     /** new element in a collection;
      * 

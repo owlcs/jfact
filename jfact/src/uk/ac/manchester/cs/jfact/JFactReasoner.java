@@ -111,6 +111,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     public Ontology getOntology() {
         return kernel.getOntology();
     }
+
     @Override
     public synchronized Node<OWLClass> getEquivalentClasses(OWLClassExpression ce)
             throws InconsistentOntologyException, ClassExpressionNotInProfileException,
@@ -313,7 +314,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             TimeOutException {
         if (consistencyVerified == null) {
             try {
-            consistencyVerified = kernel.isKBConsistent();
+                consistencyVerified = kernel.isKBConsistent();
             } catch (InconsistentOntologyException e) {
                 consistencyVerified = Boolean.FALSE;
             }
@@ -748,8 +749,8 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
 
     /** @param o
      * @param time */
-    public synchronized void writeReasoningResult(LogAdapter o, long time) {
-        kernel.writeReasoningResult(o, time);
+    public synchronized void writeReasoningResult(long time) {
+        kernel.writeReasoningResult(time);
     }
 
     // owl knowledge exploration

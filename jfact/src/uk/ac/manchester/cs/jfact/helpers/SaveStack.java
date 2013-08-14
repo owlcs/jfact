@@ -39,12 +39,6 @@ public class SaveStack<T> implements Serializable {
         return list.peek();
     }
 
-    /** @return top of stack */
-    @PortedFrom(file = "tSaveStack.h", name = "top")
-    public T top() {
-        return list.peek();
-    }
-
     /** @return pop stack */
     @PortedFrom(file = "tSaveStack.h", name = "pop")
     public T pop() {
@@ -69,11 +63,5 @@ public class SaveStack<T> implements Serializable {
     @PortedFrom(file = "tSaveStack.h", name = "empty")
     public boolean isEmpty() {
         return list.isEmpty();
-    }
-
-    /** @return size of stack */
-    @Original
-    public int size() {
-        return list.size();
     }
 }

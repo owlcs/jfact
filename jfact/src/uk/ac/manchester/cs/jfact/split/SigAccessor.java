@@ -6,7 +6,6 @@ package uk.ac.manchester.cs.jfact.split;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import uk.ac.manchester.cs.jfact.datatypes.Datatype;
-import uk.ac.manchester.cs.jfact.datatypes.cardinality;
 import uk.ac.manchester.cs.jfact.kernel.dl.DataTop;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorAdapter;
@@ -46,19 +45,6 @@ public class SigAccessor extends DLExpressionVisitorAdapter {
     @Original
     public boolean isTopOrBuiltInDataType(Expression expr) {
         return isTopDT(expr) || expr instanceof Datatype<?>;
-    }
-
-    /** @param expr
-     * @return true iff EXPR is a top datatype or an infinite built-in datatype;
-     *         FIXME add real/fraction later */
-    @Original
-    public boolean isTopOrBuiltInInfDataType(Expression expr) {
-        if (isTopDT(expr)) {
-            return true;
-        }
-        return expr instanceof Datatype<?>
-                && ((Datatype<?>) expr).getCardinality().equals(
-                        cardinality.COUNTABLYINFINITE);
     }
 
     /** @return true iff concepts are treated as TOPs */

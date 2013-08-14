@@ -184,7 +184,7 @@ public class RoleAutomaton implements Serializable {
     /** @param state
      * @return the 1st (multi-)transition starting in STATE */
     @PortedFrom(file = "RAutomaton.h", name = "begin")
-    public RAStateTransitions begin(int state) {
+    public RAStateTransitions getRAStateTransitions(int state) {
         return base.get(state);
     }
 

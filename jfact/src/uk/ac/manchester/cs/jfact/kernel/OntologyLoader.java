@@ -464,7 +464,6 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
     }
 
     /** load ontology to a given KB */
-    @Override
     @PortedFrom(file = "tOntologyLoader.h", name = "visitOntology")
     public void visitOntology(Ontology ontology) {
         for (AxiomInterface p : ontology.getAxioms()) {

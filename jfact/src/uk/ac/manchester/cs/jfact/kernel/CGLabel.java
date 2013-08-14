@@ -210,16 +210,4 @@ public class CGLabel implements Serializable {
         toReturn = ccLabel.getConceptWithBP(bp);
         return toReturn;
     }
-
-    /** @return number of all concepts */
-    @Original
-    public int baseSize() {
-        return ccLabel.size() + scLabel.size();
-    }
-
-    /** @return id for this label */
-    @Original
-    public int getId() {
-        return id;
-    }
 }

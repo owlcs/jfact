@@ -8,9 +8,7 @@ package uk.ac.manchester.cs.jfact.split;
 import java.io.Serializable;
 import java.util.Collection;
 
-import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import conformance.PortedFrom;
@@ -216,16 +214,5 @@ public class TSignatureUpdater implements DLAxiomVisitor, Serializable {
     /** @param sig */
     public TSignatureUpdater(TSignature sig) {
         Updater = new TExpressionSignatureUpdater(sig);
-    }
-
-    /** load ontology to a given KB */
-    @Override
-    @PortedFrom(file = "tSignatureUpdater.h", name = "visitOntology")
-    public void visitOntology(Ontology ontology) {
-        for (AxiomInterface p : ontology.getAxioms()) {
-            if (p.isUsed()) {
-                p.accept(this);
-            }
-        }
     }
 }

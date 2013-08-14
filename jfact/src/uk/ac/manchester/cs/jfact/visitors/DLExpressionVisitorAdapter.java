@@ -10,126 +10,207 @@ import java.io.Serializable;
 import uk.ac.manchester.cs.jfact.datatypes.Datatype;
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.kernel.dl.*;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 
 @SuppressWarnings("javadoc")
 public abstract class DLExpressionVisitorAdapter implements DLExpressionVisitor,
         Serializable {
     private static final long serialVersionUID = 11000L;
 
-    @Override
-    public void visit(ConceptTop expr) {}
+    protected void doDefault(@SuppressWarnings("unused") Expression a) {}
 
     @Override
-    public void visit(ConceptBottom expr) {}
+    public void visit(ConceptTop expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ConceptName expr) {}
+    public void visit(ConceptBottom expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ConceptNot expr) {}
+    public void visit(ConceptName expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ConceptAnd expr) {}
+    public void visit(ConceptNot expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ConceptOr expr) {}
+    public void visit(ConceptAnd expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ConceptOneOf<?> expr) {}
+    public void visit(ConceptOr expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ConceptObjectSelf expr) {}
+    public void visit(ConceptOneOf<?> expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ConceptObjectValue expr) {}
+    public void visit(ConceptObjectSelf expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ConceptObjectExists expr) {}
+    public void visit(ConceptObjectValue expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ConceptObjectForall expr) {}
+    public void visit(ConceptObjectExists expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ConceptObjectMinCardinality expr) {}
+    public void visit(ConceptObjectForall expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ConceptObjectMaxCardinality expr) {}
+    public void visit(ConceptObjectMinCardinality expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ConceptObjectExactCardinality expr) {}
+    public void visit(ConceptObjectMaxCardinality expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ConceptDataValue expr) {}
+    public void visit(ConceptObjectExactCardinality expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ConceptDataExists expr) {}
+    public void visit(ConceptDataValue expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ConceptDataForall expr) {}
+    public void visit(ConceptDataExists expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ConceptDataMinCardinality expr) {}
+    public void visit(ConceptDataForall expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ConceptDataMaxCardinality expr) {}
+    public void visit(ConceptDataMinCardinality expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ConceptDataExactCardinality expr) {}
+    public void visit(ConceptDataMaxCardinality expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(IndividualName expr) {}
+    public void visit(ConceptDataExactCardinality expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ObjectRoleTop expr) {}
+    public void visit(IndividualName expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ObjectRoleBottom expr) {}
+    public void visit(ObjectRoleTop expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ObjectRoleName expr) {}
+    public void visit(ObjectRoleBottom expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ObjectRoleInverse expr) {}
+    public void visit(ObjectRoleName expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ObjectRoleChain expr) {}
+    public void visit(ObjectRoleInverse expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ObjectRoleProjectionFrom expr) {}
+    public void visit(ObjectRoleChain expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(ObjectRoleProjectionInto expr) {}
+    public void visit(ObjectRoleProjectionFrom expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(DataRoleTop expr) {}
+    public void visit(ObjectRoleProjectionInto expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(DataRoleBottom expr) {}
+    public void visit(DataRoleTop expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(DataRoleName expr) {}
+    public void visit(DataRoleBottom expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(DataTop expr) {}
+    public void visit(DataRoleName expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(DataBottom expr) {}
+    public void visit(DataTop expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(Datatype<?> expr) {}
+    public void visit(DataBottom expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(Literal<?> expr) {}
+    public void visit(Datatype<?> expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(DataNot expr) {}
+    public void visit(Literal<?> expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(DataAnd expr) {}
+    public void visit(DataNot expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(DataOr expr) {}
+    public void visit(DataAnd expr) {
+        doDefault(expr);
+    }
 
     @Override
-    public void visit(DataOneOf expr) {}
+    public void visit(DataOr expr) {
+        doDefault(expr);
+    }
+
+    @Override
+    public void visit(DataOneOf expr) {
+        doDefault(expr);
+    }
 }

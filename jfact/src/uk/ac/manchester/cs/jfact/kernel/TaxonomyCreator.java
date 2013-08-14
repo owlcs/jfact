@@ -272,6 +272,7 @@ public class TaxonomyCreator implements Serializable {
         }
         return value;
     }
+
     /** check if it is necessary to log taxonomy action */
     @PortedFrom(file = "TaxonomyCreator.h", name = "needLogging")
     protected boolean needLogging() {
@@ -415,7 +416,7 @@ public class TaxonomyCreator implements Serializable {
      * 
      * @param p */
     @PortedFrom(file = "TaxonomyCreator.h", name = "buildSignature")
-    protected TSignature buildSignature(ClassifiableEntry p) {
+    protected TSignature buildSignature(@SuppressWarnings("unused") ClassifiableEntry p) {
         return null;
     }
 }

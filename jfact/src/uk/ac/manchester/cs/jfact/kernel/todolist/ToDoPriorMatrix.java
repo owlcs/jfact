@@ -29,8 +29,6 @@ public class ToDoPriorMatrix implements Serializable {
     private int indexLE;
     @PortedFrom(file = "PriorityMatrix.h", name = "iGE")
     private int indexGE;
-
-
     /** number of regular options (o- and NN-rules are not included) */
     @PortedFrom(file = "PriorityMatrix.h", name = "nRegularOps")
     protected static final int nRegularOptions = 7;
@@ -47,7 +45,7 @@ public class ToDoPriorMatrix implements Serializable {
      * @param options
      * @param optionName */
     @PortedFrom(file = "PriorityMatrix.h", name = "initPriorities")
-    public void initPriorities(String options, String optionName) {
+    public void initPriorities(String options) {
         // check for correctness
         if (options.length() < 7) {
             throw new ReasonerInternalException(

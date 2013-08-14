@@ -137,9 +137,6 @@ public class TBox implements Serializable {
     /** flag for switching semantic branching */
     @PortedFrom(file = "dlTBox.h", name = "useSemanticBranching")
     private boolean useSemanticBranching;
-    /** flag for switching backjumping */
-    @PortedFrom(file = "dlTBox.h", name = "useBackjumping")
-    private boolean useBackjumping;
     /** whether or not check blocking status as late as possible */
     @PortedFrom(file = "dlTBox.h", name = "useLazyBlocking")
     private boolean useLazyBlocking;
@@ -779,7 +776,7 @@ public class TBox implements Serializable {
      * 
      * @param Rule */
     @PortedFrom(file = "dlTBox.h", name = "addSimpleRule")
-    public void addSimpleRule(SimpleRule Rule) {
+    private void addSimpleRule(SimpleRule Rule) {
         initRuleFields(Rule.getBody(), simpleRules.size());
         simpleRules.add(Rule);
     }
@@ -2505,7 +2502,7 @@ public class TBox implements Serializable {
                             conceptInProcess.remove(ret);
                             conceptInProcess.add(p);
                             ret.setRelevant(relevance);
-                            p.dropRelevant(relevance);
+                            p.dropRelevant();
                         }
                         ret = null;
                         redo = false;
@@ -3074,9 +3071,9 @@ public class TBox implements Serializable {
         }
         // System.out.println(" done \nFilling all individuals...");
         // all individuals to go thru
-        List<Individual> AllInd = new ArrayList<Individual>(i_begin());
+        // List<Individual> AllInd = new ArrayList<Individual>(i_begin());
         // System.out.println(" done with " + AllInd.size() + " individuals");
-        int size = Cs.size();
+        // int size = Cs.size();
         // System.out.println("Run consistency checks...");
         // int n = 0;
         // do {

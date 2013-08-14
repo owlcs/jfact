@@ -7,7 +7,6 @@ package uk.ac.manchester.cs.jfact.visitors;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
-import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 
@@ -18,20 +17,19 @@ public class DLAxiomVisitorExAdapter<A> implements DLAxiomVisitorEx<A>, Serializ
     private static final long serialVersionUID = 11000L;
     private A defaultValue;
 
+    /** default constructor */
     public DLAxiomVisitorExAdapter() {
         this(null);
     }
 
+    /** @param a
+     *            value to return */
     public DLAxiomVisitorExAdapter(A a) {
         defaultValue = a;
     }
 
-    protected A doDefault(AxiomInterface a) {
+    protected A doDefault(@SuppressWarnings("unused") AxiomInterface a) {
         return defaultValue;
-    }
-
-    protected A doDefault(Ontology a) {
-        return null;
     }
 
     @Override
@@ -192,10 +190,5 @@ public class DLAxiomVisitorExAdapter<A> implements DLAxiomVisitorEx<A>, Serializ
     @Override
     public A visit(AxiomValueOfNot axiom) {
         return doDefault(axiom);
-    }
-
-    @Override
-    public A visitOntology(Ontology ontology) {
-        return doDefault(ontology);
     }
 }

@@ -7,25 +7,16 @@ package uk.ac.manchester.cs.jfact.split;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
-import conformance.Original;
 import conformance.PortedFrom;
 
 /** ontology atom */
 @PortedFrom(file = "tOntologyAtom.h", name = "TOntologyAtom")
-public class TOntologyAtom implements Serializable {
+public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
     private static final long serialVersionUID = 11000L;
-    final @Original
-    static Comparator<TOntologyAtom> comparator = new Comparator<TOntologyAtom>() {
-        @Override
-        public int compare(TOntologyAtom arg0, TOntologyAtom arg1) {
-            return arg0.getId() - arg1.getId();
-        }
-    };
     /** set of axioms in the atom */
     @PortedFrom(file = "tOntologyAtom.h", name = "AtomAxioms")
     private final Set<AxiomInterface> AtomAxioms = new HashSet<AxiomInterface>();
@@ -41,6 +32,11 @@ public class TOntologyAtom implements Serializable {
     /** unique atom's identifier */
     @PortedFrom(file = "tOntologyAtom.h", name = "Id")
     private int Id = 0;
+
+    @Override
+    public int compareTo(TOntologyAtom arg1) {
+        return getId() - arg1.getId();
+    }
 
     /** remove all atoms in AllDepAtoms from DepAtoms */
     @PortedFrom(file = "tOntologyAtom.h", name = "filterDep")

@@ -516,7 +516,7 @@ public class ExpressionManager implements Serializable {
 
     /** @return BOTTOM data element */
     @PortedFrom(file = "tExpressionManager.h", name = "DataBottom")
-    public DataExpression dataBottom() {
+    public DataBottom dataBottom() {
         return dataBottom;
     }
 

@@ -610,12 +610,6 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
         return curLevel > restLevel;
     }
 
-    /** restore node from the topmost entry */
-    private void restore() {
-        assert !saves.isEmpty();
-        restore(saves.pop());
-    }
-
     /** restore node to given level */
     public void restore(int level) {
         restore(saves.pop(level));
@@ -654,7 +648,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
             int bp = list.keySet(i);
             DLVertex v = dag.get(bp);
             if (v.getType() == dtForall && bp < 0) {
-                if (!B4(p, 1, v.getRole(), -v.getConceptIndex())) {
+                if (!B4(1, v.getRole(), -v.getConceptIndex())) {
                     return false;
                 }
             } else if (v.getType() == dtLE) {
@@ -663,7 +657,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
                         return false;
                     }
                 } else {
-                    if (!B4(p, v.getNumberGE(), v.getRole(), v.getConceptIndex())) {
+                    if (!B4(v.getNumberGE(), v.getRole(), v.getConceptIndex())) {
                         return false;
                     }
                 }
@@ -762,7 +756,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
         return ret;
     }
 
-    private boolean B4(DlCompletionTree p, int m, Role T, int E) {
+    private boolean B4(int m, Role T, int E) {
         assert hasParent();
         if (isParentArcLabelled(T) && m == 1 && getParentNode().isLabelledBy(E)) {
             return true;
