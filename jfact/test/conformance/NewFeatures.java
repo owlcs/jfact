@@ -420,7 +420,6 @@ public class NewFeatures {
     @Test
     @Changed
     public void testNew_Feature_ObjectPropertyChain_BJP_003() {
-
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "    xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdfs= \"http://www.w3.org/2000/01/rdf-schema#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
@@ -690,10 +689,10 @@ public class NewFeatures {
         r.run();
     }
 
-
     @Test
     @Changed(reason = "not OWL 2 DL - data properties cannt be inverse functional properties")
-    public void testrdfbased_sem_char_inversefunc_data() {
+    public
+            void testrdfbased_sem_char_inversefunc_data() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:InverseFunctionalProperty rdf:about=\"http://www.example.org#p\">\n"
                 + "    <rdf:type rdf:resource=\"http://www.w3.org/2002/07/owl#DatatypeProperty\"/></owl:InverseFunctionalProperty>\n"
@@ -716,7 +715,6 @@ public class NewFeatures {
     @Test
     @Changed
     public void testrdfbased_sem_key_def() {
-
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p1\"/>\n"

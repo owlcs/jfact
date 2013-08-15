@@ -325,7 +325,6 @@ public class FastSetSimple extends AbstractFastSet {
         return false;
     }
 
-
     @Override
     public void removeAt(int i) {
         if (values == null) {

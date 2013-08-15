@@ -593,7 +593,6 @@ public class OWL2 {
     @Test
     @Changed
     public void testNew_Feature_ObjectPropertyChain_001() {
-
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"

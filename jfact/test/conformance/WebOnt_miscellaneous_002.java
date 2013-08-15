@@ -22,7 +22,6 @@ public class WebOnt_miscellaneous_002 {
         r.run();
     }
 
-
     // public void _testWebOnt_miscellaneous_002(String s1, String s2)
     // throws OWLOntologyCreationException {
     // String conclusion = "";
@@ -67,7 +66,6 @@ public class WebOnt_miscellaneous_002 {
     // }
     // }
     // }
-
     private static String premise1 = "<!DOCTYPE owl ["
             + "<!ENTITY owl \"http://www.w3.org/2002/07/owl#\" >"
             + "<!ENTITY vin  \"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#\" >"

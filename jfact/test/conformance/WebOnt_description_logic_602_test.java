@@ -36,7 +36,6 @@ public class WebOnt_description_logic_602_test {
                 f.getOWLEquivalentClassesAxiom(D, f.getOWLObjectMaxCardinality(0, p)));
         m.addAxiom(o,
                 f.getOWLEquivalentClassesAxiom(B, f.getOWLObjectMinCardinality(1, p)));
-
         OWLReasoner reasoner = Factory.factory().createReasoner(o);
         assertTrue("cannot infer disjoint",
                 reasoner.isEntailed(f.getOWLDisjointClassesAxiom(D, B)));

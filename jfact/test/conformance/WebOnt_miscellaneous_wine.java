@@ -7,13 +7,11 @@ package conformance;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import org.junit.Test;
 
-
 @SuppressWarnings("javadoc")
 public class WebOnt_miscellaneous_wine {
     @Test
     @Changed
     public void testWebOnt_miscellaneous_001() {
-
         String premise1 = "<!DOCTYPE owl [ "
                 + "<!ENTITY vin  \"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#\" > "
                 + "<!ENTITY food \"http://www.w3.org/2002/03owlt/miscellaneous/consistent002#\" > "
@@ -137,7 +135,6 @@ public class WebOnt_miscellaneous_wine {
                 + "  <PastaWithHeavyCreamSauce rdf:about=\"#FettucineAlfRedo\" />\n"
                 + "  <PastaWithSpicyRedSauce rdf:about=\"#FraDiavolo\" />\n"
                 + "  <CheeseNutsDessert rdf:about=\"#Cheese\" />\n";
-
         String premise2 = "  <owl:Class rdf:about=\"#Wine\"><rdfs:subClassOf rdf:resource=\"&food;PotableLiquid\" /><rdfs:subClassOf><owl:Restriction><owl:onProperty rdf:resource=\"#hasMaker\" />\n"
                 + " <owl:cardinality rdf:datatype=\"&xsd;nonNegativeInteger\">1</owl:cardinality></owl:Restriction></rdfs:subClassOf><rdfs:subClassOf><owl:Restriction><owl:onProperty rdf:resource=\"#hasMaker\" />\n"
                 + " <owl:allValuesFrom rdf:resource=\"#Winery\" /></owl:Restriction></rdfs:subClassOf><rdfs:subClassOf><owl:Restriction><owl:onProperty rdf:resource=\"#madeFromGrape\" />\n"

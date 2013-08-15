@@ -128,7 +128,6 @@ public class ReasoningKernel implements Serializable {
     /** cached query input description */
     @PortedFrom(file = "Kernel.h", name = "cachedQuery")
     private ConceptExpression cachedQuery;
-
     /** ignore cache for the TExpr* (useful for semantic AD) */
     @PortedFrom(file = "Kernel.h", name = "ignoreExprCache")
     private boolean ignoreExprCache = false;

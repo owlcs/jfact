@@ -164,8 +164,8 @@ public class JUnitRunner {
         }
     }
 
-    private void actual(OWLOntology conclusionOntology,
-            StringBuilder b, OWLReasoner reasoner) {
+    private void actual(OWLOntology conclusionOntology, StringBuilder b,
+            OWLReasoner reasoner) {
         switch (t) {
             case CONSISTENCY: {
                 boolean consistent = isConsistent(reasoner, true);

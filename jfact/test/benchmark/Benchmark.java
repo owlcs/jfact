@@ -126,17 +126,16 @@ public class Benchmark {
                 + " ms to process.");
     }
 
-
     public static long compute(File file) throws Exception {
         try {
-        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-        manager.addIRIMapper(new AutoIRIMapper(new File("onto"), true));
-        OWLOntology ontology = manager.loadOntologyFromOntologyDocument(file);
-        OWLReasoner reasoner = new JFactFactory().createReasoner(ontology);
-        long startTime = System.nanoTime();
-        reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
-        long end = System.nanoTime();
-        return end - startTime;
+            OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+            manager.addIRIMapper(new AutoIRIMapper(new File("onto"), true));
+            OWLOntology ontology = manager.loadOntologyFromOntologyDocument(file);
+            OWLReasoner reasoner = new JFactFactory().createReasoner(ontology);
+            long startTime = System.nanoTime();
+            reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
+            long end = System.nanoTime();
+            return end - startTime;
         } catch (Exception e) {
             e.printStackTrace(System.out);
             throw e;
@@ -174,6 +173,7 @@ public class Benchmark {
         System.out.println(mainPath.getName() + "\tTook \t" + elapsed / 1000000L
                 + " ms to process.");
     }
+
     @Test
     public void testfamily() throws Exception {
         File mainPath = new File("onto/family.owl");
@@ -206,7 +206,6 @@ public class Benchmark {
                 + " ms to process.");
     }
 
-
     @Test
     public void testperiodic() throws Exception {
         File mainPath = new File("onto/periodic.owl");
@@ -218,6 +217,14 @@ public class Benchmark {
     @Test
     public void testcelllineontology1541() throws Exception {
         File mainPath = new File("onto/celllineontology1541.owl");
+        long elapsed = compute(mainPath);
+        System.out.println(mainPath.getName() + "\tTook \t" + elapsed / 1000000L
+                + " ms to process.");
+    }
+
+    @Test
+    public void testtest() throws Exception {
+        File mainPath = new File("onto/test.owl");
         long elapsed = compute(mainPath);
         System.out.println(mainPath.getName() + "\tTook \t" + elapsed / 1000000L
                 + " ms to process.");

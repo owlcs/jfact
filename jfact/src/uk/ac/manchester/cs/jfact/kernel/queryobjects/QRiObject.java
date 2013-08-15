@@ -14,5 +14,4 @@ import conformance.PortedFrom;
 @PortedFrom(file = "QR.h", name = "QRiObject")
 abstract class QRiObject implements Serializable {
     private static final long serialVersionUID = 11000L;
-
 }

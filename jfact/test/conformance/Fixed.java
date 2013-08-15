@@ -360,7 +360,6 @@ public class Fixed {
         r.run();
     }
 
-
     // XXX this needs to be fixed
     @Test
     @Changed(reason = "changed to fix it")
@@ -752,7 +751,8 @@ public class Fixed {
 
     @Test
     @Changed(reason = "without declarations, some properties default to datatype properties and some to annotation properties")
-    public void testrdfbased_sem_ndis_alldisjointproperties_fw() {
+    public
+            void testrdfbased_sem_ndis_alldisjointproperties_fw() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p1\"/>\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p2\"/>\n"
@@ -968,7 +968,6 @@ public class Fixed {
         r.setReasonerFactory(Factory.factory());
         r.run();
     }
-
 
     // XXX this needs to be fixed
     @Test
@@ -1543,7 +1542,6 @@ public class Fixed {
         r.setReasonerFactory(Factory.factory());
         r.run();
     }
-
 
     // XXX this needs to be fixed
     @Test

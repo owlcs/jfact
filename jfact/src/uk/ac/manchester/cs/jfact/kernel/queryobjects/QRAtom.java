@@ -14,6 +14,4 @@ import conformance.PortedFrom;
 @PortedFrom(file = "QR.h", name = "QRAtom")
 public abstract class QRAtom implements Serializable {
     private static final long serialVersionUID = 11000L;
-
-
 }

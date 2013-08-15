@@ -39,5 +39,4 @@ public class TopObjectPropertyTest {
         OWLReasoner r = fac.createNonBufferingReasoner(ont);
         assertFalse(r.getTopDataPropertyNode().getEntities().isEmpty());
     }
-
 }

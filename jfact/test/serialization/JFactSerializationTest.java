@@ -1,4 +1,5 @@
 package serialization;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -186,12 +187,12 @@ public class JFactSerializationTest extends TestCase {
 
     private OWLReasoner roundtrip(OWLReasoner r) {
         try {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ObjectOutputStream stream = new ObjectOutputStream(out);
-        stream.writeObject(r);
-        stream.flush();
-        ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
-        ObjectInputStream inStream = new ObjectInputStream(in);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ObjectOutputStream stream = new ObjectOutputStream(out);
+            stream.writeObject(r);
+            stream.flush();
+            ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+            ObjectInputStream inStream = new ObjectInputStream(in);
             return (OWLReasoner) inStream.readObject();
         } catch (Exception e) {
             e.printStackTrace();

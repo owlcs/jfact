@@ -285,7 +285,6 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
     /** allow reasoner to use undefined names in queries */
     private boolean useUndefinedNames = true;
 
-
     public boolean isLoggingActive() {
         return USE_LOGGING;
     }
