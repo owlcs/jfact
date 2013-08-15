@@ -16,6 +16,7 @@ import org.semanticweb.owlapi.reasoner.*;
 
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
+import conformance.PortedFrom;
 
 @SuppressWarnings("javadoc")
 public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Serializable {
@@ -75,6 +76,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
     /** Option 'useIncrementalReasoning' (development) allows one to reason
      * efficiently about small changes in the ontology. */
     private boolean useIncrementalReasoning = true;
+    @PortedFrom(file = "Kernel.h", name = "useAxiomSplitting")
+    private boolean useAxiomSplitting = false;
     /** Internal use only. Option 'skipBeforeBlock' allow user to skip given
      * number of nodes before make a block. */
     // private static final Option skipBeforeBlock =
@@ -281,7 +284,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
     private boolean useELReasoner = false;
     /** allow reasoner to use undefined names in queries */
     private boolean useUndefinedNames = true;
-    private boolean useAxiomSplitting = false;
+
 
     public boolean isLoggingActive() {
         return USE_LOGGING;

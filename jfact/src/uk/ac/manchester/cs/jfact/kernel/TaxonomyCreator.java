@@ -352,7 +352,7 @@ public class TaxonomyCreator implements Serializable {
                 if (v == null) {
                     continue;
                 }
-                if (v == cur) {
+                if (v.equals(cur)) {
                     // current cycle is finished, all saved in Syns
                     // after classification of CUR we need to mark all the
                     // Syns

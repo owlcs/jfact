@@ -69,7 +69,7 @@ public class QueryConnectednessChecker implements Serializable {
                     continue;
                 }
                 QRVariable neighbour;
-                if (arg1 == var) {
+                if (arg1.equals(var)) {
                     neighbour = arg2;
                 } else {
                     neighbour = arg1;

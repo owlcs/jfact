@@ -128,8 +128,7 @@ public class ReasoningKernel implements Serializable {
     /** cached query input description */
     @PortedFrom(file = "Kernel.h", name = "cachedQuery")
     private ConceptExpression cachedQuery;
-    @PortedFrom(file = "Kernel.h", name = "useAxiomSplitting")
-    private final boolean useAxiomSplitting;
+
     /** ignore cache for the TExpr* (useful for semantic AD) */
     @PortedFrom(file = "Kernel.h", name = "ignoreExprCache")
     private boolean ignoreExprCache = false;
@@ -168,7 +167,7 @@ public class ReasoningKernel implements Serializable {
     /** check whether query cache is the same as QUERY */
     @PortedFrom(file = "Kernel.h", name = "checkQueryCache")
     private boolean checkQueryCache(ConceptExpression query) {
-        return ignoreExprCache ? false : cachedQuery == query;
+        return ignoreExprCache ? false : query.equals(cachedQuery);
     }
 
     /** check whether query cache is the same as QUERY */
@@ -394,7 +393,7 @@ public class ReasoningKernel implements Serializable {
         if (D.getpName() == 0) // D is fresh
         {
             if (C.getpName() == 0) {
-                return C == D;
+                return C.equals(D);
                 // 2 fresh concepts subsumes one another iff they are the same
             } else {
                 // C is known
@@ -1309,7 +1308,7 @@ public class ReasoningKernel implements Serializable {
      * @return true iff C is equivalent to D */
     @PortedFrom(file = "Kernel.h", name = "isEquivalent")
     public boolean isEquivalent(ConceptExpression C, ConceptExpression D) {
-        if (C == D) {
+        if (C.equals(D)) {
             return true;
         }
         preprocessKB();
@@ -1322,7 +1321,7 @@ public class ReasoningKernel implements Serializable {
                     // 2 different fresh names
                     return false;
                 }
-                return cV == dV;
+                return cV.equals(dV);
             }
         }
         // not classified or not named constants
@@ -1679,7 +1678,6 @@ public class ReasoningKernel implements Serializable {
         pET = null;
         cachedQuery = null;
         initCacheAndFlags();
-        useAxiomSplitting = false;
     }
 
     /** check whether it is necessary to reload the ontology */

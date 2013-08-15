@@ -52,7 +52,7 @@ public class MergableLabel implements Serializable {
     public void merge(MergableLabel p) {
         MergableLabel sample = p.resolve();
         resolve();
-        if (pSample != sample) {
+        if (!pSample.equals(sample)) {
             pSample.pSample = sample;
         }
     }

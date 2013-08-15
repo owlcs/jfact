@@ -465,7 +465,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
         }
         // Blocker is the 1st node in the loop
         int n = 1;
-        for (DlCompletionTree p = getParentNode(); p.hasParent() && p != blocker; p = p
+        for (DlCompletionTree p = getParentNode(); p.hasParent() && !p.equals(blocker); p = p
                 .getParentNode()) {
             if (p.isLabelledBy(c)) {
                 return true;

@@ -41,12 +41,12 @@ public abstract class BuildELIOConcept implements Serializable {
                 if (atomIterator == previousAtom) {
                     continue;
                 }
-                if (arg1 == v) {
+                if (arg1.equals(v)) {
                     ConceptExpression p = Assign(query, atomIterator, arg2);
                     p = conjunctiveQueryFolding.getpEM().exists(role, p);
                     s = conjunctiveQueryFolding.getpEM().and(s, p);
                 }
-                if (arg2 == v) {
+                if (arg2.equals(v)) {
                     ConceptExpression p = Assign(query, atomIterator, arg1);
                     p = conjunctiveQueryFolding.getpEM().exists(
                             conjunctiveQueryFolding.getpEM().inverse(role), p);
@@ -57,7 +57,7 @@ public abstract class BuildELIOConcept implements Serializable {
                 QRConceptAtom atom = (QRConceptAtom) atomIterator;
                 ConceptExpression concept = atom.getConcept();
                 QRVariable arg = (QRVariable) atom.getArg();
-                if (arg == v) {
+                if (arg.equals(v)) {
                     s = conjunctiveQueryFolding.getpEM().and(s, concept);
                 }
             }

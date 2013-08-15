@@ -190,7 +190,7 @@ public class RoleMaster implements Serializable {
     @PortedFrom(file = "RoleMaster.h", name = "addRoleParentProper")
     public void addRoleParentProper(Role role, Role parent) {
         assert !role.isSynonym() && !parent.isSynonym();
-        if (role == parent) {
+        if (role.equals(parent)) {
             return;
         }
         if (role.isDataRole() != parent.isDataRole()) {
