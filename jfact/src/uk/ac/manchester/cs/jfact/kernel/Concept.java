@@ -633,9 +633,7 @@ public class Concept extends ClassifiableEntry {
         rel = lab;
     }
 
-    /** make given concept irrelevant to given Labeller's state
-     * 
-     * @param lab */
+    /** make given concept irrelevant to given Labeller's state */
     @PortedFrom(file = "tConcept.h", name = "dropRelevant")
     public void dropRelevant() {
         rel = 0;

@@ -1180,13 +1180,8 @@ public class ReasoningKernel implements Serializable {
         }
         // deal with top-roles
         if (nTopRoles > 0) {
-            if (nTopRoles > 1 || !Roles.isEmpty()) {
-                return false;
-                // universal role is not disjoint with anything but the bottom
-                // role
-            } else {
-                return true;
-            }
+            // universal role is not disjoint with anything but the bottom role
+            return !(nTopRoles > 1 || !Roles.isEmpty());
         }
         // test pair-wise disjointness
         for (int i = 0; i < Roles.size() - 1; i++) {
@@ -1849,7 +1844,8 @@ public class ReasoningKernel implements Serializable {
 
     /** setup Name2Sig for a given entity;
      * 
-     * @param entity */
+     * @param entity
+     * @param Module */
     @PortedFrom(file = "Incremental.cpp", name = "setupSig")
     public void setupSig(NamedEntity entity, List<AxiomInterface> Module) {
         moduleTimer.start();
@@ -1871,7 +1867,11 @@ public class ReasoningKernel implements Serializable {
     }
 
     /** build signature for ENTITY and all dependent entities from toProcess;
-     * look for modules in Module; */
+     * look for modules in Module;
+     * 
+     * @param entity
+     * @param Module
+     * @param toProcess */
     @PortedFrom(file = "Incremental.cpp", name = "buildSignature")
     public void buildSignature(NamedEntity entity, List<AxiomInterface> Module,
             Set<NamedEntity> toProcess) {

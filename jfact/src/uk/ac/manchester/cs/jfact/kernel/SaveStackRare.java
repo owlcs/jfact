@@ -43,7 +43,7 @@ class SaveStackRare implements Serializable {
     @PortedFrom(file = "dlCompletionGraph.h", name = "restore")
     public void restore(int level) {
         curLevel = level;
-        while (base.size() > 0 && base.getLast().getRaresavestackLevel() > level) {
+        while (!base.isEmpty() && base.getLast().getRaresavestackLevel() > level) {
             // need to restore: restore last element, remove it from stack
             base.getLast().restore();
             base.removeLast();

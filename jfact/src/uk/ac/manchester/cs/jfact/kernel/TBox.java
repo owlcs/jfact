@@ -290,7 +290,7 @@ public class TBox implements Serializable {
      * @param beg */
     @PortedFrom(file = "dlTBox.h", name = "processDisjoint")
     public void processDisjoint(List<DLTree> beg) {
-        while (beg.size() > 0) {
+        while (!beg.isEmpty()) {
             DLTree r = beg.remove(0);
             this.addSubsumeAxiom(r, DLTreeFactory.buildDisjAux(beg));
         }
@@ -999,7 +999,7 @@ public class TBox implements Serializable {
                     DLTreeFactory.createRole(objectRoleMaster.getBotRole()),
                     DLTreeFactory.createBottom()));
         }
-        if (list.size() > 0) {
+        if (!list.isEmpty()) {
             list.add(GCI);
             GCI = DLTreeFactory.createSNFAnd(list);
         }
@@ -1494,6 +1494,8 @@ public class TBox implements Serializable {
         initTaxonomy();
     }
 
+    /** @param desc
+     * @return concept for desc */
     @PortedFrom(file = "dlTBox.h", name = "getAuxConcept")
     public Concept getAuxConcept(DLTree desc) {
         boolean old = setForbidUndefinedNames(false);
@@ -1716,7 +1718,9 @@ public class TBox implements Serializable {
         return pQuery;
     }
 
-    /** preprocess query concept: put description into DAG */
+    /** preprocess query concept: put description into DAG
+     * 
+     * @param query */
     @PortedFrom(file = "dlTBox.h", name = "preprocessQueryConcept")
     public void preprocessQueryConcept(Concept query) {
         // build DAG entries for the default concept
@@ -1746,6 +1750,7 @@ public class TBox implements Serializable {
     /** build a completion tree for a concept C (no caching as it breaks the idea
      * of KE).
      * 
+     * @param pConcept
      * @return the root node */
     @PortedFrom(file = "dlTBox.h", name = "buildCompletionTree")
     public DlCompletionTree buildCompletionTree(Concept pConcept) {
@@ -2322,7 +2327,7 @@ public class TBox implements Serializable {
     /** @param l */
     @PortedFrom(file = "dlTBox.h", name = "processEquivalentR")
     public void processEquivalentR(List<DLTree> l) {
-        if (l.size() > 0) {
+        if (!l.isEmpty()) {
             RoleMaster RM = getRM(Role.resolveRole(l.get(0)));
             for (int i = 0; i < l.size() - 1; i++) {
                 RM.addRoleSynonym(Role.resolveRole(l.get(i)),
@@ -2779,7 +2784,7 @@ public class TBox implements Serializable {
         FastSet done = FastSetFactory.create();
         LinkedList<Integer> queue = new LinkedList<Integer>();
         queue.add(_p);
-        while (queue.size() > 0) {
+        while (!queue.isEmpty()) {
             int p = queue.remove(0);
             if (done.contains(p)) {
                 // skip cycles
@@ -2815,7 +2820,7 @@ public class TBox implements Serializable {
                     Role _role = v.getRole();
                     List<Role> rolesToExplore = new LinkedList<Role>();
                     rolesToExplore.add(_role);
-                    while (rolesToExplore.size() > 0) {
+                    while (!rolesToExplore.isEmpty()) {
                         Role roleToExplore = rolesToExplore.remove(0);
                         if ((roleToExplore.getId() != 0 || roleToExplore.isTop())
                                 && !roleToExplore.isRelevant(relevance)) {
@@ -2985,7 +2990,7 @@ public class TBox implements Serializable {
 
     static class IterableElem<Elem> implements Serializable {
         private static final long serialVersionUID = 11000L;
-        private List<Elem> Elems = new ArrayList<Elem>();
+        private final List<Elem> Elems;
         private final int pBeg;
         private final int pEnd;
         private int pCur;

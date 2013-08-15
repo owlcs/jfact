@@ -182,7 +182,8 @@ public class TaxonomyCreator implements Serializable {
         clearLabels();
     }
 
-    /** @return true if V is a direct parent of current wrt labels */
+    /** @param v
+     * @return true if V is a direct parent of current wrt labels */
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "isDirectParent")
     public boolean isDirectParent(TaxonomyVertex v) {
         for (TaxonomyVertex q : v.neigh(false)) {
@@ -251,7 +252,7 @@ public class TaxonomyCreator implements Serializable {
     protected void propagateFalseDown(TaxonomyVertex node) {
         // if taxonomy class already checked -- do nothing
         if (isValued(node)) {
-            assert getValue(node) == false;
+            assert !getValue(node);
             return;
         }
         // overwise -- value it...

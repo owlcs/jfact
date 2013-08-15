@@ -42,8 +42,7 @@ public class ToDoPriorMatrix implements Serializable {
 
     /** Auxiliary class to get priorities on operations
      * 
-     * @param options
-     * @param optionName */
+     * @param options */
     @PortedFrom(file = "PriorityMatrix.h", name = "initPriorities")
     public void initPriorities(String options) {
         // check for correctness

@@ -157,7 +157,7 @@ public class TranslationMachinery implements Serializable {
             Iterable<IndividualExpression> pointers) {
         OWLNamedIndividualNodeSet ns = new OWLNamedIndividualNodeSet();
         for (IndividualExpression pointer : pointers) {
-            if (pointer != null && pointer instanceof IndividualName) {
+            if (pointer instanceof IndividualName) {
                 OWLNamedIndividual ind = individualTranslator
                         .getEntityFromPointer((IndividualName) pointer);
                 // XXX skipping anonymous individuals - counterintuitive but

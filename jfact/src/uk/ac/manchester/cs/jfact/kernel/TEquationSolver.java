@@ -67,7 +67,7 @@ class TEquationSolver implements Serializable {
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "getNominal")
     public String getNominal() {
         String longNominal = ((ConceptName) LeftPart).getName();
-        int colon = longNominal.indexOf(":");
+        int colon = longNominal.indexOf(':');
         return longNominal.substring(0, colon);
     }
 

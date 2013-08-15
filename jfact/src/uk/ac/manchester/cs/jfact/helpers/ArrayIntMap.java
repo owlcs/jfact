@@ -99,8 +99,7 @@ public class ArrayIntMap implements Serializable {
 
     public boolean containsKey(int o) {
         if (values != null) {
-            boolean b = insertionIndex(o) > -1;
-            return b;
+            return insertionIndex(o) > -1;
         }
         return false;
     }

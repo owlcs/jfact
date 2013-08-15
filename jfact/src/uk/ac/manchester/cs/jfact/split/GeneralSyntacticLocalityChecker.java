@@ -113,7 +113,7 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
         // axiom is local iff all the classes are either top- or bot-local
         isLocal = false;
         List<ConceptExpression> args = axiom.getArguments();
-        if (args.size() > 0) {
+        if (!args.isEmpty()) {
             if (isBotEquivalent(args.get(0))) {
                 for (int i = 1; i < args.size(); i++) {
                     if (!isBotEquivalent(args.get(i))) {

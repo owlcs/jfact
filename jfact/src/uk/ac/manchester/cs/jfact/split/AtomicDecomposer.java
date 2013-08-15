@@ -52,7 +52,8 @@ public class AtomicDecomposer implements Serializable {
         }
     }
 
-    /** set progress indicator to be PI */
+    /** @param pi
+     *            progress indicator to use */
     @PortedFrom(file = "AtomicDecomposer.h", name = "setProgressIndicator")
     public void setProgressIndicator(ProgressIndicatorInterface pi) {
         PI = pi;

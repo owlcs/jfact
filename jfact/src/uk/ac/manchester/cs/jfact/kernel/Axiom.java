@@ -130,7 +130,7 @@ public class Axiom implements Serializable {
             // split the AND
             List<DLTree> children = new ArrayList<DLTree>(pAnd.getChildren());
             acc = this.split(acc, pos, children.remove(0));
-            if (children.size() > 0) {
+            if (!children.isEmpty()) {
                 acc = this.split(acc, pos, DLTreeFactory.createSNFAnd(children));
             }
         } else {

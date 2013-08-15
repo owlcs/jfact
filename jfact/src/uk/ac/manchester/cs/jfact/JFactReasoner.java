@@ -36,6 +36,7 @@ import conformance.Original;
  * those classes cannot be invoked from outsize synchronized methods. */
 public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         OWLKnowledgeExplorerReasoner, Serializable {
+    private static final long serialVersionUID = 10000L;
     private static final String REASONER_NAME = "JFact";
     private static final Version VERSION = new Version(0, 0, 0, 0);
     protected final AtomicBoolean interrupted = new AtomicBoolean(false);
@@ -174,7 +175,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
 
     @Override
     public synchronized Set<OWLAxiom> getPendingAxiomAdditions() {
-        if (rawChanges.size() > 0) {
+        if (!rawChanges.isEmpty()) {
             Set<OWLAxiom> added = new HashSet<OWLAxiom>();
             computeDiff(added, new HashSet<OWLAxiom>());
             return added;
@@ -184,7 +185,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
 
     @Override
     public synchronized Set<OWLAxiom> getPendingAxiomRemovals() {
-        if (rawChanges.size() > 0) {
+        if (!rawChanges.isEmpty()) {
             Set<OWLAxiom> removed = new HashSet<OWLAxiom>();
             computeDiff(new HashSet<OWLAxiom>(), removed);
             return removed;
@@ -195,7 +196,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     @Override
     public synchronized void flush() {
         // Process the changes
-        if (rawChanges.size() > 0) {
+        if (!rawChanges.isEmpty()) {
             Set<OWLAxiom> added = new HashSet<OWLAxiom>();
             Set<OWLAxiom> removed = new HashSet<OWLAxiom>();
             computeDiff(added, removed);
@@ -357,17 +358,16 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             return true;
         }
         try {
-            boolean entailed = axiom.accept(translationMachinery.getEntailmentChecker());
-            return entailed;
+            return axiom.accept(translationMachinery.getEntailmentChecker());
         } catch (ReasonerFreshEntityException e) {
             String iri = e.getIri();
             if (getFreshEntityPolicy() == FreshEntityPolicy.DISALLOW) {
                 for (OWLEntity o : axiom.getSignature()) {
                     if (o.getIRI().toString().equals(iri)) {
-                        throw new FreshEntitiesException(o);
+                        throw new FreshEntitiesException(o, e);
                     }
                 }
-                throw new FreshEntitiesException(axiom.getSignature());
+                throw new FreshEntitiesException(axiom.getSignature(), e);
             }
             System.out
                     .println("JFactReasoner.isEntailed() WARNING: fresh entity exception in the reasoner for entity: "
@@ -747,8 +747,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return actor.getElements();
     }
 
-    /** @param o
-     * @param time */
+    /** @param time */
     public synchronized void writeReasoningResult(long time) {
         kernel.writeReasoningResult(time);
     }
@@ -756,7 +755,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     // owl knowledge exploration
     private class RootNodeImpl implements RootNode, Serializable {
         private static final long serialVersionUID = 11000L;
-        private DlCompletionTree pointer;
+        private final DlCompletionTree pointer;
 
         public RootNodeImpl(DlCompletionTree p) {
             pointer = p;

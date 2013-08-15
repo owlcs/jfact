@@ -188,11 +188,6 @@ public class TaxonomyVertex implements Serializable {
         linksParent = v.linksParent;
     }
 
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return new TaxonomyVertex(this);
-    }
-
     /** add P as a synonym to curent vertex
      * 
      * @param p */

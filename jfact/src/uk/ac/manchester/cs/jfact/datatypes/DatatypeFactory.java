@@ -6,6 +6,7 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static uk.ac.manchester.cs.jfact.datatypes.Facets.*;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.whitespace.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
@@ -31,7 +32,7 @@ public class DatatypeFactory implements Serializable {
     private static final long serialVersionUID = 11000L;
     static final String namespace = "http://www.w3.org/2001/XMLSchema#";
     static final Comparable NUMBER_EXPRESSION = "[\\-+]?[0-9]+";
-    static final Comparable WHITESPACE = whitespace.collapse;
+    static final Comparable WHITESPACE = collapse;
     static final Facet[] minmax = new Facet[] { maxInclusive, maxExclusive, minInclusive,
             minExclusive };
     static final Facet[] pew = new Facet[] { pattern, enumeration, whiteSpace };
@@ -710,7 +711,7 @@ public class DatatypeFactory implements Serializable {
 
         @Override
         public String parseValue(String s) {
-            return whitespace.collapse.normalize(s);
+            return collapse.normalize(s);
         }
 
         @Override
@@ -732,12 +733,12 @@ public class DatatypeFactory implements Serializable {
             ancestors = Utils.generateAncestors(LITERAL);
             knownNonNumericFacetValues.putAll(LITERAL.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(LITERAL.getKnownNumericFacetValues());
-            knownNonNumericFacetValues.put(whiteSpace, whitespace.collapse);
+            knownNonNumericFacetValues.put(whiteSpace, collapse);
         }
 
         @Override
         public String parseValue(String s) {
-            return whitespace.collapse.normalize(s);
+            return collapse.normalize(s);
         }
 
         @Override
@@ -973,7 +974,7 @@ public class DatatypeFactory implements Serializable {
 
         @Override
         public String parseValue(String s) {
-            return whitespace.collapse.normalize(s);
+            return collapse.normalize(s);
         }
 
         @Override
@@ -1086,7 +1087,7 @@ public class DatatypeFactory implements Serializable {
             ancestors = Utils.generateAncestors(LITERAL);
             knownNonNumericFacetValues.putAll(LITERAL.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(LITERAL.getKnownNumericFacetValues());
-            knownNonNumericFacetValues.put(whiteSpace, whitespace.preserve);
+            knownNonNumericFacetValues.put(whiteSpace, preserve);
         }
 
         @Override
@@ -1204,8 +1205,7 @@ public class DatatypeFactory implements Serializable {
             if (trim.equals("INF")) {
                 return Float.POSITIVE_INFINITY;
             }
-            float f = Float.parseFloat(s);
-            return f;
+            return Float.parseFloat(s);
         }
 
         @Override
@@ -1612,7 +1612,7 @@ public class DatatypeFactory implements Serializable {
             ancestors = Utils.generateAncestors(STRING);
             knownNonNumericFacetValues.putAll(super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
-            knownNonNumericFacetValues.put(whiteSpace, whitespace.replace);
+            knownNonNumericFacetValues.put(whiteSpace, replace);
         }
     }
 
@@ -1648,7 +1648,7 @@ public class DatatypeFactory implements Serializable {
             // XXX sort of arbitrary decision; the specs say it depends on the
             // XML datatype whitespace normalization policy, but that's not
             // clear. Some W3C tests assume that text elements are irrelevant
-            return whitespace.collapse.normalize(s);
+            return collapse.normalize(s);
         }
 
         @Override

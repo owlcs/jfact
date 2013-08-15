@@ -42,7 +42,9 @@ public class Taxonomy implements Serializable {
         return current;
     }
 
-    /** set current to a given node */
+    /** set current to a given node
+     * 
+     * @param cur */
     @PortedFrom(file = "Taxonomy.h", name = "setCurrent")
     public void setCurrent(TaxonomyVertex cur) {
         current = cur;
@@ -148,7 +150,9 @@ public class Taxonomy implements Serializable {
         clearVisited();
     }
 
-    /** set node NODE as checked within taxonomy */
+    /** set node NODE as checked within taxonomy
+     * 
+     * @param node */
     @PortedFrom(file = "Taxonomy.h", name = "setVisited")
     public void setVisited(TaxonomyVertex node) {
         node.setChecked(visitedLabel);
@@ -180,6 +184,7 @@ public class Taxonomy implements Serializable {
         FreshNode.addNeighbour(false, getBottomVertex());
     }
 
+    /** @return reasoner configuration */
     public JFactReasonerConfiguration getOptions() {
         return options;
     }
@@ -224,7 +229,9 @@ public class Taxonomy implements Serializable {
         return o.toString();
     }
 
-    /** remove node from the taxonomy; assume no references to the node */
+    /** remove node from the taxonomy; assume no references to the node
+     * 
+     * @param node */
     @PortedFrom(file = "Taxonomy.h", name = "removeNode")
     public void removeNode(TaxonomyVertex node) {
         graph.remove(node);

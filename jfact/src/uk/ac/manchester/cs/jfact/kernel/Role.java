@@ -646,6 +646,8 @@ public class Role extends ClassifiableEntry {
     }
 
     /** @param t
+     * @param r
+     *            reason
      * @return R or -R for T in the form (inv ... (inv R)...); remove synonyms */
     @PortedFrom(file = "tRole.h", name = "resolveRole")
     public static Role resolveRole(DLTree t, String r) {

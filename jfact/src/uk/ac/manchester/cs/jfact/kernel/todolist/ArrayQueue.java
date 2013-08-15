@@ -35,7 +35,7 @@ public class ArrayQueue implements Serializable {
     /** @return check if queue empty */
     @PortedFrom(file = "ToDoList.h", name = "empty")
     public boolean isEmpty() {
-        return getsPointer() == getWait().size();
+        return sPointer == getWait().size();
     }
 
     /** @return next entry from the queue; works for non-empty queues */
@@ -49,7 +49,7 @@ public class ArrayQueue implements Serializable {
      * @param pos */
     @PortedFrom(file = "ToDoList.h", name = "save")
     public void save(int[][] tss, int pos) {
-        tss[pos][0] = getsPointer();
+        tss[pos][0] = sPointer;
         tss[pos][1] = getWait().size();
     }
 
@@ -63,6 +63,8 @@ public class ArrayQueue implements Serializable {
         Helper.resize(getWait(), tss[pos][1]);
     }
 
+    /** @param sp
+     * @param ep */
     @PortedFrom(file = "ToDoList.h", name = "restore")
     public void restore(int sp, int ep) {
         setsPointer(sp);
@@ -73,7 +75,7 @@ public class ArrayQueue implements Serializable {
     public String toString() {
         StringBuilder l = new StringBuilder();
         l.append("ArrayQueue{");
-        l.append(getsPointer());
+        l.append(sPointer);
         l.append(",");
         for (ToDoEntry t : getWait()) {
             l.append(t);
@@ -83,6 +85,7 @@ public class ArrayQueue implements Serializable {
         return l.toString();
     }
 
+    /** @return s pointer */
     public int getsPointer() {
         return sPointer;
     }

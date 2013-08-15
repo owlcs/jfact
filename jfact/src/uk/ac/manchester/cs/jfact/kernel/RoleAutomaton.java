@@ -309,12 +309,13 @@ public class RoleAutomaton implements Serializable {
         Complete = true;
     }
 
+    /** @param b */
     @PortedFrom(file = "RAutomaton.h", name = "setCompleted")
     public void setCompleted(boolean b) {
         Complete = b;
     }
 
-    /** check whether automaton is completed */
+    /** @return check whether automaton is completed */
     @PortedFrom(file = "RAutomaton.h", name = "isCompleted")
     public boolean isCompleted() {
         return Complete;

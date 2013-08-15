@@ -12,9 +12,7 @@ import conformance.PortedFrom;
 // i-objects (vars and individuals)
 /** i-object (from SWRL proposal), which is variable or an individual */
 @PortedFrom(file = "QR.h", name = "QRiObject")
-abstract class QRiObject implements Cloneable, Serializable {
+abstract class QRiObject implements Serializable {
     private static final long serialVersionUID = 11000L;
 
-    @Override
-    public abstract QRiObject clone();
 }

@@ -31,8 +31,7 @@ public class DLTreeFactory implements Serializable {
     public static DLTree createInverse(DLTree R) {
         assert R != null;
         if (R.token() == INV) {
-            DLTree p = R.getChild().copy();
-            return p;
+            return R.getChild().copy();
         }
         if (R.token() == RNAME) {
             if (isTopRole(R) || isBotRole(R)) {
@@ -118,7 +117,7 @@ public class DLTreeFactory implements Serializable {
     }
 
     public static DLTree createSNFAnd(Collection<DLTree> collection) {
-        if (collection.size() == 0) {
+        if (collection.isEmpty()) {
             return createTop();
         }
         if (collection.size() == 1) {
@@ -138,7 +137,7 @@ public class DLTreeFactory implements Serializable {
                 l.add(d);
             }
         }
-        if (l.size() == 0) {
+        if (l.isEmpty()) {
             return createTop();
         }
         if (l.size() == 1) {
@@ -163,7 +162,7 @@ public class DLTreeFactory implements Serializable {
                 l.add(d);
             }
         }
-        if (hasTop && l.size() == 0) {
+        if (hasTop && l.isEmpty()) {
             return createTop();
         }
         if (l.size() == collection.size()) {

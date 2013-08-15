@@ -132,8 +132,7 @@ public class SigIndex implements Serializable {
      * @return a set of all axioms that contain this entity in a signature */
     @PortedFrom(file = "SigIndex.h", name = "getAxioms")
     public Collection<AxiomInterface> getAxioms(NamedEntity entity) {
-        final Collection<AxiomInterface> collection = Base.get(entity);
-        return collection;
+        return Base.get(entity);
     }
 
     /** @param top

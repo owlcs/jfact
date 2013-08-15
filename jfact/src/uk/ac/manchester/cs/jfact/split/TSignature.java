@@ -183,7 +183,9 @@ public class TSignature implements Serializable {
         return ret;
     }
 
-    /** @return true if *THIS \subseteq SIG (\subset if IMPROPER = false ) */
+    /** @param sig
+     * @param improper
+     * @return true if *THIS \subseteq SIG (\subset if IMPROPER = false ) */
     @PortedFrom(file = "tSignature.h", name = "subset")
     public boolean subset(TSignature sig, boolean improper) {
         boolean subset = sig.set.containsAll(set);

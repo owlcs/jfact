@@ -107,7 +107,7 @@ public class RATransition implements Serializable {
         o.print(final_state());
     }
 
-    /** check whether transition is TopRole one */
+    /** @return check whether transition is TopRole one */
     @PortedFrom(file = "RAutomaton.h", name = "isTop")
     public boolean isTop() {
         return label.size() == 1 && label.iterator().next().isTop();

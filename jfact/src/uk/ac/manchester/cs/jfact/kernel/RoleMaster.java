@@ -80,9 +80,7 @@ public class RoleMaster implements Serializable {
         roles.add(r);
         r.setId(newRoleId);
         // create new role which would be inverse of R
-        String iname = "-";
-        iname += r.getName();
-        Role ri = new Role(iname);
+        Role ri = new Role("-" + r.getName());
         // set up inverse
         r.setInverse(ri);
         ri.setInverse(r);

@@ -43,8 +43,7 @@ public class SaveStack<T> implements Serializable {
     @PortedFrom(file = "tSaveStack.h", name = "pop")
     public T pop() {
         assert !list.isEmpty();
-        T pop = list.pop();
-        return pop;
+        return list.pop();
     }
 
     /** @param e */

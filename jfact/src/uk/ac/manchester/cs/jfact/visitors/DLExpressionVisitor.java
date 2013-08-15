@@ -19,85 +19,85 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDLExpression.h", name = "DLExpressionVisitor")
 public interface DLExpressionVisitor {
     // concept expressions
-    public void visit(ConceptTop expr);
+    void visit(ConceptTop expr);
 
-    public void visit(ConceptBottom expr);
+    void visit(ConceptBottom expr);
 
-    public void visit(ConceptName expr);
+    void visit(ConceptName expr);
 
-    public void visit(ConceptNot expr);
+    void visit(ConceptNot expr);
 
-    public void visit(ConceptAnd expr);
+    void visit(ConceptAnd expr);
 
-    public void visit(ConceptOr expr);
+    void visit(ConceptOr expr);
 
-    public void visit(ConceptOneOf<?> expr);
+    void visit(ConceptOneOf<?> expr);
 
-    public void visit(ConceptObjectSelf expr);
+    void visit(ConceptObjectSelf expr);
 
-    public void visit(ConceptObjectValue expr);
+    void visit(ConceptObjectValue expr);
 
-    public void visit(ConceptObjectExists expr);
+    void visit(ConceptObjectExists expr);
 
-    public void visit(ConceptObjectForall expr);
+    void visit(ConceptObjectForall expr);
 
-    public void visit(ConceptObjectMinCardinality expr);
+    void visit(ConceptObjectMinCardinality expr);
 
-    public void visit(ConceptObjectMaxCardinality expr);
+    void visit(ConceptObjectMaxCardinality expr);
 
-    public void visit(ConceptObjectExactCardinality expr);
+    void visit(ConceptObjectExactCardinality expr);
 
-    public void visit(ConceptDataValue expr);
+    void visit(ConceptDataValue expr);
 
-    public void visit(ConceptDataExists expr);
+    void visit(ConceptDataExists expr);
 
-    public void visit(ConceptDataForall expr);
+    void visit(ConceptDataForall expr);
 
-    public void visit(ConceptDataMinCardinality expr);
+    void visit(ConceptDataMinCardinality expr);
 
-    public void visit(ConceptDataMaxCardinality expr);
+    void visit(ConceptDataMaxCardinality expr);
 
-    public void visit(ConceptDataExactCardinality expr);
+    void visit(ConceptDataExactCardinality expr);
 
     // individual expressions
-    public void visit(IndividualName expr);
+    void visit(IndividualName expr);
 
     // object role expressions
-    public void visit(ObjectRoleTop expr);
+    void visit(ObjectRoleTop expr);
 
-    public void visit(ObjectRoleBottom expr);
+    void visit(ObjectRoleBottom expr);
 
-    public void visit(ObjectRoleName expr);
+    void visit(ObjectRoleName expr);
 
-    public void visit(ObjectRoleInverse expr);
+    void visit(ObjectRoleInverse expr);
 
-    public void visit(ObjectRoleChain expr);
+    void visit(ObjectRoleChain expr);
 
-    public void visit(ObjectRoleProjectionFrom expr);
+    void visit(ObjectRoleProjectionFrom expr);
 
-    public void visit(ObjectRoleProjectionInto expr);
+    void visit(ObjectRoleProjectionInto expr);
 
     // data role expressions
-    public void visit(DataRoleTop expr);
+    void visit(DataRoleTop expr);
 
-    public void visit(DataRoleBottom expr);
+    void visit(DataRoleBottom expr);
 
-    public void visit(DataRoleName expr);
+    void visit(DataRoleName expr);
 
     // data expressions
-    public void visit(DataTop expr);
+    void visit(DataTop expr);
 
-    public void visit(DataBottom expr);
+    void visit(DataBottom expr);
 
-    public void visit(Literal<?> expr);
+    void visit(Literal<?> expr);
 
-    public void visit(Datatype<?> expr);
+    void visit(Datatype<?> expr);
 
-    public void visit(DataNot expr);
+    void visit(DataNot expr);
 
-    public void visit(DataAnd expr);
+    void visit(DataAnd expr);
 
-    public void visit(DataOr expr);
+    void visit(DataOr expr);
 
-    public void visit(DataOneOf expr);
+    void visit(DataOneOf expr);
 }

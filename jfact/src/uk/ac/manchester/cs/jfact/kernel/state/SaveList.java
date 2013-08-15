@@ -36,6 +36,6 @@ public class SaveList extends LinkedList<DLCompletionTreeSaveState> {
         if (p != null) {
             this.pop();
         }
-        return p != null ? p : null;
+        return p;
     }
 }

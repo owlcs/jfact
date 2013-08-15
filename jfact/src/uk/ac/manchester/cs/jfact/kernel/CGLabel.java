@@ -195,8 +195,7 @@ public class CGLabel implements Serializable {
         if (p == bpBOTTOM) {
             return false;
         }
-        boolean b = scLabel.contains(p) || ccLabel.contains(p);
-        return b;
+        return scLabel.contains(p) || ccLabel.contains(p);
     }
 
     /** @param bp

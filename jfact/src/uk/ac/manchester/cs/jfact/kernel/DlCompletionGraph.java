@@ -341,8 +341,10 @@ public class DlCompletionGraph implements Serializable {
         } while (repeat);
     }
 
-    /** @return true if a fairness constraint C is violated in one of the loops in
-     *         the CGraph */
+    /** @param C
+     *            fairness constant
+     * @return true if a fairness constraint C is violated in one of the loops
+     *         in the CGraph */
     @PortedFrom(file = "dlCompletionGraph.h", name = "getFCViolator")
     public DlCompletionTree getFCViolator(int C) {
         for (DlCompletionTree p : nodeBase) {

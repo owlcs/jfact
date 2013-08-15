@@ -98,8 +98,7 @@ public class AxiomSet implements Serializable {
     /** @return true if non-concept aborption were executed */
     @PortedFrom(file = "tAxiomSet.h", name = "wasRoleAbsorptionApplied")
     public boolean wasRoleAbsorptionApplied() {
-        String string = "SAbsRApply";
-        return InAx.created.containsKey(string);
+        return InAx.containsSAbsRApply();
     }
 
     /** @return GCI of all non-absorbed axioms */
@@ -268,41 +267,40 @@ public class AxiomSet implements Serializable {
 
     @PortedFrom(file = "tAxiomSet.h", name = "PrintStatistics")
     private void printStatistics() {
-        if (!created.containsKey("SAbsAction")) {
+        if (!containsSAbsAction()) {
             return;
         }
         LogAdapter log = tboxHost.getOptions().getAbsorptionLog();
-        log.print("\nAbsorption dealt with ").print(get("SAbsInput"))
-                .print(" input axioms\nThere were made ").print(get("SAbsAction"))
+        log.print("\nAbsorption dealt with ").print(getSAbsInput())
+                .print(" input axioms\nThere were made ").print(getSAbsAction())
                 .print(" absorption actions, of which:");
-        if (get("SAbsRepCN") > 0) {
-            log.print("\n\t").print(get("SAbsRepCN")).print(" concept name replacements");
+        if (containsSAbsRepCN()) {
+            log.print("\n\t").print(getSAbsRepCN()).print(" concept name replacements");
         }
-        if (get("SAbsRepForall") > 0) {
-            log.print("\n\t").print(get("SAbsRepForall"))
-                    .print(" universals replacements");
+        if (containsSAbsRepForall()) {
+            log.print("\n\t").print(getSAbsRepForall()).print(" universals replacements");
         }
-        if (get("SAbsSplit") > 0) {
-            log.print("\n\t").print(get("SAbsSplit")).print(" conjunction splits");
+        if (containsSAbsSplit()) {
+            log.print("\n\t").print(getSAbsSplit()).print(" conjunction splits");
         }
-        if (get("SAbsBApply") > 0) {
-            log.print("\n\t").print(get("SAbsBApply")).print(" BOTTOM absorptions");
+        if (containsSAbsBApply()) {
+            log.print("\n\t").print(getSAbsBApply()).print(" BOTTOM absorptions");
         }
-        if (get("SAbsTApply") > 0) {
-            log.print("\n\t").print(get("SAbsTApply")).print(" TOP absorptions");
+        if (containsSAbsTApply()) {
+            log.print("\n\t").print(getSAbsTApply()).print(" TOP absorptions");
         }
-        if (get("SAbsCApply") > 0) {
-            log.print("\n\t").print(get("SAbsCApply")).print(" concept absorption with ")
-                    .print(get("SAbsCAttempt")).print(" possibilities");
+        if (containsSAbsCApply()) {
+            log.print("\n\t").print(getSAbsCApply()).print(" concept absorption with ")
+                    .print(getSAbsCAttempt()).print(" possibilities");
         }
-        if (get("SAbsNApply") > 0) {
-            log.print("\n\t").print(get("SAbsNApply"))
-                    .print(" negated concept absorption with ")
-                    .print(get("SAbsNAttempt")).print(" possibilities");
+        if (containsSAbsNApply()) {
+            log.print("\n\t").print(getSAbsNApply())
+                    .print(" negated concept absorption with ").print(getSAbsNAttempt())
+                    .print(" possibilities");
         }
-        if (get("SAbsRApply") > 0) {
-            log.print("\n\t").print(get("SAbsRApply"))
-                    .print(" role domain absorption with ").print(get("SAbsRAttempt"))
+        if (containsSAbsRApply()) {
+            log.print("\n\t").print(getSAbsRApply())
+                    .print(" role domain absorption with ").print(getSAbsRAttempt())
                     .print(" possibilities");
         }
         if (!accumulator.isEmpty()) {

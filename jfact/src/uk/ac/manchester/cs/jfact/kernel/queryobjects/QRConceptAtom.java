@@ -28,16 +28,6 @@ public class QRConceptAtom extends QRAtom {
         Arg = A;
     }
 
-    /** @param q */
-    public QRConceptAtom(QRConceptAtom q) {
-        this(q.Concept, q.Arg);
-    }
-
-    @Override
-    public QRConceptAtom clone() {
-        return new QRConceptAtom(this);
-    }
-
     // access
     /** @return concept expression */
     @PortedFrom(file = "QR.h", name = "getConcept")

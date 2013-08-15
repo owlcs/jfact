@@ -168,7 +168,9 @@ public class TModularizer implements Serializable {
         nChecks += 2 * vec.size();
     }
 
-    /** @return true iff the axiom AX is a tautology wrt given type */
+    /** @param ax
+     * @param type
+     * @return true iff the axiom AX is a tautology wrt given type */
     @PortedFrom(file = "Modularity.h", name = "isTautology")
     public boolean isTautology(AxiomInterface ax, ModuleType type) {
         boolean topLocality = type == ModuleType.M_TOP;
@@ -196,6 +198,9 @@ public class TModularizer implements Serializable {
         return Checker;
     }
 
+    /** @param begin
+     * @param signature
+     * @param type */
     @PortedFrom(file = "Modularity.h", name = "extract")
     public void extract(AxiomInterface begin, TSignature signature, ModuleType type) {
         this.extract(Collections.singletonList(begin), signature, type);
@@ -231,7 +236,7 @@ public class TModularizer implements Serializable {
         } while (size != Module.size());
     }
 
-    /** get number of checks made */
+    /** @return get number of checks made */
     @PortedFrom(file = "Modularity.h", name = "getNChecks")
     public long getNChecks() {
         return nChecks;

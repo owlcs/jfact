@@ -18,7 +18,7 @@ public class QRVariable extends QRiObject implements Comparable<QRVariable>, Has
 
     /** empty c'tor */
     public QRVariable() {
-        this(null);
+        this((String) null);
     }
 
     /** init c'tor
@@ -28,9 +28,8 @@ public class QRVariable extends QRiObject implements Comparable<QRVariable>, Has
         Name = name;
     }
 
-    @Override
-    public QRVariable clone() {
-        return new QRVariable(Name);
+    public QRVariable(QRVariable v) {
+        this(v.Name);
     }
 
     @Override

@@ -31,7 +31,7 @@ public class TODOListSaveState implements Serializable {
 
     @Override
     public String toString() {
-        return "" + noe + " " + backupID_sp + "," + backupID_ep + " " + waitingQueue
+        return noe + " " + backupID_sp + "," + backupID_ep + " " + waitingQueue
                 + " " + sp + " " + ep + " " + queueBroken + " " + Arrays.toString(backup);
     }
 }

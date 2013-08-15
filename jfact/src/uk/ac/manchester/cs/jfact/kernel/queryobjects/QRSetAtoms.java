@@ -24,9 +24,7 @@ public class QRSetAtoms implements Serializable {
     }
 
     public QRSetAtoms(QRSetAtoms q) {
-        for (QRAtom a : q.Base) {
-            Base.add(a.clone());
-        }
+        Base.addAll(q.Base);
     }
 
     /** replace an atom at a position P with NEWATOM;

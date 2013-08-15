@@ -8,6 +8,7 @@ import uk.ac.manchester.cs.jfact.kernel.ReasoningKernel;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import conformance.PortedFrom;
 
+/** modularizer */
 @PortedFrom(file = "OntologyBasedModularizer.h", name = "OntologyBasedModularizer")
 public class OntologyBasedModularizer implements Serializable {
     private static final long serialVersionUID = 11000L;
@@ -15,6 +16,8 @@ public class OntologyBasedModularizer implements Serializable {
     private final Ontology ontology;
     private final TModularizer Modularizer;
 
+    /** @param ontology
+     * @param mod */
     @PortedFrom(file = "OntologyBasedModularizer.h", name = "OntologyBasedModularizer")
     public OntologyBasedModularizer(Ontology ontology, TModularizer mod) {
         this.ontology = ontology;
@@ -46,7 +49,8 @@ public class OntologyBasedModularizer implements Serializable {
         return getModule(ontology.getAxioms(), sig, type);
     }
 
-    /** @param sig
+    /** @param axioms
+     * @param sig
      * @param type
      * @return module */
     @PortedFrom(file = "OntologyBasedModularizer.h", name = "getModule")

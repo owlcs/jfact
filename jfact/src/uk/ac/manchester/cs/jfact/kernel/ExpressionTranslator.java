@@ -36,8 +36,8 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Seri
     /** TBox to get access to the named entities */
     @PortedFrom(file = "tExpressionTranslator.h", name = "kb")
     private final TBox tbox;
-    /** signature of non-trivial entities; used in semantic locality checkers */
-    // only
+    /** signature of non-trivial entities; used in semantic locality checkers
+     * only */
     @PortedFrom(file = "tExpressionTranslator.h", name = "sig")
     private TSignature sig;
 
@@ -47,7 +47,10 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Seri
         return sig != null && !sig.containsNamedEntity(entity);
     }
 
-    /** set internal signature to a given signature S */
+    /** set internal signature to a given signature S
+     * 
+     * @param s
+     *            signature */
     @PortedFrom(file = "tExpressionTranslator.h", name = "setSignature")
     public void setSignature(TSignature s) {
         sig = s;
@@ -259,7 +262,7 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Seri
     public DLTree visit(ObjectRoleChain expr) {
         List<ObjectRoleExpression> l = new ArrayList<ObjectRoleExpression>(
                 expr.getArguments());
-        if (l.size() == 0) {
+        if (l.isEmpty()) {
             throw new ReasonerInternalException(
                     "Unsupported expression 'empty role chain' in transformation");
         }

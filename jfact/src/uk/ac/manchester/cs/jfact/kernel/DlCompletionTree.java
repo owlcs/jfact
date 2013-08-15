@@ -173,16 +173,15 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
 
     /** log node status (d-,i-,p-blocked or cached */
     private String logNodeBStatus() {
-        String toReturn = "";
+        StringBuilder toReturn = new StringBuilder();
         // blocking status information
         if (blocker != null) {
-            toReturn += getBlockingStatusName();
-            toReturn += blocker.id;
+            toReturn.append(getBlockingStatusName()).append(blocker.id);
         }
         if (isCached()) {
-            toReturn += "c";
+            toReturn.append("c");
         }
-        return toReturn;
+        return toReturn.toString();
     }
 
     /** @param newId
@@ -610,7 +609,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
         return curLevel > restLevel;
     }
 
-    /** restore node to given level */
+    /** @param level
+     *            level number restore node to given level */
     public void restore(int level) {
         restore(saves.pop(level));
     }

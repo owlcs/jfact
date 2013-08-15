@@ -348,7 +348,7 @@ public class TAxiomSplitter implements Serializable {
         registerCIs();
         // now check if some of the C's contains in an equivalence axioms
         registerEQ();
-        if (Renames.size() == 0) {
+        if (Renames.isEmpty()) {
             return;
         }
         // make records for the implications

@@ -560,7 +560,10 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         }
     }
 
-    /** fill candidates */
+    /** fill candidates
+     * 
+     * @param cur
+     *            vertex to add to candidates (and its updirection neighbors */
     public void fillCandidates(TaxonomyVertex cur) {
         if (isValued(cur)) {
             if (getValue(cur)) {

@@ -192,8 +192,7 @@ public class FastSetSimple extends AbstractFastSet {
     public boolean contains(int o) {
         if (values != null) {
             int i = insertionIndex(o);
-            boolean toReturn = i > -1;
-            return toReturn;
+            return i > -1;
         }
         return false;
     }
@@ -326,10 +325,6 @@ public class FastSetSimple extends AbstractFastSet {
         return false;
     }
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
 
     @Override
     public void removeAt(int i) {

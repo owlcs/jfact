@@ -12,24 +12,15 @@ import conformance.PortedFrom;
 class QR2ArgAtom extends QRAtom {
     private static final long serialVersionUID = 11000L;
     /** argument 1 */
-    final @PortedFrom(file = "QR.h", name = "Arg1")
-    QRiObject Arg1;
+    @PortedFrom(file = "QR.h", name = "Arg1")
+    private final QRiObject Arg1;
     /** argument 2 */
-    final @PortedFrom(file = "QR.h", name = "Arg2")
-    QRiObject Arg2;
+    @PortedFrom(file = "QR.h", name = "Arg2")
+    private final QRiObject Arg2;
 
-    QR2ArgAtom(QRiObject A1, QRiObject A2) {
+    public QR2ArgAtom(QRiObject A1, QRiObject A2) {
         Arg1 = A1;
         Arg2 = A2;
-    }
-
-    public QR2ArgAtom(QR2ArgAtom q) {
-        this(q.Arg1, q.Arg2);
-    }
-
-    @Override
-    public QR2ArgAtom clone() {
-        return new QR2ArgAtom(this);
     }
 
     // access

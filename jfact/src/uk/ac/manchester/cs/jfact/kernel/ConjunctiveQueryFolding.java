@@ -65,10 +65,10 @@ public class ConjunctiveQueryFolding implements Serializable {
                     VarRestrictions.put(var.getName(),
                             pEM.and(C, VarRestrictions.get(var.getName())));
                 } else {
-                    ret.addAtom(atom.clone());
+                    ret.addAtom(atom);
                 }
             } else {
-                ret.addAtom(p.clone());
+                ret.addAtom(p);
             }
         }
         // System.out.println("after\n" + ret);
@@ -258,6 +258,7 @@ public class ConjunctiveQueryFolding implements Serializable {
         return query;
     }
 
+    /** @param query */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "deleteFictiveVariables")
     public void deleteFictiveVariables(QRQuery query) {
         Set<QRVariable> RealFreeVars = new TreeSet<QRVariable>();
@@ -277,6 +278,8 @@ public class ConjunctiveQueryFolding implements Serializable {
         query.setFreeVars(RealFreeVars);
     }
 
+    /** @param v
+     * @return concept for var */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "createConceptByVar")
     public ConceptExpression createConceptByVar(QRVariable v) {
         return VarRestrictions.get(NewVarMap.get(v).getName());

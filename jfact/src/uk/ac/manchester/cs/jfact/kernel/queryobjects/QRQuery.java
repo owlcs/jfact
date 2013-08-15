@@ -23,14 +23,16 @@ public class QRQuery implements Serializable {
     @PortedFrom(file = "QR.h", name = "FreeVars")
     private Set<QRVariable> FreeVars = new TreeSet<QRVariable>();
 
+    @SuppressWarnings("javadoc")
     public QRQuery() {
         // TODO Auto-generated constructor stub
     }
 
+    /** @param q */
     public QRQuery(QRQuery q) {
         Body = new QRSetAtoms(q.Body);
         for (QRVariable v : q.getFreeVars()) {
-            getFreeVars().add(v.clone());
+            getFreeVars().add(new QRVariable(v));
         }
     }
 
@@ -56,15 +58,18 @@ public class QRQuery implements Serializable {
         getFreeVars().add(var);
     }
 
+    /** @return body */
     @Original
     public QRSetAtoms getBody() {
         return Body;
     }
 
+    /** @return free vars */
     public Set<QRVariable> getFreeVars() {
         return FreeVars;
     }
 
+    /** @param freeVars */
     public void setFreeVars(Set<QRVariable> freeVars) {
         FreeVars = freeVars;
     }
