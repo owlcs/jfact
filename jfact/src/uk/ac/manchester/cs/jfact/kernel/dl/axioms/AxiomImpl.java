@@ -29,7 +29,7 @@ abstract class AxiomImpl implements AxiomInterface, Serializable {
     private boolean inModule;
     /** flag to show whether it is used (to support retraction) */
     private boolean used;
-    TOntologyAtom atom = null;
+    private TOntologyAtom atom = null;
     private final OWLAxiom axiom;
 
     @Override

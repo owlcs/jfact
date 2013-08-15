@@ -21,14 +21,14 @@ import conformance.PortedFrom;
 class SimpleRule implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** body of the rule */
-    final @PortedFrom(file = "dlTBox.h", name = "Body")
-    List<Concept> simpleRuleBody = new ArrayList<Concept>();
+    @PortedFrom(file = "dlTBox.h", name = "Body")
+    protected final List<Concept> simpleRuleBody = new ArrayList<Concept>();
     /** head of the rule as a DLTree */
     @PortedFrom(file = "dlTBox.h", name = "tHead")
     protected final DLTree tHead;
     /** head of the rule as a BP */
     @PortedFrom(file = "dlTBox.h", name = "bpHead")
-    int bpHead;
+    protected int bpHead;
 
     public SimpleRule(List<Concept> body, DLTree head) {
         simpleRuleBody.addAll(body);

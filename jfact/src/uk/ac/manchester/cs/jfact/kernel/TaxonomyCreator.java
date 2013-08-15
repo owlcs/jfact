@@ -330,7 +330,7 @@ public class TaxonomyCreator implements Serializable {
      * 
      * @return the reason of cycle or NULL. */
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "prepareTS")
-    ClassifiableEntry prepareTS(ClassifiableEntry cur) {
+    private ClassifiableEntry prepareTS(ClassifiableEntry cur) {
         // we just found that TS forms a cycle -- return stop-marker
         if (waitStack.contains(cur)) {
             return cur;

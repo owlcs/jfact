@@ -30,16 +30,16 @@ import conformance.Original;
 @Original
 public class DatatypeFactory implements Serializable {
     private static final long serialVersionUID = 11000L;
-    static final String namespace = "http://www.w3.org/2001/XMLSchema#";
-    static final Comparable NUMBER_EXPRESSION = "[\\-+]?[0-9]+";
-    static final Comparable WHITESPACE = collapse;
-    static final Facet[] minmax = new Facet[] { maxInclusive, maxExclusive, minInclusive,
-            minExclusive };
-    static final Facet[] pew = new Facet[] { pattern, enumeration, whiteSpace };
-    static final Facet[] len = new Facet[] { length, minLength, maxLength };
-    static final Facet[] digs = new Facet[] { totalDigits, fractionDigits };
-    static final Set<Facet> StringFacets = Utils.getFacets(pew, len);
-    static final Set<Facet> FACETS4 = Utils.getFacets(pew, minmax);
+    private static final String namespace = "http://www.w3.org/2001/XMLSchema#";
+    private static final Comparable NUMBER_EXPRESSION = "[\\-+]?[0-9]+";
+    private static final Comparable WHITESPACE = collapse;
+    private static final Facet[] minmax = new Facet[] { maxInclusive, maxExclusive,
+            minInclusive, minExclusive };
+    private static final Facet[] pew = new Facet[] { pattern, enumeration, whiteSpace };
+    private static final Facet[] len = new Facet[] { length, minLength, maxLength };
+    private static final Facet[] digs = new Facet[] { totalDigits, fractionDigits };
+    private static final Set<Facet> StringFacets = Utils.getFacets(pew, len);
+    private static final Set<Facet> FACETS4 = Utils.getFacets(pew, minmax);
     public static final Datatype<String> LITERAL = new LITERAL_DATATYPE();
     public static final Datatype<String> ANYURI = new ANYURI_DATATYPE();
     public static final Datatype<String> BASE64BINARY = new BASE64BINARY_DATATYPE();
@@ -1661,5 +1661,9 @@ public class DatatypeFactory implements Serializable {
             }
             return true;
         }
+    }
+
+    public static String getNamespace() {
+        return namespace;
     }
 }

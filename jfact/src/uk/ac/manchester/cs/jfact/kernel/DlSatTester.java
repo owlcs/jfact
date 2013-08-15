@@ -38,7 +38,7 @@ public class DlSatTester implements Serializable {
 
     private class LocalFastSet implements FastSet, Serializable {
         private static final long serialVersionUID = 11000L;
-        BitSet pos = new BitSet();
+        private BitSet pos = new BitSet();
 
         public LocalFastSet() {}
 
@@ -205,7 +205,7 @@ public class DlSatTester implements Serializable {
         }
 
         /** get BC for TopLE-rule */
-        BCLE<DlCompletionTree> pushTopLE() {
+        protected BCLE<DlCompletionTree> pushTopLE() {
             // XXX verify if this is correct
             BCLE<DlCompletionTree> e = new BCLE<DlCompletionTree>();
             push(e);
@@ -1078,18 +1078,6 @@ public class DlSatTester implements Serializable {
     }
 
     // flags section
-    /** @return true iff semantic branching is used */
-    @PortedFrom(file = "Reasoner.h", name = "useSemanticBranching")
-    private boolean useSemanticBranching() {
-        return tBox.isUseSemanticBranching();
-    }
-
-    /** @return true iff lazy blocking is used */
-    @PortedFrom(file = "Reasoner.h", name = "useLazyBlocking")
-    private boolean useLazyBlocking() {
-        return tBox.isUseLazyBlocking();
-    }
-
     /** @return true iff active signature is in use */
     @PortedFrom(file = "Reasoner.h", name = "useActiveSignature")
     private boolean useActiveSignature() {
@@ -1460,7 +1448,7 @@ public class DlSatTester implements Serializable {
         boolean shallow = true;
         int size = 0;
         // check whether node cache is allowed
-        if (!tBox.isUseNodeCache()) {
+        if (!options.isUseNodeCache()) {
             return false;
         }
         // nominal nodes can not be cached

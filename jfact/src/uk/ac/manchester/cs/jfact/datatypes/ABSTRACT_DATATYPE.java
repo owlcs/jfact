@@ -184,7 +184,7 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
         return cardinality.COUNTABLYINFINITE;
     }
 
-    <T extends Comparable<T>> boolean overlapping(OrderedDatatype<T> first,
+    protected <T extends Comparable<T>> boolean overlapping(OrderedDatatype<T> first,
             OrderedDatatype<T> second) {
         if (first.hasMaxInclusive() && second.hasMinInclusive()) {
             return first.getMax().compareTo(second.getMin()) >= 0;

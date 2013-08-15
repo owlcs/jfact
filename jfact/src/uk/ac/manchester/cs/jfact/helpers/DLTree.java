@@ -395,7 +395,7 @@ class ONEDLTree extends DLTree {
 
     @Override
     public void replace(DLTree toReplace, DLTree replacement) {
-        if (child == toReplace) {
+        if (child.equals(toReplace)) {
             child = replacement;
             if (replacement != null) {
                 replacement.ancestor = this;

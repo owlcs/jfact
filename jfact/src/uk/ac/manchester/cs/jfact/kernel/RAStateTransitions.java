@@ -36,7 +36,7 @@ public class RAStateTransitions implements Serializable {
     private int size = 0;
     /** true iff there is a top transition going from this state */
     @PortedFrom(file = "RAutomaton.h", name = "TopTransition")
-    boolean TopTransition;
+    private boolean TopTransition;
 
     /** @return begin */
     @PortedFrom(file = "RAutomaton.h", name = "begin")

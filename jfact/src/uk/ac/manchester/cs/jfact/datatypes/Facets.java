@@ -22,11 +22,11 @@ public class Facets implements Serializable {
 
     private static abstract class AbstractFacet implements Facet, Serializable {
         private static final long serialVersionUID = 11000L;
-        final String uri;
-        final String fragment;
+        protected final String uri;
+        protected final String fragment;
 
         public AbstractFacet(String u) {
-            uri = DatatypeFactory.namespace + u;
+            uri = DatatypeFactory.getNamespace() + u;
             fragment = u;
         }
 

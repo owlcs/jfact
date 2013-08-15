@@ -27,7 +27,6 @@ public class AxiomSet implements Serializable {
     @PortedFrom(file = "tAxiomSet.h", name = "Accum")
     private List<Axiom> accumulator = new ArrayList<Axiom>();
     private final LogAdapter absorptionLog;
-
     /** set of absorption action, in order */
     @PortedFrom(file = "tAxiomSet.h", name = "ActionVector")
     private final List<AbsorptionActions> actions = new ArrayList<AbsorptionActions>();
@@ -164,7 +163,6 @@ public class AxiomSet implements Serializable {
         tboxHost.getOptions().getAbsorptionLog().print(" keep as GCI");
         return false;
     }
-
 
     /** @param flags
      * @return false if no absorptions */

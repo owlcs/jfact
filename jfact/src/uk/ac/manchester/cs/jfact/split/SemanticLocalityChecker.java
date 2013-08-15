@@ -75,7 +75,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker,
 
     /** signature to keep */
     @PortedFrom(file = "LocalityChecker.h", name = "sig")
-    TSignature sig;
+    private TSignature sig;
 
     @Override
     @Original

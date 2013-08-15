@@ -19,10 +19,12 @@ public class QRSetAtoms implements Serializable {
     @PortedFrom(file = "QR.h", name = "Base")
     private final List<QRAtom> Base = new ArrayList<QRAtom>();
 
+    /**     */
     public QRSetAtoms() {
         // TODO Auto-generated constructor stub
     }
 
+    /** @param q */
     public QRSetAtoms(QRSetAtoms q) {
         Base.addAll(q.Base);
     }
@@ -38,12 +40,15 @@ public class QRSetAtoms implements Serializable {
         return Base.set(i, newAtom);
     }
 
-    /** add atom to a set */
+    /** add atom to a set
+     * 
+     * @param atom */
     @PortedFrom(file = "QR.h", name = "addAtom")
-    void addAtom(QRAtom atom) {
+    public void addAtom(QRAtom atom) {
         Base.add(atom);
     }
 
+    /** @return list of atoms */
     @Original
     public List<QRAtom> begin() {
         return Base;

@@ -34,7 +34,7 @@ public final class DataTypeReasoner implements Serializable {
 
     /** set clash dep-set to DEP, report with given REASON */
     @PortedFrom(file = "DataReasoning.h", name = "reportClash")
-    void reportClash(DepSet dep, String reason) {
+    public void reportClash(DepSet dep, String reason) {
         // inform about clash...
         options.getLog().printTemplate(Templates.CLASH, reason);
         clashDep.setReference(dep);

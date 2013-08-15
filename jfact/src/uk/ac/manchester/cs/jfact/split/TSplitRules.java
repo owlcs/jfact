@@ -86,7 +86,7 @@ public class TSplitRules implements Serializable {
         }
 
         /** check whether set S1 intersects with the set S2 */
-        boolean intersectsWith(Set<?> S1, Set<?> S2) {
+        private boolean intersectsWith(Set<?> S1, Set<?> S2) {
             for (Object o : S1) {
                 if (S2.contains(o)) {
                     return true;

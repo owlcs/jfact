@@ -84,13 +84,13 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
     // set fields
     /** set the corresponding top evaluator */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "setTopEval")
-    void setTopEval(TopEquivalenceEvaluator eval) {
+    protected void setTopEval(TopEquivalenceEvaluator eval) {
         TopEval = eval;
     }
 
     /** @return true iff an EXPRession is equivalent to bottom wrt defined policy */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isBotEquivalent")
-    boolean isBotEquivalent(Expression expr) {
+    protected boolean isBotEquivalent(Expression expr) {
         expr.accept(this);
         return isBotEq;
     }

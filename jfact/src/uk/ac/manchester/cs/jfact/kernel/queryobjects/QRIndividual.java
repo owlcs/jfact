@@ -13,11 +13,13 @@ import conformance.PortedFrom;
 class QRIndividual extends QRiObject {
     private static final long serialVersionUID = 11000L;
     /** original individual from Expression Manager */
-    final @PortedFrom(file = "QR.h", name = "Ind")
-    IndividualName Ind;
+    @PortedFrom(file = "QR.h", name = "Ind")
+    private final IndividualName Ind;
 
-    /** init c'tor */
-    QRIndividual(IndividualName ind) {
+    /** init c'tor
+     * 
+     * @param ind */
+    public QRIndividual(IndividualName ind) {
         Ind = ind;
     }
 
@@ -27,7 +29,7 @@ class QRIndividual extends QRiObject {
 
     /** get the name */
     @PortedFrom(file = "QR.h", name = "getIndividual")
-    IndividualName getIndividual() {
+    public IndividualName getIndividual() {
         return Ind;
     }
 }

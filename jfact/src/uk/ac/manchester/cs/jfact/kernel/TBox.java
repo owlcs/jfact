@@ -134,31 +134,13 @@ public class TBox implements Serializable {
     private final List<Concept> fairness = new ArrayList<Concept>();
     // Reasoner's members: there are many reasoner classes, some members are
     // shared
-    /** flag for switching semantic branching */
-    @PortedFrom(file = "dlTBox.h", name = "useSemanticBranching")
-    private boolean useSemanticBranching;
-    /** whether or not check blocking status as late as possible */
-    @PortedFrom(file = "dlTBox.h", name = "useLazyBlocking")
-    private boolean useLazyBlocking;
-    /** flag for switching between Anywhere and Ancestor blockings */
-    @PortedFrom(file = "dlTBox.h", name = "useAnywhereBlocking")
-    private boolean useAnywhereBlocking;
-    /** flag to use caching during completion tree construction */
-    @PortedFrom(file = "dlTBox.h", name = "useNodeCache")
-    private boolean useNodeCache;
     /** let reasoner know that we are in the classificaton (for splits) */
     @PortedFrom(file = "dlTBox.h", name = "duringClassification")
     private boolean duringClassification;
     /** how many nodes skip before block; work only with FAIRNESS */
     @PortedFrom(file = "dlTBox.h", name = "nSkipBeforeBlock")
     private int nSkipBeforeBlock;
-    /** use special domains as GCIs */
-    @PortedFrom(file = "dlTBox.h", name = "useSpecialDomains")
-    private boolean useSpecialDomains;
     // Internally defined flags
-    /** whether we use sorted reasoning; depends on some simplifications */
-    @PortedFrom(file = "dlTBox.h", name = "useSortedReasoning")
-    private boolean useSortedReasoning;
     /** flag whether TBox is GALEN-like */
     @PortedFrom(file = "dlTBox.h", name = "isLikeGALEN")
     private boolean isLikeGALEN;
@@ -661,12 +643,6 @@ public class TBox implements Serializable {
         return dlHeap;
     }
 
-    /** set flag to use node cache to value VAL */
-    @PortedFrom(file = "dlTBox.h", name = "setUseNodeCache")
-    private void setUseNodeCache(boolean val) {
-        useNodeCache = val;
-    }
-
     /** return registered concept by given NAME;
      * 
      * @param name
@@ -807,8 +783,8 @@ public class TBox implements Serializable {
             }
         }
         // in presence of fairness constraints use ancestor blocking
-        if (useAnywhereBlocking && hasFC()) {
-            useAnywhereBlocking = false;
+        if (config.getuseAnywhereBlocking() && hasFC()) {
+            config.setuseAnywhereBlocking(false);
             config.getLog().print("\nFairness constraints: set useAnywhereBlocking = 0");
         }
     }
@@ -879,7 +855,7 @@ public class TBox implements Serializable {
     /** @return check if Sorted Reasoning is applicable */
     @PortedFrom(file = "dlTBox.h", name = "canUseSortedReasoning")
     public boolean canUseSortedReasoning() {
-        return useSortedReasoning && !GCIs.isGCI() && !GCIs.isReflexive();
+        return config.isUseSortedReasoning() && !GCIs.isGCI() && !GCIs.isReflexive();
     }
 
     /** perform classification (assuming KB is consistent) */
@@ -986,7 +962,7 @@ public class TBox implements Serializable {
         DLTree GCI = axioms.getGCI();
         // add special domains to the GCIs
         List<DLTree> list = new ArrayList<DLTree>();
-        if (useSpecialDomains) {
+        if (config.isUseSpecialDomains()) {
             for (Role p : objectRoleMaster.getRoles()) {
                 if (!p.isSynonym() && p.hasSpecialDomain()) {
                     list.add(p.getTSpecialDomain().copy());
@@ -1475,9 +1451,7 @@ public class TBox implements Serializable {
         dataRoleMaster = new RoleMaster(true, topDataRoleName, botDataRoleName, config);
         axioms = new AxiomSet(this);
         internalisedGeneralAxiom = bpTOP;
-        setUseNodeCache(true);
         duringClassification = false;
-        useSortedReasoning = true;
         isLikeGALEN = false;
         isLikeWINE = false;
         consistent = true;
@@ -1756,13 +1730,13 @@ public class TBox implements Serializable {
         // perform reasoning with a proper logical features
         prepareFeatures(pConcept, null);
         // turn off caching of CT nodes during reasoning
-        setUseNodeCache(false);
+        config.setUseNodeCache(false);
         // do the SAT test, save the CT if satisfiable
         if (getReasoner().runSat(pConcept.resolveId(), Helper.bpTOP)) {
             ret = getReasoner().getRootNode();
         }
         // turn on caching of CT nodes during reasoning
-        setUseNodeCache(true);
+        config.setUseNodeCache(true);
         clearFeatures();
         return ret;
     }
@@ -2908,7 +2882,7 @@ public class TBox implements Serializable {
         isLikeGALEN = bRatio > sqBSize * 20 && bRatio < bSize;
         // switch off sorted reasoning iff top role appears
         if (KBFeatures.hasTopRole()) {
-            useSortedReasoning = false;
+            config.setUseSortedReasoning(false);
         }
     }
 
@@ -3006,11 +2980,11 @@ public class TBox implements Serializable {
             }
         }
 
-        Elem getCur() {
+        public Elem getCur() {
             return Elems.get(pCur);
         }
 
-        boolean next() {
+        public boolean next() {
             if (++pCur >= pEnd) {
                 pCur = pBeg;
                 return true;
@@ -3022,19 +2996,19 @@ public class TBox implements Serializable {
     static class IterableVec<Elem> implements Serializable {
         private static final long serialVersionUID = 11000L;
 
-        void clear() {
+        public void clear() {
             Base.clear();
         }
 
         // / move I'th iterable forward; deal with end-case
-        boolean next(int i) {
+        public boolean next(int i) {
             if (Base.get(i).next()) {
                 return i == 0 ? true : next(i - 1);
             }
             return false;
         }
 
-        final List<IterableElem<Elem>> Base = new ArrayList<TBox.IterableElem<Elem>>();
+        private final List<IterableElem<Elem>> Base = new ArrayList<TBox.IterableElem<Elem>>();
 
         // / empty c'tor
         IterableVec() {}
@@ -3072,24 +3046,6 @@ public class TBox implements Serializable {
         for (DLTree q : Cs) {
             getConceptsForQueryAnswering().add(tree2dag(q));
         }
-        // System.out.println(" done \nFilling all individuals...");
-        // all individuals to go thru
-        // List<Individual> AllInd = new ArrayList<Individual>(i_begin());
-        // System.out.println(" done with " + AllInd.size() + " individuals");
-        // int size = Cs.size();
-        // System.out.println("Run consistency checks...");
-        // int n = 0;
-        // do {
-        // if (n++ % 1000 == 0) {
-        // System.out.println("TBox.answerQuery() " + n);
-        // }
-        // if (nomReasoner.checkExtraCond()) {
-        // for (int k = 0; k < size; k++) {
-        // System.out.print(IV.get(k).getName() + " ");
-        // }
-        // System.out.println();
-        // }
-        // } while (!IV.next());
     }
 
     public void reclassify(Set<NamedEntity> MPlus, Set<NamedEntity> MMinus) {
@@ -3102,18 +3058,6 @@ public class TBox implements Serializable {
 
     public boolean isDuringClassification() {
         return duringClassification;
-    }
-
-    public boolean isUseLazyBlocking() {
-        return useLazyBlocking;
-    }
-
-    public boolean isUseSemanticBranching() {
-        return useSemanticBranching;
-    }
-
-    public boolean isUseNodeCache() {
-        return useNodeCache;
     }
 
     public TSplitRules getSplitRules() {

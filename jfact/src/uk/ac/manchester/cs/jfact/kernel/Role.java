@@ -152,7 +152,7 @@ public class Role extends ClassifiableEntry {
     }
 
     @PortedFrom(file = "tRole.h", name = "mergeSupersDomain")
-    void mergeSupersDomain() {
+    public void mergeSupersDomain() {
         for (int i = 0; i < ancestorRoles.size(); i++) {
             domLabel.merge(ancestorRoles.get(i).domLabel);
         }

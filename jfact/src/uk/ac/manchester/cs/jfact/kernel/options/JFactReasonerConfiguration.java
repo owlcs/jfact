@@ -55,6 +55,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
     /** Option 'useSemanticBranching' switch semantic branching on and off. The
      * usage of semantic branching usually leads to faster reasoning, but
      * sometime could give small overhead. */
+    @PortedFrom(file = "dlTBox.h", name = "useSemanticBranching")
     private boolean useSemanticBranching = true;
     /** Option 'useBackjumping' switch backjumping on and off. The usage of
      * backjumping usually leads to much faster reasoning. */
@@ -63,15 +64,18 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
     private boolean verboseOutput = false;
     /** Option 'useLazyBlocking' makes checking of blocking status as small as
      * possible. This greatly increase speed of reasoning. */
+    @PortedFrom(file = "dlTBox.h", name = "useLazyBlocking")
     private boolean useLazyBlocking = true;
     /** Option 'useAnywhereBlocking' allow user to choose between Anywhere and
      * Ancestor blocking. */
+    @PortedFrom(file = "dlTBox.h", name = "useAnywhereBlocking")
     private boolean useAnywhereBlocking = true;
     /** Option 'useCompletelyDefined' leads to simpler Taxonomy creation if TBox
      * contains no non-primitive concepts. Unfortunately, it is quite rare case. */
     private boolean useCompletelyDefined = true;
     /** Option 'useSpecialDomains' (development) controls the special processing
      * of R&D for non-simple roles. Should always be set to true. */
+    @PortedFrom(file = "dlTBox.h", name = "useSpecialDomains")
     private boolean useSpecialDomains = true;
     /** Option 'useIncrementalReasoning' (development) allows one to reason
      * efficiently about small changes in the ontology. */
@@ -82,6 +86,63 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * number of nodes before make a block. */
     // private static final Option skipBeforeBlock =
     // getOption("skipBeforeBlock", 0);
+    /** flag to use caching during completion tree construction */
+    @PortedFrom(file = "dlTBox.h", name = "useNodeCache")
+    private boolean useNodeCache = true;
+    /** whether we use sorted reasoning; depends on some simplifications */
+    @PortedFrom(file = "dlTBox.h", name = "useSortedReasoning")
+    private boolean useSortedReasoning = true;
+
+    public boolean isUseSortedReasoning() {
+        return useSortedReasoning;
+    }
+
+    public void setUseSortedReasoning(boolean useSortedReasoning) {
+        this.useSortedReasoning = useSortedReasoning;
+    }
+
+    public boolean isUseSpecialDomains() {
+        return useSpecialDomains;
+    }
+
+    public void setUseSpecialDomains(boolean b) {
+        useSpecialDomains = b;
+    }
+
+    public boolean isUseLazyBlocking() {
+        return useLazyBlocking;
+    }
+
+    public void setUseLazyBlocking(boolean b) {
+        useLazyBlocking = b;
+    }
+
+    public boolean getUseAnywhereBlocking() {
+        return useAnywhereBlocking;
+    }
+
+    public void setUseAnywhereBlocking(boolean b) {
+        useAnywhereBlocking = b;
+    }
+
+    public boolean isUseSemanticBranching() {
+        return useSemanticBranching;
+    }
+
+    public void setUseSemanticBranching(boolean b) {
+        useSemanticBranching = b;
+    }
+
+    /** set flag to use node cache to value VAL */
+    @PortedFrom(file = "dlTBox.h", name = "setUseNodeCache")
+    public void setUseNodeCache(boolean val) {
+        useNodeCache = val;
+    }
+
+    public boolean isUseNodeCache() {
+        return useNodeCache;
+    }
+
     /** set of all avaliable (given) options */
     private final Map<String, StringOption> base = new HashMap<String, StringOption>();
 
@@ -427,7 +488,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
         }
     }
 
-    final LogAdapter empty = new LogAdapterImpl();
+    protected final LogAdapter empty = new LogAdapterImpl();
     private LogAdapterStream logAdapterStream;
 
     public void setRegularLogOutputStream(OutputStream o) {
