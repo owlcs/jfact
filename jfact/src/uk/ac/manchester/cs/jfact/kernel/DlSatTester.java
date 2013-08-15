@@ -457,11 +457,12 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "updateName")
     private void updateName(int bp) {
         int n = 0;
-        DlCompletionTree node = null;
-        while ((node = cGraph.getNode(n++)) != null) {
+        DlCompletionTree node = cGraph.getNode(n++);
+        while (node != null) {
             if (isNodeGloballyUsed(node)) {
                 this.updateName(node, bp);
             }
+            node = cGraph.getNode(n++);
         }
     }
 
@@ -990,14 +991,15 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "createCache")
     public ModelCacheInterface createCache(int p, FastSet f) {
         assert Helper.isValid(p);
-        ModelCacheInterface cache;
-        if ((cache = dlHeap.getCache(p)) != null) {
+        ModelCacheInterface cache = dlHeap.getCache(p);
+        if (cache != null) {
             return cache;
         }
         if (!tBox.testHasTopRole()) {
             prepareCascadedCache(p, f);
         }
-        if ((cache = dlHeap.getCache(p)) != null) {
+        cache = dlHeap.getCache(p);
+        if (cache != null) {
             return cache;
         }
         cache = buildCache(p);
@@ -1260,11 +1262,12 @@ public class DlSatTester implements Serializable {
     private boolean addSessionGCI(int C, DepSet dep) {
         SessionGCIs.add(C);
         int n = 0;
-        DlCompletionTree node = null;
-        while ((node = cGraph.getNode(n++)) != null) {
+        DlCompletionTree node = cGraph.getNode(n++);
+        while (node != null) {
             if (isNodeGloballyUsed(node) && addToDoEntry(node, C, dep, "sg")) {
                 return true;
             }
+            node = cGraph.getNode(n++);
         }
         return false;
     }
@@ -1985,11 +1988,12 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "updateSessionSignature")
     private void updateSessionSignature() {
         int n = 0;
-        DlCompletionTree node = null;
-        while ((node = cGraph.getNode(n++)) != null) {
+        DlCompletionTree node = cGraph.getNode(n++);
+        while (node != null) {
             if (isObjectNodeUnblocked(node)) {
                 updateSignatureByNode(node);
             }
+            node = cGraph.getNode(n++);
         }
     }
 

@@ -28,13 +28,9 @@ public class AxiomSet implements Serializable {
     private List<Axiom> accumulator = new ArrayList<Axiom>();
     private final LogAdapter absorptionLog;
 
-    private interface Abs extends Serializable {
-        boolean absMethod(Axiom ax);
-    }
-
     /** set of absorption action, in order */
     @PortedFrom(file = "tAxiomSet.h", name = "ActionVector")
-    private final List<Abs> actions = new ArrayList<AxiomSet.Abs>();
+    private final List<AbsorptionActions> actions = new ArrayList<AbsorptionActions>();
 
     /** add already built GCI p */
     @PortedFrom(file = "tAxiomSet.h", name = "insertGCI")
@@ -160,8 +156,8 @@ public class AxiomSet implements Serializable {
     @PortedFrom(file = "tAxiomSet.h", name = "absorbGCI")
     private boolean absorbGCI(Axiom p) {
         SAbsAction();
-        for (Abs abs : actions) {
-            if (abs.absMethod(p)) {
+        for (AbsorptionActions abs : actions) {
+            if (abs.execute(p, this)) {
                 return true;
             }
         }
@@ -169,99 +165,17 @@ public class AxiomSet implements Serializable {
         return false;
     }
 
+
     /** @param flags
      * @return false if no absorptions */
     @PortedFrom(file = "tAxiomSet.h", name = "initAbsorptionFlags")
     public boolean initAbsorptionFlags(String flags) {
         actions.clear();
         for (char c : flags.toCharArray()) {
-            switch (c) {
-                case 'B':
-                    actions.add(new Abs() {
-                        private static final long serialVersionUID = 11000L;
-
-                        @Override
-                        public boolean absMethod(Axiom ax) {
-                            return ax.absorbIntoBottom();
-                        }
-                    });
-                    break;
-                case 'T':
-                    actions.add(new Abs() {
-                        private static final long serialVersionUID = 11000L;
-
-                        @Override
-                        public boolean absMethod(Axiom ax) {
-                            return ax.absorbIntoTop(tboxHost);
-                        }
-                    });
-                    break;
-                case 'E':
-                    actions.add(new Abs() {
-                        private static final long serialVersionUID = 11000L;
-
-                        @Override
-                        public boolean absMethod(Axiom ax) {
-                            return processNewAxiom(ax.simplifyCN());
-                        }
-                    });
-                    break;
-                case 'C':
-                    actions.add(new Abs() {
-                        private static final long serialVersionUID = 11000L;
-
-                        @Override
-                        public boolean absMethod(Axiom ax) {
-                            return ax.absorbIntoConcept(tboxHost);
-                        }
-                    });
-                    break;
-                case 'N':
-                    actions.add(new Abs() {
-                        private static final long serialVersionUID = 11000L;
-
-                        @Override
-                        public boolean absMethod(Axiom ax) {
-                            return ax.absorbIntoNegConcept(tboxHost);
-                        }
-                    });
-                    break;
-                case 'F':
-                    actions.add(new Abs() {
-                        private static final long serialVersionUID = 11000L;
-
-                        @Override
-                        public boolean absMethod(Axiom ax) {
-                            return processNewAxiom(ax.simplifyForall(tboxHost));
-                        }
-                    });
-                    break;
-                case 'R':
-                    actions.add(new Abs() {
-                        private static final long serialVersionUID = 11000L;
-
-                        @Override
-                        public boolean absMethod(Axiom ax) {
-                            return ax.absorbIntoDomain(tboxHost);
-                        }
-                    });
-                    break;
-                case 'S':
-                    actions.add(new Abs() {
-                        private static final long serialVersionUID = 11000L;
-
-                        @Override
-                        public boolean absMethod(Axiom ax) {
-                            return split(ax);
-                        }
-                    });
-                    break;
-                default:
-                    return true;
-            }
+            actions.add(AbsorptionActions.get(c));
         }
-        tboxHost.getOptions().getAbsorptionLog()
-                .print("Init absorption order as ", flags, "\n");
+        tboxHost.getOptions().getAbsorptionLog().print("Init absorption order as ")
+                .print(flags).print("\n");
         return false;
     }
 

@@ -1486,9 +1486,7 @@ public class TBox implements Serializable {
         config.getLog().printTemplate(Templates.READ_CONFIG,
                 config.getuseCompletelyDefined(), "useRelevantOnly(obsolete)",
                 config.getdumpQuery(), config.getalwaysPreferEquals());
-        if (axioms.initAbsorptionFlags(config.getabsorptionFlags())) {
-            throw new ReasonerInternalException("Incorrect absorption flags given");
-        }
+        axioms.initAbsorptionFlags(config.getabsorptionFlags());
         initTopBottom();
         setForbidUndefinedNames(false);
         initTaxonomy();
