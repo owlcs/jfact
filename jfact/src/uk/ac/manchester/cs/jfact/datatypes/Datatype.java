@@ -37,9 +37,11 @@ public interface Datatype<Representation extends Comparable<Representation>> ext
     Set<Facet> getFacets();
 
     /** @return the known values for a subset of the available facets */
+    @SuppressWarnings("rawtypes")
     Map<Facet, Comparable> getKnownNumericFacetValues();
 
     /** @return the known values for a subset of the available facets */
+    @SuppressWarnings("rawtypes")
     Map<Facet, Comparable> getKnownNonNumericFacetValues();
 
     /** @param f
@@ -49,6 +51,7 @@ public interface Datatype<Representation extends Comparable<Representation>> ext
 
     /** @param f
      * @return numeric value */
+    @SuppressWarnings("rawtypes")
     Comparable getNumericFacetValue(Facet f);
 
     /** @return true if this datatype is numeric */

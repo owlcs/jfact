@@ -201,6 +201,7 @@ public class NominalReasoner extends DlSatTester {
         bContext = stack.pushBarrier();
     }
 
+    /** @return true if unsatisfiable */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "checkExtraCond")
     public boolean checkExtraCond() {
         prepareReasoner();

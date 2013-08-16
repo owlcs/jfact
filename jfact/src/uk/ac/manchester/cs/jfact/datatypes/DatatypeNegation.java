@@ -61,11 +61,13 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
         return !host.emptyValueSpace();
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public Map<Facet, Comparable> getKnownNumericFacetValues() {
         return host.getKnownNumericFacetValues();
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public Map<Facet, Comparable> getKnownNonNumericFacetValues() {
         return host.getKnownNonNumericFacetValues();
@@ -76,6 +78,7 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
         return host.getFacetValue(f);
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public Comparable getNumericFacetValue(Facet f) {
         return host.getNumericFacetValue(f);
@@ -168,6 +171,7 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
         return host.isOrderedDatatype();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public OrderedDatatype<R> asOrderedDatatype() {
         return (OrderedDatatype<R>) this;
@@ -184,14 +188,14 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
     }
 
     @Override
-    public DatatypeExpression<R> addNumericFacet(Facet f, Comparable value) {
+    public DatatypeExpression<R> addNumericFacet(Facet f, Comparable<?> value) {
         System.out
                 .println("DatatypeNegation.addFacet() Cannot add a facet to a negation; modify the base type and rebuild a new negation. Returning the same object");
         return this;
     }
 
     @Override
-    public DatatypeExpression<R> addNonNumericFacet(Facet f, Comparable value) {
+    public DatatypeExpression<R> addNonNumericFacet(Facet f, Comparable<?> value) {
         System.out
                 .println("DatatypeNegation.addFacet() Cannot add a facet to a negation; modify the base type and rebuild a new negation. Returning the same object");
         return this;

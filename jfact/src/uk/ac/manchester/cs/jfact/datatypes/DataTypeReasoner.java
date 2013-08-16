@@ -32,7 +32,10 @@ public final class DataTypeReasoner implements Serializable {
     @Original
     private final JFactReasonerConfiguration options;
 
-    /** set clash dep-set to DEP, report with given REASON */
+    /** set clash dep-set to DEP, report with given REASON
+     * 
+     * @param dep
+     * @param reason */
     @PortedFrom(file = "DataReasoning.h", name = "reportClash")
     public void reportClash(DepSet dep, String reason) {
         // inform about clash...
@@ -47,6 +50,7 @@ public final class DataTypeReasoner implements Serializable {
 
     // managing DTR
     /** add data type to the reasoner */
+    @SuppressWarnings("unchecked")
     @PortedFrom(file = "DataReasoning.h", name = "registerDataType")
     private <R extends Comparable<R>> DataTypeSituation<R> getType(Datatype<R> p) {
         if (map.containsKey(p)) {
@@ -245,8 +249,9 @@ public final class DataTypeReasoner implements Serializable {
                                 this.dataExpression(
                                         true,
                                         new DatatypeEnumeration<BigInteger>(
-                                                DatatypeFactory.INTEGER, Arrays
-                                                        .asList(DatatypeFactory.INTEGER
+                                                DatatypeFactory.INTEGER,
+                                                Collections
+                                                        .singletonList(DatatypeFactory.INTEGER
                                                                 .buildLiteral("0"))),
                                         DepSet.plus(ds1.getPType(), ds2.getPType()));
                                 return checkClash();

@@ -7,16 +7,16 @@ package uk.ac.manchester.cs.jfact.split;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
-import uk.ac.manchester.cs.jfact.datatypes.Datatype;
-import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.kernel.dl.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
+import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorAdapter;
 import conformance.PortedFrom;
 
 /** update the signature by adding all signature elements from the expression */
 @PortedFrom(file = "tSignatureUpdater.h", name = "TExpressionSignatureUpdater")
-class TExpressionSignatureUpdater implements DLExpressionVisitor, Serializable {
+class TExpressionSignatureUpdater extends DLExpressionVisitorAdapter implements
+        DLExpressionVisitor, Serializable {
     private static final long serialVersionUID = 11000L;
     /** Signature to be filled */
     @PortedFrom(file = "tSignatureUpdater.h", name = "sig")
@@ -69,12 +69,6 @@ class TExpressionSignatureUpdater implements DLExpressionVisitor, Serializable {
     }
 
     // concept expressions
-    @Override
-    public void visit(ConceptTop expr) {}
-
-    @Override
-    public void visit(ConceptBottom expr) {}
-
     @Override
     public void visit(ConceptName expr) {
         vE(expr);
@@ -179,12 +173,6 @@ class TExpressionSignatureUpdater implements DLExpressionVisitor, Serializable {
 
     // object role expressions
     @Override
-    public void visit(ObjectRoleTop expr) {}
-
-    @Override
-    public void visit(ObjectRoleBottom expr) {}
-
-    @Override
     public void visit(ObjectRoleName expr) {
         vE(expr);
     }
@@ -213,38 +201,7 @@ class TExpressionSignatureUpdater implements DLExpressionVisitor, Serializable {
 
     // data role expressions
     @Override
-    public void visit(DataRoleTop expr) {}
-
-    @Override
-    public void visit(DataRoleBottom expr) {}
-
-    @Override
     public void visit(DataRoleName expr) {
         vE(expr);
     }
-
-    // data expressions
-    @Override
-    public void visit(DataTop expr) {}
-
-    @Override
-    public void visit(DataBottom expr) {}
-
-    @Override
-    public void visit(Datatype<?> expr) {}
-
-    @Override
-    public void visit(Literal<?> expr) {}
-
-    @Override
-    public void visit(DataNot expr) {}
-
-    @Override
-    public void visit(DataAnd expr) {}
-
-    @Override
-    public void visit(DataOr expr) {}
-
-    @Override
-    public void visit(DataOneOf expr) {}
 }

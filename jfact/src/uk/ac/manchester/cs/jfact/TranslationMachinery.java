@@ -38,7 +38,7 @@ public class TranslationMachinery implements Serializable {
     protected final ReasoningKernel kernel;
     protected final ExpressionManager em;
     protected final OWLDataFactory df;
-    private final DatatypeFactory datatypefactory;
+    protected final DatatypeFactory datatypefactory;
 
     /** @param kernel
      * @param df
@@ -170,8 +170,9 @@ public class TranslationMachinery implements Serializable {
         return ns;
     }
 
-    public synchronized List<IndividualExpression> translateIndividualSet(
-            Set<OWLIndividual> inds) {
+    /** @param inds
+     * @return individual set */
+    public List<IndividualExpression> translateIndividualSet(Set<OWLIndividual> inds) {
         List<IndividualExpression> l = new ArrayList<IndividualExpression>();
         for (OWLIndividual ind : inds) {
             l.add(toIndividualPointer(ind));

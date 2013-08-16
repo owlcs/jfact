@@ -24,10 +24,10 @@ public interface DatatypeExpression<Representation extends Comparable<Representa
      * @param value
      *            the value for the facet
      * @return modified expression */
-    DatatypeExpression<Representation> addNonNumericFacet(Facet f, Comparable value);
+    DatatypeExpression<Representation> addNonNumericFacet(Facet f, Comparable<?> value);
 
     /** @param f
      * @param value
      * @return modified expression */
-    DatatypeExpression<Representation> addNumericFacet(Facet f, Comparable value);
+    DatatypeExpression<Representation> addNumericFacet(Facet f, Comparable<?> value);
 }

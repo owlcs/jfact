@@ -483,6 +483,7 @@ public class Concept extends ClassifiableEntry {
         return tsDepth = max + 1;
     }
 
+    /** clear concept */
     @PortedFrom(file = "tConcept.h", name = "clear")
     public void clear() {
         // TNamedEntry clean

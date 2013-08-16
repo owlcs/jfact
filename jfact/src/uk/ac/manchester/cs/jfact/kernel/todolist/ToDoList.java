@@ -47,7 +47,7 @@ public class ToDoList implements Serializable {
     @PortedFrom(file = "ToDoList.h", name = "saveState")
     public void saveState(TODOListSaveState tss) {
         tss.backupID_sp = queueID.getsPointer();
-        tss.backupID_ep = queueID.getWait().size();
+        tss.backupID_ep = queueID.getWaitSize();
         queueNN.save(tss);
         for (int i = nRegularOptions - 1; i >= 0; --i) {
             waitQueue.get(i).save(tss.backup, i);

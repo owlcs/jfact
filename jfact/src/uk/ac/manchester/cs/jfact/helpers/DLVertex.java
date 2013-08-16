@@ -29,7 +29,7 @@ public class DLVertex extends DLVertexTagDFS {
 
     static class ChildSet implements Comparator<Integer>, Serializable {
         private static final long serialVersionUID = 11000L;
-        private final FastSet set = FastSetFactory.create();
+        protected final FastSet set = FastSetFactory.create();
         private final SortedIntList original = new SortedIntList();
         private int[] sorted = null;
         protected DLDag sorter = null;

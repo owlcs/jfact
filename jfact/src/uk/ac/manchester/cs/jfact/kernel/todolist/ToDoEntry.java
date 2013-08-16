@@ -21,14 +21,17 @@ public class ToDoEntry implements Serializable {
         delegate = off.getDep().getDelegate();
     }
 
+    /** @return node */
     public DlCompletionTree getNode() {
         return node;
     }
 
+    /** @return concept offset */
     public int getOffsetConcept() {
         return concept;
     }
 
+    /** @return offset dep set */
     public FastSetSimple getOffsetDepSet() {
         return delegate;
     }

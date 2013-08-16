@@ -23,10 +23,12 @@ public class SupConceptActor implements Actor, Serializable {
         return !pe.equals(q);
     }
 
+    /** @param q */
     public SupConceptActor(ClassifiableEntry q) {
         pe = q;
     }
 
+    @Override
     @PortedFrom(file = "Kernel.cpp", name = "apply")
     public boolean apply(TaxonomyVertex v) {
         if (!entry(v.getPrimer())) {
@@ -40,5 +42,6 @@ public class SupConceptActor implements Actor, Serializable {
         return true;
     }
 
+    @Override
     public void clear() {}
 }

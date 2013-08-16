@@ -32,6 +32,7 @@ public class RIActor implements Actor, Serializable {
         return true;
     }
 
+    @Override
     public boolean apply(TaxonomyVertex v) {
         boolean ret = tryEntry(v.getPrimer());
         for (ClassifiableEntry p : v.begin_syn()) {
@@ -40,10 +41,12 @@ public class RIActor implements Actor, Serializable {
         return ret;
     }
 
+    @Override
     public void clear() {
         acc.clear();
     }
 
+    /** @return accumulator */
     public List<Individual> getAcc() {
         return acc;
     }

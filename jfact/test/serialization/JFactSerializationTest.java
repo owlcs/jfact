@@ -11,6 +11,7 @@ import junit.framework.TestCase;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.util.AutoIRIMapper;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
@@ -61,7 +62,7 @@ public class JFactSerializationTest extends TestCase {
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         m.addIRIMapper(new AutoIRIMapper(new File("."), false));
         OWLOntology o = m.loadOntologyFromOntologyDocument(new File(
-                "cell-line-ontology.1541.owl.xml"));
+                "onto/celllineontology1541.owl"));
         // m.addAxiom(o, f.getOWLDeclarationAxiom(f.getOWLClass(iri)));
         // m.addAxiom(o, f.getOWLSubClassOfAxiom(c, f.getOWLClass(string,
         // prefixmanager)));
@@ -182,7 +183,10 @@ public class JFactSerializationTest extends TestCase {
         // f.getOWLAnnotationAssertionAxiom(f.getOWLNamedIndividual(iri).getIRI(),
         // f.getOWLAnnotation(ap, owlannotationvalue)));
         OWLReasoner r = new JFactFactory().createReasoner(o);
-        assertNotNull(roundtrip(r));
+        r.precomputeInferences(InferenceType.CLASS_HIERARCHY);
+        r = roundtrip(r);
+        assertNotNull(r);
+        r.precomputeInferences(InferenceType.CLASS_HIERARCHY);
     }
 
     private OWLReasoner roundtrip(OWLReasoner r) {

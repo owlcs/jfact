@@ -27,15 +27,13 @@ public class ActorImpl implements Actor, Serializable {
     @PortedFrom(file = "Actor.h", name = "interrupt")
     protected boolean interrupt;
 
+    @Override
     @PortedFrom(file = "Actor.h", name = "clear")
     public void clear() {
         found.clear();
     }
 
-    /** taxonomy walking method.
-     * 
-     * @return true if node was processed, false if node can not be processed in
-     *         current settings */
+    @Override
     @PortedFrom(file = "Actor.h", name = "apply")
     public boolean apply(TaxonomyVertex v) {
         if (tryVertex(v)) {

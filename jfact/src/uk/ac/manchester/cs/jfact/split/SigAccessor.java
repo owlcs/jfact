@@ -26,10 +26,10 @@ public class SigAccessor extends DLExpressionVisitorAdapter {
         sig = s;
     }
 
-    public SigAccessor() {
-        // TODO Auto-generated constructor stub
-    }
+    /** empty sig */
+    public SigAccessor() {}
 
+    /** @param s */
     public SigAccessor(TSignature s) {
         setSignature(s);
     }

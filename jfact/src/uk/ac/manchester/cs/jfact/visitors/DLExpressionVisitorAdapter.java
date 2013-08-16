@@ -8,6 +8,7 @@ package uk.ac.manchester.cs.jfact.visitors;
 import java.io.Serializable;
 
 import uk.ac.manchester.cs.jfact.datatypes.Datatype;
+import uk.ac.manchester.cs.jfact.datatypes.DatatypeExpression;
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.kernel.dl.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
@@ -186,6 +187,11 @@ public abstract class DLExpressionVisitorAdapter implements DLExpressionVisitor,
 
     @Override
     public void visit(Datatype<?> expr) {
+        doDefault(expr);
+    }
+
+    @Override
+    public void visit(DatatypeExpression<?> expr) {
         doDefault(expr);
     }
 

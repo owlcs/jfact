@@ -189,6 +189,7 @@ public class ClassifiableEntry extends NamedEntry {
 
     /** @param p
      * @return resolved synonym */
+    @SuppressWarnings("unchecked")
     @PortedFrom(file = "taxNamEntry.h", name = "resolveSynonym")
     public static <T extends ClassifiableEntry> T resolveSynonym(T p) {
         return p == null ? null : p.isSynonym() ? resolveSynonym((T) p.pSynonym) : p;

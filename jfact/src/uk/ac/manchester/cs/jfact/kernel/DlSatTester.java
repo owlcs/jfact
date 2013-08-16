@@ -2657,6 +2657,7 @@ public class DlSatTester implements Serializable {
         return false;
     }
 
+    @SuppressWarnings("unchecked")
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodyLE")
     private boolean commonTacticBodyLE(DLVertex cur) // for <=nR.C concepts
     {
@@ -2768,6 +2769,7 @@ public class DlSatTester implements Serializable {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @PortedFrom(file = "Reasoner.h", name = "initLEProcessing")
     private boolean initLEProcessing(DLVertex cur) {
         DepSet dep = DepSet.create();
@@ -2781,7 +2783,7 @@ public class DlSatTester implements Serializable {
         createBCLE();
         bContext.branchDep.add(dep);
         // setup BCLE
-        BCLE bcLE = (BCLE<DlCompletionTreeArc>) bContext;
+        BCLE<DlCompletionTreeArc> bcLE = (BCLE<DlCompletionTreeArc>) bContext;
         EdgesToMerge = bcLE.swap(EdgesToMerge);
         bcLE.resetMCI();
         return false;
@@ -2842,6 +2844,7 @@ public class DlSatTester implements Serializable {
         return false;
     }
 
+    @SuppressWarnings("unchecked")
     @PortedFrom(file = "Reasoner.h", name = "processTopRoleLE")
     private boolean processTopRoleLE(DLVertex cur) {
         // for <=nR.C concepts
@@ -2939,6 +2942,7 @@ public class DlSatTester implements Serializable {
                 curConceptDepSet, cur.getNumberGE(), DlCompletionTree.BLOCKABLE_LEVEL);
     }
 
+    @SuppressWarnings("unchecked")
     @PortedFrom(file = "Reasoner.h", name = "initTopLEProcessing")
     private boolean initTopLEProcessing(DLVertex cur) {
         DepSet dep = DepSet.create();

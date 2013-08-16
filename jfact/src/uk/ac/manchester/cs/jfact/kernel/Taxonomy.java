@@ -324,6 +324,9 @@ public class Taxonomy implements Serializable {
         return true;
     }
 
+    /**
+     * 
+     */
     public void clearLabels() {
         visitedLabel++;
     }

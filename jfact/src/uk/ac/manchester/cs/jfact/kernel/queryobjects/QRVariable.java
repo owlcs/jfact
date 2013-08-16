@@ -28,6 +28,7 @@ public class QRVariable extends QRiObject implements Comparable<QRVariable>, Has
         Name = name;
     }
 
+    /** @param v */
     public QRVariable(QRVariable v) {
         this(v.Name);
     }

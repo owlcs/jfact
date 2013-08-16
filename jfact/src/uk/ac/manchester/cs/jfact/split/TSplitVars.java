@@ -26,19 +26,24 @@ public class TSplitVars implements Serializable {
     @SuppressWarnings("javadoc")
     public TSplitVars() {}
 
-    /** @return true iff the NAME has split in the set */
+    /** @param name
+     * @return true iff the NAME has split in the set */
     @PortedFrom(file = "tSplitVars.h", name = "hasCN")
     public boolean hasCN(ConceptName name) {
         return Index.containsKey(name);
     }
 
-    /** @return split corresponding to given name; only correct for known names */
+    /** @param name
+     * @return split corresponding to given name; only correct for known names */
     @PortedFrom(file = "tSplitVars.h", name = "get")
     public TSplitVar get(ConceptName name) {
         return Index.get(name);
     }
 
-    /** put SPLIT into the set corresponding to NAME */
+    /** put SPLIT into the set corresponding to NAME
+     * 
+     * @param name
+     * @param split */
     @PortedFrom(file = "tSplitVars.h", name = "set")
     public void set(ConceptName name, TSplitVar split) {
         Index.put(name, split);

@@ -22,25 +22,25 @@ public class ArrayQueue implements Serializable {
      * @param node
      * @param offset */
     public void add(DlCompletionTree node, ConceptWDep offset) {
-        getWait().add(new ToDoEntry(node, offset));
+        Wait.add(new ToDoEntry(node, offset));
     }
 
     /** clear queue */
     @PortedFrom(file = "ToDoList.h", name = "clear")
     public void clear() {
         setsPointer(0);
-        getWait().clear();
+        Wait.clear();
     }
 
     /** @return check if queue empty */
     @PortedFrom(file = "ToDoList.h", name = "empty")
     public boolean isEmpty() {
-        return sPointer == getWait().size();
+        return sPointer == Wait.size();
     }
 
     /** @return next entry from the queue; works for non-empty queues */
     public ToDoEntry get() {
-        return getWait().get(sPointer++);
+        return Wait.get(sPointer++);
     }
 
     /** save queue content to the given entry
@@ -50,7 +50,7 @@ public class ArrayQueue implements Serializable {
     @PortedFrom(file = "ToDoList.h", name = "save")
     public void save(int[][] tss, int pos) {
         tss[pos][0] = sPointer;
-        tss[pos][1] = getWait().size();
+        tss[pos][1] = Wait.size();
     }
 
     /** restore queue content from the given entry
@@ -60,7 +60,7 @@ public class ArrayQueue implements Serializable {
     @PortedFrom(file = "ToDoList.h", name = "restore")
     public void restore(int[][] tss, int pos) {
         setsPointer(tss[pos][0]);
-        Helper.resize(getWait(), tss[pos][1]);
+        Helper.resize(Wait, tss[pos][1]);
     }
 
     /** @param sp
@@ -68,7 +68,7 @@ public class ArrayQueue implements Serializable {
     @PortedFrom(file = "ToDoList.h", name = "restore")
     public void restore(int sp, int ep) {
         setsPointer(sp);
-        Helper.resize(getWait(), ep);
+        Helper.resize(Wait, ep);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class ArrayQueue implements Serializable {
         l.append("ArrayQueue{");
         l.append(sPointer);
         l.append(",");
-        for (ToDoEntry t : getWait()) {
+        for (ToDoEntry t : Wait) {
             l.append(t);
             l.append(" ");
         }
@@ -90,11 +90,13 @@ public class ArrayQueue implements Serializable {
         return sPointer;
     }
 
+    /** @param sPointer */
     public void setsPointer(int sPointer) {
         this.sPointer = sPointer;
     }
 
-    public List<ToDoEntry> getWait() {
-        return Wait;
+    /** @return wait size */
+    public int getWaitSize() {
+        return Wait.size();
     }
 }

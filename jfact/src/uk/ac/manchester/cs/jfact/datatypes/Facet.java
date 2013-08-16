@@ -17,6 +17,7 @@ public interface Facet {
 
     /** @param value
      * @return the typed value for value */
+    @SuppressWarnings("rawtypes")
     Comparable parse(Object value);
 
     /** @return true if number facet */

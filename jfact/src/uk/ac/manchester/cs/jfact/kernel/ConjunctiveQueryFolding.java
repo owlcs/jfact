@@ -31,11 +31,14 @@ public class ConjunctiveQueryFolding implements Serializable {
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "VarRestrictions")
     private final Map<String, ConceptExpression> VarRestrictions = new HashMap<String, ConceptExpression>();
 
+    /** @param expr
+     * @return true if expr is nominal */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "isNominal")
     public boolean isNominal(ConceptExpression expr) {
         return NewNominals.contains(expr);
     }
 
+    /** @param concept */
     @Original
     public void addNominal(ConceptExpression concept) {
         NewNominals.add(concept);
@@ -219,6 +222,8 @@ public class ConjunctiveQueryFolding implements Serializable {
         return var;
     }
 
+    /** @param query
+     * @return transformed query */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "transformQueryPhase1")
     public QRQuery transformQueryPhase1(QRQuery query) {
         Set<QRAtom> passedAtoms = new HashSet<QRAtom>();
@@ -285,6 +290,7 @@ public class ConjunctiveQueryFolding implements Serializable {
         return VarRestrictions.get(NewVarMap.get(v).getName());
     }
 
+    /** @param query */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "BuildAproximation")
     public void buildApproximation(QRQuery query) {
         QueryApproximation app = new QueryApproximation(this, query);
@@ -302,6 +308,8 @@ public class ConjunctiveQueryFolding implements Serializable {
         }
     }
 
+    /** @param query
+     * @return concept expression from query */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "transformQueryPhase2")
     public ConceptExpression transformQueryPhase2(QRQuery query) {
         NewNominals.clear();
@@ -342,6 +350,8 @@ public class ConjunctiveQueryFolding implements Serializable {
         assert I2Var.size() == n;
     }
 
+    /** @param query
+     * @param kernel */
     @PortedFrom(file = "ConjunctiveQuery.cpp", name = "evaluateQuery")
     public void evaluateQuery(MultiMap<String, ConceptExpression> query,
             ReasoningKernel kernel) {
@@ -389,10 +399,12 @@ public class ConjunctiveQueryFolding implements Serializable {
         // System.out.println(" done");
     }
 
+    /** @return expression manager */
     public ExpressionManager getpEM() {
         return pEM;
     }
 
+    /** @return var map */
     public Map<QRVariable, QRVariable> getNewVarMap() {
         return NewVarMap;
     }

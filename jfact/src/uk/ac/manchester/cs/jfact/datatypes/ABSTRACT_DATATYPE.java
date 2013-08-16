@@ -16,7 +16,9 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
     private static final long serialVersionUID = 11000L;
     protected final Set<Facet> facets;
     protected Set<Datatype<?>> ancestors;
+    @SuppressWarnings("rawtypes")
     protected final Map<Facet, Comparable> knownNumericFacetValues = new HashMap<Facet, Comparable>();
+    @SuppressWarnings("rawtypes")
     protected final Map<Facet, Comparable> knownNonNumericFacetValues = new HashMap<Facet, Comparable>();
     protected final String uri;
 
@@ -61,16 +63,19 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
         return this.facets;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public Map<Facet, Comparable> getKnownNumericFacetValues() {
         return this.knownNumericFacetValues;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public Map<Facet, Comparable> getKnownNonNumericFacetValues() {
         return this.knownNonNumericFacetValues;
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public Comparable getFacetValue(Facet f) {
         if (f.isNumberFacet()) {
@@ -79,6 +84,7 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
         return this.knownNonNumericFacetValues.get(f);
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public Comparable getNumericFacetValue(Facet f) {
         return this.knownNumericFacetValues.get(f);
@@ -142,6 +148,7 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
         return false;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public DatatypeExpression<R> asExpression() {
         if (!this.isExpression()) {

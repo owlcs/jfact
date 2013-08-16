@@ -66,8 +66,8 @@ class LiteralImpl<T extends Comparable<T>> implements Literal<T>, Serializable {
             return true;
         }
         if (obj instanceof Literal) {
-            return this.type.equals(((Literal) obj).getDatatypeExpression())
-                    && this.typedValue().equals(((Literal) obj).typedValue());
+            return this.type.equals(((Literal<?>) obj).getDatatypeExpression())
+                    && this.typedValue().equals(((Literal<?>) obj).typedValue());
         }
         return false;
     }

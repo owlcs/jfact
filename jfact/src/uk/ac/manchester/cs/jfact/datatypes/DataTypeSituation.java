@@ -173,9 +173,9 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
     /** data interval with dep-sets */
     static class DepInterval<R extends Comparable<R>> implements Serializable {
         private static final long serialVersionUID = 11000L;
-        private DatatypeExpression<R> e;
+        protected DatatypeExpression<R> e;
         /** local dep-set */
-        private FastSetSimple locDep;
+        protected FastSetSimple locDep;
 
         @Override
         public String toString() {
@@ -187,6 +187,7 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
          * @param value
          * @param dep
          * @return true if updated */
+        @SuppressWarnings("rawtypes")
         public boolean update(Datatype<R> value, DepSet dep) {
             if (this.e == null) {
                 if (value.isExpression()) {
@@ -196,7 +197,11 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
                 }
                 // XXX new FaCT++ code has += here rather than =; check if it's
                 // correct
-                this.locDep = dep == null ? null : dep.getDelegate();
+                if (locDep == null) {
+                    locDep = dep == null ? null : dep.getDelegate();
+                } else if (dep != null) {
+                    locDep.addAll(dep.getDelegate());
+                }
                 return false;
             } else {
                 // TODO compare value spaces

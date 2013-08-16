@@ -62,6 +62,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
         return true;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean isCompatible(Datatype<?> type) {
         // if (!super.isCompatible(type)) {
@@ -148,7 +149,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
     }
 
     @Override
-    public DatatypeExpression<O> addNonNumericFacet(Facet f, Comparable value) {
+    public DatatypeExpression<O> addNonNumericFacet(Facet f, Comparable<?> value) {
         if (!facets.contains(f)) {
             throw new IllegalArgumentException("Facet " + f
                     + " not allowed tor datatype " + this.getHostType());
@@ -169,7 +170,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
     }
 
     @Override
-    public DatatypeExpression<O> addNumericFacet(Facet f, Comparable value) {
+    public DatatypeExpression<O> addNumericFacet(Facet f, Comparable<?> value) {
         if (!facets.contains(f)) {
             throw new IllegalArgumentException("Facet " + f
                     + " not allowed tor datatype " + this.getHostType());
@@ -204,6 +205,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
         return true;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public boolean emptyValueSpace() {
         // TODO not checking string type value spaces; looks like the only
@@ -277,6 +279,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
         return this.hasMaxInclusive() || this.hasMaxExclusive();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public O getMin() {
         if (this.hasMinInclusive()) {
@@ -288,6 +291,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public O getMax() {
         if (this.hasMaxInclusive()) {

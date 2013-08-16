@@ -151,6 +151,7 @@ public class Role extends ClassifiableEntry {
         return R.automaton;
     }
 
+    /** merge domains */
     @PortedFrom(file = "tRole.h", name = "mergeSupersDomain")
     public void mergeSupersDomain() {
         for (int i = 0; i < ancestorRoles.size(); i++) {

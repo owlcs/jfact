@@ -52,11 +52,13 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype
         return this.d.getFacets();
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public Map<Facet, Comparable> getKnownNonNumericFacetValues() {
         return this.d.getKnownNonNumericFacetValues();
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public Map<Facet, Comparable> getKnownNumericFacetValues() {
         return this.d.getKnownNumericFacetValues();
@@ -67,6 +69,7 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype
         return this.d.getFacetValue(f);
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public Comparable getNumericFacetValue(Facet f) {
         return this.d.getNumericFacetValue(f);
@@ -162,6 +165,7 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype
         return this.hasMaxInclusive() || this.hasMaxExclusive();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public O getMin() {
         if (this.hasMinExclusive()) {
@@ -173,6 +177,7 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public O getMax() {
         if (this.hasMaxExclusive()) {

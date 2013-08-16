@@ -64,7 +64,7 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
             return isBotDistinct(C);
         }
         if (C instanceof Datatype) {   // string/time are infinite DT
-            return ((Datatype) C).getCardinality() == cardinality.COUNTABLYINFINITE;
+            return ((Datatype<?>) C).getCardinality() == cardinality.COUNTABLYINFINITE;
         }
         // FIXME!! try to be more precise
         return false;

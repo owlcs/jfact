@@ -56,6 +56,7 @@ public class Facets implements Serializable {
             return false;
         }
 
+        @SuppressWarnings({ "unchecked", "rawtypes" })
         @Override
         public Comparable parseNumber(Object value) {
             if (!isNumberFacet()) {
@@ -66,7 +67,7 @@ public class Facets implements Serializable {
                 throw new IllegalArgumentException("Cannot parse a null value");
             }
             if (value instanceof Comparable) {
-                return (Comparable) value;
+                return (Comparable<?>) value;
             }
             try {
                 if (value instanceof String) {
@@ -75,10 +76,10 @@ public class Facets implements Serializable {
                 if (value instanceof Literal) {
                     Object typedValue = ((Literal<?>) value).typedValue();
                     if (typedValue instanceof Number) {
-                        return (Comparable) typedValue;
+                        return (Comparable<?>) typedValue;
                     }
                     if (typedValue instanceof Calendar) {
-                        return (Comparable) typedValue;
+                        return (Comparable<?>) typedValue;
                     }
                     // if (typedValue instanceof Number) {
                     // return new BigDecimal(typedValue.toString());
@@ -94,9 +95,10 @@ public class Facets implements Serializable {
             }
         }
 
+        @SuppressWarnings("rawtypes")
         @Override
         public Comparable parse(Object o) {
-            return (Comparable) o;
+            return (Comparable<?>) o;
         }
     }
 
@@ -288,10 +290,10 @@ public class Facets implements Serializable {
         }
     }
 
-    public static Facet parse(String f) {
-        f = f.substring(f.indexOf(':') + 1);
+    public static Facet parse(String _f) {
+        String f = "#" + _f.substring(_f.indexOf(':') + 1);
         for (Facet facet : values) {
-            if (facet.getURI().endsWith("#" + f)) {
+            if (facet.getURI().endsWith(f)) {
                 return facet;
             }
         }

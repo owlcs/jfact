@@ -56,6 +56,7 @@ public class NAryExpressionImpl<Argument extends Expression> implements
     }
 
     /** transform general expression into the argument one */
+    @SuppressWarnings("unchecked")
     @Override
     public Argument transform(Expression arg) {
         return (Argument) arg;

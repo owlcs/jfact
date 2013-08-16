@@ -174,7 +174,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         return true;
     }
 
-    /** prepare signature for given entry */
+    @Override
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "buildSignature")
     public TSignature buildSignature(ClassifiableEntry p) {
         return tBox.getSignature(p);
@@ -578,6 +578,8 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         }
     }
 
+    /** @param plus
+     * @param minus */
     public void reclassify(Set<NamedEntity> plus, Set<NamedEntity> minus) {
         MPlus = plus;
         MMinus = minus;
@@ -609,6 +611,8 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         pTax.finalise();
     }
 
+    /** @param node
+     * @param s */
     public void reclassify(TaxonomyVertex node, TSignature s) {
         upDirection = false;
         sigStack.add(s);

@@ -27,16 +27,16 @@ public class TAxiomSplitter implements Serializable {
      * new name C' and new axiom C'=D or C'[=D */
     protected class TRecord implements Serializable {
         private static final long serialVersionUID = 11000L;
-        private ConceptName oldName;
-        private ConceptName newName;
-        private final List<AxiomInterface> oldAxioms = new ArrayList<AxiomInterface>();
-        private AxiomInterface newAxiom = null;
-        private TSignature newAxSig = null;
+        protected ConceptName oldName;
+        protected ConceptName newName;
+        protected final List<AxiomInterface> oldAxioms = new ArrayList<AxiomInterface>();
+        protected AxiomInterface newAxiom = null;
+        protected TSignature newAxSig = null;
         // module for a new axiom
-        private final Set<AxiomInterface> Module = new HashSet<AxiomInterface>();
+        protected final Set<AxiomInterface> Module = new HashSet<AxiomInterface>();
 
         /** set old axiom as an equivalent AX; create a new one */
-        private void setEqAx(AxiomEquivalentConcepts ax) {
+        protected void setEqAx(AxiomEquivalentConcepts ax) {
             oldAxioms.add(ax);
             List<ConceptExpression> copy = new ArrayList<ConceptExpression>();
             for (ConceptExpression p : ax.getArguments()) {
@@ -50,7 +50,7 @@ public class TAxiomSplitter implements Serializable {
         }
 
         /** set a new implication axiom based on a (known) set of old ones */
-        private void setImpAx(ConceptExpression Desc) {
+        protected void setImpAx(ConceptExpression Desc) {
             newAxiom = new AxiomConceptInclusion(null, newName, Desc);
         }
     }

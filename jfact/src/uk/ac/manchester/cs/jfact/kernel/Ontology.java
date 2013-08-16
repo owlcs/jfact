@@ -125,6 +125,7 @@ public class Ontology implements Serializable {
         return axioms.size();
     }
 
+    /** @return list of retracted axioms */
     @Original
     public List<AxiomInterface> getRetracted() {
         return retracted;

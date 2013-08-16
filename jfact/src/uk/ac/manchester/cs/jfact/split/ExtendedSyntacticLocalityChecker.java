@@ -393,7 +393,7 @@ class UpperBoundDirectEvaluator extends CardinalityEvaluatorBase {
     // FIXME!! not ready
     // public void visit ( DataTypeRestriction ) { isBotEq = false; }
     @Override
-    public void visit(Literal c) {
+    public void visit(Literal<?> c) {
         value = 1;
     }
 
@@ -613,17 +613,18 @@ class UpperBoundComplementEvaluator extends CardinalityEvaluatorBase {
 
     // negated datatype is a union of all other DTs that are infinite
     @Override
-    public void visit(Datatype c) {
+    public void visit(Datatype<?> c) {
         value = getNoneValue();
     }
 
     // negated restriction include negated DT
-    public void visit(DatatypeExpression c) {
+    @Override
+    public void visit(DatatypeExpression<?> c) {
         value = getNoneValue();
     }
 
     @Override
-    public void visit(Literal c) {
+    public void visit(Literal<?> c) {
         value = getNoneValue();
     }
 
@@ -895,17 +896,18 @@ class LowerBoundDirectEvaluator extends CardinalityEvaluatorBase {
 
     // negated datatype is a union of all other DTs that are infinite
     @Override
-    public void visit(Datatype c) {
+    public void visit(Datatype<?> c) {
         value = getNoneValue();
     }
 
     // negated restriction include negated DT
-    public void visit(DatatypeExpression c) {
+    @Override
+    public void visit(DatatypeExpression<?> c) {
         value = getNoneValue();
     }
 
     @Override
-    public void visit(Literal c) {
+    public void visit(Literal<?> c) {
         value = getNoneValue();
     }
 
@@ -1175,7 +1177,7 @@ class LowerBoundComplementEvaluator extends CardinalityEvaluatorBase {
     // FIXME!! not ready
     // public void visit ( DataTypeRestriction ) { isBotEq = false; }
     @Override
-    public void visit(Literal c) {
+    public void visit(Literal<?> c) {
         value = 1;
     }
 
@@ -1220,7 +1222,9 @@ public class ExtendedSyntacticLocalityChecker extends GeneralSyntacticLocalityCh
         return UBD.getUpperBoundDirect(expr) == 0;
     }
 
-    // / init c'tor
+    /** init c'tor
+     * 
+     * @param s */
     public ExtendedSyntacticLocalityChecker(TSignature s) {
         super(s);
         UBD = new UpperBoundDirectEvaluator(s);

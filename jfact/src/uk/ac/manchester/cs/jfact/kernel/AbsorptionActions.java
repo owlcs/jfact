@@ -2,6 +2,7 @@ package uk.ac.manchester.cs.jfact.kernel;
 
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
+/** @author ignazio */
 public enum AbsorptionActions {
     /** absorb bottom action */
     B('B') {
@@ -76,5 +77,8 @@ public enum AbsorptionActions {
         throw new ReasonerInternalException("Incorrect absorption flags given: " + ch);
     }
 
+    /** @param ax
+     * @param tb
+     * @return true if the rule is fired */
     public abstract boolean execute(Axiom ax, AxiomSet tb);
 }

@@ -36,7 +36,7 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
     }
 
     @Override
-    public DatatypeExpression<O> addNumericFacet(Facet f, Comparable value) {
+    public DatatypeExpression<O> addNumericFacet(Facet f, Comparable<?> value) {
         if (!facets.contains(f)) {
             throw new IllegalArgumentException("Facet " + f
                     + " not allowed tor datatype " + this.getHostType());
@@ -67,7 +67,7 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
     }
 
     @Override
-    public DatatypeExpression<O> addNonNumericFacet(Facet f, Comparable value) {
+    public DatatypeExpression<O> addNonNumericFacet(Facet f, Comparable<?> value) {
         if (!facets.contains(f)) {
             throw new IllegalArgumentException("Facet " + f
                     + " not allowed tor datatype " + this.getHostType());
@@ -92,6 +92,7 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
         return true;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public boolean emptyValueSpace() {
         // TODO not checking string type value spaces; looks like the only

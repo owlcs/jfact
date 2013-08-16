@@ -37,6 +37,7 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
     /** try current entry
      * 
      * @param p */
+    @SuppressWarnings("unchecked")
     @PortedFrom(file = "JNIActor.h", name = "tryEntry")
     protected void tryEntry(ClassifiableEntry p) {
         if (p.isSystem()) {
@@ -55,6 +56,7 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
         policy = p;
     }
 
+    @Override
     @PortedFrom(file = "JNIActor.h", name = "clear")
     public void clear() {
         acc.clear();
@@ -82,10 +84,7 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
         return toReturn;
     }
 
-    /** taxonomy walking method.
-     * 
-     * @return true if node was processed, and there is no need to go further,
-     *         false if node can not be processed in current settings */
+    @Override
     @PortedFrom(file = "JNIActor.h", name = "apply")
     public boolean apply(TaxonomyVertex v) {
         syn.clear();

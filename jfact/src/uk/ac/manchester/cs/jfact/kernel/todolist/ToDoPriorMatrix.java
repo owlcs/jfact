@@ -13,6 +13,7 @@ import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import uk.ac.manchester.cs.jfact.kernel.DagTag;
 import conformance.PortedFrom;
 
+/** priority matrix */
 @PortedFrom(file = "PriorityMatrix.h", name = "ToDoPriorMatrix")
 public class ToDoPriorMatrix implements Serializable {
     private static final long serialVersionUID = 11000L;
@@ -65,6 +66,10 @@ public class ToDoPriorMatrix implements Serializable {
         }
     }
 
+    /** @param Op
+     * @param Sign
+     * @param NominalNode
+     * @return index */
     @PortedFrom(file = "PriorityMatrix.h", name = "getIndex")
     public int getIndex(DagTag Op, boolean Sign, boolean NominalNode) {
         switch (Op) {

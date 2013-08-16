@@ -11,7 +11,7 @@ import java.util.List;
 
 import conformance.PortedFrom;
 
-// var factory
+/** var factory */
 @PortedFrom(file = "QR.h", name = "VariableFactory")
 public class VariableFactory implements Serializable {
     private static final long serialVersionUID = 11000L;

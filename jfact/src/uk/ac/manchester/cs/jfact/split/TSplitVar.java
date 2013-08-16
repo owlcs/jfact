@@ -26,6 +26,9 @@ public class TSplitVar implements Serializable {
     private Concept C;
     private final List<SplitVarEntry> Entries = new ArrayList<SplitVarEntry>();
 
+    /** @param name
+     * @param sig
+     * @param mod */
     public void addEntry(ConceptName name, TSignature sig, Set<AxiomInterface> mod) {
         SplitVarEntry e = new SplitVarEntry();
         e.name = name;

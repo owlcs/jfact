@@ -49,6 +49,7 @@ public class KnowledgeExplorer implements Serializable {
     private final List<Expression> Concepts = new ArrayList<Expression>();
 
     /** adds an entity as a synonym to a map MAP */
+    @SuppressWarnings("unchecked")
     @PortedFrom(file = "KnowledgeExplorer.h", name = "addE")
     private <E extends ClassifiableEntry> void addE(MultiMap<E, E> map, E entry) {
         map.put(entry, entry);

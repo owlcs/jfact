@@ -74,7 +74,7 @@ public class TopEquivalenceEvaluator extends SigAccessor implements DLExpression
             return true;
         }
         if (C instanceof Datatype) {
-            return ((Datatype) C).getCardinality() == cardinality.COUNTABLYINFINITE;
+            return ((Datatype<?>) C).getCardinality() == cardinality.COUNTABLYINFINITE;
         }
         // FIXME!! try to be more precise
         return false;

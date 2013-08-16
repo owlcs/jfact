@@ -154,6 +154,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
         base.put(defVal.getOptionName(), defVal);
     }
 
+    @SuppressWarnings("unchecked")
     public <O> O get(String name) {
         return (O) base.get(name).getValue();
     }
@@ -321,6 +322,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
             return optionName;
         }
 
+        @SuppressWarnings("unchecked")
         public <O> O getValue() {
             return (O) value;
         }

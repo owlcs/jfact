@@ -117,6 +117,7 @@ public class DatatypeIntersection<T extends Comparable<T>> implements
         return true;
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public boolean emptyValueSpace() {
         // all base types must be numeric

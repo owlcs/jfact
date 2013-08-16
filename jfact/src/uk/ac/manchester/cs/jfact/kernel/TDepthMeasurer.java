@@ -9,6 +9,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorAdapter;
 import conformance.PortedFrom;
 
+/** @author ignazio */
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TDepthMeasurer")
 public class TDepthMeasurer extends DLExpressionVisitorAdapter {
     private static final long serialVersionUID = 11000L;
@@ -56,6 +57,7 @@ public class TDepthMeasurer extends DLExpressionVisitorAdapter {
         }
     }
 
+    /** @return max depth */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "getMaxDepth")
     public int getMaxDepth() {
         int max = -1;
@@ -67,6 +69,7 @@ public class TDepthMeasurer extends DLExpressionVisitorAdapter {
         return max;
     }
 
+    /** @return nominal with max depth */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "getNominalWithMaxDepth")
     public ConceptExpression getNominalWithMaxDepth() {
         ConceptExpression max = null;
@@ -81,6 +84,9 @@ public class TDepthMeasurer extends DLExpressionVisitorAdapter {
         return max;
     }
 
+    /**
+     * 
+     */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "PrintDepthTable")
     public void PrintDepthTable() {
         System.out.println("Total nominal occurrences: " + TotalNominalOccurences + "\n");

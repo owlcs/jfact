@@ -31,15 +31,17 @@ import conformance.Original;
 public class DatatypeFactory implements Serializable {
     private static final long serialVersionUID = 11000L;
     private static final String namespace = "http://www.w3.org/2001/XMLSchema#";
-    private static final Comparable NUMBER_EXPRESSION = "[\\-+]?[0-9]+";
-    private static final Comparable WHITESPACE = collapse;
-    private static final Facet[] minmax = new Facet[] { maxInclusive, maxExclusive,
+    @SuppressWarnings("rawtypes")
+    protected static final Comparable NUMBER_EXPRESSION = "[\\-+]?[0-9]+";
+    @SuppressWarnings("rawtypes")
+    protected static final Comparable WHITESPACE = collapse;
+    protected static final Facet[] minmax = new Facet[] { maxInclusive, maxExclusive,
             minInclusive, minExclusive };
-    private static final Facet[] pew = new Facet[] { pattern, enumeration, whiteSpace };
-    private static final Facet[] len = new Facet[] { length, minLength, maxLength };
-    private static final Facet[] digs = new Facet[] { totalDigits, fractionDigits };
-    private static final Set<Facet> StringFacets = Utils.getFacets(pew, len);
-    private static final Set<Facet> FACETS4 = Utils.getFacets(pew, minmax);
+    protected static final Facet[] pew = new Facet[] { pattern, enumeration, whiteSpace };
+    protected static final Facet[] len = new Facet[] { length, minLength, maxLength };
+    protected static final Facet[] digs = new Facet[] { totalDigits, fractionDigits };
+    protected static final Set<Facet> StringFacets = Utils.getFacets(pew, len);
+    protected static final Set<Facet> FACETS4 = Utils.getFacets(pew, minmax);
     public static final Datatype<String> LITERAL = new LITERAL_DATATYPE();
     public static final Datatype<String> ANYURI = new ANYURI_DATATYPE();
     public static final Datatype<String> BASE64BINARY = new BASE64BINARY_DATATYPE();
@@ -305,104 +307,7 @@ public class DatatypeFactory implements Serializable {
         return new DatatypeFactory();
     }
 
-    // public <O extends Comparable<O>> Datatype<O> defineNewDatatype(
-    // Datatype<O> base, String uri, Collection<Facet> facets,
-    // Collection<Datatype<?>> ancestors, Map<Facet, Object> knownFacets) {
-    // return defineNewDatatype(base, uri, facets, ancestors, knownFacets,
-    // base.getOrdered(), base.getNumeric(), base.getCardinality(),
-    // base.getBounded());
-    // }
-    //
-    // public <O extends Comparable<O>> Datatype<O> defineNewDatatype(
-    // Datatype<O> base, String uri) {
-    // return defineNewDatatype(base, uri, null, null, null, base.getOrdered(),
-    // base.getNumeric(), base.getCardinality(), base.getBounded());
-    // }
-    //
-    // public Datatype<String> defineNewDatatype( String uri) {
-    // return defineNewDatatype(LITERAL, uri, null, null, null,
-    // LITERAL.getOrdered(),
-    // LITERAL.getNumeric(), LITERAL.getCardinality(), LITERAL.getBounded());
-    // }
-    //
-    // public <R extends Comparable<R>> DatatypeExpression<R>
-    // defineNewDatatypeIntersection(
-    // Collection<Datatype<R>> types) {
-    // return new DatatypeIntersection<R>(getIndex(), types);
-    // }
-    //
-    // public <R extends Comparable<R>> DatatypeExpression<R>
-    // defineNewDatatypeUnion(
-    // Collection<Datatype<R>> types) {
-    // return new DatatypeUnion<R>(getIndex(), types);
-    // }
-    //
-    // public <O extends Comparable<O>> Datatype<O> defineNewDatatype(
-    // Datatype<O> base, String uri, Collection<Facet> facets,
-    // Collection<Datatype<?>> ancestors,
-    // Map<Facet, Object> knownFacets, ordered ord,
-    // boolean numeric, cardinality card, boolean bound) {
-    // if (knownDatatypes.containsKey(uri)) { throw new
-    // IllegalArgumentException(
-    // "datatype definitions cannot be overridden: " + uri
-    // + " is already in the known types"); }
-    // Set<Facet> f = new HashSet<Facet>(base.getFacets());
-    // if (facets != null) {
-    // f.addAll(facets);
-    // }
-    // Set<Datatype<?>> a = new HashSet<Datatype<?>>(base.getAncestors());
-    // if (ancestors != null) {
-    // a.addAll(ancestors);
-    // }
-    // a.add(base);
-    // Map<Facet, Object> known = new HashMap<Facet, Object>(
-    // base.getKnownFacetValues());
-    // if (knownFacets != null) {
-    // known.putAll(knownFacets);
-    // }
-    // Datatype<O> toReturn = new ABSTRACT_DATATYPE<O>(uri, f) {
-    // @Override
-    // public ordered getOrdered() {
-    // return ord;
-    // }
-    //
-    // @Override
-    // public boolean getNumeric() {
-    // return numeric;
-    // }
-    //
-    // @Override
-    // public cardinality getCardinality() {
-    // return card;
-    // }
-    //
-    // @Override
-    // public boolean getBounded() {
-    // return bound;
-    // }
-    //
-    // @Override
-    // public boolean isInValueSpace(O l) {
-    // return base.isInValueSpace(l);
-    // }
-    //
-    // @Override
-    // public Collection<Literal<O>> listValues() {
-    // return base.listValues();
-    // }
-    //
-    // public O parseValue(String s) {
-    // return base.parseValue(s);
-    // }
-    //
-    // @Override
-    // public Literal<O> buildLiteral(String s) {
-    // return base.buildLiteral(s);
-    // }
-    // };
-    // knownDatatypes.put(uri, toReturn);
-    // return toReturn;
-    // }
+    @SuppressWarnings("rawtypes")
     public static boolean nonEmptyInterval(Comparable min, Comparable max, int excluded) {
         if (min == null) {
             // unbound lower limit - value space cannot be empty
@@ -417,6 +322,7 @@ public class DatatypeFactory implements Serializable {
             return false;
         }
         // min and max are both not null
+        @SuppressWarnings("unchecked")
         int comparison = min.compareTo(max);
         // comparison < 0: min is strictly smaller than max. Value space can
         // still be empty:
@@ -435,12 +341,14 @@ public class DatatypeFactory implements Serializable {
         // representation
         if (excluded == 2) {
             Comparable increased = increase((Number) min);
+            @SuppressWarnings("unchecked")
             int compareTo = increased.compareTo(max);
             return compareTo < 0;
         }
         return false;
     }
 
+    @SuppressWarnings("rawtypes")
     public static Comparable increase(Number v) {
         if (v instanceof Float) {
             return Float.valueOf(v.floatValue() + Float.MIN_NORMAL);
@@ -530,6 +438,7 @@ public class DatatypeFactory implements Serializable {
             return ordered.PARTIAL;
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public boolean isInValueSpace(R _l) {
             if (this.hasMinExclusive()) {
@@ -563,6 +472,7 @@ public class DatatypeFactory implements Serializable {
             return true;
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public boolean isCompatible(Datatype<?> type) {
             // if (!super.isCompatible(type)) {
@@ -629,6 +539,7 @@ public class DatatypeFactory implements Serializable {
             }
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public boolean emptyValueSpace() {
             if (!hasMin() || !hasMax()) {
@@ -675,6 +586,7 @@ public class DatatypeFactory implements Serializable {
             return this.hasMaxInclusive() || this.hasMaxExclusive();
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public R getMin() {
             if (this.hasMinExclusive()) {
@@ -686,6 +598,7 @@ public class DatatypeFactory implements Serializable {
             return null;
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public R getMax() {
             if (this.hasMaxExclusive()) {
@@ -857,6 +770,7 @@ public class DatatypeFactory implements Serializable {
             return true;
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public boolean isCompatible(Datatype<?> type) {
             if (super.isCompatible(type)) {
@@ -1041,6 +955,7 @@ public class DatatypeFactory implements Serializable {
             knownNumericFacetValues.putAll(LITERAL.getKnownNumericFacetValues());
         }
 
+        @SuppressWarnings({ "rawtypes", "unchecked" })
         @Override
         public boolean isInValueSpace(R l) {
             if (knownNumericFacetValues.containsKey(minExclusive)) {

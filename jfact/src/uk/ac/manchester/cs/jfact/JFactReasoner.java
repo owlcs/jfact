@@ -49,6 +49,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     private final OWLOntologyManager manager;
     private final OWLOntology root;
     private final BufferingMode bufferingMode;
+    @SuppressWarnings("rawtypes")
     private final List<OWLOntologyChange> rawChanges = new ArrayList<OWLOntologyChange>();
     private final Set<OWLAxiom> reasonerAxioms = new LinkedHashSet<OWLAxiom>();
     @Original
@@ -109,6 +110,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         configuration.getProgressMonitor().reasonerTaskStopped();
     }
 
+    /** @return ontology */
     public Ontology getOntology() {
         return kernel.getOntology();
     }
@@ -139,6 +141,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public void ontologiesChanged(List<? extends OWLOntologyChange> changes)
             throws OWLException {
         handleRawOntologyChanges(changes);
@@ -159,8 +162,8 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return root;
     }
 
-    private synchronized void handleRawOntologyChanges(
-            List<? extends OWLOntologyChange> changes) {
+    @SuppressWarnings("rawtypes")
+    private void handleRawOntologyChanges(List<? extends OWLOntologyChange> changes) {
         rawChanges.addAll(changes);
         // We auto-flush the changes if the reasoner is non-buffering
         if (bufferingMode.equals(BufferingMode.NON_BUFFERING)) {
@@ -169,6 +172,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public synchronized List<OWLOntologyChange> getPendingChanges() {
         return new ArrayList<OWLOntologyChange>(rawChanges);
     }
@@ -227,7 +231,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
      *            The logical axioms that have been removed from the imports
      *            closure of the reasoner root ontology */
     private synchronized void computeDiff(Set<OWLAxiom> added, Set<OWLAxiom> removed) {
-        for (OWLOntologyChange change : rawChanges) {
+        for (OWLOntologyChange<?> change : rawChanges) {
             if (change.isAddAxiom()) {
                 OWLAxiom ax = change.getAxiom();
                 if (!reasonerAxioms.contains(ax.getAxiomWithoutAnnotations())) {
@@ -761,6 +765,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             pointer = p;
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public <T> T getNode() {
             return (T) pointer;
@@ -881,6 +886,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return axiomsToSet(kernel.getAtomModule(index));
     }
 
+    /** @return number of locality checks performed for Ad creation */
     public long getLocCheckNumber() {
         return kernel.getLocCheckNumber();
     }
@@ -992,7 +998,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
      *            "<=", 4 means ">", 5 means ">="
      * @return data related individuals
      */
-    public Node<OWLNamedIndividual> getDataRelatedIndividuals(
+    public synchronized Node<OWLNamedIndividual> getDataRelatedIndividuals(
             Set<OWLIndividual> individuals, OWLDataProperty r, OWLDataProperty s, int op) {
         checkConsistency();
         // load all the individuals as parameters

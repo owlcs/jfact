@@ -88,11 +88,13 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
         return this.host.getFacets();
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public Map<Facet, Comparable> getKnownNonNumericFacetValues() {
         return this.host.getKnownNonNumericFacetValues();
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public Map<Facet, Comparable> getKnownNumericFacetValues() {
         return this.host.getKnownNumericFacetValues();
@@ -103,6 +105,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
         return this.host.getFacetValue(f);
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public Comparable getNumericFacetValue(Facet f) {
         return this.host.getNumericFacetValue(f);
@@ -237,14 +240,14 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     }
 
     @Override
-    public DatatypeExpression<R> addNumericFacet(Facet f, Comparable value) {
+    public DatatypeExpression<R> addNumericFacet(Facet f, Comparable<?> value) {
         System.out
                 .println("DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object");
         return this;
     }
 
     @Override
-    public DatatypeExpression<R> addNonNumericFacet(Facet f, Comparable value) {
+    public DatatypeExpression<R> addNonNumericFacet(Facet f, Comparable<?> value) {
         System.out
                 .println("DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object");
         return this;

@@ -25,6 +25,7 @@ public class TODOListSaveState implements Serializable {
     /** save flag of queue's consistency */
     protected boolean queueBroken;
 
+    /** @param options */
     public TODOListSaveState(int options) {
         backup = new int[options][2];
     }

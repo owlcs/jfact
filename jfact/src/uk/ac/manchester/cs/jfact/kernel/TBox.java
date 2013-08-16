@@ -2734,6 +2734,8 @@ public class TBox implements Serializable {
         pName2Sig = p;
     }
 
+    /** @param c
+     * @return signature */
     @Original
     public TSignature getSignature(ClassifiableEntry c) {
         if (pName2Sig == null) {
@@ -3037,6 +3039,7 @@ public class TBox implements Serializable {
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "concepts")
     private final List<Integer> conceptsForQueryAnswering = new ArrayList<Integer>();
 
+    /** @param Cs */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "answerQuery")
     public void answerQuery(List<DLTree> Cs) {
         dlHeap.removeQuery();
@@ -3048,26 +3051,33 @@ public class TBox implements Serializable {
         }
     }
 
+    /** @param MPlus
+     * @param MMinus */
     public void reclassify(Set<NamedEntity> MPlus, Set<NamedEntity> MMinus) {
         pTaxCreator.reclassify(MPlus, MMinus);
     }
 
+    /** @return list of concept index */
     public List<Integer> getConceptsForQueryAnswering() {
         return conceptsForQueryAnswering;
     }
 
+    /** @return true if in classification */
     public boolean isDuringClassification() {
         return duringClassification;
     }
 
+    /** @return split rules */
     public TSplitRules getSplitRules() {
         return SplitRules;
     }
 
+    /** @return individuals */
     public IterableVec<Individual> getIV() {
         return IV;
     }
 
+    /** @return skip before block */
     public int getnSkipBeforeBlock() {
         return nSkipBeforeBlock;
     }

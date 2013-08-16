@@ -66,7 +66,7 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<
     }
 
     @Override
-    public DatatypeExpression<O> addNumericFacet(Facet f, Comparable value) {
+    public DatatypeExpression<O> addNumericFacet(Facet f, Comparable<?> value) {
         if (!facets.contains(f)) {
             throw new IllegalArgumentException("Facet " + f
                     + " not allowed tor datatype " + this.getHostType());
@@ -92,7 +92,7 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<
     }
 
     @Override
-    public DatatypeExpression<O> addNonNumericFacet(Facet f, Comparable value) {
+    public DatatypeExpression<O> addNonNumericFacet(Facet f, Comparable<?> value) {
         if (!facets.contains(f)) {
             throw new IllegalArgumentException("Facet " + f
                     + " not allowed tor datatype " + this.getHostType());
@@ -112,6 +112,7 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<
         return true;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public boolean emptyValueSpace() {
         // TODO not checking string type value spaces; looks like the only
@@ -140,6 +141,7 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<
         return this.host.isNumericDatatype();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public NumericDatatype<O> asNumericDatatype() {
         return (NumericDatatype<O>) this;
@@ -150,6 +152,7 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<
         return this.host.isOrderedDatatype();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public OrderedDatatype<O> asOrderedDatatype() {
         return (OrderedDatatype<O>) this;

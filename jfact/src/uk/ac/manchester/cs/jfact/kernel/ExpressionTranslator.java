@@ -13,10 +13,7 @@ import java.util.List;
 
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
-import uk.ac.manchester.cs.jfact.datatypes.Datatype;
-import uk.ac.manchester.cs.jfact.datatypes.DatatypeEntry;
-import uk.ac.manchester.cs.jfact.datatypes.Literal;
-import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
+import uk.ac.manchester.cs.jfact.datatypes.*;
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.kernel.dl.*;
@@ -56,6 +53,7 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Seri
         sig = s;
     }
 
+    /** @param kb */
     public ExpressionTranslator(TBox kb) {
         tbox = kb;
     }
@@ -329,6 +327,12 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Seri
 
     @Override
     public DLTree visit(Datatype<?> expr) {
+        DatatypeEntry entry = new DatatypeEntry(expr);
+        return DLTreeFactory.wrap(entry);
+    }
+
+    @Override
+    public DLTree visit(DatatypeExpression<?> expr) {
         DatatypeEntry entry = new DatatypeEntry(expr);
         return DLTreeFactory.wrap(entry);
     }
