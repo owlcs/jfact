@@ -19,7 +19,6 @@ import conformance.PortedFrom;
 @PortedFrom(file = "taxVertex.h", name = "TaxonomyVertex")
 public class TaxonomyVertex implements Serializable {
     private static final long serialVersionUID = 11000L;
-    // TODO check if they need to be list
     /** immediate parents and children */
     @PortedFrom(file = "taxVertex.h", name = "Links")
     private List<TaxonomyVertex> linksParent = new ArrayList<TaxonomyVertex>();
@@ -28,7 +27,6 @@ public class TaxonomyVertex implements Serializable {
     /** entry corresponding to current tax vertex */
     @PortedFrom(file = "taxVertex.h", name = "sample")
     private ClassifiableEntry sample = null;
-    // TODO this can be a set, but there is no advantage
     /** synonyms of the sample entry */
     @PortedFrom(file = "taxVertex.h", name = "synonyms")
     private Set<ClassifiableEntry> synonyms = new LinkedHashSet<ClassifiableEntry>();

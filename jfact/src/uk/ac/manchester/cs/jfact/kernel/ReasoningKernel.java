@@ -1800,8 +1800,8 @@ public class ReasoningKernel implements Serializable {
             // save taxonomy
             oout.writeObject(tbox);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            return null;
         }
         return out.toByteArray();
     }
@@ -1811,10 +1811,8 @@ public class ReasoningKernel implements Serializable {
             return (TBox) new ObjectInputStream(new ByteArrayInputStream(tbox))
                     .readObject();
         } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;

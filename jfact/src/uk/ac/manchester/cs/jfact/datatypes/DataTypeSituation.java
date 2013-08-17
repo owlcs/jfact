@@ -195,8 +195,6 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
                 } else {
                     this.e = DatatypeFactory.getDatatypeExpression(value);
                 }
-                // XXX new FaCT++ code has += here rather than =; check if it's
-                // correct
                 if (locDep == null) {
                     locDep = dep == null ? null : dep.getDelegate();
                 } else if (dep != null) {
@@ -221,9 +219,11 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
             }
             // TODO needs to return false if the new expression has the same
             // value space as the old one
-            // XXX new FaCT++ code has += here rather than =; check if it's
-            // correct
-            this.locDep = dep == null ? null : dep.getDelegate();
+            if (locDep == null) {
+                locDep = dep == null ? null : dep.getDelegate();
+            } else if (dep != null) {
+                locDep.addAll(dep.getDelegate());
+            }
             return true;
         }
 

@@ -22,7 +22,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 import uk.ac.manchester.cs.jfact.kernel.voc.Vocabulary;
 
-// XXX verify unused parameters
 /** translation stuff */
 public class TranslationMachinery implements Serializable {
     private static final long serialVersionUID = 11000L;
