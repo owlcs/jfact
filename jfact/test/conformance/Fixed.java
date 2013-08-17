@@ -16,14 +16,111 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.semanticweb.owlapi.vocab.OWLFacet;
 import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
+import uk.ac.manchester.cs.jfact.JFactFactory;
+
 @SuppressWarnings("javadoc")
 public class Fixed {
+    @Test
+    @Changed(reason = "original test had unreliable iris, e.g., http://example.com/2a")
+    public void testConsistent_but_all_unsat() throws Exception {
+        OWLOntologyManager m = OWLManager.createOWLOntologyManager();
+        IRI ontoIRI = IRI("urn:SpecialGetOntology:Consistentbutallunsat");
+        OWLOntology o = m.createOntology(ontoIRI);
+        String ns = "http://example.com/";
+        OWLNamedIndividual i1 = NamedIndividual(IRI(ns + "i1"));
+        OWLNamedIndividual i2 = NamedIndividual(IRI(ns + "i2"));
+        OWLNamedIndividual i3 = NamedIndividual(IRI(ns + "i3"));
+        OWLClass a = Class(IRI(ns + "a"));
+        OWLClass b = Class(IRI(ns + "b"));
+        OWLClass c = Class(IRI(ns + "c"));
+        OWLClass d = Class(IRI(ns + "d"));
+        OWLClass e = Class(IRI(ns + "e"));
+        OWLObjectProperty q = ObjectProperty(IRI(ns + "q"));
+        OWLObjectProperty p = ObjectProperty(IRI(ns + "p"));
+        OWLObjectProperty s = ObjectProperty(IRI(ns + "s"));
+        OWLObjectProperty t = ObjectProperty(IRI(ns + "t"));
+        OWLObjectProperty v = ObjectProperty(IRI(ns + "v"));
+        OWLObjectProperty w = ObjectProperty(IRI(ns + "w"));
+        OWLObjectProperty z = ObjectProperty(IRI(ns + "z"));
+        OWLObjectProperty r = ObjectProperty(IRI(ns + "r"));
+        OWLObjectUnionOf domain = ObjectUnionOf(ObjectOneOf(i1), ObjectOneOf(i2),
+                ObjectOneOf(i3));
+        m.addAxiom(o, Declaration(e));
+        m.addAxiom(o, SubClassOf(e, ObjectSomeValuesFrom(p, a)));
+        m.addAxiom(o, SubClassOf(e, ObjectSomeValuesFrom(q, d)));
+        m.addAxiom(o, DisjointClasses(e, a));
+        m.addAxiom(o, DisjointClasses(e, b));
+        m.addAxiom(o, DisjointClasses(e, d));
+        m.addAxiom(o, DisjointClasses(e, c));
+        m.addAxiom(o, Declaration(a));
+        m.addAxiom(o, SubClassOf(a, domain));
+        m.addAxiom(o, SubClassOf(a, ObjectSomeValuesFrom(s, e)));
+        m.addAxiom(o, SubClassOf(a, ObjectSomeValuesFrom(t, b)));
+        m.addAxiom(o, DisjointClasses(a, e));
+        m.addAxiom(o, DisjointClasses(a, b));
+        m.addAxiom(o, DisjointClasses(a, c));
+        m.addAxiom(o, Declaration(b));
+        m.addAxiom(o, SubClassOf(b, ObjectSomeValuesFrom(v, a)));
+        m.addAxiom(o, SubClassOf(b, ObjectSomeValuesFrom(w, c)));
+        m.addAxiom(o, DisjointClasses(b, e));
+        m.addAxiom(o, DisjointClasses(b, a));
+        m.addAxiom(o, DisjointClasses(b, c));
+        m.addAxiom(o, Declaration(d));
+        m.addAxiom(o, EquivalentClasses(d, ObjectUnionOf(c, b)));
+        m.addAxiom(o, SubClassOf(d, ObjectSomeValuesFrom(z, e)));
+        m.addAxiom(o, DisjointClasses(d, e));
+        m.addAxiom(o, Declaration(c));
+        m.addAxiom(o, SubClassOf(c, ObjectSomeValuesFrom(r, b)));
+        m.addAxiom(o, DisjointClasses(c, e));
+        m.addAxiom(o, DisjointClasses(c, a));
+        m.addAxiom(o, DisjointClasses(c, b));
+        m.addAxiom(o, Declaration(p));
+        m.addAxiom(o, InverseObjectProperties(s, p));
+        m.addAxiom(o, FunctionalObjectProperty(p));
+        m.addAxiom(o, InverseFunctionalObjectProperty(p));
+        m.addAxiom(o, Declaration(q));
+        m.addAxiom(o, InverseObjectProperties(z, q));
+        m.addAxiom(o, FunctionalObjectProperty(q));
+        m.addAxiom(o, InverseFunctionalObjectProperty(q));
+        m.addAxiom(o, Declaration(s));
+        m.addAxiom(o, InverseObjectProperties(s, p));
+        m.addAxiom(o, FunctionalObjectProperty(s));
+        m.addAxiom(o, InverseFunctionalObjectProperty(s));
+        m.addAxiom(o, Declaration(t));
+        m.addAxiom(o, InverseObjectProperties(v, t));
+        m.addAxiom(o, FunctionalObjectProperty(t));
+        m.addAxiom(o, InverseFunctionalObjectProperty(t));
+        m.addAxiom(o, Declaration(v));
+        m.addAxiom(o, InverseObjectProperties(v, t));
+        m.addAxiom(o, FunctionalObjectProperty(v));
+        m.addAxiom(o, InverseFunctionalObjectProperty(v));
+        m.addAxiom(o, Declaration(w));
+        m.addAxiom(o, InverseObjectProperties(r, w));
+        m.addAxiom(o, FunctionalObjectProperty(w));
+        m.addAxiom(o, InverseFunctionalObjectProperty(w));
+        m.addAxiom(o, Declaration(z));
+        m.addAxiom(o, InverseObjectProperties(z, q));
+        m.addAxiom(o, FunctionalObjectProperty(z));
+        m.addAxiom(o, InverseFunctionalObjectProperty(z));
+        m.addAxiom(o, Declaration(r));
+        m.addAxiom(o, InverseObjectProperties(r, w));
+        m.addAxiom(o, FunctionalObjectProperty(r));
+        m.addAxiom(o, InverseFunctionalObjectProperty(r));
+        OWLReasoner reasoner = new JFactFactory().createReasoner(o);
+        reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
+        assertTrue(reasoner.isEntailed(SubClassOf(a, OWLNothing())));
+        assertTrue(reasoner.isEntailed(SubClassOf(b, OWLNothing())));
+        assertTrue(reasoner.isEntailed(SubClassOf(c, OWLNothing())));
+        assertTrue(reasoner.isEntailed(SubClassOf(e, OWLNothing())));
+        assertTrue(reasoner.isEntailed(SubClassOf(d, OWLNothing())));
+    }
 
     @Test
     public void testPlus_and_Minus_Zero_Integer() {

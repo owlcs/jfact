@@ -28,6 +28,13 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 @SuppressWarnings("javadoc")
 public class JUnitRunner {
     private static final int _10000 = 1000000;
+
+    public static void print(String premise) throws OWLException {
+        OWLOntology o = OWLManager.createOWLOntologyManager()
+                .loadOntologyFromOntologyDocument(new StringDocumentSource(premise));
+        o.getOWLOntologyManager().saveOntology(o,
+                new OWLFunctionalSyntaxOntologyFormat(), new SystemOutDocumentTarget());
+    }
     private final TestClasses t;
     private OWLReasonerFactory f;
     private final String testId;

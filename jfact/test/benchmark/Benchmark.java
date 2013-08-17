@@ -221,12 +221,4 @@ public class Benchmark {
         System.out.println(mainPath.getName() + "\tTook \t" + elapsed / 1000000L
                 + " ms to process.");
     }
-
-    @Test
-    public void testtest() throws Exception {
-        File mainPath = new File("onto/test.owl");
-        long elapsed = compute(mainPath);
-        System.out.println(mainPath.getName() + "\tTook \t" + elapsed / 1000000L
-                + " ms to process.");
-    }
 }
