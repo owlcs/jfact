@@ -3,5 +3,5 @@
 .settings
 target
 /annotations
-.classpath
-.project
+/.classpath
+/.project
