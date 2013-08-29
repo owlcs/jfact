@@ -117,6 +117,11 @@ public class DatatypeIntersection<T extends Comparable<T>> implements
         return true;
     }
 
+    @Override
+    public boolean isContradictory(Datatype<?> type) {
+        return !isCompatible(type);
+    }
+
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public boolean emptyValueSpace() {

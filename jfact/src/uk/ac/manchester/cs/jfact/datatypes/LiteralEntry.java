@@ -65,4 +65,14 @@ public class LiteralEntry extends NamedEntry {
         return "(" + this.getClass().getSimpleName() + " " + literal.toString()
                 + super.toString() + ")";
     }
+
+    public LiteralEntry withLiteral(Literal<?> l) {
+        setLiteral(l);
+        return this;
+    }
+
+    public LiteralEntry withIndex(int i) {
+        setIndex(i);
+        return this;
+    }
 }

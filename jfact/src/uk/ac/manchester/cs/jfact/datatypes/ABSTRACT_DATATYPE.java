@@ -11,7 +11,7 @@ import java.util.*;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
-abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>,
+public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>,
         Serializable {
     private static final long serialVersionUID = 11000L;
     protected final Set<Facet> facets;
@@ -124,6 +124,11 @@ abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>
             // parsing exceptions will be caught here
             return false;
         }
+    }
+
+    @Override
+    public boolean isContradictory(Datatype<?> type) {
+        return !isCompatible(type);
     }
 
     // most common answer; restrictions on value spaces to be tested in

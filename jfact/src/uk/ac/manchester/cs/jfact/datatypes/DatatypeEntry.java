@@ -64,4 +64,9 @@ public class DatatypeEntry extends NamedEntry {
         return "(" + this.getClass().getSimpleName() + " " + pName + " " + type + " "
                 + super.toString() + ")";
     }
+
+    public DatatypeEntry withIndex(int p) {
+        setIndex(p);
+        return this;
+    }
 }

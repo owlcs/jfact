@@ -1,6 +1,7 @@
 package uk.ac.manchester.cs.jfact.helpers;
 
 import java.io.Serializable;
+import java.util.Collection;
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -11,6 +12,20 @@ import java.util.List;
 /** static methods */
 public class Helper implements Serializable {
     private static final long serialVersionUID = 11000L;
+
+    /** check whether set S1 intersects with the set S2
+     * 
+     * @param S1
+     * @param S2
+     * @return true if S1 and S2 intersect */
+    public static boolean intersectsWith(Collection<?> S1, Collection<?> S2) {
+        for (Object o : S1) {
+            if (S2.contains(o)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /** @param l
      * @param n */

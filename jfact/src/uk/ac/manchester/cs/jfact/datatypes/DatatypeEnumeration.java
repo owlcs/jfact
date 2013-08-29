@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.datatypes;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.*;
 
+import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
@@ -171,6 +172,14 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean isContradictory(Datatype<?> type) {
+        if (type instanceof DatatypeEnumeration) {
+            return Helper.intersectsWith(((DatatypeEnumeration) type).literals, literals);
+        }
+        return !isCompatible(type);
     }
 
     @Override

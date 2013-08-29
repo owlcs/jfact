@@ -58,7 +58,14 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
 
     @Override
     public boolean emptyValueSpace() {
-        return !host.emptyValueSpace();
+        // XXX hack: we need to check cardinalities
+        if (host.emptyValueSpace()) {
+            return false;
+        }
+        if (host.getCardinality() == cardinality.COUNTABLYINFINITE) {
+            return false;
+        }
+        return false;
     }
 
     @SuppressWarnings("rawtypes")
@@ -131,6 +138,11 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
             return !host.isCompatible(((DatatypeNegation<?>) type).host);
         }
         return !host.isCompatible(type);
+    }
+
+    @Override
+    public boolean isContradictory(Datatype<?> type) {
+        return !isCompatible(type);
     }
 
     @Override

@@ -21,7 +21,6 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 @SuppressWarnings("javadoc")
 
 public class Broken {
-
     // XXX this needs to be fixed
     @Test
     public void testWebOnt_oneOf_004() {
@@ -145,6 +144,7 @@ public class Broken {
                         + "Unless all the classes have an infinite number of members or are empty this doesn't work. This example has a is the enumerated class {i,j,k} (i,j,k all different individuals). So it should be inconsistent.",
                 reasoner.isConsistent());
     }
+
     // XXX this needs to be fixed
     @Test
     public void testBugFix() throws OWLOntologyCreationException {
@@ -161,7 +161,7 @@ public class Broken {
         m.addAxiom(o, DataPropertyRange(p, owlDataOneOf2));
         m.addAxiom(o, ClassAssertion(DataMinCardinality(1, p, TopDatatype()), i));
         JFactReasonerConfiguration config = new JFactReasonerConfiguration();
-        config.setLoggingActive(true);
+        // config.setLoggingActive(true);
         OWLReasoner r = Factory.factory().createReasoner(o, config);
         OWLDataPropertyAssertionAxiom ass = DataPropertyAssertion(p, i, Literal(4));
         assertTrue(r.isConsistent());

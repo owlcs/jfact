@@ -415,7 +415,6 @@ public class Fixed {
         r.run();
     }
 
-
     @Test
     @Changed
     public void testrdfbased_sem_bool_intersection_inst_comp() {
@@ -1490,7 +1489,6 @@ public class Fixed {
         r.setReasonerFactory(Factory.factory());
         r.run();
     }
-
 
     @Test
     public void testInconsistent_Byte_Filler() {

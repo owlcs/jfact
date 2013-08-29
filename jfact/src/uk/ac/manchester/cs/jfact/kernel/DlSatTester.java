@@ -1564,17 +1564,41 @@ public class DlSatTester implements Serializable {
         // shortcut: if only one non-and argument is passed and it's Literal,
         // return false without bothering
         DataTypeReasoner datatypeReasoner = new DataTypeReasoner(options);
+        // XStream xStream = new XStream();
+        // xStream.registerLocalConverter(ABSTRACT_DATATYPE.class, "ancestors",
+        // new Converter() {
+        // @Override
+        // public boolean canConvert(Class arg0) {
+        // return true;
+        // }
+        //
+        // @Override
+        // public Object unmarshal(HierarchicalStreamReader arg0,
+        // UnmarshallingContext arg1) {
+        // return null;
+        // }
+        //
+        // @Override
+        // public void marshal(Object arg0, HierarchicalStreamWriter arg1,
+        // MarshallingContext arg2) {}
+        // });
+        // System.out.print("DlSatTester.hasDataClash()\t");
         for (int i = 0; i < size; i++) {
             ConceptWDep r = concepts.get(i);
             DLVertex v = dlHeap.get(r.getConcept());
             NamedEntry dataEntry = dlHeap.get(r.getConcept()).getConcept();
             boolean positive = r.getConcept() > 0;
+            // System.out.print("\tcall addDataEntry " + positive + " " +
+            // v.getType() + " "
+            // + r.getDep() + " "
+            // + xStream.toXML(dataEntry).replaceAll("\n[ \t]*", ""));
             if (datatypeReasoner.addDataEntry(positive, v.getType(), dataEntry,
                     r.getDep())) {
                 this.setClashSet(datatypeReasoner.getClashSet());
                 return true;
             }
         }
+        // System.out.println();
         boolean checkClash = datatypeReasoner.checkClash();
         if (checkClash) {
             this.setClashSet(datatypeReasoner.getClashSet());

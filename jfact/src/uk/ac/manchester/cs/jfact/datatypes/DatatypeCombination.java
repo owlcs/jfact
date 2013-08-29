@@ -13,16 +13,26 @@ public interface DatatypeCombination<Type, Element> {
      * @return the type */
     Type add(Element d);
 
+    /** @param type
+     * @return true if type\s value space and this datatype's value space have
+     *         an intersection, e.g., non negative integers and non positive
+     *         integers intersect at 0 */
+    boolean isCompatible(Datatype<?> type);
+
     /** @param l
-     * @return true if the literal is compatible */
+     * @return true if l is a literal with compatible datatype and value
+     *         included in this datatype value space */
     boolean isCompatible(Literal<?> l);
+
+    /** @param type
+     * @return true if the datatype is contradictory, e.g., the two appearing
+     *         together in a datatype situation cause a clash. e.g., +{"6"} and
+     *         +{"4"} are not compatible and not contradictory, +{"6"} and
+     *         -{"6"} are compatible and contradictory */
+    boolean isContradictory(Datatype<?> type);
 
     /** @return the datatype uri */
     String getDatatypeURI();
-
-    /** @param type
-     * @return true if the datatype is compatible */
-    boolean isCompatible(Datatype<?> type);
 
     /** @return list of elements */
     Iterable<Element> getList();

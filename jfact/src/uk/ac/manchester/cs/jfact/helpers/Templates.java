@@ -7,8 +7,8 @@ package uk.ac.manchester.cs.jfact.helpers;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 @SuppressWarnings("javadoc")
 public enum Templates {
-    TAX_TRYING("\nTAX: trying '%s' [= '%s'... "), INTERVAL(" %s%s%s,%s%s"), CLASH(
-            " DT-%s"), CREATE_EDGE(" ce(%s%s%s,%s)"), IS_BLOCKED_FAILURE_BY(" fb(%s,%s)"), LOG_NODE_BLOCKED(
+    TAX_TRYING("\nTAX: trying '%s' [= '%s'... "), INTERVAL(" %s%s%s,%s%s"), CREATE_EDGE(
+            " ce(%s%s%s,%s)"), IS_BLOCKED_FAILURE_BY(" fb(%s,%s)"), LOG_NODE_BLOCKED(
             " %sb(%s%s%s)"), LOG_SR_NODE(" %s(%s[%s],%s)"), DETERMINE_SORTS(
             "\nThere are %s different sorts in TBox\n"), WRITE_STATE(
             "\nLoaded KB used DL with following features:\nKB contains %sinverse role(s)\nKB contains %srole hierarchy\nKB contains %stransitive role(s)\nKB contains %stop role expressions\nKB contains quantifier(s)\nKB contains %sfunctional restriction(s)\nKB contains %snumber restriction(s)\nKB contains %snominal(s)\n"), BUILD_CACHE_UNSAT(

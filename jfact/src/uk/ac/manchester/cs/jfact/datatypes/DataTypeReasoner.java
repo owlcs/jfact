@@ -5,6 +5,8 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeClashes.*;
+
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.*;
@@ -37,10 +39,20 @@ public final class DataTypeReasoner implements Serializable {
      * @param dep
      * @param reason */
     @PortedFrom(file = "DataReasoning.h", name = "reportClash")
-    public void reportClash(DepSet dep, String reason) {
+    public void reportClash(DepSet dep, DatatypeClashes reason) {
         // inform about clash...
-        options.getLog().printTemplate(Templates.CLASH, reason);
+        options.getLog().print(reason);
         clashDep.setReference(dep);
+    }
+
+    /** set clash dep-set to DEP, report with given REASON
+     * 
+     * @param dep1
+     * @param dep2
+     * @param reason */
+    @PortedFrom(file = "DataReasoning.h", name = "reportClash")
+    public void reportClash(DepSet dep1, DepSet dep2, DatatypeClashes reason) {
+        reportClash(DepSet.plus(dep1, dep2), reason);
     }
 
     /** @param o */
@@ -83,6 +95,9 @@ public final class DataTypeReasoner implements Serializable {
     @PortedFrom(file = "DataReasoning.h", name = "addDataEntry")
     public boolean addDataEntry(boolean positive, DagTag type, NamedEntry entry,
             DepSet dep) {
+        // System.out.println("\n\nDataTypeReasoner.addDataEntry() " + positive
+        // + " " + type
+        // + " " + entry + " " + dep + "\n\n");
         switch (type) {
             case dtDataType: {
                 return dataType(positive, ((DatatypeEntry) entry).getDatatype(), dep);
@@ -176,8 +191,7 @@ public final class DataTypeReasoner implements Serializable {
             // check if any value is already clashing with itself
             for (int i = 0; i < size; i++) {
                 if (types.get(i).checkPNTypeClash()) {
-                    options.getLog().print(" DT-TT");
-                    clashDep.setReference(types.get(i).getPType());
+                    reportClash(types.get(i).getPType(), types.get(i).getNType(), DT_TT);
                     return true;
                 }
             }
@@ -194,29 +208,24 @@ public final class DataTypeReasoner implements Serializable {
                             && ds2.hasNType() || ds2.getType().isSubType(ds1.getType())
                             && ds2.hasPType() && ds1.hasNType()) {
                         // cannot be NOT supertype AND subtype
-                        options.getLog().print(" DT-TT");
-                        DepSet plus = DepSet.plus(ds1.getPType(), ds2.getNType());
-                        clashDep.setReference(plus);
+                        reportClash(ds1.getPType(), ds2.getNType(), DT_TT);
                         return true;
                     }
                     // what if the supertype is an enum?
                     if (ds1.getType().isSubType(ds2.getType())) {
                         // check that values in the supertype are acceptable for
                         // the subtype
-                        if (!ds1.checkCompatibleValue(ds2)) {
-                            options.getLog().print(" DT-TT");
-                            DepSet plus = DepSet.plus(ds1.getPType(), ds2.getNType());
-                            clashDep.setReference(plus);
+                        if (!ds2.checkCompatibleValue(ds1)) {
+                            reportClash(ds1.getPType(), ds2.getNType(), DT_TT);
+                            ds2.checkCompatibleValue(ds1);
                             return true;
                         }
                     }
                     if (ds2.getType().isSubType(ds1.getType())) {
                         // check that values in the supertype are acceptable for
                         // the subtype
-                        if (!ds2.checkCompatibleValue(ds1)) {
-                            options.getLog().print(" DT-TT");
-                            DepSet plus = DepSet.plus(ds1.getPType(), ds2.getNType());
-                            clashDep.setReference(plus);
+                        if (!ds1.checkCompatibleValue(ds2)) {
+                            reportClash(ds1.getPType(), ds2.getNType(), DT_TT);
                             return true;
                         }
                     }
@@ -227,9 +236,7 @@ public final class DataTypeReasoner implements Serializable {
                         // value spaces, e.g., nonneginteger, and nonposinteger
                         // and value = 0
                         if (!ds1.checkCompatibleValue(ds2)) {
-                            options.getLog().print(" DT-TT");
-                            clashDep.setReference(DepSet.plus(ds1.getPType(),
-                                    ds2.getPType()));
+                            reportClash(ds1.getPType(), ds2.getPType(), DT_TT);
                             return true;
                         } else {
                             // in this case, disjoint datatypes which have some

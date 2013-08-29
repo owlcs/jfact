@@ -81,6 +81,11 @@ public class DatatypeUnion implements DatatypeCombination<DatatypeUnion, Datatyp
     }
 
     @Override
+    public boolean isContradictory(Datatype<?> type) {
+        return !isCompatible(type);
+    }
+
+    @Override
     public boolean emptyValueSpace() {
         for (Datatype<?> d : basics) {
             if (!d.isExpression()) {

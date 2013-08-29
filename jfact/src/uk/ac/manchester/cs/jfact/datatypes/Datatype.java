@@ -71,6 +71,13 @@ public interface Datatype<Representation extends Comparable<Representation>> ext
      *         included in this datatype value space */
     boolean isCompatible(Literal<?> l);
 
+    /** @param type
+     * @return true if the datatype is contradictory, e.g., the two appearing
+     *         together in a datatype situation cause a clash. e.g., +{"6"} and
+     *         +{"4"} are not compatible and not contradictory, +{"6"} and
+     *         -{"6"} are compatible and contradictory */
+    boolean isContradictory(Datatype<?> type);
+
     /** @param l
      * @return false if this literal representation does not represent a value
      *         included in the value space of this datatype; its datatype must

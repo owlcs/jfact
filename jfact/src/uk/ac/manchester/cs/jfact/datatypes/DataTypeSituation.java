@@ -5,6 +5,8 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeClashes.*;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -44,7 +46,7 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
             DepSet localDep) {
         if (!i.consistent(interval)) {
             localDep.add(i.locDep);
-            this.reasoner.reportClash(localDep, "C-IT");
+            this.reasoner.reportClash(localDep, DT_C_IT);
             return true;
         }
         if (!i.update(interval, localDep)) {
@@ -74,7 +76,7 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
      * @return true if clash occurs */
     public boolean addInterval(boolean pos, Datatype<R> interval, DepSet dep) {
         if (interval.emptyValueSpace()) {
-            this.reasoner.reportClash(this.accDep, "Empty_interval");
+            this.reasoner.reportClash(this.accDep, DT_Empty_interval);
             return true;
         }
         if (interval instanceof DatatypeEnumeration) {
@@ -83,15 +85,13 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         Datatype<R> realInterval = pos ? interval : new DatatypeNegation<R>(interval);
         Set<DepInterval<R>> c = this.constraints;
         this.constraints = new HashSet<DepInterval<R>>();
-        if (!c.isEmpty()) {
-            for (DepInterval<R> d : c) {
-                if (this.addUpdatedInterval(d, realInterval, DepSet.create(dep))) {
-                    return true;
-                }
+        for (DepInterval<R> d : c) {
+            if (this.addUpdatedInterval(d, realInterval, DepSet.create(dep))) {
+                return true;
             }
         }
         if (this.constraints.isEmpty()) {
-            this.reasoner.reportClash(this.accDep, "C-MM");
+            this.reasoner.reportClash(this.accDep, DT_C_MM);
             return true;
         }
         return false;
@@ -99,15 +99,16 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
 
     /** @return true iff PType and NType leads to clash */
     public boolean checkPNTypeClash() {
-        if (this.hasNType() && this.hasPType()) {
-            this.reasoner.reportClash(DepSet.plus(this.pType, this.nType), "TNT");
+        if (this.hasNType() && this.hasPType() && getNType().equals(getPType())) {
+            this.reasoner.reportClash(this.pType, this.nType, DT_TNT);
             return true;
         }
         for (DepInterval<R> d : this.constraints) {
             boolean checkMinMaxClash = d.checkMinMaxClash();
             if (checkMinMaxClash) {
+                d.checkMinMaxClash();
                 this.accDep.add(d.locDep);
-                this.reasoner.reportClash(this.accDep, "C-MM");
+                this.reasoner.reportClash(this.accDep, DT_C_MM);
             }
             return checkMinMaxClash;
         }
@@ -121,6 +122,10 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
     /** @param other
      * @return true if compatible */
     public boolean checkCompatibleValue(DataTypeSituation<?> other) {
+        if (this.type.equals(DatatypeFactory.LITERAL) && emptyConstraints()
+                || other.type.equals(DatatypeFactory.LITERAL) && other.emptyConstraints()) {
+            return true;
+        }
         if (!this.type.isCompatible(other.type)) {
             return false;
         }
@@ -227,11 +232,32 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
             return true;
         }
 
+        /** @param interval
+         *            the interval to check
+         * @return true if this interval can be updated to include interval */
+        public boolean updateable(Datatype<R> interval) {
+            if (this.e == null) {
+                return true;
+            } else {
+                // TODO compare value spaces
+                if (this.e instanceof DatatypeNegation) {
+                    // cannot update a negation
+                    return false;
+                }
+                // XXX this needs to be more general
+                if (e instanceof DatatypeEnumeration
+                        && interval instanceof DatatypeEnumeration) {
+                    return true;
+                }
+            }
+            return true;
+        }
+
         /** check if the interval is consistent wrt given type
          * 
          * @param type
          * @return true if consistent */
-        public boolean consistent(Datatype<R> type) {
+        private boolean consistent(Datatype<R> type) {
             return this.e == null || this.e.isCompatible(type);
         }
 
@@ -301,6 +327,6 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + this.constraints;
+        return this.getClass().getSimpleName() + " " + type + " " + this.constraints;
     }
 }

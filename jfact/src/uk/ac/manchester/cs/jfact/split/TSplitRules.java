@@ -59,7 +59,8 @@ public class TSplitRules implements Serializable {
          * @return check whether signatures of a rule are related to current
          *         signature in such a way that allows rule to fire */
         public boolean canFire(Set<NamedEntity> CurrentSig) {
-            return CurrentSig.containsAll(eqSig) && intersectsWith(impSig, CurrentSig);
+            return CurrentSig.containsAll(eqSig)
+                    && Helper.intersectsWith(impSig, CurrentSig);
         }
 
         /** calculates dep-set for a rule that can fire, write it to DEP.
@@ -83,16 +84,6 @@ public class TSplitRules implements Serializable {
                 }
             }
             return dep;
-        }
-
-        /** check whether set S1 intersects with the set S2 */
-        private boolean intersectsWith(Set<?> S1, Set<?> S2) {
-            for (Object o : S1) {
-                if (S2.contains(o)) {
-                    return true;
-                }
-            }
-            return false;
         }
     }
 

@@ -8,6 +8,7 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
@@ -21,6 +22,7 @@ import org.semanticweb.owlapi.vocab.OWLFacet;
 import uk.ac.manchester.cs.jfact.JFactFactory;
 
 @SuppressWarnings("javadoc")
+@Ignore
 public class JFactSerializationTest extends TestCase {
     private static final OWLDataFactory f = OWLManager.getOWLDataFactory();
     OWL2Datatype owl2datatype = OWL2Datatype.XSD_INT;

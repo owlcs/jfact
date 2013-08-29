@@ -19,6 +19,7 @@ import org.semanticweb.owlapi.util.AutoIRIMapper;
 import uk.ac.manchester.cs.jfact.JFactFactory;
 
 @SuppressWarnings("javadoc")
+@Ignore
 public class Benchmark {
     @Test
     public void testgenome() throws Exception {

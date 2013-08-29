@@ -91,6 +91,11 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype
     }
 
     @Override
+    public boolean isContradictory(Datatype<?> type) {
+        return !isCompatible(type);
+    }
+
+    @Override
     public boolean isCompatible(Literal<?> l) {
         return this.d.isCompatible(l);
     }
