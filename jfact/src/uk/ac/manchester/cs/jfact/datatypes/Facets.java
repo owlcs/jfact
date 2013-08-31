@@ -66,25 +66,24 @@ public class Facets implements Serializable {
             if (value == null) {
                 throw new IllegalArgumentException("Cannot parse a null value");
             }
-            if (value instanceof Comparable) {
-                return (Comparable<?>) value;
-            }
             try {
                 if (value instanceof String) {
                     return new BigDecimal((String) value);
                 }
+                if (value instanceof Number) {
+                    return new BigDecimal(value.toString());
+                }
                 if (value instanceof Literal) {
                     Object typedValue = ((Literal<?>) value).typedValue();
                     if (typedValue instanceof Number) {
-                        return (Comparable<?>) typedValue;
+                        return new BigDecimal(typedValue.toString());
                     }
                     if (typedValue instanceof Calendar) {
                         return (Comparable<?>) typedValue;
                     }
-                    // if (typedValue instanceof Number) {
-                    // return new BigDecimal(typedValue.toString());
-                    // }
-                    // else it's not parseable anyway...
+                 }
+                if (value instanceof Comparable) {
+                    return (Comparable<?>) value;
                 }
                 // any other type, its string form must be parseable by
                 // BigDecimal - or exceptions will be spat out

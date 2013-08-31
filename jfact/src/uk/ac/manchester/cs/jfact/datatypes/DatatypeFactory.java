@@ -1035,8 +1035,8 @@ public class DatatypeFactory implements Serializable {
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
-            knownNumericFacetValues.put(minInclusive, Byte.MIN_VALUE);
-            knownNumericFacetValues.put(maxInclusive, Byte.MAX_VALUE);
+            knownNumericFacetValues.put(minInclusive, new BigDecimal(Byte.MIN_VALUE));
+            knownNumericFacetValues.put(maxInclusive, new BigDecimal(Byte.MAX_VALUE));
         }
 
         @Override
@@ -1059,8 +1059,8 @@ public class DatatypeFactory implements Serializable {
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
-            knownNumericFacetValues.put(minInclusive, Integer.MIN_VALUE);
-            knownNumericFacetValues.put(maxInclusive, Integer.MAX_VALUE);
+            knownNumericFacetValues.put(minInclusive, new BigDecimal(Integer.MIN_VALUE));
+            knownNumericFacetValues.put(maxInclusive, new BigDecimal(Integer.MAX_VALUE));
         }
 
         @Override
@@ -1108,8 +1108,8 @@ public class DatatypeFactory implements Serializable {
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
-            knownNumericFacetValues.put(minInclusive, Long.MIN_VALUE);
-            knownNumericFacetValues.put(maxInclusive, Long.MAX_VALUE);
+            knownNumericFacetValues.put(minInclusive, new BigDecimal(Long.MIN_VALUE));
+            knownNumericFacetValues.put(maxInclusive, new BigDecimal(Long.MAX_VALUE));
         }
 
         @Override
@@ -1140,7 +1140,7 @@ public class DatatypeFactory implements Serializable {
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
-            knownNumericFacetValues.put(maxInclusive, -1L);
+            knownNumericFacetValues.put(maxInclusive, new BigDecimal(-1L));
         }
 
         @Override
@@ -1170,7 +1170,7 @@ public class DatatypeFactory implements Serializable {
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
-            knownNumericFacetValues.put(minInclusive, 0L);
+            knownNumericFacetValues.put(minInclusive, new BigDecimal(0L));
         }
 
         @Override
@@ -1200,7 +1200,7 @@ public class DatatypeFactory implements Serializable {
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
-            knownNumericFacetValues.put(maxInclusive, 0L);
+            knownNumericFacetValues.put(maxInclusive, new BigDecimal(0L));
         }
 
         @Override
@@ -1226,7 +1226,7 @@ public class DatatypeFactory implements Serializable {
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
-            knownNumericFacetValues.put(minInclusive, 1L);
+            knownNumericFacetValues.put(minInclusive, new BigDecimal(1L));
         }
 
         @Override
@@ -1255,8 +1255,8 @@ public class DatatypeFactory implements Serializable {
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
-            knownNumericFacetValues.put(minInclusive, Short.MIN_VALUE);
-            knownNumericFacetValues.put(maxInclusive, Short.MAX_VALUE);
+            knownNumericFacetValues.put(minInclusive, new BigDecimal(Short.MIN_VALUE));
+            knownNumericFacetValues.put(maxInclusive, new BigDecimal(Short.MAX_VALUE));
         }
 
         @Override
@@ -1277,8 +1277,8 @@ public class DatatypeFactory implements Serializable {
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
-            knownNumericFacetValues.put(minInclusive, (short) 0);
-            knownNumericFacetValues.put(maxInclusive, (short) 255);
+            knownNumericFacetValues.put(minInclusive, new BigDecimal((short) 0));
+            knownNumericFacetValues.put(maxInclusive, new BigDecimal((short) 255));
         }
     }
 
@@ -1297,8 +1297,8 @@ public class DatatypeFactory implements Serializable {
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
-            knownNumericFacetValues.put(minInclusive, 0L);
-            knownNumericFacetValues.put(maxInclusive, 4294967295L);
+            knownNumericFacetValues.put(minInclusive, new BigDecimal(0L));
+            knownNumericFacetValues.put(maxInclusive, new BigDecimal(4294967295L));
         }
 
         @Override
@@ -1327,8 +1327,8 @@ public class DatatypeFactory implements Serializable {
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
-            knownNumericFacetValues.put(minInclusive, BigInteger.ZERO);
-            knownNumericFacetValues.put(maxInclusive, new BigInteger(
+            knownNumericFacetValues.put(minInclusive, BigDecimal.ZERO);
+            knownNumericFacetValues.put(maxInclusive, new BigDecimal(
                     "18446744073709551615"));
         }
 
@@ -1368,8 +1368,8 @@ public class DatatypeFactory implements Serializable {
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
-            knownNumericFacetValues.put(minInclusive, 0);
-            knownNumericFacetValues.put(maxInclusive, 65535);
+            knownNumericFacetValues.put(minInclusive, new BigDecimal(0));
+            knownNumericFacetValues.put(maxInclusive, new BigDecimal(65535));
         }
 
         @Override

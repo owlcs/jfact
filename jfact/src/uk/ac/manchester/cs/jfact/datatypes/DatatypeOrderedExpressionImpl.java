@@ -178,10 +178,6 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
-        if (value instanceof Literal && !this.host.isCompatible((Literal<?>) value)) {
-            throw new IllegalArgumentException("Not a valid value for this expression: "
-                    + f + "\t" + value + " for: " + this);
-        }
         DatatypeOrderedExpressionImpl<O> toReturn = new DatatypeOrderedExpressionImpl<O>(
                 this.host);
         toReturn.knownNumericFacetValues.putAll(knownNumericFacetValues);

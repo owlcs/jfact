@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
+import java.math.BigDecimal;
+
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -62,7 +64,11 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
             toReturn.knownNumericFacetValues.remove(Facets.maxExclusive);
             toReturn.knownNumericFacetValues.remove(Facets.maxInclusive);
         }
-        toReturn.knownNumericFacetValues.put(f, value);
+        if (value instanceof Number) {
+            toReturn.knownNumericFacetValues.put(f, new BigDecimal(value.toString()));
+        } else {
+            toReturn.knownNumericFacetValues.put(f, value);
+        }
         return toReturn;
     }
 

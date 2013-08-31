@@ -73,12 +73,6 @@ public final class DataTypeReasoner implements Serializable {
         return dataTypeAppearance;
     }
 
-    @Original
-    private <R extends Comparable<R>> DataTypeSituation<R>
-            getType(DatatypeExpression<R> p) {
-        return this.getType(p.getHostType());
-    }
-
     /** get clash-set
      * 
      * @return clash set */
@@ -117,16 +111,16 @@ public final class DataTypeReasoner implements Serializable {
     @Original
     private <R extends Comparable<R>> boolean dataExpression(boolean positive,
             DatatypeExpression<R> c, DepSet dep) {
-        if (c.getKnownNonNumericFacetValues().isEmpty()
-                && c.getKnownNumericFacetValues().isEmpty()) {
-            return false;
+        Datatype<R> typeToIndex = c.getHostType();
+        if (c instanceof DatatypeEnumeration) {
+            typeToIndex = c;
         }
         if (positive) {
-            this.getType(c.getHostType()).setPType(dep);
+            this.getType(typeToIndex).setPType(dep);
         }
         options.getLog().printTemplate(Templates.INTERVAL, positive ? "+" : "-", c, "",
                 "", "");
-        return this.getType(c).addInterval(positive, c, dep);
+        return this.getType(typeToIndex).addInterval(positive, c, dep);
     }
 
     @Original
@@ -148,16 +142,11 @@ public final class DataTypeReasoner implements Serializable {
     private <R extends Comparable<R>> boolean dataValue(boolean positive, Literal<R> c1,
             DepSet dep) {
         Datatype<R> d = c1.getDatatypeExpression();
-        if (positive) {
-            this.getType(d).setPType(dep);
-        } else {
-            this.getType(d).setNType(dep);
-        }
-        Datatype<R> interval = d.isNumericDatatype() ? new DatatypeNumericEnumeration<R>(
+        DatatypeExpression<R> interval = d.isNumericDatatype() ? new DatatypeNumericEnumeration<R>(
                 d.asNumericDatatype(), c1) : new DatatypeEnumeration<R>(d, c1);
         options.getLog().printTemplate(Templates.INTERVAL, positive ? "+" : "-",
                 interval, "", "", "");
-        return this.getType(d).addInterval(positive, interval, dep);
+        return dataExpression(positive, interval, dep);
     }
 
     // try to find contradiction:
