@@ -15,6 +15,7 @@ import java.util.Set;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
@@ -24,9 +25,100 @@ import org.semanticweb.owlapi.vocab.OWLFacet;
 import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
 import uk.ac.manchester.cs.jfact.JFactFactory;
+import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
 @SuppressWarnings("javadoc")
 public class Fixed {
+    @Test
+    public void testWebOnt_oneOf_004() {
+        String premise = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+                + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\nPrefix(xml:=<http://www.w3.org/XML/1998/namespace>)\nPrefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\nPrefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)\n"
+                + "Ontology(\nDeclaration(DataProperty(<urn:t:p#p>))\n"
+                + "DataPropertyRange(<urn:t:p#p> DataOneOf(\"1\"^^xsd:integer \"2\"^^xsd:integer \"3\"^^xsd:integer \"4\"^^xsd:integer))\n"
+                + "DataPropertyRange(<urn:t:p#p> DataOneOf(\"4\"^^xsd:integer \"5\"^^xsd:integer \"6\"^^xsd:integer))\n"
+                + "ClassAssertion(owl:Thing <urn:t:p#i>)\n"
+                + "ClassAssertion(DataMinCardinality(1 <urn:t:p#p>) <urn:t:p#i>)\n"
+                // +"DataPropertyAssertion(<urn:t:p#p> <urn:t:p#i> \"4\"^^xsd:integer)"
+                + ")";
+        String conclusion = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+                + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\nPrefix(xml:=<http://www.w3.org/XML/1998/namespace>)\nPrefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\nPrefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)\n"
+                + "Ontology(\nDeclaration(DataProperty(<urn:t:p#p>))\n"
+                + "ClassAssertion(owl:Thing <urn:t:p#i>)\n"
+                + "DataPropertyAssertion(<urn:t:p#p> <urn:t:p#i> \"4\"^^xsd:integer))";
+        String id = "WebOnt_oneOf_004";
+        TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
+        String d = "This test illustrates the use of dataRange in OWL DL. This test combines some of the ugliest features of XML, RDF and OWL.";
+        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        r.setReasonerFactory(Factory.factory());
+        r.run();
+    }
+
+    @Test
+    public void testWebOnt_oneOf_004_1() throws OWLOntologyCreationException {
+        String premise = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+                + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\nPrefix(xml:=<http://www.w3.org/XML/1998/namespace>)\nPrefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\nPrefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)\n"
+                + "Ontology(\nDeclaration(DataProperty(<urn:t:p#p>))\n"
+                + "DataPropertyRange(<urn:t:p#p> DataOneOf(\"1\"^^xsd:integer \"2\"^^xsd:integer \"3\"^^xsd:integer \"4\"^^xsd:integer))\n"
+                + "DataPropertyRange(<urn:t:p#p> DataOneOf(\"4\"^^xsd:integer \"5\"^^xsd:integer \"6\"^^xsd:integer))\n"
+                + "ClassAssertion(owl:Thing <urn:t:p#i>)\n"
+                + "ClassAssertion(DataMinCardinality(1 <urn:t:p#p>) <urn:t:p#i>)\n"
+                // +
+                // "DataPropertyAssertion(<urn:t:p#p> <urn:t:p#i> \"4\"^^xsd:integer)"
+                + ")";
+        OWLOntology o = OWLManager.createOWLOntologyManager()
+                .loadOntologyFromOntologyDocument(new StringDocumentSource(premise));
+        for (OWLAxiom ax : o.getAxioms()) {
+            System.out.println(ax);
+        }
+        OWLReasoner r = Factory.factory().createReasoner(o);
+        r.precomputeInferences(InferenceType.CLASS_HIERARCHY);
+        assertTrue(r.isConsistent());
+        OWLDataFactory df = o.getOWLOntologyManager().getOWLDataFactory();
+        OWLDataProperty p = df.getOWLDataProperty(IRI.create("urn:t:p#p"));
+        OWLNamedIndividual i = df.getOWLNamedIndividual(IRI.create("urn:t:p#i"));
+        OWLLiteral l = df.getOWLLiteral("4",
+                df.getOWLDatatype(OWL2Datatype.XSD_INTEGER.getIRI()));
+        assertTrue(r.isEntailed(df.getOWLDataPropertyAssertionAxiom(p, i, l)));
+        // String conclusion =
+        // "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+        // +
+        // "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\nPrefix(xml:=<http://www.w3.org/XML/1998/namespace>)\nPrefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\nPrefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)\n"
+        // + "Ontology(\nDeclaration(DataProperty(<urn:t:p#p>))\n"
+        // + "ClassAssertion(owl:Thing <urn:t:p#i>)\n"
+        // +
+        // "DataPropertyAssertion(<urn:t:p#p> <urn:t:p#i> \"4\"^^xsd:integer))";
+        // String id = "WebOnt_oneOf_004";
+        // TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
+        // String d =
+        // "This test illustrates the use of dataRange in OWL DL. This test combines some of the ugliest features of XML, RDF and OWL.";
+        // JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        // r.setReasonerFactory(Factory.factory());
+        // r.run();
+    }
+
+    @Test
+    public void testBugFix() throws OWLOntologyCreationException {
+        OWLOntologyManager m = OWLManager.createOWLOntologyManager();
+        OWLOntology o = m.createOntology();
+        OWLDataProperty p = DataProperty(IRI.create("urn:t:t#p"));
+        OWLNamedIndividual i = NamedIndividual(IRI.create("urn:t:t#i"));
+        m.addAxiom(o, Declaration(p));
+        m.addAxiom(o, Declaration(i));
+        OWLDataOneOf owlDataOneOf = DataOneOf(Literal(1), Literal(2), Literal(3),
+                Literal(4));
+        OWLDataOneOf owlDataOneOf2 = DataOneOf(Literal(4), Literal(5), Literal(6));
+        m.addAxiom(o, DataPropertyRange(p, owlDataOneOf));
+        m.addAxiom(o, DataPropertyRange(p, owlDataOneOf2));
+        m.addAxiom(o, ClassAssertion(DataMinCardinality(1, p, TopDatatype()), i));
+        JFactReasonerConfiguration config = new JFactReasonerConfiguration();
+        // config.setLoggingActive(true);
+        OWLReasoner r = Factory.factory().createReasoner(o, config);
+        OWLDataPropertyAssertionAxiom ass = DataPropertyAssertion(p, i, Literal(4));
+        assertTrue(r.isConsistent());
+        boolean entailed = r.isEntailed(ass);
+        assertTrue(entailed);
+    }
+
     @Test
     @Changed(reason = "original test had unreliable iris, e.g., http://example.com/2a")
     public void testConsistent_but_all_unsat() throws Exception {
@@ -310,27 +402,6 @@ public class Fixed {
         r.run();
     }
 
-    @Test
-    public void testWebOnt_I5_8_010() {
-        String premise = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
-                + "Ontology(\n"
-                + "Declaration(DataProperty(<urn:t#p>))\n"
-                + "DataPropertyRange(<urn:t#p> xsd:nonNegativeInteger)\n"
-                + "ClassAssertion(DataSomeValuesFrom(<urn:t#p> xsd:nonPositiveInteger) <urn:t#john>)\n)";
-        String conclusion = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
-                + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
-                + "Ontology(\nDeclaration(DataProperty(<urn:t#p>))\n"
-                + "ClassAssertion(owl:Thing <urn:t#john>)\n"
-                + "DataPropertyAssertion(<urn:t#p> <urn:t#john> \"0\"^^xsd:int)\n)";
-        String id = "WebOnt_I5_8_010";
-        TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "0 is the only <code>xsd:nonNegativeInteger</code> which is\n"
-                + "also an <code>xsd:nonPositiveInteger</code>.";
-        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
-        // r.getConfiguration().setLoggingActive(true);
-        r.run();
-    }
 
     @Test
     public void testBetween() throws OWLOntologyCreationException {
