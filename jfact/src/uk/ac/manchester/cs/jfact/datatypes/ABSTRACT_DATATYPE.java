@@ -198,12 +198,13 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Data
 
     protected <T extends Comparable<T>> boolean overlapping(OrderedDatatype<T> first,
             OrderedDatatype<T> second) {
+        T max = first.getMax();
+        T min = second.getMin();
         if (first.hasMaxInclusive() && second.hasMinInclusive()) {
-            return first.getMax().compareTo(second.getMin()) >= 0;
+            return max.compareTo(min) >= 0;
         }
-        T minSecond = second.getMin();
-        if (first.hasMaxExclusive() && minSecond != null) {
-            return first.getMax().compareTo(minSecond) > 0;
+        if (first.hasMaxExclusive() &&  second.hasMinInclusive()) {
+            return max.compareTo(min) > 0;
         }
         // if we get here, first has no max, hence it's unbounded upwards
         return false;
