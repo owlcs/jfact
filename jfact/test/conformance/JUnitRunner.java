@@ -63,23 +63,14 @@ public class JUnitRunner {
     }
 
     private boolean isConsistent(OWLReasoner reasoner, boolean expected) {
-        try {
             boolean consistent = reasoner.isConsistent();
             return consistent;
-        } catch (RuntimeException e) {
-            e.printStackTrace(System.out);
-            return !expected;
-        }
+
     }
 
     private boolean
             isEntailed(OWLReasoner reasoner, OWLAxiom conclusion, boolean expected) {
-        try {
             return reasoner.isEntailed(conclusion);
-        } catch (RuntimeException e) {
-            e.printStackTrace(System.out);
-            return !expected;
-        }
     }
 
     public OWLOntology getPremise() throws OWLOntologyCreationException {
