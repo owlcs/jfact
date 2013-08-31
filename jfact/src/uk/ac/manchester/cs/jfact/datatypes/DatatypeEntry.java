@@ -65,6 +65,19 @@ public class DatatypeEntry extends NamedEntry {
                 + super.toString() + ")";
     }
 
+    @Override
+    public int hashCode() {
+        return type.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof DatatypeEntry)) {
+            return false;
+        }
+        return type.equals(((DatatypeEntry) obj).type);
+    }
+
     public DatatypeEntry withIndex(int p) {
         setIndex(p);
         return this;

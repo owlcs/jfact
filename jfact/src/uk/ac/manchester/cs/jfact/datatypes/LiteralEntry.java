@@ -66,6 +66,19 @@ public class LiteralEntry extends NamedEntry {
                 + super.toString() + ")";
     }
 
+    @Override
+    public int hashCode() {
+        return literal.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof LiteralEntry)) {
+            return false;
+        }
+        return literal.equals(((LiteralEntry) obj).literal);
+    }
+
     public LiteralEntry withLiteral(Literal<?> l) {
         setLiteral(l);
         return this;
