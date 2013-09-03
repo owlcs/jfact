@@ -31,6 +31,13 @@ public class DepSet implements Serializable {
         return new DepSet(i);
     }
 
+    public static DepSet create(int... values) {
+        FastSetSimple set = new FastSetSimple();
+        for (int i : values) {
+            set.add(i);
+        }
+        return create(set);
+    }
     /** @param dep
      * @return copy of dep */
     @PortedFrom(file = "tDepSet.h", name = "create")

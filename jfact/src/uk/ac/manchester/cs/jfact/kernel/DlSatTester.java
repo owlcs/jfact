@@ -15,7 +15,9 @@ import java.util.*;
 import org.semanticweb.owlapi.reasoner.TimeOutException;
 
 import uk.ac.manchester.cs.jfact.datatypes.DataTypeReasoner;
+import uk.ac.manchester.cs.jfact.datatypes.DatatypeEntry;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
+import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.*;
 import uk.ac.manchester.cs.jfact.helpers.Timer;
@@ -1556,56 +1558,91 @@ public class DlSatTester implements Serializable {
         return status.usageByState();
     }
 
+    static class DataCall {
+        DagTag d;
+        NamedEntry dataEntry;
+        boolean positive;
+        ConceptWDep r;
+
+        @Override
+        public int hashCode() {
+            return ((positive ? 1 : 2) * 37 + d.hashCode()) * 37 + dataEntry.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null) {
+                return false;
+            }
+            if (this == obj) {
+                return true;
+            }
+            if (!(obj instanceof DataCall)) {
+                return false;
+            }
+            DataCall o = (DataCall) obj;
+            return positive == o.positive && d.equals(o.d)
+                    && dataEntry.equals(o.dataEntry);
+        }
+
+        @Override
+        public String toString() {
+            Object o = null;
+            if (dataEntry instanceof DatatypeEntry) {
+                o = ((DatatypeEntry) dataEntry).getDatatype();
+            } else if (dataEntry instanceof LiteralEntry) {
+                o = ((LiteralEntry) dataEntry).getLiteral();
+            } else {
+                o = dataEntry;
+            }
+            return positive + ", " + d + ", \"" + o.toString().replace("\"", "\\\"")
+                    + "\", "
+                    + r.getDep().toString().replace("{", "").replace("}", "");
+        }
+    }
+
+    // private static int counter = 0;
+
     @PortedFrom(file = "Reasoner.h", name = "hasDataClash")
     private boolean hasDataClash(DlCompletionTree node) {
         assert node != null && node.isDataNode();
         List<ConceptWDep> concepts = node.beginl_sc();
         int size = concepts.size();
-        // shortcut: if only one non-and argument is passed and it's Literal,
-        // return false without bothering
         DataTypeReasoner datatypeReasoner = new DataTypeReasoner(options);
-        // XStream xStream = new XStream();
-        // xStream.registerLocalConverter(ABSTRACT_DATATYPE.class, "ancestors",
-        // new Converter() {
-        // @Override
-        // public boolean canConvert(Class arg0) {
-        // return true;
-        // }
-        //
-        // @Override
-        // public Object unmarshal(HierarchicalStreamReader arg0,
-        // UnmarshallingContext arg1) {
-        // return null;
-        // }
-        //
-        // @Override
-        // public void marshal(Object arg0, HierarchicalStreamWriter arg1,
-        // MarshallingContext arg2) {}
-        // });
-        // System.out.print("DlSatTester.hasDataClash()\t");
+        // counter++;
+        // System.out.print("@Test public void test" + counter +
+        // "() throws Exception {");
+        Set<DataCall> calls = new LinkedHashSet<DataCall>();
         for (int i = 0; i < size; i++) {
             ConceptWDep r = concepts.get(i);
-            DLVertex v = dlHeap.get(r.getConcept());
+            DagTag d = dlHeap.get(r.getConcept()).getType();
             NamedEntry dataEntry = dlHeap.get(r.getConcept()).getConcept();
             boolean positive = r.getConcept() > 0;
-            // System.out.print("\tcall addDataEntry " + positive + " " +
-            // v.getType() + " "
-            // + r.getDep() + " "
-            // + xStream.toXML(dataEntry).replaceAll("\n[ \t]*", ""));
-            if (datatypeReasoner.addDataEntry(positive, v.getType(), dataEntry,
-                    r.getDep())) {
+            if (dataEntry != null) {
+                DataCall dc = new DataCall();
+                dc.d = d;
+                dc.positive = positive;
+                dc.dataEntry = dataEntry;
+                dc.r = r;
+                calls.add(dc);
+            }
+        }
+        for (DataCall dc : calls) {
+            // System.out.print(" makeCall( " + dc + ");");
+            if (datatypeReasoner.addDataEntry(dc.positive, dc.d, dc.dataEntry,
+                    dc.r.getDep())) {
                 this.setClashSet(datatypeReasoner.getClashSet());
+                // System.out.println("assertTrue(makeCall( " + dc + "));}");
                 return true;
             }
         }
-        // System.out.println();
         boolean checkClash = datatypeReasoner.checkClash();
+        // System.out.println("assert" + (checkClash ? "True" : "False") +
+        // "(datatypeReasoner.checkClash());}");
         if (checkClash) {
             this.setClashSet(datatypeReasoner.getClashSet());
         }
         return checkClash;
-        // XXX not sure about this change
-        // return false;
     }
 
     @PortedFrom(file = "Reasoner.h", name = "runSat")
