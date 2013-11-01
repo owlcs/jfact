@@ -116,6 +116,8 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.7.1</version>
 				<configuration>
+				                    <useFile>false</useFile>
+                    <printSummary>false</printSummary>
 					<includes>
 						<include>**/*.java</include>
 					</includes>
