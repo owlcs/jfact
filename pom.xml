@@ -127,9 +127,9 @@
 	</build>
 
 	<scm>
-		<connection>scm:git:git://git.code.sf.net/p/jfact/code</connection>
-		<developerConnection>scm:git:ssh://ignazio1977@git.code.sf.net/p/jfact/code</developerConnection>
-		<url>ssh://git.code.sf.net/p/jfact/code</url>
+		<connection>scm:git:git://github.com/owlcs/jfact.git</connection>
+		<developerConnection>scm:git:git@github.com:owlcs/jfact.git</developerConnection>
+		<url>https://github.com/owlcs/jfact</url>
 	</scm>
 
 	<dependencies>
