@@ -116,7 +116,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.7.1</version>
 				<configuration>
-				                    <useFile>false</useFile>
+				    <useFile>false</useFile>
                     <printSummary>false</printSummary>
 					<includes>
 						<include>**/*.java</include>
@@ -136,7 +136,7 @@
 		<dependency>
 			<groupId>net.sourceforge.owlapi</groupId>
 			<artifactId>owlapi-distribution</artifactId>
-			<version>3.4.6-SNAPSHOT</version>
+			<version>3.4.8</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
