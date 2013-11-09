@@ -5,12 +5,21 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
+import static uk.ac.manchester.cs.jfact.helpers.Helper.bpTOP;
 import static uk.ac.manchester.cs.jfact.kernel.DagTag.*;
 import static uk.ac.manchester.cs.jfact.kernel.Redo.*;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.semanticweb.owlapi.reasoner.TimeOutException;
 
@@ -19,8 +28,18 @@ import uk.ac.manchester.cs.jfact.datatypes.DatatypeEntry;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
 import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
-import uk.ac.manchester.cs.jfact.helpers.*;
+import uk.ac.manchester.cs.jfact.helpers.DLVertex;
+import uk.ac.manchester.cs.jfact.helpers.FastSet;
+import uk.ac.manchester.cs.jfact.helpers.FastSetFactory;
+import uk.ac.manchester.cs.jfact.helpers.FastSetSimple;
+import uk.ac.manchester.cs.jfact.helpers.Helper;
+import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
+import uk.ac.manchester.cs.jfact.helpers.Reference;
+import uk.ac.manchester.cs.jfact.helpers.SaveStack;
+import uk.ac.manchester.cs.jfact.helpers.Stats;
+import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.helpers.Timer;
+import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheConst;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheIan;
@@ -1034,7 +1053,10 @@ public class DlSatTester implements Serializable {
         DagTag type = v.getType();
         if (handlecollection.contains(type)) {
             for (int q : v.begin()) {
-                prepareCascadedCache(pos ? q : -q, f);
+                int p2 = pos ? q : -q;
+                inProcess.add(p2);
+                prepareCascadedCache(p2, f);
+                inProcess.remove(p2);
             }
         } else if (handlesingleton.contains(type)) {
             if (!pos && type.isPNameTag()) {
