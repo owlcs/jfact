@@ -99,7 +99,7 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
         if (policy.needPlain()) {
             plain.addAll(syn);
         } else {
-            acc.add(syn);
+            acc.add(new ArrayList<T> (syn));
         }
         return true;
     }
