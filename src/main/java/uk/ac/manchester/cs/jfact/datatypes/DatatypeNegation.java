@@ -6,7 +6,11 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
@@ -81,8 +85,9 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
     }
 
     @Override
-    public <O extends Comparable<O>> O getFacetValue(Facet f) {
-        return host.getFacetValue(f);
+    public <O extends Comparable<O>> O getFacetValue(Facet<O> f) {
+        O o = host.getFacetValue(f);
+        return o;
     }
 
     @SuppressWarnings("rawtypes")

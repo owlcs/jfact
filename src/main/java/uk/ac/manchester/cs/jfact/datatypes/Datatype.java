@@ -47,7 +47,7 @@ public interface Datatype<Representation extends Comparable<Representation>> ext
     /** @param f
      * @return known value for f, or null if there is no known value for the
      *         facet */
-    <O extends Comparable<O>> O getFacetValue(Facet f);
+    <O extends Comparable<O>> O getFacetValue(Facet<O> f);
 
     /** @param f
      * @return numeric value */

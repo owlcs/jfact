@@ -6,14 +6,14 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** @author ignazio */
-public interface Facet {
+public interface Facet<T extends Comparable<T>> {
     /** This is a convenience method that enables each facet to parse its values
      * without client code having to worry whether the values are literals or
      * strings - the typing is known to the facet implementation
      * 
      * @param value
      * @return value that is assigned to this facet */
-    <T extends Comparable<T>> T parseNumber(Object value);
+    T parseNumber(Object value);
 
     /** @param value
      * @return the typed value for value */
