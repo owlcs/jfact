@@ -35,7 +35,7 @@ import conformance.PortedFrom;
 public class ConjunctiveQueryFolding implements Serializable {
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "pEM")
-    private final ExpressionManager pEM = new ExpressionManager();
+    private final ExpressionManager pEM;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "VarFact")
     private final VariableFactory VarFact = new VariableFactory();
     /** map between new vars and original vars */
@@ -46,6 +46,10 @@ public class ConjunctiveQueryFolding implements Serializable {
     private final Set<ConceptExpression> NewNominals = new HashSet<ConceptExpression>();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "VarRestrictions")
     private final Map<String, ConceptExpression> VarRestrictions = new HashMap<String, ConceptExpression>();
+
+    public ConjunctiveQueryFolding(ExpressionManager em) {
+        pEM = em;
+    }
 
     /** @param expr
      * @return true if expr is nominal */

@@ -167,6 +167,14 @@ public class ExpressionManager implements Serializable {
         individualNameset.clear();
     }
 
+    /** clear the maps */
+    @PortedFrom(file = "tExpressionManager.h", name = "clear")
+    public void clear() {
+        clearNameCache();
+        inverseRoleCache.clear();
+        OneOfCache.clear();
+    }
+
     // top/bottom roles
     /** @param R
      * @return true iff R is a top data/object role */
@@ -553,16 +561,5 @@ public class ExpressionManager implements Serializable {
     @PortedFrom(file = "tExpressionManager.h", name = "DataOneOf")
     public DataExpression dataOneOf(List<Literal<?>> l) {
         return new DataOneOf(l);
-    }
-
-    /** clear the maps */
-    @PortedFrom(file = "tExpressionManager.h", name = "clear")
-    public void clear() {
-        conceptNameset.clear();
-        individualNameset.clear();
-        objectRoleNameset.clear();
-        dataRoleNameset.clear();
-        inverseRoleCache.clear();
-        OneOfCache.clear();
     }
 }
