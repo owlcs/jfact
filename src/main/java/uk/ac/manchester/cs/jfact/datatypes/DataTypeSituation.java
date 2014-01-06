@@ -8,13 +8,18 @@ package uk.ac.manchester.cs.jfact.datatypes;
 import static uk.ac.manchester.cs.jfact.datatypes.DatatypeClashes.*;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.FastSetSimple;
 
 /** @author ignazio
- * @param <R> */
+ * @param <R>
+ *            type */
 public class DataTypeSituation<R extends Comparable<R>> implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** positive type appearance */
@@ -41,6 +46,12 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
 
     /** update and add a single interval I to the constraints.
      * 
+     * @param i
+     *            dependency interval
+     * @param interval
+     *            datatype interval
+     * @param localDep
+     *            localDep
      * @return true iff clash occurs */
     private boolean addUpdatedInterval(DepInterval<R> i, Datatype<R> interval,
             DepSet localDep) {
@@ -71,8 +82,11 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
     /** add restrictions [POS]INT to intervals
      * 
      * @param pos
+     *            pos
      * @param interval
+     *            interval
      * @param dep
+     *            dep
      * @return true if clash occurs */
     public boolean addInterval(boolean pos, Datatype<R> interval, DepSet dep) {
         if (interval.emptyValueSpace()) {
@@ -120,6 +134,7 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
     }
 
     /** @param other
+     *            other
      * @return true if compatible */
     public boolean checkCompatibleValue(DataTypeSituation<?> other) {
         if (this.type.equals(DatatypeFactory.LITERAL) && emptyConstraints()
@@ -175,7 +190,10 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         return toReturn;
     }
 
-    /** data interval with dep-sets */
+    /** data interval with dep-sets
+     * 
+     * @param <R>
+     *            type */
     static class DepInterval<R extends Comparable<R>> implements Serializable {
         private static final long serialVersionUID = 11000L;
         protected DatatypeExpression<R> e;
@@ -190,7 +208,9 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         /** update MIN border of an TYPE's interval with VALUE wrt EXCL
          * 
          * @param value
+         *            value
          * @param dep
+         *            dep
          * @return true if updated */
         @SuppressWarnings("rawtypes")
         public boolean update(Datatype<R> value, DepSet dep) {
@@ -256,6 +276,7 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         /** check if the interval is consistent wrt given type
          * 
          * @param type
+         *            type
          * @return true if consistent */
         private boolean consistent(Datatype<R> type) {
             return this.e == null || this.e.isCompatible(type);
@@ -305,12 +326,14 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
 
     /** set the precense of the PType
      * 
-     * @param type */
+     * @param type
+     *            type */
     public void setPType(DepSet type) {
         this.pType = type;
     }
 
-    /** @param t */
+    /** @param t
+     *            depset for negative type */
     public void setNType(DepSet t) {
         this.nType = t;
     }

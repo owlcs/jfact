@@ -23,12 +23,14 @@ public class QRVariable extends QRiObject implements Comparable<QRVariable>, Has
 
     /** init c'tor
      * 
-     * @param name */
+     * @param name
+     *            name */
     public QRVariable(String name) {
         Name = name;
     }
 
-    /** @param v */
+    /** @param v
+     *            v */
     public QRVariable(QRVariable v) {
         this(v.Name);
     }

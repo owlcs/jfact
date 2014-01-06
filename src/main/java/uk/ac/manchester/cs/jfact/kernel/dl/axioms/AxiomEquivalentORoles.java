@@ -20,7 +20,9 @@ public class AxiomEquivalentORoles extends AbstractNaryAxiom<ObjectRoleExpressio
     private static final long serialVersionUID = 11000L;
 
     /** @param ax
-     * @param v */
+     *            ax
+     * @param v
+     *            v */
     public AxiomEquivalentORoles(OWLAxiom ax, List<ObjectRoleExpression> v) {
         super(ax, v);
     }

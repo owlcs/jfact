@@ -7,30 +7,58 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import org.semanticweb.owlapi.reasoner.OWLReasonerRuntimeException;
 
-@SuppressWarnings("javadoc")
+/** The Class ReasonerFreshEntityException. */
 public class ReasonerFreshEntityException extends OWLReasonerRuntimeException {
     private static final long serialVersionUID = 11000L;
+    /** The iri. */
     private final String iri;
 
+    /** Instantiates a new reasoner fresh entity exception.
+     * 
+     * @param iri
+     *            the iri */
     public ReasonerFreshEntityException(String iri) {
         this.iri = iri;
     }
 
+    /** Instantiates a new reasoner fresh entity exception.
+     * 
+     * @param s
+     *            the s
+     * @param iri
+     *            the iri */
     public ReasonerFreshEntityException(String s, String iri) {
         super(s);
         this.iri = iri;
     }
 
+    /** Instantiates a new reasoner fresh entity exception.
+     * 
+     * @param s
+     *            the s
+     * @param t
+     *            the t
+     * @param iri
+     *            the iri */
     public ReasonerFreshEntityException(String s, Throwable t, String iri) {
         super(s, t);
         this.iri = iri;
     }
 
+    /** Instantiates a new reasoner fresh entity exception.
+     * 
+     * @param t
+     *            the t
+     * @param iri
+     *            the iri */
     public ReasonerFreshEntityException(Throwable t, String iri) {
         super(t);
         this.iri = iri;
     }
 
+    /** Gets the iri.
+     * 
+     * @return the iri */
     public String getIri() {
         return iri;
     }

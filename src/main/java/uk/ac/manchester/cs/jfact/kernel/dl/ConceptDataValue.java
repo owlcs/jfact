@@ -28,7 +28,9 @@ public class ConceptDataValue implements ConceptDataRoleExpression,
     private final DataRoleExpression delegate;
 
     /** @param R
-     * @param V */
+     *            R
+     * @param V
+     *            V */
     public ConceptDataValue(DataRoleExpression R, Literal<?> V) {
         dataValue = V;
         delegate = R;

@@ -10,12 +10,12 @@ import conformance.Original;
 /** Represents an extended datatype - intersection, union or further
  * restrictions. All implementations must be immutable
  * 
- * @param <Representation> */
+ * @param <R>
+ *            type */
 @Original
-public interface DatatypeExpression<Representation extends Comparable<Representation>>
-        extends Datatype<Representation> {
+public interface DatatypeExpression<R extends Comparable<R>> extends Datatype<R> {
     /** @return the predefined datatype which is host for this expression */
-    Datatype<Representation> getHostType();
+    Datatype<R> getHostType();
 
     /** add a new facet value for this datatype expression
      * 
@@ -24,10 +24,12 @@ public interface DatatypeExpression<Representation extends Comparable<Representa
      * @param value
      *            the value for the facet
      * @return modified expression */
-    DatatypeExpression<Representation> addNonNumericFacet(Facet f, Comparable<?> value);
+    DatatypeExpression<R> addNonNumericFacet(Facet f, Comparable<?> value);
 
     /** @param f
+     *            facet
      * @param value
+     *            value
      * @return modified expression */
-    DatatypeExpression<Representation> addNumericFacet(Facet f, Comparable<?> value);
+    DatatypeExpression<R> addNumericFacet(Facet f, Comparable<?> value);
 }

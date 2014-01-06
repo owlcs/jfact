@@ -14,11 +14,15 @@ import conformance.PortedFrom;
 public interface Expression extends Entity {
     /** accept method for the visitor pattern
      * 
-     * @param visitor */
+     * @param visitor
+     *            visitor */
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     void accept(DLExpressionVisitor visitor);
 
     /** @param visitor
+     *            visitor
+     * @param <O>
+     *            visitor type
      * @return visitor value */
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     <O> O accept(DLExpressionVisitorEx<O> visitor);

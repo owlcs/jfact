@@ -52,6 +52,7 @@ public enum DagTag {
             dtCollection, dtProj);
 
     /** @param pos
+     *            pos
      * @return whether statistic's gathering should be omitted due to the type
      *         of a vertex */
     public boolean omitStat(boolean pos) {

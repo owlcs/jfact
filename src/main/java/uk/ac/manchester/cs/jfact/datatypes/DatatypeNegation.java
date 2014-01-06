@@ -17,14 +17,16 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 /** datatype negation
  * 
- * @param <R> */
+ * @param <R>
+ *            type */
 public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpression<R>,
         Serializable {
     private static final long serialVersionUID = 11000L;
     private final Datatype<R> host;
     private final String uri;
 
-    /** @param d */
+    /** @param d
+     *            d */
     public DatatypeNegation(Datatype<R> d) {
         this.uri = "neg#" + DatatypeFactory.getIndex();
         host = d;

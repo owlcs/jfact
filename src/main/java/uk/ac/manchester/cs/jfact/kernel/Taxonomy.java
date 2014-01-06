@@ -6,7 +6,12 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.TreeSet;
 
 import uk.ac.manchester.cs.jfact.kernel.actors.Actor;
 import uk.ac.manchester.cs.jfact.kernel.actors.SupConceptActor;
@@ -44,7 +49,8 @@ public class Taxonomy implements Serializable {
 
     /** set current to a given node
      * 
-     * @param cur */
+     * @param cur
+     *            cur */
     @PortedFrom(file = "Taxonomy.h", name = "setCurrent")
     public void setCurrent(TaxonomyVertex cur) {
         current = cur;
@@ -55,10 +61,15 @@ public class Taxonomy implements Serializable {
      * method to return as soon as the apply() method returns false
      * 
      * @param node
+     *            node
      * @param actor
+     *            actor
      * @param needCurrent
+     *            needCurrent
      * @param onlyDirect
+     *            onlyDirect
      * @param upDirection
+     *            upDirection
      * @return false if actor does not apply */
     @PortedFrom(file = "Taxonomy.h", name = "getRelativesInfo")
     public boolean getRelativesInfo(TaxonomyVertex node, SupConceptActor actor,
@@ -109,10 +120,15 @@ public class Taxonomy implements Serializable {
     /** apply ACTOR to subgraph starting from NODE as defined by flags;
      * 
      * @param node
+     *            node
      * @param actor
+     *            actor
      * @param needCurrent
+     *            needCurrent
      * @param onlyDirect
-     * @param upDirection */
+     *            onlyDirect
+     * @param upDirection
+     *            upDirection */
     @PortedFrom(file = "Taxonomy.h", name = "getRelativesInfo")
     public void getRelativesInfo(TaxonomyVertex node, Actor actor, boolean needCurrent,
             boolean onlyDirect, boolean upDirection) {
@@ -152,13 +168,15 @@ public class Taxonomy implements Serializable {
 
     /** set node NODE as checked within taxonomy
      * 
-     * @param node */
+     * @param node
+     *            node */
     @PortedFrom(file = "Taxonomy.h", name = "setVisited")
     public void setVisited(TaxonomyVertex node) {
         node.setChecked(visitedLabel);
     }
 
     /** @param node
+     *            node
      * @return check whether NODE is checked within taxonomy */
     @PortedFrom(file = "Taxonomy.h", name = "isVisited")
     public boolean isVisited(TaxonomyVertex node) {
@@ -172,8 +190,11 @@ public class Taxonomy implements Serializable {
     }
 
     /** @param pTop
+     *            pTop
      * @param pBottom
-     * @param c */
+     *            pBottom
+     * @param c
+     *            c */
     public Taxonomy(ClassifiableEntry pTop, ClassifiableEntry pBottom,
             JFactReasonerConfiguration c) {
         options = c;
@@ -202,6 +223,7 @@ public class Taxonomy implements Serializable {
     }
 
     /** @param e
+     *            e
      * @return node for fresh entity E */
     @PortedFrom(file = "Taxonomy.h", name = "getFreshVertex")
     public TaxonomyVertex getFreshVertex(ClassifiableEntry e) {
@@ -231,7 +253,8 @@ public class Taxonomy implements Serializable {
 
     /** remove node from the taxonomy; assume no references to the node
      * 
-     * @param node */
+     * @param node
+     *            node */
     @PortedFrom(file = "Taxonomy.h", name = "removeNode")
     public void removeNode(TaxonomyVertex node) {
         graph.remove(node);
@@ -275,7 +298,8 @@ public class Taxonomy implements Serializable {
         willInsertIntoTaxonomy = true;  // it's possible again to add entries
     }
 
-    /** @param syn */
+    /** @param syn
+     *            syn */
     @PortedFrom(file = "Taxonomy.h", name = "addCurrentToSynonym")
     public void addCurrentToSynonym(TaxonomyVertex syn) {
         ClassifiableEntry currentEntry = current.getPrimer();

@@ -28,7 +28,9 @@ public class ConceptDataForall implements ConceptDataRVExpression, DataRoleArg,
     private final DataExpression delegate;
 
     /** @param R
-     * @param E */
+     *            R
+     * @param E
+     *            E */
     public ConceptDataForall(DataRoleExpression R, DataExpression E) {
         dataRoleExpression = R;
         delegate = E;

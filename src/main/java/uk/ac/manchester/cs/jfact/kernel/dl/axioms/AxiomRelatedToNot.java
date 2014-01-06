@@ -23,9 +23,13 @@ public class AxiomRelatedToNot extends AxiomIndividual {
     private final ObjectRoleExpression objectRoleExpression;
 
     /** @param ax
+     *            ax
      * @param i
+     *            i
      * @param r
-     * @param j */
+     *            r
+     * @param j
+     *            j */
     public AxiomRelatedToNot(OWLAxiom ax, IndividualExpression i, ObjectRoleExpression r,
             IndividualExpression j) {
         super(ax, i);

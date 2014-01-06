@@ -155,15 +155,21 @@ public abstract class DLTree implements Serializable {
         return elem.hashCode() + (children == null ? 0 : children.hashCode());
     }
 
-    /** @param v */
+    /** @param v
+     *            v */
     public abstract void accept(DLTreeVisitor v);
 
     /** @param v
+     *            v
+     * @param <O>
+     *            visitor type
      * @return visitor value */
     public abstract <O> O accept(DLTreeVisitorEx<O> v);
 
     /** @param toReplace
-     * @param replacement */
+     *            toReplace
+     * @param replacement
+     *            replacement */
     public abstract void replace(DLTree toReplace, DLTree replacement);
 
     /** @return list of children */
@@ -172,7 +178,9 @@ public abstract class DLTree implements Serializable {
     }
 
     /** @param t1
+     *            t1
      * @param t2
+     *            t2
      * @return true if arguments are equal */
     public static boolean equalTrees(DLTree t1, DLTree t2) {
         if (t1 == null && t2 == null) {

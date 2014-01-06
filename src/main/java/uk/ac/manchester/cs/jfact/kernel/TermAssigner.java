@@ -22,7 +22,9 @@ public class TermAssigner extends BuildELIOConcept {
     private final AtomicLong Factory = new AtomicLong();
 
     /** @param conjunctiveQueryFolding
-     * @param query */
+     *            conjunctiveQueryFolding
+     * @param query
+     *            query */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TermAssigner")
     public TermAssigner(ConjunctiveQueryFolding conjunctiveQueryFolding, QRQuery query) {
         super(conjunctiveQueryFolding, query);

@@ -13,10 +13,23 @@ import java.util.Set;
 
 import org.semanticweb.owlapi.util.MultiMap;
 
-import uk.ac.manchester.cs.jfact.kernel.*;
+import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
+import uk.ac.manchester.cs.jfact.kernel.Concept;
+import uk.ac.manchester.cs.jfact.kernel.ConceptWDep;
+import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
+import uk.ac.manchester.cs.jfact.kernel.DlCompletionTreeArc;
+import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
+import uk.ac.manchester.cs.jfact.kernel.Individual;
+import uk.ac.manchester.cs.jfact.kernel.Role;
+import uk.ac.manchester.cs.jfact.kernel.TBox;
+import uk.ac.manchester.cs.jfact.kernel.TDag2Interface;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
 import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
 import conformance.PortedFrom;
 
 /** knowledge explorer */
@@ -48,7 +61,12 @@ public class KnowledgeExplorer implements Serializable {
     @PortedFrom(file = "KnowledgeExplorer.h", name = "Concepts")
     private final List<Expression> Concepts = new ArrayList<Expression>();
 
-    /** adds an entity as a synonym to a map MAP */
+    /** adds an entity as a synonym to a map MAP
+     * 
+     * @param map
+     *            map
+     * @param entry
+     *            entry */
     @SuppressWarnings("unchecked")
     @PortedFrom(file = "KnowledgeExplorer.h", name = "addE")
     private <E extends ClassifiableEntry> void addE(MultiMap<E, E> map, E entry) {
@@ -59,7 +77,9 @@ public class KnowledgeExplorer implements Serializable {
     }
 
     /** @param box
-     * @param pEM */
+     *            box
+     * @param pEM
+     *            pEM */
     public KnowledgeExplorer(TBox box, ExpressionManager pEM) {
         D2I = new TDag2Interface(box.getDag(), pEM);
         // init all concepts
@@ -104,7 +124,10 @@ public class KnowledgeExplorer implements Serializable {
      * u.__add__(F.__mul__(x)) P = F.__mul__(P.__mul__(transpose(F))) print 'x=
      * ' x.show() print 'P= ' P.show()
      */
-    /** add concept-like entity E (possibly with synonyms) to CONCEPTS */
+    /** add concept-like entity E (possibly with synonyms) to CONCEPTS
+     * 
+     * @param e
+     *            e */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "addC")
     private void addC(Expression e) {
         // check named concepts
@@ -137,7 +160,9 @@ public class KnowledgeExplorer implements Serializable {
     }
 
     /** @param node
+     *            node
      * @param onlyDet
+     *            onlyDet
      * @return set of data roles */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getDataRoles")
     public Set<RoleExpression> getDataRoles(DlCompletionTree node, boolean onlyDet) {
@@ -155,8 +180,11 @@ public class KnowledgeExplorer implements Serializable {
     }
 
     /** @param node
+     *            node
      * @param onlyDet
+     *            onlyDet
      * @param needIncoming
+     *            needIncoming
      * @return set of object neighbours of a NODE; incoming edges are counted
      *         iff NEEDINCOMING is true */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getObjectRoles")
@@ -176,7 +204,9 @@ public class KnowledgeExplorer implements Serializable {
     }
 
     /** @param node
+     *            node
      * @param R
+     *            R
      * @return set of neighbours of a NODE via role ROLE; put the resulting list
      *         into RESULT */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getNeighbours")
@@ -191,7 +221,9 @@ public class KnowledgeExplorer implements Serializable {
     }
 
     /** @param node
+     *            node
      * @param onlyDet
+     *            onlyDet
      * @return all the data expressions from the NODE label */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getLabel")
     public List<ConceptExpression> getObjectLabel(DlCompletionTree node, boolean onlyDet) {
@@ -219,7 +251,9 @@ public class KnowledgeExplorer implements Serializable {
     }
 
     /** @param node
+     *            node
      * @param onlyDet
+     *            onlyDet
      * @return list of data labels */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getLabel")
     public List<DataExpression> getDataLabel(DlCompletionTree node, boolean onlyDet) {
@@ -247,6 +281,7 @@ public class KnowledgeExplorer implements Serializable {
     }
 
     /** @param node
+     *            node
      * @return blocker of a blocked node NODE or NULL if node is not blocked */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getBlocker")
     public DlCompletionTree getBlocker(DlCompletionTree node) {

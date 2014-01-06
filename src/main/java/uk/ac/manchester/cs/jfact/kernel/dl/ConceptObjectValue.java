@@ -25,7 +25,9 @@ public class ConceptObjectValue implements ConceptObjectRoleExpression, Serializ
     private final IndividualExpression individualExpression;
 
     /** @param R
-     * @param I */
+     *            R
+     * @param I
+     *            I */
     public ConceptObjectValue(ObjectRoleExpression R, IndividualExpression I) {
         individualExpression = I;
         delegate = R;

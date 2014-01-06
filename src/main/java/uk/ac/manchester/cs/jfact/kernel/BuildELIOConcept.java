@@ -18,7 +18,7 @@ import uk.ac.manchester.cs.jfact.kernel.queryobjects.QRRoleAtom;
 import uk.ac.manchester.cs.jfact.kernel.queryobjects.QRVariable;
 import conformance.PortedFrom;
 
-@SuppressWarnings("javadoc")
+/** build elio concept */
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "BuildELIOConcept")
 public abstract class BuildELIOConcept implements Serializable {
     private static final long serialVersionUID = 11000L;
@@ -33,7 +33,15 @@ public abstract class BuildELIOConcept implements Serializable {
         Query = query;
     }
 
-    /** assign the concept to a term */
+    /** assign the concept to a term
+     * 
+     * @param query
+     *            query
+     * @param previousAtom
+     *            previousAtom
+     * @param v
+     *            v
+     * @return assigned concept */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Assign")
     public ConceptExpression Assign(QRQuery query, QRAtom previousAtom, QRVariable v) {
         // System.out.println("Assign:\n variable: " + v + "\n atom:" +

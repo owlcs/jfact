@@ -21,7 +21,8 @@ public class ConceptNot implements ConceptExpression, ConceptArg, Serializable {
     @PortedFrom(file = "tDLExpression.h", name = "C")
     private final ConceptExpression conceptExpression;
 
-    /** @param C */
+    /** @param C
+     *            C */
     public ConceptNot(ConceptExpression C) {
         conceptExpression = C;
     }

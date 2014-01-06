@@ -21,7 +21,8 @@ public class ModelCacheConst extends ModelCacheInterface {
 
     /** c'tor: no nominals can be here
      * 
-     * @param top */
+     * @param top
+     *            top */
     public ModelCacheConst(boolean top) {
         super(false);
         isTop = top;
@@ -69,6 +70,7 @@ public class ModelCacheConst extends ModelCacheInterface {
     }
 
     /** @param bp
+     *            bp
      * @return const cache by BP; BP should be either bpTOP or bpBOTTOM */
     @PortedFrom(file = "modelCacheConst.h", name = "createConstCache")
     public static ModelCacheConst createConstCache(int bp) {

@@ -66,15 +66,19 @@ public class DlCompletionTreeArc implements Serializable {
 
     /** set given arc as a reverse of current
      * 
-     * @param v */
+     * @param v
+     *            v */
     public void setReverse(DlCompletionTreeArc v) {
         reverse = v;
         v.reverse = this;
     }
 
     /** @param r
+     *            r
      * @param dep
-     * @param n */
+     *            dep
+     * @param n
+     *            n */
     public DlCompletionTreeArc(Role r, DepSet dep, DlCompletionTree n) {
         role = r;
         depSet = DepSet.create(dep);
@@ -94,7 +98,8 @@ public class DlCompletionTreeArc implements Serializable {
 
     /** set the successor field
      * 
-     * @param val */
+     * @param val
+     *            val */
     public void setSuccEdge(boolean val) {
         succEdge = val;
     }
@@ -120,13 +125,16 @@ public class DlCompletionTreeArc implements Serializable {
     }
 
     /** @param pRole
+     *            pRole
      * @return check if arc is labelled by a super-role of PROLE */
     public boolean isNeighbour(Role pRole) {
         return role != null && role.lesserequal(pRole);
     }
 
     /** @param pRole
+     *            pRole
      * @param dep
+     *            dep
      * @return same as above; fills DEP with current DEPSET if so */
     public boolean isNeighbour(Role pRole, DepSet dep) {
         if (isNeighbour(pRole)) {
@@ -163,6 +171,7 @@ public class DlCompletionTreeArc implements Serializable {
     /** add dep-set to an edge; return restorer
      * 
      * @param dep
+     *            dep
      * @return restorer */
     public Restorer addDep(DepSet dep) {
         if (dep.isEmpty()) {
@@ -175,7 +184,8 @@ public class DlCompletionTreeArc implements Serializable {
 
     /** print current arc
      * 
-     * @param o */
+     * @param o
+     *            o */
     public void print(LogAdapter o) {
         o.printTemplate(Templates.DLCOMPLETIONTREEARC,
                 isIBlocked() ? "-" : role.getName(), depSet);

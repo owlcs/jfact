@@ -26,7 +26,8 @@ public class QueryConnectednessChecker implements Serializable {
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Query")
     private final QRQuery Query;
 
-    /** @param query */
+    /** @param query
+     *            query */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "QueryConnectednessChecker")
     public QueryConnectednessChecker(QRQuery query) {
         Query = new QRQuery(query);
@@ -64,7 +65,8 @@ public class QueryConnectednessChecker implements Serializable {
         return true;
     }
 
-    /** @param var */
+    /** @param var
+     *            var */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "MarkVertex")
     public void MarkVertex(QRVariable var) {
         PassedVertice.add(var);

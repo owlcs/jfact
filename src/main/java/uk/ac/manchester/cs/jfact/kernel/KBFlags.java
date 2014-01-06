@@ -27,7 +27,8 @@ public class KBFlags implements Serializable {
         return GCI;
     }
 
-    /** @param action */
+    /** @param action
+     *            action */
     @Original
     public void setGCI(boolean action) {
         GCI = action;
@@ -52,7 +53,8 @@ public class KBFlags implements Serializable {
         return Reflexive;
     }
 
-    /** @param action */
+    /** @param action
+     *            action */
     @Original
     public void setReflexive(boolean action) {
         Reflexive = action;

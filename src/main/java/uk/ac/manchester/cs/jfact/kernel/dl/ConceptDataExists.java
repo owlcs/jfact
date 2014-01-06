@@ -29,7 +29,9 @@ public class ConceptDataExists implements ConceptDataRVExpression, DataRoleArg,
     private final DataExpression delegate;
 
     /** @param R
-     * @param E */
+     *            R
+     * @param E
+     *            E */
     public ConceptDataExists(DataRoleExpression R, DataExpression E) {
         dataRoleExpression = R;
         delegate = E;

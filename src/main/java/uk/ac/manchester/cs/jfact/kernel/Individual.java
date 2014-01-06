@@ -5,7 +5,12 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import conformance.Original;
 import conformance.PortedFrom;
@@ -17,14 +22,15 @@ public class Individual extends Concept {
     /** pointer to nominal node (works for singletons only) */
     @PortedFrom(file = "tIndividual.h", name = "node")
     private DlCompletionTree node;
-    /** index for axioms <this,C>:R */
+    /** index for axioms (this,C):R */
     @PortedFrom(file = "tIndividual.h", name = "RelatedIndex")
     private final List<Related> relatedIndex = new ArrayList<Related>();
     /** map for the related individuals: Map[R]={i:R(this,i)} */
     @PortedFrom(file = "tIndividual.h", name = "pRelatedMap")
     private final Map<Role, List<Individual>> pRelatedMap;
 
-    /** @param name */
+    /** @param name
+     *            name */
     public Individual(String name) {
         super(name);
         node = null;
@@ -55,7 +61,12 @@ public class Individual extends Concept {
     }
 
     // related things
-    /** update told subsumers from the RELATED axioms in a given range */
+    /** update told subsumers from the RELATED axioms in a given range
+     * 
+     * @param begin
+     *            begin
+     * @param RolesProcessed
+     *            RolesProcessed */
     @PortedFrom(file = "tIndividual.h", name = "updateTold")
     private <T extends Related> void updateTold(List<T> begin, Set<Role> RolesProcessed) {
         for (int i = 0; i < begin.size(); i++) {
@@ -63,7 +74,9 @@ public class Individual extends Concept {
         }
     }
 
-    /** check if individual connected to something with RELATED statement */
+    /** check if individual connected to something with RELATED statement
+     * 
+     * @return true if related */
     @PortedFrom(file = "tIndividual.h", name = "isRelated")
     private boolean isRelated() {
         return !relatedIndex.isEmpty();
@@ -71,7 +84,8 @@ public class Individual extends Concept {
 
     /** set individual related
      * 
-     * @param p */
+     * @param p
+     *            p */
     @PortedFrom(file = "tIndividual.h", name = "addRelated")
     public void addRelated(Related p) {
         relatedIndex.add(p);
@@ -79,7 +93,8 @@ public class Individual extends Concept {
 
     /** add all the related elements from the given P
      * 
-     * @param p */
+     * @param p
+     *            p */
     @PortedFrom(file = "tIndividual.h", name = "addRelated")
     public void addRelated(Individual p) {
         relatedIndex.addAll(p.relatedIndex);
@@ -87,6 +102,7 @@ public class Individual extends Concept {
 
     // related map access
     /** @param R
+     *            R
      * @return true if has cache for related individuals via role R */
     @PortedFrom(file = "tIndividual.h", name = "hasRelatedCache")
     public boolean hasRelatedCache(Role R) {
@@ -94,6 +110,7 @@ public class Individual extends Concept {
     }
 
     /** @param R
+     *            R
      * @return set of individuals related to THIS via R */
     @PortedFrom(file = "tIndividual.h", name = "getRelatedCache")
     public List<Individual> getRelatedCache(Role R) {
@@ -104,7 +121,9 @@ public class Individual extends Concept {
     /** set the cache of individuals related to THIS via R
      * 
      * @param R
-     * @param v */
+     *            R
+     * @param v
+     *            v */
     @PortedFrom(file = "tIndividual.h", name = "setRelatedCache")
     public void setRelatedCache(Role R, List<Individual> v) {
         assert !pRelatedMap.containsKey(R);
@@ -124,7 +143,8 @@ public class Individual extends Concept {
         return node;
     }
 
-    /** @param node */
+    /** @param node
+     *            node */
     @Original
     public void setNode(DlCompletionTree node) {
         this.node = node;

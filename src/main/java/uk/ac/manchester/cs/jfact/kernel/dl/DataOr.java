@@ -22,7 +22,8 @@ public class DataOr extends NAryExpressionImpl<DataExpression> implements
 
     /** create OR of expressions from the given array
      * 
-     * @param v */
+     * @param v
+     *            v */
     public DataOr(List<DataExpression> v) {
         add(v);
     }

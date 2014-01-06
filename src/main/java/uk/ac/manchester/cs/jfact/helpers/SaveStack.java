@@ -13,7 +13,8 @@ import conformance.PortedFrom;
 
 /** save stack
  * 
- * @param <T> */
+ * @param <T>
+ *            type */
 @PortedFrom(file = "tSaveStack.h", name = "TSaveStack")
 public class SaveStack<T> implements Serializable {
     private static final long serialVersionUID = 11000L;
@@ -21,6 +22,7 @@ public class SaveStack<T> implements Serializable {
     protected final LinkedList<T> list = new LinkedList<T>();
 
     /** @param depth
+     *            depth
      * @return an object from a fixed depth */
     @PortedFrom(file = "tSaveStack.h", name = "pop")
     public T pop(int depth) {
@@ -29,6 +31,7 @@ public class SaveStack<T> implements Serializable {
     }
 
     /** @param depth
+     *            depth
      * @return an object from a fixed depth */
     @PortedFrom(file = "tSaveStack.h", name = "top")
     public T top(int depth) {
@@ -46,7 +49,8 @@ public class SaveStack<T> implements Serializable {
         return list.pop();
     }
 
-    /** @param e */
+    /** @param e
+     *            e */
     @PortedFrom(file = "tSaveStack.h", name = "push")
     public void push(T e) {
         list.push(e);

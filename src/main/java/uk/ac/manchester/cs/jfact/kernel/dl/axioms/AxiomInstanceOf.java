@@ -21,8 +21,11 @@ public class AxiomInstanceOf extends AxiomIndividual {
     private final ConceptExpression conceptExpression;
 
     /** @param ax
+     *            ax
      * @param i
-     * @param c */
+     *            i
+     * @param c
+     *            c */
     public AxiomInstanceOf(OWLAxiom ax, IndividualExpression i, ConceptExpression c) {
         super(ax, i);
         conceptExpression = c;

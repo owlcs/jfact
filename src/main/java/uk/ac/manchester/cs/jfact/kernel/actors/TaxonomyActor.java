@@ -18,7 +18,8 @@ import conformance.PortedFrom;
 
 /** class for acting with concept taxonomy
  * 
- * @param <T> */
+ * @param <T>
+ *            type */
 @PortedFrom(file = "JNIActor.h", name = "TaxonomyActor")
 public class TaxonomyActor<T extends Expression> implements Actor, Serializable {
     private static final long serialVersionUID = 11000L;
@@ -36,7 +37,8 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
 
     /** try current entry
      * 
-     * @param p */
+     * @param p
+     *            p */
     @SuppressWarnings("unchecked")
     @PortedFrom(file = "JNIActor.h", name = "tryEntry")
     protected void tryEntry(ClassifiableEntry p) {
@@ -49,7 +51,9 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
     }
 
     /** @param em
-     * @param p */
+     *            em
+     * @param p
+     *            p */
     @PortedFrom(file = "JNIActor.h", name = "TaxonomyActor")
     public TaxonomyActor(ExpressionManager em, Policy p) {
         expressionManager = em;
@@ -99,7 +103,7 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
         if (policy.needPlain()) {
             plain.addAll(syn);
         } else {
-            acc.add(new ArrayList<T> (syn));
+            acc.add(new ArrayList<T>(syn));
         }
         return true;
     }

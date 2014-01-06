@@ -31,14 +31,17 @@ public class Lexeme implements Serializable {
     /** default c'tor for pointers
      * 
      * @param tok
-     * @param p */
+     *            tok
+     * @param p
+     *            p */
     public Lexeme(Token tok, NamedEntry p) {
         this(tok, p, 0);
     }
 
     /** default c'tor for pointers
      * 
-     * @param tok */
+     * @param tok
+     *            tok */
     public Lexeme(Token tok) {
         this(tok, null, 0);
     }
@@ -46,12 +49,15 @@ public class Lexeme implements Serializable {
     /** default c'tor for numbers
      * 
      * @param tok
-     * @param val */
+     *            tok
+     * @param val
+     *            val */
     public Lexeme(Token tok, int val) {
         this(tok, null, val);
     }
 
-    /** @param t */
+    /** @param t
+     *            t */
     public Lexeme(Lexeme t) {
         this(t.token, t.pName, t.data);
     }

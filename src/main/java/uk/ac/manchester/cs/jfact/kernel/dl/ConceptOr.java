@@ -22,7 +22,8 @@ public class ConceptOr extends NAryExpressionImpl<ConceptExpression> implements
 
     /** create OR of expressions from the given array
      * 
-     * @param v */
+     * @param v
+     *            v */
     public ConceptOr(List<ConceptExpression> v) {
         add(v);
     }

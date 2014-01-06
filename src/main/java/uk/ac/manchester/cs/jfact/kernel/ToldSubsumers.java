@@ -16,7 +16,8 @@ public class ToldSubsumers extends KnownSubsumers {
     /** two iterators for the TS of a concept */
     private final List<ClassifiableEntry> beg;
 
-    /** @param b */
+    /** @param b
+     *            b */
     public ToldSubsumers(Collection<ClassifiableEntry> b) {
         beg = new ArrayList<ClassifiableEntry>(b);
     }

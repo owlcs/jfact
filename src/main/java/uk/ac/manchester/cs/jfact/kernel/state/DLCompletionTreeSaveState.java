@@ -40,12 +40,14 @@ public class DLCompletionTreeSaveState implements Serializable {
         return nNeighbours;
     }
 
-    /** @param curLevel */
+    /** @param curLevel
+     *            curLevel */
     public void setCurLevel(int curLevel) {
         this.curLevel = curLevel;
     }
 
-    /** @param nNeighbours */
+    /** @param nNeighbours
+     *            nNeighbours */
     public void setnNeighbours(int nNeighbours) {
         this.nNeighbours = nNeighbours;
     }

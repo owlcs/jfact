@@ -20,8 +20,11 @@ public class AxiomRoleInverse extends AxiomSingleORole {
     private final ObjectRoleExpression inverseRole;
 
     /** @param ax
+     *            ax
      * @param dirRole
-     * @param invRole */
+     *            dirRole
+     * @param invRole
+     *            invRole */
     public AxiomRoleInverse(OWLAxiom ax, ObjectRoleExpression dirRole,
             ObjectRoleExpression invRole) {
         super(ax, dirRole);

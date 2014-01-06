@@ -19,7 +19,8 @@ public interface NamedEntity {
     @PortedFrom(file = "tDLExpression.h", name = "getEntry")
     NamedEntry getEntry();
 
-    /** @param e */
+    /** @param e
+     *            e */
     @PortedFrom(file = "tDLExpression.h", name = "setEntry")
     void setEntry(NamedEntry e);
 }

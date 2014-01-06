@@ -20,7 +20,9 @@ public class DerivedSubsumers extends KnownSubsumers {
     /** c'tor: copy given sets
      * 
      * @param sure
-     * @param possible */
+     *            sure
+     * @param possible
+     *            possible */
     public DerivedSubsumers(List<ClassifiableEntry> sure, List<ClassifiableEntry> possible) {
         Sure = new ArrayList<ClassifiableEntry>(sure);
         Possible = new ArrayList<ClassifiableEntry>(possible);

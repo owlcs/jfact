@@ -13,7 +13,14 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -26,68 +33,61 @@ import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 import uk.ac.manchester.cs.jfact.datatypes.Facets.whitespace;
 import conformance.Original;
 
-@SuppressWarnings("javadoc")
+/** Factory for datatypes
+ * 
+ * @author ignazio */
 @Original
 public class DatatypeFactory implements Serializable {
     private static final long serialVersionUID = 11000L;
+    //@formatter:off
     private static final String namespace = "http://www.w3.org/2001/XMLSchema#";
     @SuppressWarnings("rawtypes")
     protected static final Comparable NUMBER_EXPRESSION = "[\\-+]?[0-9]+";
     @SuppressWarnings("rawtypes")
     protected static final Comparable WHITESPACE = collapse;
-    protected static final Facet[] minmax = new Facet[] { maxInclusive, maxExclusive,
-            minInclusive, minExclusive };
+    protected static final Facet[] minmax = new Facet[] { maxInclusive, maxExclusive, minInclusive, minExclusive };
     protected static final Facet[] pew = new Facet[] { pattern, enumeration, whiteSpace };
     protected static final Facet[] len = new Facet[] { length, minLength, maxLength };
     protected static final Facet[] digs = new Facet[] { totalDigits, fractionDigits };
     protected static final Set<Facet> StringFacets = Utils.getFacets(pew, len);
     protected static final Set<Facet> FACETS4 = Utils.getFacets(pew, minmax);
-    public static final Datatype<String> LITERAL = new LITERAL_DATATYPE();
-    public static final Datatype<String> ANYURI = new ANYURI_DATATYPE();
-    public static final Datatype<String> BASE64BINARY = new BASE64BINARY_DATATYPE();
-    public static final Datatype<Boolean> BOOLEAN = new BOOLEAN_DATATYPE();
-    public static final Datatype<Calendar> DATETIME = new DATETIME_DATATYPE();
-    public static final Datatype<String> HEXBINARY = new HEXBINARY_DATATYPE();
-    public static final Datatype<String> STRING = new STRING_DATATYPE();
-    public static final Datatype<String> PLAINLITERAL = new PLAINLITERAL_DATATYPE();
-    public static final NumericDatatype<BigDecimal> REAL = new REAL_DATATYPE<BigDecimal>();
-    public static final NumericDatatype<BigDecimal> RATIONAL = new RATIONAL_DATATYPE<BigDecimal>();
-    public static final Datatype<Calendar> DATETIMESTAMP = new DATETIMESTAMP_DATATYPE();
-    public static final NumericDatatype<BigDecimal> DECIMAL = new DECIMAL_DATATYPE<BigDecimal>();
-    public static final NumericDatatype<BigInteger> INTEGER = new INTEGER_DATATYPE<BigInteger>();
-    public static final NumericDatatype<Double> DOUBLE = new DOUBLE_DATATYPE();
-    public static final NumericDatatype<Float> FLOAT = new FLOAT_DATATYPE();
-    public static final NumericDatatype<BigInteger> NONPOSITIVEINTEGER = new NONPOSITIVEINTEGER_DATATYPE<BigInteger>();
-    public static final NumericDatatype<BigInteger> NEGATIVEINTEGER = new NEGATIVEINTEGER_DATATYPE<BigInteger>();
-    public static final NumericDatatype<BigInteger> NONNEGATIVEINTEGER = new NONNEGATIVEINTEGER_DATATYPE<BigInteger>();
-    public static final NumericDatatype<BigInteger> POSITIVEINTEGER = new POSITIVEINTEGER_DATATYPE<BigInteger>();
-    public static final NumericDatatype<Long> LONG = new LONG_DATATYPE<Long>();
-    public static final NumericDatatype<Integer> INT = new INT_DATATYPE<Integer>();
-    public static final NumericDatatype<Short> SHORT = new SHORT_DATATYPE<Short>();
-    public static final NumericDatatype<Byte> BYTE = new BYTE_DATATYPE();
-    public static final NumericDatatype<BigInteger> UNSIGNEDLONG = new UNSIGNEDLONG_DATATYPE<BigInteger>();
-    public static final NumericDatatype<Long> UNSIGNEDINT = new UNSIGNEDINT_DATATYPE<Long>();
-    public static final NumericDatatype<Integer> UNSIGNEDSHORT = new UNSIGNEDSHORT_DATATYPE<Integer>();
-    public static final NumericDatatype<Short> UNSIGNEDBYTE = new UNSIGNEDBYTE_DATATYPE<Short>() {
-        private static final long serialVersionUID = 11000L;
-
-        @Override
-        public Short parseValue(String s) {
-            short parseByte = Short.parseShort(s);
-            if (parseByte < 0) {
-                throw new ArithmeticException("Unsigned short required, but found: " + s);
-            }
-            return parseByte;
-        }
-    };
-    public static final Datatype<String> NORMALIZEDSTRING = new NORMALIZEDSTRING_DATATYPE();
-    public static final Datatype<String> TOKEN = new TOKEN_DATATYPE();
-    public static final Datatype<String> LANGUAGE = new LANGUAGE_DATATYPE();
-    public static final Datatype<String> NAME = new NAME_DATATYPE();
-    public static final Datatype<String> NCNAME = new NCNAME_DATATYPE();
-    public static final Datatype<String> NMTOKEN = new NMTOKEN_DATATYPE();
-    public static final Datatype<String> NMTOKENS = new NMTOKENS_DATATYPE();
-    public static final Datatype<String> XMLLITERAL = new XMLLITERAL_DATATYPE();
+    
+    /**  LITERAL            */  public static final Datatype<String>                LITERAL             = new LITERAL_DATATYPE();
+    /**  ANYURI             */  public static final Datatype<String>                ANYURI              = new ANYURI_DATATYPE();
+    /**  BASE64BINARY       */  public static final Datatype<String>                BASE64BINARY        = new BASE64BINARY_DATATYPE();
+    /**  BOOLEAN            */  public static final Datatype<Boolean>               BOOLEAN             = new BOOLEAN_DATATYPE();
+    /**  DATETIME           */  public static final Datatype<Calendar>              DATETIME            = new DATETIME_DATATYPE();
+    /**  HEXBINARY          */  public static final Datatype<String>                HEXBINARY           = new HEXBINARY_DATATYPE();
+    /**  STRING             */  public static final Datatype<String>                STRING              = new STRING_DATATYPE();
+    /**  PLAINLITERAL       */  public static final Datatype<String>                PLAINLITERAL        = new PLAINLITERAL_DATATYPE();
+    /**  REAL               */  public static final NumericDatatype<BigDecimal>     REAL                = new REAL_DATATYPE<BigDecimal>();
+    /**  RATIONAL           */  public static final NumericDatatype<BigDecimal>     RATIONAL            = new RATIONAL_DATATYPE<BigDecimal>();
+    /**  DATETIMESTAMP      */  public static final Datatype<Calendar>              DATETIMESTAMP       = new DATETIMESTAMP_DATATYPE();
+    /**  DECIMAL            */  public static final NumericDatatype<BigDecimal>     DECIMAL             = new DECIMAL_DATATYPE<BigDecimal>();
+    /**  INTEGER            */  public static final NumericDatatype<BigInteger>     INTEGER             = new INTEGER_DATATYPE<BigInteger>();
+    /**  DOUBLE             */  public static final NumericDatatype<Double>         DOUBLE              = new DOUBLE_DATATYPE();
+    /**  FLOAT              */  public static final NumericDatatype<Float>          FLOAT               = new FLOAT_DATATYPE();
+    /**  NONPOSITIVEINTEGER */  public static final NumericDatatype<BigInteger>     NONPOSITIVEINTEGER  = new NONPOSITIVEINTEGER_DATATYPE<BigInteger>();
+    /**  NEGATIVEINTEGER    */  public static final NumericDatatype<BigInteger>     NEGATIVEINTEGER     = new NEGATIVEINTEGER_DATATYPE<BigInteger>();
+    /**  NONNEGATIVEINTEGER */  public static final NumericDatatype<BigInteger>     NONNEGATIVEINTEGER  = new NONNEGATIVEINTEGER_DATATYPE<BigInteger>();
+    /**  POSITIVEINTEGER    */  public static final NumericDatatype<BigInteger>     POSITIVEINTEGER     = new POSITIVEINTEGER_DATATYPE<BigInteger>();
+    /**  LONG               */  public static final NumericDatatype<Long>           LONG                = new LONG_DATATYPE<Long>();
+    /**  INT                */  public static final NumericDatatype<Integer>        INT                 = new INT_DATATYPE<Integer>();
+    /**  SHORT              */  public static final NumericDatatype<Short>          SHORT               = new SHORT_DATATYPE<Short>();
+    /**  BYTE               */  public static final NumericDatatype<Byte>           BYTE                = new BYTE_DATATYPE();
+    /**  UNSIGNEDLONG       */  public static final NumericDatatype<BigInteger>     UNSIGNEDLONG        = new UNSIGNEDLONG_DATATYPE<BigInteger>();
+    /**  UNSIGNEDINT        */  public static final NumericDatatype<Long>           UNSIGNEDINT         = new UNSIGNEDINT_DATATYPE<Long>();
+    /**  UNSIGNEDSHORT      */  public static final NumericDatatype<Integer>        UNSIGNEDSHORT       = new UNSIGNEDSHORT_DATATYPE<Integer>();
+    /**  UNSIGNEDBYTE       */  public static final NumericDatatype<Short>          UNSIGNEDBYTE        = new UnsignedByteForShort();
+    /**  NORMALIZEDSTRING   */  public static final Datatype<String>                NORMALIZEDSTRING    = new NORMALIZEDSTRING_DATATYPE();
+    /**  TOKEN              */  public static final Datatype<String>                TOKEN               = new TOKEN_DATATYPE();
+    /**  LANGUAGE           */  public static final Datatype<String>                LANGUAGE            = new LANGUAGE_DATATYPE();
+    /**  NAME               */  public static final Datatype<String>                NAME                = new NAME_DATATYPE();
+    /**  NCNAME             */  public static final Datatype<String>                NCNAME              = new NCNAME_DATATYPE();
+    /**  NMTOKEN            */  public static final Datatype<String>                NMTOKEN             = new NMTOKEN_DATATYPE();
+    /**  NMTOKENS           */  public static final Datatype<String>                NMTOKENS            = new NMTOKENS_DATATYPE();
+    /**  XMLLITERAL         */  public static final Datatype<String>                XMLLITERAL          = new XMLLITERAL_DATATYPE();
+    //@formatter:on
     private static final List<Datatype<?>> values = getList();
 
     private static final List<Datatype<?>> getList() {
@@ -158,18 +158,32 @@ public class DatatypeFactory implements Serializable {
         knownDatatypes.put("http://www.w3.org/2001/XMLSchema#date", DATETIME);
     }
 
+    /** @param key
+     *            key
+     * @return datatype for key */
     public Datatype<?> getKnownDatatype(String key) {
         return knownDatatypes.get(key);
     }
 
+    /** @param key
+     *            key
+     * @return true if known datatype */
     public boolean isKnownDatatype(String key) {
         return knownDatatypes.containsKey(key);
     }
 
+    /** @return datatype factory instance */
     public static DatatypeFactory getInstance() {
         return new DatatypeFactory();
     }
 
+    /** @param min
+     *            min
+     * @param max
+     *            max
+     * @param excluded
+     *            excluded
+     * @return true if interval not empty */
     @SuppressWarnings("rawtypes")
     public static boolean nonEmptyInterval(Comparable min, Comparable max, int excluded) {
         if (min == null) {
@@ -211,6 +225,9 @@ public class DatatypeFactory implements Serializable {
         return false;
     }
 
+    /** @param v
+     *            v
+     * @return increased number */
     @SuppressWarnings("rawtypes")
     public static Comparable increase(Number v) {
         if (v instanceof Float) {
@@ -248,16 +265,31 @@ public class DatatypeFactory implements Serializable {
         return null;
     }
 
+    /** @param base
+     *            base
+     * @param <R>
+     *            expression type
+     * @return expression */
     public static <R extends Comparable<R>> DatatypeExpression<R> getDatatypeExpression(
             Datatype<R> base) {
         return new DatatypeExpressionImpl<R>(base);
     }
 
+    /** @param base
+     *            base
+     * @param <R>
+     *            expression type
+     * @return expression */
     public static <R extends Comparable<R>> DatatypeExpression<R>
             getNumericDatatypeExpression(NumericDatatype<R> base) {
         return new DatatypeNumericExpressionImpl<R>(base);
     }
 
+    /** @param base
+     *            base
+     * @param <R>
+     *            expression type
+     * @return expression */
     public static <R extends Comparable<R>> DatatypeExpression<R>
             getOrderedDatatypeExpression(Datatype<R> base) {
         return new DatatypeOrderedExpressionImpl<R>(base);
@@ -306,27 +338,27 @@ public class DatatypeFactory implements Serializable {
         public boolean isInValueSpace(R _l) {
             if (this.hasMinExclusive()) {
                 // to be in value space, ex min must be smaller than l
-                Comparable<R> l = (Comparable<R>) minExclusive.parseNumber(_l);
+                Comparable<R> l = minExclusive.parseNumber(_l);
                 if (l.compareTo(this.getMin()) <= 0) {
                     return false;
                 }
             }
             if (this.hasMinInclusive()) {
-                Comparable<R> l = (Comparable<R>) minExclusive.parseNumber(_l);
+                Comparable<R> l = minExclusive.parseNumber(_l);
                 // to be in value space, min must be smaller or equal to l
                 if (l.compareTo(this.getMin()) < 0) {
                     return false;
                 }
             }
             if (this.hasMaxExclusive()) {
-                Comparable<R> l = (Comparable<R>) minExclusive.parseNumber(_l);
+                Comparable<R> l = minExclusive.parseNumber(_l);
                 // to be in value space, ex max must be bigger than l
                 if (l.compareTo(this.getMax()) >= 0) {
                     return false;
                 }
             }
             if (this.hasMaxInclusive()) {
-                Comparable<R> l = (Comparable<R>) minExclusive.parseNumber(_l);
+                Comparable<R> l = minExclusive.parseNumber(_l);
                 // to be in value space, ex min must be smaller than l
                 if (l.compareTo(this.getMax()) > 0) {
                     return false;
@@ -1383,6 +1415,23 @@ public class DatatypeFactory implements Serializable {
         }
     }
 
+    private static class UnsignedByteForShort extends UNSIGNEDBYTE_DATATYPE<Short> {
+        private static final long serialVersionUID = 11000L;
+
+        public UnsignedByteForShort() {
+            // TODO Auto-generated constructor stub
+        }
+
+        @Override
+        public Short parseValue(String s) {
+            short parseByte = Short.parseShort(s);
+            if (parseByte < 0) {
+                throw new ArithmeticException("Unsigned short required, but found: " + s);
+            }
+            return parseByte;
+        }
+    }
+
     static class RATIONAL_DATATYPE<R extends Comparable<R>> extends REAL_DATATYPE<R> {
         private static final long serialVersionUID = 11000L;
 
@@ -1557,6 +1606,7 @@ public class DatatypeFactory implements Serializable {
         }
     }
 
+    /** @return namespace */
     public static String getNamespace() {
         return namespace;
     }

@@ -17,8 +17,11 @@ public class QRRoleAtom extends QR2ArgAtom {
     private final ObjectRoleExpression Role;
 
     /** @param R
+     *            R
      * @param A1
-     * @param A2 */
+     *            A1
+     * @param A2
+     *            A2 */
     public QRRoleAtom(ObjectRoleExpression R, QRiObject A1, QRiObject A2) {
         super(A1, A2);
         Role = R;

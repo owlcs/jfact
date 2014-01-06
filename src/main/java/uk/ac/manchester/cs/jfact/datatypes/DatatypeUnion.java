@@ -15,7 +15,8 @@ public class DatatypeUnion implements DatatypeCombination<DatatypeUnion, Datatyp
     private final String uri;
     private final Datatype<?> host;
 
-    /** @param host */
+    /** @param host
+     *            host */
     public DatatypeUnion(Datatype<?> host) {
         uri = "union#a" + DatatypeFactory.getIndex();
         this.host = host;
@@ -27,7 +28,9 @@ public class DatatypeUnion implements DatatypeCombination<DatatypeUnion, Datatyp
     }
 
     /** @param host
-     * @param list */
+     *            host
+     * @param list
+     *            list */
     public DatatypeUnion(Datatype<?> host, Collection<Datatype<?>> list) {
         this(host);
         basics.addAll(list);

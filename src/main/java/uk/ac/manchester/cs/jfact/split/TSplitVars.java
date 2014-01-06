@@ -23,10 +23,11 @@ public class TSplitVars implements Serializable {
     @PortedFrom(file = "tSplitVars.h", name = "Index")
     protected final Map<ConceptName, TSplitVar> Index = new HashMap<ConceptName, TSplitVar>();
 
-    @SuppressWarnings("javadoc")
+    /** default constructor */
     public TSplitVars() {}
 
     /** @param name
+     *            name
      * @return true iff the NAME has split in the set */
     @PortedFrom(file = "tSplitVars.h", name = "hasCN")
     public boolean hasCN(ConceptName name) {
@@ -34,6 +35,7 @@ public class TSplitVars implements Serializable {
     }
 
     /** @param name
+     *            name
      * @return split corresponding to given name; only correct for known names */
     @PortedFrom(file = "tSplitVars.h", name = "get")
     public TSplitVar get(ConceptName name) {
@@ -43,7 +45,9 @@ public class TSplitVars implements Serializable {
     /** put SPLIT into the set corresponding to NAME
      * 
      * @param name
-     * @param split */
+     *            name
+     * @param split
+     *            split */
     @PortedFrom(file = "tSplitVars.h", name = "set")
     public void set(ConceptName name, TSplitVar split) {
         Index.put(name, split);

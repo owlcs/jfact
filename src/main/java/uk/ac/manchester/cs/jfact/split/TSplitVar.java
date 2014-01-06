@@ -15,7 +15,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import conformance.PortedFrom;
 
-/** this is to keep the track of new vars/axioms for C >< C0, C1, ..., Cn */
+/** this is to keep the track of new vars/axioms for C in C0, C1, ..., Cn */
 @PortedFrom(file = "tSplitVars.h", name = "TSplitVar")
 public class TSplitVar implements Serializable {
     private static final long serialVersionUID = 11000L;
@@ -27,8 +27,11 @@ public class TSplitVar implements Serializable {
     private final List<SplitVarEntry> Entries = new ArrayList<SplitVarEntry>();
 
     /** @param name
+     *            name
      * @param sig
-     * @param mod */
+     *            sig
+     * @param mod
+     *            mod */
     public void addEntry(ConceptName name, TSignature sig, Set<AxiomInterface> mod) {
         SplitVarEntry e = new SplitVarEntry();
         e.name = name;
@@ -48,7 +51,8 @@ public class TSplitVar implements Serializable {
         return oldName;
     }
 
-    /** @param oldName */
+    /** @param oldName
+     *            oldName */
     public void setOldName(ConceptName oldName) {
         this.oldName = oldName;
     }
@@ -58,7 +62,8 @@ public class TSplitVar implements Serializable {
         return C;
     }
 
-    /** @param c */
+    /** @param c
+     *            c */
     public void setC(Concept c) {
         C = c;
     }

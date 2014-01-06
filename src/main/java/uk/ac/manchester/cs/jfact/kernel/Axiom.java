@@ -38,6 +38,7 @@ public class Axiom implements Serializable {
     /** absorb into negation of a concept;
      * 
      * @param KB
+     *            KB
      * @return true if absorption is performed */
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoNegConcept")
     public boolean absorbIntoNegConcept(TBox KB) {
@@ -90,7 +91,11 @@ public class Axiom implements Serializable {
     @Original
     private TOntologyAtom atom;
 
-    /** create a copy of a given GCI; ignore SKIP entry */
+    /** create a copy of a given GCI; ignore SKIP entry
+     * 
+     * @param skip
+     *            skip
+     * @return copy */
     @PortedFrom(file = "tAxiom.h", name = "copy")
     private Axiom copy(DLTree skip) {
         Axiom ret = new Axiom(absorptionLog);
@@ -102,7 +107,11 @@ public class Axiom implements Serializable {
         return ret;
     }
 
-    /** simplify (OR C ...) for a non-primitive C in a given position */
+    /** simplify (OR C ...) for a non-primitive C in a given position
+     * 
+     * @param pos
+     *            pos
+     * @return simplified axiom */
     @PortedFrom(file = "tAxiom.h", name = "simplifyPosNP")
     private Axiom simplifyPosNP(DLTree pos) {
         SAbsRepCN();
@@ -113,7 +122,11 @@ public class Axiom implements Serializable {
         return ret;
     }
 
-    /** simplify (OR ~C ...) for a non-primitive C in a given position */
+    /** simplify (OR ~C ...) for a non-primitive C in a given position
+     * 
+     * @param pos
+     *            pos
+     * @return simplified axiom */
     @PortedFrom(file = "tAxiom.h", name = "simplifyNegNP")
     private Axiom simplifyNegNP(DLTree pos) {
         SAbsRepCN();
@@ -123,7 +136,15 @@ public class Axiom implements Serializable {
         return ret;
     }
 
-    /** split (OR (AND...) ...) in a given position */
+    /** split (OR (AND...) ...) in a given position
+     * 
+     * @param acc
+     *            acc
+     * @param pos
+     *            pos
+     * @param pAnd
+     *            pAnd
+     * @return split axioms */
     @PortedFrom(file = "tAxiom.h", name = "split")
     private List<Axiom> split(List<Axiom> acc, DLTree pos, DLTree pAnd) {
         if (pAnd.isAND()) {
@@ -293,6 +314,7 @@ public class Axiom implements Serializable {
     }
 
     /** @param KB
+     *            KB
      * @return false if there are no absorptions */
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoConcept")
     public boolean absorbIntoConcept(TBox KB) {
@@ -335,6 +357,7 @@ public class Axiom implements Serializable {
     }
 
     /** @param KB
+     *            KB
      * @return false if there are no absorptions */
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoDomain")
     public boolean absorbIntoDomain(TBox KB) {
@@ -379,6 +402,7 @@ public class Axiom implements Serializable {
     /** absorb into TOP;
      * 
      * @param KB
+     *            KB
      * @return true if any absorption is performed */
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoTop")
     public boolean absorbIntoTop(TBox KB) {
@@ -445,7 +469,8 @@ public class Axiom implements Serializable {
         return atom;
     }
 
-    /** @param atom */
+    /** @param atom
+     *            atom */
     @Original
     public void setAtom(TOntologyAtom atom) {
         this.atom = atom;

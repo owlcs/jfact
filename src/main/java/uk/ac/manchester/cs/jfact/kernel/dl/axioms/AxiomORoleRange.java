@@ -21,8 +21,11 @@ public class AxiomORoleRange extends AxiomSingleORole {
     private final ConceptExpression range;
 
     /** @param ax
+     *            ax
      * @param role
-     * @param range */
+     *            role
+     * @param range
+     *            range */
     @PortedFrom(file = "tDLAxiom.h", name = "Range")
     public AxiomORoleRange(OWLAxiom ax, ObjectRoleExpression role, ConceptExpression range) {
         super(ax, role);

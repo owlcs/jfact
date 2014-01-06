@@ -21,7 +21,11 @@ public class RIActor implements Actor, Serializable {
     private static final long serialVersionUID = 11000L;
     private final List<Individual> acc = new ArrayList<Individual>();
 
-    /** process single entry in a vertex label */
+    /** process single entry in a vertex label
+     * 
+     * @param p
+     *            p
+     * @return true if try successful */
     protected boolean tryEntry(ClassifiableEntry p) {
         // check the applicability
         if (p.isSystem() || !((Concept) p).isSingleton()) {

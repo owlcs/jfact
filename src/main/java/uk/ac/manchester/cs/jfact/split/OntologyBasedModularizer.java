@@ -22,7 +22,9 @@ public class OntologyBasedModularizer implements Serializable {
     private final TModularizer Modularizer;
 
     /** @param ontology
-     * @param mod */
+     *            ontology
+     * @param mod
+     *            mod */
     @PortedFrom(file = "OntologyBasedModularizer.h", name = "OntologyBasedModularizer")
     public OntologyBasedModularizer(Ontology ontology, TModularizer mod) {
         this.ontology = ontology;
@@ -30,7 +32,9 @@ public class OntologyBasedModularizer implements Serializable {
     }
 
     /** @param useSemantic
+     *            useSemantic
      * @param kernel
+     *            kernel
      * @return modularizer */
     public static TModularizer buildTModularizer(boolean useSemantic,
             ReasoningKernel kernel) {
@@ -47,7 +51,9 @@ public class OntologyBasedModularizer implements Serializable {
     }
 
     /** @param sig
+     *            sig
      * @param type
+     *            type
      * @return module */
     @PortedFrom(file = "OntologyBasedModularizer.h", name = "getModule")
     public List<AxiomInterface> getModule(TSignature sig, ModuleType type) {
@@ -55,8 +61,11 @@ public class OntologyBasedModularizer implements Serializable {
     }
 
     /** @param axioms
+     *            axioms
      * @param sig
+     *            sig
      * @param type
+     *            type
      * @return module */
     @PortedFrom(file = "OntologyBasedModularizer.h", name = "getModule")
     public List<AxiomInterface> getModule(List<AxiomInterface> axioms, TSignature sig,

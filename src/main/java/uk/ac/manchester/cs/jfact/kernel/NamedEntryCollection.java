@@ -19,7 +19,8 @@ import conformance.Original;
  * inherited from TNamedEntry. Implemented as vector of T*, with Base[i].getId()
  * == i.
  * 
- * @param <T> **/
+ * @param <T>
+ *            type */
 public class NamedEntryCollection<T extends NamedEntry> implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** vector of elements */
@@ -35,12 +36,14 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
 
     /** abstract method for additional tuning of newly created element
      * 
-     * @param p */
+     * @param p
+     *            p */
     public void registerNew(@SuppressWarnings("unused") T p) {}
 
     /** new element in a collection;
      * 
      * @param p
+     *            p
      * @return this element */
     public T registerElem(T p) {
         p.setId(base.size());
@@ -52,8 +55,11 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
     /** c'tor: clear 0-th element
      * 
      * @param name
+     *            name
      * @param creator
-     * @param options */
+     *            creator
+     * @param options
+     *            options */
     public NamedEntryCollection(String name, NameCreator<T> creator,
             JFactReasonerConfiguration options) {
         typeName = name;
@@ -71,6 +77,7 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
     /** set LOCKED value to a VAL;
      * 
      * @param val
+     *            val
      * @return old value of LOCKED */
     public boolean setLocked(boolean val) {
         boolean old = locked;
@@ -80,12 +87,14 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
 
     // add/remove elements
     /** @param name
+     *            name
      * @return check if entry with a NAME is registered in given collection */
     public boolean isRegistered(String name) {
         return nameset.get(name) != null;
     }
 
     /** @param name
+     *            name
      * @return get entry by NAME from the collection; register it if necessary */
     public T get(String name) {
         T p = nameset.get(name);
@@ -116,6 +125,7 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
     /** remove given entry from the collection;
      * 
      * @param p
+     *            p
      * @return true iff it was NOT the last entry. */
     public boolean remove(T p) {
         if (!isRegistered(p.getName())) {

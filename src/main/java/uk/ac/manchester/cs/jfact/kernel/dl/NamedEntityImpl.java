@@ -29,7 +29,8 @@ public abstract class NamedEntityImpl implements NamedEntity, Serializable {
         entry = e;
     }
 
-    /** @param name */
+    /** @param name
+     *            name */
     public NamedEntityImpl(String name) {
         this.name = name;
     }

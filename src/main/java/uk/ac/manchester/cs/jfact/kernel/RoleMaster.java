@@ -69,7 +69,10 @@ public class RoleMaster implements Serializable {
     @Original
     private final static int firstRoleIndex = 2;
 
-    /** TRole and it's inverse in RoleBox */
+    /** TRole and its inverse in RoleBox
+     * 
+     * @param r
+     *            r */
     @PortedFrom(file = "RoleMaster.h", name = "registerRole")
     private void registerRole(Role r) {
         assert r != null && r.getInverse() == null; // sanity check
@@ -89,7 +92,9 @@ public class RoleMaster implements Serializable {
         ++newRoleId;
     }
 
-    /** @return true if P is a role that is registered in the RM */
+    /** @param p
+     *            p
+     * @return true if P is a role that is registered in the RM */
     @PortedFrom(file = "RoleMaster.h", name = "isRegisteredRole")
     private boolean isRegisteredRole(NamedEntry p) {
         if (!(p instanceof Role)) {
@@ -107,9 +112,13 @@ public class RoleMaster implements Serializable {
     }
 
     /** @param d
+     *            d
      * @param TopRoleName
+     *            TopRoleName
      * @param BotRoleName
-     * @param c */
+     *            BotRoleName
+     * @param c
+     *            c */
     public RoleMaster(boolean d, String TopRoleName, String BotRoleName,
             JFactReasonerConfiguration c) {
         newRoleId = 1;
@@ -140,6 +149,7 @@ public class RoleMaster implements Serializable {
     }
 
     /** @param name
+     *            name
      * @return role entry with given name */
     @PortedFrom(file = "RoleMaster.h", name = "ensureRoleName")
     public NamedEntry ensureRoleName(String name) {
@@ -172,7 +182,9 @@ public class RoleMaster implements Serializable {
     /** add synonym to existing role
      * 
      * @param role
-     * @param syn */
+     *            role
+     * @param syn
+     *            syn */
     @PortedFrom(file = "RoleMaster.h", name = "addRoleSynonym")
     public void addRoleSynonym(Role role, Role syn) {
         // no synonyms
@@ -186,7 +198,9 @@ public class RoleMaster implements Serializable {
     /** add parent for the input role
      * 
      * @param role
-     * @param parent */
+     *            role
+     * @param parent
+     *            parent */
     @PortedFrom(file = "RoleMaster.h", name = "addRoleParentProper")
     public void addRoleParentProper(Role role, Role parent) {
         assert !role.isSynonym() && !parent.isSynonym();
@@ -220,7 +234,9 @@ public class RoleMaster implements Serializable {
     /** a pair of disjoint roles
      * 
      * @param R
-     * @param S */
+     *            R
+     * @param S
+     *            S */
     @PortedFrom(file = "RoleMaster.h", name = "addDisjointRoles")
     public void addDisjointRoles(Role R, Role S) {
         // object- and data roles are always disjoint
@@ -233,7 +249,8 @@ public class RoleMaster implements Serializable {
 
     /** change the undefined names usage policy
      * 
-     * @param val */
+     * @param val
+     *            val */
     @PortedFrom(file = "RoleMaster.h", name = "setUndefinedNames")
     public void setUndefinedNames(boolean val) {
         useUndefinedNames = val;
@@ -252,7 +269,9 @@ public class RoleMaster implements Serializable {
     }
 
     /** @param o
-     * @param type */
+     *            o
+     * @param type
+     *            type */
     @PortedFrom(file = "RoleMaster.h", name = "Print")
     public void print(LogAdapter o, String type) {
         if (size() == 0) {
@@ -278,7 +297,8 @@ public class RoleMaster implements Serializable {
         return false;
     }
 
-    /** @param RR */
+    /** @param RR
+     *            RR */
     @PortedFrom(file = "RoleMaster.h", name = "fillReflexiveRoles")
     public void fillReflexiveRoles(List<Role> RR) {
         RR.clear();
@@ -291,7 +311,9 @@ public class RoleMaster implements Serializable {
     }
 
     /** @param tree
-     * @param parent */
+     *            tree
+     * @param parent
+     *            parent */
     @PortedFrom(file = "RoleMaster.h", name = "addRoleParent")
     public void addRoleParent(DLTree tree, Role parent) {
         if (tree == null) {

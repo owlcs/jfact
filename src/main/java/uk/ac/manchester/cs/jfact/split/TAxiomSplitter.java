@@ -6,7 +6,12 @@ package uk.ac.manchester.cs.jfact.split;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
@@ -35,7 +40,10 @@ public class TAxiomSplitter implements Serializable {
         // module for a new axiom
         protected final Set<AxiomInterface> Module = new HashSet<AxiomInterface>();
 
-        /** set old axiom as an equivalent AX; create a new one */
+        /** set old axiom as an equivalent AX; create a new one
+         * 
+         * @param ax
+         *            ax */
         protected void setEqAx(AxiomEquivalentConcepts ax) {
             oldAxioms.add(ax);
             List<ConceptExpression> copy = new ArrayList<ConceptExpression>();
@@ -49,7 +57,10 @@ public class TAxiomSplitter implements Serializable {
             newAxiom = new AxiomEquivalentConcepts(ax.getOWLAxiom(), copy);
         }
 
-        /** set a new implication axiom based on a (known) set of old ones */
+        /** set a new implication axiom based on a (known) set of old ones
+         * 
+         * @param Desc
+         *            Desc */
         protected void setImpAx(ConceptExpression Desc) {
             newAxiom = new AxiomConceptInclusion(null, newName, Desc);
         }
@@ -77,7 +88,11 @@ public class TAxiomSplitter implements Serializable {
     @PortedFrom(file = "AxiomSplitter.h", name = "O")
     protected final Ontology O;
 
-    /** rename old concept into a new one with a fresh name */
+    /** rename old concept into a new one with a fresh name
+     * 
+     * @param oldName
+     *            oldName
+     * @return new concept */
     @PortedFrom(file = "AxiomSplitter.h", name = "rename")
     protected ConceptName rename(ConceptName oldName) {
         ConceptExpression c = O.getExpressionManager().concept(
@@ -90,14 +105,18 @@ public class TAxiomSplitter implements Serializable {
 
     /** process (register/unregister) axioms in a record REC
      * 
-     * @param rec */
+     * @param rec
+     *            rec */
     @PortedFrom(file = "AxiomSplitter.h", name = "processRec")
     public void processRec(TRecord rec) {
         mod.getSigIndex().preprocessOntology(rec.oldAxioms);
         mod.getSigIndex().processAx(rec.newAxiom);
     }
 
-    /** register a record in the ontology */
+    /** register a record in the ontology
+     * 
+     * @param rec
+     *            rec */
     @PortedFrom(file = "AxiomSplitter.h", name = "registerRec")
     protected void registerRec(TRecord rec) {
         for (AxiomInterface p : rec.oldAxioms) {
@@ -107,7 +126,10 @@ public class TAxiomSplitter implements Serializable {
         processRec(rec);
     }
 
-    /** unregister a record */
+    /** unregister a record
+     * 
+     * @param rec
+     *            rec */
     @PortedFrom(file = "AxiomSplitter.h", name = "unregisterRec")
     protected void unregisterRec(TRecord rec) {
         for (AxiomInterface p : rec.oldAxioms) {
@@ -117,7 +139,10 @@ public class TAxiomSplitter implements Serializable {
         processRec(rec);
     }
 
-    /** create a signature of a module corresponding to a new axiom in record */
+    /** create a signature of a module corresponding to a new axiom in record
+     * 
+     * @param rec
+     *            rec */
     @PortedFrom(file = "AxiomSplitter.h", name = "buildSig")
     protected void buildSig(TRecord rec) {
         sig = rec.newAxiom.getSignature();
@@ -129,7 +154,10 @@ public class TAxiomSplitter implements Serializable {
         rec.Module.addAll(mod.getModule());
     }
 
-    /** add axiom CI in a form C [= D for D != TOP */
+    /** add axiom CI in a form C [= D for D != TOP
+     * 
+     * @param ci
+     *            ci */
     @PortedFrom(file = "AxiomSplitter.h", name = "addSingleCI")
     protected void addSingleCI(AxiomConceptInclusion ci) {
         if (ci != null && !(ci.getSupConcept() instanceof ConceptTop)) {
@@ -157,8 +185,11 @@ public class TAxiomSplitter implements Serializable {
         }
     }
 
-    /** check whether an equivalent axiom is splittable; @return split name or
-     * NULL if not splittable */
+    /** check whether an equivalent axiom is splittable;
+     * 
+     * @return split name or NULL if not splittable
+     * @param ce
+     *            ce */
     @PortedFrom(file = "AxiomSplitter.h", name = "getEqSplit")
     protected ConceptName getEqSplit(AxiomEquivalentConcepts ce) {
         // check whether it is not a synonym definition
@@ -184,7 +215,10 @@ public class TAxiomSplitter implements Serializable {
         return size > 1 ? splitName : null;
     }
 
-    /** make the axiom split for the equivalence axiom */
+    /** make the axiom split for the equivalence axiom
+     * 
+     * @param ce
+     *            ce */
     @PortedFrom(file = "AxiomSplitter.h", name = "makeEqSplit")
     protected void makeEqSplit(AxiomEquivalentConcepts ce) {
         if (ce == null) {
@@ -215,7 +249,9 @@ public class TAxiomSplitter implements Serializable {
         }
     }
 
-    /** make implication split for a given old NAME */
+    /** @return make implication split for a given old NAME
+     * @param oldName
+     *            oldName */
     @PortedFrom(file = "AxiomSplitter.h", name = "makeImpSplit")
     protected TRecord makeImpSplit(ConceptName oldName) {
         ConceptName newName = rename(oldName);
@@ -232,7 +268,9 @@ public class TAxiomSplitter implements Serializable {
         return rec;
     }
 
-    /** get imp record of a given name; create if necessary */
+    /** @return get imp record of a given name; create if necessary
+     * @param oldName
+     *            oldName */
     @PortedFrom(file = "AxiomSplitter.h", name = "getImpRec")
     protected TRecord getImpRec(ConceptName oldName) {
         if (!ImpRens.containsKey(oldName)) {
@@ -261,7 +299,11 @@ public class TAxiomSplitter implements Serializable {
     }
 
     /** check whether the record is independent wrt modularity; @return true iff
-     * split was incorrect */
+     * split was incorrect
+     * 
+     * @param rec
+     *            rec
+     * @return true if not correct */
     @PortedFrom(file = "AxiomSplitter.h", name = "checkSplitCorrectness")
     protected boolean checkSplitCorrectness(TRecord rec) {
         if (Rejects.contains(rec.oldName)) {
@@ -305,7 +347,11 @@ public class TAxiomSplitter implements Serializable {
         } while (change);
     }
 
-    /** split all implications corresponding to oldName; @return split pointer */
+    /** split all implications corresponding to oldName;
+     * 
+     * @return split pointer
+     * @param oldName
+     *            oldName */
     @PortedFrom(file = "AxiomSplitter.h", name = "splitImplicationsFor")
     protected TSplitVar splitImplicationsFor(ConceptName oldName) {
         // check whether we already did translation for such a name
@@ -335,7 +381,9 @@ public class TAxiomSplitter implements Serializable {
     }
 
     /** @param config
-     * @param o */
+     *            config
+     * @param o
+     *            o */
     public TAxiomSplitter(JFactReasonerConfiguration config, Ontology o) {
         newNameId = 0;
         O = o;

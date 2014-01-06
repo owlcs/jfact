@@ -26,7 +26,9 @@ public class ConceptObjectExists implements ConceptObjectRCExpression, Serializa
     private final ObjectRoleExpression delegate;
 
     /** @param R
-     * @param C */
+     *            R
+     * @param C
+     *            C */
     public ConceptObjectExists(ObjectRoleExpression R, ConceptExpression C) {
         conceptExpression = C;
         delegate = R;

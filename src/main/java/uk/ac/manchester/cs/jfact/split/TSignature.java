@@ -31,10 +31,11 @@ public class TSignature implements Serializable {
     @PortedFrom(file = "tSignature.h", name = "topRLocality")
     private boolean topRLocality = false;
 
-    @SuppressWarnings("javadoc")
+    /** default constructor */
     public TSignature() {}
 
-    /** @param copy */
+    /** @param copy
+     *            copy */
     public TSignature(TSignature copy) {
         set.addAll(copy.set);
         topCLocality = copy.topCLocality;
@@ -43,7 +44,8 @@ public class TSignature implements Serializable {
 
     /** add names to signature
      * 
-     * @param p */
+     * @param p
+     *            p */
     @PortedFrom(file = "tSignature.h", name = "add")
     public void add(NamedEntity p) {
         set.add(p);
@@ -51,7 +53,8 @@ public class TSignature implements Serializable {
 
     /** remove given element from a signature
      * 
-     * @param p */
+     * @param p
+     *            p */
     @PortedFrom(file = "tSignature.h", name = "remove")
     public void remove(NamedEntity p) {
         set.remove(p);
@@ -59,7 +62,8 @@ public class TSignature implements Serializable {
 
     /** add another signature to a given one
      * 
-     * @param Sig */
+     * @param Sig
+     *            Sig */
     @PortedFrom(file = "tSignature.h", name = "add")
     public void add(TSignature Sig) {
         set.addAll(Sig.set);
@@ -67,7 +71,8 @@ public class TSignature implements Serializable {
 
     /** set new locality polarity
      * 
-     * @param top */
+     * @param top
+     *            top */
     @PortedFrom(file = "tSignature.h", name = "setLocality")
     public void setLocality(boolean top) {
         this.setLocality(top, top);
@@ -76,7 +81,9 @@ public class TSignature implements Serializable {
     /** set new locality polarity
      * 
      * @param topC
-     * @param topR */
+     *            topC
+     * @param topR
+     *            topR */
     @PortedFrom(file = "tSignature.h", name = "setLocality")
     public void setLocality(boolean topC, boolean topR) {
         topCLocality = topC;
@@ -104,6 +111,7 @@ public class TSignature implements Serializable {
     }
 
     /** @param entity
+     *            entity
      * @return true iff SIGnature does NOT contain given entity */
     @PortedFrom(file = "LocalityChecker.h", name = "nc")
     public boolean nc(NamedEntity entity) {
@@ -111,6 +119,7 @@ public class TSignature implements Serializable {
     }
 
     /** @param p
+     *            p
      * @return true iff signature contains given element */
     @Original
     public boolean containsNamedEntity(NamedEntity p) {
@@ -118,6 +127,7 @@ public class TSignature implements Serializable {
     }
 
     /** @param p
+     *            p
      * @return true iff signature contains given element */
     @PortedFrom(file = "tSignature.h", name = "contains")
     public boolean contains(Expression p) {
@@ -173,6 +183,7 @@ public class TSignature implements Serializable {
     }
 
     /** @param s2
+     *            s2
      * @return true if this and s2 intersect */
     @Original
     public List<NamedEntity> intersect(TSignature s2) {
@@ -184,7 +195,9 @@ public class TSignature implements Serializable {
     }
 
     /** @param sig
+     *            sig
      * @param improper
+     *            improper
      * @return true if *THIS \subseteq SIG (\subset if IMPROPER = false ) */
     @PortedFrom(file = "tSignature.h", name = "subset")
     public boolean subset(TSignature sig, boolean improper) {

@@ -57,6 +57,7 @@ class DLVertexTagDFS implements Serializable {
     /** check whether current Vertex is being visited
      * 
      * @param pos
+     *            pos
      * @return true if being visited */
     @PortedFrom(file = "dlVertex.h", name = "isVisited")
     public boolean isVisited(boolean pos) {
@@ -66,6 +67,7 @@ class DLVertexTagDFS implements Serializable {
     /** check whether current Vertex is processed
      * 
      * @param pos
+     *            pos
      * @return true if processed */
     @PortedFrom(file = "dlVertex.h", name = "isProcessed")
     public boolean isProcessed(boolean pos) {
@@ -74,7 +76,8 @@ class DLVertexTagDFS implements Serializable {
 
     /** set that the node is being visited
      * 
-     * @param pos */
+     * @param pos
+     *            pos */
     @PortedFrom(file = "dlVertex.h", name = "setVisited")
     public void setVisited(boolean pos) {
         if (pos) {
@@ -86,7 +89,8 @@ class DLVertexTagDFS implements Serializable {
 
     /** set that the node' DFS processing is completed
      * 
-     * @param pos */
+     * @param pos
+     *            pos */
     @PortedFrom(file = "dlVertex.h", name = "setProcessed")
     public void setProcessed(boolean pos) {
         if (pos) {
@@ -110,6 +114,7 @@ class DLVertexTagDFS implements Serializable {
     /** check whether concept is in cycle
      * 
      * @param pos
+     *            pos
      * @return true if concept is in cycle */
     @PortedFrom(file = "dlVertex.h", name = "isInCycle")
     public boolean isInCycle(boolean pos) {
@@ -118,7 +123,8 @@ class DLVertexTagDFS implements Serializable {
 
     /** set concept is in cycle
      * 
-     * @param pos */
+     * @param pos
+     *            pos */
     @PortedFrom(file = "dlVertex.h", name = "setInCycle")
     public void setInCycle(boolean pos) {
         if (pos) {
@@ -129,7 +135,8 @@ class DLVertexTagDFS implements Serializable {
     }
 
     /** @return cache wrt positive flag
-     * @param pos */
+     * @param pos
+     *            pos */
     @PortedFrom(file = "dlVertex.h", name = "getCache")
     public ModelCacheInterface getCache(boolean pos) {
         return pos ? pCache : nCache;
@@ -138,7 +145,9 @@ class DLVertexTagDFS implements Serializable {
     /** set cache wrt positive flag; note that cache is set up only once
      * 
      * @param pos
-     * @param p */
+     *            pos
+     * @param p
+     *            p */
     @PortedFrom(file = "dlVertex.h", name = "setCache")
     public void setCache(boolean pos, ModelCacheInterface p) {
         if (pos) {

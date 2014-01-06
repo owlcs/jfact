@@ -12,6 +12,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 /** policy */
 public interface Policy {
     /** @param p
+     *            p
      * @return true if applicable */
     boolean applicable(ClassifiableEntry p);
 
@@ -19,7 +20,9 @@ public interface Policy {
     boolean needPlain();
 
     /** @param EM
+     *            EM
      * @param p
+     *            p
      * @return expression for p */
     Expression buildTree(ExpressionManager EM, ClassifiableEntry p);
 }

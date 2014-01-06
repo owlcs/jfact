@@ -6,11 +6,55 @@ package uk.ac.manchester.cs.jfact;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.reasoner.*;
+import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
+import org.semanticweb.owlapi.model.OWLDataRange;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntityVisitorEx;
+import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLLogicalEntity;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.reasoner.AxiomNotInProfileException;
+import org.semanticweb.owlapi.reasoner.BufferingMode;
+import org.semanticweb.owlapi.reasoner.ClassExpressionNotInProfileException;
+import org.semanticweb.owlapi.reasoner.FreshEntitiesException;
+import org.semanticweb.owlapi.reasoner.FreshEntityPolicy;
+import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
+import org.semanticweb.owlapi.reasoner.IndividualNodeSetPolicy;
+import org.semanticweb.owlapi.reasoner.InferenceType;
+import org.semanticweb.owlapi.reasoner.Node;
+import org.semanticweb.owlapi.reasoner.NodeSet;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration;
+import org.semanticweb.owlapi.reasoner.ReasonerInterruptedException;
+import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
+import org.semanticweb.owlapi.reasoner.TimeOutException;
+import org.semanticweb.owlapi.reasoner.UnsupportedEntailmentTypeException;
 import org.semanticweb.owlapi.reasoner.impl.OWLClassNodeSet;
 import org.semanticweb.owlapi.reasoner.impl.OWLDataPropertyNode;
 import org.semanticweb.owlapi.reasoner.impl.OWLDataPropertyNodeSet;
@@ -20,10 +64,26 @@ import org.semanticweb.owlapi.util.Version;
 
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
-import uk.ac.manchester.cs.jfact.kernel.*;
-import uk.ac.manchester.cs.jfact.kernel.actors.*;
+import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
+import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
+import uk.ac.manchester.cs.jfact.kernel.Individual;
+import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
+import uk.ac.manchester.cs.jfact.kernel.Ontology;
+import uk.ac.manchester.cs.jfact.kernel.ReasonerFreshEntityException;
+import uk.ac.manchester.cs.jfact.kernel.ReasoningKernel;
+import uk.ac.manchester.cs.jfact.kernel.actors.ClassPolicy;
+import uk.ac.manchester.cs.jfact.kernel.actors.DataPropertyPolicy;
+import uk.ac.manchester.cs.jfact.kernel.actors.IndividualPolicy;
+import uk.ac.manchester.cs.jfact.kernel.actors.ObjectPropertyPolicy;
+import uk.ac.manchester.cs.jfact.kernel.actors.TaxonomyActor;
 import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.kernel.voc.Vocabulary;
 import uk.ac.manchester.cs.jfact.split.ModuleType;
@@ -63,16 +123,22 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     private final DatatypeFactory datatypeFactory;
 
     /** @param o
+     *            o
      * @param c
-     * @param b */
+     *            c
+     * @param b
+     *            b */
     public JFactReasoner(OWLOntology o, OWLReasonerConfiguration c, BufferingMode b) {
         this(o, c instanceof JFactReasonerConfiguration ? (JFactReasonerConfiguration) c
                 : new JFactReasonerConfiguration(c), b);
     }
 
     /** @param rootOntology
+     *            rootOntology
      * @param config
-     * @param bufferingMode */
+     *            config
+     * @param bufferingMode
+     *            bufferingMode */
     public JFactReasoner(OWLOntology rootOntology, JFactReasonerConfiguration config,
             BufferingMode bufferingMode) {
         configuration = config;
@@ -403,6 +469,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
 
     // tracing
     /** @param axiom
+     *            axiom
      * @return tracing set (set of axioms that were participate in achieving
      *         result) for a given entailment. Return empty set if the axiom is
      *         not entailed. */
@@ -724,7 +791,9 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     }
 
     /** @param pw
-     * @param includeBottomNode */
+     *            pw
+     * @param includeBottomNode
+     *            includeBottomNode */
     public void dumpClassHierarchy(LogAdapter pw, boolean includeBottomNode) {
         dumpSubClasses(getTopClassNode(), pw, 0, includeBottomNode);
     }
@@ -751,7 +820,8 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return actor.getElements();
     }
 
-    /** @param time */
+    /** @param time
+     *            time */
     public synchronized void writeReasoningResult(long time) {
         kernel.writeReasoningResult(time);
     }
@@ -846,7 +916,9 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     }
 
     /** @param useSemantics
+     *            useSemantics
      * @param type
+     *            type
      * @return number of atoms */
     public int getAtomicDecompositionSize(boolean useSemantics, ModuleType type) {
         return kernel.getAtomicDecompositionSize(useSemantics, type);
@@ -864,6 +936,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     }
 
     /** @param index
+     *            index
      * @return set of axioms that corresponds to the atom with the id INDEX */
     public Set<OWLAxiom> getAtomAxioms(int index) {
         return axiomsToSet(kernel.getAtomAxioms(index));
@@ -880,6 +953,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     }
 
     /** @param index
+     *            index
      * @return set of axioms that corresponds to the module of the atom with the
      *         id INDEX */
     public Set<OWLAxiom> getAtomModule(int index) {
@@ -892,6 +966,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     }
 
     /** @param index
+     *            index
      * @return set of atoms on which atom with index INDEX depends */
     public Set<TOntologyAtom> getAtomDependents(int index) {
         return kernel.getAtomDependents(index);
@@ -934,8 +1009,11 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     private final EntityVisitorEx entityTranslator = new EntityVisitorEx();
 
     /** @param signature
+     *            signature
      * @param useSemantic
+     *            useSemantic
      * @param moduletype
+     *            moduletype
      * @return set of axioms in the module */
     public Set<OWLAxiom> getModule(Set<OWLEntity> signature, boolean useSemantic,
             ModuleType moduletype) {
@@ -959,8 +1037,11 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     }
 
     /** @param signature
+     *            signature
      * @param useSemantic
+     *            useSemantic
      * @param moduletype
+     *            moduletype
      * @return set of non local axioms */
     public Set<OWLAxiom> getNonLocal(Set<OWLEntity> signature, boolean useSemantic,
             ModuleType moduletype) {
@@ -983,10 +1064,9 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return toReturn;
     }
 
-/**
-     * get all individuals from the set individuals that has r-successor and
+    /** get all individuals from the set individuals that has r-successor and
      * s-successor and those are related via OP: r op s
-     *
+     * 
      * @param individuals
      *            set of individuals to choose from
      * @param r
@@ -994,10 +1074,10 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
      * @param s
      *            second operand of the comparison
      * @param op
-     *            comparison operation: 0 means "==", 1 means "!=", 2 means "<", 3 means
-     *            "<=", 4 means ">", 5 means ">="
-     * @return data related individuals
-     */
+     *            comparison operation: 0 means "equal", 1 means "different", 2
+     *            means "lesser", 3 means "lesser than or equal", 4 means
+     *            "greater than", 5 means "greater than or equal"
+     * @return data related individuals */
     public synchronized Node<OWLNamedIndividual> getDataRelatedIndividuals(
             Set<OWLIndividual> individuals, OWLDataProperty r, OWLDataProperty s, int op) {
         checkConsistency();

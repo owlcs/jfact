@@ -21,8 +21,11 @@ public class AxiomORoleSubsumption extends AxiomSingleORole {
     private final ObjectRoleComplexExpression complexRole;
 
     /** @param ax
+     *            ax
      * @param subRole
-     * @param supRole */
+     *            subRole
+     * @param supRole
+     *            supRole */
     public AxiomORoleSubsumption(OWLAxiom ax, ObjectRoleComplexExpression subRole,
             ObjectRoleExpression supRole) {
         super(ax, supRole);

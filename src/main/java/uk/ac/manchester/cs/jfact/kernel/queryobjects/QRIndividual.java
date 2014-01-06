@@ -18,7 +18,8 @@ class QRIndividual extends QRiObject {
 
     /** init c'tor
      * 
-     * @param ind */
+     * @param ind
+     *            ind */
     public QRIndividual(IndividualName ind) {
         Ind = ind;
     }

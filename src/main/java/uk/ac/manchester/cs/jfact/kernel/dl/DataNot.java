@@ -22,7 +22,8 @@ public class DataNot implements DataExpression, DataExpressionArg<DataExpression
     @PortedFrom(file = "tDLExpression.h", name = "Expr")
     protected final DataExpression Expr;
 
-    /** @param E */
+    /** @param E
+     *            E */
     public DataNot(DataExpression E) {
         Expr = E;
     }

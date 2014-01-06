@@ -25,7 +25,9 @@ public class ArrayQueue implements Serializable {
     /** add entry to a queue
      * 
      * @param node
-     * @param offset */
+     *            node
+     * @param offset
+     *            offset */
     public void add(DlCompletionTree node, ConceptWDep offset) {
         Wait.add(new ToDoEntry(node, offset));
     }
@@ -51,7 +53,9 @@ public class ArrayQueue implements Serializable {
     /** save queue content to the given entry
      * 
      * @param tss
-     * @param pos */
+     *            tss
+     * @param pos
+     *            pos */
     @PortedFrom(file = "ToDoList.h", name = "save")
     public void save(int[][] tss, int pos) {
         tss[pos][0] = sPointer;
@@ -61,7 +65,9 @@ public class ArrayQueue implements Serializable {
     /** restore queue content from the given entry
      * 
      * @param tss
-     * @param pos */
+     *            tss
+     * @param pos
+     *            pos */
     @PortedFrom(file = "ToDoList.h", name = "restore")
     public void restore(int[][] tss, int pos) {
         setsPointer(tss[pos][0]);
@@ -69,7 +75,9 @@ public class ArrayQueue implements Serializable {
     }
 
     /** @param sp
-     * @param ep */
+     *            sp
+     * @param ep
+     *            ep */
     @PortedFrom(file = "ToDoList.h", name = "restore")
     public void restore(int sp, int ep) {
         setsPointer(sp);
@@ -95,7 +103,8 @@ public class ArrayQueue implements Serializable {
         return sPointer;
     }
 
-    /** @param sPointer */
+    /** @param sPointer
+     *            sPointer */
     public void setsPointer(int sPointer) {
         this.sPointer = sPointer;
     }

@@ -72,6 +72,7 @@ public enum AbsorptionActions {
     }
 
     /** @param ch
+     *            ch
      * @return ABS for ch, or null if no match is found */
     public static AbsorptionActions get(char ch) {
         for (AbsorptionActions v : values()) {
@@ -83,7 +84,9 @@ public enum AbsorptionActions {
     }
 
     /** @param ax
+     *            ax
      * @param tb
+     *            tb
      * @return true if the rule is fired */
     public abstract boolean execute(Axiom ax, AxiomSet tb);
 }

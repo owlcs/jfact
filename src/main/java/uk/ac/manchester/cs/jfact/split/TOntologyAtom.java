@@ -48,7 +48,8 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
 
     /** build all dep atoms; filter them from DepAtoms
      * 
-     * @param checked */
+     * @param checked
+     *            checked */
     @PortedFrom(file = "tOntologyAtom.h", name = "buildAllDepAtoms")
     public void buildAllDepAtoms(Set<TOntologyAtom> checked) {
         // first gather all dep atoms from all known dep atoms
@@ -67,7 +68,8 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
     // fill in the sets
     /** set the module axioms
      * 
-     * @param module */
+     * @param module
+     *            module */
     @PortedFrom(file = "tOntologyAtom.h", name = "setModule")
     public void setModule(Collection<AxiomInterface> module) {
         ModuleAxioms = new HashSet<AxiomInterface>(module);
@@ -75,7 +77,8 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
 
     /** add axiom AX to an atom
      * 
-     * @param ax */
+     * @param ax
+     *            ax */
     @PortedFrom(file = "tOntologyAtom.h", name = "addAxiom")
     public void addAxiom(AxiomInterface ax) {
         AtomAxioms.add(ax);
@@ -84,7 +87,8 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
 
     /** add atom to the dependency set
      * 
-     * @param atom */
+     * @param atom
+     *            atom */
     @PortedFrom(file = "tOntologyAtom.h", name = "addDepAtom")
     public void addDepAtom(TOntologyAtom atom) {
         if (atom != null && atom != this) {
@@ -93,6 +97,7 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
     }
 
     /** @param checked
+     *            checked
      * @return all the atoms the current one depends on; build this set if
      *         necessary */
     @PortedFrom(file = "tOntologyAtom.h", name = "getAllDepAtoms")
@@ -130,7 +135,8 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
 
     /** set the value of the id to ID
      * 
-     * @param id */
+     * @param id
+     *            id */
     @PortedFrom(file = "tOntologyAtom.h", name = "setId")
     public void setId(int id) {
         Id = id;

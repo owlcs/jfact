@@ -29,8 +29,11 @@ public class ConceptObjectMaxCardinality implements ConceptObjectCardinalityExpr
     private final ObjectRoleExpression roleDelegate;
 
     /** @param n
+     *            n
      * @param R
-     * @param C */
+     *            R
+     * @param C
+     *            C */
     public ConceptObjectMaxCardinality(int n, ObjectRoleExpression R, ConceptExpression C) {
         N = n;
         delegate = C;

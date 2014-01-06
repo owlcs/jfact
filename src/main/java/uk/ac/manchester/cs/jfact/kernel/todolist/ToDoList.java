@@ -25,7 +25,7 @@ public class ToDoList implements Serializable {
     /** waiting ops queue for IDs */
     @PortedFrom(file = "ToDoList.h", name = "queueID")
     private final ArrayQueue queueID = new ArrayQueue();
-    /** waiting ops queue for <= ops in nominal nodes */
+    /** waiting ops queue for lesser than or equal ops in nominal nodes */
     @PortedFrom(file = "ToDoList.h", name = "queueNN")
     private final QueueQueue queueNN = new QueueQueue();
     /** waiting ops queues */
@@ -43,7 +43,8 @@ public class ToDoList implements Serializable {
 
     /** save current Todo table content to given saveState entry
      * 
-     * @param tss */
+     * @param tss
+     *            tss */
     @PortedFrom(file = "ToDoList.h", name = "saveState")
     public void saveState(TODOListSaveState tss) {
         tss.backupID_sp = queueID.getsPointer();
@@ -57,7 +58,8 @@ public class ToDoList implements Serializable {
 
     /** restore Todo table content from given saveState entry
      * 
-     * @param tss */
+     * @param tss
+     *            tss */
     @PortedFrom(file = "ToDoList.h", name = "restoreState")
     public void restoreState(TODOListSaveState tss) {
         queueID.restore(tss.backupID_sp, tss.backupID_ep);
@@ -68,7 +70,7 @@ public class ToDoList implements Serializable {
         noe = tss.noe;
     }
 
-    @SuppressWarnings("javadoc")
+    /** default constructor */
     public ToDoList() {
         noe = 0;
         // Helper.resize(Wait, nRegularOps);
@@ -79,7 +81,8 @@ public class ToDoList implements Serializable {
 
     /** init priorities via Options
      * 
-     * @param Options */
+     * @param Options
+     *            Options */
     @Original
     public void initPriorities(String Options) {
         matrix.initPriorities(Options);
@@ -106,8 +109,11 @@ public class ToDoList implements Serializable {
     /** add entry with given NODE and CONCEPT with given OFFSET to the Todo table
      * 
      * @param node
+     *            node
      * @param type
-     * @param C */
+     *            type
+     * @param C
+     *            C */
     @PortedFrom(file = "ToDoList.h", name = "addEntry")
     public void addEntry(DlCompletionTree node, DagTag type, ConceptWDep C) {
         int index = matrix.getIndex(type, C.getConcept() > 0, node.isNominalNode());
@@ -137,7 +143,8 @@ public class ToDoList implements Serializable {
 
     /** restore state to the given level using internal stack
      * 
-     * @param level */
+     * @param level
+     *            level */
     @PortedFrom(file = "ToDoList.h", name = "restore")
     public void restore(int level) {
         restoreState(saveStack.pop(level));

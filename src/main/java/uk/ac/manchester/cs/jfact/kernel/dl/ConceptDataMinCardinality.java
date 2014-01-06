@@ -17,8 +17,11 @@ public class ConceptDataMinCardinality extends AbstractConceptDataCardinality {
     private static final long serialVersionUID = 11000L;
 
     /** @param n
+     *            n
      * @param R
-     * @param E */
+     *            R
+     * @param E
+     *            E */
     public ConceptDataMinCardinality(int n, DataRoleExpression R, DataExpression E) {
         super(n, R, E);
     }

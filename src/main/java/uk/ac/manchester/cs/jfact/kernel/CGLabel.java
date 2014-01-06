@@ -39,7 +39,7 @@ public class CGLabel implements Serializable {
     @Original
     private final int id;
 
-    @SuppressWarnings("javadoc")
+    /** default constructor */
     public CGLabel() {
         scLabel = new CWDArray();
         ccLabel = new CWDArray();
@@ -71,6 +71,7 @@ public class CGLabel implements Serializable {
     }
 
     /** @param tag
+     *            tag
      * @return label associated with the concepts defined by TAG */
     @PortedFrom(file = "CGLabel.h", name = "getLabel")
     public CWDArray getLabel(DagTag tag) {
@@ -80,7 +81,9 @@ public class CGLabel implements Serializable {
     /** index p by tag, clear caches
      * 
      * @param tag
-     * @param p */
+     *            tag
+     * @param p
+     *            p */
     @Original
     public void add(DagTag tag, ConceptWDep p) {
         getLabel(tag).private_add(p);
@@ -100,6 +103,7 @@ public class CGLabel implements Serializable {
     }
 
     /** @param p
+     *            p
      * @return true if node is labelled by complex concept P */
     @PortedFrom(file = "CGLabel.h", name = "containsCC")
     public boolean containsCC(int p) {
@@ -116,6 +120,7 @@ public class CGLabel implements Serializable {
             .newSetFromMap(new IdentityHashMap<CGLabel, Boolean>());
 
     /** @param label
+     *            label
      * @return true if this label is less or equal than label */
     @PortedFrom(file = "CGLabel.h", name = "<=")
     public boolean lesserequal(CGLabel label) {
@@ -161,7 +166,9 @@ public class CGLabel implements Serializable {
     /** restore label to given LEVEL using given SS
      * 
      * @param ss
-     * @param level */
+     *            ss
+     * @param level
+     *            level */
     @PortedFrom(file = "CGLabel.h", name = "restore")
     public void restore(SaveState ss, int level) {
         scLabel.restore(ss.getSc(), level);
@@ -185,6 +192,7 @@ public class CGLabel implements Serializable {
     }
 
     /** @param p
+     *            p
      * @return true if p index is contained in simple or complex concepts. */
     @PortedFrom(file = "CGLabel.h", name = "contains")
     public boolean contains(int p) {
@@ -199,6 +207,7 @@ public class CGLabel implements Serializable {
     }
 
     /** @param bp
+     *            bp
      * @return concept with index bp */
     @PortedFrom(file = "CGLabel.h", name = "getConcept")
     public ConceptWDep getConceptWithBP(int bp) {

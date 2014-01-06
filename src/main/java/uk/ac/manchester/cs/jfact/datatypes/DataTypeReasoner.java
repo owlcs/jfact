@@ -5,11 +5,15 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static uk.ac.manchester.cs.jfact.datatypes.DatatypeClashes.*;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeClashes.DT_TT;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.Reference;
@@ -37,7 +41,9 @@ public final class DataTypeReasoner implements Serializable {
     /** set clash dep-set to DEP, report with given REASON
      * 
      * @param dep
-     * @param reason */
+     *            dep
+     * @param reason
+     *            reason */
     @PortedFrom(file = "DataReasoning.h", name = "reportClash")
     public void reportClash(DepSet dep, DatatypeClashes reason) {
         // inform about clash...
@@ -48,28 +54,36 @@ public final class DataTypeReasoner implements Serializable {
     /** set clash dep-set to DEP, report with given REASON
      * 
      * @param dep1
+     *            dep1
      * @param dep2
-     * @param reason */
+     *            dep2
+     * @param reason
+     *            reason */
     @PortedFrom(file = "DataReasoning.h", name = "reportClash")
     public void reportClash(DepSet dep1, DepSet dep2, DatatypeClashes reason) {
         reportClash(DepSet.plus(dep1, dep2), reason);
     }
 
-    /** @param o */
-    public DataTypeReasoner(JFactReasonerConfiguration o) {
-        options = o;
+    /** @param config
+     *            config */
+    public DataTypeReasoner(JFactReasonerConfiguration config) {
+        options = config;
     }
 
     // managing DTR
-    /** add data type to the reasoner */
+    /** add data type to the reasoner
+     * 
+     * @param datatype
+     *            datatype
+     * @return datatype situation */
     @SuppressWarnings("unchecked")
     @PortedFrom(file = "DataReasoning.h", name = "registerDataType")
-    private <R extends Comparable<R>> DataTypeSituation<R> getType(Datatype<R> p) {
-        if (map.containsKey(p)) {
-            return (DataTypeSituation<R>) map.get(p);
+    private <R extends Comparable<R>> DataTypeSituation<R> getType(Datatype<R> datatype) {
+        if (map.containsKey(datatype)) {
+            return (DataTypeSituation<R>) map.get(datatype);
         }
-        DataTypeSituation<R> dataTypeAppearance = new DataTypeSituation<R>(p, this);
-        map.put(p, dataTypeAppearance);
+        DataTypeSituation<R> dataTypeAppearance = new DataTypeSituation<R>(datatype, this);
+        map.put(datatype, dataTypeAppearance);
         return dataTypeAppearance;
     }
 
@@ -82,9 +96,13 @@ public final class DataTypeReasoner implements Serializable {
     }
 
     /** @param positive
+     *            positive
      * @param type
+     *            type
      * @param entry
+     *            entry
      * @param dep
+     *            dep
      * @return false if datatype, true otherwise */
     @PortedFrom(file = "DataReasoning.h", name = "addDataEntry")
     public boolean addDataEntry(boolean positive, DagTag type, NamedEntry entry,

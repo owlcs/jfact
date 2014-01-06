@@ -16,7 +16,9 @@ public class QueryApproximation extends BuildELIOConcept {
     private static final long serialVersionUID = 11000L;
 
     /** @param conjunctiveQueryFolding
-     * @param query */
+     *            conjunctiveQueryFolding
+     * @param query
+     *            query */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "QueryApproximation")
     public QueryApproximation(ConjunctiveQueryFolding conjunctiveQueryFolding,
             QRQuery query) {

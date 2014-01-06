@@ -23,14 +23,17 @@ public class ConceptWDep implements Serializable {
 
     /** c'tor with empty dep-set
      * 
-     * @param p */
+     * @param p
+     *            p */
     public ConceptWDep(int p) {
         concept = p;
         depSet = DepSet.create();
     }
 
     /** @param p
-     * @param dep */
+     *            p
+     * @param dep
+     *            dep */
     public ConceptWDep(int p, DepSet dep) {
         concept = p;
         depSet = DepSet.create(dep);
@@ -50,7 +53,8 @@ public class ConceptWDep implements Serializable {
 
     /** add dep-set to a CWD
      * 
-     * @param d */
+     * @param d
+     *            d */
     @PortedFrom(file = "ConceptWithDep.h", name = "addDep")
     public void addDep(DepSet d) {
         depSet.add(d);

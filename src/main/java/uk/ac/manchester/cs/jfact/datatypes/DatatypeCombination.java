@@ -7,24 +7,30 @@ package uk.ac.manchester.cs.jfact.datatypes;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** @author ignazio
  * @param <Type>
- * @param <Element> */
+ *            type
+ * @param <Element>
+ *            element */
 public interface DatatypeCombination<Type, Element> {
     /** @param d
+     *            d
      * @return the type */
     Type add(Element d);
 
     /** @param type
+     *            type
      * @return true if type\s value space and this datatype's value space have
      *         an intersection, e.g., non negative integers and non positive
      *         integers intersect at 0 */
     boolean isCompatible(Datatype<?> type);
 
     /** @param l
+     *            literal
      * @return true if l is a literal with compatible datatype and value
      *         included in this datatype value space */
     boolean isCompatible(Literal<?> l);
 
     /** @param type
+     *            type
      * @return true if the datatype is contradictory, e.g., the two appearing
      *         together in a datatype situation cause a clash. e.g., +{"6"} and
      *         +{"4"} are not compatible and not contradictory, +{"6"} and

@@ -24,9 +24,13 @@ public class AxiomValueOfNot extends AxiomIndividual {
     private final Literal<?> value;
 
     /** @param ax
+     *            ax
      * @param i
+     *            i
      * @param a
-     * @param v */
+     *            a
+     * @param v
+     *            v */
     public AxiomValueOfNot(OWLAxiom ax, IndividualExpression i, DataRoleExpression a,
             Literal<?> v) {
         super(ax, i);

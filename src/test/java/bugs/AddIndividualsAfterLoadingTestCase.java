@@ -14,6 +14,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 import uk.ac.manchester.cs.jfact.JFactFactory;
 
+@SuppressWarnings("javadoc")
 public class AddIndividualsAfterLoadingTestCase {
     @Test
     public void shouldLoadAndNotFailQuery() throws Exception {

@@ -16,7 +16,9 @@ public class Helper implements Serializable {
     /** check whether set S1 intersects with the set S2
      * 
      * @param S1
+     *            S1
      * @param S2
+     *            S2
      * @return true if S1 and S2 intersect */
     public static boolean intersectsWith(Collection<?> S1, Collection<?> S2) {
         for (Object o : S1) {
@@ -28,7 +30,9 @@ public class Helper implements Serializable {
     }
 
     /** @param l
-     * @param n */
+     *            l
+     * @param n
+     *            n */
     public static void resize(List<?> l, int n) {
         if (l.size() > n) {
             while (l.size() > n) {
@@ -42,8 +46,13 @@ public class Helper implements Serializable {
     }
 
     /** @param l
+     *            l
      * @param n
-     * @param filler */
+     *            n
+     * @param <T>
+     *            argument type
+     * @param filler
+     *            filler */
     public static <T> void resize(List<T> l, int n, T filler) {
         if (l.size() > n) {
             while (l.size() > n) {
@@ -66,19 +75,23 @@ public class Helper implements Serializable {
     public final static int bpBOTTOM = -1;
 
     /** @param index
+     *            index
      * @param pos
+     *            pos
      * @return bipolar pointer */
     public static int createBiPointer(int index, boolean pos) {
         return pos ? index : -index;
     }
 
     /** @param p
+     *            p
      * @return true if correct */
     public static boolean isCorrect(int p) {
         return p != bpINVALID;
     }
 
     /** @param p
+     *            p
      * @return true if valid */
     public static boolean isValid(int p) {
         return p != bpINVALID;

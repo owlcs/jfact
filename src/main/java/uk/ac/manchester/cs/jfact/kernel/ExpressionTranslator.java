@@ -13,10 +13,50 @@ import java.util.List;
 
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
-import uk.ac.manchester.cs.jfact.datatypes.*;
+import uk.ac.manchester.cs.jfact.datatypes.Datatype;
+import uk.ac.manchester.cs.jfact.datatypes.DatatypeEntry;
+import uk.ac.manchester.cs.jfact.datatypes.DatatypeExpression;
+import uk.ac.manchester.cs.jfact.datatypes.Literal;
+import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
-import uk.ac.manchester.cs.jfact.kernel.dl.*;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptAnd;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptBottom;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataExactCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataExists;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataForall;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataMaxCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataMinCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataValue;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptNot;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectExactCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectExists;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectForall;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectMaxCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectMinCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectSelf;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectValue;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptOneOf;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptOr;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptTop;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataAnd;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataBottom;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataNot;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataOneOf;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataOr;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleBottom;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleName;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleTop;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataTop;
+import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleBottom;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleChain;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleInverse;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleName;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleProjectionFrom;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleProjectionInto;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleTop;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
@@ -38,7 +78,9 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Seri
     @PortedFrom(file = "tExpressionTranslator.h", name = "sig")
     private TSignature sig;
 
-    /** @return true iff ENTRY is not in signature */
+    /** @param entity
+     *            entity
+     * @return true iff ENTRY is not in signature */
     @PortedFrom(file = "tExpressionTranslator.h", name = "nc")
     private boolean nc(NamedEntity entity) {
         return sig != null && !sig.containsNamedEntity(entity);
@@ -53,7 +95,8 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Seri
         sig = s;
     }
 
-    /** @param kb */
+    /** @param kb
+     *            kb */
     public ExpressionTranslator(TBox kb) {
         tbox = kb;
     }
@@ -83,7 +126,13 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Seri
         }
     }
 
-    /** create DLTree of given TAG and named ENTRY; set the entry's ENTITY if */
+    /** create DLTree of given TAG and named ENTRY; set the entry's ENTITY if
+     * 
+     * @param entry
+     *            entry
+     * @param entity
+     *            entity
+     * @return updated named entry */
     // necessary
     @PortedFrom(file = "tExpressionTranslator.h", name = "matchEntry")
     private NamedEntry matchEntry(NamedEntry entry, NamedEntity entity) {

@@ -37,13 +37,14 @@ public class ToDoPriorMatrix implements Serializable {
      * highest priority) */
     @PortedFrom(file = "PriorityMatrix.h", name = "iId")
     protected static final int priorityIndexID = nRegularOptions + 1;
-    /** priority index for <= operation in nominal node */
+    /** priority index for lesser than or equal operation in nominal node */
     @PortedFrom(file = "PriorityMatrix.h", name = "iNN")
     protected static final int priorityIndexNominalNode = nRegularOptions + 2;
 
     /** Auxiliary class to get priorities on operations
      * 
-     * @param options */
+     * @param options
+     *            options */
     @PortedFrom(file = "PriorityMatrix.h", name = "initPriorities")
     public void initPriorities(String options) {
         // check for correctness
@@ -67,8 +68,11 @@ public class ToDoPriorMatrix implements Serializable {
     }
 
     /** @param Op
+     *            Op
      * @param Sign
+     *            Sign
      * @param NominalNode
+     *            NominalNode
      * @return index */
     @PortedFrom(file = "PriorityMatrix.h", name = "getIndex")
     public int getIndex(DagTag Op, boolean Sign, boolean NominalNode) {

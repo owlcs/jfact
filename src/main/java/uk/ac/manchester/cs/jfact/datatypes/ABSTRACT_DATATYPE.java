@@ -6,11 +6,18 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
+/** @author ignazio
+ * @param <R>
+ *            type */
 public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>,
         Serializable {
     private static final long serialVersionUID = 11000L;
@@ -22,6 +29,10 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Data
     protected final Map<Facet, Comparable> knownNonNumericFacetValues = new HashMap<Facet, Comparable>();
     protected final String uri;
 
+    /** @param u
+     *            u
+     * @param f
+     *            facets */
     public ABSTRACT_DATATYPE(String u, Set<Facet> f) {
         this.facets = Collections.unmodifiableSet(f);
         this.uri = u;

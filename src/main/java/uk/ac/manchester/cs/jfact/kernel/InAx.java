@@ -124,7 +124,8 @@ public class InAx implements Serializable {
 
     private final static Map<String, Integer> created = new HashMap<String, Integer>();
 
-    /** @param s */
+    /** @param s
+     *            s */
     private static void add(String s) {
         if (created.containsKey(s)) {
             created.put(s, created.get(s) + 1);
@@ -134,6 +135,7 @@ public class InAx implements Serializable {
     }
 
     /** @param s
+     *            s
      * @return index for s */
     private static int get(String s) {
         return created.containsKey(s) ? created.get(s) : 0;

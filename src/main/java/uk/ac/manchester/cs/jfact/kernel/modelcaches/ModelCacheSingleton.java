@@ -18,7 +18,8 @@ public class ModelCacheSingleton extends ModelCacheInterface {
     @PortedFrom(file = "modelCacheSingleton.h", name = "Singleton")
     private final int singleton;
 
-    /** @param bp */
+    /** @param bp
+     *            bp */
     public ModelCacheSingleton(int bp) {
         super(false);
         singleton = bp;

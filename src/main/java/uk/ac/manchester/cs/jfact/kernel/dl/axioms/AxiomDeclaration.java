@@ -20,7 +20,9 @@ public class AxiomDeclaration extends AxiomImpl {
     private final Expression expression;
 
     /** @param ax
-     * @param d */
+     *            ax
+     * @param d
+     *            d */
     public AxiomDeclaration(OWLAxiom ax, Expression d) {
         super(ax);
         expression = d;

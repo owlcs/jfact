@@ -25,7 +25,12 @@ public class QueueQueue implements Serializable {
     private boolean queueBroken = false;
     private int size = 0;
 
-    /** add entry to a queue */
+    /** add entry to a queue
+     * 
+     * @param Node
+     *            Node
+     * @param offset
+     *            offset */
     protected void add(DlCompletionTree Node, ConceptWDep offset) {
         ToDoEntry e = new ToDoEntry(Node, offset);
         // no problems with empty queue and if no priority
@@ -57,17 +62,20 @@ public class QueueQueue implements Serializable {
         size = 0;
     }
 
-    /** check if queue empty */
+    /** @return true if queue empty */
     protected boolean isEmpty() {
         return sPointer == size;
     }
 
-    /** get next entry from the queue; works for non-empty queues */
+    /** @return get next entry from the queue; works for non-empty queues */
     protected ToDoEntry get() {
         return _Wait.get(sPointer++);
     }
 
-    /** save queue content to the given entry */
+    /** save queue content to the given entry
+     * 
+     * @param tss
+     *            tss */
     @PortedFrom(file = "ToDoList.h", name = "save")
     protected void save(TODOListSaveState tss) {
         tss.queueBroken = queueBroken;
@@ -82,7 +90,10 @@ public class QueueQueue implements Serializable {
         queueBroken = false;
     }
 
-    /** restore queue content from the given entry */
+    /** restore queue content from the given entry
+     * 
+     * @param tss
+     *            tss */
     @PortedFrom(file = "ToDoList.h", name = "restore")
     protected void restore(TODOListSaveState tss) {
         queueBroken = tss.queueBroken;

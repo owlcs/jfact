@@ -44,14 +44,15 @@ public class RAStateTransitions implements Serializable {
         return base;
     }
 
-    @SuppressWarnings("javadoc")
+    /** default constructor */
     public RAStateTransitions() {
         emptyTransition = false;
     }
 
     /** add a transition from a given state
      * 
-     * @param trans */
+     * @param trans
+     *            trans */
     @PortedFrom(file = "RAutomaton.h", name = "add")
     public void add(RATransition trans) {
         base.add(trans);
@@ -84,7 +85,8 @@ public class RAStateTransitions implements Serializable {
 
     /** print all the transitions starting from the state FROM
      * 
-     * @param o */
+     * @param o
+     *            o */
     @PortedFrom(file = "RAutomaton.h", name = "print")
     public void print(LogAdapter o) {
         for (int i = 0; i < size; i++) {
@@ -95,8 +97,11 @@ public class RAStateTransitions implements Serializable {
     /** set up state transitions: no more additions to the structure
      * 
      * @param state
+     *            state
      * @param nRoles
-     * @param data */
+     *            nRoles
+     * @param data
+     *            data */
     @PortedFrom(file = "RAutomaton.h", name = "setup")
     public void setup(int state, int nRoles, boolean data) {
         from = state;
@@ -113,6 +118,7 @@ public class RAStateTransitions implements Serializable {
      * states.
      * 
      * @param trans
+     *            trans
      * @return false if no such transition found */
     @PortedFrom(file = "RAutomaton.h", name = "addToExisting")
     public boolean addToExisting(RATransition trans) {
@@ -132,6 +138,7 @@ public class RAStateTransitions implements Serializable {
     }
 
     /** @param R
+     *            R
      * @return true if R is an applicable data role */
     @PortedFrom(file = "RAutomaton.h", name = "recognise")
     public boolean recognise(Role R) {

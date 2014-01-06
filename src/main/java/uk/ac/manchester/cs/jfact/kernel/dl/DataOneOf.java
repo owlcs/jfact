@@ -23,7 +23,8 @@ public class DataOneOf extends NAryExpressionImpl<Literal<?>> implements
 
     /** create one-of from individuals in the given array
      * 
-     * @param v */
+     * @param v
+     *            v */
     public DataOneOf(List<Literal<?>> v) {
         add(v);
     }

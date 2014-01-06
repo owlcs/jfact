@@ -36,6 +36,7 @@ public class TDag2Interface implements Serializable {
     private final List<DataExpression> TransData = new ArrayList<DataExpression>();
 
     /** @param v
+     *            v
      * @return build concept expression by a vertex V */
     @PortedFrom(file = "tDag2Interface.h", name = "buildCExpr")
     public ConceptExpression buildCExpr(DLVertex v) {
@@ -89,6 +90,7 @@ public class TDag2Interface implements Serializable {
     }
 
     /** @param v
+     *            v
      * @return build data expression by a vertex V */
     @PortedFrom(file = "tDag2Interface.h", name = "buildDExpr")
     public DataExpression buildDExpr(DLVertex v) {
@@ -115,7 +117,9 @@ public class TDag2Interface implements Serializable {
     /** init c'tor
      * 
      * @param dag
-     * @param manager */
+     *            dag
+     * @param manager
+     *            manager */
     public TDag2Interface(DLDag dag, ExpressionManager manager) {
         Dag = dag;
         Manager = manager;
@@ -124,6 +128,7 @@ public class TDag2Interface implements Serializable {
     }
 
     /** @param r
+     *            r
      * @return data role expression */
     @Original
     public RoleExpression getDataRoleExpression(Role r) {
@@ -131,6 +136,7 @@ public class TDag2Interface implements Serializable {
     }
 
     /** @param r
+     *            r
      * @return object role expression */
     @Original
     public RoleExpression getObjectRoleExpression(Role r) {
@@ -149,6 +155,7 @@ public class TDag2Interface implements Serializable {
     }
 
     /** @param p
+     *            p
      * @return concept expression corresponding index of vertex */
     @PortedFrom(file = "tDag2Interface.h", name = "getCExpr")
     public ConceptExpression getCExpr(int p) {
@@ -162,6 +169,7 @@ public class TDag2Interface implements Serializable {
     }
 
     /** @param p
+     *            p
      * @return data expression corresponding index of vertex */
     @PortedFrom(file = "tDag2Interface.h", name = "getDExpr")
     public DataExpression getDExpr(int p) {
@@ -177,7 +185,9 @@ public class TDag2Interface implements Serializable {
     }
 
     /** @param p
+     *            p
      * @param data
+     *            data
      * @return expression */
     @PortedFrom(file = "tDag2Interface.h", name = "getExpr")
     public Expression getExpr(int p, boolean data) {

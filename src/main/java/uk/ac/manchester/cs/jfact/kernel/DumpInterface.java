@@ -55,7 +55,9 @@ class DumpInterface implements Serializable {
     /** start operation >=/<= with number
      * 
      * @param Op
-     * @param n */
+     *            Op
+     * @param n
+     *            n */
     @SuppressWarnings("unused")
     @PortedFrom(file = "dumpInterface.h", name = "startOp")
     public void startOp(DIOp Op, int n) {}
@@ -82,7 +84,8 @@ class DumpInterface implements Serializable {
 
     /** obtain name by the named entry
      * 
-     * @param p */
+     * @param p
+     *            p */
     @PortedFrom(file = "dumpInterface.h", name = "dumpName")
     public void dumpName(NamedEntry p) {
         o.print(p.getName());
@@ -90,14 +93,16 @@ class DumpInterface implements Serializable {
 
     /** dump concept atom (as used in expression)
      * 
-     * @param p */
+     * @param p
+     *            p */
     @SuppressWarnings("unused")
     @PortedFrom(file = "dumpInterface.h", name = "dumpConcept")
     public void dumpConcept(Concept p) {}
 
     /** dump role atom (as used in expression)
      * 
-     * @param p */
+     * @param p
+     *            p */
     @SuppressWarnings("unused")
     @PortedFrom(file = "dumpInterface.h", name = "dumpRole")
     public void dumpRole(Role p) {}

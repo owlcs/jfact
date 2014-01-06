@@ -5,7 +5,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry.*;
+import static uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry.resolveSynonym;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +34,20 @@ public class NominalReasoner extends DlSatTester {
     }
 
     /** internal nominal reasoning interface */
-    /** create cache entry for given singleton */
+    /** create cache entry for given singleton
+     * 
+     * @param p
+     *            p */
     @PortedFrom(file = "ReasonerNom.h", name = "registerNominalCache")
     protected void registerNominalCache(Individual p) {
         dlHeap.setCache(p.getpName(), createModelCache(p.getNode().resolvePBlocker()));
     }
 
-    /** init single nominal node */
+    /** init single nominal node
+     * 
+     * @param nom
+     *            nom
+     * @return true if inconsistent */
     @PortedFrom(file = "ReasonerNom.h", name = "initNominalNode")
     protected boolean initNominalNode(Individual nom) {
         DlCompletionTree node = cGraph.getNewNode();
@@ -51,7 +58,10 @@ public class NominalReasoner extends DlSatTester {
         return initNewNode(node, DepSet.create(), nom.getpName());
     }
 
-    /** use classification information for the nominal P */
+    /** use classification information for the nominal P
+     * 
+     * @param p
+     *            p */
     @PortedFrom(file = "ReasonerNom.h", name = "updateClassifiedSingleton")
     protected void updateClassifiedSingleton(Individual p) {
         registerNominalCache(p);
@@ -66,8 +76,11 @@ public class NominalReasoner extends DlSatTester {
     }
 
     /** @param tbox
+     *            tbox
      * @param Options
-     * @param datatypeFactory */
+     *            Options
+     * @param datatypeFactory
+     *            datatypeFactory */
     public NominalReasoner(TBox tbox, JFactReasonerConfiguration Options,
             DatatypeFactory datatypeFactory) {
         super(tbox, Options, datatypeFactory);

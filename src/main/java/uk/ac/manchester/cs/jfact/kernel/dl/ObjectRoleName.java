@@ -19,7 +19,8 @@ public class ObjectRoleName extends NamedEntityImpl implements ObjectRoleExpress
         NamedEntity, Serializable {
     private static final long serialVersionUID = 11000L;
 
-    /** @param name */
+    /** @param name
+     *            name */
     public ObjectRoleName(String name) {
         super(name);
     }

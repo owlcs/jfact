@@ -17,7 +17,7 @@ public class MergableLabel implements Serializable {
     @PortedFrom(file = "mergableLabel.h", name = "pSample")
     private MergableLabel pSample;
 
-    @SuppressWarnings("javadoc")
+    /** default constructor */
     public MergableLabel() {
         pSample = this;
     }
@@ -47,7 +47,8 @@ public class MergableLabel implements Serializable {
 
     /** make 2 labels equal
      * 
-     * @param p */
+     * @param p
+     *            p */
     @PortedFrom(file = "mergableLabel.h", name = "merge")
     public void merge(MergableLabel p) {
         MergableLabel sample = p.resolve();
@@ -57,7 +58,7 @@ public class MergableLabel implements Serializable {
         }
     }
 
-    /** make label's depth <= 2;
+    /** make label's depth lesser than or equal 2;
      * 
      * @return sample of the label */
     @PortedFrom(file = "mergableLabel.h", name = "resolve")

@@ -17,8 +17,11 @@ public class ConceptDataMaxCardinality extends AbstractConceptDataCardinality {
     private static final long serialVersionUID = 11000L;
 
     /** @param n
+     *            n
      * @param R
-     * @param E */
+     *            R
+     * @param E
+     *            E */
     public ConceptDataMaxCardinality(int n, DataRoleExpression R, DataExpression E) {
         super(n, R, E);
     }

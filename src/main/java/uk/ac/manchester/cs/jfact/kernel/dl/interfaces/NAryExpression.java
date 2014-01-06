@@ -12,23 +12,27 @@ import conformance.PortedFrom;
 
 /** nary expression
  * 
- * @param <Argument> */
+ * @param <Argument>
+ *            argument type */
 @PortedFrom(file = "tDLExpression.h", name = "TDLNAryExpression")
 public interface NAryExpression<Argument extends Expression> {
     /** @param arg
+     *            arg
      * @return transform general expression into the argument one */
     @PortedFrom(file = "tDLExpression.h", name = "transform")
     Argument transform(Expression arg);
 
     /** add a single element to the array
      * 
-     * @param p */
+     * @param p
+     *            p */
     @PortedFrom(file = "tDLExpression.h", name = "add")
     void add(Argument p);
 
     /** add a vector
      * 
-     * @param v */
+     * @param v
+     *            v */
     @PortedFrom(file = "tDLExpression.h", name = "add")
     void add(Collection<Argument> v);
 

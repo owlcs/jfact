@@ -20,7 +20,9 @@ public class AxiomEquivalentDRoles extends AbstractNaryAxiom<DataRoleExpression>
     private static final long serialVersionUID = 11000L;
 
     /** @param ax
-     * @param v */
+     *            ax
+     * @param v
+     *            v */
     public AxiomEquivalentDRoles(OWLAxiom ax, List<DataRoleExpression> v) {
         super(ax, v);
     }

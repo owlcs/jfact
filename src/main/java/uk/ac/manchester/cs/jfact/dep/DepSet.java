@@ -25,12 +25,16 @@ public class DepSet implements Serializable {
     }
 
     /** @param i
+     *            i
      * @return depset with value i */
     @PortedFrom(file = "tDepSet.h", name = "create")
     public static DepSet create(int i) {
         return new DepSet(i);
     }
 
+    /** @param values
+     *            values
+     * @return new depset with stated values */
     public static DepSet create(int... values) {
         FastSetSimple set = new FastSetSimple();
         for (int i : values) {
@@ -40,6 +44,7 @@ public class DepSet implements Serializable {
     }
 
     /** @param dep
+     *            dep
      * @return copy of dep */
     @PortedFrom(file = "tDepSet.h", name = "create")
     public static DepSet create(DepSet dep) {
@@ -49,7 +54,9 @@ public class DepSet implements Serializable {
     }
 
     /** @param ds1
+     *            ds1
      * @param ds2
+     *            ds2
      * @return union of ds1 and ds2 */
     @PortedFrom(file = "tDepSet.h", name = "+")
     public static DepSet plus(DepSet ds1, DepSet ds2) {
@@ -60,6 +67,7 @@ public class DepSet implements Serializable {
     }
 
     /** @param delegate
+     *            delegate
      * @return depset wrapper over delegate */
     @PortedFrom(file = "tDepSet.h", name = "create")
     public static DepSet create(FastSetSimple delegate) {
@@ -71,7 +79,8 @@ public class DepSet implements Serializable {
 
     protected DepSet() {}
 
-    /** @param d */
+    /** @param d
+     *            d */
     public DepSet(FastSetSimple d) {
         delegate = d;
     }

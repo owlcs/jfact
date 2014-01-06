@@ -22,8 +22,11 @@ public class AxiomDisjointUnion extends AbstractNaryAxiom<ConceptExpression> {
     private final ConceptExpression conceptExpression;
 
     /** @param ax
+     *            ax
      * @param c
-     * @param v */
+     *            c
+     * @param v
+     *            v */
     public AxiomDisjointUnion(OWLAxiom ax, ConceptExpression c,
             Collection<ConceptExpression> v) {
         super(ax, v);

@@ -8,7 +8,8 @@ package uk.ac.manchester.cs.jfact.datatypes;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 
 /** @author ignazio
- * @param <T> */
+ * @param <T>
+ *            type */
 public interface Literal<T extends Comparable<T>> extends DataExpression,
         Comparable<Literal<T>> {
     /** @return datatype */

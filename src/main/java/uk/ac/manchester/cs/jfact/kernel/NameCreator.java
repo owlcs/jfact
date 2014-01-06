@@ -9,10 +9,12 @@ import conformance.PortedFrom;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** name creator
  * 
- * @param <T> */
+ * @param <T>
+ *            type */
 @PortedFrom(file = "tNameSet.h", name = "TNameCreator")
 public interface NameCreator<T> {
     /** @param name
+     *            name
      * @return new Named Entry */
     @PortedFrom(file = "tNameSet.h", name = "makeEntry")
     T makeEntry(String name);

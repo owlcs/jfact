@@ -23,7 +23,8 @@ public class ObjectRoleInverse implements ObjectRoleExpression, ObjectRoleArg,
     @Original
     private final ObjectRoleExpression objectRoleExpression;
 
-    /** @param R */
+    /** @param R
+     *            R */
     public ObjectRoleInverse(ObjectRoleExpression R) {
         objectRoleExpression = R;
     }

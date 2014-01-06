@@ -25,7 +25,8 @@ public class TDepthMeasurer extends DLExpressionVisitorAdapter {
     private static final long serialVersionUID = 11000L;
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
 
-    /** @param conjunctiveQueryFolding */
+    /** @param conjunctiveQueryFolding
+     *            conjunctiveQueryFolding */
     public TDepthMeasurer(ConjunctiveQueryFolding conjunctiveQueryFolding) {
         this.conjunctiveQueryFolding = conjunctiveQueryFolding;
     }

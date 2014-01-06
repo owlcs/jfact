@@ -6,7 +6,13 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
@@ -50,7 +56,8 @@ public class TaxonomyVertex implements Serializable {
 
     /** mark vertex as the one corresponding to a given ENTRY
      * 
-     * @param entry */
+     * @param entry
+     *            entry */
     @PortedFrom(file = "taxVertex.h", name = "setVertexAsHost")
     public void setVertexAsHost(ClassifiableEntry entry) {
         entry.setTaxVertex(this);
@@ -59,7 +66,9 @@ public class TaxonomyVertex implements Serializable {
     /** set sample to ENTRY
      * 
      * @param entry
-     * @param linkBack */
+     *            entry
+     * @param linkBack
+     *            linkBack */
     @PortedFrom(file = "taxVertex.h", name = "setSample")
     public void setSample(ClassifiableEntry entry, boolean linkBack) {
         sample = entry;
@@ -69,6 +78,7 @@ public class TaxonomyVertex implements Serializable {
     }
 
     /** @param upDirection
+     *            upDirection
      * @return Links */
     @PortedFrom(file = "taxVertex.h", name = "neigh")
     public List<TaxonomyVertex> neigh(boolean upDirection) {
@@ -77,13 +87,15 @@ public class TaxonomyVertex implements Serializable {
 
     // checked part
     /** @param checkLab
+     *            checkLab
      * @return true if checked */
     @PortedFrom(file = "taxVertex.h", name = "isChecked")
     public boolean isChecked(long checkLab) {
         return checkLab == checked;
     }
 
-    /** @param checkLab */
+    /** @param checkLab
+     *            checkLab */
     @PortedFrom(file = "taxVertex.h", name = "setChecked")
     public void setChecked(long checkLab) {
         checked = checkLab;
@@ -91,6 +103,7 @@ public class TaxonomyVertex implements Serializable {
 
     // value part
     /** @param valueLab
+     *            valueLab
      * @return true if values */
     @PortedFrom(file = "taxVertex.h", name = "isValued")
     public boolean isValued(long valueLab) {
@@ -104,7 +117,9 @@ public class TaxonomyVertex implements Serializable {
     }
 
     /** @param val
+     *            val
      * @param valueLab
+     *            valueLab
      * @return val */
     @PortedFrom(file = "taxVertex.h", name = "setValued")
     public boolean setValued(boolean val, long valueLab) {
@@ -135,6 +150,7 @@ public class TaxonomyVertex implements Serializable {
     /** keep COMMON flag iff both flags are set;
      * 
      * @param n
+     *            n
      * @return true if it is the case */
     @PortedFrom(file = "taxVertex.h", name = "correctCommon")
     public boolean correctCommon(int n) {
@@ -160,20 +176,22 @@ public class TaxonomyVertex implements Serializable {
         return synonyms;
     }
 
-    @SuppressWarnings("javadoc")
+    /** default constructor */
     public TaxonomyVertex() {
         initFlags();
     }
 
     /** init c'tor; use it only for Top/Bot initialisations
      * 
-     * @param p */
+     * @param p
+     *            p */
     public TaxonomyVertex(ClassifiableEntry p) {
         initFlags();
         setSample(p, true);
     }
 
-    /** @param v */
+    /** @param v
+     *            v */
     public TaxonomyVertex(TaxonomyVertex v) {
         sample = v.sample;
         synonyms = new HashSet<ClassifiableEntry>(v.synonyms);
@@ -188,7 +206,8 @@ public class TaxonomyVertex implements Serializable {
 
     /** add P as a synonym to curent vertex
      * 
-     * @param p */
+     * @param p
+     *            p */
     @PortedFrom(file = "taxVertex.h", name = "addSynonym")
     public void addSynonym(ClassifiableEntry p) {
         synonyms.add(p);
@@ -213,7 +232,9 @@ public class TaxonomyVertex implements Serializable {
     /** add link in given direction to vertex
      * 
      * @param upDirection
-     * @param p */
+     *            upDirection
+     * @param p
+     *            p */
     @PortedFrom(file = "taxVertex.h", name = "addNeighbour")
     public void addNeighbour(boolean upDirection, TaxonomyVertex p) {
         if (p == null) {
@@ -223,6 +244,7 @@ public class TaxonomyVertex implements Serializable {
     }
 
     /** @param upDirection
+     *            upDirection
      * @return check if vertex has no neighbours in given direction */
     @PortedFrom(file = "taxVertex.h", name = "noNeighbours")
     public boolean noNeighbours(boolean upDirection) {
@@ -245,7 +267,8 @@ public class TaxonomyVertex implements Serializable {
 
     /** remove latest link (usually to the BOTTOM node)
      * 
-     * @param upDirection */
+     * @param upDirection
+     *            upDirection */
     @PortedFrom(file = "taxVertex.h", name = "removeLastLink")
     public void removeLastLink(boolean upDirection) {
         Helper.resize(neigh(upDirection), neigh(upDirection).size() - 1);
@@ -253,14 +276,17 @@ public class TaxonomyVertex implements Serializable {
 
     /** clear all links in a given direction
      * 
-     * @param upDirection */
+     * @param upDirection
+     *            upDirection */
     @PortedFrom(file = "taxVertex.h", name = "clearLinks")
     public void clearLinks(boolean upDirection) {
         neigh(upDirection).clear();
     }
 
     /** @param upDirection
+     *            upDirection
      * @param p
+     *            p
      * @return true if link removed */
     @PortedFrom(file = "taxVertex.h", name = "removeLink")
     public boolean removeLink(boolean upDirection, TaxonomyVertex p) {
@@ -275,7 +301,8 @@ public class TaxonomyVertex implements Serializable {
     }
 
     // TODO does not work with synonyms
-    /** @param c */
+    /** @param c
+     *            c */
     @PortedFrom(file = "taxVertex.h", name = "incorporate")
     public void incorporate(JFactReasonerConfiguration c) {
         // setup links
@@ -318,7 +345,8 @@ public class TaxonomyVertex implements Serializable {
 
     /** remove one half of a given node from a graph
      * 
-     * @param upDirection */
+     * @param upDirection
+     *            upDirection */
     @PortedFrom(file = "taxVertex.h", name = "removeLinks")
     public void removeLinks(boolean upDirection) {
         for (TaxonomyVertex p : neigh(upDirection)) {
@@ -343,7 +371,8 @@ public class TaxonomyVertex implements Serializable {
 
     /** set the inUse value of the node
      * 
-     * @param value */
+     * @param value
+     *            value */
     @PortedFrom(file = "taxVertex.h", name = "setInUse")
     public void setInUse(boolean value) {
         inUse = value;
@@ -352,8 +381,11 @@ public class TaxonomyVertex implements Serializable {
     /** merge NODE which is independent to THIS
      * 
      * @param node
+     *            node
      * @param excludes
-     * @param curEntry */
+     *            excludes
+     * @param curEntry
+     *            curEntry */
     @PortedFrom(file = "taxVertex.h", name = "mergeIndepNode")
     public void mergeIndepNode(TaxonomyVertex node, Set<TaxonomyVertex> excludes,
             ClassifiableEntry curEntry) {
@@ -402,6 +434,7 @@ public class TaxonomyVertex implements Serializable {
     }
 
     /** @param upDirection
+     *            upDirection
      * @return neighbours debug print */
     @PortedFrom(file = "taxVertex.h", name = "printNeighbours")
     public String printNeighbours(boolean upDirection) {

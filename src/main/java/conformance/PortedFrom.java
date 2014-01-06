@@ -16,12 +16,18 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PortedFrom {
-    /** the file with the definition */
+    /** the file with the definition
+     * 
+     * @return file */
     String file();
 
-    /** the original name */
+    /** the original name
+     * 
+     * @return name */
     String name();
 
-    /** optional method name, for method arguments */
+    /** optional method name, for method arguments
+     * 
+     * @return argument */
     String argumentFor() default "";
 }

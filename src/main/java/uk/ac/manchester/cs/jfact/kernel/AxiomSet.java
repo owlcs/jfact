@@ -31,7 +31,10 @@ public class AxiomSet implements Serializable {
     @PortedFrom(file = "tAxiomSet.h", name = "ActionVector")
     private final List<AbsorptionActions> actions = new ArrayList<AbsorptionActions>();
 
-    /** add already built GCI p */
+    /** add already built GCI p
+     * 
+     * @param p
+     *            p */
     @PortedFrom(file = "tAxiomSet.h", name = "insertGCI")
     private void insertGCI(Axiom p) {
         tboxHost.getOptions().getAbsorptionLog().print("\n new axiom (")
@@ -41,6 +44,8 @@ public class AxiomSet implements Serializable {
 
     /** insert GCI if new;
      * 
+     * @param q
+     *            q
      * @return true iff already exists */
     @PortedFrom(file = "tAxiomSet.h", name = "insertIfNew")
     private boolean insertIfNew(Axiom q) {
@@ -53,6 +58,8 @@ public class AxiomSet implements Serializable {
 
     /** helper that inserts an axiom into Accum;
      * 
+     * @param q
+     *            q
      * @return bool if success */
     @PortedFrom(file = "tAxiomSet.h", name = "processNewAxiom")
     protected boolean processNewAxiom(Axiom q) {
@@ -65,7 +72,8 @@ public class AxiomSet implements Serializable {
         return true;
     }
 
-    /** @param host */
+    /** @param host
+     *            host */
     public AxiomSet(TBox host) {
         tboxHost = host;
         absorptionLog = tboxHost.getOptions().getAbsorptionLog();
@@ -74,7 +82,9 @@ public class AxiomSet implements Serializable {
     /** add axiom for the GCI C [= D
      * 
      * @param C
-     * @param D */
+     *            C
+     * @param D
+     *            D */
     @PortedFrom(file = "tAxiomSet.h", name = "addAxiom")
     public void addAxiom(DLTree C, DLTree D) {
         SAbsInput();
@@ -84,7 +94,9 @@ public class AxiomSet implements Serializable {
         insertGCI(p);
     }
 
-    /** get number of (not absorbed) GCIs */
+    /** get number of (not absorbed) GCIs
+     * 
+     * @return size */
     @PortedFrom(file = "tAxiomSet.h", name = "size")
     private int size() {
         return accumulator.size();
@@ -108,6 +120,8 @@ public class AxiomSet implements Serializable {
 
     /** split given axiom
      * 
+     * @param p
+     *            p
      * @return true if any spit happens */
     @PortedFrom(file = "tAxiomSet.h", name = "split")
     protected boolean split(Axiom p) {
@@ -165,6 +179,7 @@ public class AxiomSet implements Serializable {
     }
 
     /** @param flags
+     *            flags
      * @return false if no absorptions */
     @PortedFrom(file = "tAxiomSet.h", name = "initAbsorptionFlags")
     public boolean initAbsorptionFlags(String flags) {

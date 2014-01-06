@@ -7,13 +7,16 @@ package uk.ac.manchester.cs.jfact.datatypes;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** all literals whose datatype is numeric
  * 
- * @param <R> */
+ * @param <R>
+ *            type */
 public class NumericLiteralImpl<R extends Comparable<R>> extends LiteralImpl<R> implements
         NumericLiteral<R> {
     private static final long serialVersionUID = 11000L;
 
     /** @param type
-     * @param value */
+     *            type
+     * @param value
+     *            value */
     public NumericLiteralImpl(NumericDatatype<R> type, String value) {
         super(type, value);
     }

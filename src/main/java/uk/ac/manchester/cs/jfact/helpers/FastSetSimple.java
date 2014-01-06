@@ -49,11 +49,13 @@ public class FastSetSimple extends AbstractFastSet {
         return -lowerbound - 1;
     }
 
-    @SuppressWarnings("javadoc")
+    /** default constructor */
     public FastSetSimple() {}
 
     /** @param c1
-     * @param c2 */
+     *            c1
+     * @param c2
+     *            c2 */
     public FastSetSimple(FastSetSimple c1, FastSetSimple c2) {
         values = new int[(c1.size + c2.size) / defaultSize * defaultSize + defaultSize];
         int i = 0;

@@ -8,9 +8,19 @@ package uk.ac.manchester.cs.jfact.kernel;
 import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
 import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
-import uk.ac.manchester.cs.jfact.helpers.*;
+import uk.ac.manchester.cs.jfact.helpers.DLTree;
+import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
+import uk.ac.manchester.cs.jfact.helpers.FastSet;
+import uk.ac.manchester.cs.jfact.helpers.FastSetFactory;
+import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import conformance.Original;
 import conformance.PortedFrom;
 
@@ -110,21 +120,24 @@ public class Concept extends ClassifiableEntry {
 
     /** adds concept as a told subsumer of current one;
      * 
+     * @param concept
+     *            concept
      * @return value for CDC analisys */
     @PortedFrom(file = "tConcept.h", name = "addToldSubsumer")
-    private boolean addToldSubsumer(Concept p) {
-        if (p != this) {
-            addParentIfNew(p);
-            if (p.isSingleton() || p.isHasSP()) {
+    private boolean addToldSubsumer(Concept concept) {
+        if (concept != this) {
+            addParentIfNew(concept);
+            if (concept.isSingleton() || concept.isHasSP()) {
                 setHasSP(true);
                 // this has singleton parent
             }
         }
         // if non-primitive concept was found in a description, it's not CD
-        return p.isPrimitive();
+        return concept.isPrimitive();
     }
 
-    /** @param name */
+    /** @param name
+     *            name */
     public Concept(String name) {
         super(name);
         rel = 0;
@@ -137,10 +150,11 @@ public class Concept extends ClassifiableEntry {
 
     /** add index of a simple rule in TBox to the ER set
      * 
-     * @param p */
+     * @param ruleIndex
+     *            ruleIndex */
     @PortedFrom(file = "tConcept.h", name = "addExtraRule")
-    public void addExtraRule(int p) {
-        extraRules.add(p);
+    public void addExtraRule(int ruleIndex) {
+        extraRules.add(ruleIndex);
         setCompletelyDefined(false);
     }
 
@@ -185,6 +199,7 @@ public class Concept extends ClassifiableEntry {
     }
 
     /** @param desc
+     *            desc
      * @return whether it is possible to init this as a non-primitive concept
      *         with DESC */
     @PortedFrom(file = "tConcept.h", name = "canInitNonPrim")
@@ -201,6 +216,7 @@ public class Concept extends ClassifiableEntry {
     /** switch primitive concept to non-primitive with new definition;
      * 
      * @param desc
+     *            desc
      * @return old definition */
     @PortedFrom(file = "tConcept.h", name = "makeNonPrimitive")
     public DLTree makeNonPrimitive(DLTree desc) {
@@ -235,7 +251,8 @@ public class Concept extends ClassifiableEntry {
 
     /** init TOP told subsumer if necessary
      * 
-     * @param top */
+     * @param top
+     *            top */
     @PortedFrom(file = "tConcept.h", name = "setToldTop")
     public void setToldTop(Concept top) {
         if (description == null && !hasToldSubsumers()) {
@@ -259,7 +276,8 @@ public class Concept extends ClassifiableEntry {
         return pName;
     }
 
-    /** @param Desc */
+    /** @param Desc
+     *            Desc */
     @PortedFrom(file = "tConcept.h", name = "addDesc")
     public void addDesc(DLTree Desc) {
         if (Desc == null) {
@@ -288,7 +306,8 @@ public class Concept extends ClassifiableEntry {
         }
     }
 
-    /** @param Desc */
+    /** @param Desc
+     *            Desc */
     @Original
     public void addLeaves(Collection<DLTree> Desc) {
         // assert isPrimitive();
@@ -360,7 +379,9 @@ public class Concept extends ClassifiableEntry {
             DNAME);
 
     /** @param stack
-     * @param current */
+     *            stack
+     * @param current
+     *            current */
     @Original
     public void push(LinkedList<DLTree> stack, DLTree current) {
         // push subtrees: stack size increases by one or two, or current is a
@@ -401,7 +422,9 @@ public class Concept extends ClassifiableEntry {
     /** init told subsumers of the concept by given DESCription;
      * 
      * @param _desc
+     *            _desc
      * @param RolesProcessed
+     *            RolesProcessed
      * @return TRUE iff concept is CD */
     @PortedFrom(file = "tConcept.h", name = "initToldSubsumers")
     public boolean initToldSubsumers(DLTree _desc, Set<Role> RolesProcessed) {
@@ -453,7 +476,9 @@ public class Concept extends ClassifiableEntry {
     }
 
     /** @param r
-     * @param RolesProcessed */
+     *            r
+     * @param RolesProcessed
+     *            RolesProcessed */
     @PortedFrom(file = "tConcept.h", name = "SearchTSbyRoleAndSupers")
     public void searchTSbyRoleAndSupers(Role r, Set<Role> RolesProcessed) {
         searchTSbyRole(r, RolesProcessed);
@@ -505,7 +530,8 @@ public class Concept extends ClassifiableEntry {
         return pName;
     }
 
-    /** @param pName */
+    /** @param pName
+     *            pName */
     @Original
     public void setpName(int pName) {
         this.pName = pName;
@@ -517,7 +543,8 @@ public class Concept extends ClassifiableEntry {
         return pBody;
     }
 
-    /** @param pBody */
+    /** @param pBody
+     *            pBody */
     @Original
     public void setpBody(int pBody) {
         this.pBody = pBody;
@@ -567,7 +594,8 @@ public class Concept extends ClassifiableEntry {
         return primitive;
     }
 
-    /** @param action */
+    /** @param action
+     *            action */
     @Original
     public void setPrimitive(boolean action) {
         primitive = action;
@@ -582,7 +610,8 @@ public class Concept extends ClassifiableEntry {
         return hasSP;
     }
 
-    /** @param action */
+    /** @param action
+     *            action */
     @Original
     public void setHasSP(boolean action) {
         hasSP = action;
@@ -597,7 +626,8 @@ public class Concept extends ClassifiableEntry {
         return nominal;
     }
 
-    /** @param action */
+    /** @param action
+     *            action */
     @Original
     public void setNominal(boolean action) {
         nominal = action;
@@ -612,7 +642,8 @@ public class Concept extends ClassifiableEntry {
         return singleton;
     }
 
-    /** @param action */
+    /** @param action
+     *            action */
     @Original
     public void setSingleton(boolean action) {
         singleton = action;
@@ -620,6 +651,7 @@ public class Concept extends ClassifiableEntry {
 
     // relevance part
     /** @param lab
+     *            lab
      * @return is given concept relevant to given Labeller's state */
     @PortedFrom(file = "tConcept.h", name = "isRelevant")
     public boolean isRelevant(long lab) {
@@ -628,7 +660,8 @@ public class Concept extends ClassifiableEntry {
 
     /** make given concept relevant to given Labeller's state
      * 
-     * @param lab */
+     * @param lab
+     *            lab */
     @PortedFrom(file = "tConcept.h", name = "setRelevant")
     public void setRelevant(long lab) {
         rel = lab;

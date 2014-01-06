@@ -23,7 +23,8 @@ public class SupConceptActor implements Actor, Serializable {
         return !pe.equals(q);
     }
 
-    /** @param q */
+    /** @param q
+     *            q */
     public SupConceptActor(ClassifiableEntry q) {
         pe = q;
     }

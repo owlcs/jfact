@@ -465,12 +465,16 @@ class UpperBoundDirectEvaluator extends CardinalityEvaluatorBase {
 class UpperBoundComplementEvaluator extends CardinalityEvaluatorBase {
     private static final long serialVersionUID = 11000L;
 
-    /** define a special value for concepts that are not in C^{<= n} */
+    /** define a special value for concepts that are not in C^{<= n}
+     * 
+     * @return none value */
     protected int getNoneValue() {
         return -1;
     }
 
-    /** define a special value for concepts that are in C^{<= n} for all n */
+    /** define a special value for concepts that are in C^{<= n} for all n
+     * 
+     * @return all value */
     protected int getAllValue() {
         return 0;
     }
@@ -1268,7 +1272,8 @@ public class ExtendedSyntacticLocalityChecker extends GeneralSyntacticLocalityCh
 
     /** init c'tor
      * 
-     * @param s */
+     * @param s
+     *            s */
     public ExtendedSyntacticLocalityChecker(TSignature s) {
         super(s);
         UBD = new UpperBoundDirectEvaluator(s);

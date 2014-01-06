@@ -50,6 +50,7 @@ public interface FastSet {
     boolean intersect(FastSet f);
 
     /** @param i
+     *            i
      * @return element at position i */
     int get(int i);
 
@@ -74,6 +75,7 @@ public interface FastSet {
      * @return true if any of the elements is contained */
     boolean containsAny(FastSet c);
 
-    /** @param value */
+    /** @param value
+     *            value */
     void completeSet(int value);
 }

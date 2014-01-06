@@ -21,7 +21,8 @@ public class ConceptObjectSelf implements ConceptObjectRoleExpression, Serializa
     @PortedFrom(file = "tDLExpression.h", name = "OR")
     private final ObjectRoleExpression objectRoleExpression;
 
-    /** @param R */
+    /** @param R
+     *            R */
     public ConceptObjectSelf(ObjectRoleExpression R) {
         objectRoleExpression = R;
     }

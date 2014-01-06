@@ -18,7 +18,8 @@ public class IndividualName extends NamedEntityImpl implements IndividualExpress
         Serializable {
     private static final long serialVersionUID = 11000L;
 
-    /** @param name */
+    /** @param name
+     *            name */
     public IndividualName(String name) {
         super(name);
     }

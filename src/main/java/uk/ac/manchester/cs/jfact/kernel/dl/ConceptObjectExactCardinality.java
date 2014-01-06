@@ -29,8 +29,11 @@ public class ConceptObjectExactCardinality implements ConceptObjectCardinalityEx
     private final ObjectRoleExpression roleDelegate;
 
     /** @param n
+     *            n
      * @param R
-     * @param C */
+     *            R
+     * @param C
+     *            C */
     public ConceptObjectExactCardinality(int n, ObjectRoleExpression R,
             ConceptExpression C) {
         N = n;

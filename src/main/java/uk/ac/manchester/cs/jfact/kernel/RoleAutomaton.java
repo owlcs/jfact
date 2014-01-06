@@ -35,7 +35,10 @@ public class RoleAutomaton implements Serializable {
     @PortedFrom(file = "RAutomaton.h", name = "OSafe")
     private boolean outputSafe;
 
-    /** make sure that STATE exists in the automaton (update ton's size) */
+    /** make sure that STATE exists in the automaton (update ton's size)
+     * 
+     * @param state
+     *            state */
     @PortedFrom(file = "RAutomaton.h", name = "ensureState")
     private void ensureState(int state) {
         if (state >= base.size()) {
@@ -48,7 +51,7 @@ public class RoleAutomaton implements Serializable {
         }
     }
 
-    @SuppressWarnings("javadoc")
+    /** default constructor */
     public RoleAutomaton() {
         initialRA = 0;
         inputSafe = true;
@@ -58,7 +61,8 @@ public class RoleAutomaton implements Serializable {
 
     /** make the beginning of the chain
      * 
-     * @param from */
+     * @param from
+     *            from */
     @PortedFrom(file = "RAutomaton.h", name = "initChain")
     public void initChain(int from) {
         initialRA = from;
@@ -67,7 +71,9 @@ public class RoleAutomaton implements Serializable {
     /** add an Automaton to the chain with a default state
      * 
      * @param RA
+     *            RA
      * @param oSafe
+     *            oSafe
      * @return is o safe */
     @PortedFrom(file = "RAutomaton.h", name = "addToChain")
     public boolean addToChain(RoleAutomaton RA, boolean oSafe) {
@@ -90,7 +96,8 @@ public class RoleAutomaton implements Serializable {
     // add single RA
     /** add RA from a subrole to given one
      * 
-     * @param RA */
+     * @param RA
+     *            RA */
     @PortedFrom(file = "RAutomaton.h", name = "addRA")
     public void addRA(RoleAutomaton RA) {
         // XXX not sure about this
@@ -112,7 +119,9 @@ public class RoleAutomaton implements Serializable {
      * correct
      * 
      * @param state
-     * @param trans */
+     *            state
+     * @param trans
+     *            trans */
     @PortedFrom(file = "RAutomaton.h", name = "addTransitionSafe")
     public void addTransitionSafe(int state, RATransition trans) {
         ensureState(state);
@@ -135,7 +144,9 @@ public class RoleAutomaton implements Serializable {
     /** check whether transition between FROM and TO breaks safety
      * 
      * @param from
-     * @param to */
+     *            from
+     * @param to
+     *            to */
     @PortedFrom(file = "RAutomaton.h", name = "checkTransition")
     public void checkTransition(int from, int to) {
         if (from == final_state) {
@@ -150,7 +161,9 @@ public class RoleAutomaton implements Serializable {
      * ton
      * 
      * @param from
-     * @param trans */
+     *            from
+     * @param trans
+     *            trans */
     @PortedFrom(file = "RAutomaton.h", name = "addTransition")
     public void addTransition(int from, RATransition trans) {
         checkTransition(from, trans.final_state());
@@ -159,7 +172,8 @@ public class RoleAutomaton implements Serializable {
 
     /** make the internal chain transition (between chainState and TO)
      * 
-     * @param to */
+     * @param to
+     *            to */
     @PortedFrom(file = "RAutomaton.h", name = "nextChainTransition")
     public void nextChainTransition(int to) {
         addTransition(initialRA, new RATransition(to));
@@ -182,6 +196,7 @@ public class RoleAutomaton implements Serializable {
     }
 
     /** @param state
+     *            state
      * @return the 1st (multi-)transition starting in STATE */
     @PortedFrom(file = "RAutomaton.h", name = "begin")
     public RAStateTransitions getRAStateTransitions(int state) {
@@ -197,7 +212,9 @@ public class RoleAutomaton implements Serializable {
     /** set up all transitions passing number of roles
      * 
      * @param nRoles
-     * @param data */
+     *            nRoles
+     * @param data
+     *            data */
     @PortedFrom(file = "RAutomaton.h", name = "setup")
     public void setup(int nRoles, boolean data) {
         for (int i = 0; i < base.size(); ++i) {
@@ -205,7 +222,8 @@ public class RoleAutomaton implements Serializable {
         }
     }
 
-    /** @param o */
+    /** @param o
+     *            o */
     @PortedFrom(file = "RAutomaton.h", name = "print")
     public void print(LogAdapter o) {
         for (int state = 0; state < base.size(); ++state) {
@@ -213,7 +231,8 @@ public class RoleAutomaton implements Serializable {
         }
     }
 
-    /** @param RA */
+    /** @param RA
+     *            RA */
     @PortedFrom(file = "RAutomaton.h", name = "addCopy")
     public void addCopy(RoleAutomaton RA) {
         for (int i = 0; i < RA.size(); ++i) {
@@ -242,7 +261,9 @@ public class RoleAutomaton implements Serializable {
      * chainState and (FRA) states
      * 
      * @param RASize
-     * @param fRA */
+     *            RASize
+     * @param fRA
+     *            fRA */
     @PortedFrom(file = "RAutomaton.h", name = "initMap")
     public void initMap(int RASize, int fRA) {
         map = Arrays.copyOf(map, RASize);
@@ -273,8 +294,11 @@ public class RoleAutomaton implements Serializable {
      * the safety of a previous automaton in a chain
      * 
      * @param RA
+     *            RA
      * @param oSafe
+     *            oSafe
      * @param fRA
+     *            fRA
      * @return is o safe */
     @PortedFrom(file = "RAutomaton.h", name = "addToChain")
     public boolean addToChain(RoleAutomaton RA, boolean oSafe, int fRA) {
@@ -309,7 +333,8 @@ public class RoleAutomaton implements Serializable {
         Complete = true;
     }
 
-    /** @param b */
+    /** @param b
+     *            b */
     @PortedFrom(file = "RAutomaton.h", name = "setCompleted")
     public void setCompleted(boolean b) {
         Complete = b;

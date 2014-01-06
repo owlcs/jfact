@@ -20,7 +20,9 @@ public class AxiomFairnessConstraint extends AbstractNaryAxiom<ConceptExpression
     private static final long serialVersionUID = 11000L;
 
     /** @param ax
-     * @param v */
+     *            ax
+     * @param v
+     *            v */
     public AxiomFairnessConstraint(OWLAxiom ax, List<ConceptExpression> v) {
         super(ax, v);
     }

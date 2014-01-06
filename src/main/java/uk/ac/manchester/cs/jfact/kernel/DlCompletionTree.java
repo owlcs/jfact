@@ -15,7 +15,12 @@ import java.util.List;
 import java.util.Map;
 
 import uk.ac.manchester.cs.jfact.dep.DepSet;
-import uk.ac.manchester.cs.jfact.helpers.*;
+import uk.ac.manchester.cs.jfact.helpers.ArrayIntMap;
+import uk.ac.manchester.cs.jfact.helpers.DLVertex;
+import uk.ac.manchester.cs.jfact.helpers.Helper;
+import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
+import uk.ac.manchester.cs.jfact.helpers.Reference;
+import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.kernel.state.DLCompletionTreeSaveState;
 import uk.ac.manchester.cs.jfact.kernel.state.SaveList;
@@ -131,7 +136,13 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     @Original
     private final JFactReasonerConfiguration options;
 
-    /** check if B2 holds for given DL vertex with C=V */
+    /** check if B2 holds for given DL vertex with C=V
+     * 
+     * @param v
+     *            v
+     * @param C
+     *            C
+     * @return true if b2 holds */
     private boolean B2(DLVertex v, int C) {
         assert hasParent();
         RAStateTransitions RST = v.getRole().getAutomaton().getBase().get(v.getState());
@@ -149,6 +160,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     }
 
     /** @param C
+     *            C
      * @return check whether a node can block another one with init concept C */
     public boolean canBlockInit(int C) {
         if (C == bpBOTTOM) {
@@ -160,18 +172,21 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
         return label.contains(C);
     }
 
-    /** log saving/restoring node */
+    /** log saving/restoring node
+     * 
+     * @param action
+     *            action */
     private void logSRNode(String action) {
         options.getLog().printTemplate(Templates.LOG_SR_NODE, action, id,
                 neighbour.size(), curLevel);
     }
 
-    /** get letter corresponding to the blocking mode */
+    /** @return letter corresponding to the blocking mode */
     private String getBlockingStatusName() {
         return isPBlocked() ? "p" : isDBlocked() ? "d" : isIBlocked() ? "i" : "u";
     }
 
-    /** log node status (d-,i-,p-blocked or cached */
+    /** @return log node status (d-,i-,p-blocked or cached) */
     private String logNodeBStatus() {
         StringBuilder toReturn = new StringBuilder();
         // blocking status information
@@ -185,7 +200,9 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     }
 
     /** @param newId
-     * @param c */
+     *            newId
+     * @param c
+     *            c */
     public DlCompletionTree(int newId, JFactReasonerConfiguration c) {
         id = newId;
         options = c;
@@ -193,7 +210,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
 
     /** add given arc P as a neighbour
      * 
-     * @param p */
+     * @param p
+     *            p */
     public void addNeighbour(DlCompletionTreeArc p) {
         neighbour.add(p);
         neighbourSize++;
@@ -212,6 +230,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     /** set cached status of given node
      * 
      * @param val
+     *            val
      * @return restorer */
     public Restorer setCached(boolean val) {
         if (cached == val) {
@@ -249,7 +268,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
         setNominalLevel(0);
     }
 
-    /** @param newLevel */
+    /** @param newLevel
+     *            newLevel */
     public void setNominalLevel(int newLevel) {
         nominalLevel = newLevel;
     }
@@ -263,14 +283,17 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
      * necessary
      * 
      * @param p
-     * @param tag */
+     *            p
+     * @param tag
+     *            tag */
     public void addConcept(ConceptWDep p, DagTag tag) {
         label.add(tag, p);
     }
 
     /** set the Init concept
      * 
-     * @param p */
+     * @param p
+     *            p */
     public void setInit(int p) {
         init = p;
     }
@@ -296,7 +319,9 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     /** check if SOME rule is applicable; includes transitive SOME support
      * 
      * @param R
+     *            R
      * @param C
+     *            C
      * @return completion tree */
     public DlCompletionTree isSomeApplicable(Role R, int C) {
         return R.isTransitive() ? isTSomeApplicable(R, C) : isNSomeApplicable(R, C);
@@ -329,6 +354,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     }
 
     /** @param p
+     *            p
      * @return check whether node's label contains P */
     public boolean isLabelledBy(int p) {
         return label.contains(p);
@@ -336,20 +362,25 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
 
     // Blocked-By methods for different logics
     /** @param p
+     *            p
      * @return check blocking condition for SH logic */
     public boolean isBlockedBy_SH(DlCompletionTree p) {
         return label.lesserequal(p.label);
     }
 
     /** @param dag
+     *            dag
      * @param p
+     *            p
      * @return check blocking condition for SHI logic */
     public boolean isBlockedBy_SHI(DLDag dag, DlCompletionTree p) {
         return isCommonlyBlockedBy(dag, p);
     }
 
     /** @param dag
+     *            dag
      * @param p
+     *            p
      * @return check blocking condition for SHIQ logic using optimised blocking */
     public boolean isBlockedBy_SHIQ(DLDag dag, DlCompletionTree p) {
         return isCommonlyBlockedBy(dag, p)
@@ -446,6 +477,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     }
 
     /** @param dep
+     *            dep
      * @return get node to which current one was merged; fills DEP from pDep's */
     public DlCompletionTree resolvePBlocker(DepSet dep) {
         if (!isPBlocked()) {
@@ -456,6 +488,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     }
 
     /** @param c
+     *            c
      * @return check whether the loop between a DBlocked NODE and it's parent
      *         blocked contains C */
     public boolean isLoopLabelled(int c) {
@@ -478,7 +511,15 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     }
 
     // re-building blocking hierarchy
-    /** set node blocked */
+    /** set node blocked
+     * 
+     * @param blocker
+     *            blocker
+     * @param permanently
+     *            permanently
+     * @param directly
+     *            directly
+     * @return restorer */
     private Restorer setBlocked(DlCompletionTree blocker, boolean permanently,
             boolean directly) {
         Restorer ret = new UnBlock(this);
@@ -494,6 +535,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     /** mark node d-blocked
      * 
      * @param blocker
+     *            blocker
      * @return restorer */
     public Restorer setDBlocked(DlCompletionTree blocker) {
         return setBlocked(blocker, false, true);
@@ -502,6 +544,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     /** mark node i-blocked
      * 
      * @param blocker
+     *            blocker
      * @return restorer */
     public Restorer setIBlocked(DlCompletionTree blocker) {
         return setBlocked(blocker, false, false);
@@ -517,7 +560,9 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     /** mark node purged
      * 
      * @param blocker
+     *            blocker
      * @param dep
+     *            dep
      * @return restorer */
     public Restorer setPBlocked(DlCompletionTree blocker, DepSet dep) {
         Restorer ret = new UnBlock(this);
@@ -537,7 +582,9 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     /** check if edge to NODE is labelled by R;
      * 
      * @param R
+     *            R
      * @param node
+     *            node
      * @return null if does not */
     public DlCompletionTreeArc getEdgeLabelled(Role R, DlCompletionTree node) {
         for (int i = 0; i < neighbourSize; i++) {
@@ -549,7 +596,11 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
         return null;
     }
 
-    /** check if parent arc is labelled by R; works only for blockable nodes */
+    /** check if parent arc is labelled by R; works only for blockable nodes
+     * 
+     * @param R
+     *            R
+     * @return true if parent labelled */
     private boolean isParentArcLabelled(Role R) {
         return getEdgeLabelled(R, getParentNode()) != null;
     }
@@ -558,7 +609,9 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     /** init IR with given entry and dep-set;
      * 
      * @param level
+     *            level
      * @param ds
+     *            ds
      * @return true if IR already has this label */
     public boolean initIR(int level, DepSet ds) {
         Reference<DepSet> dummy = new Reference<DepSet>(DepSet.create());
@@ -572,7 +625,15 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
         return false;
     }
 
-    /** check if IR for the node contains C */
+    /** check if IR for the node contains C
+     * 
+     * @param level
+     *            level
+     * @param ds
+     *            ds
+     * @param dep
+     *            dep
+     * @return true if C contained */
     private boolean inIRwithC(int level, DepSet ds, Reference<DepSet> dep) {
         if (inequalityRelation.isEmpty()) {
             return false;
@@ -588,6 +649,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
 
     // saving/restoring
     /** @param newLevel
+     *            newLevel
      * @return check if node needs to be saved */
     public boolean needSave(int newLevel) {
         return curLevel < newLevel;
@@ -595,7 +657,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
 
     /** save node using internal stack
      * 
-     * @param level */
+     * @param level
+     *            level */
     public void save(int level) {
         DLCompletionTreeSaveState node = new DLCompletionTreeSaveState();
         saves.push(node);
@@ -604,6 +667,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     }
 
     /** @param restLevel
+     *            restLevel
      * @return check if node needs to be restored */
     public boolean needRestore(int restLevel) {
         return curLevel > restLevel;
@@ -798,7 +862,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     /** default level for the Blockable node */
     public final static int BLOCKABLE_LEVEL = Integer.MAX_VALUE;
 
-    /** @param level */
+    /** @param level
+     *            level */
     public void init(int level) {
         flagDataNode = false;
         nominalLevel = BLOCKABLE_LEVEL;
@@ -913,7 +978,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
         logSRNode("RestNode");
     }
 
-    /** @param o */
+    /** @param o
+     *            o */
     public void printBody(LogAdapter o) {
         o.print(id);
         if (isNominalNode()) {
@@ -942,7 +1008,9 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     }
 
     /** @param node
+     *            node
      * @param dep
+     *            dep
      * @return check if the NODE's and current node's IR are labelled with the
      *         same level */
     public boolean nonMergable(DlCompletionTree node, Reference<DepSet> dep) {
@@ -960,7 +1028,9 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     /** update IR of the current node with IR from NODE and additional clash-set;
      * 
      * @param node
+     *            node
      * @param toAdd
+     *            toAdd
      * @return restorer */
     public Restorer updateIR(DlCompletionTree node, DepSet toAdd) {
         if (node.inequalityRelation.isEmpty()) {
@@ -1009,7 +1079,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
         return nominalLevel * id;
     }
 
-    /** @param blocker */
+    /** @param blocker
+     *            blocker */
     public void setBlocker(DlCompletionTree blocker) {
         this.blocker = blocker;
     }

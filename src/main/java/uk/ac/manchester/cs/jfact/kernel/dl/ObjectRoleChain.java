@@ -23,7 +23,8 @@ public class ObjectRoleChain extends NAryExpressionImpl<ObjectRoleExpression> im
 
     /** create role chain from given array
      * 
-     * @param v */
+     * @param v
+     *            v */
     public ObjectRoleChain(List<ObjectRoleExpression> v) {
         add(v);
     }

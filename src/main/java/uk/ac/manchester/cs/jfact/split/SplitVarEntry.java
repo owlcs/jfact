@@ -12,13 +12,15 @@ import uk.ac.manchester.cs.jfact.kernel.Concept;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 
-@SuppressWarnings("javadoc")
+/** split var entry */
 public class SplitVarEntry implements Serializable {
     private static final long serialVersionUID = 11000L;
-    // entry name
+    /** entry name */
     public ConceptName name;
-    // internal name
+    /** internal name */
     public Concept concept;
+    /** signature */
     public TSignature sig;
+    /** module */
     public Set<AxiomInterface> Module;
 }

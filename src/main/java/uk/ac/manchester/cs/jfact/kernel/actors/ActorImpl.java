@@ -48,7 +48,11 @@ public class ActorImpl implements Actor, Serializable {
         return false;
     }
 
-    /** check whether actor is applicable to the ENTRY */
+    /** check whether actor is applicable to the ENTRY
+     * 
+     * @param entry
+     *            entry
+     * @return true if applicable */
     @PortedFrom(file = "Actor.h", name = "applicable")
     protected boolean applicable(ClassifiableEntry entry) {
         if (isRole)   // object- or data-role
@@ -65,7 +69,11 @@ public class ActorImpl implements Actor, Serializable {
         }
     }
 
-    /** fills an array with all suitable data from the vertex */
+    /** fills an array with all suitable data from the vertex
+     * 
+     * @param v
+     *            v
+     * @return all suitable data */
     @PortedFrom(file = "Actor.h", name = "fillArray")
     protected List<ClassifiableEntry> fillArray(TaxonomyVertex v) {
         List<ClassifiableEntry> array = new ArrayList<ClassifiableEntry>();
@@ -80,12 +88,16 @@ public class ActorImpl implements Actor, Serializable {
         return array;
     }
 
-    /** @return true iff current entry is visible */
+    /** @param p
+     *            p
+     * @return true iff current entry is visible */
     protected boolean tryEntry(ClassifiableEntry p) {
         return !p.isSystem() && applicable(p);
     }
 
-    /** @return true if at least one entry of a vertex V is visible */
+    /** @param v
+     *            v
+     * @return true if at least one entry of a vertex V is visible */
     protected boolean tryVertex(TaxonomyVertex v) {
         if (tryEntry(v.getPrimer())) {
             return true;

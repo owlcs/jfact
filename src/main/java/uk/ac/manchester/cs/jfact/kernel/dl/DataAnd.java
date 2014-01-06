@@ -22,7 +22,8 @@ public class DataAnd extends NAryExpressionImpl<DataExpression> implements
 
     /** create AND of expressions from the given array
      * 
-     * @param v */
+     * @param v
+     *            v */
     public DataAnd(List<DataExpression> v) {
         add(v);
     }

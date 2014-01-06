@@ -7,18 +7,29 @@ package uk.ac.manchester.cs.jfact.helpers;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
-@SuppressWarnings("javadoc")
+/** The Class UnreachableSituationException. */
 public class UnreachableSituationException extends ReasonerInternalException {
     private static final long serialVersionUID = 11000L;
 
+    /** Instantiates a new unreachable situation exception. */
     public UnreachableSituationException() {
         super("Unreachable situation!");
     }
 
+    /** Instantiates a new unreachable situation exception.
+     * 
+     * @param text
+     *            the text */
     public UnreachableSituationException(String text) {
         super("Unreachable situation!\n" + text);
     }
 
+    /** Instantiates a new unreachable situation exception.
+     * 
+     * @param text
+     *            the text
+     * @param cause
+     *            the cause */
     public UnreachableSituationException(String text, Throwable cause) {
         super("Unreachable situation!\n" + text, cause);
     }

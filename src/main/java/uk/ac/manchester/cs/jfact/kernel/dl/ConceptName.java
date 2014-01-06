@@ -18,7 +18,8 @@ public class ConceptName extends NamedEntityImpl implements ConceptExpression,
         Serializable {
     private static final long serialVersionUID = 11000L;
 
-    /** @param name */
+    /** @param name
+     *            name */
     public ConceptName(String name) {
         super(name);
     }

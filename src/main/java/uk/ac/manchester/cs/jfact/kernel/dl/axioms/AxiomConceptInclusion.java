@@ -22,8 +22,11 @@ public class AxiomConceptInclusion extends AxiomImpl {
     private final ConceptExpression superConcept;
 
     /** @param ax
+     *            ax
      * @param sub
-     * @param sup */
+     *            sub
+     * @param sup
+     *            sup */
     public AxiomConceptInclusion(OWLAxiom ax, ConceptExpression sub, ConceptExpression sup) {
         super(ax);
         subConcept = sub;

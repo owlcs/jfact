@@ -66,7 +66,8 @@ public abstract class NamedEntry implements HasName, Serializable {
 
     /** set internal ID
      * 
-     * @param id */
+     * @param id
+     *            id */
     @PortedFrom(file = "tNamedEntry.h", name = "setId")
     public void setId(int id) {
         extId = id;
@@ -136,13 +137,15 @@ public abstract class NamedEntry implements HasName, Serializable {
         return entity;
     }
 
-    /** @param entity */
+    /** @param entity
+     *            entity */
     @PortedFrom(file = "tNamedEntry.h", name = "setEntity")
     public void setEntity(NamedEntity entity) {
         this.entity = entity;
     }
 
-    /** @param i */
+    /** @param i
+     *            i */
     @PortedFrom(file = "taxNamEntry.h", name = "setIndex")
     public abstract void setIndex(int i);
 

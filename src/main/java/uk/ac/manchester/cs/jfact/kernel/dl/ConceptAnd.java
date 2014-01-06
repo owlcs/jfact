@@ -22,7 +22,8 @@ public class ConceptAnd extends NAryExpressionImpl<ConceptExpression> implements
 
     /** create AND of expressions from the given array
      * 
-     * @param v */
+     * @param v
+     *            v */
     public ConceptAnd(List<ConceptExpression> v) {
         add(v);
     }

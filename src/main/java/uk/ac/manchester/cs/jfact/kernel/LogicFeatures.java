@@ -5,7 +5,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
+import static uk.ac.manchester.cs.jfact.helpers.Helper.bpTOP;
 
 import java.io.Serializable;
 import java.util.BitSet;
@@ -23,13 +23,18 @@ public class LogicFeatures implements Serializable {
     @PortedFrom(file = "LogicFeature.h", name = "flags")
     private final BitSet flags = new BitSet();
 
-    /** set any flag */
+    /** set any flag
+     * 
+     * @param val
+     *            val */
     @PortedFrom(file = "LogicFeature.h", name = "setX")
     private void setX(int val) {
         flags.set(val);
     }
 
-    /** get value of any flag */
+    /** @param val
+     *            val
+     * @return value of any flag */
     @PortedFrom(file = "LogicFeature.h", name = "getX")
     private boolean getX(int val) {
         return flags.get(val);
@@ -40,14 +45,16 @@ public class LogicFeatures implements Serializable {
 
     /** copy c'tor
      * 
-     * @param lf */
+     * @param lf
+     *            lf */
     public LogicFeatures(LogicFeatures lf) {
         flags.or(lf.flags);
     }
 
     /** operator add
      * 
-     * @param lf */
+     * @param lf
+     *            lf */
     @PortedFrom(file = "LogicFeature.h", name = "or")
     public void or(LogicFeatures lf) {
         flags.or(lf.flags);
@@ -133,7 +140,9 @@ public class LogicFeatures implements Serializable {
     }
 
     /** @param f1
+     *            f1
      * @param f2
+     *            f2
      * @return combination of the two objects */
     @PortedFrom(file = "LogicFeature.h", name = "+")
     public static LogicFeatures plus(LogicFeatures f1, LogicFeatures f2) {
@@ -142,7 +151,8 @@ public class LogicFeatures implements Serializable {
         return f;
     }
 
-    /** @param p */
+    /** @param p
+     *            p */
     @PortedFrom(file = "LogicFeature.h", name = "fillConceptData")
     public void fillConceptData(Concept p) {
         if (p.isSingleton()) {
@@ -151,7 +161,9 @@ public class LogicFeatures implements Serializable {
     }
 
     /** @param p
-     * @param both */
+     *            p
+     * @param both
+     *            both */
     @PortedFrom(file = "LogicFeature.h", name = "fillRoleData")
     public void fillRoleData(Role p, boolean both) {
         if (p.isTop()) {
@@ -183,7 +195,9 @@ public class LogicFeatures implements Serializable {
     }
 
     /** @param v
-     * @param pos */
+     *            v
+     * @param pos
+     *            pos */
     @PortedFrom(file = "LogicFeature.h", name = "fillDAGData")
     public void fillDAGData(DLVertex v, boolean pos) {
         switch (v.getType()) {
@@ -208,7 +222,8 @@ public class LogicFeatures implements Serializable {
         }
     }
 
-    /** @param l */
+    /** @param l
+     *            l */
     @PortedFrom(file = "LogicFeature.h", name = "writeState")
     public void writeState(LogAdapter l) {
         String NO = "NO ";

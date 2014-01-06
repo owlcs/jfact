@@ -37,7 +37,7 @@ public class Ontology implements Serializable {
     @PortedFrom(file = "tOntology.h", name = "Splits")
     private final TSplitVars Splits = new TSplitVars();
 
-    @SuppressWarnings("javadoc")
+    /** default constructor */
     public Ontology() {
         axiomId = 0;
         changed = false;
@@ -50,6 +50,7 @@ public class Ontology implements Serializable {
     }
 
     /** @param i
+     *            i
      * @return axiom in position i */
     @PortedFrom(file = "tOntology.h", name = "get")
     public AxiomInterface get(int i) {
@@ -72,6 +73,7 @@ public class Ontology implements Serializable {
     /** add given axiom to the ontology
      * 
      * @param p
+     *            p
      * @return p */
     @PortedFrom(file = "tOntology.h", name = "add")
     public AxiomInterface add(AxiomInterface p) {
@@ -83,7 +85,8 @@ public class Ontology implements Serializable {
 
     /** retract given axiom to the ontology
      * 
-     * @param p */
+     * @param p
+     *            p */
     @PortedFrom(file = "tOntology.h", name = "retract")
     public void retract(AxiomInterface p) {
         changed = true;

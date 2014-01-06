@@ -16,7 +16,8 @@ import conformance.PortedFrom;
 
 /** nary expression base
  * 
- * @param <Argument> */
+ * @param <Argument>
+ *            argument type */
 @PortedFrom(file = "tDLExpression.h", name = "TDLNAryExpression")
 public class NAryExpressionImpl<Argument extends Expression> implements
         NAryExpression<Argument>, Serializable {
@@ -24,7 +25,7 @@ public class NAryExpressionImpl<Argument extends Expression> implements
     /** set of equivalent concept descriptions */
     private final List<Argument> Base = new ArrayList<Argument>();
 
-    @SuppressWarnings("javadoc")
+    /** default constructor */
     public NAryExpressionImpl() {}
 
     @Override

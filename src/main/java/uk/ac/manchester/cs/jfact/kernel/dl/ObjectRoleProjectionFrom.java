@@ -7,7 +7,11 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptArg;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleArg;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleComplexExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.Original;
@@ -24,7 +28,9 @@ public class ObjectRoleProjectionFrom implements ObjectRoleComplexExpression,
     private final ObjectRoleExpression roleDelegate;
 
     /** @param R
-     * @param C */
+     *            R
+     * @param C
+     *            C */
     public ObjectRoleProjectionFrom(ObjectRoleExpression R, ConceptExpression C) {
         roleDelegate = R;
         delegate = C;

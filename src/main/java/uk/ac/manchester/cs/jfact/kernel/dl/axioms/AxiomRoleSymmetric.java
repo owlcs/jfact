@@ -18,7 +18,9 @@ public class AxiomRoleSymmetric extends AxiomSingleORole {
     private static final long serialVersionUID = 11000L;
 
     /** @param ax
-     * @param role */
+     *            ax
+     * @param role
+     *            role */
     public AxiomRoleSymmetric(OWLAxiom ax, ObjectRoleExpression role) {
         super(ax, role);
     }

@@ -20,8 +20,11 @@ public class AxiomDRoleSubsumption extends AxiomSingleDRole {
     private final DataRoleExpression subRole;
 
     /** @param ax
+     *            ax
      * @param subRole
-     * @param supRole */
+     *            subRole
+     * @param supRole
+     *            supRole */
     @PortedFrom(file = "tDLAxiom.h", name = "SubRole")
     public AxiomDRoleSubsumption(OWLAxiom ax, DataRoleExpression subRole,
             DataRoleExpression supRole) {

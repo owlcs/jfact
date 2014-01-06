@@ -17,7 +17,8 @@ import conformance.PortedFrom;
 
 /** object nominal
  * 
- * @param <I> */
+ * @param <I>
+ *            type */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptOneOf")
 public class ConceptOneOf<I extends IndividualExpression> extends NAryExpressionImpl<I>
         implements NAryExpression<I>, ConceptExpression, Serializable {
@@ -25,7 +26,8 @@ public class ConceptOneOf<I extends IndividualExpression> extends NAryExpression
 
     /** create one-of from individuals in the given array
      * 
-     * @param v */
+     * @param v
+     *            v */
     public ConceptOneOf(List<I> v) {
         add(v);
     }

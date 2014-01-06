@@ -11,7 +11,8 @@ import conformance.PortedFrom;
 
 /** name set
  * 
- * @param <T> */
+ * @param <T>
+ *            type */
 @PortedFrom(file = "tNameSet.h", name = "TNameSet")
 public class NameSet<T> extends HashMap<String, T> {
     private static final long serialVersionUID = 11000L;
@@ -19,7 +20,8 @@ public class NameSet<T> extends HashMap<String, T> {
     @PortedFrom(file = "tNameSet.h", name = "Creator")
     private final NameCreator<T> creator;
 
-    /** @param p */
+    /** @param p
+     *            p */
     public NameSet(NameCreator<T> p) {
         creator = p;
     }
@@ -27,6 +29,7 @@ public class NameSet<T> extends HashMap<String, T> {
     /** unconditionally add new element with name ID to the set;
      * 
      * @param id
+     *            id
      * @return new element */
     @PortedFrom(file = "tNameSet.h", name = "add")
     public T add(String id) {
@@ -38,6 +41,7 @@ public class NameSet<T> extends HashMap<String, T> {
     /** Insert id to a nameset (if necessary);
      * 
      * @param id
+     *            id
      * @return pointer to id structure created by external creator */
     @PortedFrom(file = "tNameSet.h", name = "insert")
     public T insert(String id) {

@@ -22,7 +22,9 @@ public class QRConceptAtom extends QRAtom {
     /** init c'tor
      * 
      * @param C
-     * @param A */
+     *            C
+     * @param A
+     *            A */
     public QRConceptAtom(ConceptExpression C, QRiObject A) {
         Concept = C;
         Arg = A;

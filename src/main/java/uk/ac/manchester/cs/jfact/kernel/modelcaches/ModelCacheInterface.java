@@ -21,12 +21,14 @@ public abstract class ModelCacheInterface implements Serializable {
 
     /** Create cache model with given precense of nominals
      * 
-     * @param flagNominals */
+     * @param flagNominals
+     *            flagNominals */
     public ModelCacheInterface(boolean flagNominals) {
         setHasNominalNode(flagNominals);
     }
 
     /** @param p
+     *            p
      * @return check whether both models have nominals; in this case, merge is
      *         impossible */
     @PortedFrom(file = "modelCacheInterface.h", name = "hasNominalClash")
@@ -36,7 +38,8 @@ public abstract class ModelCacheInterface implements Serializable {
 
     /** update knoweledge about nominals in the model after merging
      * 
-     * @param p */
+     * @param p
+     *            p */
     @PortedFrom(file = "modelCacheInterface.h", name = "updateNominalStatus")
     public void updateNominalStatus(ModelCacheInterface p) {
         setHasNominalNode(isHasNominalNode() | p.isHasNominalNode());
@@ -50,6 +53,7 @@ public abstract class ModelCacheInterface implements Serializable {
     /** check whether two caches can be merged;
      * 
      * @param p
+     *            p
      * @return state of "merged" model */
     @PortedFrom(file = "modelCacheInterface.h", name = "canMerge")
     public abstract ModelCacheState canMerge(ModelCacheInterface p);
@@ -69,11 +73,14 @@ public abstract class ModelCacheInterface implements Serializable {
     /** log this cache entry (with given level)
      * 
      * @param level
-     * @param l */
+     *            level
+     * @param l
+     *            l */
     @PortedFrom(file = "modelCacheInterface.h", name = "logCacheEntry")
     public abstract void logCacheEntry(int level, LogAdapter l);
 
-    /** @param hasNominalNode */
+    /** @param hasNominalNode
+     *            hasNominalNode */
     @Original
     public void setHasNominalNode(boolean hasNominalNode) {
         this.hasNominalNode = hasNominalNode;

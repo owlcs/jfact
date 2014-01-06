@@ -12,8 +12,50 @@ import java.util.List;
 import java.util.Map;
 
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
-import uk.ac.manchester.cs.jfact.kernel.dl.*;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptAnd;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptBottom;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataExactCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataExists;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataForall;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataMaxCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataMinCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataValue;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptNot;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectExactCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectExists;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectForall;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectMaxCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectMinCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectSelf;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectValue;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptOneOf;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptOr;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptTop;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataAnd;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataBottom;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataNot;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataOneOf;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataOr;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleBottom;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleName;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleTop;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataTop;
+import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleBottom;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleChain;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleInverse;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleName;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleProjectionFrom;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleProjectionInto;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleTop;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleComplexExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.voc.Vocabulary;
 import conformance.Original;
 import conformance.PortedFrom;
@@ -30,6 +72,7 @@ public class ExpressionManager implements Serializable {
         private Map<ObjectRoleExpression, ObjectRoleExpression> map;
 
         /** @param tail
+         *            tail
          * @return an object corresponding to Head.Tail */
         public ObjectRoleExpression get(ObjectRoleExpression tail) {
             // try to find cached dep-set
@@ -146,9 +189,13 @@ public class ExpressionManager implements Serializable {
     /** set Top/Bot properties
      * 
      * @param topORoleName
+     *            topORoleName
      * @param botORoleName
+     *            botORoleName
      * @param topDRoleName
-     * @param botDRoleName */
+     *            topDRoleName
+     * @param botDRoleName
+     *            botDRoleName */
     @PortedFrom(file = "tExpressionManager.h", name = "setTopBottomRoles")
     public void setTopBottomRoles(String topORoleName, String botORoleName,
             String topDRoleName, String botDRoleName) {
@@ -177,6 +224,7 @@ public class ExpressionManager implements Serializable {
 
     // top/bottom roles
     /** @param R
+     *            R
      * @return true iff R is a top data/object role */
     @PortedFrom(file = "tExpressionManager.h", name = "isUniversalRole")
     public boolean isUniversalRole(RoleExpression R) {
@@ -184,6 +232,7 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param R
+     *            R
      * @return true iff R is a bottom data/object role */
     @PortedFrom(file = "tExpressionManager.h", name = "isEmptyRole")
     public boolean isEmptyRole(RoleExpression R) {
@@ -227,6 +276,7 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param name
+     *            name
      * @return named concept */
     @PortedFrom(file = "tExpressionManager.h", name = "concept")
     public ConceptName concept(String name) {
@@ -234,6 +284,7 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param C
+     *            C
      * @return negation of a concept C */
     @PortedFrom(file = "tExpressionManager.h", name = "Not")
     public ConceptExpression not(ConceptExpression C) {
@@ -241,6 +292,7 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param l
+     *            l
      * @return an n-ary conjunction expression; take the arguments from the last
      *         argument list */
     @PortedFrom(file = "tExpressionManager.h", name = "and")
@@ -249,7 +301,9 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param C
+     *            C
      * @param D
+     *            D
      * @return C and D */
     @PortedFrom(file = "tExpressionManager.h", name = "and")
     public ConceptExpression and(ConceptExpression C, ConceptExpression D) {
@@ -266,7 +320,9 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param C
+     *            C
      * @param D
+     *            D
      * @return C or D */
     @PortedFrom(file = "tExpressionManager.h", name = "or")
     public ConceptExpression or(ConceptExpression C, ConceptExpression D) {
@@ -274,6 +330,7 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param l
+     *            l
      * @return an n-ary disjunction expression; take the arguments from the last
      *         argument list */
     @PortedFrom(file = "tExpressionManager.h", name = "or")
@@ -282,6 +339,7 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param l
+     *            l
      * @return an n-ary one-of expression; take the arguments from the last
      *         argument list */
     @PortedFrom(file = "tExpressionManager.h", name = "OneOf")
@@ -299,6 +357,7 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param R
+     *            R
      * @return inverse of object role expression */
     @PortedFrom(file = "tExpressionManager.h", name = "inverse")
     public ObjectRoleExpression inverse(ObjectRoleExpression R) {
@@ -306,6 +365,7 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param I
+     *            I
      * @return concept {I} for the individual I */
     @PortedFrom(file = "tExpressionManager.h", name = "OneOf")
     public ConceptExpression oneOf(IndividualExpression I) {
@@ -313,6 +373,7 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param R
+     *            R
      * @return self-reference restriction of an object role R */
     @PortedFrom(file = "tExpressionManager.h", name = "SelfReference")
     public ConceptExpression selfReference(ObjectRoleExpression R) {
@@ -320,7 +381,9 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param R
+     *            R
      * @param I
+     *            I
      * @return value restriction wrt an object role R and an individual I */
     @PortedFrom(file = "tExpressionManager.h", name = "value")
     public ConceptExpression value(ObjectRoleExpression R, IndividualExpression I) {
@@ -328,7 +391,9 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param R
+     *            R
      * @param C
+     *            C
      * @return existential restriction wrt an object role R and a concept C */
     @PortedFrom(file = "tExpressionManager.h", name = "Exists")
     public ConceptExpression exists(ObjectRoleExpression R, ConceptExpression C) {
@@ -336,7 +401,9 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param R
+     *            R
      * @param C
+     *            C
      * @return universal restriction wrt an object role R and a concept C */
     @PortedFrom(file = "tExpressionManager.h", name = "Forall")
     public ConceptExpression forall(ObjectRoleExpression R, ConceptExpression C) {
@@ -344,8 +411,11 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param n
+     *            n
      * @param R
+     *            R
      * @param C
+     *            C
      * @return min cardinality restriction wrt number N, an object role R and a
      *         concept C */
     @PortedFrom(file = "tExpressionManager.h", name = "MinCardinality")
@@ -355,8 +425,11 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param n
+     *            n
      * @param R
+     *            R
      * @param C
+     *            C
      * @return max cardinality restriction wrt number N, an object role R and a
      *         concept C */
     @PortedFrom(file = "tExpressionManager.h", name = "MaxCardinality")
@@ -366,8 +439,11 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param n
+     *            n
      * @param R
+     *            R
      * @param C
+     *            C
      * @return exact cardinality restriction wrt number N, an object role R and
      *         a concept C */
     @PortedFrom(file = "tExpressionManager.h", name = "cardinality")
@@ -377,7 +453,9 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param R
+     *            R
      * @param V
+     *            V
      * @return value restriction wrt a data role R and a data value V */
     @PortedFrom(file = "tExpressionManager.h", name = "value")
     public ConceptExpression value(DataRoleExpression R, Literal<?> V) {
@@ -385,7 +463,9 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param R
+     *            R
      * @param E
+     *            E
      * @return existential restriction wrt a data role R and a data expression E */
     @PortedFrom(file = "tExpressionManager.h", name = "Exists")
     public ConceptExpression exists(DataRoleExpression R, DataExpression E) {
@@ -393,7 +473,9 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param R
+     *            R
      * @param E
+     *            E
      * @return universal restriction wrt a data role R and a data expression E */
     @PortedFrom(file = "tExpressionManager.h", name = "Forall")
     public ConceptExpression forall(DataRoleExpression R, DataExpression E) {
@@ -401,8 +483,11 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param n
+     *            n
      * @param R
+     *            R
      * @param E
+     *            E
      * @return min cardinality restriction wrt number N, a data role R and a
      *         data expression E */
     @PortedFrom(file = "tExpressionManager.h", name = "MinCardinality")
@@ -412,8 +497,11 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param n
+     *            n
      * @param R
+     *            R
      * @param E
+     *            E
      * @return max cardinality restriction wrt number N, a data role R and a
      *         data expression E */
     @PortedFrom(file = "tExpressionManager.h", name = "MaxCardinality")
@@ -423,8 +511,11 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param n
+     *            n
      * @param R
+     *            R
      * @param E
+     *            E
      * @return exact cardinality restriction wrt number N, a data role R and a
      *         data expression E */
     @PortedFrom(file = "tExpressionManager.h", name = "cardinality")
@@ -434,6 +525,7 @@ public class ExpressionManager implements Serializable {
 
     // individuals
     /** @param name
+     *            name
      * @return named individual */
     @PortedFrom(file = "tExpressionManager.h", name = "individual")
     public IndividualName individual(String name) {
@@ -454,6 +546,7 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param name
+     *            name
      * @return named object role */
     @PortedFrom(file = "tExpressionManager.h", name = "ObjectRole")
     public ObjectRoleName objectRole(String name) {
@@ -461,6 +554,7 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param l
+     *            l
      * @return a role chain corresponding to R1 o ... o Rn; take the arguments
      *         from the last argument list */
     @PortedFrom(file = "tExpressionManager.h", name = "Compose")
@@ -469,7 +563,9 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param e1
+     *            e1
      * @param e2
+     *            e2
      * @return ObjectRoleChain */
     @PortedFrom(file = "tExpressionManager.h", name = "Compose")
     public ObjectRoleComplexExpression compose(ObjectRoleExpression e1,
@@ -478,7 +574,9 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param R
+     *            R
      * @param C
+     *            C
      * @return a expression corresponding to R projected from C */
     @PortedFrom(file = "tExpressionManager.h", name = "ProjectFrom")
     public ObjectRoleComplexExpression projectFrom(ObjectRoleExpression R,
@@ -487,7 +585,9 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param R
+     *            R
      * @param C
+     *            C
      * @return a expression corresponding to R projected into C */
     @PortedFrom(file = "tExpressionManager.h", name = "ProjectInto")
     public ObjectRoleComplexExpression projectInto(ObjectRoleExpression R,
@@ -509,6 +609,7 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param name
+     *            name
      * @return named data role */
     @PortedFrom(file = "tExpressionManager.h", name = "DataRole")
     public DataRoleName dataRole(String name) {
@@ -536,6 +637,7 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param E
+     *            E
      * @return negation of a data expression E */
     @PortedFrom(file = "tExpressionManager.h", name = "DataNot")
     public DataExpression dataNot(DataExpression E) {
@@ -543,6 +645,7 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param l
+     *            l
      * @return an n-ary data conjunction expression */
     @PortedFrom(file = "tExpressionManager.h", name = "DataAnd")
     public DataExpression dataAnd(List<DataExpression> l) {
@@ -550,6 +653,7 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param l
+     *            l
      * @return an n-ary data disjunction expression */
     @PortedFrom(file = "tExpressionManager.h", name = "DataOr")
     public DataExpression dataOr(List<DataExpression> l) {
@@ -557,6 +661,7 @@ public class ExpressionManager implements Serializable {
     }
 
     /** @param l
+     *            l
      * @return an n-ary data one-of expression */
     @PortedFrom(file = "tExpressionManager.h", name = "DataOneOf")
     public DataExpression dataOneOf(List<Literal<?>> l) {

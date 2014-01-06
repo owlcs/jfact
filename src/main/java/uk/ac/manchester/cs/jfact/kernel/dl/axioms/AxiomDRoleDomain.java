@@ -21,8 +21,11 @@ public class AxiomDRoleDomain extends AxiomSingleDRole {
     private final ConceptExpression domain;
 
     /** @param ax
+     *            ax
      * @param role
-     * @param domain */
+     *            role
+     * @param domain
+     *            domain */
     @PortedFrom(file = "tDLAxiom.h", name = "Domain")
     public AxiomDRoleDomain(OWLAxiom ax, DataRoleExpression role, ConceptExpression domain) {
         super(ax, role);

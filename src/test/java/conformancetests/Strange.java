@@ -18,6 +18,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 import uk.ac.manchester.cs.jfact.JFactFactory;
 
+@SuppressWarnings("javadoc")
 public class Strange {
     @Test
     public void shouldFindThreeSubclasses() throws OWLOntologyCreationException {
