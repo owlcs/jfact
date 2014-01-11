@@ -19,6 +19,7 @@ import org.semanticweb.owlapi.util.MultiMap;
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.kernel.TBox.IterableElem;
 import uk.ac.manchester.cs.jfact.kernel.actors.ActorImpl;
+import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.queryobjects.QRAtom;
@@ -372,12 +373,18 @@ public class ConjunctiveQueryFolding implements Serializable {
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "doQuery")
-    private void doQuery(QRQuery query, ReasoningKernel kernel) {
+    private void doQuery(QRQuery query, ReasoningKernel kernel, boolean artificialaBox) {
         TQueryToConceptsTransformer transformer = new TQueryToConceptsTransformer(this,
                 query);
         transformer.Run();
         transformer.printResult();
-        kernel.evaluateQuery(transformer.getResult());
+        kernel.evaluateQuery(transformer.getResult(), artificialaBox);
+    }
+
+    private void runQueries(ConjunctiveQuerySet queries, ReasoningKernel kernel) {
+        for (int i = 0; i < queries.size(); i++) {
+            doQuery(queries.get(i), kernel, queries.isArtificialABox());
+        }
     }
 
     @PortedFrom(file = "ConjunctiveQuery.cpp", name = "Var2I")
@@ -410,7 +417,7 @@ public class ConjunctiveQueryFolding implements Serializable {
      *            kernel */
     @PortedFrom(file = "ConjunctiveQuery.cpp", name = "evaluateQuery")
     public void evaluateQuery(MultiMap<String, ConceptExpression> query,
-            ReasoningKernel kernel) {
+            ReasoningKernel kernel, boolean artificialABox) {
         // make index of all vars
         fillVarIndex(query);
         if (I2Var.isEmpty()) {
@@ -431,28 +438,43 @@ public class ConjunctiveQueryFolding implements Serializable {
             Concepts.add(kernel.e(pEM.and(list)));
         }
         // System.out.println(">\n");
-        fillIVec(kernel);
+        fillIVec(kernel, artificialABox);
         kernel.getTBox().answerQuery(Concepts);
     }
 
+    @PortedFrom(file = "ConjunctiveQuery.cpp", name = "getABoxInstances")
+    private void getABoxInstances(ReasoningKernel kernel, ConceptExpression C,
+            boolean artificialABox) {
+        // get all instances of C
+        ActorImpl a = new ActorImpl();
+        List<Individual> individuals = new ArrayList<Individual>();
+        // Actor::Array1D result;
+        if (artificialABox) {
+            // HACK: work only for our individualisation of NCIt/etc
+            a.needConcepts();
+            kernel.getSubConcepts(C, false, a);
+            for (ClassifiableEntry p : a.getElements1D()) {
+                IndividualName ind = pEM.individual(p.getName());
+                individuals.add((Individual) ind.getEntry());
+            }
+        } else {
+            a.needIndividuals();
+            kernel.getInstances(C, a);
+            for (ClassifiableEntry p : a.getElements1D()) {
+                individuals.add((Individual) p);
+            }
+        }
+        kernel.getTBox().getIV().add(new IterableElem<Individual>(individuals));
+    }
+
     @PortedFrom(file = "ConjunctiveQuery.cpp", name = "fillIVec")
-    private void fillIVec(ReasoningKernel kernel) {
-        // System.out.print("Creating iterables...");
+    private void fillIVec(ReasoningKernel kernel, boolean artificialABox) {
         kernel.getTBox().getIV().clear();
         for (int i = 0; i < I2Var.size(); i++) {
             // The i'th var is I2Var[i]; get its concept
             ConceptExpression C = VarRestrictions.get(I2Var.get(i));
-            // get all instances of C
-            ActorImpl a = new ActorImpl();
-            a.needIndividuals();
-            kernel.getInstances(C, a);
-            List<Individual> individuals = new ArrayList<Individual>();
-            for (ClassifiableEntry e : a.getElements1D()) {
-                individuals.add((Individual) e);
-            }
-            kernel.getTBox().getIV().add(new IterableElem<Individual>(individuals));
+            getABoxInstances(kernel, C, artificialABox);
         }
-        // System.out.println(" done");
     }
 
     /** @return expression manager */

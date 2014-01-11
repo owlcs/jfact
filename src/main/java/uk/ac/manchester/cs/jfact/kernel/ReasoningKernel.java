@@ -2678,7 +2678,8 @@ public class ReasoningKernel implements Serializable {
      * @param query
      *            query */
     @Original
-    public void evaluateQuery(MultiMap<String, ConceptExpression> query) {
-        conjunctiveQueryFolding.evaluateQuery(query, this);
+    public void evaluateQuery(MultiMap<String, ConceptExpression> query,
+            boolean artificialABox) {
+        conjunctiveQueryFolding.evaluateQuery(query, this, artificialABox);
     }
 }
