@@ -98,6 +98,13 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
     /** whether we use sorted reasoning; depends on some simplifications. */
     @PortedFrom(file = "dlTBox.h", name = "useSortedReasoning")
     private boolean useSortedReasoning = true;
+    /** Option 'allowUndefinedNames' describes the policy of undefined names. */
+    @PortedFrom(file = "Kernel.h", name = "allowUndefinedNames")
+    private boolean allowUndefinedNames = true;
+    /** Option 'queryAnswering', if true, switches the reasoner to a query
+     * answering mode. */
+    @PortedFrom(file = "Kernel.h", name = "queryAnswering")
+    private boolean queryAnswering = false;
 
     /** Checks if is use sorted reasoning.
      * 
@@ -119,6 +126,28 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * @return true, if is use special domains */
     public boolean isUseSpecialDomains() {
         return useSpecialDomains;
+    }
+
+    /** @param b
+     *            value for allow undefined entities */
+    public void setAllowUndefinedNames(boolean b) {
+        allowUndefinedNames = b;
+    }
+
+    /** @return is allow undefined entities */
+    public boolean isAllowUndefinedNames() {
+        return allowUndefinedNames;
+    }
+
+    /** @param b
+     *            value for query answering */
+    public void setQueryAnswering(boolean b) {
+        queryAnswering = b;
+    }
+
+    /** @return is query answering */
+    public boolean isQueryAnswering() {
+        return queryAnswering;
     }
 
     /** Sets the use special domains.
