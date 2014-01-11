@@ -25,8 +25,8 @@ public abstract class BuildELIOConcept implements Serializable {
     protected final ConjunctiveQueryFolding conjunctiveQueryFolding;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Query")
     protected final QRQuery Query;
-    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "PassedVertice")
-    private final Set<QRVariable> PassedVertice = new TreeSet<QRVariable>();
+    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Visited")
+    private final Set<QRVariable> visited = new TreeSet<QRVariable>();
 
     protected BuildELIOConcept(ConjunctiveQueryFolding c, QRQuery query) {
         conjunctiveQueryFolding = c;
@@ -46,7 +46,7 @@ public abstract class BuildELIOConcept implements Serializable {
     public ConceptExpression Assign(QRQuery query, QRAtom previousAtom, QRVariable v) {
         // System.out.println("Assign:\n variable: " + v + "\n atom:" +
         // previousAtom);
-        PassedVertice.add(v);
+        visited.add(v);
         ConceptExpression t = createConceptByVar(v);
         ConceptExpression s = conjunctiveQueryFolding.getpEM().top();
         for (QRAtom atomIterator : Query.getBody().begin()) {
