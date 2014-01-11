@@ -35,7 +35,6 @@ import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.helpers.Timer;
-import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import uk.ac.manchester.cs.jfact.kernel.actors.Actor;
 import uk.ac.manchester.cs.jfact.kernel.actors.RIActor;
 import uk.ac.manchester.cs.jfact.kernel.actors.SupConceptActor;
@@ -2227,53 +2226,42 @@ public class ReasoningKernel implements Serializable {
                     "Can't classify KB because of previous errors");
         }
         // check if something have to be done
-        if (getStatus().ordinal() >= status.ordinal()) {
+        KBStatus curStatus = getStatus();
+        if (curStatus.ordinal() >= status.ordinal()) {
             // nothing to do; but make sure that we are consistent
             isKBConsistent();
             return;
         }
-        // here we have to do something: let's decide what to do
-        boolean stillGo = true;
-        switch (getStatus()) {
-            case kbEmpty:
-            case kbLoading:
-                break;
-            // need to do the whole cycle -- just after the switch
-            case kbCChecked: {
-                classify(status);
-                stillGo = false;
-                break;
-                // do classification
-            }
-            case kbClassified: {
-                realise();
-                stillGo = false;
-                break;
-                // do realisation
-            }
-            default:
-                // nothing should be here
-                throw new UnreachableSituationException();
-        }
-        if (stillGo) {
-            // start with loading and preprocessing -- here might be a failures
+        // here curStatus < kbRealised, and status >= kbChecked
+        if (curStatus == kbEmpty || curStatus == kbLoading) {
+            // load and preprocess KB -- here might be failures
             reasoningFailed = true;
             // load the axioms from the ontology to the TBox
             if (needForceReload()) {
                 forceReload();
             } else {
+                // just do incremental classification and exit
                 doIncremental();
                 reasoningFailed = false;
                 return;
             }
-            // do the consistency check
+            // do the preprocessing and consistency check
             pTBox.isConsistent();
             // if there were no exception thrown -- clear the failure status
             reasoningFailed = false;
             if (status == kbCChecked) {
                 return;
             }
-            classify(status);
+        }
+        // here we need to do classification or realisation
+        if (!pTBox.isConsistent()) {
+            // nothing to do for inconsistent ontologies
+            return;
+        }
+        if (status == kbRealised) {
+            pTBox.performRealisation();
+        } else {
+            pTBox.performClassification();
         }
     }
 

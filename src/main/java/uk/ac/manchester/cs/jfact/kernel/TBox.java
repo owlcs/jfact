@@ -198,6 +198,9 @@ public class TBox implements Serializable {
     /** set of split vars */
     @PortedFrom(file = "dlTBox.h", name = "Splits")
     private TSplitVars Splits;
+    /** status of the KB */
+    @PortedFrom(file = "dlTBox.h", name = "Status")
+    private KBStatus status;
 
     /** @param s
      *            split vars */
@@ -3246,6 +3249,7 @@ public class TBox implements Serializable {
      *            MMinus */
     public void reclassify(Set<NamedEntity> MPlus, Set<NamedEntity> MMinus) {
         pTaxCreator.reclassify(MPlus, MMinus);
+        status = kbRealised;    // FIXME!! check whether it is classified/realised
     }
 
     /** @return list of concept index */
