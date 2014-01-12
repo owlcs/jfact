@@ -50,9 +50,20 @@ public class ToDoList implements Serializable {
         tss.backupID_sp = queueID.getsPointer();
         tss.backupID_ep = queueID.getWaitSize();
         queueNN.save(tss);
-        for (int i = nRegularOptions - 1; i >= 0; --i) {
-            waitQueue.get(i).save(tss.backup, i);
-        }
+        tss.backup6key = waitQueue.get(6).getsPointer();
+        tss.backup6value = waitQueue.get(6).getWaitSize();
+        tss.backup5key = waitQueue.get(5).getsPointer();
+        tss.backup5value = waitQueue.get(5).getWaitSize();
+        tss.backup4key = waitQueue.get(4).getsPointer();
+        tss.backup4value = waitQueue.get(4).getWaitSize();
+        tss.backup3key = waitQueue.get(3).getsPointer();
+        tss.backup3value = waitQueue.get(3).getWaitSize();
+        tss.backup2key = waitQueue.get(2).getsPointer();
+        tss.backup2value = waitQueue.get(2).getWaitSize();
+        tss.backup1key = waitQueue.get(1).getsPointer();
+        tss.backup1value = waitQueue.get(1).getWaitSize();
+        tss.backup0key = waitQueue.get(0).getsPointer();
+        tss.backup0value = waitQueue.get(0).getWaitSize();
         tss.noe = noe;
     }
 
@@ -64,9 +75,13 @@ public class ToDoList implements Serializable {
     public void restoreState(TODOListSaveState tss) {
         queueID.restore(tss.backupID_sp, tss.backupID_ep);
         queueNN.restore(tss);
-        for (int i = nRegularOptions - 1; i >= 0; --i) {
-            waitQueue.get(i).restore(tss.backup[i][0], tss.backup[i][1]);
-        }
+        waitQueue.get(0).restore(tss.backup0key, tss.backup0value);
+        waitQueue.get(1).restore(tss.backup1key, tss.backup1value);
+        waitQueue.get(2).restore(tss.backup2key, tss.backup2value);
+        waitQueue.get(3).restore(tss.backup3key, tss.backup3value);
+        waitQueue.get(4).restore(tss.backup4key, tss.backup4value);
+        waitQueue.get(5).restore(tss.backup5key, tss.backup5value);
+        waitQueue.get(6).restore(tss.backup6key, tss.backup6value);
         noe = tss.noe;
     }
 
@@ -136,7 +151,7 @@ public class ToDoList implements Serializable {
     /** save current state using internal stack */
     @PortedFrom(file = "ToDoList.h", name = "save")
     public void save() {
-        TODOListSaveState state = new TODOListSaveState(nRegularOptions);
+        TODOListSaveState state = new TODOListSaveState();
         saveState(state);
         saveStack.push(state);
     }

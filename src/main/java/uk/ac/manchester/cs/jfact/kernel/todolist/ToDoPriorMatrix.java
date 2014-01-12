@@ -32,7 +32,7 @@ public class ToDoPriorMatrix implements Serializable {
     private int indexGE;
     /** number of regular options (o- and NN-rules are not included) */
     @PortedFrom(file = "PriorityMatrix.h", name = "nRegularOps")
-    protected static final int nRegularOptions = 7;
+    public static final int nRegularOptions = 7;
     /** priority index for o- and ID operations (note that these ops have the
      * highest priority) */
     @PortedFrom(file = "PriorityMatrix.h", name = "iId")
