@@ -9,7 +9,7 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/** denotes a change in tests
+/** Denotes a change in tests.
  * 
  * @author ignazio */
 @Retention(RetentionPolicy.CLASS)

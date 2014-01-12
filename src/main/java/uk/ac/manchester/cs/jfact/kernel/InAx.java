@@ -122,7 +122,7 @@ public class InAx implements Serializable {
         return !C.isName() || !getConcept(C).isSystem();
     }
 
-    private final static Map<String, Integer> created = new HashMap<String, Integer>();
+    private static final Map<String, Integer> created = new HashMap<String, Integer>();
 
     /** @param s
      *            s */

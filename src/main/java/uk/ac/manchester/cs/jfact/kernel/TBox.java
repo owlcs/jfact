@@ -2129,17 +2129,15 @@ public class TBox implements Serializable {
         DLVertex v = dlHeap.get(Math.abs(p));
         DagTag type = v.getType();
         switch (type) {
-            case dtTop: {
+            case dtTop:
                 dump.dumpTop();
                 return;
-            }
             case dtPConcept:
             case dtNConcept:
             case dtPSingleton:
-            case dtNSingleton: {
+            case dtNSingleton:
                 dump.dumpConcept((Concept) v.getConcept());
                 return;
-            }
             case dtAnd:
                 dump.startOp(DIOp.diAnd);
                 int[] begin = v.begin();
@@ -2978,7 +2976,7 @@ public class TBox implements Serializable {
                     }
                     break;
                 case dtForall:
-                case dtLE: {
+                case dtLE:
                     Role _role = v.getRole();
                     List<Role> rolesToExplore = new LinkedList<Role>();
                     rolesToExplore.add(_role);
@@ -2993,29 +2991,27 @@ public class TBox implements Serializable {
                             rolesToExplore.addAll(roleToExplore.getAncestor());
                         }
                     }
-                }
                     queue.add(v.getConceptIndex());
                     break;
                 case dtProj:
                 case dtChoose:
                     queue.add(v.getConceptIndex());
                     break;
-                case dtIrr: {
-                    Role _role = v.getRole();
-                    List<Role> rolesToExplore = new LinkedList<Role>();
-                    rolesToExplore.add(_role);
-                    while (rolesToExplore.size() > 0) {
-                        Role roleToExplore = rolesToExplore.remove(0);
+                case dtIrr:
+                    Role __role = v.getRole();
+                    List<Role> _rolesToExplore = new LinkedList<Role>();
+                    _rolesToExplore.add(__role);
+                    while (_rolesToExplore.size() > 0) {
+                        Role roleToExplore = _rolesToExplore.remove(0);
                         if (roleToExplore.getId() != 0
                                 && !roleToExplore.isRelevant(relevance)) {
                             roleToExplore.setRelevant(relevance);
                             this.collectLogicFeature(roleToExplore);
                             queue.add(roleToExplore.getBPDomain());
                             queue.add(roleToExplore.getBPRange());
-                            rolesToExplore.addAll(roleToExplore.getAncestor());
+                            _rolesToExplore.addAll(roleToExplore.getAncestor());
                         }
                     }
-                }
                     break;
                 case dtAnd:
                 case dtCollection:

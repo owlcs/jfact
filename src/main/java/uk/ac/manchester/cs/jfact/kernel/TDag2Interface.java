@@ -50,13 +50,12 @@ public class TDag2Interface implements Serializable {
             case dtNSingleton:
                 return Manager.oneOf(Manager.individual(v.getConcept().getName()));
             case dtAnd:
-            case dtCollection: {
+            case dtCollection:
                 List<ConceptExpression> list = new ArrayList<ConceptExpression>();
                 for (int p : v.begin()) {
                     list.add(getCExpr(p));
                 }
                 return Manager.and(list);
-            }
             case dtForall:
                 if (v.getRole().isDataRole()) {
                     return Manager.forall(Manager.dataRole(v.getRole().getName()),
@@ -102,13 +101,12 @@ public class TDag2Interface implements Serializable {
             case dtDataExpr: // TODO: no data stuff yet
                 return Manager.dataTop();
             case dtAnd:
-            case dtCollection: {
+            case dtCollection:
                 List<DataExpression> list = new ArrayList<DataExpression>();
                 for (int p : v.begin()) {
                     list.add(getDExpr(p));
                 }
                 return Manager.dataAnd(list);
-            }
             default:
                 throw new UnreachableSituationException();
         }

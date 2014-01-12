@@ -2676,7 +2676,9 @@ public class ReasoningKernel implements Serializable {
     /** call to underlying conjunctive query folding
      * 
      * @param query
-     *            query */
+     *            query
+     * @param artificialABox
+     *            true if artificial abox */
     @Original
     public void evaluateQuery(MultiMap<String, ConceptExpression> query,
             boolean artificialABox) {

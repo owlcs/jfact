@@ -182,10 +182,10 @@ public class RoleAutomaton implements Serializable {
 
     /** get the initial state */
     @Original
-    public final static int initial = 0;
+    public static final int initial = 0;
     /** get the state */
     @PortedFrom(file = "RAutomaton.h", name = "final")
-    public final static int final_state = 1;
+    public static final int final_state = 1;
 
     /** @return new state */
     @PortedFrom(file = "RAutomaton.h", name = "newState")

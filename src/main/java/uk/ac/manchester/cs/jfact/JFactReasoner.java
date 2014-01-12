@@ -109,7 +109,6 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     private final OWLOntologyManager manager;
     private final OWLOntology root;
     private final BufferingMode bufferingMode;
-    @SuppressWarnings("rawtypes")
     private final List<OWLOntologyChange> rawChanges = new ArrayList<OWLOntologyChange>();
     private final Set<OWLAxiom> reasonerAxioms = new LinkedHashSet<OWLAxiom>();
     @Original
@@ -207,7 +206,6 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
     public void ontologiesChanged(List<? extends OWLOntologyChange> changes)
             throws OWLException {
         handleRawOntologyChanges(changes);
@@ -228,7 +226,6 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return root;
     }
 
-    @SuppressWarnings("rawtypes")
     private void handleRawOntologyChanges(List<? extends OWLOntologyChange> changes) {
         rawChanges.addAll(changes);
         // We auto-flush the changes if the reasoner is non-buffering
@@ -238,7 +235,6 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
     public synchronized List<OWLOntologyChange> getPendingChanges() {
         return new ArrayList<OWLOntologyChange>(rawChanges);
     }
@@ -1065,7 +1061,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     }
 
     /** get all individuals from the set individuals that has r-successor and
-     * s-successor and those are related via OP: r op s
+     * s-successor and those are related via OP: r op s.
      * 
      * @param individuals
      *            set of individuals to choose from

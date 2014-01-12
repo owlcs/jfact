@@ -24,7 +24,7 @@ import uk.ac.manchester.cs.jfact.kernel.Token;
 /** dl tree factory */
 public class DLTreeFactory implements Serializable {
     private static final long serialVersionUID = 11000L;
-    private final static EnumSet<Token> snfCalls = EnumSet.of(TOP, BOTTOM, CNAME, INAME,
+    private static final EnumSet<Token> snfCalls = EnumSet.of(TOP, BOTTOM, CNAME, INAME,
             RNAME, DNAME, DATAEXPR, NOT, INV, AND, FORALL, LE, SELF, RCOMPOSITION,
             PROJFROM, PROJINTO);
 

@@ -375,7 +375,7 @@ public class Concept extends ClassifiableEntry {
     }
 
     @Original
-    private final static EnumSet<Token> replacements = EnumSet.of(CNAME, INAME, RNAME,
+    private static final EnumSet<Token> replacements = EnumSet.of(CNAME, INAME, RNAME,
             DNAME);
 
     /** @param stack
@@ -503,9 +503,11 @@ public class Concept extends ClassifiableEntry {
                 if (max < cur) {
                     max = cur;
                 }
-            }// else both nodes are each other subsumers: same depth?
+            }
+            // else both nodes are each other subsumers: same depth?
         }
-        return tsDepth = max + 1;
+        tsDepth = max + 1;
+        return tsDepth;
     }
 
     /** clear concept */
@@ -521,7 +523,8 @@ public class Concept extends ClassifiableEntry {
         // TConcept clean
         removeDescription();
         setPrimitive(true);
-        pName = pBody = bpINVALID;
+        pBody = bpINVALID;
+        pName = bpINVALID;
     }
 
     /** @return p name */

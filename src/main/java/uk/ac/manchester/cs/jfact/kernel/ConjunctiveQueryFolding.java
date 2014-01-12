@@ -414,30 +414,25 @@ public class ConjunctiveQueryFolding implements Serializable {
     /** @param query
      *            query
      * @param kernel
-     *            kernel */
+     *            kernel
+     * @param artificialABox
+     *            true if artificial abox */
     @PortedFrom(file = "ConjunctiveQuery.cpp", name = "evaluateQuery")
     public void evaluateQuery(MultiMap<String, ConceptExpression> query,
             ReasoningKernel kernel, boolean artificialABox) {
         // make index of all vars
         fillVarIndex(query);
         if (I2Var.isEmpty()) {
-            // System.out.println("No query variables\n");
             return;
         }
         // for every var: create an expression of vars
         List<DLTree> Concepts = new ArrayList<DLTree>();
-        // System.out.println("Tuple <");
         for (int i = 0; i < I2Var.size(); ++i) {
             String var = I2Var.get(i);
-            if (i != 0) {
-                // System.out.println(", ");
-            }
-            // System.out.println(var);
             List<ConceptExpression> list = new ArrayList<ConceptExpression>(
                     query.get(var));
             Concepts.add(kernel.e(pEM.and(list)));
         }
-        // System.out.println(">\n");
         fillIVec(kernel, artificialABox);
         kernel.getTBox().answerQuery(Concepts);
     }

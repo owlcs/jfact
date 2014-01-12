@@ -67,7 +67,7 @@ public class RoleMaster implements Serializable {
     @PortedFrom(file = "RoleMaster.h", name = "useUndefinedNames")
     private boolean useUndefinedNames;
     @Original
-    private final static int firstRoleIndex = 2;
+    private static final int firstRoleIndex = 2;
 
     /** TRole and its inverse in RoleBox
      * 

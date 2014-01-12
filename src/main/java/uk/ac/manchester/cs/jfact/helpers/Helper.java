@@ -66,13 +66,13 @@ public class Helper implements Serializable {
     }
 
     /** brancing level value */
-    public final static int InitBranchingLevelValue = 1;
+    public static final int InitBranchingLevelValue = 1;
     /** invalid bipolar pointer */
-    public final static int bpINVALID = 0;
+    public static final int bpINVALID = 0;
     /** top bipolar pointer */
-    public final static int bpTOP = 1;
+    public static final int bpTOP = 1;
     /** bottom bipolar pointer */
-    public final static int bpBOTTOM = -1;
+    public static final int bpBOTTOM = -1;
 
     /** @param index
      *            index

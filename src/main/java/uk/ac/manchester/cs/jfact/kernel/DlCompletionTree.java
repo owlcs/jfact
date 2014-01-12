@@ -860,7 +860,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     }
 
     /** default level for the Blockable node */
-    public final static int BLOCKABLE_LEVEL = Integer.MAX_VALUE;
+    public static final int BLOCKABLE_LEVEL = Integer.MAX_VALUE;
 
     /** @param level
      *            level */

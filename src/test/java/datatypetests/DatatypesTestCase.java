@@ -10,7 +10,6 @@ import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.*;
 import static uk.ac.manchester.cs.jfact.datatypes.Facets.*;
 import static uk.ac.manchester.cs.jfact.kernel.DagTag.*;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -173,8 +172,7 @@ public class DatatypesTestCase {
         return DepSet.create(s);
     }
 
-    public static String printDocument(Document doc) throws IOException,
-            TransformerException {
+    public static String printDocument(Document doc) throws TransformerException {
         StringWriter w = new StringWriter();
         TransformerFactory tf = TransformerFactory.newInstance();
         Transformer transformer = tf.newTransformer();

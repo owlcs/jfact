@@ -12,7 +12,7 @@ public class FastSetSimple extends AbstractFastSet {
     private static final long serialVersionUID = 11000L;
     protected int[] values;
     protected int size = 0;
-    protected final static int defaultSize = 16;
+    protected static final int defaultSize = 16;
 
     protected int insertionIndex(int key) {
         if (key < values[0]) {
@@ -302,6 +302,15 @@ public class FastSetSimple extends AbstractFastSet {
     @Override
     public boolean intersect(FastSet f) {
         return containsAny(f);
+    }
+
+    @Override
+    public int hashCode() {
+        int hashcode = 0;
+        for (int i = 0; i < size(); i++) {
+            hashcode += values[i];
+        }
+        return hashcode;
     }
 
     @Override

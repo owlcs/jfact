@@ -46,7 +46,7 @@ public class DatatypeEntry extends NamedEntry {
         return type.getFacets();
     }
 
-    /** get pointer to DAG entry corresponding to the data entry */
+    /** @return pointer to DAG entry corresponding to the data entry */
     @Override
     @PortedFrom(file = "taxNamEntry.h", name = "getIndex")
     public int getIndex() {

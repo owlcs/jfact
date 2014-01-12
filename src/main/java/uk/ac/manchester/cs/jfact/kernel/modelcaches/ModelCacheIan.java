@@ -304,10 +304,9 @@ public class ModelCacheIan extends ModelCacheInterface {
         switch (p.getCacheType()) {
             case mctConst:
                 return csValid;
-            case mctSingleton: {
+            case mctSingleton:
                 int Singleton = ((ModelCacheSingleton) p).getValue();
                 return isMergableSingleton(Math.abs(Singleton), Singleton > 0);
-            }
             case mctIan:
                 return isMergableIan((ModelCacheIan) p);
             default:

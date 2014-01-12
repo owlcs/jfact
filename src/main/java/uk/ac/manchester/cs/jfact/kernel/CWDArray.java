@@ -21,7 +21,7 @@ import conformance.PortedFrom;
 public class CWDArray implements Serializable {
     private static final long serialVersionUID = 11000L;
     @Original
-    private final static double distribution = 0.025;
+    private static final double distribution = 0.025;
     /** array of concepts together with dep-sets */
     @PortedFrom(file = "CWDArray.h", name = "Base")
     private final List<ConceptWDep> base = new ArrayList<ConceptWDep>();
@@ -32,7 +32,7 @@ public class CWDArray implements Serializable {
     @Original
     private boolean createCache = false;
     @Original
-    private final static int cacheLimit = 1;
+    private static final int cacheLimit = 1;
     @Original
     private int size = 0;
 

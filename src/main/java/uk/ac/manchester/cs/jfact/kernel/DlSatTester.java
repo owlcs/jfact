@@ -1177,12 +1177,12 @@ public class DlSatTester implements Serializable {
     }
 
     @Original
-    private final static EnumSet<DagTag> handlecollection = EnumSet.of(dtAnd,
+    private static final EnumSet<DagTag> handlecollection = EnumSet.of(dtAnd,
             dtCollection);
     @Original
-    private final static EnumSet<DagTag> handleforallle = EnumSet.of(dtForall, dtLE);
+    private static final EnumSet<DagTag> handleforallle = EnumSet.of(dtForall, dtLE);
     @Original
-    private final static EnumSet<DagTag> handlesingleton = EnumSet.of(dtPSingleton,
+    private static final EnumSet<DagTag> handlesingleton = EnumSet.of(dtPSingleton,
             dtNSingleton, dtNConcept, dtPConcept);
 
     @PortedFrom(file = "Reasoner.h", name = "prepareCascadedCache")
@@ -2560,7 +2560,7 @@ public class DlSatTester implements Serializable {
                         }
                     }
                     break;
-                case dtForall: {
+                case dtForall:
                     if ((flags & redoForall.getValue()) == 0) {
                         break;
                     }
@@ -2587,7 +2587,6 @@ public class DlSatTester implements Serializable {
                         }
                     }
                     break;
-                }
                 case dtLE:
                     if (isFunctionalVertex(v)) {
                         if ((flags & redoFunc.getValue()) > 0 && R.lesserequal(vR)) {
@@ -2636,7 +2635,7 @@ public class DlSatTester implements Serializable {
                         curConceptDepSet)) {
                     case acrClash:
                         return true;
-                    case acrDone: {
+                    case acrDone:
                         updateLevel(curNode, curConceptDepSet);
                         ConceptWDep rFuncRestriction1 = new ConceptWDep(functional,
                                 curConceptDepSet);
@@ -2644,7 +2643,6 @@ public class DlSatTester implements Serializable {
                         used.add(rFuncRestriction1.getConcept());
                         options.getLog().printTemplate(Templates.COMMON_TACTIC_BODY_SOME,
                                 rFuncRestriction1);
-                    }
                         break;
                     case acrExist:
                         break;
@@ -3405,10 +3403,8 @@ public class DlSatTester implements Serializable {
             if (q.getRole().isDisjoint()
                     && checkDisjointRoleClash(q.getReverse().getArcEnd(), q.getArcEnd(),
                             q.getRole(), depF)) {
-                {
-                    // XXX dubious
-                    return true;
-                }
+                // XXX dubious
+                return true;
             }
         }
         if (to.isDataNode()) {

@@ -298,12 +298,11 @@ public class TAxiomSplitter implements Serializable {
         }
     }
 
-    /** check whether the record is independent wrt modularity; @return true iff
-     * split was incorrect
+    /** check whether the record is independent wrt modularity;
      * 
+     * @return true iff split was incorrect
      * @param rec
-     *            rec
-     * @return true if not correct */
+     *            rec */
     @PortedFrom(file = "AxiomSplitter.h", name = "checkSplitCorrectness")
     protected boolean checkSplitCorrectness(TRecord rec) {
         if (Rejects.contains(rec.oldName)) {

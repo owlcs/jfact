@@ -90,7 +90,7 @@ public class DatatypeFactory implements Serializable {
     //@formatter:on
     private static final List<Datatype<?>> values = getList();
 
-    private static final List<Datatype<?>> getList() {
+    private static List<Datatype<?>> getList() {
         List<Datatype<?>> toReturn = new ArrayList<Datatype<?>>();
         toReturn.add(ANYURI);
         toReturn.add(BASE64BINARY);
@@ -295,7 +295,7 @@ public class DatatypeFactory implements Serializable {
         return new DatatypeOrderedExpressionImpl<R>(base);
     }
 
-    static abstract class ABSTRACT_NUMERIC_DATATYPE<R extends Comparable<R>> extends
+    abstract static class ABSTRACT_NUMERIC_DATATYPE<R extends Comparable<R>> extends
             ABSTRACT_DATATYPE<R> implements NumericDatatype<R> {
         private static final long serialVersionUID = 11000L;
 
@@ -1298,7 +1298,7 @@ public class DatatypeFactory implements Serializable {
         }
     }
 
-    static abstract class UNSIGNEDBYTE_DATATYPE<R extends Comparable<R>> extends
+    abstract static class UNSIGNEDBYTE_DATATYPE<R extends Comparable<R>> extends
             UNSIGNEDSHORT_DATATYPE<R> {
         private static final long serialVersionUID = 11000L;
 

@@ -107,13 +107,9 @@ public final class DataTypeReasoner implements Serializable {
     @PortedFrom(file = "DataReasoning.h", name = "addDataEntry")
     public boolean addDataEntry(boolean positive, DagTag type, NamedEntry entry,
             DepSet dep) {
-        // System.out.println("\n\nDataTypeReasoner.addDataEntry() " + positive
-        // + " " + type
-        // + " " + entry + " " + dep + "\n\n");
         switch (type) {
-            case dtDataType: {
+            case dtDataType:
                 return dataType(positive, ((DatatypeEntry) entry).getDatatype(), dep);
-            }
             case dtDataValue:
                 return this.dataValue(positive, ((LiteralEntry) entry).getLiteral(), dep);
             case dtDataExpr:
