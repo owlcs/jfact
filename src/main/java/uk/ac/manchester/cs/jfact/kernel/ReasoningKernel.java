@@ -1560,6 +1560,10 @@ public class ReasoningKernel implements Serializable {
                     // 2 different fresh names
                     return false;
                 }
+                if (cV == null || dV == null) {
+                    // not the same
+                    return false;
+                }
                 return cV.equals(dV);
             }
         }
