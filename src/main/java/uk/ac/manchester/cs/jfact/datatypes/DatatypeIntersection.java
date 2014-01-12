@@ -20,11 +20,11 @@ public class DatatypeIntersection<T extends Comparable<T>> implements
     private final String uri;
     private final Datatype<T> host;
 
-    /** @param ccollection
-     *            ccollection
+    /** @param collection
+     *            collection
      * @return datatype host for a set of datatypes */
-    public static Datatype<?> getHostDatatype(Collection<Datatype<?>> ccollection) {
-        List<Datatype<?>> list = new ArrayList<Datatype<?>>(ccollection);
+    public static Datatype<?> getHostDatatype(Collection<Datatype<?>> collection) {
+        List<Datatype<?>> list = new ArrayList<Datatype<?>>(collection);
         // all types need to be compatible, or the intersection cannot be
         // anything but empty
         for (int i = 0; i < list.size(); i++) {

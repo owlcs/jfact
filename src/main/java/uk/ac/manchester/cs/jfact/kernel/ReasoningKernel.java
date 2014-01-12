@@ -1133,21 +1133,19 @@ public class ReasoningKernel implements Serializable {
             return true;
         }
         preprocessKB();
-        if (isKBClassified()) {
-            // try to detect C=D wrt named concepts
-            if (this.isNameOrConst(D) && this.isNameOrConst(C)) {
-                TaxonomyVertex cV = getTBox().getCI(e(C)).getTaxVertex();
-                TaxonomyVertex dV = getTBox().getCI(e(D)).getTaxVertex();
-                if (cV == null && dV == null) {
-                    // 2 different fresh names
-                    return false;
-                }
-                if (cV == null || dV == null) {
-                    // not the same
-                    return false;
-                }
-                return cV.equals(dV);
+        // try to detect C=D wrt named concepts
+        if (isKBClassified() && this.isNameOrConst(D) && this.isNameOrConst(C)) {
+            TaxonomyVertex cV = getTBox().getCI(e(C)).getTaxVertex();
+            TaxonomyVertex dV = getTBox().getCI(e(D)).getTaxVertex();
+            if (cV == null && dV == null) {
+                // 2 different fresh names
+                return false;
             }
+            if (cV == null || dV == null) {
+                // not the same
+                return false;
+            }
+            return cV.equals(dV);
         }
         // not classified or not named constants
         return isSubsumedBy(C, D) && isSubsumedBy(D, C);

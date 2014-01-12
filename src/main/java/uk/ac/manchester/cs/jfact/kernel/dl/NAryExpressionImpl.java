@@ -16,20 +16,20 @@ import conformance.PortedFrom;
 
 /** nary expression base
  * 
- * @param <Argument>
+ * @param <A>
  *            argument type */
 @PortedFrom(file = "tDLExpression.h", name = "TDLNAryExpression")
-public class NAryExpressionImpl<Argument extends Expression> implements
-        NAryExpression<Argument>, Serializable {
+public class NAryExpressionImpl<A extends Expression> implements NAryExpression<A>,
+        Serializable {
     private static final long serialVersionUID = 11000L;
     /** set of equivalent concept descriptions */
-    private final List<Argument> Base = new ArrayList<Argument>();
+    private final List<A> Base = new ArrayList<A>();
 
     /** default constructor */
     public NAryExpressionImpl() {}
 
     @Override
-    public void add(Collection<Argument> v) {
+    public void add(Collection<A> v) {
         for (Expression e : v) {
             add(e);
         }
@@ -41,7 +41,7 @@ public class NAryExpressionImpl<Argument extends Expression> implements
     }
 
     @Override
-    public List<Argument> getArguments() {
+    public List<A> getArguments() {
         return Base;
     }
 
@@ -59,8 +59,8 @@ public class NAryExpressionImpl<Argument extends Expression> implements
     /** transform general expression into the argument one */
     @SuppressWarnings("unchecked")
     @Override
-    public Argument transform(Expression arg) {
-        return (Argument) arg;
+    public A transform(Expression arg) {
+        return (A) arg;
     }
 
     @Override

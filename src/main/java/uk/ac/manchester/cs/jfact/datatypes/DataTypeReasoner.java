@@ -179,100 +179,171 @@ public final class DataTypeReasoner implements Serializable {
     /** @return true if clash */
     @PortedFrom(file = "DataReasoning.h", name = "checkClash")
     public boolean checkClash() {
-        List<DataTypeSituation<?>> types = new ArrayList<DataTypeSituation<?>>(
-                map.values());
-        int size = types.size();
+        int size = map.size();
         if (size == 0) {
             // empty, nothing to do
             return false;
         }
         if (size == 1) {
             // only one, positive or negative - just check it
-            return types.get(0).checkPNTypeClash();
+            return map.values().iterator().next().checkPNTypeClash();
         }
-        if (size > 1) {
-            // check if any value is already clashing with itself
-            for (int i = 0; i < size; i++) {
-                if (types.get(i).checkPNTypeClash()) {
-                    reportClash(types.get(i).getPType(), types.get(i).getNType(), DT_TT);
+        // check if any value is already clashing with itself
+        List<DataTypeSituation<?>> types = new ArrayList<DataTypeSituation<?>>(
+                map.values());
+        if (findClash(types, size)) {
+            return true;
+        }
+        // for every two datatypes, they must either be disjoint and
+        // opposite, or one subdatatype of the other
+        // if a subtype b, then b and not a, otherwise clash
+        // a subtype b => b compatible a (all a are b) but not a compatible
+        // b (some b might not be a)
+        for (int i = 0; i < size; i++) {
+            DataTypeSituation<?> ds1 = types.get(i);
+            for (int j = i + 1; j < size; j++) {
+                DataTypeSituation<?> ds2 = types.get(j);
+                boolean p1 = ds1.hasPType();
+                boolean n2 = ds2.hasNType();
+                boolean p2 = ds2.hasPType();
+                boolean n1 = ds1.hasNType();
+                Datatype<?> t1 = ds1.getType();
+                Datatype<?> t2 = ds2.getType();
+                boolean t1subTypet2 = t1.isSubType(t2);
+                boolean t2subTypet1 = t2.isSubType(t1);
+                DepSet pType1 = ds1.getPType();
+                DepSet nType2 = ds2.getNType();
+                if (findClash(p1, n2, p2, n1, t1subTypet2, t2subTypet1, pType1, nType2)) {
+                    return true;
+                }
+                // what if the supertype is an enum?
+                // check that values in the supertype are acceptable for
+                // the subtype
+                boolean not21 = !ds2.checkCompatibleValue(ds1);
+                if (findClash(t1subTypet2, pType1, nType2, not21)) {
+                    return true;
+                }
+                boolean not12 = !ds1.checkCompatibleValue(ds2);
+                if (findClash(t2subTypet1, pType1, nType2, not12)) {
+                    return true;
+                }
+                if (findClash(p1, p2, t1, t2, pType1, ds2.getPType(), not12)) {
                     return true;
                 }
             }
-            // for every two datatypes, they must either be disjoint and
-            // opposite, or one subdatatype of the other
-            // if a subtype b, then b and not a, otherwise clash
-            // a subtype b => b compatible a (all a are b) but not a compatible
-            // b (some b might not be a)
-            for (int i = 0; i < size; i++) {
-                DataTypeSituation<?> ds1 = types.get(i);
-                for (int j = i + 1; j < size; j++) {
-                    DataTypeSituation<?> ds2 = types.get(j);
-                    if (ds1.getType().isSubType(ds2.getType()) && ds1.hasPType()
-                            && ds2.hasNType() || ds2.getType().isSubType(ds1.getType())
-                            && ds2.hasPType() && ds1.hasNType()) {
-                        // cannot be NOT supertype AND subtype
-                        reportClash(ds1.getPType(), ds2.getNType(), DT_TT);
-                        return true;
-                    }
-                    // what if the supertype is an enum?
-                    // check that values in the supertype are acceptable for
-                    // the subtype
-                    if (ds1.getType().isSubType(ds2.getType())
-                            && !ds2.checkCompatibleValue(ds1)) {
-                        reportClash(ds1.getPType(), ds2.getNType(), DT_TT);
-                        ds2.checkCompatibleValue(ds1);
-                        return true;
-                    }
-                    // check that values in the supertype are acceptable for
-                    // the subtype
-                    if (ds2.getType().isSubType(ds1.getType())
-                            && !ds1.checkCompatibleValue(ds2)) {
-                        reportClash(ds1.getPType(), ds2.getNType(), DT_TT);
-                        return true;
-                    }
-                    // they're disjoint: they can't be both positive (but can be
-                    // both negative)
-                    if (ds1.hasPType() && ds2.hasPType()) {
-                        // special case: disjoint datatypes with overlapping
-                        // value spaces, e.g., nonneginteger, and nonposinteger
-                        // and value = 0
-                        if (!ds1.checkCompatibleValue(ds2)) {
-                            reportClash(ds1.getPType(), ds2.getPType(), DT_TT);
-                            return true;
-                        } else {
-                            // in this case, disjoint datatypes which have some
-                            // common values do not rise a clash, but they are
-                            // determining a new interval that should be added
-                            // to the reasoner.
-                            // XXX need to design a proper general solution
-                            if (ds1.getType().equals(DatatypeFactory.NONNEGATIVEINTEGER)
-                                    && ds2.getType().equals(
-                                            DatatypeFactory.NONPOSITIVEINTEGER)
-                                    || ds2.getType().equals(
-                                            DatatypeFactory.NONNEGATIVEINTEGER)
-                                    && ds1.getType().equals(
-                                            DatatypeFactory.NONPOSITIVEINTEGER)) {
-                                map.remove(ds1.getType());
-                                map.remove(ds2.getType());
-                                this.dataExpression(
-                                        true,
-                                        new DatatypeEnumeration<BigInteger>(
-                                                DatatypeFactory.INTEGER,
-                                                Collections
-                                                        .singletonList(DatatypeFactory.INTEGER
-                                                                .buildLiteral("0"))),
-                                        DepSet.plus(ds1.getPType(), ds2.getPType()));
-                                return checkClash();
-                            }
-                        }
-                    }
+        }
+        return false;
+    }
+
+    /** @param p1
+     *            p1
+     * @param p2
+     *            p2
+     * @param t1
+     *            t1
+     * @param t2
+     *            t2
+     * @param pType1
+     *            pType1
+     * @param pType2
+     *            pType2
+     * @param not12
+     *            not12
+     * @return true if clash */
+    private boolean findClash(boolean p1, boolean p2, Datatype<?> t1, Datatype<?> t2,
+            DepSet pType1, DepSet pType2, boolean not12) {
+        // they're disjoint: they can't be both positive (but can be
+        // both negative)
+        if (p1 && p2) {
+            // special case: disjoint datatypes with overlapping
+            // value spaces, e.g., nonneginteger, and nonposinteger
+            // and value = 0
+            if (not12) {
+                reportClash(pType1, pType2, DT_TT);
+                return true;
+            } else {
+                // in this case, disjoint datatypes which have some
+                // common values do not rise a clash, but they are
+                // determining a new interval that should be added
+                // to the reasoner.
+                // XXX need to design a proper general solution
+                if (t1.equals(DatatypeFactory.NONNEGATIVEINTEGER)
+                        && t2.equals(DatatypeFactory.NONPOSITIVEINTEGER)
+                        || t2.equals(DatatypeFactory.NONNEGATIVEINTEGER)
+                        && t1.equals(DatatypeFactory.NONPOSITIVEINTEGER)) {
+                    map.remove(t1);
+                    map.remove(t2);
+                    DatatypeEnumeration<BigInteger> enumeration = new DatatypeEnumeration<BigInteger>(
+                            DatatypeFactory.INTEGER,
+                            Collections.singletonList(DatatypeFactory.INTEGER
+                                    .buildLiteral("0")));
+                    this.dataExpression(true, enumeration, DepSet.plus(pType1, pType2));
+                    return checkClash();
                 }
             }
-            return false;
         }
-        // this will never be reached because the previous ifs are a partition
-        // of the possible
-        // sizes for types, but the compiler is not smart enough to see this
+        return false;
+    }
+
+    /** @param p1
+     *            p1
+     * @param n2
+     *            n2
+     * @param p2
+     *            p2
+     * @param n1
+     *            n1
+     * @param t1subTypet2
+     *            t1subTypet2
+     * @param t2subTypet1
+     *            t2subTypet1
+     * @param pType1
+     *            pType1
+     * @param nType2
+     *            nType2
+     * @return true if clash */
+    private boolean findClash(boolean p1, boolean n2, boolean p2, boolean n1,
+            boolean t1subTypet2, boolean t2subTypet1, DepSet pType1, DepSet nType2) {
+        if (t1subTypet2 && p1 && n2 || t2subTypet1 && p2 && n1) {
+            // cannot be NOT supertype AND subtype
+            reportClash(pType1, nType2, DT_TT);
+            return true;
+        }
+        return false;
+    }
+
+    /** @param t2subTypet1
+     *            t2subTypet1
+     * @param pType1
+     *            pType1
+     * @param nType2
+     *            nType2
+     * @param not12
+     *            not12
+     * @return true if clash happens */
+    private boolean findClash(boolean t2subTypet1, DepSet pType1, DepSet nType2,
+            boolean not12) {
+        // check that values in the supertype are acceptable for
+        // the subtype
+        if (t2subTypet1 && not12) {
+            reportClash(pType1, nType2, DT_TT);
+            return true;
+        }
+        return false;
+    }
+
+    /** @param types
+     *            types
+     * @param size
+     *            size
+     * @return true if a clash is found */
+    private boolean findClash(List<DataTypeSituation<?>> types, int size) {
+        for (int i = 0; i < size; i++) {
+            if (types.get(i).checkPNTypeClash()) {
+                reportClash(types.get(i).getPType(), types.get(i).getNType(), DT_TT);
+                return true;
+            }
+        }
         return false;
     }
 }

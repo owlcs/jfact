@@ -77,38 +77,8 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker,
      *         NULL if none necessary */
     @PortedFrom(file = "SemanticLocalityChecker.h", name = "getExpr")
     protected ConceptExpression getExpr(AxiomInterface axiom) {
-        if (axiom instanceof AxiomRelatedTo) {
-            return pEM.value(((AxiomRelatedTo) axiom).getRelation(),
-                    ((AxiomRelatedTo) axiom).getRelatedIndividual());
-        }
-        if (axiom instanceof AxiomValueOf) {
-            return pEM.value(((AxiomValueOf) axiom).getAttribute(),
-                    ((AxiomValueOf) axiom).getValue());
-        }
-        if (axiom instanceof AxiomORoleDomain) {
-            return pEM.exists(((AxiomORoleDomain) axiom).getRole(), pEM.top());
-        }
-        if (axiom instanceof AxiomORoleRange) {
-            return pEM.exists(((AxiomORoleRange) axiom).getRole(),
-                    pEM.not(((AxiomORoleRange) axiom).getRange()));
-        }
-        if (axiom instanceof AxiomDRoleDomain) {
-            return pEM.exists(((AxiomDRoleDomain) axiom).getRole(), pEM.dataTop());
-        }
-        if (axiom instanceof AxiomDRoleRange) {
-            return pEM.exists(((AxiomDRoleRange) axiom).getRole(),
-                    pEM.dataNot(((AxiomDRoleRange) axiom).getRange()));
-        }
-        if (axiom instanceof AxiomRelatedToNot) {
-            return pEM.not(pEM.value(((AxiomRelatedToNot) axiom).getRelation(),
-                    ((AxiomRelatedToNot) axiom).getRelatedIndividual()));
-        }
-        if (axiom instanceof AxiomValueOfNot) {
-            return pEM.not(pEM.value(((AxiomValueOfNot) axiom).getAttribute(),
-                    ((AxiomValueOfNot) axiom).getValue()));
-        }
         // everything else doesn't require expression to be build
-        return null;
+        return axiom.accept(new ExpressionFromAxiomBuilder(null, pEM));
     }
 
     /** signature to keep */

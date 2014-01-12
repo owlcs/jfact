@@ -370,15 +370,9 @@ public class DatatypeFactory implements Serializable {
         @SuppressWarnings("unchecked")
         @Override
         public boolean isCompatible(Datatype<?> type) {
-            // if (!super.isCompatible(type)) {
-            // return false;
-            // }
             if (type.equals(LITERAL)) {
                 return true;
             }
-            // if(isSubType(type)||type.isSubType(this)) {
-            // return true;
-            // }
             if (type.getNumeric()) {
                 // specific cases: float and double have overlapping value
                 // spaces with all numerics but are not compatible with any

@@ -59,74 +59,77 @@ public class DatatypesTestCase {
     }
 
     private JFactReasonerConfiguration config;
-    private DatatypeEntry literalDatatypeEntry4 = datatype(LITERAL, 4);
-    private DatatypeEntry integerDatatypeEntry6 = datatype(INTEGER, 6);
-    private DatatypeEntry nonposinteger4 = datatype(NONPOSITIVEINTEGER, 4);
-    private DatatypeEntry shortDatatypeEntry5 = datatype(SHORT, 5);
-    private DatatypeEntry unsignedbyteDatatypeEntry5 = datatype(UNSIGNEDBYTE, 5);
-    private LiteralEntry Agamidae = literal(PLAINLITERAL, "Agamidae@", 26);
-    private LiteralEntry Amphisbaenidae = literal(PLAINLITERAL, "Amphisbaenidae@", 10);
-    private LiteralEntry Anomalepidae = literal(PLAINLITERAL, "Anomalepidae@", 22);
-    private LiteralEntry Bipedidae = literal(PLAINLITERAL, "Bipedidae@", 34);
-    private LiteralEntry Cordylidae = literal(PLAINLITERAL, "Cordylidae@", 50);
-    private LiteralEntry Crocodylidae = literal(PLAINLITERAL, "Crocodylidae@", 30);
-    private LiteralEntry Emydidae = literal(PLAINLITERAL, "Emydidae@", 14);
-    private LiteralEntry Gekkonidae = literal(PLAINLITERAL, "Gekkonidae@", 42);
-    private LiteralEntry Leptotyphlopidae = literal(PLAINLITERAL, "Leptotyphlopidae@", 38);
-    private LiteralEntry Loxocemidae = literal(PLAINLITERAL, "Loxocemidae@", 46);
-    private LiteralEntry Sphenodontidae = literal(PLAINLITERAL, "Sphenodontidae@", 54);
-    private LiteralEntry Xantusiidae = literal(PLAINLITERAL, "Xantusiidae@", 18);
-    private LiteralEntry aString = literal(STRING, "aString", 5);
-    private LiteralEntry valueLiteral = literal(PLAINLITERAL, "value@", 5);
-    private LiteralEntry a_String = literal(STRING, "A string", 8);
-    private LiteralEntry name_1 = literal(NEGATIVEINTEGER, "-1", 5);
-    private LiteralEntry name0float = literal(FLOAT, "0.0", 7);
-    private LiteralEntry name0_float = literal(FLOAT, "-0.0", 5);
-    private LiteralEntry name0integer = literal(INTEGER, "0", 5);
-    private LiteralEntry name18integer = literal(INTEGER, "18", 5);
-    private LiteralEntry name1998_679 = literal(POSITIVEINTEGER, "1998", 679);
-    private LiteralEntry name1998_729 = literal(POSITIVEINTEGER, "1998", 729);
-    private LiteralEntry name19integer = literal(INTEGER, "19", 7);
-    private LiteralEntry name200710 = literal(DATETIME, oct82007 + T20, 7);
-    private LiteralEntry name2008075 = literal(DATETIME, jul82008 + T20, 5);
-    private LiteralEntry name2007 = literal(INT, "2007", 5);
-    private LiteralEntry name20080708 = literal(DATETIME, jul82008, 5);
-    private LiteralEntry name20080709 = literal(DATETIME, jul92008, 8);
-    private LiteralEntry name2008070920 = literal(DATETIME, jul92008 + T20, 8);
-    private LiteralEntry name20080710 = literal(DATETIME, jul102008, 8);
-    private LiteralEntry name2008071020 = literal(DATETIME, jul102008 + T20, 7);
-    private LiteralEntry name2008 = literal(INT, "2008", 8);
-    private LiteralEntry name3integer6 = literal(INTEGER, "3", 6);
-    private LiteralEntry name3int7 = literal(INT, "3", 7);
-    private LiteralEntry name6542145 = literal(INTEGER, "6542145", 8);
-    private LiteralEntry booleanFalse = literal(BOOLEAN, "false", 10);
-    private LiteralEntry booleanTrue = literal(BOOLEAN, "true", 10);
-    private LiteralEntry name2integer5 = literal(INTEGER, "2", 5);
-    private LiteralEntry name2short5 = literal(SHORT, "2", 5);
-    private LiteralEntry xml1 = literal(XMLLITERAL, XMLTEXT1, 7);
-    private LiteralEntry xml2 = literal(XMLLITERAL, XMLTEXT2, 7);
-    private LiteralEntry xml3 = literal(XMLLITERAL, XMLTEXT3, 7);
-    private LiteralEntry xml4 = literal(XMLLITERAL, XMLTEXT4, 5);
-    private LiteralEntry xml5 = literal(XMLLITERAL, XMLTEXT5, 5);
-    private DatatypeEntry byte4 = datatype(BYTE, 4);
-    private DatatypeEntry integer7 = datatype(INTEGER, 7);
-    private DatatypeEntry nonNegativeInteger6 = datatype(NONNEGATIVEINTEGER, 6);
-    private DatatypeEntry positiveInteger11 = datatype(POSITIVEINTEGER, 11);
-    private DatatypeEntry short3 = datatype(SHORT, 3);
-    private DatatypeEntry string4 = datatype(STRING, 4);
-    private LiteralEntry int0 = literal(INT, "0", 0);
-    private DatatypeEntry float_11 = datatype(
+    private final DatatypeEntry literalDatatypeEntry4 = datatype(LITERAL, 4);
+    private final DatatypeEntry integerDatatypeEntry6 = datatype(INTEGER, 6);
+    private final DatatypeEntry nonposinteger4 = datatype(NONPOSITIVEINTEGER, 4);
+    private final DatatypeEntry shortDatatypeEntry5 = datatype(SHORT, 5);
+    private final DatatypeEntry unsignedbyteDatatypeEntry5 = datatype(UNSIGNEDBYTE, 5);
+    private final LiteralEntry Agamidae = literal(PLAINLITERAL, "Agamidae@", 26);
+    private final LiteralEntry Amphisbaenidae = literal(PLAINLITERAL, "Amphisbaenidae@",
+            10);
+    private final LiteralEntry Anomalepidae = literal(PLAINLITERAL, "Anomalepidae@", 22);
+    private final LiteralEntry Bipedidae = literal(PLAINLITERAL, "Bipedidae@", 34);
+    private final LiteralEntry Cordylidae = literal(PLAINLITERAL, "Cordylidae@", 50);
+    private final LiteralEntry Crocodylidae = literal(PLAINLITERAL, "Crocodylidae@", 30);
+    private final LiteralEntry Emydidae = literal(PLAINLITERAL, "Emydidae@", 14);
+    private final LiteralEntry Gekkonidae = literal(PLAINLITERAL, "Gekkonidae@", 42);
+    private final LiteralEntry Leptotyphlopidae = literal(PLAINLITERAL,
+            "Leptotyphlopidae@", 38);
+    private final LiteralEntry Loxocemidae = literal(PLAINLITERAL, "Loxocemidae@", 46);
+    private final LiteralEntry Sphenodontidae = literal(PLAINLITERAL, "Sphenodontidae@",
+            54);
+    private final LiteralEntry Xantusiidae = literal(PLAINLITERAL, "Xantusiidae@", 18);
+    private final LiteralEntry aString = literal(STRING, "aString", 5);
+    private final LiteralEntry valueLiteral = literal(PLAINLITERAL, "value@", 5);
+    private final LiteralEntry a_String = literal(STRING, "A string", 8);
+    private final LiteralEntry name_1 = literal(NEGATIVEINTEGER, "-1", 5);
+    private final LiteralEntry name0float = literal(FLOAT, "0.0", 7);
+    private final LiteralEntry name0_float = literal(FLOAT, "-0.0", 5);
+    private final LiteralEntry name0integer = literal(INTEGER, "0", 5);
+    private final LiteralEntry name18integer = literal(INTEGER, "18", 5);
+    private final LiteralEntry name1998_679 = literal(POSITIVEINTEGER, "1998", 679);
+    private final LiteralEntry name1998_729 = literal(POSITIVEINTEGER, "1998", 729);
+    private final LiteralEntry name19integer = literal(INTEGER, "19", 7);
+    private final LiteralEntry name200710 = literal(DATETIME, oct82007 + T20, 7);
+    private final LiteralEntry name2008075 = literal(DATETIME, jul82008 + T20, 5);
+    private final LiteralEntry name2007 = literal(INT, "2007", 5);
+    private final LiteralEntry name20080708 = literal(DATETIME, jul82008, 5);
+    private final LiteralEntry name20080709 = literal(DATETIME, jul92008, 8);
+    private final LiteralEntry name2008070920 = literal(DATETIME, jul92008 + T20, 8);
+    private final LiteralEntry name20080710 = literal(DATETIME, jul102008, 8);
+    private final LiteralEntry name2008071020 = literal(DATETIME, jul102008 + T20, 7);
+    private final LiteralEntry name2008 = literal(INT, "2008", 8);
+    private final LiteralEntry name3integer6 = literal(INTEGER, "3", 6);
+    private final LiteralEntry name3int7 = literal(INT, "3", 7);
+    private final LiteralEntry name6542145 = literal(INTEGER, "6542145", 8);
+    private final LiteralEntry booleanFalse = literal(BOOLEAN, "false", 10);
+    private final LiteralEntry booleanTrue = literal(BOOLEAN, "true", 10);
+    private final LiteralEntry name2integer5 = literal(INTEGER, "2", 5);
+    private final LiteralEntry name2short5 = literal(SHORT, "2", 5);
+    private final LiteralEntry xml1 = literal(XMLLITERAL, XMLTEXT1, 7);
+    private final LiteralEntry xml2 = literal(XMLLITERAL, XMLTEXT2, 7);
+    private final LiteralEntry xml3 = literal(XMLLITERAL, XMLTEXT3, 7);
+    private final LiteralEntry xml4 = literal(XMLLITERAL, XMLTEXT4, 5);
+    private final LiteralEntry xml5 = literal(XMLLITERAL, XMLTEXT5, 5);
+    private final DatatypeEntry byte4 = datatype(BYTE, 4);
+    private final DatatypeEntry integer7 = datatype(INTEGER, 7);
+    private final DatatypeEntry nonNegativeInteger6 = datatype(NONNEGATIVEINTEGER, 6);
+    private final DatatypeEntry positiveInteger11 = datatype(POSITIVEINTEGER, 11);
+    private final DatatypeEntry short3 = datatype(SHORT, 3);
+    private final DatatypeEntry string4 = datatype(STRING, 4);
+    private final LiteralEntry int0 = literal(INT, "0", 0);
+    private final DatatypeEntry float_11 = datatype(
             getNumericDatatypeExpression(FLOAT).addNumericFacet(minInclusive, 0F)
                     .addNumericFacet(maxInclusive, 1.17549435E-38F), 5);
-    private DatatypeEntry int_46 = datatype(getNumericDatatypeExpression(INT)
+    private final DatatypeEntry int_46 = datatype(getNumericDatatypeExpression(INT)
             .addNumericFacet(minInclusive, 2008).addNumericFacet(maxInclusive, 2009), 7);
-    private DatatypeEntry int_63 = datatype(getNumericDatatypeExpression(INT)
+    private final DatatypeEntry int_63 = datatype(getNumericDatatypeExpression(INT)
             .addNumericFacet(minInclusive, 2007).addNumericFacet(maxInclusive, 2009)
             .addNonNumericFacet(fractionDigits, 0), 5);
-    private DatatypeEntry integer_49 = datatype(
+    private final DatatypeEntry integer_49 = datatype(
             getNumericDatatypeExpression(INTEGER).addNumericFacet(minInclusive,
                     new BigDecimal("4")).addNonNumericFacet(fractionDigits, 0), 9);
-    private DatatypeEntry integer_7 = datatype(
+    private final DatatypeEntry integer_7 = datatype(
             getNumericDatatypeExpression(INTEGER).addNumericFacet(minInclusive,
                     new BigDecimal("18")).addNonNumericFacet(fractionDigits, 0), 5);
     private DataTypeReasoner datatypeReasoner;
@@ -185,7 +188,7 @@ public class DatatypesTestCase {
         return w.toString();
     }
 
-    private Map<String, NamedEntry> entries = getMap();
+    private final Map<String, NamedEntry> entries = getMap();
 
     public Map<String, NamedEntry> getMap() {
         Map<String, NamedEntry> toReturn = new HashMap<String, NamedEntry>();

@@ -1426,13 +1426,13 @@ public class TranslationMachinery implements Serializable {
 
         @Override
         public DataExpression visit(OWLDatatypeRestriction node) {
-            DatatypeExpression<?> toReturn = null;
             Datatype<?> type = datatypefactory.getKnownDatatype(node.getDatatype()
                     .getIRI().toString());
             Set<OWLFacetRestriction> facetRestrictions = node.getFacetRestrictions();
             if (facetRestrictions.isEmpty()) {
                 return type;
             }
+            DatatypeExpression<?> toReturn = null;
             if (type.isNumericDatatype()) {
                 toReturn = DatatypeFactory.getNumericDatatypeExpression(type
                         .asNumericDatatype());
