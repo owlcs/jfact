@@ -170,7 +170,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker,
         Kernel.clearKB();
         // register all the objects in the ontology signature
         for (NamedEntity p : s.begin()) {
-            Kernel.declare(null, (Expression) p);
+            Kernel.getOntology().add(new AxiomDeclaration(null, (Expression) p));
         }
         // prepare the reasoner to check tautologies
         Kernel.realiseKB();

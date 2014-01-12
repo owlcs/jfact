@@ -191,7 +191,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             checkConsistency();
             TaxonomyActor<ConceptExpression> actor = new TaxonomyActor<ConceptExpression>(
                     em, new ClassPolicy());
-            kernel.getEquivalentConcepts(translationMachinery.toClassPointer(ce), actor);
+            kernel.getEquivalentConcepts(translationMachinery.pointer(ce), actor);
             pointers = actor.getSynonyms();
         }
         return translationMachinery.getClassExpressionTranslator().getNodeFromPointers(
@@ -404,7 +404,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             ClassExpressionNotInProfileException, FreshEntitiesException,
             InconsistentOntologyException {
         checkConsistency();
-        return kernel.isSatisfiable(translationMachinery.toClassPointer(classExpression));
+        return kernel.isSatisfiable(translationMachinery.pointer(classExpression));
     }
 
     @Override
@@ -501,7 +501,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         checkConsistency();
         TaxonomyActor<ConceptExpression> actor = new TaxonomyActor<ConceptExpression>(em,
                 new ClassPolicy());
-        kernel.getSubConcepts(translationMachinery.toClassPointer(ce), direct, actor);
+        kernel.getSubConcepts(translationMachinery.pointer(ce), direct, actor);
         Collection<Collection<ConceptExpression>> pointers = actor.getElements();
         return translationMachinery.getClassExpressionTranslator()
                 .getNodeSetFromPointers(pointers);
@@ -518,14 +518,14 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         checkConsistency();
         return translationMachinery.getClassExpressionTranslator()
                 .getNodeSetFromPointers(
-                        askSuperClasses(translationMachinery.toClassPointer(ce), direct));
+                        askSuperClasses(translationMachinery.pointer(ce), direct));
     }
 
     @Override
     public synchronized NodeSet<OWLClass> getDisjointClasses(OWLClassExpression ce) {
         TaxonomyActor<ConceptExpression> actor = new TaxonomyActor<ConceptExpression>(em,
                 new ClassPolicy());
-        ConceptExpression p = translationMachinery.toClassPointer(ce);
+        ConceptExpression p = translationMachinery.pointer(ce);
         kernel.getDisjointConcepts(p, actor);
         return translationMachinery.getClassExpressionTranslator()
                 .getNodeSetFromPointers(actor.getElements());
@@ -550,8 +550,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         checkConsistency();
         TaxonomyActor<ObjectRoleExpression> actor = new TaxonomyActor<ObjectRoleExpression>(
                 em, new ObjectPropertyPolicy());
-        kernel.getSubRoles(translationMachinery.toObjectPropertyPointer(pe), direct,
-                actor);
+        kernel.getSubRoles(translationMachinery.pointer(pe), direct, actor);
         return translationMachinery.getObjectPropertyTranslator().getNodeSetFromPointers(
                 actor.getElements());
     }
@@ -564,8 +563,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         checkConsistency();
         TaxonomyActor<ObjectRoleExpression> actor = new TaxonomyActor<ObjectRoleExpression>(
                 em, new ObjectPropertyPolicy());
-        kernel.getSupRoles(translationMachinery.toObjectPropertyPointer(pe), direct,
-                actor);
+        kernel.getSupRoles(translationMachinery.pointer(pe), direct, actor);
         return translationMachinery.getObjectPropertyTranslator().getNodeSetFromPointers(
                 actor.getElements());
     }
@@ -577,7 +575,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         checkConsistency();
         TaxonomyActor<ObjectRoleExpression> actor = new TaxonomyActor<ObjectRoleExpression>(
                 em, new ObjectPropertyPolicy());
-        kernel.getEquivalentRoles(translationMachinery.toObjectPropertyPointer(pe), actor);
+        kernel.getEquivalentRoles(translationMachinery.pointer(pe), actor);
         return translationMachinery.getObjectPropertyTranslator().getNodeFromPointers(
                 actor.getSynonyms());
     }
@@ -606,7 +604,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             throws InconsistentOntologyException, ReasonerInterruptedException,
             TimeOutException {
         checkConsistency();
-        ConceptExpression subClass = translationMachinery.toClassPointer(df
+        ConceptExpression subClass = translationMachinery.pointer(df
                 .getOWLObjectSomeValuesFrom(pe, df.getOWLThing()));
         return translationMachinery.getClassExpressionTranslator()
                 .getNodeSetFromPointers(askSuperClasses(subClass, direct));
@@ -645,7 +643,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         checkConsistency();
         TaxonomyActor<DataRoleExpression> actor = new TaxonomyActor<DataRoleExpression>(
                 em, new DataPropertyPolicy());
-        kernel.getSubRoles(translationMachinery.toDataPropertyPointer(pe), direct, actor);
+        kernel.getSubRoles(translationMachinery.pointer(pe), direct, actor);
         return translationMachinery.getDataPropertyTranslator().getNodeSetFromPointers(
                 actor.getElements());
     }
@@ -657,7 +655,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         checkConsistency();
         TaxonomyActor<DataRoleExpression> actor = new TaxonomyActor<DataRoleExpression>(
                 em, new DataPropertyPolicy());
-        kernel.getSupRoles(translationMachinery.toDataPropertyPointer(pe), direct, actor);
+        kernel.getSupRoles(translationMachinery.pointer(pe), direct, actor);
         Collection<Collection<DataRoleExpression>> properties = actor.getElements();
         return translationMachinery.getDataPropertyTranslator().getNodeSetFromPointers(
                 properties);
@@ -668,7 +666,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             OWLDataProperty pe) throws InconsistentOntologyException,
             ReasonerInterruptedException, TimeOutException {
         checkConsistency();
-        DataRoleExpression p = translationMachinery.toDataPropertyPointer(pe);
+        DataRoleExpression p = translationMachinery.pointer(pe);
         TaxonomyActor<DataRoleExpression> actor = new TaxonomyActor<DataRoleExpression>(
                 em, new DataPropertyPolicy());
         kernel.getEquivalentRoles(p, actor);
@@ -705,7 +703,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         checkConsistency();
         TaxonomyActor<ConceptExpression> actor = new TaxonomyActor<ConceptExpression>(em,
                 new ClassPolicy());
-        kernel.getTypes(translationMachinery.toIndividualPointer(ind), direct, actor);
+        kernel.getTypes(translationMachinery.pointer(ind), direct, actor);
         Collection<Collection<ConceptExpression>> classElements = actor.getElements();
         return translationMachinery.getClassExpressionTranslator()
                 .getNodeSetFromPointers(classElements);
@@ -719,7 +717,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         checkConsistency();
         TaxonomyActor<IndividualExpression> actor = new TaxonomyActor<IndividualExpression>(
                 em, new IndividualPolicy(true));
-        kernel.getInstances(translationMachinery.toClassPointer(ce), actor, direct);
+        kernel.getInstances(translationMachinery.pointer(ce), actor, direct);
         return translationMachinery.translateIndividualPointersToNodeSet(actor
                 .getElements().iterator().next());
     }
@@ -731,8 +729,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             TimeOutException {
         checkConsistency();
         List<Individual> fillers = kernel.getRoleFillers(
-                translationMachinery.toIndividualPointer(ind),
-                translationMachinery.toObjectPropertyPointer(pe));
+                translationMachinery.pointer(ind), translationMachinery.pointer(pe));
         List<IndividualExpression> acc = new ArrayList<IndividualExpression>();
         for (NamedEntry p : fillers) {
             acc.add(em.individual(p.getName()));
@@ -753,7 +750,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         // return translationMachinery
         // .translateIndividualPointersToNodeSet(askRelatedIndividuals(
         // translationMachinery.toIndividualPointer(ind),
-        // translationMachinery.toDataPropertyPointer(pe)));
+        // translationMachinery.pointer(pe)));
         // TODO:
         return Collections.emptySet();
     }
@@ -766,7 +763,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         checkConsistency();
         TaxonomyActor<IndividualName> actor = new TaxonomyActor<IndividualName>(em,
                 new IndividualPolicy(true));
-        kernel.getSameAs(translationMachinery.toIndividualPointer(ind), actor);
+        kernel.getSameAs(translationMachinery.pointer(ind), actor);
         return translationMachinery.getIndividualTranslator().getNodeFromPointers(
                 actor.getSynonyms());
     }
@@ -841,7 +838,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     @Override
     public RootNode getRoot(OWLClassExpression expression) {
         return new RootNodeImpl(kernel.buildCompletionTree(translationMachinery
-                .toClassPointer(expression)));
+                .pointer(expression)));
     }
 
     @Override
@@ -872,7 +869,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             getObjectNeighbours(RootNode n, OWLObjectProperty property) {
         List<RootNode> toReturn = new ArrayList<RootNode>();
         for (DlCompletionTree t : kernel.getNeighbours((DlCompletionTree) n.getNode(),
-                translationMachinery.toObjectPropertyPointer(property))) {
+                translationMachinery.pointer(property))) {
             toReturn.add(new RootNodeImpl(t));
         }
         return toReturn;
@@ -882,7 +879,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     public Collection<RootNode> getDataNeighbours(RootNode n, OWLDataProperty property) {
         List<RootNode> toReturn = new ArrayList<RootNode>();
         for (DlCompletionTree t : kernel.getNeighbours((DlCompletionTree) n.getNode(),
-                translationMachinery.toDataPropertyPointer(property))) {
+                translationMachinery.pointer(property))) {
             toReturn.add(new RootNodeImpl(t));
         }
         return toReturn;
@@ -973,22 +970,22 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
 
         @Override
         public Expression visit(OWLClass cls) {
-            return translationMachinery.toClassPointer(cls);
+            return translationMachinery.pointer(cls);
         }
 
         @Override
         public Expression visit(OWLObjectProperty property) {
-            return translationMachinery.toObjectPropertyPointer(property);
+            return translationMachinery.pointer(property);
         }
 
         @Override
         public Expression visit(OWLDataProperty property) {
-            return translationMachinery.toDataPropertyPointer(property);
+            return translationMachinery.pointer(property);
         }
 
         @Override
         public Expression visit(OWLNamedIndividual individual) {
-            return translationMachinery.toIndividualPointer(individual);
+            return translationMachinery.pointer(individual);
         }
 
         @Override
@@ -1079,9 +1076,8 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         checkConsistency();
         // load all the individuals as parameters
         return translationMachinery.getIndividualTranslator().getNodeFromPointers(
-                kernel.getDataRelatedIndividuals(
-                        translationMachinery.toDataPropertyPointer(r),
-                        translationMachinery.toDataPropertyPointer(s), op,
+                kernel.getDataRelatedIndividuals(translationMachinery.pointer(r),
+                        translationMachinery.pointer(s), op,
                         translationMachinery.translateIndividualSet(individuals)));
     }
 }
