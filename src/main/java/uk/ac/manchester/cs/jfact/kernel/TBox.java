@@ -35,7 +35,6 @@ import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.helpers.DLVertex;
 import uk.ac.manchester.cs.jfact.helpers.FastSet;
 import uk.ac.manchester.cs.jfact.helpers.FastSetFactory;
-import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Pair;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
@@ -1866,7 +1865,7 @@ public class TBox implements Serializable {
         // turn off caching of CT nodes during reasoning
         config.setUseNodeCache(false);
         // do the SAT test, save the CT if satisfiable
-        if (getReasoner().runSat(pConcept.resolveId(), Helper.bpTOP)) {
+        if (getReasoner().runSat(pConcept.resolveId(), bpTOP)) {
             ret = getReasoner().getRootNode();
         }
         // turn on caching of CT nodes during reasoning
@@ -2330,10 +2329,9 @@ public class TBox implements Serializable {
         if (C.isSingleton() && D != null && !D.isSingleton()) {
             return false;
         }
-        if (D == null || C.getDescription() == null || D.isPrimitive()) {
-            if (!initNonPrimitive(C, right)) {
-                return true;
-            }
+        if ((D == null || C.getDescription() == null || D.isPrimitive())
+                && !initNonPrimitive(C, right)) {
+            return true;
         }
         return false;
     }

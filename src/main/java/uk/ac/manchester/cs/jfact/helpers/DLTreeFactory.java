@@ -246,7 +246,7 @@ public class DLTreeFactory implements Serializable {
      *            R
      * @return role */
     public static DLTree createRole(Role R) {
-        return createEntry(R.isDataRole() ? Token.DNAME : Token.RNAME, R);
+        return createEntry(R.isDataRole() ? DNAME : RNAME, R);
     }
 
     /** @param tag
@@ -419,7 +419,7 @@ public class DLTreeFactory implements Serializable {
      *            t
      * @return wrapped entry */
     public static DLTree wrap(NamedEntry t) {
-        return new LEAFDLTree(new Lexeme(Token.DATAEXPR, t));
+        return new LEAFDLTree(new Lexeme(DATAEXPR, t));
     }
 
     /** get TDE by a given DLTree

@@ -123,8 +123,8 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
                 d.checkMinMaxClash();
                 this.accDep.add(d.locDep);
                 this.reasoner.reportClash(this.accDep, DT_C_MM);
+                return checkMinMaxClash;
             }
-            return checkMinMaxClash;
         }
         return false;
     }

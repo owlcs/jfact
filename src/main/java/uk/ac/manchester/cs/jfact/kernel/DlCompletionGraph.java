@@ -624,12 +624,10 @@ public class DlCompletionGraph implements Serializable {
     @PortedFrom(file = "dlCompletionGraph.h", name = "findDAncestorBlocker")
     private void findDAncestorBlocker(DlCompletionTree node) {
         DlCompletionTree p = node;
-        if (pReasoner.getOptions().isRKG_USE_FAIRNESS()) {
-            if (nSkipBeforeBlock > 0) {
-                for (int n = nSkipBeforeBlock - 1; n >= 0 && p.hasParent()
-                        && p.isBlockableNode(); --n) {
-                    p = p.getParentNode();
-                }
+        if (pReasoner.getOptions().isRKG_USE_FAIRNESS() && nSkipBeforeBlock > 0) {
+            for (int n = nSkipBeforeBlock - 1; n >= 0 && p.hasParent()
+                    && p.isBlockableNode(); --n) {
+                p = p.getParentNode();
             }
         }
         while (p.hasParent()) {
@@ -648,11 +646,9 @@ public class DlCompletionGraph implements Serializable {
     private void findDAnywhereBlocker(DlCompletionTree node) {
         for (int i = 0; i < endUsed && i != node.getId(); i++) {
             DlCompletionTree p = nodeBase.get(i);
-            if (!p.isBlockedPBlockedNominalNodeCached()) {
-                if (isBlockedBy(node, p)) {
-                    setNodeDBlocked(node, p);
-                    return;
-                }
+            if (!p.isBlockedPBlockedNominalNodeCached() && isBlockedBy(node, p)) {
+                setNodeDBlocked(node, p);
+                return;
             }
         }
     }

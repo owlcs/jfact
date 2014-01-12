@@ -215,22 +215,20 @@ public final class DataTypeReasoner implements Serializable {
                         return true;
                     }
                     // what if the supertype is an enum?
-                    if (ds1.getType().isSubType(ds2.getType())) {
-                        // check that values in the supertype are acceptable for
-                        // the subtype
-                        if (!ds2.checkCompatibleValue(ds1)) {
-                            reportClash(ds1.getPType(), ds2.getNType(), DT_TT);
-                            ds2.checkCompatibleValue(ds1);
-                            return true;
-                        }
+                    // check that values in the supertype are acceptable for
+                    // the subtype
+                    if (ds1.getType().isSubType(ds2.getType())
+                            && !ds2.checkCompatibleValue(ds1)) {
+                        reportClash(ds1.getPType(), ds2.getNType(), DT_TT);
+                        ds2.checkCompatibleValue(ds1);
+                        return true;
                     }
-                    if (ds2.getType().isSubType(ds1.getType())) {
-                        // check that values in the supertype are acceptable for
-                        // the subtype
-                        if (!ds1.checkCompatibleValue(ds2)) {
-                            reportClash(ds1.getPType(), ds2.getNType(), DT_TT);
-                            return true;
-                        }
+                    // check that values in the supertype are acceptable for
+                    // the subtype
+                    if (ds2.getType().isSubType(ds1.getType())
+                            && !ds1.checkCompatibleValue(ds2)) {
+                        reportClash(ds1.getPType(), ds2.getNType(), DT_TT);
+                        return true;
                     }
                     // they're disjoint: they can't be both positive (but can be
                     // both negative)

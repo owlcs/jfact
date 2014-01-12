@@ -100,12 +100,11 @@ public class TModularizer implements Serializable {
     private void addNonLocal(AxiomInterface ax, boolean noCheck) {
         if (noCheck || isNonLocal(ax)) {
             addAxiomToModule(ax);
-            if (config.isRKG_USE_AD_IN_MODULE_EXTRACTION()) {
-                if (noAtomsProcessing && ax.getAtom() != null) {
-                    noAtomsProcessing = false;
-                    addNonLocal(ax.getAtom().getModule(), true);
-                    noAtomsProcessing = true;
-                }
+            if (config.isRKG_USE_AD_IN_MODULE_EXTRACTION() && noAtomsProcessing
+                    && ax.getAtom() != null) {
+                noAtomsProcessing = false;
+                addNonLocal(ax.getAtom().getModule(), true);
+                noAtomsProcessing = true;
             }
         }
     }

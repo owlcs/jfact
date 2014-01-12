@@ -148,16 +148,12 @@ public class DatatypeIntersection<T extends Comparable<T>> implements
         boolean maxExclusive = false;
         for (Datatype<T> dt : basics) {
             Comparable facetValue = dt.asNumericDatatype().getMin();
-            if (facetValue != null) {
-                if (min == null || min.compareTo(facetValue) < 0) {
-                    min = facetValue;
-                }
+            if (facetValue != null && (min == null || min.compareTo(facetValue) < 0)) {
+                min = facetValue;
             }
             facetValue = dt.asNumericDatatype().getMax();
-            if (facetValue != null) {
-                if (max == null || facetValue.compareTo(max) < 0) {
-                    max = facetValue;
-                }
+            if (facetValue != null && (max == null || facetValue.compareTo(max) < 0)) {
+                max = facetValue;
             }
             if (dt.asNumericDatatype().hasMinExclusive()) {
                 minExclusive = true;

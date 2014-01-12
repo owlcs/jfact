@@ -411,10 +411,9 @@ public class Concept extends ClassifiableEntry {
             }
             return DLTreeFactory.createSNFAnd(l, t);
         }
-        if (token == NOT) {
-            if (t.getChild().isAND() || replacements.contains(t.getChild().token())) {
-                return DLTreeFactory.createSNFNot(replaceWithConstOld(t.getChild()));
-            }
+        if (token == NOT
+                && (t.getChild().isAND() || replacements.contains(t.getChild().token()))) {
+            return DLTreeFactory.createSNFNot(replaceWithConstOld(t.getChild()));
         }
         return t;
     }

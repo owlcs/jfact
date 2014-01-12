@@ -155,7 +155,7 @@ public class ReasoningKernel implements Serializable {
     /** ignore cache for the TExpr* (useful for semantic AD) */
     @PortedFrom(file = "Kernel.h", name = "ignoreExprCache")
     private boolean ignoreExprCache = false;
-    private final uk.ac.manchester.cs.jfact.helpers.Timer moduleTimer = new uk.ac.manchester.cs.jfact.helpers.Timer();
+    private final Timer moduleTimer = new Timer();
 
     // -- internal query cache manipulation
     /** clear query cache */
@@ -1629,7 +1629,7 @@ public class ReasoningKernel implements Serializable {
         }
         OntoSig = NewSig;
         // fill in M^+ and M^- sets
-        uk.ac.manchester.cs.jfact.helpers.Timer t = new Timer();
+        Timer t = new Timer();
         t.start();
         LocalityChecker lc = getModExtractor(false).getModularizer().getLocalityChecker();
         for (Map.Entry<NamedEntity, TSignature> p : Name2Sig.entrySet()) {

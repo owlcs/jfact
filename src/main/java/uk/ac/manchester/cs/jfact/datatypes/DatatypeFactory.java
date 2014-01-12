@@ -642,25 +642,17 @@ public class DatatypeFactory implements Serializable {
 
         @Override
         public boolean isInValueSpace(Calendar l) {
-            if (hasMinExclusive()) {
-                if (getMin().compareTo(l) <= 0) {
-                    return false;
-                }
+            if (hasMinExclusive() && getMin().compareTo(l) <= 0) {
+                return false;
             }
-            if (hasMinInclusive()) {
-                if (getMin().compareTo(l) < 0) {
-                    return false;
-                }
+            if (hasMinInclusive() && getMin().compareTo(l) < 0) {
+                return false;
             }
-            if (hasMaxExclusive()) {
-                if (getMax().compareTo(l) >= 0) {
-                    return false;
-                }
+            if (hasMaxExclusive() && getMax().compareTo(l) >= 0) {
+                return false;
             }
-            if (hasMaxInclusive()) {
-                if (getMax().compareTo(l) > 0) {
-                    return false;
-                }
+            if (hasMaxInclusive() && getMax().compareTo(l) > 0) {
+                return false;
             }
             return true;
         }
@@ -1400,7 +1392,7 @@ public class DatatypeFactory implements Serializable {
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
-            knownNumericFacetValues.put(minInclusive, new BigDecimal(0));
+            knownNumericFacetValues.put(minInclusive, BigDecimal.ZERO);
             knownNumericFacetValues.put(maxInclusive, new BigDecimal(65535));
         }
 

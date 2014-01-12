@@ -17,7 +17,6 @@ import java.util.Map;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.ArrayIntMap;
 import uk.ac.manchester.cs.jfact.helpers.DLVertex;
-import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Reference;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
@@ -86,7 +85,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
 
         @Override
         public void restore() {
-            Helper.resize(inequalityRelation, n);
+            resize(inequalityRelation, n);
             inequalityRelation_helper.clear();
             // TODO check performances of this
             for (int i = 0; i < inequalityRelation.size(); i++) {
@@ -696,10 +695,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
             int bp = list.keySet(i);
             if (bp > 0) {
                 DLVertex v = dag.get(bp);
-                if (v.getType() == dtForall) {
-                    if (!B2(v, bp)) {
-                        return false;
-                    }
+                if (v.getType() == dtForall && !B2(v, bp)) {
+                    return false;
                 }
             }
         }
@@ -736,10 +733,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
             int bp = list.get(i).getConcept();
             if (bp > 0) {
                 DLVertex v = dag.get(bp);
-                if (v.getType() == dtLE) {
-                    if (!B5(v.getRole(), v.getConceptIndex())) {
-                        return false;
-                    }
+                if (v.getType() == dtLE && !B5(v.getRole(), v.getConceptIndex())) {
+                    return false;
                 }
             }
         }
@@ -748,10 +743,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
             int bp = list.get(i).getConcept();
             if (bp < 0) {
                 DLVertex v = dag.get(bp);
-                if (v.getType() == dtLE) {
-                    if (!B6(v.getRole(), v.getConceptIndex())) {
-                        return false;
-                    }
+                if (v.getType() == dtLE && !B6(v.getRole(), v.getConceptIndex())) {
+                    return false;
                 }
             }
         }
@@ -787,10 +780,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
                 List<RATransition> list = RST.begin();
                 for (int j = 0; j < list.size(); j++) {
                     RATransition q = list.get(i);
-                    if (q.applicable(R)) {
-                        if (!parLab.containsCC(C + q.final_state())) {
-                            return false;
-                        }
+                    if (q.applicable(R) && !parLab.containsCC(C + q.final_state())) {
+                        return false;
                     }
                 }
             }
@@ -828,10 +819,9 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
         int n = 0;
         for (int i = 0; i < neighbourSize; i++) {
             DlCompletionTreeArc q = neighbour.get(i);
-            if (q.isSuccEdge() && q.isNeighbour(T) && q.getArcEnd().isLabelledBy(E)) {
-                if (++n >= m) {
-                    return true;
-                }
+            if (q.isSuccEdge() && q.isNeighbour(T) && q.getArcEnd().isLabelledBy(E)
+                    && ++n >= m) {
+                return true;
             }
         }
         return false;
@@ -969,7 +959,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
         }
         curLevel = nss.getCurLevel();
         label.restore(nss.getLab(), curLevel);
-        Helper.resize(neighbour, nss.getnNeighbours());
+        resize(neighbour, nss.getnNeighbours());
         neighbourSize = nss.getnNeighbours();
         if (neighbourSize == 0) {
             cachedParent = null;

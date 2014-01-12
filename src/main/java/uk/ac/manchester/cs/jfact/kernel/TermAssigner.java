@@ -16,8 +16,6 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TermAssigner")
 public class TermAssigner extends BuildELIOConcept {
     private static final long serialVersionUID = 11000L;
-    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "N")
-    private final int N = 0;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Factory")
     private final AtomicLong Factory = new AtomicLong();
 

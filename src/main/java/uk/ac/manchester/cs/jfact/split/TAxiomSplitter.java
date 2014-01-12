@@ -76,6 +76,7 @@ public class TAxiomSplitter implements Serializable {
     protected final List<TRecord> R2 = new ArrayList<TRecord>();
     @PortedFrom(file = "AxiomSplitter.h", name = "ImpRens")
     protected final Map<ConceptName, TRecord> ImpRens = new HashMap<ConceptName, TRecord>();
+    // XXX multimap
     @PortedFrom(file = "AxiomSplitter.h", name = "ImplNames")
     protected final Map<ConceptName, Set<AxiomConceptInclusion>> ImplNames = new HashMap<ConceptName, Set<AxiomConceptInclusion>>();
     @PortedFrom(file = "AxiomSplitter.h", name = "newNameId")
@@ -160,16 +161,15 @@ public class TAxiomSplitter implements Serializable {
      *            ci */
     @PortedFrom(file = "AxiomSplitter.h", name = "addSingleCI")
     protected void addSingleCI(AxiomConceptInclusion ci) {
-        if (ci != null && !(ci.getSupConcept() instanceof ConceptTop)) {
-            // skip axioms with RHS=TOP
-            if (ci.getSubConcept() instanceof ConceptName) {
-                ConceptName name = (ConceptName) ci.getSubConcept();
-                SubNames.add(name);
-                if (!ImplNames.containsKey(name)) {
-                    ImplNames.put(name, new HashSet<AxiomConceptInclusion>());
-                }
-                ImplNames.get(name).add(ci);
+        // skip axioms with RHS=TOP
+        if (ci != null && !(ci.getSupConcept() instanceof ConceptTop)
+                && ci.getSubConcept() instanceof ConceptName) {
+            ConceptName name = (ConceptName) ci.getSubConcept();
+            SubNames.add(name);
+            if (!ImplNames.containsKey(name)) {
+                ImplNames.put(name, new HashSet<AxiomConceptInclusion>());
             }
+            ImplNames.get(name).add(ci);
         }
     }
 

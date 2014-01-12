@@ -19,7 +19,6 @@ import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
 import uk.ac.manchester.cs.jfact.helpers.DLVertex;
 import uk.ac.manchester.cs.jfact.helpers.FastSet;
 import uk.ac.manchester.cs.jfact.helpers.FastSetFactory;
-import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.StatIndex;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
@@ -379,7 +378,7 @@ public class DLDag implements Serializable {
                     break;
             }
         }
-        Helper.resize(heap, finalDagSize);
+        resize(heap, finalDagSize);
     }
 
     /** @param defSat

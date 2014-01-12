@@ -5,7 +5,7 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.*;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.LITERAL;
 import static uk.ac.manchester.cs.jfact.datatypes.Facets.*;
 
 import java.util.Collection;
@@ -35,29 +35,21 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
 
     @Override
     public boolean isInValueSpace(O l) {
-        if (this.hasMinExclusive()) {
-            // to be in value space, ex min must be smaller than l
-            if (l.compareTo(this.getMin()) <= 0) {
-                return false;
-            }
+        // to be in value space, ex min must be smaller than l
+        if (this.hasMinExclusive() && l.compareTo(this.getMin()) <= 0) {
+            return false;
         }
-        if (this.hasMinInclusive()) {
-            // to be in value space, min must be smaller or equal to l
-            if (l.compareTo(this.getMin()) < 0) {
-                return false;
-            }
+        // to be in value space, min must be smaller or equal to l
+        if (this.hasMinInclusive() && l.compareTo(this.getMin()) < 0) {
+            return false;
         }
-        if (this.hasMaxExclusive()) {
-            // to be in value space, ex max must be bigger than l
-            if (l.compareTo(this.getMax()) >= 0) {
-                return false;
-            }
+        // to be in value space, ex max must be bigger than l
+        if (this.hasMaxExclusive() && l.compareTo(this.getMax()) >= 0) {
+            return false;
         }
-        if (this.hasMaxInclusive()) {
-            // to be in value space, ex min must be smaller than l
-            if (l.compareTo(this.getMax()) > 0) {
-                return false;
-            }
+        // to be in value space, ex min must be smaller than l
+        if (this.hasMaxInclusive() && l.compareTo(this.getMax()) > 0) {
+            return false;
         }
         return true;
     }
