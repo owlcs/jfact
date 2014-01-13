@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.kernel.queryobjects;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.kernel.HasName;
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
@@ -14,18 +16,18 @@ public class QRVariable extends QRiObject implements Comparable<QRVariable>, Has
     private static final long serialVersionUID = 11000L;
     /** name of a var */
     @PortedFrom(file = "QR.h", name = "Name")
-    private final String Name;
+    private final IRI Name;
 
     /** empty c'tor */
     public QRVariable() {
-        this((String) null);
+        this(IRI.create("urn:null"));
     }
 
     /** init c'tor
      * 
      * @param name
      *            name */
-    public QRVariable(String name) {
+    public QRVariable(IRI name) {
         Name = name;
     }
 
@@ -37,13 +39,13 @@ public class QRVariable extends QRiObject implements Comparable<QRVariable>, Has
 
     @Override
     @PortedFrom(file = "QR.h", name = "getName")
-    public String getName() {
+    public IRI getName() {
         return Name;
     }
 
     @Override
     public String toString() {
-        return Name;
+        return Name.toString();
     }
 
     @Override

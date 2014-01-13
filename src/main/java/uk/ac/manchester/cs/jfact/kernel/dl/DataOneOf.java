@@ -8,6 +8,8 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
 import java.io.Serializable;
 import java.util.List;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
@@ -42,7 +44,7 @@ public class DataOneOf extends NAryExpressionImpl<Literal<?>> implements
     }
 
     @Override
-    public String getName() {
-        return toString();
+    public IRI getName() {
+        return IRI.create(toString());
     }
 }

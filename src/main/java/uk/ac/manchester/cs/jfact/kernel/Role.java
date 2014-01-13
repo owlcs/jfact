@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
@@ -708,7 +709,7 @@ public class Role extends ClassifiableEntry {
         return resolveSynonym(resolveRoleHelper(t, ""));
     }
 
-    protected Role(String name) {
+    protected Role(IRI name) {
         super(name);
         inverse = null;
         pDomain = null;

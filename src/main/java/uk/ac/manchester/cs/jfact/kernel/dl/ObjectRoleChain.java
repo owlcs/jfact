@@ -8,6 +8,8 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
 import java.io.Serializable;
 import java.util.List;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleComplexExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
@@ -42,7 +44,7 @@ public class ObjectRoleChain extends NAryExpressionImpl<ObjectRoleExpression> im
     }
 
     @Override
-    public String getName() {
-        return toString();
+    public IRI getName() {
+        return IRI.create(toString());
     }
 }

@@ -2,6 +2,8 @@ package uk.ac.manchester.cs.jfact.kernel;
 
 import java.io.Serializable;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import conformance.Original;
 import conformance.PortedFrom;
@@ -17,7 +19,7 @@ public abstract class NamedEntry implements HasName, Serializable {
     private static final long serialVersionUID = 11000L;
     /** name of the entry */
     @PortedFrom(file = "tNamedEntry.h", name = "extName")
-    protected final String extName;
+    protected final IRI extName;
     /** entry identifier */
     @PortedFrom(file = "tNamedEntry.h", name = "extId")
     protected int extId;
@@ -26,7 +28,7 @@ public abstract class NamedEntry implements HasName, Serializable {
 
     /** @param name
      *            entry IRI */
-    public NamedEntry(String name) {
+    public NamedEntry(IRI name) {
         assert name != null;
         extName = name;
         extId = 0;
@@ -40,7 +42,7 @@ public abstract class NamedEntry implements HasName, Serializable {
 
     @Override
     @PortedFrom(file = "tNamedEntry.h", name = "getName")
-    public String getName() {
+    public IRI getName() {
         return extName;
     }
 

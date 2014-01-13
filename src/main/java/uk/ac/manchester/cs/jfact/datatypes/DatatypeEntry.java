@@ -25,7 +25,7 @@ public class DatatypeEntry extends NamedEntry {
      * @param type
      *            type */
     public DatatypeEntry(Datatype<?> type) {
-        super(type.getDatatypeURI());
+        super(type.getDatatypeIRI());
         this.type = type;
         pName = bpINVALID;
     }

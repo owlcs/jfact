@@ -61,6 +61,7 @@ import org.semanticweb.owlapi.reasoner.impl.OWLDataPropertyNodeSet;
 import org.semanticweb.owlapi.reasoner.impl.OWLObjectPropertyNodeSet;
 import org.semanticweb.owlapi.reasoner.knowledgeexploration.OWLKnowledgeExplorerReasoner;
 import org.semanticweb.owlapi.util.Version;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
@@ -85,7 +86,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
-import uk.ac.manchester.cs.jfact.kernel.voc.Vocabulary;
 import uk.ac.manchester.cs.jfact.split.ModuleType;
 import uk.ac.manchester.cs.jfact.split.TOntologyAtom;
 import conformance.Original;
@@ -162,9 +162,10 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
                 knownEntities.addAll(axiom.getSignature());
             }
         }
-        kernel.setTopBottomRoleNames(Vocabulary.TOP_OBJECT_PROPERTY,
-                Vocabulary.BOTTOM_OBJECT_PROPERTY, Vocabulary.TOP_DATA_PROPERTY,
-                Vocabulary.BOTTOM_DATA_PROPERTY);
+        kernel.setTopBottomRoleNames(OWLRDFVocabulary.OWL_TOP_OBJECT_PROPERTY.getIRI(),
+                OWLRDFVocabulary.OWL_BOTTOM_OBJECT_PROPERTY.getIRI(),
+                OWLRDFVocabulary.OWL_TOP_DATA_PROPERTY.getIRI(),
+                OWLRDFVocabulary.OWL_BOTTOM_DATA_PROPERTY.getIRI());
         kernel.setInterruptedSwitch(interrupted);
         configuration.getProgressMonitor().reasonerTaskStarted(
                 ReasonerProgressMonitor.LOADING);

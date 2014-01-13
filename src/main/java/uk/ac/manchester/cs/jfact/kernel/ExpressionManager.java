@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptAnd;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptBottom;
@@ -100,61 +102,61 @@ public class ExpressionManager implements Serializable {
         }
     }
 
-    protected static class DataroleNameCreator implements NameCreator<DataRoleName>,
+    protected static class DataroleNameCreator implements NameCreator<DataRoleName, IRI>,
             Serializable {
         private static final long serialVersionUID = 11000L;
 
         @Override
-        public DataRoleName makeEntry(String name) {
+        public DataRoleName makeEntry(IRI name) {
             return new DataRoleName(name);
         }
     }
 
-    protected static class ObjectroleNameCreator implements NameCreator<ObjectRoleName>,
-            Serializable {
+    protected static class ObjectroleNameCreator implements
+            NameCreator<ObjectRoleName, IRI>, Serializable {
         private static final long serialVersionUID = 11000L;
 
         @Override
-        public ObjectRoleName makeEntry(String name) {
+        public ObjectRoleName makeEntry(IRI name) {
             return new ObjectRoleName(name);
         }
     }
 
-    protected static class IndividualNameCreator implements NameCreator<IndividualName>,
-            Serializable {
+    protected static class IndividualNameCreator implements
+            NameCreator<IndividualName, IRI>, Serializable {
         private static final long serialVersionUID = 11000L;
 
         @Override
-        public IndividualName makeEntry(String name) {
+        public IndividualName makeEntry(IRI name) {
             return new IndividualName(name);
         }
     }
 
-    protected static class ConceptNameCreator implements NameCreator<ConceptName>,
+    protected static class ConceptNameCreator implements NameCreator<ConceptName, IRI>,
             Serializable {
         private static final long serialVersionUID = 11000L;
 
         @Override
-        public ConceptName makeEntry(String name) {
+        public ConceptName makeEntry(IRI name) {
             return new ConceptName(name);
         }
     }
 
     /** nameset for concepts */
     @PortedFrom(file = "tExpressionManager.h", name = "NS_C")
-    private final NameSet<ConceptName> conceptNameset = new NameSet<ConceptName>(
+    private final NameSet<ConceptName, IRI> conceptNameset = new NameSet<ConceptName, IRI>(
             new ConceptNameCreator());
     /** nameset for individuals */
     @PortedFrom(file = "tExpressionManager.h", name = "NS_I")
-    private final NameSet<IndividualName> individualNameset = new NameSet<IndividualName>(
+    private final NameSet<IndividualName, IRI> individualNameset = new NameSet<IndividualName, IRI>(
             new IndividualNameCreator());
     /** nameset for object roles */
     @PortedFrom(file = "tExpressionManager.h", name = "NS_OR")
-    private final NameSet<ObjectRoleName> objectRoleNameset = new NameSet<ObjectRoleName>(
+    private final NameSet<ObjectRoleName, IRI> objectRoleNameset = new NameSet<ObjectRoleName, IRI>(
             new ObjectroleNameCreator());
     /** nameset for data roles */
     @PortedFrom(file = "tExpressionManager.h", name = "NS_DR")
-    private final NameSet<DataRoleName> dataRoleNameset = new NameSet<DataRoleName>(
+    private final NameSet<DataRoleName, IRI> dataRoleNameset = new NameSet<DataRoleName, IRI>(
             new DataroleNameCreator());
     /** TOP concept */
     @PortedFrom(file = "tExpressionManager.h", name = "CTop")
@@ -197,8 +199,8 @@ public class ExpressionManager implements Serializable {
      * @param botDRoleName
      *            botDRoleName */
     @PortedFrom(file = "tExpressionManager.h", name = "setTopBottomRoles")
-    public void setTopBottomRoles(String topORoleName, String botORoleName,
-            String topDRoleName, String botDRoleName) {
+    public void setTopBottomRoles(IRI topORoleName, IRI botORoleName, IRI topDRoleName,
+            IRI botDRoleName) {
         objectRoleTop = new ObjectRoleName(topORoleName);
         objectRoleBottom = new ObjectRoleName(botORoleName);
         dataRoleTop = new DataRoleName(topDRoleName);
@@ -279,7 +281,7 @@ public class ExpressionManager implements Serializable {
      *            name
      * @return named concept */
     @PortedFrom(file = "tExpressionManager.h", name = "concept")
-    public ConceptName concept(String name) {
+    public ConceptName concept(IRI name) {
         return conceptNameset.insert(name);
     }
 
@@ -528,7 +530,7 @@ public class ExpressionManager implements Serializable {
      *            name
      * @return named individual */
     @PortedFrom(file = "tExpressionManager.h", name = "individual")
-    public IndividualName individual(String name) {
+    public IndividualName individual(IRI name) {
         return individualNameset.insert(name);
     }
 
@@ -549,7 +551,7 @@ public class ExpressionManager implements Serializable {
      *            name
      * @return named object role */
     @PortedFrom(file = "tExpressionManager.h", name = "ObjectRole")
-    public ObjectRoleName objectRole(String name) {
+    public ObjectRoleName objectRole(IRI name) {
         return objectRoleNameset.insert(name);
     }
 
@@ -612,7 +614,7 @@ public class ExpressionManager implements Serializable {
      *            name
      * @return named data role */
     @PortedFrom(file = "tExpressionManager.h", name = "DataRole")
-    public DataRoleName dataRole(String name) {
+    public DataRoleName dataRole(IRI name) {
         return dataRoleNameset.insert(name);
     }
 

@@ -7,6 +7,8 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.queryobjects.QRQuery;
 import uk.ac.manchester.cs.jfact.kernel.queryobjects.QRVariable;
@@ -32,9 +34,10 @@ public class TermAssigner extends BuildELIOConcept {
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "createConceptByVar")
     protected ConceptExpression createConceptByVar(QRVariable v) {
         if (Query.isFreeVar(v)) {
+            String string = conjunctiveQueryFolding.getNewVarMap().get(v).getName() + ":"
+                    + Factory.incrementAndGet();
             ConceptExpression concept = conjunctiveQueryFolding.getpEM().concept(
-                    conjunctiveQueryFolding.getNewVarMap().get(v).getName() + ":"
-                            + Factory.incrementAndGet());
+                    IRI.create(string));
             conjunctiveQueryFolding.addNominal(concept);
             return concept;
         }

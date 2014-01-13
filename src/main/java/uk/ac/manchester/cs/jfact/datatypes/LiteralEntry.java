@@ -9,6 +9,8 @@ import static uk.ac.manchester.cs.jfact.helpers.Helper.bpINVALID;
 
 import java.util.Collection;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 
 /** literal */
@@ -22,9 +24,13 @@ public class LiteralEntry extends NamedEntry {
      * 
      * @param name
      *            name */
-    public LiteralEntry(String name) {
+    public LiteralEntry(IRI name) {
         super(name);
         pName = bpINVALID;
+    }
+
+    public LiteralEntry(String name) {
+        this(IRI.create(name));
     }
 
     /** set host data type for the data value

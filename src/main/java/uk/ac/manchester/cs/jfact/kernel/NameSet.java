@@ -14,15 +14,15 @@ import conformance.PortedFrom;
  * @param <T>
  *            type */
 @PortedFrom(file = "tNameSet.h", name = "TNameSet")
-public class NameSet<T> extends HashMap<String, T> {
+public class NameSet<T, K> extends HashMap<K, T> {
     private static final long serialVersionUID = 11000L;
     /** creator of new name */
     @PortedFrom(file = "tNameSet.h", name = "Creator")
-    private final NameCreator<T> creator;
+    private final NameCreator<T, K> creator;
 
     /** @param p
      *            p */
-    public NameSet(NameCreator<T> p) {
+    public NameSet(NameCreator<T, K> p) {
         creator = p;
     }
 
@@ -32,7 +32,7 @@ public class NameSet<T> extends HashMap<String, T> {
      *            id
      * @return new element */
     @PortedFrom(file = "tNameSet.h", name = "add")
-    public T add(String id) {
+    public T add(K id) {
         T pne = creator.makeEntry(id);
         put(id, pne);
         return pne;
@@ -44,7 +44,7 @@ public class NameSet<T> extends HashMap<String, T> {
      *            id
      * @return pointer to id structure created by external creator */
     @PortedFrom(file = "tNameSet.h", name = "insert")
-    public T insert(String id) {
+    public T insert(K id) {
         T pne = get(id);
         if (pne == null) {
             pne = add(id);

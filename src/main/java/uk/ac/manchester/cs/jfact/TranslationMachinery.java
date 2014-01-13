@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLAnnotationPropertyDomainAxiom;
@@ -114,6 +115,7 @@ import org.semanticweb.owlapi.reasoner.impl.OWLNamedIndividualNode;
 import org.semanticweb.owlapi.reasoner.impl.OWLNamedIndividualNodeSet;
 import org.semanticweb.owlapi.reasoner.impl.OWLObjectPropertyNode;
 import org.semanticweb.owlapi.reasoner.impl.OWLObjectPropertyNodeSet;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import uk.ac.manchester.cs.jfact.datatypes.Datatype;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeExpression;
@@ -163,7 +165,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Entity;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleComplexExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
-import uk.ac.manchester.cs.jfact.kernel.voc.Vocabulary;
 
 /** translation stuff */
 public class TranslationMachinery implements Serializable {
@@ -205,22 +206,22 @@ public class TranslationMachinery implements Serializable {
 
     /** @return top object property */
     public ObjectRoleExpression getTopObjectProperty() {
-        return em.objectRole(Vocabulary.TOP_OBJECT_PROPERTY);
+        return em.objectRole(OWLRDFVocabulary.OWL_TOP_OBJECT_PROPERTY.getIRI());
     }
 
     /** @return bottom object property */
     public ObjectRoleExpression getBottomObjectProperty() {
-        return em.objectRole(Vocabulary.BOTTOM_OBJECT_PROPERTY);
+        return em.objectRole(OWLRDFVocabulary.OWL_BOTTOM_OBJECT_PROPERTY.getIRI());
     }
 
     /** @return top data property */
     public DataRoleExpression getTopDataProperty() {
-        return em.dataRole(Vocabulary.TOP_DATA_PROPERTY);
+        return em.dataRole(OWLRDFVocabulary.OWL_TOP_DATA_PROPERTY.getIRI());
     }
 
     /** @return bottom data property */
     public DataRoleExpression getBottomDataProperty() {
-        return em.dataRole(Vocabulary.BOTTOM_DATA_PROPERTY);
+        return em.dataRole(OWLRDFVocabulary.OWL_BOTTOM_DATA_PROPERTY.getIRI());
     }
 
     /** @param axioms
@@ -278,7 +279,7 @@ public class TranslationMachinery implements Serializable {
             return individualTranslator.getPointerFromEntity(individual
                     .asOWLNamedIndividual());
         } else {
-            return em.individual(individual.toStringID());
+            return em.individual(IRI.create(individual.toStringID()));
         }
     }
 
@@ -286,7 +287,7 @@ public class TranslationMachinery implements Serializable {
         if (datatype == null) {
             throw new IllegalArgumentException("datatype cannot be null");
         }
-        return datatypefactory.getKnownDatatype(datatype.getIRI().toString());
+        return datatypefactory.getKnownDatatype(datatype.getIRI());
     }
 
     protected synchronized Literal<?> pointer(OWLLiteral literal) {
@@ -294,7 +295,7 @@ public class TranslationMachinery implements Serializable {
         if (literal.isRDFPlainLiteral()) {
             value = value + "@" + literal.getLang();
         }
-        String string = literal.getDatatype().getIRI().toString();
+        IRI string = literal.getDatatype().getIRI();
         Datatype<?> knownDatatype = datatypefactory.getKnownDatatype(string);
         return knownDatatype.buildLiteral(value);
     }
@@ -719,8 +720,7 @@ public class TranslationMachinery implements Serializable {
         protected ObjectRoleExpression createPointerForEntity(
                 OWLObjectPropertyExpression entity) {
             // FIXME!! think later!!
-            ObjectRoleExpression p = em
-                    .objectRole(entity.getNamedProperty().toStringID());
+            ObjectRoleExpression p = em.objectRole(entity.getNamedProperty().getIRI());
             if (entity.isAnonymous()) {
                 p = em.inverse(p);
             }
@@ -779,7 +779,7 @@ public class TranslationMachinery implements Serializable {
         protected ObjectRoleComplexExpression createPointerForEntity(
                 OWLObjectPropertyExpression entity) {
             ObjectRoleComplexExpression p = em.objectRole(entity.getNamedProperty()
-                    .toStringID());
+                    .getIRI());
             return p;
         }
 
@@ -1185,7 +1185,7 @@ public class TranslationMachinery implements Serializable {
         @Override
         protected ConceptExpression createPointerForEntity(OWLClass entity) {
             // XXX many entities would cause a lot of wasted memory
-            return em.concept(entity.getIRI().toString());
+            return em.concept(entity.getIRI());
         }
 
         @Override
@@ -1322,7 +1322,7 @@ public class TranslationMachinery implements Serializable {
 
         @Override
         protected DataRoleExpression createPointerForEntity(OWLDataProperty entity) {
-            return em.dataRole(entity.toStringID());
+            return em.dataRole(entity.getIRI());
         }
 
         @Override
@@ -1384,12 +1384,12 @@ public class TranslationMachinery implements Serializable {
 
         @Override
         protected DataExpression createPointerForEntity(OWLDatatype entity) {
-            return datatypefactory.getKnownDatatype(entity.getIRI().toString());
+            return datatypefactory.getKnownDatatype(entity.getIRI());
         }
 
         @Override
         public Datatype<?> visit(OWLDatatype node) {
-            return datatypefactory.getKnownDatatype(node.getIRI().toString());
+            return datatypefactory.getKnownDatatype(node.getIRI());
         }
 
         @Override
@@ -1427,7 +1427,7 @@ public class TranslationMachinery implements Serializable {
         @Override
         public DataExpression visit(OWLDatatypeRestriction node) {
             Datatype<?> type = datatypefactory.getKnownDatatype(node.getDatatype()
-                    .getIRI().toString());
+                    .getIRI());
             Set<OWLFacetRestriction> facetRestrictions = node.getFacetRestrictions();
             if (facetRestrictions.isEmpty()) {
                 return type;
@@ -1472,7 +1472,7 @@ public class TranslationMachinery implements Serializable {
 
         @Override
         protected IndividualName createPointerForEntity(OWLNamedIndividual entity) {
-            return em.individual(entity.toStringID());
+            return em.individual(entity.getIRI());
         }
 
         @Override

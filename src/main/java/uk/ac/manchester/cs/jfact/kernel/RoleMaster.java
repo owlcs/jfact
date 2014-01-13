@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
@@ -28,11 +29,11 @@ import conformance.PortedFrom;
 public class RoleMaster implements Serializable {
     private static final long serialVersionUID = 11000L;
 
-    protected static class RoleCreator implements NameCreator<Role>, Serializable {
+    protected static class RoleCreator implements NameCreator<Role, IRI>, Serializable {
         private static final long serialVersionUID = 11000L;
 
         @Override
-        public Role makeEntry(String name) {
+        public Role makeEntry(IRI name) {
             return new Role(name);
         }
     }
@@ -51,7 +52,7 @@ public class RoleMaster implements Serializable {
     private final Role universalRole;
     /** roles nameset */
     @PortedFrom(file = "RoleMaster.h", name = "roleNS")
-    private final NameSet<Role> roleNS;
+    private final NameSet<Role, IRI> roleNS;
     /** Taxonomy of roles */
     @PortedFrom(file = "RoleMaster.h", name = "pTax")
     private final Taxonomy pTax;
@@ -83,7 +84,7 @@ public class RoleMaster implements Serializable {
         roles.add(r);
         r.setId(newRoleId);
         // create new role which would be inverse of R
-        Role ri = new Role("-" + r.getName());
+        Role ri = new Role(IRI.create("-" + r.getName()));
         // set up inverse
         r.setInverse(ri);
         ri.setInverse(r);
@@ -119,12 +120,12 @@ public class RoleMaster implements Serializable {
      *            BotRoleName
      * @param c
      *            c */
-    public RoleMaster(boolean d, String TopRoleName, String BotRoleName,
+    public RoleMaster(boolean d, IRI TopRoleName, IRI BotRoleName,
             JFactReasonerConfiguration c) {
         newRoleId = 1;
-        emptyRole = new Role(BotRoleName.equals("") ? "emptyRole" : BotRoleName);
-        universalRole = new Role(TopRoleName.equals("") ? "universalRole" : TopRoleName);
-        roleNS = new NameSet<Role>(new RoleCreator());
+        emptyRole = new Role(BotRoleName);
+        universalRole = new Role(TopRoleName);
+        roleNS = new NameSet<Role, IRI>(new RoleCreator());
         dataRoles = d;
         useUndefinedNames = true;
         // no zero-named roles allowed
@@ -152,7 +153,7 @@ public class RoleMaster implements Serializable {
      *            name
      * @return role entry with given name */
     @PortedFrom(file = "RoleMaster.h", name = "ensureRoleName")
-    public NamedEntry ensureRoleName(String name) {
+    public NamedEntry ensureRoleName(IRI name) {
         // check for the Top/Bottom names
         if (name.equals(emptyRole.getName())) {
             return emptyRole;

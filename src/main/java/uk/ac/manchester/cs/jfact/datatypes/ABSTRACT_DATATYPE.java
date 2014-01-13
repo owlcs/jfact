@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
@@ -27,25 +29,25 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Data
     protected final Map<Facet, Comparable> knownNumericFacetValues = new HashMap<Facet, Comparable>();
     @SuppressWarnings("rawtypes")
     protected final Map<Facet, Comparable> knownNonNumericFacetValues = new HashMap<Facet, Comparable>();
-    protected final String uri;
+    protected final IRI uri;
 
     /** @param u
      *            u
      * @param f
      *            facets */
-    public ABSTRACT_DATATYPE(String u, Set<Facet> f) {
+    public ABSTRACT_DATATYPE(IRI u, Set<Facet> f) {
         this.facets = Collections.unmodifiableSet(f);
         this.uri = u;
     }
 
     @Override
-    public String getDatatypeURI() {
+    public IRI getDatatypeIRI() {
         return this.uri;
     }
 
     @Override
-    public String getName() {
-        return toString();
+    public IRI getName() {
+        return IRI.create(toString());
     }
 
     @Override
@@ -59,7 +61,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Data
             return true;
         }
         if (obj instanceof Datatype<?>) {
-            return this.uri.equals(((Datatype<?>) obj).getDatatypeURI());
+            return this.uri.equals(((Datatype<?>) obj).getDatatypeIRI());
         }
         return false;
     }
@@ -108,9 +110,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Data
 
     @Override
     public String toString() {
-        String datatypeURI = this.getDatatypeURI();
-        datatypeURI = datatypeURI.substring(datatypeURI.lastIndexOf('#'));
-        return datatypeURI;
+        return getDatatypeIRI().getFragment();
     }
 
     @Override
@@ -168,7 +168,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Data
     @Override
     public DatatypeExpression<R> asExpression() {
         if (!this.isExpression()) {
-            throw new UnsupportedOperationException("Type: " + this.getDatatypeURI()
+            throw new UnsupportedOperationException("Type: " + this.getDatatypeIRI()
                     + " is not an expression");
         }
         return (DatatypeExpression<R>) this;

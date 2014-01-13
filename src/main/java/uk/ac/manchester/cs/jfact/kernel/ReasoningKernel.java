@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 import org.semanticweb.owlapi.util.MultiMap;
@@ -87,16 +88,16 @@ public class ReasoningKernel implements Serializable {
     // output
     /** top object role name */
     @PortedFrom(file = "Kernel.h", name = "topORoleName")
-    private String topORoleName;
+    private IRI topORoleName;
     /** bottom object role name */
     @PortedFrom(file = "Kernel.h", name = "botORoleName")
-    private String botORoleName;
+    private IRI botORoleName;
     /** top data role name */
     @PortedFrom(file = "Kernel.h", name = "topDRoleName")
-    private String topDRoleName;
+    private IRI topDRoleName;
     /** bottom data role name */
     @PortedFrom(file = "Kernel.h", name = "botDRoleName")
-    private String botDRoleName;
+    private IRI botDRoleName;
     // values to propagate to the new KB in case of clearance
     @Original
     private AtomicBoolean interrupted;
@@ -627,7 +628,7 @@ public class ReasoningKernel implements Serializable {
      * @param botD
      *            botD */
     @PortedFrom(file = "Kernel.h", name = "setTopBottomRoleNames")
-    public void setTopBottomRoleNames(String topO, String botO, String topD, String botD) {
+    public void setTopBottomRoleNames(IRI topO, IRI botO, IRI topD, IRI botD) {
         topORoleName = topO;
         botORoleName = botO;
         topDRoleName = topD;

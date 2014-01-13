@@ -12,6 +12,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import conformance.Original;
 import conformance.PortedFrom;
 
@@ -34,7 +36,7 @@ public class ClassifiableEntry extends NamedEntry {
     @PortedFrom(file = "taxNamEntry.h", name = "Index")
     protected int index;
 
-    protected ClassifiableEntry(String name) {
+    protected ClassifiableEntry(IRI name) {
         super(name);
         pSynonym = null;
         index = 0;

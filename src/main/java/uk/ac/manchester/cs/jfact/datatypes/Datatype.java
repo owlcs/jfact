@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import conformance.Original;
 
@@ -116,7 +118,7 @@ public interface Datatype<R extends Comparable<R>> extends DataExpression {
 
     /** @return the datatype uri as a string (there does seem to be no need for a
      *         more complex representation) */
-    String getDatatypeURI();
+    IRI getDatatypeIRI();
 
     /** @return the list of possible values for this datatype which are compatible
      *         with the listed datatypes. */

@@ -7,6 +7,8 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import conformance.PortedFrom;
@@ -16,7 +18,7 @@ import conformance.PortedFrom;
 public abstract class NamedEntityImpl implements NamedEntity, Serializable {
     private static final long serialVersionUID = 11000L;
     /** name of the entity */
-    protected final String name;
+    protected final IRI name;
     private NamedEntry entry;
 
     @Override
@@ -31,12 +33,12 @@ public abstract class NamedEntityImpl implements NamedEntity, Serializable {
 
     /** @param name
      *            name */
-    public NamedEntityImpl(String name) {
+    public NamedEntityImpl(IRI name) {
         this.name = name;
     }
 
     @Override
-    public String getName() {
+    public IRI getName() {
         return name;
     }
 

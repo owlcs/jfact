@@ -32,10 +32,9 @@ public class ClassPolicy implements Policy, Serializable {
             return EM.concept(p.getName());
         }
         // top or bottom
-        String name = p.getName();
-        if (name.equals("TOP")) {
+        if (p.getName().equals(Concept.thing)) {
             return EM.top();
-        } else if (name.equals("BOTTOM")) {
+        } else if (p.getName().equals(Concept.nothing)) {
             return EM.bottom();
         } else {
             // error

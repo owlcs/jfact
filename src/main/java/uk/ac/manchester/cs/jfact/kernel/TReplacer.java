@@ -8,6 +8,8 @@ package uk.ac.manchester.cs.jfact.kernel;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptAnd;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectExists;
@@ -30,7 +32,7 @@ class TReplacer extends DLExpressionVisitorAdapter {
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TReplacer")
     public TReplacer(ConjunctiveQueryFolding conjunctiveQueryFolding,
-            ConceptExpression expression, String propositionalVariable) {
+            ConceptExpression expression, IRI propositionalVariable) {
         this.conjunctiveQueryFolding = conjunctiveQueryFolding;
         ExpressionToReplace = expression;
         PropositionalVariable = this.conjunctiveQueryFolding.getpEM().concept(

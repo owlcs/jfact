@@ -7,6 +7,8 @@ package uk.ac.manchester.cs.jfact.datatypes;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.Collection;
 
+import org.semanticweb.owlapi.model.IRI;
+
 class DatatypeExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<O>
         implements DatatypeExpression<O> {
     private static final long serialVersionUID = 11000L;
@@ -14,7 +16,8 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<
     private final Datatype<O> host;
 
     public DatatypeExpressionImpl(Datatype<O> b) {
-        super(b.getDatatypeURI() + "_" + DatatypeFactory.getIndex(), b.getFacets());
+        super(IRI.create(b.getDatatypeIRI() + "_" + DatatypeFactory.getIndex()), b
+                .getFacets());
         if (b.isExpression()) {
             this.host = b.asExpression().getHostType();
         } else {

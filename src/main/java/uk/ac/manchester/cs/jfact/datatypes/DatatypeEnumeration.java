@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
@@ -21,14 +23,14 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
  *            type */
 public class DatatypeEnumeration<R extends Comparable<R>> implements
         DatatypeCombination<DatatypeEnumeration<R>, Literal<R>>, DatatypeExpression<R> {
-    private final String uri;
+    private final IRI uri;
     protected final Datatype<R> host;
     protected final List<Literal<R>> literals = new ArrayList<Literal<R>>();
 
     /** @param d
      *            d */
     public DatatypeEnumeration(Datatype<R> d) {
-        this.uri = "enum" + DatatypeFactory.getIndex();
+        this.uri = IRI.create("urn:enum" + DatatypeFactory.getIndex());
         this.host = d;
     }
 
@@ -167,7 +169,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     }
 
     @Override
-    public String getDatatypeURI() {
+    public IRI getDatatypeIRI() {
         return this.uri;
     }
 
@@ -236,7 +238,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
 
     @Override
     public String toString() {
-        return this.uri + this.literals;
+        return this.uri.toString() + this.literals;
     }
 
     @Override
@@ -275,7 +277,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     }
 
     @Override
-    public String getName() {
-        return toString();
+    public IRI getName() {
+        return IRI.create(toString());
     }
 }

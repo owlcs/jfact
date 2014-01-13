@@ -12,10 +12,10 @@ import conformance.PortedFrom;
  * @param <T>
  *            type */
 @PortedFrom(file = "tNameSet.h", name = "TNameCreator")
-public interface NameCreator<T> {
+public interface NameCreator<T, K> {
     /** @param name
      *            name
      * @return new Named Entry */
     @PortedFrom(file = "tNameSet.h", name = "makeEntry")
-    T makeEntry(String name);
+    T makeEntry(K name);
 }

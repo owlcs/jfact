@@ -11,13 +11,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.semanticweb.owlapi.model.IRI;
+
 /** @author ignazio
  * @param <T>
  *            type */
 public class DatatypeIntersection<T extends Comparable<T>> implements
         DatatypeCombination<DatatypeIntersection<T>, Datatype<T>> {
     private final Set<Datatype<T>> basics = new HashSet<Datatype<T>>();
-    private final String uri;
+    private final IRI uri;
     private final Datatype<T> host;
 
     /** @param collection
@@ -59,7 +61,7 @@ public class DatatypeIntersection<T extends Comparable<T>> implements
     /** @param host
      *            host */
     public DatatypeIntersection(Datatype<T> host) {
-        uri = "intersection#a" + DatatypeFactory.getIndex();
+        uri = IRI.create("urn:intersection#a" + DatatypeFactory.getIndex());
         this.host = host;
     }
 
@@ -107,7 +109,7 @@ public class DatatypeIntersection<T extends Comparable<T>> implements
     }
 
     @Override
-    public String getDatatypeURI() {
+    public IRI getDatatypeIRI() {
         return uri;
     }
 

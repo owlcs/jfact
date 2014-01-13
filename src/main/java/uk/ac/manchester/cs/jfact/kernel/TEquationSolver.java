@@ -7,6 +7,8 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptAnd;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectExists;
@@ -29,7 +31,7 @@ class TEquationSolver implements Serializable {
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TEquationSolver")
     public TEquationSolver(ConjunctiveQueryFolding conjunctiveQueryFolding,
-            ConceptExpression leftPart, String propositionalVariable,
+            ConceptExpression leftPart, IRI propositionalVariable,
             TExpressionMarker expressionMarker) {
         this.conjunctiveQueryFolding = conjunctiveQueryFolding;
         LeftPart = leftPart;
@@ -75,9 +77,9 @@ class TEquationSolver implements Serializable {
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "getNominal")
     public String getNominal() {
-        String longNominal = ((ConceptName) LeftPart).getName();
-        int colon = longNominal.indexOf(':');
-        return longNominal.substring(0, colon);
+        IRI longNominal = ((ConceptName) LeftPart).getName();
+        int colon = longNominal.toString().lastIndexOf(':');
+        return longNominal.toString().substring(0, colon);
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "getPhi")

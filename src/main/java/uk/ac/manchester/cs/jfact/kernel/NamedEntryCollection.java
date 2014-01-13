@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.reasoner.FreshEntityPolicy;
 
 import uk.ac.manchester.cs.jfact.helpers.Helper;
@@ -26,7 +27,7 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
     /** vector of elements */
     private final List<T> base = new ArrayList<T>();
     /** nameset to hold the elements */
-    private final NameSet<T> nameset;
+    private final NameSet<T, IRI> nameset;
     /** name of the type */
     private final String typeName;
     /** flag to lock the nameset (ie, prohibit to add new names there) */
@@ -60,12 +61,12 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
      *            creator
      * @param options
      *            options */
-    public NamedEntryCollection(String name, NameCreator<T> creator,
+    public NamedEntryCollection(String name, NameCreator<T, IRI> creator,
             JFactReasonerConfiguration options) {
         typeName = name;
         locked = false;
         base.add(null);
-        nameset = new NameSet<T>(creator);
+        nameset = new NameSet<T, IRI>(creator);
         this.options = options;
     }
 
@@ -89,14 +90,14 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
     /** @param name
      *            name
      * @return check if entry with a NAME is registered in given collection */
-    public boolean isRegistered(String name) {
+    public boolean isRegistered(IRI name) {
         return nameset.get(name) != null;
     }
 
     /** @param name
      *            name
      * @return get entry by NAME from the collection; register it if necessary */
-    public T get(String name) {
+    public T get(IRI name) {
         T p = nameset.get(name);
         // check if name is already defined
         if (p != null) {
@@ -106,7 +107,7 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
         if (isLocked() && !options.isUseUndefinedNames()
                 && options.getFreshEntityPolicy() == FreshEntityPolicy.DISALLOW) {
             throw new ReasonerFreshEntityException("Unable to register '" + name
-                    + "' as a " + typeName, name);
+                    + "' as a " + typeName, name.toString());
         }
         // create name in name set, and register it
         p = registerElem(nameset.add(name));

@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.util.MultiMap;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
@@ -39,7 +40,7 @@ class TQueryToConceptsTransformer implements Serializable {
         // System.out.println("After Phase 1\n" + Query);
         ConceptExpression term = conjunctiveQueryFolding.transformQueryPhase2(Query);
         conjunctiveQueryFolding.buildApproximation(Query);
-        String propositionalVariable = null;
+        IRI propositionalVariable = null;
         String lastNominal = null;
         for (int i = 1; true; ++i) {
             // System.out.println("Expression:");
@@ -67,7 +68,7 @@ class TQueryToConceptsTransformer implements Serializable {
             // System.out.print(expressionMarker.getSubterm());
             // System.out.println();
             // System.out.println("Initializing Replacer...\n");
-            propositionalVariable = "P" + i;
+            propositionalVariable = IRI.create("urn:P" + i);
             TReplacer replacer = new TReplacer(conjunctiveQueryFolding,
                     expressionMarker.getSubterm(), propositionalVariable);
             // System.out.println("Running Replacer...\n");

@@ -7,6 +7,9 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
@@ -30,7 +33,7 @@ public class DataBottom implements DataExpression, Serializable {
     }
 
     @Override
-    public String getName() {
-        return toString();
+    public IRI getName() {
+        return OWLRDFVocabulary.OWL_BOTTOM_DATA_PROPERTY.getIRI();
     }
 }

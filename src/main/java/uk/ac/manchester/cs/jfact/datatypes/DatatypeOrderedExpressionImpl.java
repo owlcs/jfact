@@ -10,6 +10,8 @@ import static uk.ac.manchester.cs.jfact.datatypes.Facets.*;
 
 import java.util.Collection;
 
+import org.semanticweb.owlapi.model.IRI;
+
 class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<O>
         implements DatatypeExpression<O>, OrderedDatatype<O> {
     private static final long serialVersionUID = 11000L;
@@ -17,7 +19,8 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
     private final Datatype<O> host;
 
     public DatatypeOrderedExpressionImpl(Datatype<O> b) {
-        super(b.getDatatypeURI() + "_" + DatatypeFactory.getIndex(), b.getFacets());
+        super(IRI.create(b.getDatatypeIRI() + "_" + DatatypeFactory.getIndex()), b
+                .getFacets());
         if (b.isExpression()) {
             this.host = b.asExpression().getHostType();
         } else {

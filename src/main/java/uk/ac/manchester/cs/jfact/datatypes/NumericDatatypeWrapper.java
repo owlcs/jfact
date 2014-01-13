@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
@@ -122,8 +124,8 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype
     }
 
     @Override
-    public String getDatatypeURI() {
-        return this.d.getDatatypeURI();
+    public IRI getDatatypeIRI() {
+        return this.d.getDatatypeIRI();
     }
 
     @Override
@@ -221,7 +223,7 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype
     }
 
     @Override
-    public String getName() {
-        return toString();
+    public IRI getName() {
+        return IRI.create(toString());
     }
 }

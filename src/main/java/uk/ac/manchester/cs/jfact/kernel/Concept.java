@@ -16,6 +16,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.helpers.FastSet;
@@ -28,11 +31,15 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ConceptWithDep.h", name = "Concept")
 public class Concept extends ClassifiableEntry {
     private static final long serialVersionUID = 11000L;
+    public static final IRI temp = IRI.create("urn:jfact#", "temp");
+    public static final IRI query = IRI.create("urn:jfact#", "default");
+    public static final IRI nothing = OWLRDFVocabulary.OWL_NOTHING.getIRI();
+    public static final IRI thing = OWLRDFVocabulary.OWL_THING.getIRI();
 
     /** @return bottom concept */
     @Original
     public static Concept getBOTTOM() {
-        Concept toReturn = new Concept("BOTTOM");
+        Concept toReturn = new Concept(nothing);
         toReturn.setBottom();
         toReturn.setId(-1);
         toReturn.setpName(bpBOTTOM);
@@ -43,7 +50,7 @@ public class Concept extends ClassifiableEntry {
     /** @return top concept */
     @Original
     public static Concept getTOP() {
-        Concept toReturn = new Concept("TOP");
+        Concept toReturn = new Concept(thing);
         toReturn.setTop();
         toReturn.setId(-1);
         toReturn.setpName(bpTOP);
@@ -56,11 +63,17 @@ public class Concept extends ClassifiableEntry {
     /** @return temporary concept */
     @Original
     public static Concept getTEMP() {
-        Concept TEMP = new Concept(" ");
+        Concept TEMP = new Concept(temp);
         TEMP.setId(-1);
         TEMP.setTsDepth(1);
         TEMP.setClassTag(CTTag.cttTrueCompletelyDefined);
         return TEMP;
+    }
+
+    public static Concept getQuery() {
+        Concept p = new Concept(query);
+        p.setSystem();
+        return p;
     }
 
     /** type of concept wrt classifiability */
@@ -138,7 +151,7 @@ public class Concept extends ClassifiableEntry {
 
     /** @param name
      *            name */
-    public Concept(String name) {
+    public Concept(IRI name) {
         super(name);
         rel = 0;
         classTag = CTTag.cttUnspecified;
@@ -229,7 +242,7 @@ public class Concept extends ClassifiableEntry {
 
     @Override
     public String toString() {
-        return extName;
+        return extName.toString();
     }
 
     /** init told subsumers of the concept by it's description */

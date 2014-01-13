@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.jfact.kernel.dl.interfaces;
 
+import uk.ac.manchester.cs.jfact.kernel.HasName;
 import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 import conformance.PortedFrom;
 
@@ -10,11 +11,7 @@ import conformance.PortedFrom;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** named entity */
 @PortedFrom(file = "tDLExpression.h", name = "TNamedEntity")
-public interface NamedEntity {
-    /** @return name */
-    @PortedFrom(file = "tDLExpression.h", name = "getName")
-    String getName();
-
+public interface NamedEntity extends HasName {
     /** @return named entry */
     @PortedFrom(file = "tDLExpression.h", name = "getEntry")
     NamedEntry getEntry();

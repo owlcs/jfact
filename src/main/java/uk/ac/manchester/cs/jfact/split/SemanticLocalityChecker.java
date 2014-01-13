@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+
 import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
 import uk.ac.manchester.cs.jfact.kernel.ReasoningKernel;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleChain;
@@ -112,10 +114,10 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker,
         isLocal = true;
         pEM = Kernel.getExpressionManager();
         // for tests we will need TB names to be from the OWL 2 namespace
-        pEM.setTopBottomRoles("http://www.w3.org/2002/07/owl#topObjectProperty",
-                "http://www.w3.org/2002/07/owl#bottomObjectProperty",
-                "http://www.w3.org/2002/07/owl#topDataProperty",
-                "http://www.w3.org/2002/07/owl#bottomDataProperty");
+        pEM.setTopBottomRoles(OWLRDFVocabulary.OWL_TOP_OBJECT_PROPERTY.getIRI(),
+                OWLRDFVocabulary.OWL_BOTTOM_OBJECT_PROPERTY.getIRI(),
+                OWLRDFVocabulary.OWL_TOP_DATA_PROPERTY.getIRI(),
+                OWLRDFVocabulary.OWL_BOTTOM_DATA_PROPERTY.getIRI());
     }
 
     // set fields

@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.util.MultiMap;
 
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
@@ -46,7 +47,7 @@ public class ConjunctiveQueryFolding implements Serializable {
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "NewNominals")
     private final Set<ConceptExpression> NewNominals = new HashSet<ConceptExpression>();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "VarRestrictions")
-    private final Map<String, ConceptExpression> VarRestrictions = new HashMap<String, ConceptExpression>();
+    private final Map<IRI, ConceptExpression> VarRestrictions = new HashMap<IRI, ConceptExpression>();
 
     /** @param em
      *            expression manager */
@@ -106,18 +107,18 @@ public class ConjunctiveQueryFolding implements Serializable {
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "buildQueryFigure2")
     private void buildQueryFigure2(QRQuery query) {
-        QRVariable x = VarFact.getNewVar("x");
-        QRVariable y = VarFact.getNewVar("y");
-        QRVariable z = VarFact.getNewVar("z");
-        QRVariable w = VarFact.getNewVar("v");
+        QRVariable x = VarFact.getNewVar(IRI.create("urn:test#x"));
+        QRVariable y = VarFact.getNewVar(IRI.create("urn:test#y"));
+        QRVariable z = VarFact.getNewVar(IRI.create("urn:test#z"));
+        QRVariable w = VarFact.getNewVar(IRI.create("urn:test#v"));
         query.setVarFree(x);
         query.setVarFree(y);
-        ObjectRoleExpression R1 = pEM.objectRole("R1");
-        ObjectRoleExpression R2 = pEM.objectRole("R2");
-        ObjectRoleExpression R3 = pEM.objectRole("R3");
-        ObjectRoleExpression R4 = pEM.objectRole("R4");
-        ObjectRoleExpression R5 = pEM.objectRole("R5");
-        ObjectRoleExpression R6 = pEM.objectRole("R6");
+        ObjectRoleExpression R1 = pEM.objectRole(IRI.create("urn:test#R1"));
+        ObjectRoleExpression R2 = pEM.objectRole(IRI.create("urn:test#R2"));
+        ObjectRoleExpression R3 = pEM.objectRole(IRI.create("urn:test#R3"));
+        ObjectRoleExpression R4 = pEM.objectRole(IRI.create("urn:test#R4"));
+        ObjectRoleExpression R5 = pEM.objectRole(IRI.create("urn:test#R5"));
+        ObjectRoleExpression R6 = pEM.objectRole(IRI.create("urn:test#R6"));
         query.addAtom(new QRRoleAtom(R1, x, z));
         query.addAtom(new QRRoleAtom(R2, x, w));
         query.addAtom(new QRRoleAtom(R3, z, y));
@@ -128,32 +129,32 @@ public class ConjunctiveQueryFolding implements Serializable {
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "buildSimpleQuery")
     private void buildSimpleQuery(QRQuery query) {
-        QRVariable x = VarFact.getNewVar("x");
-        QRVariable y = VarFact.getNewVar("y");
+        QRVariable x = VarFact.getNewVar(IRI.create("urn:test#x"));
+        QRVariable y = VarFact.getNewVar(IRI.create("urn:test#y"));
         query.setVarFree(x);
         query.setVarFree(y);
-        ObjectRoleExpression R1 = pEM.objectRole("R1");
-        ObjectRoleExpression R2 = pEM.objectRole("R2");
+        ObjectRoleExpression R1 = pEM.objectRole(IRI.create("urn:test#R1"));
+        ObjectRoleExpression R2 = pEM.objectRole(IRI.create("urn:test#R2"));
         query.addAtom(new QRRoleAtom(R1, x, y));
         query.addAtom(new QRRoleAtom(R2, y, x));
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "buildVerySimpleQuery")
     private void buildVerySimpleQuery(QRQuery query) {
-        QRVariable x = VarFact.getNewVar("x");
+        QRVariable x = VarFact.getNewVar(IRI.create("urn:test#x"));
         query.setVarFree(x);
-        ObjectRoleExpression R1 = pEM.objectRole("R1");
+        ObjectRoleExpression R1 = pEM.objectRole(IRI.create("urn:test#R1"));
         query.addAtom(new QRRoleAtom(R1, x, x));
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "buildVerySimpleQueryLUBM1")
     private void buildVerySimpleQueryLUBM1(QRQuery query) {
-        QRVariable x = VarFact.getNewVar("x");
+        QRVariable x = VarFact.getNewVar(IRI.create("urn:test#x"));
         query.setVarFree(x);
-        QRVariable y = VarFact.getNewVar("y");
+        QRVariable y = VarFact.getNewVar(IRI.create("urn:test#y"));
         query.setVarFree(y);
-        ObjectRoleExpression R1 = pEM.objectRole("R1");
-        ConceptExpression C1 = pEM.concept("C1");
+        ObjectRoleExpression R1 = pEM.objectRole(IRI.create("urn:test#R1"));
+        ConceptExpression C1 = pEM.concept(IRI.create("urn:test#C1"));
         query.addAtom(new QRRoleAtom(R1, x, y));
         query.addAtom(new QRConceptAtom(C1, x));
     }
@@ -161,20 +162,24 @@ public class ConjunctiveQueryFolding implements Serializable {
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "buildLUBM2Query")
     private void buildLUBM2Query(int n, QRQuery query) {
         if (n == 1) {
-            QRVariable v0 = VarFact.getNewVar("v0");
-            QRVariable v1 = VarFact.getNewVar("v1");
-            QRVariable v2 = VarFact.getNewVar("v2");
-            QRVariable v3 = VarFact.getNewVar("v3");
+            QRVariable v0 = VarFact.getNewVar(IRI.create("urn:test#v0"));
+            QRVariable v1 = VarFact.getNewVar(IRI.create("urn:test#v1"));
+            QRVariable v2 = VarFact.getNewVar(IRI.create("urn:test#v2"));
+            QRVariable v3 = VarFact.getNewVar(IRI.create("urn:test#v3"));
             query.setVarFree(v0);
             query.setVarFree(v2);
-            ConceptExpression Student = pEM.concept("Student");
-            ConceptExpression Course = pEM.concept("Course");
-            ConceptExpression Faculty = pEM.concept("Faculty");
-            ConceptExpression Department = pEM.concept("Department");
-            ObjectRoleExpression takesCourse = pEM.objectRole("takesCourse");
-            ObjectRoleExpression teacherOf = pEM.objectRole("teacherOf");
-            ObjectRoleExpression worksFor = pEM.objectRole("worksFor");
-            ObjectRoleExpression memberOf = pEM.objectRole("memberOf");
+            ConceptExpression Student = pEM.concept(IRI.create("urn:test#Student"));
+            ConceptExpression Course = pEM.concept(IRI.create("urn:test#Course"));
+            ConceptExpression Faculty = pEM.concept(IRI.create("urn:test#Faculty"));
+            ConceptExpression Department = pEM.concept(IRI.create("urn:test#Department"));
+            ObjectRoleExpression takesCourse = pEM.objectRole(IRI
+                    .create("urn:test#takesCourse"));
+            ObjectRoleExpression teacherOf = pEM.objectRole(IRI
+                    .create("urn:test#teacherOf"));
+            ObjectRoleExpression worksFor = pEM.objectRole(IRI
+                    .create("urn:test#worksFor"));
+            ObjectRoleExpression memberOf = pEM.objectRole(IRI
+                    .create("urn:test#memberOf"));
             query.addAtom(new QRConceptAtom(Student, v0));
             query.addAtom(new QRConceptAtom(Course, v1));
             query.addAtom(new QRConceptAtom(Faculty, v2));
@@ -264,7 +269,7 @@ public class ConjunctiveQueryFolding implements Serializable {
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "QRVariable")
     private QRVariable getNewCopyVar(QRVariable old, int suffix) {
         String buf = "_" + suffix;
-        QRVariable var = VarFact.getNewVar(old.getName() + buf);
+        QRVariable var = VarFact.getNewVar(IRI.create(old.getName() + buf));
         NewVarMap.put(var, old);
         return var;
     }

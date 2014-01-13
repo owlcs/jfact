@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptTop;
@@ -97,7 +99,7 @@ public class TAxiomSplitter implements Serializable {
     @PortedFrom(file = "AxiomSplitter.h", name = "rename")
     protected ConceptName rename(ConceptName oldName) {
         ConceptExpression c = O.getExpressionManager().concept(
-                oldName.getName() + "+" + ++newNameId);
+                IRI.create(oldName.getName() + "+" + ++newNameId));
         if (c instanceof ConceptName) {
             return (ConceptName) c;
         }

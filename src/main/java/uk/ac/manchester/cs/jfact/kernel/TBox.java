@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
 
@@ -717,7 +718,7 @@ public class TBox implements Serializable {
      *            name
      * @return null if can't register */
     @PortedFrom(file = "dlTBox.h", name = "getConcept")
-    public Concept getConcept(String name) {
+    public Concept getConcept(IRI name) {
         return concepts.get(name);
     }
 
@@ -727,7 +728,7 @@ public class TBox implements Serializable {
      *            name
      * @return null if can't register */
     @PortedFrom(file = "dlTBox.h", name = "getIndividual")
-    public Individual getIndividual(String name) {
+    public Individual getIndividual(IRI name) {
         return individuals.get(name);
     }
 
@@ -735,7 +736,7 @@ public class TBox implements Serializable {
      *            name
      * @return true iff given NAME is a name of a registered individual */
     @PortedFrom(file = "dlTBox.h", name = "isIndividual")
-    private boolean isIndividual(String name) {
+    private boolean isIndividual(IRI name) {
         return individuals.isRegistered(name);
     }
 
@@ -1551,8 +1552,8 @@ public class TBox implements Serializable {
      * @param interrupted
      *            interrupted */
     public TBox(DatatypeFactory datatypeFactory,
-            JFactReasonerConfiguration configuration, String topObjectRoleName,
-            String botObjectRoleName, String topDataRoleName, String botDataRoleName,
+            JFactReasonerConfiguration configuration, IRI topObjectRoleName,
+            IRI botObjectRoleName, IRI topDataRoleName, IRI botDataRoleName,
             AtomicBoolean interrupted) {
         this.datatypeFactory = datatypeFactory;
         this.interrupted = interrupted;
@@ -1592,7 +1593,7 @@ public class TBox implements Serializable {
     @PortedFrom(file = "dlTBox.h", name = "getAuxConcept")
     public Concept getAuxConcept(DLTree desc) {
         boolean old = setForbidUndefinedNames(false);
-        Concept C = getConcept(" aux" + ++auxConceptID);
+        Concept C = getConcept(IRI.create("urn:aux" + ++auxConceptID));
         setForbidUndefinedNames(old);
         C.setSystem();
         C.setNonClassifiable(true);
@@ -1614,9 +1615,7 @@ public class TBox implements Serializable {
         bottom = Concept.getBOTTOM();
         pTemp = Concept.getTEMP();
         // query concept
-        Concept p = new Concept("jfact.default");
-        p.setSystem();
-        pQuery = p;
+        pQuery = Concept.getQuery();
     }
 
     /** prepare reasoning */

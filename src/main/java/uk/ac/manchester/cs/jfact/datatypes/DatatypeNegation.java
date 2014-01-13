@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
@@ -23,12 +25,12 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
         Serializable {
     private static final long serialVersionUID = 11000L;
     private final Datatype<R> host;
-    private final String uri;
+    private final IRI uri;
 
     /** @param d
      *            d */
     public DatatypeNegation(Datatype<R> d) {
-        this.uri = "neg#" + DatatypeFactory.getIndex();
+        this.uri = IRI.create("urn:neg" + DatatypeFactory.getIndex());
         host = d;
     }
 
@@ -135,7 +137,7 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
     }
 
     @Override
-    public String getDatatypeURI() {
+    public IRI getDatatypeIRI() {
         return uri;
     }
 
@@ -221,7 +223,7 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
     }
 
     @Override
-    public String getName() {
-        return toString();
+    public IRI getName() {
+        return IRI.create(toString());
     }
 }

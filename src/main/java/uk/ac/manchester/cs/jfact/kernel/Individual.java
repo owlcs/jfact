@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import conformance.Original;
 import conformance.PortedFrom;
 
@@ -31,7 +33,7 @@ public class Individual extends Concept {
 
     /** @param name
      *            name */
-    public Individual(String name) {
+    public Individual(IRI name) {
         super(name);
         node = null;
         setSingleton(true);
