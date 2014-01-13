@@ -16,7 +16,7 @@ import conformance.PortedFrom;
 
 /** Axiom interface */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiom")
-public interface AxiomInterface extends Entity {
+public interface AxiomInterface {
     /** @return original owl axiom */
     @Original
     OWLAxiom getOWLAxiom();
