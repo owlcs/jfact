@@ -37,6 +37,7 @@ import uk.ac.manchester.cs.jfact.helpers.Timer;
 import uk.ac.manchester.cs.jfact.kernel.actors.Actor;
 import uk.ac.manchester.cs.jfact.kernel.actors.RIActor;
 import uk.ac.manchester.cs.jfact.kernel.actors.SupConceptActor;
+import uk.ac.manchester.cs.jfact.kernel.actors.TaxonomyActor;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptBottom;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptTop;
@@ -1160,9 +1161,11 @@ public class ReasoningKernel implements Serializable {
      * @param direct
      *            direct
      * @param actor
-     *            actor */
+     *            actor
+     * @return actor */
     @PortedFrom(file = "Kernel.h", name = "getSupConcepts")
-    public void getSupConcepts(ConceptExpression C, boolean direct, Actor actor) {
+    public <T extends Expression> TaxonomyActor<T> getSupConcepts(ConceptExpression C,
+            boolean direct, TaxonomyActor<T> actor) {
         classifyKB();
         this.setUpCache(C, csClassified);
         actor.clear();
@@ -1172,6 +1175,7 @@ public class ReasoningKernel implements Serializable {
         } else {
             tax.getRelativesInfo(cachedVertex, actor, false, false, true);
         }
+        return actor;
     }
 
     /** apply actor__apply() to all DIRECT sub-concepts of [complex] C
@@ -1181,14 +1185,36 @@ public class ReasoningKernel implements Serializable {
      * @param direct
      *            direct
      * @param actor
-     *            actor */
+     *            actor
+     * @return actor */
     @PortedFrom(file = "Kernel.h", name = "getSubConcepts")
-    public void getSubConcepts(ConceptExpression C, boolean direct, Actor actor) {
+    public <T extends Expression> TaxonomyActor<T> getSubConcepts(ConceptExpression C,
+            boolean direct, TaxonomyActor<T> actor) {
         classifyKB();
         this.setUpCache(C, csClassified);
         actor.clear();
         Taxonomy tax = getCTaxonomy();
         tax.getRelativesInfo(cachedVertex, actor, false, direct, false);
+        return actor;
+    }
+
+    /** apply actor__apply() to all DIRECT sub-concepts of [complex] C
+     * 
+     * @param C
+     *            C
+     * @param direct
+     *            direct
+     * @param actor
+     *            actor
+     * @return actor */
+    @PortedFrom(file = "Kernel.h", name = "getSubConcepts")
+    public Actor getSubConcepts(ConceptExpression C, boolean direct, Actor actor) {
+        classifyKB();
+        this.setUpCache(C, csClassified);
+        actor.clear();
+        Taxonomy tax = getCTaxonomy();
+        tax.getRelativesInfo(cachedVertex, actor, false, direct, false);
+        return actor;
     }
 
     /** apply actor__apply() to all synonyms of [complex] C
@@ -1196,13 +1222,16 @@ public class ReasoningKernel implements Serializable {
      * @param C
      *            C
      * @param actor
-     *            actor */
+     *            actor
+     * @return actor */
     @PortedFrom(file = "Kernel.h", name = "getEquivalentConcepts")
-    public void getEquivalentConcepts(ConceptExpression C, Actor actor) {
+    public <T extends Expression> TaxonomyActor<T> getEquivalentConcepts(
+            ConceptExpression C, TaxonomyActor<T> actor) {
         classifyKB();
         this.setUpCache(C, csClassified);
         actor.clear();
         actor.apply(cachedVertex);
+        return actor;
     }
 
     /** apply actor::apply() to all named concepts disjoint with [complex] C
@@ -1212,13 +1241,15 @@ public class ReasoningKernel implements Serializable {
      * @param actor
      *            actor */
     @PortedFrom(file = "Kernel.h", name = "getDisjointConcepts")
-    public void getDisjointConcepts(ConceptExpression C, Actor actor) {
+    public <T extends Expression> TaxonomyActor<T> getDisjointConcepts(
+            ConceptExpression C, TaxonomyActor<T> actor) {
         classifyKB();
         this.setUpCache(getExpressionManager().not(C), csClassified);
         actor.clear();
         Taxonomy tax = getCTaxonomy();
         // we are looking for all sub-concepts of (not C) (including synonyms)
         tax.getRelativesInfo(cachedVertex, actor, true, false, false);
+        return actor;
     }
 
     // role hierarchy
@@ -1231,12 +1262,14 @@ public class ReasoningKernel implements Serializable {
      * @param actor
      *            actor */
     @PortedFrom(file = "Kernel.h", name = "getSupRoles")
-    public void getSupRoles(RoleExpression r, boolean direct, Actor actor) {
+    public <T extends RoleExpression> TaxonomyActor<T> getSupRoles(RoleExpression r,
+            boolean direct, TaxonomyActor<T> actor) {
         preprocessKB(); // ensure KB is ready to answer the query
         Role R = getRole(r, "Role expression expected in getSupRoles()");
         actor.clear();
         Taxonomy tax = getTaxonomy(R);
         tax.getRelativesInfo(getTaxVertex(R), actor, false, direct, true);
+        return actor;
     }
 
     /** apply actor__apply() to all DIRECT sub-roles of [complex] R
@@ -1248,12 +1281,14 @@ public class ReasoningKernel implements Serializable {
      * @param actor
      *            actor */
     @PortedFrom(file = "Kernel.h", name = "getSubRoles")
-    public void getSubRoles(RoleExpression r, boolean direct, Actor actor) {
+    public <T extends RoleExpression> TaxonomyActor<T> getSubRoles(RoleExpression r,
+            boolean direct, TaxonomyActor<T> actor) {
         preprocessKB();
         Role R = getRole(r, "Role expression expected in getSubRoles()");
         actor.clear();
         Taxonomy tax = getTaxonomy(R);
         tax.getRelativesInfo(getTaxVertex(R), actor, false, direct, false);
+        return actor;
     }
 
     /** apply actor__apply() to all synonyms of [complex] R
@@ -1263,11 +1298,13 @@ public class ReasoningKernel implements Serializable {
      * @param actor
      *            actor */
     @PortedFrom(file = "Kernel.h", name = "getEquivalentRoles")
-    public void getEquivalentRoles(RoleExpression r, Actor actor) {
+    public <T extends RoleExpression> TaxonomyActor<T> getEquivalentRoles(
+            RoleExpression r, TaxonomyActor<T> actor) {
         preprocessKB();
         Role R = getRole(r, "Role expression expected in getEquivalentRoles()");
         actor.clear();
         actor.apply(getTaxVertex(R));
+        return actor;
     }
 
     // domain and range as a set of named concepts
@@ -1336,12 +1373,14 @@ public class ReasoningKernel implements Serializable {
      * @param direct
      *            direct */
     @PortedFrom(file = "Kernel.h", name = "getInstances")
-    public void getInstances(ConceptExpression C, Actor actor, boolean direct) {
+    public TaxonomyActor<IndividualExpression> getInstances(ConceptExpression C,
+            TaxonomyActor<IndividualExpression> actor, boolean direct) {
         if (direct) {
             getDirectInstances(C, actor);
         } else {
             this.getInstances(C, actor);
         }
+        return actor;
     }
 
     /** apply actor__apply() to all direct instances of given [complex] C
@@ -1395,12 +1434,14 @@ public class ReasoningKernel implements Serializable {
      * @param actor
      *            actor */
     @PortedFrom(file = "Kernel.h", name = "getTypes")
-    public void getTypes(IndividualName I, boolean direct, Actor actor) {
+    public <T extends Expression> TaxonomyActor<T> getTypes(IndividualName I,
+            boolean direct, TaxonomyActor<T> actor) {
         realiseKB();
         this.setUpCache(getExpressionManager().oneOf(I), csClassified);
         actor.clear();
         Taxonomy tax = getCTaxonomy();
         tax.getRelativesInfo(cachedVertex, actor, true, direct, true);
+        return actor;
     }
 
     /** apply actor__apply() to all synonyms of an individual I
@@ -1410,9 +1451,10 @@ public class ReasoningKernel implements Serializable {
      * @param actor
      *            actor */
     @PortedFrom(file = "Kernel.h", name = "getSameAs")
-    public void getSameAs(IndividualName I, Actor actor) {
+    public <T extends Expression> TaxonomyActor<T> getSameAs(IndividualName I,
+            TaxonomyActor<T> actor) {
         realiseKB();
-        getEquivalentConcepts(getExpressionManager().oneOf(I), actor);
+        return getEquivalentConcepts(getExpressionManager().oneOf(I), actor);
     }
 
     /** @param I
@@ -1466,7 +1508,7 @@ public class ReasoningKernel implements Serializable {
      *            onlyDet
      * @return set of data roles */
     @PortedFrom(file = "Kernel.h", name = "getDataRoles")
-    public Set<RoleExpression> getDataRoles(DlCompletionTree node, boolean onlyDet) {
+    public Set<DataRoleExpression> getDataRoles(DlCompletionTree node, boolean onlyDet) {
         return KE.getDataRoles(node, onlyDet);
     }
 
@@ -1481,8 +1523,8 @@ public class ReasoningKernel implements Serializable {
      *            needIncoming
      * @return set of object roles */
     @PortedFrom(file = "Kernel.h", name = "getObjectRoles")
-    public Set<RoleExpression> getObjectRoles(DlCompletionTree node, boolean onlyDet,
-            boolean needIncoming) {
+    public Set<ObjectRoleExpression> getObjectRoles(DlCompletionTree node,
+            boolean onlyDet, boolean needIncoming) {
         return KE.getObjectRoles(node, onlyDet, needIncoming);
     }
 

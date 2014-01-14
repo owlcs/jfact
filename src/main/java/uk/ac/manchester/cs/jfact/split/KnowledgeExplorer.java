@@ -27,9 +27,10 @@ import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
 import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import conformance.PortedFrom;
 
 /** knowledge explorer */
@@ -54,9 +55,6 @@ public class KnowledgeExplorer implements Serializable {
     /** node vector to return */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "Nodes")
     private final List<DlCompletionTree> Nodes = new ArrayList<DlCompletionTree>();
-    /** role set to return */
-    @PortedFrom(file = "KnowledgeExplorer.h", name = "Roles")
-    private final Set<RoleExpression> Roles = new HashSet<RoleExpression>();
     /** concept vector to return */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "Concepts")
     private final List<Expression> Concepts = new ArrayList<Expression>();
@@ -165,18 +163,17 @@ public class KnowledgeExplorer implements Serializable {
      *            onlyDet
      * @return set of data roles */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getDataRoles")
-    public Set<RoleExpression> getDataRoles(DlCompletionTree node, boolean onlyDet) {
-        Roles.clear();
+    public Set<DataRoleExpression> getDataRoles(DlCompletionTree node, boolean onlyDet) {
+        Set<DataRoleExpression> roles = new HashSet<DataRoleExpression>();
         for (DlCompletionTreeArc p : node.getNeighbour()) {
             if (!p.isIBlocked() && p.getArcEnd().isDataNode()
                     && (!onlyDet || p.getDep().isEmpty())) {
                 for (Role r : DRs.get(p.getRole().getEntity())) {
-                    Roles.add(D2I.getDataRoleExpression(r));
+                    roles.add((DataRoleExpression) D2I.getDataRoleExpression(r));
                 }
             }
         }
-        // Roles.addAll(DRs.get(p.getRole().getEntity()));
-        return Roles;
+        return roles;
     }
 
     /** @param node
@@ -188,19 +185,19 @@ public class KnowledgeExplorer implements Serializable {
      * @return set of object neighbours of a NODE; incoming edges are counted
      *         iff NEEDINCOMING is true */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getObjectRoles")
-    public Set<RoleExpression> getObjectRoles(DlCompletionTree node, boolean onlyDet,
-            boolean needIncoming) {
-        Roles.clear();
+    public Set<ObjectRoleExpression> getObjectRoles(DlCompletionTree node,
+            boolean onlyDet, boolean needIncoming) {
+        Set<ObjectRoleExpression> roles = new HashSet<ObjectRoleExpression>();
         for (DlCompletionTreeArc p : node.getNeighbour()) {
             if (!p.isIBlocked() && !p.getArcEnd().isDataNode()
                     && (!onlyDet || p.getDep().isEmpty())
                     && (needIncoming || p.isSuccEdge())) {
                 for (Role r : ORs.get(p.getRole().getEntity())) {
-                    Roles.add(D2I.getObjectRoleExpression(r));
+                    roles.add((ObjectRoleExpression) D2I.getObjectRoleExpression(r));
                 }
             }
         }
-        return Roles;
+        return roles;
     }
 
     /** @param node

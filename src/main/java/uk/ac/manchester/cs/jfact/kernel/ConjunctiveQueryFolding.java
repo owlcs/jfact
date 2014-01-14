@@ -448,7 +448,6 @@ public class ConjunctiveQueryFolding implements Serializable {
         // get all instances of C
         ActorImpl a = new ActorImpl();
         List<Individual> individuals = new ArrayList<Individual>();
-        // Actor::Array1D result;
         if (artificialABox) {
             // HACK: work only for our individualisation of NCIt/etc
             a.needConcepts();

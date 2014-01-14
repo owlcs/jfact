@@ -107,7 +107,7 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
         if (isLocked() && !options.isUseUndefinedNames()
                 && options.getFreshEntityPolicy() == FreshEntityPolicy.DISALLOW) {
             throw new ReasonerFreshEntityException("Unable to register '" + name
-                    + "' as a " + typeName, name.toString());
+                    + "' as a " + typeName, name);
         }
         // create name in name set, and register it
         p = registerElem(nameset.add(name));

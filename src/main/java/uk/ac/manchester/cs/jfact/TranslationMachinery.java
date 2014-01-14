@@ -68,6 +68,7 @@ import org.semanticweb.owlapi.model.OWLInverseFunctionalObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLInverseObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLIrreflexiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLLogicalEntity;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLNegativeDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
@@ -162,6 +163,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Entity;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleComplexExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
@@ -222,6 +224,22 @@ public class TranslationMachinery implements Serializable {
     /** @return bottom data property */
     public DataRoleExpression getBottomDataProperty() {
         return em.dataRole(OWLRDFVocabulary.OWL_BOTTOM_DATA_PROPERTY.getIRI());
+    }
+
+    /** @param signature
+     *            signature
+     * @return expressions */
+    public List<Expression> translateExpressions(Set<OWLEntity> signature) {
+        List<Expression> list = new ArrayList<Expression>();
+        for (OWLEntity entity : signature) {
+            if (entity instanceof OWLLogicalEntity) {
+                Expression ex = entity.accept(new EntityVisitorEx(this));
+                if (ex != null) {
+                    list.add(ex);
+                }
+            }
+        }
+        return list;
     }
 
     /** @param axioms
@@ -300,7 +318,7 @@ public class TranslationMachinery implements Serializable {
         return knownDatatype.buildLiteral(value);
     }
 
-    protected NodeSet<OWLNamedIndividual> translateIndividualPointersToNodeSet(
+    protected NodeSet<OWLNamedIndividual> translateNodeSet(
             Iterable<IndividualExpression> pointers) {
         OWLNamedIndividualNodeSet ns = new OWLNamedIndividualNodeSet();
         for (IndividualExpression pointer : pointers) {
@@ -320,7 +338,7 @@ public class TranslationMachinery implements Serializable {
     /** @param inds
      *            inds
      * @return individual set */
-    public List<IndividualExpression> translateIndividualSet(Set<OWLIndividual> inds) {
+    public List<IndividualExpression> translate(Set<OWLIndividual> inds) {
         List<IndividualExpression> l = new ArrayList<IndividualExpression>();
         for (OWLIndividual ind : inds) {
             l.add(pointer(ind));
@@ -658,7 +676,7 @@ public class TranslationMachinery implements Serializable {
             return pointer;
         }
 
-        public Node<E> getNodeFromPointers(Collection<T> pointers) {
+        public Node<E> node(Collection<T> pointers) {
             DefaultNode<E> node = this.createDefaultNode();
             for (T pointer : pointers) {
                 node.add(this.getEntityFromPointer(pointer));
@@ -666,10 +684,10 @@ public class TranslationMachinery implements Serializable {
             return node;
         }
 
-        public NodeSet<E> getNodeSetFromPointers(Collection<Collection<T>> pointers) {
+        public NodeSet<E> nodeSet(Collection<Collection<T>> pointers) {
             DefaultNodeSet<E> nodeSet = this.createDefaultNodeSet();
             for (Collection<T> pointerArray : pointers) {
-                nodeSet.addNode(this.getNodeFromPointers(pointerArray));
+                nodeSet.addNode(this.node(pointerArray));
             }
             return nodeSet;
         }
@@ -938,8 +956,8 @@ public class TranslationMachinery implements Serializable {
         @Override
         public AxiomInterface visit(OWLDifferentIndividualsAxiom axiom) {
             return kernel.getOntology().add(
-                    new AxiomDifferentIndividuals(axiom, translateIndividualSet(axiom
-                            .getIndividuals())));
+                    new AxiomDifferentIndividuals(axiom,
+                            translate(axiom.getIndividuals())));
         }
 
         @Override
@@ -1086,8 +1104,7 @@ public class TranslationMachinery implements Serializable {
         @Override
         public AxiomInterface visit(OWLSameIndividualAxiom axiom) {
             return kernel.getOntology().add(
-                    new AxiomSameIndividuals(axiom, translateIndividualSet(axiom
-                            .getIndividuals())));
+                    new AxiomSameIndividuals(axiom, translate(axiom.getIndividuals())));
         }
 
         @Override
@@ -1267,7 +1284,7 @@ public class TranslationMachinery implements Serializable {
 
         @Override
         public ConceptExpression visit(OWLObjectOneOf desc) {
-            return em.oneOf(translateIndividualSet(desc.getIndividuals()));
+            return em.oneOf(translate(desc.getIndividuals()));
         }
 
         @Override
