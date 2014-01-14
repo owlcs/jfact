@@ -12,7 +12,9 @@ import conformance.PortedFrom;
 /** name set
  * 
  * @param <T>
- *            type */
+ *            type
+ * @param <K>
+ *            key */
 @PortedFrom(file = "tNameSet.h", name = "TNameSet")
 public class NameSet<T, K> extends HashMap<K, T> {
     private static final long serialVersionUID = 11000L;

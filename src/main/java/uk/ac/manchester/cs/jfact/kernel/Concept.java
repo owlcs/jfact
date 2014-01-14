@@ -31,9 +31,13 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ConceptWithDep.h", name = "Concept")
 public class Concept extends ClassifiableEntry {
     private static final long serialVersionUID = 11000L;
+    /** temp concept iri */
     public static final IRI temp = IRI.create("urn:jfact#", "temp");
+    /** query concept iri */
     public static final IRI query = IRI.create("urn:jfact#", "default");
+    /** nothing concept iri */
     public static final IRI nothing = OWLRDFVocabulary.OWL_NOTHING.getIRI();
+    /** thing concept iri */
     public static final IRI thing = OWLRDFVocabulary.OWL_THING.getIRI();
 
     /** @return bottom concept */
@@ -70,6 +74,7 @@ public class Concept extends ClassifiableEntry {
         return TEMP;
     }
 
+    /** @return query concept */
     public static Concept getQuery() {
         Concept p = new Concept(query);
         p.setSystem();

@@ -1239,7 +1239,10 @@ public class ReasoningKernel implements Serializable {
      * @param C
      *            C
      * @param actor
-     *            actor */
+     *            actor
+     * @param <T>
+     *            type
+     * @return actor */
     @PortedFrom(file = "Kernel.h", name = "getDisjointConcepts")
     public <T extends Expression> TaxonomyActor<T> getDisjointConcepts(
             ConceptExpression C, TaxonomyActor<T> actor) {
@@ -1260,7 +1263,10 @@ public class ReasoningKernel implements Serializable {
      * @param direct
      *            direct
      * @param actor
-     *            actor */
+     *            actor
+     * @param <T>
+     *            type
+     * @return actor */
     @PortedFrom(file = "Kernel.h", name = "getSupRoles")
     public <T extends RoleExpression> TaxonomyActor<T> getSupRoles(RoleExpression r,
             boolean direct, TaxonomyActor<T> actor) {
@@ -1279,7 +1285,10 @@ public class ReasoningKernel implements Serializable {
      * @param direct
      *            direct
      * @param actor
-     *            actor */
+     *            actor
+     * @param <T>
+     *            type
+     * @return actor */
     @PortedFrom(file = "Kernel.h", name = "getSubRoles")
     public <T extends RoleExpression> TaxonomyActor<T> getSubRoles(RoleExpression r,
             boolean direct, TaxonomyActor<T> actor) {
@@ -1296,7 +1305,10 @@ public class ReasoningKernel implements Serializable {
      * @param r
      *            r
      * @param actor
-     *            actor */
+     *            actor
+     * @param <T>
+     *            type
+     * @return actor */
     @PortedFrom(file = "Kernel.h", name = "getEquivalentRoles")
     public <T extends RoleExpression> TaxonomyActor<T> getEquivalentRoles(
             RoleExpression r, TaxonomyActor<T> actor) {
@@ -1371,7 +1383,8 @@ public class ReasoningKernel implements Serializable {
      * @param actor
      *            actor
      * @param direct
-     *            direct */
+     *            direct
+     * @return actor */
     @PortedFrom(file = "Kernel.h", name = "getInstances")
     public TaxonomyActor<IndividualExpression> getInstances(ConceptExpression C,
             TaxonomyActor<IndividualExpression> actor, boolean direct) {
@@ -1432,7 +1445,10 @@ public class ReasoningKernel implements Serializable {
      * @param direct
      *            direct
      * @param actor
-     *            actor */
+     *            actor
+     * @param <T>
+     *            type
+     * @return actor */
     @PortedFrom(file = "Kernel.h", name = "getTypes")
     public <T extends Expression> TaxonomyActor<T> getTypes(IndividualName I,
             boolean direct, TaxonomyActor<T> actor) {
@@ -1449,7 +1465,10 @@ public class ReasoningKernel implements Serializable {
      * @param I
      *            I
      * @param actor
-     *            actor */
+     *            actor
+     * @param <T>
+     *            type
+     * @return actor */
     @PortedFrom(file = "Kernel.h", name = "getSameAs")
     public <T extends Expression> TaxonomyActor<T> getSameAs(IndividualName I,
             TaxonomyActor<T> actor) {

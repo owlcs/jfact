@@ -29,6 +29,8 @@ public class LiteralEntry extends NamedEntry {
         pName = bpINVALID;
     }
 
+    /** @param name
+     *            name */
     public LiteralEntry(String name) {
         this(IRI.create(name));
     }

@@ -10,7 +10,9 @@ import conformance.PortedFrom;
 /** name creator
  * 
  * @param <T>
- *            type */
+ *            type
+ * @param <K>
+ *            key */
 @PortedFrom(file = "tNameSet.h", name = "TNameCreator")
 public interface NameCreator<T, K> {
     /** @param name
