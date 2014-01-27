@@ -9,7 +9,16 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
+import org.semanticweb.owlapi.model.OWLObjectMinCardinality;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
@@ -278,7 +287,7 @@ public class WebOnt {
                 + " EquivalentClasses( restriction( first:p, minCardinality(1) ) )\n"
                 + " ObjectProperty( first:p )\n"
                 + "This is trivially true given that first:p is an \n"
-                + "<code>individualvaluedPropertyID</code>.";
+                + "individualvaluedPropertyID.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -295,7 +304,7 @@ public class WebOnt {
         String conclusion = "";
         String id = "WebOnt_I5_2_001";
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
-        String d = "A class like <code>owl:Nothing</code> can be defined using OWL Lite restrictions.";
+        String d = "A class like owl:Nothing can be defined using OWL Lite restrictions.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -315,7 +324,7 @@ public class WebOnt {
                 + "   <owl:Class rdf:about=\"premises002#Nothing\"><owl:equivalentClass><owl:Class rdf:about=\"http://www.w3.org/2002/07/owl#Nothing\" /></owl:equivalentClass></owl:Class></rdf:RDF>";
         String id = "WebOnt_I5_2_002";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "A class like <code>owl:Nothing</code> can be defined using OWL Lite restrictions.";
+        String d = "A class like owl:Nothing can be defined using OWL Lite restrictions.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -387,7 +396,7 @@ public class WebOnt {
         String conclusion = "";
         String id = "WebOnt_I5_2_005";
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
-        String d = "The union of two classes can be defined using OWL Lite restrictions, and <code>owl:intersectionOf</code>.";
+        String d = "The union of two classes can be defined using OWL Lite restrictions, and owl:intersectionOf.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -420,7 +429,7 @@ public class WebOnt {
                 + "</rdf:RDF>";
         String id = "WebOnt_I5_2_006";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "The union of two classes can be defined using OWL Lite restrictions, and <code>owl:intersectionOf</code>.";
+        String d = "The union of two classes can be defined using OWL Lite restrictions, and owl:intersectionOf.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -535,8 +544,8 @@ public class WebOnt {
         // + "  </owl:DatatypeProperty>\n" + "</rdf:RDF>";
         // String id = "WebOnt_I5_8_007";
         // TestClasses tc = TestClasses.valueOf("NEGATIVE_IMPL");
-        // String d = "-1 is an <code>xsd:short</code>\n" + "that is not an\n"
-        // + " <code>xsd:unsignedByte</code>.";
+        // String d = "-1 is an xsd:short\n" + "that is not an\n"
+        // + " xsd:unsignedByte.";
         // JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         // r.setReasonerFactory(Factory.factory());
         // r.run();
@@ -567,8 +576,8 @@ public class WebOnt {
                 + "  <rdfs:Datatype rdf:about=\"http://www.w3.org/2001/XMLSchema#string\"/></rdf:RDF>";
         String id = "WebOnt_I5_8_011";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "The empty graph entails that <code>xsd:integer</code> and <code>xsd:string</code>\n"
-                + "are a <code>rdfs:Datatype</code>";
+        String d = "The empty graph entails that xsd:integer and xsd:string\n"
+                + "are a rdfs:Datatype";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -594,9 +603,9 @@ public class WebOnt {
                 + "    <rdf:Description rdf:about=\"premises001#subject1\"><owl:sameAs rdf:resource=\"premises001#subject2\" /></rdf:Description></rdf:RDF>";
         String id = "WebOnt_InverseFunctionalProperty_001";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "If <code>prop</code> belongs to <code>owl:InverseFunctionalProperty</code>,\n"
-                + "and <code>object</code> denotes a resource\n"
-                + "which is the object of two <code>prop</code> triples, then the <code>subject</code>s\n"
+        String d = "If prop belongs to owl:InverseFunctionalProperty,\n"
+                + "and object denotes a resource\n"
+                + "which is the object of two prop triples, then the subjects\n"
                 + "of these triples have the same denotation.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
@@ -611,7 +620,7 @@ public class WebOnt {
         String conclusion = "";
         String id = "WebOnt_Nothing_001";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        String d = "The triple asserts something of type <code>owl:Nothing</code>, however\n"
+        String d = "The triple asserts something of type owl:Nothing, however\n"
                 + "that is the empty class.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
@@ -641,7 +650,7 @@ public class WebOnt {
         String id = "WebOnt_Ontology_001";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "This is a variation of <a xmlns=\"http://www.w3.org/1999/xhtml\" href=\"#equivalentClass-001\">equivalentClass-001</a>,\n"
-                + "showing the use of <code>owl:Ontology</code> triples in the premises and conclusions.";
+                + "showing the use of owl:Ontology triples in the premises and conclusions.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -751,7 +760,7 @@ public class WebOnt {
                 + "     <first:equalityOnA rdf:resource=\"premises002#a\"/></owl:Thing></rdf:RDF>";
         String id = "WebOnt_SymmetricProperty_002";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "Test illustrating extensional semantics of <code>owl:SymmetricProperty</code>.";
+        String d = "Test illustrating extensional semantics of owl:SymmetricProperty.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -831,7 +840,7 @@ public class WebOnt {
                 + "</rdf:RDF>";
         String id = "WebOnt_TransitiveProperty_002";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "Test illustrating extensional semantics of <code>owl:TransitiveProperty</code>.";
+        String d = "Test illustrating extensional semantics of owl:TransitiveProperty.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -845,7 +854,7 @@ public class WebOnt {
         String conclusion = "";
         String id = "WebOnt_backwardCompatibleWith_002";
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
-        String d = "In OWL Lite and DL the subject and object of a triple with predicate <code>owl:backwardCompatibleWith</code> must both be explicitly typed as <code>owl:Ontology</code>.  In OWL 2, this RDF graph parses to a single ontology with URI http://www.example.org/ and an annotation assertion between a blank node and that URI.";
+        String d = "In OWL Lite and DL the subject and object of a triple with predicate owl:backwardCompatibleWith must both be explicitly typed as owl:Ontology.  In OWL 2, this RDF graph parses to a single ontology with URI http://www.example.org/ and an annotation assertion between a blank node and that URI.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -868,7 +877,7 @@ public class WebOnt {
                 + "    <owl:ObjectProperty rdf:about=\"premises001#p\"/></rdf:RDF>";
         String id = "WebOnt_cardinality_001";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "An <code>owl:cardinality</code> constraint is simply shorthand for a pair of <code>owl:minCardinality</code> and <code>owl:maxCardinality</code> constraints.";
+        String d = "An owl:cardinality constraint is simply shorthand for a pair of owl:minCardinality and owl:maxCardinality constraints.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -891,7 +900,7 @@ public class WebOnt {
                 + "    <owl:ObjectProperty rdf:ID=\"p\"/>\n" + "</rdf:RDF>";
         String id = "WebOnt_cardinality_002";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "An <code>owl:cardinality</code> constraint is simply shorthand for a pair of <code>owl:minCardinality</code> and <code>owl:maxCardinality</code> constraints.";
+        String d = "An owl:cardinality constraint is simply shorthand for a pair of owl:minCardinality and owl:maxCardinality constraints.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -914,7 +923,7 @@ public class WebOnt {
                 + "    <owl:ObjectProperty rdf:about=\"premises003#p\"/></rdf:RDF>";
         String id = "WebOnt_cardinality_003";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "An <code>owl:cardinality</code> constraint is simply shorthand for a pair of <code>owl:minCardinality</code> and <code>owl:maxCardinality</code> constraints.";
+        String d = "An owl:cardinality constraint is simply shorthand for a pair of owl:minCardinality and owl:maxCardinality constraints.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -937,7 +946,7 @@ public class WebOnt {
                 + "     <owl:ObjectProperty rdf:ID=\"p\"/>\n" + "</rdf:RDF>";
         String id = "WebOnt_cardinality_004";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "An <code>owl:cardinality</code> constraint is simply shorthand for a pair of <code>owl:minCardinality</code> and <code>owl:maxCardinality</code> constraints.";
+        String d = "An owl:cardinality constraint is simply shorthand for a pair of owl:minCardinality and owl:maxCardinality constraints.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -5705,7 +5714,7 @@ public class WebOnt {
                 + "    <rdf:Description rdf:about=\"premises001#b\"><owl:differentFrom rdf:resource=\"premises001#a\"/></rdf:Description></rdf:RDF>";
         String id = "WebOnt_differentFrom_001";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "<code>differentFrom</code> is a <code>SymmetricProperty</code>.";
+        String d = "differentFrom is a SymmetricProperty.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -6081,7 +6090,7 @@ public class WebOnt {
                 + "   <owl:ObjectProperty rdf:about=\"premises001#hasHead\"/></rdf:RDF>";
         String id = "WebOnt_equivalentProperty_001";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "<code>hasLeader</code> may be stated to be the <code>owl:equivalentProperty</code> of <code>hasHead</code>.";
+        String d = "hasLeader may be stated to be the owl:equivalentProperty of hasHead.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -6100,7 +6109,7 @@ public class WebOnt {
                 + "   <owl:ObjectProperty rdf:about=\"premises002#hasLeader\"><rdfs:subPropertyOf rdf:resource=\"premises002#hasHead\"/></owl:ObjectProperty></rdf:RDF>";
         String id = "WebOnt_equivalentProperty_002";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "A reasoner can also deduce that <code>hasLeader</code> is a <code>subProperty</code> of <code>hasHead</code> and <code>hasHead</code> is a <code>subProperty</code> of <code>hasLeader</code>.";
+        String d = "A reasoner can also deduce that hasLeader is a subProperty of hasHead and hasHead is a subProperty of hasLeader.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -6145,7 +6154,7 @@ public class WebOnt {
                 + "   <owl:ObjectProperty rdf:about=\"premises004#p\"><owl:equivalentProperty><owl:ObjectProperty rdf:about=\"premises004#q\"/></owl:equivalentProperty></owl:ObjectProperty></rdf:RDF>";
         String id = "WebOnt_equivalentProperty_004";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "If <code>p</code> and <code>q</code> have the same property extension then <code>p</code> <code>equivalentProperty</code> <code>q</code>.";
+        String d = "If p and q have the same property extension then p equivalentProperty q.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -6261,7 +6270,7 @@ public class WebOnt {
         String conclusion = "";
         String id = "WebOnt_miscellaneous_303";
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
-        String d = "<code>dc:creator</code> may be declared as an annotation property.";
+        String d = "dc:creator may be declared as an annotation property.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -6276,7 +6285,7 @@ public class WebOnt {
         String conclusion = "";
         String id = "WebOnt_oneOf_001";
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
-        String d = "<code>oneOf</code> <em>does not</em> indicate that the named\n"
+        String d = "oneOf <em>does not</em> indicate that the named\n"
                 + "individuals are distinct. Thus a consistent interpretation\n"
                 + "of this file is when all the individual names denote the\n"
                 + "same individual.";

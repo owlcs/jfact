@@ -164,7 +164,7 @@ public class WebOnt_allValuesFrom_001 {
                 ")";
         String id = "WebOnt_allValuesFrom_002";
         TestClasses tc = TestClasses.valueOf("NEGATIVE_IMPL");
-        String d = "Another simple example; contrast with <code>owl:someValuesFrom</code>.";
+        String d = "Another simple example; contrast with owl:someValuesFrom.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -188,7 +188,7 @@ public class WebOnt_allValuesFrom_001 {
                 + "</rdf:RDF>";
         String id = "WebOnt_I4_6_004";
         TestClasses tc = TestClasses.valueOf("NEGATIVE_IMPL");
-        String d = "<code>owl:sameAs</code> is stronger than <code>owl:equivalentClass</code>.";
+        String d = "owl:sameAs is stronger than owl:equivalentClass.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -411,7 +411,7 @@ public class WebOnt_allValuesFrom_001 {
                 + "\n" + "</rdf:RDF>";
         String id = "WebOnt_I5_8_006";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "All <code>xsd:byte</code>\n" + "are <code>xsd:short</code>.";
+        String d = "All xsd:byte\n" + "are xsd:short.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();

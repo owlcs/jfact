@@ -11,7 +11,17 @@ import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.*;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 
@@ -177,9 +187,8 @@ public class Broken {
                 + "\n" + "</rdf:RDF>";
         String id = "WebOnt_I5_8_009";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "0 is the only <code>xsd:nonNegativeInteger</code> which is\n"
-                + "also an <code>xsd:nonPositiveInteger</code>. 0 is an\n"
-                + "<code>xsd:short</code>.";
+        String d = "0 is the only xsd:nonNegativeInteger which is\n"
+                + "also an xsd:nonPositiveInteger. 0 is an\n" + "xsd:short.";
         // XXX while it is true, I don't see why the zero should be a short
         // instead of a oneof from int or integer or any of the types in the
         // middle.
@@ -202,8 +211,8 @@ public class Broken {
                 + "DataPropertyAssertion(<urn:t#p> <urn:t#john> \"0\"^^xsd:int)\n)";
         String id = "WebOnt_I5_8_010";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "0 is the only <code>xsd:nonNegativeInteger</code> which is\n"
-                + "also an <code>xsd:nonPositiveInteger</code>.";
+        String d = "0 is the only xsd:nonNegativeInteger which is\n"
+                + "also an xsd:nonPositiveInteger.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         // r.getConfiguration().setLoggingActive(true);
