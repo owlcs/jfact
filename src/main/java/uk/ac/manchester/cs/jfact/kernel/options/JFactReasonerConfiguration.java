@@ -391,7 +391,6 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * @param source
      *            the source */
     public JFactReasonerConfiguration(OWLReasonerConfiguration source) {
-        this();
         progressMonitor = source.getProgressMonitor();
         freshEntityPolicy = source.getFreshEntityPolicy();
         individualNodeSetPolicy = source.getIndividualNodeSetPolicy();
@@ -403,11 +402,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * @param source
      *            the source */
     public JFactReasonerConfiguration(JFactReasonerConfiguration source) {
-        this();
-        progressMonitor = source.getProgressMonitor();
-        freshEntityPolicy = source.getFreshEntityPolicy();
-        individualNodeSetPolicy = source.getIndividualNodeSetPolicy();
-        timeOut = source.getTimeOut();
+        this((OWLReasonerConfiguration) source);
         alwaysPreferEquals = source.alwaysPreferEquals;
         DEBUG_SAVE_RESTORE = source.DEBUG_SAVE_RESTORE;
         dumpQuery = source.dumpQuery;
