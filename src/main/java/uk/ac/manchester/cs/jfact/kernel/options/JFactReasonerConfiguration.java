@@ -391,6 +391,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * @param source
      *            the source */
     public JFactReasonerConfiguration(OWLReasonerConfiguration source) {
+        this();
         progressMonitor = source.getProgressMonitor();
         freshEntityPolicy = source.getFreshEntityPolicy();
         individualNodeSetPolicy = source.getIndividualNodeSetPolicy();
