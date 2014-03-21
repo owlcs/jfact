@@ -17,15 +17,18 @@ import conformance.PortedFrom;
 
 /** data negation */
 @PortedFrom(file = "tDLExpression.h", name = "TDLDataNot")
-public class DataNot implements DataExpression, DataExpressionArg<DataExpression>,
-        Serializable {
+public class DataNot implements DataExpression,
+        DataExpressionArg<DataExpression>, Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** data expression argument */
     @PortedFrom(file = "tDLExpression.h", name = "Expr")
     protected final DataExpression Expr;
 
-    /** @param E
-     *            E */
+    /**
+     * @param E
+     *        E
+     */
     public DataNot(DataExpression E) {
         Expr = E;
     }

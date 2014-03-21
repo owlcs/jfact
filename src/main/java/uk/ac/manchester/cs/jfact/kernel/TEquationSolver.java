@@ -20,6 +20,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TEquationSolver")
 class TEquationSolver implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "LeftPart")
@@ -35,7 +36,8 @@ class TEquationSolver implements Serializable {
             TExpressionMarker expressionMarker) {
         this.conjunctiveQueryFolding = conjunctiveQueryFolding;
         LeftPart = leftPart;
-        RightPart = this.conjunctiveQueryFolding.getpEM().concept(propositionalVariable);
+        RightPart = this.conjunctiveQueryFolding.getpEM().concept(
+                propositionalVariable);
         ExpressionMarker = expressionMarker;
     }
 
@@ -44,11 +46,12 @@ class TEquationSolver implements Serializable {
         while (!conjunctiveQueryFolding.isNominal(LeftPart)) {
             if (LeftPart instanceof ConceptObjectExists) {
                 ConceptObjectExists leftDiamond = (ConceptObjectExists) LeftPart;
-                ObjectRoleInverse invRole = (ObjectRoleInverse) leftDiamond.getOR();
+                ObjectRoleInverse invRole = (ObjectRoleInverse) leftDiamond
+                        .getOR();
                 ObjectRoleExpression role = invRole.getOR();
                 ConceptExpression newLeftPart = leftDiamond.getConcept();
-                ConceptExpression newRightPart = conjunctiveQueryFolding.getpEM().forall(
-                        role, RightPart);
+                ConceptExpression newRightPart = conjunctiveQueryFolding
+                        .getpEM().forall(role, RightPart);
                 LeftPart = newLeftPart;
                 RightPart = newRightPart;
             } else if (LeftPart instanceof ConceptAnd) {
@@ -67,7 +70,8 @@ class TEquationSolver implements Serializable {
                     newRightPart = RightPart;
                 } else {
                     newRightPart = conjunctiveQueryFolding.getpEM().or(
-                            conjunctiveQueryFolding.getpEM().not(arg2), RightPart);
+                            conjunctiveQueryFolding.getpEM().not(arg2),
+                            RightPart);
                 }
                 LeftPart = newLeftPart;
                 RightPart = newRightPart;

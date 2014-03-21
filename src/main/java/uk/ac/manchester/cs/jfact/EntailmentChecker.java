@@ -58,19 +58,24 @@ import uk.ac.manchester.cs.jfact.kernel.ReasoningKernel;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 
 /** entailment checker */
-public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>, Serializable {
+public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>,
+        Serializable {
+
     private static final long serialVersionUID = 11000L;
     private final ReasoningKernel kernel;
     private final TranslationMachinery tr;
     private final OWLDataFactory df;
 
-    /** @param k
-     *            k
+    /**
+     * @param k
+     *        k
      * @param df
-     *            df
+     *        df
      * @param tr
-     *            tr */
-    public EntailmentChecker(ReasoningKernel k, OWLDataFactory df, TranslationMachinery tr) {
+     *        tr
+     */
+    public EntailmentChecker(ReasoningKernel k, OWLDataFactory df,
+            TranslationMachinery tr) {
         kernel = k;
         this.tr = tr;
         this.df = df;
@@ -106,7 +111,8 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>, Serializab
         Set<OWLClassExpression> classExpressions = axiom.getClassExpressions();
         if (classExpressions.size() == 2) {
             Iterator<OWLClassExpression> it = classExpressions.iterator();
-            return kernel.isDisjoint(tr.pointer(it.next()), tr.pointer(it.next()));
+            return kernel.isDisjoint(tr.pointer(it.next()),
+                    tr.pointer(it.next()));
         } else {
             for (OWLAxiom ax : axiom.asOWLSubClassOfAxioms()) {
                 if (!ax.accept(this)) {
@@ -159,7 +165,8 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>, Serializab
                 axiom.getProperties());
         for (int i = 0; i < l.size() - 1; i++) {
             for (int j = i + 1; j < l.size(); j++) {
-                if (!kernel.isDisjointRoles(tr.pointer(l.get(i)), tr.pointer(l.get(i)))) {
+                if (!kernel.isDisjointRoles(tr.pointer(l.get(i)),
+                        tr.pointer(l.get(i)))) {
                     return Boolean.FALSE;
                 }
             }
@@ -173,7 +180,8 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>, Serializab
                 axiom.getProperties());
         for (int i = 0; i < l.size() - 1; i++) {
             for (int j = i + 1; j < l.size(); j++) {
-                if (!kernel.isDisjointRoles(tr.pointer(l.get(i)), tr.pointer(l.get(i)))) {
+                if (!kernel.isDisjointRoles(tr.pointer(l.get(i)),
+                        tr.pointer(l.get(i)))) {
                     return Boolean.FALSE;
                 }
             }
@@ -251,10 +259,12 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>, Serializab
 
     @Override
     public Boolean visit(OWLEquivalentClassesAxiom axiom) {
-        Set<OWLClassExpression> classExpressionSet = axiom.getClassExpressions();
+        Set<OWLClassExpression> classExpressionSet = axiom
+                .getClassExpressions();
         if (classExpressionSet.size() == 2) {
             Iterator<OWLClassExpression> it = classExpressionSet.iterator();
-            return kernel.isEquivalent(tr.pointer(it.next()), tr.pointer(it.next()));
+            return kernel.isEquivalent(tr.pointer(it.next()),
+                    tr.pointer(it.next()));
         } else {
             for (OWLAxiom ax : axiom.asOWLSubClassOfAxioms()) {
                 if (!ax.accept(this)) {

@@ -14,6 +14,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "tRareSaveStack.h", name = "TRareSaveStack")
 class SaveStackRare implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** heap of saved objects */
     private final LinkedList<Restorer> base = new LinkedList<Restorer>();
@@ -29,23 +30,28 @@ class SaveStackRare implements Serializable {
         ++curLevel;
     }
 
-    /** add a new object to the stack
+    /**
+     * add a new object to the stack
      * 
      * @param p
-     *            p */
+     *        p
+     */
     public void push(Restorer p) {
         p.setRaresavestackLevel(curLevel);
         base.addLast(p);
     }
 
-    /** get all object from the top of the stack with levels >= LEVEL
+    /**
+     * get all object from the top of the stack with levels >= LEVEL
      * 
      * @param level
-     *            level */
+     *        level
+     */
     @PortedFrom(file = "dlCompletionGraph.h", name = "restore")
     public void restore(int level) {
         curLevel = level;
-        while (!base.isEmpty() && base.getLast().getRaresavestackLevel() > level) {
+        while (!base.isEmpty()
+                && base.getLast().getRaresavestackLevel() > level) {
             // need to restore: restore last element, remove it from stack
             base.getLast().restore();
             base.removeLast();

@@ -17,19 +17,25 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 import conformance.PortedFrom;
 
-/** object nominal
+/**
+ * object nominal
  * 
  * @param <I>
- *            type */
+ *        type
+ */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptOneOf")
-public class ConceptOneOf<I extends IndividualExpression> extends NAryExpressionImpl<I>
-        implements NAryExpression<I>, ConceptExpression, Serializable {
+public class ConceptOneOf<I extends IndividualExpression> extends
+        NAryExpressionImpl<I> implements NAryExpression<I>, ConceptExpression,
+        Serializable {
+
     private static final long serialVersionUID = 11000L;
 
-    /** create one-of from individuals in the given array
+    /**
+     * create one-of from individuals in the given array
      * 
      * @param v
-     *            v */
+     *        v
+     */
     public ConceptOneOf(List<I> v) {
         add(v);
     }

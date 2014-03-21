@@ -9,30 +9,37 @@ import java.util.HashMap;
 
 import conformance.PortedFrom;
 
-/** name set
+/**
+ * name set
  * 
  * @param <T>
- *            type
+ *        type
  * @param <K>
- *            key */
+ *        key
+ */
 @PortedFrom(file = "tNameSet.h", name = "TNameSet")
 public class NameSet<T, K> extends HashMap<K, T> {
+
     private static final long serialVersionUID = 11000L;
     /** creator of new name */
     @PortedFrom(file = "tNameSet.h", name = "Creator")
     private final NameCreator<T, K> creator;
 
-    /** @param p
-     *            p */
+    /**
+     * @param p
+     *        p
+     */
     public NameSet(NameCreator<T, K> p) {
         creator = p;
     }
 
-    /** unconditionally add new element with name ID to the set;
+    /**
+     * unconditionally add new element with name ID to the set;
      * 
      * @param id
-     *            id
-     * @return new element */
+     *        id
+     * @return new element
+     */
     @PortedFrom(file = "tNameSet.h", name = "add")
     public T add(K id) {
         T pne = creator.makeEntry(id);
@@ -40,11 +47,13 @@ public class NameSet<T, K> extends HashMap<K, T> {
         return pne;
     }
 
-    /** Insert id to a nameset (if necessary);
+    /**
+     * Insert id to a nameset (if necessary);
      * 
      * @param id
-     *            id
-     * @return pointer to id structure created by external creator */
+     *        id
+     * @return pointer to id structure created by external creator
+     */
     @PortedFrom(file = "tNameSet.h", name = "insert")
     public T insert(K id) {
         T pne = get(id);

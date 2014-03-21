@@ -17,16 +17,21 @@ public enum StatIndex {
     Gener,
     /** Freq */
     Freq;
-    /** @param pos
-     *            positive or negative
-     * @return index for stat */
+
+    /**
+     * @param pos
+     *        positive or negative
+     * @return index for stat
+     */
     public int getIndex(boolean pos) {
         return ordinal() * 2 + (pos ? 0 : 1);
     }
 
-    /** @param c
-     *            stat
-     * @return index for chosen stat */
+    /**
+     * @param c
+     *        stat
+     * @return index for chosen stat
+     */
     public static int choose(char c) {
         switch (c) {
             case 'S':
@@ -42,22 +47,24 @@ public enum StatIndex {
         }
     }
 
-    /** add-up all stat values at once by explicit values
+    /**
+     * add-up all stat values at once by explicit values
      * 
      * @param d
-     *            d
+     *        d
      * @param s
-     *            s
+     *        s
      * @param b
-     *            b
+     *        b
      * @param g
-     *            g
+     *        g
      * @param pos
-     *            pos
+     *        pos
      * @param stat
-     *            stat */
-    public static void updateStatValues(int d, int s, int b, int g, boolean pos,
-            int[] stat) {
+     *        stat
+     */
+    public static void updateStatValues(int d, int s, int b, int g,
+            boolean pos, int[] stat) {
         stat[Size.getIndex(pos)] += s;
         stat[Branch.getIndex(pos)] += b;
         stat[Gener.getIndex(pos)] += g;
@@ -66,83 +73,97 @@ public enum StatIndex {
         }
     }
 
-    /** add-up all values at once by a given vertex
+    /**
+     * add-up all values at once by a given vertex
      * 
      * @param v
-     *            v
+     *        v
      * @param posV
-     *            posV
+     *        posV
      * @param pos
-     *            pos
+     *        pos
      * @param stat
-     *            stat */
-    public static void
-            updateStatValues(DLVertex v, boolean posV, boolean pos, int[] stat) {
+     *        stat
+     */
+    public static void updateStatValues(DLVertex v, boolean posV, boolean pos,
+            int[] stat) {
         updateStatValues(getDepth(posV, v.stat), getSize(posV, v.stat),
                 getBranch(posV, v.stat), getGener(posV, v.stat), pos, stat);
     }
 
-    /** increment frequency value
+    /**
+     * increment frequency value
      * 
      * @param pos
-     *            pos
+     *        pos
      * @param stat
-     *            stat */
+     *        stat
+     */
     public static void incFreqValue(boolean pos, int[] stat) {
         stat[Freq.getIndex(pos)] += 1;
     }
 
-    /** general access to a stat value by index
+    /**
+     * general access to a stat value by index
      * 
      * @param pos
-     *            pos
+     *        pos
      * @param stat
-     *            stat
-     * @return depth */
+     *        stat
+     * @return depth
+     */
     public static int getDepth(boolean pos, int[] stat) {
         return stat[Depth.getIndex(pos)];
     }
 
-    /** general access to a stat value by index
+    /**
+     * general access to a stat value by index
      * 
      * @param pos
-     *            pos
+     *        pos
      * @param stat
-     *            stat
-     * @return size */
+     *        stat
+     * @return size
+     */
     protected static int getSize(boolean pos, int[] stat) {
         return stat[Size.getIndex(pos)];
     }
 
-    /** general access to a stat value by index
+    /**
+     * general access to a stat value by index
      * 
      * @param pos
-     *            pos
+     *        pos
      * @param stat
-     *            stat
-     * @return branch */
+     *        stat
+     * @return branch
+     */
     protected static int getBranch(boolean pos, int[] stat) {
         return stat[Branch.getIndex(pos)];
     }
 
-    /** general access to a stat value by index
+    /**
+     * general access to a stat value by index
      * 
      * @param pos
-     *            pos
+     *        pos
      * @param stat
-     *            stat
-     * @return gener */
+     *        stat
+     * @return gener
+     */
     protected static int getGener(boolean pos, int[] stat) {
         return stat[Gener.getIndex(pos)];
     }
 
-    /** general access to a stat value by index
+    /**
+     * general access to a stat value by index
      * 
      * @param pos
-     *            pos
+     *        pos
      * @param stat
-     *            stat
-     * @return freq */
+     *        stat
+     * @return freq
+     */
     protected static int getFreq(boolean pos, int[] stat) {
         return stat[Freq.getIndex(pos)];
     }

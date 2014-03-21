@@ -14,11 +14,14 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
 /** stats. */
 public class Stats implements Serializable {
+
     private static final long serialVersionUID = 11000L;
 
-    /** @param list
-     *            the list
-     * @return the accumulated statistic */
+    /**
+     * @param list
+     *        the list
+     * @return the accumulated statistic
+     */
     public AccumulatedStatistic build(List<AccumulatedStatistic> list) {
         AccumulatedStatistic toReturn = new AccumulatedStatistic();
         list.add(toReturn);
@@ -27,6 +30,7 @@ public class Stats implements Serializable {
 
     /** accumulated stats. */
     public static class AccumulatedStatistic implements Serializable {
+
         private static final long serialVersionUID = 11000L;
         /** accumulated statistic. */
         private int total;
@@ -50,14 +54,16 @@ public class Stats implements Serializable {
             local = 0;
         }
 
-        /** @param l
-         *            l
+        /**
+         * @param l
+         *        l
          * @param b
-         *            b
+         *        b
          * @param s1
-         *            s1
+         *        s1
          * @param s2
-         *            s2 */
+         *        s2
+         */
         public void print(LogAdapter l, boolean b, String s1, String s2) {
             l.print(s1);
             if (b) {
@@ -141,16 +147,18 @@ public class Stats implements Serializable {
         }
     }
 
-    /** Log statistic data.
+    /**
+     * Log statistic data.
      * 
      * @param o
-     *            the o
+     *        the o
      * @param needLocal
-     *            the need local
+     *        the need local
      * @param CGraph
-     *            the c graph
+     *        the c graph
      * @param options
-     *            the options */
+     *        the options
+     */
     public void logStatisticData(LogAdapter o, boolean needLocal,
             DlCompletionGraph CGraph, JFactReasonerConfiguration options) {
         if (options.isUSE_REASONING_STATISTICS()) {
@@ -160,7 +168,8 @@ public class Stats implements Serializable {
             nSingletonCalls.print(o, needLocal, "\n           including ",
                     " singleton ones");
             nOrCalls.print(o, needLocal, "\n    OR   operations: ", "");
-            nOrBrCalls.print(o, needLocal, "\n           ", " of which are branching");
+            nOrBrCalls.print(o, needLocal, "\n           ",
+                    " of which are branching");
             nAndCalls.print(o, needLocal, "\n    AND  operations: ", "");
             nSomeCalls.print(o, needLocal, "\n    SOME operations: ", "");
             nAllCalls.print(o, needLocal, "\n    ALL  operations: ", "");
@@ -168,23 +177,28 @@ public class Stats implements Serializable {
             nLeCalls.print(o, needLocal, "\n    LE   operations: ", "");
             nGeCalls.print(o, needLocal, "\n    GE   operations: ", "");
             nUseless.print(o, needLocal, "\n    N/A  operations: ", "");
-            nNNCalls.print(o, needLocal, "\nThere were made ", " NN rule application");
-            nMergeCalls.print(o, needLocal, "\nThere were made ", " merging operations");
+            nNNCalls.print(o, needLocal, "\nThere were made ",
+                    " NN rule application");
+            nMergeCalls.print(o, needLocal, "\nThere were made ",
+                    " merging operations");
             nAutoEmptyLookups.print(o, needLocal, "\nThere were made ",
                     " RA empty transition lookups");
             nAutoTransLookups.print(o, needLocal, "\nThere were made ",
                     " RA applicable transition lookups");
-            nSRuleAdd.print(o, needLocal, "\nThere were made ", " simple rule additions");
-            nSRuleFire.print(o, needLocal, "\n       of which ", " simple rules fired");
+            nSRuleAdd.print(o, needLocal, "\nThere were made ",
+                    " simple rule additions");
+            nSRuleFire.print(o, needLocal, "\n       of which ",
+                    " simple rules fired");
             nStateSaves.print(o, needLocal, "\nThere were made ",
                     " save(s) of global state");
             nStateRestores.print(o, needLocal, "\nThere were made ",
                     " restore(s) of global state");
-            nNodeSaves
-                    .print(o, needLocal, "\nThere were made ", " save(s) of tree state");
+            nNodeSaves.print(o, needLocal, "\nThere were made ",
+                    " save(s) of tree state");
             nNodeRestores.print(o, needLocal, "\nThere were made ",
                     " restore(s) of tree state");
-            nLookups.print(o, needLocal, "\nThere were made ", " concept lookups");
+            nLookups.print(o, needLocal, "\nThere were made ",
+                    " concept lookups");
             if (options.isRKG_USE_FAIRNESS()) {
                 nFairnessViolations.print(o, needLocal, "\nThere were ",
                         " fairness constraints violation");
@@ -223,9 +237,11 @@ public class Stats implements Serializable {
         return nIdCalls;
     }
 
-    /** Gets the n singleton calls.
+    /**
+     * Gets the n singleton calls.
      * 
-     * @return the n singleton calls */
+     * @return the n singleton calls
+     */
     public AccumulatedStatistic getnSingletonCalls() {
         return nSingletonCalls;
     }

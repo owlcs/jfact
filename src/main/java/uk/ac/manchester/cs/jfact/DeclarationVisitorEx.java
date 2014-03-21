@@ -18,20 +18,24 @@ import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDeclaration;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 
 /** declaration translator */
-public class DeclarationVisitorEx implements OWLEntityVisitorEx<AxiomInterface>,
-        Serializable {
+public class DeclarationVisitorEx implements
+        OWLEntityVisitorEx<AxiomInterface>, Serializable {
+
     private static final long serialVersionUID = 11000L;
     private Ontology o;
     private OWLDataFactory df;
     private TranslationMachinery tr;
 
-    /** @param o
-     *            o
+    /**
+     * @param o
+     *        o
      * @param df
-     *            df
+     *        df
      * @param tr
-     *            tr */
-    public DeclarationVisitorEx(Ontology o, OWLDataFactory df, TranslationMachinery tr) {
+     *        tr
+     */
+    public DeclarationVisitorEx(Ontology o, OWLDataFactory df,
+            TranslationMachinery tr) {
         this.o = o;
         this.df = df;
         this.tr = tr;

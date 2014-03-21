@@ -15,102 +15,132 @@ import conformance.PortedFrom;
 /** DLTREE utils */
 @PortedFrom(file = "tAxiom.h", name = "InAx")
 public class InAx implements Serializable {
+
     private static final long serialVersionUID = 11000L;
 
-    /** @return an RW concept from a given [C|I]NAME-rooted DLTree
+    /**
+     * @return an RW concept from a given [C|I]NAME-rooted DLTree
      * @param p
-     *            the tree */
+     *        the tree
+     */
     public static Concept getConcept(DLTree p) {
         return (Concept) p.elem().getNE();
     }
 
-    /** @return true iff P is a TOP
+    /**
+     * @return true iff P is a TOP
      * @param p
-     *            the tree */
+     *        the tree
+     */
     public static boolean isTop(DLTree p) {
         return p.isBOTTOM();
     }
 
-    /** @return true iff P is a BOTTOM
+    /**
+     * @return true iff P is a BOTTOM
      * @param p
-     *            the tree */
+     *        the tree
+     */
     public static boolean isBot(DLTree p) {
         return p.isTOP();
     }
 
-    /** @return true iff P is a positive concept name
+    /**
+     * @return true iff P is a positive concept name
      * @param p
-     *            the tree */
+     *        the tree
+     */
     public static boolean isPosCN(DLTree p) {
         return p.isNOT() && p.getChild().isName();
     }
 
-    /** @return true iff P is a positive non-primitive CN
+    /**
+     * @return true iff P is a positive non-primitive CN
      * @param p
-     *            the tree */
+     *        the tree
+     */
     public static boolean isPosNP(DLTree p) {
         return isPosCN(p) && !getConcept(p.getChild()).isPrimitive();
     }
 
-    /** @return true iff P is a positive primitive CN
+    /**
+     * @return true iff P is a positive primitive CN
      * @param p
-     *            the tree */
+     *        the tree
+     */
     public static boolean isPosPC(DLTree p) {
         return isPosCN(p) && getConcept(p.getChild()).isPrimitive();
     }
 
-    /** @return true iff P is a negative concept name
+    /**
+     * @return true iff P is a negative concept name
      * @param p
-     *            the tree */
+     *        the tree
+     */
     public static boolean isNegCN(DLTree p) {
         return p.isName();
     }
 
-    /** @return true iff P is a negative non-primitive CN
+    /**
+     * @return true iff P is a negative non-primitive CN
      * @param p
-     *            the tree */
+     *        the tree
+     */
     public static boolean isNegNP(DLTree p) {
         return isNegCN(p) && !getConcept(p).isPrimitive();
     }
 
-    /** @return true iff P is a negative primitive CN
+    /**
+     * @return true iff P is a negative primitive CN
      * @param p
-     *            the tree */
+     *        the tree
+     */
     public static boolean isNegPC(DLTree p) {
         return isNegCN(p) && getConcept(p).isPrimitive();
     }
 
-    /** @return check whether P is in the form (and C D)
+    /**
+     * @return check whether P is in the form (and C D)
      * @param p
-     *            the tree */
+     *        the tree
+     */
     public static boolean isAnd(DLTree p) {
         return p.isNOT() && p.getChild().isAND();
     }
 
-    /** @return true iff P is an OR expression
+    /**
+     * @return true iff P is an OR expression
      * @param p
-     *            the tree */
+     *        the tree
+     */
     public static boolean isOr(DLTree p) {
         return p.isAND();
     }
 
-    /** @return true iff P is a general FORALL expression
+    /**
+     * @return true iff P is a general FORALL expression
      * @param p
-     *            the tree */
+     *        the tree
+     */
     public static boolean isForall(DLTree p) {
         return p.isNOT() && p.getChild().token() == Token.FORALL;
     }
 
-    /** @return true iff P is an object FORALL expression
+    /**
+     * @return true iff P is an object FORALL expression
      * @param p
-     *            the tree */
+     *        the tree
+     */
     public static boolean isOForall(DLTree p) {
-        return isForall(p) && !Role.resolveRole(p.getChild().getLeft()).isDataRole();
+        return isForall(p)
+                && !Role.resolveRole(p.getChild().getLeft()).isDataRole();
     }
 
-    /** @return true iff P is a FORALL expression suitable for absorption
+    /**
+     * @return true iff P is a FORALL expression suitable for absorption
      * @param p
-     *            the tree */
+     *        the tree
+     */
     public static boolean isAbsForall(DLTree p) {
         if (!isOForall(p)) {
             return false;
@@ -124,8 +154,10 @@ public class InAx implements Serializable {
 
     private static final Map<String, Integer> created = new HashMap<String, Integer>();
 
-    /** @param s
-     *            s */
+    /**
+     * @param s
+     *        s
+     */
     private static void add(String s) {
         if (created.containsKey(s)) {
             created.put(s, created.get(s) + 1);
@@ -134,9 +166,11 @@ public class InAx implements Serializable {
         }
     }
 
-    /** @param s
-     *            s
-     * @return index for s */
+    /**
+     * @param s
+     *        s
+     * @return index for s
+     */
     private static int get(String s) {
         return created.containsKey(s) ? created.get(s) : 0;
     }

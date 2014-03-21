@@ -17,22 +17,25 @@ import conformance.PortedFrom;
 /** data has value axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomValueOf")
 public class AxiomValueOf extends AxiomIndividual {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "A")
     private final DataRoleExpression dataRoleExpression;
     @PortedFrom(file = "tDLAxiom.h", name = "V")
     private final Literal<?> value;
 
-    /** @param ax
-     *            ax
+    /**
+     * @param ax
+     *        ax
      * @param i
-     *            i
+     *        i
      * @param a
-     *            a
+     *        a
      * @param v
-     *            v */
-    public AxiomValueOf(OWLAxiom ax, IndividualExpression i, DataRoleExpression a,
-            Literal<?> v) {
+     *        v
+     */
+    public AxiomValueOf(OWLAxiom ax, IndividualExpression i,
+            DataRoleExpression a, Literal<?> v) {
         super(ax, i);
         dataRoleExpression = a;
         value = v;

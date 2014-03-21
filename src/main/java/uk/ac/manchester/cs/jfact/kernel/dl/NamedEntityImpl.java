@@ -16,6 +16,7 @@ import conformance.PortedFrom;
 /** named entity base class */
 @PortedFrom(file = "tDLExpression.h", name = "TNamedEntity")
 public abstract class NamedEntityImpl implements NamedEntity, Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** name of the entity */
     protected final IRI name;
@@ -31,8 +32,10 @@ public abstract class NamedEntityImpl implements NamedEntity, Serializable {
         entry = e;
     }
 
-    /** @param name
-     *            name */
+    /**
+     * @param name
+     *        name
+     */
     public NamedEntityImpl(IRI name) {
         this.name = name;
     }

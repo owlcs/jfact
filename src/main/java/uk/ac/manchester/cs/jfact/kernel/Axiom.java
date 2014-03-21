@@ -25,21 +25,26 @@ import conformance.PortedFrom;
 /** inner axiom class */
 @PortedFrom(file = "tAxiom.h", name = "TAxiom")
 public class Axiom implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     private final LogAdapter absorptionLog;
 
-    /** @param l
-     *            absorption log */
+    /**
+     * @param l
+     *        absorption log
+     */
     public Axiom(LogAdapter l) {
         absorptionLog = l;
     }
 
     // NS for different DLTree matchers for trees in axiom
-    /** absorb into negation of a concept;
+    /**
+     * absorb into negation of a concept;
      * 
      * @param KB
-     *            KB
-     * @return true if absorption is performed */
+     *        KB
+     * @return true if absorption is performed
+     */
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoNegConcept")
     public boolean absorbIntoNegConcept(TBox KB) {
         List<DLTree> Cons = new ArrayList<DLTree>();
@@ -49,7 +54,8 @@ public class Axiom implements Serializable {
         for (DLTree p : disjuncts) {
             if (p.token() == NOT && p.getChild().isName()
                     && (Concept = getConcept(p.getChild())).isPrimitive()
-                    && !Concept.isSingleton() && Concept.getDescription() == null) {
+                    && !Concept.isSingleton()
+                    && Concept.getDescription() == null) {
                 SAbsNAttempt();
                 Cons.add(p);
             }
@@ -71,8 +77,8 @@ public class Axiom implements Serializable {
             if (Cons.size() > 1) {
                 absorptionLog.print(" (other options are");
                 for (int j = 1; j < Cons.size(); ++j) {
-                    absorptionLog.print(" ", InAx.getConcept(Cons.get(j).getChild())
-                            .getName());
+                    absorptionLog.print(" ",
+                            InAx.getConcept(Cons.get(j).getChild()).getName());
                 }
                 absorptionLog.print(")");
             }
@@ -91,11 +97,13 @@ public class Axiom implements Serializable {
     @Original
     private TOntologyAtom atom;
 
-    /** create a copy of a given GCI; ignore SKIP entry
+    /**
+     * create a copy of a given GCI; ignore SKIP entry
      * 
      * @param skip
-     *            skip
-     * @return copy */
+     *        skip
+     * @return copy
+     */
     @PortedFrom(file = "tAxiom.h", name = "copy")
     private Axiom copy(DLTree skip) {
         Axiom ret = new Axiom(absorptionLog);
@@ -107,11 +115,13 @@ public class Axiom implements Serializable {
         return ret;
     }
 
-    /** simplify (OR C ...) for a non-primitive C in a given position
+    /**
+     * simplify (OR C ...) for a non-primitive C in a given position
      * 
      * @param pos
-     *            pos
-     * @return simplified axiom */
+     *        pos
+     * @return simplified axiom
+     */
     @PortedFrom(file = "tAxiom.h", name = "simplifyPosNP")
     private Axiom simplifyPosNP(DLTree pos) {
         SAbsRepCN();
@@ -122,11 +132,13 @@ public class Axiom implements Serializable {
         return ret;
     }
 
-    /** simplify (OR ~C ...) for a non-primitive C in a given position
+    /**
+     * simplify (OR ~C ...) for a non-primitive C in a given position
      * 
      * @param pos
-     *            pos
-     * @return simplified axiom */
+     *        pos
+     * @return simplified axiom
+     */
     @PortedFrom(file = "tAxiom.h", name = "simplifyNegNP")
     private Axiom simplifyNegNP(DLTree pos) {
         SAbsRepCN();
@@ -136,15 +148,17 @@ public class Axiom implements Serializable {
         return ret;
     }
 
-    /** split (OR (AND...) ...) in a given position
+    /**
+     * split (OR (AND...) ...) in a given position
      * 
      * @param acc
-     *            acc
+     *        acc
      * @param pos
-     *            pos
+     *        pos
      * @param pAnd
-     *            pAnd
-     * @return split axioms */
+     *        pAnd
+     * @return split axioms
+     */
     @PortedFrom(file = "tAxiom.h", name = "split")
     private List<Axiom> split(List<Axiom> acc, DLTree pos, DLTree pAnd) {
         if (pAnd.isAND()) {
@@ -152,7 +166,8 @@ public class Axiom implements Serializable {
             List<DLTree> children = new ArrayList<DLTree>(pAnd.getChildren());
             acc = this.split(acc, pos, children.remove(0));
             if (!children.isEmpty()) {
-                acc = this.split(acc, pos, DLTreeFactory.createSNFAnd(children));
+                acc = this
+                        .split(acc, pos, DLTreeFactory.createSNFAnd(children));
             }
         } else {
             Axiom ret = copy(pos);
@@ -162,9 +177,11 @@ public class Axiom implements Serializable {
         return acc;
     }
 
-    /** split an axiom;
+    /**
+     * split an axiom;
      * 
-     * @return new axiom and/or NULL */
+     * @return new axiom and/or NULL
+     */
     @PortedFrom(file = "tAxiom.h", name = "split")
     public List<Axiom> split() {
         List<Axiom> acc = new ArrayList<Axiom>();
@@ -173,20 +190,24 @@ public class Axiom implements Serializable {
                 SAbsSplit();
                 absorptionLog.print(" split AND espression ", p.getChild());
                 acc = this.split(acc, p, p.getChildren().iterator().next());
-                /** no need to split more than once: every extra splits would be
+                /**
+                 * no need to split more than once: every extra splits would be
                  * together with unsplitted parts like: (A or B) and (C or D)
                  * would be transform into A and (C or D), B and (C or D), (A or
-                 * B) and C, (A or B) and D so just return here */
+                 * B) and C, (A or B) and D so just return here
+                 */
                 return acc;
             }
         }
         return acc;
     }
 
-    /** add DLTree to an axiom
+    /**
+     * add DLTree to an axiom
      * 
      * @param p
-     *            tree to add */
+     *        tree to add
+     */
     @PortedFrom(file = "tAxiom.h", name = "add")
     public void add(DLTree p) {
         if (InAx.isBot(p)) {
@@ -214,9 +235,11 @@ public class Axiom implements Serializable {
         return b.toString();
     }
 
-    /** replace a defined concept with its description
+    /**
+     * replace a defined concept with its description
      * 
-     * @return rewritten axiom */
+     * @return rewritten axiom
+     */
     @PortedFrom(file = "tAxiom.h", name = "simplifyCN")
     public Axiom simplifyCN() {
         for (DLTree p : disjuncts) {
@@ -229,11 +252,13 @@ public class Axiom implements Serializable {
         return null;
     }
 
-    /** replace a universal restriction with a fresh concept
+    /**
+     * replace a universal restriction with a fresh concept
      * 
      * @param KB
-     *            tbox
-     * @return rewritten axiom */
+     *        tbox
+     * @return rewritten axiom
+     */
     @PortedFrom(file = "tAxiom.h", name = "simplifyForall")
     public Axiom simplifyForall(TBox KB) {
         for (DLTree i : disjuncts) {
@@ -255,12 +280,14 @@ public class Axiom implements Serializable {
         return ret;
     }
 
-    /** create a concept expression corresponding to a given GCI; ignore SKIP
+    /**
+     * create a concept expression corresponding to a given GCI; ignore SKIP
      * entry
      * 
      * @param replaced
-     *            ignored entity
-     * @return rewritten DLTree */
+     *        ignored entity
+     * @return rewritten DLTree
+     */
     @PortedFrom(file = "tAxiom.h", name = "createAnAxiom")
     public DLTree createAnAxiom(DLTree replaced) {
         // XXX check if this is correct
@@ -278,9 +305,11 @@ public class Axiom implements Serializable {
         return DLTreeFactory.createSNFNot(result);
     }
 
-    /** absorb into BOTTOM;
+    /**
+     * absorb into BOTTOM;
      * 
-     * @return true if absorption is performed */
+     * @return true if absorption is performed
+     */
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoBottom")
     public boolean absorbIntoBottom() {
         List<DLTree> Pos = new ArrayList<DLTree>(), Neg = new ArrayList<DLTree>();
@@ -305,7 +334,8 @@ public class Axiom implements Serializable {
             for (DLTree s : Pos) {
                 if (q.equals(s)) {
                     SAbsBApply();
-                    absorptionLog.print(" Absorb into BOTTOM due to (not", q, ") and", s);
+                    absorptionLog.print(" Absorb into BOTTOM due to (not", q,
+                            ") and", s);
                     return true;
                 }
             }
@@ -313,9 +343,11 @@ public class Axiom implements Serializable {
         return false;
     }
 
-    /** @param KB
-     *            KB
-     * @return false if there are no absorptions */
+    /**
+     * @param KB
+     *        KB
+     * @return false if there are no absorptions
+     */
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoConcept")
     public boolean absorbIntoConcept(TBox KB) {
         List<DLTree> Cons = new ArrayList<DLTree>();
@@ -343,7 +375,8 @@ public class Axiom implements Serializable {
             if (Cons.size() > 1) {
                 absorptionLog.print(" (other options are");
                 for (int j = 1; j < Cons.size(); ++j) {
-                    absorptionLog.print(" ", InAx.getConcept(Cons.get(j)).getName());
+                    absorptionLog.print(" ", InAx.getConcept(Cons.get(j))
+                            .getName());
                 }
                 absorptionLog.print(")");
             }
@@ -356,9 +389,11 @@ public class Axiom implements Serializable {
         return true;
     }
 
-    /** @param KB
-     *            KB
-     * @return false if there are no absorptions */
+    /**
+     * @param KB
+     *        KB
+     * @return false if there are no absorptions
+     */
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoDomain")
     public boolean absorbIntoDomain(TBox KB) {
         List<DLTree> Cons = new ArrayList<DLTree>();
@@ -385,12 +420,14 @@ public class Axiom implements Serializable {
             role = Role.resolveRole(Cons.get(0).getChild().getLeft());
         }
         if (KB.getOptions().isAbsorptionLoggingActive()) {
-            absorptionLog.print(" R-Absorb GCI to the domain of role ", role.getName());
+            absorptionLog.print(" R-Absorb GCI to the domain of role ",
+                    role.getName());
             if (Cons.size() > 1) {
                 absorptionLog.print(" (other options are");
                 for (int j = 1; j < Cons.size(); ++j) {
                     absorptionLog.print(" ",
-                            Role.resolveRole(Cons.get(j).getChild().getLeft()).getName());
+                            Role.resolveRole(Cons.get(j).getChild().getLeft())
+                                    .getName());
                 }
                 absorptionLog.print(")");
             }
@@ -399,11 +436,13 @@ public class Axiom implements Serializable {
         return true;
     }
 
-    /** absorb into TOP;
+    /**
+     * absorb into TOP;
      * 
      * @param KB
-     *            KB
-     * @return true if any absorption is performed */
+     *        KB
+     * @return true if any absorption is performed
+     */
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoTop")
     public boolean absorbIntoTop(TBox KB) {
         Concept C = null;
@@ -431,7 +470,8 @@ public class Axiom implements Serializable {
         // make an absorption
         DLTree desc = KB.makeNonPrimitive(C, DLTreeFactory.createTop());
         if (KB.getOptions().isAbsorptionLoggingActive()) {
-            absorptionLog.print("TAxiom.absorbIntoTop() T-Absorb GCI to axiom\n");
+            absorptionLog
+                    .print("TAxiom.absorbIntoTop() T-Absorb GCI to axiom\n");
             if (desc != null) {
                 absorptionLog.print("s *TOP* [=", desc, " and\n");
             }
@@ -469,8 +509,10 @@ public class Axiom implements Serializable {
         return atom;
     }
 
-    /** @param atom
-     *            atom */
+    /**
+     * @param atom
+     *        atom
+     */
     @Original
     public void setAtom(TOntologyAtom atom) {
         this.atom = atom;

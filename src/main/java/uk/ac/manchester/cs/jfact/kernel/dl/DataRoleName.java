@@ -17,12 +17,15 @@ import conformance.PortedFrom;
 
 /** data role name */
 @PortedFrom(file = "tDLExpression.h", name = "TDLDataRoleName")
-public class DataRoleName extends NamedEntityImpl implements DataRoleExpression,
-        NamedEntity, Serializable {
+public class DataRoleName extends NamedEntityImpl implements
+        DataRoleExpression, NamedEntity, Serializable {
+
     private static final long serialVersionUID = 11000L;
 
-    /** @param name
-     *            name */
+    /**
+     * @param name
+     *        name
+     */
     public DataRoleName(IRI name) {
         super(name);
     }

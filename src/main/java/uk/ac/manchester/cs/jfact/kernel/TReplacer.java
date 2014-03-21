@@ -21,6 +21,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TReplacer")
 class TReplacer extends DLExpressionVisitorAdapter {
+
     private static final long serialVersionUID = 11000L;
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "ReplaceResult")
@@ -65,7 +66,8 @@ class TReplacer extends DLExpressionVisitorAdapter {
                 if (p == expr.getArguments().get(0)) {
                     s = ReplaceResult.get(p);
                 } else {
-                    s = conjunctiveQueryFolding.getpEM().and(s, ReplaceResult.get(p));
+                    s = conjunctiveQueryFolding.getpEM().and(s,
+                            ReplaceResult.get(p));
                 }
             }
             ReplaceResult.put(expr, s);
@@ -87,7 +89,8 @@ class TReplacer extends DLExpressionVisitorAdapter {
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "getReplaceResult")
-    public ConceptExpression getReplaceResult(ConceptExpression c) {
+    public
+            ConceptExpression getReplaceResult(ConceptExpression c) {
         return ReplaceResult.get(c);
     }
 }

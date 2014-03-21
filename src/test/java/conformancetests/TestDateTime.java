@@ -27,6 +27,7 @@ import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
 @SuppressWarnings("javadoc")
 public class TestDateTime {
+
     @Test
     public void testEqual() throws OWLOntologyCreationException {
         // try {
@@ -38,8 +39,10 @@ public class TestDateTime {
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLOntology o = m.createOntology();
         OWLDataFactory f = m.getOWLDataFactory();
-        OWLNamedIndividual x = f.getOWLNamedIndividual(IRI.create("urn:test:x"));
-        OWLNamedIndividual y = f.getOWLNamedIndividual(IRI.create("urn:test:y"));
+        OWLNamedIndividual x = f
+                .getOWLNamedIndividual(IRI.create("urn:test:x"));
+        OWLNamedIndividual y = f
+                .getOWLNamedIndividual(IRI.create("urn:test:y"));
         OWLDataProperty p = f.getOWLDataProperty(IRI.create("urn:test:p"));
         OWLLiteral date = f.getOWLLiteral("2008-07-08T20:44:11.656+01:00",
                 OWL2Datatype.XSD_DATE_TIME);
@@ -48,8 +51,9 @@ public class TestDateTime {
         m.addAxiom(o, f.getOWLFunctionalDataPropertyAxiom(p));
         m.addAxiom(o, f.getOWLSameIndividualAxiom(x, y));
         OWLReasoner r = Factory.factory().createReasoner(o);
-        assertTrue("Ontology was supposed to be consistent!\n" + o.getLogicalAxioms(),
-                r.isConsistent());
+        assertTrue(
+                "Ontology was supposed to be consistent!\n"
+                        + o.getLogicalAxioms(), r.isConsistent());
     }
 
     @Test
@@ -57,8 +61,10 @@ public class TestDateTime {
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLOntology o = m.createOntology();
         OWLDataFactory f = m.getOWLDataFactory();
-        OWLNamedIndividual x = f.getOWLNamedIndividual(IRI.create("urn:test:x"));
-        OWLNamedIndividual y = f.getOWLNamedIndividual(IRI.create("urn:test:y"));
+        OWLNamedIndividual x = f
+                .getOWLNamedIndividual(IRI.create("urn:test:x"));
+        OWLNamedIndividual y = f
+                .getOWLNamedIndividual(IRI.create("urn:test:y"));
         OWLDataProperty p = f.getOWLDataProperty(IRI.create("urn:test:p"));
         OWLLiteral date1 = f.getOWLLiteral("2008-07-08T20:44:11.656+01:00",
                 OWL2Datatype.XSD_DATE_TIME);
@@ -69,8 +75,9 @@ public class TestDateTime {
         m.addAxiom(o, f.getOWLFunctionalDataPropertyAxiom(p));
         m.addAxiom(o, f.getOWLSameIndividualAxiom(x, y));
         OWLReasoner r = Factory.factory().createReasoner(o);
-        assertFalse("Ontology was supposed to be inconsistent!\n" + o.getLogicalAxioms(),
-                r.isConsistent());
+        assertFalse(
+                "Ontology was supposed to be inconsistent!\n"
+                        + o.getLogicalAxioms(), r.isConsistent());
     }
 
     @Test
@@ -78,7 +85,8 @@ public class TestDateTime {
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLOntology o = m.createOntology();
         OWLDataFactory f = m.getOWLDataFactory();
-        OWLNamedIndividual x = f.getOWLNamedIndividual(IRI.create("urn:test:x"));
+        OWLNamedIndividual x = f
+                .getOWLNamedIndividual(IRI.create("urn:test:x"));
         OWLClass c = f.getOWLClass(IRI.create("urn:test:c"));
         OWLDataProperty p = f.getOWLDataProperty(IRI.create("urn:test:p"));
         OWLLiteral date1 = f.getOWLLiteral("2008-07-08T20:44:11.656+01:00",
@@ -96,7 +104,9 @@ public class TestDateTime {
         m.addAxiom(o, f.getOWLDataPropertyAssertionAxiom(p, x, date3));
         m.addAxiom(o, f.getOWLFunctionalDataPropertyAxiom(p));
         OWLReasoner r = Factory.factory().createReasoner(o);
-        assertTrue("x was supposed to be an instance of c!\n" + o.getLogicalAxioms(),
+        assertTrue(
+                "x was supposed to be an instance of c!\n"
+                        + o.getLogicalAxioms(),
                 r.isEntailed(f.getOWLClassAssertionAxiom(c, x)));
     }
 
@@ -105,8 +115,10 @@ public class TestDateTime {
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLOntology o = m.createOntology();
         OWLDataFactory f = m.getOWLDataFactory();
-        OWLNamedIndividual x = f.getOWLNamedIndividual(IRI.create("urn:test:x"));
-        OWLNamedIndividual y = f.getOWLNamedIndividual(IRI.create("urn:test:y"));
+        OWLNamedIndividual x = f
+                .getOWLNamedIndividual(IRI.create("urn:test:x"));
+        OWLNamedIndividual y = f
+                .getOWLNamedIndividual(IRI.create("urn:test:y"));
         OWLDataProperty p = f.getOWLDataProperty(IRI.create("urn:test:p"));
         OWLLiteral date = f.getOWLLiteral("2008-07-08",
                 f.getOWLDatatype(XSDVocabulary.DATE.getIRI()));
@@ -115,8 +127,9 @@ public class TestDateTime {
         m.addAxiom(o, f.getOWLFunctionalDataPropertyAxiom(p));
         m.addAxiom(o, f.getOWLSameIndividualAxiom(x, y));
         OWLReasoner r = Factory.factory().createReasoner(o);
-        assertTrue("Ontology was supposed to be consistent!\n" + o.getLogicalAxioms(),
-                r.isConsistent());
+        assertTrue(
+                "Ontology was supposed to be consistent!\n"
+                        + o.getLogicalAxioms(), r.isConsistent());
     }
 
     @Test
@@ -124,8 +137,10 @@ public class TestDateTime {
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLOntology o = m.createOntology();
         OWLDataFactory f = m.getOWLDataFactory();
-        OWLNamedIndividual x = f.getOWLNamedIndividual(IRI.create("urn:test:x"));
-        OWLNamedIndividual y = f.getOWLNamedIndividual(IRI.create("urn:test:y"));
+        OWLNamedIndividual x = f
+                .getOWLNamedIndividual(IRI.create("urn:test:x"));
+        OWLNamedIndividual y = f
+                .getOWLNamedIndividual(IRI.create("urn:test:y"));
         OWLDataProperty p = f.getOWLDataProperty(IRI.create("urn:test:p"));
         OWLLiteral date1 = f.getOWLLiteral("2008-07-08",
                 f.getOWLDatatype(XSDVocabulary.DATE.getIRI()));
@@ -136,8 +151,9 @@ public class TestDateTime {
         m.addAxiom(o, f.getOWLFunctionalDataPropertyAxiom(p));
         m.addAxiom(o, f.getOWLSameIndividualAxiom(x, y));
         OWLReasoner r = Factory.factory().createReasoner(o);
-        assertFalse("Ontology was supposed to be inconsistent!\n" + o.getLogicalAxioms(),
-                r.isConsistent());
+        assertFalse(
+                "Ontology was supposed to be inconsistent!\n"
+                        + o.getLogicalAxioms(), r.isConsistent());
     }
 
     @Test
@@ -145,7 +161,8 @@ public class TestDateTime {
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLOntology o = m.createOntology();
         OWLDataFactory f = m.getOWLDataFactory();
-        OWLNamedIndividual x = f.getOWLNamedIndividual(IRI.create("urn:test:x"));
+        OWLNamedIndividual x = f
+                .getOWLNamedIndividual(IRI.create("urn:test:x"));
         OWLClass c = f.getOWLClass(IRI.create("urn:test:c"));
         OWLDataProperty p = f.getOWLDataProperty(IRI.create("urn:test:p"));
         OWLLiteral date1 = f.getOWLLiteral("2008-07-08",
@@ -163,7 +180,9 @@ public class TestDateTime {
         m.addAxiom(o, f.getOWLDataPropertyAssertionAxiom(p, x, date3));
         m.addAxiom(o, f.getOWLFunctionalDataPropertyAxiom(p));
         OWLReasoner r = Factory.factory().createReasoner(o);
-        assertTrue("x was supposed to be an instance of c!\n" + o.getLogicalAxioms(),
+        assertTrue(
+                "x was supposed to be an instance of c!\n"
+                        + o.getLogicalAxioms(),
                 r.isEntailed(f.getOWLClassAssertionAxiom(c, x)));
     }
 }

@@ -12,6 +12,7 @@ import conformance.PortedFrom;
 /** class for S/R local state */
 @PortedFrom(file = "dlCompletionGraph.h", name = "SaveState")
 public class DLCompletionGraphSaveState implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** number of valid nodes */
     private int nNodes = 0;
@@ -25,8 +26,10 @@ public class DLCompletionGraphSaveState implements Serializable {
         return nNodes;
     }
 
-    /** @param nNodes
-     *            nNodes */
+    /**
+     * @param nNodes
+     *        nNodes
+     */
     public void setnNodes(int nNodes) {
         this.nNodes = nNodes;
     }
@@ -36,8 +39,10 @@ public class DLCompletionGraphSaveState implements Serializable {
         return sNodes;
     }
 
-    /** @param sNodes
-     *            sNodes */
+    /**
+     * @param sNodes
+     *        sNodes
+     */
     public void setsNodes(int sNodes) {
         this.sNodes = sNodes;
     }
@@ -47,8 +52,10 @@ public class DLCompletionGraphSaveState implements Serializable {
         return nEdges;
     }
 
-    /** @param nEdges
-     *            nEdges */
+    /**
+     * @param nEdges
+     *        nEdges
+     */
     public void setnEdges(int nEdges) {
         this.nEdges = nEdges;
     }

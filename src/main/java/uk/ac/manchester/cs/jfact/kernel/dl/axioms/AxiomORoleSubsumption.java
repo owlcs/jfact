@@ -16,18 +16,21 @@ import conformance.PortedFrom;
 /** object role subsumption */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomORoleSubsumption")
 public class AxiomORoleSubsumption extends AxiomSingleORole {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "SubRole")
     private final ObjectRoleComplexExpression complexRole;
 
-    /** @param ax
-     *            ax
+    /**
+     * @param ax
+     *        ax
      * @param subRole
-     *            subRole
+     *        subRole
      * @param supRole
-     *            supRole */
-    public AxiomORoleSubsumption(OWLAxiom ax, ObjectRoleComplexExpression subRole,
-            ObjectRoleExpression supRole) {
+     *        supRole
+     */
+    public AxiomORoleSubsumption(OWLAxiom ax,
+            ObjectRoleComplexExpression subRole, ObjectRoleExpression supRole) {
         super(ax, supRole);
         complexRole = subRole;
     }

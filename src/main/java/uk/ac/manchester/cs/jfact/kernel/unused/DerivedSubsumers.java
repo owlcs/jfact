@@ -13,17 +13,21 @@ import uk.ac.manchester.cs.jfact.kernel.KnownSubsumers;
 
 /** all the derived subsumers of a class (came from the model) */
 public class DerivedSubsumers extends KnownSubsumers {
+
     private static final long serialVersionUID = 11000L;
     /** set of sure- and possible subsumers */
     protected final List<ClassifiableEntry> Sure, Possible;
 
-    /** c'tor: copy given sets
+    /**
+     * c'tor: copy given sets
      * 
      * @param sure
-     *            sure
+     *        sure
      * @param possible
-     *            possible */
-    public DerivedSubsumers(List<ClassifiableEntry> sure, List<ClassifiableEntry> possible) {
+     *        possible
+     */
+    public DerivedSubsumers(List<ClassifiableEntry> sure,
+            List<ClassifiableEntry> possible) {
         Sure = new ArrayList<ClassifiableEntry>(sure);
         Possible = new ArrayList<ClassifiableEntry>(possible);
     }

@@ -14,15 +14,18 @@ import conformance.PortedFrom;
 /** model cache const */
 @PortedFrom(file = "modelCacheConst.h", name = "modelCacheConst")
 public class ModelCacheConst extends ModelCacheInterface {
+
     private static final long serialVersionUID = 11000L;
     /** the itself */
     @PortedFrom(file = "modelCacheConst.h", name = "isTop")
     private final boolean isTop;
 
-    /** c'tor: no nominals can be here
+    /**
+     * c'tor: no nominals can be here
      * 
      * @param top
-     *            top */
+     *        top
+     */
     public ModelCacheConst(boolean top) {
         super(false);
         isTop = top;
@@ -42,9 +45,11 @@ public class ModelCacheConst extends ModelCacheInterface {
     }
 
     // mergable part
-    /** check whether two caches can be merged;
+    /**
+     * check whether two caches can be merged;
      * 
-     * @return state of "merged" model */
+     * @return state of "merged" model
+     */
     @Override
     @PortedFrom(file = "modelCacheConst.h", name = "canMerge")
     public ModelCacheState canMerge(ModelCacheInterface p) {
@@ -69,9 +74,11 @@ public class ModelCacheConst extends ModelCacheInterface {
         l.printTemplate(Templates.LOGCACHEENTRY, isTop ? "TOP" : "BOTTOM");
     }
 
-    /** @param bp
-     *            bp
-     * @return const cache by BP; BP should be either bpTOP or bpBOTTOM */
+    /**
+     * @param bp
+     *        bp
+     * @return const cache by BP; BP should be either bpTOP or bpBOTTOM
+     */
     @PortedFrom(file = "modelCacheConst.h", name = "createConstCache")
     public static ModelCacheConst createConstCache(int bp) {
         assert bp == Helper.bpTOP || bp == Helper.bpBOTTOM;

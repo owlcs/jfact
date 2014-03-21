@@ -13,14 +13,17 @@ import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
 /** individual translator */
 public class IndividualTranslator extends
         OWLEntityTranslator<OWLNamedIndividual, IndividualName> {
+
     private static final long serialVersionUID = 11000L;
 
-    /** @param em
-     *            em
+    /**
+     * @param em
+     *        em
      * @param df
-     *            df
+     *        df
      * @param tr
-     *            tr */
+     *        tr
+     */
     public IndividualTranslator(ExpressionManager em, OWLDataFactory df,
             TranslationMachinery tr) {
         super(em, df, tr);

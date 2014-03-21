@@ -12,6 +12,7 @@ import conformance.PortedFrom;
 /** save list */
 @PortedFrom(file = "tSaveList.h", name = "TSaveList")
 public class SaveList extends LinkedList<DLCompletionTreeSaveState> {
+
     private static final long serialVersionUID = 11000L;
 
     @Override
@@ -23,9 +24,11 @@ public class SaveList extends LinkedList<DLCompletionTreeSaveState> {
         return null;
     }
 
-    /** @param level
-     *            level
-     * @return element from stack with given level */
+    /**
+     * @param level
+     *        level
+     * @return element from stack with given level
+     */
     @PortedFrom(file = "tSaveList.h", name = "pop")
     public DLCompletionTreeSaveState pop(int level) {
         DLCompletionTreeSaveState p = isEmpty() ? null : peek();

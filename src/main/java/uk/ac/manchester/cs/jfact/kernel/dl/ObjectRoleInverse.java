@@ -20,13 +20,16 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDLExpression.h", name = "TDLObjectRoleInverse")
 public class ObjectRoleInverse implements ObjectRoleExpression, ObjectRoleArg,
         Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** object role argument */
     @Original
     private final ObjectRoleExpression objectRoleExpression;
 
-    /** @param R
-     *            R */
+    /**
+     * @param R
+     *        R
+     */
     public ObjectRoleInverse(ObjectRoleExpression R) {
         objectRoleExpression = R;
     }

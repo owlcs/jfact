@@ -7,26 +7,33 @@ import java.io.Serializable;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-/** Typed strong reference
+/**
+ * Typed strong reference
  * 
  * @author ignazio
  * @param <E>
- *            type */
+ *        type
+ */
 public class Reference<E> implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     private E e;
 
     /** default constructor */
     public Reference() {}
 
-    /** @param e
-     *            e */
+    /**
+     * @param e
+     *        e
+     */
     public Reference(E e) {
         setReference(e);
     }
 
-    /** @param e
-     *            e */
+    /**
+     * @param e
+     *        e
+     */
     public void setReference(E e) {
         this.e = e;
     }
@@ -58,7 +65,8 @@ public class Reference<E> implements Serializable {
             return true;
         }
         if (arg0 instanceof Reference) {
-            return e != null ? e.equals(((Reference<?>) arg0).getReference()) : false;
+            return e != null ? e.equals(((Reference<?>) arg0).getReference())
+                    : false;
         }
         return false;
     }

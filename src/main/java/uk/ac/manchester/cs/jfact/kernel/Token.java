@@ -47,6 +47,7 @@ public enum Token {
     RNAME("rname"),
     /** name of a data role */
     DNAME("dname");
+
     // FaCT commands
     private final String s;
 
@@ -59,6 +60,7 @@ public enum Token {
         if (s.length() > 0) {
             return s;
         }
-        throw new ReasonerInternalException("token " + toString() + "has no name");
+        throw new ReasonerInternalException("token " + toString()
+                + "has no name");
     }
 }

@@ -14,11 +14,14 @@ import org.semanticweb.owlapi.model.IRI;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import conformance.Original;
 
-/** @author ignazio
+/**
+ * @author ignazio
  * @param <R>
- *            type */
+ *        type
+ */
 @Original
 public interface Datatype<R extends Comparable<R>> extends DataExpression {
+
     /** @return true if this datatype is an expression */
     boolean isExpression();
 
@@ -34,8 +37,10 @@ public interface Datatype<R extends Comparable<R>> extends DataExpression {
     /** @return the cardinality of the value space: finite or countably infinite */
     cardinality getCardinality();
 
-    /** @return the available facets for this datatype. The collection is
-     *         immutable - only specs sanctioned facets allowed */
+    /**
+     * @return the available facets for this datatype. The collection is
+     *         immutable - only specs sanctioned facets allowed
+     */
     Set<Facet> getFacets();
 
     /** @return the known values for a subset of the available facets */
@@ -46,17 +51,21 @@ public interface Datatype<R extends Comparable<R>> extends DataExpression {
     @SuppressWarnings("rawtypes")
     Map<Facet, Comparable> getKnownNonNumericFacetValues();
 
-    /** @param f
-     *            facet
+    /**
+     * @param f
+     *        facet
      * @param <O>
-     *            facet type
+     *        facet type
      * @return known value for f, or null if there is no known value for the
-     *         facet */
+     *         facet
+     */
     <O extends Comparable<O>> O getFacetValue(Facet<O> f);
 
-    /** @param f
-     *            facet
-     * @return numeric value */
+    /**
+     * @param f
+     *        facet
+     * @return numeric value
+     */
     @SuppressWarnings("rawtypes")
     Comparable getNumericFacetValue(Facet f);
 
@@ -66,62 +75,82 @@ public interface Datatype<R extends Comparable<R>> extends DataExpression {
     /** @return the kind of ordering: false, partial or total */
     ordered getOrdered();
 
-    /** @param type
-     *            type
+    /**
+     * @param type
+     *        type
      * @return true if type\s value space and this datatype's value space have
      *         an intersection, e.g., non negative integers and non positive
-     *         integers intersect at 0 */
+     *         integers intersect at 0
+     */
     boolean isCompatible(Datatype<?> type);
 
-    /** @param l
-     *            literal
+    /**
+     * @param l
+     *        literal
      * @return true if l is a literal with compatible datatype and value
-     *         included in this datatype value space */
+     *         included in this datatype value space
+     */
     boolean isCompatible(Literal<?> l);
 
-    /** @param type
-     *            type
+    /**
+     * @param type
+     *        type
      * @return true if the datatype is contradictory, e.g., the two appearing
      *         together in a datatype situation cause a clash. e.g., +{"6"} and
      *         +{"4"} are not compatible and not contradictory, +{"6"} and
-     *         -{"6"} are compatible and contradictory */
+     *         -{"6"} are compatible and contradictory
+     */
     boolean isContradictory(Datatype<?> type);
 
-    /** @param l
-     *            literal
+    /**
+     * @param l
+     *        literal
      * @return false if this literal representation does not represent a value
      *         included in the value space of this datatype; its datatype must
-     *         be this datatype */
+     *         be this datatype
+     */
     boolean isInValueSpace(R l);
 
-    /** @return true if this datatype expression is limited in such a way that
-     *         there are no valid values */
+    /**
+     * @return true if this datatype expression is limited in such a way that
+     *         there are no valid values
+     */
     boolean emptyValueSpace();
 
-    /** @param s
-     *            parses a literal form to a value in the datatype value space;
-     *            for use when building Literals
-     * @return value */
+    /**
+     * @param s
+     *        parses a literal form to a value in the datatype value space; for
+     *        use when building Literals
+     * @return value
+     */
     R parseValue(String s);
 
-    /** @param s
-     *            literal
+    /**
+     * @param s
+     *        literal
      * @return a literal with parseValue(s) as typed value, generic type O equal
      *         to the internal class representing the type, and datatype this
-     *         datatype. */
+     *         datatype.
+     */
     Literal<R> buildLiteral(String s);
 
-    /** @param type
-     *            type
-     * @return true if this datatype has type as an ancestor */
+    /**
+     * @param type
+     *        type
+     * @return true if this datatype has type as an ancestor
+     */
     boolean isSubType(Datatype<?> type);
 
-    /** @return the datatype uri as a string (there does seem to be no need for a
-     *         more complex representation) */
+    /**
+     * @return the datatype uri as a string (there does seem to be no need for a
+     *         more complex representation)
+     */
     IRI getDatatypeIRI();
 
-    /** @return the list of possible values for this datatype which are compatible
-     *         with the listed datatypes. */
+    /**
+     * @return the list of possible values for this datatype which are compatible
+     *         with the listed datatypes.
+     */
     Collection<Literal<R>> listValues();
 
     /** @return true if the datatype is numeric */

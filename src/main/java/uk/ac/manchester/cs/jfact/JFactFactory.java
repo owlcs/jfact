@@ -18,6 +18,7 @@ import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 
 /** JFact factory. */
 public class JFactFactory implements OWLReasonerFactory, Serializable {
+
     private static final long serialVersionUID = 11000L;
 
     @Override
@@ -27,13 +28,14 @@ public class JFactFactory implements OWLReasonerFactory, Serializable {
 
     @Override
     public OWLReasoner createReasoner(OWLOntology ontology) {
-        JFactReasoner toReturn = new JFactReasoner(ontology, new SimpleConfiguration(),
-                BufferingMode.BUFFERING);
+        JFactReasoner toReturn = new JFactReasoner(ontology,
+                new SimpleConfiguration(), BufferingMode.BUFFERING);
         return verify(toReturn);
     }
 
     private OWLReasoner verify(JFactReasoner toReturn) {
-        OWLOntologyManager m = toReturn.getRootOntology().getOWLOntologyManager();
+        OWLOntologyManager m = toReturn.getRootOntology()
+                .getOWLOntologyManager();
         m.addOntologyChangeListener(toReturn);
         // toReturn.kernel.writeReasoningResult(new
         // LeveLogger.LogAdapterStream(), 0);
@@ -42,14 +44,15 @@ public class JFactFactory implements OWLReasonerFactory, Serializable {
 
     @Override
     public OWLReasoner createNonBufferingReasoner(OWLOntology ontology) {
-        JFactReasoner toReturn = new JFactReasoner(ontology, new SimpleConfiguration(),
-                BufferingMode.NON_BUFFERING);
+        JFactReasoner toReturn = new JFactReasoner(ontology,
+                new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
         return verify(toReturn);
     }
 
     @Override
     public OWLReasoner createReasoner(OWLOntology ontology,
-            OWLReasonerConfiguration config) throws IllegalConfigurationException {
+            OWLReasonerConfiguration config)
+            throws IllegalConfigurationException {
         JFactReasoner toReturn = new JFactReasoner(ontology, config,
                 BufferingMode.BUFFERING);
         return verify(toReturn);
@@ -57,7 +60,8 @@ public class JFactFactory implements OWLReasonerFactory, Serializable {
 
     @Override
     public OWLReasoner createNonBufferingReasoner(OWLOntology ontology,
-            OWLReasonerConfiguration config) throws IllegalConfigurationException {
+            OWLReasonerConfiguration config)
+            throws IllegalConfigurationException {
         JFactReasoner toReturn = new JFactReasoner(ontology, config,
                 BufferingMode.NON_BUFFERING);
         return verify(toReturn);

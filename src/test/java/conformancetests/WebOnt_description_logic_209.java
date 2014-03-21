@@ -9,6 +9,7 @@ import org.junit.Test;
 
 @SuppressWarnings("javadoc")
 public class WebOnt_description_logic_209 {
+
     @Test
     public void testWebOnt_description_logic_209() {
         String premise = "<rdf:RDF\n"

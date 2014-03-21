@@ -20,6 +20,7 @@ import conformance.PortedFrom;
 /** class to hold the signature of a module */
 @PortedFrom(file = "tSignature.h", name = "TSignature")
 public class TSignature implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** set to keep all the elements in signature */
     @PortedFrom(file = "tSignature.h", name = "Set")
@@ -34,56 +35,68 @@ public class TSignature implements Serializable {
     /** default constructor */
     public TSignature() {}
 
-    /** @param copy
-     *            copy */
+    /**
+     * @param copy
+     *        copy
+     */
     public TSignature(TSignature copy) {
         set.addAll(copy.set);
         topCLocality = copy.topCLocality;
         topRLocality = copy.topRLocality;
     }
 
-    /** add names to signature
+    /**
+     * add names to signature
      * 
      * @param p
-     *            p */
+     *        p
+     */
     @PortedFrom(file = "tSignature.h", name = "add")
     public void add(NamedEntity p) {
         set.add(p);
     }
 
-    /** remove given element from a signature
+    /**
+     * remove given element from a signature
      * 
      * @param p
-     *            p */
+     *        p
+     */
     @PortedFrom(file = "tSignature.h", name = "remove")
     public void remove(NamedEntity p) {
         set.remove(p);
     }
 
-    /** add another signature to a given one
+    /**
+     * add another signature to a given one
      * 
      * @param Sig
-     *            Sig */
+     *        Sig
+     */
     @PortedFrom(file = "tSignature.h", name = "add")
     public void add(TSignature Sig) {
         set.addAll(Sig.set);
     }
 
-    /** set new locality polarity
+    /**
+     * set new locality polarity
      * 
      * @param top
-     *            top */
+     *        top
+     */
     @PortedFrom(file = "tSignature.h", name = "setLocality")
     public void setLocality(boolean top) {
         this.setLocality(top, top);
     }
 
-    /** set new locality polarity
+    /**
+     * set new locality polarity
      * 
      * @param topC
-     *            topC
+     *        topC
      * @param topR
-     *            topR */
+     *        topR
+     */
     @PortedFrom(file = "tSignature.h", name = "setLocality")
     public void setLocality(boolean topC, boolean topR) {
         topCLocality = topC;
@@ -110,25 +123,31 @@ public class TSignature implements Serializable {
         return set.hashCode();
     }
 
-    /** @param entity
-     *            entity
-     * @return true iff SIGnature does NOT contain given entity */
+    /**
+     * @param entity
+     *        entity
+     * @return true iff SIGnature does NOT contain given entity
+     */
     @PortedFrom(file = "LocalityChecker.h", name = "nc")
     public boolean nc(NamedEntity entity) {
         return !containsNamedEntity(entity);
     }
 
-    /** @param p
-     *            p
-     * @return true iff signature contains given element */
+    /**
+     * @param p
+     *        p
+     * @return true iff signature contains given element
+     */
     @Original
     public boolean containsNamedEntity(NamedEntity p) {
         return set.contains(p);
     }
 
-    /** @param p
-     *            p
-     * @return true iff signature contains given element */
+    /**
+     * @param p
+     *        p
+     * @return true iff signature contains given element
+     */
     @PortedFrom(file = "tSignature.h", name = "contains")
     public boolean contains(Expression p) {
         if (p instanceof NamedEntity) {
@@ -182,9 +201,11 @@ public class TSignature implements Serializable {
         return !topRLocal();
     }
 
-    /** @param s2
-     *            s2
-     * @return true if this and s2 intersect */
+    /**
+     * @param s2
+     *        s2
+     * @return true if this and s2 intersect
+     */
     @Original
     public List<NamedEntity> intersect(TSignature s2) {
         List<NamedEntity> ret = new ArrayList<NamedEntity>();
@@ -194,11 +215,13 @@ public class TSignature implements Serializable {
         return ret;
     }
 
-    /** @param sig
-     *            sig
+    /**
+     * @param sig
+     *        sig
      * @param improper
-     *            improper
-     * @return true if *THIS \subseteq SIG (\subset if IMPROPER = false ) */
+     *        improper
+     * @return true if *THIS \subseteq SIG (\subset if IMPROPER = false )
+     */
     @PortedFrom(file = "tSignature.h", name = "subset")
     public boolean subset(TSignature sig, boolean improper) {
         boolean subset = sig.set.containsAll(set);

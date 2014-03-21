@@ -47,24 +47,29 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tSignatureUpdater.h", name = "TExpressionSignatureUpdater")
 class TExpressionSignatureUpdater extends DLExpressionVisitorAdapter implements
         DLExpressionVisitor, Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** Signature to be filled */
     @PortedFrom(file = "tSignatureUpdater.h", name = "sig")
     private final TSignature sig;
 
-    /** helper for concept arguments
+    /**
+     * helper for concept arguments
      * 
      * @param expr
-     *            expr */
+     *        expr
+     */
     @PortedFrom(file = "tSignatureUpdater.h", name = "vC")
     private void vC(ConceptArg expr) {
         expr.getConcept().accept(this);
     }
 
-    /** helper for individual arguments
+    /**
+     * helper for individual arguments
      * 
      * @param expr
-     *            expr */
+     *        expr
+     */
     @PortedFrom(file = "tSignatureUpdater.h", name = "vI")
     private void vI(IndividualExpression expr) {
         // should no longer be needed: IndividualNames are NamedEntities
@@ -74,37 +79,45 @@ class TExpressionSignatureUpdater extends DLExpressionVisitorAdapter implements
         }
     }
 
-    /** helper for object role arguments
+    /**
+     * helper for object role arguments
      * 
      * @param expr
-     *            expr */
+     *        expr
+     */
     @PortedFrom(file = "tSignatureUpdater.h", name = "vOR")
     private void vOR(ObjectRoleArg expr) {
         expr.getOR().accept(this);
     }
 
-    /** helper for object role arguments
+    /**
+     * helper for object role arguments
      * 
      * @param expr
-     *            expr */
+     *        expr
+     */
     @PortedFrom(file = "tSignatureUpdater.h", name = "vDR")
     private void vDR(DataRoleArg expr) {
         expr.getDataRoleExpression().accept(this);
     }
 
-    /** helper for the named entity
+    /**
+     * helper for the named entity
      * 
      * @param e
-     *            e */
+     *        e
+     */
     @PortedFrom(file = "tSignatureUpdater.h", name = "vE")
     private void vE(NamedEntity e) {
         sig.add(e);
     }
 
-    /** array helper
+    /**
+     * array helper
      * 
      * @param expr
-     *            expr */
+     *        expr
+     */
     @PortedFrom(file = "tSignatureUpdater.h", name = "processArray")
     private void processArray(NAryExpression<? extends Expression> expr) {
         for (Expression p : expr.getArguments()) {

@@ -11,6 +11,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "dumpLisp.h", name = "dumpLisp")
 class DumpLisp extends DumpInterface {
+
     private static final long serialVersionUID = 11000L;
 
     public DumpLisp(LogAdapter oo) {

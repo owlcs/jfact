@@ -23,16 +23,19 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDLExpression.h", name = "TDLObjectRoleProjectionFrom")
 public class ObjectRoleProjectionFrom implements ObjectRoleComplexExpression,
         ObjectRoleArg, ConceptArg, Serializable {
+
     private static final long serialVersionUID = 11000L;
     @Original
     private final ConceptExpression delegate;
     @Original
     private final ObjectRoleExpression roleDelegate;
 
-    /** @param R
-     *            R
+    /**
+     * @param R
+     *        R
      * @param C
-     *            C */
+     *        C
+     */
     public ObjectRoleProjectionFrom(ObjectRoleExpression R, ConceptExpression C) {
         roleDelegate = R;
         delegate = C;

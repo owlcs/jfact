@@ -12,18 +12,23 @@ import conformance.PortedFrom;
 /** expression */
 @PortedFrom(file = "tNAryQueue.h", name = "Expression")
 public interface Expression extends Entity {
-    /** accept method for the visitor pattern
+
+    /**
+     * accept method for the visitor pattern
      * 
      * @param visitor
-     *            visitor */
+     *        visitor
+     */
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     void accept(DLExpressionVisitor visitor);
 
-    /** @param visitor
-     *            visitor
+    /**
+     * @param visitor
+     *        visitor
      * @param <O>
-     *            visitor type
-     * @return visitor value */
+     *        visitor type
+     * @return visitor value
+     */
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     <O> O accept(DLExpressionVisitorEx<O> visitor);
 }

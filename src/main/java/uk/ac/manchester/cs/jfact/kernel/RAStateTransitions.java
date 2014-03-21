@@ -17,6 +17,7 @@ import conformance.PortedFrom;
 /** class to represent transitions from a single state in an automaton */
 @PortedFrom(file = "RAutomaton.h", name = "RAStateTransitions")
 public class RAStateTransitions implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** all transitions */
     @PortedFrom(file = "RAutomaton.h", name = "Base")
@@ -49,10 +50,12 @@ public class RAStateTransitions implements Serializable {
         emptyTransition = false;
     }
 
-    /** add a transition from a given state
+    /**
+     * add a transition from a given state
      * 
      * @param trans
-     *            trans */
+     *        trans
+     */
     @PortedFrom(file = "RAutomaton.h", name = "add")
     public void add(RATransition trans) {
         base.add(trans);
@@ -83,10 +86,12 @@ public class RAStateTransitions implements Serializable {
         return emptyTransition;
     }
 
-    /** print all the transitions starting from the state FROM
+    /**
+     * print all the transitions starting from the state FROM
      * 
      * @param o
-     *            o */
+     *        o
+     */
     @PortedFrom(file = "RAutomaton.h", name = "print")
     public void print(LogAdapter o) {
         for (int i = 0; i < size; i++) {
@@ -94,14 +99,16 @@ public class RAStateTransitions implements Serializable {
         }
     }
 
-    /** set up state transitions: no more additions to the structure
+    /**
+     * set up state transitions: no more additions to the structure
      * 
      * @param state
-     *            state
+     *        state
      * @param nRoles
-     *            nRoles
+     *        nRoles
      * @param data
-     *            data */
+     *        data
+     */
     @PortedFrom(file = "RAutomaton.h", name = "setup")
     public void setup(int state, int nRoles, boolean data) {
         from = state;
@@ -114,12 +121,14 @@ public class RAStateTransitions implements Serializable {
         }
     }
 
-    /** add information from TRANS to existing transition between the same
+    /**
+     * add information from TRANS to existing transition between the same
      * states.
      * 
      * @param trans
-     *            trans
-     * @return false if no such transition found */
+     *        trans
+     * @return false if no such transition found
+     */
     @PortedFrom(file = "RAutomaton.h", name = "addToExisting")
     public boolean addToExisting(RATransition trans) {
         int to = trans.final_state();
@@ -137,15 +146,18 @@ public class RAStateTransitions implements Serializable {
         return false;
     }
 
-    /** @param R
-     *            R
-     * @return true if R is an applicable data role */
+    /**
+     * @param R
+     *        R
+     * @return true if R is an applicable data role
+     */
     @PortedFrom(file = "RAutomaton.h", name = "recognise")
     public boolean recognise(Role R) {
         if (R == null) {
             return false;
         }
-        return R.isDataRole() == dataRole && applicableRoles.get(R.getAbsoluteIndex());
+        return R.isDataRole() == dataRole
+                && applicableRoles.get(R.getAbsoluteIndex());
     }
 
     /** @return true iff there is only one transition */

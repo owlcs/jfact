@@ -47,6 +47,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 
 /** translation stuff */
 public class TranslationMachinery implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     private final AxiomTranslator axiomTranslator;
     private final ClassExpressionTranslator classExpressionTranslator;
@@ -62,30 +63,36 @@ public class TranslationMachinery implements Serializable {
     protected final OWLDataFactory df;
     protected final DatatypeFactory datatypefactory;
 
-    /** @param kernel
-     *            kernel
+    /**
+     * @param kernel
+     *        kernel
      * @param df
-     *            df
+     *        df
      * @param factory
-     *            factory */
+     *        factory
+     */
     public TranslationMachinery(ReasoningKernel kernel, OWLDataFactory df,
             DatatypeFactory factory) {
         this.kernel = kernel;
         datatypefactory = factory;
         em = kernel.getExpressionManager();
         this.df = df;
-        axiomTranslator = new AxiomTranslator(kernel.getOntology(), df, this, em);
+        axiomTranslator = new AxiomTranslator(kernel.getOntology(), df, this,
+                em);
         classExpressionTranslator = new ClassExpressionTranslator(em, df, this);
-        dataRangeTranslator = new DataRangeTranslator(em, df, this, datatypefactory);
+        dataRangeTranslator = new DataRangeTranslator(em, df, this,
+                datatypefactory);
         objectPropertyTranslator = new ObjectPropertyTranslator(em, df, this);
         dataPropertyTranslator = new DataPropertyTranslator(em, df, this);
         individualTranslator = new IndividualTranslator(em, df, this);
         entailmentChecker = new EntailmentChecker(kernel, df, this);
     }
 
-    /** @param signature
-     *            signature
-     * @return expressions */
+    /**
+     * @param signature
+     *        signature
+     * @return expressions
+     */
     public List<Expression> translateExpressions(Set<OWLEntity> signature) {
         List<Expression> list = new ArrayList<Expression>();
         for (OWLEntity entity : signature) {
@@ -99,8 +106,10 @@ public class TranslationMachinery implements Serializable {
         return list;
     }
 
-    /** @param axioms
-     *            axioms */
+    /**
+     * @param axioms
+     *        axioms
+     */
     public void loadAxioms(Collection<OWLAxiom> axioms) {
         for (OWLAxiom axiom : axioms) {
             // TODO check valid axioms, such as those involving topDataProperty
@@ -113,8 +122,10 @@ public class TranslationMachinery implements Serializable {
         }
     }
 
-    /** @param axiom
-     *            axiom */
+    /**
+     * @param axiom
+     *        axiom
+     */
     public void retractAxiom(OWLAxiom axiom) {
         AxiomInterface ptr = axiom2PtrMap.get(axiom);
         if (ptr != null) {
@@ -131,8 +142,8 @@ public class TranslationMachinery implements Serializable {
         return dataRange.accept(dataRangeTranslator);
     }
 
-    protected ObjectRoleExpression
-            pointer(OWLObjectPropertyExpression propertyExpression) {
+    protected ObjectRoleExpression pointer(
+            OWLObjectPropertyExpression propertyExpression) {
         OWLObjectPropertyExpression simp = propertyExpression.getSimplified();
         if (simp.isAnonymous()) {
             OWLObjectInverseOf inv = (OWLObjectInverseOf) simp;
@@ -144,7 +155,8 @@ public class TranslationMachinery implements Serializable {
         }
     }
 
-    protected DataRoleExpression pointer(OWLDataPropertyExpression propertyExpression) {
+    protected DataRoleExpression pointer(
+            OWLDataPropertyExpression propertyExpression) {
         return dataPropertyTranslator.getPointerFromEntity(propertyExpression
                 .asOWLDataProperty());
     }
@@ -192,9 +204,11 @@ public class TranslationMachinery implements Serializable {
         return ns;
     }
 
-    /** @param inds
-     *            inds
-     * @return individual set */
+    /**
+     * @param inds
+     *        inds
+     * @return individual set
+     */
     public List<IndividualExpression> translate(Set<OWLIndividual> inds) {
         List<IndividualExpression> l = new ArrayList<IndividualExpression>();
         for (OWLIndividual ind : inds) {
@@ -233,9 +247,11 @@ public class TranslationMachinery implements Serializable {
         return entailmentChecker;
     }
 
-    /** @param trace
-     *            trace
-     * @return trnslated set */
+    /**
+     * @param trace
+     *        trace
+     * @return trnslated set
+     */
     public Set<OWLAxiom> translateTAxiomSet(Collection<AxiomInterface> trace) {
         Set<OWLAxiom> ret = new HashSet<OWLAxiom>();
         for (AxiomInterface ap : trace) {

@@ -16,22 +16,25 @@ import conformance.PortedFrom;
 /** negated object role assertion */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomRelatedToNot")
 public class AxiomRelatedToNot extends AxiomIndividual {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "J")
     private final IndividualExpression individualExpression;
     @PortedFrom(file = "tDLAxiom.h", name = "R")
     private final ObjectRoleExpression objectRoleExpression;
 
-    /** @param ax
-     *            ax
+    /**
+     * @param ax
+     *        ax
      * @param i
-     *            i
+     *        i
      * @param r
-     *            r
+     *        r
      * @param j
-     *            j */
-    public AxiomRelatedToNot(OWLAxiom ax, IndividualExpression i, ObjectRoleExpression r,
-            IndividualExpression j) {
+     *        j
+     */
+    public AxiomRelatedToNot(OWLAxiom ax, IndividualExpression i,
+            ObjectRoleExpression r, IndividualExpression j) {
         super(ax, i);
         objectRoleExpression = r;
         individualExpression = j;

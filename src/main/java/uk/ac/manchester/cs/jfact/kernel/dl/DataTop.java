@@ -18,6 +18,7 @@ import conformance.PortedFrom;
 /** data top */
 @PortedFrom(file = "tDLExpression.h", name = "TDLDataTop")
 public class DataTop implements DataExpression, Serializable {
+
     private static final long serialVersionUID = 11000L;
 
     @Override

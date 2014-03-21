@@ -16,18 +16,21 @@ import conformance.PortedFrom;
 
 /** class to represent single queue */
 public class ArrayQueue implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** waiting ops queue */
     private final List<ToDoEntry> Wait = new ArrayList<ToDoEntry>(50);
     /** start pointer; points to the 1st element in the queue */
     private int sPointer = 0;
 
-    /** add entry to a queue
+    /**
+     * add entry to a queue
      * 
      * @param node
-     *            node
+     *        node
      * @param offset
-     *            offset */
+     *        offset
+     */
     public void add(DlCompletionTree node, ConceptWDep offset) {
         Wait.add(new ToDoEntry(node, offset));
     }
@@ -50,34 +53,40 @@ public class ArrayQueue implements Serializable {
         return Wait.get(sPointer++);
     }
 
-    /** save queue content to the given entry
+    /**
+     * save queue content to the given entry
      * 
      * @param tss
-     *            tss
+     *        tss
      * @param pos
-     *            pos */
+     *        pos
+     */
     @PortedFrom(file = "ToDoList.h", name = "save")
     public void save(int[][] tss, int pos) {
         tss[pos][0] = sPointer;
         tss[pos][1] = Wait.size();
     }
 
-    /** restore queue content from the given entry
+    /**
+     * restore queue content from the given entry
      * 
      * @param tss
-     *            tss
+     *        tss
      * @param pos
-     *            pos */
+     *        pos
+     */
     @PortedFrom(file = "ToDoList.h", name = "restore")
     public void restore(int[][] tss, int pos) {
         setsPointer(tss[pos][0]);
         Helper.resize(Wait, tss[pos][1]);
     }
 
-    /** @param sp
-     *            sp
+    /**
+     * @param sp
+     *        sp
      * @param ep
-     *            ep */
+     *        ep
+     */
     @PortedFrom(file = "ToDoList.h", name = "restore")
     public void restore(int sp, int ep) {
         setsPointer(sp);
@@ -103,8 +112,10 @@ public class ArrayQueue implements Serializable {
         return sPointer;
     }
 
-    /** @param sPointer
-     *            sPointer */
+    /**
+     * @param sPointer
+     *        sPointer
+     */
     public void setsPointer(int sPointer) {
         this.sPointer = sPointer;
     }

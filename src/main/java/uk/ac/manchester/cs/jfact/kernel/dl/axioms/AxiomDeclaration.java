@@ -15,14 +15,17 @@ import conformance.PortedFrom;
 /** declaration */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDeclaration")
 public class AxiomDeclaration extends AxiomImpl {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "D")
     private final Expression expression;
 
-    /** @param ax
-     *            ax
+    /**
+     * @param ax
+     *        ax
      * @param d
-     *            d */
+     *        d
+     */
     public AxiomDeclaration(OWLAxiom ax, Expression d) {
         super(ax);
         expression = d;

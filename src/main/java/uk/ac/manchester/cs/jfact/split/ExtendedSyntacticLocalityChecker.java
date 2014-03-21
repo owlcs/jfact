@@ -51,6 +51,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
 
 abstract class CardinalityEvaluatorBase extends SigAccessor {
+
     private static final long serialVersionUID = 11000L;
     protected UpperBoundDirectEvaluator UBD;
     protected LowerBoundDirectEvaluator LBD;
@@ -166,17 +167,20 @@ abstract class CardinalityEvaluatorBase extends SigAccessor {
 
     @Override
     public void visit(ConceptObjectMinCardinality expr) {
-        value = getMinValue(expr.getCardinality(), expr.getOR(), expr.getConcept());
+        value = getMinValue(expr.getCardinality(), expr.getOR(),
+                expr.getConcept());
     }
 
     @Override
     public void visit(ConceptObjectMaxCardinality expr) {
-        value = getMaxValue(expr.getCardinality(), expr.getOR(), expr.getConcept());
+        value = getMaxValue(expr.getCardinality(), expr.getOR(),
+                expr.getConcept());
     }
 
     @Override
     public void visit(ConceptObjectExactCardinality expr) {
-        value = getExactValue(expr.getCardinality(), expr.getOR(), expr.getConcept());
+        value = getExactValue(expr.getCardinality(), expr.getOR(),
+                expr.getConcept());
     }
 
     @Override
@@ -191,20 +195,20 @@ abstract class CardinalityEvaluatorBase extends SigAccessor {
 
     @Override
     public void visit(ConceptDataMinCardinality expr) {
-        value = getMinValue(expr.getCardinality(), expr.getDataRoleExpression(),
-                expr.getExpr());
+        value = getMinValue(expr.getCardinality(),
+                expr.getDataRoleExpression(), expr.getExpr());
     }
 
     @Override
     public void visit(ConceptDataMaxCardinality expr) {
-        value = getMaxValue(expr.getCardinality(), expr.getDataRoleExpression(),
-                expr.getExpr());
+        value = getMaxValue(expr.getCardinality(),
+                expr.getDataRoleExpression(), expr.getExpr());
     }
 
     @Override
     public void visit(ConceptDataExactCardinality expr) {
-        value = getExactValue(expr.getCardinality(), expr.getDataRoleExpression(),
-                expr.getExpr());
+        value = getExactValue(expr.getCardinality(),
+                expr.getDataRoleExpression(), expr.getExpr());
     }
 
     // object role expressions
@@ -236,6 +240,7 @@ abstract class CardinalityEvaluatorBase extends SigAccessor {
 
 // / determine how many instances can an expression have
 class UpperBoundDirectEvaluator extends CardinalityEvaluatorBase {
+
     private static final long serialVersionUID = 11000L;
 
     // / define a special value for concepts that are not in C^{<= n}
@@ -251,7 +256,8 @@ class UpperBoundDirectEvaluator extends CardinalityEvaluatorBase {
     // / helper for entities TODO: checks only C top-locality, not R
     @Override
     protected int getEntityValue(NamedEntity entity) {
-        return sig.botCLocal() && sig.nc(entity) ? getAllValue() : getNoneValue();
+        return sig.botCLocal() && sig.nc(entity) ? getAllValue()
+                : getNoneValue();
     }
 
     // / helper for All
@@ -463,18 +469,23 @@ class UpperBoundDirectEvaluator extends CardinalityEvaluatorBase {
 }
 
 class UpperBoundComplementEvaluator extends CardinalityEvaluatorBase {
+
     private static final long serialVersionUID = 11000L;
 
-    /** define a special value for concepts that are not in C^{<= n}
+    /**
+     * define a special value for concepts that are not in C^{<= n}
      * 
-     * @return none value */
+     * @return none value
+     */
     protected int getNoneValue() {
         return -1;
     }
 
-    /** define a special value for concepts that are in C^{<= n} for all n
+    /**
+     * define a special value for concepts that are in C^{<= n} for all n
      * 
-     * @return all value */
+     * @return all value
+     */
     protected int getAllValue() {
         return 0;
     }
@@ -698,6 +709,7 @@ class UpperBoundComplementEvaluator extends CardinalityEvaluatorBase {
 }
 
 class LowerBoundDirectEvaluator extends CardinalityEvaluatorBase {
+
     private static final long serialVersionUID = 11000L;
 
     // / define a special value for concepts that are not in C^{>= n}
@@ -890,7 +902,8 @@ class LowerBoundDirectEvaluator extends CardinalityEvaluatorBase {
 
     @Override
     public void visit(ConceptDataValue expr) {
-        value = isTopEquivalent(expr.getDataRoleExpression()) ? 1 : getNoneValue();
+        value = isTopEquivalent(expr.getDataRoleExpression()) ? 1
+                : getNoneValue();
     }
 
     // object role expressions
@@ -981,6 +994,7 @@ class LowerBoundDirectEvaluator extends CardinalityEvaluatorBase {
 }
 
 class LowerBoundComplementEvaluator extends CardinalityEvaluatorBase {
+
     private static final long serialVersionUID = 11000L;
 
     // / define a special value for concepts that are not in C^{>= n}
@@ -1168,7 +1182,8 @@ class LowerBoundComplementEvaluator extends CardinalityEvaluatorBase {
 
     @Override
     public void visit(ConceptDataValue expr) {
-        value = isBotEquivalent(expr.getDataRoleExpression()) ? 1 : getNoneValue();
+        value = isBotEquivalent(expr.getDataRoleExpression()) ? 1
+                : getNoneValue();
     }
 
     // object role expressions
@@ -1251,7 +1266,9 @@ class LowerBoundComplementEvaluator extends CardinalityEvaluatorBase {
 }
 
 /** syntactic locality checker for DL axioms */
-public class ExtendedSyntacticLocalityChecker extends GeneralSyntacticLocalityChecker {
+public class ExtendedSyntacticLocalityChecker extends
+        GeneralSyntacticLocalityChecker {
+
     private static final long serialVersionUID = 11000L;
     protected final UpperBoundDirectEvaluator UBD;
     protected final LowerBoundDirectEvaluator LBD;
@@ -1270,10 +1287,12 @@ public class ExtendedSyntacticLocalityChecker extends GeneralSyntacticLocalityCh
         return UBD.getUpperBoundDirect(expr) == 0;
     }
 
-    /** init c'tor
+    /**
+     * init c'tor
      * 
      * @param s
-     *            s */
+     *        s
+     */
     public ExtendedSyntacticLocalityChecker(TSignature s) {
         super(s);
         UBD = new UpperBoundDirectEvaluator(s);

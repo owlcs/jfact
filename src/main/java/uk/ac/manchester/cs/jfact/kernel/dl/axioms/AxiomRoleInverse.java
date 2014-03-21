@@ -15,16 +15,19 @@ import conformance.PortedFrom;
 /** inverse object property */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomRoleInverse")
 public class AxiomRoleInverse extends AxiomSingleORole {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "InvRole")
     private final ObjectRoleExpression inverseRole;
 
-    /** @param ax
-     *            ax
+    /**
+     * @param ax
+     *        ax
      * @param dirRole
-     *            dirRole
+     *        dirRole
      * @param invRole
-     *            invRole */
+     *        invRole
+     */
     public AxiomRoleInverse(OWLAxiom ax, ObjectRoleExpression dirRole,
             ObjectRoleExpression invRole) {
         super(ax, dirRole);

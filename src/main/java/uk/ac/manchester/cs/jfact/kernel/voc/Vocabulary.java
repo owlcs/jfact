@@ -9,6 +9,7 @@ import java.io.Serializable;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** vocabulary iris */
 public final class Vocabulary implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     //@formatter:off
     /** OWL_NAMESPACE          */ public static final String OWL_NAMESPACE            = "http://www.w3.org/2002/07/owl#";

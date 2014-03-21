@@ -17,14 +17,18 @@ import conformance.PortedFrom;
 
 /** self object restriction */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectSelf")
-public class ConceptObjectSelf implements ConceptObjectRoleExpression, Serializable {
+public class ConceptObjectSelf implements ConceptObjectRoleExpression,
+        Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** object role argument */
     @PortedFrom(file = "tDLExpression.h", name = "OR")
     private final ObjectRoleExpression objectRoleExpression;
 
-    /** @param R
-     *            R */
+    /**
+     * @param R
+     *        R
+     */
     public ConceptObjectSelf(ObjectRoleExpression R) {
         objectRoleExpression = R;
     }

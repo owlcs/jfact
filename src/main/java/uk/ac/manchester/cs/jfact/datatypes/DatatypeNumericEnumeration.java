@@ -7,32 +7,42 @@ package uk.ac.manchester.cs.jfact.datatypes;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.Collection;
 
-/** numeric enumeration
+/**
+ * numeric enumeration
  * 
  * @param <R>
- *            type */
+ *        type
+ */
 public class DatatypeNumericEnumeration<R extends Comparable<R>> extends
         DatatypeEnumeration<R> implements NumericDatatype<R> {
-    /** @param d
-     *            d */
+
+    /**
+     * @param d
+     *        d
+     */
     public DatatypeNumericEnumeration(NumericDatatype<R> d) {
         super(d);
     }
 
-    /** @param d
-     *            d
+    /**
+     * @param d
+     *        d
      * @param l
-     *            l */
+     *        l
+     */
     public DatatypeNumericEnumeration(NumericDatatype<R> d, Literal<R> l) {
         this(d);
         literals.add(l);
     }
 
-    /** @param d
-     *            d
+    /**
+     * @param d
+     *        d
      * @param c
-     *            c */
-    public DatatypeNumericEnumeration(NumericDatatype<R> d, Collection<Literal<R>> c) {
+     *        c
+     */
+    public DatatypeNumericEnumeration(NumericDatatype<R> d,
+            Collection<Literal<R>> c) {
         this(d);
         literals.addAll(c);
     }
@@ -104,7 +114,8 @@ public class DatatypeNumericEnumeration<R extends Comparable<R>> extends
         if (literals.isEmpty()) {
             return null;
         }
-        R r = (R) Facets.maxInclusive.parseNumber(literals.get(literals.size() - 1));
+        R r = (R) Facets.maxInclusive
+                .parseNumber(literals.get(literals.size() - 1));
         return r;
     }
 

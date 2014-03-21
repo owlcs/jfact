@@ -17,6 +17,7 @@ public enum DatatypeClashes {
     DT_TNT(" DT-TNT"),
     /** DT_C_IT */
     DT_C_IT(" DT-C-IT");
+
     private String label;
 
     DatatypeClashes(String s) {

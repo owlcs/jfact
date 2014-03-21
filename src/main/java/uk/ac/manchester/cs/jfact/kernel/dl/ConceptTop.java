@@ -18,6 +18,7 @@ import conformance.PortedFrom;
 /** top */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptTop")
 public class ConceptTop implements ConceptExpression, Serializable {
+
     private static final long serialVersionUID = 11000L;
 
     @Override

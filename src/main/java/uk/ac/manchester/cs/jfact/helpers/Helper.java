@@ -11,15 +11,18 @@ import java.util.List;
 
 /** static methods */
 public class Helper implements Serializable {
+
     private static final long serialVersionUID = 11000L;
 
-    /** check whether set S1 intersects with the set S2
+    /**
+     * check whether set S1 intersects with the set S2
      * 
      * @param S1
-     *            S1
+     *        S1
      * @param S2
-     *            S2
-     * @return true if S1 and S2 intersect */
+     *        S2
+     * @return true if S1 and S2 intersect
+     */
     public static boolean intersectsWith(Collection<?> S1, Collection<?> S2) {
         for (Object o : S1) {
             if (S2.contains(o)) {
@@ -29,10 +32,12 @@ public class Helper implements Serializable {
         return false;
     }
 
-    /** @param l
-     *            l
+    /**
+     * @param l
+     *        l
      * @param n
-     *            n */
+     *        n
+     */
     public static void resize(List<?> l, int n) {
         if (l.size() > n) {
             while (l.size() > n) {
@@ -45,14 +50,16 @@ public class Helper implements Serializable {
         }
     }
 
-    /** @param l
-     *            l
+    /**
+     * @param l
+     *        l
      * @param n
-     *            n
+     *        n
      * @param <T>
-     *            argument type
+     *        argument type
      * @param filler
-     *            filler */
+     *        filler
+     */
     public static <T> void resize(List<T> l, int n, T filler) {
         if (l.size() > n) {
             while (l.size() > n) {
@@ -74,25 +81,31 @@ public class Helper implements Serializable {
     /** bottom bipolar pointer */
     public static final int bpBOTTOM = -1;
 
-    /** @param index
-     *            index
+    /**
+     * @param index
+     *        index
      * @param pos
-     *            pos
-     * @return bipolar pointer */
+     *        pos
+     * @return bipolar pointer
+     */
     public static int createBiPointer(int index, boolean pos) {
         return pos ? index : -index;
     }
 
-    /** @param p
-     *            p
-     * @return true if correct */
+    /**
+     * @param p
+     *        p
+     * @return true if correct
+     */
     public static boolean isCorrect(int p) {
         return p != bpINVALID;
     }
 
-    /** @param p
-     *            p
-     * @return true if valid */
+    /**
+     * @param p
+     *        p
+     * @return true if valid
+     */
     public static boolean isValid(int p) {
         return p != bpINVALID;
     }

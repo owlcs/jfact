@@ -14,14 +14,17 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 /** data property translator */
 public class DataPropertyTranslator extends
         OWLEntityTranslator<OWLDataProperty, DataRoleExpression> {
+
     private static final long serialVersionUID = 11000L;
 
-    /** @param em
-     *            em
+    /**
+     * @param em
+     *        em
      * @param df
-     *            df
+     *        df
      * @param tr
-     *            tr */
+     *        tr
+     */
     public DataPropertyTranslator(ExpressionManager em, OWLDataFactory df,
             TranslationMachinery tr) {
         super(em, df, tr);

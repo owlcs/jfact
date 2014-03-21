@@ -12,6 +12,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "Tactic.cpp", name = "EdgeCompare")
 class EdgeCompare implements Comparator<DlCompletionTreeArc>, Serializable {
+
     private static final long serialVersionUID = 11000L;
 
     @Override

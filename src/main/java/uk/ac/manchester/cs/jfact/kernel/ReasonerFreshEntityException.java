@@ -10,48 +10,57 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerRuntimeException;
 
 /** The Class ReasonerFreshEntityException. */
 public class ReasonerFreshEntityException extends OWLReasonerRuntimeException {
+
     private static final long serialVersionUID = 11000L;
     /** The iri. */
     private final IRI iri;
 
-    /** Instantiates a new reasoner fresh entity exception.
+    /**
+     * Instantiates a new reasoner fresh entity exception.
      * 
      * @param iri
-     *            the iri */
+     *        the iri
+     */
     public ReasonerFreshEntityException(IRI iri) {
         this.iri = iri;
     }
 
-    /** Instantiates a new reasoner fresh entity exception.
+    /**
+     * Instantiates a new reasoner fresh entity exception.
      * 
      * @param s
-     *            the s
+     *        the s
      * @param iri
-     *            the iri */
+     *        the iri
+     */
     public ReasonerFreshEntityException(String s, IRI iri) {
         super(s);
         this.iri = iri;
     }
 
-    /** Instantiates a new reasoner fresh entity exception.
+    /**
+     * Instantiates a new reasoner fresh entity exception.
      * 
      * @param s
-     *            the s
+     *        the s
      * @param t
-     *            the t
+     *        the t
      * @param iri
-     *            the iri */
+     *        the iri
+     */
     public ReasonerFreshEntityException(String s, Throwable t, IRI iri) {
         super(s, t);
         this.iri = iri;
     }
 
-    /** Instantiates a new reasoner fresh entity exception.
+    /**
+     * Instantiates a new reasoner fresh entity exception.
      * 
      * @param t
-     *            the t
+     *        the t
      * @param iri
-     *            the iri */
+     *        the iri
+     */
     public ReasonerFreshEntityException(Throwable t, IRI iri) {
         super(t);
         this.iri = iri;

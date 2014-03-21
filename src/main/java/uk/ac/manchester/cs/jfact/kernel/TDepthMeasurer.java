@@ -22,11 +22,14 @@ import conformance.PortedFrom;
 /** @author ignazio */
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TDepthMeasurer")
 public class TDepthMeasurer extends DLExpressionVisitorAdapter {
+
     private static final long serialVersionUID = 11000L;
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
 
-    /** @param conjunctiveQueryFolding
-     *            conjunctiveQueryFolding */
+    /**
+     * @param conjunctiveQueryFolding
+     *        conjunctiveQueryFolding
+     */
     public TDepthMeasurer(ConjunctiveQueryFolding conjunctiveQueryFolding) {
         this.conjunctiveQueryFolding = conjunctiveQueryFolding;
     }
@@ -82,7 +85,8 @@ public class TDepthMeasurer extends DLExpressionVisitorAdapter {
 
     /** @return nominal with max depth */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "getNominalWithMaxDepth")
-    public ConceptExpression getNominalWithMaxDepth() {
+    public
+            ConceptExpression getNominalWithMaxDepth() {
         ConceptExpression max = null;
         int maxvalue = -1;
         for (Map.Entry<ConceptExpression, Integer> e : DepthOfNominalOccurences
@@ -100,7 +104,8 @@ public class TDepthMeasurer extends DLExpressionVisitorAdapter {
      */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "PrintDepthTable")
     public void PrintDepthTable() {
-        System.out.println("Total nominal occurrences: " + TotalNominalOccurences + "\n");
+        System.out.println("Total nominal occurrences: "
+                + TotalNominalOccurences + "\n");
         for (Map.Entry<ConceptExpression, Integer> e : DepthOfNominalOccurences
                 .entrySet()) {
             System.out.print(e.getKey());

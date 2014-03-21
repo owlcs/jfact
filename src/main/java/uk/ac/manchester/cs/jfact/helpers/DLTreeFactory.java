@@ -23,19 +23,22 @@ import uk.ac.manchester.cs.jfact.kernel.Token;
 
 /** dl tree factory */
 public class DLTreeFactory implements Serializable {
+
     private static final long serialVersionUID = 11000L;
-    private static final EnumSet<Token> snfCalls = EnumSet.of(TOP, BOTTOM, CNAME, INAME,
-            RNAME, DNAME, DATAEXPR, NOT, INV, AND, FORALL, LE, SELF, RCOMPOSITION,
-            PROJFROM, PROJINTO);
+    private static final EnumSet<Token> snfCalls = EnumSet.of(TOP, BOTTOM,
+            CNAME, INAME, RNAME, DNAME, DATAEXPR, NOT, INV, AND, FORALL, LE,
+            SELF, RCOMPOSITION, PROJFROM, PROJINTO);
 
     /** @return BOTTOM element */
     public static DLTree createBottom() {
         return new LEAFDLTree(new Lexeme(BOTTOM));
     }
 
-    /** @param R
-     *            R
-     * @return inverse */
+    /**
+     * @param R
+     *        R
+     * @return inverse
+     */
     public static DLTree createInverse(DLTree R) {
         assert R != null;
         if (R.token() == INV) {
@@ -52,39 +55,47 @@ public class DLTreeFactory implements Serializable {
     }
 
     // Semantic Locality checking support. DO NOT used in usual reasoning
-    /** @param dr
-     *            dr
+    /**
+     * @param dr
+     *        dr
      * @return true iff a data range DR is semantically equivalent to TOP.
-     *         FIXME!! good approximation for now */
+     *         FIXME!! good approximation for now
+     */
     public static boolean isSemanticallyDataTop(DLTree dr) {
         return dr.elem().getToken() == TOP;
     }
 
-    /** @param dr
-     *            dr
+    /**
+     * @param dr
+     *        dr
      * @return true iff a data range DR is semantically equivalent to BOTTOM.
-     *         FIXME!! good approximation for now */
+     *         FIXME!! good approximation for now
+     */
     public static boolean isSemanticallyDataBottom(DLTree dr) {
         return dr.elem().getToken() == BOTTOM;
     }
 
-    /** @param dr
-     *            dr
+    /**
+     * @param dr
+     *        dr
      * @param n
-     *            n
+     *        n
      * @return true iff the cardinality of a given data range DR is greater than
-     *         N. FIXME!! good approximation for now */
+     *         N. FIXME!! good approximation for now
+     */
     @SuppressWarnings("unused")
     public static boolean isDataRangeBigEnough(DLTree dr, int n) {
         // XXX bug
         return true;
     }
 
-    /** simplify universal restriction with top data role
+    /**
+     * simplify universal restriction with top data role
      * 
      * @param dr
-     *            dr
-     * @return simplified tree */
+     *        dr
+     * @return simplified tree
+     */
     public static DLTree simplifyDataTopForall(DLTree dr) {
         // if the filler (dr) is TOP (syntactically or semantically), then the
         // forall is top
@@ -95,13 +106,15 @@ public class DLTreeFactory implements Serializable {
         return createBottom();
     }
 
-    /** simplify minimal cardinality restriction with top data role
+    /**
+     * simplify minimal cardinality restriction with top data role
      * 
      * @param n
-     *            n
+     *        n
      * @param dr
-     *            dr
-     * @return simplified tree */
+     *        dr
+     * @return simplified tree
+     */
     public static DLTree simplifyDataTopLE(int n, DLTree dr) {
         // if the filler (dr) is BOTTOM (syntactically or semantically), then
         // the LE is top
@@ -117,9 +130,11 @@ public class DLTreeFactory implements Serializable {
         return createBottom();
     }
 
-    /** @param arguments
-     *            arguments to AND
-     * @return a construction in the form AND (\neg q_i) */
+    /**
+     * @param arguments
+     *        arguments to AND
+     * @return a construction in the form AND (\neg q_i)
+     */
     public static DLTree buildDisjAux(List<DLTree> arguments) {
         List<DLTree> args = new ArrayList<DLTree>(arguments.size());
         for (DLTree i : arguments) {
@@ -128,11 +143,13 @@ public class DLTreeFactory implements Serializable {
         return DLTreeFactory.createSNFAnd(args);
     }
 
-    /** @param C
-     *            C
+    /**
+     * @param C
+     *        C
      * @param D
-     *            D
-     * @return and */
+     *        D
+     * @return and
+     */
     public static DLTree createSNFAnd(DLTree C, DLTree D) {
         if (C == null) {
             return D;
@@ -149,9 +166,11 @@ public class DLTreeFactory implements Serializable {
         return new NDLTree(new Lexeme(AND), C, D);
     }
 
-    /** @param collection
-     *            collection
-     * @return and */
+    /**
+     * @param collection
+     *        collection
+     * @return and
+     */
     public static DLTree createSNFAnd(Collection<DLTree> collection) {
         if (collection.isEmpty()) {
             return createTop();
@@ -182,12 +201,15 @@ public class DLTreeFactory implements Serializable {
         return new NDLTree(new Lexeme(AND), l);
     }
 
-    /** @param collection
-     *            collection
+    /**
+     * @param collection
+     *        collection
      * @param ancestor
-     *            ancestor
-     * @return and */
-    public static DLTree createSNFAnd(Collection<DLTree> collection, DLTree ancestor) {
+     *        ancestor
+     * @return and
+     */
+    public static DLTree createSNFAnd(Collection<DLTree> collection,
+            DLTree ancestor) {
         boolean hasTop = false;
         List<DLTree> l = new ArrayList<DLTree>();
         for (DLTree d : collection) {
@@ -213,23 +235,27 @@ public class DLTreeFactory implements Serializable {
         return new NDLTree(new Lexeme(AND), l);
     }
 
-    /** create existential restriction of given formulas (\ER.C)
+    /**
+     * create existential restriction of given formulas (\ER.C)
      * 
      * @param R
-     *            R
+     *        R
      * @param C
-     *            C
-     * @return exist R C */
+     *        C
+     * @return exist R C
+     */
     public static DLTree createSNFExists(DLTree R, DLTree C) {
         // \ER.C . \not\AR.\not C
         return createSNFNot(createSNFForall(R, createSNFNot(C)));
     }
 
-    /** @param R
-     *            R
+    /**
+     * @param R
+     *        R
      * @param C
-     *            C
-     * @return for all */
+     *        C
+     * @return for all
+     */
     public static DLTree createSNFForall(DLTree R, DLTree C) {
         if (C.isTOP()) {
             return C;
@@ -242,31 +268,37 @@ public class DLTreeFactory implements Serializable {
         return new TWODLTree(new Lexeme(FORALL), R, C);
     }
 
-    /** @param R
-     *            R
-     * @return role */
+    /**
+     * @param R
+     *        R
+     * @return role
+     */
     public static DLTree createRole(Role R) {
         return createEntry(R.isDataRole() ? DNAME : RNAME, R);
     }
 
-    /** @param tag
-     *            tag
+    /**
+     * @param tag
+     *        tag
      * @param entry
-     *            entry
-     * @return entry */
+     *        entry
+     * @return entry
+     */
     public static DLTree createEntry(Token tag, NamedEntry entry) {
         return new LEAFDLTree(new Lexeme(tag, entry));
     }
 
-    /** create at-most (LE) restriction of given formulas (max n R.C)
+    /**
+     * create at-most (LE) restriction of given formulas (max n R.C)
      * 
      * @param n
-     *            n
+     *        n
      * @param R
-     *            R
+     *        R
      * @param C
-     *            C
-     * @return at most */
+     *        C
+     * @return at most
+     */
     public static DLTree createSNFLE(int n, DLTree R, DLTree C) {
         if (C.isBOTTOM()) {
             // <= n R.F -> T;
@@ -284,29 +316,35 @@ public class DLTreeFactory implements Serializable {
         return new TWODLTree(new Lexeme(LE, n), R, C);
     }
 
-    /** check whether T is a bottom (empty) role
+    /**
+     * check whether T is a bottom (empty) role
      * 
      * @param t
-     *            tree
-     * @return true if bottom */
+     *        tree
+     * @return true if bottom
+     */
     public static boolean isBotRole(DLTree t) {
         return isRName(t) && t.elem().getNE().isBottom();
     }
 
-    /** check whether T is a top (universal) role
+    /**
+     * check whether T is a top (universal) role
      * 
      * @param t
-     *            tree
-     * @return true if top role */
+     *        tree
+     * @return true if top role
+     */
     public static boolean isTopRole(DLTree t) {
         return isRName(t) && t.elem().getNE().isTop();
     }
 
-    /** create SELF restriction for role R
+    /**
+     * create SELF restriction for role R
      * 
      * @param R
-     *            R
-     * @return self */
+     *        R
+     * @return self
+     */
     public static DLTree createSNFSelf(DLTree R) {
         if (isBotRole(R)) {
             return createBottom();
@@ -319,13 +357,15 @@ public class DLTreeFactory implements Serializable {
         return new ONEDLTree(new Lexeme(SELF), R);
     }
 
-    /** @param n
-     *            n
+    /**
+     * @param n
+     *        n
      * @param R
-     *            R
+     *        R
      * @param C
-     *            C
-     * @return at least */
+     *        C
+     * @return at least
+     */
     public static DLTree createSNFGE(int n, DLTree R, DLTree C) {
         if (n == 0) {
             return createTop();
@@ -337,9 +377,11 @@ public class DLTreeFactory implements Serializable {
         }
     }
 
-    /** @param C
-     *            C
-     * @return not */
+    /**
+     * @param C
+     *        C
+     * @return not
+     */
     public static DLTree createSNFNot(DLTree C) {
         assert C != null;
         if (C.isBOTTOM()) {
@@ -358,11 +400,13 @@ public class DLTreeFactory implements Serializable {
         return new ONEDLTree(new Lexeme(NOT), C);
     }
 
-    /** @param C
-     *            C
+    /**
+     * @param C
+     *        C
      * @param ancestor
-     *            ancestor
-     * @return not */
+     *        ancestor
+     * @return not
+     */
     public static DLTree createSNFNot(DLTree C, DLTree ancestor) {
         assert C != null;
         if (C.isBOTTOM()) {
@@ -381,11 +425,13 @@ public class DLTreeFactory implements Serializable {
         return ancestor;
     }
 
-    /** create disjunction of given formulas
+    /**
+     * create disjunction of given formulas
      * 
      * @param C
-     *            C
-     * @return OR C */
+     *        C
+     * @return OR C
+     */
     public static DLTree createSNFOr(Collection<DLTree> C) {
         // C\or D . \not(\not C\and\not D)
         List<DLTree> list = new ArrayList<DLTree>();
@@ -400,60 +446,73 @@ public class DLTreeFactory implements Serializable {
         return new LEAFDLTree(new Lexeme(TOP));
     }
 
-    /** @param tree
-     *            tree
-     * @return inverse */
+    /**
+     * @param tree
+     *        tree
+     * @return inverse
+     */
     public static DLTree inverseComposition(DLTree tree) {
         // XXX this needs to be checked with a proper test
         // see rolemaster.cpp, inverseComposition
         if (tree.token() == RCOMPOSITION) {
             return tree.accept(new ReverseCloningVisitor());
         } else {
-            return new LEAFDLTree(new Lexeme(RNAME, Role.resolveRole(tree).inverse()));
+            return new LEAFDLTree(new Lexeme(RNAME, Role.resolveRole(tree)
+                    .inverse()));
         }
     }
 
-    /** get DLTree by a given TDE
+    /**
+     * get DLTree by a given TDE
      * 
      * @param t
-     *            t
-     * @return wrapped entry */
+     *        t
+     * @return wrapped entry
+     */
     public static DLTree wrap(NamedEntry t) {
         return new LEAFDLTree(new Lexeme(DATAEXPR, t));
     }
 
-    /** get TDE by a given DLTree
+    /**
+     * get TDE by a given DLTree
      * 
      * @param t
-     *            t
-     * @return unwrapped entry */
+     *        t
+     * @return unwrapped entry
+     */
     public static NamedEntry unwrap(DLTree t) {
         return t.elem().getNE();
     }
 
-    /** @param t
-     *            t
+    /**
+     * @param t
+     *        t
      * @param t1
-     *            t1
+     *        t1
      * @param t2
-     *            t2
-     * @return tree with two children */
+     *        t2
+     * @return tree with two children
+     */
     public static DLTree buildTree(Lexeme t, DLTree t1, DLTree t2) {
         return new TWODLTree(t, t1, t2);
     }
 
-    /** @param t
-     *            t
+    /**
+     * @param t
+     *        t
      * @param t1
-     *            t1
-     * @return single child tree */
+     *        t1
+     * @return single child tree
+     */
     public static DLTree buildTree(Lexeme t, DLTree t1) {
         return new ONEDLTree(t, t1);
     }
 
-    /** @param t
-     *            t
-     * @return leaf tree */
+    /**
+     * @param t
+     *        t
+     * @return leaf tree
+     */
     public static DLTree buildTree(Lexeme t) {
         return new LEAFDLTree(t);
     }
@@ -469,21 +528,26 @@ public class DLTreeFactory implements Serializable {
         return false;
     }
 
-    /** check whether T is an expression in the form (atmost 1 RNAME)
+    /**
+     * check whether T is an expression in the form (atmost 1 RNAME)
      * 
      * @param t
-     *            t
+     *        t
      * @param R
-     *            R
-     * @return true if functional */
+     *        R
+     * @return true if functional
+     */
     public static boolean isFunctionalExpr(DLTree t, NamedEntry R) {
-        return t != null && t.token() == LE && R.equals(t.getLeft().elem().getNE())
+        return t != null && t.token() == LE
+                && R.equals(t.getLeft().elem().getNE())
                 && t.elem().getData() == 1 && t.getRight().isTOP();
     }
 
-    /** @param t
-     *            t
-     * @return true is SNF */
+    /**
+     * @param t
+     *        t
+     * @return true is SNF
+     */
     public static boolean isSNF(DLTree t) {
         if (t == null) {
             return true;
@@ -494,11 +558,13 @@ public class DLTreeFactory implements Serializable {
         return false;
     }
 
-    /** @param t1
-     *            t1
+    /**
+     * @param t1
+     *        t1
      * @param t2
-     *            t2
-     * @return true if t2 is a subtree */
+     *        t2
+     * @return true if t2 is a subtree
+     */
     public static boolean isSubTree(DLTree t1, DLTree t2) {
         if (t1 == null || t1.isTOP()) {
             return true;
@@ -525,18 +591,22 @@ public class DLTreeFactory implements Serializable {
         return t1.equals(t2);
     }
 
-    /** check whether T is U-Role
+    /**
+     * check whether T is U-Role
      * 
      * @param t
-     *            t
-     * @return true if universal */
+     *        t
+     * @return true if universal
+     */
     public static boolean isUniversalRole(DLTree t) {
         return isRName(t) && t.elem().getNE().isTop();
     }
 
-    /** @param desc
-     *            desc
-     * @return true if changes happen */
+    /**
+     * @param desc
+     *        desc
+     * @return true if changes happen
+     */
     public static boolean replaceSynonymsFromTree(DLTree desc) {
         if (desc == null) {
             return false;
@@ -550,8 +620,9 @@ public class DLTreeFactory implements Serializable {
                 } else if (entry.isBottom()) {
                     desc.elem = new Lexeme(BOTTOM);
                 } else {
-                    desc.elem = new Lexeme(((Concept) entry).isSingleton() ? INAME
-                            : CNAME, entry);
+                    desc.elem = new Lexeme(
+                            ((Concept) entry).isSingleton() ? INAME : CNAME,
+                            entry);
                 }
                 return true;
             } else {

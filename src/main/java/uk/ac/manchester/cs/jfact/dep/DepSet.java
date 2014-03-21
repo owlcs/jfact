@@ -11,11 +11,14 @@ import uk.ac.manchester.cs.jfact.helpers.FastSetSimple;
 import conformance.Original;
 import conformance.PortedFrom;
 
-/** Dependency set
+/**
+ * Dependency set
  * 
- * @author ignazio */
+ * @author ignazio
+ */
 @PortedFrom(file = "tDepSet.h", name = "TDepSet")
 public class DepSet implements Serializable {
+
     private static final long serialVersionUID = 11000L;
 
     /** @return empty depset */
@@ -24,17 +27,21 @@ public class DepSet implements Serializable {
         return new DepSet();
     }
 
-    /** @param i
-     *            i
-     * @return depset with value i */
+    /**
+     * @param i
+     *        i
+     * @return depset with value i
+     */
     @PortedFrom(file = "tDepSet.h", name = "create")
     public static DepSet create(int i) {
         return new DepSet(i);
     }
 
-    /** @param values
-     *            values
-     * @return new depset with stated values */
+    /**
+     * @param values
+     *        values
+     * @return new depset with stated values
+     */
     public static DepSet create(int... values) {
         FastSetSimple set = new FastSetSimple();
         for (int i : values) {
@@ -43,9 +50,11 @@ public class DepSet implements Serializable {
         return create(set);
     }
 
-    /** @param dep
-     *            dep
-     * @return copy of dep */
+    /**
+     * @param dep
+     *        dep
+     * @return copy of dep
+     */
     @PortedFrom(file = "tDepSet.h", name = "create")
     public static DepSet create(DepSet dep) {
         DepSet toReturn = new DepSet();
@@ -53,11 +62,13 @@ public class DepSet implements Serializable {
         return toReturn;
     }
 
-    /** @param ds1
-     *            ds1
+    /**
+     * @param ds1
+     *        ds1
      * @param ds2
-     *            ds2
-     * @return union of ds1 and ds2 */
+     *        ds2
+     * @return union of ds1 and ds2
+     */
     @PortedFrom(file = "tDepSet.h", name = "+")
     public static DepSet plus(DepSet ds1, DepSet ds2) {
         DepSet toReturn = new DepSet();
@@ -66,9 +77,11 @@ public class DepSet implements Serializable {
         return toReturn;
     }
 
-    /** @param delegate
-     *            delegate
-     * @return depset wrapper over delegate */
+    /**
+     * @param delegate
+     *        delegate
+     * @return depset wrapper over delegate
+     */
     @PortedFrom(file = "tDepSet.h", name = "create")
     public static DepSet create(FastSetSimple delegate) {
         return new DepSet(delegate);
@@ -79,15 +92,19 @@ public class DepSet implements Serializable {
 
     protected DepSet() {}
 
-    /** @param d
-     *            d */
+    /**
+     * @param d
+     *        d
+     */
     public DepSet(FastSetSimple d) {
         delegate = d;
     }
 
-    /** to be used to get the FastSet and store it in CWDArray save/restore
+    /**
+     * to be used to get the FastSet and store it in CWDArray save/restore
      * 
-     * @return delegate */
+     * @return delegate
+     */
     @Original
     public FastSetSimple getDelegate() {
         return delegate;
@@ -162,8 +179,10 @@ public class DepSet implements Serializable {
         return delegate == null ? 0 : delegate.size();
     }
 
-    /** @param level
-     *            level to cut the delegate to */
+    /**
+     * @param level
+     *        level to cut the delegate to
+     */
     @PortedFrom(file = "tDepSet.h", name = "restrict")
     public void restrict(int level) {
         if (delegate != null) {
@@ -186,8 +205,10 @@ public class DepSet implements Serializable {
         delegate = null;
     }
 
-    /** @param toAdd
-     *            add all elements in the depset to this depset */
+    /**
+     * @param toAdd
+     *        add all elements in the depset to this depset
+     */
     @PortedFrom(file = "tDepSet.h", name = "add")
     public void add(DepSet toAdd) {
         if (toAdd == null || toAdd.size() == 0) {
@@ -200,8 +221,10 @@ public class DepSet implements Serializable {
         }
     }
 
-    /** @param d
-     *            add all elements in the depset to this depset */
+    /**
+     * @param d
+     *        add all elements in the depset to this depset
+     */
     @PortedFrom(file = "tDepSet.h", name = "add")
     public void add(FastSetSimple d) {
         if (d == null || d.size() == 0) {

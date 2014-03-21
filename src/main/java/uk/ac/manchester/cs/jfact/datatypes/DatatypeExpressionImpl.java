@@ -9,15 +9,17 @@ import java.util.Collection;
 
 import org.semanticweb.owlapi.model.IRI;
 
-class DatatypeExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<O>
-        implements DatatypeExpression<O> {
+class DatatypeExpressionImpl<O extends Comparable<O>> extends
+        ABSTRACT_DATATYPE<O> implements DatatypeExpression<O> {
+
     private static final long serialVersionUID = 11000L;
     // TODO handle all value space restrictions in the delegations
     private final Datatype<O> host;
 
     public DatatypeExpressionImpl(Datatype<O> b) {
-        super(IRI.create(b.getDatatypeIRI() + "_" + DatatypeFactory.getIndex()), b
-                .getFacets());
+        super(
+                IRI.create(b.getDatatypeIRI() + "_"
+                        + DatatypeFactory.getIndex()), b.getFacets());
         if (b.isExpression()) {
             this.host = b.asExpression().getHostType();
         } else {
@@ -77,7 +79,8 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
-        DatatypeExpressionImpl<O> toReturn = new DatatypeExpressionImpl<O>(this.host);
+        DatatypeExpressionImpl<O> toReturn = new DatatypeExpressionImpl<O>(
+                this.host);
         toReturn.knownNumericFacetValues.putAll(knownNumericFacetValues);
         toReturn.knownNonNumericFacetValues.putAll(knownNonNumericFacetValues);
         // cannot have noth min/maxInclusive and min/maxExclusive values, so
@@ -95,7 +98,8 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<
     }
 
     @Override
-    public DatatypeExpression<O> addNonNumericFacet(Facet f, Comparable<?> value) {
+    public DatatypeExpression<O>
+            addNonNumericFacet(Facet f, Comparable<?> value) {
         if (!facets.contains(f)) {
             throw new IllegalArgumentException("Facet " + f
                     + " not allowed tor datatype " + this.getHostType());
@@ -103,7 +107,8 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
-        DatatypeExpressionImpl<O> toReturn = new DatatypeExpressionImpl<O>(this.host);
+        DatatypeExpressionImpl<O> toReturn = new DatatypeExpressionImpl<O>(
+                this.host);
         toReturn.knownNumericFacetValues.putAll(knownNumericFacetValues);
         toReturn.knownNonNumericFacetValues.putAll(knownNonNumericFacetValues);
         toReturn.knownNonNumericFacetValues.put(f, value);
@@ -163,8 +168,8 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<
 
     @Override
     public String toString() {
-        return this.getClass().getName() + "(" + this.host.toString() + "(extra facets:"
-                + knownNumericFacetValues + "))";
+        return this.getClass().getName() + "(" + this.host.toString()
+                + "(extra facets:" + knownNumericFacetValues + "))";
     }
 
     @Override

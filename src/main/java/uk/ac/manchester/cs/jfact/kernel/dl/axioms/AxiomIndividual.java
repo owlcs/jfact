@@ -12,6 +12,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomIndividual")
 abstract class AxiomIndividual extends AxiomImpl {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "I")
     private final IndividualExpression individualExpression;

@@ -16,6 +16,7 @@ import conformance.PortedFrom;
 /** priority matrix */
 @PortedFrom(file = "PriorityMatrix.h", name = "ToDoPriorMatrix")
 public class ToDoPriorMatrix implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     // regular operation indexes
     @PortedFrom(file = "PriorityMatrix.h", name = "iAnd")
@@ -33,18 +34,22 @@ public class ToDoPriorMatrix implements Serializable {
     /** number of regular options (o- and NN-rules are not included) */
     @PortedFrom(file = "PriorityMatrix.h", name = "nRegularOps")
     public static final int nRegularOptions = 7;
-    /** priority index for o- and ID operations (note that these ops have the
-     * highest priority) */
+    /**
+     * priority index for o- and ID operations (note that these ops have the
+     * highest priority)
+     */
     @PortedFrom(file = "PriorityMatrix.h", name = "iId")
     protected static final int priorityIndexID = nRegularOptions + 1;
     /** priority index for lesser than or equal operation in nominal node */
     @PortedFrom(file = "PriorityMatrix.h", name = "iNN")
     protected static final int priorityIndexNominalNode = nRegularOptions + 2;
 
-    /** Auxiliary class to get priorities on operations
+    /**
+     * Auxiliary class to get priorities on operations
      * 
      * @param options
-     *            options */
+     *        options
+     */
     @PortedFrom(file = "PriorityMatrix.h", name = "initPriorities")
     public void initPriorities(String options) {
         // check for correctness
@@ -61,19 +66,22 @@ public class ToDoPriorMatrix implements Serializable {
         indexGE = options.charAt(6) - '0';
         // correctness checking
         if (indexAnd >= nRegularOptions || indexOr >= nRegularOptions
-                || indexExists >= nRegularOptions || indexForall >= nRegularOptions
-                || indexGE >= nRegularOptions || indexLE >= nRegularOptions) {
+                || indexExists >= nRegularOptions
+                || indexForall >= nRegularOptions || indexGE >= nRegularOptions
+                || indexLE >= nRegularOptions) {
             throw new ReasonerInternalException("ToDo List option out of range");
         }
     }
 
-    /** @param Op
-     *            Op
+    /**
+     * @param Op
+     *        Op
      * @param Sign
-     *            Sign
+     *        Sign
      * @param NominalNode
-     *            NominalNode
-     * @return index */
+     *        NominalNode
+     * @return index
+     */
     @PortedFrom(file = "PriorityMatrix.h", name = "getIndex")
     public int getIndex(DagTag Op, boolean Sign, boolean NominalNode) {
         switch (Op) {
@@ -89,7 +97,8 @@ public class ToDoPriorMatrix implements Serializable {
             case dtChoose:
                 return indexOr;
             case dtLE:
-                return Sign ? NominalNode ? priorityIndexNominalNode : indexLE : indexGE;
+                return Sign ? NominalNode ? priorityIndexNominalNode : indexLE
+                        : indexGE;
             case dtDataType:
             case dtDataValue:
             case dtDataExpr:

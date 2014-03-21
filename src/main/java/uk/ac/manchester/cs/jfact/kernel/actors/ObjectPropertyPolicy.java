@@ -14,6 +14,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 
 /** policy for object properties */
 public class ObjectPropertyPolicy implements Policy, Serializable {
+
     private static final long serialVersionUID = 11000L;
 
     @Override

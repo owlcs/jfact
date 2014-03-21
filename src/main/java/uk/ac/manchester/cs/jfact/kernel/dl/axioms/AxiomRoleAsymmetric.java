@@ -15,12 +15,15 @@ import conformance.PortedFrom;
 /** asymmetric object role */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomRoleAsymmetric")
 public class AxiomRoleAsymmetric extends AxiomSingleORole {
+
     private static final long serialVersionUID = 11000L;
 
-    /** @param ax
-     *            ax
+    /**
+     * @param ax
+     *        ax
      * @param role
-     *            role */
+     *        role
+     */
     public AxiomRoleAsymmetric(OWLAxiom ax, ObjectRoleExpression role) {
         super(ax, role);
     }

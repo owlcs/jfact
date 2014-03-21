@@ -19,14 +19,18 @@ import conformance.PortedFrom;
 
 /** object role chain */
 @PortedFrom(file = "tDLExpression.h", name = "TDLObjectRoleChain")
-public class ObjectRoleChain extends NAryExpressionImpl<ObjectRoleExpression> implements
-        NAryExpression<ObjectRoleExpression>, ObjectRoleComplexExpression, Serializable {
+public class ObjectRoleChain extends NAryExpressionImpl<ObjectRoleExpression>
+        implements NAryExpression<ObjectRoleExpression>,
+        ObjectRoleComplexExpression, Serializable {
+
     private static final long serialVersionUID = 11000L;
 
-    /** create role chain from given array
+    /**
+     * create role chain from given array
      * 
      * @param v
-     *            v */
+     *        v
+     */
     public ObjectRoleChain(List<ObjectRoleExpression> v) {
         add(v);
     }

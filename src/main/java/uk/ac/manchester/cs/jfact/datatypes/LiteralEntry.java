@@ -15,30 +15,37 @@ import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 
 /** literal */
 public class LiteralEntry extends NamedEntry {
+
     private static final long serialVersionUID = 11000L;
     private Literal<?> literal;
     /** DAG index of the entry */
     private int pName;
 
-    /** create data entry with given name
+    /**
+     * create data entry with given name
      * 
      * @param name
-     *            name */
+     *        name
+     */
     public LiteralEntry(IRI name) {
         super(name);
         pName = bpINVALID;
     }
 
-    /** @param name
-     *            name */
+    /**
+     * @param name
+     *        name
+     */
     public LiteralEntry(String name) {
         this(IRI.create(name));
     }
 
-    /** set host data type for the data value
+    /**
+     * set host data type for the data value
      * 
      * @param l
-     *            l */
+     *        l
+     */
     public void setLiteral(Literal<?> l) {
         literal = l;
     }
@@ -89,17 +96,21 @@ public class LiteralEntry extends NamedEntry {
         return literal.equals(((LiteralEntry) obj).literal);
     }
 
-    /** @param l
-     *            literal
-     * @return modified object */
+    /**
+     * @param l
+     *        literal
+     * @return modified object
+     */
     public LiteralEntry withLiteral(Literal<?> l) {
         setLiteral(l);
         return this;
     }
 
-    /** @param i
-     *            index
-     * @return modified object */
+    /**
+     * @param i
+     *        index
+     * @return modified object
+     */
     public LiteralEntry withIndex(int i) {
         setIndex(i);
         return this;

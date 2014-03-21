@@ -16,6 +16,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TQueryToConceptsTransformer")
 class TQueryToConceptsTransformer implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
     /** query to transform */
@@ -27,8 +28,8 @@ class TQueryToConceptsTransformer implements Serializable {
     private final MultiMap<String, ConceptExpression> Result = new MultiMap<String, ConceptExpression>();
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TQueryToConceptsTransformer")
-    public TQueryToConceptsTransformer(ConjunctiveQueryFolding conjunctiveQueryFolding,
-            QRQuery query) {
+    public TQueryToConceptsTransformer(
+            ConjunctiveQueryFolding conjunctiveQueryFolding, QRQuery query) {
         this.conjunctiveQueryFolding = conjunctiveQueryFolding;
         Query = new QRQuery(query);
     }
@@ -38,7 +39,8 @@ class TQueryToConceptsTransformer implements Serializable {
     public void Run() {
         Query = conjunctiveQueryFolding.transformQueryPhase1(Query);
         // System.out.println("After Phase 1\n" + Query);
-        ConceptExpression term = conjunctiveQueryFolding.transformQueryPhase2(Query);
+        ConceptExpression term = conjunctiveQueryFolding
+                .transformQueryPhase2(Query);
         conjunctiveQueryFolding.buildApproximation(Query);
         IRI propositionalVariable = null;
         String lastNominal = null;
@@ -47,7 +49,8 @@ class TQueryToConceptsTransformer implements Serializable {
             // System.out.print(term);
             // System.out.println("; i = " + i + "\n");
             // System.out.println("Depth Measuring:");
-            TDepthMeasurer depthMeasurer = new TDepthMeasurer(conjunctiveQueryFolding);
+            TDepthMeasurer depthMeasurer = new TDepthMeasurer(
+                    conjunctiveQueryFolding);
             term.accept(depthMeasurer);
             // System.out.println(depthMeasurer.getMaxDepth());
             if (depthMeasurer.getMaxDepth() == -1) {
@@ -77,9 +80,9 @@ class TQueryToConceptsTransformer implements Serializable {
             // System.out.print(replacer.getReplaceResult(term));
             // System.out.println();
             // System.out.println("Initializing Solver...\n");
-            TEquationSolver equationSolver = new TEquationSolver(conjunctiveQueryFolding,
-                    expressionMarker.getSubterm(), propositionalVariable,
-                    expressionMarker);
+            TEquationSolver equationSolver = new TEquationSolver(
+                    conjunctiveQueryFolding, expressionMarker.getSubterm(),
+                    propositionalVariable, expressionMarker);
             // System.out.println("Running Solver...\n");
             equationSolver.Solve();
             // System.out.println("Phi : ");
@@ -92,7 +95,8 @@ class TQueryToConceptsTransformer implements Serializable {
         Result.put(
                 lastNominal,
                 conjunctiveQueryFolding.getpEM().not(
-                        conjunctiveQueryFolding.getpEM().concept(propositionalVariable)));
+                        conjunctiveQueryFolding.getpEM().concept(
+                                propositionalVariable)));
     }
 
     /** @return the result */

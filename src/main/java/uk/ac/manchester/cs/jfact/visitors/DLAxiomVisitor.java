@@ -42,131 +42,196 @@ import conformance.PortedFrom;
 /** axiom visitor */
 @PortedFrom(file = "tDLAxiom.h", name = "DLAxiomVisitor")
 public interface DLAxiomVisitor {
-    /** @param axiom
-     *            AxiomDeclaration axiom to visit */
+
+    /**
+     * @param axiom
+     *        AxiomDeclaration axiom to visit
+     */
     void visit(AxiomDeclaration axiom);
 
-    /** @param axiom
-     *            AxiomEquivalentConcepts axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomEquivalentConcepts axiom to visit
+     */
     void visit(AxiomEquivalentConcepts axiom);
 
-    /** @param axiom
-     *            AxiomDisjointConcepts axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomDisjointConcepts axiom to visit
+     */
     void visit(AxiomDisjointConcepts axiom);
 
-    /** @param axiom
-     *            AxiomEquivalentORoles axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomEquivalentORoles axiom to visit
+     */
     void visit(AxiomEquivalentORoles axiom);
 
-    /** @param axiom
-     *            AxiomEquivalentDRoles axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomEquivalentDRoles axiom to visit
+     */
     void visit(AxiomEquivalentDRoles axiom);
 
-    /** @param axiom
-     *            AxiomDisjointORoles axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomDisjointORoles axiom to visit
+     */
     void visit(AxiomDisjointORoles axiom);
 
-    /** @param axiom
-     *            AxiomDisjointDRoles axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomDisjointDRoles axiom to visit
+     */
     void visit(AxiomDisjointDRoles axiom);
 
-    /** @param axiom
-     *            AxiomSameIndividuals axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomSameIndividuals axiom to visit
+     */
     void visit(AxiomSameIndividuals axiom);
 
-    /** @param axiom
-     *            AxiomDifferentIndividuals axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomDifferentIndividuals axiom to visit
+     */
     void visit(AxiomDifferentIndividuals axiom);
 
-    /** @param axiom
-     *            AxiomFairnessConstraint axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomFairnessConstraint axiom to visit
+     */
     void visit(AxiomFairnessConstraint axiom);
 
-    /** @param axiom
-     *            AxiomRoleInverse axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomRoleInverse axiom to visit
+     */
     void visit(AxiomRoleInverse axiom);
 
-    /** @param axiom
-     *            AxiomORoleSubsumption axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomORoleSubsumption axiom to visit
+     */
     void visit(AxiomORoleSubsumption axiom);
 
-    /** @param axiom
-     *            AxiomDRoleSubsumption axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomDRoleSubsumption axiom to visit
+     */
     void visit(AxiomDRoleSubsumption axiom);
 
-    /** @param axiom
-     *            AxiomORoleDomain axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomORoleDomain axiom to visit
+     */
     void visit(AxiomORoleDomain axiom);
 
-    /** @param axiom
-     *            AxiomDRoleDomain axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomDRoleDomain axiom to visit
+     */
     void visit(AxiomDRoleDomain axiom);
 
-    /** @param axiom
-     *            AxiomORoleRange axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomORoleRange axiom to visit
+     */
     void visit(AxiomORoleRange axiom);
 
-    /** @param axiom
-     *            AxiomDRoleRange axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomDRoleRange axiom to visit
+     */
     void visit(AxiomDRoleRange axiom);
 
-    /** @param axiom
-     *            AxiomRoleTransitive axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomRoleTransitive axiom to visit
+     */
     void visit(AxiomRoleTransitive axiom);
 
-    /** @param axiom
-     *            AxiomRoleReflexive axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomRoleReflexive axiom to visit
+     */
     void visit(AxiomRoleReflexive axiom);
 
-    /** @param axiom
-     *            AxiomRoleIrreflexive axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomRoleIrreflexive axiom to visit
+     */
     void visit(AxiomRoleIrreflexive axiom);
 
-    /** @param axiom
-     *            AxiomRoleSymmetric axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomRoleSymmetric axiom to visit
+     */
     void visit(AxiomRoleSymmetric axiom);
 
-    /** @param axiom
-     *            AxiomRoleAsymmetric axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomRoleAsymmetric axiom to visit
+     */
     void visit(AxiomRoleAsymmetric axiom);
 
-    /** @param axiom
-     *            AxiomORoleFunctional axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomORoleFunctional axiom to visit
+     */
     void visit(AxiomORoleFunctional axiom);
 
-    /** @param axiom
-     *            AxiomDRoleFunctional axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomDRoleFunctional axiom to visit
+     */
     void visit(AxiomDRoleFunctional axiom);
 
-    /** @param axiom
-     *            AxiomRoleInverseFunctional axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomRoleInverseFunctional axiom to visit
+     */
     void visit(AxiomRoleInverseFunctional axiom);
 
-    /** @param axiom
-     *            AxiomConceptInclusion axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomConceptInclusion axiom to visit
+     */
     void visit(AxiomConceptInclusion axiom);
 
-    /** @param axiom
-     *            AxiomInstanceOf axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomInstanceOf axiom to visit
+     */
     void visit(AxiomInstanceOf axiom);
 
-    /** @param axiom
-     *            AxiomRelatedTo axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomRelatedTo axiom to visit
+     */
     void visit(AxiomRelatedTo axiom);
 
-    /** @param axiom
-     *            AxiomRelatedToNot axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomRelatedToNot axiom to visit
+     */
     void visit(AxiomRelatedToNot axiom);
 
-    /** @param axiom
-     *            AxiomValueOf axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomValueOf axiom to visit
+     */
     void visit(AxiomValueOf axiom);
 
-    /** @param axiom
-     *            AxiomValueOfNot axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomValueOfNot axiom to visit
+     */
     void visit(AxiomValueOfNot axiom);
 
-    /** @param axiom
-     *            AxiomDisjointUnion axiom to visit */
+    /**
+     * @param axiom
+     *        AxiomDisjointUnion axiom to visit
+     */
     void visit(AxiomDisjointUnion axiom);
 }

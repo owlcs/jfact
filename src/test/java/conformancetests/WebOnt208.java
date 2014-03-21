@@ -9,6 +9,7 @@ import org.junit.Test;
 
 @SuppressWarnings("javadoc")
 public class WebOnt208 {
+
     @Test
     public void testWebOnt_description_logic_208() {
         String premise = "<rdf:RDF\n"
@@ -202,7 +203,8 @@ public class WebOnt208 {
                 + "</owl:Thing>\n" + "</rdf:RDF>";
         String id = "WebOnt_description_logic_208";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "DL Test: k_poly\n" + "ABox test from DL98 systems comparison.";
+        String d = "DL Test: k_poly\n"
+                + "ABox test from DL98 systems comparison.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();

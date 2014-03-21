@@ -9,6 +9,7 @@ import org.junit.Test;
 
 @SuppressWarnings("javadoc")
 public class WebOnt_allValuesFrom_001 {
+
     @Test
     public void testWebOnt_miscellaneous_203() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:first=\"http://www.w3.org/2002/03owlt/miscellaneous/inconsistent203#\"\n"

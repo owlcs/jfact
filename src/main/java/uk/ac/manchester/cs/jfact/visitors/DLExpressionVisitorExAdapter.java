@@ -48,12 +48,15 @@ import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleProjectionInto;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleTop;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 
-/** adapter for expression visitor
+/**
+ * adapter for expression visitor
  * 
  * @param <A>
- *            return type */
+ *        return type
+ */
 public abstract class DLExpressionVisitorExAdapter<A> implements
         DLExpressionVisitorEx<A>, Serializable {
+
     private static final long serialVersionUID = 11000L;
     private A defaultValue;
 
@@ -66,8 +69,10 @@ public abstract class DLExpressionVisitorExAdapter<A> implements
         this(null);
     }
 
-    /** @param a
-     *            return value */
+    /**
+     * @param a
+     *        return value
+     */
     public DLExpressionVisitorExAdapter(A a) {
         defaultValue = a;
     }

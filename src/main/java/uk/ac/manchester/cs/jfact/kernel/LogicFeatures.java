@@ -18,23 +18,28 @@ import conformance.PortedFrom;
 /** logic features */
 @PortedFrom(file = "LogicFeature.h", name = "LogicFeatures")
 public class LogicFeatures implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** all flags in one long */
     @PortedFrom(file = "LogicFeature.h", name = "flags")
     private final BitSet flags = new BitSet();
 
-    /** set any flag
+    /**
+     * set any flag
      * 
      * @param val
-     *            val */
+     *        val
+     */
     @PortedFrom(file = "LogicFeature.h", name = "setX")
     private void setX(int val) {
         flags.set(val);
     }
 
-    /** @param val
-     *            val
-     * @return value of any flag */
+    /**
+     * @param val
+     *        val
+     * @return value of any flag
+     */
     @PortedFrom(file = "LogicFeature.h", name = "getX")
     private boolean getX(int val) {
         return flags.get(val);
@@ -43,18 +48,22 @@ public class LogicFeatures implements Serializable {
     /** default c'tor */
     public LogicFeatures() {}
 
-    /** copy c'tor
+    /**
+     * copy c'tor
      * 
      * @param lf
-     *            lf */
+     *        lf
+     */
     public LogicFeatures(LogicFeatures lf) {
         flags.or(lf.flags);
     }
 
-    /** operator add
+    /**
+     * operator add
      * 
      * @param lf
-     *            lf */
+     *        lf
+     */
     @PortedFrom(file = "LogicFeature.h", name = "or")
     public void or(LogicFeatures lf) {
         flags.or(lf.flags);
@@ -139,11 +148,13 @@ public class LogicFeatures implements Serializable {
         setX(lfBothRoles);
     }
 
-    /** @param f1
-     *            f1
+    /**
+     * @param f1
+     *        f1
      * @param f2
-     *            f2
-     * @return combination of the two objects */
+     *        f2
+     * @return combination of the two objects
+     */
     @PortedFrom(file = "LogicFeature.h", name = "+")
     public static LogicFeatures plus(LogicFeatures f1, LogicFeatures f2) {
         LogicFeatures f = new LogicFeatures(f1);
@@ -151,8 +162,10 @@ public class LogicFeatures implements Serializable {
         return f;
     }
 
-    /** @param p
-     *            p */
+    /**
+     * @param p
+     *        p
+     */
     @PortedFrom(file = "LogicFeature.h", name = "fillConceptData")
     public void fillConceptData(Concept p) {
         if (p.isSingleton()) {
@@ -160,10 +173,12 @@ public class LogicFeatures implements Serializable {
         }
     }
 
-    /** @param p
-     *            p
+    /**
+     * @param p
+     *        p
      * @param both
-     *            both */
+     *        both
+     */
     @PortedFrom(file = "LogicFeature.h", name = "fillRoleData")
     public void fillRoleData(Role p, boolean both) {
         if (p.isTop()) {
@@ -194,10 +209,12 @@ public class LogicFeatures implements Serializable {
         }
     }
 
-    /** @param v
-     *            v
+    /**
+     * @param v
+     *        v
      * @param pos
-     *            pos */
+     *        pos
+     */
     @PortedFrom(file = "LogicFeature.h", name = "fillDAGData")
     public void fillDAGData(DLVertex v, boolean pos) {
         switch (v.getType()) {
@@ -222,8 +239,10 @@ public class LogicFeatures implements Serializable {
         }
     }
 
-    /** @param l
-     *            l */
+    /**
+     * @param l
+     *        l
+     */
     @PortedFrom(file = "LogicFeature.h", name = "writeState")
     public void writeState(LogAdapter l) {
         String NO = "NO ";

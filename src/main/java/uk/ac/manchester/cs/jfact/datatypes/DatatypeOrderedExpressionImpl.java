@@ -12,15 +12,18 @@ import java.util.Collection;
 
 import org.semanticweb.owlapi.model.IRI;
 
-class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<O>
-        implements DatatypeExpression<O>, OrderedDatatype<O> {
+class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
+        ABSTRACT_DATATYPE<O> implements DatatypeExpression<O>,
+        OrderedDatatype<O> {
+
     private static final long serialVersionUID = 11000L;
     // TODO handle all value space restrictions in the delegations
     private final Datatype<O> host;
 
     public DatatypeOrderedExpressionImpl(Datatype<O> b) {
-        super(IRI.create(b.getDatatypeIRI() + "_" + DatatypeFactory.getIndex()), b
-                .getFacets());
+        super(
+                IRI.create(b.getDatatypeIRI() + "_"
+                        + DatatypeFactory.getIndex()), b.getFacets());
         if (b.isExpression()) {
             this.host = b.asExpression().getHostType();
         } else {
@@ -70,7 +73,8 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
         // return true;
         // }
         if (type.isOrderedDatatype()) {
-            OrderedDatatype<O> wrapper = (OrderedDatatype<O>) type.asOrderedDatatype();
+            OrderedDatatype<O> wrapper = (OrderedDatatype<O>) type
+                    .asOrderedDatatype();
             // if both have no max or both have no min -> there is an
             // overlap
             // if one has no max, then min must be smaller than max of the
@@ -107,7 +111,8 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
             // exclusives:
             // one minInclusive/exclusive is strictly larger than the other
             // maxinclusive/exclusive
-            return this.overlapping(this, wrapper) || this.overlapping(wrapper, this);
+            return this.overlapping(this, wrapper)
+                    || this.overlapping(wrapper, this);
         } else {
             return false;
         }
@@ -144,7 +149,8 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
     }
 
     @Override
-    public DatatypeExpression<O> addNonNumericFacet(Facet f, Comparable<?> value) {
+    public DatatypeExpression<O>
+            addNonNumericFacet(Facet f, Comparable<?> value) {
         if (!facets.contains(f)) {
             throw new IllegalArgumentException("Facet " + f
                     + " not allowed tor datatype " + this.getHostType());
@@ -152,9 +158,11 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
-        if (value instanceof Literal && !this.host.isCompatible((Literal<?>) value)) {
-            throw new IllegalArgumentException("Not a valid value for this expression: "
-                    + f + "\t" + value + " for: " + this);
+        if (value instanceof Literal
+                && !this.host.isCompatible((Literal<?>) value)) {
+            throw new IllegalArgumentException(
+                    "Not a valid value for this expression: " + f + "\t"
+                            + value + " for: " + this);
         }
         DatatypeOrderedExpressionImpl<O> toReturn = new DatatypeOrderedExpressionImpl<O>(
                 this.host);
@@ -296,7 +304,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
 
     @Override
     public String toString() {
-        return this.getClass().getName() + "(" + this.host.toString() + "(extra facets:"
-                + knownNumericFacetValues + "))";
+        return this.getClass().getName() + "(" + this.host.toString()
+                + "(extra facets:" + knownNumericFacetValues + "))";
     }
 }

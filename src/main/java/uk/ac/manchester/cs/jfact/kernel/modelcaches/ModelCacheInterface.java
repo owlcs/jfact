@@ -14,32 +14,39 @@ import conformance.PortedFrom;
 /** model cache */
 @PortedFrom(file = "modelCacheInterface.h", name = "modelCacheInterface")
 public abstract class ModelCacheInterface implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** flag to show that model contains nominals */
     @PortedFrom(file = "modelCacheInterface.h", name = "hasNominalNode")
     private boolean hasNominalNode;
 
-    /** Create cache model with given precense of nominals
+    /**
+     * Create cache model with given precense of nominals
      * 
      * @param flagNominals
-     *            flagNominals */
+     *        flagNominals
+     */
     public ModelCacheInterface(boolean flagNominals) {
         setHasNominalNode(flagNominals);
     }
 
-    /** @param p
-     *            p
+    /**
+     * @param p
+     *        p
      * @return check whether both models have nominals; in this case, merge is
-     *         impossible */
+     *         impossible
+     */
     @PortedFrom(file = "modelCacheInterface.h", name = "hasNominalClash")
     public boolean hasNominalClash(ModelCacheInterface p) {
         return isHasNominalNode() && p.isHasNominalNode();
     }
 
-    /** update knoweledge about nominals in the model after merging
+    /**
+     * update knoweledge about nominals in the model after merging
      * 
      * @param p
-     *            p */
+     *        p
+     */
     @PortedFrom(file = "modelCacheInterface.h", name = "updateNominalStatus")
     public void updateNominalStatus(ModelCacheInterface p) {
         setHasNominalNode(isHasNominalNode() | p.isHasNominalNode());
@@ -50,11 +57,13 @@ public abstract class ModelCacheInterface implements Serializable {
     @PortedFrom(file = "modelCacheInterface.h", name = "getState")
     public abstract ModelCacheState getState();
 
-    /** check whether two caches can be merged;
+    /**
+     * check whether two caches can be merged;
      * 
      * @param p
-     *            p
-     * @return state of "merged" model */
+     *        p
+     * @return state of "merged" model
+     */
     @PortedFrom(file = "modelCacheInterface.h", name = "canMerge")
     public abstract ModelCacheState canMerge(ModelCacheInterface p);
 
@@ -70,17 +79,21 @@ public abstract class ModelCacheInterface implements Serializable {
         return true;
     }
 
-    /** log this cache entry (with given level)
+    /**
+     * log this cache entry (with given level)
      * 
      * @param level
-     *            level
+     *        level
      * @param l
-     *            l */
+     *        l
+     */
     @PortedFrom(file = "modelCacheInterface.h", name = "logCacheEntry")
     public abstract void logCacheEntry(int level, LogAdapter l);
 
-    /** @param hasNominalNode
-     *            hasNominalNode */
+    /**
+     * @param hasNominalNode
+     *        hasNominalNode
+     */
     @Original
     public void setHasNominalNode(boolean hasNominalNode) {
         this.hasNominalNode = hasNominalNode;

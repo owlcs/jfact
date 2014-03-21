@@ -19,6 +19,7 @@ import conformance.PortedFrom;
 /** List of concepts with dependencies */
 @PortedFrom(file = "CWDArray.h", name = "CWDArray")
 public class CWDArray implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     @Original
     private static final double distribution = 0.025;
@@ -58,10 +59,12 @@ public class CWDArray implements Serializable {
         return indexes;
     }
 
-    /** adds concept P to a label - to be called only from CGLabel
+    /**
+     * adds concept P to a label - to be called only from CGLabel
      * 
      * @param p
-     *            p */
+     *        p
+     */
     @Original
     protected void private_add(ConceptWDep p) {
         base.add(p);
@@ -75,12 +78,15 @@ public class CWDArray implements Serializable {
         // create a cache only if the size is higher than a preset minimum and
         // there is at least an element in 20; caches with very dispersed
         // elements eat up too much memory
-        createCache = size > cacheLimit && (double) size / (span + 1) > distribution;
+        createCache = size > cacheLimit
+                && (double) size / (span + 1) > distribution;
     }
 
-    /** @param bp
-     *            bp
-     * @return true if label contains BP (ignoring dep-set) */
+    /**
+     * @param bp
+     *        bp
+     * @return true if label contains BP (ignoring dep-set)
+     */
     @PortedFrom(file = "CWDArray.h", name = "contains")
     public boolean contains(int bp) {
         if (cache == null && createCache) {
@@ -106,9 +112,11 @@ public class CWDArray implements Serializable {
         return p >= 0 ? 2 * p : 1 - 2 * p;
     }
 
-    /** @param bp
-     *            bp
-     * @return index of given bp */
+    /**
+     * @param bp
+     *        bp
+     * @return index of given bp
+     */
     @PortedFrom(file = "CWDArray.h", name = "index")
     public int index(int bp) {
         // check that the index actually exist: quicker
@@ -118,9 +126,11 @@ public class CWDArray implements Serializable {
         return indexes.get(bp);
     }
 
-    /** @param bp
-     *            bp
-     * @return depset for given bp */
+    /**
+     * @param bp
+     *        bp
+     * @return depset for given bp
+     */
     @PortedFrom(file = "CWDArray.h", name = "get")
     public DepSet get(int bp) {
         // check that the index actually exist: quicker
@@ -134,9 +144,11 @@ public class CWDArray implements Serializable {
         return base.get(i).getDep();
     }
 
-    /** @param bp
-     *            bp
-     * @return concept with given bp */
+    /**
+     * @param bp
+     *        bp
+     * @return concept with given bp
+     */
     @Original
     public ConceptWDep getConceptWithBP(int bp) {
         // check that the index actually exist: quicker
@@ -156,9 +168,11 @@ public class CWDArray implements Serializable {
         return size;
     }
 
-    /** @param label
-     *            label
-     * @return true if this list is lesser or equal label */
+    /**
+     * @param label
+     *        label
+     * @return true if this list is lesser or equal label
+     */
     @PortedFrom(file = "CWDArray.h", name = "<=")
     public boolean lesserequal(CWDArray label) {
         // use the cache on the label if there is one
@@ -194,19 +208,23 @@ public class CWDArray implements Serializable {
         return false;
     }
 
-    /** save label using given SS
+    /**
+     * save label using given SS
      * 
-     * @return save level */
+     * @return save level
+     */
     @PortedFrom(file = "CWDArray.h", name = "save")
     public int save() {
         return size;
     }
 
-    /** @param index
-     *            index
+    /**
+     * @param index
+     *        index
      * @param dep
-     *            dep
-     * @return restorer for saved dep set */
+     *        dep
+     * @return restorer for saved dep set
+     */
     @PortedFrom(file = "CWDArray.h", name = "updateDepSet")
     public Restorer updateDepSet(int index, DepSet dep) {
         if (dep.isEmpty()) {
@@ -217,9 +235,11 @@ public class CWDArray implements Serializable {
         return ret;
     }
 
-    /** @param dep
-     *            dep
-     * @return restorer for saved dep set */
+    /**
+     * @param dep
+     *        dep
+     * @return restorer for saved dep set
+     */
     @PortedFrom(file = "CWDArray.h", name = "updateDepSet")
     public List<Restorer> updateDepSet(DepSet dep) {
         if (dep.isEmpty()) {
@@ -234,10 +254,12 @@ public class CWDArray implements Serializable {
         return toReturn;
     }
 
-    /** @param ss
-     *            ss
+    /**
+     * @param ss
+     *        ss
      * @param level
-     *            level */
+     *        level
+     */
     @PortedFrom(file = "CWDArray.h", name = "restore")
     public void restore(int ss, int level) {
         for (int i = ss; i < size; i++) {

@@ -15,12 +15,15 @@ import conformance.PortedFrom;
 /** transitive object role */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomRoleTransitive")
 public class AxiomRoleTransitive extends AxiomSingleORole {
+
     private static final long serialVersionUID = 11000L;
 
-    /** @param ax
-     *            ax
+    /**
+     * @param ax
+     *        ax
      * @param role
-     *            role */
+     *        role
+     */
     public AxiomRoleTransitive(OWLAxiom ax, ObjectRoleExpression role) {
         super(ax, role);
     }

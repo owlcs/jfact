@@ -10,8 +10,9 @@ import conformance.PortedFrom;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** general data role cardinality expression */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptDataCardinalityExpression")
-public interface ConceptDataCardinalityExpression extends ConceptDataRVExpression,
-        NumberArg {
+public interface ConceptDataCardinalityExpression extends
+        ConceptDataRVExpression, NumberArg {
+
     @Override
     /** accept method for the visitor pattern */
     @PortedFrom(file = "tDLExpression.h", name = "accept")

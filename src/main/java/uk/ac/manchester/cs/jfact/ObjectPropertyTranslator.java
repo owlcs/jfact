@@ -15,14 +15,17 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 /** object property translator */
 public class ObjectPropertyTranslator extends
         OWLEntityTranslator<OWLObjectPropertyExpression, ObjectRoleExpression> {
+
     private static final long serialVersionUID = 11000L;
 
-    /** @param em
-     *            em
+    /**
+     * @param em
+     *        em
      * @param df
-     *            df
+     *        df
      * @param tr
-     *            tr */
+     *        tr
+     */
     public ObjectPropertyTranslator(ExpressionManager em, OWLDataFactory df,
             TranslationMachinery tr) {
         super(em, df, tr);
@@ -35,11 +38,13 @@ public class ObjectPropertyTranslator extends
 
     @Override
     protected ObjectRoleExpression getBottomEntityPointer() {
-        return em.objectRole(OWLRDFVocabulary.OWL_BOTTOM_OBJECT_PROPERTY.getIRI());
+        return em.objectRole(OWLRDFVocabulary.OWL_BOTTOM_OBJECT_PROPERTY
+                .getIRI());
     }
 
     @Override
-    protected ObjectRoleExpression registerNewEntity(OWLObjectPropertyExpression entity) {
+    protected ObjectRoleExpression registerNewEntity(
+            OWLObjectPropertyExpression entity) {
         ObjectRoleExpression pointer = createPointerForEntity(entity);
         fillMaps(entity, pointer);
         OWLObjectPropertyExpression inverseentity = entity.getInverseProperty()
@@ -52,7 +57,8 @@ public class ObjectPropertyTranslator extends
     protected ObjectRoleExpression createPointerForEntity(
             OWLObjectPropertyExpression entity) {
         // FIXME!! think later!!
-        ObjectRoleExpression p = em.objectRole(entity.getNamedProperty().getIRI());
+        ObjectRoleExpression p = em.objectRole(entity.getNamedProperty()
+                .getIRI());
         if (entity.isAnonymous()) {
             p = em.inverse(p);
         }
@@ -75,7 +81,8 @@ public class ObjectPropertyTranslator extends
     }
 
     @Override
-    protected DefaultNodeSet<OWLObjectPropertyExpression> createDefaultNodeSet() {
+    protected DefaultNodeSet<OWLObjectPropertyExpression>
+            createDefaultNodeSet() {
         return new OWLObjectPropertyNodeSet();
     }
 }

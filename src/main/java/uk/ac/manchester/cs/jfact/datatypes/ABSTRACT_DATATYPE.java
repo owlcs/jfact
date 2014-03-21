@@ -17,11 +17,14 @@ import org.semanticweb.owlapi.model.IRI;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
-/** @author ignazio
+/**
+ * @author ignazio
  * @param <R>
- *            type */
-public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>,
-        Serializable {
+ *        type
+ */
+public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
+        Datatype<R>, Serializable {
+
     private static final long serialVersionUID = 11000L;
     protected final Set<Facet> facets;
     protected Set<Datatype<?>> ancestors;
@@ -31,10 +34,12 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Data
     protected final Map<Facet, Comparable> knownNonNumericFacetValues = new HashMap<Facet, Comparable>();
     protected final IRI uri;
 
-    /** @param u
-     *            u
+    /**
+     * @param u
+     *        u
      * @param f
-     *            facets */
+     *        facets
+     */
     public ABSTRACT_DATATYPE(IRI u, Set<Facet> f) {
         this.facets = Collections.unmodifiableSet(f);
         this.uri = u;
@@ -168,8 +173,8 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Data
     @Override
     public DatatypeExpression<R> asExpression() {
         if (!this.isExpression()) {
-            throw new UnsupportedOperationException("Type: " + this.getDatatypeIRI()
-                    + " is not an expression");
+            throw new UnsupportedOperationException("Type: "
+                    + this.getDatatypeIRI() + " is not an expression");
         }
         return (DatatypeExpression<R>) this;
     }
@@ -207,8 +212,8 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Data
         return cardinality.COUNTABLYINFINITE;
     }
 
-    protected <T extends Comparable<T>> boolean overlapping(OrderedDatatype<T> first,
-            OrderedDatatype<T> second) {
+    protected <T extends Comparable<T>> boolean overlapping(
+            OrderedDatatype<T> first, OrderedDatatype<T> second) {
         T max = first.getMax();
         T min = second.getMin();
         if (first.hasMaxInclusive() && second.hasMinInclusive()) {

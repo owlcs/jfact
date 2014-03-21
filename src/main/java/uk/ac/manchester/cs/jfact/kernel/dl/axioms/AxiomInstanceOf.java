@@ -16,17 +16,21 @@ import conformance.PortedFrom;
 /** class assertion */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomInstanceOf")
 public class AxiomInstanceOf extends AxiomIndividual {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "C")
     private final ConceptExpression conceptExpression;
 
-    /** @param ax
-     *            ax
+    /**
+     * @param ax
+     *        ax
      * @param i
-     *            i
+     *        i
      * @param c
-     *            c */
-    public AxiomInstanceOf(OWLAxiom ax, IndividualExpression i, ConceptExpression c) {
+     *        c
+     */
+    public AxiomInstanceOf(OWLAxiom ax, IndividualExpression i,
+            ConceptExpression c) {
         super(ax, i);
         conceptExpression = c;
     }

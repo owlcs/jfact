@@ -25,6 +25,7 @@ import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 @SuppressWarnings("javadoc")
 public class WebOnt {
+
     @Test
     public void testWebOnt_AnnotationProperty_003() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/AnnotationProperty/consistent003#\"\n"
@@ -76,7 +77,8 @@ public class WebOnt {
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I4.5/conclusions001\" >\n"
                 + "  <owl:Ontology/>\n"
                 + "  <first:EuroMP rdf:about=\"premises001#Kinnock\" />\n"
-                + "  <owl:Class rdf:about=\"premises001#EuroMP\"/>\n" + "</rdf:RDF>";
+                + "  <owl:Class rdf:about=\"premises001#EuroMP\"/>\n"
+                + "</rdf:RDF>";
         String id = "WebOnt_I4_5_001";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "An example combinging owl:oneOf and owl:inverseOf.";
@@ -261,7 +263,8 @@ public class WebOnt {
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLOntology o = m.createOntology();
         OWLDataFactory f = m.getOWLDataFactory();
-        OWLObjectProperty p = f.getOWLObjectProperty(IRI.create("urn:test:test#p"));
+        OWLObjectProperty p = f.getOWLObjectProperty(IRI
+                .create("urn:test:test#p"));
         m.addAxiom(o, f.getOWLDeclarationAxiom(p));
         OWLReasoner r = Factory.factory().createReasoner(o);
         assertTrue(r.isConsistent());
@@ -559,10 +562,10 @@ public class WebOnt {
                 f.getOWLDataPropertyRangeAxiom(p,
                         f.getOWLDatatype(OWL2Datatype.XSD_SHORT.getIRI())));
         OWLReasoner r = Factory.factory().createReasoner(o);
-        assertFalse(
-                "unsigned byte should not be inferred",
-                r.isEntailed(f.getOWLDataPropertyRangeAxiom(p,
-                        f.getOWLDatatype(OWL2Datatype.XSD_UNSIGNED_BYTE.getIRI()))));
+        assertFalse("unsigned byte should not be inferred", r.isEntailed(f
+                .getOWLDataPropertyRangeAxiom(p,
+                        f.getOWLDatatype(OWL2Datatype.XSD_UNSIGNED_BYTE
+                                .getIRI()))));
     }
 
     @Test
@@ -646,7 +649,8 @@ public class WebOnt {
                 + "  <first:Automobile rdf:about=\"premises001#car\">\n"
                 + "     <rdf:type rdf:resource=\"http://www.w3.org/2002/07/owl#Thing\" /></first:Automobile>\n"
                 + "   <owl:Class rdf:about=\"premises001#Car\"/>\n"
-                + "   <owl:Class rdf:about=\"premises001#Automobile\"/>\n" + "</rdf:RDF>";
+                + "   <owl:Class rdf:about=\"premises001#Automobile\"/>\n"
+                + "</rdf:RDF>";
         String id = "WebOnt_Ontology_001";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "This is a variation of <a xmlns=\"http://www.w3.org/1999/xhtml\" href=\"#equivalentClass-001\">equivalentClass-001</a>,\n"
@@ -1921,7 +1925,8 @@ public class WebOnt {
         String conclusion = "";
         String id = "WebOnt_description_logic_101";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        String d = "DL Test: heinsohn1.1\n" + "Tbox tests from Heinsohn et al.\n"
+        String d = "DL Test: heinsohn1.1\n"
+                + "Tbox tests from Heinsohn et al.\n"
                 + "Tests incoherency caused by disjoint concept";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
@@ -1945,7 +1950,8 @@ public class WebOnt {
         String conclusion = "";
         String id = "WebOnt_description_logic_102";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        String d = "DL Test: heinsohn1.2\n" + "Tbox tests from Heinsohn et al.\n"
+        String d = "DL Test: heinsohn1.2\n"
+                + "Tbox tests from Heinsohn et al.\n"
                 + "Tests incoherency caused by disjoint concept";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
@@ -1969,7 +1975,8 @@ public class WebOnt {
         String conclusion = "";
         String id = "WebOnt_description_logic_103";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        String d = "DL Test: heinsohn1.3\n" + "Tbox tests from Heinsohn et al.\n"
+        String d = "DL Test: heinsohn1.3\n"
+                + "Tbox tests from Heinsohn et al.\n"
                 + "Tests incoherency caused by disjoint concept";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
@@ -1993,7 +2000,8 @@ public class WebOnt {
         String conclusion = "";
         String id = "WebOnt_description_logic_104";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        String d = "DL Test: heinsohn1.4\n" + "Tbox tests from Heinsohn et al.\n"
+        String d = "DL Test: heinsohn1.4\n"
+                + "Tbox tests from Heinsohn et al.\n"
                 + "Tests incoherency caused by disjoint concept";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
@@ -2015,7 +2023,8 @@ public class WebOnt {
         String conclusion = "";
         String id = "WebOnt_description_logic_105";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        String d = "DL Test: heinsohn2.1\n" + "Tbox tests from Heinsohn et al.\n"
+        String d = "DL Test: heinsohn2.1\n"
+                + "Tbox tests from Heinsohn et al.\n"
                 + "Tests incoherency caused by number restrictions";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
@@ -2036,7 +2045,8 @@ public class WebOnt {
         String conclusion = "";
         String id = "WebOnt_description_logic_106";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        String d = "DL Test: heinsohn2.2\n" + "Tbox tests from Heinsohn et al.\n"
+        String d = "DL Test: heinsohn2.2\n"
+                + "Tbox tests from Heinsohn et al.\n"
                 + "Tests incoherency caused by number restrictions";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
@@ -2070,7 +2080,8 @@ public class WebOnt {
         String conclusion = "";
         String id = "WebOnt_description_logic_107";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        String d = "DL Test: heinsohn3.1\n" + "Tbox tests from Heinsohn et al.\n"
+        String d = "DL Test: heinsohn3.1\n"
+                + "Tbox tests from Heinsohn et al.\n"
                 + "Tests incoherency caused by number restrictions and role hierarchy";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
@@ -2106,7 +2117,8 @@ public class WebOnt {
         String conclusion = "";
         String id = "WebOnt_description_logic_108";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        String d = "DL Test: heinsohn3.2\n" + "Tbox tests from Heinsohn et al.\n"
+        String d = "DL Test: heinsohn3.2\n"
+                + "Tbox tests from Heinsohn et al.\n"
                 + "Tests incoherency caused by number restrictions and role hierarchy";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
@@ -2130,7 +2142,8 @@ public class WebOnt {
         String conclusion = "";
         String id = "WebOnt_description_logic_109";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        String d = "DL Test: heinsohn3c.1\n" + "Tbox tests from Heinsohn et al.\n"
+        String d = "DL Test: heinsohn3c.1\n"
+                + "Tbox tests from Heinsohn et al.\n"
                 + "Tests incoherency caused by number restrictions and role hierarchy";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
@@ -2152,7 +2165,8 @@ public class WebOnt {
         String conclusion = "";
         String id = "WebOnt_description_logic_110";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        String d = "DL Test: heinsohn4.1\n" + "Tbox tests from Heinsohn et al.\n"
+        String d = "DL Test: heinsohn4.1\n"
+                + "Tbox tests from Heinsohn et al.\n"
                 + "Tests role restrictions";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
@@ -2176,7 +2190,8 @@ public class WebOnt {
         String conclusion = "";
         String id = "WebOnt_description_logic_111";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        String d = "DL Test: heinsohn4.2\n" + "Tbox tests from Heinsohn et al.\n"
+        String d = "DL Test: heinsohn4.2\n"
+                + "Tbox tests from Heinsohn et al.\n"
                 + "Tests role restrictions";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
@@ -2432,7 +2447,8 @@ public class WebOnt {
                 + "</owl:Thing>\n" + "</rdf:RDF>";
         String id = "WebOnt_description_logic_205";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "DL Test: k_lin\n" + "ABox test from DL98 systems comparison.";
+        String d = "DL Test: k_lin\n"
+                + "ABox test from DL98 systems comparison.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -2466,7 +2482,8 @@ public class WebOnt {
                 + "</owl:Thing>\n" + "</rdf:RDF>";
         String id = "WebOnt_description_logic_207";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "DL Test: k_ph\n" + "ABox test from DL98 systems comparison.";
+        String d = "DL Test: k_ph\n"
+                + "ABox test from DL98 systems comparison.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -3426,7 +3443,8 @@ public class WebOnt {
                 + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
                 + "Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\n"
                 + "Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)\n"
-                + "Prefix(urn:=<urn:test#>)\n" + "Ontology(<urn:testonto:>\n"
+                + "Prefix(urn:=<urn:test#>)\n"
+                + "Ontology(<urn:testonto:>\n"
                 + "Declaration(Class(<urn:A.2>))\n"
                 + "EquivalentClasses(<urn:A.2> ObjectAllValuesFrom(<urn:r> <urn:c>))\n"
                 + "SubClassOf(<urn:A.2> <urn:d>)\n"
@@ -3452,7 +3470,8 @@ public class WebOnt {
     }
 
     @Test
-    public void testWebOnt_description_logic_602() throws OWLOntologyCreationException {
+    public void testWebOnt_description_logic_602()
+            throws OWLOntologyCreationException {
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLDataFactory f = m.getOWLDataFactory();
         OWLOntology o = m.createOntology();
@@ -3469,10 +3488,14 @@ public class WebOnt {
         m.addAxiom(o, f.getOWLSubClassOfAxiom(U, C));
         m.addAxiom(o, f.getOWLSubClassOfAxiom(U, B));
         m.addAxiom(o, f.getOWLSubClassOfAxiom(C, rAllC));
-        m.addAxiom(o,
-                f.getOWLEquivalentClassesAxiom(D, f.getOWLObjectMaxCardinality(0, p)));
-        m.addAxiom(o,
-                f.getOWLEquivalentClassesAxiom(B, f.getOWLObjectMinCardinality(1, p)));
+        m.addAxiom(
+                o,
+                f.getOWLEquivalentClassesAxiom(D,
+                        f.getOWLObjectMaxCardinality(0, p)));
+        m.addAxiom(
+                o,
+                f.getOWLEquivalentClassesAxiom(B,
+                        f.getOWLObjectMinCardinality(1, p)));
         // m.saveOntology(o, new OWLFunctionalSyntaxOntologyFormat(),
         // new SystemOutDocumentTarget());
         OWLReasoner reasoner = Factory.factory().createReasoner(o);
@@ -3491,7 +3514,8 @@ public class WebOnt {
                 reasoner.isEntailed(f.getOWLSubClassOfAxiom(A, D)));
         assertTrue("cannot infer U [= D",
                 reasoner.isEntailed(f.getOWLSubClassOfAxiom(U, D)));
-        assertFalse("cannot find unsatisfiable class", reasoner.isSatisfiable(U));
+        assertFalse("cannot find unsatisfiable class",
+                reasoner.isSatisfiable(U));
     }
 
     @Test
@@ -4614,7 +4638,9 @@ public class WebOnt {
                 + "   <owl:Restriction>\n"
                 + "    <owl:onProperty rdf:resource=\"http://oiled.man.example.net/test#f\"/>\n"
                 + "    <owl:maxCardinality rdf:datatype=\"/2001/XMLSchema#nonNegativeInteger\">1</owl:maxCardinality></owl:Restriction></rdfs:subClassOf>\n"
-                + " </rdf:Description>\n" + " <oiled:Unsatisfiable/>\n" + "</rdf:RDF>";
+                + " </rdf:Description>\n"
+                + " <oiled:Unsatisfiable/>\n"
+                + "</rdf:RDF>";
         String conclusion = "";
         String id = "WebOnt_description_logic_626";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -5119,7 +5145,8 @@ public class WebOnt {
         String conclusion = "";
         String id = "WebOnt_description_logic_641";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        String d = "DL Test: heinsohn1.1\n" + "Tbox tests from Heinsohn et al.\n"
+        String d = "DL Test: heinsohn1.1\n"
+                + "Tbox tests from Heinsohn et al.\n"
                 + "Tests incoherency caused by disjoint concept";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
@@ -5172,11 +5199,14 @@ public class WebOnt {
                 + " <owl:Class rdf:about=\"http://oiled.man.example.net/test#d1.comp\"><owl:equivalentClass><owl:Restriction>\n"
                 + "    <owl:onProperty rdf:resource=\"#P.2\"/>\n"
                 + "    <owl:cardinality rdf:datatype=\"/2001/XMLSchema#short\">0</owl:cardinality></owl:Restriction></owl:equivalentClass>\n"
-                + " </owl:Class>\n" + " <oiled:Unsatisfiable/>\n" + "</rdf:RDF>";
+                + " </owl:Class>\n"
+                + " <oiled:Unsatisfiable/>\n"
+                + "</rdf:RDF>";
         String conclusion = "";
         String id = "WebOnt_description_logic_642";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        String d = "DL Test: heinsohn1.2\n" + "Tbox tests from Heinsohn et al.\n"
+        String d = "DL Test: heinsohn1.2\n"
+                + "Tbox tests from Heinsohn et al.\n"
                 + "Tests incoherency caused by disjoint concept";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
@@ -5224,7 +5254,8 @@ public class WebOnt {
         String conclusion = "";
         String id = "WebOnt_description_logic_643";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        String d = "DL Test: heinsohn1.3\n" + "Tbox tests from Heinsohn et al.\n"
+        String d = "DL Test: heinsohn1.3\n"
+                + "Tbox tests from Heinsohn et al.\n"
                 + "Tests incoherency caused by disjoint concept";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
@@ -5267,7 +5298,8 @@ public class WebOnt {
         String conclusion = "";
         String id = "WebOnt_description_logic_644";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        String d = "DL Test: heinsohn1.4\n" + "Tbox tests from Heinsohn et al.\n"
+        String d = "DL Test: heinsohn1.4\n"
+                + "Tbox tests from Heinsohn et al.\n"
                 + "Tests incoherency caused by disjoint concept";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
@@ -5306,7 +5338,8 @@ public class WebOnt {
         String conclusion = "";
         String id = "WebOnt_description_logic_646";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        String d = "DL Test: heinsohn2.2\n" + "Tbox tests from Heinsohn et al.\n"
+        String d = "DL Test: heinsohn2.2\n"
+                + "Tbox tests from Heinsohn et al.\n"
                 + "Tests incoherency caused by number restrictions";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
@@ -5362,7 +5395,8 @@ public class WebOnt {
         String conclusion = "";
         String id = "WebOnt_description_logic_650";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        String d = "DL Test: heinsohn4.1\n" + "Tbox tests from Heinsohn et al.\n"
+        String d = "DL Test: heinsohn4.1\n"
+                + "Tbox tests from Heinsohn et al.\n"
                 + "Tests role restrictions";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
@@ -5473,7 +5507,8 @@ public class WebOnt {
                 + "</owl:Thing>\n" + "</rdf:RDF>";
         String id = "WebOnt_description_logic_665";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "DL Test: k_lin\n" + "ABox test from DL98 systems comparison.";
+        String d = "DL Test: k_lin\n"
+                + "ABox test from DL98 systems comparison.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -5550,7 +5585,8 @@ public class WebOnt {
                 + "</owl:Thing>\n" + "</rdf:RDF>";
         String id = "WebOnt_description_logic_667";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "DL Test: k_ph\n" + "ABox test from DL98 systems comparison.";
+        String d = "DL Test: k_ph\n"
+                + "ABox test from DL98 systems comparison.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -5797,7 +5833,8 @@ public class WebOnt {
         String id = "WebOnt_disjointWith_005";
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
         String d = "If the owl:disjointWith edges in the graph form unconnected\n"
-                + "undirected complete subgraphs\n" + "then this may be within OWL DL.";
+                + "undirected complete subgraphs\n"
+                + "then this may be within OWL DL.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -5839,7 +5876,8 @@ public class WebOnt {
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
         String d = "If the owl:disjointWith edges in the graph form\n"
                 + "undirected complete subgraphs which share URIref nodes\n"
-                + "but do not share blank node\n" + "then this may be within OWL DL.";
+                + "but do not share blank node\n"
+                + "then this may be within OWL DL.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -5878,7 +5916,8 @@ public class WebOnt {
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
         String d = "If the owl:disjointWith edges in the graph form\n"
                 + "undirected complete subgraphs which share URIref nodes\n"
-                + "but do not share blank node\n" + "then this may be within OWL DL.";
+                + "but do not share blank node\n"
+                + "then this may be within OWL DL.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -5903,7 +5942,8 @@ public class WebOnt {
                 + "  <first:Automobile rdf:about=\"premises001#car\">\n"
                 + "     <rdf:type rdf:resource=\"http://www.w3.org/2002/07/owl#Thing\" /></first:Automobile>\n"
                 + "   <owl:Class rdf:about=\"premises001#Car\"/>\n"
-                + "   <owl:Class rdf:about=\"premises001#Automobile\"/>\n" + "</rdf:RDF>";
+                + "   <owl:Class rdf:about=\"premises001#Automobile\"/>\n"
+                + "</rdf:RDF>";
         String id = "WebOnt_equivalentClass_001";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Two classes may have the same class extension.";
@@ -6018,7 +6058,8 @@ public class WebOnt {
                 + "   <owl:Ontology/>\n"
                 + "   <owl:Class><owl:intersectionOf rdf:parseType=\"Collection\"><owl:Class><owl:complementOf rdf:resource=\"premises006#A\"/></owl:Class><owl:Class><owl:complementOf rdf:resource=\"premises006#B\"/></owl:Class></owl:intersectionOf><owl:equivalentClass><owl:Class><owl:complementOf><owl:Class><owl:unionOf rdf:parseType=\"Collection\"><rdf:Description rdf:about=\"premises006#A\"/><rdf:Description rdf:about=\"premises006#B\"/></owl:unionOf></owl:Class></owl:complementOf></owl:Class></owl:equivalentClass></owl:Class>   \n"
                 + "   <owl:Class rdf:about=\"premises006#A\"/>\n"
-                + "   <owl:Class rdf:about=\"premises006#B\"/>\n" + "</rdf:RDF>";
+                + "   <owl:Class rdf:about=\"premises006#B\"/>\n"
+                + "</rdf:RDF>";
         String id = "WebOnt_equivalentClass_006";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "De Morgan's law.";
@@ -6034,7 +6075,8 @@ public class WebOnt {
                 + "   <owl:Ontology/>\n"
                 + "   <owl:Class rdf:ID=\"c1\"><owl:equivalentClass><owl:Class rdf:ID=\"c2\"/></owl:equivalentClass>\n"
                 + "     <first:annotate>description of c1</first:annotate></owl:Class>\n"
-                + "   <owl:AnnotationProperty rdf:ID=\"annotate\" />\n" + "</rdf:RDF>";
+                + "   <owl:AnnotationProperty rdf:ID=\"annotate\" />\n"
+                + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/equivalentClass/premises008#\"\n"
                 + " xml:base=\"http://www.w3.org/2002/03owlt/equivalentClass/nonconclusions008\" >\n"
                 + "   <owl:Ontology/>\n"
@@ -6246,13 +6288,16 @@ public class WebOnt {
                 + "<owl:Ontology/>\n"
                 + "<owl:AnnotationProperty rdf:ID=\"prop\" />\n"
                 + "<owl:Thing rdf:about=\"#a\">\n"
-                + "   <first:prop>foo</first:prop></owl:Thing>\n" + "</rdf:RDF>";
+                + "   <first:prop>foo</first:prop></owl:Thing>\n"
+                + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/miscellaneous/premises302#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/miscellaneous/nonconclusions302\" >\n"
                 + "<owl:Ontology/>\n"
                 + "<owl:AnnotationProperty rdf:about=\"premises302#prop\" />\n"
                 + "<owl:Thing rdf:about=\"premises302#a\">\n"
-                + "   <first:prop>bar</first:prop>\n" + "</owl:Thing>\n" + "</rdf:RDF>";
+                + "   <first:prop>bar</first:prop>\n"
+                + "</owl:Thing>\n"
+                + "</rdf:RDF>";
         String id = "WebOnt_miscellaneous_302_Direct";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "A version of WebOnt-miscellaneous-302 applicable under the Direct Semantics, in which the annotation in the entailed ontology is not considered.";
@@ -6303,7 +6348,8 @@ public class WebOnt {
                 + "     <owl:sameAs>\n"
                 + "       <owl:Class rdf:ID=\"c2\"/></owl:sameAs>\n"
                 + "     <first:annotate>description of c1</first:annotate></owl:Class>\n"
-                + "   <owl:AnnotationProperty rdf:ID=\"annotate\" />\n" + "</rdf:RDF>";
+                + "   <owl:AnnotationProperty rdf:ID=\"annotate\" />\n"
+                + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/sameAs/premises001#\"\n"
                 + " xml:base=\"http://www.w3.org/2002/03owlt/sameAs/conclusions001\" >\n"
                 + "   <owl:Ontology/>\n"

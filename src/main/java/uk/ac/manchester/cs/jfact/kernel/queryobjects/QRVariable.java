@@ -12,7 +12,9 @@ import conformance.PortedFrom;
 
 /** QR variable replacing the individual */
 @PortedFrom(file = "QR.h", name = "QRVariable")
-public class QRVariable extends QRiObject implements Comparable<QRVariable>, HasName {
+public class QRVariable extends QRiObject implements Comparable<QRVariable>,
+        HasName {
+
     private static final long serialVersionUID = 11000L;
     /** name of a var */
     @PortedFrom(file = "QR.h", name = "Name")
@@ -23,16 +25,20 @@ public class QRVariable extends QRiObject implements Comparable<QRVariable>, Has
         this(IRI.create("urn:null"));
     }
 
-    /** init c'tor
+    /**
+     * init c'tor
      * 
      * @param name
-     *            name */
+     *        name
+     */
     public QRVariable(IRI name) {
         Name = name;
     }
 
-    /** @param v
-     *            v */
+    /**
+     * @param v
+     *        v
+     */
     public QRVariable(QRVariable v) {
         this(v.Name);
     }

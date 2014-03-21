@@ -15,6 +15,7 @@ public enum ModelCacheState {
     csFailed,
     /** untested model cache. */
     csUnknown;
+
     /** @return is this invalid? */
     public boolean usageByState() {
         return this == csInvalid;

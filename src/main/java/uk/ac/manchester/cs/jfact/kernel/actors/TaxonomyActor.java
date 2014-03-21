@@ -16,12 +16,15 @@ import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import conformance.PortedFrom;
 
-/** class for acting with concept taxonomy
+/**
+ * class for acting with concept taxonomy
  * 
  * @param <T>
- *            type */
+ *        type
+ */
 @PortedFrom(file = "JNIActor.h", name = "TaxonomyActor")
 public class TaxonomyActor<T extends Expression> implements Actor, Serializable {
+
     private static final long serialVersionUID = 11000L;
     private final Policy policy;
     private final ExpressionManager expressionManager;
@@ -35,10 +38,12 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
     @PortedFrom(file = "JNIActor.h", name = "syn")
     private final List<T> syn = new ArrayList<T>();
 
-    /** try current entry
+    /**
+     * try current entry
      * 
      * @param p
-     *            p */
+     *        p
+     */
     @SuppressWarnings("unchecked")
     @PortedFrom(file = "JNIActor.h", name = "tryEntry")
     protected void tryEntry(ClassifiableEntry p) {
@@ -50,10 +55,12 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
         }
     }
 
-    /** @param em
-     *            em
+    /**
+     * @param em
+     *        em
      * @param p
-     *            p */
+     *        p
+     */
     @PortedFrom(file = "JNIActor.h", name = "TaxonomyActor")
     public TaxonomyActor(ExpressionManager em, Policy p) {
         expressionManager = em;
@@ -68,7 +75,9 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
     }
 
     // return values
-    /** @return single vector of synonyms (necessary for Equivalents, for example) */
+    /**
+     * @return single vector of synonyms (necessary for Equivalents, for example)
+     */
     @PortedFrom(file = "JNIActor.h", name = "getSynonyms")
     public Collection<T> getSynonyms() {
         return acc.isEmpty() ? syn : acc.get(0);

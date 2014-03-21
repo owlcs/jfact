@@ -13,18 +13,22 @@ import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleComplexExpression;
 
 /** property expression translator */
-public class ComplexObjectPropertyTranslator extends
+public class ComplexObjectPropertyTranslator
+        extends
         OWLEntityTranslator<OWLObjectPropertyExpression, ObjectRoleComplexExpression> {
+
     private static final long serialVersionUID = 11000L;
 
-    /** @param em
-     *            em
+    /**
+     * @param em
+     *        em
      * @param df
-     *            df
+     *        df
      * @param tr
-     *            tr */
-    public ComplexObjectPropertyTranslator(ExpressionManager em, OWLDataFactory df,
-            TranslationMachinery tr) {
+     *        tr
+     */
+    public ComplexObjectPropertyTranslator(ExpressionManager em,
+            OWLDataFactory df, TranslationMachinery tr) {
         super(em, df, tr);
     }
 
@@ -35,7 +39,8 @@ public class ComplexObjectPropertyTranslator extends
 
     @Override
     protected ObjectRoleComplexExpression getBottomEntityPointer() {
-        return em.objectRole(OWLRDFVocabulary.OWL_BOTTOM_OBJECT_PROPERTY.getIRI());
+        return em.objectRole(OWLRDFVocabulary.OWL_BOTTOM_OBJECT_PROPERTY
+                .getIRI());
     }
 
     @Override
@@ -52,7 +57,8 @@ public class ComplexObjectPropertyTranslator extends
     @Override
     protected ObjectRoleComplexExpression createPointerForEntity(
             OWLObjectPropertyExpression entity) {
-        ObjectRoleComplexExpression p = em.objectRole(entity.getNamedProperty().getIRI());
+        ObjectRoleComplexExpression p = em.objectRole(entity.getNamedProperty()
+                .getIRI());
         return p;
     }
 
@@ -72,7 +78,8 @@ public class ComplexObjectPropertyTranslator extends
     }
 
     @Override
-    protected DefaultNodeSet<OWLObjectPropertyExpression> createDefaultNodeSet() {
+    protected DefaultNodeSet<OWLObjectPropertyExpression>
+            createDefaultNodeSet() {
         return new OWLObjectPropertyNodeSet();
     }
 }

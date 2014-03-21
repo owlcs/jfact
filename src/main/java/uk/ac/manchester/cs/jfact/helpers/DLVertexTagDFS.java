@@ -13,6 +13,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "dlVertex.h", name = "DLVertexTagDFS")
 class DLVertexTagDFS implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "dlVertex.h", name = "Op")
     protected DagTag op;
@@ -54,30 +55,36 @@ class DLVertexTagDFS implements Serializable {
     }
 
     // DFS-related method
-    /** check whether current Vertex is being visited
+    /**
+     * check whether current Vertex is being visited
      * 
      * @param pos
-     *            pos
-     * @return true if being visited */
+     *        pos
+     * @return true if being visited
+     */
     @PortedFrom(file = "dlVertex.h", name = "isVisited")
     public boolean isVisited(boolean pos) {
         return pos ? visitedPos : visitedNeg;
     }
 
-    /** check whether current Vertex is processed
+    /**
+     * check whether current Vertex is processed
      * 
      * @param pos
-     *            pos
-     * @return true if processed */
+     *        pos
+     * @return true if processed
+     */
     @PortedFrom(file = "dlVertex.h", name = "isProcessed")
     public boolean isProcessed(boolean pos) {
         return pos ? processedPos : processedNeg;
     }
 
-    /** set that the node is being visited
+    /**
+     * set that the node is being visited
      * 
      * @param pos
-     *            pos */
+     *        pos
+     */
     @PortedFrom(file = "dlVertex.h", name = "setVisited")
     public void setVisited(boolean pos) {
         if (pos) {
@@ -87,10 +94,12 @@ class DLVertexTagDFS implements Serializable {
         }
     }
 
-    /** set that the node' DFS processing is completed
+    /**
+     * set that the node' DFS processing is completed
      * 
      * @param pos
-     *            pos */
+     *        pos
+     */
     @PortedFrom(file = "dlVertex.h", name = "setProcessed")
     public void setProcessed(boolean pos) {
         if (pos) {
@@ -111,20 +120,24 @@ class DLVertexTagDFS implements Serializable {
         visitedNeg = false;
     }
 
-    /** check whether concept is in cycle
+    /**
+     * check whether concept is in cycle
      * 
      * @param pos
-     *            pos
-     * @return true if concept is in cycle */
+     *        pos
+     * @return true if concept is in cycle
+     */
     @PortedFrom(file = "dlVertex.h", name = "isInCycle")
     public boolean isInCycle(boolean pos) {
         return pos ? inCyclePos : inCycleNeg;
     }
 
-    /** set concept is in cycle
+    /**
+     * set concept is in cycle
      * 
      * @param pos
-     *            pos */
+     *        pos
+     */
     @PortedFrom(file = "dlVertex.h", name = "setInCycle")
     public void setInCycle(boolean pos) {
         if (pos) {
@@ -134,20 +147,24 @@ class DLVertexTagDFS implements Serializable {
         }
     }
 
-    /** @return cache wrt positive flag
+    /**
+     * @return cache wrt positive flag
      * @param pos
-     *            pos */
+     *        pos
+     */
     @PortedFrom(file = "dlVertex.h", name = "getCache")
     public ModelCacheInterface getCache(boolean pos) {
         return pos ? pCache : nCache;
     }
 
-    /** set cache wrt positive flag; note that cache is set up only once
+    /**
+     * set cache wrt positive flag; note that cache is set up only once
      * 
      * @param pos
-     *            pos
+     *        pos
      * @param p
-     *            p */
+     *        p
+     */
     @PortedFrom(file = "dlVertex.h", name = "setCache")
     public void setCache(boolean pos, ModelCacheInterface p) {
         if (pos) {

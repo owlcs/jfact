@@ -21,6 +21,7 @@ import conformance.PortedFrom;
 /** nominal reasoner */
 @PortedFrom(file = "ReasonerNom.h", name = "NominalReasoner")
 public class NominalReasoner extends DlSatTester {
+
     private static final long serialVersionUID = 11000L;
     /** all nominals defined in TBox */
     @PortedFrom(file = "ReasonerNom.h", name = "Nominals")
@@ -34,20 +35,25 @@ public class NominalReasoner extends DlSatTester {
     }
 
     /** internal nominal reasoning interface */
-    /** create cache entry for given singleton
+    /**
+     * create cache entry for given singleton
      * 
      * @param p
-     *            p */
+     *        p
+     */
     @PortedFrom(file = "ReasonerNom.h", name = "registerNominalCache")
     protected void registerNominalCache(Individual p) {
-        dlHeap.setCache(p.getpName(), createModelCache(p.getNode().resolvePBlocker()));
+        dlHeap.setCache(p.getpName(), createModelCache(p.getNode()
+                .resolvePBlocker()));
     }
 
-    /** init single nominal node
+    /**
+     * init single nominal node
      * 
      * @param nom
-     *            nom
-     * @return true if inconsistent */
+     *        nom
+     * @return true if inconsistent
+     */
     @PortedFrom(file = "ReasonerNom.h", name = "initNominalNode")
     protected boolean initNominalNode(Individual nom) {
         DlCompletionTree node = cGraph.getNewNode();
@@ -58,29 +64,34 @@ public class NominalReasoner extends DlSatTester {
         return initNewNode(node, DepSet.create(), nom.getpName());
     }
 
-    /** use classification information for the nominal P
+    /**
+     * use classification information for the nominal P
      * 
      * @param p
-     *            p */
+     *        p
+     */
     @PortedFrom(file = "ReasonerNom.h", name = "updateClassifiedSingleton")
     protected void updateClassifiedSingleton(Individual p) {
         registerNominalCache(p);
         if (p.getNode().isPBlocked()) {
             // BP of the individual P is merged to
-            int bp = p.getNode().getBlocker().label().get_sc().get(0).getConcept();
+            int bp = p.getNode().getBlocker().label().get_sc().get(0)
+                    .getConcept();
             Individual blocker = (Individual) dlHeap.get(bp).getConcept();
             assert blocker.getNode().equals(p.getNode().getBlocker());
-            tBox.addSameIndividuals(p, new Pair(blocker, p.getNode().getPurgeDep()
-                    .isEmpty()));
+            tBox.addSameIndividuals(p, new Pair(blocker, p.getNode()
+                    .getPurgeDep().isEmpty()));
         }
     }
 
-    /** @param tbox
-     *            tbox
+    /**
+     * @param tbox
+     *        tbox
      * @param Options
-     *            Options
+     *        Options
      * @param datatypeFactory
-     *            datatypeFactory */
+     *        datatypeFactory
+     */
     public NominalReasoner(TBox tbox, JFactReasonerConfiguration Options,
             DatatypeFactory datatypeFactory) {
         super(tbox, Options, datatypeFactory);

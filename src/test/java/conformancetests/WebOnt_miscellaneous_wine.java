@@ -9,6 +9,7 @@ import org.junit.Test;
 
 @SuppressWarnings("javadoc")
 public class WebOnt_miscellaneous_wine {
+
     @Test
     @Changed
     public void testWebOnt_miscellaneous_001() {
@@ -401,8 +402,8 @@ public class WebOnt_miscellaneous_wine {
         String id = "WebOnt_miscellaneous_001";
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
         String d = "Wine example taken from the guide. Note that this is the same as the ontology http://www.w3.org/2002/03owlt/miscellaneous/consistent002 imported in other tests.";
-        JUnitRunner r = new JUnitRunner(premise1 + premise2 + premise3 + premise4,
-                conclusion, id, tc, d);
+        JUnitRunner r = new JUnitRunner(premise1 + premise2 + premise3
+                + premise4, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
     }

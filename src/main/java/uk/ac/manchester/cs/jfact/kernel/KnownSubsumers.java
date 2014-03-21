@@ -10,6 +10,7 @@ import java.util.List;
 
 /** abstract class to represent the known subsumers of a concept */
 public abstract class KnownSubsumers implements Serializable {
+
     private static final long serialVersionUID = 11000L;
 
     /** @return begin of the Sure subsumers interval */
@@ -29,10 +30,13 @@ public abstract class KnownSubsumers implements Serializable {
         return p_begin().isEmpty();
     }
 
-    /** @param ce
-     *            class expression
-     * @return true iff CE is the possible subsumer */
-    public boolean isPossibleSub(@SuppressWarnings("unused") ClassifiableEntry ce) {
+    /**
+     * @param ce
+     *        class expression
+     * @return true iff CE is the possible subsumer
+     */
+    public boolean isPossibleSub(
+            @SuppressWarnings("unused") ClassifiableEntry ce) {
         return true;
     }
 }

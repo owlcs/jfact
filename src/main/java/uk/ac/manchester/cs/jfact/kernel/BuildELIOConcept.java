@@ -21,6 +21,7 @@ import conformance.PortedFrom;
 /** build elio concept */
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "BuildELIOConcept")
 public abstract class BuildELIOConcept implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     protected final ConjunctiveQueryFolding conjunctiveQueryFolding;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Query")
@@ -33,17 +34,20 @@ public abstract class BuildELIOConcept implements Serializable {
         Query = query;
     }
 
-    /** assign the concept to a term
+    /**
+     * assign the concept to a term
      * 
      * @param query
-     *            query
+     *        query
      * @param previousAtom
-     *            previousAtom
+     *        previousAtom
      * @param v
-     *            v
-     * @return assigned concept */
+     *        v
+     * @return assigned concept
+     */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Assign")
-    public ConceptExpression Assign(QRQuery query, QRAtom previousAtom, QRVariable v) {
+    public ConceptExpression Assign(QRQuery query, QRAtom previousAtom,
+            QRVariable v) {
         // System.out.println("Assign:\n variable: " + v + "\n atom:" +
         // previousAtom);
         visited.add(v);

@@ -14,6 +14,7 @@ import conformance.PortedFrom;
 /** class for exploring concept taxonomy to find super classes */
 @PortedFrom(file = "Kernel.cpp", name = "SupConceptActor")
 public class SupConceptActor implements Actor, Serializable {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "Kernel.cpp", name = "pe")
     protected final ClassifiableEntry pe;
@@ -23,8 +24,10 @@ public class SupConceptActor implements Actor, Serializable {
         return !pe.equals(q);
     }
 
-    /** @param q
-     *            q */
+    /**
+     * @param q
+     *        q
+     */
     public SupConceptActor(ClassifiableEntry q) {
         pe = q;
     }

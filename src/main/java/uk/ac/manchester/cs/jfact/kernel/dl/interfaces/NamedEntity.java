@@ -12,12 +12,15 @@ import conformance.PortedFrom;
 /** named entity */
 @PortedFrom(file = "tDLExpression.h", name = "TNamedEntity")
 public interface NamedEntity extends HasName {
+
     /** @return named entry */
     @PortedFrom(file = "tDLExpression.h", name = "getEntry")
     NamedEntry getEntry();
 
-    /** @param e
-     *            e */
+    /**
+     * @param e
+     *        e
+     */
     @PortedFrom(file = "tDLExpression.h", name = "setEntry")
     void setEntry(NamedEntry e);
 }

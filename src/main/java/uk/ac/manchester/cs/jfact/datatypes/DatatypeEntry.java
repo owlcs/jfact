@@ -14,16 +14,19 @@ import conformance.PortedFrom;
 
 /** datatype entry */
 public class DatatypeEntry extends NamedEntry {
+
     private static final long serialVersionUID = 11000L;
     /** corresponding type (Type has null in the field) */
     private final Datatype<?> type;
     /** DAG index of the entry */
     private int pName;
 
-    /** create data entry with given name
+    /**
+     * create data entry with given name
      * 
      * @param type
-     *            type */
+     *        type
+     */
     public DatatypeEntry(Datatype<?> type) {
         super(type.getDatatypeIRI());
         this.type = type;
@@ -62,8 +65,8 @@ public class DatatypeEntry extends NamedEntry {
 
     @Override
     public String toString() {
-        return "(" + this.getClass().getSimpleName() + " " + pName + " " + type + " "
-                + super.toString() + ")";
+        return "(" + this.getClass().getSimpleName() + " " + pName + " " + type
+                + " " + super.toString() + ")";
     }
 
     @Override
@@ -79,9 +82,11 @@ public class DatatypeEntry extends NamedEntry {
         return type.equals(((DatatypeEntry) obj).type);
     }
 
-    /** @param p
-     *            index to set
-     * @return modified object */
+    /**
+     * @param p
+     *        index to set
+     * @return modified object
+     */
     public DatatypeEntry withIndex(int p) {
         setIndex(p);
         return this;

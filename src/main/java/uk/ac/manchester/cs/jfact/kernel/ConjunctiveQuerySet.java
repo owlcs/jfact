@@ -10,6 +10,7 @@ import conformance.PortedFrom;
 /** Conjunctive query set */
 @PortedFrom(file = "ConjunctiveQuerySet.h", name = "CQSet")
 public class ConjunctiveQuerySet {
+
     // / pointer to an expression manager
     protected ExpressionManager pEManager;
     // / pointer to a query var factory
@@ -20,13 +21,16 @@ public class ConjunctiveQuerySet {
     // class names)
     protected boolean artificialABox;
 
-    /** @param pEM
-     *            expression manager
+    /**
+     * @param pEM
+     *        expression manager
      * @param VarFact
-     *            variable factory
+     *        variable factory
      * @param art
-     *            artificual abox */
-    public ConjunctiveQuerySet(ExpressionManager pEM, VariableFactory VarFact, boolean art) {
+     *        artificual abox
+     */
+    public ConjunctiveQuerySet(ExpressionManager pEM, VariableFactory VarFact,
+            boolean art) {
         pEManager = pEM;
         VarFactory = VarFact;
         artificialABox = art;
@@ -41,9 +45,11 @@ public class ConjunctiveQuerySet {
         return artificialABox;
     }
 
-    /** @param i
-     *            index
-     * @return query by index */
+    /**
+     * @param i
+     *        index
+     * @return query by index
+     */
     public QRQuery get(int i) {
         return queries.get(i);
     }

@@ -15,13 +15,16 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorExAdapter;
 /** @author ignazio */
 public class ExpressionFromAxiomBuilder extends
         DLAxiomVisitorExAdapter<ConceptExpression> {
+
     private static final long serialVersionUID = 10201L;
     private final ExpressionManager pEM;
 
-    /** @param a
-     *            a
+    /**
+     * @param a
+     *        a
      * @param e
-     *            e */
+     *        e
+     */
     public ExpressionFromAxiomBuilder(ConceptExpression a, ExpressionManager e) {
         super(a);
         pEM = e;
@@ -59,7 +62,8 @@ public class ExpressionFromAxiomBuilder extends
 
     @Override
     public ConceptExpression visit(AxiomRelatedToNot axiom) {
-        return pEM.not(pEM.value(axiom.getRelation(), axiom.getRelatedIndividual()));
+        return pEM.not(pEM.value(axiom.getRelation(),
+                axiom.getRelatedIndividual()));
     }
 
     @Override

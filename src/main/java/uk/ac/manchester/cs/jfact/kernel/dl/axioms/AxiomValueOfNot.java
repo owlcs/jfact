@@ -17,22 +17,25 @@ import conformance.PortedFrom;
 /** negation of data hasvalue axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomValueOfNot")
 public class AxiomValueOfNot extends AxiomIndividual {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "A")
     private final DataRoleExpression dataRoleExpression;
     @PortedFrom(file = "tDLAxiom.h", name = "V")
     private final Literal<?> value;
 
-    /** @param ax
-     *            ax
+    /**
+     * @param ax
+     *        ax
      * @param i
-     *            i
+     *        i
      * @param a
-     *            a
+     *        a
      * @param v
-     *            v */
-    public AxiomValueOfNot(OWLAxiom ax, IndividualExpression i, DataRoleExpression a,
-            Literal<?> v) {
+     *        v
+     */
+    public AxiomValueOfNot(OWLAxiom ax, IndividualExpression i,
+            DataRoleExpression a, Literal<?> v) {
         super(ax, i);
         dataRoleExpression = a;
         value = v;

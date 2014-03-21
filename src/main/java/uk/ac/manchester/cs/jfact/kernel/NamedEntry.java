@@ -16,6 +16,7 @@ import conformance.PortedFrom;
 /** named entry */
 @PortedFrom(file = "tNamedEntry.h", name = "TNamedEntry")
 public abstract class NamedEntry implements HasName, Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** name of the entry */
     @PortedFrom(file = "tNamedEntry.h", name = "extName")
@@ -26,8 +27,10 @@ public abstract class NamedEntry implements HasName, Serializable {
     @PortedFrom(file = "tNamedEntry.h", name = "entity")
     protected NamedEntity entity = null;
 
-    /** @param name
-     *            entry IRI */
+    /**
+     * @param name
+     *        entry IRI
+     */
     public NamedEntry(IRI name) {
         assert name != null;
         extName = name;
@@ -66,10 +69,12 @@ public abstract class NamedEntry implements HasName, Serializable {
         return extName.hashCode();
     }
 
-    /** set internal ID
+    /**
+     * set internal ID
      * 
      * @param id
-     *            id */
+     *        id
+     */
     @PortedFrom(file = "tNamedEntry.h", name = "setId")
     public void setId(int id) {
         extId = id;
@@ -83,8 +88,8 @@ public abstract class NamedEntry implements HasName, Serializable {
 
     @Override
     public String toString() {
-        return extName + " " + extId + " " + entity + " " + bottom + " " + system + " "
-                + top;
+        return extName + " " + extId + " " + entity + " " + bottom + " "
+                + system + " " + top;
     }
 
     @Original
@@ -139,15 +144,19 @@ public abstract class NamedEntry implements HasName, Serializable {
         return entity;
     }
 
-    /** @param entity
-     *            entity */
+    /**
+     * @param entity
+     *        entity
+     */
     @PortedFrom(file = "tNamedEntry.h", name = "setEntity")
     public void setEntity(NamedEntity entity) {
         this.entity = entity;
     }
 
-    /** @param i
-     *            i */
+    /**
+     * @param i
+     *        i
+     */
     @PortedFrom(file = "taxNamEntry.h", name = "setIndex")
     public abstract void setIndex(int i);
 

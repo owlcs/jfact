@@ -13,19 +13,25 @@ import java.util.Set;
 
 import org.semanticweb.owlapi.model.IRI;
 
-/** @author ignazio
+/**
+ * @author ignazio
  * @param <T>
- *            type */
+ *        type
+ */
 public class DatatypeIntersection<T extends Comparable<T>> implements
         DatatypeCombination<DatatypeIntersection<T>, Datatype<T>> {
+
     private final Set<Datatype<T>> basics = new HashSet<Datatype<T>>();
     private final IRI uri;
     private final Datatype<T> host;
 
-    /** @param collection
-     *            collection
-     * @return datatype host for a set of datatypes */
-    public static Datatype<?> getHostDatatype(Collection<Datatype<?>> collection) {
+    /**
+     * @param collection
+     *        collection
+     * @return datatype host for a set of datatypes
+     */
+    public static Datatype<?>
+            getHostDatatype(Collection<Datatype<?>> collection) {
         List<Datatype<?>> list = new ArrayList<Datatype<?>>(collection);
         // all types need to be compatible, or the intersection cannot be
         // anything but empty
@@ -58,17 +64,21 @@ public class DatatypeIntersection<T extends Comparable<T>> implements
         return null;
     }
 
-    /** @param host
-     *            host */
+    /**
+     * @param host
+     *        host
+     */
     public DatatypeIntersection(Datatype<T> host) {
         uri = IRI.create("urn:intersection#a" + DatatypeFactory.getIndex());
         this.host = host;
     }
 
-    /** @param host
-     *            host
+    /**
+     * @param host
+     *        host
      * @param list
-     *            list */
+     *        list
+     */
     public DatatypeIntersection(Datatype<T> host, Iterable<Datatype<T>> list) {
         this(host);
         for (Datatype<T> d : list) {
@@ -88,7 +98,8 @@ public class DatatypeIntersection<T extends Comparable<T>> implements
 
     @Override
     public DatatypeIntersection<T> add(Datatype<T> d) {
-        DatatypeIntersection<T> toReturn = new DatatypeIntersection<T>(host, basics);
+        DatatypeIntersection<T> toReturn = new DatatypeIntersection<T>(host,
+                basics);
         toReturn.basics.add(d);
         return toReturn;
     }
@@ -150,11 +161,13 @@ public class DatatypeIntersection<T extends Comparable<T>> implements
         boolean maxExclusive = false;
         for (Datatype<T> dt : basics) {
             Comparable facetValue = dt.asNumericDatatype().getMin();
-            if (facetValue != null && (min == null || min.compareTo(facetValue) < 0)) {
+            if (facetValue != null
+                    && (min == null || min.compareTo(facetValue) < 0)) {
                 min = facetValue;
             }
             facetValue = dt.asNumericDatatype().getMax();
-            if (facetValue != null && (max == null || facetValue.compareTo(max) < 0)) {
+            if (facetValue != null
+                    && (max == null || facetValue.compareTo(max) < 0)) {
                 max = facetValue;
             }
             if (dt.asNumericDatatype().hasMinExclusive()) {

@@ -16,18 +16,22 @@ import conformance.PortedFrom;
 /** data role range */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDRoleRange")
 public class AxiomDRoleRange extends AxiomSingleDRole {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "Range")
     private final DataExpression range;
 
-    /** @param ax
-     *            ax
+    /**
+     * @param ax
+     *        ax
      * @param role
-     *            role
+     *        role
      * @param range
-     *            range */
+     *        range
+     */
     @PortedFrom(file = "tDLAxiom.h", name = "Range")
-    public AxiomDRoleRange(OWLAxiom ax, DataRoleExpression role, DataExpression range) {
+    public AxiomDRoleRange(OWLAxiom ax, DataRoleExpression role,
+            DataExpression range) {
         super(ax, role);
         this.range = range;
     }

@@ -31,6 +31,7 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 @SuppressWarnings("javadoc")
 @Ignore
 public class Broken {
+
     // XXX this needs to be fixed
     @Test
     @Changed(reason = "changed to fix unreliable iris")
@@ -50,7 +51,8 @@ public class Broken {
         OWLNamedIndividual j = NamedIndividual(IRI(ns + "j"));
         OWLNamedIndividual i = NamedIndividual(IRI(ns + "i"));
         OWLNamedIndividual k = NamedIndividual(IRI(ns + "k"));
-        OWLObjectProperty bandctotwoaprime = ObjectProperty(IRI(ns + "bandctotwoaprime"));
+        OWLObjectProperty bandctotwoaprime = ObjectProperty(IRI(ns
+                + "bandctotwoaprime"));
         OWLObjectProperty btoaprime = ObjectProperty(IRI(ns + "btoaprime"));
         OWLObjectProperty btoc = ObjectProperty(IRI(ns + "btoc"));
         OWLObjectProperty ctobprime = ObjectProperty(IRI(ns + "ctobprime"));
@@ -70,7 +72,8 @@ public class Broken {
         m.addAxiom(o, DisjointClasses(b, twoa));
         m.addAxiom(o, Declaration(bandc));
         m.addAxiom(o, EquivalentClasses(bandc, ObjectUnionOf(c, b)));
-        m.addAxiom(o, SubClassOf(bandc, ObjectSomeValuesFrom(bandctotwoaprime, twoa)));
+        m.addAxiom(o,
+                SubClassOf(bandc, ObjectSomeValuesFrom(bandctotwoaprime, twoa)));
         m.addAxiom(o, DisjointClasses(bandc, twoa));
         m.addAxiom(o, Declaration(c));
         m.addAxiom(o, SubClassOf(c, ObjectSomeValuesFrom(ctobprime, b)));
@@ -79,7 +82,8 @@ public class Broken {
         m.addAxiom(o, DisjointClasses(c, twoa));
         m.addAxiom(o, Declaration(twoa));
         m.addAxiom(o, SubClassOf(twoa, ObjectSomeValuesFrom(twoatoa, a)));
-        m.addAxiom(o, SubClassOf(twoa, ObjectSomeValuesFrom(twoatobandc, bandc)));
+        m.addAxiom(o,
+                SubClassOf(twoa, ObjectSomeValuesFrom(twoatobandc, bandc)));
         m.addAxiom(o, DisjointClasses(twoa, a));
         m.addAxiom(o, DisjointClasses(twoa, b));
         m.addAxiom(o, DisjointClasses(twoa, bandc));
@@ -160,8 +164,10 @@ public class Broken {
         OWLOntologyManager mngr = OWLManager.createOWLOntologyManager();
         OWLOntology ont = mngr.createOntology();
         OWLDataFactory df = OWLManager.getOWLDataFactory();
-        OWLDataProperty dp = df.getOWLDataProperty(IRI.create("urn:test:datap1"));
-        mngr.addAxiom(ont, df.getOWLDataPropertyDomainAxiom(dp, df.getOWLNothing()));
+        OWLDataProperty dp = df.getOWLDataProperty(IRI
+                .create("urn:test:datap1"));
+        mngr.addAxiom(ont,
+                df.getOWLDataPropertyDomainAxiom(dp, df.getOWLNothing()));
         OWLReasonerFactory fac = Factory.factory();
         OWLReasoner r = fac.createNonBufferingReasoner(ont);
         assertEquals(2, r.getBottomDataPropertyNode().getEntities().size());
@@ -358,7 +364,8 @@ public class Broken {
         OWLOntology o = m.createOntology();
         OWLObjectProperty p = f.getOWLObjectProperty(IRI.create("urn:p"));
         OWLNamedIndividual a = f.getOWLNamedIndividual(IRI.create("urn:a"));
-        OWLObjectSomeValuesFrom c = f.getOWLObjectSomeValuesFrom(p, f.getOWLThing());
+        OWLObjectSomeValuesFrom c = f.getOWLObjectSomeValuesFrom(p,
+                f.getOWLThing());
         m.addAxiom(o, f.getOWLClassAssertionAxiom(c, a));
         OWLReasoner r = Factory.factory().createReasoner(o);
         assertTrue(r.isEntailed(f.getOWLObjectPropertyAssertionAxiom(p, a,

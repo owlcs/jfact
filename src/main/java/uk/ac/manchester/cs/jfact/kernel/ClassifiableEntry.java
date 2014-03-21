@@ -20,16 +20,21 @@ import conformance.PortedFrom;
 /** classifiable entry */
 @PortedFrom(file = "taxNamEntry.h", name = "ClassifiableEntry")
 public class ClassifiableEntry extends NamedEntry {
+
     private static final long serialVersionUID = 11000L;
     /** link to taxonomy entry for current entry */
     @PortedFrom(file = "taxNamEntry.h", name = "taxVertex")
     protected TaxonomyVertex taxVertex = null;
-    /** links to 'told subsumers' (entries that are direct super-entries for
-     * current) */
+    /**
+     * links to 'told subsumers' (entries that are direct super-entries for
+     * current)
+     */
     @PortedFrom(file = "taxNamEntry.h", name = "toldSubsumers")
     protected final Set<ClassifiableEntry> toldSubsumers = new LinkedHashSet<ClassifiableEntry>();
-    /** pointer to synonym (entry which contains whole information the same as
-     * current) */
+    /**
+     * pointer to synonym (entry which contains whole information the same as
+     * current)
+     */
     @PortedFrom(file = "taxNamEntry.h", name = "pSynonym")
     protected ClassifiableEntry pSynonym;
     /** index as a vertex in the SubsumptionMap */
@@ -48,10 +53,12 @@ public class ClassifiableEntry extends NamedEntry {
         return taxVertex != null;
     }
 
-    /** set up given entry
+    /**
+     * set up given entry
      * 
      * @param vertex
-     *            vertex */
+     *        vertex
+     */
     @PortedFrom(file = "taxNamEntry.h", name = "setTaxVertex")
     public void setTaxVertex(TaxonomyVertex vertex) {
         taxVertex = vertex;
@@ -73,8 +80,10 @@ public class ClassifiableEntry extends NamedEntry {
         return completelyDefined;
     }
 
-    /** @param action
-     *            action */
+    /**
+     * @param action
+     *        action
+     */
     @Original
     public void setCompletelyDefined(boolean action) {
         completelyDefined = action;
@@ -89,8 +98,10 @@ public class ClassifiableEntry extends NamedEntry {
         return nonClassifiable;
     }
 
-    /** @param action
-     *            action */
+    /**
+     * @param action
+     *        action
+     */
     @Original
     public void setNonClassifiable(boolean action) {
         nonClassifiable = action;
@@ -108,19 +119,23 @@ public class ClassifiableEntry extends NamedEntry {
         return !toldSubsumers.isEmpty();
     }
 
-    /** add told subsumer of entry (duplications possible)
+    /**
+     * add told subsumer of entry (duplications possible)
      * 
      * @param parent
-     *            parent */
+     *        parent
+     */
     @PortedFrom(file = "taxNamEntry.h", name = "addParent")
     public void addParent(ClassifiableEntry parent) {
         toldSubsumers.add(parent);
     }
 
-    /** add all parents (with duplicates) from the range to current node
+    /**
+     * add all parents (with duplicates) from the range to current node
      * 
      * @param entries
-     *            entries */
+     *        entries
+     */
     @PortedFrom(file = "taxNamEntry.h", name = "addParents")
     public void addParents(Collection<ClassifiableEntry> entries) {
         for (ClassifiableEntry c : entries) {
@@ -165,10 +180,12 @@ public class ClassifiableEntry extends NamedEntry {
         }
     }
 
-    /** add entry's synonym
+    /**
+     * add entry's synonym
      * 
      * @param syn
-     *            syn */
+     *        syn
+     */
     @PortedFrom(file = "taxNamEntry.h", name = "setSynonym")
     public void setSynonym(ClassifiableEntry syn) {
         // do it only once
@@ -200,19 +217,24 @@ public class ClassifiableEntry extends NamedEntry {
         toldSubsumers.removeAll(toRemove);
     }
 
-    /** @param p
-     *            p
+    /**
+     * @param p
+     *        p
      * @param <T>
-     *            expression type
-     * @return resolved synonym */
+     *        expression type
+     * @return resolved synonym
+     */
     @SuppressWarnings("unchecked")
     @PortedFrom(file = "taxNamEntry.h", name = "resolveSynonym")
     public static <T extends ClassifiableEntry> T resolveSynonym(T p) {
-        return p == null ? null : p.isSynonym() ? resolveSynonym((T) p.pSynonym) : p;
+        return p == null ? null
+                : p.isSynonym() ? resolveSynonym((T) p.pSynonym) : p;
     }
 
-    /** @param parent
-     *            parent */
+    /**
+     * @param parent
+     *        parent
+     */
     @PortedFrom(file = "taxNamEntry.h", name = "addParentIfNew")
     public void addParentIfNew(ClassifiableEntry parent) {
         // resolve synonyms

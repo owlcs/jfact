@@ -17,12 +17,15 @@ import conformance.PortedFrom;
 
 /** object role */
 @PortedFrom(file = "tDLExpression.h", name = "TDLObjectRoleName")
-public class ObjectRoleName extends NamedEntityImpl implements ObjectRoleExpression,
-        NamedEntity, Serializable {
+public class ObjectRoleName extends NamedEntityImpl implements
+        ObjectRoleExpression, NamedEntity, Serializable {
+
     private static final long serialVersionUID = 11000L;
 
-    /** @param name
-     *            name */
+    /**
+     * @param name
+     *        name
+     */
     public ObjectRoleName(IRI name) {
         super(name);
     }

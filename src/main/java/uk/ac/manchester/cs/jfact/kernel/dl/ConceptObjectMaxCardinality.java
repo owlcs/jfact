@@ -20,8 +20,9 @@ import conformance.PortedFrom;
 
 /** object max cardinality */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectMaxCardinality")
-public class ConceptObjectMaxCardinality implements ConceptObjectCardinalityExpression,
-        NumberArg, Serializable {
+public class ConceptObjectMaxCardinality implements
+        ConceptObjectCardinalityExpression, NumberArg, Serializable {
+
     private static final long serialVersionUID = 11000L;
     @Original
     private final ConceptExpression delegate;
@@ -30,13 +31,16 @@ public class ConceptObjectMaxCardinality implements ConceptObjectCardinalityExpr
     @Original
     private final ObjectRoleExpression roleDelegate;
 
-    /** @param n
-     *            n
+    /**
+     * @param n
+     *        n
      * @param R
-     *            R
+     *        R
      * @param C
-     *            C */
-    public ConceptObjectMaxCardinality(int n, ObjectRoleExpression R, ConceptExpression C) {
+     *        C
+     */
+    public ConceptObjectMaxCardinality(int n, ObjectRoleExpression R,
+            ConceptExpression C) {
         N = n;
         delegate = C;
         roleDelegate = R;

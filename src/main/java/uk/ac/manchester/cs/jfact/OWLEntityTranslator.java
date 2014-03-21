@@ -15,8 +15,9 @@ import org.semanticweb.owlapi.reasoner.impl.DefaultNodeSet;
 import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Entity;
 
-abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity> implements
-        Serializable {
+abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity>
+        implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     private final Map<E, T> entity2dlentity = new HashMap<E, T>();
     private final Map<T, E> dlentity2entity = new HashMap<T, E>();

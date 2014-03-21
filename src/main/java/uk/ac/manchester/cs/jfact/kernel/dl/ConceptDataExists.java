@@ -22,6 +22,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptDataExists")
 public class ConceptDataExists implements ConceptDataRVExpression, DataRoleArg,
         Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** data role argument */
     @PortedFrom(file = "tDLExpression.h", name = "DR")
@@ -30,10 +31,12 @@ public class ConceptDataExists implements ConceptDataRVExpression, DataRoleArg,
     @Original
     private final DataExpression delegate;
 
-    /** @param R
-     *            R
+    /**
+     * @param R
+     *        R
      * @param E
-     *            E */
+     *        E
+     */
     public ConceptDataExists(DataRoleExpression R, DataExpression E) {
         dataRoleExpression = R;
         delegate = E;

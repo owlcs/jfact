@@ -9,6 +9,7 @@ import org.junit.Test;
 
 @SuppressWarnings("javadoc")
 public class WebOnt661 {
+
     @Test
     @Changed
     public void testWebOnt_description_logic_661() {
@@ -362,7 +363,8 @@ public class WebOnt661 {
                 + "</owl:Thing>\n" + "</rdf:RDF>";
         String id = "WebOnt_description_logic_661";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "DL Test: k_branch\n" + "ABox test from DL98 systems comparison.";
+        String d = "DL Test: k_branch\n"
+                + "ABox test from DL98 systems comparison.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();

@@ -11,17 +11,20 @@ import conformance.PortedFrom;
 /** role atom R(x,y) */
 @PortedFrom(file = "QR.h", name = "QRRoleAtom")
 public class QRRoleAtom extends QR2ArgAtom {
+
     private static final long serialVersionUID = 11000L;
     /** role between two i-objects */
     @PortedFrom(file = "QR.h", name = "Role")
     private final ObjectRoleExpression Role;
 
-    /** @param R
-     *            R
+    /**
+     * @param R
+     *        R
      * @param A1
-     *            A1
+     *        A1
      * @param A2
-     *            A2 */
+     *        A2
+     */
     public QRRoleAtom(ObjectRoleExpression R, QRiObject A1, QRiObject A2) {
         super(A1, A2);
         Role = R;

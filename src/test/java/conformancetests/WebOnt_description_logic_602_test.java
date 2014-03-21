@@ -14,8 +14,10 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 @SuppressWarnings("javadoc")
 public class WebOnt_description_logic_602_test {
+
     @Test
-    public void testWebOnt_description_logic_602() throws OWLOntologyCreationException {
+    public void testWebOnt_description_logic_602()
+            throws OWLOntologyCreationException {
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLDataFactory f = m.getOWLDataFactory();
         OWLOntology o = m.createOntology();
@@ -32,10 +34,14 @@ public class WebOnt_description_logic_602_test {
         m.addAxiom(o, f.getOWLSubClassOfAxiom(U, C));
         m.addAxiom(o, f.getOWLSubClassOfAxiom(U, B));
         m.addAxiom(o, f.getOWLEquivalentClassesAxiom(C, rAllC));
-        m.addAxiom(o,
-                f.getOWLEquivalentClassesAxiom(D, f.getOWLObjectMaxCardinality(0, p)));
-        m.addAxiom(o,
-                f.getOWLEquivalentClassesAxiom(B, f.getOWLObjectMinCardinality(1, p)));
+        m.addAxiom(
+                o,
+                f.getOWLEquivalentClassesAxiom(D,
+                        f.getOWLObjectMaxCardinality(0, p)));
+        m.addAxiom(
+                o,
+                f.getOWLEquivalentClassesAxiom(B,
+                        f.getOWLObjectMinCardinality(1, p)));
         OWLReasoner reasoner = Factory.factory().createReasoner(o);
         assertTrue("cannot infer disjoint",
                 reasoner.isEntailed(f.getOWLDisjointClassesAxiom(D, B)));
@@ -51,6 +57,7 @@ public class WebOnt_description_logic_602_test {
                 reasoner.isEntailed(f.getOWLSubClassOfAxiom(A, D)));
         assertTrue("cannot infer U [= D",
                 reasoner.isEntailed(f.getOWLSubClassOfAxiom(U, D)));
-        assertFalse("cannot find unsatisfiable class", reasoner.isSatisfiable(U));
+        assertFalse("cannot find unsatisfiable class",
+                reasoner.isSatisfiable(U));
     }
 }

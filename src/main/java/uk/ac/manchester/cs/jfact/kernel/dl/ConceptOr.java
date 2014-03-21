@@ -20,12 +20,15 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptOr")
 public class ConceptOr extends NAryExpressionImpl<ConceptExpression> implements
         NAryExpression<ConceptExpression>, ConceptExpression, Serializable {
+
     private static final long serialVersionUID = 11000L;
 
-    /** create OR of expressions from the given array
+    /**
+     * create OR of expressions from the given array
      * 
      * @param v
-     *            v */
+     *        v
+     */
     public ConceptOr(List<ConceptExpression> v) {
         add(v);
     }

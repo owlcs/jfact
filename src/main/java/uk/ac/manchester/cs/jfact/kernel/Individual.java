@@ -20,6 +20,7 @@ import conformance.PortedFrom;
 /** individual */
 @PortedFrom(file = "tIndividual.h", name = "TIndividual")
 public class Individual extends Concept {
+
     private static final long serialVersionUID = 11000L;
     /** pointer to nominal node (works for singletons only) */
     @PortedFrom(file = "tIndividual.h", name = "node")
@@ -31,8 +32,10 @@ public class Individual extends Concept {
     @PortedFrom(file = "tIndividual.h", name = "pRelatedMap")
     private final Map<Role, List<Individual>> pRelatedMap;
 
-    /** @param name
-     *            name */
+    /**
+     * @param name
+     *        name
+     */
     public Individual(IRI name) {
         super(name);
         node = null;
@@ -63,69 +66,84 @@ public class Individual extends Concept {
     }
 
     // related things
-    /** update told subsumers from the RELATED axioms in a given range
+    /**
+     * update told subsumers from the RELATED axioms in a given range
      * 
      * @param begin
-     *            begin
+     *        begin
      * @param RolesProcessed
-     *            RolesProcessed */
+     *        RolesProcessed
+     */
     @PortedFrom(file = "tIndividual.h", name = "updateTold")
-    private <T extends Related> void updateTold(List<T> begin, Set<Role> RolesProcessed) {
+    private <T extends Related> void updateTold(List<T> begin,
+            Set<Role> RolesProcessed) {
         for (int i = 0; i < begin.size(); i++) {
             searchTSbyRoleAndSupers(begin.get(i).getRole(), RolesProcessed);
         }
     }
 
-    /** check if individual connected to something with RELATED statement
+    /**
+     * check if individual connected to something with RELATED statement
      * 
-     * @return true if related */
+     * @return true if related
+     */
     @PortedFrom(file = "tIndividual.h", name = "isRelated")
     private boolean isRelated() {
         return !relatedIndex.isEmpty();
     }
 
-    /** set individual related
+    /**
+     * set individual related
      * 
      * @param p
-     *            p */
+     *        p
+     */
     @PortedFrom(file = "tIndividual.h", name = "addRelated")
     public void addRelated(Related p) {
         relatedIndex.add(p);
     }
 
-    /** add all the related elements from the given P
+    /**
+     * add all the related elements from the given P
      * 
      * @param p
-     *            p */
+     *        p
+     */
     @PortedFrom(file = "tIndividual.h", name = "addRelated")
     public void addRelated(Individual p) {
         relatedIndex.addAll(p.relatedIndex);
     }
 
     // related map access
-    /** @param R
-     *            R
-     * @return true if has cache for related individuals via role R */
+    /**
+     * @param R
+     *        R
+     * @return true if has cache for related individuals via role R
+     */
     @PortedFrom(file = "tIndividual.h", name = "hasRelatedCache")
     public boolean hasRelatedCache(Role R) {
         return pRelatedMap.containsKey(R);
     }
 
-    /** @param R
-     *            R
-     * @return set of individuals related to THIS via R */
+    /**
+     * @param R
+     *        R
+     * @return set of individuals related to THIS via R
+     */
     @PortedFrom(file = "tIndividual.h", name = "getRelatedCache")
     public List<Individual> getRelatedCache(Role R) {
         assert pRelatedMap.containsKey(R);
         return pRelatedMap.get(R);
     }
 
-    /** set the cache of individuals related to THIS via R
+    /**
+     * set the cache of individuals related to THIS via R
      * 
      * @param R
-     *            R
+     *        R
      * @param v
-     *            v */
+     *        v
+     */
     @PortedFrom(file = "tIndividual.h", name = "setRelatedCache")
     public void setRelatedCache(Role R, List<Individual> v) {
         assert !pRelatedMap.containsKey(R);
@@ -145,8 +163,10 @@ public class Individual extends Concept {
         return node;
     }
 
-    /** @param node
-     *            node */
+    /**
+     * @param node
+     *        node
+     */
     @Original
     public void setNode(DlCompletionTree node) {
         this.node = node;

@@ -14,13 +14,16 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import conformance.PortedFrom;
 
-/** nary expression base
+/**
+ * nary expression base
  * 
  * @param <A>
- *            argument type */
+ *        argument type
+ */
 @PortedFrom(file = "tDLExpression.h", name = "TDLNAryExpression")
-public class NAryExpressionImpl<A extends Expression> implements NAryExpression<A>,
-        Serializable {
+public class NAryExpressionImpl<A extends Expression> implements
+        NAryExpression<A>, Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** set of equivalent concept descriptions */
     private final List<A> Base = new ArrayList<A>();

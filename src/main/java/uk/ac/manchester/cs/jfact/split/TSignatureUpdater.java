@@ -47,24 +47,29 @@ import conformance.PortedFrom;
 /** update signature by adding the signature of a given axiom to it */
 @PortedFrom(file = "tSignatureUpdater.h", name = "TSignatureUpdater")
 public class TSignatureUpdater implements DLAxiomVisitor, Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** helper with expressions */
     @PortedFrom(file = "tSignatureUpdater.h", name = "Updater")
     private final TExpressionSignatureUpdater Updater;
 
-    /** helper for the expression processing
+    /**
+     * helper for the expression processing
      * 
      * @param E
-     *            E */
+     *        E
+     */
     @PortedFrom(file = "tSignatureUpdater.h", name = "v")
     private void v(Expression E) {
         E.accept(Updater);
     }
 
-    /** helper for the [begin,end) interval
+    /**
+     * helper for the [begin,end) interval
      * 
      * @param arg
-     *            arg */
+     *        arg
+     */
     @PortedFrom(file = "tSignatureUpdater.h", name = "v")
     private void v(Collection<? extends Expression> arg) {
         for (Expression e : arg) {
@@ -248,8 +253,10 @@ public class TSignatureUpdater implements DLAxiomVisitor, Serializable {
         v(axiom.getAttribute());
     }
 
-    /** @param sig
-     *            sig */
+    /**
+     * @param sig
+     *        sig
+     */
     public TSignatureUpdater(TSignature sig) {
         Updater = new TExpressionSignatureUpdater(sig);
     }

@@ -17,16 +17,19 @@ import conformance.PortedFrom;
 /** Disjoint Union axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDisjointUnion")
 public class AxiomDisjointUnion extends AbstractNaryAxiom<ConceptExpression> {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "C")
     private final ConceptExpression conceptExpression;
 
-    /** @param ax
-     *            ax
+    /**
+     * @param ax
+     *        ax
      * @param c
-     *            c
+     *        c
      * @param v
-     *            v */
+     *        v
+     */
     public AxiomDisjointUnion(OWLAxiom ax, ConceptExpression c,
             Collection<ConceptExpression> v) {
         super(ax, v);

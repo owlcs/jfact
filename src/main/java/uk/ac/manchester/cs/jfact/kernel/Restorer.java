@@ -12,6 +12,7 @@ import conformance.PortedFrom;
 /** restorer */
 @PortedFrom(file = "tRestorer.h", name = "TRestorer")
 public abstract class Restorer implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tRestorer.h", name = "lev")
     private int raresavestackLevel;
@@ -26,10 +27,12 @@ public abstract class Restorer implements Serializable {
         return raresavestackLevel;
     }
 
-    /** for accessing the level on TRareSaveStack
+    /**
+     * for accessing the level on TRareSaveStack
      * 
      * @param raresavestackLevel
-     *            raresavestackLevel */
+     *        raresavestackLevel
+     */
     @PortedFrom(file = "tRestorer.h", name = "setLevel")
     public void setRaresavestackLevel(int raresavestackLevel) {
         this.raresavestackLevel = raresavestackLevel;

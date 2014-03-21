@@ -49,8 +49,9 @@ import conformance.PortedFrom;
 
 /** syntactic locality checker for DL axioms */
 @PortedFrom(file = "GeneralSyntacticLocalityChecker.h", name = "GeneralSyntacticLocalityChecker")
-public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implements
-        DLAxiomVisitor, LocalityChecker {
+public abstract class GeneralSyntacticLocalityChecker extends SigAccessor
+        implements DLAxiomVisitor, LocalityChecker {
+
     private static final long serialVersionUID = 11000L;
     /** top evaluator */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "TopEval")
@@ -62,25 +63,31 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isLocal")
     protected boolean isLocal;
 
-    /** @param expr
-     *            expr
-     * @return true iff EXPR is top equivalent */
+    /**
+     * @param expr
+     *        expr
+     * @return true iff EXPR is top equivalent
+     */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isTopEquivalent")
     protected boolean isTopEquivalent(Expression expr) {
         return TopEval.isTopEquivalent(expr);
     }
 
-    /** @param expr
-     *            expr
-     * @return true iff EXPR is bottom equivalent */
+    /**
+     * @param expr
+     *        expr
+     * @return true iff EXPR is bottom equivalent
+     */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isBotEquivalent")
     protected boolean isBotEquivalent(Expression expr) {
         return BotEval.isBotEquivalent(expr);
     }
 
-    /** @param expr
-     *            expr
-     * @return true iff role expression in equivalent to const wrt locality */
+    /**
+     * @param expr
+     *        expr
+     * @return true iff role expression in equivalent to const wrt locality
+     */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isREquivalent")
     private boolean isREquivalent(Expression expr) {
         return sig.topRLocal() ? isTopEquivalent(expr) : isBotEquivalent(expr);
@@ -113,10 +120,12 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
         }
     }
 
-    /** init c'tor
+    /**
+     * init c'tor
      * 
      * @param sig
-     *            sig */
+     *        sig
+     */
     public GeneralSyntacticLocalityChecker(TSignature sig) {
         this.sig = sig;
         TopEval = new TopEquivalenceEvaluator();
@@ -312,8 +321,10 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
         isLocal = false;
     }
 
-    /** FaCT++ extension: there is no such axiom in OWL API, but I hope nobody
-     * would use Fairness here */
+    /**
+     * FaCT++ extension: there is no such axiom in OWL API, but I hope nobody
+     * would use Fairness here
+     */
     @Override
     public void visit(AxiomFairnessConstraint axiom) {
         isLocal = true;
@@ -321,44 +332,52 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
 
     @Override
     public void visit(AxiomRoleInverse axiom) {
-        isLocal = isBotEquivalent(axiom.getRole()) && isBotEquivalent(axiom.getInvRole())
+        isLocal = isBotEquivalent(axiom.getRole())
+                && isBotEquivalent(axiom.getInvRole())
                 || isTopEquivalent(axiom.getRole())
                 && isTopEquivalent(axiom.getInvRole());
     }
 
     @Override
     public void visit(AxiomORoleSubsumption axiom) {
-        isLocal = isTopEquivalent(axiom.getRole()) || isBotEquivalent(axiom.getSubRole());
+        isLocal = isTopEquivalent(axiom.getRole())
+                || isBotEquivalent(axiom.getSubRole());
     }
 
     @Override
     public void visit(AxiomDRoleSubsumption axiom) {
-        isLocal = isTopEquivalent(axiom.getRole()) || isBotEquivalent(axiom.getSubRole());
+        isLocal = isTopEquivalent(axiom.getRole())
+                || isBotEquivalent(axiom.getSubRole());
     }
 
     @Override
     public void visit(AxiomORoleDomain axiom) {
-        isLocal = isTopEquivalent(axiom.getDomain()) || isBotEquivalent(axiom.getRole());
+        isLocal = isTopEquivalent(axiom.getDomain())
+                || isBotEquivalent(axiom.getRole());
     }
 
     @Override
     public void visit(AxiomDRoleDomain axiom) {
-        isLocal = isTopEquivalent(axiom.getDomain()) || isBotEquivalent(axiom.getRole());
+        isLocal = isTopEquivalent(axiom.getDomain())
+                || isBotEquivalent(axiom.getRole());
     }
 
     @Override
     public void visit(AxiomORoleRange axiom) {
-        isLocal = isTopEquivalent(axiom.getRange()) || isBotEquivalent(axiom.getRole());
+        isLocal = isTopEquivalent(axiom.getRange())
+                || isBotEquivalent(axiom.getRole());
     }
 
     @Override
     public void visit(AxiomDRoleRange axiom) {
-        isLocal = isTopEquivalent(axiom.getRange()) || isBotEquivalent(axiom.getRole());
+        isLocal = isTopEquivalent(axiom.getRange())
+                || isBotEquivalent(axiom.getRole());
     }
 
     @Override
     public void visit(AxiomRoleTransitive axiom) {
-        isLocal = isBotEquivalent(axiom.getRole()) || isTopEquivalent(axiom.getRole());
+        isLocal = isBotEquivalent(axiom.getRole())
+                || isTopEquivalent(axiom.getRole());
     }
 
     /** as BotRole is irreflexive, the only local axiom is topEquivalent(R) */
@@ -374,7 +393,8 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
 
     @Override
     public void visit(AxiomRoleSymmetric axiom) {
-        isLocal = isBotEquivalent(axiom.getRole()) || isTopEquivalent(axiom.getRole());
+        isLocal = isBotEquivalent(axiom.getRole())
+                || isTopEquivalent(axiom.getRole());
     }
 
     @Override

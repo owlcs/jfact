@@ -50,8 +50,9 @@ import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleTop;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 
 /** adapter for expression visitor */
-public abstract class DLExpressionVisitorAdapter implements DLExpressionVisitor,
-        Serializable {
+public abstract class DLExpressionVisitorAdapter implements
+        DLExpressionVisitor, Serializable {
+
     private static final long serialVersionUID = 11000L;
 
     protected void doDefault(@SuppressWarnings("unused") Expression a) {}

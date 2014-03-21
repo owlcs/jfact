@@ -15,10 +15,13 @@ import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import conformance.Original;
 import conformance.PortedFrom;
 
-/** class for simple rules like Ch :- Cb1, Cbi, CbN; all C are primitive named
- * concepts */
+/**
+ * class for simple rules like Ch :- Cb1, Cbi, CbN; all C are primitive named
+ * concepts
+ */
 @PortedFrom(file = "dlTBox.h", name = "TSimpleRule")
 class SimpleRule implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** body of the rule */
     @PortedFrom(file = "dlTBox.h", name = "Body")

@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 class SortedIntList implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     protected int[] values;
     protected int size = 0;
@@ -35,7 +36,8 @@ class SortedIntList implements Serializable {
         if (values != null) {
             return values[i];
         }
-        throw new IllegalArgumentException("Illegal argument " + i + ": no such element");
+        throw new IllegalArgumentException("Illegal argument " + i
+                + ": no such element");
     }
 
     protected void init() {

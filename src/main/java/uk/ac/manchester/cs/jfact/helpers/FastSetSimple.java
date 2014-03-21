@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 /** int set implementation */
 public class FastSetSimple extends AbstractFastSet {
+
     private static final long serialVersionUID = 11000L;
     protected int[] values;
     protected int size = 0;
@@ -52,12 +53,15 @@ public class FastSetSimple extends AbstractFastSet {
     /** default constructor */
     public FastSetSimple() {}
 
-    /** @param c1
-     *            c1
+    /**
+     * @param c1
+     *        c1
      * @param c2
-     *            c2 */
+     *        c2
+     */
     public FastSetSimple(FastSetSimple c1, FastSetSimple c2) {
-        values = new int[(c1.size + c2.size) / defaultSize * defaultSize + defaultSize];
+        values = new int[(c1.size + c2.size) / defaultSize * defaultSize
+                + defaultSize];
         int i = 0;
         int j = 0;
         int index = 0;
@@ -97,7 +101,8 @@ public class FastSetSimple extends AbstractFastSet {
         if (values != null) {
             return values[i];
         }
-        throw new IllegalArgumentException("Illegal argument " + i + ": no such element");
+        throw new IllegalArgumentException("Illegal argument " + i
+                + ": no such element");
     }
 
     protected void init() {
@@ -363,8 +368,8 @@ public class FastSetSimple extends AbstractFastSet {
             return;
         }
         if (end < -1 || end < i || end > size || i < -1 || i > size) {
-            throw new IllegalArgumentException("illegal arguments: " + i + " " + end
-                    + " size: " + size);
+            throw new IllegalArgumentException("illegal arguments: " + i + " "
+                    + end + " size: " + size);
         }
         if (size == 1 || i == 0 && end == size) {
             values = null;

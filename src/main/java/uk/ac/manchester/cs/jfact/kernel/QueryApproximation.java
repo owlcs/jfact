@@ -13,12 +13,15 @@ import conformance.PortedFrom;
 /** @author ignazio */
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "QueryApproximation")
 public class QueryApproximation extends BuildELIOConcept {
+
     private static final long serialVersionUID = 11000L;
 
-    /** @param conjunctiveQueryFolding
-     *            conjunctiveQueryFolding
+    /**
+     * @param conjunctiveQueryFolding
+     *        conjunctiveQueryFolding
      * @param query
-     *            query */
+     *        query
+     */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "QueryApproximation")
     public QueryApproximation(ConjunctiveQueryFolding conjunctiveQueryFolding,
             QRQuery query) {

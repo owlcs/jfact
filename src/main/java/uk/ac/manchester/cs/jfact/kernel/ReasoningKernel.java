@@ -67,6 +67,7 @@ import conformance.PortedFrom;
 /** Reasoning kernel */
 @PortedFrom(file = "Kernel.h", name = "ReasoningKernel")
 public class ReasoningKernel implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** options for the kernel and all related substructures */
     @PortedFrom(file = "Kernel.h", name = "KernelOptions")
@@ -103,8 +104,10 @@ public class ReasoningKernel implements Serializable {
     @Original
     private AtomicBoolean interrupted;
 
-    /** @param b
-     *            b */
+    /**
+     * @param b
+     *        b
+     */
     @Original
     public void setInterruptedSwitch(AtomicBoolean b) {
         interrupted = b;
@@ -167,50 +170,60 @@ public class ReasoningKernel implements Serializable {
         cachedQueryTree = null;
     }
 
-    /** set query cache value to QUERY
+    /**
+     * set query cache value to QUERY
      * 
      * @param query
-     *            query */
+     *        query
+     */
     @PortedFrom(file = "Kernel.h", name = "setQueryCache")
     private void setQueryCache(ConceptExpression query) {
         clearQueryCache();
         cachedQuery = query;
     }
 
-    /** set query cache value to QUERY
+    /**
+     * set query cache value to QUERY
      * 
      * @param query
-     *            query */
+     *        query
+     */
     @PortedFrom(file = "Kernel.h", name = "setQueryCache")
     private void setQueryCache(DLTree query) {
         clearQueryCache();
         cachedQueryTree = query;
     }
 
-    /** choose whether TExpr cache should be ignored
+    /**
+     * choose whether TExpr cache should be ignored
      * 
      * @param value
-     *            value */
+     *        value
+     */
     @PortedFrom(file = "Kernel.h", name = "setIgnoreExprCache")
     public void setIgnoreExprCache(boolean value) {
         ignoreExprCache = value;
     }
 
-    /** check whether query cache is the same as QUERY
+    /**
+     * check whether query cache is the same as QUERY
      * 
      * @param query
-     *            query
-     * @return true if same */
+     *        query
+     * @return true if same
+     */
     @PortedFrom(file = "Kernel.h", name = "checkQueryCache")
     private boolean checkQueryCache(ConceptExpression query) {
         return ignoreExprCache ? false : query.equals(cachedQuery);
     }
 
-    /** check whether query cache is the same as QUERY
+    /**
+     * check whether query cache is the same as QUERY
      * 
      * @param query
-     *            query
-     * @return true if same */
+     *        query
+     * @return true if same
+     */
     @PortedFrom(file = "Kernel.h", name = "checkQueryCache")
     private boolean checkQueryCache(DLTree query) {
         return equalTrees(cachedQueryTree, query);
@@ -229,17 +242,21 @@ public class ReasoningKernel implements Serializable {
         return pTBox.getStatus();
     }
 
-    /** @param expr
-     *            expr
-     * @return get DLTree corresponding to an expression EXPR */
+    /**
+     * @param expr
+     *        expr
+     * @return get DLTree corresponding to an expression EXPR
+     */
     @PortedFrom(file = "Kernel.h", name = "e")
     public DLTree e(Expression expr) {
         return expr.accept(pET);
     }
 
-    /** @return fresh filled depending of a type of R
+    /**
+     * @return fresh filled depending of a type of R
      * @param R
-     *            R */
+     *        R
+     */
     @PortedFrom(file = "Kernel.h", name = "getFreshFiller")
     private DLTree getFreshFiller(Role R) {
         if (R.isDataRole()) {
@@ -251,9 +268,11 @@ public class ReasoningKernel implements Serializable {
         }
     }
 
-    /** @return role expression based on the R
+    /**
+     * @return role expression based on the R
      * @param R
-     *            R */
+     *        R
+     */
     @PortedFrom(file = "Kernel.h", name = "Role")
     private RoleExpression Role(Role R) {
         if (R.isDataRole()) {
@@ -288,10 +307,12 @@ public class ReasoningKernel implements Serializable {
         return toReturn;
     }
 
-    /** set the signature of the expression translator
+    /**
+     * set the signature of the expression translator
      * 
      * @param sig
-     *            sig */
+     *        sig
+     */
     @PortedFrom(file = "Kernel.h", name = "setSignature")
     public void setSignature(TSignature sig) {
         if (pET != null) {
@@ -305,11 +326,13 @@ public class ReasoningKernel implements Serializable {
         return ontology;
     }
 
-    /** @return related cache for an individual I
+    /**
+     * @return related cache for an individual I
      * @param I
-     *            I
+     *        I
      * @param R
-     *            R */
+     *        R
+     */
     @PortedFrom(file = "Kernel.h", name = "getRelated")
     private List<Individual> getRelated(Individual I, Role R) {
         if (!I.hasRelatedCache(R)) {
@@ -319,9 +342,11 @@ public class ReasoningKernel implements Serializable {
     }
 
     // -- internal reasoning methods
-    /** @param C
-     *            C
-     * @return true iff C is satisfiable */
+    /**
+     * @param C
+     *        C
+     * @return true iff C is satisfiable
+     */
     @PortedFrom(file = "Kernel.h", name = "checkSatTree")
     private boolean checkSatTree(DLTree C) {
         if (C.isTOP()) {
@@ -334,20 +359,24 @@ public class ReasoningKernel implements Serializable {
         return getTBox().isSatisfiable(cachedConcept);
     }
 
-    /** @param C
-     *            C
-     * @return true iff C is satisfiable */
+    /**
+     * @param C
+     *        C
+     * @return true iff C is satisfiable
+     */
     @PortedFrom(file = "Kernel.h", name = "checkSat")
     private boolean checkSat(ConceptExpression C) {
         this.setUpCache(C, csSat);
         return getTBox().isSatisfiable(cachedConcept);
     }
 
-    /** helper;
+    /**
+     * helper;
      * 
      * @param C
-     *            C
-     * @return true iff C is either named concept of Top/Bot */
+     *        C
+     * @return true iff C is either named concept of Top/Bot
+     */
     @PortedFrom(file = "Kernel.h", name = "isNameOrConst")
     private boolean isNameOrConst(ConceptExpression C) {
         return C instanceof ConceptName || C instanceof ConceptTop
@@ -359,45 +388,54 @@ public class ReasoningKernel implements Serializable {
         return C.isBOTTOM() || C.isTOP() || C.isName();
     }
 
-    /** @param C
-     *            C
+    /**
+     * @param C
+     *        C
      * @param D
-     *            D
-     * @return true iff C [= D holds */
+     *        D
+     * @return true iff C [= D holds
+     */
     @PortedFrom(file = "Kernel.h", name = "checkSub")
     private boolean checkSub(ConceptExpression C, ConceptExpression D) {
         if (this.isNameOrConst(D) && this.isNameOrConst(C)) {
             return this.checkSub(getTBox().getCI(e(C)), getTBox().getCI(e(D)));
         }
-        return !checkSat(getExpressionManager().and(C, getExpressionManager().not(D)));
+        return !checkSat(getExpressionManager().and(C,
+                getExpressionManager().not(D)));
     }
 
-    /** @param useSemantic
-     *            useSemantic
-     * @return module extractor */
+    /**
+     * @param useSemantic
+     *        useSemantic
+     * @return module extractor
+     */
     @PortedFrom(file = "Kernel.h", name = "getModExtractor")
     public OntologyBasedModularizer getModExtractor(boolean useSemantic) {
         if (useSemantic) {
             if (ModSem == null) {
                 ModSem = new OntologyBasedModularizer(ontology,
-                        OntologyBasedModularizer.buildTModularizer(useSemantic, this));
+                        OntologyBasedModularizer.buildTModularizer(useSemantic,
+                                this));
             }
             return ModSem;
         }
         if (ModSyn == null) {
             ModSyn = new OntologyBasedModularizer(ontology,
-                    OntologyBasedModularizer.buildTModularizer(useSemantic, this));
+                    OntologyBasedModularizer.buildTModularizer(useSemantic,
+                            this));
         }
         return ModSyn;
     }
 
-    /** @param signature
-     *            signature
+    /**
+     * @param signature
+     *        signature
      * @param useSemantic
-     *            useSemantic
+     *        useSemantic
      * @param type
-     *            type
-     * @return a set of axioms that corresponds to the atom with the id INDEX */
+     *        type
+     * @return a set of axioms that corresponds to the atom with the id INDEX
+     */
     @PortedFrom(file = "Kernel.h", name = "getModule")
     public List<AxiomInterface> getModule(List<Expression> signature,
             boolean useSemantic, ModuleType type) {
@@ -412,13 +450,15 @@ public class ReasoningKernel implements Serializable {
         return getModExtractor(useSemantic).getModule(Sig, type);
     }
 
-    /** @param signature
-     *            signature
+    /**
+     * @param signature
+     *        signature
      * @param useSemantic
-     *            useSemantic
+     *        useSemantic
      * @param type
-     *            type
-     * @return a set of axioms that corresponds to the atom with the id INDEX */
+     *        type
+     * @return a set of axioms that corresponds to the atom with the id INDEX
+     */
     @PortedFrom(file = "Kernel.h", name = "getNonLocal")
     public Set<AxiomInterface> getNonLocal(List<Expression> signature,
             boolean useSemantic, ModuleType type) {
@@ -443,11 +483,13 @@ public class ReasoningKernel implements Serializable {
         return Result;
     }
 
-    /** @param C
-     *            C
+    /**
+     * @param C
+     *        C
      * @param D
-     *            D
-     * @return true iff C [= D holds */
+     *        D
+     * @return true iff C [= D holds
+     */
     @PortedFrom(file = "Kernel.h", name = "checkSub")
     private boolean checkSub(Concept C, Concept D) {
         // check whether a concept is fresh
@@ -465,7 +507,8 @@ public class ReasoningKernel implements Serializable {
             // D is known
             if (C.getpName() == 0) {
                 // C [= D iff D = \top, or ~D = \bottom
-                return !checkSatTree(DLTreeFactory.createSNFNot(getTBox().getTree(C)));
+                return !checkSatTree(DLTreeFactory.createSNFNot(getTBox()
+                        .getTree(C)));
             }
         }
         // here C and D are known (not fresh)
@@ -554,11 +597,13 @@ public class ReasoningKernel implements Serializable {
     }
 
     // transformation methods
-    /** @return individual by the TIndividualExpr
+    /**
+     * @return individual by the TIndividualExpr
      * @param i
-     *            i
+     *        i
      * @param reason
-     *            reason */
+     *        reason
+     */
     @PortedFrom(file = "Kernel.h", name = "getIndividual")
     private Individual getIndividual(IndividualExpression i, String reason) {
         DLTree I = e(i);
@@ -568,27 +613,33 @@ public class ReasoningKernel implements Serializable {
         return (Individual) getTBox().getCI(I);
     }
 
-    /** @return role by the TRoleExpr
+    /**
+     * @return role by the TRoleExpr
      * @param r
-     *            r
+     *        r
      * @param reason
-     *            reason */
+     *        reason
+     */
     @PortedFrom(file = "Kernel.h", name = "getRole")
     private Role getRole(RoleExpression r, String reason) {
         return Role.resolveRole(e(r), reason);
     }
 
-    /** @return taxonomy of the property wrt it's name
+    /**
+     * @return taxonomy of the property wrt it's name
      * @param R
-     *            R */
+     *        R
+     */
     @PortedFrom(file = "Kernel.h", name = "getTaxonomy")
     private Taxonomy getTaxonomy(Role R) {
         return R.isDataRole() ? getDRTaxonomy() : getORTaxonomy();
     }
 
-    /** @return taxonomy vertext of the property wrt it's name
+    /**
+     * @return taxonomy vertext of the property wrt it's name
      * @param R
-     *            R */
+     *        R
+     */
     @PortedFrom(file = "Kernel.h", name = "getTaxVertex")
     private TaxonomyVertex getTaxVertex(Role R) {
         return R.getTaxVertex();
@@ -618,31 +669,35 @@ public class ReasoningKernel implements Serializable {
         return getStatus().ordinal() >= kbRealised.ordinal();
     }
 
-    /** set top/bottom role names to use them in the related output
+    /**
+     * set top/bottom role names to use them in the related output
      * 
      * @param topO
-     *            topO
+     *        topO
      * @param botO
-     *            botO
+     *        botO
      * @param topD
-     *            topD
+     *        topD
      * @param botD
-     *            botD */
+     *        botD
+     */
     @PortedFrom(file = "Kernel.h", name = "setTopBottomRoleNames")
     public void setTopBottomRoleNames(IRI topO, IRI botO, IRI topD, IRI botD) {
         topORoleName = topO;
         botORoleName = botO;
         topDRoleName = topD;
         botDRoleName = botD;
-        ontology.getExpressionManager().setTopBottomRoles(topORoleName, botORoleName,
-                topDRoleName, botDRoleName);
+        ontology.getExpressionManager().setTopBottomRoles(topORoleName,
+                botORoleName, topDRoleName, botDRoleName);
     }
 
-    /** dump query processing TIME, reasoning statistics and a (preprocessed)
+    /**
+     * dump query processing TIME, reasoning statistics and a (preprocessed)
      * TBox
      * 
      * @param time
-     *            time */
+     *        time
+     */
     @PortedFrom(file = "Kernel.h", name = "writeReasoningResult")
     public void writeReasoningResult(long time) {
         // get rid of the query leftovers
@@ -651,22 +706,26 @@ public class ReasoningKernel implements Serializable {
     }
 
     // helper methods to query properties of roles
-    /** @param R
-     *            R
-     * @return true if R is functional wrt ontology */
+    /**
+     * @param R
+     *        R
+     * @return true if R is functional wrt ontology
+     */
     @PortedFrom(file = "Kernel.h", name = "checkFunctionality")
     private boolean checkFunctionality(Role R) {
         // R is transitive iff \ER.C and \ER.\not C is unsatisfiable
-        DLTree tmp = DLTreeFactory.createSNFExists(DLTreeFactory.createRole(R).copy(),
-                DLTreeFactory.createSNFNot(getFreshFiller(R)));
+        DLTree tmp = DLTreeFactory.createSNFExists(DLTreeFactory.createRole(R)
+                .copy(), DLTreeFactory.createSNFNot(getFreshFiller(R)));
         tmp = DLTreeFactory.createSNFAnd(tmp, DLTreeFactory.createSNFExists(
                 DLTreeFactory.createRole(R), getFreshFiller(R)));
         return !checkSatTree(tmp);
     }
 
-    /** @param R
-     *            R
-     * @return true if R is functional; set the value for R if necessary */
+    /**
+     * @param R
+     *        R
+     * @return true if R is functional; set the value for R if necessary
+     */
     @PortedFrom(file = "Kernel.h", name = "getFunctionality")
     private boolean getFunctionality(Role R) {
         if (!R.isFunctionalityKnown()) {
@@ -675,9 +734,11 @@ public class ReasoningKernel implements Serializable {
         return R.isFunctional();
     }
 
-    /** @param R
-     *            R
-     * @return true if R is transitive wrt ontology */
+    /**
+     * @param R
+     *        R
+     * @return true if R is transitive wrt ontology
+     */
     @PortedFrom(file = "Kernel.h", name = "checkTransitivity")
     private boolean checkTransitivity(DLTree R) {
         // R is transitive iff \ER.\ER.C and \AR.\not C is unsatisfiable
@@ -689,9 +750,11 @@ public class ReasoningKernel implements Serializable {
         return !checkSatTree(tmp);
     }
 
-    /** @param R
-     *            R
-     * @return true if R is symmetric wrt ontology */
+    /**
+     * @param R
+     *        R
+     * @return true if R is symmetric wrt ontology
+     */
     @PortedFrom(file = "Kernel.h", name = "checkSymmetry")
     private boolean checkSymmetry(DLTree R) {
         // R is symmetric iff C and \ER.\AR.(not C) is unsatisfiable
@@ -702,9 +765,11 @@ public class ReasoningKernel implements Serializable {
         return !checkSatTree(tmp);
     }
 
-    /** @param R
-     *            R
-     * @return true if R is reflexive wrt ontology */
+    /**
+     * @param R
+     *        R
+     * @return true if R is reflexive wrt ontology
+     */
     @PortedFrom(file = "Kernel.h", name = "checkReflexivity")
     private boolean checkReflexivity(DLTree R) {
         // R is reflexive iff C and \AR.(not C) is unsatisfiable
@@ -733,24 +798,28 @@ public class ReasoningKernel implements Serializable {
         return ontology.getExpressionManager();
     }
 
-    /** create new KB
+    /**
+     * create new KB
      * 
-     * @return false if new tbox was created */
+     * @return false if new tbox was created
+     */
     @PortedFrom(file = "Kernel.h", name = "newKB")
     private boolean newKB() {
         if (pTBox != null) {
             return true;
         }
-        pTBox = new TBox(datatypeFactory, getOptions(), topORoleName, botORoleName,
-                topDRoleName, botDRoleName, interrupted);
+        pTBox = new TBox(datatypeFactory, getOptions(), topORoleName,
+                botORoleName, topDRoleName, botDRoleName, interrupted);
         pET = new ExpressionTranslator(pTBox);
         initCacheAndFlags();
         return false;
     }
 
-    /** delete existing KB
+    /**
+     * delete existing KB
      * 
-     * @return false */
+     * @return false
+     */
     @PortedFrom(file = "Kernel.h", name = "releaseKB")
     private boolean releaseKB() {
         clearTBox();
@@ -758,9 +827,11 @@ public class ReasoningKernel implements Serializable {
         return false;
     }
 
-    /** reset current KB
+    /**
+     * reset current KB
      * 
-     * @return true if no new tbox is created */
+     * @return true if no new tbox is created
+     */
     @PortedFrom(file = "Kernel.h", name = "clearKB")
     public boolean clearKB() {
         if (pTBox == null) {
@@ -810,9 +881,11 @@ public class ReasoningKernel implements Serializable {
     }
 
     // role info retrieval
-    /** @param R
-     *            R
-     * @return true iff object role is functional */
+    /**
+     * @param R
+     *        R
+     * @return true iff object role is functional
+     */
     @PortedFrom(file = "Kernel.h", name = "isFunctional")
     public boolean isFunctional(ObjectRoleExpression R) {
         // ensure KB is ready to answer the query
@@ -829,9 +902,11 @@ public class ReasoningKernel implements Serializable {
         return getFunctionality(r);
     }
 
-    /** @param R
-     *            R
-     * @return true iff data role is functional */
+    /**
+     * @param R
+     *        R
+     * @return true iff data role is functional
+     */
     @PortedFrom(file = "Kernel.h", name = "isFunctional")
     public boolean isFunctional(DataRoleExpression R) {
         // ensure KB is ready to answer the query
@@ -848,9 +923,11 @@ public class ReasoningKernel implements Serializable {
         return getFunctionality(r);
     }
 
-    /** @param R
-     *            R
-     * @return true iff role is inverse-functional */
+    /**
+     * @param R
+     *        R
+     * @return true iff role is inverse-functional
+     */
     @PortedFrom(file = "Kernel.h", name = "isInverseFunctional")
     public boolean isInverseFunctional(ObjectRoleExpression R) {
         // ensure KB is ready to answer the query
@@ -868,9 +945,11 @@ public class ReasoningKernel implements Serializable {
         return getFunctionality(r);
     }
 
-    /** @param R
-     *            R
-     * @return true iff role is transitive */
+    /**
+     * @param R
+     *        R
+     * @return true iff role is transitive
+     */
     @PortedFrom(file = "Kernel.h", name = "isTransitive")
     public boolean isTransitive(ObjectRoleExpression R) {
         // ensure KB is ready to answer the query
@@ -890,9 +969,11 @@ public class ReasoningKernel implements Serializable {
         return r.isTransitive();
     }
 
-    /** @param R
-     *            R
-     * @return true iff role is symmetric */
+    /**
+     * @param R
+     *        R
+     * @return true iff role is symmetric
+     */
     @PortedFrom(file = "Kernel.h", name = "isSymmetric")
     public boolean isSymmetric(ObjectRoleExpression R) {
         preprocessKB();
@@ -909,9 +990,11 @@ public class ReasoningKernel implements Serializable {
         return r.isSymmetric();
     }
 
-    /** @param R
-     *            R
-     * @return true iff role is asymmetric */
+    /**
+     * @param R
+     *        R
+     * @return true iff role is asymmetric
+     */
     @PortedFrom(file = "Kernel.h", name = "isAsymmetric")
     public boolean isAsymmetric(ObjectRoleExpression R) {
         preprocessKB();
@@ -928,9 +1011,11 @@ public class ReasoningKernel implements Serializable {
         return r.isAsymmetric();
     }
 
-    /** @param R
-     *            R
-     * @return true iff role is reflexive */
+    /**
+     * @param R
+     *        R
+     * @return true iff role is reflexive
+     */
     @PortedFrom(file = "Kernel.h", name = "isReflexive")
     public boolean isReflexive(ObjectRoleExpression R) {
         preprocessKB();
@@ -947,9 +1032,11 @@ public class ReasoningKernel implements Serializable {
         return r.isReflexive();
     }
 
-    /** @param R
-     *            R
-     * @return true iff role is irreflexive */
+    /**
+     * @param R
+     *        R
+     * @return true iff role is irreflexive
+     */
     @PortedFrom(file = "Kernel.h", name = "isIrreflexive")
     public boolean isIrreflexive(ObjectRoleExpression R) {
         preprocessKB();
@@ -967,9 +1054,11 @@ public class ReasoningKernel implements Serializable {
     }
 
     // all-disjoint query implementation
-    /** @param l
-     *            l
-     * @return true if disjoint */
+    /**
+     * @param l
+     *        l
+     * @return true if disjoint
+     */
     @PortedFrom(file = "Kernel.h", name = "isDisjointRoles")
     public boolean isDisjointRoles(List<? extends RoleExpression> l) {
         int nTopRoles = 0;
@@ -1003,13 +1092,16 @@ public class ReasoningKernel implements Serializable {
         return true;
     }
 
-    /** @param R
-     *            R
+    /**
+     * @param R
+     *        R
      * @param S
-     *            S
-     * @return true iff two roles are disjoint */
+     *        S
+     * @return true iff two roles are disjoint
+     */
     @PortedFrom(file = "Kernel.h", name = "isDisjointRoles")
-    public boolean isDisjointRoles(ObjectRoleExpression R, ObjectRoleExpression S) {
+    public boolean isDisjointRoles(ObjectRoleExpression R,
+            ObjectRoleExpression S) {
         preprocessKB();
         Role r = getRole(R, "Role expression expected in isDisjointRoles()");
         Role s = getRole(S, "Role expression expected in isDisjointRoles()");
@@ -1024,11 +1116,13 @@ public class ReasoningKernel implements Serializable {
         return getTBox().isDisjointRoles(r, s);
     }
 
-    /** @param R
-     *            R
+    /**
+     * @param R
+     *        R
      * @param S
-     *            S
-     * @return true iff two roles are disjoint */
+     *        S
+     * @return true iff two roles are disjoint
+     */
     @PortedFrom(file = "Kernel.h", name = "isDisjointRoles")
     public boolean isDisjointRoles(DataRoleExpression R, DataRoleExpression S) {
         preprocessKB();
@@ -1043,13 +1137,16 @@ public class ReasoningKernel implements Serializable {
         return getTBox().isDisjointRoles(r, s);
     }
 
-    /** @param R
-     *            R
+    /**
+     * @param R
+     *        R
      * @param S
-     *            S
-     * @return true if R is a sub-role of S */
+     *        S
+     * @return true if R is a sub-role of S
+     */
     @PortedFrom(file = "Kernel.h", name = "isSubRoles")
-    public boolean isSubRoles(ObjectRoleComplexExpression R, ObjectRoleExpression S) {
+    public boolean isSubRoles(ObjectRoleComplexExpression R,
+            ObjectRoleExpression S) {
         preprocessKB();
         Role r = getRole(R, "Role expression expected in isSubRoles()");
         Role s = getRole(S, "Role expression expected in isSubRoles()");
@@ -1081,9 +1178,11 @@ public class ReasoningKernel implements Serializable {
     }
 
     // single satisfiability
-    /** @param C
-     *            C
-     * @return true iff C is satisfiable */
+    /**
+     * @param C
+     *        C
+     * @return true iff C is satisfiable
+     */
     @PortedFrom(file = "Kernel.h", name = "isSatisfiable")
     public boolean isSatisfiable(ConceptExpression C) {
         preprocessKB();
@@ -1099,11 +1198,13 @@ public class ReasoningKernel implements Serializable {
         }
     }
 
-    /** @param C
-     *            C
+    /**
+     * @param C
+     *        C
      * @param D
-     *            D
-     * @return true iff C [= D holds */
+     *        D
+     * @return true iff C [= D holds
+     */
     @PortedFrom(file = "Kernel.h", name = "isSubsumedBy")
     public boolean isSubsumedBy(ConceptExpression C, ConceptExpression D) {
         preprocessKB();
@@ -1114,21 +1215,25 @@ public class ReasoningKernel implements Serializable {
         return !checkSatTree(DLTreeFactory.createSNFAnd(e(C), nD));
     }
 
-    /** @param C
-     *            C
+    /**
+     * @param C
+     *        C
      * @param D
-     *            D
-     * @return true iff C is disjoint with D; that is, C [= \not D holds */
+     *        D
+     * @return true iff C is disjoint with D; that is, C [= \not D holds
+     */
     @PortedFrom(file = "Kernel.h", name = "isDisjoint")
     public boolean isDisjoint(ConceptExpression C, ConceptExpression D) {
         return isSubsumedBy(C, getExpressionManager().not(D));
     }
 
-    /** @param C
-     *            C
+    /**
+     * @param C
+     *        C
      * @param D
-     *            D
-     * @return true iff C is equivalent to D */
+     *        D
+     * @return true iff C is equivalent to D
+     */
     @PortedFrom(file = "Kernel.h", name = "isEquivalent")
     public boolean isEquivalent(ConceptExpression C, ConceptExpression D) {
         if (C.equals(D)) {
@@ -1154,18 +1259,20 @@ public class ReasoningKernel implements Serializable {
     }
 
     // concept hierarchy
-    /** apply actor__apply() to all DIRECT super-concepts of [complex] C
+    /**
+     * apply actor__apply() to all DIRECT super-concepts of [complex] C
      * 
      * @param C
-     *            C
+     *        C
      * @param direct
-     *            direct
+     *        direct
      * @param actor
-     *            actor
-     * @return actor */
+     *        actor
+     * @return actor
+     */
     @PortedFrom(file = "Kernel.h", name = "getSupConcepts")
-    public <T extends Expression> TaxonomyActor<T> getSupConcepts(ConceptExpression C,
-            boolean direct, TaxonomyActor<T> actor) {
+    public <T extends Expression> TaxonomyActor<T> getSupConcepts(
+            ConceptExpression C, boolean direct, TaxonomyActor<T> actor) {
         classifyKB();
         this.setUpCache(C, csClassified);
         actor.clear();
@@ -1178,18 +1285,20 @@ public class ReasoningKernel implements Serializable {
         return actor;
     }
 
-    /** apply actor__apply() to all DIRECT sub-concepts of [complex] C
+    /**
+     * apply actor__apply() to all DIRECT sub-concepts of [complex] C
      * 
      * @param C
-     *            C
+     *        C
      * @param direct
-     *            direct
+     *        direct
      * @param actor
-     *            actor
-     * @return actor */
+     *        actor
+     * @return actor
+     */
     @PortedFrom(file = "Kernel.h", name = "getSubConcepts")
-    public <T extends Expression> TaxonomyActor<T> getSubConcepts(ConceptExpression C,
-            boolean direct, TaxonomyActor<T> actor) {
+    public <T extends Expression> TaxonomyActor<T> getSubConcepts(
+            ConceptExpression C, boolean direct, TaxonomyActor<T> actor) {
         classifyKB();
         this.setUpCache(C, csClassified);
         actor.clear();
@@ -1198,17 +1307,20 @@ public class ReasoningKernel implements Serializable {
         return actor;
     }
 
-    /** apply actor__apply() to all DIRECT sub-concepts of [complex] C
+    /**
+     * apply actor__apply() to all DIRECT sub-concepts of [complex] C
      * 
      * @param C
-     *            C
+     *        C
      * @param direct
-     *            direct
+     *        direct
      * @param actor
-     *            actor
-     * @return actor */
+     *        actor
+     * @return actor
+     */
     @PortedFrom(file = "Kernel.h", name = "getSubConcepts")
-    public Actor getSubConcepts(ConceptExpression C, boolean direct, Actor actor) {
+    public Actor
+            getSubConcepts(ConceptExpression C, boolean direct, Actor actor) {
         classifyKB();
         this.setUpCache(C, csClassified);
         actor.clear();
@@ -1217,13 +1329,15 @@ public class ReasoningKernel implements Serializable {
         return actor;
     }
 
-    /** apply actor__apply() to all synonyms of [complex] C
+    /**
+     * apply actor__apply() to all synonyms of [complex] C
      * 
      * @param C
-     *            C
+     *        C
      * @param actor
-     *            actor
-     * @return actor */
+     *        actor
+     * @return actor
+     */
     @PortedFrom(file = "Kernel.h", name = "getEquivalentConcepts")
     public <T extends Expression> TaxonomyActor<T> getEquivalentConcepts(
             ConceptExpression C, TaxonomyActor<T> actor) {
@@ -1234,15 +1348,17 @@ public class ReasoningKernel implements Serializable {
         return actor;
     }
 
-    /** apply actor::apply() to all named concepts disjoint with [complex] C
+    /**
+     * apply actor::apply() to all named concepts disjoint with [complex] C
      * 
      * @param C
-     *            C
+     *        C
      * @param actor
-     *            actor
+     *        actor
      * @param <T>
-     *            type
-     * @return actor */
+     *        type
+     * @return actor
+     */
     @PortedFrom(file = "Kernel.h", name = "getDisjointConcepts")
     public <T extends Expression> TaxonomyActor<T> getDisjointConcepts(
             ConceptExpression C, TaxonomyActor<T> actor) {
@@ -1256,20 +1372,22 @@ public class ReasoningKernel implements Serializable {
     }
 
     // role hierarchy
-    /** apply actor__apply() to all DIRECT super-roles of [complex] R
+    /**
+     * apply actor__apply() to all DIRECT super-roles of [complex] R
      * 
      * @param r
-     *            r
+     *        r
      * @param direct
-     *            direct
+     *        direct
      * @param actor
-     *            actor
+     *        actor
      * @param <T>
-     *            type
-     * @return actor */
+     *        type
+     * @return actor
+     */
     @PortedFrom(file = "Kernel.h", name = "getSupRoles")
-    public <T extends RoleExpression> TaxonomyActor<T> getSupRoles(RoleExpression r,
-            boolean direct, TaxonomyActor<T> actor) {
+    public <T extends RoleExpression> TaxonomyActor<T> getSupRoles(
+            RoleExpression r, boolean direct, TaxonomyActor<T> actor) {
         preprocessKB(); // ensure KB is ready to answer the query
         Role R = getRole(r, "Role expression expected in getSupRoles()");
         actor.clear();
@@ -1278,20 +1396,22 @@ public class ReasoningKernel implements Serializable {
         return actor;
     }
 
-    /** apply actor__apply() to all DIRECT sub-roles of [complex] R
+    /**
+     * apply actor__apply() to all DIRECT sub-roles of [complex] R
      * 
      * @param r
-     *            r
+     *        r
      * @param direct
-     *            direct
+     *        direct
      * @param actor
-     *            actor
+     *        actor
      * @param <T>
-     *            type
-     * @return actor */
+     *        type
+     * @return actor
+     */
     @PortedFrom(file = "Kernel.h", name = "getSubRoles")
-    public <T extends RoleExpression> TaxonomyActor<T> getSubRoles(RoleExpression r,
-            boolean direct, TaxonomyActor<T> actor) {
+    public <T extends RoleExpression> TaxonomyActor<T> getSubRoles(
+            RoleExpression r, boolean direct, TaxonomyActor<T> actor) {
         preprocessKB();
         Role R = getRole(r, "Role expression expected in getSubRoles()");
         actor.clear();
@@ -1300,15 +1420,17 @@ public class ReasoningKernel implements Serializable {
         return actor;
     }
 
-    /** apply actor__apply() to all synonyms of [complex] R
+    /**
+     * apply actor__apply() to all synonyms of [complex] R
      * 
      * @param r
-     *            r
+     *        r
      * @param actor
-     *            actor
+     *        actor
      * @param <T>
-     *            type
-     * @return actor */
+     *        type
+     * @return actor
+     */
     @PortedFrom(file = "Kernel.h", name = "getEquivalentRoles")
     public <T extends RoleExpression> TaxonomyActor<T> getEquivalentRoles(
             RoleExpression r, TaxonomyActor<T> actor) {
@@ -1320,39 +1442,47 @@ public class ReasoningKernel implements Serializable {
     }
 
     // domain and range as a set of named concepts
-    /** apply actor__apply() to all DIRECT NC that are in the domain of [complex]
+    /**
+     * apply actor__apply() to all DIRECT NC that are in the domain of [complex]
      * R
      * 
      * @param r
-     *            r
+     *        r
      * @param direct
-     *            direct
+     *        direct
      * @param actor
-     *            actor */
+     *        actor
+     */
     @PortedFrom(file = "Kernel.h", name = "getORoleDomain")
-    public void getORoleDomain(ObjectRoleExpression r, boolean direct, Actor actor) {
+    public void getORoleDomain(ObjectRoleExpression r, boolean direct,
+            Actor actor) {
         classifyKB();
-        this.setUpCache(getExpressionManager().exists(r, getExpressionManager().top()),
+        this.setUpCache(
+                getExpressionManager().exists(r, getExpressionManager().top()),
                 csClassified);
         actor.clear();
         Taxonomy tax = getCTaxonomy();
         tax.getRelativesInfo(cachedVertex, actor, true, direct, true);
     }
 
-    /** apply actor::apply() to all DIRECT NC that are in the domain of data role
+    /**
+     * apply actor::apply() to all DIRECT NC that are in the domain of data role
      * R
      * 
      * @param r
-     *            r
+     *        r
      * @param direct
-     *            direct
+     *        direct
      * @param actor
-     *            actor */
+     *        actor
+     */
     @PortedFrom(file = "Kernel.h", name = "getDRoleDomain")
-    private void getDRoleDomain(DataRoleExpression r, boolean direct, Actor actor) {
+    private void getDRoleDomain(DataRoleExpression r, boolean direct,
+            Actor actor) {
         classifyKB();
-        this.setUpCache(getExpressionManager()
-                .exists(r, getExpressionManager().dataTop()), csClassified);
+        this.setUpCache(
+                getExpressionManager().exists(r,
+                        getExpressionManager().dataTop()), csClassified);
         actor.clear();
         Taxonomy tax = getCTaxonomy();
         if (direct) {
@@ -1363,31 +1493,37 @@ public class ReasoningKernel implements Serializable {
         }
     }
 
-    /** apply actor__apply() to all DIRECT NC that are in the range of [complex]
+    /**
+     * apply actor__apply() to all DIRECT NC that are in the range of [complex]
      * R
      * 
      * @param r
-     *            r
+     *        r
      * @param direct
-     *            direct
+     *        direct
      * @param actor
-     *            actor */
+     *        actor
+     */
     @PortedFrom(file = "Kernel.h", name = "getRoleRange")
-    private void getRoleRange(ObjectRoleExpression r, boolean direct, Actor actor) {
+    private void getRoleRange(ObjectRoleExpression r, boolean direct,
+            Actor actor) {
         getORoleDomain(getExpressionManager().inverse(r), direct, actor);
     }
 
     // instances
-    /** @param C
-     *            C
+    /**
+     * @param C
+     *        C
      * @param actor
-     *            actor
+     *        actor
      * @param direct
-     *            direct
-     * @return actor */
+     *        direct
+     * @return actor
+     */
     @PortedFrom(file = "Kernel.h", name = "getInstances")
-    public TaxonomyActor<IndividualExpression> getInstances(ConceptExpression C,
-            TaxonomyActor<IndividualExpression> actor, boolean direct) {
+    public TaxonomyActor<IndividualExpression> getInstances(
+            ConceptExpression C, TaxonomyActor<IndividualExpression> actor,
+            boolean direct) {
         if (direct) {
             getDirectInstances(C, actor);
         } else {
@@ -1396,12 +1532,14 @@ public class ReasoningKernel implements Serializable {
         return actor;
     }
 
-    /** apply actor__apply() to all direct instances of given [complex] C
+    /**
+     * apply actor__apply() to all direct instances of given [complex] C
      * 
      * @param C
-     *            C
+     *        C
      * @param actor
-     *            actor */
+     *        actor
+     */
     @PortedFrom(file = "Kernel.h", name = "getDirectInstances")
     public void getDirectInstances(ConceptExpression C, Actor actor) {
         realiseKB();
@@ -1420,12 +1558,14 @@ public class ReasoningKernel implements Serializable {
         }
     }
 
-    /** apply actor__apply() to all instances of given [complex] C
+    /**
+     * apply actor__apply() to all instances of given [complex] C
      * 
      * @param C
-     *            C
+     *        C
      * @param actor
-     *            actor */
+     *        actor
+     */
     @PortedFrom(file = "Kernel.h", name = "getInstances")
     public void getInstances(ConceptExpression C, Actor actor) {
         // FIXME!!
@@ -1437,18 +1577,20 @@ public class ReasoningKernel implements Serializable {
         tax.getRelativesInfo(cachedVertex, actor, true, false, false);
     }
 
-    /** apply actor__apply() to all DIRECT concepts that are types of an
+    /**
+     * apply actor__apply() to all DIRECT concepts that are types of an
      * individual I
      * 
      * @param I
-     *            I
+     *        I
      * @param direct
-     *            direct
+     *        direct
      * @param actor
-     *            actor
+     *        actor
      * @param <T>
-     *            type
-     * @return actor */
+     *        type
+     * @return actor
+     */
     @PortedFrom(file = "Kernel.h", name = "getTypes")
     public <T extends Expression> TaxonomyActor<T> getTypes(IndividualName I,
             boolean direct, TaxonomyActor<T> actor) {
@@ -1460,15 +1602,17 @@ public class ReasoningKernel implements Serializable {
         return actor;
     }
 
-    /** apply actor__apply() to all synonyms of an individual I
+    /**
+     * apply actor__apply() to all synonyms of an individual I
      * 
      * @param I
-     *            I
+     *        I
      * @param actor
-     *            actor
+     *        actor
      * @param <T>
-     *            type
-     * @return actor */
+     *        type
+     * @return actor
+     */
     @PortedFrom(file = "Kernel.h", name = "getSameAs")
     public <T extends Expression> TaxonomyActor<T> getSameAs(IndividualName I,
             TaxonomyActor<T> actor) {
@@ -1476,13 +1620,16 @@ public class ReasoningKernel implements Serializable {
         return getEquivalentConcepts(getExpressionManager().oneOf(I), actor);
     }
 
-    /** @param I
-     *            I
+    /**
+     * @param I
+     *        I
      * @param J
-     *            J
-     * @return true iff I and J refer to the same individual */
+     *        J
+     * @return true iff I and J refer to the same individual
+     */
     @PortedFrom(file = "Kernel.h", name = "isSameIndividuals")
-    public boolean isSameIndividuals(IndividualExpression I, IndividualExpression J) {
+    public boolean isSameIndividuals(IndividualExpression I,
+            IndividualExpression J) {
         realiseKB();
         Individual i = getIndividual(I,
                 "Only known individuals are allowed in the isSameAs()");
@@ -1494,12 +1641,14 @@ public class ReasoningKernel implements Serializable {
     // ----------------------------------------------------------------------------------
     // knowledge exploration queries
     // ----------------------------------------------------------------------------------
-    /** build a completion tree for a concept expression C (no caching as it
+    /**
+     * build a completion tree for a concept expression C (no caching as it
      * breaks the idea of KE).
      * 
      * @param C
-     *            C
-     * @return the root node */
+     *        C
+     * @return the root node
+     */
     @PortedFrom(file = "Kernel.h", name = "buildCompletionTree")
     public DlCompletionTree buildCompletionTree(ConceptExpression C) {
         preprocessKB();
@@ -1518,87 +1667,106 @@ public class ReasoningKernel implements Serializable {
         return KE;
     }
 
-    /** build the set of data neighbours of a NODE, put the set of data roles
+    /**
+     * build the set of data neighbours of a NODE, put the set of data roles
      * into the RESULT variable
      * 
      * @param node
-     *            node
+     *        node
      * @param onlyDet
-     *            onlyDet
-     * @return set of data roles */
+     *        onlyDet
+     * @return set of data roles
+     */
     @PortedFrom(file = "Kernel.h", name = "getDataRoles")
-    public Set<DataRoleExpression> getDataRoles(DlCompletionTree node, boolean onlyDet) {
+    public Set<DataRoleExpression> getDataRoles(DlCompletionTree node,
+            boolean onlyDet) {
         return KE.getDataRoles(node, onlyDet);
     }
 
-    /** build the set of object neighbours of a NODE, put the set of object roles
+    /**
+     * build the set of object neighbours of a NODE, put the set of object roles
      * and inverses into the RESULT variable
      * 
      * @param node
-     *            node
+     *        node
      * @param onlyDet
-     *            onlyDet
+     *        onlyDet
      * @param needIncoming
-     *            needIncoming
-     * @return set of object roles */
+     *        needIncoming
+     * @return set of object roles
+     */
     @PortedFrom(file = "Kernel.h", name = "getObjectRoles")
     public Set<ObjectRoleExpression> getObjectRoles(DlCompletionTree node,
             boolean onlyDet, boolean needIncoming) {
         return KE.getObjectRoles(node, onlyDet, needIncoming);
     }
 
-    /** build the set of neighbours of a NODE via role ROLE; put the resulting
+    /**
+     * build the set of neighbours of a NODE via role ROLE; put the resulting
      * list into RESULT
      * 
      * @param node
-     *            node
+     *        node
      * @param role
-     *            role
-     * @return neighbors for KE */
+     *        role
+     * @return neighbors for KE
+     */
     @PortedFrom(file = "Kernel.h", name = "getNeighbours")
-    public List<DlCompletionTree>
-            getNeighbours(DlCompletionTree node, RoleExpression role) {
-        return KE.getNeighbours(node,
-                getRole(role, "Role expression expected in getNeighbours() method"));
+    public List<DlCompletionTree> getNeighbours(DlCompletionTree node,
+            RoleExpression role) {
+        return KE.getNeighbours(
+                node,
+                getRole(role,
+                        "Role expression expected in getNeighbours() method"));
     }
 
-    /** put into RESULT all the expressions from the NODE label; if ONLYDET is
+    /**
+     * put into RESULT all the expressions from the NODE label; if ONLYDET is
      * true, return only deterministic elements
      * 
      * @param node
-     *            node
+     *        node
      * @param onlyDet
-     *            onlyDet
-     * @return object labels for KE */
+     *        onlyDet
+     * @return object labels for KE
+     */
     @PortedFrom(file = "Kernel.h", name = "getLabel")
-    public List<ConceptExpression> getObjectLabel(DlCompletionTree node, boolean onlyDet) {
+    public List<ConceptExpression> getObjectLabel(DlCompletionTree node,
+            boolean onlyDet) {
         return KE.getObjectLabel(node, onlyDet);
     }
 
-    /** @param node
-     *            node
+    /**
+     * @param node
+     *        node
      * @param onlyDet
-     *            onlyDet
-     * @return data labels for KE */
+     *        onlyDet
+     * @return data labels for KE
+     */
     @PortedFrom(file = "Kernel.h", name = "getLabel")
-    public List<DataExpression> getDataLabel(DlCompletionTree node, boolean onlyDet) {
+    public List<DataExpression> getDataLabel(DlCompletionTree node,
+            boolean onlyDet) {
         return KE.getDataLabel(node, onlyDet);
     }
 
-    /** @param node
-     *            node
-     * @return blocker of a blocked node NODE or NULL if node is not blocked */
+    /**
+     * @param node
+     *        node
+     * @return blocker of a blocked node NODE or NULL if node is not blocked
+     */
     @PortedFrom(file = "Kernel.h", name = "getBlocker")
     public DlCompletionTree getBlocker(DlCompletionTree node) {
         return KE.getBlocker(node);
     }
 
     // atomic decomposition queries
-    /** @param I
-     *            I
+    /**
+     * @param I
+     *        I
      * @param C
-     *            C
-     * @return true iff individual I is instance of given [complex] C */
+     *        C
+     * @return true iff individual I is instance of given [complex] C
+     */
     @PortedFrom(file = "Kernel.h", name = "isInstance")
     public boolean isInstance(IndividualExpression I, ConceptExpression C) {
         realiseKB();
@@ -1607,11 +1775,14 @@ public class ReasoningKernel implements Serializable {
         return isSubsumedBy(getExpressionManager().oneOf(I), C);
     }
 
-    /** @param conf
-     *            conf
+    /**
+     * @param conf
+     *        conf
      * @param factory
-     *            factory */
-    public ReasoningKernel(JFactReasonerConfiguration conf, DatatypeFactory factory) {
+     *        factory
+     */
+    public ReasoningKernel(JFactReasonerConfiguration conf,
+            DatatypeFactory factory) {
         // should be commented
         cachedQuery = null;
         cachedQueryTree = null;
@@ -1623,9 +1794,11 @@ public class ReasoningKernel implements Serializable {
         initCacheAndFlags();
     }
 
-    /** check whether it is necessary to reload the ontology
+    /**
+     * check whether it is necessary to reload the ontology
      * 
-     * @return true if reload must happen */
+     * @return true if reload must happen
+     */
     @PortedFrom(file = "Kernel.h", name = "needForceReload")
     private boolean needForceReload() {
         if (pTBox == null) {
@@ -1651,9 +1824,11 @@ public class ReasoningKernel implements Serializable {
         Set<NamedEntity> MPlus = new HashSet<NamedEntity>();
         Set<NamedEntity> MMinus = new HashSet<NamedEntity>();
         TSignature NewSig = ontology.getSignature();
-        Set<NamedEntity> RemovedEntities = new HashSet<NamedEntity>(OntoSig.begin());
+        Set<NamedEntity> RemovedEntities = new HashSet<NamedEntity>(
+                OntoSig.begin());
         RemovedEntities.removeAll(NewSig.begin());
-        Set<NamedEntity> AddedEntities = new HashSet<NamedEntity>(NewSig.begin());
+        Set<NamedEntity> AddedEntities = new HashSet<NamedEntity>(
+                NewSig.begin());
         AddedEntities.removeAll(OntoSig.begin());
         Taxonomy tax = getCTaxonomy();
         Set<Concept> excluded = new HashSet<Concept>();
@@ -1691,7 +1866,8 @@ public class ReasoningKernel implements Serializable {
         // fill in M^+ and M^- sets
         Timer t = new Timer();
         t.start();
-        LocalityChecker lc = getModExtractor(false).getModularizer().getLocalityChecker();
+        LocalityChecker lc = getModExtractor(false).getModularizer()
+                .getLocalityChecker();
         for (Map.Entry<NamedEntity, TSignature> p : Name2Sig.entrySet()) {
             lc.setSignatureValue(p.getValue());
             for (AxiomInterface notProcessed : ontology.getAxioms()) {
@@ -1704,8 +1880,8 @@ public class ReasoningKernel implements Serializable {
                 if (!lc.local(retracted)) {
                     MMinus.add(p.getKey());
                     // FIXME!! only concepts for now
-                    TaxonomyVertex v = ((ClassifiableEntry) p.getKey().getEntry())
-                            .getTaxVertex();
+                    TaxonomyVertex v = ((ClassifiableEntry) p.getKey()
+                            .getEntry()).getTaxVertex();
                     if (v.noNeighbours(true)) {
                         v.addNeighbour(true, tax.getTopVertex());
                         tax.getTopVertex().addNeighbour(false, v);
@@ -1720,7 +1896,8 @@ public class ReasoningKernel implements Serializable {
         toProcess.addAll(MMinus);
         // process all entries recursively
         while (!toProcess.isEmpty()) {
-            buildSignature(toProcess.iterator().next(), ontology.getAxioms(), toProcess);
+            buildSignature(toProcess.iterator().next(), ontology.getAxioms(),
+                    toProcess);
         }
         tax.finalise();
         // save the taxonomy
@@ -1774,7 +1951,8 @@ public class ReasoningKernel implements Serializable {
         }
         // split ontological axioms
         if (kernelOptions.isSplits()) {
-            TAxiomSplitter AxiomSplitter = new TAxiomSplitter(kernelOptions, ontology);
+            TAxiomSplitter AxiomSplitter = new TAxiomSplitter(kernelOptions,
+                    ontology);
             AxiomSplitter.buildSplit();
         }
         OntologyLoader ontologyLoader = new OntologyLoader(getTBox());
@@ -1786,12 +1964,14 @@ public class ReasoningKernel implements Serializable {
         ontology.setProcessed();
     }
 
-    /** setup Name2Sig for a given entity;
+    /**
+     * setup Name2Sig for a given entity;
      * 
      * @param entity
-     *            entity
+     *        entity
      * @param Module
-     *            Module */
+     *        Module
+     */
     @PortedFrom(file = "Incremental.cpp", name = "setupSig")
     public void setupSig(NamedEntity entity, List<AxiomInterface> Module) {
         moduleTimer.start();
@@ -1806,33 +1986,36 @@ public class ReasoningKernel implements Serializable {
         sig.add(entity);
         getModExtractor(false).getModule(Module, sig, ModuleType.M_BOT);
         // perform update
-        Name2Sig.put(entity, new TSignature(getModExtractor(false).getModularizer()
-                .getSignature()));
+        Name2Sig.put(entity, new TSignature(getModExtractor(false)
+                .getModularizer().getSignature()));
         moduleTimer.stop();
         // return ret;
     }
 
-    /** build signature for ENTITY and all dependent entities from toProcess;
+    /**
+     * build signature for ENTITY and all dependent entities from toProcess;
      * look for modules in Module;
      * 
      * @param entity
-     *            entity
+     *        entity
      * @param Module
-     *            Module
+     *        Module
      * @param toProcess
-     *            toProcess */
+     *        toProcess
+     */
     @PortedFrom(file = "Incremental.cpp", name = "buildSignature")
     public void buildSignature(NamedEntity entity, List<AxiomInterface> Module,
             Set<NamedEntity> toProcess) {
         toProcess.remove(entity);
         setupSig(entity, Module);
-        List<AxiomInterface> NewModule = getModExtractor(false).getModularizer()
-                .getModule();
+        List<AxiomInterface> NewModule = getModExtractor(false)
+                .getModularizer().getModule();
         if (Module.size() == NewModule.size()) {
             return;
         }
         // smaller module: recurse
-        TSignature ModSig = getModExtractor(false).getModularizer().getSignature();
+        TSignature ModSig = getModExtractor(false).getModularizer()
+                .getSignature();
         for (NamedEntity p : ModSig.begin()) {
             if (toProcess.contains(p)) {
                 // need to process
@@ -1854,7 +2037,8 @@ public class ReasoningKernel implements Serializable {
         }
         // process all entries recursively
         while (!toProcess.isEmpty()) {
-            buildSignature(toProcess.iterator().next(), ontology.getAxioms(), toProcess);
+            buildSignature(toProcess.iterator().next(), ontology.getAxioms(),
+                    toProcess);
         }
         getTBox().setNameSigMap(Name2Sig);
         OntoSig = ontology.getSignature();
@@ -1936,11 +2120,13 @@ public class ReasoningKernel implements Serializable {
     }
 
     // -- query caching support
-    /** classify query; cache is ready at the point. NAMED means whether concept
+    /**
+     * classify query; cache is ready at the point. NAMED means whether concept
      * is just a name
      * 
      * @param named
-     *            named */
+     *        named
+     */
     @PortedFrom(file = "Kernel.h", name = "classifyQuery")
     private void classifyQuery(boolean named) {
         // make sure KB is classified
@@ -2057,7 +2243,8 @@ public class ReasoningKernel implements Serializable {
     }
 
     @PortedFrom(file = "Kernel.cpp", name = "checkDataRelation")
-    private boolean checkDataRelation(DlCompletionTree vR, DlCompletionTree vS, int op) {
+    private boolean checkDataRelation(DlCompletionTree vR, DlCompletionTree vS,
+            int op) {
         switch (op) {
             case 0: // =
                 return isEq(vR, vS);
@@ -2077,25 +2264,30 @@ public class ReasoningKernel implements Serializable {
         }
     }
 
-    /** set RESULT into set of instances of A such that they do have data roles R
+    /**
+     * set RESULT into set of instances of A such that they do have data roles R
      * and S
      * 
      * @param R
-     *            R
+     *        R
      * @param S
-     *            S
+     *        S
      * @param op
-     *            op
+     *        op
      * @param individuals
-     *            individuals
-     * @return related individuals */
+     *        individuals
+     * @return related individuals
+     */
     @PortedFrom(file = "Kernel.cpp", name = "getDataRelatedIndividuals")
-    public Collection<IndividualName> getDataRelatedIndividuals(RoleExpression R,
-            RoleExpression S, int op, Collection<IndividualExpression> individuals) {
+    public Collection<IndividualName> getDataRelatedIndividuals(
+            RoleExpression R, RoleExpression S, int op,
+            Collection<IndividualExpression> individuals) {
         realiseKB();    // ensure KB is ready to answer the query
         List<IndividualName> toReturn = new ArrayList<IndividualName>();
-        Role r = getRole(R, "Role expression expected in the getIndividualsWith()");
-        Role s = getRole(S, "Role expression expected in the getIndividualsWith()");
+        Role r = getRole(R,
+                "Role expression expected in the getIndividualsWith()");
+        Role s = getRole(S,
+                "Role expression expected in the getIndividualsWith()");
         // vector of individuals
         for (IndividualExpression q : individuals) {
             Individual ind = getIndividual(q,
@@ -2120,27 +2312,33 @@ public class ReasoningKernel implements Serializable {
     }
 
     // atomic decomposition queries
-    /** create new atomic decomposition of the loaded ontology using TYPE.
+    /**
+     * create new atomic decomposition of the loaded ontology using TYPE.
      * 
      * @param useSemantics
-     *            useSemantics
+     *        useSemantics
      * @param type
-     *            type
-     * @return size of the AD */
+     *        type
+     * @return size of the AD
+     */
     @PortedFrom(file = "Kernel.h", name = "getAtomicDecompositionSize")
-    public int getAtomicDecompositionSize(boolean useSemantics, ModuleType type) {
+    public int
+            getAtomicDecompositionSize(boolean useSemantics, ModuleType type) {
         // init AD field
         if (AD == null) {
-            AD = new AtomicDecomposer(getModExtractor(useSemantics).getModularizer());
+            AD = new AtomicDecomposer(getModExtractor(useSemantics)
+                    .getModularizer());
         }
         return AD.getAOS(ontology, type).size();
     }
 
-    /** get a set of axioms that corresponds to the atom with the id INDEX
+    /**
+     * get a set of axioms that corresponds to the atom with the id INDEX
      * 
      * @param index
-     *            index
-     * @return list of axioms for atom */
+     *        index
+     * @return list of axioms for atom
+     */
     @PortedFrom(file = "Kernel.h", name = "getAtomAxioms")
     public Set<AxiomInterface> getAtomAxioms(int index) {
         return AD.getAOS().get(index).getAtomAxioms();
@@ -2152,22 +2350,26 @@ public class ReasoningKernel implements Serializable {
         return AD.getTautologies();
     }
 
-    /** get a set of axioms that corresponds to the module of the atom with the
+    /**
+     * get a set of axioms that corresponds to the module of the atom with the
      * id INDEX
      * 
      * @param index
-     *            index
-     * @return module for atom */
+     *        index
+     * @return module for atom
+     */
     @PortedFrom(file = "Kernel.h", name = "getAtomModule")
     public Set<AxiomInterface> getAtomModule(int index) {
         return AD.getAOS().get(index).getModule();
     }
 
-    /** get a set of atoms on which atom with index INDEX depends
+    /**
+     * get a set of atoms on which atom with index INDEX depends
      * 
      * @param index
-     *            index
-     * @return dependent atoms for atom */
+     *        index
+     * @return dependent atoms for atom
+     */
     @PortedFrom(file = "Kernel.h", name = "getAtomDependents")
     public Set<TOntologyAtom> getAtomDependents(int index) {
         return AD.getAOS().get(index).getDepAtoms();
@@ -2180,12 +2382,14 @@ public class ReasoningKernel implements Serializable {
     }
 
     // knowledge exploration queries
-    /** @param R
-     *            R
+    /**
+     * @param R
+     *        R
      * @param l
-     *            l
+     *        l
      * @return true iff the chain contained in the arg-list is a sub-property of
-     *         R */
+     *         R
+     */
     @PortedFrom(file = "Kernel.h", name = "checkSubChain")
     private boolean checkSubChain(Role R, List<ObjectRoleExpression> l) {
         // retrieve a role chain
@@ -2194,25 +2398,30 @@ public class ReasoningKernel implements Serializable {
         DLTree tmp = DLTreeFactory.createSNFNot(getTBox().getFreshConcept());
         for (int i = l.size() - 1; i > -1; i--) {
             ObjectRoleExpression p = l.get(i);
-            Role S = getRole(p, "Role expression expected in chain of isSubChain()");
+            Role S = getRole(p,
+                    "Role expression expected in chain of isSubChain()");
             if (S.isBottom()) {
                 return true;
             }
-            tmp = DLTreeFactory.createSNFExists(DLTreeFactory.createRole(S), tmp);
+            tmp = DLTreeFactory.createSNFExists(DLTreeFactory.createRole(S),
+                    tmp);
         }
-        tmp = DLTreeFactory.createSNFAnd(tmp, DLTreeFactory.createSNFForall(DLTreeFactory
-                .buildTree(new Lexeme(Token.RNAME, R)), getTBox().getFreshConcept()));
+        tmp = DLTreeFactory.createSNFAnd(tmp, DLTreeFactory.createSNFForall(
+                DLTreeFactory.buildTree(new Lexeme(Token.RNAME, R)), getTBox()
+                        .getFreshConcept()));
         return !checkSatTree(tmp);
     }
 
-    /** @param R
-     *            R
+    /**
+     * @param R
+     *        R
      * @param l
-     *            l
-     * @return true if R is a super-role of a chain holding in the args */
+     *        l
+     * @return true if R is a super-role of a chain holding in the args
+     */
     @PortedFrom(file = "Kernel.h", name = "isSubChain")
-    public boolean
-            isSubChain(ObjectRoleComplexExpression R, List<ObjectRoleExpression> l) {
+    public boolean isSubChain(ObjectRoleComplexExpression R,
+            List<ObjectRoleExpression> l) {
         preprocessKB();
         Role r = getRole(R, "Role expression expected in isSubChain()");
         if (r.isTop()) {
@@ -2222,11 +2431,13 @@ public class ReasoningKernel implements Serializable {
         return checkSubChain(r, l);
     }
 
-    /** @param R
-     *            R
+    /**
+     * @param R
+     *        R
      * @param S
-     *            S
-     * @return true if R is a sub-role of S */
+     *        S
+     * @return true if R is a sub-role of S
+     */
     @PortedFrom(file = "Kernel.h", name = "isSubRoles")
     public boolean isSubRoles(DataRoleExpression R, DataRoleExpression S) {
         preprocessKB();
@@ -2262,9 +2473,9 @@ public class ReasoningKernel implements Serializable {
             return new ArrayList<Individual>();
         }
         RIActor actor = new RIActor();
-        ObjectRoleExpression InvR = R.getId() > 0 ? getExpressionManager().inverse(
-                getExpressionManager().objectRole(R.getName())) : getExpressionManager()
-                .objectRole(R.inverse().getName());
+        ObjectRoleExpression InvR = R.getId() > 0 ? getExpressionManager()
+                .inverse(getExpressionManager().objectRole(R.getName()))
+                : getExpressionManager().objectRole(R.inverse().getName());
         ConceptExpression query;
         if (R.isTop()) {
             query = getExpressionManager().top();
@@ -2276,37 +2487,44 @@ public class ReasoningKernel implements Serializable {
         return actor.getAcc();
     }
 
-    /** @param I
-     *            I
+    /**
+     * @param I
+     *        I
      * @param R
-     *            R
-     * @return individual role fillers for object role and individual */
+     *        R
+     * @return individual role fillers for object role and individual
+     */
     @PortedFrom(file = "Kernel.h", name = "getRoleFillers")
-    public List<Individual>
-            getRoleFillers(IndividualExpression I, ObjectRoleExpression R) {
+    public List<Individual> getRoleFillers(IndividualExpression I,
+            ObjectRoleExpression R) {
         realiseKB();
         return getRelated(
-                getIndividual(I, "Individual name expected in the getRoleFillers()"),
+                getIndividual(I,
+                        "Individual name expected in the getRoleFillers()"),
                 getRole(R, "Role expression expected in the getRoleFillers()"));
     }
 
-    /** @param I
-     *            I
+    /**
+     * @param I
+     *        I
      * @param R
-     *            R
+     *        R
      * @param J
-     *            J
-     * @return true if individuals related through R */
+     *        J
+     * @return true if individuals related through R
+     */
     @PortedFrom(file = "Kernel.h", name = "isRelated")
     private boolean isRelated(IndividualExpression I, ObjectRoleExpression R,
             IndividualExpression J) {
         realiseKB();
-        Individual i = getIndividual(I, "Individual name expected in the isRelated()");
+        Individual i = getIndividual(I,
+                "Individual name expected in the isRelated()");
         Role r = getRole(R, "Role expression expected in the isRelated()");
         if (r.isDataRole()) {
             return false;
         }
-        Individual j = getIndividual(J, "Individual name expected in the isRelated()");
+        Individual j = getIndividual(J,
+                "Individual name expected in the isRelated()");
         List<Individual> vec = getRelated(i, r);
         for (Individual p : vec) {
             if (j.equals(p)) {
@@ -2319,12 +2537,14 @@ public class ReasoningKernel implements Serializable {
     private final ConjunctiveQueryFolding conjunctiveQueryFolding = new ConjunctiveQueryFolding(
             getExpressionManager());
 
-    /** call to underlying conjunctive query folding
+    /**
+     * call to underlying conjunctive query folding
      * 
      * @param query
-     *            query
+     *        query
      * @param artificialABox
-     *            true if artificial abox */
+     *        true if artificial abox
+     */
     @Original
     public void evaluateQuery(MultiMap<String, ConceptExpression> query,
             boolean artificialABox) {

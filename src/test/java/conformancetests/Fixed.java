@@ -47,6 +47,7 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
 @SuppressWarnings("javadoc")
 public class Fixed {
+
     @Test
     public void testWebOnt_oneOf_004() {
         String premise = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
@@ -84,13 +85,15 @@ public class Fixed {
                 // "DataPropertyAssertion(<urn:t:p#p> <urn:t:p#i> \"4\"^^xsd:integer)"
                 + ")";
         OWLOntology o = OWLManager.createOWLOntologyManager()
-                .loadOntologyFromOntologyDocument(new StringDocumentSource(premise));
+                .loadOntologyFromOntologyDocument(
+                        new StringDocumentSource(premise));
         OWLReasoner r = Factory.factory().createReasoner(o);
         r.precomputeInferences(InferenceType.CLASS_HIERARCHY);
         assertTrue(r.isConsistent());
         OWLDataFactory df = o.getOWLOntologyManager().getOWLDataFactory();
         OWLDataProperty p = df.getOWLDataProperty(IRI.create("urn:t:p#p"));
-        OWLNamedIndividual i = df.getOWLNamedIndividual(IRI.create("urn:t:p#i"));
+        OWLNamedIndividual i = df
+                .getOWLNamedIndividual(IRI.create("urn:t:p#i"));
         OWLLiteral l = df.getOWLLiteral("4",
                 df.getOWLDatatype(OWL2Datatype.XSD_INTEGER.getIRI()));
         assertTrue(r.isEntailed(df.getOWLDataPropertyAssertionAxiom(p, i, l)));
@@ -119,16 +122,19 @@ public class Fixed {
         OWLNamedIndividual i = NamedIndividual(IRI.create("urn:t:t#i"));
         m.addAxiom(o, Declaration(p));
         m.addAxiom(o, Declaration(i));
-        OWLDataOneOf owlDataOneOf = DataOneOf(Literal(1), Literal(2), Literal(3),
-                Literal(4));
-        OWLDataOneOf owlDataOneOf2 = DataOneOf(Literal(4), Literal(5), Literal(6));
+        OWLDataOneOf owlDataOneOf = DataOneOf(Literal(1), Literal(2),
+                Literal(3), Literal(4));
+        OWLDataOneOf owlDataOneOf2 = DataOneOf(Literal(4), Literal(5),
+                Literal(6));
         m.addAxiom(o, DataPropertyRange(p, owlDataOneOf));
         m.addAxiom(o, DataPropertyRange(p, owlDataOneOf2));
-        m.addAxiom(o, ClassAssertion(DataMinCardinality(1, p, TopDatatype()), i));
+        m.addAxiom(o,
+                ClassAssertion(DataMinCardinality(1, p, TopDatatype()), i));
         JFactReasonerConfiguration config = new JFactReasonerConfiguration();
         // config.setLoggingActive(true);
         OWLReasoner r = Factory.factory().createReasoner(o, config);
-        OWLDataPropertyAssertionAxiom ass = DataPropertyAssertion(p, i, Literal(4));
+        OWLDataPropertyAssertionAxiom ass = DataPropertyAssertion(p, i,
+                Literal(4));
         assertTrue(r.isConsistent());
         boolean entailed = r.isEntailed(ass);
         assertTrue(entailed);
@@ -136,7 +142,8 @@ public class Fixed {
 
     @Test
     @Changed(reason = "original test had unreliable iris, e.g., http://example.com/2a")
-    public void testConsistent_but_all_unsat() throws Exception {
+    public
+            void testConsistent_but_all_unsat() throws Exception {
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         IRI ontoIRI = IRI("urn:SpecialGetOntology:Consistentbutallunsat");
         OWLOntology o = m.createOntology(ontoIRI);
@@ -157,8 +164,8 @@ public class Fixed {
         OWLObjectProperty w = ObjectProperty(IRI(ns + "w"));
         OWLObjectProperty z = ObjectProperty(IRI(ns + "z"));
         OWLObjectProperty r = ObjectProperty(IRI(ns + "r"));
-        OWLObjectUnionOf domain = ObjectUnionOf(ObjectOneOf(i1), ObjectOneOf(i2),
-                ObjectOneOf(i3));
+        OWLObjectUnionOf domain = ObjectUnionOf(ObjectOneOf(i1),
+                ObjectOneOf(i2), ObjectOneOf(i3));
         m.addAxiom(o, Declaration(e));
         m.addAxiom(o, SubClassOf(e, ObjectSomeValuesFrom(p, a)));
         m.addAxiom(o, SubClassOf(e, ObjectSomeValuesFrom(q, d)));
@@ -281,8 +288,9 @@ public class Fixed {
         m.addAxiom(o, FunctionalDataProperty(p));
         m.addAxiom(o, SameIndividual(x, y));
         OWLReasoner r = Factory.factory().createReasoner(o);
-        assertTrue("Ontology was supposed to be consistent!\n" + o.getLogicalAxioms(),
-                r.isConsistent());
+        assertTrue(
+                "Ontology was supposed to be consistent!\n"
+                        + o.getLogicalAxioms(), r.isConsistent());
     }
 
     @Test
@@ -301,8 +309,9 @@ public class Fixed {
         m.addAxiom(o, FunctionalDataProperty(p));
         m.addAxiom(o, SameIndividual(x, y));
         OWLReasoner r = Factory.factory().createReasoner(o);
-        assertFalse("Ontology was supposed to be inconsistent!\n" + o.getLogicalAxioms(),
-                r.isConsistent());
+        assertFalse(
+                "Ontology was supposed to be inconsistent!\n"
+                        + o.getLogicalAxioms(), r.isConsistent());
     }
 
     @Test
@@ -336,7 +345,8 @@ public class Fixed {
 
     @Test
     @Changed(reason = "old test appears to use the wrong value")
-    public void testDatatype_Float_Discrete_001() throws OWLOntologyCreationException {
+    public void testDatatype_Float_Discrete_001()
+            throws OWLOntologyCreationException {
         // String premise = "<?xml version=\"1.0\"?>\n"
         // + "<rdf:RDF\n"
         // +
@@ -440,7 +450,9 @@ public class Fixed {
         m.addAxiom(o, FunctionalDataProperty(p));
         OWLReasoner r = Factory.factory().createReasoner(o);
         assertTrue(r.isConsistent());
-        assertTrue("x was supposed to be an instance of c!\n" + o.getLogicalAxioms(),
+        assertTrue(
+                "x was supposed to be an instance of c!\n"
+                        + o.getLogicalAxioms(),
                 r.isEntailed(ClassAssertion(c, x)));
     }
 
@@ -468,7 +480,8 @@ public class Fixed {
     @Test
     public void testfunctionality_clash() {
         String premise = "Prefix(:=<http://example.org/>)\n"
-                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n" + "Ontology(\n"
+                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+                + "Ontology(\n"
                 + "  Declaration(NamedIndividual(:a))\n"
                 + "  Declaration(DataProperty(:hasAge))\n"
                 + "  FunctionalDataProperty(:hasAge) \n"
@@ -512,11 +525,11 @@ public class Fixed {
                 + "<owl:equivalentClass><owl:Class>"
                 + "    <owl:intersectionOf rdf:parseType=\"Collection\"><rdf:Description rdf:about=\"http://www.example.org#x\"/><rdf:Description rdf:about=\"http://www.example.org#y\"/></owl:intersectionOf>\n"
                 + "</owl:Class></owl:equivalentClass>"
-                + "  </rdf:Description>\n"
-                + "</rdf:RDF>";
+                + "  </rdf:Description>\n" + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
-                + "  <ex:c rdf:about=\"http://www.example.org#z\"/>\n" + "</rdf:RDF>";
+                + "  <ex:c rdf:about=\"http://www.example.org#z\"/>\n"
+                + "</rdf:RDF>";
         String id = "rdfbased_sem_bool_intersection_inst_comp";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "An individual, which is an instance of every component class of an intersection, is an instance of the intersection class expression.";
@@ -567,7 +580,8 @@ public class Fixed {
                 + "  </rdf:Description>\n</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
-                + "  <ex:c rdf:about=\"http://www.example.org#z\"/>\n" + "</rdf:RDF>";
+                + "  <ex:c rdf:about=\"http://www.example.org#z\"/>\n"
+                + "</rdf:RDF>";
         String id = "rdfbased_sem_bool_union_inst_comp";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "An individual, which is an instance of one of the component classes of a union, is an instance of the union class expression.";
@@ -587,8 +601,7 @@ public class Fixed {
                 + "<owl:equivalentClass><owl:Class>"
                 + "    <owl:unionOf rdf:parseType=\"Collection\"><rdf:Description rdf:about=\"http://www.example.org#x\"/><rdf:Description rdf:about=\"http://www.example.org#y\"/></owl:unionOf>\n"
                 + "</owl:Class></owl:equivalentClass>"
-                + "  </rdf:Description>\n"
-                + "</rdf:RDF>";
+                + "  </rdf:Description>\n" + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x\"/>\n"
@@ -629,7 +642,8 @@ public class Fixed {
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#e\"/>\n"
                 + "  <ex:e rdf:about=\"http://www.example.org#x\"/>\n"
-                + "  <ex:e rdf:about=\"http://www.example.org#y\"/>\n" + "</rdf:RDF>";
+                + "  <ex:e rdf:about=\"http://www.example.org#y\"/>\n"
+                + "</rdf:RDF>";
         String id = "rdfbased_sem_enum_inst_included";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "If a class defines an enumeration class expression from two individuals, than both individuals are instances of the class.";
@@ -849,7 +863,8 @@ public class Fixed {
                 + "  <rdf:Description rdf:about=\"http://www.example.org#p\"><rdfs:domain rdf:resource=\"http://www.example.org#c\"/></rdf:Description></rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
-                + "  <ex:c rdf:about=\"http://www.example.org#u\"/>\n" + "</rdf:RDF>";
+                + "  <ex:c rdf:about=\"http://www.example.org#u\"/>\n"
+                + "</rdf:RDF>";
         String id = "rdfbased_sem_rdfs_domain_cond";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The left hand side individual in a given triple is entailed to be an instance of the domain of the predicate.";
@@ -868,7 +883,8 @@ public class Fixed {
                 + "  <rdf:Description rdf:about=\"http://www.example.org#p\"><rdfs:range rdf:resource=\"http://www.example.org#c\"/></rdf:Description></rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
-                + "  <ex:c rdf:about=\"http://www.example.org#v\"/>\n" + "</rdf:RDF>";
+                + "  <ex:c rdf:about=\"http://www.example.org#v\"/>\n"
+                + "</rdf:RDF>";
         String id = "rdfbased_sem_rdfs_range_cond";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The right hand side individual in a given triple is entailed to be an instance of the range of the predicate.";
@@ -895,8 +911,7 @@ public class Fixed {
                 + "<owl:equivalentClass><owl:Restriction>"
                 + "    <owl:allValuesFrom rdf:resource=\"http://www.example.org#c2\"/><owl:onProperty rdf:resource=\"http://www.example.org#p\"/>\n"
                 + "</owl:Restriction></owl:equivalentClass>"
-                + "  </rdf:Description>\n"
-                + "</rdf:RDF>";
+                + "  </rdf:Description>\n" + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x1\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x2\"/>\n"
@@ -927,8 +942,7 @@ public class Fixed {
                 + "<owl:equivalentClass><owl:Restriction>"
                 + "    <owl:allValuesFrom rdf:resource=\"http://www.example.org#c\"/><owl:onProperty rdf:resource=\"http://www.example.org#p2\"/>\n"
                 + "</owl:Restriction></owl:equivalentClass>"
-                + "  </rdf:Description>\n"
-                + "</rdf:RDF>";
+                + "  </rdf:Description>\n" + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x1\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x2\"/>\n"
@@ -953,11 +967,11 @@ public class Fixed {
                 + "<rdfs:subClassOf><owl:Restriction>"
                 + "    <owl:allValuesFrom rdf:resource=\"http://www.example.org#c\"/><owl:onProperty rdf:resource=\"http://www.example.org#p\"/>\n"
                 + "</owl:Restriction></rdfs:subClassOf>"
-                + "  </rdf:Description>\n"
-                + "</rdf:RDF>";
+                + "  </rdf:Description>\n" + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "<owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
-                + "  <ex:c rdf:about=\"http://www.example.org#x\"/>\n" + "</rdf:RDF>";
+                + "  <ex:c rdf:about=\"http://www.example.org#x\"/>\n"
+                + "</rdf:RDF>";
         String id = "rdfbased_sem_restrict_allvalues_inst_obj";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "If an individual w is an instance of the universal restriction on property p and class c, then for any triple w p x follows that x is an instance of c.";
@@ -983,8 +997,7 @@ public class Fixed {
                 + "<owl:equivalentClass><owl:Restriction>"
                 + "    <owl:hasValue rdf:resource=\"http://www.example.org#v\"/><owl:onProperty rdf:resource=\"http://www.example.org#p2\"/>\n"
                 + "</owl:Restriction></owl:equivalentClass>"
-                + "  </rdf:Description>\n"
-                + "</rdf:RDF>";
+                + "  </rdf:Description>\n" + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x1\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x2\"/>\n"
@@ -1010,8 +1023,7 @@ public class Fixed {
                 + "<owl:equivalentClass><owl:Restriction>"
                 + "    <owl:hasValue rdf:resource=\"http://www.example.org#u\"/><owl:onProperty rdf:resource=\"http://www.example.org#p\"/>\n"
                 + "</owl:Restriction></owl:equivalentClass>"
-                + "  </rdf:Description>\n"
-                + "</rdf:RDF>";
+                + "  </rdf:Description>\n" + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "<owl:ObjectProperty rdf:about=\"http://www.example.org#p\"/>\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#w\"><ex:p rdf:resource=\"http://www.example.org#u\"/></rdf:Description></rdf:RDF>";
@@ -1037,7 +1049,8 @@ public class Fixed {
                 + "  <rdf:Description rdf:about=\"http://www.example.org#w\"><ex:p rdf:resource=\"http://www.example.org#u\"/></rdf:Description></rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#z\"/>\n"
-                + "  <ex:z rdf:about=\"http://www.example.org#w\"/>\n" + "</rdf:RDF>";
+                + "  <ex:z rdf:about=\"http://www.example.org#w\"/>\n"
+                + "</rdf:RDF>";
         String id = "rdfbased_sem_restrict_hasvalue_inst_subj";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "For a triple w p u, the individual w is an instance of the has-value restriction on p to u.";
@@ -1104,8 +1117,7 @@ public class Fixed {
                 + "<owl:equivalentClass><owl:Restriction>"
                 + "    <owl:maxQualifiedCardinality rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\">1</owl:maxQualifiedCardinality><owl:onProperty rdf:resource=\"http://www.example.org#p\"/><owl:onClass rdf:resource=\"http://www.example.org#c\"/>\n"
                 + "</owl:Restriction></owl:equivalentClass>"
-                + "  </rdf:Description>\n"
-                + "</rdf:RDF>";
+                + "  </rdf:Description>\n" + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <rdf:Description rdf:about=\"http://www.example.org#x1\"><owl:sameAs rdf:resource=\"http://www.example.org#x2\"/></rdf:Description></rdf:RDF>";
         String id = "rdfbased_sem_restrict_maxqcr_inst_obj_one";
@@ -1128,8 +1140,7 @@ public class Fixed {
                 + "<owl:equivalentClass><owl:Restriction>"
                 + "    <owl:maxQualifiedCardinality rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\">0</owl:maxQualifiedCardinality><owl:onProperty rdf:resource=\"http://www.example.org#p\"/><owl:onClass rdf:resource=\"http://www.example.org#c\"/>\n"
                 + "</owl:Restriction></owl:equivalentClass>"
-                + "  </rdf:Description>\n"
-                + "</rdf:RDF>";
+                + "  </rdf:Description>\n" + "</rdf:RDF>";
         String conclusion = "";
         String id = "rdfbased_sem_restrict_maxqcr_inst_obj_zero";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -1157,8 +1168,7 @@ public class Fixed {
                 + "<owl:equivalentClass><owl:Restriction>"
                 + "    <owl:someValuesFrom rdf:resource=\"http://www.example.org#c2\"/><owl:onProperty rdf:resource=\"http://www.example.org#p\"/>\n"
                 + "</owl:Restriction></owl:equivalentClass>"
-                + "  </rdf:Description>\n"
-                + "</rdf:RDF>";
+                + "  </rdf:Description>\n" + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x1\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x2\"/>\n"
@@ -1189,8 +1199,7 @@ public class Fixed {
                 + "<owl:equivalentClass><owl:Restriction>"
                 + "    <owl:someValuesFrom rdf:resource=\"http://www.example.org#c\"/><owl:onProperty rdf:resource=\"http://www.example.org#p2\"/>\n"
                 + "</owl:Restriction></owl:equivalentClass>"
-                + "  </rdf:Description>\n"
-                + "</rdf:RDF>";
+                + "  </rdf:Description>\n" + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x1\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x2\"/>\n"
@@ -1220,7 +1229,8 @@ public class Fixed {
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Thing rdf:about=\"http://www.example.org#w\"/>\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#z\"/>\n"
-                + "  <ex:z rdf:about=\"http://www.example.org#w\"/>\n" + "</rdf:RDF>";
+                + "  <ex:z rdf:about=\"http://www.example.org#w\"/>\n"
+                + "</rdf:RDF>";
         String id = "rdfbased_sem_restrict_somevalues_inst_subj";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "For a triple w p x, with x being an instance of a class c, the individual w is an instance of the existential restriction on p to c.";
@@ -1232,7 +1242,8 @@ public class Fixed {
     @Test
     public void teststring_integer_clash() {
         String premise = "Prefix(:=<http://example.org/>)\n"
-                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n" + "Ontology(\n"
+                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+                + "Ontology(\n"
                 + "  Declaration(NamedIndividual(:a))\n"
                 + "  Declaration(DataProperty(:hasAge))\n"
                 + "  DataPropertyRange(:hasAge xsd:integer)\n"
@@ -1457,12 +1468,14 @@ public class Fixed {
         axioms.add(Declaration(dp));
         axioms.add(Declaration(a));
         axioms.add(ClassAssertion(A, a));
-        OWLOntology o = OWLManager.createOWLOntologyManager().createOntology(axioms);
+        OWLOntology o = OWLManager.createOWLOntologyManager().createOntology(
+                axioms);
         assertFalse(Factory.factory().createReasoner(o).isConsistent());
     }
 
     @Test
-    public void testContradicting_int_restrictions() throws OWLOntologyCreationException {
+    public void testContradicting_int_restrictions()
+            throws OWLOntologyCreationException {
         Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
         OWLClass A = Class(IRI("http://example.org/A"));
         OWLNamedIndividual a = NamedIndividual(IRI("http://example.org/a"));
@@ -1480,7 +1493,8 @@ public class Fixed {
         axioms.add(Declaration(dp));
         axioms.add(Declaration(a));
         axioms.add(ClassAssertion(A, a));
-        OWLOntology o = OWLManager.createOWLOntologyManager().createOntology(axioms);
+        OWLOntology o = OWLManager.createOWLOntologyManager().createOntology(
+                axioms);
         assertFalse(Factory.factory().createReasoner(o).isConsistent());
     }
 
@@ -1512,16 +1526,18 @@ public class Fixed {
     @Test
     public void testInconsistent_Data_Complement_with_the_Restrictions() {
         String premise = "Prefix(:=<http://example.org/>)\n"
-                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n" + "Ontology(\n"
-                + "  Declaration(NamedIndividual(:a))\n"
-                + "  Declaration(DataProperty(:dp))\n" + "  Declaration(Class(:A))\n"
+                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+                + "Ontology(\n" + "  Declaration(NamedIndividual(:a))\n"
+                + "  Declaration(DataProperty(:dp))\n"
+                + "  Declaration(Class(:A))\n"
                 + "  SubClassOf(:A DataAllValuesFrom(:dp \n"
-                + "    DataOneOf(\"3\"^^xsd:integer \"4\"^^xsd:integer))\n" + "  ) \n"
-                + "  SubClassOf(:A DataAllValuesFrom(:dp \n"
-                + "    DataOneOf(\"2\"^^xsd:integer \"3\"^^xsd:integer))\n" + "  )\n"
-                + "  ClassAssertion(:A :a)\n"
+                + "    DataOneOf(\"3\"^^xsd:integer \"4\"^^xsd:integer))\n"
+                + "  ) \n" + "  SubClassOf(:A DataAllValuesFrom(:dp \n"
+                + "    DataOneOf(\"2\"^^xsd:integer \"3\"^^xsd:integer))\n"
+                + "  )\n" + "  ClassAssertion(:A :a)\n"
                 + "  ClassAssertion(DataSomeValuesFrom(:dp\n"
-                + "  DataComplementOf(DataOneOf(\"3\"^^xsd:integer))) :a)\n" + ")";
+                + "  DataComplementOf(DataOneOf(\"3\"^^xsd:integer))) :a)\n"
+                + ")";
         String conclusion = "";
         String id = "Inconsistent_Data_Complement_with_the_Restrictions";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -1556,17 +1572,19 @@ public class Fixed {
                 + "Prefix( xsd: = <http://www.w3.org/2001/XMLSchema#> )\n"
                 + "\n"
                 + "Ontology(<http://owl.semanticweb.org/page/Special:GetOntology/Qualified-cardinality-boolean?m=p>\n"
-                + "  Declaration(NamedIndividual(:a))\n" + "  Declaration(Class(:A))\n"
+                + "  Declaration(NamedIndividual(:a))\n"
+                + "  Declaration(Class(:A))\n"
                 + "  Declaration(DataProperty(:dp))\n" + "\n"
-                + "  SubClassOf(:A DataExactCardinality(2 :dp xsd:boolean))\n" + "\n"
-                + "  ClassAssertion(:A :a)\n" + ")";
+                + "  SubClassOf(:A DataExactCardinality(2 :dp xsd:boolean))\n"
+                + "\n" + "  ClassAssertion(:A :a)\n" + ")";
         String conclusion = "Prefix( : = <http://example.org/test#> )\n"
                 + "Prefix( xsd: = <http://www.w3.org/2001/XMLSchema#> )\n"
                 + "\n"
                 + "Ontology(<http://owl.semanticweb.org/page/Special:GetOntology/Qualified-cardinality-boolean?m=c>\n"
                 + "  Declaration(DataProperty(:dp))\n" + "\n"
                 + "  DataPropertyAssertion(:dp :a \"true\"^^xsd:boolean)\n"
-                + "  DataPropertyAssertion(:dp :a \"false\"^^xsd:boolean)\n" + ")";
+                + "  DataPropertyAssertion(:dp :a \"false\"^^xsd:boolean)\n"
+                + ")";
         String id = "Qualified_cardinality_boolean";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "According to qualified cardinality restriction individual a should have two boolean values. Since there are only two boolean values, the data property assertions can be entailed.";
@@ -1578,11 +1596,14 @@ public class Fixed {
     @Test
     public void testInconsistent_Byte_Filler() {
         String premise = "Prefix(:=<http://example.org/>)\n"
-                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n" + "Ontology(\n"
+                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+                + "Ontology(\n"
                 + "  Declaration(NamedIndividual(:a))\n"
-                + "  Declaration(DataProperty(:dp))\n" + "  Declaration(Class(:A))\n"
+                + "  Declaration(DataProperty(:dp))\n"
+                + "  Declaration(Class(:A))\n"
                 + "  SubClassOf(:A DataAllValuesFrom(:dp xsd:byte))  \n"
-                + "  ClassAssertion(:A :a)\n" + "  ClassAssertion(\n"
+                + "  ClassAssertion(:A :a)\n"
+                + "  ClassAssertion(\n"
                 + "    DataSomeValuesFrom(:dp DataOneOf(\"6542145\"^^xsd:integer)) :a\n"
                 + "  )\n" + ")";
         String conclusion = "";

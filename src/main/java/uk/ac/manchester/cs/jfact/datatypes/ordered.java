@@ -13,9 +13,12 @@ public enum ordered {
     PARTIAL("partial"),
     /** totally ordered */
     TOTAL("total");
-    /** @param string
-     *            string
-     * @return ordered */
+
+    /**
+     * @param string
+     *        string
+     * @return ordered
+     */
     public static ordered parse(String string) {
         for (ordered o : values()) {
             if (o.name.equals(string)) {

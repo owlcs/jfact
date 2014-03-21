@@ -19,17 +19,21 @@ import conformance.PortedFrom;
 
 /** object value restriction */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectValue")
-public class ConceptObjectValue implements ConceptObjectRoleExpression, Serializable {
+public class ConceptObjectValue implements ConceptObjectRoleExpression,
+        Serializable {
+
     private static final long serialVersionUID = 11000L;
     @Original
     private final ObjectRoleExpression delegate;
     @PortedFrom(file = "tDLExpression.h", name = "I")
     private final IndividualExpression individualExpression;
 
-    /** @param R
-     *            R
+    /**
+     * @param R
+     *        R
      * @param I
-     *            I */
+     *        I
+     */
     public ConceptObjectValue(ObjectRoleExpression R, IndividualExpression I) {
         individualExpression = I;
         delegate = R;

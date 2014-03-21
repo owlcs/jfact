@@ -20,6 +20,7 @@ import conformance.PortedFrom;
 /** role automaton transition */
 @PortedFrom(file = "RAutomaton.h", name = "RATransition")
 public class RATransition implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** set of roles that may affect the transition */
     @PortedFrom(file = "RAutomaton.h", name = "label")
@@ -30,30 +31,36 @@ public class RATransition implements Serializable {
     @PortedFrom(file = "RAutomaton.h", name = "state")
     private final int state;
 
-    /** create a transition to given state
+    /**
+     * create a transition to given state
      * 
      * @param st
-     *            st */
+     *        st
+     */
     public RATransition(int st) {
         state = st;
         label = new LinkedHashSet<Role>();
     }
 
-    /** create a transition with a given label R to given state ST
+    /**
+     * create a transition with a given label R to given state ST
      * 
      * @param st
-     *            st
+     *        st
      * @param R
-     *            R */
+     *        R
+     */
     public RATransition(int st, Role R) {
         this(st);
         label.add(R);
     }
 
-    /** add label of transition TRANS to transition's label
+    /**
+     * add label of transition TRANS to transition's label
      * 
      * @param trans
-     *            trans */
+     *        trans
+     */
     @PortedFrom(file = "RAutomaton.h", name = "add")
     public void add(RATransition trans) {
         label.addAll(trans.label);
@@ -73,9 +80,11 @@ public class RATransition implements Serializable {
         return state;
     }
 
-    /** @param R
-     *            R
-     * @return whether transition is applicable wrt role R */
+    /**
+     * @param R
+     *        R
+     * @return whether transition is applicable wrt role R
+     */
     @PortedFrom(file = "RAutomaton.h", name = "applicable")
     public boolean applicable(Role R) {
         if (cache == null) {
@@ -93,12 +102,14 @@ public class RATransition implements Serializable {
         return label.isEmpty();
     }
 
-    /** print the transition starting from FROM
+    /**
+     * print the transition starting from FROM
      * 
      * @param o
-     *            o
+     *        o
      * @param from
-     *            from */
+     *        from
+     */
     @PortedFrom(file = "RAutomaton.h", name = "print")
     public void print(LogAdapter o, int from) {
         o.print("\n").print(from).print(" -- ");

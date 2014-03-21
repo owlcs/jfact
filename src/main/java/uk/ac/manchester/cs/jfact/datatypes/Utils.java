@@ -11,11 +11,14 @@ import java.util.Set;
 
 /** @author ignazio */
 public class Utils implements Serializable {
+
     private static final long serialVersionUID = 11000L;
 
-    /** @param facets
-     *            facets
-     * @return set of facets */
+    /**
+     * @param facets
+     *        facets
+     * @return set of facets
+     */
     public static Set<Facet> getFacets(Facet... facets) {
         Set<Facet> toReturn = new HashSet<Facet>();
         for (Facet f : facets) {
@@ -24,9 +27,11 @@ public class Utils implements Serializable {
         return toReturn;
     }
 
-    /** @param facets
-     *            facets
-     * @return set of facets */
+    /**
+     * @param facets
+     *        facets
+     * @return set of facets
+     */
     public static Set<Facet> getFacets(Facet[]... facets) {
         Set<Facet> toReturn = new HashSet<Facet>();
         for (Facet[] fac : facets) {
@@ -37,9 +42,11 @@ public class Utils implements Serializable {
         return toReturn;
     }
 
-    /** @param d
-     *            d
-     * @return ancestors */
+    /**
+     * @param d
+     *        d
+     * @return ancestors
+     */
     public static Set<Datatype<?>> generateAncestors(Datatype<?> d) {
         Set<Datatype<?>> toReturn = new HashSet<Datatype<?>>(d.getAncestors());
         toReturn.add(d);

@@ -41,11 +41,15 @@ import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOf;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOfNot;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 
-/** adapter for null visitor
+/**
+ * adapter for null visitor
  * 
  * @param <A>
- *            return type */
-public class DLAxiomVisitorExAdapter<A> implements DLAxiomVisitorEx<A>, Serializable {
+ *        return type
+ */
+public class DLAxiomVisitorExAdapter<A> implements DLAxiomVisitorEx<A>,
+        Serializable {
+
     private static final long serialVersionUID = 11000L;
     private A defaultValue;
 
@@ -54,8 +58,10 @@ public class DLAxiomVisitorExAdapter<A> implements DLAxiomVisitorEx<A>, Serializ
         this(null);
     }
 
-    /** @param a
-     *            value to return */
+    /**
+     * @param a
+     *        value to return
+     */
     public DLAxiomVisitorExAdapter(A a) {
         defaultValue = a;
     }

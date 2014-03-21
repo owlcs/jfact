@@ -11,9 +11,12 @@ public enum cardinality {
     FINITE,
     /** COUNTABLYINFINITE */
     COUNTABLYINFINITE;
-    /** @param string
-     *            string
-     * @return cardinality */
+
+    /**
+     * @param string
+     *        string
+     * @return cardinality
+     */
     public static cardinality parse(String string) {
         if (string.equals("countably infinite")) {
             return COUNTABLYINFINITE;

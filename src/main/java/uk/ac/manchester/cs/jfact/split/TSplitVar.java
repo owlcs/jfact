@@ -18,6 +18,7 @@ import conformance.PortedFrom;
 /** this is to keep the track of new vars/axioms for C in C0, C1, ..., Cn */
 @PortedFrom(file = "tSplitVars.h", name = "TSplitVar")
 public class TSplitVar implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     // types
     // name of split concept
@@ -26,13 +27,16 @@ public class TSplitVar implements Serializable {
     private Concept C;
     private final List<SplitVarEntry> Entries = new ArrayList<SplitVarEntry>();
 
-    /** @param name
-     *            name
+    /**
+     * @param name
+     *        name
      * @param sig
-     *            sig
+     *        sig
      * @param mod
-     *            mod */
-    public void addEntry(ConceptName name, TSignature sig, Set<AxiomInterface> mod) {
+     *        mod
+     */
+    public void addEntry(ConceptName name, TSignature sig,
+            Set<AxiomInterface> mod) {
         SplitVarEntry e = new SplitVarEntry();
         e.name = name;
         e.concept = null;
@@ -51,8 +55,10 @@ public class TSplitVar implements Serializable {
         return oldName;
     }
 
-    /** @param oldName
-     *            oldName */
+    /**
+     * @param oldName
+     *        oldName
+     */
     public void setOldName(ConceptName oldName) {
         this.oldName = oldName;
     }
@@ -62,8 +68,10 @@ public class TSplitVar implements Serializable {
         return C;
     }
 
-    /** @param c
-     *            c */
+    /**
+     * @param c
+     *        c
+     */
     public void setC(Concept c) {
         C = c;
     }

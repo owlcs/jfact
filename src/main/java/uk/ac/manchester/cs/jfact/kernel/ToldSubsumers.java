@@ -12,12 +12,15 @@ import java.util.List;
 
 /** class to represent the TS's */
 public class ToldSubsumers extends KnownSubsumers {
+
     private static final long serialVersionUID = 11000L;
     /** two iterators for the TS of a concept */
     private final List<ClassifiableEntry> beg;
 
-    /** @param b
-     *            b */
+    /**
+     * @param b
+     *        b
+     */
     public ToldSubsumers(Collection<ClassifiableEntry> b) {
         beg = new ArrayList<ClassifiableEntry>(b);
     }

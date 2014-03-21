@@ -12,6 +12,7 @@ import conformance.PortedFrom;
 /** class for save/restore */
 @PortedFrom(file = "CGLabel.h", name = "SaveState")
 public class SaveState implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** states for simple-, complex- and extra labels */
     private int sc;
@@ -33,14 +34,18 @@ public class SaveState implements Serializable {
         return cc;
     }
 
-    /** @param sc
-     *            sc */
+    /**
+     * @param sc
+     *        sc
+     */
     public void setSc(int sc) {
         this.sc = sc;
     }
 
-    /** @param cc
-     *            cc */
+    /**
+     * @param cc
+     *        cc
+     */
     public void setCc(int cc) {
         this.cc = cc;
     }

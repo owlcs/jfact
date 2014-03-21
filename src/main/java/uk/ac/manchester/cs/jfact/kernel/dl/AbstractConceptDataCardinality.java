@@ -20,6 +20,7 @@ import conformance.PortedFrom;
 @Original
 public abstract class AbstractConceptDataCardinality implements
         ConceptDataCardinalityExpression, DataRoleArg, Serializable {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLExpression.h", name = "N")
     private final int cardinality;
@@ -29,7 +30,8 @@ public abstract class AbstractConceptDataCardinality implements
     @PortedFrom(file = "tDLExpression.h", name = "Expr")
     private final DataExpression expression;
 
-    protected AbstractConceptDataCardinality(int n, DataRoleExpression R, DataExpression E) {
+    protected AbstractConceptDataCardinality(int n, DataRoleExpression R,
+            DataExpression E) {
         dataRoleExpression = R;
         expression = E;
         cardinality = n;

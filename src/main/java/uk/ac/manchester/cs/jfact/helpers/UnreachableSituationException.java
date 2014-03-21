@@ -9,6 +9,7 @@ import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 /** The Class UnreachableSituationException. */
 public class UnreachableSituationException extends ReasonerInternalException {
+
     private static final long serialVersionUID = 11000L;
 
     /** Instantiates a new unreachable situation exception. */
@@ -16,20 +17,24 @@ public class UnreachableSituationException extends ReasonerInternalException {
         super("Unreachable situation!");
     }
 
-    /** Instantiates a new unreachable situation exception.
+    /**
+     * Instantiates a new unreachable situation exception.
      * 
      * @param text
-     *            the text */
+     *        the text
+     */
     public UnreachableSituationException(String text) {
         super("Unreachable situation!\n" + text);
     }
 
-    /** Instantiates a new unreachable situation exception.
+    /**
+     * Instantiates a new unreachable situation exception.
      * 
      * @param text
-     *            the text
+     *        the text
      * @param cause
-     *            the cause */
+     *        the cause
+     */
     public UnreachableSituationException(String text, Throwable cause) {
         super("Unreachable situation!\n" + text, cause);
     }

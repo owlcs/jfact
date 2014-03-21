@@ -60,6 +60,7 @@ import conformance.PortedFrom;
 /** ontology loader */
 @PortedFrom(file = "tOntologyLoader.h", name = "TOntologyLoader")
 public class OntologyLoader implements DLAxiomVisitor, Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** KB to load the ontology */
     @PortedFrom(file = "tOntologyLoader.h", name = "kb")
@@ -68,27 +69,32 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
     @PortedFrom(file = "tOntologyLoader.h", name = "ETrans")
     private final ExpressionTranslator expressionTranslator;
 
-    /** get role by the DLTree; throw exception if unable
+    /**
+     * get role by the DLTree; throw exception if unable
      * 
      * @param r
-     *            r
+     *        r
      * @param reason
-     *            reason
-     * @return role */
+     *        reason
+     * @return role
+     */
     @PortedFrom(file = "tOntologyLoader.h", name = "getRole")
     private Role getRole(RoleExpression r, String reason) {
         try {
             return Role.resolveRole(r.accept(expressionTranslator));
         } catch (OWLRuntimeException e) {
-            throw new ReasonerInternalException(reason + "\t" + e.getMessage(), e);
+            throw new ReasonerInternalException(reason + "\t" + e.getMessage(),
+                    e);
         }
     }
 
-    /** @param I
-     *            I
+    /**
+     * @param I
+     *        I
      * @param reason
-     *            reason
-     * @return an individual be the DLTree; throw exception if unable */
+     *        reason
+     * @return an individual be the DLTree; throw exception if unable
+     */
     @PortedFrom(file = "tOntologyLoader.h", name = "getIndividual")
     public Individual getIndividual(IndividualExpression I, String reason) {
         DLTree i = I.accept(expressionTranslator);
@@ -98,21 +104,25 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         return (Individual) tbox.getCI(i);
     }
 
-    /** ensure that the expression EXPR has its named entities linked to the KB
+    /**
+     * ensure that the expression EXPR has its named entities linked to the KB
      * ones
      * 
      * @param Expr
-     *            Expr */
+     *        Expr
+     */
     @PortedFrom(file = "tOntologyLoader.h", name = "ensureNames")
     public void ensureNames(Expression Expr) {
         assert Expr != null; // temporarily
     }
 
-    /** prepare arguments for the [begin,end) interval
+    /**
+     * prepare arguments for the [begin,end) interval
      * 
      * @param c
-     *            c
-     * @return list of arguments */
+     *        c
+     * @return list of arguments
+     */
     @PortedFrom(file = "tOntologyLoader.h", name = "prepareArgList")
     private <T extends Expression> List<DLTree> prepareArgList(Collection<T> c) {
         List<DLTree> ArgList = new ArrayList<DLTree>();
@@ -288,8 +298,9 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
     public void visit(AxiomDRoleRange axiom) {
         ensureNames(axiom.getRole());
         ensureNames(axiom.getRange());
-        getRole(axiom.getRole(), "Role expression expected in Data Role Range axiom")
-                .setRange(axiom.getRange().accept(expressionTranslator));
+        getRole(axiom.getRole(),
+                "Role expression expected in Data Role Range axiom").setRange(
+                axiom.getRange().accept(expressionTranslator));
     }
 
     @Override
@@ -324,10 +335,11 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
             throw new InconsistentOntologyException();
         }
         if (!R.isBottom()) {
-            R.setDomain(DLTreeFactory.createSNFNot(DLTreeFactory.createSNFSelf(axiom
-                    .getRole().accept(expressionTranslator))));
-            R.setDomain(DLTreeFactory.createSNFNot(DLTreeFactory.buildTree(new Lexeme(
-                    Token.SELF), axiom.getRole().accept(expressionTranslator))));
+            R.setDomain(DLTreeFactory.createSNFNot(DLTreeFactory
+                    .createSNFSelf(axiom.getRole().accept(expressionTranslator))));
+            R.setDomain(DLTreeFactory.createSNFNot(DLTreeFactory.buildTree(
+                    new Lexeme(Token.SELF),
+                    axiom.getRole().accept(expressionTranslator))));
             R.setIrreflexive(true);
         }
     }
@@ -410,7 +422,8 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
     public void visit(AxiomInstanceOf axiom) {
         ensureNames(axiom.getIndividual());
         ensureNames(axiom.getC());
-        getIndividual(axiom.getIndividual(), "Individual expected in Instance axiom");
+        getIndividual(axiom.getIndividual(),
+                "Individual expected in Instance axiom");
         DLTree I = axiom.getIndividual().accept(expressionTranslator);
         DLTree C = axiom.getC().accept(expressionTranslator);
         tbox.addSubsumeAxiom(I, C);
@@ -453,11 +466,13 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
             getIndividual(axiom.getRelatedIndividual(),
                     "Individual expected in Related To Not axiom");
             // make an axiom i:AR.\neg{j}
-            tbox.addSubsumeAxiom(axiom.getIndividual().accept(expressionTranslator),
+            tbox.addSubsumeAxiom(
+                    axiom.getIndividual().accept(expressionTranslator),
                     DLTreeFactory.createSNFForall(
                             axiom.getRelation().accept(expressionTranslator),
-                            DLTreeFactory.createSNFNot(axiom.getRelatedIndividual()
-                                    .accept(expressionTranslator))));
+                            DLTreeFactory.createSNFNot(axiom
+                                    .getRelatedIndividual().accept(
+                                            expressionTranslator))));
         }
     }
 
@@ -465,7 +480,8 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
     public void visit(AxiomValueOf axiom) {
         ensureNames(axiom.getIndividual());
         ensureNames(axiom.getAttribute());
-        getIndividual(axiom.getIndividual(), "Individual expected in Value Of axiom");
+        getIndividual(axiom.getIndividual(),
+                "Individual expected in Value Of axiom");
         Role R = getRole(axiom.getAttribute(),
                 "Role expression expected in Value Of axiom");
         if (R.isBottom()) {
@@ -474,10 +490,11 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         if (!R.isTop()) {
             // nothing to do for universal role
             // make an axiom i:EA.V
-            tbox.addSubsumeAxiom(axiom.getIndividual().accept(expressionTranslator),
+            tbox.addSubsumeAxiom(
+                    axiom.getIndividual().accept(expressionTranslator),
                     DLTreeFactory.createSNFExists(
-                            axiom.getAttribute().accept(expressionTranslator), axiom
-                                    .getValue().accept(expressionTranslator)));
+                            axiom.getAttribute().accept(expressionTranslator),
+                            axiom.getValue().accept(expressionTranslator)));
         }
     }
 
@@ -485,7 +502,8 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
     public void visit(AxiomValueOfNot axiom) {
         ensureNames(axiom.getIndividual());
         ensureNames(axiom.getAttribute());
-        getIndividual(axiom.getIndividual(), "Individual expected in Value Of Not axiom");
+        getIndividual(axiom.getIndividual(),
+                "Individual expected in Value Of Not axiom");
         Role R = getRole(axiom.getAttribute(),
                 "Role expression expected in Value Of Not axiom");
         if (R.isTop()) {
@@ -493,7 +511,8 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         }
         if (!R.isBottom()) {
             // make an axiom i:AA.\neg V
-            tbox.addSubsumeAxiom(axiom.getIndividual().accept(expressionTranslator),
+            tbox.addSubsumeAxiom(
+                    axiom.getIndividual().accept(expressionTranslator),
                     DLTreeFactory.createSNFForall(
                             axiom.getAttribute().accept(expressionTranslator),
                             DLTreeFactory.createSNFNot(axiom.getValue().accept(
@@ -501,17 +520,21 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         }
     }
 
-    /** @param KB
-     *            KB */
+    /**
+     * @param KB
+     *        KB
+     */
     public OntologyLoader(TBox KB) {
         tbox = KB;
         expressionTranslator = new ExpressionTranslator(KB);
     }
 
-    /** load ontology to a given KB
+    /**
+     * load ontology to a given KB
      * 
      * @param ontology
-     *            ontology */
+     *        ontology
+     */
     @PortedFrom(file = "tOntologyLoader.h", name = "visitOntology")
     public void visitOntology(Ontology ontology) {
         for (AxiomInterface p : ontology.getAxioms()) {

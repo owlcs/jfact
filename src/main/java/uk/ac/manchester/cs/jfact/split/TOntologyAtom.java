@@ -16,6 +16,7 @@ import conformance.PortedFrom;
 /** ontology atom */
 @PortedFrom(file = "tOntologyAtom.h", name = "TOntologyAtom")
 public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** set of axioms in the atom */
     @PortedFrom(file = "tOntologyAtom.h", name = "AtomAxioms")
@@ -46,10 +47,12 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
         }
     }
 
-    /** build all dep atoms; filter them from DepAtoms
+    /**
+     * build all dep atoms; filter them from DepAtoms
      * 
      * @param checked
-     *            checked */
+     *        checked
+     */
     @PortedFrom(file = "tOntologyAtom.h", name = "buildAllDepAtoms")
     public void buildAllDepAtoms(Set<TOntologyAtom> checked) {
         // first gather all dep atoms from all known dep atoms
@@ -66,29 +69,35 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
     }
 
     // fill in the sets
-    /** set the module axioms
+    /**
+     * set the module axioms
      * 
      * @param module
-     *            module */
+     *        module
+     */
     @PortedFrom(file = "tOntologyAtom.h", name = "setModule")
     public void setModule(Collection<AxiomInterface> module) {
         ModuleAxioms = new HashSet<AxiomInterface>(module);
     }
 
-    /** add axiom AX to an atom
+    /**
+     * add axiom AX to an atom
      * 
      * @param ax
-     *            ax */
+     *        ax
+     */
     @PortedFrom(file = "tOntologyAtom.h", name = "addAxiom")
     public void addAxiom(AxiomInterface ax) {
         AtomAxioms.add(ax);
         ax.setAtom(this);
     }
 
-    /** add atom to the dependency set
+    /**
+     * add atom to the dependency set
      * 
      * @param atom
-     *            atom */
+     *        atom
+     */
     @PortedFrom(file = "tOntologyAtom.h", name = "addDepAtom")
     public void addDepAtom(TOntologyAtom atom) {
         if (atom != null && atom != this) {
@@ -96,10 +105,12 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
         }
     }
 
-    /** @param checked
-     *            checked
+    /**
+     * @param checked
+     *        checked
      * @return all the atoms the current one depends on; build this set if
-     *         necessary */
+     *         necessary
+     */
     @PortedFrom(file = "tOntologyAtom.h", name = "getAllDepAtoms")
     public Set<TOntologyAtom> getAllDepAtoms(Set<TOntologyAtom> checked) {
         if (checked.contains(this)) {
@@ -133,10 +144,12 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
         return Id;
     }
 
-    /** set the value of the id to ID
+    /**
+     * set the value of the id to ID
      * 
      * @param id
-     *            id */
+     *        id
+     */
     @PortedFrom(file = "tOntologyAtom.h", name = "setId")
     public void setId(int id) {
         Id = id;

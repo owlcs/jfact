@@ -30,19 +30,23 @@ import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 
 /** datarange translator */
-public class DataRangeTranslator extends OWLEntityTranslator<OWLDatatype, DataExpression>
-        implements OWLDataRangeVisitorEx<DataExpression> {
+public class DataRangeTranslator extends
+        OWLEntityTranslator<OWLDatatype, DataExpression> implements
+        OWLDataRangeVisitorEx<DataExpression> {
+
     private static final long serialVersionUID = 11000L;
     private final DatatypeFactory f;
 
-    /** @param em
-     *            em
+    /**
+     * @param em
+     *        em
      * @param df
-     *            df
+     *        df
      * @param tr
-     *            tr
+     *        tr
      * @param f
-     *            f */
+     *        f
+     */
     public DataRangeTranslator(ExpressionManager em, OWLDataFactory df,
             TranslationMachinery tr, DatatypeFactory f) {
         super(em, df, tr);
@@ -108,7 +112,8 @@ public class DataRangeTranslator extends OWLEntityTranslator<OWLDatatype, DataEx
         return em.dataAnd(translateDataRangeSet(node.getOperands()));
     }
 
-    private List<DataExpression> translateDataRangeSet(Set<OWLDataRange> dataRanges) {
+    private List<DataExpression> translateDataRangeSet(
+            Set<OWLDataRange> dataRanges) {
         List<DataExpression> l = new ArrayList<DataExpression>();
         for (OWLDataRange op : dataRanges) {
             l.add(op.accept(this));
@@ -124,7 +129,8 @@ public class DataRangeTranslator extends OWLEntityTranslator<OWLDatatype, DataEx
     @Override
     public DataExpression visit(OWLDatatypeRestriction node) {
         Datatype<?> type = f.getKnownDatatype(node.getDatatype().getIRI());
-        Set<OWLFacetRestriction> facetRestrictions = node.getFacetRestrictions();
+        Set<OWLFacetRestriction> facetRestrictions = node
+                .getFacetRestrictions();
         if (facetRestrictions.isEmpty()) {
             return type;
         }

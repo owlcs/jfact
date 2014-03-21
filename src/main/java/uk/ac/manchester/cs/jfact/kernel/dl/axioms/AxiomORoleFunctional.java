@@ -15,12 +15,15 @@ import conformance.PortedFrom;
 /** functional object role */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomORoleFunctional")
 public class AxiomORoleFunctional extends AxiomSingleORole {
+
     private static final long serialVersionUID = 11000L;
 
-    /** @param ax
-     *            ax
+    /**
+     * @param ax
+     *        ax
      * @param role
-     *            role */
+     *        role
+     */
     public AxiomORoleFunctional(OWLAxiom ax, ObjectRoleExpression role) {
         super(ax, role);
     }

@@ -19,7 +19,9 @@ import conformance.PortedFrom;
 
 /** forall object restriction */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectForall")
-public class ConceptObjectForall implements ConceptObjectRCExpression, Serializable {
+public class ConceptObjectForall implements ConceptObjectRCExpression,
+        Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** concept argument */
     @PortedFrom(file = "tDLExpression.h", name = "C")
@@ -27,10 +29,12 @@ public class ConceptObjectForall implements ConceptObjectRCExpression, Serializa
     @Original
     private final ObjectRoleExpression delegate;
 
-    /** @param R
-     *            R
+    /**
+     * @param R
+     *        R
      * @param C
-     *            C */
+     *        C
+     */
     public ConceptObjectForall(ObjectRoleExpression R, ConceptExpression C) {
         conceptExpression = C;
         delegate = R;

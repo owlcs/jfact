@@ -7,11 +7,14 @@ package uk.ac.manchester.cs.jfact.datatypes;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 
-/** @author ignazio
+/**
+ * @author ignazio
  * @param <T>
- *            type */
+ *        type
+ */
 public interface Literal<T extends Comparable<T>> extends DataExpression,
         Comparable<Literal<T>> {
+
     /** @return datatype */
     Datatype<T> getDatatypeExpression();
 

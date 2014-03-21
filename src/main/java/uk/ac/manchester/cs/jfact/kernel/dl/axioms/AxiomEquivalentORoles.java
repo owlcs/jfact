@@ -16,13 +16,17 @@ import conformance.PortedFrom;
 
 /** Object Role equivalence axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomEquivalentORoles")
-public class AxiomEquivalentORoles extends AbstractNaryAxiom<ObjectRoleExpression> {
+public class AxiomEquivalentORoles extends
+        AbstractNaryAxiom<ObjectRoleExpression> {
+
     private static final long serialVersionUID = 11000L;
 
-    /** @param ax
-     *            ax
+    /**
+     * @param ax
+     *        ax
      * @param v
-     *            v */
+     *        v
+     */
     public AxiomEquivalentORoles(OWLAxiom ax, List<ObjectRoleExpression> v) {
         super(ax, v);
     }

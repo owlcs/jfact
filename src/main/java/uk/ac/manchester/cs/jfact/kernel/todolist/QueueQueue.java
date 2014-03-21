@@ -16,6 +16,7 @@ import conformance.PortedFrom;
 
 /** class to represent single priority queue */
 public class QueueQueue implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** waiting ops queue */
     private List<ToDoEntry> _Wait = new ArrayList<ToDoEntry>();
@@ -25,12 +26,14 @@ public class QueueQueue implements Serializable {
     private boolean queueBroken = false;
     private int size = 0;
 
-    /** add entry to a queue
+    /**
+     * add entry to a queue
      * 
      * @param Node
-     *            Node
+     *        Node
      * @param offset
-     *            offset */
+     *        offset
+     */
     protected void add(DlCompletionTree Node, ConceptWDep offset) {
         ToDoEntry e = new ToDoEntry(Node, offset);
         // no problems with empty queue and if no priority
@@ -45,7 +48,8 @@ public class QueueQueue implements Serializable {
         // here we need to put e on the proper place
         int n = size;
         while (n > sPointer
-                && _Wait.get(n - 1).getNode().getNominalLevel() > Node.getNominalLevel()) {
+                && _Wait.get(n - 1).getNode().getNominalLevel() > Node
+                        .getNominalLevel()) {
             --n;
         }
         _Wait.add(n, e);
@@ -72,10 +76,12 @@ public class QueueQueue implements Serializable {
         return _Wait.get(sPointer++);
     }
 
-    /** save queue content to the given entry
+    /**
+     * save queue content to the given entry
      * 
      * @param tss
-     *            tss */
+     *        tss
+     */
     @PortedFrom(file = "ToDoList.h", name = "save")
     protected void save(TODOListSaveState tss) {
         tss.queueBroken = queueBroken;
@@ -90,10 +96,12 @@ public class QueueQueue implements Serializable {
         queueBroken = false;
     }
 
-    /** restore queue content from the given entry
+    /**
+     * restore queue content from the given entry
      * 
      * @param tss
-     *            tss */
+     *        tss
+     */
     @PortedFrom(file = "ToDoList.h", name = "restore")
     protected void restore(TODOListSaveState tss) {
         queueBroken = tss.queueBroken;
@@ -112,7 +120,8 @@ public class QueueQueue implements Serializable {
 
     @Override
     public String toString() {
-        return "{" + (!isEmpty() ? _Wait.get(sPointer) : "empty") + " sPointer: "
-                + sPointer + " size: " + size + " Wait: " + _Wait + "}";
+        return "{" + (!isEmpty() ? _Wait.get(sPointer) : "empty")
+                + " sPointer: " + sPointer + " size: " + size + " Wait: "
+                + _Wait + "}";
     }
 }

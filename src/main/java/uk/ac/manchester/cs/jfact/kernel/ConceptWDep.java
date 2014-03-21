@@ -13,6 +13,7 @@ import conformance.PortedFrom;
 /** concept and dependency set */
 @PortedFrom(file = "ConceptWithDep.h", name = "Concept")
 public class ConceptWDep implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** "pointer" to a concept in DAG */
     @PortedFrom(file = "ConceptWithDep.h", name = "Concept")
@@ -21,19 +22,23 @@ public class ConceptWDep implements Serializable {
     @PortedFrom(file = "ConceptWithDep.h", name = "depSet")
     private final DepSet depSet;
 
-    /** c'tor with empty dep-set
+    /**
+     * c'tor with empty dep-set
      * 
      * @param p
-     *            p */
+     *        p
+     */
     public ConceptWDep(int p) {
         concept = p;
         depSet = DepSet.create();
     }
 
-    /** @param p
-     *            p
+    /**
+     * @param p
+     *        p
      * @param dep
-     *            dep */
+     *        dep
+     */
     public ConceptWDep(int p, DepSet dep) {
         concept = p;
         depSet = DepSet.create(dep);
@@ -51,10 +56,12 @@ public class ConceptWDep implements Serializable {
         return depSet;
     }
 
-    /** add dep-set to a CWD
+    /**
+     * add dep-set to a CWD
      * 
      * @param d
-     *            d */
+     *        d
+     */
     @PortedFrom(file = "ConceptWithDep.h", name = "addDep")
     public void addDep(DepSet d) {
         depSet.add(d);

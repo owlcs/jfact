@@ -32,13 +32,16 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
 @SuppressWarnings("javadoc")
 public class JUnitRunner {
+
     private static final int _10000 = 1000000;
 
     public static void print(String premise) throws OWLException {
         OWLOntology o = OWLManager.createOWLOntologyManager()
-                .loadOntologyFromOntologyDocument(new StringDocumentSource(premise));
+                .loadOntologyFromOntologyDocument(
+                        new StringDocumentSource(premise));
         o.getOWLOntologyManager().saveOntology(o,
-                new OWLFunctionalSyntaxOntologyFormat(), new SystemOutDocumentTarget());
+                new OWLFunctionalSyntaxOntologyFormat(),
+                new SystemOutDocumentTarget());
     }
 
     private final TestClasses t;
@@ -50,8 +53,8 @@ public class JUnitRunner {
     private final JFactReasonerConfiguration c = new JFactReasonerConfiguration(
             new SimpleConfiguration(_10000));
 
-    public JUnitRunner(String premise, String consequence, String testId, TestClasses t,
-            String description) {
+    public JUnitRunner(String premise, String consequence, String testId,
+            TestClasses t, String description) {
         this.testId = testId;
         this.premise = premise;
         this.consequence = consequence;
@@ -77,7 +80,8 @@ public class JUnitRunner {
 
     public OWLOntology getPremise() throws OWLOntologyCreationException {
         if (premise != null) {
-            StringDocumentSource documentSource = new StringDocumentSource(premise);
+            StringDocumentSource documentSource = new StringDocumentSource(
+                    premise);
             return OWLManager.createOWLOntologyManager()
                     .loadOntologyFromOntologyDocument(documentSource);
         }
@@ -86,7 +90,8 @@ public class JUnitRunner {
 
     public OWLOntology getConsequence() throws OWLOntologyCreationException {
         if (consequence != null) {
-            StringDocumentSource documentSource = new StringDocumentSource(consequence);
+            StringDocumentSource documentSource = new StringDocumentSource(
+                    consequence);
             return OWLManager.createOWLOntologyManager()
                     .loadOntologyFromOntologyDocument(documentSource);
         }
@@ -101,11 +106,13 @@ public class JUnitRunner {
             if (premise != null) {
                 premiseOntology = getPremise();
                 OWL2DLProfile profile = new OWL2DLProfile();
-                OWLProfileReport report = profile.checkOntology(premiseOntology);
+                OWLProfileReport report = profile
+                        .checkOntology(premiseOntology);
                 if (report.getViolations().size() > 0) {
                     System.out.println("JUnitRunner.run() " + testId);
-                    System.out.println("JUnitRunner.run() premise violations:\n"
-                            + report.toString());
+                    System.out
+                            .println("JUnitRunner.run() premise violations:\n"
+                                    + report.toString());
                     throw new RuntimeException("errors!\n" + report.toString());
                 }
             }
@@ -119,12 +126,14 @@ public class JUnitRunner {
             if (consequence != null) {
                 conclusionOntology = getConsequence();
                 OWL2DLProfile profile = new OWL2DLProfile();
-                OWLProfileReport report = profile.checkOntology(conclusionOntology);
+                OWLProfileReport report = profile
+                        .checkOntology(conclusionOntology);
                 if (report.getViolations().size() > 0) {
                     System.out.println("JUnitRunner.run() " + testId
                             + report.getViolations().size());
-                    System.out.println("JUnitRunner.run() conclusion violations:\n"
-                            + report.toString());
+                    System.out
+                            .println("JUnitRunner.run() conclusion violations:\n"
+                                    + report.toString());
                     throw new RuntimeException("errors!");
                 }
             }
@@ -135,7 +144,8 @@ public class JUnitRunner {
         this.run(premiseOntology, conclusionOntology);
     }
 
-    protected void run(OWLOntology premiseOntology, OWLOntology conclusionOntology) {
+    protected void run(OWLOntology premiseOntology,
+            OWLOntology conclusionOntology) {
         StringBuilder b = new StringBuilder();
         b.append("JUnitRunner.logTroubles() premise");
         b.append("\n");
@@ -157,7 +167,8 @@ public class JUnitRunner {
             ObjectOutputStream stream = new ObjectOutputStream(out);
             stream.writeObject(r);
             stream.flush();
-            ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+            ByteArrayInputStream in = new ByteArrayInputStream(
+                    out.toByteArray());
             ObjectInputStream inStream = new ObjectInputStream(in);
             return (OWLReasoner) inStream.readObject();
         } catch (Exception e) {
@@ -228,8 +239,8 @@ public class JUnitRunner {
         }
     }
 
-    public String logTroubles(boolean expected, boolean actual, TestClasses testclass,
-            OWLAxiom axiom) {
+    public String logTroubles(boolean expected, boolean actual,
+            TestClasses testclass, OWLAxiom axiom) {
         StringBuilder b = new StringBuilder();
         b.append("JUnitRunner.logTroubles() \t");
         b.append(testclass);
@@ -254,13 +265,15 @@ public class JUnitRunner {
             OWLOntologyCreationException {
         OWLOntology premise2 = getPremise();
         premise2.getOWLOntologyManager().saveOntology(premise2,
-                new OWLFunctionalSyntaxOntologyFormat(), new SystemOutDocumentTarget());
+                new OWLFunctionalSyntaxOntologyFormat(),
+                new SystemOutDocumentTarget());
     }
 
     public void printConsequence() throws OWLOntologyStorageException,
             OWLOntologyCreationException {
         OWLOntology consequence2 = getConsequence();
         consequence2.getOWLOntologyManager().saveOntology(consequence2,
-                new OWLFunctionalSyntaxOntologyFormat(), new SystemOutDocumentTarget());
+                new OWLFunctionalSyntaxOntologyFormat(),
+                new SystemOutDocumentTarget());
     }
 }

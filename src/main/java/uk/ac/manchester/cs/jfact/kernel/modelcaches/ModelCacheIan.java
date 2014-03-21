@@ -30,6 +30,7 @@ import conformance.PortedFrom;
 /** model cache Ian (Horrocks) */
 @PortedFrom(file = "modelCacheIan.h", name = "modelCacheIan")
 public class ModelCacheIan extends ModelCacheInterface {
+
     private static final long serialVersionUID = 11000L;
     // sets for the cache
     /** named concepts that appears positively det-lly in a root node of a cache */
@@ -69,12 +70,14 @@ public class ModelCacheIan extends ModelCacheInterface {
     @Original
     private final boolean simpleRules;
 
-    /** process CT label in given interval; set Deterministic accordingly
+    /**
+     * process CT label in given interval; set Deterministic accordingly
      * 
      * @param DLHeap
-     *            DLHeap
+     *        DLHeap
      * @param start
-     *            start */
+     *        start
+     */
     @PortedFrom(file = "modelCacheIan.h", name = "processLabelInterval")
     private void processLabelInterval(DLDag DLHeap, List<ConceptWDep> start) {
         for (int i = 0; i < start.size(); i++) {
@@ -84,48 +87,55 @@ public class ModelCacheIan extends ModelCacheInterface {
         }
     }
 
-    /** fills cache sets by tree.Label; set Deterministic accordingly
+    /**
+     * fills cache sets by tree.Label; set Deterministic accordingly
      * 
      * @param DLHeap
-     *            DLHeap
+     *        DLHeap
      * @param pCT
-     *            pCT */
+     *        pCT
+     */
     @PortedFrom(file = "modelCacheIan.h", name = "initCacheByLabel")
     private void initCacheByLabel(DLDag DLHeap, DlCompletionTree pCT) {
         processLabelInterval(DLHeap, pCT.beginl_sc());
         processLabelInterval(DLHeap, pCT.beginl_cc());
     }
 
-    /** Create cache model of given CompletionTree using given HEAP
+    /**
+     * Create cache model of given CompletionTree using given HEAP
      * 
      * @param heap
-     *            heap
+     *        heap
      * @param p
-     *            p
+     *        p
      * @param flagNominals
-     *            flagNominals
+     *        flagNominals
      * @param nC
-     *            nC
+     *        nC
      * @param nR
-     *            nR
+     *        nR
      * @param simpleRules
-     *            simpleRules */
-    public ModelCacheIan(DLDag heap, DlCompletionTree p, boolean flagNominals, int nC,
-            int nR, boolean simpleRules) {
+     *        simpleRules
+     */
+    public ModelCacheIan(DLDag heap, DlCompletionTree p, boolean flagNominals,
+            int nC, int nR, boolean simpleRules) {
         this(flagNominals, nC, nR, simpleRules);
         initCacheByLabel(heap, p);
         initRolesFromArcs(p);
     }
 
-    /** @param flagNominals
-     *            flagNominals
+    /**
+     * @param flagNominals
+     *        flagNominals
      * @param nC
-     *            nC
+     *        nC
      * @param nR
-     *            nR
+     *        nR
      * @param simpleRules
-     *            simpleRules */
-    public ModelCacheIan(boolean flagNominals, int nC, int nR, boolean simpleRules) {
+     *        simpleRules
+     */
+    public ModelCacheIan(boolean flagNominals, int nC, int nR,
+            boolean simpleRules) {
         super(flagNominals);
         curState = csValid;
         this.simpleRules = simpleRules;
@@ -144,27 +154,33 @@ public class ModelCacheIan extends ModelCacheInterface {
         return pos ? posDConcepts : negDConcepts;
     }
 
-    /** @param pos
-     *            pos
-     * @return N-concepts wrt polarity */
+    /**
+     * @param pos
+     *        pos
+     * @return N-concepts wrt polarity
+     */
     @PortedFrom(file = "modelCacheIan.h", name = "getNConcepts")
     private BitSet getNConcepts(boolean pos) {
         return pos ? posNConcepts : negNConcepts;
     }
 
-    /** @param det
-     *            det
-     * @return extra concepts wrt deterministic flag */
+    /**
+     * @param det
+     *        det
+     * @return extra concepts wrt deterministic flag
+     */
     @PortedFrom(file = "modelCacheIan.h", name = "getExtra")
     private FastSet getExtra(boolean det) {
         return det ? extraDConcepts : extraNConcepts;
     }
 
-    /** init existRoles from arcs; can be used to create pseudo-cache with deps
+    /**
+     * init existRoles from arcs; can be used to create pseudo-cache with deps
      * of CT edges
      * 
      * @param pCT
-     *            pCT */
+     *        pCT
+     */
     @PortedFrom(file = "modelCacheIan.h", name = "initRolesFromArcs")
     public void initRolesFromArcs(DlCompletionTree pCT) {
         List<DlCompletionTreeArc> list = pCT.getNeighbour();
@@ -207,12 +223,14 @@ public class ModelCacheIan extends ModelCacheInterface {
         curState = csValid;
     }
 
-    /** @param cur
-     *            cur
+    /**
+     * @param cur
+     *        cur
      * @param pos
-     *            pos
+     *        pos
      * @param det
-     *            det */
+     *        det
+     */
     @PortedFrom(file = "modelCacheIan.h", name = "processConcept")
     public void processConcept(DLVertex cur, boolean pos, boolean det) {
         switch (cur.getType()) {
@@ -250,8 +268,10 @@ public class ModelCacheIan extends ModelCacheInterface {
         }
     }
 
-    /** @param cur
-     *            cur */
+    /**
+     * @param cur
+     *        cur
+     */
     @PortedFrom(file = "modelCacheIan.h", name = "processAutomaton")
     public void processAutomaton(DLVertex cur) {
         RAStateTransitions RST = cur.getRole().getAutomaton().getBase()
@@ -266,10 +286,12 @@ public class ModelCacheIan extends ModelCacheInterface {
         }
     }
 
-    /** adds role to exists- and func-role if necessary
+    /**
+     * adds role to exists- and func-role if necessary
      * 
      * @param R
-     *            R */
+     *        R
+     */
     @PortedFrom(file = "modelCacheIan.h", name = "addRoleToCache")
     private void addRoleToCache(Role R) {
         existsRoles.add(R.getIndex());
@@ -278,10 +300,12 @@ public class ModelCacheIan extends ModelCacheInterface {
         }
     }
 
-    /** adds role (and all its super-roles) to exists- and funcRoles
+    /**
+     * adds role (and all its super-roles) to exists- and funcRoles
      * 
      * @param R
-     *            R */
+     *        R
+     */
     @PortedFrom(file = "modelCacheIan.h", name = "addExistsRole")
     private void addExistsRole(Role R) {
         addRoleToCache(R);
@@ -314,12 +338,14 @@ public class ModelCacheIan extends ModelCacheInterface {
         }
     }
 
-    /** @param Singleton
-     *            Singleton
+    /**
+     * @param Singleton
+     *        Singleton
      * @param pos
-     *            pos
+     *        pos
      * @return invalid, failed or valid depending on whether singleton is
-     *         included */
+     *         included
+     */
     @PortedFrom(file = "modelCacheIan.h", name = "isMergableSingleton")
     public ModelCacheState isMergableSingleton(int Singleton, boolean pos) {
         assert Singleton != 0;
@@ -332,9 +358,11 @@ public class ModelCacheIan extends ModelCacheInterface {
         return csValid;
     }
 
-    /** @param q
-     *            q
-     * @return invalid, failed or valid */
+    /**
+     * @param q
+     *        q
+     * @return invalid, failed or valid
+     */
     @PortedFrom(file = "modelCacheIan.h", name = "isMergableIan")
     public ModelCacheState isMergableIan(ModelCacheIan q) {
         if (posDConcepts.intersects(q.negDConcepts)
@@ -372,9 +400,11 @@ public class ModelCacheIan extends ModelCacheInterface {
         }
     }
 
-    /** @param p
-     *            p
-     * @return invalid, failed or valid */
+    /**
+     * @param p
+     *        p
+     * @return invalid, failed or valid
+     */
     @PortedFrom(file = "modelCacheIan.h", name = "merge")
     public ModelCacheState merge(ModelCacheInterface p) {
         assert p != null;
@@ -401,12 +431,14 @@ public class ModelCacheIan extends ModelCacheInterface {
         return curState;
     }
 
-    /** actual merge with a singleton cache
+    /**
+     * actual merge with a singleton cache
      * 
      * @param Singleton
-     *            Singleton
+     *        Singleton
      * @param pos
-     *            pos */
+     *        pos
+     */
     @PortedFrom(file = "modelCacheIan.h", name = "mergeSingleton")
     private void mergeSingleton(int Singleton, boolean pos) {
         ModelCacheState newState = isMergableSingleton(Singleton, pos);
@@ -417,10 +449,12 @@ public class ModelCacheIan extends ModelCacheInterface {
         }
     }
 
-    /** actual merge with an Ian's cache
+    /**
+     * actual merge with an Ian's cache
      * 
      * @param p
-     *            p */
+     *        p
+     */
     @PortedFrom(file = "modelCacheIan.h", name = "mergeIan")
     private void mergeIan(ModelCacheIan p) {
         // setup curState
@@ -442,9 +476,10 @@ public class ModelCacheIan extends ModelCacheInterface {
     @Override
     @PortedFrom(file = "modelCacheIan.h", name = "logCacheEntry")
     public void logCacheEntry(int level, LogAdapter l) {
-        l.print("\nIan cache: posDConcepts = {", posDConcepts, "}, posNConcepts = {",
-                posNConcepts, "}, negDConcepts = {", negDConcepts, "}, negNConcepts = {",
-                negNConcepts, "}, existsRoles = {", existsRoles, "}, forallRoles = {",
+        l.print("\nIan cache: posDConcepts = {", posDConcepts,
+                "}, posNConcepts = {", posNConcepts, "}, negDConcepts = {",
+                negDConcepts, "}, negNConcepts = {", negNConcepts,
+                "}, existsRoles = {", existsRoles, "}, forallRoles = {",
                 forallRoles, "}, funcRoles = {", funcRoles, "}");
     }
 

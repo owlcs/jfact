@@ -17,10 +17,13 @@ import java.util.Set;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.FastSetSimple;
 
-/** @author ignazio
+/**
+ * @author ignazio
  * @param <R>
- *            type */
+ *        type
+ */
 public class DataTypeSituation<R extends Comparable<R>> implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** positive type appearance */
     private DepSet pType;
@@ -44,15 +47,17 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         this.constraints.add(new DepInterval<R>());
     }
 
-    /** update and add a single interval I to the constraints.
+    /**
+     * update and add a single interval I to the constraints.
      * 
      * @param i
-     *            dependency interval
+     *        dependency interval
      * @param interval
-     *            datatype interval
+     *        datatype interval
      * @param localDep
-     *            localDep
-     * @return true iff clash occurs */
+     *        localDep
+     * @return true iff clash occurs
+     */
     private boolean addUpdatedInterval(DepInterval<R> i, Datatype<R> interval,
             DepSet localDep) {
         if (!i.consistent(interval)) {
@@ -79,15 +84,17 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         return this.type;
     }
 
-    /** add restrictions [POS]INT to intervals
+    /**
+     * add restrictions [POS]INT to intervals
      * 
      * @param pos
-     *            pos
+     *        pos
      * @param interval
-     *            interval
+     *        interval
      * @param dep
-     *            dep
-     * @return true if clash occurs */
+     *        dep
+     * @return true if clash occurs
+     */
     public boolean addInterval(boolean pos, Datatype<R> interval, DepSet dep) {
         if (interval.emptyValueSpace()) {
             this.reasoner.reportClash(this.accDep, DT_Empty_interval);
@@ -96,7 +103,8 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         if (interval instanceof DatatypeEnumeration) {
             this.literals.addAll(interval.listValues());
         }
-        Datatype<R> realInterval = pos ? interval : new DatatypeNegation<R>(interval);
+        Datatype<R> realInterval = pos ? interval : new DatatypeNegation<R>(
+                interval);
         Set<DepInterval<R>> c = this.constraints;
         this.constraints = new HashSet<DepInterval<R>>();
         for (DepInterval<R> d : c) {
@@ -130,15 +138,19 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
     }
 
     private boolean emptyConstraints() {
-        return this.constraints.isEmpty() || this.constraints.iterator().next().e == null;
+        return this.constraints.isEmpty()
+                || this.constraints.iterator().next().e == null;
     }
 
-    /** @param other
-     *            other
-     * @return true if compatible */
+    /**
+     * @param other
+     *        other
+     * @return true if compatible
+     */
     public boolean checkCompatibleValue(DataTypeSituation<?> other) {
         if (this.type.equals(DatatypeFactory.LITERAL) && emptyConstraints()
-                || other.type.equals(DatatypeFactory.LITERAL) && other.emptyConstraints()) {
+                || other.type.equals(DatatypeFactory.LITERAL)
+                && other.emptyConstraints()) {
             return true;
         }
         if (!this.type.isCompatible(other.type)) {
@@ -190,11 +202,14 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         return toReturn;
     }
 
-    /** data interval with dep-sets
+    /**
+     * data interval with dep-sets
      * 
      * @param <R>
-     *            type */
+     *        type
+     */
     static class DepInterval<R extends Comparable<R>> implements Serializable {
+
         private static final long serialVersionUID = 11000L;
         protected DatatypeExpression<R> e;
         /** local dep-set */
@@ -205,13 +220,15 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
             return "depInterval{" + this.e + "}";
         }
 
-        /** update MIN border of an TYPE's interval with VALUE wrt EXCL
+        /**
+         * update MIN border of an TYPE's interval with VALUE wrt EXCL
          * 
          * @param value
-         *            value
+         *        value
          * @param dep
-         *            dep
-         * @return true if updated */
+         *        dep
+         * @return true if updated
+         */
         @SuppressWarnings("rawtypes")
         public boolean update(Datatype<R> value, DepSet dep) {
             if (this.e == null) {
@@ -233,13 +250,14 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
                     // cannot update an enumeration
                     return false;
                 }
-                for (Map.Entry<Facet, Comparable> f : value.getKnownNumericFacetValues()
-                        .entrySet()) {
+                for (Map.Entry<Facet, Comparable> f : value
+                        .getKnownNumericFacetValues().entrySet()) {
                     this.e = this.e.addNumericFacet(f.getKey(), f.getValue());
                 }
                 for (Map.Entry<Facet, Comparable> f : value
                         .getKnownNonNumericFacetValues().entrySet()) {
-                    this.e = this.e.addNonNumericFacet(f.getKey(), f.getValue());
+                    this.e = this.e
+                            .addNonNumericFacet(f.getKey(), f.getValue());
                 }
             }
             // TODO needs to return false if the new expression has the same
@@ -252,9 +270,11 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
             return true;
         }
 
-        /** @param interval
-         *            the interval to check
-         * @return true if this interval can be updated to include interval */
+        /**
+         * @param interval
+         *        the interval to check
+         * @return true if this interval can be updated to include interval
+         */
         public boolean updateable(Datatype<R> interval) {
             if (this.e == null) {
                 return true;
@@ -273,11 +293,13 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
             return true;
         }
 
-        /** check if the interval is consistent wrt given type
+        /**
+         * check if the interval is consistent wrt given type
          * 
          * @param type
-         *            type
-         * @return true if consistent */
+         *        type
+         * @return true if consistent
+         */
         private boolean consistent(Datatype<R> type) {
             return this.e == null || this.e.isCompatible(type);
         }
@@ -295,8 +317,9 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
                 return true;
             }
             if (obj instanceof DepInterval) {
-                return (this.e == null ? ((DepInterval<?>) obj).e == null : this.e
-                        .equals(((DepInterval<?>) obj).e)) && this.locDep == null ? ((DepInterval<?>) obj).locDep == null
+                return (this.e == null ? ((DepInterval<?>) obj).e == null
+                        : this.e.equals(((DepInterval<?>) obj).e))
+                        && this.locDep == null ? ((DepInterval<?>) obj).locDep == null
                         : this.locDep.equals(((DepInterval<?>) obj).locDep);
             }
             return false;
@@ -310,30 +333,38 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
     }
 
     // presence interface
-    /** check if type is present positively in the node
+    /**
+     * check if type is present positively in the node
      * 
-     * @return true if pType not null */
+     * @return true if pType not null
+     */
     public boolean hasPType() {
         return this.pType != null;
     }
 
-    /** check if type is present negatively in the node
+    /**
+     * check if type is present negatively in the node
      * 
-     * @return true if nType not null */
+     * @return true if nType not null
+     */
     public boolean hasNType() {
         return this.nType != null;
     }
 
-    /** set the precense of the PType
+    /**
+     * set the precense of the PType
      * 
      * @param type
-     *            type */
+     *        type
+     */
     public void setPType(DepSet type) {
         this.pType = type;
     }
 
-    /** @param t
-     *            depset for negative type */
+    /**
+     * @param t
+     *        depset for negative type
+     */
     public void setNType(DepSet t) {
         this.nType = t;
     }
@@ -350,6 +381,7 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + " " + type + " " + this.constraints;
+        return this.getClass().getSimpleName() + " " + type + " "
+                + this.constraints;
     }
 }

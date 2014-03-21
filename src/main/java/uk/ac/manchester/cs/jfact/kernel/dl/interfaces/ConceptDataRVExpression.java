@@ -12,6 +12,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptDataRVExpression")
 public interface ConceptDataRVExpression extends ConceptDataRoleExpression,
         DataExpressionArg<DataExpression> {
+
     @Override
     /** accept method for the visitor pattern */
     @PortedFrom(file = "tDLExpression.h", name = "accept")

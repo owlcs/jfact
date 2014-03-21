@@ -15,19 +15,23 @@ import conformance.PortedFrom;
 /** SubClassOf */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomConceptInclusion")
 public class AxiomConceptInclusion extends AxiomImpl {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "Sub")
     private final ConceptExpression subConcept;
     @PortedFrom(file = "tDLAxiom.h", name = "Sup")
     private final ConceptExpression superConcept;
 
-    /** @param ax
-     *            ax
+    /**
+     * @param ax
+     *        ax
      * @param sub
-     *            sub
+     *        sub
      * @param sup
-     *            sup */
-    public AxiomConceptInclusion(OWLAxiom ax, ConceptExpression sub, ConceptExpression sup) {
+     *        sup
+     */
+    public AxiomConceptInclusion(OWLAxiom ax, ConceptExpression sub,
+            ConceptExpression sup) {
         super(ax);
         subConcept = sub;
         superConcept = sup;

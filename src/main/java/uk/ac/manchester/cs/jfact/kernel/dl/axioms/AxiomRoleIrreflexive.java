@@ -15,12 +15,15 @@ import conformance.PortedFrom;
 /** irreflexive object role */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomRoleIrreflexive")
 public class AxiomRoleIrreflexive extends AxiomSingleORole {
+
     private static final long serialVersionUID = 11000L;
 
-    /** @param ax
-     *            ax
+    /**
+     * @param ax
+     *        ax
      * @param role
-     *            role */
+     *        role
+     */
     public AxiomRoleIrreflexive(OWLAxiom ax, ObjectRoleExpression role) {
         super(ax, role);
     }

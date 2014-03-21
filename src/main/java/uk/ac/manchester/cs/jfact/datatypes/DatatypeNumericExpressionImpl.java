@@ -13,13 +13,15 @@ import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.ABSTRACT_NUMERIC_DATA
 
 class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
         ABSTRACT_NUMERIC_DATATYPE<O> implements DatatypeExpression<O> {
+
     private static final long serialVersionUID = 11000L;
     // TODO handle all value space restrictions in the delegations
     private final Datatype<O> host;
 
     public DatatypeNumericExpressionImpl(Datatype<O> b) {
-        super(IRI.create(b.getDatatypeIRI() + "_" + DatatypeFactory.getIndex()), b
-                .getFacets());
+        super(
+                IRI.create(b.getDatatypeIRI() + "_"
+                        + DatatypeFactory.getIndex()), b.getFacets());
         if (b.isExpression()) {
             this.host = b.asExpression().getHostType();
         } else {
@@ -49,9 +51,11 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
-        if (value instanceof Literal && !this.host.isCompatible((Literal<?>) value)) {
-            throw new IllegalArgumentException("Not a valid value for this expression: "
-                    + f + "\t" + value + " for: " + this);
+        if (value instanceof Literal
+                && !this.host.isCompatible((Literal<?>) value)) {
+            throw new IllegalArgumentException(
+                    "Not a valid value for this expression: " + f + "\t"
+                            + value + " for: " + this);
         }
         DatatypeNumericExpressionImpl<O> toReturn = new DatatypeNumericExpressionImpl<O>(
                 this.host);
@@ -68,7 +72,8 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
             toReturn.knownNumericFacetValues.remove(Facets.maxInclusive);
         }
         if (value instanceof Number) {
-            toReturn.knownNumericFacetValues.put(f, new BigDecimal(value.toString()));
+            toReturn.knownNumericFacetValues.put(f,
+                    new BigDecimal(value.toString()));
         } else {
             toReturn.knownNumericFacetValues.put(f, value);
         }
@@ -76,7 +81,8 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
     }
 
     @Override
-    public DatatypeExpression<O> addNonNumericFacet(Facet f, Comparable<?> value) {
+    public DatatypeExpression<O>
+            addNonNumericFacet(Facet f, Comparable<?> value) {
         if (!facets.contains(f)) {
             throw new IllegalArgumentException("Facet " + f
                     + " not allowed tor datatype " + this.getHostType());
@@ -84,9 +90,11 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
-        if (value instanceof Literal && !this.host.isCompatible((Literal<?>) value)) {
-            throw new IllegalArgumentException("Not a valid value for this expression: "
-                    + f + "\t" + value + " for: " + this);
+        if (value instanceof Literal
+                && !this.host.isCompatible((Literal<?>) value)) {
+            throw new IllegalArgumentException(
+                    "Not a valid value for this expression: " + f + "\t"
+                            + value + " for: " + this);
         }
         DatatypeNumericExpressionImpl<O> toReturn = new DatatypeNumericExpressionImpl<O>(
                 this.host);
@@ -147,7 +155,7 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
 
     @Override
     public String toString() {
-        return "numeric(" + this.host.toString() + "(extra facets:" + getMin() + " "
-                + getMax() + "))";
+        return "numeric(" + this.host.toString() + "(extra facets:" + getMin()
+                + " " + getMax() + "))";
     }
 }

@@ -17,27 +17,33 @@ import conformance.PortedFrom;
 /** term assigner */
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TermAssigner")
 public class TermAssigner extends BuildELIOConcept {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Factory")
     private final AtomicLong Factory = new AtomicLong();
 
-    /** @param conjunctiveQueryFolding
-     *            conjunctiveQueryFolding
+    /**
+     * @param conjunctiveQueryFolding
+     *        conjunctiveQueryFolding
      * @param query
-     *            query */
+     *        query
+     */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TermAssigner")
-    public TermAssigner(ConjunctiveQueryFolding conjunctiveQueryFolding, QRQuery query) {
+    public TermAssigner(ConjunctiveQueryFolding conjunctiveQueryFolding,
+            QRQuery query) {
         super(conjunctiveQueryFolding, query);
     }
 
     @Override
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "createConceptByVar")
-    protected ConceptExpression createConceptByVar(QRVariable v) {
+    protected
+            ConceptExpression createConceptByVar(QRVariable v) {
         if (Query.isFreeVar(v)) {
-            String string = conjunctiveQueryFolding.getNewVarMap().get(v).getName() + ":"
-                    + Factory.incrementAndGet();
-            ConceptExpression concept = conjunctiveQueryFolding.getpEM().concept(
-                    IRI.create(string));
+            String string = conjunctiveQueryFolding.getNewVarMap().get(v)
+                    .getName()
+                    + ":" + Factory.incrementAndGet();
+            ConceptExpression concept = conjunctiveQueryFolding.getpEM()
+                    .concept(IRI.create(string));
             conjunctiveQueryFolding.addNominal(concept);
             return concept;
         }

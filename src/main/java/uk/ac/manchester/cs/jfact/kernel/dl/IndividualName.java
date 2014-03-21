@@ -16,12 +16,15 @@ import conformance.PortedFrom;
 
 /** individual name */
 @PortedFrom(file = "tDLExpression.h", name = "TDLIndividualName")
-public class IndividualName extends NamedEntityImpl implements IndividualExpression,
-        Serializable {
+public class IndividualName extends NamedEntityImpl implements
+        IndividualExpression, Serializable {
+
     private static final long serialVersionUID = 11000L;
 
-    /** @param name
-     *            name */
+    /**
+     * @param name
+     *        name
+     */
     public IndividualName(IRI name) {
         super(name);
     }

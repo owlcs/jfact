@@ -21,12 +21,15 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDLExpression.h", name = "TDLDataOneOf")
 public class DataOneOf extends NAryExpressionImpl<Literal<?>> implements
         NAryExpression<Literal<?>>, DataExpression, Serializable {
+
     private static final long serialVersionUID = 11000L;
 
-    /** create one-of from individuals in the given array
+    /**
+     * create one-of from individuals in the given array
      * 
      * @param v
-     *            v */
+     *        v
+     */
     public DataOneOf(List<Literal<?>> v) {
         add(v);
     }

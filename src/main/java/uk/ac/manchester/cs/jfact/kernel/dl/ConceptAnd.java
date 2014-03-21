@@ -20,12 +20,15 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptAnd")
 public class ConceptAnd extends NAryExpressionImpl<ConceptExpression> implements
         NAryExpression<ConceptExpression>, ConceptExpression, Serializable {
+
     private static final long serialVersionUID = 11000L;
 
-    /** create AND of expressions from the given array
+    /**
+     * create AND of expressions from the given array
      * 
      * @param v
-     *            v */
+     *        v
+     */
     public ConceptAnd(List<ConceptExpression> v) {
         add(v);
     }

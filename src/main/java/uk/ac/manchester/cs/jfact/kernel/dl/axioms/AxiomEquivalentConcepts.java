@@ -16,13 +16,17 @@ import conformance.PortedFrom;
 
 /** equivalent concepts */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomEquivalentConcepts")
-public class AxiomEquivalentConcepts extends AbstractNaryAxiom<ConceptExpression> {
+public class AxiomEquivalentConcepts extends
+        AbstractNaryAxiom<ConceptExpression> {
+
     private static final long serialVersionUID = 11000L;
 
-    /** @param ax
-     *            ax
+    /**
+     * @param ax
+     *        ax
      * @param v
-     *            v */
+     *        v
+     */
     public AxiomEquivalentConcepts(OWLAxiom ax, List<ConceptExpression> v) {
         super(ax, v);
     }
