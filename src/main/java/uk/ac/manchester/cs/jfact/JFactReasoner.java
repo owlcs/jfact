@@ -178,6 +178,13 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         configuration.getProgressMonitor().reasonerTaskStopped();
     }
 
+    /**
+     * @return the configuration for this reasoner
+     */
+    public JFactReasonerConfiguration getConfiguration() {
+        return configuration;
+    }
+
     /** @return ontology */
     public Ontology getOntology() {
         return kernel.getOntology();
