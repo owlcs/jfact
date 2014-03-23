@@ -25,4 +25,6 @@ public interface Actor {
 
     /** clear collections */
     void clear();
+
+    boolean applicable(TaxonomyVertex v);
 }

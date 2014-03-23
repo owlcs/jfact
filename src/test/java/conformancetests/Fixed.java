@@ -422,7 +422,6 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
         String d = "The individual a must have either negative Infinity or 0 (-0 as integer is 0) as dp fillers and all dp successors must be from owl:real, which excludes negative infinity, but allows 0.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.getConfiguration().setLoggingActive(true);
         r.setReasonerFactory(Factory.factory());
         r.run();
     }

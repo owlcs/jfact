@@ -58,8 +58,8 @@ public class ActorImpl implements Actor, Serializable {
      */
     @PortedFrom(file = "Actor.h", name = "applicable")
     protected boolean applicable(ClassifiableEntry entry) {
-        if (isRole)   // object- or data-role
-        {
+        if (isRole) {
+            // object- or data-role
             if (isStandard) {
                 return true;
             } else {
@@ -68,7 +68,8 @@ public class ActorImpl implements Actor, Serializable {
             }
         } else {
             // concept or individual: standard are concepts
-            return ((Concept) entry).isSingleton() != isStandard;
+            return entry instanceof Concept
+                    && ((Concept) entry).isSingleton() != isStandard;
         }
     }
 
@@ -91,6 +92,19 @@ public class ActorImpl implements Actor, Serializable {
             }
         }
         return array;
+    }
+
+    @Override
+    public boolean applicable(TaxonomyVertex v) {
+        if (tryEntry(v.getPrimer())) {
+            return true;
+        }
+        for (ClassifiableEntry p : v.begin_syn()) {
+            if (tryEntry(p)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

@@ -47,5 +47,18 @@ public class SupConceptActor implements Actor, Serializable {
     }
 
     @Override
+    public boolean applicable(TaxonomyVertex v) {
+        if (entry(v.getPrimer())) {
+            return true;
+        }
+        for (ClassifiableEntry p : v.begin_syn()) {
+            if (entry(p)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public void clear() {}
 }

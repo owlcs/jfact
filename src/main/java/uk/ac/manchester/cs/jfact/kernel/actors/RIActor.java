@@ -49,6 +49,23 @@ public class RIActor implements Actor, Serializable {
     }
 
     @Override
+    public boolean applicable(TaxonomyVertex v) {
+        if (test(v.getPrimer())) {
+            return true;
+        }
+        for (ClassifiableEntry p : v.begin_syn()) {
+            if (test(p)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean test(ClassifiableEntry p) {
+        return !(p.isSystem() || !((Concept) p).isSingleton());
+    }
+
+    @Override
     public void clear() {
         acc.clear();
     }

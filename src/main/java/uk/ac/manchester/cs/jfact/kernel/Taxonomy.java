@@ -146,27 +146,32 @@ public class Taxonomy implements Serializable {
         if (needCurrent && actor.apply(node) && onlyDirect) {
             return;
         }
-        Queue<List<TaxonomyVertex>> queue = new LinkedList<List<TaxonomyVertex>>();
-        queue.add(node.neigh(upDirection));
+        List<TaxonomyVertex> queue = new LinkedList<TaxonomyVertex>();
+        for (TaxonomyVertex v : node.neigh(upDirection)) {
+            if (actor.applicable(v) || !onlyDirect) {
+                queue.add(v);
+            }
+        }
         while (queue.size() > 0) {
-            List<TaxonomyVertex> neigh = queue.remove();
-            int size = neigh.size();
-            for (int i = 0; i < size; i++) {
-                TaxonomyVertex _node = neigh.get(i);
-                // recursive applicability checking
-                if (!isVisited(_node)) {
-                    // label node as visited
-                    setVisited(_node);
-                    // if current node processed OK and there is no need to
-                    // continue -- exit
-                    // if node is NOT processed for some reasons -- go to
-                    // another level
-                    if (actor.apply(_node) && onlyDirect) {
-                        continue;
+            TaxonomyVertex _node = queue.remove(0);
+            // recursive applicability checking
+            if (!isVisited(_node)) {
+                // label node as visited
+                setVisited(_node);
+                // if current node processed OK and there is no need to
+                // continue -- exit
+                // if node is NOT processed for some reasons -- go to
+                // another level
+                if (actor.apply(_node) && onlyDirect) {
+                    continue;
+                }
+                // apply method to the proper neighbours with proper
+                // parameters
+                // only pick nodes that are policy applicable
+                for (TaxonomyVertex v : _node.neigh(upDirection)) {
+                    if (actor.applicable(v) || !onlyDirect) {
+                        queue.add(v);
                     }
-                    // apply method to the proper neighbours with proper
-                    // parameters
-                    queue.add(_node.neigh(upDirection));
                 }
             }
         }

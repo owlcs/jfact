@@ -38,6 +38,19 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
     @PortedFrom(file = "JNIActor.h", name = "syn")
     private final List<T> syn = new ArrayList<T>();
 
+    @Override
+    public boolean applicable(TaxonomyVertex v) {
+        if (policy.applicable(v.getPrimer())) {
+            return true;
+        }
+        for (ClassifiableEntry p : v.begin_syn()) {
+            if (policy.applicable(p)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * try current entry
      * 
@@ -76,7 +89,8 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
 
     // return values
     /**
-     * @return single vector of synonyms (necessary for Equivalents, for example)
+     * @return single vector of synonyms (necessary for Equivalents, for
+     *         example)
      */
     @PortedFrom(file = "JNIActor.h", name = "getSynonyms")
     public Collection<T> getSynonyms() {
