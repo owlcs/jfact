@@ -230,12 +230,6 @@ public final class DataTypeReasoner implements Serializable {
                 Datatype<?> t2 = ds2.getType();
                 boolean t1subTypet2 = t1.isSubType(t2);
                 boolean t2subTypet1 = t2.isSubType(t1);
-                System.out
-                        .println("DataTypeReasoner.checkClash() t1 subtype t2 "
-                                + t1subTypet2);
-                System.out
-                        .println("DataTypeReasoner.checkClash() t2 subtype t1 "
-                                + t2subTypet1);
                 if (findClash(p1, n2, p2, n1, t1subTypet2, t2subTypet1,
                         ds1.getPType(), ds2.getNType())) {
                     return true;
@@ -245,10 +239,6 @@ public final class DataTypeReasoner implements Serializable {
                 // the subtype
                 boolean not21 = !ds2.checkCompatibleValue(ds1);
                 boolean not12 = !ds1.checkCompatibleValue(ds2);
-                System.out.println("DataTypeReasoner.checkClash() not21 "
-                        + not21);
-                System.out.println("DataTypeReasoner.checkClash() not12 "
-                        + not12);
                 if (t1subTypet2) {
                     if (findClash(t1subTypet2, ds1.getPType(), ds2.getNType(),
                             not21)) {
