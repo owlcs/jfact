@@ -1454,8 +1454,8 @@ public class ReasoningKernel implements Serializable {
      *        actor
      */
     @PortedFrom(file = "Kernel.h", name = "getORoleDomain")
-    public void getORoleDomain(ObjectRoleExpression r, boolean direct,
-            Actor actor) {
+    public <T extends ConceptExpression> TaxonomyActor<T> getORoleDomain(
+            ObjectRoleExpression r, boolean direct, TaxonomyActor<T> actor) {
         classifyKB();
         this.setUpCache(
                 getExpressionManager().exists(r, getExpressionManager().top()),
@@ -1463,6 +1463,7 @@ public class ReasoningKernel implements Serializable {
         actor.clear();
         Taxonomy tax = getCTaxonomy();
         tax.getRelativesInfo(cachedVertex, actor, true, direct, true);
+        return actor;
     }
 
     /**
@@ -1505,8 +1506,8 @@ public class ReasoningKernel implements Serializable {
      *        actor
      */
     @PortedFrom(file = "Kernel.h", name = "getRoleRange")
-    private void getRoleRange(ObjectRoleExpression r, boolean direct,
-            Actor actor) {
+    private <T extends ConceptExpression> void getRoleRange(
+            ObjectRoleExpression r, boolean direct, TaxonomyActor<T> actor) {
         getORoleDomain(getExpressionManager().inverse(r), direct, actor);
     }
 

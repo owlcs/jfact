@@ -583,7 +583,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         checkConsistency();
         OWLObjectSomeValuesFrom expression = df.getOWLObjectSomeValuesFrom(pe,
                 df.getOWLThing());
-        return discoverDomains(direct, expression);
+        return discoverDomains(direct, pe);
     }
 
     /**
@@ -592,22 +592,16 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
      * @return
      */
     NodeSet<OWLClass> discoverDomains(boolean direct,
-            OWLObjectSomeValuesFrom expression) {
-        ConceptExpression subClass = tr.pointer(expression);
-        Collection<Collection<ConceptExpression>> classes = askEquivalentClasses(subClass);
-        if (!direct || classes.isEmpty() || classes.iterator().next().isEmpty()) {
-            classes.addAll(askSuperClasses(subClass, direct));
-        }
-        return tr.getClassExpressionTranslator().nodeSet(classes);
+            OWLObjectPropertyExpression pe) {
+        return tr.getClassExpressionTranslator().nodeSet(
+                kernel.getORoleDomain(tr.pointer(pe), direct, classActor())
+                        .getElements());
     }
 
     @Override
     public NodeSet<OWLClass> getObjectPropertyRanges(
             OWLObjectPropertyExpression pe, boolean direct) {
-        return discoverDomains(
-                direct,
-                df.getOWLObjectSomeValuesFrom(pe.getInverseProperty(),
-                        df.getOWLThing()));
+        return discoverDomains(direct, pe.getInverseProperty());
     }
 
     // data properties
