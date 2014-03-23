@@ -224,28 +224,44 @@ public final class DataTypeReasoner implements Serializable {
                 boolean n2 = ds2.hasNType();
                 boolean p2 = ds2.hasPType();
                 boolean n1 = ds1.hasNType();
+                System.out.println("\n\n" + ds1 + " " + p1 + " " + n1 + "\n"
+                        + ds2 + " " + p2 + " " + n2 + "\n\n");
                 Datatype<?> t1 = ds1.getType();
                 Datatype<?> t2 = ds2.getType();
                 boolean t1subTypet2 = t1.isSubType(t2);
                 boolean t2subTypet1 = t2.isSubType(t1);
-                DepSet pType1 = ds1.getPType();
-                DepSet nType2 = ds2.getNType();
-                if (findClash(p1, n2, p2, n1, t1subTypet2, t2subTypet1, pType1,
-                        nType2)) {
+                System.out
+                        .println("DataTypeReasoner.checkClash() t1 subtype t2 "
+                                + t1subTypet2);
+                System.out
+                        .println("DataTypeReasoner.checkClash() t2 subtype t1 "
+                                + t2subTypet1);
+                if (findClash(p1, n2, p2, n1, t1subTypet2, t2subTypet1,
+                        ds1.getPType(), ds2.getNType())) {
                     return true;
                 }
                 // what if the supertype is an enum?
                 // check that values in the supertype are acceptable for
                 // the subtype
                 boolean not21 = !ds2.checkCompatibleValue(ds1);
-                if (findClash(t1subTypet2, pType1, nType2, not21)) {
-                    return true;
-                }
                 boolean not12 = !ds1.checkCompatibleValue(ds2);
-                if (findClash(t2subTypet1, pType1, nType2, not12)) {
-                    return true;
+                System.out.println("DataTypeReasoner.checkClash() not21 "
+                        + not21);
+                System.out.println("DataTypeReasoner.checkClash() not12 "
+                        + not12);
+                if (t1subTypet2) {
+                    if (findClash(t1subTypet2, ds1.getPType(), ds2.getNType(),
+                            not21)) {
+                        return true;
+                    }
+                } else if (t2subTypet1) {
+                    if (findClash(t2subTypet1, ds1.getPType(), ds2.getNType(),
+                            not12)) {
+                        return true;
+                    }
                 }
-                if (findClash(p1, p2, t1, t2, pType1, ds2.getPType(), not12)) {
+                if (findClash(p1, p2, t1, t2, ds1.getPType(), ds2.getPType(),
+                        not21, not12)) {
                     return true;
                 }
             }
@@ -268,17 +284,20 @@ public final class DataTypeReasoner implements Serializable {
      *        pType2
      * @param not12
      *        not12
+     * @param not21
+     *        not21
      * @return true if clash
      */
     private boolean findClash(boolean p1, boolean p2, Datatype<?> t1,
-            Datatype<?> t2, DepSet pType1, DepSet pType2, boolean not12) {
+            Datatype<?> t2, DepSet pType1, DepSet pType2, boolean not12,
+            boolean not21) {
         // they're disjoint: they can't be both positive (but can be
         // both negative)
         if (p1 && p2) {
             // special case: disjoint datatypes with overlapping
             // value spaces, e.g., nonneginteger, and nonposinteger
             // and value = 0
-            if (not12) {
+            if (not12 || not21) {
                 reportClash(pType1, pType2, DT_TT);
                 return true;
             } else {

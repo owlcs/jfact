@@ -968,28 +968,28 @@ public class DatatypesTestCase {
     public void test77() {
         makeCall(true, dtDataType, "#boolean");
         makeCall(false, dtDataValue, "\"true\"^^#boolean");
-        assertTrue(datatypeReasoner.checkClash());
+        assertFalse(datatypeReasoner.checkClash());
     }
 
     @Test
     public void test78() {
         makeCall(true, dtDataType, "#boolean");
         makeCall(false, dtDataValue, "\"false\"^^#boolean");
-        assertTrue(datatypeReasoner.checkClash());
+        assertFalse(datatypeReasoner.checkClash());
     }
 
     @Test
     public void test79() {
         makeCall(true, dtDataType, "#boolean");
         makeCall(false, dtDataValue, "\"true\"^^#boolean");
-        assertTrue(datatypeReasoner.checkClash());
+        assertFalse(datatypeReasoner.checkClash());
     }
 
     @Test
     public void test80() {
         makeCall(true, dtDataType, "#boolean");
         makeCall(false, dtDataValue, "\"false\"^^#boolean");
-        assertTrue(datatypeReasoner.checkClash());
+        assertFalse(datatypeReasoner.checkClash());
     }
 
     @Test

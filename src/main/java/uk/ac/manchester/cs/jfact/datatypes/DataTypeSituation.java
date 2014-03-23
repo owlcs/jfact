@@ -159,6 +159,12 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         if (this.emptyConstraints() && other.emptyConstraints()) {
             return true;
         }
+        if (other.literals.isEmpty() && other.emptyConstraints()) {
+            return true;
+        }
+        if (literals.isEmpty() && emptyConstraints()) {
+            return true;
+        }
         List<Literal<?>> allLiterals = new ArrayList<Literal<?>>(this.literals);
         allLiterals.addAll(other.literals);
         List<Datatype<?>> allRestrictions = new ArrayList<Datatype<?>>();
