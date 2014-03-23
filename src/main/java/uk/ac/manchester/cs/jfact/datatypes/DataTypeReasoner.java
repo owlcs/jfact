@@ -224,8 +224,6 @@ public final class DataTypeReasoner implements Serializable {
                 boolean n2 = ds2.hasNType();
                 boolean p2 = ds2.hasPType();
                 boolean n1 = ds1.hasNType();
-                System.out.println("\n\n" + ds1 + " " + p1 + " " + n1 + "\n"
-                        + ds2 + " " + p2 + " " + n2 + "\n\n");
                 Datatype<?> t1 = ds1.getType();
                 Datatype<?> t2 = ds2.getType();
                 boolean t1subTypet2 = t1.isSubType(t2);
