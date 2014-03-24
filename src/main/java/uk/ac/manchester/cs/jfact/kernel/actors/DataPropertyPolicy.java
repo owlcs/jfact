@@ -18,7 +18,7 @@ public class DataPropertyPolicy implements Policy, Serializable {
 
     @Override
     public boolean applicable(ClassifiableEntry p) {
-        return p.getId() > 0;
+        return p.getId() > -1;
     }
 
     @Override
