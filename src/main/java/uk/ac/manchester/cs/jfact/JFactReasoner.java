@@ -497,9 +497,15 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             return new OWLClassNodeSet(getBottomClassNode());
         }
         checkConsistency();
-        Collection<Collection<ConceptExpression>> pointers = kernel
-                .getConcepts(tr.pointer(ce), direct, classActor(), false)
-                .getElements();
+        List<Collection<ConceptExpression>> pointers = kernel.getConcepts(
+                tr.pointer(ce), direct, classActor(), false).getElements();
+        if (pointers.isEmpty() || pointers.get(0).isEmpty()) {
+            // XXX trick: empty sets imply the ony subclasses are the equivalent
+            // to bottom.
+            // should happen in the reasoner proper, but something stops that
+            pointers.add(kernel.getEquivalentConcepts(
+                    tr.pointer(df.getOWLNothing()), classActor()).getSynonyms());
+        }
         return tr.getClassExpressionTranslator().nodeSet(pointers);
     }
 
@@ -548,9 +554,15 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             getSuperObjectProperties(OWLObjectPropertyExpression pe,
                     boolean direct) {
         checkConsistency();
-        return tr.getObjectPropertyTranslator().nodeSet(
-                kernel.getRoles(tr.pointer(pe), direct, objectActor(), true)
-                        .getElements());
+        List<Collection<ObjectRoleExpression>> elements = kernel.getRoles(
+                tr.pointer(pe), direct, objectActor(), true).getElements();
+        // XXX trick
+        if (elements.isEmpty() || elements.get(0).isEmpty()) {
+            elements.add(kernel.getEquivalentRoles(
+                    tr.pointer(df.getOWLTopObjectProperty()), objectActor())
+                    .getSynonyms());
+        }
+        return tr.getObjectPropertyTranslator().nodeSet(elements);
     }
 
     @Override
@@ -619,9 +631,15 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     public synchronized NodeSet<OWLDataProperty> getSuperDataProperties(
             OWLDataProperty pe, boolean direct) {
         checkConsistency();
-        return tr.getDataPropertyTranslator().nodeSet(
-                kernel.getRoles(tr.pointer(pe), direct, dataActor(), true)
-                        .getElements());
+        List<Collection<DataRoleExpression>> elements = kernel.getRoles(
+                tr.pointer(pe), direct, dataActor(), true).getElements();
+        // XXX trick
+        if (elements.isEmpty() || elements.get(0).isEmpty()) {
+            elements.add(kernel.getEquivalentRoles(
+                    tr.pointer(df.getOWLTopDataProperty()), dataActor())
+                    .getSynonyms());
+        }
+        return tr.getDataPropertyTranslator().nodeSet(elements);
     }
 
     @Override
