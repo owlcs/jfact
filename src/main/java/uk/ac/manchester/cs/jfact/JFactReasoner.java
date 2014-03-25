@@ -421,7 +421,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     @Override
     public synchronized boolean isEntailed(OWLAxiom axiom) {
         checkConsistency();
-        if (reasonerAxioms.contains(axiom.getAxiomWithoutAnnotations())) {
+        if (root.containsAxiomIgnoreAnnotations(axiom, true)) {
             return true;
         }
         try {
