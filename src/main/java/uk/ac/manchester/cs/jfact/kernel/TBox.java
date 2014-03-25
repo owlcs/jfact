@@ -1863,7 +1863,13 @@ public class TBox implements Serializable {
         config.getLog().printTemplate(Templates.IS_SATISFIABLE,
                 pConcept.getName());
         prepareFeatures(pConcept, null);
-        boolean result = getReasoner().runSat(pConcept.resolveId(), bpTOP);
+        int resolveId = pConcept.resolveId();
+        if (resolveId == bpINVALID) {
+            config.getLog().print(
+                    "query concept still invalid after prepareFeatures()");
+            return false;
+        }
+        boolean result = getReasoner().runSat(resolveId, bpTOP);
         cache = getReasoner().buildCacheByCGraph(result);
         dlHeap.setCache(pConcept.getpName(), cache);
         clearFeatures();
