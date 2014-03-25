@@ -99,8 +99,8 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
 
     /** @return 2D array of all required elements of the taxonomy */
     @PortedFrom(file = "JNIActor.h", name = "getElements")
-    public Collection<Collection<T>> getElements() {
-        Collection<Collection<T>> toReturn = new ArrayList<Collection<T>>();
+    public List<Collection<T>> getElements() {
+        List<Collection<T>> toReturn = new ArrayList<Collection<T>>();
         if (policy.needPlain()) {
             toReturn.add(plain);
         } else {
