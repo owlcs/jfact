@@ -366,7 +366,7 @@ public class ReasoningKernel implements Serializable {
      */
     @PortedFrom(file = "Kernel.h", name = "checkSat")
     private boolean checkSat(ConceptExpression C) {
-        this.setUpCache(C, csSat);
+        setUpCache(C, csSat);
         return getTBox().isSatisfiable(cachedConcept);
     }
 
@@ -1260,7 +1260,7 @@ public class ReasoningKernel implements Serializable {
 
     // concept hierarchy
     /**
-     * apply actor__apply() to all DIRECT super-concepts of [complex] C
+     * apply actor__apply() to all super/sub-concepts of [complex] C
      * 
      * @param C
      *        C
@@ -1268,20 +1268,20 @@ public class ReasoningKernel implements Serializable {
      *        direct
      * @param actor
      *        actor
+     * @param supDirection
+     *        true for superClasses, false for subclasses
      * @return actor
      */
     @PortedFrom(file = "Kernel.h", name = "getSupConcepts")
-    public <T extends Expression> TaxonomyActor<T> getSupConcepts(
-            ConceptExpression C, boolean direct, TaxonomyActor<T> actor) {
+    public <T extends Expression> TaxonomyActor<T> getConcepts(
+            // refactored getSupConcepts and getSubConcepts
+            ConceptExpression C, boolean direct, TaxonomyActor<T> actor,
+            boolean supDirection) {
         classifyKB();
-        this.setUpCache(C, csClassified);
+        setUpCache(C, csClassified);
         actor.clear();
-        Taxonomy tax = getCTaxonomy();
-        if (direct) {
-            tax.getRelativesInfo(cachedVertex, actor, false, true, true);
-        } else {
-            tax.getRelativesInfo(cachedVertex, actor, false, false, true);
-        }
+        getCTaxonomy().getRelativesInfo(cachedVertex, actor, false, direct,
+                supDirection);
         return actor;
     }
 
@@ -1294,38 +1294,18 @@ public class ReasoningKernel implements Serializable {
      *        direct
      * @param actor
      *        actor
+     * @param supDirection
+     *        true for super direction
      * @return actor
      */
     @PortedFrom(file = "Kernel.h", name = "getSubConcepts")
-    public <T extends Expression> TaxonomyActor<T> getSubConcepts(
-            ConceptExpression C, boolean direct, TaxonomyActor<T> actor) {
+    public Actor getConcepts(ConceptExpression C, boolean direct, Actor actor,
+            boolean supDirection) {
         classifyKB();
         this.setUpCache(C, csClassified);
         actor.clear();
         Taxonomy tax = getCTaxonomy();
-        tax.getRelativesInfo(cachedVertex, actor, false, direct, false);
-        return actor;
-    }
-
-    /**
-     * apply actor__apply() to all DIRECT sub-concepts of [complex] C
-     * 
-     * @param C
-     *        C
-     * @param direct
-     *        direct
-     * @param actor
-     *        actor
-     * @return actor
-     */
-    @PortedFrom(file = "Kernel.h", name = "getSubConcepts")
-    public Actor
-            getSubConcepts(ConceptExpression C, boolean direct, Actor actor) {
-        classifyKB();
-        this.setUpCache(C, csClassified);
-        actor.clear();
-        Taxonomy tax = getCTaxonomy();
-        tax.getRelativesInfo(cachedVertex, actor, false, direct, false);
+        tax.getRelativesInfo(cachedVertex, actor, false, direct, supDirection);
         return actor;
     }
 
@@ -1342,7 +1322,7 @@ public class ReasoningKernel implements Serializable {
     public <T extends Expression> TaxonomyActor<T> getEquivalentConcepts(
             ConceptExpression C, TaxonomyActor<T> actor) {
         classifyKB();
-        this.setUpCache(C, csClassified);
+        setUpCache(C, csClassified);
         actor.clear();
         actor.apply(cachedVertex);
         return actor;
@@ -1363,11 +1343,11 @@ public class ReasoningKernel implements Serializable {
     public <T extends Expression> TaxonomyActor<T> getDisjointConcepts(
             ConceptExpression C, TaxonomyActor<T> actor) {
         classifyKB();
-        this.setUpCache(getExpressionManager().not(C), csClassified);
+        setUpCache(getExpressionManager().not(C), csClassified);
         actor.clear();
-        Taxonomy tax = getCTaxonomy();
         // we are looking for all sub-concepts of (not C) (including synonyms)
-        tax.getRelativesInfo(cachedVertex, actor, true, false, false);
+        getCTaxonomy()
+                .getRelativesInfo(cachedVertex, actor, true, false, false);
         return actor;
     }
 
@@ -1381,42 +1361,21 @@ public class ReasoningKernel implements Serializable {
      *        direct
      * @param actor
      *        actor
+     * @param supDirection
+     *        true for super direction
      * @param <T>
      *        type
      * @return actor
      */
     @PortedFrom(file = "Kernel.h", name = "getSupRoles")
-    public <T extends RoleExpression> TaxonomyActor<T> getSupRoles(
-            RoleExpression r, boolean direct, TaxonomyActor<T> actor) {
+    public <T extends RoleExpression> TaxonomyActor<T> getRoles(
+            RoleExpression r, boolean direct, TaxonomyActor<T> actor,
+            boolean supDirection) {
         preprocessKB(); // ensure KB is ready to answer the query
-        Role R = getRole(r, "Role expression expected in getSupRoles()");
+        Role R = getRole(r, "Role expression expected in getRoles()");
         actor.clear();
-        Taxonomy tax = getTaxonomy(R);
-        tax.getRelativesInfo(getTaxVertex(R), actor, false, direct, true);
-        return actor;
-    }
-
-    /**
-     * apply actor__apply() to all DIRECT sub-roles of [complex] R
-     * 
-     * @param r
-     *        r
-     * @param direct
-     *        direct
-     * @param actor
-     *        actor
-     * @param <T>
-     *        type
-     * @return actor
-     */
-    @PortedFrom(file = "Kernel.h", name = "getSubRoles")
-    public <T extends RoleExpression> TaxonomyActor<T> getSubRoles(
-            RoleExpression r, boolean direct, TaxonomyActor<T> actor) {
-        preprocessKB();
-        Role R = getRole(r, "Role expression expected in getSubRoles()");
-        actor.clear();
-        Taxonomy tax = getTaxonomy(R);
-        tax.getRelativesInfo(getTaxVertex(R), actor, false, direct, false);
+        getTaxonomy(R).getRelativesInfo(getTaxVertex(R), actor, false, direct,
+                supDirection);
         return actor;
     }
 
@@ -1452,17 +1411,18 @@ public class ReasoningKernel implements Serializable {
      *        direct
      * @param actor
      *        actor
+     * @return modified actor
      */
     @PortedFrom(file = "Kernel.h", name = "getORoleDomain")
     public <T extends ConceptExpression> TaxonomyActor<T> getORoleDomain(
             ObjectRoleExpression r, boolean direct, TaxonomyActor<T> actor) {
         classifyKB();
-        this.setUpCache(
+        setUpCache(
                 getExpressionManager().exists(r, getExpressionManager().top()),
                 csClassified);
         actor.clear();
-        Taxonomy tax = getCTaxonomy();
-        tax.getRelativesInfo(cachedVertex, actor, true, direct, true);
+        getCTaxonomy()
+                .getRelativesInfo(cachedVertex, actor, true, direct, true);
         return actor;
     }
 
@@ -1476,22 +1436,19 @@ public class ReasoningKernel implements Serializable {
      *        direct
      * @param actor
      *        actor
+     * @return modified actor
      */
     @PortedFrom(file = "Kernel.h", name = "getDRoleDomain")
-    private void getDRoleDomain(DataRoleExpression r, boolean direct,
-            Actor actor) {
+    public <T extends ConceptExpression> TaxonomyActor<T> getDRoleDomain(
+            DataRoleExpression r, boolean direct, TaxonomyActor<T> actor) {
         classifyKB();
-        this.setUpCache(
+        setUpCache(
                 getExpressionManager().exists(r,
                         getExpressionManager().dataTop()), csClassified);
         actor.clear();
-        Taxonomy tax = getCTaxonomy();
-        if (direct) {
-            tax.getRelativesInfo(cachedVertex, actor, true, true, true);
-        } else {
-            // gets all named classes that are in the domain of a role
-            tax.getRelativesInfo(cachedVertex, actor, true, false, true);
-        }
+        getCTaxonomy()
+                .getRelativesInfo(cachedVertex, actor, true, direct, true);
+        return actor;
     }
 
     /**
@@ -1544,7 +1501,7 @@ public class ReasoningKernel implements Serializable {
     @PortedFrom(file = "Kernel.h", name = "getDirectInstances")
     public void getDirectInstances(ConceptExpression C, Actor actor) {
         realiseKB();
-        this.setUpCache(C, csClassified);
+        setUpCache(C, csClassified);
         actor.clear();
         // implement 1-level check by hand
         // if the root vertex contains individuals -- we are done
@@ -1572,10 +1529,10 @@ public class ReasoningKernel implements Serializable {
         // FIXME!!
         // check for Racer's/IS approach
         realiseKB();
-        this.setUpCache(C, csClassified);
+        setUpCache(C, csClassified);
         actor.clear();
-        Taxonomy tax = getCTaxonomy();
-        tax.getRelativesInfo(cachedVertex, actor, true, false, false);
+        getCTaxonomy()
+                .getRelativesInfo(cachedVertex, actor, true, false, false);
     }
 
     /**
@@ -1596,10 +1553,10 @@ public class ReasoningKernel implements Serializable {
     public <T extends Expression> TaxonomyActor<T> getTypes(IndividualName I,
             boolean direct, TaxonomyActor<T> actor) {
         realiseKB();
-        this.setUpCache(getExpressionManager().oneOf(I), csClassified);
+        setUpCache(getExpressionManager().oneOf(I), csClassified);
         actor.clear();
-        Taxonomy tax = getCTaxonomy();
-        tax.getRelativesInfo(cachedVertex, actor, true, direct, true);
+        getCTaxonomy()
+                .getRelativesInfo(cachedVertex, actor, true, direct, true);
         return actor;
     }
 
@@ -1653,7 +1610,7 @@ public class ReasoningKernel implements Serializable {
     @PortedFrom(file = "Kernel.h", name = "buildCompletionTree")
     public DlCompletionTree buildCompletionTree(ConceptExpression C) {
         preprocessKB();
-        this.setUpCache(C, csSat);
+        setUpCache(C, csSat);
         DlCompletionTree ret = getTBox().buildCompletionTree(cachedConcept);
         // init KB after the sat test to reduce the number of DAG adjustments
         if (KE == null) {

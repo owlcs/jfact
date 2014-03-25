@@ -26,5 +26,10 @@ public interface Actor {
     /** clear collections */
     void clear();
 
+    /**
+     * @param v
+     *        vertex to check
+     * @return true if applicable
+     */
     boolean applicable(TaxonomyVertex v);
 }

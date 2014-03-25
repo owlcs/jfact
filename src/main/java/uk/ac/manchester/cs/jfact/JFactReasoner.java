@@ -31,7 +31,6 @@ import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
-import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
@@ -499,7 +498,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         }
         checkConsistency();
         Collection<Collection<ConceptExpression>> pointers = kernel
-                .getSubConcepts(tr.pointer(ce), direct, classActor())
+                .getConcepts(tr.pointer(ce), direct, classActor(), false)
                 .getElements();
         return tr.getClassExpressionTranslator().nodeSet(pointers);
     }
@@ -540,7 +539,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
                     boolean direct) {
         checkConsistency();
         return tr.getObjectPropertyTranslator().nodeSet(
-                kernel.getSubRoles(tr.pointer(pe), direct, objectActor())
+                kernel.getRoles(tr.pointer(pe), direct, objectActor(), false)
                         .getElements());
     }
 
@@ -550,7 +549,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
                     boolean direct) {
         checkConsistency();
         return tr.getObjectPropertyTranslator().nodeSet(
-                kernel.getSupRoles(tr.pointer(pe), direct, objectActor())
+                kernel.getRoles(tr.pointer(pe), direct, objectActor(), true)
                         .getElements());
     }
 
@@ -581,18 +580,6 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     public synchronized NodeSet<OWLClass> getObjectPropertyDomains(
             OWLObjectPropertyExpression pe, boolean direct) {
         checkConsistency();
-        OWLObjectSomeValuesFrom expression = df.getOWLObjectSomeValuesFrom(pe,
-                df.getOWLThing());
-        return discoverDomains(direct, pe);
-    }
-
-    /**
-     * @param direct
-     * @param expression
-     * @return
-     */
-    NodeSet<OWLClass> discoverDomains(boolean direct,
-            OWLObjectPropertyExpression pe) {
         return tr.getClassExpressionTranslator().nodeSet(
                 kernel.getORoleDomain(tr.pointer(pe), direct, classActor())
                         .getElements());
@@ -601,7 +588,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     @Override
     public NodeSet<OWLClass> getObjectPropertyRanges(
             OWLObjectPropertyExpression pe, boolean direct) {
-        return discoverDomains(direct, pe.getInverseProperty());
+        return getObjectPropertyDomains(pe.getInverseProperty(), direct);
     }
 
     // data properties
@@ -624,7 +611,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             OWLDataProperty pe, boolean direct) {
         checkConsistency();
         return tr.getDataPropertyTranslator().nodeSet(
-                kernel.getSubRoles(tr.pointer(pe), direct, dataActor())
+                kernel.getRoles(tr.pointer(pe), direct, dataActor(), false)
                         .getElements());
     }
 
@@ -633,7 +620,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             OWLDataProperty pe, boolean direct) {
         checkConsistency();
         return tr.getDataPropertyTranslator().nodeSet(
-                kernel.getSupRoles(tr.pointer(pe), direct, dataActor())
+                kernel.getRoles(tr.pointer(pe), direct, dataActor(), true)
                         .getElements());
     }
 
@@ -658,8 +645,9 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     @Override
     public NodeSet<OWLClass> getDataPropertyDomains(OWLDataProperty pe,
             boolean direct) {
-        return getSuperClasses(
-                df.getOWLDataSomeValuesFrom(pe, df.getTopDatatype()), direct);
+        return tr.getClassExpressionTranslator().nodeSet(
+                kernel.getDRoleDomain(tr.pointer(pe), direct, classActor())
+                        .getElements());
     }
 
     // individuals
@@ -792,12 +780,8 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
 
     private Collection<Collection<ConceptExpression>> askSuperClasses(
             ConceptExpression arg, boolean direct) {
-        return kernel.getSupConcepts(arg, direct, classActor()).getElements();
-    }
-
-    private Collection<Collection<ConceptExpression>> askEquivalentClasses(
-            ConceptExpression arg) {
-        return kernel.getEquivalentConcepts(arg, classActor()).getElements();
+        return kernel.getConcepts(arg, direct, classActor(), true)
+                .getElements();
     }
 
     /**

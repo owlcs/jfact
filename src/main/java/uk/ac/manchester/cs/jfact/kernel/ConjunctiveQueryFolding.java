@@ -500,7 +500,7 @@ public class ConjunctiveQueryFolding implements Serializable {
         if (artificialABox) {
             // HACK: work only for our individualisation of NCIt/etc
             a.needConcepts();
-            kernel.getSubConcepts(C, false, a);
+            kernel.getConcepts(C, false, a, false);
             for (ClassifiableEntry p : a.getElements1D()) {
                 IndividualName ind = pEM.individual(p.getName());
                 individuals.add((Individual) ind.getEntry());
