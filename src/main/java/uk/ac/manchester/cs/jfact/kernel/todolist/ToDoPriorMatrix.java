@@ -112,7 +112,7 @@ public class ToDoPriorMatrix implements Serializable {
             case dtNConcept: // both NC and neg NC are processed
                 return priorityIndexID;
             default: // safety check
-                throw new UnreachableSituationException();
+                throw new UnreachableSituationException("Error: " + Op);
         }
     }
 }
