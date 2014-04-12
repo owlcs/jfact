@@ -7,14 +7,17 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
-import org.semanticweb.owlapi.util.MultiMap;
-
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.queryobjects.QRQuery;
+
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
+
 import conformance.PortedFrom;
 
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TQueryToConceptsTransformer")
 class TQueryToConceptsTransformer implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
     /** query to transform */
@@ -23,11 +26,12 @@ class TQueryToConceptsTransformer implements Serializable {
     /** transformation result */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Result")
     // XXX verify the order is not important
-    private final MultiMap<String, ConceptExpression> Result = new MultiMap<String, ConceptExpression>();
+    private final Multimap<String, ConceptExpression> Result = LinkedHashMultimap
+            .create();
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TQueryToConceptsTransformer")
-    public TQueryToConceptsTransformer(ConjunctiveQueryFolding conjunctiveQueryFolding,
-            QRQuery query) {
+    public TQueryToConceptsTransformer(
+            ConjunctiveQueryFolding conjunctiveQueryFolding, QRQuery query) {
         this.conjunctiveQueryFolding = conjunctiveQueryFolding;
         Query = new QRQuery(query);
     }
@@ -37,7 +41,8 @@ class TQueryToConceptsTransformer implements Serializable {
     public void Run() {
         Query = conjunctiveQueryFolding.transformQueryPhase1(Query);
         // System.out.println("After Phase 1\n" + Query);
-        ConceptExpression term = conjunctiveQueryFolding.transformQueryPhase2(Query);
+        ConceptExpression term = conjunctiveQueryFolding
+                .transformQueryPhase2(Query);
         conjunctiveQueryFolding.buildApproximation(Query);
         String propositionalVariable = null;
         String lastNominal = null;
@@ -46,7 +51,8 @@ class TQueryToConceptsTransformer implements Serializable {
             // System.out.print(term);
             // System.out.println("; i = " + i + "\n");
             // System.out.println("Depth Measuring:");
-            TDepthMeasurer depthMeasurer = new TDepthMeasurer(conjunctiveQueryFolding);
+            TDepthMeasurer depthMeasurer = new TDepthMeasurer(
+                    conjunctiveQueryFolding);
             term.accept(depthMeasurer);
             // System.out.println(depthMeasurer.getMaxDepth());
             if (depthMeasurer.getMaxDepth() == -1) {
@@ -76,9 +82,9 @@ class TQueryToConceptsTransformer implements Serializable {
             // System.out.print(replacer.getReplaceResult(term));
             // System.out.println();
             // System.out.println("Initializing Solver...\n");
-            TEquationSolver equationSolver = new TEquationSolver(conjunctiveQueryFolding,
-                    expressionMarker.getSubterm(), propositionalVariable,
-                    expressionMarker);
+            TEquationSolver equationSolver = new TEquationSolver(
+                    conjunctiveQueryFolding, expressionMarker.getSubterm(),
+                    propositionalVariable, expressionMarker);
             // System.out.println("Running Solver...\n");
             equationSolver.Solve();
             // System.out.println("Phi : ");
@@ -91,12 +97,13 @@ class TQueryToConceptsTransformer implements Serializable {
         Result.put(
                 lastNominal,
                 conjunctiveQueryFolding.getpEM().not(
-                        conjunctiveQueryFolding.getpEM().concept(propositionalVariable)));
+                        conjunctiveQueryFolding.getpEM().concept(
+                                propositionalVariable)));
     }
 
     /** @return the result */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "getResult")
-    public MultiMap<String, ConceptExpression> getResult() {
+    public Multimap<String, ConceptExpression> getResult() {
         return Result;
     }
 
@@ -104,7 +111,7 @@ class TQueryToConceptsTransformer implements Serializable {
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "printResult")
     public void printResult() {
         int i = 0;
-        for (ConceptExpression e : Result.getAllValues()) {
+        for (ConceptExpression e : Result.values()) {
             System.err.println(i + ": ");
             i++;
             System.err.println(e);

@@ -14,8 +14,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.semanticweb.owlapi.util.MultiMap;
-
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.kernel.TBox.IterableElem;
 import uk.ac.manchester.cs.jfact.kernel.actors.ActorImpl;
@@ -27,12 +25,16 @@ import uk.ac.manchester.cs.jfact.kernel.queryobjects.QRQuery;
 import uk.ac.manchester.cs.jfact.kernel.queryobjects.QRRoleAtom;
 import uk.ac.manchester.cs.jfact.kernel.queryobjects.QRVariable;
 import uk.ac.manchester.cs.jfact.kernel.queryobjects.VariableFactory;
+
+import com.google.common.collect.Multimap;
+
 import conformance.Original;
 import conformance.PortedFrom;
 
 /** conjunctive query folding */
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "ConjunctiveQueryFolding")
 public class ConjunctiveQueryFolding implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "pEM")
     private final ExpressionManager pEM = new ExpressionManager();
@@ -47,8 +49,10 @@ public class ConjunctiveQueryFolding implements Serializable {
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "VarRestrictions")
     private final Map<String, ConceptExpression> VarRestrictions = new HashMap<String, ConceptExpression>();
 
-    /** @param expr
-     * @return true if expr is nominal */
+    /**
+     * @param expr
+     * @return true if expr is nominal
+     */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "isNominal")
     public boolean isNominal(ConceptExpression expr) {
         return NewNominals.contains(expr);
@@ -60,10 +64,13 @@ public class ConjunctiveQueryFolding implements Serializable {
         NewNominals.add(concept);
     }
 
-    /** @param query
-     * @return concept removal */
+    /**
+     * @param query
+     * @return concept removal
+     */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "RemoveCFromQuery")
-    public QRQuery RemoveCFromQuery(QRQuery query) {
+    public
+            QRQuery RemoveCFromQuery(QRQuery query) {
         // init VR with \top for all free vars
         VarRestrictions.clear();
         QRQuery ret = new QRQuery();
@@ -95,7 +102,8 @@ public class ConjunctiveQueryFolding implements Serializable {
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "buildQueryFigure2")
-    private void buildQueryFigure2(QRQuery query) {
+    private
+            void buildQueryFigure2(QRQuery query) {
         QRVariable x = VarFact.getNewVar("x");
         QRVariable y = VarFact.getNewVar("y");
         QRVariable z = VarFact.getNewVar("z");
@@ -117,7 +125,8 @@ public class ConjunctiveQueryFolding implements Serializable {
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "buildSimpleQuery")
-    private void buildSimpleQuery(QRQuery query) {
+    private
+            void buildSimpleQuery(QRQuery query) {
         QRVariable x = VarFact.getNewVar("x");
         QRVariable y = VarFact.getNewVar("y");
         query.setVarFree(x);
@@ -129,7 +138,8 @@ public class ConjunctiveQueryFolding implements Serializable {
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "buildVerySimpleQuery")
-    private void buildVerySimpleQuery(QRQuery query) {
+    private
+            void buildVerySimpleQuery(QRQuery query) {
         QRVariable x = VarFact.getNewVar("x");
         query.setVarFree(x);
         ObjectRoleExpression R1 = pEM.objectRole("R1");
@@ -137,7 +147,8 @@ public class ConjunctiveQueryFolding implements Serializable {
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "buildVerySimpleQueryLUBM1")
-    private void buildVerySimpleQueryLUBM1(QRQuery query) {
+    private
+            void buildVerySimpleQueryLUBM1(QRQuery query) {
         QRVariable x = VarFact.getNewVar("x");
         query.setVarFree(x);
         QRVariable y = VarFact.getNewVar("y");
@@ -185,8 +196,9 @@ public class ConjunctiveQueryFolding implements Serializable {
 
     /** support for query decycling */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "PossiblyReplaceAtom")
-    private boolean PossiblyReplaceAtom(QRQuery query, int atomIterator, QRAtom newAtom,
-            QRVariable newArg, Set<QRAtom> passedAtoms) {
+    private
+            boolean PossiblyReplaceAtom(QRQuery query, int atomIterator,
+                    QRAtom newAtom, QRVariable newArg, Set<QRAtom> passedAtoms) {
         // System.out.println("Modified code starts here!\nBefore replacing in copy.\n"
         // + query);
         QRAtom oldAtom = query.getBody().replaceAtom(atomIterator, newAtom);
@@ -238,10 +250,13 @@ public class ConjunctiveQueryFolding implements Serializable {
         return var;
     }
 
-    /** @param query
-     * @return transformed query */
+    /**
+     * @param query
+     * @return transformed query
+     */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "transformQueryPhase1")
-    public QRQuery transformQueryPhase1(QRQuery query) {
+    public
+            QRQuery transformQueryPhase1(QRQuery query) {
         Set<QRAtom> passedAtoms = new HashSet<QRAtom>();
         int n = 0;
         // remove C's
@@ -281,7 +296,8 @@ public class ConjunctiveQueryFolding implements Serializable {
 
     /** @param query */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "deleteFictiveVariables")
-    public void deleteFictiveVariables(QRQuery query) {
+    public
+            void deleteFictiveVariables(QRQuery query) {
         Set<QRVariable> RealFreeVars = new TreeSet<QRVariable>();
         for (QRAtom atomIterator : query.getBody().begin()) {
             if (atomIterator instanceof QRRoleAtom) {
@@ -299,16 +315,20 @@ public class ConjunctiveQueryFolding implements Serializable {
         query.setFreeVars(RealFreeVars);
     }
 
-    /** @param v
-     * @return concept for var */
+    /**
+     * @param v
+     * @return concept for var
+     */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "createConceptByVar")
-    public ConceptExpression createConceptByVar(QRVariable v) {
+    public
+            ConceptExpression createConceptByVar(QRVariable v) {
         return VarRestrictions.get(NewVarMap.get(v).getName());
     }
 
     /** @param query */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "BuildAproximation")
-    public void buildApproximation(QRQuery query) {
+    public
+            void buildApproximation(QRQuery query) {
         QueryApproximation app = new QueryApproximation(this, query);
         Map<QRVariable, ConceptExpression> approx = new HashMap<QRVariable, ConceptExpression>();
         for (QRVariable p : NewVarMap.values()) {
@@ -316,18 +336,24 @@ public class ConjunctiveQueryFolding implements Serializable {
         }
         for (QRVariable v : query.getFreeVars()) {
             QRVariable var = NewVarMap.get(v);
-            approx.put(var, pEM.and(approx.get(var), app.Assign(query, null, v)));
+            approx.put(var,
+                    pEM.and(approx.get(var), app.Assign(query, null, v)));
         }
         for (Map.Entry<QRVariable, ConceptExpression> e : approx.entrySet()) {
-            VarRestrictions.put(e.getKey().getName(),
-                    pEM.and(VarRestrictions.get(e.getKey().getName()), e.getValue()));
+            VarRestrictions.put(
+                    e.getKey().getName(),
+                    pEM.and(VarRestrictions.get(e.getKey().getName()),
+                            e.getValue()));
         }
     }
 
-    /** @param query
-     * @return concept expression from query */
+    /**
+     * @param query
+     * @return concept expression from query
+     */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "transformQueryPhase2")
-    public ConceptExpression transformQueryPhase2(QRQuery query) {
+    public
+            ConceptExpression transformQueryPhase2(QRQuery query) {
         NewNominals.clear();
         TermAssigner assigner = new TermAssigner(this, query);
         deleteFictiveVariables(query);
@@ -338,8 +364,8 @@ public class ConjunctiveQueryFolding implements Serializable {
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "doQuery")
     private void doQuery(QRQuery query, ReasoningKernel kernel) {
-        TQueryToConceptsTransformer transformer = new TQueryToConceptsTransformer(this,
-                query);
+        TQueryToConceptsTransformer transformer = new TQueryToConceptsTransformer(
+                this, query);
         transformer.Run();
         transformer.printResult();
         kernel.evaluateQuery(transformer.getResult());
@@ -352,7 +378,7 @@ public class ConjunctiveQueryFolding implements Serializable {
 
     /** fills in variable index */
     @PortedFrom(file = "ConjunctiveQuery.cpp", name = "fillVarIndex")
-    private void fillVarIndex(MultiMap<String, ConceptExpression> query) {
+    private void fillVarIndex(Multimap<String, ConceptExpression> query) {
         int n = 0;
         Var2I.clear();
         I2Var.clear();
@@ -366,10 +392,12 @@ public class ConjunctiveQueryFolding implements Serializable {
         assert I2Var.size() == n;
     }
 
-    /** @param query
-     * @param kernel */
+    /**
+     * @param query
+     * @param kernel
+     */
     @PortedFrom(file = "ConjunctiveQuery.cpp", name = "evaluateQuery")
-    public void evaluateQuery(MultiMap<String, ConceptExpression> query,
+    public void evaluateQuery(Multimap<String, ConceptExpression> query,
             ReasoningKernel kernel) {
         // make index of all vars
         fillVarIndex(query);
@@ -410,7 +438,8 @@ public class ConjunctiveQueryFolding implements Serializable {
             for (ClassifiableEntry e : a.getElements1D()) {
                 individuals.add((Individual) e);
             }
-            kernel.getTBox().getIV().add(new IterableElem<Individual>(individuals));
+            kernel.getTBox().getIV()
+                    .add(new IterableElem<Individual>(individuals));
         }
         // System.out.println(" done");
     }

@@ -114,7 +114,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     private final OWLOntology root;
     private final BufferingMode bufferingMode;
     @SuppressWarnings("rawtypes")
-    private final List<OWLOntologyChange> rawChanges = new ArrayList<OWLOntologyChange>();
+    private final List<OWLOntologyChange<?>> rawChanges = new ArrayList<OWLOntologyChange<?>>();
     private final Set<OWLAxiom> reasonerAxioms = new LinkedHashSet<OWLAxiom>();
     @Original
     private final JFactReasonerConfiguration configuration;
@@ -141,8 +141,11 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
 
     /**
      * @param rootOntology
+     *        root ontology
      * @param config
+     *        configuration
      * @param bufferingMode
+     *        buffering mode
      */
     public JFactReasoner(OWLOntology rootOntology,
             JFactReasonerConfiguration config, BufferingMode bufferingMode) {
@@ -236,9 +239,8 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return root;
     }
 
-    @SuppressWarnings("rawtypes")
     private void handleRawOntologyChanges(
-            List<? extends OWLOntologyChange> changes) {
+            List<? extends OWLOntologyChange<?>> changes) {
         rawChanges.addAll(changes);
         // We auto-flush the changes if the reasoner is non-buffering
         if (bufferingMode.equals(BufferingMode.NON_BUFFERING)) {
@@ -247,9 +249,8 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
-    public synchronized List<OWLOntologyChange> getPendingChanges() {
-        return new ArrayList<OWLOntologyChange>(rawChanges);
+    public synchronized List<OWLOntologyChange<?>> getPendingChanges() {
+        return new ArrayList<OWLOntologyChange<?>>(rawChanges);
     }
 
     @Override

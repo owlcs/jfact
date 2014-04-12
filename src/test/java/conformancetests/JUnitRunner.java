@@ -22,11 +22,12 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.profiles.OWL2DLProfile;
+import org.semanticweb.owlapi.profiles.OWLProfileReport;
+import org.semanticweb.owlapi.profiles.Profiles;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
-import org.semanticweb.owlapitools.profiles.OWL2DLProfile;
-import org.semanticweb.owlapitools.profiles.OWLProfileReport;
 
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
@@ -108,8 +109,7 @@ public class JUnitRunner {
         try {
             if (premise != null) {
                 premiseOntology = getPremise();
-                OWL2DLProfile profile = new OWL2DLProfile();
-                OWLProfileReport report = profile
+                OWLProfileReport report = Profiles.OWL2_DL
                         .checkOntology(premiseOntology);
                 if (report.getViolations().size() > 0) {
                     System.out.println("JUnitRunner.run() " + testId);
