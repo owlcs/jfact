@@ -2434,19 +2434,19 @@ public class TBox implements Serializable {
      *        D
      */
     @PortedFrom(file = "dlTBox.h", name = "addSubsumeForDefined")
-    public void addSubsumeForDefined(Concept C, DLTree D) {
-        if (DLTreeFactory.isSubTree(D, C.getDescription())) {
+    public void addSubsumeForDefined(Concept C, DLTree E) {
+        if (DLTreeFactory.isSubTree(E, C.getDescription())) {
             return;
         }
-        DLTree oldDesc = C.getDescription().copy();
+        DLTree D = C.getDescription().copy();
         C.removeSelfFromDescription();
-        if (DLTree.equalTrees(oldDesc, C.getDescription())) {
-            processGCI(oldDesc, D);
+        if (DLTree.equalTrees(D, C.getDescription())) {
+            processGCI(D, E);
             return;
         }
-        C.setPrimitive(true);
-        C.addDesc(D);
-        this.addSubsumeAxiom(oldDesc, getTree(C));
+        // note that we don't know exact semantics of C for now;
+        // we need to split its definition and work via GCIs
+        makeDefinitionPrimitive(C, E, D);
     }
 
     /**
@@ -2537,6 +2537,27 @@ public class TBox implements Serializable {
             return true;
         }
         return false;
+    }
+
+    /**
+     * transform definition C=D' with C [= E into C [= (D' and E) with D [= C.<br>
+     * D is usually D', but see addSubsumeForDefined()
+     * 
+     * @param C
+     *        primitive
+     * @param E
+     *        superclass
+     * @param D
+     *        replacement
+     */
+    @PortedFrom(file = "dlTBox.h", name = "makeDefinitionPrimitive")
+    void makeDefinitionPrimitive(Concept C, DLTree E, DLTree D) {
+        // now we have C [= D'
+        C.setPrimitive(true);
+        // here C [= (D' and E)
+        C.addDesc(E);
+        // all we need is to add (old C's desc)D [= C
+        addSubsumeAxiom(D, getTree(C));
     }
 
     /**
