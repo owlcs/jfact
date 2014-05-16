@@ -12,6 +12,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import conformance.Original;
 import conformance.PortedFrom;
@@ -30,6 +31,63 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
     /** remember the axiom locality value here */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isLocal")
     protected boolean isLocal;
+
+    /** processing method for all Equivalent axioms */
+    @PortedFrom(file = "GeneralSyntacticLocalityChecker.h", name = "processEquivalentAxiom")
+            void processEquivalentAxiom(
+                    NAryExpression<? extends Expression> axiom) {
+        // 1 element => local
+        if (axiom.size() <= 1) {
+            isLocal = true;
+            return;
+        }
+        // axiom is local iff all the elements are either top- or bot-local
+        isLocal = false;
+        List<? extends Expression> list = axiom.getArguments();
+        if (isBotEquivalent(list.get(0))) {
+            // all should be \bot-eq
+            for (int i = 1; i < list.size(); i++) {
+                if (!isBotEquivalent(list.get(i))) {
+                    return;
+                }
+            }
+        } else if (isTopEquivalent(list.get(0))) {
+            // all should be \top-eq
+            for (int i = 1; i < list.size(); i++) {
+                if (!isTopEquivalent(list.get(i))) {
+                    return;
+                }
+            }
+        } else {
+            // neither \bot- no \top-eq: non-local
+            return;
+        }
+        // all elements have the same locality
+        isLocal = true;
+    }
+
+    /** processing method for all Disjoint axioms */
+    @PortedFrom(file = "GeneralSyntacticLocalityChecker.h", name = "processDisjointAxiom")
+            void
+            processDisjointAxiom(NAryExpression<? extends Expression> axiom) {
+        // local iff at most 1 element is not bot-equiv
+        boolean hasNBE = false;
+        isLocal = false;
+        List<? extends Expression> list = axiom.getArguments();
+        for (int i = 0; i < list.size(); i++) {
+            if (!isBotEquivalent(list.get(i))) {
+                if (hasNBE) {
+                    // already seen one non-bot-eq element
+                    // non-local
+                    return;
+                } else {
+                    // record that 1 non-bot-eq element was found
+                    hasNBE = true;
+                }
+            }
+        }
+        isLocal = true;
+    }
 
     /** @return true iff EXPR is top equivalent */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isTopEquivalent")
@@ -105,47 +163,12 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
 
     @Override
     public void visit(AxiomEquivalentConcepts axiom) {
-        // 1 element => local
-        if (axiom.size() <= 1) {
-            isLocal = true;
-            return;
-        }
-        // axiom is local iff all the classes are either top- or bot-local
-        isLocal = false;
-        List<ConceptExpression> args = axiom.getArguments();
-        if (!args.isEmpty()) {
-            if (isBotEquivalent(args.get(0))) {
-                for (int i = 1; i < args.size(); i++) {
-                    if (!isBotEquivalent(args.get(i))) {
-                        return;
-                    }
-                }
-            } else {
-                for (int i = 0; i < args.size(); i++) {
-                    if (!isTopEquivalent(args.get(i))) {
-                        return;
-                    }
-                }
-            }
-        }
-        isLocal = true;
+        processEquivalentAxiom(axiom);
     }
 
     @Override
     public void visit(AxiomDisjointConcepts axiom) {
-        // local iff at most 1 concept is not bot-equiv
-        boolean hasNBE = false;
-        isLocal = false;
-        for (ConceptExpression p : axiom.getArguments()) {
-            if (!isBotEquivalent(p)) {
-                if (hasNBE) {
-                    return;
-                } else {
-                    hasNBE = true;
-                }
-            }
-        }
-        isLocal = true;
+        processDisjointAxiom(axiom);
     }
 
     @Override
@@ -182,86 +205,22 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implem
 
     @Override
     public void visit(AxiomEquivalentORoles axiom) {
-        // 1 element => local
-        if (axiom.size() <= 1) {
-            isLocal = true;
-            return;
-        }
-        // axiom is local iff all the elements are either top- or bot-local
-        if (isBotEquivalent(axiom.getArguments().get(0))) {
-            for (int i = 1; i < axiom.getArguments().size(); i++) {
-                if (!isBotEquivalent(axiom.getArguments().get(i))) {
-                    return;
-                }
-            }
-        } else {
-            for (int i = 0; i < axiom.getArguments().size(); i++) {
-                if (!isTopEquivalent(axiom.getArguments().get(i))) {
-                    return;
-                }
-            }
-        }
-        isLocal = true;
+        processEquivalentAxiom(axiom);
     }
 
     @Override
     public void visit(AxiomEquivalentDRoles axiom) {
-        // 1 element => local
-        if (axiom.size() <= 1) {
-            isLocal = true;
-            return;
-        }
-        // axiom is local iff all the elements are either top- or bot-local
-        if (isBotEquivalent(axiom.getArguments().get(0))) {
-            for (int i = 1; i < axiom.getArguments().size(); i++) {
-                if (!isBotEquivalent(axiom.getArguments().get(i))) {
-                    return;
-                }
-            }
-        } else {
-            for (int i = 0; i < axiom.getArguments().size(); i++) {
-                if (!isTopEquivalent(axiom.getArguments().get(i))) {
-                    return;
-                }
-            }
-        }
-        isLocal = true;
+        processEquivalentAxiom(axiom);
     }
 
     @Override
     public void visit(AxiomDisjointORoles axiom) {
-        // XXX check on number of arguments
-        // local iff at most 1 element is not bot-equiv
-        boolean hasNBE = false;
-        isLocal = false;
-        for (int i = 0; i < axiom.getArguments().size(); i++) {
-            if (!isBotEquivalent(axiom.getArguments().get(i))) {
-                if (hasNBE) {
-                    return;
-                } else {
-                    hasNBE = true;
-                }
-            }
-        }
-        isLocal = true;
+        processDisjointAxiom(axiom);
     }
 
     @Override
     public void visit(AxiomDisjointDRoles axiom) {
-        // XXX check on number of arguments
-        // local iff at most 1 element is not bot-equiv
-        boolean hasNBE = false;
-        isLocal = false;
-        for (int i = 0; i < axiom.getArguments().size(); i++) {
-            if (!isBotEquivalent(axiom.getArguments().get(i))) {
-                if (hasNBE) {
-                    return;
-                } else {
-                    hasNBE = true;
-                }
-            }
-        }
-        isLocal = true;
+        processDisjointAxiom(axiom);
     }
 
     @Override
