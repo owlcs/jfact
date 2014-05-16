@@ -161,13 +161,13 @@ public class ReasoningKernel implements Serializable {
     // internal flags
     /** set if TBox throws an exception during preprocessing/classification */
     @PortedFrom(file = "Kernel.h", name = "reasoningFailed")
-    private boolean reasoningFailed;
+    private boolean reasoningFailed = false;
     /** trace vector for the last operation (set from the TBox trace-sets) */
     @PortedFrom(file = "Kernel.h", name = "TraceVec")
     private final List<AxiomInterface> traceVec = new ArrayList<AxiomInterface>();
     /** flag to gather trace information for the next reasoner's call */
     @PortedFrom(file = "Kernel.h", name = "NeedTracing")
-    private boolean needTracing;
+    private boolean needTracing = false;
     @Original
     private final DatatypeFactory datatypeFactory;
     // types for knowledge exploration
@@ -289,7 +289,6 @@ public class ReasoningKernel implements Serializable {
         clearQueryCache();
         cachedConcept = null;
         cachedVertex = null;
-        reasoningFailed = false;
         needTracing = false;
     }
 
@@ -748,6 +747,9 @@ public class ReasoningKernel implements Serializable {
     private boolean releaseKB() {
         clearTBox();
         ontology.clear();
+        // the new KB is coming so the failures of the previous one doesn't
+        // matter
+        reasoningFailed = false;
         return false;
     }
 
@@ -2185,7 +2187,7 @@ public class ReasoningKernel implements Serializable {
         // check whether reasoning was failed
         if (reasoningFailed) {
             throw new ReasonerInternalException(
-                    "Can't classify KB because of previous errors");
+                    "Can't answer queries due to previous errors");
         }
         // check if something have to be done
         if (getStatus().ordinal() >= status.ordinal()) {
