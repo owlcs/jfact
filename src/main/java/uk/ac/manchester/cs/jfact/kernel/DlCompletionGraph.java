@@ -403,6 +403,15 @@ public class DlCompletionGraph implements Serializable {
         }
     }
 
+    /**
+     * get the rare stack
+     * 
+     * @return rare stack
+     */
+    public SaveStackRare getRareStack() {
+        return rareStack;
+    }
+
     // role/node
     /** add role R with dep-set DEP to the label of the TO arc
      * 
