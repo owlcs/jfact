@@ -64,61 +64,70 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isLocal")
     protected boolean isLocal;
 
-    /** processing method for all Equivalent axioms */
+    /**
+     * processing method for all Equivalent axioms
+     * 
+     * @param axiom
+     *        axiom to process
+     * @return true if axiom is local
+     */
     @PortedFrom(file = "GeneralSyntacticLocalityChecker.h", name = "processEquivalentAxiom")
-            void processEquivalentAxiom(
+            boolean processEquivalentAxiom(
                     NAryExpression<? extends Expression> axiom) {
         // 1 element => local
         if (axiom.size() <= 1) {
-            isLocal = true;
-            return;
+            return true;
         }
         // axiom is local iff all the elements are either top- or bot-local
-        isLocal = false;
         List<? extends Expression> list = axiom.getArguments();
         if (isBotEquivalent(list.get(0))) {
             // all should be \bot-eq
             for (int i = 1; i < list.size(); i++) {
                 if (!isBotEquivalent(list.get(i))) {
-                    return;
+                    return false;
                 }
             }
         } else if (isTopEquivalent(list.get(0))) {
             // all should be \top-eq
             for (int i = 1; i < list.size(); i++) {
                 if (!isTopEquivalent(list.get(i))) {
-                    return;
+                    return false;
                 }
             }
         } else {
             // neither \bot- no \top-eq: non-local
-            return;
+            return false;
         }
         // all elements have the same locality
-        isLocal = true;
+        return true;
     }
 
-    /** processing method for all Disjoint axioms */
+    /**
+     * processing method for all Disjoint axioms
+     * 
+     * @param axiom
+     *        axiom to process
+     * @return true if axiom is local
+     */
     @PortedFrom(file = "GeneralSyntacticLocalityChecker.h", name = "processDisjointAxiom")
-            void
-            processDisjointAxiom(NAryExpression<? extends Expression> axiom) {
+            boolean processDisjointAxiom(
+                    NAryExpression<? extends Expression> axiom) {
         // local iff at most 1 element is not bot-equiv
         boolean hasNBE = false;
-        isLocal = false;
         List<? extends Expression> list = axiom.getArguments();
         for (int i = 0; i < list.size(); i++) {
             if (!isBotEquivalent(list.get(i))) {
                 if (hasNBE) {
                     // already seen one non-bot-eq element
                     // non-local
-                    return;
+                    return false;
                 } else {
                     // record that 1 non-bot-eq element was found
                     hasNBE = true;
                 }
             }
         }
-        isLocal = true;
+        return true;
     }
 
     /**
@@ -210,12 +219,12 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor
 
     @Override
     public void visit(AxiomEquivalentConcepts axiom) {
-        processEquivalentAxiom(axiom);
+        isLocal = processEquivalentAxiom(axiom);
     }
 
     @Override
     public void visit(AxiomDisjointConcepts axiom) {
-        processDisjointAxiom(axiom);
+        isLocal = processDisjointAxiom(axiom);
     }
 
     @Override
@@ -252,22 +261,22 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor
 
     @Override
     public void visit(AxiomEquivalentORoles axiom) {
-        processEquivalentAxiom(axiom);
+        isLocal = processEquivalentAxiom(axiom);
     }
 
     @Override
     public void visit(AxiomEquivalentDRoles axiom) {
-        processEquivalentAxiom(axiom);
+        isLocal = processEquivalentAxiom(axiom);
     }
 
     @Override
     public void visit(AxiomDisjointORoles axiom) {
-        processDisjointAxiom(axiom);
+        isLocal = processDisjointAxiom(axiom);
     }
 
     @Override
     public void visit(AxiomDisjointDRoles axiom) {
-        processDisjointAxiom(axiom);
+        isLocal = processDisjointAxiom(axiom);
     }
 
     @Override
