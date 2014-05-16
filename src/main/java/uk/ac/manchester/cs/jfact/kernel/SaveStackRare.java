@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "tRareSaveStack.h", name = "TRareSaveStack")
-class SaveStackRare implements Serializable {
+public class SaveStackRare implements Serializable {
 
     private static final long serialVersionUID = 11000L;
     /** heap of saved objects */

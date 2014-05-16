@@ -15,6 +15,7 @@ import uk.ac.manchester.cs.jfact.helpers.SaveStack;
 import uk.ac.manchester.cs.jfact.kernel.ConceptWDep;
 import uk.ac.manchester.cs.jfact.kernel.DagTag;
 import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
+import uk.ac.manchester.cs.jfact.kernel.SaveStackRare;
 import conformance.Original;
 import conformance.PortedFrom;
 
@@ -28,7 +29,7 @@ public class ToDoList implements Serializable {
     private final ArrayQueue queueID = new ArrayQueue();
     /** waiting ops queue for lesser than or equal ops in nominal nodes */
     @PortedFrom(file = "ToDoList.h", name = "queueNN")
-    private final QueueQueue queueNN = new QueueQueue();
+    private final QueueQueue queueNN;
     /** waiting ops queues */
     @PortedFrom(file = "ToDoList.h", name = "Wait")
     private final List<ArrayQueue> waitQueue = new ArrayList<ArrayQueue>(
@@ -92,7 +93,8 @@ public class ToDoList implements Serializable {
     }
 
     /** default constructor */
-    public ToDoList() {
+    public ToDoList(SaveStackRare r) {
+        queueNN = new QueueQueue(r);
         noe = 0;
         // Helper.resize(Wait, nRegularOps);
         for (int i = 0; i < nRegularOptions; i++) {

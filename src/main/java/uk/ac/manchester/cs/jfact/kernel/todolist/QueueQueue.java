@@ -12,6 +12,8 @@ import java.util.List;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.kernel.ConceptWDep;
 import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
+import uk.ac.manchester.cs.jfact.kernel.Restorer;
+import uk.ac.manchester.cs.jfact.kernel.SaveStackRare;
 import conformance.PortedFrom;
 
 /** class to represent single priority queue */
@@ -20,11 +22,38 @@ public class QueueQueue implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** waiting ops queue */
     private List<ToDoEntry> _Wait = new ArrayList<ToDoEntry>();
+    // / stack to save states for the overwritten queue
+    SaveStackRare stack;
     /** start pointer; points to the 1st element in the queue */
     private int sPointer = 0;
-    /** flag for checking whether queue was reordered */
-    private boolean queueBroken = false;
     private int size = 0;
+
+    // type for restore the whole queue
+    class QueueRestorer extends Restorer {
+
+        // copy of a queue
+        List<ToDoEntry> Wait = new ArrayList<ToDoEntry>();
+        // pointer to a queue to restore
+        QueueQueue queue;
+        // start pointer
+        int sp;
+
+        QueueRestorer(QueueQueue q) {
+            Wait = q._Wait;
+            queue = q;
+            sp = q.sPointer;
+        }
+
+        // restore: copy the queue back, adjust pointers
+        public void restore() {
+            queue._Wait = Wait;
+            queue.sPointer = sp;
+        }
+    }
+
+    public QueueQueue(SaveStackRare rare) {
+        stack = rare;
+    }
 
     /**
      * add entry to a queue
@@ -46,6 +75,7 @@ public class QueueQueue implements Serializable {
             return;
         }
         // here we need to put e on the proper place
+        stack.push(new QueueRestorer(this));
         int n = size;
         while (n > sPointer
                 && _Wait.get(n - 1).getNode().getNominalLevel() > Node
@@ -53,7 +83,6 @@ public class QueueQueue implements Serializable {
             --n;
         }
         _Wait.add(n, e);
-        queueBroken = true;
         size++;
     }
 
@@ -61,7 +90,6 @@ public class QueueQueue implements Serializable {
     @PortedFrom(file = "ToDoList.h", name = "clear")
     protected void clear() {
         sPointer = 0;
-        queueBroken = false;
         _Wait.clear();
         size = 0;
     }
@@ -84,16 +112,8 @@ public class QueueQueue implements Serializable {
      */
     @PortedFrom(file = "ToDoList.h", name = "save")
     protected void save(TODOListSaveState tss) {
-        tss.queueBroken = queueBroken;
         tss.sp = sPointer;
-        if (queueBroken) {
-            tss.waitingQueue = new ArrayList<ToDoEntry>(_Wait);
-        } else {
-            // save just end pointer
-            tss.ep = size;
-        }
-        // clear flag for the next session
-        queueBroken = false;
+        tss.ep = size;
     }
 
     /**
@@ -104,18 +124,9 @@ public class QueueQueue implements Serializable {
      */
     @PortedFrom(file = "ToDoList.h", name = "restore")
     protected void restore(TODOListSaveState tss) {
-        queueBroken = tss.queueBroken;
         sPointer = tss.sp;
-        if (queueBroken) {
-            // the tss variable is discarded at the end of the restore, so
-            // no need to copy
-            _Wait = tss.waitingQueue;
-            size = _Wait.size();
-        } else {
-            // save just end pointer
-            Helper.resize(_Wait, tss.ep);
-            size = tss.ep;
-        }
+        Helper.resize(_Wait, tss.ep);
+        size = tss.ep;
     }
 
     @Override

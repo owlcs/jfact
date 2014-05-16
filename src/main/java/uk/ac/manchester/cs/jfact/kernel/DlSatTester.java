@@ -1563,7 +1563,7 @@ public class DlSatTester implements Serializable {
         tBox = tbox;
         dlHeap = tbox.getDLHeap();
         cGraph = new DlCompletionGraph(1, this);
-        TODO = new ToDoList();
+        TODO = new ToDoList(cGraph.getRareStack());
         newNodeCache = new ModelCacheIan(true, tbox.nC, tbox.nR,
                 options.isRKG_USE_SIMPLE_RULES());
         newNodeEdges = new ModelCacheIan(false, tbox.nC, tbox.nR,
