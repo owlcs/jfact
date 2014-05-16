@@ -206,6 +206,7 @@ public class TBox implements Serializable {
     /** status of the KB */
     @PortedFrom(file = "dlTBox.h", name = "Status")
     private KBStatus status;
+    private Map<Concept, DLTree> ExtraConceptDefs = new HashMap<Concept, DLTree>();
 
     /**
      * @param s
@@ -2439,9 +2440,26 @@ public class TBox implements Serializable {
             return;
         }
         DLTree D = C.getDescription().copy();
+        // try to see whether C contains a reference to itself at the top level
+        // TODO: rewrite via hasSelfInDesc()
         C.removeSelfFromDescription();
         if (DLTree.equalTrees(D, C.getDescription())) {
-            processGCI(D, E);
+            // XXX this disables the new strategy
+            if (true) {
+                // for now: it's not clear of what's going wrong
+                processGCI(D, E);
+            } else {
+                // here we leave the definition of C = D, and delay the
+                // processing of C [= E
+                DLTree p = ExtraConceptDefs.get(C);
+                if (p == null) {
+                    // save C [= E
+                    ExtraConceptDefs.put(C, E);
+                } else {
+                    // we have C [= X; change to C [= (X and E)
+                    ExtraConceptDefs.put(C, DLTreeFactory.createSNFAnd(p, E));
+                }
+            }
             return;
         }
         // note that we don't know exact semantics of C for now;
@@ -2556,6 +2574,7 @@ public class TBox implements Serializable {
         C.setPrimitive(true);
         // here C [= (D' and E)
         C.addDesc(E);
+        C.initToldSubsumers();
         // all we need is to add (old C's desc)D [= C
         addSubsumeAxiom(D, getTree(C));
     }
@@ -2703,6 +2722,8 @@ public class TBox implements Serializable {
             replaceAllSynonyms();
         }
         preprocessRelated();
+        // FIXME!! find a proper place for this
+        TransformExtraSubsumptions();
         initToldSubsumers();
         transformToldCycles();
         transformSingletonHierarchy();
@@ -2730,6 +2751,93 @@ public class TBox implements Serializable {
             config.getLog().print(" done in ").print(pt.calcDelta())
                     .print(" seconds\n\n");
         }
+    }
+
+    /**
+     * @return true if C is referenced in TREE; use PROCESSED to record explored
+     *         names
+     */
+    @PortedFrom(file = "Preprocess.cpp", name = "isReferenced")
+    boolean isReferenced(Concept C, DLTree tree, Set<Concept> processed) {
+        assert tree != null;
+        // names
+        if (tree.isName()) {
+            Concept D = (Concept) tree.elem().getNE();
+            // check whether we found cycle
+            if (C.equals(D)) {
+                return true;
+            }
+            // check if we already processed D
+            if (!processed.isEmpty()) {
+                return false;
+            }
+            // recurse here
+            return isReferenced(C, D, processed);
+        }
+        // operations with a single concept
+        if (tree.getChildren().size() == 1) {
+            return isReferenced(C, tree.getChild(), processed);
+        }
+        // operations w/o concept
+        if (tree.token() == SELF || tree.isTOP() || tree.isBOTTOM()) {
+            return false;
+        }
+        if (tree.isAND() || tree.token() == OR) {
+            boolean b = false;
+            for (DLTree child : tree.getChildren()) {
+                b |= isReferenced(C, child, processed);
+            }
+            return b;
+        }
+        // non-concept expressions: should not be here
+        throw new UnreachableSituationException("cannot match the tree type");
+    }
+
+    /**
+     * @return true if C is referenced in the definition of concept D; use
+     *         PROCESSED to record explored names
+     */
+    boolean isReferenced(Concept C, Concept D, Set<Concept> processed) {
+        // mark D as processed
+        processed.add(D);
+        // check the description of D
+        if (D.getDescription() == null) {
+            return false;
+        }
+        if (isReferenced(C, D.getDescription(), processed)) {
+            return true;
+        }
+        // we are done for primitive concepts
+        if (D.isPrimitive()) {
+            return false;
+        }
+        // check if D has an extra description
+        DLTree p = ExtraConceptDefs.get(D);
+        if (p != null) {
+            return isReferenced(C, p, processed);
+        }
+        return false;
+    }
+
+    /** transform C [= E with C = D into GCIs */
+    @PortedFrom(file = "Preprocess.cpp", name = "TransformExtraSubsumptions")
+    void TransformExtraSubsumptions() {
+        for (Map.Entry<Concept, DLTree> p : ExtraConceptDefs.entrySet()) {
+            Concept C = p.getKey();
+            DLTree D = C.getDescription().copy();
+            DLTree E = p.getValue();
+            // for every C here we have C = D in KB and C [= E in ExtraDefs
+            Set<Concept> processed = new HashSet<Concept>();
+            // if there is a cycle for C
+            if (isReferenced(C, C, processed)) {
+                // then we should make C [= (D and E) and go with GCI D [= C
+                makeDefinitionPrimitive(C, E, D);
+            } else {
+                // it is safe to keep definition C = D and go with GCI D [= E
+                processGCI(D, E);
+            }
+        }
+        ExtraConceptDefs.clear();
     }
 
     @PortedFrom(file = "dlTBox.h", name = "setAllIndexes")
@@ -2848,6 +2956,19 @@ public class TBox implements Serializable {
                                     break;
                                 } else {
                                     leaves.add(d);
+                                }
+                                // check whether we had an extra definition for
+                                // Q
+                                DLTree extra = ExtraConceptDefs.get(q);
+                                if (extra != null) {
+                                    if (extra.isBOTTOM()) {
+                                        leaves.clear();
+                                        leaves.add(extra);
+                                        break;
+                                    } else {
+                                        leaves.add(d);
+                                    }
+                                    ExtraConceptDefs.remove(q);
                                 }
                             }
                         }
