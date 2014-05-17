@@ -29,6 +29,7 @@ public class QueueQueue implements Serializable {
     // type for restore the whole queue
     class QueueRestorer extends Restorer {
 
+        private static final long serialVersionUID = 11000L;
         // copy of a queue
         List<ToDoEntry> Wait = new ArrayList<ToDoEntry>();
         // pointer to a queue to restore

@@ -30,10 +30,10 @@ public abstract class NamedEntry implements HasName, Serializable {
         assert name != null;
         extName = name;
         extId = 0;
-        if (extName.equals("TOP")) {
+        if (extName.isThing()) {
             top = true;
         }
-        if (extName.equals("BOTTOM")) {
+        if (extName.isNothing()) {
             bottom = true;
         }
     }
