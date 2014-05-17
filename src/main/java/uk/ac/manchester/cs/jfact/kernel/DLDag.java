@@ -332,12 +332,12 @@ public class DLDag implements Serializable {
     public String toString() {
         StringBuilder o = new StringBuilder("\nDag structure");
         for (int i = 1; i < size(); ++i) {
-            o.append("\n");
+            o.append('\n');
             o.append(i);
-            o.append(" ");
+            o.append(' ');
             o.append(get(i));
         }
-        o.append("\n");
+        o.append('\n');
         return o.toString();
     }
 

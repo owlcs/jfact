@@ -189,6 +189,6 @@ public class DatatypeIntersection<T extends Comparable<T>> implements
 
     @Override
     public String toString() {
-        return uri + "{" + basics + "}";
+        return uri + "{" + basics + '}';
     }
 }

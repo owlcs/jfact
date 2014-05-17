@@ -88,8 +88,8 @@ public abstract class NamedEntry implements HasName, Serializable {
 
     @Override
     public String toString() {
-        return extName + " " + extId + " " + entity + " " + bottom + " "
-                + system + " " + top;
+        return extName + " " + extId + ' ' + entity + ' ' + bottom + ' '
+                + system + ' ' + top;
     }
 
     @Original

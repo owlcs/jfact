@@ -111,6 +111,6 @@ public class DatatypeUnion implements
 
     @Override
     public String toString() {
-        return uri + "{" + basics + "}";
+        return uri + "{" + basics + '}';
     }
 }

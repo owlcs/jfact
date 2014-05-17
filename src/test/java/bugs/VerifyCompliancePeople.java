@@ -2,7 +2,6 @@ package bugs;
 
 import static org.junit.Assert.assertFalse;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -10,7 +9,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 @SuppressWarnings("javadoc")
-@Ignore("temporary to speed up release")
 public class VerifyCompliancePeople extends VerifyComplianceBase {
 
     String in = "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
@@ -18,10 +16,10 @@ public class VerifyCompliancePeople extends VerifyComplianceBase {
             + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
             + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
             + "Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)\n"
-            + "\n"
-            + "\n"
+            + '\n'
+            + '\n'
             + "Ontology(<urn:people.owl>\n"
-            + "\n"
+            + '\n'
             + "Declaration(Class(<urn:people#adult>))\n"
             + "Declaration(Class(<urn:people#animal>))\n"
             + "Declaration(Class(<urn:people#animal_lover>))\n"

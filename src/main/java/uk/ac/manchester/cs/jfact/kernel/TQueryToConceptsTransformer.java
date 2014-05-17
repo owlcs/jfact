@@ -25,7 +25,7 @@ class TQueryToConceptsTransformer implements Serializable {
     /** transformation result */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Result")
     // XXX verify the order is not important
-    private final MultiMap<String, ConceptExpression> Result = new MultiMap<String, ConceptExpression>();
+    private final MultiMap<IRI, ConceptExpression> Result = new MultiMap<IRI, ConceptExpression>();
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TQueryToConceptsTransformer")
     public TQueryToConceptsTransformer(
@@ -43,7 +43,7 @@ class TQueryToConceptsTransformer implements Serializable {
                 .transformQueryPhase2(Query);
         conjunctiveQueryFolding.buildApproximation(Query);
         IRI propositionalVariable = null;
-        String lastNominal = null;
+        IRI lastNominal = null;
         for (int i = 1; true; ++i) {
             // System.out.println("Expression:");
             // System.out.print(term);
@@ -101,7 +101,7 @@ class TQueryToConceptsTransformer implements Serializable {
 
     /** @return the result */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "getResult")
-    public MultiMap<String, ConceptExpression> getResult() {
+    public MultiMap<IRI, ConceptExpression> getResult() {
         return Result;
     }
 

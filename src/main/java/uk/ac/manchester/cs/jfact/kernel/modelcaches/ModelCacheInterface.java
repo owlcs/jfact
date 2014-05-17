@@ -49,7 +49,7 @@ public abstract class ModelCacheInterface implements Serializable {
      */
     @PortedFrom(file = "modelCacheInterface.h", name = "updateNominalStatus")
     public void updateNominalStatus(ModelCacheInterface p) {
-        setHasNominalNode(isHasNominalNode() | p.isHasNominalNode());
+        setHasNominalNode(isHasNominalNode() || p.isHasNominalNode());
     }
 
     // mergable part

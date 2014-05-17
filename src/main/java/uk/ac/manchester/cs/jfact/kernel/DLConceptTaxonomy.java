@@ -709,7 +709,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         candidates.clear();
         if (removed) {
             // re-check all parents
-            List<TaxonomyVertex> pos = new ArrayList<TaxonomyVertex>();
+            // List<TaxonomyVertex> pos = new ArrayList<TaxonomyVertex>();
             List<TaxonomyVertex> neg = new ArrayList<TaxonomyVertex>();
             for (TaxonomyVertex p : node.neigh(true)) {
                 if (isValued(p) && getValue(p)) {
@@ -717,7 +717,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
                 }
                 boolean sub = testSubsumption(p);
                 if (sub) {
-                    pos.add(p);
+                    // pos.add(p);
                     propagateTrueUp(p);
                 } else {
                     setValue(p, sub);

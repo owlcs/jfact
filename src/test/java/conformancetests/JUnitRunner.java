@@ -148,10 +148,10 @@ public class JUnitRunner {
             OWLOntology conclusionOntology) {
         StringBuilder b = new StringBuilder();
         b.append("JUnitRunner.logTroubles() premise");
-        b.append("\n");
+        b.append('\n');
         for (OWLAxiom ax1 : premiseOntology.getAxioms()) {
             b.append(ax1);
-            b.append("\n");
+            b.append('\n');
         }
         OWLReasoner reasoner = f.createReasoner(premiseOntology, c);
         actual(conclusionOntology, b, reasoner);
@@ -244,7 +244,7 @@ public class JUnitRunner {
         StringBuilder b = new StringBuilder();
         b.append("JUnitRunner.logTroubles() \t");
         b.append(testclass);
-        b.append("\t");
+        b.append('\t');
         b.append(testId);
         b.append("\n ======================================\n");
         b.append(description);

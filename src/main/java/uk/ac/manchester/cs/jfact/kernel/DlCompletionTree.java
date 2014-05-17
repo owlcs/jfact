@@ -208,7 +208,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
             toReturn.append(getBlockingStatusName()).append(blocker.id);
         }
         if (isCached()) {
-            toReturn.append("c");
+            toReturn.append('c');
         }
         return toReturn.toString();
     }
@@ -1068,11 +1068,11 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         StringBuilder o = new StringBuilder();
         o.append(id);
         if (isNominalNode()) {
-            o.append("o").append(nominalLevel);
+            o.append('o').append(nominalLevel);
         }
-        o.append("(").append(curLevel).append(")");
+        o.append('(').append(curLevel).append(')');
         if (isDataNode()) {
-            o.append("d");
+            o.append('d');
         }
         o.append(label).append(logNodeBStatus());
         return o.toString();

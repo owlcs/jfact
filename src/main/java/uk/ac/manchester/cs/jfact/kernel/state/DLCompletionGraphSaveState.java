@@ -62,6 +62,6 @@ public class DLCompletionGraphSaveState implements Serializable {
 
     @Override
     public String toString() {
-        return "CGSaveState (" + nNodes + "," + nEdges + "," + sNodes + ")";
+        return "CGSaveState (" + nNodes + ',' + nEdges + ',' + sNodes + ')';
     }
 }

@@ -68,6 +68,6 @@ public class NAryExpressionImpl<A extends Expression> implements
 
     @Override
     public String toString() {
-        return "NAryExpression(" + Base + ")";
+        return "NAryExpression(" + Base + ')';
     }
 }

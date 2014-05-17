@@ -150,13 +150,13 @@ public abstract class DLTree implements Serializable {
     public String toString() {
         if (getChildren().size() > 0) {
             StringBuilder b = new StringBuilder();
-            b.append("(");
+            b.append('(');
             b.append(elem);
             for (DLTree d : getChildren()) {
                 b.append(' ');
                 b.append(d);
             }
-            b.append(")");
+            b.append(')');
             return b.toString();
         } else {
             return elem.toString();

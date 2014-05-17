@@ -21,7 +21,7 @@ public class NewFeatures {
                 + "  DisjointDataProperties(:dp1 :dp2) \n"
                 + "  DataPropertyAssertion(:dp1 :a \"10\"^^xsd:integer)\n"
                 + "  SubClassOf(:A DataSomeValuesFrom(:dp2 DatatypeRestriction(xsd:integer xsd:minInclusive \"10\"^^xsd:integer xsd:maxInclusive \"10\"^^xsd:integer)\n  )\n  )\n"
-                + "  ClassAssertion(:A :a)\n" + ")";
+                + "  ClassAssertion(:A :a)\n" + ')';
         String conclusion = "";
         String id = "Inconsistent_Disjoint_Dataproperties";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -46,7 +46,7 @@ public class NewFeatures {
                 + "  )\n"
                 + "  ClassAssertion(:A :a) \n"
                 + "  NegativeDataPropertyAssertion(:dp :a \"0\"^^xsd:unsignedInt)\n"
-                + ")";
+                + ')';
         String conclusion = "";
         String id = "Minus_Infinity_is_not_in_owl_real";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -61,8 +61,8 @@ public class NewFeatures {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n" + "<owl:Ontology/>\n" + "\n"
-                + "<owl:DatatypeProperty rdf:about=\"hasName\" />\n" + "\n"
+                + '\n' + "<owl:Ontology/>\n" + '\n'
+                + "<owl:DatatypeProperty rdf:about=\"hasName\" />\n" + '\n'
                 + "<rdf:Description rdf:about=\"Meg\">\n"
                 + "  <hasName>Meg Griffin</hasName>\n"
                 + "  <hasName>Megan Griffin</hasName>\n"
@@ -70,18 +70,18 @@ public class NewFeatures {
         String conclusion = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:DatatypeProperty rdf:about=\"hasName\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Meg\">\n"
                 + "  <rdf:type>\n"
                 + "    <owl:Restriction>\n"
                 + "      <owl:onProperty rdf:resource=\"hasName\" />\n"
                 + "      <owl:minQualifiedCardinality rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\">2</owl:minQualifiedCardinality>\n"
                 + "      <owl:onDataRange rdf:resource=\"http://www.w3.org/2001/XMLSchema#string\" /></owl:Restriction></rdf:type>\n"
-                + "</rdf:Description>\n" + "\n" + "</rdf:RDF>";
+                + "</rdf:Description>\n" + '\n' + "</rdf:RDF>";
         String id = "New_Feature_DataQCR_001";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Demonstrates a qualified minimum cardinality data property restriction based on example in the Structural Specification and Functional-Style Syntax document.";
@@ -95,18 +95,18 @@ public class NewFeatures {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:DatatypeProperty rdf:about=\"hasName\" />\n"
                 + "<owl:DatatypeProperty rdf:about=\"hasAddress\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"hasName\">\n"
                 + "  <owl:propertyDisjointWith rdf:resource=\"hasAddress\" /></rdf:Description>\n"
-                + "\n" + "<rdf:Description rdf:about=\"Peter\">\n"
+                + '\n' + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <hasName>Peter Griffin</hasName>\n"
                 + "  <hasAddress>Peter Griffin</hasAddress>\n"
-                + "</rdf:Description>\n" + "\n" + "</rdf:RDF>";
+                + "</rdf:Description>\n" + '\n' + "</rdf:RDF>";
         String conclusion = "";
         String id = "New_Feature_DisjointDataProperties_001";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -121,37 +121,37 @@ public class NewFeatures {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n" + "<owl:Ontology/>\n" + "\n"
+                + '\n' + "<owl:Ontology/>\n" + '\n'
                 + "<owl:DatatypeProperty rdf:about=\"hasName\" />\n"
                 + "<owl:DatatypeProperty rdf:about=\"hasAddress\" />\n"
-                + "<owl:DatatypeProperty rdf:about=\"hasZip\" />\n" + "\n"
+                + "<owl:DatatypeProperty rdf:about=\"hasZip\" />\n" + '\n'
                 + "<owl:AllDisjointProperties>\n"
                 + "  <owl:members rdf:parseType=\"Collection\">\n"
                 + "    <rdf:Description rdf:about=\"hasName\" />\n"
                 + "    <rdf:Description rdf:about=\"hasAddress\" />\n"
                 + "    <rdf:Description rdf:about=\"hasZip\" />\n"
-                + "  </owl:members></owl:AllDisjointProperties>\n" + "\n"
+                + "  </owl:members></owl:AllDisjointProperties>\n" + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <hasName>Peter Griffin</hasName>\n"
-                + "</rdf:Description>\n" + "\n"
+                + "</rdf:Description>\n" + '\n'
                 + "<rdf:Description rdf:about=\"Peter_Griffin\">\n"
                 + "  <hasAddress>Peter Griffin</hasAddress>\n"
-                + "</rdf:Description>\n" + "\n"
+                + "</rdf:Description>\n" + '\n'
                 + "<rdf:Description rdf:about=\"Petre\">\n"
                 + "  <hasZip>Peter Griffin</hasZip>\n" + "</rdf:Description>\n"
                 + "</rdf:RDF>";
         String conclusion = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:AllDifferent>\n"
                 + "  <owl:distinctMembers rdf:parseType=\"Collection\">\n"
                 + "    <rdf:Description rdf:about=\"Peter\" />\n"
                 + "    <rdf:Description rdf:about=\"Peter_Griffin\" />\n"
                 + "    <rdf:Description rdf:about=\"Petre\" /></owl:distinctMembers></owl:AllDifferent>\n"
-                + "\n" + "</rdf:RDF>";
+                + '\n' + "</rdf:RDF>";
         String id = "New_Feature_DisjointDataProperties_002";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Demonstrates use of a ternary disjoint data properties axiom to infer different individuals.  Adapted from test New-Feature-DisjointDataProperties-001.";
@@ -165,29 +165,29 @@ public class NewFeatures {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:DatatypeProperty rdf:about=\"hasSSN\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"http://www.w3.org/2002/07/owl#Thing\">\n"
                 + "  <owl:hasKey rdf:parseType=\"Collection\">\n"
                 + "    <rdf:Description rdf:about=\"hasSSN\" />\n"
-                + "  </owl:hasKey></rdf:Description>\n" + "\n"
+                + "  </owl:hasKey></rdf:Description>\n" + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <hasSSN>123-45-6789</hasSSN>\n" + "</rdf:Description>\n"
-                + "\n" + "<rdf:Description rdf:about=\"Peter_Griffin\">\n"
+                + '\n' + "<rdf:Description rdf:about=\"Peter_Griffin\">\n"
                 + "  <hasSSN>123-45-6789</hasSSN>\n" + "</rdf:Description>\n"
                 + "</rdf:RDF>";
         String conclusion = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <owl:sameAs rdf:resource=\"Peter_Griffin\" /></rdf:Description>\n"
-                + "\n" + "</rdf:RDF>";
+                + '\n' + "</rdf:RDF>";
         String id = "New_Feature_Keys_001";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Demonstrates use of a key axiom to merge individuals based on an example in the Structural Specification and Functional-Style Syntax document.";
@@ -201,27 +201,27 @@ public class NewFeatures {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:DatatypeProperty rdf:about=\"hasSSN\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"http://www.w3.org/2002/07/owl#Thing\">\n"
                 + "  <owl:hasKey rdf:parseType=\"Collection\">\n"
                 + "    <rdf:Description rdf:about=\"hasSSN\" />\n"
                 + "  </owl:hasKey></rdf:Description>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <hasSSN>123-45-6789</hasSSN>\n"
                 + "</rdf:Description>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Peter_Griffin\">\n"
                 + "  <hasSSN>123-45-6789</hasSSN>\n"
                 + "</rdf:Description>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <owl:differentFrom rdf:resource=\"Peter_Griffin\" /></rdf:Description>\n"
-                + "\n" + "</rdf:RDF>";
+                + '\n' + "</rdf:RDF>";
         String conclusion = "";
         String id = "New_Feature_Keys_002";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -236,37 +236,37 @@ public class NewFeatures {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:Class rdf:about=\"GriffinFamilyMember\" />\n"
-                + "\n"
+                + '\n'
                 + "<owl:DatatypeProperty rdf:about=\"hasName\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"GriffinFamilyMember\">\n"
                 + "  <owl:hasKey rdf:parseType=\"Collection\">\n"
                 + "    <rdf:Description rdf:about=\"hasName\" />\n"
                 + "  </owl:hasKey></rdf:Description>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <hasName>Peter</hasName>\n"
                 + "  <rdf:type rdf:resource=\"GriffinFamilyMember\" /></rdf:Description>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Peter_Griffin\">\n"
                 + "  <hasName>Peter</hasName>\n"
                 + "  <rdf:type rdf:resource=\"GriffinFamilyMember\" /></rdf:Description>\n"
-                + "\n" + "<rdf:Description rdf:about=\"StPeter\">\n"
+                + '\n' + "<rdf:Description rdf:about=\"StPeter\">\n"
                 + "  <hasName>Peter</hasName>\n" + "</rdf:Description>\n"
                 + "</rdf:RDF>";
         String conclusion = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <owl:sameAs rdf:resource=\"Peter_Griffin\" /></rdf:Description>\n"
-                + "\n" + "</rdf:RDF>";
+                + '\n' + "</rdf:RDF>";
         String id = "New_Feature_Keys_003";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Demonstrates use of a \"localized\" key axiom to merge individuals based on an example in the Structural Specification and Functional-Style Syntax document.";
@@ -280,35 +280,35 @@ public class NewFeatures {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:Class rdf:about=\"GriffinFamilyMember\" />\n"
-                + "\n"
+                + '\n'
                 + "<owl:DatatypeProperty rdf:about=\"hasName\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"GriffinFamilyMember\">\n"
                 + "  <owl:hasKey rdf:parseType=\"Collection\">\n"
                 + "    <rdf:Description rdf:about=\"hasName\" />\n"
                 + "  </owl:hasKey></rdf:Description>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <hasName>Peter</hasName>\n"
                 + "  <rdf:type rdf:resource=\"GriffinFamilyMember\" /></rdf:Description>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Peter_Griffin\">\n"
                 + "  <hasName>Peter</hasName>\n"
                 + "  <rdf:type rdf:resource=\"GriffinFamilyMember\" /></rdf:Description>\n"
-                + "\n" + "<rdf:Description rdf:about=\"StPeter\">\n"
+                + '\n' + "<rdf:Description rdf:about=\"StPeter\">\n"
                 + "  <hasName>Peter</hasName>\n" + "</rdf:Description>\n"
                 + "</rdf:RDF>";
         String conclusion = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n" + "<owl:Ontology/>\n" + "\n"
+                + '\n' + "<owl:Ontology/>\n" + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <owl:sameAs rdf:resource=\"StPeter\" />\n"
-                + "</rdf:Description>\n" + "\n" + "</rdf:RDF>";
+                + "</rdf:Description>\n" + '\n' + "</rdf:RDF>";
         String id = "New_Feature_Keys_004";
         TestClasses tc = TestClasses.valueOf("NEGATIVE_IMPL");
         String d = "Demonstrates that use of a \"localized\" key axiom only merges individuals that are instances of the given class expression.  Based on an example in the Structural Specification and Functional-Style Syntax document.";
@@ -322,23 +322,23 @@ public class NewFeatures {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:Class rdf:about=\"GriffinFamilyMember\" />\n"
-                + "\n"
+                + '\n'
                 + "<owl:DatatypeProperty rdf:about=\"hasName\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"GriffinFamilyMember\">\n"
                 + "  <owl:hasKey rdf:parseType=\"Collection\">\n"
                 + "    <rdf:Description rdf:about=\"hasName\" />\n"
                 + "  </owl:hasKey></rdf:Description>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <hasName>Peter</hasName>\n"
                 + "  <hasName>Kichwa-Tembo</hasName>\n"
                 + "  <rdf:type rdf:resource=\"GriffinFamilyMember\" /></rdf:Description>\n"
-                + "\n" + "</rdf:RDF>";
+                + '\n' + "</rdf:RDF>";
         String conclusion = "";
         String id = "New_Feature_Keys_005";
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
@@ -353,25 +353,25 @@ public class NewFeatures {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:Class rdf:about=\"GriffinFamilyMember\" />\n"
-                + "\n"
+                + '\n'
                 + "<owl:DatatypeProperty rdf:about=\"hasName\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"GriffinFamilyMember\">\n"
                 + "  <owl:hasKey rdf:parseType=\"Collection\">\n"
                 + "    <rdf:Description rdf:about=\"hasName\" /></owl:hasKey></rdf:Description>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <hasName>Peter</hasName>\n"
                 + "  <hasName>Kichwa-Tembo</hasName>\n"
                 + "  <rdf:type rdf:resource=\"GriffinFamilyMember\" /></rdf:Description>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"hasName\">\n"
                 + "  <rdf:type rdf:resource=\"http://www.w3.org/2002/07/owl#FunctionalProperty\" /></rdf:Description>\n"
-                + "\n" + "</rdf:RDF>";
+                + '\n' + "</rdf:RDF>";
         String conclusion = "";
         String id = "New_Feature_Keys_006";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -386,25 +386,25 @@ public class NewFeatures {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:Class rdf:about=\"Person\" />\n"
-                + "\n"
+                + '\n'
                 + "<owl:Class rdf:about=\"Man\" />\n"
-                + "\n"
+                + '\n'
                 + "<owl:DatatypeProperty rdf:about=\"hasSSN\" />\n"
-                + "\n"
+                + '\n'
                 + "<owl:ObjectProperty rdf:about=\"marriedTo\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Person\">\n"
                 + "  <owl:hasKey rdf:parseType=\"Collection\">\n"
                 + "    <rdf:Description rdf:about=\"hasSSN\" /></owl:hasKey></rdf:Description>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <hasSSN>123-45-6789</hasSSN>\n"
                 + "  <rdf:type rdf:resource=\"Person\" /></rdf:Description>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Lois\">\n"
                 + "  <rdf:type>\n"
                 + "    <owl:Restriction>\n"
@@ -420,9 +420,9 @@ public class NewFeatures {
         String conclusion = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n" + "<owl:Ontology/>\n" + "\n"
-                + "<owl:Class rdf:about=\"Man\" />\n" + "\n"
-                + "<Man rdf:about=\"Peter\" />\n" + "\n" + "</rdf:RDF>";
+                + '\n' + "<owl:Ontology/>\n" + '\n'
+                + "<owl:Class rdf:about=\"Man\" />\n" + '\n'
+                + "<Man rdf:about=\"Peter\" />\n" + '\n' + "</rdf:RDF>";
         String id = "New_Feature_Keys_007";
         TestClasses tc = TestClasses.valueOf("NEGATIVE_IMPL");
         String d = "Demonstrates that a key axiom only applies to named individuals.  Based on an example in the Structural Specification and Functional-Style Syntax document.";
@@ -437,9 +437,9 @@ public class NewFeatures {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "    xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdfs= \"http://www.w3.org/2000/01/rdf-schema#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:ObjectProperty rdf:about=\"http://www.example.org/p\"/>\n"
                 // XXX this is a bug, needs to be fixed
                 + "<owl:Thing rdf:about=\"http://www.example.org/a\"/>\n"
@@ -483,23 +483,23 @@ public class NewFeatures {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:DatatypeProperty rdf:about=\"dp\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"a\">\n"
                 + "  <rdf:type>\n"
                 + "    <owl:Restriction>\n"
                 + "      <owl:onProperty rdf:resource=\"dp\" />\n"
                 + "      <owl:allValuesFrom rdf:resource=\"http://www.w3.org/2002/07/owl#rational\" /></owl:Restriction></rdf:type></rdf:Description>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"a\">\n"
                 + "  <rdf:type>\n"
                 + "    <owl:Restriction>\n"
                 + "      <owl:onProperty rdf:resource=\"dp\" />\n"
                 + "      <owl:minCardinality rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\">2</owl:minCardinality></owl:Restriction></rdf:type>\n"
-                + "</rdf:Description>\n" + "\n" + "</rdf:RDF>";
+                + "</rdf:Description>\n" + '\n' + "</rdf:RDF>";
         String conclusion = "";
         String id = "New_Feature_Rational_001";
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
@@ -514,11 +514,11 @@ public class NewFeatures {
         String premise = "Prefix( : = <http://example.org/> )\n"
                 + "Prefix( owl: = <http://www.w3.org/2002/07/owl#> )\n"
                 + "Prefix( xsd: = <http://www.w3.org/2001/XMLSchema#> )\n"
-                + "\n"
+                + '\n'
                 + "Ontology(\n"
                 + " Declaration( DataProperty( :dp ) )\n"
                 + " ClassAssertion( DataAllValuesFrom( :dp DataOneOf( \"0.5\"^^xsd:decimal \"1/2\"^^owl:rational ) ) :a )\n"
-                + " ClassAssertion( DataMinCardinality( 2 :dp ) :a )\n" + ")";
+                + " ClassAssertion( DataMinCardinality( 2 :dp ) :a )\n" + ')';
         String conclusion = "";
         String id = "New_Feature_Rational_002";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -533,11 +533,11 @@ public class NewFeatures {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs= \"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:DatatypeProperty rdf:about=\"dp\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"a\">\n"
                 + "  <rdf:type>\n"
                 + "    <owl:Restriction>\n"
@@ -551,13 +551,13 @@ public class NewFeatures {
                 + "                <rdf:Description>\n"
                 + "                  <rdf:first rdf:datatype=\"http://www.w3.org/2002/07/owl#rational\">1/3</rdf:first>\n"
                 + "                  <rdf:rest rdf:resource=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"/></rdf:Description></rdf:rest></rdf:Description></owl:oneOf></rdfs:Datatype></owl:allValuesFrom></owl:Restriction></rdf:type></rdf:Description>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"a\">\n"
                 + "  <rdf:type>\n"
                 + "    <owl:Restriction>\n"
                 + "      <owl:onProperty rdf:resource=\"dp\" />\n"
                 + "      <owl:minCardinality rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\">2</owl:minCardinality></owl:Restriction></rdf:type>\n"
-                + "</rdf:Description>\n" + "\n" + "</rdf:RDF>";
+                + "</rdf:Description>\n" + '\n' + "</rdf:RDF>";
         String conclusion = "";
         String id = "New_Feature_Rational_003";
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
@@ -572,16 +572,16 @@ public class NewFeatures {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n" + "<owl:Ontology/>\n" + "\n"
+                + '\n' + "<owl:Ontology/>\n" + '\n'
                 + "<owl:ObjectProperty rdf:about=\"knows\" />\n"
-                + "<owl:NamedIndividual rdf:about=\"Peter\" />\n" + "\n"
-                + "<owl:ReflexiveProperty rdf:about=\"knows\" />\n" + "\n"
+                + "<owl:NamedIndividual rdf:about=\"Peter\" />\n" + '\n'
+                + "<owl:ReflexiveProperty rdf:about=\"knows\" />\n" + '\n'
                 + "</rdf:RDF>";
         String conclusion = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n" + "<owl:Ontology/>\n" + "\n"
-                + "<owl:ObjectProperty rdf:about=\"knows\" />\n" + "\n"
+                + '\n' + "<owl:Ontology/>\n" + '\n'
+                + "<owl:ObjectProperty rdf:about=\"knows\" />\n" + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <knows rdf:resource=\"Peter\" />\n"
                 + "</rdf:Description>\n" + "</rdf:RDF>";
@@ -598,22 +598,22 @@ public class NewFeatures {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:ObjectProperty rdf:about=\"likes\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <rdf:type>\n"
                 + "    <owl:Restriction>\n"
                 + "      <owl:onProperty rdf:resource=\"likes\" />\n"
                 + "      <owl:hasSelf rdf:datatype=\"http://www.w3.org/2001/XMLSchema#boolean\">true</owl:hasSelf></owl:Restriction></rdf:type>\n"
-                + "</rdf:Description>\n" + "\n" + "</rdf:RDF>";
+                + "</rdf:Description>\n" + '\n' + "</rdf:RDF>";
         String conclusion = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n" + "<owl:Ontology/>\n" + "\n"
-                + "<owl:ObjectProperty rdf:about=\"likes\" />\n" + "\n"
+                + '\n' + "<owl:Ontology/>\n" + '\n'
+                + "<owl:ObjectProperty rdf:about=\"likes\" />\n" + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <likes rdf:resource=\"Peter\" />\n"
                 + "</rdf:Description>\n" + "</rdf:RDF>";
@@ -630,25 +630,25 @@ public class NewFeatures {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n" + "<owl:Ontology/>\n" + "\n"
-                + "<owl:ObjectProperty rdf:about=\"likes\" />\n" + "\n"
+                + '\n' + "<owl:Ontology/>\n" + '\n'
+                + "<owl:ObjectProperty rdf:about=\"likes\" />\n" + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <likes rdf:resource=\"Peter\" />\n"
                 + "</rdf:Description>\n" + "</rdf:RDF>";
         String conclusion = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:ObjectProperty rdf:about=\"likes\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <rdf:type>\n"
                 + "    <owl:Restriction>\n"
                 + "      <owl:onProperty rdf:resource=\"likes\" />\n"
                 + "      <owl:hasSelf rdf:datatype=\"http://www.w3.org/2001/XMLSchema#boolean\">true</owl:hasSelf></owl:Restriction></rdf:type>\n"
-                + "</rdf:Description>\n" + "\n" + "</rdf:RDF>";
+                + "</rdf:Description>\n" + '\n' + "</rdf:RDF>";
         String id = "New_Feature_SelfRestriction_002";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Demonstrates use of an object property assertion to infer membership in a self restriction based on example in the Structural Specification and Functional-Style Syntax document.";
@@ -662,9 +662,9 @@ public class NewFeatures {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"i\">\n"
                 + "  <rdf:type>\n"
                 + "    <owl:Class>\n"
@@ -672,7 +672,7 @@ public class NewFeatures {
                 + "        <owl:Restriction>\n"
                 + "          <owl:onProperty rdf:resource=\"http://www.w3.org/2002/07/owl#topObjectProperty\" />\n"
                 + "          <owl:someValuesFrom rdf:resource=\"http://www.w3.org/2002/07/owl#Thing\" /></owl:Restriction></owl:complementOf></owl:Class>\n"
-                + "  </rdf:type></rdf:Description>\n" + "\n" + "</rdf:RDF>";
+                + "  </rdf:type></rdf:Description>\n" + '\n' + "</rdf:RDF>";
         String conclusion = "";
         String id = "New_Feature_TopObjectProperty_001";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -696,7 +696,7 @@ public class NewFeatures {
                 + "    DatatypeRestriction(xsd:integer \n"
                 + "      xsd:minInclusive \"18\"^^xsd:integer \n"
                 + "      xsd:maxInclusive \"18\"^^xsd:integer)\n" + "    )\n"
-                + "  )\n" + "  ClassAssertion(:A :a)\n" + ")";
+                + "  )\n" + "  ClassAssertion(:A :a)\n" + ')';
         String conclusion = "";
         String id = "consistent_dataproperty_disjointness";
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");

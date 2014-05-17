@@ -55,7 +55,7 @@ class LiteralImpl<T extends Comparable<T>> implements Literal<T>, Serializable {
 
     @Override
     public String toString() {
-        return "\"" + this.value + "\"^^" + this.type;
+        return '"' + this.value + "\"^^" + this.type;
     }
 
     @Override

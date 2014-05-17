@@ -98,12 +98,12 @@ public class ArrayQueue implements Serializable {
         StringBuilder l = new StringBuilder();
         l.append("ArrayQueue{");
         l.append(sPointer);
-        l.append(",");
+        l.append(',');
         for (ToDoEntry t : Wait) {
             l.append(t);
-            l.append(" ");
+            l.append(' ');
         }
-        l.append("}");
+        l.append('}');
         return l.toString();
     }
 

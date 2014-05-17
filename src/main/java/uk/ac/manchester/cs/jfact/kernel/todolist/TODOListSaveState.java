@@ -59,12 +59,12 @@ public final class TODOListSaveState implements Serializable {
 
     @Override
     public String toString() {
-        return noe + " " + backupID_sp + "," + backupID_ep + " " + waitingQueue
-                + " " + sp + " " + ep + " " + queueBroken + " " + backup0key
-                + " " + backup0value + " " + backup1key + " " + backup1value
-                + " " + backup2key + " " + backup2value + " " + backup3key
-                + " " + backup3value + " " + backup4key + " " + backup4value
-                + " " + backup5key + " " + backup5value + " " + backup6key
-                + " " + backup6value;
+        return noe + " " + backupID_sp + ',' + backupID_ep + ' ' + waitingQueue
+                + ' ' + sp + ' ' + ep + ' ' + queueBroken + ' ' + backup0key
+                + ' ' + backup0value + ' ' + backup1key + ' ' + backup1value
+                + ' ' + backup2key + ' ' + backup2value + ' ' + backup3key
+                + ' ' + backup3value + ' ' + backup4key + ' ' + backup4value
+                + ' ' + backup5key + ' ' + backup5value + ' ' + backup6key
+                + ' ' + backup6value;
     }
 }

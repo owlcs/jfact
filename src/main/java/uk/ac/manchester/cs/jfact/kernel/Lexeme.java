@@ -124,9 +124,9 @@ public class Lexeme implements Serializable {
             return token.getName();
         }
         if (token == Token.INAME) {
-            return "(" + token.getName() + " " + pName.toString() + ")";
+            return '(' + token.getName() + ' ' + pName.toString() + ')';
         } else {
-            return token.getName() + " " + pName.toString();
+            return token.getName() + ' ' + pName.toString();
         }
     }
 }

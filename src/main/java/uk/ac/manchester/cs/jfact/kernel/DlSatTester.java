@@ -180,7 +180,7 @@ public class DlSatTester implements Serializable {
             return this.getClass().getSimpleName() + " dep '" + branchDep
                     + "' curconcept '"
                     + (concept == null ? new ConceptWDep(bpINVALID) : concept)
-                    + "' curnode '" + node + "'";
+                    + "' curnode '" + node + '\'';
         }
     }
 
@@ -485,7 +485,7 @@ public class DlSatTester implements Serializable {
             o.append(node);
             o.append(" orentries [");
             o.append(applicableOrEntries);
-            o.append("]");
+            o.append(']');
             return o.toString();
         }
     }

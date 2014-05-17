@@ -139,6 +139,6 @@ public class QueueQueue implements Serializable {
     public String toString() {
         return "{" + (!isEmpty() ? _Wait.get(sPointer) : "empty")
                 + " sPointer: " + sPointer + " size: " + size + " Wait: "
-                + _Wait + "}";
+                + _Wait + '}';
     }
 }

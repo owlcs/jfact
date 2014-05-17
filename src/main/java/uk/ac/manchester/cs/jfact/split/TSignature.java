@@ -235,9 +235,9 @@ public class TSignature implements Serializable {
     public String toString() {
         StringBuilder b = new StringBuilder("[");
         for (NamedEntity p : set) {
-            b.append(p.getName()).append(" ");
+            b.append(p.getName()).append(' ');
         }
-        b.append("]");
+        b.append(']');
         return b.toString();
     }
 }

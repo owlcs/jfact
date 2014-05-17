@@ -205,7 +205,7 @@ public class DatatypeNegation<R extends Comparable<R>> implements
 
     @Override
     public String toString() {
-        return uri + "{" + host + "}";
+        return uri + "{" + host + '}';
     }
 
     @Override

@@ -283,7 +283,7 @@ public class CWDArray implements Serializable {
             }
             o.append(base.get(i));
         }
-        o.append("]");
+        o.append(']');
         return o.toString();
     }
 }

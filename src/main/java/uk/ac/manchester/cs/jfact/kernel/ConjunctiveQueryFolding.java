@@ -438,9 +438,9 @@ public class ConjunctiveQueryFolding implements Serializable {
     }
 
     @PortedFrom(file = "ConjunctiveQuery.cpp", name = "Var2I")
-    private final Map<String, Integer> Var2I = new HashMap<String, Integer>();
+    private final Map<IRI, Integer> Var2I = new HashMap<IRI, Integer>();
     @PortedFrom(file = "ConjunctiveQuery.cpp", name = "I2Var")
-    private final List<String> I2Var = new ArrayList<String>();
+    private final List<IRI> I2Var = new ArrayList<IRI>();
 
     /**
      * fills in variable index
@@ -449,11 +449,11 @@ public class ConjunctiveQueryFolding implements Serializable {
      *        query
      */
     @PortedFrom(file = "ConjunctiveQuery.cpp", name = "fillVarIndex")
-    private void fillVarIndex(MultiMap<String, ConceptExpression> query) {
+    private void fillVarIndex(MultiMap<IRI, ConceptExpression> query) {
         int n = 0;
         Var2I.clear();
         I2Var.clear();
-        for (String p : query.keySet()) {
+        for (IRI p : query.keySet()) {
             if (!Var2I.containsKey(p)) {
                 // new name
                 Var2I.put(p, n++);
@@ -472,7 +472,7 @@ public class ConjunctiveQueryFolding implements Serializable {
      *        true if artificial abox
      */
     @PortedFrom(file = "ConjunctiveQuery.cpp", name = "evaluateQuery")
-    public void evaluateQuery(MultiMap<String, ConceptExpression> query,
+    public void evaluateQuery(MultiMap<IRI, ConceptExpression> query,
             ReasoningKernel kernel, boolean artificialABox) {
         // make index of all vars
         fillVarIndex(query);
@@ -482,7 +482,7 @@ public class ConjunctiveQueryFolding implements Serializable {
         // for every var: create an expression of vars
         List<DLTree> Concepts = new ArrayList<DLTree>();
         for (int i = 0; i < I2Var.size(); ++i) {
-            String var = I2Var.get(i);
+            IRI var = I2Var.get(i);
             List<ConceptExpression> list = new ArrayList<ConceptExpression>(
                     query.get(var));
             Concepts.add(kernel.e(pEM.and(list)));

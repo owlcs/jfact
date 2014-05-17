@@ -161,7 +161,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
         if (value instanceof Literal
                 && !this.host.isCompatible((Literal<?>) value)) {
             throw new IllegalArgumentException(
-                    "Not a valid value for this expression: " + f + "\t"
+                    "Not a valid value for this expression: " + f + '\t'
                             + value + " for: " + this);
         }
         DatatypeOrderedExpressionImpl<O> toReturn = new DatatypeOrderedExpressionImpl<O>(
@@ -304,7 +304,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
 
     @Override
     public String toString() {
-        return this.getClass().getName() + "(" + this.host.toString()
+        return this.getClass().getName() + '(' + this.host.toString()
                 + "(extra facets:" + knownNumericFacetValues + "))";
     }
 }

@@ -231,7 +231,7 @@ public class Axiom implements Serializable {
         for (DLTree p : disjuncts) {
             b.append(p);
         }
-        b.append(")");
+        b.append(')');
         return b.toString();
     }
 

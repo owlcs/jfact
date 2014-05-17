@@ -65,8 +65,8 @@ public class DatatypeEntry extends NamedEntry {
 
     @Override
     public String toString() {
-        return "(" + this.getClass().getSimpleName() + " " + pName + " " + type
-                + " " + super.toString() + ")";
+        return '(' + this.getClass().getSimpleName() + ' ' + pName + ' ' + type
+                + ' ' + super.toString() + ')';
     }
 
     @Override

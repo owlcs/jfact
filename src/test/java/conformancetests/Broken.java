@@ -37,21 +37,21 @@ public class Broken {
     public void testQualified_cardinality_boolean() {
         String premise = "Prefix( : = <http://example.org/test#> )\n"
                 + "Prefix( xsd: = <http://www.w3.org/2001/XMLSchema#> )\n"
-                + "\n"
+                + '\n'
                 + "Ontology(<http://owl.semanticweb.org/page/Special:GetOntology/Qualified-cardinality-boolean?m=p>\n"
                 + "  Declaration(NamedIndividual(:a))\n"
                 + "  Declaration(Class(:A))\n"
-                + "  Declaration(DataProperty(:dp))\n" + "\n"
+                + "  Declaration(DataProperty(:dp))\n" + '\n'
                 + "  SubClassOf(:A DataExactCardinality(2 :dp xsd:boolean))\n"
-                + "\n" + "  ClassAssertion(:A :a)\n" + ")";
+                + '\n' + "  ClassAssertion(:A :a)\n" + ')';
         String conclusion = "Prefix( : = <http://example.org/test#> )\n"
                 + "Prefix( xsd: = <http://www.w3.org/2001/XMLSchema#> )\n"
-                + "\n"
+                + '\n'
                 + "Ontology(<http://owl.semanticweb.org/page/Special:GetOntology/Qualified-cardinality-boolean?m=c>\n"
-                + "  Declaration(DataProperty(:dp))\n" + "\n"
+                + "  Declaration(DataProperty(:dp))\n" + '\n'
                 + "  DataPropertyAssertion(:dp :a \"true\"^^xsd:boolean)\n"
                 + "  DataPropertyAssertion(:dp :a \"false\"^^xsd:boolean)\n"
-                + ")";
+                + ')';
         String id = "Qualified_cardinality_boolean";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "According to qualified cardinality restriction individual a should have two boolean values. Since there are only two boolean values, the data property assertions can be entailed.";
@@ -72,13 +72,13 @@ public class Broken {
         OWLObjectProperty atotwoaprime = ObjectProperty(IRI(ns + "atotwoaprime"));
         OWLObjectProperty atob = ObjectProperty(IRI(ns + "atob"));
         OWLClass bandc = Class(IRI(ns + "bandc"));
-        OWLClass b = Class(IRI(ns + "b"));
-        OWLClass c = Class(IRI(ns + "c"));
-        OWLClass a = Class(IRI(ns + "a"));
+        OWLClass b = Class(IRI(ns + 'b'));
+        OWLClass c = Class(IRI(ns + 'c'));
+        OWLClass a = Class(IRI(ns + 'a'));
         OWLObjectProperty twoatobandc = ObjectProperty(IRI(ns + "twoatobandc"));
-        OWLNamedIndividual j = NamedIndividual(IRI(ns + "j"));
-        OWLNamedIndividual i = NamedIndividual(IRI(ns + "i"));
-        OWLNamedIndividual k = NamedIndividual(IRI(ns + "k"));
+        OWLNamedIndividual j = NamedIndividual(IRI(ns + 'j'));
+        OWLNamedIndividual i = NamedIndividual(IRI(ns + 'i'));
+        OWLNamedIndividual k = NamedIndividual(IRI(ns + 'k'));
         OWLObjectProperty bandctotwoaprime = ObjectProperty(IRI(ns
                 + "bandctotwoaprime"));
         OWLObjectProperty btoaprime = ObjectProperty(IRI(ns + "btoaprime"));
@@ -176,7 +176,7 @@ public class Broken {
                 + "DataAllValuesFrom(:dp DataOneOf(\"2\"^^xsd:short \"3\"^^xsd:int)))\n"
                 + "  ClassAssertion(:A :a)\n"
                 + "  ClassAssertion(DataSomeValuesFrom(:dp DataOneOf(\"3\"^^xsd:integer)) :a\n"
-                + "  )\n" + ")";
+                + "  )\n" + ')';
         String conclusion = "";
         String id = "Consistent_Datatype_restrictions_with_Different_Types";
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
@@ -218,7 +218,7 @@ public class Broken {
                 + "  <owl:DatatypeProperty rdf:about=\"premises009#p\">\n"
                 + "    <rdfs:range rdf:resource=\n"
                 + "  \"http://www.w3.org/2001/XMLSchema#short\" /></owl:DatatypeProperty>\n"
-                + "\n" + "</rdf:RDF>";
+                + '\n' + "</rdf:RDF>";
         String id = "WebOnt_I5_8_009";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "0 is the only xsd:nonNegativeInteger which is\n"

@@ -54,7 +54,7 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
         if (value instanceof Literal
                 && !this.host.isCompatible((Literal<?>) value)) {
             throw new IllegalArgumentException(
-                    "Not a valid value for this expression: " + f + "\t"
+                    "Not a valid value for this expression: " + f + '\t'
                             + value + " for: " + this);
         }
         DatatypeNumericExpressionImpl<O> toReturn = new DatatypeNumericExpressionImpl<O>(
@@ -93,7 +93,7 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
         if (value instanceof Literal
                 && !this.host.isCompatible((Literal<?>) value)) {
             throw new IllegalArgumentException(
-                    "Not a valid value for this expression: " + f + "\t"
+                    "Not a valid value for this expression: " + f + '\t'
                             + value + " for: " + this);
         }
         DatatypeNumericExpressionImpl<O> toReturn = new DatatypeNumericExpressionImpl<O>(
@@ -156,6 +156,6 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
     @Override
     public String toString() {
         return "numeric(" + this.host.toString() + "(extra facets:" + getMin()
-                + " " + getMax() + "))";
+                + ' ' + getMax() + "))";
     }
 }

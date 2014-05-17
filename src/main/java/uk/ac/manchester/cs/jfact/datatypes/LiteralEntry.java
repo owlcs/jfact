@@ -79,8 +79,8 @@ public class LiteralEntry extends NamedEntry {
 
     @Override
     public String toString() {
-        return "(" + this.getClass().getSimpleName() + " " + literal.toString()
-                + super.toString() + ")";
+        return '(' + this.getClass().getSimpleName() + ' ' + literal.toString()
+                + super.toString() + ')';
     }
 
     @Override

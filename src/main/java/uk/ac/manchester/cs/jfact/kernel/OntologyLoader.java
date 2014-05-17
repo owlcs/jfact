@@ -83,7 +83,7 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         try {
             return Role.resolveRole(r.accept(expressionTranslator));
         } catch (OWLRuntimeException e) {
-            throw new ReasonerInternalException(reason + "\t" + e.getMessage(),
+            throw new ReasonerInternalException(reason + '\t' + e.getMessage(),
                     e);
         }
     }

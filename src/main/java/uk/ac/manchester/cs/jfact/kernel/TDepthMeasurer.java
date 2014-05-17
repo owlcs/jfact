@@ -105,11 +105,11 @@ public class TDepthMeasurer extends DLExpressionVisitorAdapter {
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "PrintDepthTable")
     public void PrintDepthTable() {
         System.out.println("Total nominal occurrences: "
-                + TotalNominalOccurences + "\n");
+                + TotalNominalOccurences + '\n');
         for (Map.Entry<ConceptExpression, Integer> e : DepthOfNominalOccurences
                 .entrySet()) {
             System.out.print(e.getKey());
-            System.out.println(" has depth " + e.getValue() + "\n");
+            System.out.println(" has depth " + e.getValue() + '\n');
         }
     }
 }

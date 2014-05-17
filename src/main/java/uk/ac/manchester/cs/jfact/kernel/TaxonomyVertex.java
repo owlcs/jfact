@@ -462,9 +462,9 @@ public class TaxonomyVertex implements Serializable {
         assert sample != null;
         StringBuilder o = new StringBuilder();
         if (synonyms.isEmpty()) {
-            o.append("\"");
+            o.append('"');
             o.append(sample.getName());
-            o.append("\"");
+            o.append('"');
         } else {
             o.append("(\"");
             o.append(sample.getName());
@@ -487,7 +487,7 @@ public class TaxonomyVertex implements Serializable {
         StringBuilder o = new StringBuilder();
         o.append(" {");
         o.append(neigh(upDirection).size());
-        o.append(":");
+        o.append(':');
         TreeSet<TaxonomyVertex> sorted = new TreeSet<TaxonomyVertex>(
                 new Comparator<TaxonomyVertex>() {
 
@@ -501,9 +501,9 @@ public class TaxonomyVertex implements Serializable {
         for (TaxonomyVertex p : sorted) {
             o.append(" \"");
             o.append(p.sample.getName());
-            o.append("\"");
+            o.append('"');
         }
-        o.append("}");
+        o.append('}');
         return o.toString();
     }
 
@@ -513,7 +513,7 @@ public class TaxonomyVertex implements Serializable {
         b.append(printSynonyms());
         b.append(printNeighbours(true));
         b.append(printNeighbours(false));
-        b.append("\n");
+        b.append('\n');
         return b.toString();
     }
 }

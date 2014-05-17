@@ -312,7 +312,7 @@ public class ArrayIntMap implements Serializable {
     @Override
     public String toString() {
         if (values != null) {
-            return Arrays.toString(Arrays.copyOf(values[0], size)) + "\n"
+            return Arrays.toString(Arrays.copyOf(values[0], size)) + '\n'
                     + Arrays.toString(Arrays.copyOf(values[1], size));
         }
         return "[]";

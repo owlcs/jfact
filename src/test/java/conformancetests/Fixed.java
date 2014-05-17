@@ -58,7 +58,7 @@ public class Fixed {
                 + "ClassAssertion(owl:Thing <urn:t:p#i>)\n"
                 + "ClassAssertion(DataMinCardinality(1 <urn:t:p#p>) <urn:t:p#i>)\n"
                 // +"DataPropertyAssertion(<urn:t:p#p> <urn:t:p#i> \"4\"^^xsd:integer)"
-                + ")";
+                + ')';
         String conclusion = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
                 + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\nPrefix(xml:=<http://www.w3.org/XML/1998/namespace>)\nPrefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\nPrefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)\n"
                 + "Ontology(\nDeclaration(DataProperty(<urn:t:p#p>))\n"
@@ -83,7 +83,7 @@ public class Fixed {
                 + "ClassAssertion(DataMinCardinality(1 <urn:t:p#p>) <urn:t:p#i>)\n"
                 // +
                 // "DataPropertyAssertion(<urn:t:p#p> <urn:t:p#i> \"4\"^^xsd:integer)"
-                + ")";
+                + ')';
         OWLOntology o = OWLManager.createOWLOntologyManager()
                 .loadOntologyFromOntologyDocument(
                         new StringDocumentSource(premise));
@@ -151,19 +151,19 @@ public class Fixed {
         OWLNamedIndividual i1 = NamedIndividual(IRI(ns + "i1"));
         OWLNamedIndividual i2 = NamedIndividual(IRI(ns + "i2"));
         OWLNamedIndividual i3 = NamedIndividual(IRI(ns + "i3"));
-        OWLClass a = Class(IRI(ns + "a"));
-        OWLClass b = Class(IRI(ns + "b"));
-        OWLClass c = Class(IRI(ns + "c"));
-        OWLClass d = Class(IRI(ns + "d"));
-        OWLClass e = Class(IRI(ns + "e"));
-        OWLObjectProperty q = ObjectProperty(IRI(ns + "q"));
-        OWLObjectProperty p = ObjectProperty(IRI(ns + "p"));
-        OWLObjectProperty s = ObjectProperty(IRI(ns + "s"));
-        OWLObjectProperty t = ObjectProperty(IRI(ns + "t"));
-        OWLObjectProperty v = ObjectProperty(IRI(ns + "v"));
-        OWLObjectProperty w = ObjectProperty(IRI(ns + "w"));
-        OWLObjectProperty z = ObjectProperty(IRI(ns + "z"));
-        OWLObjectProperty r = ObjectProperty(IRI(ns + "r"));
+        OWLClass a = Class(IRI(ns + 'a'));
+        OWLClass b = Class(IRI(ns + 'b'));
+        OWLClass c = Class(IRI(ns + 'c'));
+        OWLClass d = Class(IRI(ns + 'd'));
+        OWLClass e = Class(IRI(ns + 'e'));
+        OWLObjectProperty q = ObjectProperty(IRI(ns + 'q'));
+        OWLObjectProperty p = ObjectProperty(IRI(ns + 'p'));
+        OWLObjectProperty s = ObjectProperty(IRI(ns + 's'));
+        OWLObjectProperty t = ObjectProperty(IRI(ns + 't'));
+        OWLObjectProperty v = ObjectProperty(IRI(ns + 'v'));
+        OWLObjectProperty w = ObjectProperty(IRI(ns + 'w'));
+        OWLObjectProperty z = ObjectProperty(IRI(ns + 'z'));
+        OWLObjectProperty r = ObjectProperty(IRI(ns + 'r'));
         OWLObjectUnionOf domain = ObjectUnionOf(ObjectOneOf(i1),
                 ObjectOneOf(i2), ObjectOneOf(i3));
         m.addAxiom(o, Declaration(e));
@@ -1247,7 +1247,7 @@ public class Fixed {
                 + "  Declaration(DataProperty(:hasAge))\n"
                 + "  DataPropertyRange(:hasAge xsd:integer)\n"
                 + "  ClassAssertion(DataHasValue(:hasAge \"aString\"^^xsd:string) :a)\n"
-                + ")";
+                + ')';
         String conclusion = "";
         String id = "string_integer_clash";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -1512,7 +1512,7 @@ public class Fixed {
                 + "      xsd:dateTime \n"
                 + "      xsd:minInclusive \"2008-07-08T20:44:11.656+01:00\"^^xsd:dateTime \n"
                 + "      xsd:maxInclusive \"2008-10-08T20:44:11.656+01:00\"^^xsd:dateTime)\n"
-                + "    )\n" + "  ) \n" + "  ClassAssertion(:A :a)\n" + ")";
+                + "    )\n" + "  ) \n" + "  ClassAssertion(:A :a)\n" + ')';
         String conclusion = "";
         String id = "Contradicting_dateTime_restrictions";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -1536,7 +1536,7 @@ public class Fixed {
                 + "  )\n" + "  ClassAssertion(:A :a)\n"
                 + "  ClassAssertion(DataSomeValuesFrom(:dp\n"
                 + "  DataComplementOf(DataOneOf(\"3\"^^xsd:integer))) :a)\n"
-                + ")";
+                + ')';
         String conclusion = "";
         String id = "Inconsistent_Data_Complement_with_the_Restrictions";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -1555,7 +1555,7 @@ public class Fixed {
                 + "  Declaration(DataProperty(:numberOfChildren))\n"
                 + "  DataPropertyAssertion(:numberOfChildren :Meg \"+0.0\"^^xsd:float) \n"
                 + "  DataPropertyAssertion(:numberOfChildren :Meg \"-0.0\"^^xsd:float) \n"
-                + "  FunctionalDataProperty(:numberOfChildren)\n" + ")";
+                + "  FunctionalDataProperty(:numberOfChildren)\n" + ')';
         String conclusion = "";
         String id = "Plus_and_Minus_Zero_are_Distinct";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -1577,7 +1577,7 @@ public class Fixed {
                 + "  ClassAssertion(:A :a)\n"
                 + "  ClassAssertion(\n"
                 + "    DataSomeValuesFrom(:dp DataOneOf(\"6542145\"^^xsd:integer)) :a\n"
-                + "  )\n" + ")";
+                + "  )\n" + ')';
         String conclusion = "";
         String id = "Inconsistent_Byte_Filler";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");

@@ -38,7 +38,7 @@ public class DebugVerifyComplianceUniversityTestCase {
                 + "DisjointClasses(<urn:uni#Lecturer> <urn:uni#Professor>)\n"
                 + "EquivalentClasses(<urn:uni#Professor> DataHasValue(<urn:uni#hasTenure> \"true\"^^xsd:boolean))\n"
                 + "DataPropertyDomain(<urn:uni#hasTenure> <urn:uni#TeachingFaculty>)\n"
-                + "DataPropertyRange(<urn:uni#hasTenure> xsd:boolean)\n" + ")";
+                + "DataPropertyRange(<urn:uni#hasTenure> xsd:boolean)\n" + ')';
         return OWLManager.createOWLOntologyManager()
                 .loadOntologyFromOntologyDocument(
                         new StringDocumentSource(input));

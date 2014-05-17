@@ -530,7 +530,10 @@ public class ReasoningKernel implements Serializable {
         }
     }
 
-    /** @throw an exception if no TBox found */
+    /**
+     * @throws ReasonerInternalException
+     *         exception if no TBox found
+     */
     @PortedFrom(file = "Kernel.h", name = "checkTBox")
     private void checkTBox() {
         if (pTBox == null) {
@@ -1801,12 +1804,10 @@ public class ReasoningKernel implements Serializable {
                 NewSig.begin());
         AddedEntities.removeAll(OntoSig.begin());
         Taxonomy tax = getCTaxonomy();
-        Set<Concept> excluded = new HashSet<Concept>();
         // deal with removed concepts
         for (NamedEntity e : RemovedEntities) {
             if (e.getEntry() instanceof Concept) {
                 Concept C = (Concept) e.getEntry();
-                excluded.add(C);
                 // remove all links
                 C.getTaxVertex().remove();
                 // update Name2Sig
@@ -2516,7 +2517,7 @@ public class ReasoningKernel implements Serializable {
      *        true if artificial abox
      */
     @Original
-    public void evaluateQuery(MultiMap<String, ConceptExpression> query,
+    public void evaluateQuery(MultiMap<IRI, ConceptExpression> query,
             boolean artificialABox) {
         conjunctiveQueryFolding.evaluateQuery(query, this, artificialABox);
     }

@@ -47,7 +47,7 @@ public abstract class NamedEntityImpl implements NamedEntity, Serializable {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + "(" + name + ")";
+        return this.getClass().getSimpleName() + '(' + name + ')';
     }
 
     @Override

@@ -358,23 +358,23 @@ public class DLVertex extends DLVertexTagDFS {
         if (extendedStats) {
             o.append("[d(");
             o.append(stat[0]);
-            o.append("/");
+            o.append('/');
             o.append(stat[1]);
             o.append("),s(");
             o.append(stat[2]);
-            o.append("/");
+            o.append('/');
             o.append(stat[3]);
             o.append("),b(");
             o.append(stat[4]);
-            o.append("/");
+            o.append('/');
             o.append(stat[5]);
             o.append("),g(");
             o.append(stat[6]);
-            o.append("/");
+            o.append('/');
             o.append(stat[7]);
             o.append("),f(");
             o.append(stat[8]);
-            o.append("/");
+            o.append('/');
             o.append(stat[9]);
             o.append(")] ");
         }
@@ -395,7 +395,7 @@ public class DLVertex extends DLVertexTagDFS {
             case dtNN:
                 return o.toString();
             case dtDataExpr:
-                o.append(" ");
+                o.append(' ');
                 o.append(concept);
                 return o.toString();
             case dtDataValue:
@@ -409,22 +409,22 @@ public class DLVertex extends DLVertexTagDFS {
                         conceptIndex));
                 return o.toString();
             case dtLE:
-                o.append(" ").append(n).append(" ").append(role.getName())
-                        .append(" ").append(conceptIndex);
+                o.append(' ').append(n).append(' ').append(role.getName())
+                        .append(' ').append(conceptIndex);
                 return o.toString();
             case dtForall:
                 o.append(String.format(Templates.DLVERTEXPrint3.getTemplate(),
                         role.getName(), n, conceptIndex));
                 return o.toString();
             case dtIrr:
-                o.append(" ").append(role.getName());
+                o.append(' ').append(role.getName());
                 return o.toString();
             case dtProj:
                 o.append(String.format(Templates.DLVERTEXPrint4.getTemplate(),
                         role.getName(), conceptIndex, projRole.getName()));
                 return o.toString();
             case dtChoose:
-                o.append(" ").append(getConceptIndex());
+                o.append(' ').append(getConceptIndex());
                 return o.toString();
             default:
                 throw new ReasonerInternalException(String.format(
@@ -432,7 +432,7 @@ public class DLVertex extends DLVertexTagDFS {
                         op));
         }
         for (int q : child.sorted()) {
-            o.append(" ");
+            o.append(' ');
             o.append(q);
         }
         return o.toString();

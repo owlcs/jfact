@@ -213,15 +213,15 @@ public class ToDoList implements Serializable {
     @Override
     public String toString() {
         StringBuilder l = new StringBuilder("Todolist{");
-        l.append("\n");
+        l.append('\n');
         l.append(queueID);
-        l.append("\n");
+        l.append('\n');
         for (int i = 0; i < nRegularOptions; ++i) {
             l.append(waitQueue.get(i));
-            l.append("\n");
+            l.append('\n');
         }
-        l.append("\n");
-        l.append("}");
+        l.append('\n');
+        l.append('}');
         return l.toString();
     }
 }

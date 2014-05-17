@@ -168,7 +168,7 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends
 
     @Override
     public String toString() {
-        return this.getClass().getName() + "(" + this.host.toString()
+        return this.getClass().getName() + '(' + this.host.toString()
                 + "(extra facets:" + knownNumericFacetValues + "))";
     }
 

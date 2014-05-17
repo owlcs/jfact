@@ -43,7 +43,7 @@ public class Facets implements Serializable {
 
         @Override
         public String toString() {
-            return "facet[" + fragment + "]";
+            return "facet[" + fragment + ']';
         }
 
         @Override
@@ -346,7 +346,7 @@ public class Facets implements Serializable {
      * @return facet
      */
     public static Facet parse(String _f) {
-        String f = "#" + _f.substring(_f.indexOf(':') + 1);
+        String f = '#' + _f.substring(_f.indexOf(':') + 1);
         for (Facet facet : values) {
             if (facet.getURI().endsWith(f)) {
                 return facet;

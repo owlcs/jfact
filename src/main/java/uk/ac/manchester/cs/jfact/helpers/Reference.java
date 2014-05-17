@@ -46,7 +46,7 @@ public class Reference<E> implements Serializable {
     @Override
     public String toString() {
         if (e != null) {
-            return "ref(" + e.toString() + ")";
+            return "ref(" + e.toString() + ')';
         }
         return "ref(null)";
     }

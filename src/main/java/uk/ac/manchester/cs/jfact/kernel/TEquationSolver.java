@@ -80,10 +80,8 @@ class TEquationSolver implements Serializable {
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "getNominal")
-    public String getNominal() {
-        IRI longNominal = ((ConceptName) LeftPart).getName();
-        int colon = longNominal.toString().lastIndexOf(':');
-        return longNominal.toString().substring(0, colon);
+    public IRI getNominal() {
+        return ((ConceptName) LeftPart).getName();
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "getPhi")

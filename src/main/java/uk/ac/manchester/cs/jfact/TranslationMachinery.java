@@ -117,6 +117,7 @@ public class TranslationMachinery implements Serializable {
                 AxiomInterface axiomPointer = axiom.accept(axiomTranslator);
                 if (axiomPointer != null) {
                     axiom2PtrMap.put(axiom, axiomPointer);
+                    ptr2AxiomMap.put(axiomPointer, axiom);
                 }
             }
         }
@@ -131,6 +132,7 @@ public class TranslationMachinery implements Serializable {
         if (ptr != null) {
             kernel.getOntology().retract(ptr);
             axiom2PtrMap.remove(axiom);
+            ptr2AxiomMap.remove(ptr);
         }
     }
 
@@ -180,7 +182,7 @@ public class TranslationMachinery implements Serializable {
     protected synchronized Literal<?> pointer(OWLLiteral literal) {
         String value = literal.getLiteral();
         if (literal.isRDFPlainLiteral()) {
-            value = value + "@" + literal.getLang();
+            value = value + '@' + literal.getLang();
         }
         IRI string = literal.getDatatype().getIRI();
         Datatype<?> knownDatatype = datatypefactory.getKnownDatatype(string);
