@@ -1,0 +1,72 @@
+package bugs;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
+import org.semanticweb.owlapi.io.StringDocumentSource;
+import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+
+import uk.ac.manchester.cs.jfact.JFactFactory;
+import uk.ac.manchester.cs.jfact.JFactReasoner;
+
+@SuppressWarnings("javadoc")
+public class DebugVerifyComplianceUniversityTestCase {
+
+    private JFactReasoner reasoner;
+    private OWLDataFactory df = OWLManager.getOWLDataFactory();
+
+    private OWLOntology load() throws OWLOntologyCreationException {
+        String input = "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
+                + "Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\n"
+                + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
+                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+                + "Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)\n"
+                + "Ontology(<urn:uni>\n"
+                + "Declaration(Class(<urn:uni#Professor>))\n"
+                + "Declaration(Class(<urn:uni#TeachingFaculty>))\n"
+                + "Declaration(DataProperty(<urn:uni#hasTenure>))\n"
+                + "EquivalentClasses(<urn:uni#Lecturer> DataHasValue(<urn:uni#hasTenure> \"false\"^^xsd:boolean))\n"
+                + "DisjointClasses(<urn:uni#Lecturer> <urn:uni#Professor>)\n"
+                + "EquivalentClasses(<urn:uni#Professor> DataHasValue(<urn:uni#hasTenure> \"true\"^^xsd:boolean))\n"
+                + "DataPropertyDomain(<urn:uni#hasTenure> <urn:uni#TeachingFaculty>)\n"
+                + "DataPropertyRange(<urn:uni#hasTenure> xsd:boolean)\n" + ")";
+        return OWLManager.createOWLOntologyManager()
+                .loadOntologyFromOntologyDocument(
+                        new StringDocumentSource(input));
+    }
+
+    private void equal(Object o, boolean object) {
+        assertEquals(object, o);
+    }
+
+    private OWLClass C(String i) {
+        return df.getOWLClass(IRI.create(i));
+    }
+
+    private OWLClass Professor = C("urn:uni#Professor");
+
+    @Before
+    public void setUp() throws OWLOntologyCreationException {
+        reasoner = (JFactReasoner) new JFactFactory().createReasoner(load());
+    }
+
+    protected void print(OWLOntology o) throws OWLOntologyStorageException {
+        o.getOWLOntologyManager().saveOntology(o,
+                new OWLFunctionalSyntaxOntologyFormat(),
+                new SystemOutDocumentTarget());
+    }
+
+    @Test
+    public void shouldPassisSatisfiableProfessor() {
+        equal(reasoner.isSatisfiable(Professor), true);
+    }
+}
