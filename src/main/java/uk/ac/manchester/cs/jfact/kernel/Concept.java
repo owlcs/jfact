@@ -329,9 +329,9 @@ public class Concept extends ClassifiableEntry {
                 description.addFirstChildren(Desc.getChildren());
             } else {
                 // if it's not an AND then a new AND must be created
-                DLTree temp = description;
+                DLTree t = description;
                 description = Desc.copy();
-                description.addChild(temp);
+                description.addChild(t);
             }
         } else {
             if (description.isAND()) {

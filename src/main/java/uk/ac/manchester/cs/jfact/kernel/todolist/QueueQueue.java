@@ -45,12 +45,17 @@ public class QueueQueue implements Serializable {
         }
 
         // restore: copy the queue back, adjust pointers
+        @Override
         public void restore() {
             queue._Wait = Wait;
             queue.sPointer = sp;
         }
     }
 
+    /**
+     * @param rare
+     *        rare stack
+     */
     public QueueQueue(SaveStackRare rare) {
         stack = rare;
     }

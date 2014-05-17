@@ -2431,8 +2431,8 @@ public class TBox implements Serializable {
     /**
      * @param C
      *        C
-     * @param D
-     *        D
+     * @param E
+     *        superclass
      */
     @PortedFrom(file = "dlTBox.h", name = "addSubsumeForDefined")
     public void addSubsumeForDefined(Concept C, DLTree E) {
@@ -2754,6 +2754,12 @@ public class TBox implements Serializable {
     }
 
     /**
+     * @param C
+     *        concept
+     * @param tree
+     *        superclass
+     * @param processed
+     *        processed set
      * @return true if C is referenced in TREE; use PROCESSED to record explored
      *         names
      */
@@ -2794,6 +2800,12 @@ public class TBox implements Serializable {
     }
 
     /**
+     * @param C
+     *        concept
+     * @param D
+     *        superclass
+     * @param processed
+     *        processed
      * @return true if C is referenced in the definition of concept D; use
      *         PROCESSED to record explored names
      */

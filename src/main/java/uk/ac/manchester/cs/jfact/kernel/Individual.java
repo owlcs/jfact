@@ -69,6 +69,8 @@ public class Individual extends Concept {
     /**
      * update told subsumers from the RELATED axioms in a given range
      * 
+     * @param <T>
+     *        type
      * @param begin
      *        begin
      * @param RolesProcessed

@@ -92,7 +92,12 @@ public class ToDoList implements Serializable {
         noe = tss.noe;
     }
 
-    /** default constructor */
+    /**
+     * default constructor
+     * 
+     * @param r
+     *        rare stack
+     */
     public ToDoList(SaveStackRare r) {
         queueNN = new QueueQueue(r);
         noe = 0;

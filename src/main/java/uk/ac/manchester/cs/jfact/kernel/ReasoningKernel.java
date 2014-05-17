@@ -1272,6 +1272,8 @@ public class ReasoningKernel implements Serializable {
      *        actor
      * @param supDirection
      *        true for superClasses, false for subclasses
+     * @param <T>
+     *        type
      * @return actor
      */
     @PortedFrom(file = "Kernel.h", name = "getSupConcepts")
@@ -1318,6 +1320,8 @@ public class ReasoningKernel implements Serializable {
      *        C
      * @param actor
      *        actor
+     * @param <T>
+     *        type
      * @return actor
      */
     @PortedFrom(file = "Kernel.h", name = "getEquivalentConcepts")
@@ -1413,6 +1417,8 @@ public class ReasoningKernel implements Serializable {
      *        direct
      * @param actor
      *        actor
+     * @param <T>
+     *        type
      * @return modified actor
      */
     @PortedFrom(file = "Kernel.h", name = "getORoleDomain")
@@ -1438,6 +1444,8 @@ public class ReasoningKernel implements Serializable {
      *        direct
      * @param actor
      *        actor
+     * @param <T>
+     *        type
      * @return modified actor
      */
     @PortedFrom(file = "Kernel.h", name = "getDRoleDomain")
@@ -1463,6 +1471,8 @@ public class ReasoningKernel implements Serializable {
      *        direct
      * @param actor
      *        actor
+     * @param <T>
+     *        type
      */
     @PortedFrom(file = "Kernel.h", name = "getRoleRange")
     private <T extends ConceptExpression> void getRoleRange(

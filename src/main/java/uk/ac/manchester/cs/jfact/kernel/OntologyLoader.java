@@ -121,6 +121,8 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
      * 
      * @param c
      *        c
+     * @param <T>
+     *        type
      * @return list of arguments
      */
     @PortedFrom(file = "tOntologyLoader.h", name = "prepareArgList")
