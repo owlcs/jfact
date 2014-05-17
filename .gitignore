@@ -6,3 +6,5 @@
 /reports
 /.checkstyle
 /.pmd
+.idea/*
+.DS_Store
