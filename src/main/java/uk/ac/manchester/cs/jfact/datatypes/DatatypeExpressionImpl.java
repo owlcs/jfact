@@ -7,14 +7,19 @@ package uk.ac.manchester.cs.jfact.datatypes;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.Collection;
 
-class DatatypeExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<O>
-        implements DatatypeExpression<O> {
+import org.semanticweb.owlapi.model.IRI;
+
+class DatatypeExpressionImpl<O extends Comparable<O>> extends
+        ABSTRACT_DATATYPE<O> implements DatatypeExpression<O> {
+
     private static final long serialVersionUID = 11000L;
     // TODO handle all value space restrictions in the delegations
     private final Datatype<O> host;
 
     public DatatypeExpressionImpl(Datatype<O> b) {
-        super(b.getDatatypeURI() + "_" + DatatypeFactory.getIndex(), b.getFacets());
+        super(
+                IRI.create(b.getDatatypeIRI() + "_"
+                        + DatatypeFactory.getIndex()), b.getFacets());
         if (b.isExpression()) {
             this.host = b.asExpression().getHostType();
         } else {
@@ -160,8 +165,8 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<
 
     @Override
     public String toString() {
-        return this.getClass().getName() + "(" + this.host.toString() + "(extra facets:"
-                + knownNumericFacetValues + "))";
+        return this.getClass().getName() + '(' + this.host.toString()
+                + "(extra facets:" + knownNumericFacetValues + "))";
     }
 
     @Override

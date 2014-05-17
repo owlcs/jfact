@@ -18,6 +18,7 @@ import conformance.PortedFrom;
 /** ontology */
 @PortedFrom(file = "tOntology.h", name = "TOntology")
 public class Ontology implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** all the axioms */
     @PortedFrom(file = "tOntology.h", name = "Axioms")
@@ -37,7 +38,7 @@ public class Ontology implements Serializable {
     @PortedFrom(file = "tOntology.h", name = "Splits")
     private final TSplitVars Splits = new TSplitVars();
 
-    @SuppressWarnings("javadoc")
+    /** default constructor */
     public Ontology() {
         axiomId = 0;
         changed = false;
@@ -49,8 +50,11 @@ public class Ontology implements Serializable {
         return Splits;
     }
 
-    /** @param i
-     * @return axiom in position i */
+    /**
+     * @param i
+     *        i
+     * @return axiom in position i
+     */
     @PortedFrom(file = "tOntology.h", name = "get")
     public AxiomInterface get(int i) {
         return axioms.get(i);
@@ -69,10 +73,13 @@ public class Ontology implements Serializable {
         changed = false;
     }
 
-    /** add given axiom to the ontology
+    /**
+     * add given axiom to the ontology
      * 
      * @param p
-     * @return p */
+     *        p
+     * @return p
+     */
     @PortedFrom(file = "tOntology.h", name = "add")
     public AxiomInterface add(AxiomInterface p) {
         p.setId(++axiomId);
@@ -81,9 +88,12 @@ public class Ontology implements Serializable {
         return p;
     }
 
-    /** retract given axiom to the ontology
+    /**
+     * retract given axiom to the ontology
      * 
-     * @param p */
+     * @param p
+     *        p
+     */
     @PortedFrom(file = "tOntology.h", name = "retract")
     public void retract(AxiomInterface p) {
         changed = true;

@@ -9,6 +9,7 @@ import org.junit.Test;
 
 @SuppressWarnings("javadoc")
 public class OWL2 {
+
     @Test
     public void testowl2_rl_anonymous_individual() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:j.0=\"http://owl2.test/rules#\">\n"
@@ -285,19 +286,20 @@ public class OWL2 {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs= \"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology rdf:about=\"http://example.org/\"/>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"http://example.org/\">\n"
                 + "  <rdfs:label>An example ontology</rdfs:label></rdf:Description>\n"
-                + "\n"
+                + '\n'
                 + "<owl:Annotation>\n"
                 + "  <owl:annotatedSource rdf:resource=\"http://example.org/\" />\n"
                 + "  <owl:annotatedProperty rdf:resource=\"http://www.w3.org/2000/01/rdf-schema#label\" />\n"
                 + "  <owl:annotatedTarget>An example ontology</owl:annotatedTarget>\n"
-                + "  <author>Mike Smith</author>\n" + "</owl:Annotation>\n" + "\n"
-                + "<owl:AnnotationProperty rdf:about=\"author\" />\n"
-                + "<owl:NamedIndividual rdf:about=\"i\" />\n" + "\n" + "</rdf:RDF>";
+                + "  <author>Mike Smith</author>\n" + "</owl:Annotation>\n"
+                + '\n' + "<owl:AnnotationProperty rdf:about=\"author\" />\n"
+                + "<owl:NamedIndividual rdf:about=\"i\" />\n" + '\n'
+                + "</rdf:RDF>";
         String conclusion = "";
         String id = "New_Feature_AnnotationAnnotations_001";
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
@@ -312,14 +314,15 @@ public class OWL2 {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n" + "<owl:Ontology/>\n" + "\n"
+                + '\n' + "<owl:Ontology/>\n" + '\n'
                 + "<owl:ObjectProperty rdf:about=\"parentOf\" />\n"
-                + "<owl:AsymmetricProperty rdf:about=\"parentOf\" />\n" + "\n"
+                + "<owl:AsymmetricProperty rdf:about=\"parentOf\" />\n" + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
-                + "  <parentOf rdf:resource=\"Stewie\" />\n" + "</rdf:Description>\n"
-                + "\n" + "<rdf:Description rdf:about=\"Stewie\">\n"
-                + "  <parentOf rdf:resource=\"Peter\" />\n" + "</rdf:Description>\n"
-                + "\n" + "</rdf:RDF>";
+                + "  <parentOf rdf:resource=\"Stewie\" />\n"
+                + "</rdf:Description>\n" + '\n'
+                + "<rdf:Description rdf:about=\"Stewie\">\n"
+                + "  <parentOf rdf:resource=\"Peter\" />\n"
+                + "</rdf:Description>\n" + '\n' + "</rdf:RDF>";
         String conclusion = "";
         String id = "New_Feature_AsymmetricProperty_001";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -334,21 +337,21 @@ public class OWL2 {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:Class rdf:about=\"Child\" />\n"
                 + "<owl:Class rdf:about=\"Person\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Child\">\n"
                 + "  <rdfs:subClassOf rdf:resource=\"Person\" /></rdf:Description>\n"
-                + "\n"
+                + '\n'
                 + "<owl:Axiom>\n"
                 + "  <owl:annotatedSource rdf:resource=\"Child\" />\n"
                 + "  <owl:annotatedProperty rdf:resource=\"http://www.w3.org/2000/01/rdf-schema#subClassOf\" />\n"
                 + "  <owl:annotatedTarget rdf:resource=\"Person\" />\n"
                 + "  <rdfs:comment>Children are people.</rdfs:comment></owl:Axiom>\n"
-                + "\n" + "</rdf:RDF>";
+                + '\n' + "</rdf:RDF>";
         String conclusion = "";
         String id = "New_Feature_AxiomAnnotations_001";
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
@@ -363,15 +366,15 @@ public class OWL2 {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"i\">\n"
                 + "  <rdf:type>\n"
                 + "    <owl:Restriction>\n"
                 + "      <owl:onProperty rdf:resource=\"http://www.w3.org/2002/07/owl#bottomDataProperty\" />\n"
                 + "      <owl:someValuesFrom rdf:resource=\"http://www.w3.org/2000/01/rdf-schema#Literal\" /></owl:Restriction></rdf:type>\n"
-                + "</rdf:Description>\n" + "\n" + "</rdf:RDF>";
+                + "</rdf:Description>\n" + '\n' + "</rdf:RDF>";
         String conclusion = "";
         String id = "New_Feature_BottomDataProperty_001";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -386,15 +389,15 @@ public class OWL2 {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"i\">\n"
                 + "  <rdf:type>\n"
                 + "    <owl:Restriction>\n"
                 + "      <owl:onProperty rdf:resource=\"http://www.w3.org/2002/07/owl#bottomObjectProperty\" />\n"
                 + "      <owl:someValuesFrom rdf:resource=\"http://www.w3.org/2002/07/owl#Thing\" /></owl:Restriction></rdf:type>\n"
-                + "</rdf:Description>\n" + "\n" + "</rdf:RDF>";
+                + "</rdf:Description>\n" + '\n' + "</rdf:RDF>";
         String conclusion = "";
         String id = "New_Feature_BottomObjectProperty_001";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -409,26 +412,29 @@ public class OWL2 {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:ObjectProperty rdf:about=\"hasFather\" />\n"
                 + "<owl:ObjectProperty rdf:about=\"hasMother\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"hasFather\">\n"
                 + "  <owl:propertyDisjointWith rdf:resource=\"hasMother\" /></rdf:Description>\n"
-                + "\n" + "<rdf:Description rdf:about=\"Stewie\">\n"
-                + "  <hasFather rdf:resource=\"Peter\" />\n" + "</rdf:Description>\n"
-                + "\n" + "<rdf:Description rdf:about=\"Stewie\">\n"
-                + "  <hasMother rdf:resource=\"Lois\" />\n" + "</rdf:Description>\n"
-                + "\n" + "</rdf:RDF>";
+                + '\n' + "<rdf:Description rdf:about=\"Stewie\">\n"
+                + "  <hasFather rdf:resource=\"Peter\" />\n"
+                + "</rdf:Description>\n" + '\n'
+                + "<rdf:Description rdf:about=\"Stewie\">\n"
+                + "  <hasMother rdf:resource=\"Lois\" />\n"
+                + "</rdf:Description>\n" + '\n' + "</rdf:RDF>";
         String conclusion = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n" + "<owl:Ontology/>\n" + "\n"
+                + '\n'
+                + "<owl:Ontology/>\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <owl:differentFrom rdf:resource=\"Lois\" /></rdf:Description>\n"
-                + "\n" + "</rdf:RDF>";
+                + '\n' + "</rdf:RDF>";
         String id = "New_Feature_DisjointObjectProperties_001";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Demonstrates use of a disjoint object properties axiom to infer that two individuals are different based on the example in the Structural Specification and Functional-Style Syntax document.";
@@ -442,37 +448,39 @@ public class OWL2 {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:ObjectProperty rdf:about=\"hasFather\" />\n"
                 + "<owl:ObjectProperty rdf:about=\"hasMother\" />\n"
                 + "<owl:ObjectProperty rdf:about=\"hasChild\" />\n"
-                + "\n"
+                + '\n'
                 + "<owl:AllDisjointProperties>\n"
                 + "  <owl:members rdf:parseType=\"Collection\">\n"
                 + "    <rdf:Description rdf:about=\"hasFather\" />\n"
                 + "    <rdf:Description rdf:about=\"hasMother\" />\n"
                 + "    <rdf:Description rdf:about=\"hasChild\" /></owl:members></owl:AllDisjointProperties>\n"
-                + "\n" + "<rdf:Description rdf:about=\"Stewie\">\n"
-                + "  <hasFather rdf:resource=\"Peter\" />\n" + "</rdf:Description>\n"
-                + "\n" + "<rdf:Description rdf:about=\"Stewie\">\n"
-                + "  <hasMother rdf:resource=\"Lois\" />\n" + "</rdf:Description>\n"
-                + "\n" + "<rdf:Description rdf:about=\"Stewie\">\n"
-                + "  <hasChild rdf:resource=\"StewieJr\" />\n" + "</rdf:Description>\n"
-                + "\n" + "</rdf:RDF>";
+                + '\n' + "<rdf:Description rdf:about=\"Stewie\">\n"
+                + "  <hasFather rdf:resource=\"Peter\" />\n"
+                + "</rdf:Description>\n" + '\n'
+                + "<rdf:Description rdf:about=\"Stewie\">\n"
+                + "  <hasMother rdf:resource=\"Lois\" />\n"
+                + "</rdf:Description>\n" + '\n'
+                + "<rdf:Description rdf:about=\"Stewie\">\n"
+                + "  <hasChild rdf:resource=\"StewieJr\" />\n"
+                + "</rdf:Description>\n" + '\n' + "</rdf:RDF>";
         String conclusion = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:AllDifferent>\n"
                 + "  <owl:distinctMembers rdf:parseType=\"Collection\">\n"
                 + "    <rdf:Description rdf:about=\"Peter\" />\n"
                 + "    <rdf:Description rdf:about=\"Lois\" />\n"
                 + "    <rdf:Description rdf:about=\"StewieJr\" /></owl:distinctMembers></owl:AllDifferent>\n"
-                + "\n" + "</rdf:RDF>";
+                + '\n' + "</rdf:RDF>";
         String id = "New_Feature_DisjointObjectProperties_002";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "A modification of test New-Feature-DisjointObjectProperties-001 to demonstrate a ternary disjoint object properties axiom.";
@@ -486,29 +494,30 @@ public class OWL2 {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:Class rdf:about=\"Child\" />\n"
                 + "<owl:Class rdf:about=\"Boy\" />\n"
                 + "<owl:Class rdf:about=\"Girl\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Child\">\n"
                 + "  <owl:disjointUnionOf rdf:parseType=\"Collection\">\n"
                 + "    <rdf:Description rdf:about=\"Boy\" />\n"
                 + "    <rdf:Description rdf:about=\"Girl\" /></owl:disjointUnionOf></rdf:Description>\n"
-                + "\n"
+                + '\n'
                 + "<Child rdf:about=\"Stewie\" />\n"
                 + "<rdf:Description rdf:about=\"Stewie\">\n"
                 + "  <rdf:type>\n"
                 + "    <owl:Class>\n"
                 + "      <owl:complementOf rdf:resource=\"Girl\" /></owl:Class></rdf:type>\n"
-                + "</rdf:Description>\n" + "\n" + "</rdf:RDF>";
+                + "</rdf:Description>\n" + '\n' + "</rdf:RDF>";
         String conclusion = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n" + "<owl:Ontology/>\n" + "\n" + "<owl:Class rdf:about=\"Boy\" />\n"
-                + "\n" + "<Boy rdf:about=\"Stewie\" />\n" + "\n" + "</rdf:RDF>";
+                + '\n' + "<owl:Ontology/>\n" + '\n'
+                + "<owl:Class rdf:about=\"Boy\" />\n" + '\n'
+                + "<Boy rdf:about=\"Stewie\" />\n" + '\n' + "</rdf:RDF>";
         String id = "New_Feature_DisjointUnion_001";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Demonstrates a disjoint union axiom based on the example in the Structural Specification and Functional-Style Syntax document.";
@@ -522,12 +531,12 @@ public class OWL2 {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n" + "<owl:Ontology/>\n" + "\n"
+                + '\n' + "<owl:Ontology/>\n" + '\n'
                 + "<owl:ObjectProperty rdf:about=\"marriedTo\" />\n"
-                + "<owl:IrreflexiveProperty rdf:about=\"marriedTo\" />\n" + "\n"
-                + "<rdf:Description rdf:about=\"Peter\">\n"
-                + "  <marriedTo rdf:resource=\"Peter\" />\n" + "</rdf:Description>\n"
-                + "\n" + "</rdf:RDF>";
+                + "<owl:IrreflexiveProperty rdf:about=\"marriedTo\" />\n"
+                + '\n' + "<rdf:Description rdf:about=\"Peter\">\n"
+                + "  <marriedTo rdf:resource=\"Peter\" />\n"
+                + "</rdf:Description>\n" + '\n' + "</rdf:RDF>";
         String conclusion = "";
         String id = "New_Feature_IrreflexiveProperty_001";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -542,19 +551,19 @@ public class OWL2 {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:DatatypeProperty rdf:about=\"hasAge\" />\n"
-                + "\n"
+                + '\n'
                 + "<owl:NegativePropertyAssertion>\n"
                 + "  <owl:sourceIndividual rdf:resource=\"Meg\" />\n"
                 + "  <owl:assertionProperty rdf:resource=\"hasAge\" />\n"
                 + "  <owl:targetValue rdf:datatype=\"http://www.w3.org/2001/XMLSchema#integer\">5</owl:targetValue></owl:NegativePropertyAssertion>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Meg\">\n"
                 + "  <hasAge rdf:datatype=\"http://www.w3.org/2001/XMLSchema#integer\">5</hasAge></rdf:Description>\n"
-                + "\n" + "</rdf:RDF>";
+                + '\n' + "</rdf:RDF>";
         String conclusion = "";
         String id = "New_Feature_NegativeDataPropertyAssertion_001";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -569,18 +578,18 @@ public class OWL2 {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:ObjectProperty rdf:about=\"hasSon\" />\n"
-                + "\n"
+                + '\n'
                 + "<owl:NegativePropertyAssertion>\n"
                 + "  <owl:sourceIndividual rdf:resource=\"Peter\" />\n"
                 + "  <owl:assertionProperty rdf:resource=\"hasSon\" />\n"
                 + "  <owl:targetIndividual rdf:resource=\"Meg\" /></owl:NegativePropertyAssertion>\n"
-                + "\n" + "<rdf:Description rdf:about=\"Peter\">\n"
-                + "  <hasSon rdf:resource=\"Meg\" />\n" + "</rdf:Description>\n"
-                + "</rdf:RDF>";
+                + '\n' + "<rdf:Description rdf:about=\"Peter\">\n"
+                + "  <hasSon rdf:resource=\"Meg\" />\n"
+                + "</rdf:Description>\n" + "</rdf:RDF>";
         String conclusion = "";
         String id = "New_Feature_NegativeObjectPropertyAssertion_001";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -604,10 +613,11 @@ public class OWL2 {
                 + "    <rdf:Description rdf:about=\"hasMother\" />\n"
                 + "    <rdf:Description rdf:about=\"hasSister\" /></owl:propertyChainAxiom></rdf:Description>\n"
                 + "<rdf:Description rdf:about=\"Stewie\">\n"
-                + "  <hasMother rdf:resource=\"Lois\" />\n" + "</rdf:Description>\n"
+                + "  <hasMother rdf:resource=\"Lois\" />\n"
+                + "</rdf:Description>\n"
                 + "<rdf:Description rdf:about=\"Lois\">\n"
-                + "  <hasSister rdf:resource=\"Carol\" />\n" + "</rdf:Description>\n"
-                + "</rdf:RDF>";
+                + "  <hasSister rdf:resource=\"Carol\" />\n"
+                + "</rdf:Description>\n" + "</rdf:RDF>";
         String conclusion = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
@@ -627,23 +637,25 @@ public class OWL2 {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "    xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdfs= \"http://www.w3.org/2000/01/rdf-schema#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "    <rdf:Description rdf:about=\"p\">\n"
                 + "        <owl:propertyChainAxiom rdf:parseType=\"Collection\">\n"
                 + "            <owl:ObjectProperty rdf:about=\"p\"/>\n"
                 + "            <owl:ObjectProperty rdf:about=\"q\"/></owl:propertyChainAxiom></rdf:Description>\n"
                 + "    \n" + "    <rdf:Description rdf:about=\"a\">\n"
-                + "        <q rdf:resource=\"b\"/>\n" + "    </rdf:Description>\n"
-                + "    \n" + "    <rdf:Description rdf:about=\"b\">\n"
-                + "        <q rdf:resource=\"c\"/>\n" + "    </rdf:Description>\n"
-                + "   \n" + "</rdf:RDF>";
+                + "        <q rdf:resource=\"b\"/>\n"
+                + "    </rdf:Description>\n" + "    \n"
+                + "    <rdf:Description rdf:about=\"b\">\n"
+                + "        <q rdf:resource=\"c\"/>\n"
+                + "    </rdf:Description>\n" + "   \n" + "</rdf:RDF>";
         String conclusion = "<rdf:RDF\n"
                 + "    xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n" + "   <owl:Ontology/>\n"
+                + '\n' + "   <owl:Ontology/>\n"
                 + "   <owl:ObjectProperty rdf:about=\"p\"/>\n"
-                + "   <owl:TransitiveProperty rdf:about=\"p\"/>\n" + "</rdf:RDF>";
+                + "   <owl:TransitiveProperty rdf:about=\"p\"/>\n"
+                + "</rdf:RDF>";
         String id = "New_Feature_ObjectPropertyChain_BJP_004";
         TestClasses tc = TestClasses.valueOf("NEGATIVE_IMPL");
         String d = "A test of an interaction between a role chain +hierarchy and transitivity axioms.";
@@ -657,33 +669,39 @@ public class OWL2 {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n" + "<owl:Ontology/>\n" + "\n"
+                + '\n'
+                + "<owl:Ontology/>\n"
+                + '\n'
                 + "<owl:ObjectProperty rdf:about=\"fatherOf\" />\n"
-                + "<owl:Class rdf:about=\"Man\" />\n" + "\n"
+                + "<owl:Class rdf:about=\"Man\" />\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <fatherOf rdf:resource=\"Stewie\" />\n"
-                + "  <fatherOf rdf:resource=\"Chris\" />\n" + "</rdf:Description>\n"
-                + "\n" + "<Man rdf:about=\"Stewie\" />\n"
-                + "<Man rdf:about=\"Chris\" />\n" + "\n"
+                + "  <fatherOf rdf:resource=\"Chris\" />\n"
+                + "</rdf:Description>\n"
+                + '\n'
+                + "<Man rdf:about=\"Stewie\" />\n"
+                + "<Man rdf:about=\"Chris\" />\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Stewie\">\n"
                 + "  <owl:differentFrom rdf:resource=\"Chris\" /></rdf:Description>\n"
-                + "\n" + "</rdf:RDF>";
+                + '\n' + "</rdf:RDF>";
         String conclusion = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:ObjectProperty rdf:about=\"fatherOf\" />\n"
                 + "<owl:Class rdf:about=\"Man\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <rdf:type>\n"
                 + "    <owl:Restriction>\n"
                 + "      <owl:onProperty rdf:resource=\"fatherOf\" />\n"
                 + "      <owl:minQualifiedCardinality rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\">2</owl:minQualifiedCardinality>\n"
                 + "      <owl:onClass rdf:resource=\"Man\" /></owl:Restriction></rdf:type>\n"
-                + "</rdf:Description>\n" + "\n" + "</rdf:RDF>";
+                + "</rdf:Description>\n" + '\n' + "</rdf:RDF>";
         String id = "New_Feature_ObjectQCR_001";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Demonstrates a qualified minimum cardinality object property restriction based on example in the Structural Specification and Functional-Style Syntax document.";
@@ -697,41 +715,42 @@ public class OWL2 {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:ObjectProperty rdf:about=\"fatherOf\" />\n"
                 + "<owl:Class rdf:about=\"Woman\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <fatherOf rdf:resource=\"Stewie\" />\n"
                 + "  <fatherOf rdf:resource=\"Meg\" /></rdf:Description>\n"
-                + "\n"
+                + '\n'
                 + "<Woman rdf:about=\"Meg\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <rdf:type>\n"
                 + "    <owl:Restriction>\n"
                 + "      <owl:onProperty rdf:resource=\"fatherOf\" />\n"
                 + "      <owl:maxQualifiedCardinality rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\">1</owl:maxQualifiedCardinality>\n"
                 + "      <owl:onClass rdf:resource=\"Woman\" /></owl:Restriction></rdf:type>\n"
-                + "</rdf:Description>\n" + "\n"
+                + "</rdf:Description>\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Stewie\">\n"
                 + "  <owl:differentFrom rdf:resource=\"Meg\" /></rdf:Description>\n"
-                + "\n" + "</rdf:RDF>";
+                + '\n' + "</rdf:RDF>";
         String conclusion = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:Class rdf:about=\"Woman\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Stewie\">\n"
                 + "  <rdf:type>\n"
                 + "    <owl:Class>\n"
                 + "      <owl:complementOf rdf:resource=\"Woman\" /></owl:Class></rdf:type>\n"
-                + "</rdf:Description>\n" + "\n" + "</rdf:RDF>";
+                + "</rdf:Description>\n" + '\n' + "</rdf:RDF>";
         String id = "New_Feature_ObjectQCR_002";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Demonstrates a qualified maximum cardinality object property restriction adapted from example in the Structural Specification and Functional-Style Syntax document.";
@@ -841,10 +860,10 @@ public class OWL2 {
     public void testchain2trans1() {
         String premise = "<rdf:RDF \n"
                 + "     xml:base=\"http://example.org/\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\">\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Ontology rdf:about=\"http://owl.semanticweb.org/page/Special:GetOntology/Chain2trans?m=p\"/>\n"
                 + "    <owl:ObjectProperty rdf:about=\"#p\"/>\n"
-                + "\n"
+                + '\n'
                 + "    <rdf:Description rdf:about=\"#p\">\n"
                 + "        <owl:propertyChainAxiom rdf:parseType=\"Collection\">\n"
                 + "            <rdf:Description rdf:about=\"#p\"/>\n"
@@ -854,7 +873,8 @@ public class OWL2 {
                 + "<rdf:RDF \n"
                 + "     xml:base=\"http://example.org/\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\">\n"
                 + "    <owl:Ontology rdf:about=\"http://owl.semanticweb.org/page/Special:GetOntology/Chain2trans?m=c\"/>\n"
-                + "    <owl:TransitiveProperty rdf:about=\"#p\"/>\n" + "</rdf:RDF>";
+                + "    <owl:TransitiveProperty rdf:about=\"#p\"/>\n"
+                + "</rdf:RDF>";
         String id = "chain2trans1";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "A role chain can be a synonym for transitivity.";
@@ -881,7 +901,7 @@ public class OWL2 {
                 + "    DataAllValuesFrom(:dp DatatypeRestriction(\n"
                 + "      xsd:dateTime \n"
                 + "      xsd:maxInclusive \"2008-10-08T20:44:11.656+01:00\"^^xsd:dateTime)\n"
-                + "    )\n" + "  )\n" + "  ClassAssertion(:A :a)\n" + ")";
+                + "    )\n" + "  )\n" + "  ClassAssertion(:A :a)\n" + ')';
         String conclusion = "";
         String id = "Consistent_dateTime";
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
@@ -894,12 +914,14 @@ public class OWL2 {
     @Test
     public void testconsistent_integer_filler() {
         String premise = "Prefix(:=<http://example.org/>)\n"
-                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n" + "Ontology(\n"
-                + "  Declaration(NamedIndividual(:a))\n"
-                + "  Declaration(DataProperty(:dp))\n" + "  Declaration(Class(:A))\n"
+                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+                + "Ontology(\n" + "  Declaration(NamedIndividual(:a))\n"
+                + "  Declaration(DataProperty(:dp))\n"
+                + "  Declaration(Class(:A))\n"
                 + "  SubClassOf(:A DataHasValue(:dp \"18\"^^xsd:integer)) \n"
                 + "  ClassAssertion(:A :a) \n"
-                + "  ClassAssertion(DataAllValuesFrom(:dp xsd:integer) :a)\n" + ")";
+                + "  ClassAssertion(DataAllValuesFrom(:dp xsd:integer) :a)\n"
+                + ')';
         String conclusion = "";
         String id = "consistent_integer_filler";
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
@@ -914,20 +936,20 @@ public class OWL2 {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs= \"http://www.w3.org/2000/01/rdf-schema#\" >\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:DatatypeProperty rdf:about=\"p\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"p\">\n"
                 + "  <rdfs:range>\n"
                 + "    <rdfs:Datatype>\n"
                 + "      <owl:datatypeComplementOf rdf:resource=\"http://www.w3.org/2001/XMLSchema#positiveInteger\" /></rdfs:Datatype></rdfs:range></rdf:Description>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"i\">\n"
                 + "  <p rdf:datatype=\"http://www.w3.org/2001/XMLSchema#negativeInteger\">-1</p>\n"
                 + "  <p rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">A string</p></rdf:Description>\n"
-                + "\n" + "</rdf:RDF>";
+                + '\n' + "</rdf:RDF>";
         String conclusion = "";
         String id = "Datatype_DataComplementOf_001";
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
@@ -940,17 +962,18 @@ public class OWL2 {
     @Test
     public void testDifferent_types_in_Datatype_Restrictions_and_Complement() {
         String premise = "Prefix(:=<http://example.org/>)\n"
-                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n" + "Ontology(\n"
-                + "  Declaration(NamedIndividual(:a))\n"
-                + "  Declaration(DataProperty(:dp))\n" + "  Declaration(Class(:A))\n"
+                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+                + "Ontology(\n" + "  Declaration(NamedIndividual(:a))\n"
+                + "  Declaration(DataProperty(:dp))\n"
+                + "  Declaration(Class(:A))\n"
                 + "  SubClassOf(:A DataAllValuesFrom(:dp \n"
-                + "    DataOneOf(\"3\"^^xsd:integer \"4\"^^xsd:int))\n" + "  ) \n"
-                + "  SubClassOf(:A DataAllValuesFrom(:dp \n"
-                + "    DataOneOf(\"2\"^^xsd:short \"3\"^^xsd:integer))\n" + "  )\n"
-                + "  ClassAssertion(:A :a)\n"
+                + "    DataOneOf(\"3\"^^xsd:integer \"4\"^^xsd:int))\n"
+                + "  ) \n" + "  SubClassOf(:A DataAllValuesFrom(:dp \n"
+                + "    DataOneOf(\"2\"^^xsd:short \"3\"^^xsd:integer))\n"
+                + "  )\n" + "  ClassAssertion(:A :a)\n"
                 + "  ClassAssertion(DataSomeValuesFrom(:dp\n"
-                + "    DataComplementOf(DataOneOf(\"3\"^^xsd:integer))) :a\n" + "  )\n"
-                + ")";
+                + "    DataComplementOf(DataOneOf(\"3\"^^xsd:integer))) :a\n"
+                + "  )\n" + ')';
         String conclusion = "";
         String id = "Different_types_in_Datatype_Restrictions_and_Complement";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -963,13 +986,14 @@ public class OWL2 {
     @Test
     public void testinconsistent_integer_filler() {
         String premise = "Prefix(:=<http://example.org/>)\n"
-                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n" + "Ontology(\n"
+                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+                + "Ontology(\n"
                 + "  Declaration(NamedIndividual(:a))\n"
                 + "  Declaration(DataProperty(:hasAge))\n"
                 + "  Declaration(Class(:Eighteen))\n"
                 + "  SubClassOf(DataHasValue(:hasAge \"18\"^^xsd:integer) :Eighteen) \n"
                 + "  ClassAssertion(DataHasValue(:hasAge \"18\"^^xsd:integer) :a) \n"
-                + "  ClassAssertion(ObjectComplementOf(:Eighteen) :a)\n" + ")";
+                + "  ClassAssertion(ObjectComplementOf(:Eighteen) :a)\n" + ')';
         String conclusion = "";
         String id = "inconsistent_integer_filler";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -984,24 +1008,28 @@ public class OWL2 {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n" + "<owl:Ontology/>\n" + "\n" + "<owl:Class rdf:about=\"Boy\" />\n"
-                + "<owl:Class rdf:about=\"Girl\" />\n" + "\n"
+                + '\n'
+                + "<owl:Ontology/>\n"
+                + '\n'
+                + "<owl:Class rdf:about=\"Boy\" />\n"
+                + "<owl:Class rdf:about=\"Girl\" />\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Boy\">\n"
                 + "  <owl:disjointWith rdf:resource=\"Girl\" /></rdf:Description>\n"
-                + "\n" + "<Boy rdf:about=\"Stewie\" />\n" + "</rdf:RDF>";
+                + '\n' + "<Boy rdf:about=\"Stewie\" />\n" + "</rdf:RDF>";
         String conclusion = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:Class rdf:about=\"Girl\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Stewie\">\n"
                 + "  <rdf:type>\n"
                 + "    <owl:Class>\n"
                 + "      <owl:complementOf rdf:resource=\"Girl\" /></owl:Class></rdf:type>\n"
-                + "</rdf:Description>\n" + "\n" + "</rdf:RDF>";
+                + "</rdf:Description>\n" + '\n' + "</rdf:RDF>";
         String id = "DisjointClasses_001";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Demonstrates a binary disjoint classes axiom based on example in the Structural Specification and Functional-Style Syntax document.";
@@ -1015,12 +1043,16 @@ public class OWL2 {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n" + "<owl:Ontology/>\n" + "\n" + "<owl:Class rdf:about=\"Boy\" />\n"
-                + "<owl:Class rdf:about=\"Girl\" />\n" + "\n"
+                + '\n'
+                + "<owl:Ontology/>\n"
+                + '\n'
+                + "<owl:Class rdf:about=\"Boy\" />\n"
+                + "<owl:Class rdf:about=\"Girl\" />\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Boy\">\n"
                 + "  <owl:disjointWith rdf:resource=\"Girl\" /></rdf:Description>\n"
-                + "\n" + "<Boy rdf:about=\"Stewie\" />\n"
-                + "<Girl rdf:about=\"Stewie\" />\n" + "\n" + "</rdf:RDF>";
+                + '\n' + "<Boy rdf:about=\"Stewie\" />\n"
+                + "<Girl rdf:about=\"Stewie\" />\n" + '\n' + "</rdf:RDF>";
         String conclusion = "";
         String id = "DisjointClasses_002";
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
@@ -1035,36 +1067,37 @@ public class OWL2 {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n" + "<owl:Ontology/>\n" + "\n" + "<owl:Class rdf:about=\"Boy\" />\n"
+                + '\n' + "<owl:Ontology/>\n" + '\n'
+                + "<owl:Class rdf:about=\"Boy\" />\n"
                 + "<owl:Class rdf:about=\"Girl\" />\n"
-                + "<owl:Class rdf:about=\"Dog\" />\n" + "\n"
+                + "<owl:Class rdf:about=\"Dog\" />\n" + '\n'
                 + "<owl:AllDisjointClasses>\n"
                 + "  <owl:members rdf:parseType=\"Collection\">\n"
                 + "    <rdf:Description rdf:about=\"Boy\" />\n"
                 + "    <rdf:Description rdf:about=\"Girl\" />\n"
                 + "    <rdf:Description rdf:about=\"Dog\" />\n"
-                + "  </owl:members></owl:AllDisjointClasses>\n" + "\n"
-                + "<Boy rdf:about=\"Stewie\" />\n" + "\n" + "</rdf:RDF>";
+                + "  </owl:members></owl:AllDisjointClasses>\n" + '\n'
+                + "<Boy rdf:about=\"Stewie\" />\n" + '\n' + "</rdf:RDF>";
         String conclusion = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + "\n"
+                + '\n'
                 + "<owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "<owl:Class rdf:about=\"Girl\" />\n"
                 + "<owl:Class rdf:about=\"Dog\" />\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Stewie\">\n"
                 + "  <rdf:type>\n"
                 + "    <owl:Class>\n"
                 + "      <owl:complementOf rdf:resource=\"Girl\" /></owl:Class></rdf:type>\n"
                 + "</rdf:Description>\n"
-                + "\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Stewie\">\n"
                 + "  <rdf:type>\n"
                 + "    <owl:Class>\n"
                 + "      <owl:complementOf rdf:resource=\"Dog\" /></owl:Class></rdf:type>\n"
-                + "</rdf:Description>\n" + "\n" + "</rdf:RDF>";
+                + "</rdf:Description>\n" + '\n' + "</rdf:RDF>";
         String id = "DisjointClasses_003";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "A modification of test DisjointClasses-001 to demonstrate a ternary disjoint classes axiom.";

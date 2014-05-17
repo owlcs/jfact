@@ -12,6 +12,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "dumpInterface.h", name = "dumpInterface")
 class DumpInterface implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** output stream */
     @PortedFrom(file = "dumpInterface.h", name = "o")
@@ -52,10 +53,14 @@ class DumpInterface implements Serializable {
     @PortedFrom(file = "dumpInterface.h", name = "startOp")
     public void startOp(DIOp Op) {}
 
-    /** start operation >=/<= with number
+    /**
+     * start operation >=/<= with number
      * 
      * @param Op
-     * @param n */
+     *        Op
+     * @param n
+     *        n
+     */
     @SuppressWarnings("unused")
     @PortedFrom(file = "dumpInterface.h", name = "startOp")
     public void startOp(DIOp Op, int n) {}
@@ -80,24 +85,33 @@ class DumpInterface implements Serializable {
     @PortedFrom(file = "dumpInterface.h", name = "finishAx")
     public void finishAx(DIOp Ax) {}
 
-    /** obtain name by the named entry
+    /**
+     * obtain name by the named entry
      * 
-     * @param p */
+     * @param p
+     *        p
+     */
     @PortedFrom(file = "dumpInterface.h", name = "dumpName")
     public void dumpName(NamedEntry p) {
         o.print(p.getName());
     }
 
-    /** dump concept atom (as used in expression)
+    /**
+     * dump concept atom (as used in expression)
      * 
-     * @param p */
+     * @param p
+     *        p
+     */
     @SuppressWarnings("unused")
     @PortedFrom(file = "dumpInterface.h", name = "dumpConcept")
     public void dumpConcept(Concept p) {}
 
-    /** dump role atom (as used in expression)
+    /**
+     * dump role atom (as used in expression)
      * 
-     * @param p */
+     * @param p
+     *        p
+     */
     @SuppressWarnings("unused")
     @PortedFrom(file = "dumpInterface.h", name = "dumpRole")
     public void dumpRole(Role p) {}

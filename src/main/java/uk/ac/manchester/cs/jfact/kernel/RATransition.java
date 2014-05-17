@@ -6,7 +6,12 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import conformance.Original;
@@ -15,6 +20,7 @@ import conformance.PortedFrom;
 /** role automaton transition */
 @PortedFrom(file = "RAutomaton.h", name = "RATransition")
 public class RATransition implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** set of roles that may affect the transition */
     @PortedFrom(file = "RAutomaton.h", name = "label")
@@ -25,26 +31,36 @@ public class RATransition implements Serializable {
     @PortedFrom(file = "RAutomaton.h", name = "state")
     private final int state;
 
-    /** create a transition to given state
+    /**
+     * create a transition to given state
      * 
-     * @param st */
+     * @param st
+     *        st
+     */
     public RATransition(int st) {
         state = st;
         label = new LinkedHashSet<Role>();
     }
 
-    /** create a transition with a given label R to given state ST
+    /**
+     * create a transition with a given label R to given state ST
      * 
      * @param st
-     * @param R */
+     *        st
+     * @param R
+     *        R
+     */
     public RATransition(int st, Role R) {
         this(st);
         label.add(R);
     }
 
-    /** add label of transition TRANS to transition's label
+    /**
+     * add label of transition TRANS to transition's label
      * 
-     * @param trans */
+     * @param trans
+     *        trans
+     */
     @PortedFrom(file = "RAutomaton.h", name = "add")
     public void add(RATransition trans) {
         label.addAll(trans.label);
@@ -64,8 +80,11 @@ public class RATransition implements Serializable {
         return state;
     }
 
-    /** @param R
-     * @return whether transition is applicable wrt role R */
+    /**
+     * @param R
+     *        R
+     * @return whether transition is applicable wrt role R
+     */
     @PortedFrom(file = "RAutomaton.h", name = "applicable")
     public boolean applicable(Role R) {
         if (cache == null) {
@@ -83,10 +102,14 @@ public class RATransition implements Serializable {
         return label.isEmpty();
     }
 
-    /** print the transition starting from FROM
+    /**
+     * print the transition starting from FROM
      * 
      * @param o
-     * @param from */
+     *        o
+     * @param from
+     *        from
+     */
     @PortedFrom(file = "RAutomaton.h", name = "print")
     public void print(LogAdapter o, int from) {
         o.print("\n").print(from).print(" -- ");

@@ -23,8 +23,11 @@ public class SaveList extends LinkedList<DLCompletionTreeSaveState> {
         return null;
     }
 
-    /** @param level
-     * @return element from stack with given level */
+    /**
+     * @param level
+     *        level
+     * @return element from stack with given level
+     */
     @PortedFrom(file = "tSaveList.h", name = "pop")
     public DLCompletionTreeSaveState pop(int level) {
         DLCompletionTreeSaveState p = isEmpty() ? null : peek();

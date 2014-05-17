@@ -6,16 +6,43 @@ package uk.ac.manchester.cs.jfact.kernel.todolist;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
 import conformance.PortedFrom;
 
 /** class for saving/restoring array Todo table */
-public class TODOListSaveState implements Serializable {
+public final class TODOListSaveState implements Serializable {
+
     private static final long serialVersionUID = 11000L;
-    /** save state of all regular queues */
-    protected final int[][] backup;
+    // save state of all regular queues
+    /** key queue 0 */
+    public int backup0key;
+    /** key queue 0 */
+    public int backup0value;
+    /** key queue 1 */
+    public int backup1key;
+    /** key queue 1 */
+    public int backup1value;
+    /** key queue 2 */
+    public int backup2key;
+    /** key queue 2 */
+    public int backup2value;
+    /** key queue 3 */
+    public int backup3key;
+    /** key queue 3 */
+    public int backup3value;
+    /** key queue 4 */
+    public int backup4key;
+    /** key queue 4 */
+    public int backup4value;
+    /** key queue 5 */
+    public int backup5key;
+    /** key queue 5 */
+    public int backup5value;
+    /** key queue 6 */
+    public int backup6key;
+    /** value queue 6 */
+    public int backup6value;
     /** save number-of-entries to do */
     @PortedFrom(file = "ToDoList.h", name = "noe")
     protected int noe;
@@ -30,14 +57,14 @@ public class TODOListSaveState implements Serializable {
     /** save flag of queue's consistency */
     protected boolean queueBroken;
 
-    /** @param options */
-    public TODOListSaveState(int options) {
-        backup = new int[options][2];
-    }
-
     @Override
     public String toString() {
-        return noe + " " + backupID_sp + "," + backupID_ep + " " + waitingQueue + " "
-                + sp + " " + ep + " " + queueBroken + " " + Arrays.toString(backup);
+        return noe + " " + backupID_sp + ',' + backupID_ep + ' ' + waitingQueue
+                + ' ' + sp + ' ' + ep + ' ' + queueBroken + ' ' + backup0key
+                + ' ' + backup0value + ' ' + backup1key + ' ' + backup1value
+                + ' ' + backup2key + ' ' + backup2value + ' ' + backup3key
+                + ' ' + backup3value + ' ' + backup4key + ' ' + backup4value
+                + ' ' + backup5key + ' ' + backup5value + ' ' + backup6key
+                + ' ' + backup6value;
     }
 }

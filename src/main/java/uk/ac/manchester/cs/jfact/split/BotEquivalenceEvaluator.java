@@ -10,17 +10,59 @@ import java.io.Serializable;
 import uk.ac.manchester.cs.jfact.datatypes.Datatype;
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.datatypes.cardinality;
-import uk.ac.manchester.cs.jfact.kernel.dl.*;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptAnd;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptBottom;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataExactCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataExists;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataForall;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataMaxCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataMinCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataValue;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptNot;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectExactCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectExists;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectForall;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectMaxCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectMinCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectSelf;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectValue;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptOneOf;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptOr;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptTop;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataAnd;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataBottom;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataNot;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataOneOf;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataOr;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleBottom;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleName;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleTop;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataTop;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleBottom;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleChain;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleInverse;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleName;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleProjectionFrom;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleProjectionInto;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleTop;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import conformance.PortedFrom;
 
-/** check whether class expressions are equivalent to bottom wrt given locality
- * class */
+/**
+ * check whether class expressions are equivalent to bottom wrt given locality
+ * class
+ */
 // XXX verify unused parameters
 @PortedFrom(file = "SyntacticLocalityChecker.h", name = "BotEquivalenceEvaluator")
-public class BotEquivalenceEvaluator extends SigAccessor implements DLExpressionVisitor,
-        Serializable {
+public class BotEquivalenceEvaluator extends SigAccessor implements
+        DLExpressionVisitor, Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** corresponding top evaluator */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "TopEval")
@@ -29,20 +71,34 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isBotEq")
     private boolean isBotEq = false;
 
-    /** check whether the expression is top-equivalent */
+    /**
+     * check whether the expression is top-equivalent
+     * 
+     * @param expr
+     *        expr
+     * @return true if top equivalent
+     */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isTopEquivalent")
     private boolean isTopEquivalent(Expression expr) {
         return TopEval.isTopEquivalent(expr);
     }
 
-    /** @return true iff role expression in equivalent to const wrt locality */
+    /**
+     * @param expr
+     *        expr
+     * @return true iff role expression in equivalent to const wrt locality
+     */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isREquivalent")
     private boolean isREquivalent(Expression expr) {
         return sig.topRLocal() ? isTopEquivalent(expr) : isBotEquivalent(expr);
     }
 
     // non-empty Concept/Data expression
-    /** @return true iff C^I is non-empty */
+    /**
+     * @param C
+     *        C
+     * @return true iff C^I is non-empty
+     */
     private boolean isBotDistinct(Expression C) {
         // TOP is non-empty
         if (isTopEquivalent(C)) {
@@ -54,7 +110,13 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
     }
 
     // cardinality of a concept/data expression interpretation
-    /** @return true if #C^I > n */
+    /**
+     * @param C
+     *        C
+     * @param n
+     *        n
+     * @return true if #C^I > n
+     */
     private boolean isCardLargerThan(Expression C, int n) {
         // data top is infinite
         if (C instanceof DataExpression && isTopEquivalent(C)) {
@@ -71,24 +133,49 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
     }
 
     // QCRs
-    /** @return true iff (>= n R.C) is botEq */
+    /**
+     * @param n
+     *        n
+     * @param R
+     *        R
+     * @param C
+     *        C
+     * @return true iff (>= n R.C) is botEq
+     */
     private boolean isMinBotEquivalent(int n, RoleExpression R, Expression C) {
         return n > 0 && (isBotEquivalent(R) || isBotEquivalent(C));
     }
 
-    /** @return true iff (<= n R.C) is botEq */
+    /**
+     * @param n
+     *        n
+     * @param R
+     *        R
+     * @param C
+     *        C
+     * @return true iff (<= n R.C) is botEq
+     */
     private boolean isMaxBotEquivalent(int n, RoleExpression R, Expression C) {
         return isTopEquivalent(R) && isCardLargerThan(C, n);
     }
 
     // set fields
-    /** set the corresponding top evaluator */
+    /**
+     * set the corresponding top evaluator
+     * 
+     * @param eval
+     *        eval
+     */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "setTopEval")
     protected void setTopEval(TopEquivalenceEvaluator eval) {
         TopEval = eval;
     }
 
-    /** @return true iff an EXPRession is equivalent to bottom wrt defined policy */
+    /**
+     * @param expr
+     *        expr
+     * @return true iff an EXPRession is equivalent to bottom wrt defined policy
+     */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isBotEquivalent")
     protected boolean isBotEquivalent(Expression expr) {
         expr.accept(this);
@@ -172,7 +259,8 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
 
     @Override
     public void visit(ConceptObjectForall expr) {
-        isBotEq = isTopEquivalent(expr.getOR()) && isBotEquivalent(expr.getConcept());
+        isBotEq = isTopEquivalent(expr.getOR())
+                && isBotEquivalent(expr.getConcept());
     }
 
     @Override
@@ -185,7 +273,8 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
     @Override
     public void visit(ConceptObjectMaxCardinality expr) {
         isBotEq = sig.topRLocal() && expr.getCardinality() > 0
-                && isTopEquivalent(expr.getOR()) && isTopEquivalent(expr.getConcept());
+                && isTopEquivalent(expr.getOR())
+                && isTopEquivalent(expr.getConcept());
     }
 
     @Override
@@ -203,7 +292,8 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
 
     @Override
     public void visit(ConceptDataExists expr) {
-        isBotEq = isMinBotEquivalent(1, expr.getDataRoleExpression(), expr.getExpr());
+        isBotEq = isMinBotEquivalent(1, expr.getDataRoleExpression(),
+                expr.getExpr());
     }
 
     @Override
@@ -222,8 +312,8 @@ public class BotEquivalenceEvaluator extends SigAccessor implements DLExpression
     public void visit(ConceptDataMaxCardinality expr) {
         isBotEq = sig.topRLocal()
                 && isTopEquivalent(expr.getDataRoleExpression())
-                && (expr.getCardinality() <= 1 ? isTopOrBuiltInDataType(expr.getExpr())
-                        : isTopOrBuiltInDataType(expr.getExpr()));
+                && (expr.getCardinality() <= 1 ? isTopOrBuiltInDataType(expr
+                        .getExpr()) : isTopOrBuiltInDataType(expr.getExpr()));
     }
 
     @Override

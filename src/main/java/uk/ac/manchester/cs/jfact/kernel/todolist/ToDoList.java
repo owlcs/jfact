@@ -26,12 +26,13 @@ public class ToDoList implements Serializable {
     /** waiting ops queue for IDs */
     @PortedFrom(file = "ToDoList.h", name = "queueID")
     private final ArrayQueue queueID = new ArrayQueue();
-    /** waiting ops queue for <= ops in nominal nodes */
+    /** waiting ops queue for lesser than or equal ops in nominal nodes */
     @PortedFrom(file = "ToDoList.h", name = "queueNN")
     private final QueueQueue queueNN;
     /** waiting ops queues */
     @PortedFrom(file = "ToDoList.h", name = "Wait")
-    private final List<ArrayQueue> waitQueue = new ArrayList<ArrayQueue>(nRegularOptions);
+    private final List<ArrayQueue> waitQueue = new ArrayList<ArrayQueue>(
+            nRegularOptions);
     /** stack of saved states */
     @PortedFrom(file = "ToDoList.h", name = "SaveStack")
     private final SaveStack<TODOListSaveState> saveStack = new SaveStack<TODOListSaveState>();
@@ -42,30 +43,51 @@ public class ToDoList implements Serializable {
     @PortedFrom(file = "ToDoList.h", name = "noe")
     private int noe;
 
-    /** save current Todo table content to given saveState entry
+    /**
+     * save current Todo table content to given saveState entry
      * 
-     * @param tss */
+     * @param tss
+     *        tss
+     */
     @PortedFrom(file = "ToDoList.h", name = "saveState")
     public void saveState(TODOListSaveState tss) {
         tss.backupID_sp = queueID.getsPointer();
         tss.backupID_ep = queueID.getWaitSize();
         queueNN.save(tss);
-        for (int i = nRegularOptions - 1; i >= 0; --i) {
-            waitQueue.get(i).save(tss.backup, i);
-        }
+        tss.backup6key = waitQueue.get(6).getsPointer();
+        tss.backup6value = waitQueue.get(6).getWaitSize();
+        tss.backup5key = waitQueue.get(5).getsPointer();
+        tss.backup5value = waitQueue.get(5).getWaitSize();
+        tss.backup4key = waitQueue.get(4).getsPointer();
+        tss.backup4value = waitQueue.get(4).getWaitSize();
+        tss.backup3key = waitQueue.get(3).getsPointer();
+        tss.backup3value = waitQueue.get(3).getWaitSize();
+        tss.backup2key = waitQueue.get(2).getsPointer();
+        tss.backup2value = waitQueue.get(2).getWaitSize();
+        tss.backup1key = waitQueue.get(1).getsPointer();
+        tss.backup1value = waitQueue.get(1).getWaitSize();
+        tss.backup0key = waitQueue.get(0).getsPointer();
+        tss.backup0value = waitQueue.get(0).getWaitSize();
         tss.noe = noe;
     }
 
-    /** restore Todo table content from given saveState entry
+    /**
+     * restore Todo table content from given saveState entry
      * 
-     * @param tss */
+     * @param tss
+     *        tss
+     */
     @PortedFrom(file = "ToDoList.h", name = "restoreState")
     public void restoreState(TODOListSaveState tss) {
         queueID.restore(tss.backupID_sp, tss.backupID_ep);
         queueNN.restore(tss);
-        for (int i = nRegularOptions - 1; i >= 0; --i) {
-            waitQueue.get(i).restore(tss.backup[i][0], tss.backup[i][1]);
-        }
+        waitQueue.get(0).restore(tss.backup0key, tss.backup0value);
+        waitQueue.get(1).restore(tss.backup1key, tss.backup1value);
+        waitQueue.get(2).restore(tss.backup2key, tss.backup2value);
+        waitQueue.get(3).restore(tss.backup3key, tss.backup3value);
+        waitQueue.get(4).restore(tss.backup4key, tss.backup4value);
+        waitQueue.get(5).restore(tss.backup5key, tss.backup5value);
+        waitQueue.get(6).restore(tss.backup6key, tss.backup6value);
         noe = tss.noe;
     }
 
@@ -84,9 +106,12 @@ public class ToDoList implements Serializable {
         }
     }
 
-    /** init priorities via Options
+    /**
+     * init priorities via Options
      * 
-     * @param Options */
+     * @param Options
+     *        Options
+     */
     @Original
     public void initPriorities(String Options) {
         matrix.initPriorities(Options);
@@ -110,11 +135,16 @@ public class ToDoList implements Serializable {
     }
 
     // work with entries
-    /** add entry with given NODE and CONCEPT with given OFFSET to the Todo table
+    /**
+     * add entry with given NODE and CONCEPT with given OFFSET to the Todo table
      * 
      * @param node
+     *        node
      * @param type
-     * @param C */
+     *        type
+     * @param C
+     *        C
+     */
     @PortedFrom(file = "ToDoList.h", name = "addEntry")
     public void addEntry(DlCompletionTree node, DagTag type, ConceptWDep C) {
         int index = matrix.getIndex(type, C.getConcept() > 0, node.isNominalNode());
@@ -137,14 +167,17 @@ public class ToDoList implements Serializable {
     /** save current state using internal stack */
     @PortedFrom(file = "ToDoList.h", name = "save")
     public void save() {
-        TODOListSaveState state = new TODOListSaveState(nRegularOptions);
+        TODOListSaveState state = new TODOListSaveState();
         saveState(state);
         saveStack.push(state);
     }
 
-    /** restore state to the given level using internal stack
+    /**
+     * restore state to the given level using internal stack
      * 
-     * @param level */
+     * @param level
+     *        level
+     */
     @PortedFrom(file = "ToDoList.h", name = "restore")
     public void restore(int level) {
         restoreState(saveStack.pop(level));
@@ -178,15 +211,15 @@ public class ToDoList implements Serializable {
     @Override
     public String toString() {
         StringBuilder l = new StringBuilder("Todolist{");
-        l.append("\n");
+        l.append('\n');
         l.append(queueID);
-        l.append("\n");
+        l.append('\n');
         for (int i = 0; i < nRegularOptions; ++i) {
             l.append(waitQueue.get(i));
-            l.append("\n");
+            l.append('\n');
         }
-        l.append("\n");
-        l.append("}");
+        l.append('\n');
+        l.append('}');
         return l.toString();
     }
 }

@@ -7,6 +7,8 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpressionArg;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
@@ -15,14 +17,18 @@ import conformance.PortedFrom;
 
 /** data negation */
 @PortedFrom(file = "tDLExpression.h", name = "TDLDataNot")
-public class DataNot implements DataExpression, DataExpressionArg<DataExpression>,
-        Serializable {
+public class DataNot implements DataExpression,
+        DataExpressionArg<DataExpression>, Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** data expression argument */
     @PortedFrom(file = "tDLExpression.h", name = "Expr")
     protected final DataExpression Expr;
 
-    /** @param E */
+    /**
+     * @param E
+     *        E
+     */
     public DataNot(DataExpression E) {
         Expr = E;
     }
@@ -47,7 +53,7 @@ public class DataNot implements DataExpression, DataExpressionArg<DataExpression
     }
 
     @Override
-    public String getName() {
-        return toString();
+    public IRI getName() {
+        return IRI.create(toString());
     }
 }

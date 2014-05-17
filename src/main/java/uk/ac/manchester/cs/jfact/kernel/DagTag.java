@@ -46,14 +46,18 @@ public enum DagTag {
     dtChoose("choose"),
     /** split concept */
     dtSplitConcept("split-concept");
-    private final static EnumSet<DagTag> TRUE = EnumSet.of(dtDataType, dtDataValue,
-            dtDataExpr, dtNN, dtBad, dtTop, dtChoose);
-    private final static EnumSet<DagTag> NotPos = EnumSet.of(dtPConcept, dtPSingleton,
-            dtCollection, dtProj);
 
-    /** @param pos
+    private static final EnumSet<DagTag> TRUE = EnumSet.of(dtDataType,
+            dtDataValue, dtDataExpr, dtNN, dtBad, dtTop, dtChoose);
+    private static final EnumSet<DagTag> NotPos = EnumSet.of(dtPConcept,
+            dtPSingleton, dtCollection, dtProj);
+
+    /**
+     * @param pos
+     *        pos
      * @return whether statistic's gathering should be omitted due to the type
-     *         of a vertex */
+     *         of a vertex
+     */
     public boolean omitStat(boolean pos) {
         if (TRUE.contains(this)) {
             return true;
@@ -76,14 +80,18 @@ public enum DagTag {
     }
 
     // data type with restrictions
-    /** @return check whether given DagTag is a primitive named concept-like
-     *         entity */
+    /**
+     * @return check whether given DagTag is a primitive named concept-like
+     *         entity
+     */
     public boolean isPNameTag() {
         return this == DagTag.dtPConcept || this == DagTag.dtPSingleton;
     }
 
-    /** @return check whether given DagTag is a non-primitive named concept-like
-     *         entity */
+    /**
+     * @return check whether given DagTag is a non-primitive named concept-like
+     *         entity
+     */
     public boolean isNNameTag() {
         return this == DagTag.dtNConcept || this == DagTag.dtNSingleton;
     }
@@ -93,8 +101,9 @@ public enum DagTag {
         return isPNameTag() || isNNameTag();
     }
 
-    private final static EnumSet<DagTag> complexConceptsEnumSet = EnumSet.of(
-            DagTag.dtForall, DagTag.dtLE, DagTag.dtIrr, DagTag.dtNN, DagTag.dtChoose);
+    private static final EnumSet<DagTag> complexConceptsEnumSet = EnumSet.of(
+            DagTag.dtForall, DagTag.dtLE, DagTag.dtIrr, DagTag.dtNN,
+            DagTag.dtChoose);
 
     /** @return true iff TAG represents complex concept */
     public boolean isComplexConcept() {

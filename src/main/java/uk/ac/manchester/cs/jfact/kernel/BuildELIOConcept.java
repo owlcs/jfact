@@ -18,27 +18,39 @@ import uk.ac.manchester.cs.jfact.kernel.queryobjects.QRRoleAtom;
 import uk.ac.manchester.cs.jfact.kernel.queryobjects.QRVariable;
 import conformance.PortedFrom;
 
-@SuppressWarnings("javadoc")
+/** build elio concept */
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "BuildELIOConcept")
 public abstract class BuildELIOConcept implements Serializable {
     private static final long serialVersionUID = 11000L;
     protected final ConjunctiveQueryFolding conjunctiveQueryFolding;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Query")
     protected final QRQuery Query;
-    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "PassedVertice")
-    private final Set<QRVariable> PassedVertice = new TreeSet<QRVariable>();
+
+    // @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "PassedVertice")
+    // private final Set<QRVariable> visited = new TreeSet<QRVariable>();
 
     protected BuildELIOConcept(ConjunctiveQueryFolding c, QRQuery query) {
         conjunctiveQueryFolding = c;
         Query = query;
     }
 
-    /** assign the concept to a term */
+    /**
+     * assign the concept to a term
+     * 
+     * @param query
+     *        query
+     * @param previousAtom
+     *        previousAtom
+     * @param v
+     *        v
+     * @return assigned concept
+     */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Assign")
     public ConceptExpression Assign(QRQuery query, QRAtom previousAtom, QRVariable v) {
         // System.out.println("Assign:\n variable: " + v + "\n atom:" +
         // previousAtom);
-        PassedVertice.add(v);
+      //XXX unused?
+        // visited.add(v);
         ConceptExpression t = createConceptByVar(v);
         ConceptExpression s = conjunctiveQueryFolding.getpEM().top();
         for (QRAtom atomIterator : Query.getBody().begin()) {

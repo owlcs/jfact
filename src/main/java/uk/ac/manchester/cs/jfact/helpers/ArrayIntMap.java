@@ -8,8 +8,13 @@ import java.io.Serializable;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.Arrays;
 
-@SuppressWarnings("javadoc")
+/**
+ * map int to int
+ * 
+ * @author ignazio
+ */
 public class ArrayIntMap implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     private int[][] values;
     private int size = 0;
@@ -57,6 +62,12 @@ public class ArrayIntMap implements Serializable {
         size = 0;
     }
 
+    /**
+     * @param e
+     *        e
+     * @param v
+     *        v
+     */
     public void put(int e, int v) {
         int pos = -1;
         if (values == null) {
@@ -74,7 +85,8 @@ public class ArrayIntMap implements Serializable {
         // i is now the insertion point
         if (i >= values[0].length || size >= values[0].length) {
             // no space left, increase
-            int[][] replacementvalues = new int[2][values[0].length + defaultSize];
+            int[][] replacementvalues = new int[2][values[0].length
+                    + defaultSize];
             for (int j = 0; j < values[0].length; j++) {
                 replacementvalues[0][j] = values[0][j];
                 replacementvalues[1][j] = values[1][j];
@@ -92,11 +104,17 @@ public class ArrayIntMap implements Serializable {
         size++;
     }
 
+    /** clear the map */
     public void clear() {
         values = null;
         size = 0;
     }
 
+    /**
+     * @param o
+     *        o
+     * @return true if o is a key
+     */
     public boolean containsKey(int o) {
         if (values != null) {
             return insertionIndex(o) > -1;
@@ -104,6 +122,11 @@ public class ArrayIntMap implements Serializable {
         return false;
     }
 
+    /**
+     * @param c
+     *        c
+     * @return true if all elements in c are contained
+     */
     public boolean containsAll(ArrayIntMap c) {
         if (c.size == 0) {
             return true;
@@ -157,10 +180,15 @@ public class ArrayIntMap implements Serializable {
         return true;
     }
 
+    /** @return true if empty */
     public boolean isEmpty() {
         return values == null;
     }
 
+    /**
+     * @param o
+     *        o
+     */
     public void remove(int o) {
         if (values == null) {
             return;
@@ -169,10 +197,15 @@ public class ArrayIntMap implements Serializable {
         removeAt(i);
     }
 
+    /** @return size */
     public int size() {
         return size;
     }
 
+    /**
+     * @param i
+     *        i
+     */
     public void removeAt(int i) {
         if (values == null) {
             return;
@@ -194,6 +227,11 @@ public class ArrayIntMap implements Serializable {
         }
     }
 
+    /**
+     * @param value
+     *        value
+     * @return true if value is a value in
+     */
     public boolean containsValue(int value) {
         for (int i = 0; i < size; i++) {
             if (values[1][i] == value) {
@@ -203,10 +241,16 @@ public class ArrayIntMap implements Serializable {
         return false;
     }
 
+    /** @return all values */
     public int[] values() {
         return Arrays.copyOf(values[1], size);
     }
 
+    /**
+     * @param key
+     *        key
+     * @return value for key
+     */
     public int get(int key) {
         int index = insertionIndex(key);
         if (index < 0) {
@@ -215,10 +259,16 @@ public class ArrayIntMap implements Serializable {
         return values[1][index];
     }
 
+    /** @return all keys */
     public int[] keySet() {
         return Arrays.copyOf(values[0], size);
     }
 
+    /**
+     * @param i
+     *        i
+     * @return key at position i
+     */
     public int keySet(int i) {
         return values[0][i];
     }
@@ -262,7 +312,7 @@ public class ArrayIntMap implements Serializable {
     @Override
     public String toString() {
         if (values != null) {
-            return Arrays.toString(Arrays.copyOf(values[0], size)) + "\n"
+            return Arrays.toString(Arrays.copyOf(values[0], size)) + '\n'
                     + Arrays.toString(Arrays.copyOf(values[1], size));
         }
         return "[]";

@@ -21,9 +21,14 @@ public class AxiomDisjointUnion extends AbstractNaryAxiom<ConceptExpression> {
     @PortedFrom(file = "tDLAxiom.h", name = "C")
     private final ConceptExpression conceptExpression;
 
-    /** @param ax
+    /**
+     * @param ax
+     *        ax
      * @param c
-     * @param v */
+     *        c
+     * @param v
+     *        v
+     */
     public AxiomDisjointUnion(OWLAxiom ax, ConceptExpression c,
             Collection<ConceptExpression> v) {
         super(ax, v);

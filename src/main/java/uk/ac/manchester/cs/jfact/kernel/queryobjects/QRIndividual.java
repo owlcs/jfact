@@ -16,9 +16,12 @@ class QRIndividual extends QRiObject {
     @PortedFrom(file = "QR.h", name = "Ind")
     private final IndividualName Ind;
 
-    /** init c'tor
+    /**
+     * init c'tor
      * 
-     * @param ind */
+     * @param ind
+     *        ind
+     */
     public QRIndividual(IndividualName ind) {
         Ind = ind;
     }

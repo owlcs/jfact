@@ -6,13 +6,25 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
-public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Datatype<R>,
-        Serializable {
+/**
+ * @author ignazio
+ * @param <R>
+ *        type
+ */
+public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
+        Datatype<R>, Serializable {
+
     private static final long serialVersionUID = 11000L;
     protected final Set<Facet> facets;
     protected Set<Datatype<?>> ancestors;
@@ -20,21 +32,27 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Data
     protected final Map<Facet, Comparable> knownNumericFacetValues = new HashMap<Facet, Comparable>();
     @SuppressWarnings("rawtypes")
     protected final Map<Facet, Comparable> knownNonNumericFacetValues = new HashMap<Facet, Comparable>();
-    protected final String uri;
+    protected final IRI uri;
 
-    public ABSTRACT_DATATYPE(String u, Set<Facet> f) {
+    /**
+     * @param u
+     *        u
+     * @param f
+     *        facets
+     */
+    public ABSTRACT_DATATYPE(IRI u, Set<Facet> f) {
         this.facets = Collections.unmodifiableSet(f);
         this.uri = u;
     }
 
     @Override
-    public String getDatatypeURI() {
+    public IRI getDatatypeIRI() {
         return this.uri;
     }
 
     @Override
-    public String getName() {
-        return toString();
+    public IRI getName() {
+        return IRI.create(toString());
     }
 
     @Override
@@ -48,7 +66,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Data
             return true;
         }
         if (obj instanceof Datatype<?>) {
-            return this.uri.equals(((Datatype<?>) obj).getDatatypeURI());
+            return this.uri.equals(((Datatype<?>) obj).getDatatypeIRI());
         }
         return false;
     }
@@ -97,9 +115,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Data
 
     @Override
     public String toString() {
-        String datatypeURI = this.getDatatypeURI();
-        datatypeURI = datatypeURI.substring(datatypeURI.lastIndexOf('#'));
-        return datatypeURI;
+        return getDatatypeIRI().getFragment();
     }
 
     @Override
@@ -157,8 +173,8 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Data
     @Override
     public DatatypeExpression<R> asExpression() {
         if (!this.isExpression()) {
-            throw new UnsupportedOperationException("Type: " + this.getDatatypeURI()
-                    + " is not an expression");
+            throw new UnsupportedOperationException("Type: "
+                    + this.getDatatypeIRI() + " is not an expression");
         }
         return (DatatypeExpression<R>) this;
     }
@@ -196,8 +212,8 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements Data
         return cardinality.COUNTABLYINFINITE;
     }
 
-    protected <T extends Comparable<T>> boolean overlapping(OrderedDatatype<T> first,
-            OrderedDatatype<T> second) {
+    protected <T extends Comparable<T>> boolean overlapping(
+            OrderedDatatype<T> first, OrderedDatatype<T> second) {
         T max = first.getMax();
         T min = second.getMin();
         if (first.hasMaxInclusive() && second.hasMinInclusive()) {

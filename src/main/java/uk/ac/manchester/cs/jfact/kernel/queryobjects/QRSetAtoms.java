@@ -19,30 +19,36 @@ public class QRSetAtoms implements Serializable {
     @PortedFrom(file = "QR.h", name = "Base")
     private final List<QRAtom> Base = new ArrayList<QRAtom>();
 
-    /**     */
-    public QRSetAtoms() {
-        // TODO Auto-generated constructor stub
-    }
+    /** default constructor */
+    public QRSetAtoms() {}
 
-    /** @param q */
+    /**
+     * @param q
+     *        q
+     */
     public QRSetAtoms(QRSetAtoms q) {
         Base.addAll(q.Base);
     }
 
-    /** replace an atom at a position P with NEWATOM;
+    /**
+     * replace an atom at a position P with NEWATOM;
      * 
      * @param i
      *            position of the element to replace
      * @param newAtom
      *            element to replace
-     * @return a replaced atom */
+     * @return a replaced atom
+     */
     public QRAtom replaceAtom(int i, QRAtom newAtom) {
         return Base.set(i, newAtom);
     }
 
-    /** add atom to a set
+    /**
+     * add atom to a set
      * 
-     * @param atom */
+     * @param atom
+     *        atom
+     */
     @PortedFrom(file = "QR.h", name = "addAtom")
     public void addAtom(QRAtom atom) {
         Base.add(atom);

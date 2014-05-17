@@ -7,6 +7,8 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptObjectRCExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
@@ -25,8 +27,12 @@ public class ConceptObjectForall implements ConceptObjectRCExpression, Serializa
     @Original
     private final ObjectRoleExpression delegate;
 
-    /** @param R
-     * @param C */
+    /**
+     * @param R
+     *        R
+     * @param C
+     *        C
+     */
     public ConceptObjectForall(ObjectRoleExpression R, ConceptExpression C) {
         conceptExpression = C;
         delegate = R;
@@ -58,7 +64,7 @@ public class ConceptObjectForall implements ConceptObjectRCExpression, Serializa
     }
 
     @Override
-    public String getName() {
-        return toString();
+    public IRI getName() {
+        return IRI.create(toString());
     }
 }

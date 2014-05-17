@@ -19,8 +19,10 @@ public class AddRoleActor extends ActorImpl {
     private final List<Role> rset;
 
     // TODO check other actors
-    /** @param v
-     *            lit to accumulate primers */
+    /**
+     * @param v
+     *        lit to accumulate primers
+     */
     public AddRoleActor(List<Role> v) {
         rset = v;
     }

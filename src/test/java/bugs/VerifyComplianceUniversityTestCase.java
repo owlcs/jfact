@@ -2,7 +2,6 @@ package bugs;
 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -12,7 +11,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 @SuppressWarnings("javadoc")
-@Ignore("temporary to speed up release")
 public class VerifyComplianceUniversityTestCase extends VerifyComplianceBase {
 
     String input = "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
@@ -20,10 +18,10 @@ public class VerifyComplianceUniversityTestCase extends VerifyComplianceBase {
             + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
             + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
             + "Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)\n"
-            + "\n"
-            + "\n"
+            + '\n'
+            + '\n'
             + "Ontology(<urn:university>\n"
-            + "\n"
+            + '\n'
             + "Declaration(Class(<urn:university#AIStudent>))\n"
             + "Declaration(Class(<urn:university#AI_Dept>))\n"
             + "Declaration(Class(<urn:university#AssistantProfessor>))\n"

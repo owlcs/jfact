@@ -7,6 +7,8 @@ package uk.ac.manchester.cs.jfact.datatypes;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
@@ -52,12 +54,12 @@ class LiteralImpl<T extends Comparable<T>> implements Literal<T>, Serializable {
 
     @Override
     public String toString() {
-        return "\"" + this.value + "\"^^" + this.type;
+        return '"' + this.value + "\"^^" + this.type;
     }
 
     @Override
-    public String getName() {
-        return toString();
+    public IRI getName() {
+        return IRI.create(toString());
     }
 
     @Override

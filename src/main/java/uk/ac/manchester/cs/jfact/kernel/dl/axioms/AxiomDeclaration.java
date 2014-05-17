@@ -19,8 +19,12 @@ public class AxiomDeclaration extends AxiomImpl {
     @PortedFrom(file = "tDLAxiom.h", name = "D")
     private final Expression expression;
 
-    /** @param ax
-     * @param d */
+    /**
+     * @param ax
+     *        ax
+     * @param d
+     *        d
+     */
     public AxiomDeclaration(OWLAxiom ax, Expression d) {
         super(ax);
         expression = d;

@@ -2,6 +2,8 @@ package uk.ac.manchester.cs.jfact.kernel;
 
 import java.io.Serializable;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import conformance.Original;
 import conformance.PortedFrom;
@@ -14,19 +16,22 @@ import conformance.PortedFrom;
 /** named entry */
 @PortedFrom(file = "tNamedEntry.h", name = "TNamedEntry")
 public abstract class NamedEntry implements HasName, Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** name of the entry */
     @PortedFrom(file = "tNamedEntry.h", name = "extName")
-    protected final String extName;
+    protected final IRI extName;
     /** entry identifier */
     @PortedFrom(file = "tNamedEntry.h", name = "extId")
     protected int extId;
     @PortedFrom(file = "tNamedEntry.h", name = "entity")
     protected NamedEntity entity = null;
 
-    /** @param name
-     *            entry IRI */
-    public NamedEntry(String name) {
+    /**
+     * @param name
+     *        entry IRI
+     */
+    public NamedEntry(IRI name) {
         assert name != null;
         extName = name;
         extId = 0;
@@ -40,7 +45,7 @@ public abstract class NamedEntry implements HasName, Serializable {
 
     @Override
     @PortedFrom(file = "tNamedEntry.h", name = "getName")
-    public String getName() {
+    public IRI getName() {
         return extName;
     }
 
@@ -64,9 +69,12 @@ public abstract class NamedEntry implements HasName, Serializable {
         return extName.hashCode();
     }
 
-    /** set internal ID
+    /**
+     * set internal ID
      * 
-     * @param id */
+     * @param id
+     *        id
+     */
     @PortedFrom(file = "tNamedEntry.h", name = "setId")
     public void setId(int id) {
         extId = id;
@@ -80,8 +88,8 @@ public abstract class NamedEntry implements HasName, Serializable {
 
     @Override
     public String toString() {
-        return extName + " " + extId + " " + entity + " " + bottom + " " + system + " "
-                + top;
+        return extName + " " + extId + ' ' + entity + ' ' + bottom + ' '
+                + system + ' ' + top;
     }
 
     @Original
@@ -136,13 +144,19 @@ public abstract class NamedEntry implements HasName, Serializable {
         return entity;
     }
 
-    /** @param entity */
+    /**
+     * @param entity
+     *        entity
+     */
     @PortedFrom(file = "tNamedEntry.h", name = "setEntity")
     public void setEntity(NamedEntity entity) {
         this.entity = entity;
     }
 
-    /** @param i */
+    /**
+     * @param i
+     *        i
+     */
     @PortedFrom(file = "taxNamEntry.h", name = "setIndex")
     public abstract void setIndex(int i);
 

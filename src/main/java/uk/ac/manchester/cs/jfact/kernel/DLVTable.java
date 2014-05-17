@@ -54,6 +54,6 @@ class DLVTable implements Serializable {
 
     @Override
     public String toString() {
-        return table.toString() + "\n" + host.toString();
+        return table.toString() + '\n' + host.toString();
     }
 }

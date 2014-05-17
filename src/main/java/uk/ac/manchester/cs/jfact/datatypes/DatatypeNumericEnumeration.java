@@ -7,26 +7,42 @@ package uk.ac.manchester.cs.jfact.datatypes;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.Collection;
 
-/** numeric enumeration
+/**
+ * numeric enumeration
  * 
- * @param <R> */
+ * @param <R>
+ *        type
+ */
 public class DatatypeNumericEnumeration<R extends Comparable<R>> extends
         DatatypeEnumeration<R> implements NumericDatatype<R> {
-    /** @param d */
+
+    /**
+     * @param d
+     *        d
+     */
     public DatatypeNumericEnumeration(NumericDatatype<R> d) {
         super(d);
     }
 
-    /** @param d
-     * @param l */
+    /**
+     * @param d
+     *        d
+     * @param l
+     *        l
+     */
     public DatatypeNumericEnumeration(NumericDatatype<R> d, Literal<R> l) {
         this(d);
         literals.add(l);
     }
 
-    /** @param d
-     * @param c */
-    public DatatypeNumericEnumeration(NumericDatatype<R> d, Collection<Literal<R>> c) {
+    /**
+     * @param d
+     *        d
+     * @param c
+     *        c
+     */
+    public DatatypeNumericEnumeration(NumericDatatype<R> d,
+            Collection<Literal<R>> c) {
         this(d);
         literals.addAll(c);
     }
@@ -89,8 +105,8 @@ public class DatatypeNumericEnumeration<R extends Comparable<R>> extends
         if (literals.isEmpty()) {
             return null;
         }
-        R parseNumber = (R) Facets.minInclusive.parseNumber(literals.get(0));
-        return parseNumber;
+        R r = (R) Facets.minInclusive.parseNumber(literals.get(0));
+        return r;
     }
 
     @Override
@@ -98,9 +114,9 @@ public class DatatypeNumericEnumeration<R extends Comparable<R>> extends
         if (literals.isEmpty()) {
             return null;
         }
-        R parseNumber = (R) Facets.maxInclusive.parseNumber(literals
-                .get(literals.size() - 1));
-        return parseNumber;
+        R r = (R) Facets.maxInclusive
+                .parseNumber(literals.get(literals.size() - 1));
+        return r;
     }
 
     @Override

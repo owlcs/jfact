@@ -18,6 +18,7 @@ import conformance.PortedFrom;
 /** taxonomy creator for DL */
 @PortedFrom(file = "TaxonomyCreator.h", name = "TaxonomyCreator")
 public class TaxonomyCreator implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "TaxonomyCreator.h", name = "pTax")
     protected final Taxonomy pTax;
@@ -35,8 +36,10 @@ public class TaxonomyCreator implements Serializable {
     /** number of completely-defined entries */
     @PortedFrom(file = "TaxonomyCreator.h", name = "nCDEntries")
     protected long nCDEntries = 0;
-    /** optimisation flag: if entry is completely defined by it's told subsumers,
-     * no other classification required */
+    /**
+     * optimisation flag: if entry is completely defined by it's told subsumers,
+     * no other classification required
+     */
     @PortedFrom(file = "TaxonomyCreator.h", name = "useCompletelyDefined")
     protected boolean useCompletelyDefined = false;
     /** session flag: shows the direction of the search */
@@ -52,12 +55,20 @@ public class TaxonomyCreator implements Serializable {
     @PortedFrom(file = "TaxonomyCreator.h", name = "sigStack")
     protected final LinkedList<TSignature> sigStack = new LinkedList<TSignature>();
 
-    /** @param pTax2 */
+    /**
+     * @param pTax2
+     *        pTax2
+     */
     public TaxonomyCreator(Taxonomy pTax2) {
         pTax = pTax2;
     }
 
-    /** initialise aux entry with given concept p */
+    /**
+     * initialise aux entry with given concept p
+     * 
+     * @param p
+     *        p
+     */
     @PortedFrom(file = "TaxonomyCreator.h", name = "setCurrentEntry")
     protected void setCurrentEntry(ClassifiableEntry p) {
         pTax.getCurrent().clear();
@@ -79,8 +90,10 @@ public class TaxonomyCreator implements Serializable {
         for (ClassifiableEntry p : top) {
             if (p.isClassified()) {
                 if (needLogging()) {
-                    pTax.getOptions().getLog()
-                            .printTemplate(Templates.TOLD_SUBSUMERS, p.getName());
+                    pTax.getOptions()
+                            .getLog()
+                            .printTemplate(Templates.TOLD_SUBSUMERS,
+                                    p.getName());
                 }
                 propagateTrueUp(p.getTaxVertex());
             }
@@ -97,7 +110,8 @@ public class TaxonomyCreator implements Serializable {
     }
 
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "setNonRedundantCandidates")
-    private void setNonRedundantCandidates() {
+    private
+            void setNonRedundantCandidates() {
         if (!curEntry.hasToldSubsumers()) {
             pTax.getOptions().getLog().print("\nTAX: TOP");
         }
@@ -111,7 +125,11 @@ public class TaxonomyCreator implements Serializable {
         }
     }
 
-    /** check if no classification needed (synonym, orphan, unsatisfiable) */
+    /**
+     * check if no classification needed (synonym, orphan, unsatisfiable)
+     * 
+     * @return true if no classification
+     */
     @PortedFrom(file = "TaxonomyCreator.h", name = "immediatelyClassified")
     protected boolean immediatelyClassified() {
         return classifySynonym();
@@ -126,7 +144,11 @@ public class TaxonomyCreator implements Serializable {
         }
     }
 
-    /** check if it is possible to skip TD phase */
+    /**
+     * check if it is possible to skip TD phase
+     * 
+     * @return true if top down can be skipped
+     */
     @PortedFrom(file = "TaxonomyCreator.h", name = "needTopDown")
     protected boolean needTopDown() {
         return false;
@@ -136,7 +158,11 @@ public class TaxonomyCreator implements Serializable {
     @PortedFrom(file = "TaxonomyCreator.h", name = "runTopDown")
     protected void runTopDown() {}
 
-    /** check if it is possible to skip BU phase */
+    /**
+     * check if it is possible to skip BU phase
+     * 
+     * @return true if bottom up necessary
+     */
     @PortedFrom(file = "TaxonomyCreator.h", name = "needBottomUp")
     protected boolean needBottomUp() {
         return false;
@@ -148,7 +174,8 @@ public class TaxonomyCreator implements Serializable {
 
     /** actions that to be done BEFORE entry will be classified */
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "preClassificationActions")
-    protected void preClassificationActions() {}
+    protected
+            void preClassificationActions() {}
 
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "performClassification")
     private void performClassification() {
@@ -170,7 +197,8 @@ public class TaxonomyCreator implements Serializable {
     }
 
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "generalTwoPhaseClassification")
-    private void generalTwoPhaseClassification() {
+    private
+            void generalTwoPhaseClassification() {
         setupTopDown();
         if (needTopDown()) {
             setValue(pTax.getTopVertex(), true);
@@ -187,8 +215,11 @@ public class TaxonomyCreator implements Serializable {
         clearLabels();
     }
 
-    /** @param v
-     * @return true if V is a direct parent of current wrt labels */
+    /**
+     * @param v
+     *        v
+     * @return true if V is a direct parent of current wrt labels
+     */
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "isDirectParent")
     public boolean isDirectParent(TaxonomyVertex v) {
         for (TaxonomyVertex q : v.neigh(false)) {
@@ -200,7 +231,12 @@ public class TaxonomyCreator implements Serializable {
     }
 
     // -- DFS-based classification
-    /** add top entry together with its known subsumers */
+    /**
+     * add top entry together with its known subsumers
+     * 
+     * @param p
+     *        p
+     */
     @PortedFrom(file = "TaxonomyCreator.h", name = "addTop")
     private void addTop(ClassifiableEntry p) {
         waitStack.push(p);
@@ -235,7 +271,12 @@ public class TaxonomyCreator implements Serializable {
         removeTop();
     }
 
-    /** propagate the TRUE value of the KS subsumption up the hierarchy */
+    /**
+     * propagate the TRUE value of the KS subsumption up the hierarchy
+     * 
+     * @param node
+     *        node
+     */
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "propagateTrueUp")
     protected void propagateTrueUp(TaxonomyVertex node) {
         // if taxonomy class already checked -- do nothing
@@ -252,7 +293,12 @@ public class TaxonomyCreator implements Serializable {
         }
     }
 
-    /** propagate the FALSE value of the KS subsumption down the hierarchy */
+    /**
+     * propagate the FALSE value of the KS subsumption down the hierarchy
+     * 
+     * @param node
+     *        node
+     */
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "propagateFalseDown")
     protected void propagateFalseDown(TaxonomyVertex node) {
         // if taxonomy class already checked -- do nothing
@@ -268,7 +314,15 @@ public class TaxonomyCreator implements Serializable {
         }
     }
 
-    /** propagate constant VALUE into an appropriate direction */
+    /**
+     * propagate constant VALUE into an appropriate direction
+     * 
+     * @param node
+     *        node
+     * @param value
+     *        value
+     * @return value
+     */
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "setAndPropagate")
     protected boolean setAndPropagate(TaxonomyVertex node, boolean value) {
         if (value) {
@@ -279,15 +333,22 @@ public class TaxonomyCreator implements Serializable {
         return value;
     }
 
-    /** check if it is necessary to log taxonomy action */
+    /**
+     * check if it is necessary to log taxonomy action
+     * 
+     * @return true if necessary to log
+     */
     @PortedFrom(file = "TaxonomyCreator.h", name = "needLogging")
     protected boolean needLogging() {
         return true;
     }
 
-    /** add PARENT as a parent if it exists and is direct parent
+    /**
+     * add PARENT as a parent if it exists and is direct parent
      * 
-     * @param parent */
+     * @param parent
+     *        parent
+     */
     @PortedFrom(file = "TaxonomyCreator.h", name = "addPossibleParent")
     public void addPossibleParent(TaxonomyVertex parent) {
         if (parent != null && isDirectParent(parent)) {
@@ -301,15 +362,21 @@ public class TaxonomyCreator implements Serializable {
         valueLabel++;
     }
 
-    /** set Completely Defined flag
+    /**
+     * set Completely Defined flag
      * 
-     * @param use */
+     * @param use
+     *        use
+     */
     @PortedFrom(file = "TaxonomyCreator.h", name = "setCompletelyDefined")
     public void setCompletelyDefined(boolean use) {
         useCompletelyDefined = use;
     }
 
-    /** @param p */
+    /**
+     * @param p
+     *        p
+     */
     @PortedFrom(file = "TaxonomyCreator.h", name = "classifyEntry")
     public void classifyEntry(ClassifiableEntry p) {
         assert waitStack.isEmpty();
@@ -331,9 +398,13 @@ public class TaxonomyCreator implements Serializable {
         return o.toString();
     }
 
-    /** ensure that all TS of the top entry are classified.
+    /**
+     * ensure that all TS of the top entry are classified.
      * 
-     * @return the reason of cycle or NULL. */
+     * @param cur
+     *        cur
+     * @return the reason of cycle or NULL.
+     */
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "prepareTS")
     private ClassifiableEntry prepareTS(ClassifiableEntry cur) {
         // we just found that TS forms a cycle -- return stop-marker
@@ -394,35 +465,50 @@ public class TaxonomyCreator implements Serializable {
     // -----------------------------------------------------------------
     // -- DFS-based classification
     // -----------------------------------------------------------------
-    /** @param node
-     * @return true if a NODE has been valued during current classification pass */
+    /**
+     * @param node
+     *        node
+     * @return true if a NODE has been valued during current classification pass
+     */
     @PortedFrom(file = "TaxonomyCreator.h", name = "isValued")
     public boolean isValued(TaxonomyVertex node) {
         return node.isValued(valueLabel);
     }
 
-    /** @param node
-     * @return the subsumption value of a NODE wrt currently classified one */
+    /**
+     * @param node
+     *        node
+     * @return the subsumption value of a NODE wrt currently classified one
+     */
     @PortedFrom(file = "TaxonomyCreator.h", name = "getValue")
     public boolean getValue(TaxonomyVertex node) {
         return node.getValue();
     }
 
-    /** set the classification value of a NODE to VALUE
+    /**
+     * set the classification value of a NODE to VALUE
      * 
      * @param node
+     *        node
      * @param value
-     * @return val */
+     *        value
+     * @return val
+     */
     @PortedFrom(file = "TaxonomyCreator.h", name = "setValue")
     public boolean setValue(TaxonomyVertex node, boolean value) {
         return node.setValued(value, valueLabel);
     }
 
-    /** prepare signature for given entry
+    /**
+     * prepare signature for given entry
      * 
-     * @param p */
+     * @param p
+     *        p
+     * @return signature
+     */
     @PortedFrom(file = "TaxonomyCreator.h", name = "buildSignature")
-    protected TSignature buildSignature(@SuppressWarnings("unused") ClassifiableEntry p) {
+    protected TSignature buildSignature(
+            @SuppressWarnings("unused") ClassifiableEntry p) {
         return null;
     }
 }

@@ -7,6 +7,8 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptDataRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpressionArg;
@@ -27,8 +29,12 @@ public class ConceptDataValue implements ConceptDataRoleExpression,
     @Original
     private final DataRoleExpression delegate;
 
-    /** @param R
-     * @param V */
+    /**
+     * @param R
+     *        R
+     * @param V
+     *        V
+     */
     public ConceptDataValue(DataRoleExpression R, Literal<?> V) {
         dataValue = V;
         delegate = R;
@@ -59,7 +65,7 @@ public class ConceptDataValue implements ConceptDataRoleExpression,
     }
 
     @Override
-    public String getName() {
-        return toString();
+    public IRI getName() {
+        return IRI.create(toString());
     }
 }

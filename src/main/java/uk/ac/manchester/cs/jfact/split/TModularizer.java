@@ -20,6 +20,7 @@ import conformance.PortedFrom;
 /** class to create modules of an ontology wrt module type */
 @PortedFrom(file = "Modularity.h", name = "TModularizer")
 public class TModularizer implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** shared signature signature */
     @PortedFrom(file = "Modularity.h", name = "sig")
@@ -48,7 +49,12 @@ public class TModularizer implements Serializable {
     @Original
     private final JFactReasonerConfiguration config;
 
-    /** update SIG wrt the axiom signature */
+    /**
+     * update SIG wrt the axiom signature
+     * 
+     * @param axiom
+     *        axiom
+     */
     @PortedFrom(file = "Modularity.h", name = "addAxiomSig")
     private void addAxiomSig(AxiomInterface axiom) {
         TSignature axiomSig = axiom.getSignature();
@@ -62,7 +68,12 @@ public class TModularizer implements Serializable {
         }
     }
 
-    /** add an axiom to a module */
+    /**
+     * add an axiom to a module
+     * 
+     * @param axiom
+     *        axiom
+     */
     @PortedFrom(file = "Modularity.h", name = "addAxiomToModule")
     private void addAxiomToModule(AxiomInterface axiom) {
         axiom.setInModule(true);
@@ -71,7 +82,11 @@ public class TModularizer implements Serializable {
         addAxiomSig(axiom);
     }
 
-    /** @return true iff an AXiom is non-local */
+    /**
+     * @param ax
+     *        ax
+     * @return true iff an AXiom is non-local
+     */
     @PortedFrom(file = "Modularity.h", name = "isNonLocal")
     private boolean isNonLocal(AxiomInterface ax) {
         ++nChecks;
@@ -82,22 +97,35 @@ public class TModularizer implements Serializable {
         return true;
     }
 
-    /** add an axiom if it is non-local (or if noCheck is true) */
+    /**
+     * add an axiom if it is non-local (or if noCheck is true)
+     * 
+     * @param ax
+     *        ax
+     * @param noCheck
+     *        noCheck
+     */
     @PortedFrom(file = "Modularity.h", name = "addNonLocal")
     private void addNonLocal(AxiomInterface ax, boolean noCheck) {
         if (noCheck || isNonLocal(ax)) {
             addAxiomToModule(ax);
-            if (config.isRKG_USE_AD_IN_MODULE_EXTRACTION()) {
-                if (noAtomsProcessing && ax.getAtom() != null) {
-                    noAtomsProcessing = false;
-                    addNonLocal(ax.getAtom().getModule(), true);
-                    noAtomsProcessing = true;
-                }
+            if (config.isRKG_USE_AD_IN_MODULE_EXTRACTION() && noAtomsProcessing
+                    && ax.getAtom() != null) {
+                noAtomsProcessing = false;
+                addNonLocal(ax.getAtom().getModule(), true);
+                noAtomsProcessing = true;
             }
         }
     }
 
-    /** add all the non-local axioms from given axiom-set AxSet */
+    /**
+     * add all the non-local axioms from given axiom-set AxSet
+     * 
+     * @param AxSet
+     *        AxSet
+     * @param noCheck
+     *        noCheck
+     */
     @PortedFrom(file = "Modularity.h", name = "addNonLocal")
     private void addNonLocal(Collection<AxiomInterface> AxSet, boolean noCheck) {
         for (AxiomInterface q : AxSet) {
@@ -125,7 +153,12 @@ public class TModularizer implements Serializable {
         }
     }
 
-    /** extract module wrt presence of a sig index */
+    /**
+     * extract module wrt presence of a sig index
+     * 
+     * @param args
+     *        args
+     */
     @PortedFrom(file = "Modularity.h", name = "extractModule")
     private void extractModule(Collection<AxiomInterface> args) {
         Module.clear();
@@ -144,10 +177,14 @@ public class TModularizer implements Serializable {
         }
     }
 
-    /** init c'tor
+    /**
+     * init c'tor
      * 
      * @param config
-     * @param c */
+     *        config
+     * @param c
+     *        c
+     */
     public TModularizer(JFactReasonerConfiguration config, LocalityChecker c) {
         this.config = config;
         Checker = c;
@@ -157,9 +194,12 @@ public class TModularizer implements Serializable {
         nNonLocal = 0;
     }
 
-    /** allow the checker to preprocess an ontology if necessary
+    /**
+     * allow the checker to preprocess an ontology if necessary
      * 
-     * @param vec */
+     * @param vec
+     *        vec
+     */
     @PortedFrom(file = "Modularity.h", name = "preprocessOntology")
     public void preprocessOntology(Collection<AxiomInterface> vec) {
         Checker.preprocessOntology(vec);
@@ -168,9 +208,13 @@ public class TModularizer implements Serializable {
         nChecks += 2 * vec.size();
     }
 
-    /** @param ax
+    /**
+     * @param ax
+     *        ax
      * @param type
-     * @return true iff the axiom AX is a tautology wrt given type */
+     *        type
+     * @return true iff the axiom AX is a tautology wrt given type
+     */
     @PortedFrom(file = "Modularity.h", name = "isTautology")
     public boolean isTautology(AxiomInterface ax, ModuleType type) {
         boolean topLocality = type == ModuleType.M_TOP;
@@ -198,19 +242,30 @@ public class TModularizer implements Serializable {
         return Checker;
     }
 
-    /** @param begin
+    /**
+     * @param begin
+     *        begin
      * @param signature
-     * @param type */
+     *        signature
+     * @param type
+     *        type
+     */
     @PortedFrom(file = "Modularity.h", name = "extract")
-    public void extract(AxiomInterface begin, TSignature signature, ModuleType type) {
+    public void extract(AxiomInterface begin, TSignature signature,
+            ModuleType type) {
         this.extract(Collections.singletonList(begin), signature, type);
     }
 
-    /** extract module wrt SIGNATURE and TYPE from the set of axioms [BEGIN,END)
+    /**
+     * extract module wrt SIGNATURE and TYPE from the set of axioms [BEGIN,END)
      * 
      * @param begin
+     *        begin
      * @param signature
-     * @param type */
+     *        signature
+     * @param type
+     *        type
+     */
     @PortedFrom(file = "Modularity.h", name = "extract")
     public void extract(Collection<AxiomInterface> begin, TSignature signature,
             ModuleType type) {
@@ -242,12 +297,17 @@ public class TModularizer implements Serializable {
         return nChecks;
     }
 
-    /** extract module wrt SIGNATURE and TYPE from O;
+    /**
+     * extract module wrt SIGNATURE and TYPE from O;
      * 
      * @param list
+     *        list
      * @param signature
+     *        signature
      * @param type
-     * @return result in the Set */
+     *        type
+     * @return result in the Set
+     */
     @PortedFrom(file = "Modularity.h", name = "extractModule")
     public List<AxiomInterface> extractModule(List<AxiomInterface> list,
             TSignature signature, ModuleType type) {

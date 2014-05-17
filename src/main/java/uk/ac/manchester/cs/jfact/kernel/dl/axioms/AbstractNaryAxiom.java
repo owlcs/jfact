@@ -17,17 +17,25 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import conformance.Original;
 import conformance.PortedFrom;
 
-/** n-ary axiom base class
+/**
+ * n-ary axiom base class
  * 
- * @param <I> */
+ * @param <I>
+ *        expression type
+ */
 @Original
-public abstract class AbstractNaryAxiom<I extends Expression> extends AxiomImpl implements
-        AxiomInterface, NAryExpression<I> {
+public abstract class AbstractNaryAxiom<I extends Expression> extends AxiomImpl
+        implements AxiomInterface, NAryExpression<I> {
+
     private static final long serialVersionUID = 11000L;
     private final NAryExpressionImpl<I> delegate;
 
-    /** @param ax
-     * @param v */
+    /**
+     * @param ax
+     *        ax
+     * @param v
+     *        v
+     */
     protected AbstractNaryAxiom(OWLAxiom ax, Collection<I> v) {
         super(ax);
         delegate = new NAryExpressionImpl<I>();

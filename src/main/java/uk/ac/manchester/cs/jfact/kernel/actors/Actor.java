@@ -11,14 +11,25 @@ import conformance.PortedFrom;
 /** Actor interface */
 @PortedFrom(file = "Actor.h", name = "Actor")
 public interface Actor {
-    /** taxonomy walking method.
+
+    /**
+     * taxonomy walking method.
      * 
      * @param v
+     *        v
      * @return true if node was processed, false if node can not be processed in
-     *         current settings */
+     *         current settings
+     */
     @PortedFrom(file = "Actor.h", name = "apply")
     boolean apply(TaxonomyVertex v);
 
     /** clear collections */
     void clear();
+
+    /**
+     * @param v
+     *        vertex to check
+     * @return true if applicable
+     */
+    boolean applicable(TaxonomyVertex v);
 }

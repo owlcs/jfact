@@ -7,6 +7,8 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptAnd;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectExists;
@@ -18,6 +20,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TEquationSolver")
 class TEquationSolver implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "LeftPart")
@@ -29,11 +32,12 @@ class TEquationSolver implements Serializable {
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TEquationSolver")
     public TEquationSolver(ConjunctiveQueryFolding conjunctiveQueryFolding,
-            ConceptExpression leftPart, String propositionalVariable,
+            ConceptExpression leftPart, IRI propositionalVariable,
             TExpressionMarker expressionMarker) {
         this.conjunctiveQueryFolding = conjunctiveQueryFolding;
         LeftPart = leftPart;
-        RightPart = this.conjunctiveQueryFolding.getpEM().concept(propositionalVariable);
+        RightPart = this.conjunctiveQueryFolding.getpEM().concept(
+                propositionalVariable);
         ExpressionMarker = expressionMarker;
     }
 
@@ -42,11 +46,12 @@ class TEquationSolver implements Serializable {
         while (!conjunctiveQueryFolding.isNominal(LeftPart)) {
             if (LeftPart instanceof ConceptObjectExists) {
                 ConceptObjectExists leftDiamond = (ConceptObjectExists) LeftPart;
-                ObjectRoleInverse invRole = (ObjectRoleInverse) leftDiamond.getOR();
+                ObjectRoleInverse invRole = (ObjectRoleInverse) leftDiamond
+                        .getOR();
                 ObjectRoleExpression role = invRole.getOR();
                 ConceptExpression newLeftPart = leftDiamond.getConcept();
-                ConceptExpression newRightPart = conjunctiveQueryFolding.getpEM().forall(
-                        role, RightPart);
+                ConceptExpression newRightPart = conjunctiveQueryFolding
+                        .getpEM().forall(role, RightPart);
                 LeftPart = newLeftPart;
                 RightPart = newRightPart;
             } else if (LeftPart instanceof ConceptAnd) {
@@ -65,7 +70,8 @@ class TEquationSolver implements Serializable {
                     newRightPart = RightPart;
                 } else {
                     newRightPart = conjunctiveQueryFolding.getpEM().or(
-                            conjunctiveQueryFolding.getpEM().not(arg2), RightPart);
+                            conjunctiveQueryFolding.getpEM().not(arg2),
+                            RightPart);
                 }
                 LeftPart = newLeftPart;
                 RightPart = newRightPart;
@@ -74,10 +80,8 @@ class TEquationSolver implements Serializable {
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "getNominal")
-    public String getNominal() {
-        String longNominal = ((ConceptName) LeftPart).getName();
-        int colon = longNominal.indexOf(':');
-        return longNominal.substring(0, colon);
+    public IRI getNominal() {
+        return ((ConceptName) LeftPart).getName();
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "getPhi")

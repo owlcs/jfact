@@ -20,13 +20,17 @@ import conformance.PortedFrom;
 /** connectivity checker */
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "QueryConnectednessChecker")
 public class QueryConnectednessChecker implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "PassedVertice")
     private final Set<QRVariable> PassedVertice = new TreeSet<QRVariable>();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Query")
     private final QRQuery Query;
 
-    /** @param query */
+    /**
+     * @param query
+     *        query
+     */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "QueryConnectednessChecker")
     public QueryConnectednessChecker(QRQuery query) {
         Query = new QRQuery(query);
@@ -41,14 +45,16 @@ public class QueryConnectednessChecker implements Serializable {
         } else if (a instanceof QRConceptAtom) {
             MarkVertex((QRVariable) ((QRConceptAtom) a).getArg());
         } else {
-            throw new UnreachableSituationException("Unsupported atom in query rewriting");
+            throw new UnreachableSituationException(
+                    "Unsupported atom in query rewriting");
         }
         for (QRAtom atomIterator : Query.getBody().begin()) {
             if (atomIterator instanceof QRRoleAtom) {
                 QRRoleAtom atom = (QRRoleAtom) atomIterator;
                 QRVariable arg1 = (QRVariable) atom.getArg1();
                 QRVariable arg2 = (QRVariable) atom.getArg2();
-                if (!PassedVertice.contains(arg1) || !PassedVertice.contains(arg2)) {
+                if (!PassedVertice.contains(arg1)
+                        || !PassedVertice.contains(arg2)) {
                     return false;
                 }
             } else if (atomIterator instanceof QRConceptAtom) {
@@ -64,7 +70,10 @@ public class QueryConnectednessChecker implements Serializable {
         return true;
     }
 
-    /** @param var */
+    /**
+     * @param var
+     *        var
+     */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "MarkVertex")
     public void MarkVertex(QRVariable var) {
         PassedVertice.add(var);

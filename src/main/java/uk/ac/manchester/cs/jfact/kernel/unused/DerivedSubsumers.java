@@ -17,11 +17,16 @@ public class DerivedSubsumers extends KnownSubsumers {
     /** set of sure- and possible subsumers */
     protected final List<ClassifiableEntry> Sure, Possible;
 
-    /** c'tor: copy given sets
+    /**
+     * c'tor: copy given sets
      * 
      * @param sure
-     * @param possible */
-    public DerivedSubsumers(List<ClassifiableEntry> sure, List<ClassifiableEntry> possible) {
+     *        sure
+     * @param possible
+     *        possible
+     */
+    public DerivedSubsumers(List<ClassifiableEntry> sure,
+            List<ClassifiableEntry> possible) {
         Sure = new ArrayList<ClassifiableEntry>(sure);
         Possible = new ArrayList<ClassifiableEntry>(possible);
     }

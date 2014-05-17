@@ -26,9 +26,12 @@ public abstract class Restorer implements Serializable {
         return raresavestackLevel;
     }
 
-    /** for accessing the level on TRareSaveStack
+    /**
+     * for accessing the level on TRareSaveStack
      * 
-     * @param raresavestackLevel */
+     * @param raresavestackLevel
+     *        raresavestackLevel
+     */
     @PortedFrom(file = "tRestorer.h", name = "setLevel")
     public void setRaresavestackLevel(int raresavestackLevel) {
         this.raresavestackLevel = raresavestackLevel;

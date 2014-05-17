@@ -23,12 +23,18 @@ public class AxiomValueOf extends AxiomIndividual {
     @PortedFrom(file = "tDLAxiom.h", name = "V")
     private final Literal<?> value;
 
-    /** @param ax
+    /**
+     * @param ax
+     *        ax
      * @param i
+     *        i
      * @param a
-     * @param v */
-    public AxiomValueOf(OWLAxiom ax, IndividualExpression i, DataRoleExpression a,
-            Literal<?> v) {
+     *        a
+     * @param v
+     *        v
+     */
+    public AxiomValueOf(OWLAxiom ax, IndividualExpression i,
+            DataRoleExpression a, Literal<?> v) {
         super(ax, i);
         dataRoleExpression = a;
         value = v;

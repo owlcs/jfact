@@ -19,8 +19,12 @@ import conformance.PortedFrom;
 public class AxiomDisjointDRoles extends AbstractNaryAxiom<DataRoleExpression> {
     private static final long serialVersionUID = 11000L;
 
-    /** @param ax
-     * @param v */
+    /**
+     * @param ax
+     *        ax
+     * @param v
+     *        v
+     */
     public AxiomDisjointDRoles(OWLAxiom ax, List<DataRoleExpression> v) {
         super(ax, v);
     }

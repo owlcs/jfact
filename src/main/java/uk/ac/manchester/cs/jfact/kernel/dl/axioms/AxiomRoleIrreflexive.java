@@ -17,8 +17,12 @@ import conformance.PortedFrom;
 public class AxiomRoleIrreflexive extends AxiomSingleORole {
     private static final long serialVersionUID = 11000L;
 
-    /** @param ax
-     * @param role */
+    /**
+     * @param ax
+     *        ax
+     * @param role
+     *        role
+     */
     public AxiomRoleIrreflexive(OWLAxiom ax, ObjectRoleExpression role) {
         super(ax, role);
     }

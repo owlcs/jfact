@@ -11,25 +11,35 @@ import java.util.LinkedList;
 import conformance.Original;
 import conformance.PortedFrom;
 
-/** save stack
+/**
+ * save stack
  * 
- * @param <T> */
+ * @param <T>
+ *        type
+ */
 @PortedFrom(file = "tSaveStack.h", name = "TSaveStack")
 public class SaveStack<T> implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     @Original
     protected final LinkedList<T> list = new LinkedList<T>();
 
-    /** @param depth
-     * @return an object from a fixed depth */
+    /**
+     * @param depth
+     *        depth
+     * @return an object from a fixed depth
+     */
     @PortedFrom(file = "tSaveStack.h", name = "pop")
     public T pop(int depth) {
         top(depth);
         return pop();
     }
 
-    /** @param depth
-     * @return an object from a fixed depth */
+    /**
+     * @param depth
+     *        depth
+     * @return an object from a fixed depth
+     */
     @PortedFrom(file = "tSaveStack.h", name = "top")
     public T top(int depth) {
         assert list.size() >= depth;
@@ -46,7 +56,10 @@ public class SaveStack<T> implements Serializable {
         return list.pop();
     }
 
-    /** @param e */
+    /**
+     * @param e
+     *        e
+     */
     @PortedFrom(file = "tSaveStack.h", name = "push")
     public void push(T e) {
         list.push(e);

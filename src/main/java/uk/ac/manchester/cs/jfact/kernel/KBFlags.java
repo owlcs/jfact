@@ -13,6 +13,7 @@ import conformance.PortedFrom;
 /** flags */
 @PortedFrom(file = "tKBFlags.h", name = "TKBFlags")
 public class KBFlags implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     @Original
     private boolean GCI;
@@ -27,7 +28,10 @@ public class KBFlags implements Serializable {
         return GCI;
     }
 
-    /** @param action */
+    /**
+     * @param action
+     *        action
+     */
     @Original
     public void setGCI(boolean action) {
         GCI = action;
@@ -39,8 +43,10 @@ public class KBFlags implements Serializable {
         return RnD;
     }
 
-    /** @param b
-     *            rnd value */
+    /**
+     * @param b
+     *        rnd value
+     */
     @Original
     public void setRnD(boolean b) {
         RnD = b;
@@ -52,7 +58,10 @@ public class KBFlags implements Serializable {
         return Reflexive;
     }
 
-    /** @param action */
+    /**
+     * @param action
+     *        action
+     */
     @Original
     public void setReflexive(boolean action) {
         Reflexive = action;

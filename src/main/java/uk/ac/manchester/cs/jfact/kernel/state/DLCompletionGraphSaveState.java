@@ -25,7 +25,10 @@ public class DLCompletionGraphSaveState implements Serializable {
         return nNodes;
     }
 
-    /** @param nNodes */
+    /**
+     * @param nNodes
+     *        nNodes
+     */
     public void setnNodes(int nNodes) {
         this.nNodes = nNodes;
     }
@@ -35,7 +38,10 @@ public class DLCompletionGraphSaveState implements Serializable {
         return sNodes;
     }
 
-    /** @param sNodes */
+    /**
+     * @param sNodes
+     *        sNodes
+     */
     public void setsNodes(int sNodes) {
         this.sNodes = sNodes;
     }
@@ -45,13 +51,16 @@ public class DLCompletionGraphSaveState implements Serializable {
         return nEdges;
     }
 
-    /** @param nEdges */
+    /**
+     * @param nEdges
+     *        nEdges
+     */
     public void setnEdges(int nEdges) {
         this.nEdges = nEdges;
     }
 
     @Override
     public String toString() {
-        return "CGSaveState (" + nNodes + "," + nEdges + "," + sNodes + ")";
+        return "CGSaveState (" + nNodes + ',' + nEdges + ',' + sNodes + ')';
     }
 }

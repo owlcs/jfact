@@ -29,9 +29,11 @@ public abstract class KnownSubsumers implements Serializable {
         return p_begin().isEmpty();
     }
 
-    /** @param ce
+    /**
+     * @param ce
      *            class expression
-     * @return true iff CE is the possible subsumer */
+     * @return true iff CE is the possible subsumer
+     */
     public boolean isPossibleSub(@SuppressWarnings("unused") ClassifiableEntry ce) {
         return true;
     }

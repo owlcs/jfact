@@ -20,11 +20,14 @@ public class DatatypeEntry extends NamedEntry {
     /** DAG index of the entry */
     private int pName;
 
-    /** create data entry with given name
+    /**
+     * create data entry with given name
      * 
-     * @param type */
+     * @param type
+     *        type
+     */
     public DatatypeEntry(Datatype<?> type) {
-        super(type.getDatatypeURI());
+        super(type.getDatatypeIRI());
         this.type = type;
         pName = bpINVALID;
     }
@@ -45,7 +48,7 @@ public class DatatypeEntry extends NamedEntry {
         return type.getFacets();
     }
 
-    /** get pointer to DAG entry corresponding to the data entry */
+    /** @return pointer to DAG entry corresponding to the data entry */
     @Override
     @PortedFrom(file = "taxNamEntry.h", name = "getIndex")
     public int getIndex() {
@@ -61,8 +64,8 @@ public class DatatypeEntry extends NamedEntry {
 
     @Override
     public String toString() {
-        return "(" + this.getClass().getSimpleName() + " " + pName + " " + type + " "
-                + super.toString() + ")";
+        return '(' + this.getClass().getSimpleName() + ' ' + pName + ' ' + type
+                + ' ' + super.toString() + ')';
     }
 
     @Override
@@ -78,6 +81,11 @@ public class DatatypeEntry extends NamedEntry {
         return type.equals(((DatatypeEntry) obj).type);
     }
 
+    /**
+     * @param p
+     *        index to set
+     * @return modified object
+     */
     public DatatypeEntry withIndex(int p) {
         setIndex(p);
         return this;

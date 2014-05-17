@@ -38,8 +38,10 @@ public class AtomicDecomposer implements Serializable {
     @PortedFrom(file = "AtomicDecomposer.h", name = "type")
     private ModuleType type;
 
-    /** @param c
-     *            modularizer */
+    /**
+     * @param c
+     *        modularizer
+     */
     public AtomicDecomposer(TModularizer c) {
         Modularizer = c;
     }
@@ -52,15 +54,22 @@ public class AtomicDecomposer implements Serializable {
         }
     }
 
-    /** @param pi
-     *            progress indicator to use */
+    /**
+     * @param pi
+     *        progress indicator to use
+     */
     @PortedFrom(file = "AtomicDecomposer.h", name = "setProgressIndicator")
     public void setProgressIndicator(ProgressIndicatorInterface pi) {
         PI = pi;
     }
 
-    /** remove tautologies (axioms that are always local) from the ontology
-     * temporarily */
+    /**
+     * remove tautologies (axioms that are always local) from the ontology
+     * temporarily
+     * 
+     * @param O
+     *        O
+     */
     @PortedFrom(file = "AtomicDecomposer.h", name = "removeTautologies")
     private void removeTautologies(Ontology O) {
         // we might use it for another decomposition
@@ -83,8 +92,16 @@ public class AtomicDecomposer implements Serializable {
         }
     }
 
-    /** build a module for given axiom AX; use parent atom's module as a base for
-     * the module search */
+    /**
+     * build a module for given axiom AX; use parent atom's module as a base for
+     * the module search
+     * 
+     * @param sig
+     *        sig
+     * @param parent
+     *        parent
+     * @return new atom
+     */
     @PortedFrom(file = "AtomicDecomposer.h", name = "buildModule")
     private TOntologyAtom buildModule(TSignature sig, TOntologyAtom parent) {
         // build a module for a given signature
@@ -109,8 +126,16 @@ public class AtomicDecomposer implements Serializable {
         return atom;
     }
 
-    /** create atom for given axiom AX; use parent atom's module as a base for
-     * the module search */
+    /**
+     * create atom for given axiom AX; use parent atom's module as a base for
+     * the module search
+     * 
+     * @param ax
+     *        ax
+     * @param parent
+     *        parent
+     * @return new atom
+     */
     @PortedFrom(file = "AtomicDecomposer.h", name = "createAtom")
     private TOntologyAtom createAtom(AxiomInterface ax, TOntologyAtom parent) {
         // check whether axiom already has an atom
@@ -149,9 +174,13 @@ public class AtomicDecomposer implements Serializable {
         return AOS;
     }
 
-    /** @param O
+    /**
+     * @param O
+     *        O
      * @param t
-     * @return the atomic structure for given module type T */
+     *        t
+     * @return the atomic structure for given module type T
+     */
     @PortedFrom(file = "AtomicDecomposer.h", name = "getAOS")
     public AOStructure getAOS(Ontology O, ModuleType t) {
         // remember the type of the module

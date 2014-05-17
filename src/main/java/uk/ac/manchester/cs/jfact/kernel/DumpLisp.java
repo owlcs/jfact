@@ -79,7 +79,7 @@ class DumpLisp extends DumpInterface {
     @Override
     @PortedFrom(file = "dumpLisp.h", name = "dumpName")
     public void dumpName(NamedEntry p) {
-        o.print("|" + p.getName() + "|");
+        o.print("|" + p.getName() + '|');
     }
 
     /** dump concept atom (as used in expression) */

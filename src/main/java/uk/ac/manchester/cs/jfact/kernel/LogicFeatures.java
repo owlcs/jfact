@@ -5,7 +5,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
+import static uk.ac.manchester.cs.jfact.helpers.Helper.bpTOP;
 
 import java.io.Serializable;
 import java.util.BitSet;
@@ -18,18 +18,28 @@ import conformance.PortedFrom;
 /** logic features */
 @PortedFrom(file = "LogicFeature.h", name = "LogicFeatures")
 public class LogicFeatures implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** all flags in one long */
     @PortedFrom(file = "LogicFeature.h", name = "flags")
     private final BitSet flags = new BitSet();
 
-    /** set any flag */
+    /**
+     * set any flag
+     * 
+     * @param val
+     *        val
+     */
     @PortedFrom(file = "LogicFeature.h", name = "setX")
     private void setX(int val) {
         flags.set(val);
     }
 
-    /** get value of any flag */
+    /**
+     * @param val
+     *        val
+     * @return value of any flag
+     */
     @PortedFrom(file = "LogicFeature.h", name = "getX")
     private boolean getX(int val) {
         return flags.get(val);
@@ -38,16 +48,22 @@ public class LogicFeatures implements Serializable {
     /** default c'tor */
     public LogicFeatures() {}
 
-    /** copy c'tor
+    /**
+     * copy c'tor
      * 
-     * @param lf */
+     * @param lf
+     *        lf
+     */
     public LogicFeatures(LogicFeatures lf) {
         flags.or(lf.flags);
     }
 
-    /** operator add
+    /**
+     * operator add
      * 
-     * @param lf */
+     * @param lf
+     *        lf
+     */
     @PortedFrom(file = "LogicFeature.h", name = "or")
     public void or(LogicFeatures lf) {
         flags.or(lf.flags);
@@ -132,9 +148,13 @@ public class LogicFeatures implements Serializable {
         setX(lfBothRoles);
     }
 
-    /** @param f1
+    /**
+     * @param f1
+     *        f1
      * @param f2
-     * @return combination of the two objects */
+     *        f2
+     * @return combination of the two objects
+     */
     @PortedFrom(file = "LogicFeature.h", name = "+")
     public static LogicFeatures plus(LogicFeatures f1, LogicFeatures f2) {
         LogicFeatures f = new LogicFeatures(f1);
@@ -142,7 +162,10 @@ public class LogicFeatures implements Serializable {
         return f;
     }
 
-    /** @param p */
+    /**
+     * @param p
+     *        p
+     */
     @PortedFrom(file = "LogicFeature.h", name = "fillConceptData")
     public void fillConceptData(Concept p) {
         if (p.isSingleton()) {
@@ -150,8 +173,12 @@ public class LogicFeatures implements Serializable {
         }
     }
 
-    /** @param p
-     * @param both */
+    /**
+     * @param p
+     *        p
+     * @param both
+     *        both
+     */
     @PortedFrom(file = "LogicFeature.h", name = "fillRoleData")
     public void fillRoleData(Role p, boolean both) {
         if (p.isTop()) {
@@ -182,8 +209,12 @@ public class LogicFeatures implements Serializable {
         }
     }
 
-    /** @param v
-     * @param pos */
+    /**
+     * @param v
+     *        v
+     * @param pos
+     *        pos
+     */
     @PortedFrom(file = "LogicFeature.h", name = "fillDAGData")
     public void fillDAGData(DLVertex v, boolean pos) {
         switch (v.getType()) {
@@ -208,7 +239,10 @@ public class LogicFeatures implements Serializable {
         }
     }
 
-    /** @param l */
+    /**
+     * @param l
+     *        l
+     */
     @PortedFrom(file = "LogicFeature.h", name = "writeState")
     public void writeState(LogAdapter l) {
         String NO = "NO ";
@@ -223,36 +257,36 @@ public class LogicFeatures implements Serializable {
 
     // role description
     @PortedFrom(file = "LogicFeature.h", name = "lfTransitiveRoles")
-    private final static int lfTransitiveRoles = 1;
+    private static final int lfTransitiveRoles = 1;
     @PortedFrom(file = "LogicFeature.h", name = "lfRolesSubsumption")
-    private final static int lfRolesSubsumption = 2;
+    private static final int lfRolesSubsumption = 2;
     @PortedFrom(file = "LogicFeature.h", name = "lfDirectRoles")
-    private final static int lfDirectRoles = 3;
+    private static final int lfDirectRoles = 3;
     @PortedFrom(file = "LogicFeature.h", name = "lfInverseRoles")
-    private final static int lfInverseRoles = 4;
+    private static final int lfInverseRoles = 4;
     @PortedFrom(file = "LogicFeature.h", name = "lfRangeAndDomain")
-    private final static int lfRangeAndDomain = 5;
+    private static final int lfRangeAndDomain = 5;
     @PortedFrom(file = "LogicFeature.h", name = "lfFunctionalRoles")
-    private final static int lfFunctionalRoles = 6;
+    private static final int lfFunctionalRoles = 6;
     // concept description
     @PortedFrom(file = "LogicFeature.h", name = "lfSomeConstructor")
-    private final static int lfSomeConstructor = 7;
+    private static final int lfSomeConstructor = 7;
     @PortedFrom(file = "LogicFeature.h", name = "lfFConstructor")
-    private final static int lfFConstructor = 8;
+    private static final int lfFConstructor = 8;
     @PortedFrom(file = "LogicFeature.h", name = "lfNConstructor")
-    private final static int lfNConstructor = 9;
+    private static final int lfNConstructor = 9;
     @PortedFrom(file = "LogicFeature.h", name = "lfQConstructor")
-    private final static int lfQConstructor = 10;
+    private static final int lfQConstructor = 10;
     @PortedFrom(file = "LogicFeature.h", name = "lfSingleton")
-    private final static int lfSingleton = 11;
+    private static final int lfSingleton = 11;
     // global description
     @PortedFrom(file = "LogicFeature.h", name = "lfGeneralAxioms")
-    private final static int lfGeneralAxioms = 12;
+    private static final int lfGeneralAxioms = 12;
     @PortedFrom(file = "LogicFeature.h", name = "lfBothRoles")
-    private final static int lfBothRoles = 13;
+    private static final int lfBothRoles = 13;
     // new constructions
     @PortedFrom(file = "LogicFeature.h", name = "lfSelfRef")
-    private final static int lfSelfRef = 14;
+    private static final int lfSelfRef = 14;
     @PortedFrom(file = "LogicFeature.h", name = "lfTopRole")
-    private final static int lfTopRole = 15;
+    private static final int lfTopRole = 15;
 }

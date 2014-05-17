@@ -7,8 +7,9 @@ import java.io.Serializable;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-@SuppressWarnings("javadoc")
+/** Timer */
 public class Timer implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** save the starting time of the timer */
     private long startTime;
@@ -17,23 +18,27 @@ public class Timer implements Serializable {
     /** flag to show timer is started */
     private boolean started;
 
+    /** default constructor */
     public Timer() {
         startTime = 0;
         resultTime = 0;
         started = false;
     }
 
+    /** reset */
     public void reset() {
         started = false;
         resultTime = 0;
     }
 
+    /** @return delta */
     public long calcDelta() {
         long finishTime = System.currentTimeMillis();
         // calculate difference between cuttent time and start time
         return finishTime - startTime;
     }
 
+    /** start if not started */
     public void start() {
         if (!started) {
             startTime = System.currentTimeMillis();
@@ -41,6 +46,7 @@ public class Timer implements Serializable {
         }
     }
 
+    /** stop if not stopped */
     public void stop() {
         if (started) {
             started = false;
@@ -48,6 +54,7 @@ public class Timer implements Serializable {
         }
     }
 
+    /** @return time */
     public long getResultTime() {
         return resultTime;
     }

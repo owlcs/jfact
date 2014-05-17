@@ -10,12 +10,11 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
-
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import conformance.Original;
 import conformance.PortedFrom;
 
@@ -53,7 +52,14 @@ public class SigIndex implements Serializable {
         return nRegistered;
     }
 
-    /** add axiom AX to the non-local set with top-locality value TOP */
+    /**
+     * add axiom AX to the non-local set with top-locality value TOP
+     * 
+     * @param ax
+     *        ax
+     * @param top
+     *        top
+     */
     @PortedFrom(file = "SigIndex.h", name = "checkNonLocal")
     private void checkNonLocal(AxiomInterface ax, boolean top) {
         emptySig.setLocality(top);
@@ -71,13 +77,19 @@ public class SigIndex implements Serializable {
      * empty c'tor
      * 
      * @param c
+     *        c
      */
     public SigIndex(LocalityChecker c) {
         Checker = c;
     }
 
     // work with axioms
-    /** register an axiom */
+    /**
+     * register an axiom
+     * 
+     * @param ax
+     *        ax
+     */
     @PortedFrom(file = "SigIndex.h", name = "registerAx")
     private void registerAx(AxiomInterface ax) {
         for (NamedEntity p : ax.getSignature().begin()) {
@@ -89,7 +101,12 @@ public class SigIndex implements Serializable {
         ++nRegistered;
     }
 
-    /** unregister an axiom AX */
+    /**
+     * unregister an axiom AX
+     * 
+     * @param ax
+     *        ax
+     */
     @PortedFrom(file = "SigIndex.h", name = "unregisterAx")
     private void unregisterAx(AxiomInterface ax) {
         for (NamedEntity p : ax.getSignature().begin()) {
@@ -105,6 +122,7 @@ public class SigIndex implements Serializable {
      * process an axiom wrt its Used status
      * 
      * @param ax
+     *        ax
      */
     @PortedFrom(file = "SigIndex.h", name = "processAx")
     public void processAx(AxiomInterface ax) {
@@ -119,6 +137,7 @@ public class SigIndex implements Serializable {
      * preprocess given set of axioms
      * 
      * @param axioms
+     *        axioms
      */
     @PortedFrom(file = "SigIndex.h", name = "preprocessOntology")
     public void preprocessOntology(Collection<AxiomInterface> axioms) {
@@ -140,6 +159,7 @@ public class SigIndex implements Serializable {
      * given an entity,
      * 
      * @param entity
+     *        entity
      * @return a set of all axioms that contain this entity in a signature
      */
     @PortedFrom(file = "SigIndex.h", name = "getAxioms")
@@ -149,6 +169,7 @@ public class SigIndex implements Serializable {
 
     /**
      * @param top
+     *        top
      * @return the non-local axioms with top-locality value TOP
      */
     @PortedFrom(file = "SigIndex.h", name = "getNonLocal")

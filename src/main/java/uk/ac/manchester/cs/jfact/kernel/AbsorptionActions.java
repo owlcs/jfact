@@ -71,19 +71,27 @@ public enum AbsorptionActions {
         c = ch;
     }
 
-    /** @param ch
-     * @return ABS for ch, or null if no match is found */
+    /**
+     * @param ch
+     *        ch
+     * @return ABS for ch, or null if no match is found
+     */
     public static AbsorptionActions get(char ch) {
         for (AbsorptionActions v : values()) {
             if (v.c == ch) {
                 return v;
             }
         }
-        throw new ReasonerInternalException("Incorrect absorption flags given: " + ch);
+        throw new ReasonerInternalException(
+                "Incorrect absorption flags given: " + ch);
     }
 
-    /** @param ax
+    /**
+     * @param ax
+     *        ax
      * @param tb
-     * @return true if the rule is fired */
+     *        tb
+     * @return true if the rule is fired
+     */
     public abstract boolean execute(Axiom ax, AxiomSet tb);
 }

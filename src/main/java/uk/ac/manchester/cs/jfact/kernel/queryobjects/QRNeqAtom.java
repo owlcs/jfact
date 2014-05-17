@@ -12,8 +12,12 @@ import conformance.PortedFrom;
 public class QRNeqAtom extends QR2ArgAtom {
     private static final long serialVersionUID = 11000L;
 
-    /** @param A1
-     * @param A2 */
+    /**
+     * @param A1
+     *        A1
+     * @param A2
+     *        A2
+     */
     public QRNeqAtom(QRiObject A1, QRiObject A2) {
         super(A1, A2);
     }

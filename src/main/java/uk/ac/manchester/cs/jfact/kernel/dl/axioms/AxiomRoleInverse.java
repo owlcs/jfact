@@ -19,9 +19,14 @@ public class AxiomRoleInverse extends AxiomSingleORole {
     @PortedFrom(file = "tDLAxiom.h", name = "InvRole")
     private final ObjectRoleExpression inverseRole;
 
-    /** @param ax
+    /**
+     * @param ax
+     *        ax
      * @param dirRole
-     * @param invRole */
+     *        dirRole
+     * @param invRole
+     *        invRole
+     */
     public AxiomRoleInverse(OWLAxiom ax, ObjectRoleExpression dirRole,
             ObjectRoleExpression invRole) {
         super(ax, dirRole);

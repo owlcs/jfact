@@ -16,9 +16,12 @@ import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import conformance.PortedFrom;
 
-/** class for acting with concept taxonomy
+/**
+ * class for acting with concept taxonomy
  * 
- * @param <T> */
+ * @param <T>
+ *        type
+ */
 @PortedFrom(file = "JNIActor.h", name = "TaxonomyActor")
 public class TaxonomyActor<T extends Expression> implements Actor, Serializable {
     private static final long serialVersionUID = 11000L;
@@ -34,9 +37,25 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
     @PortedFrom(file = "JNIActor.h", name = "syn")
     private final List<T> syn = new ArrayList<T>();
 
-    /** try current entry
+    @Override
+    public boolean applicable(TaxonomyVertex v) {
+        if (policy.applicable(v.getPrimer())) {
+            return true;
+        }
+        for (ClassifiableEntry p : v.begin_syn()) {
+            if (policy.applicable(p)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * try current entry
      * 
-     * @param p */
+     * @param p
+     *        p
+     */
     @SuppressWarnings("unchecked")
     @PortedFrom(file = "JNIActor.h", name = "tryEntry")
     protected void tryEntry(ClassifiableEntry p) {
@@ -48,8 +67,12 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
         }
     }
 
-    /** @param em
-     * @param p */
+    /**
+     * @param em
+     *        em
+     * @param p
+     *        p
+     */
     @PortedFrom(file = "JNIActor.h", name = "TaxonomyActor")
     public TaxonomyActor(ExpressionManager em, Policy p) {
         expressionManager = em;
@@ -64,7 +87,10 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
     }
 
     // return values
-    /** @return single vector of synonyms (necessary for Equivalents, for example) */
+    /**
+     * @return single vector of synonyms (necessary for Equivalents, for
+     *         example)
+     */
     @PortedFrom(file = "JNIActor.h", name = "getSynonyms")
     public Collection<T> getSynonyms() {
         return acc.isEmpty() ? syn : acc.get(0);
@@ -72,8 +98,8 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
 
     /** @return 2D array of all required elements of the taxonomy */
     @PortedFrom(file = "JNIActor.h", name = "getElements")
-    public Collection<Collection<T>> getElements() {
-        Collection<Collection<T>> toReturn = new ArrayList<Collection<T>>();
+    public List<Collection<T>> getElements() {
+        List<Collection<T>> toReturn = new ArrayList<Collection<T>>();
         if (policy.needPlain()) {
             toReturn.add(plain);
         } else {
@@ -99,7 +125,7 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
         if (policy.needPlain()) {
             plain.addAll(syn);
         } else {
-            acc.add(syn);
+            acc.add(new ArrayList<T>(syn));
         }
         return true;
     }

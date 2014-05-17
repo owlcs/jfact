@@ -1,5 +1,6 @@
 package bugs;
 
+
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
@@ -8,7 +9,7 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
+import org.semanticweb.owlapi.formats.OWLFunctionalSyntaxOntologyFormat;
 import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
 import org.semanticweb.owlapi.model.IRI;

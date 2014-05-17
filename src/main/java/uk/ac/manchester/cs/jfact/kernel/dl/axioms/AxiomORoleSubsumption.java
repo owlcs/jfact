@@ -20,11 +20,16 @@ public class AxiomORoleSubsumption extends AxiomSingleORole {
     @PortedFrom(file = "tDLAxiom.h", name = "SubRole")
     private final ObjectRoleComplexExpression complexRole;
 
-    /** @param ax
+    /**
+     * @param ax
+     *        ax
      * @param subRole
-     * @param supRole */
-    public AxiomORoleSubsumption(OWLAxiom ax, ObjectRoleComplexExpression subRole,
-            ObjectRoleExpression supRole) {
+     *        subRole
+     * @param supRole
+     *        supRole
+     */
+    public AxiomORoleSubsumption(OWLAxiom ax,
+            ObjectRoleComplexExpression subRole, ObjectRoleExpression supRole) {
         super(ax, supRole);
         complexRole = subRole;
     }

@@ -16,7 +16,13 @@ import org.semanticweb.owlapi.model.OWLRuntimeException;
 
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeEntry;
 import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
-import uk.ac.manchester.cs.jfact.helpers.*;
+import uk.ac.manchester.cs.jfact.helpers.DLVertex;
+import uk.ac.manchester.cs.jfact.helpers.FastSet;
+import uk.ac.manchester.cs.jfact.helpers.FastSetFactory;
+import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
+import uk.ac.manchester.cs.jfact.helpers.StatIndex;
+import uk.ac.manchester.cs.jfact.helpers.Templates;
+import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import conformance.Original;
@@ -25,6 +31,7 @@ import conformance.PortedFrom;
 /** directed acyclic graph */
 @PortedFrom(file = "dlDag.h", name = "DLDag")
 public class DLDag implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** body of DAG */
     @PortedFrom(file = "dlDag.h", name = "Heap")
@@ -58,19 +65,27 @@ public class DLDag implements Serializable {
     @Original
     private final JFactReasonerConfiguration options;
 
-    /** replace existing vertex at index I with a vertex V
+    /**
+     * replace existing vertex at index I with a vertex V
      * 
      * @param i
+     *        i
      * @param v
-     * @param C */
+     *        v
+     * @param C
+     *        C
+     */
     @PortedFrom(file = "dlDag.h", name = "replaceVertex")
     public void replaceVertex(int i, DLVertex v, NamedEntry C) {
         heap.set(i > 0 ? i : -i, v);
         v.setConcept(C);
     }
 
-    /** @param c
-     * @return index of a vertex containing a concept */
+    /**
+     * @param c
+     *        c
+     * @return index of a vertex containing a concept
+     */
     @PortedFrom(file = "dlDag.h", name = "index")
     public int index(NamedEntry c) {
         for (int i = 0; i < heap.size(); i++) {
@@ -82,7 +97,13 @@ public class DLDag implements Serializable {
         return bpINVALID;
     }
 
-    /** check if given string is correct sort ordering representation */
+    /**
+     * check if given string is correct sort ordering representation
+     * 
+     * @param str
+     *        str
+     * @return true if correct
+     */
     @PortedFrom(file = "dlDag.h", name = "isCorrectOption")
     private boolean isCorrectOption(String str) {
         if (str == null) {
@@ -94,9 +115,10 @@ public class DLDag implements Serializable {
         }
         char Method = str.charAt(0), Order = n >= 2 ? str.charAt(1) : 'a', NGPref = n == 3 ? str
                 .charAt(2) : 'p';
-        return (Method == 'S' || Method == 'D' || Method == 'F' || Method == 'B'
-                || Method == 'G' || Method == '0')
-                && (Order == 'a' || Order == 'd') && (NGPref == 'p' || NGPref == 'n');
+        return (Method == 'S' || Method == 'D' || Method == 'F'
+                || Method == 'B' || Method == 'G' || Method == '0')
+                && (Order == 'a' || Order == 'd')
+                && (NGPref == 'p' || NGPref == 'n');
     }
 
     /** change order of ADD elements wrt statistic */
@@ -115,10 +137,14 @@ public class DLDag implements Serializable {
         }
     }
 
-    /** update index corresponding to DLVertex's tag
+    /**
+     * update index corresponding to DLVertex's tag
      * 
      * @param tag
-     * @param value */
+     *        tag
+     * @param value
+     *        value
+     */
     @PortedFrom(file = "dlDag.h", name = "updateIndex")
     public void updateIndex(DagTag tag, int value) {
         if (!indexes.containsKey(tag)) {
@@ -130,10 +156,13 @@ public class DLDag implements Serializable {
         }
     }
 
-    /** add vertex to the end of DAG and calculate it's statistic if necessary
+    /**
+     * add vertex to the end of DAG and calculate it's statistic if necessary
      * 
      * @param v
-     * @return size of heap */
+     *        v
+     * @return size of heap
+     */
     @PortedFrom(file = "dlDag.h", name = "directAdd")
     public int directAdd(DLVertex v) {
         int index = index(v.getConcept());
@@ -145,11 +174,14 @@ public class DLDag implements Serializable {
         return heap.size() - 1;
     }
 
-    /** add vertex to the end of DAG and calculate it's statistic if necessary;
+    /**
+     * add vertex to the end of DAG and calculate it's statistic if necessary;
      * put it into cache
      * 
      * @param v
-     * @return size of heap */
+     *        v
+     * @return size of heap
+     */
     @PortedFrom(file = "dlDag.h", name = "directAddAndCache")
     public int directAddAndCache(DLVertex v) {
         int ret = directAdd(v);
@@ -159,24 +191,33 @@ public class DLDag implements Serializable {
         return ret;
     }
 
-    /** @param p
-     * @return if given index points to the last DAG entry */
+    /**
+     * @param p
+     *        p
+     * @return if given index points to the last DAG entry
+     */
     @PortedFrom(file = "dlDag.h", name = "isLast")
     public boolean isLast(int p) {
         return p == heap.size() - 1 || -p == heap.size() - 1;
     }
 
     // access methods
-    /** whether to use cache for nodes
+    /**
+     * whether to use cache for nodes
      * 
-     * @param val */
+     * @param val
+     *        val
+     */
     @PortedFrom(file = "dlDag.h", name = "setExpressionCache")
     public void setExpressionCache(boolean val) {
         useDLVCache = val;
     }
 
-    /** @param i
-     * @return access by index */
+    /**
+     * @param i
+     *        i
+     * @return access by index
+     */
     @PortedFrom(file = "dlDag.h", name = "get")
     public DLVertex get(int i) {
         assert isValid(i);
@@ -207,27 +248,38 @@ public class DLDag implements Serializable {
         setOrderOptions(options.getORSortSat());
     }
 
-    /** @param p
-     * @return cache for given BiPointer (may return null if no cache defined) */
+    /**
+     * @param p
+     *        p
+     * @return cache for given BiPointer (may return null if no cache defined)
+     */
     @PortedFrom(file = "dlDag.h", name = "getCache")
     public ModelCacheInterface getCache(int p) {
         return get(p).getCache(p > 0);
     }
 
-    /** set cache for given BiPointer;
+    /**
+     * set cache for given BiPointer;
      * 
      * @param p
-     * @param cache */
+     *        p
+     * @param cache
+     *        cache
+     */
     @PortedFrom(file = "dlDag.h", name = "setCache")
     public void setCache(int p, ModelCacheInterface cache) {
         get(p).setCache(p > 0, cache);
     }
 
     // sort interface
-    /** merge two given DAG entries
+    /**
+     * merge two given DAG entries
      * 
      * @param ml
-     * @param p */
+     *        ml
+     * @param p
+     *        p
+     */
     @PortedFrom(file = "dlDag.h", name = "merge")
     public void merge(MergableLabel ml, int p) {
         if (p != bpINVALID && p != bpTOP && p != bpBOTTOM) {
@@ -235,9 +287,13 @@ public class DLDag implements Serializable {
         }
     }
 
-    /** @param p
+    /**
+     * @param p
+     *        p
      * @param q
-     * @return check if two BPs are of the same sort */
+     *        q
+     * @return check if two BPs are of the same sort
+     */
     @PortedFrom(file = "dlDag.h", name = "haveSameSort")
     public boolean haveSameSort(int p, int q) {
         if (options.isRKG_USE_SORTED_REASONING()) {
@@ -258,9 +314,12 @@ public class DLDag implements Serializable {
     }
 
     // output interface
-    /** print DAG size and number of cache hits, together with DAG usage
+    /**
+     * print DAG size and number of cache hits, together with DAG usage
      * 
-     * @param o */
+     * @param o
+     *        o
+     */
     @PortedFrom(file = "dlDag.h", name = "PrintStat")
     public void printStat(LogAdapter o) {
         o.printTemplate(Templates.PRINT_STAT, heap.size(), nCacheHits);
@@ -273,17 +332,20 @@ public class DLDag implements Serializable {
     public String toString() {
         StringBuilder o = new StringBuilder("\nDag structure");
         for (int i = 1; i < size(); ++i) {
-            o.append("\n");
+            o.append('\n');
             o.append(i);
-            o.append(" ");
+            o.append(' ');
             o.append(get(i));
         }
-        o.append("\n");
+        o.append('\n');
         return o.toString();
     }
 
-    /** @param v
-     * @return bipolar pointer */
+    /**
+     * @param v
+     *        v
+     * @return bipolar pointer
+     */
     @PortedFrom(file = "dlDag.h", name = "add")
     public int add(DLVertex v) {
         int ret = useDLVCache ? indexes.get(v.getType()).locate(v) : bpINVALID;
@@ -296,7 +358,10 @@ public class DLDag implements Serializable {
         return ret;
     }
 
-    /** @param Options */
+    /**
+     * @param Options
+     *        Options
+     */
     public DLDag(JFactReasonerConfiguration Options) {
         options = Options;
         /** hash-table for verteces (and, all, LE) fast search */
@@ -347,11 +412,15 @@ public class DLDag implements Serializable {
                     break;
             }
         }
-        Helper.resize(heap, finalDagSize);
+        resize(heap, finalDagSize);
     }
 
-    /** @param defSat
-     * @param defSub */
+    /**
+     * @param defSat
+     *        defSat
+     * @param defSub
+     *        defSub
+     */
     @PortedFrom(file = "dlDag.h", name = "setOrderDefaults")
     public void setOrderDefaults(String defSat, String defSub) {
         assert isCorrectOption(defSat) && isCorrectOption(defSub);
@@ -369,7 +438,10 @@ public class DLDag implements Serializable {
         options.getLog().print(", used=", options.getORSortSub(), "\n");
     }
 
-    /** @param opt */
+    /**
+     * @param opt
+     *        opt
+     */
     @PortedFrom(file = "dlDag.h", name = "setOrderOptions")
     public void setOrderOptions(String opt) {
         if (opt.charAt(0) == '0') {
@@ -489,7 +561,12 @@ public class DLDag implements Serializable {
         v.updateStatValues(d, s, b, g, pos);
     }
 
-    /** gather vertex freq statistics */
+    /**
+     * gather vertex freq statistics
+     * 
+     * @param p
+     *        p
+     */
     @PortedFrom(file = "dlDag.h", name = "computeVertexFreq")
     private void computeVertexFreq(int p) {
         DLVertex v = get(p);
@@ -513,7 +590,16 @@ public class DLDag implements Serializable {
         }
     }
 
-    /** helper for the recursion */
+    /**
+     * helper for the recursion
+     * 
+     * @param v
+     *        v
+     * @param p
+     *        p
+     * @param pos
+     *        pos
+     */
     @PortedFrom(file = "dlDag.h", name = "updateVertexStat")
     private void updateVertexStat(DLVertex v, int p, boolean pos) {
         DLVertex w = get(p);
@@ -525,7 +611,14 @@ public class DLDag implements Serializable {
         v.updateStatValues(w, same, pos);
     }
 
-    /** helper for the recursion */
+    /**
+     * helper for the recursion
+     * 
+     * @param p
+     *        p
+     * @param pos
+     *        pos
+     */
     @PortedFrom(file = "dlDag.h", name = "computeVertexFreq")
     private void computeVertexFreq(int p, boolean pos) {
         computeVertexFreq(createBiPointer(p, pos));
@@ -556,9 +649,13 @@ public class DLDag implements Serializable {
         }
     }
 
-    /** @param p1
+    /**
+     * @param p1
+     *        p1
      * @param p2
-     * @return true if p1 dlvertex is smaller than p2 dlvertex */
+     *        p2
+     * @return true if p1 dlvertex is smaller than p2 dlvertex
+     */
     @PortedFrom(file = "dlDag.h", name = "less")
     public int compare(int p1, int p2) {
         if (p1 == p2) {
@@ -586,8 +683,10 @@ public class DLDag implements Serializable {
         }
     }
 
-    /** @param o
-     *            debug dag usage */
+    /**
+     * @param o
+     *        debug dag usage
+     */
     @PortedFrom(file = "dlDag.h", name = "PrintDAGUsage")
     public void printDAGUsage(LogAdapter o) {
         // number of no-used DAG entries
@@ -605,10 +704,14 @@ public class DLDag implements Serializable {
         o.printTemplate(Templates.PRINTDAGUSAGE, n, n * 100 / total, total);
     }
 
-    /** build the sort system for given TBox
+    /**
+     * build the sort system for given TBox
      * 
      * @param ORM
-     * @param DRM */
+     *        ORM
+     * @param DRM
+     *        DRM
+     */
     @PortedFrom(file = "dlDag.h", name = "determineSorts")
     public void determineSorts(RoleMaster ORM, RoleMaster DRM) {
         sortArraySize = heap.size();
@@ -658,10 +761,16 @@ public class DLDag implements Serializable {
         if (sum > 0) {
             sum--;
         }
-        options.getLog().printTemplate(Templates.DETERMINE_SORTS, sum > 0 ? sum : "no");
+        options.getLog().printTemplate(Templates.DETERMINE_SORTS,
+                sum > 0 ? sum : "no");
     }
 
-    /** merge sorts for a given role */
+    /**
+     * merge sorts for a given role
+     * 
+     * @param R
+     *        R
+     */
     @PortedFrom(file = "dlDag.h", name = "mergeSorts")
     private void mergeSorts(Role R) {
         // associate role domain labels
@@ -673,7 +782,12 @@ public class DLDag implements Serializable {
         }
     }
 
-    /** merge sorts for a given vertex */
+    /**
+     * merge sorts for a given vertex
+     * 
+     * @param v
+     *        v
+     */
     @PortedFrom(file = "dlDag.h", name = "mergeSorts")
     private void mergeSorts(DLVertex v) {
         switch (v.getType()) {
@@ -687,7 +801,8 @@ public class DLDag implements Serializable {
                 v.merge(v.getRole().getDomainLabel());
                 v.merge(v.getProjRole().getDomainLabel());
                 merge(v.getRole().getDomainLabel(), v.getConceptIndex());
-                v.getRole().getRangeLabel().merge(v.getProjRole().getRangeLabel());
+                v.getRole().getRangeLabel()
+                        .merge(v.getProjRole().getRangeLabel());
                 break;
             case dtIrr: // equate R&D for role
                 v.merge(v.getRole().getDomainLabel());
@@ -718,11 +833,16 @@ public class DLDag implements Serializable {
         }
     }
 
-    /** update sorts for <a,b>:R construction
+    /**
+     * update sorts for (a,b):R construction
      * 
      * @param a
+     *        a
      * @param R
-     * @param b */
+     *        R
+     * @param b
+     *        b
+     */
     @PortedFrom(file = "dlDag.h", name = "updateSorts")
     public void updateSorts(int a, Role R, int b) {
         merge(R.getDomainLabel(), a);

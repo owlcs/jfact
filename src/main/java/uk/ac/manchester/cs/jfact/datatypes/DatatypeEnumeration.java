@@ -5,35 +5,56 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
-/** @author ignazio
- * @param <R> */
+/**
+ * @author ignazio
+ * @param <R>
+ *        type
+ */
 public class DatatypeEnumeration<R extends Comparable<R>> implements
         DatatypeCombination<DatatypeEnumeration<R>, Literal<R>>, DatatypeExpression<R> {
-    private final String uri;
+    private final IRI uri;
     protected final Datatype<R> host;
     protected final List<Literal<R>> literals = new ArrayList<Literal<R>>();
 
-    /** @param d */
+    /**
+     * @param d
+     *        d
+     */
     public DatatypeEnumeration(Datatype<R> d) {
-        this.uri = "enum" + DatatypeFactory.getIndex();
+        this.uri = IRI.create("urn:enum" + DatatypeFactory.getIndex());
         this.host = d;
     }
 
-    /** @param d
-     * @param l */
+    /**
+     * @param d
+     *        d
+     * @param l
+     *        l
+     */
     public DatatypeEnumeration(Datatype<R> d, Literal<R> l) {
         this(d);
         this.literals.add(l);
     }
 
-    /** @param d
-     * @param c */
+    /**
+     * @param d
+     *        d
+     * @param c
+     *        c
+     */
     public DatatypeEnumeration(Datatype<R> d, Collection<Literal<R>> c) {
         this(d);
         this.literals.addAll(c);
@@ -102,9 +123,9 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     }
 
     @Override
-    public <O extends Comparable<O>> O getFacetValue(Facet f) {
-        O facetValue = (O) this.host.getFacetValue(f);
-        return facetValue;
+    public <O extends Comparable<O>> O getFacetValue(Facet<O> f) {
+        O o = this.host.getFacetValue(f);
+        return o;
     }
 
     @SuppressWarnings("rawtypes")
@@ -156,7 +177,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     }
 
     @Override
-    public String getDatatypeURI() {
+    public IRI getDatatypeIRI() {
         return this.uri;
     }
 
@@ -225,7 +246,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
 
     @Override
     public String toString() {
-        return this.uri + this.literals;
+        return this.uri.toString() + this.literals;
     }
 
     @Override
@@ -264,7 +285,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     }
 
     @Override
-    public String getName() {
-        return toString();
+    public IRI getName() {
+        return IRI.create(toString());
     }
 }

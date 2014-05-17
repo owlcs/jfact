@@ -7,6 +7,8 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptObjectCardinalityExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NumberArg;
@@ -18,8 +20,9 @@ import conformance.PortedFrom;
 
 /** object max cardinality */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectMaxCardinality")
-public class ConceptObjectMaxCardinality implements ConceptObjectCardinalityExpression,
-        NumberArg, Serializable {
+public class ConceptObjectMaxCardinality implements
+        ConceptObjectCardinalityExpression, NumberArg, Serializable {
+
     private static final long serialVersionUID = 11000L;
     @Original
     private final ConceptExpression delegate;
@@ -28,10 +31,16 @@ public class ConceptObjectMaxCardinality implements ConceptObjectCardinalityExpr
     @Original
     private final ObjectRoleExpression roleDelegate;
 
-    /** @param n
+    /**
+     * @param n
+     *        n
      * @param R
-     * @param C */
-    public ConceptObjectMaxCardinality(int n, ObjectRoleExpression R, ConceptExpression C) {
+     *        R
+     * @param C
+     *        C
+     */
+    public ConceptObjectMaxCardinality(int n, ObjectRoleExpression R,
+            ConceptExpression C) {
         N = n;
         delegate = C;
         roleDelegate = R;
@@ -68,7 +77,7 @@ public class ConceptObjectMaxCardinality implements ConceptObjectCardinalityExpr
     }
 
     @Override
-    public String getName() {
-        return toString();
+    public IRI getName() {
+        return IRI.create(toString());
     }
 }

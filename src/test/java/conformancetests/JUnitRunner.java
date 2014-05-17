@@ -5,7 +5,7 @@ package conformancetests;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -24,7 +24,6 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.profiles.OWL2DLProfile;
 import org.semanticweb.owlapi.profiles.OWLProfileReport;
-import org.semanticweb.owlapi.profiles.Profiles;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
@@ -51,7 +50,7 @@ public class JUnitRunner {
     private final String premise;
     private final String consequence;
     private final String description;
-    private JFactReasonerConfiguration c = new JFactReasonerConfiguration(
+    private final JFactReasonerConfiguration c = new JFactReasonerConfiguration(
             new SimpleConfiguration(_10000));
 
     public JUnitRunner(String premise, String consequence, String testId,
@@ -71,13 +70,11 @@ public class JUnitRunner {
         return c;
     }
 
-    private boolean isConsistent(OWLReasoner reasoner, boolean expected) {
-        boolean consistent = reasoner.isConsistent();
-        return consistent;
+    private boolean isConsistent(OWLReasoner reasoner) {
+        return reasoner.isConsistent();
     }
 
-    private boolean isEntailed(OWLReasoner reasoner, OWLAxiom conclusion,
-            boolean expected) {
+    private boolean isEntailed(OWLReasoner reasoner, OWLAxiom conclusion) {
         return reasoner.isEntailed(conclusion);
     }
 
@@ -103,13 +100,13 @@ public class JUnitRunner {
 
     public void run() {
         OWLOntology premiseOntology = null;
-        OWLOntology conclusionOntology = null;
         // OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         // m.setSilentMissingImportsHandling(true);
         try {
             if (premise != null) {
                 premiseOntology = getPremise();
-                OWLProfileReport report = Profiles.OWL2_DL
+                OWL2DLProfile profile = new OWL2DLProfile();
+                OWLProfileReport report = profile
                         .checkOntology(premiseOntology);
                 if (report.getViolations().size() > 0) {
                     System.out.println("JUnitRunner.run() " + testId);
@@ -124,6 +121,7 @@ public class JUnitRunner {
             // System.out.println("JUnitRunner.run() premise:\n" + premise);
             throw new RuntimeException(e);
         }
+        OWLOntology conclusionOntology = null;
         try {
             if (consequence != null) {
                 conclusionOntology = getConsequence();
@@ -150,10 +148,10 @@ public class JUnitRunner {
             OWLOntology conclusionOntology) {
         StringBuilder b = new StringBuilder();
         b.append("JUnitRunner.logTroubles() premise");
-        b.append("\n");
+        b.append('\n');
         for (OWLAxiom ax1 : premiseOntology.getAxioms()) {
             b.append(ax1);
-            b.append("\n");
+            b.append('\n');
         }
         OWLReasoner reasoner = f.createReasoner(premiseOntology, c);
         actual(conclusionOntology, b, reasoner);
@@ -183,57 +181,57 @@ public class JUnitRunner {
             OWLReasoner reasoner) {
         switch (t) {
             case CONSISTENCY: {
-                boolean consistent = isConsistent(reasoner, true);
+                boolean consistent = isConsistent(reasoner);
                 if (!consistent) {
                     String message = b.toString()
                             + logTroubles(true, consistent, t, null);
-                    assertEquals(message, true, consistent);
+                    assertTrue(message, consistent);
                 }
             }
                 break;
             case INCONSISTENCY: {
-                boolean consistent = isConsistent(reasoner, false);
+                boolean consistent = isConsistent(reasoner);
                 if (consistent) {
                     String message = b.toString()
                             + logTroubles(false, consistent, t, null);
-                    assertEquals(message, false, consistent);
+                    assertFalse(message, consistent);
                 }
             }
                 break;
             case NEGATIVE_IMPL: {
-                boolean consistent = isConsistent(reasoner, true);
+                boolean consistent = isConsistent(reasoner);
                 if (!consistent) {
                     String message = b.toString()
                             + logTroubles(true, consistent, t, null);
-                    assertEquals(message, true, consistent);
+                    assertTrue(message, consistent);
                 }
                 boolean entailed = false;
                 for (OWLAxiom ax : conclusionOntology.getLogicalAxioms()) {
-                    boolean temp = isEntailed(reasoner, ax, false);
+                    boolean temp = isEntailed(reasoner, ax);
                     entailed |= temp;
                     if (temp) {
                         b.append(logTroubles(false, entailed, t, ax));
                     }
                 }
-                assertEquals(b.toString(), false, entailed);
+                assertFalse(b.toString(), entailed);
             }
                 break;
             case POSITIVE_IMPL: {
-                boolean consistent = isConsistent(reasoner, true);
+                boolean consistent = isConsistent(reasoner);
                 if (!consistent) {
                     String message = b.toString()
                             + logTroubles(true, consistent, t, null);
-                    assertEquals(message, true, consistent);
+                    assertTrue(message, consistent);
                 }
                 boolean entailed = true;
                 for (OWLAxiom ax : conclusionOntology.getLogicalAxioms()) {
-                    boolean temp = isEntailed(reasoner, ax, true);
+                    boolean temp = isEntailed(reasoner, ax);
                     entailed &= temp;
                     if (!temp) {
                         b.append(logTroubles(true, entailed, t, ax));
                     }
                 }
-                assertEquals(b.toString(), true, entailed);
+                assertTrue(b.toString(), entailed);
             }
                 break;
             default:
@@ -246,7 +244,7 @@ public class JUnitRunner {
         StringBuilder b = new StringBuilder();
         b.append("JUnitRunner.logTroubles() \t");
         b.append(testclass);
-        b.append("\t");
+        b.append('\t');
         b.append(testId);
         b.append("\n ======================================\n");
         b.append(description);

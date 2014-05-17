@@ -7,12 +7,13 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
-import uk.ac.manchester.cs.jfact.kernel.queryobjects.QRQuery;
+import org.semanticweb.owlapi.model.IRI;
 
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
+import uk.ac.manchester.cs.jfact.kernel.queryobjects.QRQuery;
 import conformance.PortedFrom;
 
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TQueryToConceptsTransformer")
@@ -26,7 +27,7 @@ class TQueryToConceptsTransformer implements Serializable {
     /** transformation result */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Result")
     // XXX verify the order is not important
-    private final Multimap<String, ConceptExpression> Result = LinkedHashMultimap
+    private final Multimap<IRI, ConceptExpression> Result = LinkedHashMultimap
             .create();
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TQueryToConceptsTransformer")
@@ -44,8 +45,8 @@ class TQueryToConceptsTransformer implements Serializable {
         ConceptExpression term = conjunctiveQueryFolding
                 .transformQueryPhase2(Query);
         conjunctiveQueryFolding.buildApproximation(Query);
-        String propositionalVariable = null;
-        String lastNominal = null;
+        IRI propositionalVariable = null;
+        IRI lastNominal = null;
         for (int i = 1; true; ++i) {
             // System.out.println("Expression:");
             // System.out.print(term);
@@ -73,7 +74,7 @@ class TQueryToConceptsTransformer implements Serializable {
             // System.out.print(expressionMarker.getSubterm());
             // System.out.println();
             // System.out.println("Initializing Replacer...\n");
-            propositionalVariable = "P" + i;
+            propositionalVariable = IRI.create("urn:P" + i);
             TReplacer replacer = new TReplacer(conjunctiveQueryFolding,
                     expressionMarker.getSubterm(), propositionalVariable);
             // System.out.println("Running Replacer...\n");
@@ -103,7 +104,7 @@ class TQueryToConceptsTransformer implements Serializable {
 
     /** @return the result */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "getResult")
-    public Multimap<String, ConceptExpression> getResult() {
+    public Multimap<IRI, ConceptExpression> getResult() {
         return Result;
     }
 

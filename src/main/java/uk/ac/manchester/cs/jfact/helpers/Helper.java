@@ -11,13 +11,18 @@ import java.util.List;
 
 /** static methods */
 public class Helper implements Serializable {
+
     private static final long serialVersionUID = 11000L;
 
-    /** check whether set S1 intersects with the set S2
+    /**
+     * check whether set S1 intersects with the set S2
      * 
      * @param S1
+     *        S1
      * @param S2
-     * @return true if S1 and S2 intersect */
+     *        S2
+     * @return true if S1 and S2 intersect
+     */
     public static boolean intersectsWith(Collection<?> S1, Collection<?> S2) {
         for (Object o : S1) {
             if (S2.contains(o)) {
@@ -27,8 +32,12 @@ public class Helper implements Serializable {
         return false;
     }
 
-    /** @param l
-     * @param n */
+    /**
+     * @param l
+     *        l
+     * @param n
+     *        n
+     */
     public static void resize(List<?> l, int n) {
         if (l.size() > n) {
             while (l.size() > n) {
@@ -41,9 +50,16 @@ public class Helper implements Serializable {
         }
     }
 
-    /** @param l
+    /**
+     * @param l
+     *        l
      * @param n
-     * @param filler */
+     *        n
+     * @param <T>
+     *        argument type
+     * @param filler
+     *        filler
+     */
     public static <T> void resize(List<T> l, int n, T filler) {
         if (l.size() > n) {
             while (l.size() > n) {
@@ -57,29 +73,39 @@ public class Helper implements Serializable {
     }
 
     /** brancing level value */
-    public final static int InitBranchingLevelValue = 1;
+    public static final int InitBranchingLevelValue = 1;
     /** invalid bipolar pointer */
-    public final static int bpINVALID = 0;
+    public static final int bpINVALID = 0;
     /** top bipolar pointer */
-    public final static int bpTOP = 1;
+    public static final int bpTOP = 1;
     /** bottom bipolar pointer */
-    public final static int bpBOTTOM = -1;
+    public static final int bpBOTTOM = -1;
 
-    /** @param index
+    /**
+     * @param index
+     *        index
      * @param pos
-     * @return bipolar pointer */
+     *        pos
+     * @return bipolar pointer
+     */
     public static int createBiPointer(int index, boolean pos) {
         return pos ? index : -index;
     }
 
-    /** @param p
-     * @return true if correct */
+    /**
+     * @param p
+     *        p
+     * @return true if correct
+     */
     public static boolean isCorrect(int p) {
         return p != bpINVALID;
     }
 
-    /** @param p
-     * @return true if valid */
+    /**
+     * @param p
+     *        p
+     * @return true if valid
+     */
     public static boolean isValid(int p) {
         return p != bpINVALID;
     }

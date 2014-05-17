@@ -184,7 +184,7 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
 
         @Override
         public String toString() {
-            return "depInterval{" + this.e + "}";
+            return "depInterval{" + this.e + '}';
         }
 
         /** update MIN border of an TYPE's interval with VALUE wrt EXCL
@@ -327,6 +327,7 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + " " + type + " " + this.constraints;
+        return this.getClass().getSimpleName() + ' ' + type + ' '
+                + this.constraints;
     }
 }

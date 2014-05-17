@@ -11,15 +11,23 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 
 /** policy */
 public interface Policy {
-    /** @param p
-     * @return true if applicable */
+
+    /**
+     * @param p
+     *        p
+     * @return true if applicable
+     */
     boolean applicable(ClassifiableEntry p);
 
     /** @return true if plain is needed */
     boolean needPlain();
 
-    /** @param EM
+    /**
+     * @param EM
+     *        EM
      * @param p
-     * @return expression for p */
+     *        p
+     * @return expression for p
+     */
     Expression buildTree(ExpressionManager EM, ClassifiableEntry p);
 }

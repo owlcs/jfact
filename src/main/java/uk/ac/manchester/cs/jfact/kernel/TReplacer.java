@@ -8,6 +8,8 @@ package uk.ac.manchester.cs.jfact.kernel;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptAnd;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectExists;
@@ -19,6 +21,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TReplacer")
 class TReplacer extends DLExpressionVisitorAdapter {
+
     private static final long serialVersionUID = 11000L;
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "ReplaceResult")
@@ -30,7 +33,7 @@ class TReplacer extends DLExpressionVisitorAdapter {
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TReplacer")
     public TReplacer(ConjunctiveQueryFolding conjunctiveQueryFolding,
-            ConceptExpression expression, String propositionalVariable) {
+            ConceptExpression expression, IRI propositionalVariable) {
         this.conjunctiveQueryFolding = conjunctiveQueryFolding;
         ExpressionToReplace = expression;
         PropositionalVariable = this.conjunctiveQueryFolding.getpEM().concept(
@@ -60,10 +63,11 @@ class TReplacer extends DLExpressionVisitorAdapter {
             ConceptExpression s = null;
             for (ConceptExpression p : expr.getArguments()) {
                 p.accept(this);
-                if (p == expr.getArguments().get(0)) {
+                if (p .equals( expr.getArguments().get(0))) {
                     s = ReplaceResult.get(p);
                 } else {
-                    s = conjunctiveQueryFolding.getpEM().and(s, ReplaceResult.get(p));
+                    s = conjunctiveQueryFolding.getpEM().and(s,
+                            ReplaceResult.get(p));
                 }
             }
             ReplaceResult.put(expr, s);
@@ -85,7 +89,8 @@ class TReplacer extends DLExpressionVisitorAdapter {
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "getReplaceResult")
-    public ConceptExpression getReplaceResult(ConceptExpression c) {
+    public
+            ConceptExpression getReplaceResult(ConceptExpression c) {
         return ReplaceResult.get(c);
     }
 }

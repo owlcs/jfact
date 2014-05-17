@@ -9,22 +9,27 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import conformance.PortedFrom;
 
 /** var factory */
 @PortedFrom(file = "QR.h", name = "VariableFactory")
 public class VariableFactory implements Serializable {
-    private static final long serialVersionUID = 11000L;
-    @PortedFrom(file = "QR.h", name = "Base")
-    private final List<QRVariable> Base = new ArrayList<QRVariable>();
 
-    /** @param name
-     *            variable name
-     * @return fresh variable */
+    private static final long serialVersionUID = 11000L;
+   // @PortedFrom(file = "QR.h", name = "Base")
+   // private final List<QRVariable> Base = new ArrayList<QRVariable>();
+
+    /**
+     * @param name
+     *        variable name
+     * @return fresh variable
+     */
     @PortedFrom(file = "QR.h", name = "getNewVar")
-    public QRVariable getNewVar(String name) {
+    public QRVariable getNewVar(IRI name) {
         QRVariable ret = new QRVariable(name);
-        Base.add(ret);
+      //  Base.add(ret);
         return ret;
     }
 }

@@ -7,8 +7,38 @@ package uk.ac.manchester.cs.jfact.split;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
-import uk.ac.manchester.cs.jfact.kernel.dl.*;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptAnd;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataExactCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataExists;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataForall;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataMaxCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataMinCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataValue;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptNot;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectExactCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectExists;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectForall;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectMaxCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectMinCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectSelf;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectValue;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptOneOf;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptOr;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleName;
+import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleChain;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleInverse;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleName;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleProjectionFrom;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleProjectionInto;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptArg;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleArg;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleArg;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorAdapter;
 import conformance.PortedFrom;
@@ -17,18 +47,29 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tSignatureUpdater.h", name = "TExpressionSignatureUpdater")
 class TExpressionSignatureUpdater extends DLExpressionVisitorAdapter implements
         DLExpressionVisitor, Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** Signature to be filled */
     @PortedFrom(file = "tSignatureUpdater.h", name = "sig")
     private final TSignature sig;
 
-    /** helper for concept arguments */
+    /**
+     * helper for concept arguments
+     * 
+     * @param expr
+     *        expr
+     */
     @PortedFrom(file = "tSignatureUpdater.h", name = "vC")
     private void vC(ConceptArg expr) {
         expr.getConcept().accept(this);
     }
 
-    /** helper for individual arguments */
+    /**
+     * helper for individual arguments
+     * 
+     * @param expr
+     *        expr
+     */
     @PortedFrom(file = "tSignatureUpdater.h", name = "vI")
     private void vI(IndividualExpression expr) {
         // should no longer be needed: IndividualNames are NamedEntities
@@ -38,25 +79,45 @@ class TExpressionSignatureUpdater extends DLExpressionVisitorAdapter implements
         }
     }
 
-    /** helper for object role arguments */
+    /**
+     * helper for object role arguments
+     * 
+     * @param expr
+     *        expr
+     */
     @PortedFrom(file = "tSignatureUpdater.h", name = "vOR")
     private void vOR(ObjectRoleArg expr) {
         expr.getOR().accept(this);
     }
 
-    /** helper for object role arguments */
+    /**
+     * helper for object role arguments
+     * 
+     * @param expr
+     *        expr
+     */
     @PortedFrom(file = "tSignatureUpdater.h", name = "vDR")
     private void vDR(DataRoleArg expr) {
         expr.getDataRoleExpression().accept(this);
     }
 
-    /** helper for the named entity */
+    /**
+     * helper for the named entity
+     * 
+     * @param e
+     *        e
+     */
     @PortedFrom(file = "tSignatureUpdater.h", name = "vE")
     private void vE(NamedEntity e) {
         sig.add(e);
     }
 
-    /** array helper */
+    /**
+     * array helper
+     * 
+     * @param expr
+     *        expr
+     */
     @PortedFrom(file = "tSignatureUpdater.h", name = "processArray")
     private void processArray(NAryExpression<? extends Expression> expr) {
         for (Expression p : expr.getArguments()) {

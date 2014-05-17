@@ -11,19 +11,58 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+
 import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
 import uk.ac.manchester.cs.jfact.kernel.ReasoningKernel;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleChain;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomConceptInclusion;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleDomain;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleFunctional;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleRange;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleSubsumption;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDeclaration;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDifferentIndividuals;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDisjointConcepts;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDisjointDRoles;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDisjointORoles;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDisjointUnion;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomEquivalentConcepts;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomEquivalentDRoles;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomEquivalentORoles;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomFairnessConstraint;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomInstanceOf;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleDomain;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleFunctional;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleRange;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleSubsumption;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRelatedTo;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRelatedToNot;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleAsymmetric;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleInverse;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleInverseFunctional;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleIrreflexive;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleReflexive;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleSymmetric;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleTransitive;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomSameIndividuals;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOf;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOfNot;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import conformance.Original;
 import conformance.PortedFrom;
 
 /** semantic locality checker for DL axioms */
 @PortedFrom(file = "SemanticLocalityChecker.h", name = "SemanticLocalityChecker")
-public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker,
-        Serializable {
+public class SemanticLocalityChecker implements DLAxiomVisitor,
+        LocalityChecker, Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** Reasoner to detect the tautology */
     @PortedFrom(file = "SemanticLocalityChecker.h", name = "Kernel")
@@ -35,42 +74,16 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker,
     @PortedFrom(file = "SemanticLocalityChecker.h", name = "ExprMap")
     private final Map<AxiomInterface, ConceptExpression> ExprMap = new HashMap<AxiomInterface, ConceptExpression>();
 
-    /** @return expression necessary to build query for a given type of an axiom; @return
-     *         NULL if none necessary */
+    /**
+     * @param axiom
+     *        axiom
+     * @return expression necessary to build query for a given type of an axiom; @return
+     *         NULL if none necessary
+     */
     @PortedFrom(file = "SemanticLocalityChecker.h", name = "getExpr")
     protected ConceptExpression getExpr(AxiomInterface axiom) {
-        if (axiom instanceof AxiomRelatedTo) {
-            return pEM.value(((AxiomRelatedTo) axiom).getRelation(),
-                    ((AxiomRelatedTo) axiom).getRelatedIndividual());
-        }
-        if (axiom instanceof AxiomValueOf) {
-            return pEM.value(((AxiomValueOf) axiom).getAttribute(),
-                    ((AxiomValueOf) axiom).getValue());
-        }
-        if (axiom instanceof AxiomORoleDomain) {
-            return pEM.exists(((AxiomORoleDomain) axiom).getRole(), pEM.top());
-        }
-        if (axiom instanceof AxiomORoleRange) {
-            return pEM.exists(((AxiomORoleRange) axiom).getRole(),
-                    pEM.not(((AxiomORoleRange) axiom).getRange()));
-        }
-        if (axiom instanceof AxiomDRoleDomain) {
-            return pEM.exists(((AxiomDRoleDomain) axiom).getRole(), pEM.dataTop());
-        }
-        if (axiom instanceof AxiomDRoleRange) {
-            return pEM.exists(((AxiomDRoleRange) axiom).getRole(),
-                    pEM.dataNot(((AxiomDRoleRange) axiom).getRange()));
-        }
-        if (axiom instanceof AxiomRelatedToNot) {
-            return pEM.not(pEM.value(((AxiomRelatedToNot) axiom).getRelation(),
-                    ((AxiomRelatedToNot) axiom).getRelatedIndividual()));
-        }
-        if (axiom instanceof AxiomValueOfNot) {
-            return pEM.not(pEM.value(((AxiomValueOfNot) axiom).getAttribute(),
-                    ((AxiomValueOfNot) axiom).getValue()));
-        }
         // everything else doesn't require expression to be build
-        return null;
+        return axiom.accept(new ExpressionFromAxiomBuilder(null, pEM));
     }
 
     /** signature to keep */
@@ -95,18 +108,22 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker,
     @PortedFrom(file = "SemanticLocalityChecker.h", name = "isLocal")
     private boolean isLocal;
 
-    /** init c'tor
+    /**
+     * init c'tor
      * 
-     * @param k */
+     * @param k
+     *        k
+     */
     public SemanticLocalityChecker(ReasoningKernel k) {
         Kernel = k;
         isLocal = true;
         pEM = Kernel.getExpressionManager();
         // for tests we will need TB names to be from the OWL 2 namespace
-        pEM.setTopBottomRoles("http://www.w3.org/2002/07/owl#topObjectProperty",
-                "http://www.w3.org/2002/07/owl#bottomObjectProperty",
-                "http://www.w3.org/2002/07/owl#topDataProperty",
-                "http://www.w3.org/2002/07/owl#bottomDataProperty");
+        pEM.setTopBottomRoles(
+                OWLRDFVocabulary.OWL_TOP_OBJECT_PROPERTY.getIRI(),
+                OWLRDFVocabulary.OWL_BOTTOM_OBJECT_PROPERTY.getIRI(),
+                OWLRDFVocabulary.OWL_TOP_DATA_PROPERTY.getIRI(),
+                OWLRDFVocabulary.OWL_BOTTOM_DATA_PROPERTY.getIRI());
     }
 
     // set fields
@@ -121,7 +138,8 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker,
     /** init kernel with the ontology signature */
     @Override
     @PortedFrom(file = "SemanticLocalityChecker.h", name = "preprocessOntology")
-    public void preprocessOntology(Collection<AxiomInterface> axioms) {
+    public
+            void preprocessOntology(Collection<AxiomInterface> axioms) {
         TSignature s = new TSignature();
         ExprMap.clear();
         for (AxiomInterface q : axioms) {
@@ -131,7 +149,8 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker,
         Kernel.clearKB();
         // register all the objects in the ontology signature
         for (NamedEntity p : s.begin()) {
-            Kernel.declare(null, (Expression) p);
+            Kernel.getOntology()
+                    .add(new AxiomDeclaration(null, (Expression) p));
         }
         // prepare the reasoner to check tautologies
         Kernel.realiseKB();
@@ -251,8 +270,10 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker,
         isLocal = false;
     }
 
-    /** there is no such axiom in OWL API, but I hope nobody would use Fairness
-     * here */
+    /**
+     * there is no such axiom in OWL API, but I hope nobody would use Fairness
+     * here
+     */
     @Override
     public void visit(AxiomFairnessConstraint axiom) {
         isLocal = true;
@@ -261,8 +282,10 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker,
     // R = inverse(S) is tautology iff R [= S- and S [= R-
     @Override
     public void visit(AxiomRoleInverse axiom) {
-        isLocal = Kernel.isSubRoles(axiom.getRole(), pEM.inverse(axiom.getInvRole()))
-                && Kernel.isSubRoles(axiom.getInvRole(), pEM.inverse(axiom.getRole()));
+        isLocal = Kernel.isSubRoles(axiom.getRole(),
+                pEM.inverse(axiom.getInvRole()))
+                && Kernel.isSubRoles(axiom.getInvRole(),
+                        pEM.inverse(axiom.getRole()));
     }
 
     @Override
@@ -351,7 +374,8 @@ public class SemanticLocalityChecker implements DLAxiomVisitor, LocalityChecker,
 
     @Override
     public void visit(AxiomConceptInclusion axiom) {
-        isLocal = Kernel.isSubsumedBy(axiom.getSubConcept(), axiom.getSupConcept());
+        isLocal = Kernel.isSubsumedBy(axiom.getSubConcept(),
+                axiom.getSupConcept());
     }
 
     // for top locality, this might be local

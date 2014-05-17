@@ -12,6 +12,7 @@ import conformance.PortedFrom;
 /** lexeme */
 @PortedFrom(file = "tLexeme.h", name = "TLexeme")
 public class Lexeme implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** Lexeme's Token */
     @PortedFrom(file = "tLexeme.h", name = "token")
@@ -28,30 +29,44 @@ public class Lexeme implements Serializable {
         data = i;
     }
 
-    /** default c'tor for pointers
+    /**
+     * default c'tor for pointers
      * 
      * @param tok
-     * @param p */
+     *        tok
+     * @param p
+     *        p
+     */
     public Lexeme(Token tok, NamedEntry p) {
         this(tok, p, 0);
     }
 
-    /** default c'tor for pointers
+    /**
+     * default c'tor for pointers
      * 
-     * @param tok */
+     * @param tok
+     *        tok
+     */
     public Lexeme(Token tok) {
         this(tok, null, 0);
     }
 
-    /** default c'tor for numbers
+    /**
+     * default c'tor for numbers
      * 
      * @param tok
-     * @param val */
+     *        tok
+     * @param val
+     *        val
+     */
     public Lexeme(Token tok, int val) {
         this(tok, null, val);
     }
 
-    /** @param t */
+    /**
+     * @param t
+     *        t
+     */
     public Lexeme(Lexeme t) {
         this(t.token, t.pName, t.data);
     }
@@ -109,9 +124,9 @@ public class Lexeme implements Serializable {
             return token.getName();
         }
         if (token == Token.INAME) {
-            return "(" + token.getName() + " " + pName.toString() + ")";
+            return '(' + token.getName() + ' ' + pName.toString() + ')';
         } else {
-            return token.getName() + " " + pName.toString();
+            return token.getName() + ' ' + pName.toString();
         }
     }
 }

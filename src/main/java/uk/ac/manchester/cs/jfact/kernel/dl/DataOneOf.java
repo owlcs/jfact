@@ -8,6 +8,8 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
 import java.io.Serializable;
 import java.util.List;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
@@ -21,9 +23,12 @@ public class DataOneOf extends NAryExpressionImpl<Literal<?>> implements
         NAryExpression<Literal<?>>, DataExpression, Serializable {
     private static final long serialVersionUID = 11000L;
 
-    /** create one-of from individuals in the given array
+    /**
+     * create one-of from individuals in the given array
      * 
-     * @param v */
+     * @param v
+     *        v
+     */
     public DataOneOf(List<Literal<?>> v) {
         add(v);
     }
@@ -41,7 +46,7 @@ public class DataOneOf extends NAryExpressionImpl<Literal<?>> implements
     }
 
     @Override
-    public String getName() {
-        return toString();
+    public IRI getName() {
+        return IRI.create(toString());
     }
 }

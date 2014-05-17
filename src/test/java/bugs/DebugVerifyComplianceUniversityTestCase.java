@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
+import org.semanticweb.owlapi.formats.OWLFunctionalSyntaxOntologyFormat;
 import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
 import org.semanticweb.owlapi.model.IRI;
@@ -38,7 +38,7 @@ public class DebugVerifyComplianceUniversityTestCase {
                 + "DisjointClasses(<urn:uni#Lecturer> <urn:uni#Professor>)\n"
                 + "EquivalentClasses(<urn:uni#Professor> DataHasValue(<urn:uni#hasTenure> \"true\"^^xsd:boolean))\n"
                 + "DataPropertyDomain(<urn:uni#hasTenure> <urn:uni#TeachingFaculty>)\n"
-                + "DataPropertyRange(<urn:uni#hasTenure> xsd:boolean)\n" + ")";
+                + "DataPropertyRange(<urn:uni#hasTenure> xsd:boolean)\n" + ')';
         return OWLManager.createOWLOntologyManager()
                 .loadOntologyFromOntologyDocument(
                         new StringDocumentSource(input));

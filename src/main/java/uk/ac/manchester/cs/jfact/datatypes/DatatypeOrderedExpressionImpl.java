@@ -10,14 +10,20 @@ import static uk.ac.manchester.cs.jfact.datatypes.Facets.*;
 
 import java.util.Collection;
 
-class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DATATYPE<O>
-        implements DatatypeExpression<O>, OrderedDatatype<O> {
+import org.semanticweb.owlapi.model.IRI;
+
+class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
+        ABSTRACT_DATATYPE<O> implements DatatypeExpression<O>,
+        OrderedDatatype<O> {
+
     private static final long serialVersionUID = 11000L;
     // TODO handle all value space restrictions in the delegations
     private final Datatype<O> host;
 
     public DatatypeOrderedExpressionImpl(Datatype<O> b) {
-        super(b.getDatatypeURI() + "_" + DatatypeFactory.getIndex(), b.getFacets());
+        super(
+                IRI.create(b.getDatatypeIRI() + "_"
+                        + DatatypeFactory.getIndex()), b.getFacets());
         if (b.isExpression()) {
             this.host = b.asExpression().getHostType();
         } else {
@@ -35,30 +41,22 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
 
     @Override
     public boolean isInValueSpace(O l) {
-        if (this.hasMinExclusive()) {
             // to be in value space, ex min must be smaller than l
-            if (l.compareTo(this.getMin()) <= 0) {
+        if (this.hasMinExclusive() && l.compareTo(this.getMin()) <= 0) {
                 return false;
             }
-        }
-        if (this.hasMinInclusive()) {
             // to be in value space, min must be smaller or equal to l
-            if (l.compareTo(this.getMin()) < 0) {
+        if (this.hasMinInclusive() && l.compareTo(this.getMin()) < 0) {
                 return false;
             }
-        }
-        if (this.hasMaxExclusive()) {
             // to be in value space, ex max must be bigger than l
-            if (l.compareTo(this.getMax()) >= 0) {
+        if (this.hasMaxExclusive() && l.compareTo(this.getMax()) >= 0) {
                 return false;
             }
-        }
-        if (this.hasMaxInclusive()) {
             // to be in value space, ex min must be smaller than l
-            if (l.compareTo(this.getMax()) > 0) {
+        if (this.hasMaxInclusive() && l.compareTo(this.getMax()) > 0) {
                 return false;
             }
-        }
         return true;
     }
 
@@ -75,7 +73,8 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
         // return true;
         // }
         if (type.isOrderedDatatype()) {
-            OrderedDatatype<O> wrapper = (OrderedDatatype<O>) type.asOrderedDatatype();
+            OrderedDatatype<O> wrapper = (OrderedDatatype<O>) type
+                    .asOrderedDatatype();
             // if both have no max or both have no min -> there is an
             // overlap
             // if one has no max, then min must be smaller than max of the
@@ -157,9 +156,11 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
-        if (value instanceof Literal && !this.host.isCompatible((Literal<?>) value)) {
-            throw new IllegalArgumentException("Not a valid value for this expression: "
-                    + f + "\t" + value + " for: " + this);
+        if (value instanceof Literal
+                && !this.host.isCompatible((Literal<?>) value)) {
+            throw new IllegalArgumentException(
+                    "Not a valid value for this expression: " + f + '\t'
+                            + value + " for: " + this);
         }
         DatatypeOrderedExpressionImpl<O> toReturn = new DatatypeOrderedExpressionImpl<O>(
                 this.host);
@@ -301,7 +302,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends ABSTRACT_DA
 
     @Override
     public String toString() {
-        return this.getClass().getName() + "(" + this.host.toString() + "(extra facets:"
-                + knownNumericFacetValues + "))";
+        return this.getClass().getName() + '(' + this.host.toString()
+                + "(extra facets:" + knownNumericFacetValues + "))";
     }
 }

@@ -12,12 +12,13 @@ import conformance.PortedFrom;
 /** label that can be merged */
 @PortedFrom(file = "mergableLabel.h", name = "mergableLabel")
 public class MergableLabel implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** sample for all equivalent labels */
     @PortedFrom(file = "mergableLabel.h", name = "pSample")
     private MergableLabel pSample;
 
-    @SuppressWarnings("javadoc")
+    /** default constructor */
     public MergableLabel() {
         pSample = this;
     }
@@ -45,9 +46,12 @@ public class MergableLabel implements Serializable {
         return super.hashCode();
     }
 
-    /** make 2 labels equal
+    /**
+     * make 2 labels equal
      * 
-     * @param p */
+     * @param p
+     *        p
+     */
     @PortedFrom(file = "mergableLabel.h", name = "merge")
     public void merge(MergableLabel p) {
         MergableLabel sample = p.resolve();
@@ -57,9 +61,11 @@ public class MergableLabel implements Serializable {
         }
     }
 
-    /** make label's depth <= 2;
+    /**
+     * make label's depth lesser than or equal 2;
      * 
-     * @return sample of the label */
+     * @return sample of the label
+     */
     @PortedFrom(file = "mergableLabel.h", name = "resolve")
     public MergableLabel resolve() {
         // check if current node is itself sample

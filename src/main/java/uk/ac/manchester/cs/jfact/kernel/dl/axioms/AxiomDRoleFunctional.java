@@ -17,8 +17,12 @@ import conformance.PortedFrom;
 public class AxiomDRoleFunctional extends AxiomSingleDRole {
     private static final long serialVersionUID = 11000L;
 
-    /** @param ax
-     * @param role */
+    /**
+     * @param ax
+     *        ax
+     * @param role
+     *        role
+     */
     public AxiomDRoleFunctional(OWLAxiom ax, DataRoleExpression role) {
         super(ax, role);
     }

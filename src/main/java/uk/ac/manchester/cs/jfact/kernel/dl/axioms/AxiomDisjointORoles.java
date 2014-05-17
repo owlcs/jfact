@@ -16,11 +16,17 @@ import conformance.PortedFrom;
 
 /** Object Role disjointness axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDisjointORoles")
-public class AxiomDisjointORoles extends AbstractNaryAxiom<ObjectRoleExpression> {
+public class AxiomDisjointORoles extends
+        AbstractNaryAxiom<ObjectRoleExpression> {
+
     private static final long serialVersionUID = 11000L;
 
-    /** @param ax
-     * @param v */
+    /**
+     * @param ax
+     *        ax
+     * @param v
+     *        v
+     */
     public AxiomDisjointORoles(OWLAxiom ax, List<ObjectRoleExpression> v) {
         super(ax, v);
     }

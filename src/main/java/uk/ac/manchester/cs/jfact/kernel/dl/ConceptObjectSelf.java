@@ -7,6 +7,8 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
@@ -15,13 +17,18 @@ import conformance.PortedFrom;
 
 /** self object restriction */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectSelf")
-public class ConceptObjectSelf implements ConceptObjectRoleExpression, Serializable {
+public class ConceptObjectSelf implements ConceptObjectRoleExpression,
+        Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** object role argument */
     @PortedFrom(file = "tDLExpression.h", name = "OR")
     private final ObjectRoleExpression objectRoleExpression;
 
-    /** @param R */
+    /**
+     * @param R
+     *        R
+     */
     public ConceptObjectSelf(ObjectRoleExpression R) {
         objectRoleExpression = R;
     }
@@ -46,7 +53,7 @@ public class ConceptObjectSelf implements ConceptObjectRoleExpression, Serializa
     }
 
     @Override
-    public String getName() {
-        return toString();
+    public IRI getName() {
+        return IRI.create(toString());
     }
 }

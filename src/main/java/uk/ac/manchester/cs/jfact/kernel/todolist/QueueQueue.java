@@ -97,24 +97,34 @@ public class QueueQueue implements Serializable {
         size = 0;
     }
 
-    /** check if queue empty */
+    /** @return true if queue empty */
     protected boolean isEmpty() {
         return sPointer == size;
     }
 
-    /** get next entry from the queue; works for non-empty queues */
+    /** @return get next entry from the queue; works for non-empty queues */
     protected ToDoEntry get() {
         return _Wait.get(sPointer++);
     }
 
-    /** save queue content to the given entry */
+    /**
+     * save queue content to the given entry
+     * 
+     * @param tss
+     *        tss
+     */
     @PortedFrom(file = "ToDoList.h", name = "save")
     protected void save(TODOListSaveState tss) {
         tss.sp = sPointer;
         tss.ep = size;
     }
 
-    /** restore queue content from the given entry */
+    /**
+     * restore queue content from the given entry
+     * 
+     * @param tss
+     *        tss
+     */
     @PortedFrom(file = "ToDoList.h", name = "restore")
     protected void restore(TODOListSaveState tss) {
         sPointer = tss.sp;
@@ -124,7 +134,8 @@ public class QueueQueue implements Serializable {
 
     @Override
     public String toString() {
-        return "{" + (!isEmpty() ? _Wait.get(sPointer) : "empty") + " sPointer: "
-                + sPointer + " size: " + size + " Wait: " + _Wait + "}";
+        return "{" + (!isEmpty() ? _Wait.get(sPointer) : "empty")
+                + " sPointer: " + sPointer + " size: " + size + " Wait: "
+                + _Wait + '}';
     }
 }

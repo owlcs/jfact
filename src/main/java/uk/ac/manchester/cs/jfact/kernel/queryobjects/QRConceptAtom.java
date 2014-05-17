@@ -19,10 +19,14 @@ public class QRConceptAtom extends QRAtom {
     @PortedFrom(file = "QR.h", name = "Arg")
     private final QRiObject Arg;
 
-    /** init c'tor
+    /**
+     * init c'tor
      * 
      * @param C
-     * @param A */
+     *        C
+     * @param A
+     *        A
+     */
     public QRConceptAtom(ConceptExpression C, QRiObject A) {
         Concept = C;
         Arg = A;
@@ -43,6 +47,6 @@ public class QRConceptAtom extends QRAtom {
 
     @Override
     public String toString() {
-        return Concept.getName() + "(" + getArg() + ")";
+        return Concept.getName() + "(" + getArg() + ')';
     }
 }

@@ -11,6 +11,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
+
 import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
 import uk.ac.manchester.cs.jfact.kernel.Concept;
 import uk.ac.manchester.cs.jfact.kernel.ConceptWDep;
@@ -25,13 +29,10 @@ import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
 import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
-
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Multimap;
-
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import conformance.PortedFrom;
 
 /** knowledge explorer */
@@ -59,14 +60,18 @@ public class KnowledgeExplorer implements Serializable {
     /** node vector to return */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "Nodes")
     private final List<DlCompletionTree> Nodes = new ArrayList<DlCompletionTree>();
-    /** role set to return */
-    @PortedFrom(file = "KnowledgeExplorer.h", name = "Roles")
-    private final Set<RoleExpression> Roles = new HashSet<RoleExpression>();
     /** concept vector to return */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "Concepts")
     private final List<Expression> Concepts = new ArrayList<Expression>();
 
-    /** adds an entity as a synonym to a map MAP */
+    /**
+     * adds an entity as a synonym to a map MAP
+     * 
+     * @param map
+     *        map
+     * @param entry
+     *        entry
+     */
     @SuppressWarnings("unchecked")
     @PortedFrom(file = "KnowledgeExplorer.h", name = "addE")
     private <E extends ClassifiableEntry> void
@@ -79,7 +84,9 @@ public class KnowledgeExplorer implements Serializable {
 
     /**
      * @param box
+     *        box
      * @param pEM
+     *        pEM
      */
     public KnowledgeExplorer(TBox box, ExpressionManager pEM) {
         D2I = new TDag2Interface(box.getDag(), pEM);
@@ -125,7 +132,12 @@ public class KnowledgeExplorer implements Serializable {
      * u.__add__(F.__mul__(x)) P = F.__mul__(P.__mul__(transpose(F))) print 'x=
      * ' x.show() print 'P= ' P.show()
      */
-    /** add concept-like entity E (possibly with synonyms) to CONCEPTS */
+    /**
+     * add concept-like entity E (possibly with synonyms) to CONCEPTS
+     * 
+     * @param e
+     *        e
+     */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "addC")
     private void addC(Expression e) {
         // check named concepts
@@ -160,51 +172,58 @@ public class KnowledgeExplorer implements Serializable {
 
     /**
      * @param node
+     *        node
      * @param onlyDet
+     *        onlyDet
      * @return set of data roles
      */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getDataRoles")
-    public Set<RoleExpression> getDataRoles(DlCompletionTree node,
+    public Set<DataRoleExpression> getDataRoles(DlCompletionTree node,
             boolean onlyDet) {
-        Roles.clear();
+        Set<DataRoleExpression> roles = new HashSet<DataRoleExpression>();
         for (DlCompletionTreeArc p : node.getNeighbour()) {
             if (!p.isIBlocked() && p.getArcEnd().isDataNode()
                     && (!onlyDet || p.getDep().isEmpty())) {
                 for (Role r : DRs.get(p.getRole().getEntity())) {
-                    Roles.add(D2I.getDataRoleExpression(r));
+                    roles.add((DataRoleExpression) D2I.getDataRoleExpression(r));
                 }
             }
         }
-        // Roles.addAll(DRs.get(p.getRole().getEntity()));
-        return Roles;
+        return roles;
     }
 
     /**
      * @param node
+     *        node
      * @param onlyDet
+     *        onlyDet
      * @param needIncoming
+     *        needIncoming
      * @return set of object neighbours of a NODE; incoming edges are counted
      *         iff NEEDINCOMING is true
      */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getObjectRoles")
-    public Set<RoleExpression> getObjectRoles(DlCompletionTree node,
+    public Set<ObjectRoleExpression> getObjectRoles(DlCompletionTree node,
             boolean onlyDet, boolean needIncoming) {
-        Roles.clear();
+        Set<ObjectRoleExpression> roles = new HashSet<ObjectRoleExpression>();
         for (DlCompletionTreeArc p : node.getNeighbour()) {
             if (!p.isIBlocked() && !p.getArcEnd().isDataNode()
                     && (!onlyDet || p.getDep().isEmpty())
                     && (needIncoming || p.isSuccEdge())) {
                 for (Role r : ORs.get(p.getRole().getEntity())) {
-                    Roles.add(D2I.getObjectRoleExpression(r));
+                    roles.add((ObjectRoleExpression) D2I
+                            .getObjectRoleExpression(r));
                 }
             }
         }
-        return Roles;
+        return roles;
     }
 
     /**
      * @param node
+     *        node
      * @param R
+     *        R
      * @return set of neighbours of a NODE via role ROLE; put the resulting list
      *         into RESULT
      */
@@ -221,7 +240,9 @@ public class KnowledgeExplorer implements Serializable {
 
     /**
      * @param node
+     *        node
      * @param onlyDet
+     *        onlyDet
      * @return all the data expressions from the NODE label
      */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getLabel")
@@ -252,7 +273,9 @@ public class KnowledgeExplorer implements Serializable {
 
     /**
      * @param node
+     *        node
      * @param onlyDet
+     *        onlyDet
      * @return list of data labels
      */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getLabel")
@@ -283,6 +306,7 @@ public class KnowledgeExplorer implements Serializable {
 
     /**
      * @param node
+     *        node
      * @return blocker of a blocked node NODE or NULL if node is not blocked
      */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getBlocker")

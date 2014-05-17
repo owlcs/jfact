@@ -39,7 +39,7 @@ public class CGLabel implements Serializable {
     @Original
     private final int id;
 
-    @SuppressWarnings("javadoc")
+    /** default constructor */
     public CGLabel() {
         scLabel = new CWDArray();
         ccLabel = new CWDArray();
@@ -70,17 +70,24 @@ public class CGLabel implements Serializable {
         return ccLabel.getContainedConcepts();
     }
 
-    /** @param tag
-     * @return label associated with the concepts defined by TAG */
+    /**
+     * @param tag
+     *        tag
+     * @return label associated with the concepts defined by TAG
+     */
     @PortedFrom(file = "CGLabel.h", name = "getLabel")
     public CWDArray getLabel(DagTag tag) {
         return tag.isComplexConcept() ? ccLabel : scLabel;
     }
 
-    /** index p by tag, clear caches
+    /**
+     * index p by tag, clear caches
      * 
      * @param tag
-     * @param p */
+     *        tag
+     * @param p
+     *        p
+     */
     @Original
     public void add(DagTag tag, ConceptWDep p) {
         getLabel(tag).private_add(p);
@@ -99,8 +106,11 @@ public class CGLabel implements Serializable {
         }
     }
 
-    /** @param p
-     * @return true if node is labelled by complex concept P */
+    /**
+     * @param p
+     *        p
+     * @return true if node is labelled by complex concept P
+     */
     @PortedFrom(file = "CGLabel.h", name = "containsCC")
     public boolean containsCC(int p) {
         return ccLabel.contains(p);
@@ -115,8 +125,11 @@ public class CGLabel implements Serializable {
     private final Set<CGLabel> lesserEquals = Collections
             .newSetFromMap(new IdentityHashMap<CGLabel, Boolean>());
 
-    /** @param label
-     * @return true if this label is less or equal than label */
+    /**
+     * @param label
+     *        label
+     * @return true if this label is less or equal than label
+     */
     @PortedFrom(file = "CGLabel.h", name = "<=")
     public boolean lesserequal(CGLabel label) {
         if (this == label) {
@@ -150,18 +163,24 @@ public class CGLabel implements Serializable {
         return false;
     }
 
-    /** @param ss
-     *            save label using given SS */
+    /**
+     * @param ss
+     *        save label using given SS
+     */
     @PortedFrom(file = "CGLabel.h", name = "save")
     public void save(SaveState ss) {
         ss.setSc(scLabel.save());
         ss.setCc(ccLabel.save());
     }
 
-    /** restore label to given LEVEL using given SS
+    /**
+     * restore label to given LEVEL using given SS
      * 
      * @param ss
-     * @param level */
+     *        ss
+     * @param level
+     *        level
+     */
     @PortedFrom(file = "CGLabel.h", name = "restore")
     public void restore(SaveState ss, int level) {
         scLabel.restore(ss.getSc(), level);
@@ -174,8 +193,10 @@ public class CGLabel implements Serializable {
         return scLabel.toString() + ccLabel.toString();
     }
 
-    /** init the node - this is not in the constructor because objecs will be
-     * reused */
+    /**
+     * init the node - this is not in the constructor because objecs will be
+     * reused
+     */
     @PortedFrom(file = "CGLabel.h", name = "init")
     public void init() {
         clearOthersCache();
@@ -184,8 +205,11 @@ public class CGLabel implements Serializable {
         ccLabel.init();
     }
 
-    /** @param p
-     * @return true if p index is contained in simple or complex concepts. */
+    /**
+     * @param p
+     *        p
+     * @return true if p index is contained in simple or complex concepts.
+     */
     @PortedFrom(file = "CGLabel.h", name = "contains")
     public boolean contains(int p) {
         assert isCorrect(p);
@@ -198,8 +222,11 @@ public class CGLabel implements Serializable {
         return scLabel.contains(p) || ccLabel.contains(p);
     }
 
-    /** @param bp
-     * @return concept with index bp */
+    /**
+     * @param bp
+     *        bp
+     * @return concept with index bp
+     */
     @PortedFrom(file = "CGLabel.h", name = "getConcept")
     public ConceptWDep getConceptWithBP(int bp) {
         ConceptWDep toReturn = scLabel.getConceptWithBP(bp);

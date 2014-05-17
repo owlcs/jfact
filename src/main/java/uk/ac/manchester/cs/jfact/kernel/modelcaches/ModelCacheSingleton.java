@@ -8,9 +8,11 @@ package uk.ac.manchester.cs.jfact.kernel.modelcaches;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import conformance.PortedFrom;
 
-/** Model caching implementation for singleton models. Such models contains only
+/**
+ * Model caching implementation for singleton models. Such models contains only
  * one [negated] concept in completion tree. Reduced set of operations, but very
- * efficient. */
+ * efficient.
+ */
 @PortedFrom(file = "modelCacheSingleton.h", name = "modelCacheSingleton")
 public class ModelCacheSingleton extends ModelCacheInterface {
     private static final long serialVersionUID = 11000L;
@@ -18,7 +20,10 @@ public class ModelCacheSingleton extends ModelCacheInterface {
     @PortedFrom(file = "modelCacheSingleton.h", name = "Singleton")
     private final int singleton;
 
-    /** @param bp */
+    /**
+     * @param bp
+     *        bp
+     */
     public ModelCacheSingleton(int bp) {
         super(false);
         singleton = bp;
@@ -38,9 +43,11 @@ public class ModelCacheSingleton extends ModelCacheInterface {
     }
 
     // mergable part
-    /** check whether two caches can be merged;
+    /**
+     * check whether two caches can be merged;
      * 
-     * @return state of "merged" model */
+     * @return state of "merged" model
+     */
     @Override
     @PortedFrom(file = "modelCacheSingleton.h", name = "canMerge")
     public ModelCacheState canMerge(ModelCacheInterface p) {

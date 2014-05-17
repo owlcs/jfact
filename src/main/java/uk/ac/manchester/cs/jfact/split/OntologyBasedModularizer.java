@@ -16,51 +16,70 @@ import conformance.PortedFrom;
 /** modularizer */
 @PortedFrom(file = "OntologyBasedModularizer.h", name = "OntologyBasedModularizer")
 public class OntologyBasedModularizer implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "OntologyBasedModularizer.h", name = "Ontology")
     private final Ontology ontology;
     private final TModularizer Modularizer;
 
-    /** @param ontology
-     * @param mod */
+    /**
+     * @param ontology
+     *        ontology
+     * @param mod
+     *        mod
+     */
     @PortedFrom(file = "OntologyBasedModularizer.h", name = "OntologyBasedModularizer")
     public OntologyBasedModularizer(Ontology ontology, TModularizer mod) {
         this.ontology = ontology;
         Modularizer = mod;
     }
 
-    /** @param useSemantic
+    /**
+     * @param useSemantic
+     *        useSemantic
      * @param kernel
-     * @return modularizer */
+     *        kernel
+     * @return modularizer
+     */
     public static TModularizer buildTModularizer(boolean useSemantic,
             ReasoningKernel kernel) {
         TModularizer Mod = null;
         if (useSemantic) {
-            Mod = new TModularizer(kernel.getOptions(), new SemanticLocalityChecker(
-                    kernel));
+            Mod = new TModularizer(kernel.getOptions(),
+                    new SemanticLocalityChecker(kernel));
             Mod.preprocessOntology(kernel.getOntology().getAxioms());
         } else {
-            Mod = new TModularizer(kernel.getOptions(), new SyntacticLocalityChecker());
+            Mod = new TModularizer(kernel.getOptions(),
+                    new SyntacticLocalityChecker());
             Mod.preprocessOntology(kernel.getOntology().getAxioms());
         }
         return Mod;
     }
 
-    /** @param sig
+    /**
+     * @param sig
+     *        sig
      * @param type
-     * @return module */
+     *        type
+     * @return module
+     */
     @PortedFrom(file = "OntologyBasedModularizer.h", name = "getModule")
     public List<AxiomInterface> getModule(TSignature sig, ModuleType type) {
         return getModule(ontology.getAxioms(), sig, type);
     }
 
-    /** @param axioms
+    /**
+     * @param axioms
+     *        axioms
      * @param sig
+     *        sig
      * @param type
-     * @return module */
+     *        type
+     * @return module
+     */
     @PortedFrom(file = "OntologyBasedModularizer.h", name = "getModule")
-    public List<AxiomInterface> getModule(List<AxiomInterface> axioms, TSignature sig,
-            ModuleType type) {
+    public List<AxiomInterface> getModule(List<AxiomInterface> axioms,
+            TSignature sig, ModuleType type) {
         Modularizer.extract(axioms, sig, type);
         return Modularizer.getModule();
     }

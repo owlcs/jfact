@@ -20,10 +20,16 @@ public class AxiomInstanceOf extends AxiomIndividual {
     @PortedFrom(file = "tDLAxiom.h", name = "C")
     private final ConceptExpression conceptExpression;
 
-    /** @param ax
+    /**
+     * @param ax
+     *        ax
      * @param i
-     * @param c */
-    public AxiomInstanceOf(OWLAxiom ax, IndividualExpression i, ConceptExpression c) {
+     *        i
+     * @param c
+     *        c
+     */
+    public AxiomInstanceOf(OWLAxiom ax, IndividualExpression i,
+            ConceptExpression c) {
         super(ax, i);
         conceptExpression = c;
     }

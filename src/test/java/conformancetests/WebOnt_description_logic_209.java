@@ -1021,7 +1021,7 @@ public class WebOnt_description_logic_209 {
                 +
                 // ClassAssertion(owl:Thing
                 // <http://oiled.man.example.net/test#V16448>)
-                ")";
+                ')';
         String id = "WebOnt_description_logic_209";
         TestClasses tc = TestClasses.valueOf("NEGATIVE_IMPL");
         String d = "DL Test: k_poly\n"

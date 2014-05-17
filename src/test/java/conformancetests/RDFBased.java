@@ -9,6 +9,7 @@ import org.junit.Test;
 
 @SuppressWarnings("javadoc")
 public class RDFBased {
+
     @Test
     @Changed
     public void testrdfbased_sem_bool_complement_inst() {
@@ -342,7 +343,8 @@ public class RDFBased {
                 + "<owl:Class rdf:about=\"http://www.example.org#c2\"/>\n"
                 + "<owl:Class rdf:about=\"http://www.example.org#c1\"/>\n"
                 + "  <ex:c2 rdf:about=\"http://www.example.org#x\"/>\n"
-                + "  <ex:c1 rdf:about=\"http://www.example.org#y\"/>\n" + "</rdf:RDF>";
+                + "  <ex:c1 rdf:about=\"http://www.example.org#y\"/>\n"
+                + "</rdf:RDF>";
         String id = "rdfbased_sem_eqdis_eqclass_inst";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "For two equivalent classes, any instance of one class is also an instance of the other class, and vice versa.";
@@ -858,7 +860,8 @@ public class RDFBased {
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "<owl:Class rdf:about=\"http://www.example.org#c2\"/>\n"
                 + "<owl:Class rdf:about=\"http://www.example.org#c1\"/>\n"
-                + "  <ex:c2 rdf:about=\"http://www.example.org#w\"/>\n" + "</rdf:RDF>";
+                + "  <ex:c2 rdf:about=\"http://www.example.org#w\"/>\n"
+                + "</rdf:RDF>";
         String id = "rdfbased_sem_rdfs_subclass_cond";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The extensions of two classes related by rdfs:subClassOf are in a subsumption relationship.";

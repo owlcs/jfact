@@ -9,6 +9,8 @@ import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
 
 import java.util.Collection;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 
 /** literal */
@@ -18,17 +20,31 @@ public class LiteralEntry extends NamedEntry {
     /** DAG index of the entry */
     private int pName;
 
-    /** create data entry with given name
+    /**
+     * create data entry with given name
      * 
-     * @param name */
-    public LiteralEntry(String name) {
+     * @param name
+     *        name
+     */
+    public LiteralEntry(IRI name) {
         super(name);
         pName = bpINVALID;
     }
 
-    /** set host data type for the data value
+    /**
+     * @param name
+     *        name
+     */
+    public LiteralEntry(String name) {
+        this(IRI.create(name));
+    }
+
+    /**
+     * set host data type for the data value
      * 
-     * @param l */
+     * @param l
+     *        l
+     */
     public void setLiteral(Literal<?> l) {
         literal = l;
     }
@@ -62,8 +78,8 @@ public class LiteralEntry extends NamedEntry {
 
     @Override
     public String toString() {
-        return "(" + this.getClass().getSimpleName() + " " + literal.toString()
-                + super.toString() + ")";
+        return '(' + this.getClass().getSimpleName() + ' ' + literal.toString()
+                + super.toString() + ')';
     }
 
     @Override
@@ -79,11 +95,21 @@ public class LiteralEntry extends NamedEntry {
         return literal.equals(((LiteralEntry) obj).literal);
     }
 
+    /**
+     * @param l
+     *        literal
+     * @return modified object
+     */
     public LiteralEntry withLiteral(Literal<?> l) {
         setLiteral(l);
         return this;
     }
 
+    /**
+     * @param i
+     *        index
+     * @return modified object
+     */
     public LiteralEntry withIndex(int i) {
         setIndex(i);
         return this;

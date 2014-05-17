@@ -8,6 +8,8 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
 import java.io.Serializable;
 import java.util.List;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleComplexExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
@@ -17,13 +19,18 @@ import conformance.PortedFrom;
 
 /** object role chain */
 @PortedFrom(file = "tDLExpression.h", name = "TDLObjectRoleChain")
-public class ObjectRoleChain extends NAryExpressionImpl<ObjectRoleExpression> implements
-        NAryExpression<ObjectRoleExpression>, ObjectRoleComplexExpression, Serializable {
+public class ObjectRoleChain extends NAryExpressionImpl<ObjectRoleExpression>
+        implements NAryExpression<ObjectRoleExpression>,
+        ObjectRoleComplexExpression, Serializable {
+
     private static final long serialVersionUID = 11000L;
 
-    /** create role chain from given array
+    /**
+     * create role chain from given array
      * 
-     * @param v */
+     * @param v
+     *        v
+     */
     public ObjectRoleChain(List<ObjectRoleExpression> v) {
         add(v);
     }
@@ -41,7 +48,7 @@ public class ObjectRoleChain extends NAryExpressionImpl<ObjectRoleExpression> im
     }
 
     @Override
-    public String getName() {
-        return toString();
+    public IRI getName() {
+        return IRI.create(toString());
     }
 }

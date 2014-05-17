@@ -21,10 +21,16 @@ public class AxiomConceptInclusion extends AxiomImpl {
     @PortedFrom(file = "tDLAxiom.h", name = "Sup")
     private final ConceptExpression superConcept;
 
-    /** @param ax
+    /**
+     * @param ax
+     *        ax
      * @param sub
-     * @param sup */
-    public AxiomConceptInclusion(OWLAxiom ax, ConceptExpression sub, ConceptExpression sup) {
+     *        sub
+     * @param sup
+     *        sup
+     */
+    public AxiomConceptInclusion(OWLAxiom ax, ConceptExpression sub,
+            ConceptExpression sup) {
         super(ax);
         subConcept = sub;
         superConcept = sup;

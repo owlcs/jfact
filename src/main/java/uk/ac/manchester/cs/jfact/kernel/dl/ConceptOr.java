@@ -8,6 +8,8 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
 import java.io.Serializable;
 import java.util.List;
 
+import org.semanticweb.owlapi.model.IRI;
+
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
@@ -20,9 +22,12 @@ public class ConceptOr extends NAryExpressionImpl<ConceptExpression> implements
         NAryExpression<ConceptExpression>, ConceptExpression, Serializable {
     private static final long serialVersionUID = 11000L;
 
-    /** create OR of expressions from the given array
+    /**
+     * create OR of expressions from the given array
      * 
-     * @param v */
+     * @param v
+     *        v
+     */
     public ConceptOr(List<ConceptExpression> v) {
         add(v);
     }
@@ -40,7 +45,7 @@ public class ConceptOr extends NAryExpressionImpl<ConceptExpression> implements
     }
 
     @Override
-    public String getName() {
-        return toString();
+    public IRI getName() {
+        return IRI.create(toString());
     }
 }

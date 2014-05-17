@@ -17,7 +17,7 @@ public class SaveState implements Serializable {
     private int sc;
     private int cc;
 
-    @SuppressWarnings("javadoc")
+    /** default constructor */
     public SaveState() {
         sc = Integer.MAX_VALUE;
         cc = Integer.MAX_VALUE;
@@ -33,12 +33,18 @@ public class SaveState implements Serializable {
         return cc;
     }
 
-    /** @param sc */
+    /**
+     * @param sc
+     *        sc
+     */
     public void setSc(int sc) {
         this.sc = sc;
     }
 
-    /** @param cc */
+    /**
+     * @param cc
+     *        cc
+     */
     public void setCc(int cc) {
         this.cc = cc;
     }

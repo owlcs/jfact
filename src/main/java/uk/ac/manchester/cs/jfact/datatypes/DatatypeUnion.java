@@ -9,15 +9,20 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.semanticweb.owlapi.model.IRI;
+
 /** datatype union */
 public class DatatypeUnion implements DatatypeCombination<DatatypeUnion, Datatype<?>> {
     private final Set<Datatype<?>> basics = new HashSet<Datatype<?>>();
-    private final String uri;
+    private final IRI uri;
     private final Datatype<?> host;
 
-    /** @param host */
+    /**
+     * @param host
+     *        host
+     */
     public DatatypeUnion(Datatype<?> host) {
-        uri = "union#a" + DatatypeFactory.getIndex();
+        uri = IRI.create("urn:union#a" + DatatypeFactory.getIndex());
         this.host = host;
     }
 
@@ -26,8 +31,12 @@ public class DatatypeUnion implements DatatypeCombination<DatatypeUnion, Datatyp
         return host;
     }
 
-    /** @param host
-     * @param list */
+    /**
+     * @param host
+     *        host
+     * @param list
+     *        list
+     */
     public DatatypeUnion(Datatype<?> host, Collection<Datatype<?>> list) {
         this(host);
         basics.addAll(list);
@@ -61,7 +70,7 @@ public class DatatypeUnion implements DatatypeCombination<DatatypeUnion, Datatyp
     }
 
     @Override
-    public String getDatatypeURI() {
+    public IRI getDatatypeIRI() {
         return uri;
     }
 
@@ -100,6 +109,6 @@ public class DatatypeUnion implements DatatypeCombination<DatatypeUnion, Datatyp
 
     @Override
     public String toString() {
-        return uri + "{" + basics + "}";
+        return uri + "{" + basics + '}';
     }
 }

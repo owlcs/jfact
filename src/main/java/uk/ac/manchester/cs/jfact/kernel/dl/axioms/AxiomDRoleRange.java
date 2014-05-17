@@ -20,11 +20,17 @@ public class AxiomDRoleRange extends AxiomSingleDRole {
     @PortedFrom(file = "tDLAxiom.h", name = "Range")
     private final DataExpression range;
 
-    /** @param ax
+    /**
+     * @param ax
+     *        ax
      * @param role
-     * @param range */
+     *        role
+     * @param range
+     *        range
+     */
     @PortedFrom(file = "tDLAxiom.h", name = "Range")
-    public AxiomDRoleRange(OWLAxiom ax, DataRoleExpression role, DataExpression range) {
+    public AxiomDRoleRange(OWLAxiom ax, DataRoleExpression role,
+            DataExpression range) {
         super(ax, role);
         this.range = range;
     }

@@ -122,9 +122,4 @@ abstract class AxiomImpl implements AxiomInterface, Serializable {
     public String toString() {
         return axiom == null ? super.toString() : axiom.toString();
     }
-
-    @Override
-    public String getName() {
-        return toString();
-    }
 }

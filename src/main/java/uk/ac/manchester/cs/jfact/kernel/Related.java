@@ -23,9 +23,14 @@ public class Related implements Serializable {
     @PortedFrom(file = "tRelated.h", name = "R")
     private Role R;
 
-    /** @param a_
+    /**
+     * @param a_
+     *        a_
      * @param b_
-     * @param R_ */
+     *        b_
+     * @param R_
+     *        R_
+     */
     public Related(Individual a_, Individual b_, Role R_) {
         a = a_;
         b = b_;

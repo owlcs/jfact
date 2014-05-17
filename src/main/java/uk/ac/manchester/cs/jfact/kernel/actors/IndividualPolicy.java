@@ -17,7 +17,10 @@ public class IndividualPolicy implements Policy, Serializable {
     private static final long serialVersionUID = 11000L;
     private final boolean plain;
 
-    /** @param plain */
+    /**
+     * @param plain
+     *        plain
+     */
     public IndividualPolicy(boolean plain) {
         this.plain = plain;
     }

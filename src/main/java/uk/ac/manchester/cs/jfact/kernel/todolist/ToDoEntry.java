@@ -44,6 +44,6 @@ public class ToDoEntry implements Serializable {
     @Override
     public String toString() {
         return "Node(" + node.getId() + "), offset("
-                + new ConceptWDep(concept, DepSet.create(delegate)) + ")";
+                + new ConceptWDep(concept, DepSet.create(delegate)) + ')';
     }
 }

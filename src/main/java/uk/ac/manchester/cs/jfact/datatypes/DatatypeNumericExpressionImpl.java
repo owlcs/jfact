@@ -2,6 +2,8 @@ package uk.ac.manchester.cs.jfact.datatypes;
 
 import java.math.BigDecimal;
 
+import org.semanticweb.owlapi.model.IRI;
+
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -16,7 +18,9 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
     private final Datatype<O> host;
 
     public DatatypeNumericExpressionImpl(Datatype<O> b) {
-        super(b.getDatatypeURI() + "_" + DatatypeFactory.getIndex(), b.getFacets());
+        super(
+                IRI.create(b.getDatatypeIRI() + "_"
+                        + DatatypeFactory.getIndex()), b.getFacets());
         if (b.isExpression()) {
             this.host = b.asExpression().getHostType();
         } else {
@@ -46,9 +50,11 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
-        if (value instanceof Literal && !this.host.isCompatible((Literal<?>) value)) {
-            throw new IllegalArgumentException("Not a valid value for this expression: "
-                    + f + "\t" + value + " for: " + this);
+        if (value instanceof Literal
+                && !this.host.isCompatible((Literal<?>) value)) {
+            throw new IllegalArgumentException(
+                    "Not a valid value for this expression: " + f + '\t'
+                            + value + " for: " + this);
         }
         DatatypeNumericExpressionImpl<O> toReturn = new DatatypeNumericExpressionImpl<O>(
                 this.host);
@@ -81,9 +87,11 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
-        if (value instanceof Literal && !this.host.isCompatible((Literal<?>) value)) {
-            throw new IllegalArgumentException("Not a valid value for this expression: "
-                    + f + "\t" + value + " for: " + this);
+        if (value instanceof Literal
+                && !this.host.isCompatible((Literal<?>) value)) {
+            throw new IllegalArgumentException(
+                    "Not a valid value for this expression: " + f + '\t'
+                            + value + " for: " + this);
         }
         DatatypeNumericExpressionImpl<O> toReturn = new DatatypeNumericExpressionImpl<O>(
                 this.host);
@@ -144,7 +152,7 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
 
     @Override
     public String toString() {
-        return "numeric(" + this.host.toString() + "(extra facets:" + getMin() + " "
-                + getMax() + "))";
+        return "numeric(" + this.host.toString() + "(extra facets:" + getMin()
+                + ' ' + getMax() + "))";
     }
 }

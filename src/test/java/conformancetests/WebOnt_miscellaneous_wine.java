@@ -1,6 +1,5 @@
 package conformancetests;
 
-import org.junit.Ignore;
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -9,7 +8,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")
-@Ignore("temporary to speed up release")
 public class WebOnt_miscellaneous_wine {
     @Test
     @Changed

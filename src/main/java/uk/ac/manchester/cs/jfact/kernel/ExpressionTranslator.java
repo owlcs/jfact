@@ -13,10 +13,50 @@ import java.util.List;
 
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
-import uk.ac.manchester.cs.jfact.datatypes.*;
+import uk.ac.manchester.cs.jfact.datatypes.Datatype;
+import uk.ac.manchester.cs.jfact.datatypes.DatatypeEntry;
+import uk.ac.manchester.cs.jfact.datatypes.DatatypeExpression;
+import uk.ac.manchester.cs.jfact.datatypes.Literal;
+import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
-import uk.ac.manchester.cs.jfact.kernel.dl.*;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptAnd;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptBottom;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataExactCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataExists;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataForall;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataMaxCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataMinCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataValue;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptNot;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectExactCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectExists;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectForall;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectMaxCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectMinCardinality;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectSelf;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectValue;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptOneOf;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptOr;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptTop;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataAnd;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataBottom;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataNot;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataOneOf;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataOr;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleBottom;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleName;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleTop;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataTop;
+import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleBottom;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleChain;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleInverse;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleName;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleProjectionFrom;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleProjectionInto;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleTop;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
@@ -28,32 +68,45 @@ import conformance.PortedFrom;
 
 /** expression translator */
 @PortedFrom(file = "tExpressionTranslator.h", name = "TExpressionTranslator")
-public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Serializable {
+public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>,
+        Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** TBox to get access to the named entities */
     @PortedFrom(file = "tExpressionTranslator.h", name = "kb")
     private final TBox tbox;
-    /** signature of non-trivial entities; used in semantic locality checkers
-     * only */
+    /**
+     * signature of non-trivial entities; used in semantic locality checkers
+     * only
+     */
     @PortedFrom(file = "tExpressionTranslator.h", name = "sig")
     private TSignature sig;
 
-    /** @return true iff ENTRY is not in signature */
+    /**
+     * @param entity
+     *        entity
+     * @return true iff ENTRY is not in signature
+     */
     @PortedFrom(file = "tExpressionTranslator.h", name = "nc")
     private boolean nc(NamedEntity entity) {
         return sig != null && !sig.containsNamedEntity(entity);
     }
 
-    /** set internal signature to a given signature S
+    /**
+     * set internal signature to a given signature S
      * 
      * @param s
-     *            signature */
+     *        signature
+     */
     @PortedFrom(file = "tExpressionTranslator.h", name = "setSignature")
     public void setSignature(TSignature s) {
         sig = s;
     }
 
-    /** @param kb */
+    /**
+     * @param kb
+     *        kb
+     */
     public ExpressionTranslator(TBox kb) {
         tbox = kb;
     }
@@ -83,7 +136,15 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Seri
         }
     }
 
-    /** create DLTree of given TAG and named ENTRY; set the entry's ENTITY if */
+    /**
+     * create DLTree of given TAG and named ENTRY; set the entry's ENTITY if
+     * 
+     * @param entry
+     *        entry
+     * @param entity
+     *        entity
+     * @return updated named entry
+     */
     // necessary
     @PortedFrom(file = "tExpressionTranslator.h", name = "matchEntry")
     private NamedEntry matchEntry(NamedEntry entry, NamedEntity entity) {
@@ -128,8 +189,8 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Seri
         if (r.elem().getNE().isBottom()) {
             return DLTreeFactory.createBottom();
         }
-        DLTree toReturn = DLTreeFactory.createSNFSelf(DLTreeFactory.buildTree(new Lexeme(
-                Token.SELF), r));
+        DLTree toReturn = DLTreeFactory.createSNFSelf(DLTreeFactory.buildTree(
+                new Lexeme(Token.SELF), r));
         return toReturn;
     }
 
@@ -141,75 +202,79 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Seri
 
     @Override
     public DLTree visit(ConceptObjectExists expr) {
-        return DLTreeFactory.createSNFExists(expr.getOR().accept(this), expr.getConcept()
-                .accept(this));
+        return DLTreeFactory.createSNFExists(expr.getOR().accept(this), expr
+                .getConcept().accept(this));
     }
 
     @Override
     public DLTree visit(ConceptObjectForall expr) {
-        return DLTreeFactory.createSNFForall(expr.getOR().accept(this), expr.getConcept()
-                .accept(this));
+        return DLTreeFactory.createSNFForall(expr.getOR().accept(this), expr
+                .getConcept().accept(this));
     }
 
     @Override
     public DLTree visit(ConceptObjectMinCardinality expr) {
-        return DLTreeFactory.createSNFGE(expr.getCardinality(),
-                expr.getOR().accept(this), expr.getConcept().accept(this));
+        return DLTreeFactory.createSNFGE(expr.getCardinality(), expr.getOR()
+                .accept(this), expr.getConcept().accept(this));
     }
 
     @Override
     public DLTree visit(ConceptObjectMaxCardinality expr) {
-        return DLTreeFactory.createSNFLE(expr.getCardinality(),
-                expr.getOR().accept(this), expr.getConcept().accept(this));
+        return DLTreeFactory.createSNFLE(expr.getCardinality(), expr.getOR()
+                .accept(this), expr.getConcept().accept(this));
     }
 
     @Override
     public DLTree visit(ConceptObjectExactCardinality expr) {
-        DLTree le = DLTreeFactory.createSNFLE(expr.getCardinality(),
-                expr.getOR().accept(this).copy(), expr.getConcept().accept(this).copy());
-        DLTree ge = DLTreeFactory.createSNFGE(expr.getCardinality(),
-                expr.getOR().accept(this).copy(), expr.getConcept().accept(this).copy());
+        DLTree le = DLTreeFactory.createSNFLE(expr.getCardinality(), expr
+                .getOR().accept(this).copy(), expr.getConcept().accept(this)
+                .copy());
+        DLTree ge = DLTreeFactory.createSNFGE(expr.getCardinality(), expr
+                .getOR().accept(this).copy(), expr.getConcept().accept(this)
+                .copy());
         return DLTreeFactory.createSNFAnd(ge, le);
     }
 
     @Override
     public DLTree visit(ConceptDataValue expr) {
-        return DLTreeFactory.createSNFExists(expr.getDataRoleExpression().accept(this),
-                expr.getExpr().accept(this));
+        return DLTreeFactory.createSNFExists(expr.getDataRoleExpression()
+                .accept(this), expr.getExpr().accept(this));
     }
 
     @Override
     public DLTree visit(ConceptDataExists expr) {
-        return DLTreeFactory.createSNFExists(expr.getDataRoleExpression().accept(this),
-                expr.getExpr().accept(this));
+        return DLTreeFactory.createSNFExists(expr.getDataRoleExpression()
+                .accept(this), expr.getExpr().accept(this));
     }
 
     @Override
     public DLTree visit(ConceptDataForall expr) {
-        return DLTreeFactory.createSNFForall(expr.getDataRoleExpression().accept(this),
-                expr.getExpr().accept(this));
+        return DLTreeFactory.createSNFForall(expr.getDataRoleExpression()
+                .accept(this), expr.getExpr().accept(this));
     }
 
     @Override
     public DLTree visit(ConceptDataMinCardinality expr) {
         return DLTreeFactory.createSNFGE(expr.getCardinality(), expr
-                .getDataRoleExpression().accept(this), expr.getExpr().accept(this));
+                .getDataRoleExpression().accept(this),
+                expr.getExpr().accept(this));
     }
 
     @Override
     public DLTree visit(ConceptDataMaxCardinality expr) {
         return DLTreeFactory.createSNFLE(expr.getCardinality(), expr
-                .getDataRoleExpression().accept(this), expr.getExpr().accept(this));
+                .getDataRoleExpression().accept(this),
+                expr.getExpr().accept(this));
     }
 
     @Override
     public DLTree visit(ConceptDataExactCardinality expr) {
         DLTree le = DLTreeFactory.createSNFLE(expr.getCardinality(), expr
-                .getDataRoleExpression().accept(this).copy(), expr.getExpr().accept(this)
-                .copy());
+                .getDataRoleExpression().accept(this).copy(), expr.getExpr()
+                .accept(this).copy());
         DLTree ge = DLTreeFactory.createSNFGE(expr.getCardinality(), expr
-                .getDataRoleExpression().accept(this).copy(), expr.getExpr().accept(this)
-                .copy());
+                .getDataRoleExpression().accept(this).copy(), expr.getExpr()
+                .accept(this).copy());
         return DLTreeFactory.createSNFAnd(ge, le);
     }
 
@@ -276,14 +341,14 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Seri
 
     @Override
     public DLTree visit(ObjectRoleProjectionFrom expr) {
-        return DLTreeFactory.buildTree(new Lexeme(PROJFROM), expr.getOR().accept(this),
-                expr.getConcept().accept(this));
+        return DLTreeFactory.buildTree(new Lexeme(PROJFROM), expr.getOR()
+                .accept(this), expr.getConcept().accept(this));
     }
 
     @Override
     public DLTree visit(ObjectRoleProjectionInto expr) {
-        return DLTreeFactory.buildTree(new Lexeme(PROJINTO), expr.getOR().accept(this),
-                expr.getConcept().accept(this));
+        return DLTreeFactory.buildTree(new Lexeme(PROJINTO), expr.getOR()
+                .accept(this), expr.getConcept().accept(this));
     }
 
     // data role expressions

@@ -23,12 +23,13 @@ public class QRQuery implements Serializable {
     @PortedFrom(file = "QR.h", name = "FreeVars")
     private Set<QRVariable> FreeVars = new TreeSet<QRVariable>();
 
-    @SuppressWarnings("javadoc")
-    public QRQuery() {
-        // TODO Auto-generated constructor stub
-    }
+    /** default constructor */
+    public QRQuery() {}
 
-    /** @param q */
+    /**
+     * @param q
+     *        q
+     */
     public QRQuery(QRQuery q) {
         Body = new QRSetAtoms(q.Body);
         for (QRVariable v : q.getFreeVars()) {
@@ -36,23 +37,32 @@ public class QRQuery implements Serializable {
         }
     }
 
-    /** @param var
-     * @return true if VAR is a free var */
+    /**
+     * @param var
+     *        var
+     * @return true if VAR is a free var
+     */
     public boolean isFreeVar(QRVariable var) {
         return var != null && getFreeVars().contains(var);
     }
 
-    /** add atom to a query body
+    /**
+     * add atom to a query body
      * 
-     * @param atom */
+     * @param atom
+     *        atom
+     */
     @PortedFrom(file = "QR.h", name = "addAtom")
     public void addAtom(QRAtom atom) {
         Body.addAtom(atom);
     }
 
-    /** mark a variable as a free one
+    /**
+     * mark a variable as a free one
      * 
-     * @param var */
+     * @param var
+     *        var
+     */
     @PortedFrom(file = "QR.h", name = "setVarFree")
     public void setVarFree(QRVariable var) {
         getFreeVars().add(var);
@@ -69,7 +79,10 @@ public class QRQuery implements Serializable {
         return FreeVars;
     }
 
-    /** @param freeVars */
+    /**
+     * @param freeVars
+     *        freeVars
+     */
     public void setFreeVars(Set<QRVariable> freeVars) {
         FreeVars = freeVars;
     }

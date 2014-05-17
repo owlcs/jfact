@@ -16,9 +16,14 @@ public class QRRoleAtom extends QR2ArgAtom {
     @PortedFrom(file = "QR.h", name = "Role")
     private final ObjectRoleExpression Role;
 
-    /** @param R
+    /**
+     * @param R
+     *        R
      * @param A1
-     * @param A2 */
+     *        A1
+     * @param A2
+     *        A2
+     */
     public QRRoleAtom(ObjectRoleExpression R, QRiObject A1, QRiObject A2) {
         super(A1, A2);
         Role = R;
@@ -32,6 +37,6 @@ public class QRRoleAtom extends QR2ArgAtom {
 
     @Override
     public String toString() {
-        return Role.getName() + "(" + getArg1() + "," + getArg2() + ")";
+        return Role.getName() + "(" + getArg1() + ',' + getArg2() + ')';
     }
 }

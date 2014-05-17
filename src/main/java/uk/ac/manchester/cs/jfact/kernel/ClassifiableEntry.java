@@ -5,7 +5,14 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.semanticweb.owlapi.model.IRI;
 
 import conformance.Original;
 import conformance.PortedFrom;
@@ -13,23 +20,28 @@ import conformance.PortedFrom;
 /** classifiable entry */
 @PortedFrom(file = "taxNamEntry.h", name = "ClassifiableEntry")
 public class ClassifiableEntry extends NamedEntry {
+
     private static final long serialVersionUID = 11000L;
     /** link to taxonomy entry for current entry */
     @PortedFrom(file = "taxNamEntry.h", name = "taxVertex")
     protected TaxonomyVertex taxVertex = null;
-    /** links to 'told subsumers' (entries that are direct super-entries for
-     * current) */
+    /**
+     * links to 'told subsumers' (entries that are direct super-entries for
+     * current)
+     */
     @PortedFrom(file = "taxNamEntry.h", name = "toldSubsumers")
     protected final Set<ClassifiableEntry> toldSubsumers = new LinkedHashSet<ClassifiableEntry>();
-    /** pointer to synonym (entry which contains whole information the same as
-     * current) */
+    /**
+     * pointer to synonym (entry which contains whole information the same as
+     * current)
+     */
     @PortedFrom(file = "taxNamEntry.h", name = "pSynonym")
     protected ClassifiableEntry pSynonym;
     /** index as a vertex in the SubsumptionMap */
     @PortedFrom(file = "taxNamEntry.h", name = "Index")
     protected int index;
 
-    protected ClassifiableEntry(String name) {
+    protected ClassifiableEntry(IRI name) {
         super(name);
         pSynonym = null;
         index = 0;
@@ -41,9 +53,12 @@ public class ClassifiableEntry extends NamedEntry {
         return taxVertex != null;
     }
 
-    /** set up given entry
+    /**
+     * set up given entry
      * 
-     * @param vertex */
+     * @param vertex
+     *        vertex
+     */
     @PortedFrom(file = "taxNamEntry.h", name = "setTaxVertex")
     public void setTaxVertex(TaxonomyVertex vertex) {
         taxVertex = vertex;
@@ -65,7 +80,10 @@ public class ClassifiableEntry extends NamedEntry {
         return completelyDefined;
     }
 
-    /** @param action */
+    /**
+     * @param action
+     *        action
+     */
     @Original
     public void setCompletelyDefined(boolean action) {
         completelyDefined = action;
@@ -80,7 +98,10 @@ public class ClassifiableEntry extends NamedEntry {
         return nonClassifiable;
     }
 
-    /** @param action */
+    /**
+     * @param action
+     *        action
+     */
     @Original
     public void setNonClassifiable(boolean action) {
         nonClassifiable = action;
@@ -98,17 +119,23 @@ public class ClassifiableEntry extends NamedEntry {
         return !toldSubsumers.isEmpty();
     }
 
-    /** add told subsumer of entry (duplications possible)
+    /**
+     * add told subsumer of entry (duplications possible)
      * 
-     * @param parent */
+     * @param parent
+     *        parent
+     */
     @PortedFrom(file = "taxNamEntry.h", name = "addParent")
     public void addParent(ClassifiableEntry parent) {
         toldSubsumers.add(parent);
     }
 
-    /** add all parents (with duplicates) from the range to current node
+    /**
+     * add all parents (with duplicates) from the range to current node
      * 
-     * @param entries */
+     * @param entries
+     *        entries
+     */
     @PortedFrom(file = "taxNamEntry.h", name = "addParents")
     public void addParents(Collection<ClassifiableEntry> entries) {
         for (ClassifiableEntry c : entries) {
@@ -153,9 +180,12 @@ public class ClassifiableEntry extends NamedEntry {
         }
     }
 
-    /** add entry's synonym
+    /**
+     * add entry's synonym
      * 
-     * @param syn */
+     * @param syn
+     *        syn
+     */
     @PortedFrom(file = "taxNamEntry.h", name = "setSynonym")
     public void setSynonym(ClassifiableEntry syn) {
         // do it only once
@@ -187,15 +217,24 @@ public class ClassifiableEntry extends NamedEntry {
         toldSubsumers.removeAll(toRemove);
     }
 
-    /** @param p
-     * @return resolved synonym */
+    /**
+     * @param p
+     *        p
+     * @param <T>
+     *        expression type
+     * @return resolved synonym
+     */
     @SuppressWarnings("unchecked")
     @PortedFrom(file = "taxNamEntry.h", name = "resolveSynonym")
     public static <T extends ClassifiableEntry> T resolveSynonym(T p) {
-        return p == null ? null : p.isSynonym() ? resolveSynonym((T) p.pSynonym) : p;
+        return p == null ? null
+                : p.isSynonym() ? resolveSynonym((T) p.pSynonym) : p;
     }
 
-    /** @param parent */
+    /**
+     * @param parent
+     *        parent
+     */
     @PortedFrom(file = "taxNamEntry.h", name = "addParentIfNew")
     public void addParentIfNew(ClassifiableEntry parent) {
         // resolve synonyms

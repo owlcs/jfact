@@ -22,12 +22,18 @@ public class AxiomRelatedTo extends AxiomIndividual {
     @PortedFrom(file = "tDLAxiom.h", name = "R")
     private final ObjectRoleExpression objectRoleExpression;
 
-    /** @param ax
+    /**
+     * @param ax
+     *        ax
      * @param i
+     *        i
      * @param r
-     * @param j */
-    public AxiomRelatedTo(OWLAxiom ax, IndividualExpression i, ObjectRoleExpression r,
-            IndividualExpression j) {
+     *        r
+     * @param j
+     *        j
+     */
+    public AxiomRelatedTo(OWLAxiom ax, IndividualExpression i,
+            ObjectRoleExpression r, IndividualExpression j) {
         super(ax, i);
         objectRoleExpression = r;
         individualExpression = j;

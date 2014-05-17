@@ -6,23 +6,33 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
-/** datatype negation
+/**
+ * datatype negation
  * 
  * @param <R> */
 public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpression<R>,
         Serializable {
     private static final long serialVersionUID = 11000L;
     private final Datatype<R> host;
-    private final String uri;
+    private final IRI uri;
 
-    /** @param d */
+    /**
+     * @param d
+     *        d
+     */
     public DatatypeNegation(Datatype<R> d) {
-        this.uri = "neg#" + DatatypeFactory.getIndex();
+        this.uri = IRI.create("urn:neg" + DatatypeFactory.getIndex());
         host = d;
     }
 
@@ -81,9 +91,9 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
     }
 
     @Override
-    public <O extends Comparable<O>> O getFacetValue(Facet f) {
-        O facetValue = (O) host.getFacetValue(f);
-        return facetValue;
+    public <O extends Comparable<O>> O getFacetValue(Facet<O> f) {
+        O o = host.getFacetValue(f);
+        return o;
     }
 
     @SuppressWarnings("rawtypes")
@@ -129,7 +139,7 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
     }
 
     @Override
-    public String getDatatypeURI() {
+    public IRI getDatatypeIRI() {
         return uri;
     }
 
@@ -192,7 +202,7 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
 
     @Override
     public String toString() {
-        return uri + "{" + host + "}";
+        return uri + "{" + host + '}';
     }
 
     @Override
@@ -215,7 +225,7 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
     }
 
     @Override
-    public String getName() {
-        return toString();
+    public IRI getName() {
+        return IRI.create(toString());
     }
 }

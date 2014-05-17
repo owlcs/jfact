@@ -9,13 +9,14 @@ import org.junit.Test;
 
 @SuppressWarnings("javadoc")
 public class WebOnt_allValuesFrom_001 {
+
     @Test
     public void testWebOnt_miscellaneous_203() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:first=\"http://www.w3.org/2002/03owlt/miscellaneous/inconsistent203#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/miscellaneous/inconsistent203\" >\n"
-                + "\n"
+                + '\n'
                 + "  <owl:Ontology/>\n"
-                + "\n"
+                + '\n'
                 + "  <owl:DatatypeProperty\n"
                 + "           rdf:ID=\"fp\" />\n"
                 + "  <owl:FunctionalProperty\n"
@@ -24,7 +25,7 @@ public class WebOnt_allValuesFrom_001 {
                 + "     <first:fp rdf:parseType=\"Literal\">\n"
                 + "<br />\n"
                 + "<img src=\"vn.png\" alt=\"Venn diagram\" longdesc=\"vn.html\" title=\"Venn\"></img>\n"
-                + "\n"
+                + '\n'
                 + "</first:fp>\n"
                 + "     <first:fp rdf:parseType=\"Literal\"><br \n"
                 + "></br>\n"
@@ -79,7 +80,7 @@ public class WebOnt_allValuesFrom_001 {
                 + "DataPropertyAssertion(<urn:fp> <urn:id2> \"<br></br>\n\n"
                 + "<img></img>\"^^rdf:XMLLiteral)\n"
                 + "DataPropertyAssertion(<urn:fp> <urn:id2> \"<br></br>\n"
-                + "<img></img>\"^^rdf:XMLLiteral)\n" + ")";
+                + "<img></img>\"^^rdf:XMLLiteral)\n" + ')';
         // TODO this is silly, to pass this test the reasoner needs a lot of
         // extra processing for literals... maybe the OWL API should do this, it
         // can be useful for users in general and it's actually down to the
@@ -161,10 +162,10 @@ public class WebOnt_allValuesFrom_001 {
                 "ObjectPropertyAssertion(<urn:t:t#p> <urn:t:t#i> <urn:t:t#newind>)\n"
                 + "ClassAssertion(<urn:t:t#c> <urn:t:t#newind>)\n" +
                 // "ClassAssertion(owl:Thing <urn:t:t#newind>)" +
-                ")";
+                ')';
         String id = "WebOnt_allValuesFrom_002";
         TestClasses tc = TestClasses.valueOf("NEGATIVE_IMPL");
-        String d = "Another simple example; contrast with <code>owl:someValuesFrom</code>.";
+        String d = "Another simple example; contrast with owl:someValuesFrom.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -188,7 +189,7 @@ public class WebOnt_allValuesFrom_001 {
                 + "</rdf:RDF>";
         String id = "WebOnt_I4_6_004";
         TestClasses tc = TestClasses.valueOf("NEGATIVE_IMPL");
-        String d = "<code>owl:sameAs</code> is stronger than <code>owl:equivalentClass</code>.";
+        String d = "owl:sameAs is stronger than owl:equivalentClass.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
@@ -198,7 +199,7 @@ public class WebOnt_allValuesFrom_001 {
     public void testWebOnt_I5_21_002() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/I5.21/premises002#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.21/premises002\" >\n"
-                + "\n"
+                + '\n'
                 + "   <owl:Ontology/>\n"
                 + "   <owl:Class rdf:ID=\"Reptile\">\n"
                 + "     <rdfs:subClassOf>\n"
@@ -207,21 +208,21 @@ public class WebOnt_allValuesFrom_001 {
                 + "              <owl:DatatypeProperty rdf:ID=\"family-name\"/></owl:onProperty>\n"
                 + "           <owl:cardinality rdf:datatype=\n"
                 + " \"http://www.w3.org/2001/XMLSchema#int\">1</owl:cardinality></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Class rdf:about=\"#Amphisbaenidae\">\n"
                 + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n"
                 + "      <rdfs:subClassOf>\n"
                 + "        <owl:Restriction>\n"
                 + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
                 + "          <owl:hasValue>Amphisbaenidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Class rdf:about=\"#Agamidae\">\n"
                 + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n"
                 + "      <rdfs:subClassOf>\n"
                 + "        <owl:Restriction>\n"
                 + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
                 + "          <owl:hasValue>Agamidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Class rdf:about=\"#Anomalepidae\">\n"
                 + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n"
                 + "      <rdfs:subClassOf>\n"
@@ -235,66 +236,66 @@ public class WebOnt_allValuesFrom_001 {
                 + "        <owl:Restriction>\n"
                 + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
                 + "          <owl:hasValue>Emydidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Class rdf:about=\"#Crocodylidae\">\n"
                 + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n"
                 + "      <rdfs:subClassOf>\n"
                 + "        <owl:Restriction>\n"
                 + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
                 + "          <owl:hasValue>Crocodylidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Class rdf:about=\"#Gekkonidae\">\n"
                 + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n"
                 + "      <rdfs:subClassOf>\n"
                 + "        <owl:Restriction>\n"
                 + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
                 + "          <owl:hasValue>Gekkonidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Class rdf:about=\"#Sphenodontidae\">\n"
                 + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n"
                 + "      <rdfs:subClassOf>\n"
                 + "        <owl:Restriction>\n"
                 + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
                 + "          <owl:hasValue>Sphenodontidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Class rdf:about=\"#Cordylidae\">\n"
                 + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n"
                 + "      <rdfs:subClassOf>\n"
                 + "        <owl:Restriction>\n"
                 + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
                 + "          <owl:hasValue>Cordylidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Class rdf:about=\"#Bipedidae\">\n"
                 + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n"
                 + "      <rdfs:subClassOf>\n"
                 + "        <owl:Restriction>\n"
                 + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
                 + "          <owl:hasValue>Bipedidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Class rdf:about=\"#Leptotyphlopidae\">\n"
                 + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n"
                 + "      <rdfs:subClassOf>\n"
                 + "        <owl:Restriction>\n"
                 + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
                 + "          <owl:hasValue>Leptotyphlopidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Class rdf:about=\"#Xantusiidae\">\n"
                 + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n"
                 + "      <rdfs:subClassOf>\n"
                 + "        <owl:Restriction>\n"
                 + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
                 + "          <owl:hasValue>Xantusiidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Class rdf:about=\"#Loxocemidae\">\n"
                 + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n"
                 + "      <rdfs:subClassOf>\n"
                 + "        <owl:Restriction>\n"
                 + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
                 + "          <owl:hasValue>Loxocemidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-                + "\n" + "\n" + "</rdf:RDF>";
+                + '\n' + '\n' + "</rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.21/conclusions002\" >\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Ontology/>\n"
                 + "    <owl:Class rdf:about=\"premises002#Amphisbaenidae\">\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Agamidae\"/>\n"
@@ -308,7 +309,7 @@ public class WebOnt_allValuesFrom_001 {
                 + "      <owl:disjointWith rdf:resource=\"premises002#Leptotyphlopidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Xantusiidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Loxocemidae\"/></owl:Class>\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Class rdf:about=\"premises002#Agamidae\">\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Anomalepidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Emydidae\"/>\n"
@@ -320,7 +321,7 @@ public class WebOnt_allValuesFrom_001 {
                 + "      <owl:disjointWith rdf:resource=\"premises002#Leptotyphlopidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Xantusiidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Loxocemidae\"/></owl:Class>\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Class rdf:about=\"premises002#Anomalepidae\">\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Emydidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Crocodylidae\"/>\n"
@@ -331,7 +332,7 @@ public class WebOnt_allValuesFrom_001 {
                 + "      <owl:disjointWith rdf:resource=\"premises002#Leptotyphlopidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Xantusiidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Loxocemidae\"/></owl:Class>\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Class rdf:about=\"premises002#Emydidae\">\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Crocodylidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Gekkonidae\"/>\n"
@@ -341,7 +342,7 @@ public class WebOnt_allValuesFrom_001 {
                 + "      <owl:disjointWith rdf:resource=\"premises002#Leptotyphlopidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Xantusiidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Loxocemidae\"/></owl:Class>\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Class rdf:about=\"premises002#Crocodylidae\">\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Gekkonidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Sphenodontidae\"/>\n"
@@ -350,7 +351,7 @@ public class WebOnt_allValuesFrom_001 {
                 + "      <owl:disjointWith rdf:resource=\"premises002#Leptotyphlopidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Xantusiidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Loxocemidae\"/></owl:Class>\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Class rdf:about=\"premises002#Gekkonidae\">\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Sphenodontidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Cordylidae\"/>\n"
@@ -358,34 +359,34 @@ public class WebOnt_allValuesFrom_001 {
                 + "      <owl:disjointWith rdf:resource=\"premises002#Leptotyphlopidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Xantusiidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Loxocemidae\"/></owl:Class>\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Class rdf:about=\"premises002#Sphenodontidae\">\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Cordylidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Bipedidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Leptotyphlopidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Xantusiidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Loxocemidae\"/></owl:Class>\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Class rdf:about=\"premises002#Cordylidae\">\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Bipedidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Leptotyphlopidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Xantusiidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Loxocemidae\"/></owl:Class>\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Class rdf:about=\"premises002#Bipedidae\">\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Leptotyphlopidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Xantusiidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Loxocemidae\"/></owl:Class>\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Class rdf:about=\"premises002#Leptotyphlopidae\">\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Xantusiidae\"/>\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Loxocemidae\"/></owl:Class>\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Class rdf:about=\"premises002#Xantusiidae\">\n"
                 + "      <owl:disjointWith rdf:resource=\"premises002#Loxocemidae\"/></owl:Class>\n"
-                + "\n"
+                + '\n'
                 + "    <owl:Class rdf:about=\"premises002#Loxocemidae\"></owl:Class>\n"
-                + "\n" + "</rdf:RDF>";
+                + '\n' + "</rdf:RDF>";
         String id = "WebOnt_I5_21_002";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The construct used here shows how to express mutual disjointness between classes with  O(N) triples.";
@@ -408,10 +409,10 @@ public class WebOnt_allValuesFrom_001 {
                 + "  <owl:DatatypeProperty rdf:about=\"premises006#p\">\n"
                 + "    <rdfs:range rdf:resource=\n"
                 + "  \"http://www.w3.org/2001/XMLSchema#short\" /></owl:DatatypeProperty>\n"
-                + "\n" + "</rdf:RDF>";
+                + '\n' + "</rdf:RDF>";
         String id = "WebOnt_I5_8_006";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "All <code>xsd:byte</code>\n" + "are <code>xsd:short</code>.";
+        String d = "All xsd:byte\n" + "are xsd:short.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         r.run();
