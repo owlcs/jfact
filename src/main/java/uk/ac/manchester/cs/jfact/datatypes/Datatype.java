@@ -148,8 +148,8 @@ public interface Datatype<R extends Comparable<R>> extends DataExpression {
     IRI getDatatypeIRI();
 
     /**
-     * @return the list of possible values for this datatype which are compatible
-     *         with the listed datatypes.
+     * @return the list of possible values for this datatype which are
+     *         compatible with the listed datatypes.
      */
     Collection<Literal<R>> listValues();
 
