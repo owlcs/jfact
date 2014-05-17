@@ -1531,6 +1531,12 @@ public class ReasoningKernel implements Serializable {
      * @param C
      * @param direct
      * @param actor
+     *        actor
+     * @param supDirection
+     *        true for superClasses, false for subclasses
+     * @param <T>
+     *        type
+     * @return actor
      */
     @PortedFrom(file = "Kernel.h", name = "getSupConcepts")
     public void
@@ -1568,6 +1574,10 @@ public class ReasoningKernel implements Serializable {
      * 
      * @param C
      * @param actor
+     *        actor
+     * @param <T>
+     *        type
+     * @return actor
      */
     @PortedFrom(file = "Kernel.h", name = "getEquivalentConcepts")
     public void getEquivalentConcepts(ConceptExpression C, Actor actor) {
@@ -1648,6 +1658,10 @@ public class ReasoningKernel implements Serializable {
      * @param r
      * @param direct
      * @param actor
+     *        actor
+     * @param <T>
+     *        type
+     * @return modified actor
      */
     @PortedFrom(file = "Kernel.h", name = "getORoleDomain")
     public void getORoleDomain(ObjectRoleExpression r, boolean direct,
@@ -1668,6 +1682,10 @@ public class ReasoningKernel implements Serializable {
      * @param r
      * @param direct
      * @param actor
+     *        actor
+     * @param <T>
+     *        type
+     * @return modified actor
      */
     @PortedFrom(file = "Kernel.h", name = "getDRoleDomain")
     private void getDRoleDomain(DataRoleExpression r, boolean direct,
@@ -1693,6 +1711,9 @@ public class ReasoningKernel implements Serializable {
      * @param r
      * @param direct
      * @param actor
+     *        actor
+     * @param <T>
+     *        type
      */
     @PortedFrom(file = "Kernel.h", name = "getRoleRange")
     private void getRoleRange(ObjectRoleExpression r, boolean direct,

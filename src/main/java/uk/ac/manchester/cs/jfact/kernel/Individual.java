@@ -55,7 +55,17 @@ public class Individual extends Concept {
     }
 
     // related things
-    /** update told subsumers from the RELATED axioms in a given range */
+
+    /**
+     * update told subsumers from the RELATED axioms in a given range
+     * 
+     * @param <T>
+     *        type
+     * @param begin
+     *        begin
+     * @param RolesProcessed
+     *        RolesProcessed
+     */
     @PortedFrom(file = "tIndividual.h", name = "updateTold")
     private <T extends Related> void updateTold(List<T> begin, Set<Role> RolesProcessed) {
         for (int i = 0; i < begin.size(); i++) {

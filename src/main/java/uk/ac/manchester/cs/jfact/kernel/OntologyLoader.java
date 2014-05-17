@@ -68,7 +68,15 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         assert Expr != null; // temporarily
     }
 
-    /** prepare arguments for the [begin,end) interval */
+    /**
+     * prepare arguments for the [begin,end) interval
+     * 
+     * @param c
+     *        c
+     * @param <T>
+     *        type
+     * @return list of arguments
+     */
     @PortedFrom(file = "tOntologyLoader.h", name = "prepareArgList")
     private <T extends Expression> List<DLTree> prepareArgList(Collection<T> c) {
         List<DLTree> ArgList = new ArrayList<DLTree>();

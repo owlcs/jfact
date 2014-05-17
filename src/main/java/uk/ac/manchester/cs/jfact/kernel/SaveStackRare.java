@@ -12,6 +12,9 @@ import java.util.LinkedList;
 
 import conformance.PortedFrom;
 
+/**
+ * Rare stack
+ */
 @PortedFrom(file = "tRareSaveStack.h", name = "TRareSaveStack")
 public class SaveStackRare implements Serializable {
 
@@ -21,6 +24,9 @@ public class SaveStackRare implements Serializable {
     /** current level */
     private int curLevel;
 
+    /**
+     * default constructor
+     */
     public SaveStackRare() {
         curLevel = InitBranchingLevelValue;
     }
@@ -38,9 +44,13 @@ public class SaveStackRare implements Serializable {
         base.addLast(p);
     }
 
-    /** get all object from the top of the stack with levels >= LEVEL
+    /**
+     * get all object from the top of the stack with levels greater or equal
+     * LEVEL
      * 
-     * @param level */
+     * @param level
+     *        level
+     */
     @PortedFrom(file = "dlCompletionGraph.h", name = "restore")
     public void restore(int level) {
         curLevel = level;
