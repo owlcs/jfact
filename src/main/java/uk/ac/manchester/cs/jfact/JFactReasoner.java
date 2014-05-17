@@ -152,14 +152,12 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         knownEntities.add(df.getOWLNothing());
         for (OWLOntology ont : root.getImportsClosure()) {
             for (OWLAxiom ax : ont.getLogicalAxioms()) {
-                OWLAxiom axiom = ax.getAxiomWithoutAnnotations();
-                reasonerAxioms.add(axiom);
-                knownEntities.addAll(axiom.getSignature());
+                reasonerAxioms.add(ax);
+                knownEntities.addAll(ax.getSignature());
             }
             for (OWLAxiom ax : ont.getAxioms(AxiomType.DECLARATION)) {
-                OWLAxiom axiom = ax.getAxiomWithoutAnnotations();
-                reasonerAxioms.add(axiom);
-                knownEntities.addAll(axiom.getSignature());
+                reasonerAxioms.add(ax);
+                knownEntities.addAll(ax.getSignature());
             }
         }
         kernel.setTopBottomRoleNames(
@@ -302,7 +300,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         for (OWLOntologyChange change : rawChanges) {
             if (change.isAddAxiom()) {
                 OWLAxiom ax = change.getAxiom();
-                if (!reasonerAxioms.contains(ax.getAxiomWithoutAnnotations())) {
+                if (!reasonerAxioms.contains(ax)) {
                     added.add(ax);
                 }
             } else if (change.isRemoveAxiom()) {
