@@ -10,7 +10,7 @@
 	<groupId>net.sourceforge.owlapi</groupId>
 	<artifactId>jfact</artifactId>
 	<packaging>jar</packaging>
-	<version>1.2.2-SNAPSHOT</version>
+	<version>1.2.2</version>
 	<name>JFact</name>
 	<description>JFact is an OWL DL reasoner, based on FaCT++</description>
 	<url>http://jfact.sourceforge.net</url>
