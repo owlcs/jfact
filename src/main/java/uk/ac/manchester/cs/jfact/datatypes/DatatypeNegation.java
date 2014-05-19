@@ -82,7 +82,8 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
 
     @Override
     public <O extends Comparable<O>> O getFacetValue(Facet f) {
-        return host.getFacetValue(f);
+        O facetValue = (O) host.getFacetValue(f);
+        return facetValue;
     }
 
     @SuppressWarnings("rawtypes")

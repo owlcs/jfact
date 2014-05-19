@@ -89,7 +89,8 @@ public class DatatypeNumericEnumeration<R extends Comparable<R>> extends
         if (literals.isEmpty()) {
             return null;
         }
-        return Facets.minInclusive.parseNumber(literals.get(0));
+        R parseNumber = (R) Facets.minInclusive.parseNumber(literals.get(0));
+        return parseNumber;
     }
 
     @Override
@@ -97,7 +98,9 @@ public class DatatypeNumericEnumeration<R extends Comparable<R>> extends
         if (literals.isEmpty()) {
             return null;
         }
-        return Facets.maxInclusive.parseNumber(literals.get(literals.size() - 1));
+        R parseNumber = (R) Facets.maxInclusive.parseNumber(literals
+                .get(literals.size() - 1));
+        return parseNumber;
     }
 
     @Override
