@@ -20,6 +20,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDLExpression.h", name = "TDLDataAnd")
 public class DataAnd extends NAryExpressionImpl<DataExpression> implements
         NAryExpression<DataExpression>, DataExpression, Serializable {
+
     private static final long serialVersionUID = 11000L;
 
     /**

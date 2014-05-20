@@ -11,6 +11,7 @@ import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 public enum AbsorptionActions {
     /** absorb bottom action */
     B('B') {
+
         @Override
         public boolean execute(Axiom ax, AxiomSet tb) {
             return ax.absorbIntoBottom();
@@ -18,6 +19,7 @@ public enum AbsorptionActions {
     },
     /** absorb top action */
     T('T') {
+
         @Override
         public boolean execute(Axiom ax, AxiomSet tb) {
             return ax.absorbIntoTop(tb.tboxHost);
@@ -25,6 +27,7 @@ public enum AbsorptionActions {
     },
     /** process simplified CN axiom action */
     E('E') {
+
         @Override
         public boolean execute(Axiom ax, AxiomSet tb) {
             return tb.processNewAxiom(ax.simplifyCN());
@@ -32,6 +35,7 @@ public enum AbsorptionActions {
     },
     /** absorb in concept action */
     C('C') {
+
         @Override
         public boolean execute(Axiom ax, AxiomSet tb) {
             return ax.absorbIntoConcept(tb.tboxHost);
@@ -39,6 +43,7 @@ public enum AbsorptionActions {
     },
     /** absorb in concept negation action */
     N('N') {
+
         @Override
         public boolean execute(Axiom ax, AxiomSet tb) {
             return ax.absorbIntoNegConcept(tb.tboxHost);
@@ -46,6 +51,7 @@ public enum AbsorptionActions {
     },
     /** process simplified forall axiom action */
     F('F') {
+
         @Override
         public boolean execute(Axiom ax, AxiomSet tb) {
             return tb.processNewAxiom(ax.simplifyForall(tb.tboxHost));
@@ -53,6 +59,7 @@ public enum AbsorptionActions {
     },
     /** absorb into domain axiom action */
     R('R') {
+
         @Override
         public boolean execute(Axiom ax, AxiomSet tb) {
             return ax.absorbIntoDomain(tb.tboxHost);
@@ -60,11 +67,13 @@ public enum AbsorptionActions {
     },
     /** split axiom action */
     S('S') {
+
         @Override
         public boolean execute(Axiom ax, AxiomSet tb) {
             return tb.split(ax);
         }
     };
+
     private char c;
 
     private AbsorptionActions(char ch) {

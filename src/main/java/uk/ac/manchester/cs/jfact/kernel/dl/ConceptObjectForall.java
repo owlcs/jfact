@@ -19,7 +19,9 @@ import conformance.PortedFrom;
 
 /** forall object restriction */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectForall")
-public class ConceptObjectForall implements ConceptObjectRCExpression, Serializable {
+public class ConceptObjectForall implements ConceptObjectRCExpression,
+        Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** concept argument */
     @PortedFrom(file = "tDLExpression.h", name = "C")

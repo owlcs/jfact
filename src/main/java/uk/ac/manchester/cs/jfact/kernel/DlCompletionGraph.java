@@ -25,6 +25,7 @@ import conformance.PortedFrom;
 /** completion graph */
 @PortedFrom(file = "dlCompletionGraph.h", name = "DlCompletionGraph")
 public class DlCompletionGraph implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** initial value of IR level */
     @PortedFrom(file = "dlCompletionGraph.h", name = "initIRLevel")
@@ -197,7 +198,8 @@ public class DlCompletionGraph implements Serializable {
      *        blocker
      */
     @PortedFrom(file = "dlCompletionGraph.h", name = "setNodeDBlocked")
-    private void setNodeDBlocked(DlCompletionTree node, DlCompletionTree blocker) {
+    private void
+            setNodeDBlocked(DlCompletionTree node, DlCompletionTree blocker) {
         saveRareCond(node.setDBlocked(blocker));
         propagateIBlockedStatus(node, node);
     }
@@ -211,7 +213,8 @@ public class DlCompletionGraph implements Serializable {
      *        blocker
      */
     @PortedFrom(file = "dlCompletionGraph.h", name = "setNodeIBlocked")
-    private void setNodeIBlocked(DlCompletionTree node, DlCompletionTree blocker) {
+    private void
+            setNodeIBlocked(DlCompletionTree node, DlCompletionTree blocker) {
         // nominal nodes can't be blocked
         if (node.isPBlocked() || node.isNominalNode()) {
             return;
@@ -238,7 +241,8 @@ public class DlCompletionGraph implements Serializable {
      *        blocker
      */
     @PortedFrom(file = "dlCompletionGraph.h", name = "propagateIBlockedStatus")
-    private void propagateIBlockedStatus(DlCompletionTree node, DlCompletionTree blocker) {
+    private void propagateIBlockedStatus(DlCompletionTree node,
+            DlCompletionTree blocker) {
         List<DlCompletionTreeArc> neighbour = node.getNeighbour();
         int size = neighbour.size();
         for (int i = 0; i < size; i++) {
@@ -345,7 +349,8 @@ public class DlCompletionGraph implements Serializable {
      *        tag
      */
     @PortedFrom(file = "dlCompletionGraph.h", name = "addConceptToNode")
-    public void addConceptToNode(DlCompletionTree node, ConceptWDep c, DagTag tag) {
+    public void addConceptToNode(DlCompletionTree node, ConceptWDep c,
+            DagTag tag) {
         node.addConcept(c, tag);
         if (useLazyBlocking) {
             node.setAffected();
@@ -435,7 +440,7 @@ public class DlCompletionGraph implements Serializable {
 
     /**
      * @param C
-     *            fairness constant
+     *        fairness constant
      * @return true if a fairness constraint C is violated in one of the loops
      *         in the CGraph
      */
@@ -523,14 +528,14 @@ public class DlCompletionGraph implements Serializable {
      * @param isPredEdge
      *        isPredEdge
      * @param R
-     *            name of role (arc label)
+     *        name of role (arc label)
      * @param dep
-     *            dep-set of the arc label
+     *        dep-set of the arc label
      * @return completion tree arc
      */
     @PortedFrom(file = "dlCompletionGraph.h", name = "addRoleLabel")
-    public DlCompletionTreeArc addRoleLabel(DlCompletionTree from, DlCompletionTree to,
-            boolean isPredEdge, Role R, DepSet dep) {
+    public DlCompletionTreeArc addRoleLabel(DlCompletionTree from,
+            DlCompletionTree to, boolean isPredEdge, Role R, DepSet dep) {
         // check if GCraph already has FROM.TO edge labelled with RNAME
         DlCompletionTreeArc ret = from.getEdgeLabelled(R, to);
         if (ret == null) {
@@ -551,14 +556,14 @@ public class DlCompletionGraph implements Serializable {
      * @param isPredEdge
      *        isPredEdge
      * @param r
-     *            name of role (arc label)
+     *        name of role (arc label)
      * @param dep
-     *            dep-set of the arc label
+     *        dep-set of the arc label
      * @return an edge to created node
      */
     @PortedFrom(file = "dlCompletionGraph.h", name = "createNeighbour")
-    public DlCompletionTreeArc createNeighbour(DlCompletionTree from, boolean isPredEdge,
-            Role r, DepSet dep) {
+    public DlCompletionTreeArc createNeighbour(DlCompletionTree from,
+            boolean isPredEdge, Role r, DepSet dep) {
         if (pReasoner.getOptions().isRKG_IMPROVE_SAVE_RESTORE_DEPSET()) {
             assert branchingLevel == dep.level() + 1;
         }
@@ -577,7 +582,8 @@ public class DlCompletionGraph implements Serializable {
      * @return a loop edge
      */
     @PortedFrom(file = "dlCompletionGraph.h", name = "createLoop")
-    public DlCompletionTreeArc createLoop(DlCompletionTree node, Role r, DepSet dep) {
+    public DlCompletionTreeArc createLoop(DlCompletionTree node, Role r,
+            DepSet dep) {
         return addRoleLabel(node, node, /* isPredEdge= */
                 false, r, dep);
     }
@@ -616,7 +622,8 @@ public class DlCompletionGraph implements Serializable {
     }
 
     @PortedFrom(file = "dlCompletionGraph.h", name = "isBlockedBy")
-    private boolean isBlockedBy(DlCompletionTree node, DlCompletionTree blocker) {
+    private boolean
+            isBlockedBy(DlCompletionTree node, DlCompletionTree blocker) {
         assert !node.isNominalNode();
         assert !blocker.isNominalNode();
         if (blocker.isBlocked()) {
@@ -640,8 +647,8 @@ public class DlCompletionGraph implements Serializable {
             pReasoner
                     .getOptions()
                     .getLog()
-                    .printTemplate(Templates.IS_BLOCKED_FAILURE_BY, node.getId(),
-                            blocker.getId());
+                    .printTemplate(Templates.IS_BLOCKED_FAILURE_BY,
+                            node.getId(), blocker.getId());
         }
         return ret;
     }
@@ -686,11 +693,11 @@ public class DlCompletionGraph implements Serializable {
     private void findDAncestorBlocker(DlCompletionTree node) {
         DlCompletionTree p = node;
         if (pReasoner.getOptions().isRKG_USE_FAIRNESS() && nSkipBeforeBlock > 0) {
-                for (int n = nSkipBeforeBlock - 1; n >= 0 && p.hasParent()
-                        && p.isBlockableNode(); --n) {
-                    p = p.getParentNode();
-                }
+            for (int n = nSkipBeforeBlock - 1; n >= 0 && p.hasParent()
+                    && p.isBlockableNode(); --n) {
+                p = p.getParentNode();
             }
+        }
         while (p.hasParent()) {
             p = p.getParentNode();
             if (!p.isBlockableNode()) {
@@ -708,11 +715,11 @@ public class DlCompletionGraph implements Serializable {
         for (int i = 0; i < endUsed && i != node.getId(); i++) {
             DlCompletionTree p = nodeBase.get(i);
             if (!p.isBlockedPBlockedNominalNodeCached() && isBlockedBy(node, p)) {
-                    setNodeDBlocked(node, p);
-                    return;
-                }
+                setNodeDBlocked(node, p);
+                return;
             }
         }
+    }
 
     /**
      * Class for maintaining graph of CT nodes. Behaves like deleteless
@@ -763,13 +770,13 @@ public class DlCompletionGraph implements Serializable {
     public void finiIR() {}
 
     @PortedFrom(file = "dlCompletionGraph.h", name = "createEdge")
-    private DlCompletionTreeArc createEdge(DlCompletionTree from, DlCompletionTree to,
-            boolean isPredEdge, Role roleName, DepSet dep) {
+    private DlCompletionTreeArc createEdge(DlCompletionTree from,
+            DlCompletionTree to, boolean isPredEdge, Role roleName, DepSet dep) {
         DlCompletionTreeArc forward = new DlCompletionTreeArc(roleName, dep, to);
         ctEdgeHeap.add(forward);
         forward.setSuccEdge(!isPredEdge);
-        DlCompletionTreeArc backward = new DlCompletionTreeArc(roleName.inverse(), dep,
-                from);
+        DlCompletionTreeArc backward = new DlCompletionTreeArc(
+                roleName.inverse(), dep, from);
         ctEdgeHeap.add(backward);
         backward.setSuccEdge(isPredEdge);
         forward.setReverse(backward);
@@ -784,14 +791,15 @@ public class DlCompletionGraph implements Serializable {
                     .printTemplate(Templates.CREATE_EDGE,
                             isPredEdge ? to.getId() : from.getId(),
                             isPredEdge ? "<-" : "->",
-                            isPredEdge ? from.getId() : to.getId(), roleName.getName());
+                            isPredEdge ? from.getId() : to.getId(),
+                            roleName.getName());
         }
         return forward;
     }
 
     @PortedFrom(file = "dlCompletionGraph.h", name = "moveEdge")
-    private DlCompletionTreeArc moveEdge(DlCompletionTree node, DlCompletionTreeArc edge,
-            boolean isPredEdge, DepSet dep) {
+    private DlCompletionTreeArc moveEdge(DlCompletionTree node,
+            DlCompletionTreeArc edge, boolean isPredEdge, DepSet dep) {
         if (edge.isIBlocked()) {
             return null;
         }
@@ -847,7 +855,8 @@ public class DlCompletionGraph implements Serializable {
     }
 
     @PortedFrom(file = "dlCompletionGraph.h", name = "purgeNode")
-    private void purgeNode(DlCompletionTree p, DlCompletionTree root, DepSet dep) {
+    private void
+            purgeNode(DlCompletionTree p, DlCompletionTree root, DepSet dep) {
         if (p.isPBlocked()) {
             return;
         }
@@ -863,7 +872,8 @@ public class DlCompletionGraph implements Serializable {
     }
 
     @PortedFrom(file = "dlCompletionGraph.h", name = "purgeEdge")
-    private void purgeEdge(DlCompletionTreeArc e, DlCompletionTree root, DepSet dep) {
+    private void purgeEdge(DlCompletionTreeArc e, DlCompletionTree root,
+            DepSet dep) {
         if (e.getRole() != null) {
             invalidateEdge(e);
         }
@@ -977,7 +987,8 @@ public class DlCompletionGraph implements Serializable {
         ++cgpIndent;
         List<DlCompletionTreeArc> l = node.getNeighbour();
         for (int i = 0; i < l.size(); i++) {
-            if (l.get(i).isSuccEdge() || wantPred && l.get(i).getArcEnd().isNominalNode()) {
+            if (l.get(i).isSuccEdge() || wantPred
+                    && l.get(i).getArcEnd().isNominalNode()) {
                 printEdge(l, i + 1, l.get(i), node, o);
             }
         }

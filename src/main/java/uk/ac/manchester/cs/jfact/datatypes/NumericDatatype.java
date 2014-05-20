@@ -13,6 +13,7 @@ package uk.ac.manchester.cs.jfact.datatypes;
  */
 public interface NumericDatatype<R extends Comparable<R>> extends Datatype<R>,
         OrderedDatatype<R> {
+
     @Override
     boolean hasMinExclusive();
 

@@ -15,6 +15,7 @@ import conformance.PortedFrom;
 /** general QR conjunctions of atoms */
 @PortedFrom(file = "QR.h", name = "QRSetAtoms")
 public class QRSetAtoms implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "QR.h", name = "Base")
     private final List<QRAtom> Base = new ArrayList<QRAtom>();
@@ -34,9 +35,9 @@ public class QRSetAtoms implements Serializable {
      * replace an atom at a position P with NEWATOM;
      * 
      * @param i
-     *            position of the element to replace
+     *        position of the element to replace
      * @param newAtom
-     *            element to replace
+     *        element to replace
      * @return a replaced atom
      */
     public QRAtom replaceAtom(int i, QRAtom newAtom) {

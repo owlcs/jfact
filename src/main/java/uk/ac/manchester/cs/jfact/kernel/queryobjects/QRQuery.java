@@ -15,6 +15,7 @@ import conformance.PortedFrom;
 /** class for the queries */
 @PortedFrom(file = "QR.h", name = "QRQuery")
 public class QRQuery implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** query as a set of atoms */
     @PortedFrom(file = "QR.h", name = "Body")

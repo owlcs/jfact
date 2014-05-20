@@ -14,6 +14,7 @@ import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
 
 /** the entry of Todo table */
 public class ToDoEntry implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** node to include concept */
     private final DlCompletionTree node;

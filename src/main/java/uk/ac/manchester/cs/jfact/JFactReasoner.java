@@ -155,8 +155,8 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         knownEntities.add(df.getOWLNothing());
         for (OWLOntology ont : root.getImportsClosure()) {
             for (OWLAxiom ax : ont.getLogicalAxioms()) {
-                 reasonerAxioms.add(ax);
-                //breakCycles(ax, true);
+                reasonerAxioms.add(ax);
+                // breakCycles(ax, true);
                 knownEntities.addAll(ax.getSignature());
             }
             for (OWLAxiom ax : ont.getAxioms(AxiomType.DECLARATION)) {
@@ -306,14 +306,14 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             computeDiff(added, removed);
             rawChanges.clear();
             if (!added.isEmpty() || !removed.isEmpty()) {
-                //for (OWLAxiom a : removed) {
-                //    breakCycles(a, false);
-                //}
-                //for (OWLAxiom a : added) {
-                //    breakCycles(a, true);
-                //}
-                 reasonerAxioms.removeAll(removed);
-                 reasonerAxioms.addAll(added);
+                // for (OWLAxiom a : removed) {
+                // breakCycles(a, false);
+                // }
+                // for (OWLAxiom a : added) {
+                // breakCycles(a, true);
+                // }
+                reasonerAxioms.removeAll(removed);
+                reasonerAxioms.addAll(added);
                 knownEntities.clear();
                 for (OWLAxiom ax : reasonerAxioms) {
                     knownEntities.addAll(ax.getSignature());

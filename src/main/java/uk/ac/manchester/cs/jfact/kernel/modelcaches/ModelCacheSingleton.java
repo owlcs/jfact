@@ -15,6 +15,7 @@ import conformance.PortedFrom;
  */
 @PortedFrom(file = "modelCacheSingleton.h", name = "modelCacheSingleton")
 public class ModelCacheSingleton extends ModelCacheInterface {
+
     private static final long serialVersionUID = 11000L;
     /** the singleton itself */
     @PortedFrom(file = "modelCacheSingleton.h", name = "Singleton")

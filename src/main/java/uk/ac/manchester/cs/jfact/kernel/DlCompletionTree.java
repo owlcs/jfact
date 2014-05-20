@@ -28,11 +28,14 @@ import conformance.PortedFrom;
 
 /** completion tree */
 @PortedFrom(file = "dlCompletionTree.h", name = "DlCompletionTree")
-public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializable {
+public class DlCompletionTree implements Comparable<DlCompletionTree>,
+        Serializable {
+
     private static final long serialVersionUID = 11000L;
 
     /** restore blocked node */
     static class UnBlock extends Restorer {
+
         private static final long serialVersionUID = 11000L;
         private final DlCompletionTree p;
         private final DlCompletionTree unblockBlocker;
@@ -59,6 +62,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
 
     /** restore (un)cached node */
     static class CacheRestorer extends Restorer {
+
         private static final long serialVersionUID = 11000L;
         private final DlCompletionTree p;
         private final boolean isCached;
@@ -76,6 +80,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
 
     /** restore node after IR set change */
     class IRRestorer extends Restorer {
+
         private static final long serialVersionUID = 11000L;
         private final int n;
 
@@ -90,8 +95,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
             // TODO check performances of this
             for (int i = 0; i < inequalityRelation.size(); i++) {
                 if (inequalityRelation.get(i) != null) {
-                    inequalityRelation_helper.put(inequalityRelation.get(i).getConcept(),
-                            inequalityRelation.get(i));
+                    inequalityRelation_helper.put(inequalityRelation.get(i)
+                            .getConcept(), inequalityRelation.get(i));
                 }
             }
         }
@@ -148,7 +153,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
      */
     private boolean B2(DLVertex v, int C) {
         assert hasParent();
-        RAStateTransitions RST = v.getRole().getAutomaton().getBase().get(v.getState());
+        RAStateTransitions RST = v.getRole().getAutomaton().getBase()
+                .get(v.getState());
         if (v.getRole().isSimple()) {
             return B2Simple(RST, v.getConceptIndex());
         } else {
@@ -190,7 +196,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
 
     /** @return letter corresponding to the blocking mode */
     private String getBlockingStatusName() {
-        return isPBlocked() ? "p" : isDBlocked() ? "d" : isIBlocked() ? "i" : "u";
+        return isPBlocked() ? "p" : isDBlocked() ? "d" : isIBlocked() ? "i"
+                : "u";
     }
 
     /** @return log node status (d-,i-,p-blocked or cached) */
@@ -345,7 +352,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
      * @return completion tree
      */
     public DlCompletionTree isSomeApplicable(Role R, int C) {
-        return R.isTransitive() ? isTSomeApplicable(R, C) : isNSomeApplicable(R, C);
+        return R.isTransitive() ? isTSomeApplicable(R, C) : isNSomeApplicable(
+                R, C);
     }
 
     /** @return label */
@@ -533,8 +541,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
         }
         // Blocker is the 1st node in the loop
         int n = 1;
-        for (DlCompletionTree p = getParentNode(); p.hasParent() && !p.equals(blocker); p = p
-                .getParentNode()) {
+        for (DlCompletionTree p = getParentNode(); p.hasParent()
+                && !p.equals(blocker); p = p.getParentNode()) {
             if (p.isLabelledBy(c)) {
                 return true;
             } else {
@@ -758,10 +766,10 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
             if (bp > 0) {
                 DLVertex v = dag.get(bp);
                 if (v.getType() == dtForall && !B2(v, bp)) {
-                        return false;
-                    }
+                    return false;
                 }
             }
+        }
         return true;
     }
 
@@ -776,7 +784,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
                 }
             } else if (v.getType() == dtLE) {
                 if (bp > 0) {
-                    if (!B3(p, v.getNumberLE(), v.getRole(), v.getConceptIndex())) {
+                    if (!B3(p, v.getNumberLE(), v.getRole(),
+                            v.getConceptIndex())) {
                         return false;
                     }
                 } else {
@@ -797,10 +806,10 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
                 DLVertex v = dag.get(bp);
                 if (v.getType() == dtLE
                         && !B5(v.getRole(), v.getConceptIndex())) {
-                        return false;
-                    }
+                    return false;
                 }
             }
+        }
         list = getParentNode().beginl_cc();
         for (int i = 0; i < list.size(); i++) {
             int bp = list.get(i).getConcept();
@@ -808,10 +817,10 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
                 DLVertex v = dag.get(bp);
                 if (v.getType() == dtLE
                         && !B6(v.getRole(), v.getConceptIndex())) {
-                        return false;
-                    }
+                    return false;
                 }
             }
+        }
         return true;
     }
 
@@ -846,11 +855,11 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
                     RATransition q = list.get(i);
                     if (q.applicable(R)
                             && !parLab.containsCC(C + q.final_state())) {
-                            return false;
-                        }
+                        return false;
                     }
                 }
             }
+        }
         return true;
     }
 
@@ -867,7 +876,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
             int m = 0;
             for (int i = 0; i < p.neighbourSize; i++) {
                 DlCompletionTreeArc q = p.neighbour.get(i);
-                if (q.isSuccEdge() && q.isNeighbour(S) && q.getArcEnd().isLabelledBy(C)) {
+                if (q.isSuccEdge() && q.isNeighbour(S)
+                        && q.getArcEnd().isLabelledBy(C)) {
                     ++m;
                 }
             }
@@ -886,9 +896,9 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
             DlCompletionTreeArc q = neighbour.get(i);
             if (q.isSuccEdge() && q.isNeighbour(T)
                     && q.getArcEnd().isLabelledBy(E) && ++n >= m) {
-                    return true;
-                }
+                return true;
             }
+        }
         return false;
     }
 
@@ -963,7 +973,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
         return null;
     }
 
-    private DlCompletionTree isTPredLabelled(Role R, int C, DlCompletionTree from) {
+    private DlCompletionTree isTPredLabelled(Role R, int C,
+            DlCompletionTree from) {
         if (isLabelledBy(C)) {
             return this;
         }
@@ -973,7 +984,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
         DlCompletionTree ret = null;
         for (int i = 0; i < neighbourSize; i++) {
             DlCompletionTreeArc p = neighbour.get(i);
-            if (p.isSuccEdge() && p.isNeighbour(R) && !p.getArcEnd().equals(from)
+            if (p.isSuccEdge() && p.isNeighbour(R)
+                    && !p.getArcEnd().equals(from)
                     && (ret = p.getArcEnd().isTSuccLabelled(R, C)) != null) {
                 return ret;
             }

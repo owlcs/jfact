@@ -13,6 +13,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 class LiteralImpl<T extends Comparable<T>> implements Literal<T>, Serializable {
+
     private static final long serialVersionUID = 11000L;
     private final Datatype<T> type;
     private final String value;
@@ -69,7 +70,8 @@ class LiteralImpl<T extends Comparable<T>> implements Literal<T>, Serializable {
         }
         if (obj instanceof Literal) {
             return this.type.equals(((Literal<?>) obj).getDatatypeExpression())
-                    && this.typedValue().equals(((Literal<?>) obj).typedValue());
+                    && this.typedValue()
+                            .equals(((Literal<?>) obj).typedValue());
         }
         return false;
     }

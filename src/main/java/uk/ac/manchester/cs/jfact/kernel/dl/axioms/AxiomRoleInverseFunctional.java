@@ -15,6 +15,7 @@ import conformance.PortedFrom;
 /** inverse functional object role */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomRoleInverseFunctional")
 public class AxiomRoleInverseFunctional extends AxiomSingleORole {
+
     private static final long serialVersionUID = 11000L;
 
     /**

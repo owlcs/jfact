@@ -18,6 +18,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptName")
 public class ConceptName extends NamedEntityImpl implements ConceptExpression,
         Serializable {
+
     private static final long serialVersionUID = 11000L;
 
     /**

@@ -18,6 +18,7 @@ import conformance.PortedFrom;
 /** concept negation */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptNot")
 public class ConceptNot implements ConceptExpression, ConceptArg, Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** concept argument */
     @PortedFrom(file = "tDLExpression.h", name = "C")

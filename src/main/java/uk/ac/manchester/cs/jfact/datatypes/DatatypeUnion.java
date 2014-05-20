@@ -12,7 +12,9 @@ import java.util.Set;
 import org.semanticweb.owlapi.model.IRI;
 
 /** datatype union */
-public class DatatypeUnion implements DatatypeCombination<DatatypeUnion, Datatype<?>> {
+public class DatatypeUnion implements
+        DatatypeCombination<DatatypeUnion, Datatype<?>> {
+
     private final Set<Datatype<?>> basics = new HashSet<Datatype<?>>();
     private final IRI uri;
     private final Datatype<?> host;

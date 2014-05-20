@@ -22,6 +22,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptDataForall")
 public class ConceptDataForall implements ConceptDataRVExpression, DataRoleArg,
         Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** data role argument */
     @PortedFrom(file = "tDLExpression.h", name = "DR")

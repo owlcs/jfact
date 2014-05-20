@@ -15,8 +15,9 @@ import conformance.Original;
  *        type
  */
 @Original
-public interface DatatypeExpression<R extends Comparable<R>>
-        extends Datatype<R> {
+public interface DatatypeExpression<R extends Comparable<R>> extends
+        Datatype<R> {
+
     /** @return the predefined datatype which is host for this expression */
     Datatype<R> getHostType();
 
@@ -24,9 +25,9 @@ public interface DatatypeExpression<R extends Comparable<R>>
      * add a new facet value for this datatype expression
      * 
      * @param f
-     *            a valid facet for the host datatype
+     *        a valid facet for the host datatype
      * @param value
-     *            the value for the facet
+     *        the value for the facet
      * @return modified expression
      */
     DatatypeExpression<R> addNonNumericFacet(Facet f, Comparable<?> value);

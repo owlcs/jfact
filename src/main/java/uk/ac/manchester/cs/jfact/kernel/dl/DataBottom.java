@@ -18,6 +18,7 @@ import conformance.PortedFrom;
 /** data bottom concept */
 @PortedFrom(file = "tDLExpression.h", name = "TDLDataBottom")
 public class DataBottom implements DataExpression, Serializable {
+
     private static final long serialVersionUID = 11000L;
 
     @Override

@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.helpers;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** templates */
 public enum Templates {
+
     //@formatter:off
     /** TAX_TRYING               */ TAX_TRYING              ("\nTAX: trying '%s' [= '%s'... "), 
     /** INTERVAL                 */ INTERVAL                (" %s%s%s,%s%s"), 
@@ -52,7 +53,6 @@ public enum Templates {
     /** IS_SATISFIABLE           */ IS_SATISFIABLE          ("\n-----------\nChecking satisfiability of '%s':\n"),
     /** IS_SATISFIABLE1          */ IS_SATISFIABLE1         ("\nThe '%s' concept is %ssatisfiable w.r.t. TBox");
     //@formatter:on
-
     private final String template;
 
     private Templates(String s) {

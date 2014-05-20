@@ -16,6 +16,7 @@ import conformance.PortedFrom;
 /** data role range */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDRoleRange")
 public class AxiomDRoleRange extends AxiomSingleDRole {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "Range")
     private final DataExpression range;

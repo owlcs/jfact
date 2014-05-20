@@ -21,6 +21,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDLExpression.h", name = "TDLDataOneOf")
 public class DataOneOf extends NAryExpressionImpl<Literal<?>> implements
         NAryExpression<Literal<?>>, DataExpression, Serializable {
+
     private static final long serialVersionUID = 11000L;
 
     /**

@@ -10,6 +10,7 @@ import conformance.PortedFrom;
 /** object role arg */
 @PortedFrom(file = "tDLExpression.h", name = "TObjectRoleArg")
 public interface ObjectRoleArg {
+
     /** @return object role */
     @PortedFrom(file = "tDLExpression.h", name = "getOR")
     ObjectRoleExpression getOR();

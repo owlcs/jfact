@@ -14,6 +14,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 /** class to check whether there is a need to unsplit splitted var */
 @SuppressWarnings("unused")
 public class SingleSplit implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** signature of equivalent part of the split */
     private final Set<NamedEntity> eqSig;

@@ -41,22 +41,22 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
 
     @Override
     public boolean isInValueSpace(O l) {
-            // to be in value space, ex min must be smaller than l
+        // to be in value space, ex min must be smaller than l
         if (this.hasMinExclusive() && l.compareTo(this.getMin()) <= 0) {
-                return false;
-            }
-            // to be in value space, min must be smaller or equal to l
+            return false;
+        }
+        // to be in value space, min must be smaller or equal to l
         if (this.hasMinInclusive() && l.compareTo(this.getMin()) < 0) {
-                return false;
-            }
-            // to be in value space, ex max must be bigger than l
+            return false;
+        }
+        // to be in value space, ex max must be bigger than l
         if (this.hasMaxExclusive() && l.compareTo(this.getMax()) >= 0) {
-                return false;
-            }
-            // to be in value space, ex min must be smaller than l
+            return false;
+        }
+        // to be in value space, ex min must be smaller than l
         if (this.hasMaxInclusive() && l.compareTo(this.getMax()) > 0) {
-                return false;
-            }
+            return false;
+        }
         return true;
     }
 
@@ -111,7 +111,8 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
             // exclusives:
             // one minInclusive/exclusive is strictly larger than the other
             // maxinclusive/exclusive
-            return this.overlapping(this, wrapper) || this.overlapping(wrapper, this);
+            return this.overlapping(this, wrapper)
+                    || this.overlapping(wrapper, this);
         } else {
             return false;
         }
@@ -148,7 +149,8 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
     }
 
     @Override
-    public DatatypeExpression<O> addNonNumericFacet(Facet f, Comparable<?> value) {
+    public DatatypeExpression<O>
+            addNonNumericFacet(Facet f, Comparable<?> value) {
         if (!facets.contains(f)) {
             throw new IllegalArgumentException("Facet " + f
                     + " not allowed tor datatype " + this.getHostType());

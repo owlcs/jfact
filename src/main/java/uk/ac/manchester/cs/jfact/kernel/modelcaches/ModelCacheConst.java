@@ -14,6 +14,7 @@ import conformance.PortedFrom;
 /** model cache const */
 @PortedFrom(file = "modelCacheConst.h", name = "modelCacheConst")
 public class ModelCacheConst extends ModelCacheInterface {
+
     private static final long serialVersionUID = 11000L;
     /** the itself */
     @PortedFrom(file = "modelCacheConst.h", name = "isTop")

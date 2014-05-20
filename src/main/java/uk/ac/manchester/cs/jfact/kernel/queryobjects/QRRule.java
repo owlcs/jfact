@@ -12,5 +12,6 @@ import conformance.PortedFrom;
 /** rule in a general form body to head */
 @PortedFrom(file = "QR.h", name = "QRRule")
 public class QRRule implements Serializable {
+
     private static final long serialVersionUID = 11000L;
 }

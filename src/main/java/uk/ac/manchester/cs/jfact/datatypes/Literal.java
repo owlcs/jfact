@@ -14,6 +14,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
  */
 public interface Literal<T extends Comparable<T>> extends DataExpression,
         Comparable<Literal<T>> {
+
     /** @return datatype */
     Datatype<T> getDatatypeExpression();
 

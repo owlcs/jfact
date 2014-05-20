@@ -24,7 +24,9 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
  *        type
  */
 public class DatatypeEnumeration<R extends Comparable<R>> implements
-        DatatypeCombination<DatatypeEnumeration<R>, Literal<R>>, DatatypeExpression<R> {
+        DatatypeCombination<DatatypeEnumeration<R>, Literal<R>>,
+        DatatypeExpression<R> {
+
     private final IRI uri;
     protected final Datatype<R> host;
     protected final List<Literal<R>> literals = new ArrayList<Literal<R>>();
@@ -199,7 +201,8 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     @Override
     public boolean isContradictory(Datatype<?> type) {
         if (type instanceof DatatypeEnumeration) {
-            return Helper.intersectsWith(((DatatypeEnumeration) type).literals, literals);
+            return Helper.intersectsWith(((DatatypeEnumeration) type).literals,
+                    literals);
         }
         return !isCompatible(type);
     }
@@ -255,7 +258,8 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
             return true;
         }
         if (obj instanceof DatatypeEnumeration) {
-            return this.literals.equals(((DatatypeEnumeration<?>) obj).literals);
+            return this.literals
+                    .equals(((DatatypeEnumeration<?>) obj).literals);
         }
         return false;
     }
@@ -278,7 +282,8 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     }
 
     @Override
-    public DatatypeExpression<R> addNonNumericFacet(Facet f, Comparable<?> value) {
+    public DatatypeExpression<R>
+            addNonNumericFacet(Facet f, Comparable<?> value) {
         System.out
                 .println("DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object");
         return this;

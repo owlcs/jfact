@@ -20,8 +20,9 @@ import conformance.PortedFrom;
 
 /** object min cardinality */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectMinCardinality")
-public class ConceptObjectMinCardinality implements ConceptObjectCardinalityExpression,
-        NumberArg, Serializable {
+public class ConceptObjectMinCardinality implements
+        ConceptObjectCardinalityExpression, NumberArg, Serializable {
+
     private static final long serialVersionUID = 11000L;
     @Original
     private final ConceptExpression delegate;

@@ -24,6 +24,7 @@ import conformance.PortedFrom;
  */
 @PortedFrom(file = "JNIActor.h", name = "TaxonomyActor")
 public class TaxonomyActor<T extends Expression> implements Actor, Serializable {
+
     private static final long serialVersionUID = 11000L;
     private final Policy policy;
     private final ExpressionManager expressionManager;

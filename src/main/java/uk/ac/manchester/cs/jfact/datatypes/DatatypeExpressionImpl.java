@@ -79,7 +79,8 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
-        DatatypeExpressionImpl<O> toReturn = new DatatypeExpressionImpl<O>(this.host);
+        DatatypeExpressionImpl<O> toReturn = new DatatypeExpressionImpl<O>(
+                this.host);
         toReturn.knownNumericFacetValues.putAll(knownNumericFacetValues);
         toReturn.knownNonNumericFacetValues.putAll(knownNonNumericFacetValues);
         // cannot have noth min/maxInclusive and min/maxExclusive values, so
@@ -97,7 +98,8 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends
     }
 
     @Override
-    public DatatypeExpression<O> addNonNumericFacet(Facet f, Comparable<?> value) {
+    public DatatypeExpression<O>
+            addNonNumericFacet(Facet f, Comparable<?> value) {
         if (!facets.contains(f)) {
             throw new IllegalArgumentException("Facet " + f
                     + " not allowed tor datatype " + this.getHostType());
@@ -105,7 +107,8 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
-        DatatypeExpressionImpl<O> toReturn = new DatatypeExpressionImpl<O>(this.host);
+        DatatypeExpressionImpl<O> toReturn = new DatatypeExpressionImpl<O>(
+                this.host);
         toReturn.knownNumericFacetValues.putAll(knownNumericFacetValues);
         toReturn.knownNonNumericFacetValues.putAll(knownNonNumericFacetValues);
         toReturn.knownNonNumericFacetValues.put(f, value);

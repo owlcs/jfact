@@ -12,6 +12,7 @@ package uk.ac.manchester.cs.jfact.datatypes;
  *        type
  */
 public interface OrderedDatatype<R extends Comparable<R>> {
+
     /** @return true if min exclusive facet applies */
     boolean hasMinExclusive();
 

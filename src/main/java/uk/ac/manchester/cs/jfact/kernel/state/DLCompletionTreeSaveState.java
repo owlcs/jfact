@@ -12,6 +12,7 @@ import conformance.PortedFrom;
 /** class for saving Completion Tree nodes state */
 @PortedFrom(file = "dlCompletionTree.h", name = "SaveState")
 public class DLCompletionTreeSaveState implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** saving status of the label */
     private final SaveState lab = new SaveState();

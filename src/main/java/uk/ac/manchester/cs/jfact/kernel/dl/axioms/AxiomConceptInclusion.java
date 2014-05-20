@@ -15,6 +15,7 @@ import conformance.PortedFrom;
 /** SubClassOf */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomConceptInclusion")
 public class AxiomConceptInclusion extends AxiomImpl {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "Sub")
     private final ConceptExpression subConcept;

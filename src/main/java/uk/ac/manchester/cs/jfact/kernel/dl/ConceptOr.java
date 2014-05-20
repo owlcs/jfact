@@ -20,6 +20,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptOr")
 public class ConceptOr extends NAryExpressionImpl<ConceptExpression> implements
         NAryExpression<ConceptExpression>, ConceptExpression, Serializable {
+
     private static final long serialVersionUID = 11000L;
 
     /**

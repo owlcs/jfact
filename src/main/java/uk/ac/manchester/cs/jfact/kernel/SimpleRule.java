@@ -21,6 +21,7 @@ import conformance.PortedFrom;
  */
 @PortedFrom(file = "dlTBox.h", name = "TSimpleRule")
 class SimpleRule implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** body of the rule */
     @PortedFrom(file = "dlTBox.h", name = "Body")

@@ -11,6 +11,7 @@ import java.util.Set;
 
 /** @author ignazio */
 public class Utils implements Serializable {
+
     private static final long serialVersionUID = 11000L;
 
     /**

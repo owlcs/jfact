@@ -18,6 +18,7 @@ import conformance.PortedFrom;
 /** atomical decomposer of the ontology */
 @PortedFrom(file = "AtomicDecomposer.h", name = "AtomicDecomposer")
 public class AtomicDecomposer implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** atomic structure to build */
     @PortedFrom(file = "AtomicDecomposer.h", name = "AOS")

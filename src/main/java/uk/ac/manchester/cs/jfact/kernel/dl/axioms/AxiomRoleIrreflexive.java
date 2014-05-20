@@ -15,6 +15,7 @@ import conformance.PortedFrom;
 /** irreflexive object role */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomRoleIrreflexive")
 public class AxiomRoleIrreflexive extends AxiomSingleORole {
+
     private static final long serialVersionUID = 11000L;
 
     /**

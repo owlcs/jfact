@@ -13,6 +13,7 @@ import conformance.PortedFrom;
 /** concept and dependency set */
 @PortedFrom(file = "ConceptWithDep.h", name = "Concept")
 public class ConceptWDep implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** "pointer" to a concept in DAG */
     @PortedFrom(file = "ConceptWithDep.h", name = "Concept")

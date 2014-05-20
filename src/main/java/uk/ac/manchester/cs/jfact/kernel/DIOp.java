@@ -37,6 +37,7 @@ enum DIOp {
     diRangeR("range"),
     // individual axioms
     diInstanceOf;
+
     private final String s;
 
     private DIOp() {

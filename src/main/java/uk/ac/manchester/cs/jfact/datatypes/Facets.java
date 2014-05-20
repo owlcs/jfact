@@ -22,9 +22,11 @@ import org.semanticweb.owlapi.vocab.OWLFacet;
  * @author ignazio
  */
 public class Facets implements Serializable {
+
     private static final long serialVersionUID = 11000L;
 
     private static abstract class AbstractFacet implements Facet, Serializable {
+
         private static final long serialVersionUID = 11000L;
         protected final String uri;
         protected final String fragment;
@@ -93,8 +95,8 @@ public class Facets implements Serializable {
                 // BigDecimal - or exceptions will be spat out
                 return new BigDecimal(value.toString());
             } catch (NumberFormatException e) {
-                throw new NumberFormatException("Cannot parse '" + value.toString()
-                        + "' as a big decimal");
+                throw new NumberFormatException("Cannot parse '"
+                        + value.toString() + "' as a big decimal");
             }
         }
 
@@ -106,6 +108,7 @@ public class Facets implements Serializable {
     }
 
     private static class LimitFacet extends AbstractFacet {
+
         private static final long serialVersionUID = 11000L;
 
         public LimitFacet(String u) {
@@ -157,6 +160,7 @@ public class Facets implements Serializable {
          */
         /** preserve */
         preserve {
+
             @Override
             public String normalize(String input) {
                 return input;
@@ -164,13 +168,16 @@ public class Facets implements Serializable {
         },
         /** replace */
         replace {
+
             @Override
             public String normalize(String input) {
-                return input.replace('\t', ' ').replace('\n', ' ').replace('\r', ' ');
+                return input.replace('\t', ' ').replace('\n', ' ')
+                        .replace('\r', ' ');
             }
         },
         /** collapse */
         collapse {
+
             @Override
             public String normalize(String input) {
                 StringBuilder b = new StringBuilder(replace.normalize(input));
@@ -296,9 +303,10 @@ public class Facets implements Serializable {
         return new ArrayList<Facet>(values);
     }
 
-    private static final List<Facet> values = Arrays.asList(enumeration, fractionDigits,
-            length, maxExclusive, maxInclusive, minExclusive, minInclusive, maxLength,
-            minLength, pattern, totalDigits, whiteSpace);
+    private static final List<Facet> values = Arrays.asList(enumeration,
+            fractionDigits, length, maxExclusive, maxInclusive, minExclusive,
+            minInclusive, maxLength, minLength, pattern, totalDigits,
+            whiteSpace);
 
     /**
      * @param f

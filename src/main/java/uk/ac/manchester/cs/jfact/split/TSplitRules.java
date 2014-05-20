@@ -345,15 +345,14 @@ public class TSplitRules implements Serializable {
         // create a set of allowed entities for the next round
         List<NamedEntity> RecAllowed = new ArrayList<NamedEntity>();
         List<NamedEntity> Keepers = new ArrayList<NamedEntity>();
-        //Set<AxiomInterface> outModule = new HashSet<AxiomInterface>();
+        // Set<AxiomInterface> outModule = new HashSet<AxiomInterface>();
         TModularizer mod = new TModularizer(config,
                 new SyntacticLocalityChecker());
         for (NamedEntity p : Allowed) {
             if (sig.containsNamedEntity(p)) {
                 sig.remove(p);
-//                outModule.addAll(
-                        mod.extractModule(Module, sig,
-                        ModuleType.M_STAR);
+                // outModule.addAll(
+                mod.extractModule(Module, sig, ModuleType.M_STAR);
                 if (mod.getModule().size() == Module.size()) {
                     // possible to remove one
                     RecAllowed.add(p);
@@ -372,8 +371,8 @@ public class TSplitRules implements Serializable {
             for (NamedEntity p : RecAllowed) {
                 sig.remove(p);
             }
-         //   outModule.addAll(
-                    mod.extractModule(Module, sig, ModuleType.M_STAR);
+            // outModule.addAll(
+            mod.extractModule(Module, sig, ModuleType.M_STAR);
             if (mod.getModule().size() == Module.size()) {
                 Out.add(sig);
                 return;

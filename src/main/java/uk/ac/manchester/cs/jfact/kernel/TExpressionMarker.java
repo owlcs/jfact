@@ -24,6 +24,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TExpressionMarker")
 class TExpressionMarker extends DLExpressionVisitorAdapter {
+
     private static final long serialVersionUID = 11000L;
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "GoodTerms")

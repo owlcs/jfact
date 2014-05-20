@@ -19,6 +19,7 @@ import conformance.PortedFrom;
 /** set of axioms */
 @PortedFrom(file = "tAxiomSet.h", name = "TAxiomSet")
 public class AxiomSet implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** host TBox that holds all concepts/etc */
     @PortedFrom(file = "tAxiomSet.h", name = "Host")

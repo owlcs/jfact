@@ -20,6 +20,7 @@ import org.semanticweb.owlapi.model.IRI;
  */
 public class DatatypeIntersection<T extends Comparable<T>> implements
         DatatypeCombination<DatatypeIntersection<T>, Datatype<T>> {
+
     private final Set<Datatype<T>> basics = new HashSet<Datatype<T>>();
     private final IRI uri;
     private final Datatype<T> host;
@@ -97,7 +98,8 @@ public class DatatypeIntersection<T extends Comparable<T>> implements
 
     @Override
     public DatatypeIntersection<T> add(Datatype<T> d) {
-        DatatypeIntersection<T> toReturn = new DatatypeIntersection<T>(host, basics);
+        DatatypeIntersection<T> toReturn = new DatatypeIntersection<T>(host,
+                basics);
         toReturn.basics.add(d);
         return toReturn;
     }
@@ -161,13 +163,13 @@ public class DatatypeIntersection<T extends Comparable<T>> implements
             Comparable facetValue = dt.asNumericDatatype().getMin();
             if (facetValue != null
                     && (min == null || min.compareTo(facetValue) < 0)) {
-                    min = facetValue;
-                }
+                min = facetValue;
+            }
             facetValue = dt.asNumericDatatype().getMax();
             if (facetValue != null
                     && (max == null || facetValue.compareTo(max) < 0)) {
-                    max = facetValue;
-                }
+                max = facetValue;
+            }
             if (dt.asNumericDatatype().hasMinExclusive()) {
                 minExclusive = true;
             }

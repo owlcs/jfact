@@ -15,6 +15,7 @@ import conformance.PortedFrom;
 /** relation betweenindividuals */
 @PortedFrom(file = "tRelated.h", name = "TRelated")
 public class Related implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tRelated.h", name = "a")
     private Individual a;

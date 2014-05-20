@@ -16,8 +16,9 @@ import org.semanticweb.owlapi.model.IRI;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
-class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype<O>,
-        OrderedDatatype<O> {
+class NumericDatatypeWrapper<O extends Comparable<O>> implements
+        NumericDatatype<O>, OrderedDatatype<O> {
+
     private final Datatype<O> d;
 
     public NumericDatatypeWrapper(Datatype<O> d) {

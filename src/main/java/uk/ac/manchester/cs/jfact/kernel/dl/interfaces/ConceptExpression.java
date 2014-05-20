@@ -11,6 +11,7 @@ import conformance.PortedFrom;
 /** concept expression */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptExpression")
 public interface ConceptExpression extends Expression {
+
     @Override
     /** accept method for the visitor pattern */
     @PortedFrom(file = "tDLExpression.h", name = "accept")

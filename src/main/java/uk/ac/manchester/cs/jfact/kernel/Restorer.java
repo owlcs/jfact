@@ -12,6 +12,7 @@ import conformance.PortedFrom;
 /** restorer */
 @PortedFrom(file = "tRestorer.h", name = "TRestorer")
 public abstract class Restorer implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tRestorer.h", name = "lev")
     private int raresavestackLevel;

@@ -15,6 +15,7 @@ import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 
 /** literal */
 public class LiteralEntry extends NamedEntry {
+
     private static final long serialVersionUID = 11000L;
     private Literal<?> literal;
     /** DAG index of the entry */

@@ -28,7 +28,6 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
-
 import com.google.common.collect.Multimap;
 
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;

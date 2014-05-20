@@ -19,7 +19,9 @@ import conformance.PortedFrom;
 
 /** object exist restriction */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectExists")
-public class ConceptObjectExists implements ConceptObjectRCExpression, Serializable {
+public class ConceptObjectExists implements ConceptObjectRCExpression,
+        Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** concept argument */
     @PortedFrom(file = "tDLExpression.h", name = "C")

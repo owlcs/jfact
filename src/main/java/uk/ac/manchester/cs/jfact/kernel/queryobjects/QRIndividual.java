@@ -11,6 +11,7 @@ import conformance.PortedFrom;
 /** individual in a query */
 @PortedFrom(file = "QR.h", name = "QRIndividual")
 class QRIndividual extends QRiObject {
+
     private static final long serialVersionUID = 11000L;
     /** original individual from Expression Manager */
     @PortedFrom(file = "QR.h", name = "Ind")

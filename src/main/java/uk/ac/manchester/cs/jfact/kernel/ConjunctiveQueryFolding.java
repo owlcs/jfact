@@ -524,7 +524,7 @@ public class ConjunctiveQueryFolding implements Serializable {
             // The i'th var is I2Var[i]; get its concept
             ConceptExpression C = VarRestrictions.get(I2Var.get(i));
             getABoxInstances(kernel, C, artificialABox);
-            }
+        }
     }
 
     /** @return expression manager */

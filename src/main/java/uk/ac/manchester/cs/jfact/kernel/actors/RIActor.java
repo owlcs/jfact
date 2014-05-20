@@ -18,6 +18,7 @@ import conformance.PortedFrom;
 /** RI actor */
 @PortedFrom(file = "Kernel.cpp", name = "RIActor")
 public class RIActor implements Actor, Serializable {
+
     private static final long serialVersionUID = 11000L;
     private final List<Individual> acc = new ArrayList<Individual>();
 

@@ -12,6 +12,7 @@ import conformance.Original;
 /** interface for named things */
 @Original
 public interface HasName {
+
     /** @return name of given entry */
     IRI getName();
 }

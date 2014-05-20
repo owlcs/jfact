@@ -63,7 +63,7 @@ class TReplacer extends DLExpressionVisitorAdapter {
             ConceptExpression s = null;
             for (ConceptExpression p : expr.getArguments()) {
                 p.accept(this);
-                if (p .equals( expr.getArguments().get(0))) {
+                if (p.equals(expr.getArguments().get(0))) {
                     s = ReplaceResult.get(p);
                 } else {
                     s = conjunctiveQueryFolding.getpEM().and(s,

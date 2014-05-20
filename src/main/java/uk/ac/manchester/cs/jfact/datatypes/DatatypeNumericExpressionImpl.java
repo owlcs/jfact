@@ -13,6 +13,7 @@ import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.ABSTRACT_NUMERIC_DATA
 
 class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
         ABSTRACT_NUMERIC_DATATYPE<O> implements DatatypeExpression<O> {
+
     private static final long serialVersionUID = 11000L;
     // TODO handle all value space restrictions in the delegations
     private final Datatype<O> host;
@@ -71,7 +72,8 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
             toReturn.knownNumericFacetValues.remove(Facets.maxInclusive);
         }
         if (value instanceof Number) {
-            toReturn.knownNumericFacetValues.put(f, new BigDecimal(value.toString()));
+            toReturn.knownNumericFacetValues.put(f,
+                    new BigDecimal(value.toString()));
         } else {
             toReturn.knownNumericFacetValues.put(f, value);
         }
@@ -79,7 +81,8 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
     }
 
     @Override
-    public DatatypeExpression<O> addNonNumericFacet(Facet f, Comparable<?> value) {
+    public DatatypeExpression<O>
+            addNonNumericFacet(Facet f, Comparable<?> value) {
         if (!facets.contains(f)) {
             throw new IllegalArgumentException("Facet " + f
                     + " not allowed tor datatype " + this.getHostType());

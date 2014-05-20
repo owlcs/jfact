@@ -19,6 +19,7 @@ import conformance.PortedFrom;
 /** List of concepts with dependencies */
 @PortedFrom(file = "CWDArray.h", name = "CWDArray")
 public class CWDArray implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     @Original
     private static final double distribution = 0.025;
@@ -77,7 +78,8 @@ public class CWDArray implements Serializable {
         // create a cache only if the size is higher than a preset minimum and
         // there is at least an element in 20; caches with very dispersed
         // elements eat up too much memory
-        createCache = size > cacheLimit && (double) size / (span + 1) > distribution;
+        createCache = size > cacheLimit
+                && (double) size / (span + 1) > distribution;
     }
 
     /**

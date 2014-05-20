@@ -12,6 +12,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "tRole.cpp", name = "TRoleCompare")
 class RoleCompare implements Comparator<Role>, Serializable {
+
     private static final long serialVersionUID = 11000L;
 
     @Override

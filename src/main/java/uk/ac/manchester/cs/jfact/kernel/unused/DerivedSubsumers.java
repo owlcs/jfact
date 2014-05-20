@@ -13,6 +13,7 @@ import uk.ac.manchester.cs.jfact.kernel.KnownSubsumers;
 
 /** all the derived subsumers of a class (came from the model) */
 public class DerivedSubsumers extends KnownSubsumers {
+
     private static final long serialVersionUID = 11000L;
     /** set of sure- and possible subsumers */
     protected final List<ClassifiableEntry> Sure, Possible;

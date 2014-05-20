@@ -17,6 +17,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiom")
 abstract class AxiomImpl implements AxiomInterface, Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** id of the axiom */
     private int id;

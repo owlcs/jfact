@@ -18,6 +18,7 @@ import conformance.PortedFrom;
 /** @author ignazio */
 @Original
 public class ActorImpl implements Actor, Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** vertices that satisfy the condition */
     @PortedFrom(file = "Actor.h", name = "found")

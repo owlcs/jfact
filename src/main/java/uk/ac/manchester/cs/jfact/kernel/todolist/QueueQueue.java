@@ -18,6 +18,7 @@ import conformance.PortedFrom;
 
 /** class to represent single priority queue */
 public class QueueQueue implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** waiting ops queue */
     private List<ToDoEntry> _Wait = new ArrayList<ToDoEntry>();
@@ -26,6 +27,7 @@ public class QueueQueue implements Serializable {
     /** start pointer; points to the 1st element in the queue */
     private int sPointer = 0;
     private int size = 0;
+
     // type for restore the whole queue
     class QueueRestorer extends Restorer {
 
@@ -82,7 +84,8 @@ public class QueueQueue implements Serializable {
         stack.push(new QueueRestorer(this));
         int n = size;
         while (n > sPointer
-                && _Wait.get(n - 1).getNode().getNominalLevel() > Node.getNominalLevel()) {
+                && _Wait.get(n - 1).getNode().getNominalLevel() > Node
+                        .getNominalLevel()) {
             --n;
         }
         _Wait.add(n, e);

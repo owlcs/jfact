@@ -17,6 +17,7 @@ import conformance.PortedFrom;
 /** data has value axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomValueOf")
 public class AxiomValueOf extends AxiomIndividual {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "A")
     private final DataRoleExpression dataRoleExpression;

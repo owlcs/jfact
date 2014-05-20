@@ -20,9 +20,11 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 /**
  * datatype negation
  * 
- * @param <R> */
-public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpression<R>,
-        Serializable {
+ * @param <R>
+ */
+public class DatatypeNegation<R extends Comparable<R>> implements
+        DatatypeExpression<R>, Serializable {
+
     private static final long serialVersionUID = 11000L;
     private final Datatype<R> host;
     private final IRI uri;
@@ -218,7 +220,8 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
     }
 
     @Override
-    public DatatypeExpression<R> addNonNumericFacet(Facet f, Comparable<?> value) {
+    public DatatypeExpression<R>
+            addNonNumericFacet(Facet f, Comparable<?> value) {
         System.out
                 .println("DatatypeNegation.addFacet() Cannot add a facet to a negation; modify the base type and rebuild a new negation. Returning the same object");
         return this;

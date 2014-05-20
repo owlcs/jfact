@@ -12,6 +12,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "Tactic.cpp", name = "NodeCompare")
 class NodeCompare implements Comparator<DlCompletionTree>, Serializable {
+
     private static final long serialVersionUID = 11000L;
 
     @Override

@@ -20,8 +20,9 @@ import conformance.PortedFrom;
 
 /** object exact cardinality */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectExactCardinality")
-public class ConceptObjectExactCardinality implements ConceptObjectCardinalityExpression,
-        NumberArg, Serializable {
+public class ConceptObjectExactCardinality implements
+        ConceptObjectCardinalityExpression, NumberArg, Serializable {
+
     private static final long serialVersionUID = 11000L;
     @Original
     private final ConceptExpression delegate;

@@ -21,6 +21,7 @@ import conformance.PortedFrom;
 /** Completion graph label */
 @PortedFrom(file = "CGLabel.h", name = "CGLabel")
 public class CGLabel implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     @Original
     private static int idcounter = 0;

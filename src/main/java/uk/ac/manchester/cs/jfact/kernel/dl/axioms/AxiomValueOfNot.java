@@ -17,6 +17,7 @@ import conformance.PortedFrom;
 /** negation of data hasvalue axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomValueOfNot")
 public class AxiomValueOfNot extends AxiomIndividual {
+
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "A")
     private final DataRoleExpression dataRoleExpression;

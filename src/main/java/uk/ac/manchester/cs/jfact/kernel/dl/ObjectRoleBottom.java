@@ -18,6 +18,7 @@ import conformance.PortedFrom;
 /** bottom object role */
 @PortedFrom(file = "tDLExpression.h", name = "TDLObjectRoleBottom")
 public class ObjectRoleBottom implements ObjectRoleExpression, Serializable {
+
     private static final long serialVersionUID = 11000L;
 
     @Override

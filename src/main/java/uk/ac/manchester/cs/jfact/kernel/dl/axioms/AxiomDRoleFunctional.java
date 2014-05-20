@@ -15,6 +15,7 @@ import conformance.PortedFrom;
 /** functional data role */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDRoleFunctional")
 public class AxiomDRoleFunctional extends AxiomSingleDRole {
+
     private static final long serialVersionUID = 11000L;
 
     /**

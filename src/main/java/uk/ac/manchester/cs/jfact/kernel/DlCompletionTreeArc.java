@@ -15,6 +15,7 @@ import conformance.PortedFrom;
 /** completion tree arc */
 @PortedFrom(file = "dlCompletionTreeArc.h", name = "DlCompletionTreeArc")
 public class DlCompletionTreeArc implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** pointer to "to" node */
     private final DlCompletionTree node;
@@ -33,6 +34,7 @@ public class DlCompletionTreeArc implements Serializable {
      */
     /** class for restoring edge */
     static class EdgeRestorer extends Restorer {
+
         private static final long serialVersionUID = 11000L;
         private final DlCompletionTreeArc arc;
         private final Role role;
@@ -51,6 +53,7 @@ public class DlCompletionTreeArc implements Serializable {
 
     /** class for restoring dep-set */
     static class EdgeDepRestorer extends Restorer {
+
         private static final long serialVersionUID = 11000L;
         private final DlCompletionTreeArc arc;
         private final DepSet dep;

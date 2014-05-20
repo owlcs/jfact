@@ -22,6 +22,7 @@ import conformance.PortedFrom;
 /** todo list */
 @PortedFrom(file = "ToDoList.h", name = "ToDoList")
 public class ToDoList implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** waiting ops queue for IDs */
     @PortedFrom(file = "ToDoList.h", name = "queueID")
@@ -147,7 +148,8 @@ public class ToDoList implements Serializable {
      */
     @PortedFrom(file = "ToDoList.h", name = "addEntry")
     public void addEntry(DlCompletionTree node, DagTag type, ConceptWDep C) {
-        int index = matrix.getIndex(type, C.getConcept() > 0, node.isNominalNode());
+        int index = matrix.getIndex(type, C.getConcept() > 0,
+                node.isNominalNode());
         switch (index) {
             case nRegularOptions: // unused entry
                 return;

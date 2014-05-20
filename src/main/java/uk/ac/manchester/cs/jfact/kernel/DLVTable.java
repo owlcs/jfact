@@ -18,6 +18,7 @@ import conformance.PortedFrom;
 
 @PortedFrom(file = "dlVHash.h", name = "dlVHashTable")
 class DLVTable implements Serializable {
+
     private static final long serialVersionUID = 11000L;
     /** host DAG that contains actual nodes; */
     private final DLDag host;
