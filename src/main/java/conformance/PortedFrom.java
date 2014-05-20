@@ -11,7 +11,7 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * Mark a field, method, method argument or type with the original file and
- * original name in FaCT++
+ * original name in FaCT++.
  * 
  * @author ignazio
  */
@@ -19,12 +19,24 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PortedFrom {
 
-    /** the file with the definition */
+    /**
+     * the file with the definition.
+     * 
+     * @return file
+     */
     String file();
 
-    /** the original name */
+    /**
+     * the original name.
+     * 
+     * @return name
+     */
     String name();
 
-    /** optional method name, for method arguments */
+    /**
+     * optional method name, for method arguments.
+     * 
+     * @return argument
+     */
     String argumentFor() default "";
 }

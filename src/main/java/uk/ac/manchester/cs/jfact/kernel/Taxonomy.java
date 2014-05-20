@@ -370,9 +370,11 @@ public class Taxonomy implements Serializable {
             return false;
         }
         // assert willInsertIntoTaxonomy;
-        assert syn.getTaxVertex() != null;
+        if (syn.isClassified()) {
         addCurrentToSynonym(syn.getTaxVertex());
         return true;
+        }
+        return false;
     }
 
     /**

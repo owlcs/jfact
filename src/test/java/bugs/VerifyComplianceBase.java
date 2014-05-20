@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import org.junit.Before;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.formats.OWLFunctionalSyntaxOntologyFormat;
@@ -22,6 +24,10 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.profiles.OWLProfileReport;
+import org.semanticweb.owlapi.profiles.OWLProfileViolation;
+import org.semanticweb.owlapi.profiles.Profiles;
+import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 
@@ -37,9 +43,16 @@ public abstract class VerifyComplianceBase {
     protected OWLDataFactory df = OWLManager.getOWLDataFactory();
 
     protected OWLOntology load(String in) throws OWLOntologyCreationException {
-        return OWLManager.createOWLOntologyManager()
+        OWLOntology onto = OWLManager.createOWLOntologyManager()
                 .loadOntologyFromOntologyDocument(
                         VerifyComplianceBase.class.getResourceAsStream(in));
+        OWLProfileReport checkOntology = Profiles.OWL2_DL.checkOntology(onto);
+        if (!checkOntology.isInProfile()) {
+            for (OWLProfileViolation<?> v : checkOntology.getViolations()) {
+                System.out.println("VerifyComplianceBase.load() " + v);
+            }
+        }
+        return onto;
     }
 
     protected OWLOntology loadFromString(String in)
@@ -72,18 +85,22 @@ public abstract class VerifyComplianceBase {
         assertEquals(object, o);
     }
 
+    @Nonnull
     protected OWLClass C(String i) {
         return df.getOWLClass(IRI.create(i));
     }
 
+    @Nonnull
     protected OWLNamedIndividual I(String i) {
         return df.getOWLNamedIndividual(IRI.create(i));
     }
 
+    @Nonnull
     protected OWLObjectProperty OP(String i) {
         return df.getOWLObjectProperty(IRI.create(i));
     }
 
+    @Nonnull
     protected OWLDataProperty DP(String i) {
         return df.getOWLDataProperty(IRI.create(i));
     }
@@ -102,6 +119,7 @@ public abstract class VerifyComplianceBase {
     public void setUp() throws OWLOntologyCreationException {
         reasoner = (JFactReasoner) new JFactFactory()
                 .createReasoner(load(input()));
+        reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
     }
 
     protected void switchLoggingOn() {

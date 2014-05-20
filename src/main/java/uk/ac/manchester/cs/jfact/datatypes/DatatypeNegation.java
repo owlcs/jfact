@@ -21,6 +21,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
  * datatype negation
  * 
  * @param <R>
+ *        type
  */
 public class DatatypeNegation<R extends Comparable<R>> implements
         DatatypeExpression<R>, Serializable {

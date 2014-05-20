@@ -227,8 +227,13 @@ public class ClassifiableEntry extends NamedEntry {
     @SuppressWarnings("unchecked")
     @PortedFrom(file = "taxNamEntry.h", name = "resolveSynonym")
     public static <T extends ClassifiableEntry> T resolveSynonym(T p) {
-        return p == null ? null
-                : p.isSynonym() ? resolveSynonym((T) p.pSynonym) : p;
+        if (p == null) {
+            return null;
+        }
+        if (p.isSynonym()) {
+            return resolveSynonym((T) p.pSynonym);
+        }
+        return p;
     }
 
     /**

@@ -8,7 +8,11 @@ package uk.ac.manchester.cs.jfact.datatypes;
 import static uk.ac.manchester.cs.jfact.datatypes.DatatypeClashes.*;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.FastSetSimple;
@@ -16,6 +20,7 @@ import uk.ac.manchester.cs.jfact.helpers.FastSetSimple;
 /**
  * @author ignazio
  * @param <R>
+ *        type
  */
 public class DataTypeSituation<R extends Comparable<R>> implements Serializable {
 
@@ -45,6 +50,12 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
     /**
      * update and add a single interval I to the constraints.
      * 
+     * @param i
+     *        dependency interval
+     * @param interval
+     *        datatype interval
+     * @param localDep
+     *        localDep
      * @return true iff clash occurs
      */
     private boolean addUpdatedInterval(DepInterval<R> i, Datatype<R> interval,
@@ -77,8 +88,11 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
      * add restrictions [POS]INT to intervals
      * 
      * @param pos
+     *        pos
      * @param interval
+     *        interval
      * @param dep
+     *        dep
      * @return true if clash occurs
      */
     public boolean addInterval(boolean pos, Datatype<R> interval, DepSet dep) {
@@ -117,8 +131,8 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
                 d.checkMinMaxClash();
                 this.accDep.add(d.locDep);
                 this.reasoner.reportClash(this.accDep, DT_C_MM);
+                return checkMinMaxClash;
             }
-            return checkMinMaxClash;
         }
         return false;
     }
@@ -130,6 +144,7 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
 
     /**
      * @param other
+     *        other
      * @return true if compatible
      */
     public boolean checkCompatibleValue(DataTypeSituation<?> other) {
@@ -142,6 +157,12 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
             return false;
         }
         if (this.emptyConstraints() && other.emptyConstraints()) {
+            return true;
+        }
+        if (other.literals.isEmpty() && other.emptyConstraints()) {
+            return true;
+        }
+        if (literals.isEmpty() && emptyConstraints()) {
             return true;
         }
         List<Literal<?>> allLiterals = new ArrayList<Literal<?>>(this.literals);
@@ -187,7 +208,12 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         return toReturn;
     }
 
-    /** data interval with dep-sets */
+    /**
+     * data interval with dep-sets
+     * 
+     * @param <R>
+     *        type
+     */
     static class DepInterval<R extends Comparable<R>> implements Serializable {
 
         private static final long serialVersionUID = 11000L;
@@ -204,7 +230,9 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
          * update MIN border of an TYPE's interval with VALUE wrt EXCL
          * 
          * @param value
+         *        value
          * @param dep
+         *        dep
          * @return true if updated
          */
         @SuppressWarnings("rawtypes")
@@ -275,6 +303,7 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
          * check if the interval is consistent wrt given type
          * 
          * @param type
+         *        type
          * @return true if consistent
          */
         private boolean consistent(Datatype<R> type) {
@@ -332,12 +361,16 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
      * set the precense of the PType
      * 
      * @param type
+     *        type
      */
     public void setPType(DepSet type) {
         this.pType = type;
     }
 
-    /** @param t */
+    /**
+     * @param t
+     *        depset for negative type
+     */
     public void setNType(DepSet t) {
         this.nType = t;
     }

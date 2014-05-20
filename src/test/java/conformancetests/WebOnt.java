@@ -7,6 +7,7 @@ package conformancetests;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static org.junit.Assert.*;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -273,17 +274,14 @@ public class WebOnt {
     }
 
     @Test
+    @Ignore("Conclusion does not contain axioms")
     public void testWebOnt_I5_26_010() {
-        String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/I5.26/premises010#\"\n"
-                + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.26/premises010\" >\n"
-                + "   <owl:Ontology/><owl:ObjectProperty rdf:ID=\"p\" /></rdf:RDF>";
-        String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-                + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.26/conclusions010\" >\n"
+        String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/I5.26/premises010#\" xml:base=\"http://www.w3.org/2002/03owlt/I5.26/premises010\" ><owl:Ontology/><owl:ObjectProperty rdf:ID=\"p\" /></rdf:RDF>";
+        String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xml:base=\"http://www.w3.org/2002/03owlt/I5.26/conclusions010\" >\n"
                 + "  <owl:Ontology/>\n"
                 + "  <owl:Restriction rdf:nodeID=\"n\">\n"
                 + "     <owl:onProperty><owl:ObjectProperty rdf:about=\"premises010#p\" /></owl:onProperty>\n"
-                + "     <owl:minCardinality rdf:datatype=\n"
-                + " \"http://www.w3.org/2001/XMLSchema#int\">1</owl:minCardinality></owl:Restriction></rdf:RDF>";
+                + "     <owl:minCardinality rdf:datatype=\"http://www.w3.org/2001/XMLSchema#int\">1</owl:minCardinality></owl:Restriction></rdf:RDF>";
         String id = "WebOnt_I5_26_010";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The abstract syntax form of the conclusions is:\n"
