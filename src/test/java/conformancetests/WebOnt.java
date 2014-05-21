@@ -10,16 +10,20 @@ import static org.junit.Assert.*;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.formats.OWLFunctionalSyntaxOntologyFormat;
+import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
+import org.semanticweb.owlapi.model.OWLObjectMaxCardinality;
 import org.semanticweb.owlapi.model.OWLObjectMinCardinality;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
@@ -3486,18 +3490,20 @@ public class WebOnt {
         m.addAxiom(o, f.getOWLSubClassOfAxiom(U, C));
         m.addAxiom(o, f.getOWLSubClassOfAxiom(U, B));
         m.addAxiom(o, f.getOWLSubClassOfAxiom(C, rAllC));
+        OWLObjectMaxCardinality zeroP = f.getOWLObjectMaxCardinality(0, p);
         m.addAxiom(
                 o,
                 f.getOWLEquivalentClassesAxiom(D,
-                        f.getOWLObjectMaxCardinality(0, p)));
+                        zeroP));
+        OWLObjectMinCardinality oneP = f.getOWLObjectMinCardinality(1, p);
         m.addAxiom(
                 o,
                 f.getOWLEquivalentClassesAxiom(B,
-                        f.getOWLObjectMinCardinality(1, p)));
-        // m.saveOntology(o, new OWLFunctionalSyntaxOntologyFormat(),
-        // new SystemOutDocumentTarget());
+                        oneP));
         OWLReasoner reasoner = Factory.factory().createReasoner(o);
         reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
+        assertFalse("cannot find unsatisfiable class",
+                reasoner.isSatisfiable(U));
         assertTrue("cannot infer disjoint",
                 reasoner.isEntailed(f.getOWLDisjointClassesAxiom(D, B)));
         assertTrue("cannot infer U [= B",

@@ -55,6 +55,7 @@ import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.reasoner.UnsupportedEntailmentTypeException;
 
 import uk.ac.manchester.cs.jfact.kernel.ReasoningKernel;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 
 /** entailment checker */
@@ -87,8 +88,12 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>,
                 || axiom.getSubClass().equals(df.getOWLNothing())) {
             return Boolean.TRUE;
         }
-        return kernel.isSubsumedBy(tr.pointer(axiom.getSubClass()),
-                tr.pointer(axiom.getSuperClass()));
+        ConceptExpression sub = tr.pointer(axiom.getSubClass());
+        if (!kernel.isSatisfiable(sub)) {
+            return true;
+        }
+        ConceptExpression sup = tr.pointer(axiom.getSuperClass());
+        return kernel.isSubsumedBy(sub, sup);
     }
 
     @Override
