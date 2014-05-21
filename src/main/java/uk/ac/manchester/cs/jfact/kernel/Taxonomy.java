@@ -83,6 +83,7 @@ public class Taxonomy implements Serializable {
         // this is the helper to the case like getDomain():
         // if there is a named concept that represent's a domain -- that's what
         // we need
+        try {
         if (needCurrent) {
             if (!actor.apply(node)) {
                 return false;
@@ -118,8 +119,10 @@ public class Taxonomy implements Serializable {
                 }
             }
         }
-        clearVisited();
         return true;
+        } finally {
+            clearVisited();
+        }
     }
 
     /**
