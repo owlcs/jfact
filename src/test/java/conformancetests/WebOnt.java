@@ -10,8 +10,6 @@ import static org.junit.Assert.*;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.formats.OWLFunctionalSyntaxOntologyFormat;
-import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -23,7 +21,6 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
@@ -3491,15 +3488,9 @@ public class WebOnt {
         m.addAxiom(o, f.getOWLSubClassOfAxiom(U, B));
         m.addAxiom(o, f.getOWLSubClassOfAxiom(C, rAllC));
         OWLObjectMaxCardinality zeroP = f.getOWLObjectMaxCardinality(0, p);
-        m.addAxiom(
-                o,
-                f.getOWLEquivalentClassesAxiom(D,
-                        zeroP));
+        m.addAxiom(o, f.getOWLEquivalentClassesAxiom(D, zeroP));
         OWLObjectMinCardinality oneP = f.getOWLObjectMinCardinality(1, p);
-        m.addAxiom(
-                o,
-                f.getOWLEquivalentClassesAxiom(B,
-                        oneP));
+        m.addAxiom(o, f.getOWLEquivalentClassesAxiom(B, oneP));
         OWLReasoner reasoner = Factory.factory().createReasoner(o);
         reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
         assertFalse("cannot find unsatisfiable class",

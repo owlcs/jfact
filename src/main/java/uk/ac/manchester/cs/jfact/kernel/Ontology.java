@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.split.TSignature;
 import uk.ac.manchester.cs.jfact.split.TSplitVars;
@@ -81,6 +83,7 @@ public class Ontology implements Serializable {
      * @return p
      */
     @PortedFrom(file = "tOntology.h", name = "add")
+    @Nonnull
     public AxiomInterface add(AxiomInterface p) {
         p.setId(++axiomId);
         axioms.add(p);

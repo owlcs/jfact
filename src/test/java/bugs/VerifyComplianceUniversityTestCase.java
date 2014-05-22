@@ -2,6 +2,8 @@ package bugs;
 
 import static org.junit.Assert.assertTrue;
 
+import javax.annotation.Nonnull;
+
 import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -123,40 +125,42 @@ public class VerifyComplianceUniversityTestCase extends VerifyComplianceBase {
         return loadFromString(input);
     }
 
+    @Nonnull
     protected String input() {
         return "/AF_university.owl.xml";
     }
 
-    private OWLClass assistantProfessor = C("urn:university#AssistantProfessor");
-    private OWLClass aiStudent = C("urn:university#AIStudent");
-    private OWLClass aiDept = C("urn:university#AI_Dept");
-    private OWLClass CS_Department = C("urn:university#CS_Department");
-    private OWLClass HCIStudent = C("urn:university#HCIStudent");
-    private OWLClass CS_StudentTakingCourses = C("urn:university#CS_StudentTakingCourses");
-    private OWLClass LecturerTaking4Courses = C("urn:university#LecturerTaking4Courses");
-    private OWLClass Lecturer = C("urn:university#Lecturer");
-    private OWLClass CS_Course = C("urn:university#CS_Course");
-    private OWLClass Professor = C("urn:university#Professor");
-    private OWLClass ProfessorInHCIorAI = C("urn:university#ProfessorInHCIorAI");
-    private OWLClass UniversityPhoneBook = C("urn:university#UniversityPhoneBook");
-    private OWLClass ResearchArea = C("urn:university#ResearchArea");
-    private OWLClass TeachingFaculty = C("urn:university#TeachingFaculty");
-    private OWLClass Department = C("urn:university#Department");
-    private OWLClass Person = C("urn:university#Person");
-    private OWLClass CS_Student = C("urn:university#CS_Student");
-    private OWLClass Student = C("urn:university#Student");
-    private OWLClass PhoneBook = C("urn:university#PhoneBook");
-    private OWLClass EE_Course = C("urn:university#EE_Course");
-    private OWLClass Faculty = C("urn:university#Faculty");
-    private OWLClass CS_Library = C("urn:university#CS_Library");
-    private OWLClass EE_Department = C("urn:university#EE_Department");
-    private OWLClass FacultyPhoneBook = C("urn:university#FacultyPhoneBook");
-    private OWLClass Schedule = C("urn:university#Schedule");
-    private OWLClass Library = C("urn:university#Library");
-    private OWLClass Course = C("urn:university#Course");
-    private OWLClass EE_Library = C("urn:university#EE_Library");
-    private OWLDataProperty hasTenure = df.getOWLDataProperty(IRI
-            .create("urn:university#hasTenure"));
+//@formatter:off
+  @Nonnull  private OWLClass assistantProfessor = C("urn:university#AssistantProfessor");
+  @Nonnull  private OWLClass aiStudent = C("urn:university#AIStudent");
+  @Nonnull  private OWLClass aiDept = C("urn:university#AI_Dept");
+  @Nonnull  private OWLClass CS_Department = C("urn:university#CS_Department");
+  @Nonnull  private OWLClass HCIStudent = C("urn:university#HCIStudent");
+  @Nonnull  private OWLClass CS_StudentTakingCourses = C("urn:university#CS_StudentTakingCourses");
+  @Nonnull  private OWLClass LecturerTaking4Courses = C("urn:university#LecturerTaking4Courses");
+  @Nonnull  private OWLClass Lecturer = C("urn:university#Lecturer");
+  @Nonnull  private OWLClass CS_Course = C("urn:university#CS_Course");
+  @Nonnull  private OWLClass Professor = C("urn:university#Professor");
+  @Nonnull  private OWLClass ProfessorInHCIorAI = C("urn:university#ProfessorInHCIorAI");
+  @Nonnull  private OWLClass UniversityPhoneBook = C("urn:university#UniversityPhoneBook");
+  @Nonnull  private OWLClass ResearchArea = C("urn:university#ResearchArea");
+  @Nonnull  private OWLClass TeachingFaculty = C("urn:university#TeachingFaculty");
+  @Nonnull  private OWLClass Department = C("urn:university#Department");
+  @Nonnull  private OWLClass Person = C("urn:university#Person");
+  @Nonnull  private OWLClass CS_Student = C("urn:university#CS_Student");
+  @Nonnull  private OWLClass Student = C("urn:university#Student");
+  @Nonnull  private OWLClass PhoneBook = C("urn:university#PhoneBook");
+  @Nonnull  private OWLClass EE_Course = C("urn:university#EE_Course");
+  @Nonnull  private OWLClass Faculty = C("urn:university#Faculty");
+  @Nonnull  private OWLClass CS_Library = C("urn:university#CS_Library");
+  @Nonnull  private OWLClass EE_Department = C("urn:university#EE_Department");
+  @Nonnull  private OWLClass FacultyPhoneBook = C("urn:university#FacultyPhoneBook");
+  @Nonnull  private OWLClass Schedule = C("urn:university#Schedule");
+  @Nonnull  private OWLClass Library = C("urn:university#Library");
+  @Nonnull  private OWLClass Course = C("urn:university#Course");
+  @Nonnull  private OWLClass EE_Library = C("urn:university#EE_Library");
+  @Nonnull  private OWLDataProperty hasTenure = df.getOWLDataProperty(IRI.create("urn:university#hasTenure"));
+//@formatter:on
 
     @Test
     public void shouldPassgetBottomClass() {

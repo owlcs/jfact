@@ -735,6 +735,7 @@ public class Role extends ClassifiableEntry {
     }
 
     @Original
+    @SuppressWarnings("incomplete-switch")
     private static Role resolveRoleHelper(DLTree t, String r) {
         if (t == null) {
             throw new ReasonerInternalException("Role expression expected: "

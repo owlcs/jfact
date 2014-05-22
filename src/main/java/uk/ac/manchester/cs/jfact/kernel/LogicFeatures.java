@@ -216,6 +216,7 @@ public class LogicFeatures implements Serializable {
      *        pos
      */
     @PortedFrom(file = "LogicFeature.h", name = "fillDAGData")
+    @SuppressWarnings("incomplete-switch")
     public void fillDAGData(DLVertex v, boolean pos) {
         switch (v.getType()) {
             case dtForall:

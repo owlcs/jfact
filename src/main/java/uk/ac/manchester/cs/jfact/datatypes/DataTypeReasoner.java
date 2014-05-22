@@ -120,6 +120,7 @@ public final class DataTypeReasoner implements Serializable {
      * @return false if datatype, true otherwise
      */
     @PortedFrom(file = "DataReasoning.h", name = "addDataEntry")
+    @SuppressWarnings("incomplete-switch")
     public boolean addDataEntry(boolean positive, DagTag type,
             NamedEntry entry, DepSet dep) {
         switch (type) {

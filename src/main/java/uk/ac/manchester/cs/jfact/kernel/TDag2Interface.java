@@ -42,6 +42,7 @@ public class TDag2Interface implements Serializable {
      * @return build concept expression by a vertex V
      */
     @PortedFrom(file = "tDag2Interface.h", name = "buildCExpr")
+    @SuppressWarnings("incomplete-switch")
     public ConceptExpression buildCExpr(DLVertex v) {
         switch (v.getType()) {
             case dtTop:
@@ -100,6 +101,7 @@ public class TDag2Interface implements Serializable {
      * @return build data expression by a vertex V
      */
     @PortedFrom(file = "tDag2Interface.h", name = "buildDExpr")
+    @SuppressWarnings("incomplete-switch")
     public DataExpression buildDExpr(DLVertex v) {
         switch (v.getType()) {
             case dtTop:

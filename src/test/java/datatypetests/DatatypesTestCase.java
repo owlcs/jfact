@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -51,11 +52,13 @@ public class DatatypesTestCase {
     private static final String oct82007 = "2007-10-08";
     private static final String T20 = "T20:44:11.656+01:00";
 
-    private DatatypeEntry datatype(Datatype<?> d, int index) {
+    @Nonnull
+    private static DatatypeEntry datatype(Datatype<?> d, int index) {
         return new DatatypeEntry(d).withIndex(index);
     }
 
-    private LiteralEntry literal(Datatype<?> d, String name, int index) {
+    @Nonnull
+    private static LiteralEntry literal(Datatype<?> d, String name, int index) {
         return new LiteralEntry(name).withLiteral(d.buildLiteral(name))
                 .withIndex(index);
     }

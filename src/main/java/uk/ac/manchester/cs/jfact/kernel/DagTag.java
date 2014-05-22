@@ -7,6 +7,8 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.EnumSet;
 
+import javax.annotation.Nonnull;
+
 /** different Concept Expression tags */
 public enum DagTag {
     /** illegal entry */
@@ -68,13 +70,15 @@ public enum DagTag {
         return false;
     }
 
+    @Nonnull
     private final String name;
 
-    private DagTag(String s) {
+    private DagTag(@Nonnull String s) {
         name = s;
     }
 
     /** @return name */
+    @Nonnull
     public String getName() {
         return name;
     }

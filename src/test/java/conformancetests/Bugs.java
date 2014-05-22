@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import javax.annotation.Nonnull;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -29,26 +31,39 @@ public class Bugs {
     private OWLDataFactory df = OWLManager.getOWLDataFactory();
     private OWLOntology o1;
     private OWLOntology o2;
+    @Nonnull
     private OWLObjectProperty topObject = df.getOWLTopObjectProperty();
+    @Nonnull
     private OWLClass composition = df.getOWLClass(IRI
             .create("urn:mereology#Composition"));
+    @Nonnull
     private OWLClass abstractEntity = df.getOWLClass(IRI
             .create("urn:mereology#Abstract_Entity"));
+    @Nonnull
     private OWLClass whole = df.getOWLClass(IRI.create("urn:mereology#Whole"));
+    @Nonnull
     private OWLClass pair = df.getOWLClass(IRI.create("urn:mereology#Pair"));
+    @Nonnull
     private OWLClass part = df.getOWLClass(IRI.create("urn:mereology#Part"));
+    @Nonnull
     private OWLClass serviceModel = df.getOWLClass(IRI
             .create("urn:Service#ServiceModel"));
+    @Nonnull
     private OWLClass compositeProcess = df.getOWLClass(IRI
             .create("urn:Process#CompositeProcess"));
+    @Nonnull
     private OWLObjectProperty composedOf = df.getOWLObjectProperty(IRI
             .create("urn:Process#composedOf"));
+    @Nonnull
     private OWLClass simpleProcess = df.getOWLClass(IRI
             .create("urn:Process#SimpleProcess"));
+    @Nonnull
     private OWLClass atomicProcess = df.getOWLClass(IRI
             .create("urn:Process#AtomicProcess"));
+    @Nonnull
     private OWLClass process = df
             .getOWLClass(IRI.create("urn:Process#Process"));
+    @Nonnull
     private String input1 = "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
             + "Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\n"
             + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
@@ -94,6 +109,7 @@ public class Bugs {
             + "SubClassOf(<urn:Process#SimpleProcess> <urn:Process#Process>)\n"
             + "ObjectPropertyDomain(<urn:Process#composedOf> <urn:Process#CompositeProcess>))";
 
+    @SuppressWarnings("null")
     @Before
     public void setUp() throws OWLOntologyCreationException {
         o1 = OWLManager.createOWLOntologyManager()
@@ -108,8 +124,8 @@ public class Bugs {
         jfact2.precomputeInferences(InferenceType.CLASS_HIERARCHY);
     }
 
-    @SuppressWarnings("rawtypes")
-    private void equal(NodeSet<?> node, Object... objects) {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    private static void equal(NodeSet<?> node, Object... objects) {
         assertEquals(new HashSet(Arrays.asList(objects)), node.getFlattened());
     }
 

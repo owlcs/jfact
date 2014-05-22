@@ -83,6 +83,7 @@ public class ToDoPriorMatrix implements Serializable {
      * @return index
      */
     @PortedFrom(file = "PriorityMatrix.h", name = "getIndex")
+    @SuppressWarnings("incomplete-switch")
     public int getIndex(DagTag Op, boolean Sign, boolean NominalNode) {
         switch (Op) {
             case dtAnd:

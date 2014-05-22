@@ -1331,6 +1331,7 @@ public class TBox implements Serializable {
      * @return index of new element
      */
     @PortedFrom(file = "dlTBox.h", name = "tree2dag")
+    @SuppressWarnings("incomplete-switch")
     public int tree2dag(DLTree t) {
         if (t == null) {
             return bpINVALID;
@@ -1522,6 +1523,7 @@ public class TBox implements Serializable {
      * @return number of elements
      */
     @PortedFrom(file = "dlTBox.h", name = "fillArrays")
+    @SuppressWarnings("incomplete-switch")
     public <T extends Concept> int fillArrays(List<T> begin) {
         int n = 0;
         for (T p : begin) {
@@ -2274,6 +2276,7 @@ public class TBox implements Serializable {
      *        p
      */
     @PortedFrom(file = "dlTBox.h", name = "dumpExpression")
+    @SuppressWarnings("incomplete-switch")
     public void dumpExpression(DumpInterface dump, int p) {
         assert isValid(p);
         if (p == bpTOP) {
@@ -3311,6 +3314,7 @@ public class TBox implements Serializable {
      *        _p
      */
     @PortedFrom(file = "dlTBox.h", name = "setRelevant")
+    @SuppressWarnings("incomplete-switch")
     private void setRelevant(int _p) {
         FastSet done = FastSetFactory.create();
         LinkedList<Integer> queue = new LinkedList<Integer>();

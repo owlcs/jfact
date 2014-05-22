@@ -12,6 +12,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.reasoner.FreshEntityPolicy;
 import org.semanticweb.owlapi.reasoner.IndividualNodeSetPolicy;
 import org.semanticweb.owlapi.reasoner.NullReasonerProgressMonitor;
@@ -471,8 +473,10 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
     /** The progress monitor. */
     private ReasonerProgressMonitor progressMonitor = new NullReasonerProgressMonitor();
     /** The fresh entity policy. */
+    @Nonnull
     private FreshEntityPolicy freshEntityPolicy = FreshEntityPolicy.ALLOW;
     /** The individual node set policy. */
+    @Nonnull
     private IndividualNodeSetPolicy individualNodeSetPolicy = IndividualNodeSetPolicy.BY_NAME;
     /** The time out. */
     private long timeOut = Long.MAX_VALUE;
@@ -541,43 +545,21 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
         verboseOutput = source.verboseOutput;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration#getFreshEntityPolicy
-     * ()
-     */
     @Override
     public FreshEntityPolicy getFreshEntityPolicy() {
         return freshEntityPolicy;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration#
-     * getIndividualNodeSetPolicy()
-     */
     @Override
     public IndividualNodeSetPolicy getIndividualNodeSetPolicy() {
         return individualNodeSetPolicy;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration#getProgressMonitor
-     * ()
-     */
     @Override
     public ReasonerProgressMonitor getProgressMonitor() {
         return progressMonitor;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration#getTimeOut()
-     */
     @Override
     public long getTimeOut() {
         return timeOut;
@@ -1052,32 +1034,18 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
             out = o;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see
-         * uk.ac.manchester.cs.jfact.helpers.LogAdapter#printTemplate(uk.ac.
-         * manchester.cs.jfact.helpers.Templates, java.lang.Object[])
-         */
         @Override
         public LogAdapter printTemplate(Templates t, Object... strings) {
             this.print(String.format(t.getTemplate(), strings));
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(int)
-         */
         @Override
         public LogAdapter print(int i) {
             this.print(Integer.toString(i));
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(double)
-         */
         @Override
         public LogAdapter print(double i) {
             try {
@@ -1088,10 +1056,6 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(float)
-         */
         @Override
         public LogAdapter print(float i) {
             try {
@@ -1102,10 +1066,6 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(boolean)
-         */
         @Override
         public LogAdapter print(boolean i) {
             try {
@@ -1116,41 +1076,24 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(byte)
-         */
         @Override
         public LogAdapter print(byte i) {
             this.print(Byte.toString(i));
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(char)
-         */
         @Override
         public LogAdapter print(char i) {
             this.print(Character.toString(i));
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(short)
-         */
         @Override
         public LogAdapter print(short i) {
             this.print(Short.toString(i));
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see
-         * uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(java.lang.String)
-         */
         @Override
         public LogAdapter print(String i) {
             try {
@@ -1162,33 +1105,18 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see uk.ac.manchester.cs.jfact.helpers.LogAdapter#println()
-         */
         @Override
         public LogAdapter println() {
             this.print('\n');
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see
-         * uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(java.lang.Object)
-         */
         @Override
         public LogAdapter print(Object s) {
             this.print(s == null ? "null" : s.toString());
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see
-         * uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(java.lang.Object
-         * [])
-         */
         @Override
         public LogAdapter print(Object... s) {
             for (Object o : s) {
@@ -1197,12 +1125,6 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see
-         * uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(java.lang.Object,
-         * java.lang.Object)
-         */
         @Override
         public LogAdapter print(Object s1, Object s2) {
             this.print(s1.toString());
@@ -1210,12 +1132,6 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see
-         * uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(java.lang.Object,
-         * java.lang.Object, java.lang.Object)
-         */
         @Override
         public LogAdapter print(Object s1, Object s2, Object s3) {
             this.print(s1.toString());
@@ -1224,12 +1140,6 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see
-         * uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(java.lang.Object,
-         * java.lang.Object, java.lang.Object, java.lang.Object)
-         */
         @Override
         public LogAdapter print(Object s1, Object s2, Object s3, Object s4) {
             this.print(s1.toString());
@@ -1239,13 +1149,6 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see
-         * uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(java.lang.Object,
-         * java.lang.Object, java.lang.Object, java.lang.Object,
-         * java.lang.Object)
-         */
         @Override
         public LogAdapter print(Object s1, Object s2, Object s3, Object s4,
                 Object s5) {
@@ -1264,160 +1167,81 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
         /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 11000L;
 
-        /*
-         * (non-Javadoc)
-         * @see
-         * uk.ac.manchester.cs.jfact.helpers.LogAdapter#printTemplate(uk.ac.
-         * manchester.cs.jfact.helpers.Templates, java.lang.Object[])
-         */
         @Override
         public LogAdapter printTemplate(Templates t, Object... strings) {
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(int)
-         */
         @Override
         public LogAdapter print(int i) {
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(double)
-         */
         @Override
         public LogAdapter print(double d) {
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(float)
-         */
         @Override
         public LogAdapter print(float f) {
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(boolean)
-         */
         @Override
         public LogAdapter print(boolean b) {
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(byte)
-         */
         @Override
         public LogAdapter print(byte b) {
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(char)
-         */
         @Override
         public LogAdapter print(char c) {
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(short)
-         */
         @Override
         public LogAdapter print(short s) {
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see
-         * uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(java.lang.String)
-         */
         @Override
         public LogAdapter print(String s) {
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see uk.ac.manchester.cs.jfact.helpers.LogAdapter#println()
-         */
         @Override
         public LogAdapter println() {
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see
-         * uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(java.lang.Object)
-         */
         @Override
         public LogAdapter print(Object s) {
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see
-         * uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(java.lang.Object
-         * [])
-         */
         @Override
         public LogAdapter print(Object... s) {
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see
-         * uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(java.lang.Object,
-         * java.lang.Object)
-         */
         @Override
         public LogAdapter print(Object s1, Object s2) {
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see
-         * uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(java.lang.Object,
-         * java.lang.Object, java.lang.Object)
-         */
         @Override
         public LogAdapter print(Object s1, Object s2, Object s3) {
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see
-         * uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(java.lang.Object,
-         * java.lang.Object, java.lang.Object, java.lang.Object)
-         */
         @Override
         public LogAdapter print(Object s1, Object s2, Object s3, Object s4) {
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see
-         * uk.ac.manchester.cs.jfact.helpers.LogAdapter#print(java.lang.Object,
-         * java.lang.Object, java.lang.Object, java.lang.Object,
-         * java.lang.Object)
-         */
         @Override
         public LogAdapter print(Object s1, Object s2, Object s3, Object s4,
                 Object s5) {

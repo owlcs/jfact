@@ -5,6 +5,8 @@ package uk.ac.manchester.cs.jfact;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static org.semanticweb.owlapi.util.OWLAPIPreconditions.checkNotNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,6 +17,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import javax.annotation.Nonnull;
 
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
@@ -55,6 +59,7 @@ import org.semanticweb.owlapi.reasoner.impl.OWLDataPropertyNode;
 import org.semanticweb.owlapi.reasoner.impl.OWLDataPropertyNodeSet;
 import org.semanticweb.owlapi.reasoner.impl.OWLObjectPropertyNodeSet;
 import org.semanticweb.owlapi.reasoner.knowledgeexploration.OWLKnowledgeExplorerReasoner;
+import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.Version;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
@@ -97,15 +102,22 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     protected final AtomicBoolean interrupted = new AtomicBoolean(false);
     private ReasoningKernel kernel;
     private final ExpressionManager em;
+    @SuppressWarnings("null")
+    @Nonnull
     private static final EnumSet<InferenceType> supportedInferenceTypes = EnumSet
             .of(InferenceType.CLASS_ASSERTIONS, InferenceType.CLASS_HIERARCHY,
                     InferenceType.DATA_PROPERTY_HIERARCHY,
                     InferenceType.OBJECT_PROPERTY_HIERARCHY,
                     InferenceType.SAME_INDIVIDUAL);
+    @Nonnull
     private final OWLOntologyManager manager;
+    @Nonnull
     private final OWLOntology root;
+    @Nonnull
     private final BufferingMode bufferingMode;
+    @Nonnull
     private final List<OWLOntologyChange<?>> rawChanges = new ArrayList<OWLOntologyChange<?>>();
+    @Nonnull
     private final Set<OWLAxiom> reasonerAxioms = new LinkedHashSet<OWLAxiom>();
     @Original
     private final JFactReasonerConfiguration configuration;
@@ -125,8 +137,8 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
      * @param b
      *        b
      */
-    public JFactReasoner(OWLOntology o, OWLReasonerConfiguration c,
-            BufferingMode b) {
+    public JFactReasoner(@Nonnull OWLOntology o,
+            @Nonnull OWLReasonerConfiguration c, @Nonnull BufferingMode b) {
         this(
                 o,
                 c instanceof JFactReasonerConfiguration ? (JFactReasonerConfiguration) c
@@ -141,8 +153,9 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
      * @param bufferingMode
      *        bufferingMode
      */
-    public JFactReasoner(OWLOntology rootOntology,
-            JFactReasonerConfiguration config, BufferingMode bufferingMode) {
+    public JFactReasoner(@Nonnull OWLOntology rootOntology,
+            @Nonnull JFactReasonerConfiguration config,
+            @Nonnull BufferingMode bufferingMode) {
         configuration = config;
         root = rootOntology;
         df = root.getOWLOntologyManager().getOWLDataFactory();
@@ -192,8 +205,10 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
                 for (OWLEquivalentClassesAxiom a : ((OWLEquivalentClassesAxiom) ax)
                         .asPairwiseAxioms()) {
                     List<OWLClassExpression> l = a.getClassExpressionsAsList();
-                    OWLAxiom a1 = df.getOWLSubClassOfAxiom(l.get(0), l.get(1));
-                    OWLAxiom a2 = df.getOWLSubClassOfAxiom(l.get(1), l.get(0));
+                    OWLClassExpression l1 = checkNotNull(l.get(0));
+                    OWLClassExpression l2 = checkNotNull(l.get(1));
+                    OWLAxiom a1 = df.getOWLSubClassOfAxiom(l1, l2);
+                    OWLAxiom a2 = df.getOWLSubClassOfAxiom(l2, l1);
                     if (add) {
                         reasonerAxioms.add(a1);
                         reasonerAxioms.add(a2);
@@ -284,7 +299,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             computeDiff(added, new HashSet<OWLAxiom>());
             return added;
         }
-        return Collections.emptySet();
+        return CollectionFactory.emptySet();
     }
 
     @Override
@@ -294,7 +309,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             computeDiff(new HashSet<OWLAxiom>(), removed);
             return removed;
         }
-        return Collections.emptySet();
+        return CollectionFactory.emptySet();
     }
 
     @Override
@@ -487,7 +502,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     @Override
     public synchronized boolean isEntailed(Set<? extends OWLAxiom> axioms) {
         for (OWLAxiom ax : axioms) {
-            if (!this.isEntailed(ax)) {
+            if (!this.isEntailed(checkNotNull(ax))) {
                 return false;
             }
         }
@@ -510,7 +525,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
      *         result) for a given entailment. Return empty set if the axiom is
      *         not entailed.
      */
-    public synchronized Set<OWLAxiom> getTrace(OWLAxiom axiom) {
+    public synchronized Set<OWLAxiom> getTrace(@Nonnull OWLAxiom axiom) {
         kernel.needTracing();
         if (this.isEntailed(axiom)) {
             return tr.translateTAxiomSet(kernel.getTrace());
@@ -786,7 +801,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         // translationMachinery.toIndividualPointer(ind),
         // translationMachinery.pointer(pe)));
         // TODO:
-        return Collections.emptySet();
+        return CollectionFactory.emptySet();
     }
 
     @Override
@@ -856,9 +871,10 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     private class RootNodeImpl implements RootNode, Serializable {
 
         private static final long serialVersionUID = 11000L;
+        @Nonnull
         private final DlCompletionTree pointer;
 
-        public RootNodeImpl(DlCompletionTree p) {
+        public RootNodeImpl(@Nonnull DlCompletionTree p) {
             pointer = p;
         }
 
@@ -897,7 +913,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         List<RootNode> toReturn = new ArrayList<RootNode>();
         for (DlCompletionTree t : kernel.getNeighbours(
                 (DlCompletionTree) n.getNode(), tr.pointer(property))) {
-            toReturn.add(new RootNodeImpl(t));
+            toReturn.add(new RootNodeImpl(checkNotNull(t)));
         }
         return toReturn;
     }
@@ -908,7 +924,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         List<RootNode> toReturn = new ArrayList<RootNode>();
         for (DlCompletionTree t : kernel.getNeighbours(
                 (DlCompletionTree) n.getNode(), tr.pointer(property))) {
-            toReturn.add(new RootNodeImpl(t));
+            toReturn.add(new RootNodeImpl(checkNotNull(t)));
         }
         return toReturn;
     }

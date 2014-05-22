@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import conformance.PortedFrom;
@@ -67,6 +69,7 @@ public class NAryExpressionImpl<A extends Expression> implements
     }
 
     @Override
+    @Nonnull
     public String toString() {
         return "NAryExpression(" + Base + ')';
     }

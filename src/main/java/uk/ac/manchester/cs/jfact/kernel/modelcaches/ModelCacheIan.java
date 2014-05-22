@@ -232,6 +232,7 @@ public class ModelCacheIan extends ModelCacheInterface {
      *        det
      */
     @PortedFrom(file = "modelCacheIan.h", name = "processConcept")
+    @SuppressWarnings("incomplete-switch")
     public void processConcept(DLVertex cur, boolean pos, boolean det) {
         switch (cur.getType()) {
             case dtTop:
@@ -333,6 +334,7 @@ public class ModelCacheIan extends ModelCacheInterface {
                 return isMergableSingleton(Math.abs(Singleton), Singleton > 0);
             case mctIan:
                 return isMergableIan((ModelCacheIan) p);
+            case mctBadType:
             default:
                 return csUnknown;
         }
@@ -406,6 +408,7 @@ public class ModelCacheIan extends ModelCacheInterface {
      * @return invalid, failed or valid
      */
     @PortedFrom(file = "modelCacheIan.h", name = "merge")
+    @SuppressWarnings("incomplete-switch")
     public ModelCacheState merge(ModelCacheInterface p) {
         assert p != null;
         // check for nominal clash

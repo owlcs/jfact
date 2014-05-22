@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
+import javax.annotation.Nonnull;
+
 import conformance.PortedFrom;
 
 /* This file is part of the JFact DL reasoner
@@ -24,5 +26,6 @@ public interface NameCreator<T, K> {
      * @return new Named Entry
      */
     @PortedFrom(file = "tNameSet.h", name = "makeEntry")
+    @Nonnull
     T makeEntry(K name);
 }

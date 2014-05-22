@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLAnnotationPropertyDomainAxiom;
 import org.semanticweb.owlapi.model.OWLAnnotationPropertyRangeAxiom;
@@ -95,6 +97,7 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>,
         Serializable {
 
     private static final long serialVersionUID = 11000L;
+    @Nonnull
     private final DeclarationVisitorEx v;
     private Ontology o;
     private TranslationMachinery tr;

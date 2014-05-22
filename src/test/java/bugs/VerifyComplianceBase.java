@@ -55,13 +55,13 @@ public abstract class VerifyComplianceBase {
         return onto;
     }
 
-    protected OWLOntology loadFromString(String in)
+    protected OWLOntology loadFromString(@Nonnull String in)
             throws OWLOntologyCreationException {
         return OWLManager.createOWLOntologyManager()
                 .loadOntologyFromOntologyDocument(new StringDocumentSource(in));
     }
 
-    private Set<String> set(Iterable<OWLEntity> i) {
+    private static Set<String> set(Iterable<OWLEntity> i) {
         Set<String> s = new HashSet<String>();
         for (OWLEntity e : i) {
             s.add(e.getIRI().getFragment());
@@ -86,22 +86,22 @@ public abstract class VerifyComplianceBase {
     }
 
     @Nonnull
-    protected OWLClass C(String i) {
+    protected OWLClass C(@Nonnull String i) {
         return df.getOWLClass(IRI.create(i));
     }
 
     @Nonnull
-    protected OWLNamedIndividual I(String i) {
+    protected OWLNamedIndividual I(@Nonnull String i) {
         return df.getOWLNamedIndividual(IRI.create(i));
     }
 
     @Nonnull
-    protected OWLObjectProperty OP(String i) {
+    protected OWLObjectProperty OP(@Nonnull String i) {
         return df.getOWLObjectProperty(IRI.create(i));
     }
 
     @Nonnull
-    protected OWLDataProperty DP(String i) {
+    protected OWLDataProperty DP(@Nonnull String i) {
         return df.getOWLDataProperty(IRI.create(i));
     }
 

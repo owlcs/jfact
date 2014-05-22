@@ -7,6 +7,8 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
@@ -74,6 +76,11 @@ public class ConceptObjectExactCardinality implements
     @PortedFrom(file = "tDLExpression.h", name = "getOR")
     public ObjectRoleExpression getOR() {
         return roleDelegate;
+    }
+    @Override
+    @Nonnull
+    public String toString() {
+        return "Cardinality(" + N + " " + roleDelegate + " " + delegate;
     }
 
     @Override

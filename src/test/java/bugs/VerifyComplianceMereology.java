@@ -2,6 +2,8 @@ package bugs;
 
 import static org.junit.Assert.assertTrue;
 
+import javax.annotation.Nonnull;
+
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -10,6 +12,7 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 @SuppressWarnings("javadoc")
 public class VerifyComplianceMereology extends VerifyComplianceBase {
 
+    @Nonnull
     String input = "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
             + "Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\n"
             + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
@@ -92,16 +95,27 @@ public class VerifyComplianceMereology extends VerifyComplianceBase {
         return "/AF_mereology.owl.xml";
     }
 
+    @Nonnull
     OWLClass Abstract_Entity = C("urn:mereology#Abstract_Entity");
+    @Nonnull
     OWLClass Composition = C("urn:mereology#Composition");
+    @Nonnull
     OWLClass Whole = C("urn:mereology#Whole");
+    @Nonnull
     OWLClass Pair = C("urn:mereology#Pair");
+    @Nonnull
     OWLClass Atom = C("urn:mereology#Atom");
+    @Nonnull
     OWLClass Nothing = C("http://www.w3.org/2002/07/owl#Nothing");
+    @Nonnull
     OWLClass Part = C("urn:mereology#Part");
+    @Nonnull
     OWLClass Physical_Entity = C("urn:mereology#Physical_Entity");
+    @Nonnull
     OWLClass Occurrence = C("urn:mereology#Occurrence");
+    @Nonnull
     OWLClass Mental_Entity = C("urn:mereology#Mental_Entity");
+    @Nonnull
     OWLClass Thing = C("http://www.w3.org/2002/07/owl#Thing");
 
     @Test

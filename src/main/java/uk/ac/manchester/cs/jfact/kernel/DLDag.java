@@ -393,6 +393,7 @@ public class DLDag implements Serializable {
 
     /** clean query */
     @PortedFrom(file = "dlDag.h", name = "removeQuery")
+    @SuppressWarnings("incomplete-switch")
     public void removeQuery() {
         for (int i = size() - 1; i >= finalDagSize; --i) {
             DLVertex v = heap.get(i);
@@ -454,6 +455,7 @@ public class DLDag implements Serializable {
     }
 
     @PortedFrom(file = "dlDag.h", name = "computeVertexStat")
+    @SuppressWarnings("incomplete-switch")
     private void computeVertexStat(DLVertex v, boolean pos, int depth) {
         // in case of cycle: mark concept as such
         if (v.isVisited(pos)) {
@@ -510,6 +512,7 @@ public class DLDag implements Serializable {
     }
 
     @PortedFrom(file = "dlDag.h", name = "updateVertexStat")
+    @SuppressWarnings("incomplete-switch")
     private void updateVertexStat(DLVertex v, boolean pos) {
         int d = 0, s = 1, b = 0, g = 0;
         if (!v.getType().omitStat(pos)) {
@@ -789,6 +792,7 @@ public class DLDag implements Serializable {
      *        v
      */
     @PortedFrom(file = "dlDag.h", name = "mergeSorts")
+    @SuppressWarnings("incomplete-switch")
     private void mergeSorts(DLVertex v) {
         switch (v.getType()) {
             case dtLE: // set R&D for role

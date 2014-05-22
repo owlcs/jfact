@@ -335,6 +335,10 @@ public class Facets implements Serializable {
                 return totalDigits;
             case FRACTION_DIGITS:
                 return fractionDigits;
+                // XXX lang range should actually perform validation on language
+                // tags
+            case LANG_RANGE:
+                return pattern;
             default:
                 throw new OWLRuntimeException("Unsupported facet: " + f);
         }

@@ -310,6 +310,7 @@ public class Axiom implements Serializable {
      * 
      * @return true if absorption is performed
      */
+    @SuppressWarnings("incomplete-switch")
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoBottom")
     public boolean absorbIntoBottom() {
         List<DLTree> Pos = new ArrayList<DLTree>(), Neg = new ArrayList<DLTree>();

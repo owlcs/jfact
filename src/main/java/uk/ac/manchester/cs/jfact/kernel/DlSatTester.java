@@ -2271,6 +2271,7 @@ public class DlSatTester implements Serializable {
     }
 
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBody")
+    @SuppressWarnings("incomplete-switch")
     private boolean commonTacticBody(DLVertex cur) {
         stats.getnTacticCalls().inc();
         switch (cur.getType()) {
@@ -2673,6 +2674,7 @@ public class DlSatTester implements Serializable {
      * @return true if clashing
      */
     @PortedFrom(file = "Reasoner.h", name = "applyUniversalNR")
+    @SuppressWarnings("incomplete-switch")
     private boolean applyUniversalNR(DlCompletionTree Node,
             DlCompletionTreeArc arcSample, DepSet dep_, int flags) {
         // check whether a flag is set

@@ -24,11 +24,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
-
-import com.google.common.collect.Multimap;
 
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
 import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
@@ -62,6 +62,9 @@ import uk.ac.manchester.cs.jfact.split.OntologyBasedModularizer;
 import uk.ac.manchester.cs.jfact.split.TAxiomSplitter;
 import uk.ac.manchester.cs.jfact.split.TOntologyAtom;
 import uk.ac.manchester.cs.jfact.split.TSignature;
+
+import com.google.common.collect.Multimap;
+
 import conformance.Original;
 import conformance.PortedFrom;
 
@@ -778,7 +781,8 @@ public class ReasoningKernel implements Serializable {
     }
 
     @PortedFrom(file = "Kernel.h", name = "checkRoleSubsumption")
-    private boolean checkRoleSubsumption(Role R, Role S) {
+    @Nonnull
+    private Boolean checkRoleSubsumption(Role R, Role S) {
         if (R.isDataRole() != S.isDataRole()) {
             return false;
         }
@@ -930,7 +934,8 @@ public class ReasoningKernel implements Serializable {
      * @return true iff role is inverse-functional
      */
     @PortedFrom(file = "Kernel.h", name = "isInverseFunctional")
-    public boolean isInverseFunctional(ObjectRoleExpression R) {
+    @Nonnull
+    public Boolean isInverseFunctional(ObjectRoleExpression R) {
         // ensure KB is ready to answer the query
         preprocessKB();
         Role r = getRole(R, "Role expression expected in isInverseFunctional()")
@@ -997,7 +1002,8 @@ public class ReasoningKernel implements Serializable {
      * @return true iff role is asymmetric
      */
     @PortedFrom(file = "Kernel.h", name = "isAsymmetric")
-    public boolean isAsymmetric(ObjectRoleExpression R) {
+    @Nonnull
+    public Boolean isAsymmetric(ObjectRoleExpression R) {
         preprocessKB();
         Role r = getRole(R, "Role expression expected in isAsymmetric()");
         if (r.isTop()) {
@@ -1619,6 +1625,7 @@ public class ReasoningKernel implements Serializable {
      * @return the root node
      */
     @PortedFrom(file = "Kernel.h", name = "buildCompletionTree")
+    @Nonnull
     public DlCompletionTree buildCompletionTree(ConceptExpression C) {
         preprocessKB();
         setUpCache(C, csSat);
@@ -1724,6 +1731,7 @@ public class ReasoningKernel implements Serializable {
      * @return blocker of a blocked node NODE or NULL if node is not blocked
      */
     @PortedFrom(file = "Kernel.h", name = "getBlocker")
+    @Nonnull
     public DlCompletionTree getBlocker(DlCompletionTree node) {
         return KE.getBlocker(node);
     }
@@ -2406,7 +2414,8 @@ public class ReasoningKernel implements Serializable {
      * @return true if R is a sub-role of S
      */
     @PortedFrom(file = "Kernel.h", name = "isSubRoles")
-    public boolean isSubRoles(DataRoleExpression R, DataRoleExpression S) {
+    @Nonnull
+    public Boolean isSubRoles(DataRoleExpression R, DataRoleExpression S) {
         preprocessKB();
         if (getExpressionManager().isEmptyRole(R)
                 || getExpressionManager().isUniversalRole(S)) {

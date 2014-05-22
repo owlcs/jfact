@@ -230,6 +230,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     }
 
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "testSub")
+    @SuppressWarnings("incomplete-switch")
     private boolean testSub(Concept p, Concept q) {
         assert p != null;
         assert q != null;

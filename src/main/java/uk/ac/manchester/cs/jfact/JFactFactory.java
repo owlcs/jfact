@@ -7,6 +7,8 @@ package uk.ac.manchester.cs.jfact;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
@@ -33,7 +35,8 @@ public class JFactFactory implements OWLReasonerFactory, Serializable {
         return verify(toReturn);
     }
 
-    private OWLReasoner verify(JFactReasoner toReturn) {
+    @Nonnull
+    private static OWLReasoner verify(JFactReasoner toReturn) {
         OWLOntologyManager m = toReturn.getRootOntology()
                 .getOWLOntologyManager();
         m.addOntologyChangeListener(toReturn);

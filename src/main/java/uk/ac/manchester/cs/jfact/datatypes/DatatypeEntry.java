@@ -5,9 +5,11 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
+import static uk.ac.manchester.cs.jfact.helpers.Helper.bpINVALID;
 
 import java.util.Collection;
+
+import javax.annotation.Nonnull;
 
 import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 import conformance.PortedFrom;
@@ -64,6 +66,7 @@ public class DatatypeEntry extends NamedEntry {
     }
 
     @Override
+    @Nonnull
     public String toString() {
         return '(' + this.getClass().getSimpleName() + ' ' + pName + ' ' + type
                 + ' ' + super.toString() + ')';
@@ -87,6 +90,7 @@ public class DatatypeEntry extends NamedEntry {
      *        index to set
      * @return modified object
      */
+    @Nonnull
     public DatatypeEntry withIndex(int p) {
         setIndex(p);
         return this;

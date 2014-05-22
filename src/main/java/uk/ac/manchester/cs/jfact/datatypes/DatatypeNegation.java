@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
@@ -204,6 +206,7 @@ public class DatatypeNegation<R extends Comparable<R>> implements
     }
 
     @Override
+    @Nonnull
     public String toString() {
         return uri + "{" + host + '}';
     }

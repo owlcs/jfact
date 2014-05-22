@@ -11,8 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Multimap;
+import javax.annotation.Nonnull;
 
 import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
 import uk.ac.manchester.cs.jfact.kernel.Concept;
@@ -32,6 +31,10 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
+
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
+
 import conformance.PortedFrom;
 
 /** knowledge explorer */
@@ -309,6 +312,7 @@ public class KnowledgeExplorer implements Serializable {
      * @return blocker of a blocked node NODE or NULL if node is not blocked
      */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getBlocker")
+    @Nonnull
     public DlCompletionTree getBlocker(DlCompletionTree node) {
         return node.getBlocker();
     }

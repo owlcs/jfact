@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.reasoner.Node;
@@ -36,15 +38,14 @@ abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity>
         this.df = df;
         this.tr = tr;
         E topEntity = this.getTopEntity();
-        if (topEntity != null) {
             this.fillMaps(topEntity, this.getTopEntityPointer());
-        }
         E bottomEntity = this.getBottomEntity();
         if (bottomEntity != null) {
             this.fillMaps(bottomEntity, this.getBottomEntityPointer());
         }
     }
 
+    @Nonnull
     protected T registerNewEntity(E entity) {
         T pointer = this.createPointerForEntity(entity);
         this.fillMaps(entity, pointer);
@@ -55,6 +56,7 @@ abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity>
         return this.dlentity2entity.get(pointer);
     }
 
+    @Nonnull
     public T getPointerFromEntity(E entity) {
         T pointer = this.entity2dlentity.get(entity);
         if (pointer == null) {
@@ -63,6 +65,7 @@ abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity>
         return pointer;
     }
 
+    @Nonnull
     public Node<E> node(Collection<T> pointers) {
         DefaultNode<E> node = this.createDefaultNode();
         for (T pointer : pointers) {
@@ -71,6 +74,7 @@ abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity>
         return node;
     }
 
+    @Nonnull
     public NodeSet<E> nodeSet(Collection<Collection<T>> pointers) {
         DefaultNodeSet<E> nodeSet = this.createDefaultNodeSet();
         for (Collection<T> pointerArray : pointers) {
@@ -79,16 +83,22 @@ abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity>
         return nodeSet;
     }
 
+    @Nonnull
     protected abstract DefaultNode<E> createDefaultNode();
 
+    @Nonnull
     protected abstract DefaultNodeSet<E> createDefaultNodeSet();
 
+    @Nonnull
     protected abstract T getTopEntityPointer();
 
+    @Nonnull
     protected abstract T getBottomEntityPointer();
 
+    @Nonnull
     protected abstract T createPointerForEntity(E entity);
 
+    @Nonnull
     protected abstract E getTopEntity();
 
     protected abstract E getBottomEntity();

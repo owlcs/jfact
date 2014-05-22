@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 import uk.ac.manchester.cs.jfact.kernel.DLDag;
@@ -383,9 +385,10 @@ public class DLVertex extends DLVertexTagDFS {
     }
 
     @Override
+    @SuppressWarnings("incomplete-switch")
+    @Nonnull
     public String toString() {
-        StringBuilder o = new StringBuilder();
-        o.append(op.getName());
+        // StringBuilder o = new StringBuilder();
         switch (op) {
             case dtAnd:
             case dtCollection:
@@ -393,47 +396,43 @@ public class DLVertex extends DLVertexTagDFS {
                 break;
             case dtTop:
             case dtNN:
-                return o.toString();
+                return op.getName();
             case dtDataExpr:
-                o.append(' ');
-                o.append(concept);
-                return o.toString();
+                return op.getName() + ' ' + concept;
             case dtDataValue:
             case dtDataType:
             case dtPConcept:
             case dtNConcept:
             case dtPSingleton:
             case dtNSingleton:
-                o.append(String.format(Templates.DLVERTEXPrint2.getTemplate(),
-                        concept.getName(), op.isNNameTag() ? "=" : "[=",
-                        conceptIndex));
-                return o.toString();
+                return op.getName()
+                        + String.format(Templates.DLVERTEXPrint2.getTemplate(),
+                                concept.getName(),
+                                op.isNNameTag() ? "=" : "[=", conceptIndex);
             case dtLE:
-                o.append(' ').append(n).append(' ').append(role.getName())
-                        .append(' ').append(conceptIndex);
-                return o.toString();
+                return op.getName() + ' ' + n + ' ' + role.getName() + ' '
+                        + conceptIndex;
             case dtForall:
-                o.append(String.format(Templates.DLVERTEXPrint3.getTemplate(),
-                        role.getName(), n, conceptIndex));
-                return o.toString();
+                return op.getName()
+                        + String.format(Templates.DLVERTEXPrint3.getTemplate(),
+                                role.getName(), n, conceptIndex);
             case dtIrr:
-                o.append(' ').append(role.getName());
-                return o.toString();
+                return op.getName() + ' ' + role.getName();
             case dtProj:
-                o.append(String.format(Templates.DLVERTEXPrint4.getTemplate(),
-                        role.getName(), conceptIndex, projRole.getName()));
-                return o.toString();
+                return op.getName()
+                        + String.format(Templates.DLVERTEXPrint4.getTemplate(),
+                                role.getName(), conceptIndex,
+                                projRole.getName());
             case dtChoose:
-                o.append(' ').append(getConceptIndex());
-                return o.toString();
+                return op.getName() + ' ' + getConceptIndex();
             default:
                 throw new ReasonerInternalException(String.format(
                         "Error printing vertex of type %s(%s)", op.getName(),
                         op));
         }
+        StringBuilder o = new StringBuilder(op.getName());
         for (int q : child.sorted()) {
-            o.append(' ');
-            o.append(q);
+            o.append(' ').append(q);
         }
         return o.toString();
     }

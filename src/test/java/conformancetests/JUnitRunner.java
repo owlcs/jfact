@@ -30,7 +30,7 @@ import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({ "javadoc", "null" })
 public class JUnitRunner {
 
     private static final int _10000 = 1000000;
@@ -70,11 +70,12 @@ public class JUnitRunner {
         return c;
     }
 
-    private boolean isConsistent(OWLReasoner reasoner) {
+    private static boolean isConsistent(OWLReasoner reasoner) {
         return reasoner.isConsistent();
     }
 
-    private boolean isEntailed(OWLReasoner reasoner, OWLAxiom conclusion) {
+    private static boolean
+            isEntailed(OWLReasoner reasoner, OWLAxiom conclusion) {
         return reasoner.isEntailed(conclusion);
     }
 
@@ -161,7 +162,7 @@ public class JUnitRunner {
                 (OWLOntologyChangeListener) reasoner);
     }
 
-    private OWLReasoner roundtrip(OWLReasoner r) {
+    private static OWLReasoner roundtrip(OWLReasoner r) {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             ObjectOutputStream stream = new ObjectOutputStream(out);

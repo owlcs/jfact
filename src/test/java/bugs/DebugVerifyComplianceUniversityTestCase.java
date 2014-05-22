@@ -2,6 +2,8 @@ package bugs;
 
 import static org.junit.Assert.assertEquals;
 
+import javax.annotation.Nonnull;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -24,7 +26,8 @@ public class DebugVerifyComplianceUniversityTestCase {
     private JFactReasoner reasoner;
     private OWLDataFactory df = OWLManager.getOWLDataFactory();
 
-    private OWLOntology load() throws OWLOntologyCreationException {
+    @Nonnull
+    private static OWLOntology load() throws OWLOntologyCreationException {
         String input = "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
                 + "Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\n"
                 + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
@@ -44,14 +47,16 @@ public class DebugVerifyComplianceUniversityTestCase {
                         new StringDocumentSource(input));
     }
 
-    private void equal(Object o, boolean object) {
+    private static void equal(Object o, boolean object) {
         assertEquals(object, o);
     }
 
-    private OWLClass C(String i) {
+    @Nonnull
+    private OWLClass C(@Nonnull String i) {
         return df.getOWLClass(IRI.create(i));
     }
 
+    @Nonnull
     private OWLClass Professor = C("urn:uni#Professor");
 
     @Before

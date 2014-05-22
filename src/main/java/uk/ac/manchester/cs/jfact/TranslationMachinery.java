@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
@@ -49,14 +51,23 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 public class TranslationMachinery implements Serializable {
 
     private static final long serialVersionUID = 11000L;
+    @Nonnull
     private final AxiomTranslator axiomTranslator;
+    @Nonnull
     private final ClassExpressionTranslator classExpressionTranslator;
+    @Nonnull
     private final DataRangeTranslator dataRangeTranslator;
+    @Nonnull
     private final ObjectPropertyTranslator objectPropertyTranslator;
+    @Nonnull
     private final DataPropertyTranslator dataPropertyTranslator;
+    @Nonnull
     private final IndividualTranslator individualTranslator;
+    @Nonnull
     private final EntailmentChecker entailmentChecker;
+    @Nonnull
     private final Map<OWLAxiom, AxiomInterface> axiom2PtrMap = new HashMap<OWLAxiom, AxiomInterface>();
+    @Nonnull
     private final Map<AxiomInterface, OWLAxiom> ptr2AxiomMap = new HashMap<AxiomInterface, OWLAxiom>();
     protected final ReasoningKernel kernel;
     protected final ExpressionManager em;
@@ -136,14 +147,17 @@ public class TranslationMachinery implements Serializable {
         }
     }
 
+    @Nonnull
     protected ConceptExpression pointer(OWLClassExpression classExpression) {
         return classExpression.accept(classExpressionTranslator);
     }
 
+    @Nonnull
     protected DataExpression pointer(OWLDataRange dataRange) {
         return dataRange.accept(dataRangeTranslator);
     }
 
+    @Nonnull
     protected ObjectRoleExpression pointer(
             OWLObjectPropertyExpression propertyExpression) {
         OWLObjectPropertyExpression simp = propertyExpression.getSimplified();
@@ -157,12 +171,14 @@ public class TranslationMachinery implements Serializable {
         }
     }
 
+    @Nonnull
     protected DataRoleExpression pointer(
             OWLDataPropertyExpression propertyExpression) {
         return dataPropertyTranslator.getPointerFromEntity(propertyExpression
                 .asOWLDataProperty());
     }
 
+    @Nonnull
     protected synchronized IndividualName pointer(OWLIndividual individual) {
         if (!individual.isAnonymous()) {
             return individualTranslator.getPointerFromEntity(individual
@@ -172,6 +188,7 @@ public class TranslationMachinery implements Serializable {
         }
     }
 
+    @Nonnull
     protected synchronized Datatype<?> pointer(OWLDatatype datatype) {
         if (datatype == null) {
             throw new IllegalArgumentException("datatype cannot be null");
@@ -179,6 +196,7 @@ public class TranslationMachinery implements Serializable {
         return datatypefactory.getKnownDatatype(datatype.getIRI());
     }
 
+    @Nonnull
     protected synchronized Literal<?> pointer(OWLLiteral literal) {
         String value = literal.getLiteral();
         if (literal.isRDFPlainLiteral()) {
@@ -189,6 +207,7 @@ public class TranslationMachinery implements Serializable {
         return knownDatatype.buildLiteral(value);
     }
 
+    @Nonnull
     protected NodeSet<OWLNamedIndividual> translateNodeSet(
             Iterable<IndividualExpression> pointers) {
         OWLNamedIndividualNodeSet ns = new OWLNamedIndividualNodeSet();
@@ -245,6 +264,7 @@ public class TranslationMachinery implements Serializable {
     }
 
     /** @return entailemnt checker */
+    @Nonnull
     public EntailmentChecker getEntailmentChecker() {
         return entailmentChecker;
     }

@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.jfact.helpers.Helper;
@@ -248,6 +250,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     }
 
     @Override
+    @Nonnull
     public String toString() {
         return this.uri.toString() + this.literals;
     }

@@ -365,6 +365,7 @@ public class Concept extends ClassifiableEntry {
     }
 
     @PortedFrom(file = "tConcept.h", name = "determineClassTag")
+    @SuppressWarnings("incomplete-switch")
     private CTTag determineClassTag() {
         if (isSynonym()) {
             return resolveSynonym(this).getClassTag();

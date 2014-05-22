@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.ArrayIntMap;
 import uk.ac.manchester.cs.jfact.helpers.DLVertex;
@@ -119,6 +121,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
     /** concept that init the newly created node */
     private int init;
     /** blocker of a node */
+    @Nonnull
     protected DlCompletionTree blocker;
     /** dep-set for Purge op */
     protected DepSet pDep = DepSet.create();
@@ -497,6 +500,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
     }
 
     /** @return blocker */
+    @Nonnull
     public DlCompletionTree getBlocker() {
         return blocker;
     }
