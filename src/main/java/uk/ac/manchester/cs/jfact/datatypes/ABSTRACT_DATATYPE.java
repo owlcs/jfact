@@ -118,7 +118,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
     @Override
     @Nonnull
     public String toString() {
-        return getDatatypeIRI().getFragment();
+        return getDatatypeIRI().getShortForm();
     }
 
     @Override

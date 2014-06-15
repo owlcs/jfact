@@ -1,6 +1,5 @@
 package bugs;
 
-
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
@@ -64,7 +63,7 @@ public abstract class VerifyComplianceBase {
     private static Set<String> set(Iterable<OWLEntity> i) {
         Set<String> s = new HashSet<String>();
         for (OWLEntity e : i) {
-            s.add(e.getIRI().getFragment());
+            s.add(e.getIRI().getShortForm());
         }
         return s;
     }
