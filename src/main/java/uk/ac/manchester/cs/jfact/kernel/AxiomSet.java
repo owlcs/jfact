@@ -24,13 +24,15 @@ public class AxiomSet implements Serializable {
     /** host TBox that holds all concepts/etc */
     @PortedFrom(file = "tAxiomSet.h", name = "Host")
     protected final TBox tboxHost;
-    /** set of axioms that accumilates incoming (and newly created) axioms; Tg */
+    /** set of axioms that accumilates incoming (and newly created) axioms */
     @PortedFrom(file = "tAxiomSet.h", name = "Accum")
     private List<Axiom> accumulator = new ArrayList<Axiom>();
     private final LogAdapter absorptionLog;
     /** set of absorption action, in order */
     @PortedFrom(file = "tAxiomSet.h", name = "ActionVector")
     private final List<AbsorptionActions> actions = new ArrayList<AbsorptionActions>();
+    @PortedFrom(file = "tAxiomSet.h", name = "curAxiom")
+    private int curAxiom = 0;
 
     /**
      * add already built GCI p
@@ -45,20 +47,27 @@ public class AxiomSet implements Serializable {
         accumulator.add(p);
     }
 
-    /**
-     * insert GCI if new;
-     * 
-     * @param q
-     *        q
-     * @return true iff already exists
-     */
-    @PortedFrom(file = "tAxiomSet.h", name = "insertIfNew")
-    private boolean insertIfNew(Axiom q) {
-        if (!accumulator.contains(q)) {
-            insertGCI(q);
-            return false;
+    /** @return true iff axiom Q is a copy of an axiom in range [p,p_end) */
+    @PortedFrom(file = "tAxiomSet.h", name = "copyOf")
+    boolean copyOf(Axiom q, int start, int end, List<Axiom> p) {
+        for (int i = start; i <= end; i++) {
+            if (q == p.get(i)) {
+                return true;
+            }
         }
-        return true;
+        return false;
+    }
+
+    /** @return true iff axiom Q is a copy of already processed axiom */
+    @PortedFrom(file = "tAxiomSet.h", name = "copyOfProcessed")
+    boolean copyOfProcessed(Axiom q) {
+        return copyOf(q, 0, curAxiom, accumulator);
+    }
+
+    /** @return true iff axiom Q is a copy of newly introduced axiom */
+    @PortedFrom(file = "tAxiomSet.h", name = "copyOfNew")
+    boolean copyOfNew(Axiom q) {
+        return copyOf(q, curAxiom, accumulator.size() + 1, accumulator);
     }
 
     /**
@@ -73,9 +82,18 @@ public class AxiomSet implements Serializable {
         if (q == null) {
             return false;
         }
-        if (insertIfNew(q)) {
+        // if an axiom is a copy of already processed one -- fail to add (will
+        // result in a cycle)
+        if (copyOfProcessed(q)) {
             return false;
         }
+        // if an axiom is a copy of a new one -- succeed but didn't really add
+        // anything
+        if (copyOfNew(q)) {
+            return true;
+        }
+        // fresh axiom -- add it
+        insertGCI(q);
         return true;
     }
 
@@ -145,14 +163,24 @@ public class AxiomSet implements Serializable {
             // nothing to split
             return false;
         }
-        for (Axiom q : splitted) {
-            if (accumulator.contains(q)) {
+        List<Axiom> kept = new ArrayList<Axiom>();
+        boolean fail = false;
+        for (int i = 0; i < splitted.size(); i++) {
+            Axiom q = splitted.get(i);
+            if (copyOfProcessed(q)) {
+                // accumulator.contains(q)) {
                 // there is already such an axiom in process; delete it
+                fail = true;
                 return false;
             }
+            // axiom is not a copy of a new one: keep it
+            if (!copyOfNew(q)) {
+                kept.add(q);
+            }
         }
+        // no failure: delete all the unneded axioms, add all kept ones
         // do the actual insertion if necessary
-        for (Axiom q : splitted) {
+        for (Axiom q : kept) {
             insertGCI(q);
         }
         return true;
@@ -165,10 +193,10 @@ public class AxiomSet implements Serializable {
         List<Axiom> GCIs = new ArrayList<Axiom>();
         // we will change Accum (via split rule), so indexing and compare with
         // size
-        for (int i = 0; i < accumulator.size(); i++) {
-            Axiom ax = accumulator.get(i);
+        for (curAxiom = 0; curAxiom < accumulator.size(); curAxiom++) {
+            Axiom ax = accumulator.get(curAxiom);
             tboxHost.getOptions().getAbsorptionLog().print("\nProcessing (")
-                    .print(i).print("):");
+                    .print(curAxiom).print("):");
             if (!absorbGCI(ax)) {
                 GCIs.add(ax);
             }
