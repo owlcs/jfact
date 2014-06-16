@@ -461,6 +461,34 @@ public class Concept extends ClassifiableEntry {
         return t;
     }
 
+    @PortedFrom(file = "tConcept.h", name = "hasSelfInDesc")
+    private boolean hasSelfInDesc(DLTree t) {
+        if (t == null) {
+            return false;
+        }
+        Token token = t.token();
+        // the three ifs are actually exclusive
+        if (replacements.contains(token)) {
+            return resolveSynonym((ClassifiableEntry) t.elem().getNE()).equals(
+                    this);
+        }
+        if (token == AND) {
+            List<DLTree> l = new ArrayList<DLTree>();
+            for (DLTree d : t.getChildren()) {
+                if (hasSelfInDesc(d)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        if (token == NOT
+                && (t.getChild().isAND() || replacements.contains(t.getChild()
+                        .token()))) {
+            return hasSelfInDesc(t.getChild());
+        }
+        return false;
+    }
+
     /**
      * init told subsumers of the concept by given DESCription;
      * 
@@ -573,6 +601,14 @@ public class Concept extends ClassifiableEntry {
         setPrimitive(true);
         pBody = bpINVALID;
         pName = bpINVALID;
+    }
+
+    /**
+     * @return true iff description contains top-level references to THIS concept
+     */
+    @PortedFrom(file = "tConcept.h", name = "hasSelfInDesc")
+    boolean hasSelfInDesc() {
+        return hasSelfInDesc(description);
     }
 
     /** @return p name */
