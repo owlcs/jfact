@@ -27,14 +27,19 @@ import conformance.PortedFrom;
 public class Axiom implements Serializable {
 
     private static final long serialVersionUID = 11000L;
-    private final LogAdapter absorptionLog;
+    private static LogAdapter absorptionLog;
+    private Axiom origin;
 
     /**
      * @param l
      *        absorption log
      */
-    public Axiom(LogAdapter l) {
+    public static void setLogAdapter(LogAdapter l) {
         absorptionLog = l;
+    }
+
+    public Axiom(Axiom parent) {
+        origin = parent;
     }
 
     // NS for different DLTree matchers for trees in axiom
@@ -106,13 +111,27 @@ public class Axiom implements Serializable {
      */
     @PortedFrom(file = "tAxiom.h", name = "copy")
     private Axiom copy(DLTree skip) {
-        Axiom ret = new Axiom(absorptionLog);
+        Axiom ret = new Axiom(this);
         for (DLTree i : disjuncts) {
             if (!i.equals(skip)) {
                 ret.disjuncts.add(i.copy());
             }
         }
         return ret;
+    }
+
+    /** @return true iff an axiom is the same as one of its ancestors */
+    @PortedFrom(file = "tAxiom.h", name = "isCyclic")
+    boolean isCyclic() {
+        Axiom p = origin;
+        while (p != null) {
+            if (p == this) {
+                absorptionLog.print(" same as ancestor");
+                return true;
+            }
+            p = p.origin;
+        }
+        return false;
     }
 
     /**

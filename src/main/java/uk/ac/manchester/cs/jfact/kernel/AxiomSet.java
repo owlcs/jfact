@@ -49,25 +49,14 @@ public class AxiomSet implements Serializable {
 
     /** @return true iff axiom Q is a copy of an axiom in range [p,p_end) */
     @PortedFrom(file = "tAxiomSet.h", name = "copyOf")
-    boolean copyOf(Axiom q, int start, int end, List<Axiom> p) {
-        for (int i = start; i <= end; i++) {
-            if (q == p.get(i)) {
+    boolean copyOfExisting(Axiom q) {
+        for (int i = 0; i < accumulator.size(); i++) {
+            if (q == accumulator.get(i)) {
+                absorptionLog.print(" same as (").print(i).print(")");
                 return true;
             }
         }
         return false;
-    }
-
-    /** @return true iff axiom Q is a copy of already processed axiom */
-    @PortedFrom(file = "tAxiomSet.h", name = "copyOfProcessed")
-    boolean copyOfProcessed(Axiom q) {
-        return copyOf(q, 0, curAxiom, accumulator);
-    }
-
-    /** @return true iff axiom Q is a copy of newly introduced axiom */
-    @PortedFrom(file = "tAxiomSet.h", name = "copyOfNew")
-    boolean copyOfNew(Axiom q) {
-        return copyOf(q, curAxiom, accumulator.size() + 1, accumulator);
     }
 
     /**
@@ -84,12 +73,12 @@ public class AxiomSet implements Serializable {
         }
         // if an axiom is a copy of already processed one -- fail to add (will
         // result in a cycle)
-        if (copyOfProcessed(q)) {
+        if (q.isCyclic()) {
             return false;
         }
         // if an axiom is a copy of a new one -- succeed but didn't really add
         // anything
-        if (copyOfNew(q)) {
+        if (copyOfExisting(q)) {
             return true;
         }
         // fresh axiom -- add it
@@ -104,6 +93,7 @@ public class AxiomSet implements Serializable {
     public AxiomSet(TBox host) {
         tboxHost = host;
         absorptionLog = tboxHost.getOptions().getAbsorptionLog();
+        Axiom.setLogAdapter(absorptionLog);
     }
 
     /**
@@ -117,7 +107,7 @@ public class AxiomSet implements Serializable {
     @PortedFrom(file = "tAxiomSet.h", name = "addAxiom")
     public void addAxiom(DLTree C, DLTree D) {
         SAbsInput();
-        Axiom p = new Axiom(absorptionLog);
+        Axiom p = new Axiom(null);
         p.add(C);
         p.add(DLTreeFactory.createSNFNot(D));
         insertGCI(p);
@@ -164,17 +154,14 @@ public class AxiomSet implements Serializable {
             return false;
         }
         List<Axiom> kept = new ArrayList<Axiom>();
-        boolean fail = false;
         for (int i = 0; i < splitted.size(); i++) {
             Axiom q = splitted.get(i);
-            if (copyOfProcessed(q)) {
-                // accumulator.contains(q)) {
+            if (q.isCyclic()) {
                 // there is already such an axiom in process; delete it
-                fail = true;
                 return false;
             }
             // axiom is not a copy of a new one: keep it
-            if (!copyOfNew(q)) {
+            if (!copyOfExisting(q)) {
                 kept.add(q);
             }
         }
