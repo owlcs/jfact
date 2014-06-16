@@ -2442,15 +2442,27 @@ public class TBox implements Serializable {
         if (DLTreeFactory.isSubTree(E, C.getDescription())) {
             return;
         }
-        DLTree D = C.getDescription().copy();
-        // try to see whether C contains a reference to itself at the top level
-        // TODO: rewrite via hasSelfInDesc()
-        C.removeSelfFromDescription();
-        if (DLTree.equalTrees(D, C.getDescription())) {
+        // DLTree D = C.getDescription().copy();
+        // // try to see whether C contains a reference to itself at the top
+        // level
+        // // TODO: rewrite via hasSelfInDesc()
+        // C.removeSelfFromDescription();
+        if (C.hasSelfInDesc()) {
+            // remember the old description value
+            DLTree D = C.getDescription().copy();
+            // remove C from the description
+            C.removeSelfFromDescription();
+            // the trees should differ here
+            assert !DLTree.equalTrees(D, C.getDescription());
+            // note that we don't know exact semantics of C for now;
+            // we need to split it's definition and work via GCIs
+            makeDefinitionPrimitive(C, E, D);
+        } else {
+            // here we have the definition of C = D, and subsumption C [= E
             // XXX this disables the new strategy
             if (true) {
                 // for now: it's not clear of what's going wrong
-                processGCI(D, E);
+                processGCI(getTree(C), E);
             } else {
                 // here we leave the definition of C = D, and delay the
                 // processing of C [= E
@@ -2465,9 +2477,6 @@ public class TBox implements Serializable {
             }
             return;
         }
-        // note that we don't know exact semantics of C for now;
-        // we need to split its definition and work via GCIs
-        makeDefinitionPrimitive(C, E, D);
     }
 
     /**
@@ -2839,20 +2848,30 @@ public class TBox implements Serializable {
     void TransformExtraSubsumptions() {
         for (Map.Entry<Concept, DLTree> p : ExtraConceptDefs.entrySet()) {
             Concept C = p.getKey();
-            DLTree D = C.getDescription().copy();
             DLTree E = p.getValue();
             // for every C here we have C = D in KB and C [= E in ExtraDefs
-            Set<Concept> processed = new HashSet<Concept>();
+            // Set<Concept> processed = new HashSet<Concept>();
             // if there is a cycle for C
-            if (isReferenced(C, C, processed)) {
+            // if (isReferenced(C, C, processed)) {
+            if (isCyclic(C)) {
+                DLTree D = C.getDescription().copy();
                 // then we should make C [= (D and E) and go with GCI D [= C
                 makeDefinitionPrimitive(C, E, D);
             } else {
                 // it is safe to keep definition C = D and go with GCI D [= E
-                processGCI(D, E);
+                processGCI(getTree(C), E);
             }
         }
         ExtraConceptDefs.clear();
+    }
+
+    /**
+     * @return true iff C has a cyclic definition, ie is referenced in its own
+     *         description
+     */
+    @PortedFrom(file = "Preprocess.cpp", name = "isCyclic")
+    boolean isCyclic(Concept C) {
+        return isReferenced(C, C, new HashSet<Concept>());
     }
 
     @PortedFrom(file = "dlTBox.h", name = "setAllIndexes")
