@@ -1609,7 +1609,7 @@ public class TBox implements Serializable {
         if (needConcept && kbStatus.ordinal() < kbClassified.ordinal()) {
             kbStatus = kbClassified;
         }
-        if (needIndividual) {
+        if (needIndividual || nNominalReferences > 0) {
             kbStatus = kbRealised;
         }
         if (config.getverboseOutput()) {
@@ -2866,11 +2866,13 @@ public class TBox implements Serializable {
     }
 
     /**
+     * @param C
+     *        concept
      * @return true iff C has a cyclic definition, ie is referenced in its own
      *         description
      */
     @PortedFrom(file = "Preprocess.cpp", name = "isCyclic")
-    boolean isCyclic(Concept C) {
+    public boolean isCyclic(Concept C) {
         return isReferenced(C, C, new HashSet<Concept>());
     }
 
@@ -3517,8 +3519,11 @@ public class TBox implements Serializable {
         Concept X = getAuxConcept(null);
         DLTree C = DLTreeFactory.createSNFNot(RC.getRight().copy());
         // create ax axiom C [= AR^-.X
-        this.addSubsumeAxiom(C, DLTreeFactory.createSNFForall(
-                DLTreeFactory.createInverse(RC.getLeft().copy()), getTree(X)));
+        DLTree forAll = DLTreeFactory.createSNFForall(
+                DLTreeFactory.createInverse(RC.getLeft().copy()), getTree(X));
+        config.getAbsorptionLog().print("\nReplaceForall: add").print(C)
+                .print(" [=").print(forAll);
+        this.addSubsumeAxiom(C, forAll);
         // save cache for R,C
         forall_R_C_Cache.put(RC, X);
         return X;

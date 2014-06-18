@@ -47,7 +47,11 @@ public class AxiomSet implements Serializable {
         accumulator.add(p);
     }
 
-    /** @return true iff axiom Q is a copy of an axiom in range [p,p_end) */
+    /**
+     * @param q
+     *        axiom
+     * @return true iff axiom q is a copy of an axiom in range [p,p_end)
+     */
     @PortedFrom(file = "tAxiomSet.h", name = "copyOf")
     boolean copyOfExisting(Axiom q) {
         for (int i = 0; i < accumulator.size(); i++) {

@@ -38,6 +38,10 @@ public class Axiom implements Serializable {
         absorptionLog = l;
     }
 
+    /**
+     * @param parent
+     *        parent axiom
+     */
     public Axiom(Axiom parent) {
         origin = parent;
     }
@@ -257,14 +261,16 @@ public class Axiom implements Serializable {
     /**
      * replace a defined concept with its description
      * 
+     * @param t
+     *        tbox
      * @return rewritten axiom
      */
     @PortedFrom(file = "tAxiom.h", name = "simplifyCN")
-    public Axiom simplifyCN() {
+    public Axiom simplifyCN(TBox t) {
         for (DLTree p : disjuncts) {
-            if (InAx.isPosNP(p)) {
+            if (InAx.isPosNP(p, t)) {
                 return simplifyPosNP(p);
-            } else if (InAx.isNegNP(p)) {
+            } else if (InAx.isNegNP(p, t)) {
                 return simplifyNegNP(p);
             }
         }
