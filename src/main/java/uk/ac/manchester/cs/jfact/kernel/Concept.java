@@ -604,7 +604,8 @@ public class Concept extends ClassifiableEntry {
     }
 
     /**
-     * @return true iff description contains top-level references to THIS concept
+     * @return true iff description contains top-level references to THIS
+     *         concept
      */
     @PortedFrom(file = "tConcept.h", name = "hasSelfInDesc")
     boolean hasSelfInDesc() {
@@ -683,6 +684,12 @@ public class Concept extends ClassifiableEntry {
     @Original
     public boolean isPrimitive() {
         return primitive;
+    }
+
+    /** @return false if primitive */
+    @Original
+    public boolean isNonPrimitive() {
+        return !isPrimitive();
     }
 
     /**

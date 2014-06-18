@@ -30,7 +30,7 @@ public enum AbsorptionActions {
 
         @Override
         public boolean execute(Axiom ax, AxiomSet tb) {
-            return tb.processNewAxiom(ax.simplifyCN());
+            return tb.processNewAxiom(ax.simplifyCN(tb.tboxHost));
         }
     },
     /** absorb in concept action */
