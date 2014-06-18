@@ -439,7 +439,7 @@ public class InAx implements Serializable {
         if (!isAbsForall(p)) {
             return false;
         }
-        DLTree C = p.getLeft().getRight();
+        DLTree C = p.getChild().getRight();
         // forall is simple if its filler is a name of a primitive concept
         return C.isName() && getConcept(C).getDescription() == null;
     }

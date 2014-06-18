@@ -216,7 +216,9 @@ public class Concept extends ClassifiableEntry {
     /** remove concept from its own definition (like in case C [= (or C ...) */
     @PortedFrom(file = "tConcept.h", name = "removeSelfFromDescription")
     public void removeSelfFromDescription() {
-        description = replaceWithConstOld(description);
+        if (hasSelfInDesc()) {
+            description = replaceWithConstOld(description);
+        }
         this.initToldSubsumers();
     }
 
@@ -474,7 +476,6 @@ public class Concept extends ClassifiableEntry {
                     this);
         }
         if (token == AND) {
-            List<DLTree> l = new ArrayList<DLTree>();
             for (DLTree d : t.getChildren()) {
                 if (hasSelfInDesc(d)) {
                     return true;

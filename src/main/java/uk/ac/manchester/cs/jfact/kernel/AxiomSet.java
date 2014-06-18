@@ -54,11 +54,10 @@ public class AxiomSet implements Serializable {
      */
     @PortedFrom(file = "tAxiomSet.h", name = "copyOf")
     boolean copyOfExisting(Axiom q) {
-        for (int i = 0; i < accumulator.size(); i++) {
-            if (q == accumulator.get(i)) {
-                absorptionLog.print(" same as (").print(i).print(")");
-                return true;
-            }
+        int i = accumulator.indexOf(q);
+        if (i > -1) {
+            absorptionLog.print(" same as (").print(i).print(")");
+            return true;
         }
         return false;
     }
