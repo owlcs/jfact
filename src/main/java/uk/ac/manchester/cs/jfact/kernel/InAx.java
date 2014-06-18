@@ -7,7 +7,9 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import conformance.PortedFrom;
@@ -36,7 +38,47 @@ public class InAx implements Serializable {
      */
     @PortedFrom(file = "tAxiom.cpp", name = "isNP")
     public static boolean isNP(Concept C, TBox t) {
-        return C.isNonPrimitive();
+        return C.isNonPrimitive() && !hasDefCycle(C);
+    }
+
+    @PortedFrom(file = "tAxiom.cpp", name = "hasDefCycle")
+    static boolean hasDefCycle(Concept C) {
+        Set<Concept> visited = new HashSet<Concept>();
+        return hasDefCycle(C, visited);
+    }
+
+    @PortedFrom(file = "tAxiom.cpp", name = "hasDefCycle")
+    static boolean hasDefCycle(Concept C, Set<Concept> visited) {
+        // interested in non-primitive
+        if (C.isPrimitive()) {
+            return false;
+        }
+        // already seen -- cycle
+        if (visited.contains(C)) {
+            return true;
+        }
+        // check the structure: looking for the \exists R.C
+        DLTree p = C.getDescription();
+        if (!p.isNOT()) {
+            return false;
+        }
+        p = p.getChild();
+        if (p.token() != Token.FORALL) {
+            return false;
+        }
+        p = p.getRight();
+        if (!p.isNOT()) {
+            return false;
+        }
+        p = p.getChild();
+        if (!p.isName()) {
+            return false;
+        }
+        // here P is a concept
+        // remember C
+        visited.add(C);
+        // check p
+        return hasDefCycle(getConcept(p), visited);
     }
 
     /**
