@@ -49,6 +49,14 @@ public enum AbsorptionActions {
             return ax.absorbIntoNegConcept(tb.tboxHost);
         }
     },
+    /** absorb in concept forall action */
+    FA('f') {
+
+        @Override
+        public boolean execute(Axiom ax, AxiomSet tb) {
+            return tb.processNewAxiom(ax.simplifySForall(tb.tboxHost));
+        }
+    },
     /** process simplified forall axiom action */
     F('F') {
 

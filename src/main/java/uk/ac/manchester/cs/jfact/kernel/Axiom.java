@@ -294,6 +294,22 @@ public class Axiom implements Serializable {
         return null;
     }
 
+    /**
+     * replace a simple universal restriction with a fresh concept
+     * 
+     * @param KB
+     *        tbox
+     * @return simplified axiom
+     */
+    public Axiom simplifySForall(TBox KB) {
+        for (DLTree i : disjuncts) {
+            if (InAx.isSimpleForall(i)) {
+                return simplifyForall(i, KB);
+            }
+        }
+        return null;
+    }
+
     @PortedFrom(file = "tAxiom.h", name = "simplifyForall")
     private Axiom simplifyForall(DLTree pos, TBox KB) {
         SAbsRepForall();
