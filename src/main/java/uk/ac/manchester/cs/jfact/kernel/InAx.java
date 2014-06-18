@@ -385,4 +385,20 @@ public class InAx implements Serializable {
     public static int getSAbsNAttempt() {
         return get("SAbsNAttempt");
     }
+
+    /**
+     * @param p
+     *        dltree representing a forall
+     * @return true iff P is a FORALL expression suitable for absorption with
+     *         name at the end
+     */
+    @PortedFrom(file = "tAxiom.h", name = "isSimpleForall")
+    public static boolean isSimpleForall(DLTree p) {
+        if (!isAbsForall(p)) {
+            return false;
+        }
+        DLTree C = p.getLeft().getRight();
+        // forall is simple if its filler is a name of a primitive concept
+        return C.isName() && getConcept(C).getDescription() == null;
+    }
 }

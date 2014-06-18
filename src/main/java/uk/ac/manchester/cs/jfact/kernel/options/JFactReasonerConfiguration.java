@@ -40,10 +40,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * It text field of arbitrary length; every symbol means the absorption
      * action: (B)ottom Absorption), (T)op absorption, (E)quivalent concepts
      * replacement, (C)oncept absorption, (N)egated concept absorption, (F)orall
-     * expression replacement, (R)ole absorption, (S)plit
+     * expression replacement, (R)ole absorption, (S)plit, Simple (f)orall
+     * expression replacement
      */
     private static StringOption absorptionFlags = getOption("absorptionFlags",
-            "BTECFSR");
+            "BTEfCFSR");
     /**
      * Option 'alwaysPreferEquals' allows user to enforce usage of C=D
      * definition instead of C[=D during absorption, even if implication
