@@ -20,6 +20,7 @@ import org.semanticweb.owlapi.reasoner.NodeSet;
 
 import uk.ac.manchester.cs.jfact.JFactFactory;
 import uk.ac.manchester.cs.jfact.JFactReasoner;
+import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
 @SuppressWarnings("javadoc")
 public class Bugs {
@@ -102,9 +103,11 @@ public class Bugs {
         o2 = OWLManager.createOWLOntologyManager()
                 .loadOntologyFromOntologyDocument(
                         new StringDocumentSource(input2));
-        jfact1 = (JFactReasoner) new JFactFactory().createReasoner(o1);
+        JFactReasonerConfiguration c = new JFactReasonerConfiguration();
+        c.setLoggingActive(true);
+        jfact1 = (JFactReasoner) new JFactFactory().createReasoner(o1, c);
         jfact1.precomputeInferences(InferenceType.CLASS_HIERARCHY);
-        jfact2 = (JFactReasoner) new JFactFactory().createReasoner(o2);
+        jfact2 = (JFactReasoner) new JFactFactory().createReasoner(o2, c);
         jfact2.precomputeInferences(InferenceType.CLASS_HIERARCHY);
     }
 

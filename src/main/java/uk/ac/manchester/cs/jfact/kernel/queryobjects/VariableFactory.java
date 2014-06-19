@@ -18,9 +18,9 @@ import conformance.PortedFrom;
 public class VariableFactory implements Serializable {
 
     private static final long serialVersionUID = 11000L;
-   // @PortedFrom(file = "QR.h", name = "Base")
-   // private final List<QRVariable> Base = new ArrayList<QRVariable>();
 
+    // @PortedFrom(file = "QR.h", name = "Base")
+    // private final List<QRVariable> Base = new ArrayList<QRVariable>();
     /**
      * @param name
      *        variable name
@@ -29,7 +29,7 @@ public class VariableFactory implements Serializable {
     @PortedFrom(file = "QR.h", name = "getNewVar")
     public QRVariable getNewVar(IRI name) {
         QRVariable ret = new QRVariable(name);
-      //  Base.add(ret);
+        // Base.add(ret);
         return ret;
     }
 }

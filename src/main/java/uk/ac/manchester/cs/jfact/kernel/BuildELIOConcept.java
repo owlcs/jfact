@@ -50,7 +50,7 @@ public abstract class BuildELIOConcept implements Serializable {
             QRVariable v) {
         // System.out.println("Assign:\n variable: " + v + "\n atom:" +
         // previousAtom);
-      //XXX unused?
+        // XXX unused?
         visited.add(v);
         ConceptExpression t = createConceptByVar(v);
         ConceptExpression s = conjunctiveQueryFolding.getpEM().top();

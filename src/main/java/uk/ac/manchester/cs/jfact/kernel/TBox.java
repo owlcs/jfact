@@ -2146,8 +2146,7 @@ public class TBox implements Serializable {
             default:
                 throw new ReasonerInternalException(
                         "Error printing vertex of type " + type.getName() + '('
-                                + type + ')'
-                );
+                                + type + ')');
         }
     }
 
@@ -2331,8 +2330,7 @@ public class TBox implements Serializable {
             default:
                 throw new ReasonerInternalException(
                         "Error dumping vertex of type " + type.getName() + '('
-                                + type + ')'
-                );
+                                + type + ')');
         }
     }
 
@@ -2983,7 +2981,7 @@ public class TBox implements Serializable {
                         }
                         Set<DLTree> leaves = new HashSet<DLTree>();
                         for (Concept q : toldSynonyms) {
-                            if (!q.equals( p)) {
+                            if (!q.equals(p)) {
                                 DLTree d = makeNonPrimitive(q, getTree(p));
                                 if (d.isBOTTOM()) {
                                     leaves.clear();
