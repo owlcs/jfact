@@ -643,7 +643,7 @@ public class DatatypesTestCase {
     @Test
     public void test34() {
         makeCall(true, dtDataExpr, "numeric(#integer(extra facets:18 null))");
-        assertTrue(makeCall(true, dtDataExpr,
+        assertFalse(makeCall(true, dtDataExpr,
                 "numeric(#integer(extra facets:18 null))"));
     }
 
@@ -1015,7 +1015,7 @@ public class DatatypesTestCase {
     @Test
     public void test84() {
         makeCall(true, dtDataExpr, "numeric(#integer(extra facets:4 null))");
-        assertTrue(makeCall(true, dtDataExpr,
+        assertFalse(makeCall(true, dtDataExpr,
                 "numeric(#integer(extra facets:4 null))"));
     }
 
