@@ -129,7 +129,7 @@ public class Axiom implements Serializable {
     boolean isCyclic() {
         Axiom p = origin;
         while (p != null) {
-            if (p == this) {
+            if (p.equals(this)) {
                 absorptionLog.print(" same as ancestor");
                 return true;
             }
