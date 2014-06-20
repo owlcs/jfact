@@ -184,7 +184,7 @@ public class DatatypeIntersection<T extends Comparable<T>> implements
         if (maxExclusive) {
             excluded++;
         }
-        return !DatatypeFactory.nonEmptyInterval(min, max, excluded);
+        return !DatatypeFactory.intervalWithValues(min, max, excluded);
     }
 
     @Override

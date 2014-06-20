@@ -8,7 +8,6 @@ package conformancetests;
 import static org.junit.Assert.*;
 import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.*;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -29,10 +28,8 @@ import uk.ac.manchester.cs.jfact.JFactFactory;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
 @SuppressWarnings("javadoc")
-@Ignore
 public class Broken {
 
-    @Ignore
     @Test
     public void testQualified_cardinality_boolean() {
         String premise = "Prefix( : = <http://example.org/test#> )\n"
@@ -186,7 +183,6 @@ public class Broken {
         r.run();
     }
 
-    @Ignore
     @Test
     public void testUnsatisfiableClasses() throws OWLOntologyCreationException {
         OWLOntologyManager mngr = OWLManager.createOWLOntologyManager();
@@ -198,10 +194,10 @@ public class Broken {
                 df.getOWLDataPropertyDomainAxiom(dp, df.getOWLNothing()));
         OWLReasonerFactory fac = Factory.factory();
         OWLReasoner r = fac.createNonBufferingReasoner(ont);
-        assertEquals(2, r.getBottomDataPropertyNode().getEntities().size());
+        assertEquals(r.getBottomDataPropertyNode().toString(), 2, r
+                .getBottomDataPropertyNode().getEntities().size());
     }
 
-    @Ignore
     @Test
     public void testWebOnt_I5_8_009() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
@@ -253,7 +249,6 @@ public class Broken {
         r.run();
     }
 
-    @Ignore
     @Test
     public void testWebOnt_I5_8_008() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
@@ -279,7 +274,6 @@ public class Broken {
         r.run();
     }
 
-    @Ignore
     @Test
     public void testWebOnt_someValuesFrom_003() {
         String premise = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
@@ -346,7 +340,6 @@ public class Broken {
         r.run();
     }
 
-    @Ignore
     @Test
     public void testsomevaluesfrom2bnode() throws OWLOntologyCreationException {
         // String premise =
@@ -398,27 +391,5 @@ public class Broken {
         OWLReasoner r = Factory.factory().createReasoner(o);
         assertTrue(r.isEntailed(f.getOWLObjectPropertyAssertionAxiom(p, a,
                 f.getOWLAnonymousIndividual())));
-    }
-
-    @Ignore
-    @Test
-    public void testConsistent_owl_real_range_with_DataOneOf() {
-        // XXX integers, float and reals do not share a value space
-        String premise = "Prefix(:=<http://example.org/>)\n"
-                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
-                + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
-                + "Ontology(\n"
-                + "  Declaration(NamedIndividual(:a))\n"
-                + "  Declaration(DataProperty(:dp))\n"
-                + "  Declaration(Class(:A))\n"
-                + "  SubClassOf(:A DataAllValuesFrom(:dp owl:real)) \n"
-                + "  SubClassOf(:A DataSomeValuesFrom(:dp DataOneOf(\"-INF\"^^xsd:float \"-0\"^^xsd:integer))\n)\n  ClassAssertion(:A :a)\n)";
-        String conclusion = "";
-        String id = "Consistent_owl_real_range_with_DataOneOf";
-        TestClasses tc = TestClasses.valueOf("CONSISTENCY");
-        String d = "The individual a must have either negative Infinity or 0 (-0 as integer is 0) as dp fillers and all dp successors must be from owl:real, which excludes negative infinity, but allows 0.";
-        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
-        r.run();
     }
 }

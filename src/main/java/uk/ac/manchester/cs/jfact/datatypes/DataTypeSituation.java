@@ -97,6 +97,7 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
      */
     public boolean addInterval(boolean pos, Datatype<R> interval, DepSet dep) {
         if (interval.emptyValueSpace()) {
+            interval.emptyValueSpace();
             this.reasoner.reportClash(this.accDep, DT_Empty_interval);
             return true;
         }

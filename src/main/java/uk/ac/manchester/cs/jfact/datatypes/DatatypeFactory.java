@@ -201,19 +201,19 @@ public class DatatypeFactory implements Serializable {
      * @return true if interval not empty
      */
     @SuppressWarnings("rawtypes")
-    public static boolean nonEmptyInterval(Comparable min, Comparable max,
+    public static boolean intervalWithValues(Comparable min, Comparable max,
             int excluded) {
         if (min == null) {
             // unbound lower limit - value space cannot be empty
             // even if the actual type used to represent the literal is bounded,
             // the limit should explicitly be there.
-            return false;
+            return true;
         }
         if (max == null) {
             // unbound upper limit - value space cannot be empty
             // even if the actual type used to represent the literal is bounded,
             // the limit should explicitly be there.
-            return false;
+            return true;
         }
         // min and max are both not null
         @SuppressWarnings("unchecked")

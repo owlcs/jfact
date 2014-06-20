@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.StringDocumentSource;
@@ -47,6 +46,26 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
 @SuppressWarnings("javadoc")
 public class Fixed {
+
+    @Test
+    public void testConsistent_owl_real_range_with_DataOneOf() {
+        String premise = "Prefix(:=<http://example.org/>)\n"
+                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+                + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
+                + "Ontology(\n"
+                + "  Declaration(NamedIndividual(:a))\n"
+                + "  Declaration(DataProperty(:dp))\n"
+                + "  Declaration(Class(:A))\n"
+                + "  SubClassOf(:A DataAllValuesFrom(:dp owl:real)) \n"
+                + "  SubClassOf(:A DataSomeValuesFrom(:dp DataOneOf(\"-INF\"^^xsd:float \"-0\"^^xsd:integer))\n)\n  ClassAssertion(:A :a)\n)";
+        String conclusion = "";
+        String id = "Consistent_owl_real_range_with_DataOneOf";
+        TestClasses tc = TestClasses.valueOf("CONSISTENCY");
+        String d = "The individual a must have either negative Infinity or 0 (-0 as integer is 0) as dp fillers and all dp successors must be from owl:real, which excludes negative infinity, but allows 0.";
+        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
+        r.setReasonerFactory(Factory.factory());
+        r.run();
+    }
 
     @Test
     public void testWebOnt_oneOf_004() {
@@ -402,28 +421,6 @@ public class Fixed {
         // OWLReasoner r = Factory.factory().createReasoner(o, config);
         OWLReasoner r = Factory.factory().createReasoner(o);
         assertFalse(r.isConsistent());
-    }
-
-    @Ignore
-    @Test
-    public void testConsistent_owl_real_range_with_DataOneOf() {
-        // XXX integers, float and reals do not share a value space
-        String premise = "Prefix(:=<http://example.org/>)\n"
-                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
-                + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
-                + "Ontology(\n"
-                + "  Declaration(NamedIndividual(:a))\n"
-                + "  Declaration(DataProperty(:dp))\n"
-                + "  Declaration(Class(:A))\n"
-                + "  SubClassOf(:A DataAllValuesFrom(:dp owl:real)) \n"
-                + "  SubClassOf(:A DataSomeValuesFrom(:dp DataOneOf(\"-INF\"^^xsd:float \"-0\"^^xsd:integer))\n)\n  ClassAssertion(:A :a)\n)";
-        String conclusion = "";
-        String id = "Consistent_owl_real_range_with_DataOneOf";
-        TestClasses tc = TestClasses.valueOf("CONSISTENCY");
-        String d = "The individual a must have either negative Infinity or 0 (-0 as integer is 0) as dp fillers and all dp successors must be from owl:real, which excludes negative infinity, but allows 0.";
-        JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
-        r.run();
     }
 
     @Test
