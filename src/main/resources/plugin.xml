@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+
+<plugin>
+
+    <extension point="org.protege.editor.owl.inference_reasonerfactory"
+               id="jfact-factory">
+        <name value="JFact 1.2.3-SNAPSHOT"/>
+        <label value="JFact 1.2.3-SNAPSHOT" />
+        <class value="jfact.plugin.protege.JFactProtegeFactory"/>
+    </extension>
+</plugin>

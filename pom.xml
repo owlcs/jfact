@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<!-- Usual ref to Sonatype OSS repository -->
 	<parent>
@@ -9,7 +10,7 @@
 	</parent>
 	<groupId>net.sourceforge.owlapi</groupId>
 	<artifactId>jfact</artifactId>
-	<packaging>jar</packaging>
+	<packaging>bundle</packaging>
 	<version>1.2.3-SNAPSHOT</version>
 	<name>JFact</name>
 	<description>JFact is an OWL DL reasoner, based on FaCT++</description>
@@ -75,6 +76,21 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>net.sourceforge.owlapi.jfact;singleton:=true</Bundle-SymbolicName>
+						<Bundle-Name>${project.artifactId}</Bundle-Name>
+						<Export-Package>{local-packages}</Export-Package>
+						<Import-Package>org.protege.*, javax.*, org.w3c.dom.*,
+							org.semanticweb.owlapi.*, uk.ac.manchester.cs.owl.owlapi.*</Import-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 				<version>2.1.2</version>
@@ -115,8 +131,8 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.16</version>
 				<configuration>
-				    <useFile>false</useFile>
-                    <printSummary>false</printSummary>
+					<useFile>false</useFile>
+					<printSummary>false</printSummary>
 					<includes>
 						<include>**/*.java</include>
 					</includes>
@@ -135,7 +151,7 @@
 		<dependency>
 			<groupId>net.sourceforge.owlapi</groupId>
 			<artifactId>owlapi-distribution</artifactId>
-			<version>3.5.0</version>
+			<version>3.4.10</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -153,6 +169,11 @@
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 			<version>2.3</version>
+		</dependency>
+		<dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>org.protege.editor.owl</artifactId>
+			<version>4.3.0</version>
 		</dependency>
 	</dependencies>
 </project>
