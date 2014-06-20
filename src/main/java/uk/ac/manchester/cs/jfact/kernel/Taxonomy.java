@@ -83,43 +83,46 @@ public class Taxonomy implements Serializable {
         // this is the helper to the case like getDomain():
         // if there is a named concept that represent's a domain -- that's what
         // we need
-        if (needCurrent) {
-            if (!actor.apply(node)) {
-                return false;
-            }
-            if (onlyDirect) {
-                return true;
-            }
-        }
-        Queue<List<TaxonomyVertex>> queue = new LinkedList<List<TaxonomyVertex>>();
-        queue.add(node.neigh(upDirection));
-        while (queue.size() > 0) {
-            List<TaxonomyVertex> neigh = queue.remove();
-            int size = neigh.size();
-            for (int i = 0; i < size; i++) {
-                TaxonomyVertex _node = neigh.get(i);
-                // recursive applicability checking
-                if (!isVisited(_node)) {
-                    // label node as visited
-                    setVisited(_node);
-                    // if current node processed OK and there is no need to
-                    // continue -- exit
-                    // if node is NOT processed for some reasons -- go to
-                    // another level
-                    if (!actor.apply(_node)) {
-                        return false;
-                    }
-                    if (onlyDirect) {
-                        continue;
-                    }
-                    // apply method to the proper neighbours with proper
-                    // parameters
-                    queue.add(_node.neigh(upDirection));
+        try {
+            if (needCurrent) {
+                if (!actor.apply(node)) {
+                    return false;
+                }
+                if (onlyDirect) {
+                    return true;
                 }
             }
+            Queue<List<TaxonomyVertex>> queue = new LinkedList<List<TaxonomyVertex>>();
+            queue.add(node.neigh(upDirection));
+            while (queue.size() > 0) {
+                List<TaxonomyVertex> neigh = queue.remove();
+                int size = neigh.size();
+                for (int i = 0; i < size; i++) {
+                    TaxonomyVertex _node = neigh.get(i);
+                    // recursive applicability checking
+                    if (!isVisited(_node)) {
+                        // label node as visited
+                        setVisited(_node);
+                        // if current node processed OK and there is no need to
+                        // continue -- exit
+                        // if node is NOT processed for some reasons -- go to
+                        // another level
+                        if (!actor.apply(_node)) {
+                            return false;
+                        }
+                        if (onlyDirect) {
+                            continue;
+                        }
+                        // apply method to the proper neighbours with proper
+                        // parameters
+                        queue.add(_node.neigh(upDirection));
+                    }
+                }
+            }
+            return true;
+        } finally {
+            clearVisited();
         }
-        clearVisited();
-        return true;
     }
 
     /**
@@ -370,9 +373,11 @@ public class Taxonomy implements Serializable {
             return false;
         }
         // assert willInsertIntoTaxonomy;
-        assert syn.getTaxVertex() != null;
-        addCurrentToSynonym(syn.getTaxVertex());
-        return true;
+        if (syn.isClassified()) {
+            addCurrentToSynonym(syn.getTaxVertex());
+            return true;
+        }
+        return false;
     }
 
     /**

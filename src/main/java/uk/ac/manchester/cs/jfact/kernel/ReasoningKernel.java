@@ -522,12 +522,7 @@ public class ReasoningKernel implements Serializable {
         // classified => do the taxonomy traversal
         SupConceptActor actor = new SupConceptActor(D);
         Taxonomy tax = getCTaxonomy();
-        if (tax.getRelativesInfo(C.getTaxVertex(), actor, true, false, true)) {
-            return false;
-        } else {
-            tax.clearVisited();
-            return true;
-        }
+        return tax.getRelativesInfo(C.getTaxVertex(), actor, true, false, true);
     }
 
     /**

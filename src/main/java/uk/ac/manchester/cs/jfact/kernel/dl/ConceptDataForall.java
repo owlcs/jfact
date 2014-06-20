@@ -69,4 +69,9 @@ public class ConceptDataForall implements ConceptDataRVExpression, DataRoleArg,
     public IRI getName() {
         return IRI.create(toString());
     }
+
+    @Override
+    public String toString() {
+        return "DataForall(" + dataRoleExpression + " " + delegate + ")";
+    }
 }

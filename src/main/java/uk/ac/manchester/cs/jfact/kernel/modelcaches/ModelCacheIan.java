@@ -333,6 +333,7 @@ public class ModelCacheIan extends ModelCacheInterface {
                 return isMergableSingleton(Math.abs(Singleton), Singleton > 0);
             case mctIan:
                 return isMergableIan((ModelCacheIan) p);
+            case mctBadType:
             default:
                 return csUnknown;
         }

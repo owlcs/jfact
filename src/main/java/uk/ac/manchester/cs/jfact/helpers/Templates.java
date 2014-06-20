@@ -10,6 +10,7 @@ public enum Templates {
 
 
 
+
     //@formatter:off
     /** TAX_TRYING               */ TAX_TRYING              ("\nTAX: trying '%s' [= '%s'... "), 
     /** INTERVAL                 */ INTERVAL                (" %s%s%s,%s%s"), 

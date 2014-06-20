@@ -70,4 +70,9 @@ public class ConceptDataExists implements ConceptDataRVExpression, DataRoleArg,
     public IRI getName() {
         return IRI.create(toString());
     }
+
+    @Override
+    public String toString() {
+        return "DataExist(" + dataRoleExpression + " " + delegate + ")";
+    }
 }

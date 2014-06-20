@@ -77,6 +77,11 @@ public class ConceptObjectExactCardinality implements
     }
 
     @Override
+    public String toString() {
+        return "Cardinality(" + N + " " + roleDelegate + " " + delegate;
+    }
+
+    @Override
     public IRI getName() {
         return IRI.create(toString());
     }

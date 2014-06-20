@@ -56,6 +56,12 @@ public abstract class AbstractConceptDataCardinality implements
     }
 
     @Override
+    public String toString() {
+        return "Cardinality(" + cardinality + " " + dataRoleExpression + " "
+                + expression;
+    }
+
+    @Override
     public IRI getName() {
         return IRI.create(toString());
     }
