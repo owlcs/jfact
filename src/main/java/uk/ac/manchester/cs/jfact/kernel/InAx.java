@@ -43,8 +43,10 @@ public class InAx implements Serializable {
 
     @PortedFrom(file = "tAxiom.cpp", name = "hasDefCycle")
     static boolean hasDefCycle(Concept C) {
-        Set<Concept> visited = new HashSet<Concept>();
-        return hasDefCycle(C, visited);
+        if (C.isPrimitive()) {
+            return false;
+        }
+        return hasDefCycle(C, new HashSet<Concept>());
     }
 
     @PortedFrom(file = "tAxiom.cpp", name = "hasDefCycle")
@@ -441,6 +443,7 @@ public class InAx implements Serializable {
         }
         DLTree C = p.getChild().getRight();
         // forall is simple if its filler is a name of a primitive concept
+        // XXX check
         return C.isName() && getConcept(C).getDescription() == null;
     }
 }

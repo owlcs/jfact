@@ -2455,7 +2455,7 @@ public class TBox implements Serializable {
             // the trees should differ here
             assert !DLTree.equalTrees(D, C.getDescription());
             // note that we don't know exact semantics of C for now;
-            // we need to split it's definition and work via GCIs
+            // we need to split its definition and work via GCIs
             makeDefinitionPrimitive(C, E, D);
         } else {
             // here we have the definition of C = D, and subsumption C [= E
