@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>net.sourceforge.owlapi</groupId>
 	<artifactId>jfact</artifactId>
-	<packaging>jar</packaging>
+	<packaging>bundle</packaging>
 	<version>4.0.0-SNAPSHOT</version>
 	<name>JFact</name>
 	<description>JFact is an OWL DL reasoner, based on FaCT++</description>
@@ -76,6 +76,21 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>net.sourceforge.owlapi.jfact;singleton:=true</Bundle-SymbolicName>
+						<Bundle-Name>${project.artifactId}</Bundle-Name>
+						<Export-Package>{local-packages}</Export-Package>
+						<Import-Package>org.protege.*, javax.*, org.w3c.dom.*,
+							org.semanticweb.owlapi.*, uk.ac.manchester.cs.owl.owlapi.*</Import-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 				<version>2.1.2</version>
@@ -114,8 +129,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.7.1</version>
+				<version>2.16</version>
 				<configuration>
+					<useFile>false</useFile>
+					<printSummary>false</printSummary>
 					<includes>
 						<include>**/*.java</include>
 					</includes>
@@ -125,9 +142,9 @@
 	</build>
 
 	<scm>
-		<connection>scm:git:git://git.code.sf.net/p/jfact/code</connection>
-		<developerConnection>scm:git:ssh://ignazio1977@git.code.sf.net/p/jfact/code</developerConnection>
-		<url>ssh://git.code.sf.net/p/jfact/code</url>
+		<connection>scm:git:git://github.com/owlcs/jfact.git</connection>
+		<developerConnection>scm:git:git@github.com:owlcs/jfact.git</developerConnection>
+		<url>https://github.com/owlcs/jfact</url>
 	</scm>
 
 	<dependencies>
@@ -152,6 +169,11 @@
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 			<version>2.3</version>
+		</dependency>
+		<dependency>
+			<groupId>edu.stanford.protege</groupId>
+			<artifactId>org.protege.editor.owl</artifactId>
+			<version>4.3.0</version>
 		</dependency>
 	</dependencies>
 </project>
