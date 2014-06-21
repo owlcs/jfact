@@ -7,6 +7,8 @@ package uk.ac.manchester.cs.jfact.kernel.queryobjects;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.model.IRI;
 
 import conformance.PortedFrom;
@@ -17,17 +19,14 @@ public class VariableFactory implements Serializable {
 
     private static final long serialVersionUID = 11000L;
 
-    // @PortedFrom(file = "QR.h", name = "Base")
-    // private final List<QRVariable> Base = new ArrayList<QRVariable>();
     /**
      * @param name
      *        variable name
      * @return fresh variable
      */
     @PortedFrom(file = "QR.h", name = "getNewVar")
+    @Nonnull
     public QRVariable getNewVar(IRI name) {
-        QRVariable ret = new QRVariable(name);
-        // Base.add(ret);
-        return ret;
+        return new QRVariable(name);
     }
 }

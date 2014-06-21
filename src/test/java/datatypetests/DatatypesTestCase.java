@@ -41,15 +41,25 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 @SuppressWarnings("javadoc")
 public class DatatypesTestCase {
 
+    @Nonnull
     private static final String XMLTEXT5 = "&lt;span xml:lang=&quot;en&quot;&gt;&lt;b&gt;Good!&lt;/b&gt;&lt;/span&gt;";
+    @Nonnull
     private static final String XMLTEXT4 = "&lt;span xml:lang=&quot;en&quot;&gt;&lt;b&gt;Bad!&lt;/b&gt;&lt;/span&gt;";
+    @Nonnull
     private static final String XMLTEXT3 = "&lt;br&gt;&lt;/br&gt;&lt;img src=&quot;vn.png&quot; title=&quot;Venn&quot; alt=&quot;Venn diagram&quot; longdesc=&quot;vn.html&quot;&gt;&lt;/img&gt;";
+    @Nonnull
     private static final String XMLTEXT2 = "&lt;br&gt;&lt;/br&gt;&lt;img&gt;&lt;/img&gt;";
+    @Nonnull
     private static final String XMLTEXT1 = "&lt;br&gt;&lt;/br&gt;&lt;img src=&quot;vn.png&quot; alt=&quot;Venn diagram&quot; longdesc=&quot;vn.html&quot; title=&quot;Venn&quot;&gt;&lt;/img&gt;";
+    @Nonnull
     private static final String jul102008 = "2008-07-10";
+    @Nonnull
     private static final String jul92008 = "2008-07-09";
+    @Nonnull
     private static final String jul82008 = "2008-07-08";
+    @Nonnull
     private static final String oct82007 = "2007-10-08";
+    @Nonnull
     private static final String T20 = "T20:44:11.656+01:00";
 
     @Nonnull
@@ -58,7 +68,8 @@ public class DatatypesTestCase {
     }
 
     @Nonnull
-    private static LiteralEntry literal(Datatype<?> d, String name, int index) {
+    private static LiteralEntry literal(Datatype<?> d, @Nonnull String name,
+            int index) {
         return new LiteralEntry(name).withLiteral(d.buildLiteral(name))
                 .withIndex(index);
     }
@@ -179,13 +190,10 @@ public class DatatypesTestCase {
         DepSet dep;
     }
 
-    private DataCall dc;
-
     @Before
     public void setUp() {
         config = new JFactReasonerConfiguration();
         datatypeReasoner = new DataTypeReasoner(config);
-        dc = new DataCall();
     }
 
     private boolean makeCall(boolean positive, DagTag t, String s,
@@ -194,12 +202,7 @@ public class DatatypesTestCase {
                 getDepSet(depset));
     }
 
-    private boolean makeCall(boolean positive, DagTag t, NamedEntry s,
-            int... depset) {
-        return datatypeReasoner.addDataEntry(positive, t, s, getDepSet(depset));
-    }
-
-    private DepSet getDepSet(int... s) {
+    private static DepSet getDepSet(int... s) {
         return DepSet.create(s);
     }
 

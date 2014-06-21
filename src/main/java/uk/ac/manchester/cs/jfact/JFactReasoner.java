@@ -30,7 +30,6 @@ import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLDataRange;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -190,41 +189,6 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         tr = new TranslationMachinery(kernel, df, datatypeFactory);
         tr.loadAxioms(reasonerAxioms);
         configuration.getProgressMonitor().reasonerTaskStopped();
-    }
-
-    private void breakCycles(OWLAxiom ax, boolean add) {
-        if (ax instanceof OWLEquivalentClassesAxiom) {
-            boolean complex = false;
-            for (OWLClassExpression ex : ((OWLEquivalentClassesAxiom) ax)
-                    .getClassExpressions()) {
-                if (ex.isAnonymous()) {
-                    complex = true;
-                }
-            }
-            if (complex) {
-                for (OWLEquivalentClassesAxiom a : ((OWLEquivalentClassesAxiom) ax)
-                        .asPairwiseAxioms()) {
-                    List<OWLClassExpression> l = a.getClassExpressionsAsList();
-                    OWLClassExpression l1 = checkNotNull(l.get(0));
-                    OWLClassExpression l2 = checkNotNull(l.get(1));
-                    OWLAxiom a1 = df.getOWLSubClassOfAxiom(l1, l2);
-                    OWLAxiom a2 = df.getOWLSubClassOfAxiom(l2, l1);
-                    if (add) {
-                        reasonerAxioms.add(a1);
-                        reasonerAxioms.add(a2);
-                    } else {
-                        reasonerAxioms.remove(a1);
-                        reasonerAxioms.remove(a2);
-                    }
-                }
-                return;
-            }
-        }
-        if (add) {
-            reasonerAxioms.add(ax);
-        } else {
-            reasonerAxioms.add(ax);
-        }
     }
 
     /**
