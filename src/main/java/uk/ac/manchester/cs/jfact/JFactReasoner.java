@@ -115,7 +115,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     @Nonnull
     private final BufferingMode bufferingMode;
     @Nonnull
-    private final List<OWLOntologyChange<?>> rawChanges = new ArrayList<OWLOntologyChange<?>>();
+    private final List<OWLOntologyChange> rawChanges = new ArrayList<OWLOntologyChange>();
     @Nonnull
     private final Set<OWLAxiom> reasonerAxioms = new LinkedHashSet<OWLAxiom>();
     @Original
@@ -223,8 +223,12 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     }
 
     @Override
-    public void ontologiesChanged(List<? extends OWLOntologyChange<?>> changes) {
-        handleRawOntologyChanges(changes);
+    public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
+        rawChanges.addAll(changes);
+        // We auto-flush the changes if the reasoner is non-buffering
+        if (bufferingMode.equals(BufferingMode.NON_BUFFERING)) {
+            flush();
+        }
     }
 
     @Override
@@ -242,18 +246,9 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return root;
     }
 
-    private void handleRawOntologyChanges(
-            List<? extends OWLOntologyChange<?>> changes) {
-        rawChanges.addAll(changes);
-        // We auto-flush the changes if the reasoner is non-buffering
-        if (bufferingMode.equals(BufferingMode.NON_BUFFERING)) {
-            flush();
-        }
-    }
-
     @Override
-    public synchronized List<OWLOntologyChange<?>> getPendingChanges() {
-        return new ArrayList<OWLOntologyChange<?>>(rawChanges);
+    public synchronized List<OWLOntologyChange> getPendingChanges() {
+        return new ArrayList<OWLOntologyChange>(rawChanges);
     }
 
     @Override
@@ -320,13 +315,19 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     private synchronized void computeDiff(Set<OWLAxiom> added,
             Set<OWLAxiom> removed) {
         for (OWLOntologyChange change : rawChanges) {
+            OWLAxiom ax = change.getAxiom();
             if (change.isAddAxiom()) {
-                OWLAxiom ax = change.getAxiom();
-                if (!reasonerAxioms.contains(ax)) {
+                if (!reasonerAxioms.contains(ax)
+                        && !reasonerAxioms.contains(ax
+                                .getAxiomWithoutAnnotations())) {
                     added.add(ax);
                 }
             } else if (change.isRemoveAxiom()) {
-                removed.add(change.getAxiom());
+                if (reasonerAxioms.contains(ax)
+                        || reasonerAxioms.contains(ax
+                                .getAxiomWithoutAnnotations())) {
+                    removed.add(change.getAxiom());
+                }
             }
         }
         added.removeAll(removed);
