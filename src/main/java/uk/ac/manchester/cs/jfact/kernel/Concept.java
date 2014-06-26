@@ -359,7 +359,7 @@ public class Concept extends ClassifiableEntry {
                     description.addChild(d);
                 }
             } else {
-                List<DLTree> l = new ArrayList<DLTree>(Desc);
+                List<DLTree> l = new ArrayList<>(Desc);
                 l.add(description);
                 description = DLTreeFactory.createSNFAnd(l);
             }
@@ -449,7 +449,7 @@ public class Concept extends ClassifiableEntry {
             return DLTreeFactory.createTop();
         }
         if (token == AND) {
-            List<DLTree> l = new ArrayList<DLTree>();
+            List<DLTree> l = new ArrayList<>();
             for (DLTree d : t.getChildren()) {
                 l.add(replaceWithConstOld(d));
             }

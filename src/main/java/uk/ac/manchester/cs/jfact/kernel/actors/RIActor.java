@@ -20,7 +20,7 @@ import conformance.PortedFrom;
 public class RIActor implements Actor, Serializable {
 
     private static final long serialVersionUID = 11000L;
-    private final List<Individual> acc = new ArrayList<Individual>();
+    private final List<Individual> acc = new ArrayList<>();
 
     /**
      * process single entry in a vertex label
@@ -61,7 +61,7 @@ public class RIActor implements Actor, Serializable {
         return false;
     }
 
-    private boolean test(ClassifiableEntry p) {
+    private static boolean test(ClassifiableEntry p) {
         return !(p.isSystem() || !((Concept) p).isSingleton());
     }
 

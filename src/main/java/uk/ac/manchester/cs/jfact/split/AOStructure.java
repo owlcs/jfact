@@ -20,7 +20,7 @@ public class AOStructure implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** all the atoms */
     @PortedFrom(file = "AtomicDecomposer.h", name = "Atoms")
-    private final List<TOntologyAtom> Atoms = new ArrayList<TOntologyAtom>();
+    private final List<TOntologyAtom> Atoms = new ArrayList<>();
 
     /** @return a new atom */
     @PortedFrom(file = "AtomicDecomposer.h", name = "newAtom")
@@ -34,7 +34,7 @@ public class AOStructure implements Serializable {
     /** reduce graph of the atoms in the structure */
     @PortedFrom(file = "AtomicDecomposer.h", name = "reduceGraph")
     public void reduceGraph() {
-        Set<TOntologyAtom> checked = new HashSet<TOntologyAtom>();
+        Set<TOntologyAtom> checked = new HashSet<>();
         for (TOntologyAtom p : Atoms) {
             p.getAllDepAtoms(checked);
         }

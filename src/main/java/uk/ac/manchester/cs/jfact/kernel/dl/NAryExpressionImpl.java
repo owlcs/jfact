@@ -28,7 +28,7 @@ public class NAryExpressionImpl<A extends Expression> implements
 
     private static final long serialVersionUID = 11000L;
     /** set of equivalent concept descriptions */
-    private final List<A> Base = new ArrayList<A>();
+    private final List<A> Base = new ArrayList<>();
 
     /** default constructor */
     public NAryExpressionImpl() {}

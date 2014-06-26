@@ -72,7 +72,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor,
     private final ExpressionManager pEM;
     /** map between axioms and concept expressions */
     @PortedFrom(file = "SemanticLocalityChecker.h", name = "ExprMap")
-    private final Map<AxiomInterface, ConceptExpression> ExprMap = new HashMap<AxiomInterface, ConceptExpression>();
+    private final Map<AxiomInterface, ConceptExpression> ExprMap = new HashMap<>();
 
     /**
      * @param axiom

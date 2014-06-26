@@ -26,7 +26,7 @@ public class Taxonomy implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** array of taxonomy verteces */
     @PortedFrom(file = "Taxonomy.h", name = "Graph")
-    private final List<TaxonomyVertex> graph = new ArrayList<TaxonomyVertex>();
+    private final List<TaxonomyVertex> graph = new ArrayList<>();
     /** aux. vertex to be included to taxonomy */
     @PortedFrom(file = "Taxonomy.h", name = "Current")
     protected TaxonomyVertex current = new TaxonomyVertex();
@@ -84,42 +84,42 @@ public class Taxonomy implements Serializable {
         // if there is a named concept that represent's a domain -- that's what
         // we need
         try {
-        if (needCurrent) {
-            if (!actor.apply(node)) {
-                return false;
-            }
-            if (onlyDirect) {
-                return true;
-            }
-        }
-        Queue<List<TaxonomyVertex>> queue = new LinkedList<List<TaxonomyVertex>>();
-        queue.add(node.neigh(upDirection));
-        while (queue.size() > 0) {
-            List<TaxonomyVertex> neigh = queue.remove();
-            int size = neigh.size();
-            for (int i = 0; i < size; i++) {
-                TaxonomyVertex _node = neigh.get(i);
-                // recursive applicability checking
-                if (!isVisited(_node)) {
-                    // label node as visited
-                    setVisited(_node);
-                    // if current node processed OK and there is no need to
-                    // continue -- exit
-                    // if node is NOT processed for some reasons -- go to
-                    // another level
-                    if (!actor.apply(_node)) {
-                        return false;
-                    }
-                    if (onlyDirect) {
-                        continue;
-                    }
-                    // apply method to the proper neighbours with proper
-                    // parameters
-                    queue.add(_node.neigh(upDirection));
+            if (needCurrent) {
+                if (!actor.apply(node)) {
+                    return false;
+                }
+                if (onlyDirect) {
+                    return true;
                 }
             }
-        }
-        return true;
+            Queue<List<TaxonomyVertex>> queue = new LinkedList<>();
+            queue.add(node.neigh(upDirection));
+            while (queue.size() > 0) {
+                List<TaxonomyVertex> neigh = queue.remove();
+                int size = neigh.size();
+                for (int i = 0; i < size; i++) {
+                    TaxonomyVertex _node = neigh.get(i);
+                    // recursive applicability checking
+                    if (!isVisited(_node)) {
+                        // label node as visited
+                        setVisited(_node);
+                        // if current node processed OK and there is no need to
+                        // continue -- exit
+                        // if node is NOT processed for some reasons -- go to
+                        // another level
+                        if (!actor.apply(_node)) {
+                            return false;
+                        }
+                        if (onlyDirect) {
+                            continue;
+                        }
+                        // apply method to the proper neighbours with proper
+                        // parameters
+                        queue.add(_node.neigh(upDirection));
+                    }
+                }
+            }
+            return true;
         } finally {
             clearVisited();
         }
@@ -149,7 +149,7 @@ public class Taxonomy implements Serializable {
         if (needCurrent && actor.apply(node) && onlyDirect) {
             return;
         }
-        List<TaxonomyVertex> queue = new LinkedList<TaxonomyVertex>();
+        List<TaxonomyVertex> queue = new LinkedList<>();
         for (TaxonomyVertex v : node.neigh(upDirection)) {
             if (actor.applicable(v) || !onlyDirect) {
                 queue.add(v);
@@ -258,7 +258,7 @@ public class Taxonomy implements Serializable {
     public String toString() {
         StringBuilder o = new StringBuilder();
         o.append("All entries are in format:\n\"entry\" {n: parent_1 ... parent_n} {m: child_1 child_m}\n\n");
-        TreeSet<TaxonomyVertex> sorted = new TreeSet<TaxonomyVertex>(
+        TreeSet<TaxonomyVertex> sorted = new TreeSet<>(
                 new Comparator<TaxonomyVertex>() {
 
                     @Override
@@ -374,8 +374,8 @@ public class Taxonomy implements Serializable {
         }
         // assert willInsertIntoTaxonomy;
         if (syn.isClassified()) {
-        addCurrentToSynonym(syn.getTaxVertex());
-        return true;
+            addCurrentToSynonym(syn.getTaxVertex());
+            return true;
         }
         return false;
     }

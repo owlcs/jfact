@@ -30,7 +30,7 @@ public class ClassifiableEntry extends NamedEntry {
      * current)
      */
     @PortedFrom(file = "taxNamEntry.h", name = "toldSubsumers")
-    protected final Set<ClassifiableEntry> toldSubsumers = new LinkedHashSet<ClassifiableEntry>();
+    protected final Set<ClassifiableEntry> toldSubsumers = new LinkedHashSet<>();
     /**
      * pointer to synonym (entry which contains whole information the same as
      * current)
@@ -191,7 +191,7 @@ public class ClassifiableEntry extends NamedEntry {
         // do it only once
         assert pSynonym == null;
         // check there are no cycles
-        Set<ClassifiableEntry> set = new HashSet<ClassifiableEntry>();
+        Set<ClassifiableEntry> set = new HashSet<>();
         set.add(this);
         ClassifiableEntry runner = syn;
         while (runner.isSynonym() && !set.contains(runner.pSynonym)) {
@@ -208,7 +208,7 @@ public class ClassifiableEntry extends NamedEntry {
     /** if two synonyms are in 'told' list, merge them */
     @PortedFrom(file = "taxNamEntry.h", name = "removeSynonymsFromParents")
     public void removeSynonymsFromParents() {
-        List<ClassifiableEntry> toRemove = new ArrayList<ClassifiableEntry>();
+        List<ClassifiableEntry> toRemove = new ArrayList<>();
         for (ClassifiableEntry c : toldSubsumers) {
             if (this == resolveSynonym(c)) {
                 toRemove.add(c);

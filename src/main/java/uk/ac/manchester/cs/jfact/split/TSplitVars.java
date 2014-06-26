@@ -20,9 +20,9 @@ public class TSplitVars implements Serializable {
 
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tSplitVars.h", name = "Base")
-    protected final List<TSplitVar> Base = new ArrayList<TSplitVar>();
+    protected final List<TSplitVar> Base = new ArrayList<>();
     @PortedFrom(file = "tSplitVars.h", name = "Index")
-    protected final Map<ConceptName, TSplitVar> Index = new HashMap<ConceptName, TSplitVar>();
+    protected final Map<ConceptName, TSplitVar> Index = new HashMap<>();
 
     /** default constructor */
     public TSplitVars() {}

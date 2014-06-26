@@ -10,11 +10,12 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
+
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import conformance.Original;
 import conformance.PortedFrom;
 
@@ -32,9 +33,9 @@ public class SigIndex implements Serializable {
     private final LocalityChecker Checker;
     /** sets of axioms non-local wrt the empty signature */
     @Original
-    private final Set<AxiomInterface> NonLocalTrue = new HashSet<AxiomInterface>();
+    private final Set<AxiomInterface> NonLocalTrue = new HashSet<>();
     @Original
-    private final Set<AxiomInterface> NonLocalFalse = new HashSet<AxiomInterface>();
+    private final Set<AxiomInterface> NonLocalFalse = new HashSet<>();
     /** empty signature to test the non-locality */
     @PortedFrom(file = "SigIndex.h", name = "emptySig")
     private final TSignature emptySig = new TSignature();

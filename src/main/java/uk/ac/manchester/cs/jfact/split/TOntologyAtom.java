@@ -20,16 +20,16 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
     private static final long serialVersionUID = 11000L;
     /** set of axioms in the atom */
     @PortedFrom(file = "tOntologyAtom.h", name = "AtomAxioms")
-    private final Set<AxiomInterface> AtomAxioms = new HashSet<AxiomInterface>();
+    private final Set<AxiomInterface> AtomAxioms = new HashSet<>();
     /** set of axioms in the module (Atom's ideal) */
     @PortedFrom(file = "tOntologyAtom.h", name = "ModuleAxioms")
-    private Set<AxiomInterface> ModuleAxioms = new HashSet<AxiomInterface>();
+    private Set<AxiomInterface> ModuleAxioms = new HashSet<>();
     /** set of atoms current one depends on */
     @PortedFrom(file = "tOntologyAtom.h", name = "DepAtoms")
-    private final Set<TOntologyAtom> DepAtoms = new HashSet<TOntologyAtom>();
+    private final Set<TOntologyAtom> DepAtoms = new HashSet<>();
     /** set of all atoms current one depends on */
     @PortedFrom(file = "tOntologyAtom.h", name = "AllDepAtoms")
-    private final Set<TOntologyAtom> AllDepAtoms = new HashSet<TOntologyAtom>();
+    private final Set<TOntologyAtom> AllDepAtoms = new HashSet<>();
     /** unique atom's identifier */
     @PortedFrom(file = "tOntologyAtom.h", name = "Id")
     private int Id = 0;
@@ -77,7 +77,7 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
      */
     @PortedFrom(file = "tOntologyAtom.h", name = "setModule")
     public void setModule(Collection<AxiomInterface> module) {
-        ModuleAxioms = new HashSet<AxiomInterface>(module);
+        ModuleAxioms = new HashSet<>(module);
     }
 
     /**

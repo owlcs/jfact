@@ -31,7 +31,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
 
     private final IRI uri;
     protected final Datatype<R> host;
-    protected final List<Literal<R>> literals = new ArrayList<Literal<R>>();
+    protected final List<Literal<R>> literals = new ArrayList<>();
 
     /**
      * @param d
@@ -72,7 +72,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
 
     @Override
     public DatatypeEnumeration<R> add(Literal<R> d) {
-        DatatypeEnumeration<R> toReturn = new DatatypeEnumeration<R>(this.host,
+        DatatypeEnumeration<R> toReturn = new DatatypeEnumeration<>(this.host,
                 this.literals);
         toReturn.literals.add(d);
         Collections.sort(toReturn.literals);
@@ -81,7 +81,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
 
     @Override
     public Collection<Literal<R>> listValues() {
-        return new ArrayList<Literal<R>>(this.literals);
+        return new ArrayList<>(this.literals);
     }
 
     @Override

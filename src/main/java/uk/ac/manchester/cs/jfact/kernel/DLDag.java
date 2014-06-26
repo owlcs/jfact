@@ -35,12 +35,12 @@ public class DLDag implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** body of DAG */
     @PortedFrom(file = "dlDag.h", name = "Heap")
-    private final List<DLVertex> heap = new ArrayList<DLVertex>();
+    private final List<DLVertex> heap = new ArrayList<>();
     /** all the AND nodes (needs to recompute) */
     @PortedFrom(file = "dlDag.h", name = "listAnds")
     private final FastSet listAnds = FastSetFactory.create();
     @Original
-    private final EnumMap<DagTag, DLVTable> indexes = new EnumMap<DagTag, DLVTable>(
+    private final EnumMap<DagTag, DLVTable> indexes = new EnumMap<>(
             DagTag.class);
     /** cache efficiency -- statistic purposes */
     @PortedFrom(file = "dlDag.h", name = "nCacheHits")
@@ -105,7 +105,7 @@ public class DLDag implements Serializable {
      * @return true if correct
      */
     @PortedFrom(file = "dlDag.h", name = "isCorrectOption")
-    private boolean isCorrectOption(String str) {
+    private static boolean isCorrectOption(String str) {
         if (str == null) {
             return false;
         }

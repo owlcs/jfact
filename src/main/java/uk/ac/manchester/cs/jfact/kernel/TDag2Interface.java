@@ -32,9 +32,9 @@ public class TDag2Interface implements Serializable {
     private final ExpressionManager Manager;
     /** vector of cached expressions */
     @PortedFrom(file = "tDag2Interface.h", name = "TransC")
-    private final List<ConceptExpression> TransConcept = new ArrayList<ConceptExpression>();
+    private final List<ConceptExpression> TransConcept = new ArrayList<>();
     @PortedFrom(file = "tDag2Interface.h", name = "TransD")
-    private final List<DataExpression> TransData = new ArrayList<DataExpression>();
+    private final List<DataExpression> TransData = new ArrayList<>();
 
     /**
      * @param v
@@ -56,7 +56,7 @@ public class TDag2Interface implements Serializable {
                         .getName()));
             case dtAnd:
             case dtCollection:
-                List<ConceptExpression> list = new ArrayList<ConceptExpression>();
+                List<ConceptExpression> list = new ArrayList<>();
                 for (int p : v.begin()) {
                     list.add(getCExpr(p));
                 }
@@ -112,7 +112,7 @@ public class TDag2Interface implements Serializable {
                 return Manager.dataTop();
             case dtAnd:
             case dtCollection:
-                List<DataExpression> list = new ArrayList<DataExpression>();
+                List<DataExpression> list = new ArrayList<>();
                 for (int p : v.begin()) {
                     list.add(getDExpr(p));
                 }

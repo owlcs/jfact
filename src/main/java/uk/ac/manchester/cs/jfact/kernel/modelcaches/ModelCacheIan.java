@@ -487,7 +487,8 @@ public class ModelCacheIan extends ModelCacheInterface {
     }
 
     @PortedFrom(file = "modelCacheInterface.h", name = "mergeStatus")
-    private ModelCacheState mergeStatus(ModelCacheState s1, ModelCacheState s2) {
+    private static ModelCacheState mergeStatus(ModelCacheState s1,
+            ModelCacheState s2) {
         // if one of caches is definitely UNSAT, then merge will be the same
         if (s1 == csInvalid || s2 == csInvalid) {
             return csInvalid;

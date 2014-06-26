@@ -49,7 +49,7 @@ public class DatatypeNumericEnumeration<R extends Comparable<R>> extends
 
     @Override
     public DatatypeNumericEnumeration<R> add(Literal<R> d) {
-        DatatypeNumericEnumeration<R> toReturn = new DatatypeNumericEnumeration<R>(
+        DatatypeNumericEnumeration<R> toReturn = new DatatypeNumericEnumeration<>(
                 (NumericDatatype<R>) host, literals);
         toReturn.literals.add(d);
         return toReturn;

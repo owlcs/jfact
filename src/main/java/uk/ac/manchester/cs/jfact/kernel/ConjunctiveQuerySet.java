@@ -11,14 +11,16 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ConjunctiveQuerySet.h", name = "CQSet")
 public class ConjunctiveQuerySet {
 
-    // / pointer to an expression manager
+    /** pointer to an expression manager */
     protected ExpressionManager pEManager;
-    // / pointer to a query var factory
+    /** pointer to a query var factory */
     protected VariableFactory VarFactory;
-    // / queries
-    protected List<QRQuery> queries = new ArrayList<QRQuery>();
-    // / flag whether an ABox is original or artificial (individuals correspond
-    // class names)
+    /** queries */
+    protected List<QRQuery> queries = new ArrayList<>();
+    /**
+     * flag whether an ABox is original or artificial (individuals correspond
+     * class names)
+     */
     protected boolean artificialABox;
 
     /**

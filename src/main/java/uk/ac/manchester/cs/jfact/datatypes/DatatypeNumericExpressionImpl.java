@@ -57,7 +57,7 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
                     "Not a valid value for this expression: " + f + '\t'
                             + value + " for: " + this);
         }
-        DatatypeNumericExpressionImpl<O> toReturn = new DatatypeNumericExpressionImpl<O>(
+        DatatypeNumericExpressionImpl<O> toReturn = new DatatypeNumericExpressionImpl<>(
                 this.host);
         toReturn.knownNumericFacetValues.putAll(knownNumericFacetValues);
         toReturn.knownNonNumericFacetValues.putAll(knownNonNumericFacetValues);
@@ -96,7 +96,7 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
                     "Not a valid value for this expression: " + f + '\t'
                             + value + " for: " + this);
         }
-        DatatypeNumericExpressionImpl<O> toReturn = new DatatypeNumericExpressionImpl<O>(
+        DatatypeNumericExpressionImpl<O> toReturn = new DatatypeNumericExpressionImpl<>(
                 this.host);
         toReturn.knownNumericFacetValues.putAll(knownNumericFacetValues);
         toReturn.knownNonNumericFacetValues.putAll(knownNonNumericFacetValues);

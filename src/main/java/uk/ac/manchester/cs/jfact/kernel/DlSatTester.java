@@ -236,7 +236,7 @@ public class DlSatTester implements Serializable {
          * @return le
          */
         protected BCLE<DlCompletionTreeArc> pushLE() {
-            BCLE<DlCompletionTreeArc> e = new BCLE<DlCompletionTreeArc>();
+            BCLE<DlCompletionTreeArc> e = new BCLE<>();
             push(e);
             return e;
         }
@@ -248,7 +248,7 @@ public class DlSatTester implements Serializable {
          */
         protected BCLE<DlCompletionTree> pushTopLE() {
             // XXX verify if this is correct
-            BCLE<DlCompletionTree> e = new BCLE<DlCompletionTree>();
+            BCLE<DlCompletionTree> e = new BCLE<>();
             push(e);
             return e;
         }
@@ -303,7 +303,7 @@ public class DlSatTester implements Serializable {
         /** index of a merge-candidate (in LE concept) */
         private int mergeCandIndex;
         /** vector of edges to be merged */
-        private List<I> edges = new ArrayList<I>();
+        private List<I> edges = new ArrayList<>();
 
         /** init tag and indeces */
         @Override
@@ -419,7 +419,7 @@ public class DlSatTester implements Serializable {
         private int branchIndex;
         private int size = 0;
         /** useful disjuncts (ready to add) in case of OR */
-        private List<ConceptWDep> applicableOrEntries = new ArrayList<ConceptWDep>();
+        private List<ConceptWDep> applicableOrEntries = new ArrayList<>();
 
         /** init tag and indeces */
         @Override
@@ -492,21 +492,21 @@ public class DlSatTester implements Serializable {
 
     /** GCIs local to session */
     @PortedFrom(file = "Reasoner.h", name = "SessionGCIs")
-    private final List<Integer> SessionGCIs = new ArrayList<Integer>();
+    private final List<Integer> SessionGCIs = new ArrayList<>();
     /** set of active splits */
     @PortedFrom(file = "Reasoner.h", name = "ActiveSplits")
     private final FastSet ActiveSplits = FastSetFactory.create();
     /** concept signature of current CGraph */
     @PortedFrom(file = "Reasoner.h", name = "SessionSignature")
-    private final Set<NamedEntity> SessionSignature = new HashSet<NamedEntity>();
+    private final Set<NamedEntity> SessionSignature = new HashSet<>();
     /** signature to dep-set map for current session */
     @PortedFrom(file = "Reasoner.h", name = "SessionSigDepSet")
-    private final Map<NamedEntity, DepSet> SessionSigDepSet = new HashMap<NamedEntity, DepSet>();
+    private final Map<NamedEntity, DepSet> SessionSigDepSet = new HashMap<>();
     /** nodes to merge in the TopRole-LE rules */
     @PortedFrom(file = "Reasoner.h", name = "NodesToMerge")
-    private List<DlCompletionTree> NodesToMerge = new ArrayList<DlCompletionTree>();
+    private List<DlCompletionTree> NodesToMerge = new ArrayList<>();
     @PortedFrom(file = "Reasoner.h", name = "EdgesToMerge")
-    private List<DlCompletionTreeArc> EdgesToMerge = new ArrayList<DlCompletionTreeArc>();
+    private List<DlCompletionTreeArc> EdgesToMerge = new ArrayList<>();
 
     // CGraph-wide rules support
     /**
@@ -515,7 +515,7 @@ public class DlSatTester implements Serializable {
      * @return true if node is valid for the reasoning
      */
     @PortedFrom(file = "Reasoner.h", name = "isNodeGloballyUsed")
-    private boolean isNodeGloballyUsed(DlCompletionTree node) {
+    private static boolean isNodeGloballyUsed(DlCompletionTree node) {
         return !(node.isDataNode() || node.isIBlocked() || node.isPBlocked());
     }
 
@@ -525,7 +525,7 @@ public class DlSatTester implements Serializable {
      * @return true if node is valid for the reasoning
      */
     @PortedFrom(file = "Reasoner.h", name = "isObjectNodeUnblocked")
-    private boolean isObjectNodeUnblocked(DlCompletionTree node) {
+    private static boolean isObjectNodeUnblocked(DlCompletionTree node) {
         return isNodeGloballyUsed(node) && !node.isDBlocked();
     }
 
@@ -575,7 +575,7 @@ public class DlSatTester implements Serializable {
     protected final DLDag dlHeap;
     /** all the reflexive roles */
     @PortedFrom(file = "Reasoner.h", name = "ReflexiveRoles")
-    private final List<Role> reflexiveRoles = new ArrayList<Role>();
+    private final List<Role> reflexiveRoles = new ArrayList<>();
     /** Completion Graph of tested concept(s) */
     @PortedFrom(file = "Reasoner.h", name = "CGraph")
     protected final DlCompletionGraph cGraph;
@@ -629,7 +629,7 @@ public class DlSatTester implements Serializable {
     private int dagSize;
     /** temporary array used in OR operation */
     @PortedFrom(file = "Reasoner.h", name = "OrConceptsToTest")
-    private List<ConceptWDep> orConceptsToTest = new ArrayList<ConceptWDep>();
+    private List<ConceptWDep> orConceptsToTest = new ArrayList<>();
     /** contains clash set if clash is encountered in a node label */
     @PortedFrom(file = "Reasoner.h", name = "clashSet")
     private DepSet clashSet = DepSet.create();
@@ -864,7 +864,7 @@ public class DlSatTester implements Serializable {
      * @return true if clashing
      */
     @PortedFrom(file = "Reasoner.h", name = "checkNRclash")
-    private boolean checkNRclash(DLVertex atleast, DLVertex atmost) {
+    private static boolean checkNRclash(DLVertex atleast, DLVertex atmost) {
         // >= n R.C clash with <= m S.D iff...
         return (atmost.getConceptIndex() == bpTOP ||
         // either D is TOP or C == D...
@@ -1809,7 +1809,7 @@ public class DlSatTester implements Serializable {
      */
     @PortedFrom(file = "Reasoner.h", name = "doCacheNode")
     private void doCacheNode(DlCompletionTree node) {
-        List<DepSet> deps = new ArrayList<DepSet>();
+        List<DepSet> deps = new ArrayList<>();
         newNodeCache.clear();
         List<ConceptWDep> beginl_sc = node.beginl_sc();
         for (int i = 0; i < beginl_sc.size(); i++) {
@@ -1932,7 +1932,7 @@ public class DlSatTester implements Serializable {
         // counter++;
         // System.out.print("@Test public void test" + counter +
         // "() throws Exception {");
-        Set<DataCall> calls = new LinkedHashSet<DataCall>();
+        Set<DataCall> calls = new LinkedHashSet<>();
         for (int i = 0; i < size; i++) {
             ConceptWDep r = concepts.get(i);
             DagTag d = dlHeap.get(r.getConcept()).getType();
@@ -2467,7 +2467,7 @@ public class DlSatTester implements Serializable {
         assert curConceptConcept < 0 && cur.getType() == dtAnd;
         stats.getnOrCalls().inc();
         if (isFirstBranchCall()) {
-            Reference<DepSet> dep = new Reference<DepSet>(DepSet.create());
+            Reference<DepSet> dep = new Reference<>(DepSet.create());
             if (planOrProcessing(cur, dep)) {
                 options.getLog().printTemplate(Templates.COMMON_TACTIC_BODY_OR,
                         orConceptsToTest.get(orConceptsToTest.size() - 1));
@@ -3168,7 +3168,7 @@ public class DlSatTester implements Serializable {
             DlCompletionTreeArc toArc = bcLE.getTo();
             DlCompletionTree from = fromArc.getArcEnd();
             DlCompletionTree to = toArc.getArcEnd();
-            Reference<DepSet> dep = new Reference<DepSet>(DepSet.create());
+            Reference<DepSet> dep = new Reference<>(DepSet.create());
             // empty dep-set
             // fast check for FROM =/= TO
             if (cGraph.nonMergable(from, to, dep)) {
@@ -3333,7 +3333,7 @@ public class DlSatTester implements Serializable {
             // get from- and to-arcs using corresponding indexes in Edges
             DlCompletionTree from = bcLE.getFrom();
             DlCompletionTree to = bcLE.getTo();
-            Reference<DepSet> dep = new Reference<DepSet>(DepSet.create());
+            Reference<DepSet> dep = new Reference<>(DepSet.create());
             // fast check for FROM =/= TO
             if (cGraph.nonMergable(from, to, dep)) {
                 // add dep-set from labels
@@ -3540,7 +3540,7 @@ public class DlSatTester implements Serializable {
                 to.getId());
         stats.getnMergeCalls().inc();
         DepSet dep = DepSet.create(depF);
-        Reference<DepSet> ref = new Reference<DepSet>(dep);
+        Reference<DepSet> ref = new Reference<>(dep);
         if (cGraph.nonMergable(from, to, ref)) {
             this.setClashSet(ref.getReference());
             return true;
@@ -3552,7 +3552,7 @@ public class DlSatTester implements Serializable {
         if (mergeLabels(from.label(), to, depF)) {
             return true;
         }
-        List<DlCompletionTreeArc> edges = new ArrayList<DlCompletionTreeArc>();
+        List<DlCompletionTreeArc> edges = new ArrayList<>();
         cGraph.merge(from, to, depF, edges);
         int size = edges.size();
         for (int i = 0; i < size; i++) {
@@ -3592,8 +3592,8 @@ public class DlSatTester implements Serializable {
     }
 
     @PortedFrom(file = "Tactic.cpp", name = "isNewEdge")
-    private boolean
-            isNewEdge(DlCompletionTree node, List<DlCompletionTreeArc> e) {
+    private static boolean isNewEdge(DlCompletionTree node,
+            List<DlCompletionTreeArc> e) {
         int size = e.size();
         for (int i = 0; i < size; i++) {
             if (e.get(i).getArcEnd().equals(node)) {

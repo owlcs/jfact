@@ -45,12 +45,12 @@ public class ConjunctiveQueryFolding implements Serializable {
     private final VariableFactory VarFact = new VariableFactory();
     /** map between new vars and original vars */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "NewVarMap")
-    private final Map<QRVariable, QRVariable> NewVarMap = new HashMap<QRVariable, QRVariable>();
+    private final Map<QRVariable, QRVariable> NewVarMap = new HashMap<>();
     /** query to term transformation support */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "NewNominals")
-    private final Set<ConceptExpression> NewNominals = new HashSet<ConceptExpression>();
+    private final Set<ConceptExpression> NewNominals = new HashSet<>();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "VarRestrictions")
-    private final Map<IRI, ConceptExpression> VarRestrictions = new HashMap<IRI, ConceptExpression>();
+    private final Map<IRI, ConceptExpression> VarRestrictions = new HashMap<>();
 
     /**
      * @param em
@@ -234,7 +234,7 @@ public class ConjunctiveQueryFolding implements Serializable {
      * @return true if connected
      */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "PossiblyReplaceAtom")
-    private
+    private static
             boolean PossiblyReplaceAtom(QRQuery query, int atomIterator,
                     QRAtom newAtom, QRVariable newArg, Set<QRAtom> passedAtoms) {
         // System.out.println("Modified code starts here!\nBefore replacing in copy.\n"
@@ -309,7 +309,7 @@ public class ConjunctiveQueryFolding implements Serializable {
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "transformQueryPhase1")
     public
             QRQuery transformQueryPhase1(QRQuery query) {
-        Set<QRAtom> passedAtoms = new HashSet<QRAtom>();
+        Set<QRAtom> passedAtoms = new HashSet<>();
         int n = 0;
         // remove C's
         query = RemoveCFromQuery(query);
@@ -353,7 +353,7 @@ public class ConjunctiveQueryFolding implements Serializable {
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "deleteFictiveVariables")
     public
             void deleteFictiveVariables(QRQuery query) {
-        Set<QRVariable> RealFreeVars = new TreeSet<QRVariable>();
+        Set<QRVariable> RealFreeVars = new TreeSet<>();
         for (QRAtom atomIterator : query.getBody().begin()) {
             if (atomIterator instanceof QRRoleAtom) {
                 QRRoleAtom atom = (QRRoleAtom) atomIterator;
@@ -389,7 +389,7 @@ public class ConjunctiveQueryFolding implements Serializable {
     public
             void buildApproximation(QRQuery query) {
         QueryApproximation app = new QueryApproximation(this, query);
-        Map<QRVariable, ConceptExpression> approx = new HashMap<QRVariable, ConceptExpression>();
+        Map<QRVariable, ConceptExpression> approx = new HashMap<>();
         for (QRVariable p : NewVarMap.values()) {
             approx.put(p, pEM.top());
         }
@@ -440,9 +440,9 @@ public class ConjunctiveQueryFolding implements Serializable {
     }
 
     @PortedFrom(file = "ConjunctiveQuery.cpp", name = "Var2I")
-    private final Map<IRI, Integer> Var2I = new HashMap<IRI, Integer>();
+    private final Map<IRI, Integer> Var2I = new HashMap<>();
     @PortedFrom(file = "ConjunctiveQuery.cpp", name = "I2Var")
-    private final List<IRI> I2Var = new ArrayList<IRI>();
+    private final List<IRI> I2Var = new ArrayList<>();
 
     /**
      * fills in variable index
@@ -482,11 +482,10 @@ public class ConjunctiveQueryFolding implements Serializable {
             return;
         }
         // for every var: create an expression of vars
-        List<DLTree> Concepts = new ArrayList<DLTree>();
+        List<DLTree> Concepts = new ArrayList<>();
         for (int i = 0; i < I2Var.size(); ++i) {
             IRI var = I2Var.get(i);
-            List<ConceptExpression> list = new ArrayList<ConceptExpression>(
-                    query.get(var));
+            List<ConceptExpression> list = new ArrayList<>(query.get(var));
             Concepts.add(kernel.e(pEM.and(list)));
         }
         fillIVec(kernel, artificialABox);
@@ -498,7 +497,7 @@ public class ConjunctiveQueryFolding implements Serializable {
             boolean artificialABox) {
         // get all instances of C
         ActorImpl a = new ActorImpl();
-        List<Individual> individuals = new ArrayList<Individual>();
+        List<Individual> individuals = new ArrayList<>();
         if (artificialABox) {
             // HACK: work only for our individualisation of NCIt/etc
             a.needConcepts();
@@ -514,7 +513,7 @@ public class ConjunctiveQueryFolding implements Serializable {
                 individuals.add((Individual) p);
             }
         }
-        kernel.getTBox().getIV().add(new IterableElem<Individual>(individuals));
+        kernel.getTBox().getIV().add(new IterableElem<>(individuals));
     }
 
     @PortedFrom(file = "ConjunctiveQuery.cpp", name = "fillIVec")

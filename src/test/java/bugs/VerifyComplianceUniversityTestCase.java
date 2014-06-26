@@ -125,6 +125,7 @@ public class VerifyComplianceUniversityTestCase extends VerifyComplianceBase {
         return loadFromString(input);
     }
 
+    @Override
     @Nonnull
     protected String input() {
         return "/AF_university.owl.xml";

@@ -136,7 +136,7 @@ public class DLTreeFactory implements Serializable {
      * @return a construction in the form AND (\neg q_i)
      */
     public static DLTree buildDisjAux(List<DLTree> arguments) {
-        List<DLTree> args = new ArrayList<DLTree>(arguments.size());
+        List<DLTree> args = new ArrayList<>(arguments.size());
         for (DLTree i : arguments) {
             args.add(DLTreeFactory.createSNFNot(i.copy()));
         }
@@ -178,7 +178,7 @@ public class DLTreeFactory implements Serializable {
         if (collection.size() == 1) {
             return collection.iterator().next();
         }
-        List<DLTree> l = new ArrayList<DLTree>();
+        List<DLTree> l = new ArrayList<>();
         for (DLTree d : collection) {
             if (d == null) {
                 continue;
@@ -211,7 +211,7 @@ public class DLTreeFactory implements Serializable {
     public static DLTree createSNFAnd(Collection<DLTree> collection,
             DLTree ancestor) {
         boolean hasTop = false;
-        List<DLTree> l = new ArrayList<DLTree>();
+        List<DLTree> l = new ArrayList<>();
         for (DLTree d : collection) {
             if (d.isTOP()) {
                 hasTop = true;
@@ -434,7 +434,7 @@ public class DLTreeFactory implements Serializable {
      */
     public static DLTree createSNFOr(Collection<DLTree> C) {
         // C\or D . \not(\not C\and\not D)
-        List<DLTree> list = new ArrayList<DLTree>();
+        List<DLTree> list = new ArrayList<>();
         for (DLTree d : C) {
             list.add(createSNFNot(d));
         }

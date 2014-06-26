@@ -5,7 +5,7 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static uk.ac.manchester.cs.jfact.datatypes.DatatypeClashes.*;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeClashes.DT_TT;
 
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -32,10 +32,10 @@ public final class DataTypeReasoner implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** map Type.pName.Type appearance */
     @PortedFrom(file = "DataReasoning.h", name = "Map")
-    private final Map<Datatype<?>, DataTypeSituation<?>> map = new HashMap<Datatype<?>, DataTypeSituation<?>>();
+    private final Map<Datatype<?>, DataTypeSituation<?>> map = new HashMap<>();
     /** dep-set for the clash for *all* the types */
     @PortedFrom(file = "DataReasoning.h", name = "clashDep")
-    private final Reference<DepSet> clashDep = new Reference<DepSet>();
+    private final Reference<DepSet> clashDep = new Reference<>();
     @Original
     private final JFactReasonerConfiguration options;
 
@@ -89,13 +89,14 @@ public final class DataTypeReasoner implements Serializable {
     @PortedFrom(file = "DataReasoning.h", name = "registerDataType")
     private <R extends Comparable<R>> DataTypeSituation<R> getType(
             Datatype<R> datatype) {
-        if (map.containsKey(datatype)) {
-            return (DataTypeSituation<R>) map.get(datatype);
+        DataTypeSituation<R> appearance = (DataTypeSituation<R>) map
+                .get(datatype);
+        if (appearance != null) {
+            return appearance;
         }
-        DataTypeSituation<R> dataTypeAppearance = new DataTypeSituation<R>(
-                datatype, this);
-        map.put(datatype, dataTypeAppearance);
-        return dataTypeAppearance;
+        appearance = new DataTypeSituation<>(datatype, this);
+        map.put(datatype, appearance);
+        return appearance;
     }
 
     /**
@@ -174,8 +175,8 @@ public final class DataTypeReasoner implements Serializable {
     private <R extends Comparable<R>> boolean dataValue(boolean positive,
             Literal<R> c1, DepSet dep) {
         Datatype<R> d = c1.getDatatypeExpression();
-        DatatypeExpression<R> interval = d.isNumericDatatype() ? new DatatypeNumericEnumeration<R>(
-                d.asNumericDatatype(), c1) : new DatatypeEnumeration<R>(d, c1);
+        DatatypeExpression<R> interval = d.isNumericDatatype() ? new DatatypeNumericEnumeration<>(
+                d.asNumericDatatype(), c1) : new DatatypeEnumeration<>(d, c1);
         options.getLog().printTemplate(Templates.INTERVAL,
                 positive ? "+" : "-", interval, "", "", "");
         return dataExpression(positive, interval, dep);
@@ -207,8 +208,7 @@ public final class DataTypeReasoner implements Serializable {
             return map.values().iterator().next().checkPNTypeClash();
         }
         // check if any value is already clashing with itself
-        List<DataTypeSituation<?>> types = new ArrayList<DataTypeSituation<?>>(
-                map.values());
+        List<DataTypeSituation<?>> types = new ArrayList<>(map.values());
         if (findClash(types, size)) {
             return true;
         }
@@ -301,7 +301,7 @@ public final class DataTypeReasoner implements Serializable {
                         && t1.equals(DatatypeFactory.NONPOSITIVEINTEGER)) {
                     map.remove(t1);
                     map.remove(t2);
-                    DatatypeEnumeration<BigInteger> enumeration = new DatatypeEnumeration<BigInteger>(
+                    DatatypeEnumeration<BigInteger> enumeration = new DatatypeEnumeration<>(
                             DatatypeFactory.INTEGER,
                             Collections.singletonList(DatatypeFactory.INTEGER
                                     .buildLiteral("0")));

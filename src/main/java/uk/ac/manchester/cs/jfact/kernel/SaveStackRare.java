@@ -20,7 +20,7 @@ public class SaveStackRare implements Serializable {
 
     private static final long serialVersionUID = 11000L;
     /** heap of saved objects */
-    private final LinkedList<Restorer> base = new LinkedList<Restorer>();
+    private final LinkedList<Restorer> base = new LinkedList<>();
     /** current level */
     private int curLevel;
 

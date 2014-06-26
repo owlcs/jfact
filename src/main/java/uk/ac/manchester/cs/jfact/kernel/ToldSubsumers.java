@@ -22,7 +22,7 @@ public class ToldSubsumers extends KnownSubsumers {
      *        b
      */
     public ToldSubsumers(Collection<ClassifiableEntry> b) {
-        beg = new ArrayList<ClassifiableEntry>(b);
+        beg = new ArrayList<>(b);
     }
 
     /** begin of the Sure subsumers interval */

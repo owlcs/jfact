@@ -46,7 +46,7 @@ public class RoleMaster implements Serializable {
     private int newRoleId;
     /** all registered roles */
     @PortedFrom(file = "RoleMaster.h", name = "Roles")
-    private final List<Role> roles = new ArrayList<Role>();
+    private final List<Role> roles = new ArrayList<>();
     /** internal empty role (bottom in the taxonomy) */
     @PortedFrom(file = "RoleMaster.h", name = "emptyRole")
     private final Role emptyRole;
@@ -61,9 +61,9 @@ public class RoleMaster implements Serializable {
     private final Taxonomy pTax;
     /** two halves of disjoint roles axioms */
     @PortedFrom(file = "RoleMaster.h", name = "DJRolesA")
-    private final List<Role> disjointRolesA = new ArrayList<Role>();
+    private final List<Role> disjointRolesA = new ArrayList<>();
     @PortedFrom(file = "RoleMaster.h", name = "DJRolesB")
-    private final List<Role> disjointRolesB = new ArrayList<Role>();
+    private final List<Role> disjointRolesB = new ArrayList<>();
     /** flag whether to create data roles or not */
     @PortedFrom(file = "RoleMaster.h", name = "DataRoles")
     private final boolean dataRoles;
@@ -135,7 +135,7 @@ public class RoleMaster implements Serializable {
         newRoleId = 1;
         emptyRole = new Role(BotRoleName);
         universalRole = new Role(TopRoleName);
-        roleNS = new NameSet<Role, IRI>(new RoleCreator());
+        roleNS = new NameSet<>(new RoleCreator());
         dataRoles = d;
         useUndefinedNames = true;
         // no zero-named roles allowed

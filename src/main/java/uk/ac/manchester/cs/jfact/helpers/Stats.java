@@ -77,7 +77,7 @@ public class Stats implements Serializable {
 
     // statistic elements
     /** all AccumulatedStatistic members are linked together. */
-    private final List<AccumulatedStatistic> root = new ArrayList<AccumulatedStatistic>();
+    private final List<AccumulatedStatistic> root = new ArrayList<>();
     /** The n tactic calls. */
     private final AccumulatedStatistic nTacticCalls = build(root);
     /** The n useless. */

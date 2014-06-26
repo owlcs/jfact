@@ -101,7 +101,7 @@ public class ClassExpressionTranslator extends
 
     private List<ConceptExpression> translateClassExpressionSet(
             Set<OWLClassExpression> classExpressions) {
-        List<ConceptExpression> l = new ArrayList<ConceptExpression>();
+        List<ConceptExpression> l = new ArrayList<>();
         for (OWLClassExpression ce : classExpressions) {
             l.add(ce.accept(this));
         }

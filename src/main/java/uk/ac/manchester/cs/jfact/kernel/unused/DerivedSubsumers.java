@@ -28,8 +28,8 @@ public class DerivedSubsumers extends KnownSubsumers {
      */
     public DerivedSubsumers(List<ClassifiableEntry> sure,
             List<ClassifiableEntry> possible) {
-        Sure = new ArrayList<ClassifiableEntry>(sure);
-        Possible = new ArrayList<ClassifiableEntry>(possible);
+        Sure = new ArrayList<>(sure);
+        Possible = new ArrayList<>(possible);
     }
 
     /** begin of the Sure subsumers interval */

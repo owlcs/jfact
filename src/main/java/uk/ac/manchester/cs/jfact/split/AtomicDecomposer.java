@@ -28,7 +28,7 @@ public class AtomicDecomposer implements Serializable {
     private final TModularizer Modularizer;
     /** tautologies of the ontology */
     @PortedFrom(file = "AtomicDecomposer.h", name = "Tautologies")
-    private final List<AxiomInterface> Tautologies = new ArrayList<AxiomInterface>();
+    private final List<AxiomInterface> Tautologies = new ArrayList<>();
     /** progress indicator */
     @PortedFrom(file = "AtomicDecomposer.h", name = "PI")
     private ProgressIndicatorInterface PI = null;
@@ -166,7 +166,7 @@ public class AtomicDecomposer implements Serializable {
     /** @return all tautologies */
     @Original
     public List<AxiomInterface> getTautologies() {
-        return new ArrayList<AxiomInterface>(Tautologies);
+        return new ArrayList<>(Tautologies);
     }
 
     /** @return the atom structure */
@@ -194,7 +194,7 @@ public class AtomicDecomposer implements Serializable {
         removeTautologies(O);
         // init the root atom
         rootAtom = new TOntologyAtom();
-        rootAtom.setModule(new HashSet<AxiomInterface>(O.getAxioms()));
+        rootAtom.setModule(new HashSet<>(O.getAxioms()));
         // build the "bottom" atom for an empty signature
         TOntologyAtom BottomAtom = buildModule(new TSignature(), rootAtom);
         if (BottomAtom != null) {

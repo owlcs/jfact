@@ -100,18 +100,18 @@ public class Role extends ClassifiableEntry {
     private final MergableLabel domLabel = new MergableLabel();
     // for later filling
     @PortedFrom(file = "tRole.h", name = "Ancestor")
-    private final List<Role> ancestorRoles = new ArrayList<Role>();
+    private final List<Role> ancestorRoles = new ArrayList<>();
     @PortedFrom(file = "tRole.h", name = "Descendant")
-    private final List<Role> descendantRoles = new ArrayList<Role>();
+    private final List<Role> descendantRoles = new ArrayList<>();
     /** set of the most functional super-roles */
     @PortedFrom(file = "tRole.h", name = "TopFunc")
-    private final List<Role> topFunctionalRoles = new ArrayList<Role>();
+    private final List<Role> topFunctionalRoles = new ArrayList<>();
     /** set of the roles that are disjoint with a given one */
     @PortedFrom(file = "tRole.h", name = "Disjoint")
-    private final Set<Role> disjointRoles = new HashSet<Role>();
+    private final Set<Role> disjointRoles = new HashSet<>();
     /** all compositions in the form R1*R2*\ldots*Rn [= R */
     @PortedFrom(file = "tRole.h", name = "subCompositions")
-    private final List<List<Role>> subCompositions = new ArrayList<List<Role>>();
+    private final List<List<Role>> subCompositions = new ArrayList<>();
     /** bit-vector of all parents */
     @PortedFrom(file = "tRole.h", name = "AncMap")
     private final FastSet ancestorMap = FastSetFactory.create();
@@ -677,7 +677,7 @@ public class Role extends ClassifiableEntry {
      */
     @PortedFrom(file = "tRole.h", name = "addComposition")
     public void addComposition(DLTree tree) {
-        List<Role> RS = new ArrayList<Role>();
+        List<Role> RS = new ArrayList<>();
         fillsComposition(RS, tree);
         subCompositions.add(RS);
     }
@@ -696,8 +696,8 @@ public class Role extends ClassifiableEntry {
      */
     @PortedFrom(file = "tRole.h", name = "eliminateToldCycles")
     public Role eliminateToldCycles() {
-        Set<Role> RInProcess = new HashSet<Role>();
-        List<Role> ToldSynonyms = new ArrayList<Role>();
+        Set<Role> RInProcess = new HashSet<>();
+        List<Role> ToldSynonyms = new ArrayList<>();
         return this.eliminateToldCycles(RInProcess, ToldSynonyms);
     }
 
@@ -709,7 +709,7 @@ public class Role extends ClassifiableEntry {
      */
     @PortedFrom(file = "tRole.h", name = "completeAutomaton")
     public void completeAutomaton(int nRoles) {
-        Set<Role> RInProcess = new HashSet<Role>();
+        Set<Role> RInProcess = new HashSet<>();
         this.completeAutomaton(RInProcess);
         automaton.setup(nRoles, isDataRole());
     }
@@ -901,8 +901,7 @@ public class Role extends ClassifiableEntry {
         }
         if (!toldSubsumers.isEmpty()) {
             o.print(" parents={\"");
-            List<ClassifiableEntry> l = new ArrayList<ClassifiableEntry>(
-                    toldSubsumers);
+            List<ClassifiableEntry> l = new ArrayList<>(toldSubsumers);
             for (int i = 0; i < l.size(); i++) {
                 if (i > 0) {
                     o.print("\", \"");
@@ -913,7 +912,7 @@ public class Role extends ClassifiableEntry {
         }
         if (!disjointRoles.isEmpty()) {
             o.print(" disjoint with {\"");
-            List<Role> l = new ArrayList<Role>(disjointRoles);
+            List<Role> l = new ArrayList<>(disjointRoles);
             for (int i = 0; i < disjointRoles.size(); i++) {
                 if (i > 0) {
                     o.print("\", \"");

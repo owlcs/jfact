@@ -127,13 +127,13 @@ public class TBox implements Serializable {
     private AxiomSet axioms;
     /** given individual-individual relations */
     @PortedFrom(file = "dlTBox.h", name = "RelatedI")
-    private final List<Related> relatedIndividuals = new ArrayList<Related>();
+    private final List<Related> relatedIndividuals = new ArrayList<>();
     /** known disjoint sets of individuals */
     @PortedFrom(file = "dlTBox.h", name = "DifferentIndividuals")
-    private final List<List<Individual>> differentIndividuals = new ArrayList<List<Individual>>();
+    private final List<List<Individual>> differentIndividuals = new ArrayList<>();
     /** all simple rules in KB */
     @PortedFrom(file = "dlTBox.h", name = "SimpleRules")
-    private final List<SimpleRule> simpleRules = new ArrayList<SimpleRule>();
+    private final List<SimpleRule> simpleRules = new ArrayList<>();
     /** split rules */
     @PortedFrom(file = "dlTBox.h", name = "SplitRules")
     private final TSplitRules SplitRules;
@@ -145,7 +145,7 @@ public class TBox implements Serializable {
     private final KBFlags GCIs = new KBFlags();
     /** cache for the \forall R.C replacements during absorption */
     @PortedFrom(file = "dlTBox.h", name = "RCCache")
-    private final Map<DLTree, Concept> forall_R_C_Cache = new HashMap<DLTree, Concept>();
+    private final Map<DLTree, Concept> forall_R_C_Cache = new HashMap<>();
     /** current aux concept's ID */
     @PortedFrom(file = "dlTBox.h", name = "auxConceptID")
     private int auxConceptID = 0;
@@ -157,10 +157,10 @@ public class TBox implements Serializable {
     private int nNominalReferences;
     /** searchable stack for the told subsumers */
     @PortedFrom(file = "dlTBox.h", name = "CInProcess")
-    private final Set<Concept> conceptInProcess = new HashSet<Concept>();
+    private final Set<Concept> conceptInProcess = new HashSet<>();
     /** fairness constraints */
     @PortedFrom(file = "dlTBox.h", name = "Fairness")
-    private final List<Concept> fairness = new ArrayList<Concept>();
+    private final List<Concept> fairness = new ArrayList<>();
     // Reasoner's members: there are many reasoner classes, some members are
     // shared
     /** let reasoner know that we are in the classificaton (for splits) */
@@ -193,20 +193,20 @@ public class TBox implements Serializable {
     protected int nR = 0;
     /** maps from concept index to concept itself */
     @PortedFrom(file = "dlTBox.h", name = "ConceptMap")
-    private final List<Concept> ConceptMap = new ArrayList<Concept>();
+    private final List<Concept> ConceptMap = new ArrayList<>();
     /** map to show the possible equivalence between individuals */
     @PortedFrom(file = "dlTBox.h", name = "SameI")
-    private final Map<Concept, Pair> sameIndividuals = new HashMap<Concept, Pair>();
+    private final Map<Concept, Pair> sameIndividuals = new HashMap<>();
     /** all the synonyms in the told subsumers' cycle */
     @PortedFrom(file = "dlTBox.h", name = "ToldSynonyms")
-    private final Set<Concept> toldSynonyms = new HashSet<Concept>();
+    private final Set<Concept> toldSynonyms = new HashSet<>();
     /** set of split vars */
     @PortedFrom(file = "dlTBox.h", name = "Splits")
     private TSplitVars Splits;
     /** status of the KB */
     @PortedFrom(file = "dlTBox.h", name = "Status")
     private KBStatus status;
-    private Map<Concept, DLTree> ExtraConceptDefs = new HashMap<Concept, DLTree>();
+    private Map<Concept, DLTree> ExtraConceptDefs = new HashMap<>();
 
     /**
      * @param s
@@ -1137,7 +1137,7 @@ public class TBox implements Serializable {
         }
         DLTree GCI = axioms.getGCI();
         // add special domains to the GCIs
-        List<DLTree> list = new ArrayList<DLTree>();
+        List<DLTree> list = new ArrayList<>();
         if (config.isUseSpecialDomains()) {
             for (Role p : objectRoleMaster.getRoles()) {
                 if (!p.isSynonym() && p.hasSpecialDomain()) {
@@ -1509,11 +1509,11 @@ public class TBox implements Serializable {
     }
 
     @PortedFrom(file = "dlTBox.h", name = "arrayCD")
-    private final List<Concept> arrayCD = new ArrayList<Concept>();
+    private final List<Concept> arrayCD = new ArrayList<>();
     @PortedFrom(file = "dlTBox.h", name = "arrayNoCD")
-    private final List<Concept> arrayNoCD = new ArrayList<Concept>();
+    private final List<Concept> arrayNoCD = new ArrayList<>();
     @PortedFrom(file = "dlTBox.h", name = "arrayNP")
-    private final List<Concept> arrayNP = new ArrayList<Concept>();
+    private final List<Concept> arrayNP = new ArrayList<>();
 
     /**
      * @param begin
@@ -1688,9 +1688,9 @@ public class TBox implements Serializable {
         dlHeap = new DLDag(configuration);
         kbStatus = kbLoading;
         pQuery = null;
-        concepts = new NamedEntryCollection<Concept>("concept",
-                new ConceptCreator(), config);
-        individuals = new NamedEntryCollection<Individual>("individual",
+        concepts = new NamedEntryCollection<>("concept", new ConceptCreator(),
+                config);
+        individuals = new NamedEntryCollection<>("individual",
                 new IndividualCreator(), config);
         objectRoleMaster = new RoleMaster(false, topObjectRoleName,
                 botObjectRoleName, config);
@@ -2597,8 +2597,8 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "processDisjointC")
     public void processDisjointC(Collection<DLTree> beg) {
-        List<DLTree> prim = new ArrayList<DLTree>();
-        List<DLTree> rest = new ArrayList<DLTree>();
+        List<DLTree> prim = new ArrayList<>();
+        List<DLTree> rest = new ArrayList<>();
         for (DLTree d : beg) {
             if (d.isName() && ((Concept) d.elem().getNE()).isPrimitive()) {
                 prim.add(d);
@@ -2638,7 +2638,7 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "processDifferent")
     public void processDifferent(List<DLTree> l) {
-        List<Individual> acc = new ArrayList<Individual>();
+        List<Individual> acc = new ArrayList<>();
         for (int i = 0; i < l.size(); i++) {
             if (this.isIndividual(l.get(i))) {
                 acc.add((Individual) l.get(i).elem().getNE());
@@ -2688,7 +2688,7 @@ public class TBox implements Serializable {
                         "Universal role in the disjoint roles axiom");
             }
         }
-        List<Role> roles = new ArrayList<Role>(size);
+        List<Role> roles = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             roles.add(Role.resolveRole(l.get(i)));
         }
@@ -2850,7 +2850,7 @@ public class TBox implements Serializable {
             Concept C = p.getKey();
             DLTree E = p.getValue();
             // for every C here we have C = D in KB and C [= E in ExtraDefs
-            // Set<Concept> processed = new HashSet<Concept>();
+            // Set<Concept> processed = new HashSet<>();
             // if there is a cycle for C
             // if (isReferenced(C, C, processed)) {
             if (isCyclic(C)) {
@@ -2982,7 +2982,7 @@ public class TBox implements Serializable {
                                 p = q;
                             }
                         }
-                        Set<DLTree> leaves = new HashSet<DLTree>();
+                        Set<DLTree> leaves = new HashSet<>();
                         for (Concept q : toldSynonyms) {
                             if (!q.equals(p)) {
                                 DLTree d = makeNonPrimitive(q, getTree(p));
@@ -3338,7 +3338,7 @@ public class TBox implements Serializable {
     @SuppressWarnings("incomplete-switch")
     private void setRelevant(int _p) {
         FastSet done = FastSetFactory.create();
-        LinkedList<Integer> queue = new LinkedList<Integer>();
+        LinkedList<Integer> queue = new LinkedList<>();
         queue.add(_p);
         while (!queue.isEmpty()) {
             int p = queue.remove(0);
@@ -3374,7 +3374,7 @@ public class TBox implements Serializable {
                 case dtForall:
                 case dtLE:
                     Role _role = v.getRole();
-                    List<Role> rolesToExplore = new LinkedList<Role>();
+                    List<Role> rolesToExplore = new LinkedList<>();
                     rolesToExplore.add(_role);
                     while (!rolesToExplore.isEmpty()) {
                         Role roleToExplore = rolesToExplore.remove(0);
@@ -3396,7 +3396,7 @@ public class TBox implements Serializable {
                     break;
                 case dtIrr:
                     Role __role = v.getRole();
-                    List<Role> _rolesToExplore = new LinkedList<Role>();
+                    List<Role> _rolesToExplore = new LinkedList<>();
                     _rolesToExplore.add(__role);
                     while (_rolesToExplore.size() > 0) {
                         Role roleToExplore = _rolesToExplore.remove(0);
@@ -3601,7 +3601,7 @@ public class TBox implements Serializable {
             return false;
         }
 
-        private final List<IterableElem<Elem>> Base = new ArrayList<TBox.IterableElem<Elem>>();
+        private final List<IterableElem<Elem>> Base = new ArrayList<>();
 
         // / empty c'tor
         IterableVec() {}
@@ -3626,9 +3626,9 @@ public class TBox implements Serializable {
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "IV")
-    private final IterableVec<Individual> IV = new IterableVec<Individual>();
+    private final IterableVec<Individual> IV = new IterableVec<>();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "concepts")
-    private final List<Integer> conceptsForQueryAnswering = new ArrayList<Integer>();
+    private final List<Integer> conceptsForQueryAnswering = new ArrayList<>();
 
     /**
      * @param Cs

@@ -20,7 +20,7 @@ public class Utils implements Serializable {
      * @return set of facets
      */
     public static Set<Facet> getFacets(Facet... facets) {
-        Set<Facet> toReturn = new HashSet<Facet>();
+        Set<Facet> toReturn = new HashSet<>();
         for (Facet f : facets) {
             toReturn.add(f);
         }
@@ -33,7 +33,7 @@ public class Utils implements Serializable {
      * @return set of facets
      */
     public static Set<Facet> getFacets(Facet[]... facets) {
-        Set<Facet> toReturn = new HashSet<Facet>();
+        Set<Facet> toReturn = new HashSet<>();
         for (Facet[] fac : facets) {
             for (Facet f : fac) {
                 toReturn.add(f);
@@ -48,7 +48,7 @@ public class Utils implements Serializable {
      * @return ancestors
      */
     public static Set<Datatype<?>> generateAncestors(Datatype<?> d) {
-        Set<Datatype<?>> toReturn = new HashSet<Datatype<?>>(d.getAncestors());
+        Set<Datatype<?>> toReturn = new HashSet<>(d.getAncestors());
         toReturn.add(d);
         return toReturn;
     }

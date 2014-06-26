@@ -174,7 +174,7 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>,
     // TODO: this check is incomplete
     @Override
     public Boolean visit(OWLDisjointDataPropertiesAxiom axiom) {
-        List<OWLDataPropertyExpression> l = new ArrayList<OWLDataPropertyExpression>(
+        List<OWLDataPropertyExpression> l = new ArrayList<>(
                 axiom.getProperties());
         for (int i = 0; i < l.size() - 1; i++) {
             for (int j = i + 1; j < l.size(); j++) {
@@ -189,7 +189,7 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>,
 
     @Override
     public Boolean visit(OWLDisjointObjectPropertiesAxiom axiom) {
-        List<OWLObjectPropertyExpression> l = new ArrayList<OWLObjectPropertyExpression>(
+        List<OWLObjectPropertyExpression> l = new ArrayList<>(
                 axiom.getProperties());
         for (int i = 0; i < l.size() - 1; i++) {
             for (int j = i + 1; j < l.size(); j++) {
@@ -330,7 +330,7 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>,
 
     @Override
     public Boolean visit(OWLSubPropertyChainOfAxiom axiom) {
-        List<ObjectRoleExpression> l = new ArrayList<ObjectRoleExpression>();
+        List<ObjectRoleExpression> l = new ArrayList<>();
         for (OWLObjectPropertyExpression p : axiom.getPropertyChain()) {
             l.add(tr.pointer(p));
         }

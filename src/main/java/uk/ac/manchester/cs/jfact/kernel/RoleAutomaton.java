@@ -22,7 +22,7 @@ public class RoleAutomaton implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** all transitions of the automaton, groupped by a starting state */
     @PortedFrom(file = "RAutomaton.h", name = "Base")
-    private final List<RAStateTransitions> base = new ArrayList<RAStateTransitions>();
+    private final List<RAStateTransitions> base = new ArrayList<>();
     /** maps original automata state into the new ones (used in copyRA) */
     @PortedFrom(file = "RAutomaton.h", name = "map")
     private int[] map = new int[0];

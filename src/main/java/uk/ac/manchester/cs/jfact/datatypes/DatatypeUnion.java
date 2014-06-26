@@ -15,7 +15,7 @@ import org.semanticweb.owlapi.model.IRI;
 public class DatatypeUnion implements
         DatatypeCombination<DatatypeUnion, Datatype<?>> {
 
-    private final Set<Datatype<?>> basics = new HashSet<Datatype<?>>();
+    private final Set<Datatype<?>> basics = new HashSet<>();
     private final IRI uri;
     private final Datatype<?> host;
 

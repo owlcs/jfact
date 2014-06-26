@@ -19,7 +19,7 @@ public class ArrayQueue implements Serializable {
 
     private static final long serialVersionUID = 11000L;
     /** waiting ops queue */
-    private final List<ToDoEntry> Wait = new ArrayList<ToDoEntry>(50);
+    private final List<ToDoEntry> Wait = new ArrayList<>(50);
     /** start pointer; points to the 1st element in the queue */
     private int sPointer = 0;
 

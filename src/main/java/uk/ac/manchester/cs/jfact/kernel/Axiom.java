@@ -56,7 +56,7 @@ public class Axiom implements Serializable {
      */
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoNegConcept")
     public boolean absorbIntoNegConcept(TBox KB) {
-        List<DLTree> Cons = new ArrayList<DLTree>();
+        List<DLTree> Cons = new ArrayList<>();
         Concept Concept;
         DLTree bestConcept = null;
         // finds all primitive negated concept names without description
@@ -102,7 +102,7 @@ public class Axiom implements Serializable {
 
     /** GCI is presented in the form (or Disjuncts); */
     @PortedFrom(file = "tAxiom.h", name = "Disjuncts")
-    private final Set<DLTree> disjuncts = new LinkedHashSet<DLTree>();
+    private final Set<DLTree> disjuncts = new LinkedHashSet<>();
     @Original
     private TOntologyAtom atom;
 
@@ -186,7 +186,7 @@ public class Axiom implements Serializable {
     private List<Axiom> split(List<Axiom> acc, DLTree pos, DLTree pAnd) {
         if (pAnd.isAND()) {
             // split the AND
-            List<DLTree> children = new ArrayList<DLTree>(pAnd.getChildren());
+            List<DLTree> children = new ArrayList<>(pAnd.getChildren());
             acc = this.split(acc, pos, children.remove(0));
             if (!children.isEmpty()) {
                 acc = this
@@ -207,7 +207,7 @@ public class Axiom implements Serializable {
      */
     @PortedFrom(file = "tAxiom.h", name = "split")
     public List<Axiom> split() {
-        List<Axiom> acc = new ArrayList<Axiom>();
+        List<Axiom> acc = new ArrayList<>();
         for (DLTree p : disjuncts) {
             if (InAx.isAnd(p)) {
                 SAbsSplit();
@@ -336,7 +336,7 @@ public class Axiom implements Serializable {
             return DLTreeFactory.createBottom();
         }
         // assert !disjuncts.isEmpty();
-        List<DLTree> leaves = new ArrayList<DLTree>();
+        List<DLTree> leaves = new ArrayList<>();
         for (DLTree d : disjuncts) {
             if (!d.equals(replaced)) {
                 leaves.add(d.copy());
@@ -354,7 +354,8 @@ public class Axiom implements Serializable {
     @SuppressWarnings("incomplete-switch")
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoBottom")
     public boolean absorbIntoBottom() {
-        List<DLTree> Pos = new ArrayList<DLTree>(), Neg = new ArrayList<DLTree>();
+        List<DLTree> Pos = new ArrayList<>();
+        List<DLTree> Neg = new ArrayList<>();
         for (DLTree p : disjuncts) {
             switch (p.token()) {
                 case BOTTOM: // axiom in the form T [= T or ...; nothing to do
@@ -392,7 +393,7 @@ public class Axiom implements Serializable {
      */
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoConcept")
     public boolean absorbIntoConcept(TBox KB) {
-        List<DLTree> Cons = new ArrayList<DLTree>();
+        List<DLTree> Cons = new ArrayList<>();
         DLTree bestConcept = null;
         for (DLTree p : disjuncts) {
             if (InAx.isNegPC(p)) {
@@ -438,7 +439,7 @@ public class Axiom implements Serializable {
      */
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoDomain")
     public boolean absorbIntoDomain(TBox KB) {
-        List<DLTree> Cons = new ArrayList<DLTree>();
+        List<DLTree> Cons = new ArrayList<>();
         DLTree bestSome = null;
         for (DLTree p : disjuncts) {
             if (p.token() == NOT

@@ -154,7 +154,7 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>,
 
     private List<ConceptExpression> translateClassExpressionSet(
             Set<OWLClassExpression> classExpressions) {
-        List<ConceptExpression> l = new ArrayList<ConceptExpression>();
+        List<ConceptExpression> l = new ArrayList<>();
         for (OWLClassExpression ce : classExpressions) {
             l.add(tr.pointer(ce));
         }
@@ -181,7 +181,7 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>,
 
     private List<ObjectRoleExpression> translateObjectPropertySet(
             Collection<OWLObjectPropertyExpression> properties) {
-        List<ObjectRoleExpression> l = new ArrayList<ObjectRoleExpression>();
+        List<ObjectRoleExpression> l = new ArrayList<>();
         for (OWLObjectPropertyExpression property : properties) {
             l.add(tr.pointer(property));
         }
@@ -208,7 +208,7 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>,
 
     private List<DataRoleExpression> translateDataPropertySet(
             Set<OWLDataPropertyExpression> properties) {
-        List<DataRoleExpression> l = new ArrayList<DataRoleExpression>();
+        List<DataRoleExpression> l = new ArrayList<>();
         for (OWLDataPropertyExpression property : properties) {
             l.add(tr.pointer(property));
         }

@@ -35,7 +35,7 @@ public class TDepthMeasurer extends DLExpressionVisitorAdapter {
     }
 
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "DepthOfNominalOccurences")
-    private final Map<ConceptExpression, Integer> DepthOfNominalOccurences = new HashMap<ConceptExpression, Integer>();
+    private final Map<ConceptExpression, Integer> DepthOfNominalOccurences = new HashMap<>();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "CurrentDepth")
     private int CurrentDepth = 0;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "TotalNominalOccurences")

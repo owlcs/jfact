@@ -31,9 +31,9 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
     protected final Set<Facet> facets;
     protected Set<Datatype<?>> ancestors;
     @SuppressWarnings("rawtypes")
-    protected final Map<Facet, Comparable> knownNumericFacetValues = new HashMap<Facet, Comparable>();
+    protected final Map<Facet, Comparable> knownNumericFacetValues = new HashMap<>();
     @SuppressWarnings("rawtypes")
-    protected final Map<Facet, Comparable> knownNonNumericFacetValues = new HashMap<Facet, Comparable>();
+    protected final Map<Facet, Comparable> knownNonNumericFacetValues = new HashMap<>();
     protected final IRI uri;
 
     /**
@@ -185,9 +185,9 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
     @Override
     public Literal<R> buildLiteral(String s) {
         if (this.getNumeric()) {
-            return new NumericLiteralImpl<R>(this.asNumericDatatype(), s);
+            return new NumericLiteralImpl<>(this.asNumericDatatype(), s);
         }
-        return new LiteralImpl<R>(this, s);
+        return new LiteralImpl<>(this, s);
     }
 
     @Override

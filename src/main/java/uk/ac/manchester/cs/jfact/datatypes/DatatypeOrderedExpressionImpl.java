@@ -164,7 +164,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
                     "Not a valid value for this expression: " + f + '\t'
                             + value + " for: " + this);
         }
-        DatatypeOrderedExpressionImpl<O> toReturn = new DatatypeOrderedExpressionImpl<O>(
+        DatatypeOrderedExpressionImpl<O> toReturn = new DatatypeOrderedExpressionImpl<>(
                 this.host);
         toReturn.knownNumericFacetValues.putAll(knownNumericFacetValues);
         toReturn.knownNonNumericFacetValues.putAll(knownNonNumericFacetValues);
@@ -181,7 +181,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
-        DatatypeOrderedExpressionImpl<O> toReturn = new DatatypeOrderedExpressionImpl<O>(
+        DatatypeOrderedExpressionImpl<O> toReturn = new DatatypeOrderedExpressionImpl<>(
                 this.host);
         toReturn.knownNumericFacetValues.putAll(knownNumericFacetValues);
         toReturn.knownNonNumericFacetValues.putAll(knownNonNumericFacetValues);

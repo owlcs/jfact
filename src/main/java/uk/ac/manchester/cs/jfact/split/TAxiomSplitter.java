@@ -40,11 +40,11 @@ public class TAxiomSplitter implements Serializable {
         private static final long serialVersionUID = 11000L;
         protected ConceptName oldName;
         protected ConceptName newName;
-        protected final List<AxiomInterface> oldAxioms = new ArrayList<AxiomInterface>();
+        protected final List<AxiomInterface> oldAxioms = new ArrayList<>();
         protected AxiomInterface newAxiom = null;
         protected TSignature newAxSig = null;
         // module for a new axiom
-        protected final Set<AxiomInterface> Module = new HashSet<AxiomInterface>();
+        protected final Set<AxiomInterface> Module = new HashSet<>();
 
         /**
          * set old axiom as an equivalent AX; create a new one
@@ -54,7 +54,7 @@ public class TAxiomSplitter implements Serializable {
          */
         protected void setEqAx(AxiomEquivalentConcepts ax) {
             oldAxioms.add(ax);
-            List<ConceptExpression> copy = new ArrayList<ConceptExpression>();
+            List<ConceptExpression> copy = new ArrayList<>();
             for (ConceptExpression p : ax.getArguments()) {
                 if (p.equals(oldName)) {
                     copy.add(newName);
@@ -77,18 +77,18 @@ public class TAxiomSplitter implements Serializable {
     }
 
     @PortedFrom(file = "AxiomSplitter.h", name = "SubNames")
-    protected final Set<ConceptName> SubNames = new HashSet<ConceptName>();
+    protected final Set<ConceptName> SubNames = new HashSet<>();
     @PortedFrom(file = "AxiomSplitter.h", name = "Rejects")
-    protected final Set<ConceptName> Rejects = new HashSet<ConceptName>();
+    protected final Set<ConceptName> Rejects = new HashSet<>();
     @PortedFrom(file = "AxiomSplitter.h", name = "Renames")
-    protected final List<TRecord> Renames = new ArrayList<TRecord>();
+    protected final List<TRecord> Renames = new ArrayList<>();
     @PortedFrom(file = "AxiomSplitter.h", name = "R2")
-    protected final List<TRecord> R2 = new ArrayList<TRecord>();
+    protected final List<TRecord> R2 = new ArrayList<>();
     @PortedFrom(file = "AxiomSplitter.h", name = "ImpRens")
-    protected final Map<ConceptName, TRecord> ImpRens = new HashMap<ConceptName, TRecord>();
+    protected final Map<ConceptName, TRecord> ImpRens = new HashMap<>();
     // XXX multimap
     @PortedFrom(file = "AxiomSplitter.h", name = "ImplNames")
-    protected final Map<ConceptName, Set<AxiomConceptInclusion>> ImplNames = new HashMap<ConceptName, Set<AxiomConceptInclusion>>();
+    protected final Map<ConceptName, Set<AxiomConceptInclusion>> ImplNames = new HashMap<>();
     @PortedFrom(file = "AxiomSplitter.h", name = "newNameId")
     private int newNameId;
     // seed signature
@@ -287,7 +287,7 @@ public class TAxiomSplitter implements Serializable {
         TRecord rec = new TRecord();
         rec.oldName = oldName;
         rec.newName = newName;
-        List<ConceptExpression> args = new ArrayList<ConceptExpression>();
+        List<ConceptExpression> args = new ArrayList<>();
         for (AxiomConceptInclusion s : ImplNames.get(oldName)) {
             rec.oldAxioms.add(s);
             args.add(s.getSupConcept());

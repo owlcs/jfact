@@ -22,7 +22,7 @@ public class QRQuery implements Serializable {
     private QRSetAtoms Body = new QRSetAtoms();
     /** set of free variables */
     @PortedFrom(file = "QR.h", name = "FreeVars")
-    private Set<QRVariable> FreeVars = new TreeSet<QRVariable>();
+    private Set<QRVariable> FreeVars = new TreeSet<>();
 
     /** default constructor */
     public QRQuery() {}

@@ -66,9 +66,9 @@ public class TranslationMachinery implements Serializable {
     @Nonnull
     private final EntailmentChecker entailmentChecker;
     @Nonnull
-    private final Map<OWLAxiom, AxiomInterface> axiom2PtrMap = new HashMap<OWLAxiom, AxiomInterface>();
+    private final Map<OWLAxiom, AxiomInterface> axiom2PtrMap = new HashMap<>();
     @Nonnull
-    private final Map<AxiomInterface, OWLAxiom> ptr2AxiomMap = new HashMap<AxiomInterface, OWLAxiom>();
+    private final Map<AxiomInterface, OWLAxiom> ptr2AxiomMap = new HashMap<>();
     protected final ReasoningKernel kernel;
     protected final ExpressionManager em;
     protected final OWLDataFactory df;
@@ -105,7 +105,7 @@ public class TranslationMachinery implements Serializable {
      * @return expressions
      */
     public List<Expression> translateExpressions(Set<OWLEntity> signature) {
-        List<Expression> list = new ArrayList<Expression>();
+        List<Expression> list = new ArrayList<>();
         for (OWLEntity entity : signature) {
             if (entity instanceof OWLLogicalEntity) {
                 Expression ex = entity.accept(new EntityVisitorEx(this));
@@ -231,7 +231,7 @@ public class TranslationMachinery implements Serializable {
      * @return individual set
      */
     public List<IndividualExpression> translate(Set<OWLIndividual> inds) {
-        List<IndividualExpression> l = new ArrayList<IndividualExpression>();
+        List<IndividualExpression> l = new ArrayList<>();
         for (OWLIndividual ind : inds) {
             l.add(pointer(ind));
         }
@@ -275,7 +275,7 @@ public class TranslationMachinery implements Serializable {
      * @return trnslated set
      */
     public Set<OWLAxiom> translateTAxiomSet(Collection<AxiomInterface> trace) {
-        Set<OWLAxiom> ret = new HashSet<OWLAxiom>();
+        Set<OWLAxiom> ret = new HashSet<>();
         for (AxiomInterface ap : trace) {
             ret.add(ptr2AxiomMap.get(ap));
         }

@@ -23,7 +23,7 @@ public class QueryConnectednessChecker implements Serializable {
 
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "PassedVertice")
-    private final Set<QRVariable> PassedVertice = new TreeSet<QRVariable>();
+    private final Set<QRVariable> PassedVertice = new TreeSet<>();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Query")
     private final QRQuery Query;
 

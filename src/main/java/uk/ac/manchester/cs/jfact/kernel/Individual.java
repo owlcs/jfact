@@ -27,7 +27,7 @@ public class Individual extends Concept {
     private DlCompletionTree node;
     /** index for axioms (this,C):R */
     @PortedFrom(file = "tIndividual.h", name = "RelatedIndex")
-    private final List<Related> relatedIndex = new ArrayList<Related>();
+    private final List<Related> relatedIndex = new ArrayList<>();
     /** map for the related individuals: Map[R]={i:R(this,i)} */
     @PortedFrom(file = "tIndividual.h", name = "pRelatedMap")
     private final Map<Role, List<Individual>> pRelatedMap;
@@ -40,7 +40,7 @@ public class Individual extends Concept {
         super(name);
         node = null;
         setSingleton(true);
-        pRelatedMap = new HashMap<Role, List<Individual>>();
+        pRelatedMap = new HashMap<>();
     }
 
     /** init told subsumers of the individual by it's description */
@@ -155,7 +155,7 @@ public class Individual extends Concept {
     // TIndividual RELATED-dependent method' implementation
     @PortedFrom(file = "tIndividual.h", name = "updateToldFromRelated")
     private void updateToldFromRelated() {
-        Set<Role> RolesProcessed = new HashSet<Role>();
+        Set<Role> RolesProcessed = new HashSet<>();
         updateTold(relatedIndex, RolesProcessed);
     }
 

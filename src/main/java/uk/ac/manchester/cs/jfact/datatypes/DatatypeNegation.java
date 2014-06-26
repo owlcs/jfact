@@ -173,7 +173,7 @@ public class DatatypeNegation<R extends Comparable<R>> implements
 
     @Override
     public Collection<Literal<R>> listValues() {
-        List<Literal<R>> toReturn = new ArrayList<Literal<R>>(host.listValues());
+        List<Literal<R>> toReturn = new ArrayList<>(host.listValues());
         for (int i = 0; i < toReturn.size();) {
             if (host.isCompatible(toReturn.get(i))) {
                 toReturn.remove(i);
@@ -191,7 +191,7 @@ public class DatatypeNegation<R extends Comparable<R>> implements
 
     @Override
     public NumericDatatype<R> asNumericDatatype() {
-        return new NumericDatatypeWrapper<R>(this);
+        return new NumericDatatypeWrapper<>(this);
     }
 
     @Override

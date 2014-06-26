@@ -61,10 +61,10 @@ public class KnowledgeExplorer implements Serializable {
     private final TDag2Interface D2I;
     /** node vector to return */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "Nodes")
-    private final List<DlCompletionTree> Nodes = new ArrayList<DlCompletionTree>();
+    private final List<DlCompletionTree> Nodes = new ArrayList<>();
     /** concept vector to return */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "Concepts")
-    private final List<Expression> Concepts = new ArrayList<Expression>();
+    private final List<Expression> Concepts = new ArrayList<>();
 
     /**
      * adds an entity as a synonym to a map MAP
@@ -76,8 +76,8 @@ public class KnowledgeExplorer implements Serializable {
      */
     @SuppressWarnings("unchecked")
     @PortedFrom(file = "KnowledgeExplorer.h", name = "addE")
-    private <E extends ClassifiableEntry> void
-            addE(Multimap<E, E> map, E entry) {
+    private static <E extends ClassifiableEntry> void addE(Multimap<E, E> map,
+            E entry) {
         map.put(entry, entry);
         if (entry.isSynonym()) {
             map.put((E) entry.getSynonym(), entry);
@@ -182,7 +182,7 @@ public class KnowledgeExplorer implements Serializable {
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getDataRoles")
     public Set<DataRoleExpression> getDataRoles(DlCompletionTree node,
             boolean onlyDet) {
-        Set<DataRoleExpression> roles = new HashSet<DataRoleExpression>();
+        Set<DataRoleExpression> roles = new HashSet<>();
         for (DlCompletionTreeArc p : node.getNeighbour()) {
             if (!p.isIBlocked() && p.getArcEnd().isDataNode()
                     && (!onlyDet || p.getDep().isEmpty())) {
@@ -207,7 +207,7 @@ public class KnowledgeExplorer implements Serializable {
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getObjectRoles")
     public Set<ObjectRoleExpression> getObjectRoles(DlCompletionTree node,
             boolean onlyDet, boolean needIncoming) {
-        Set<ObjectRoleExpression> roles = new HashSet<ObjectRoleExpression>();
+        Set<ObjectRoleExpression> roles = new HashSet<>();
         for (DlCompletionTreeArc p : node.getNeighbour()) {
             if (!p.isIBlocked() && !p.getArcEnd().isDataNode()
                     && (!onlyDet || p.getDep().isEmpty())
@@ -264,7 +264,7 @@ public class KnowledgeExplorer implements Serializable {
                 addC(D2I.getExpr(p.getConcept(), false));
             }
         }
-        List<ConceptExpression> toReturn = new ArrayList<ConceptExpression>();
+        List<ConceptExpression> toReturn = new ArrayList<>();
         for (Expression e : Concepts) {
             if (e instanceof ConceptExpression) {
                 toReturn.add((ConceptExpression) e);
@@ -297,7 +297,7 @@ public class KnowledgeExplorer implements Serializable {
                 addC(D2I.getExpr(p.getConcept(), true));
             }
         }
-        List<DataExpression> toReturn = new ArrayList<DataExpression>();
+        List<DataExpression> toReturn = new ArrayList<>();
         for (Expression e : Concepts) {
             if (e instanceof DataExpression) {
                 toReturn.add((DataExpression) e);

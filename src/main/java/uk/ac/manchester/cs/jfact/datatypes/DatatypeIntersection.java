@@ -21,7 +21,7 @@ import org.semanticweb.owlapi.model.IRI;
 public class DatatypeIntersection<T extends Comparable<T>> implements
         DatatypeCombination<DatatypeIntersection<T>, Datatype<T>> {
 
-    private final Set<Datatype<T>> basics = new HashSet<Datatype<T>>();
+    private final Set<Datatype<T>> basics = new HashSet<>();
     private final IRI uri;
     private final Datatype<T> host;
 
@@ -32,7 +32,7 @@ public class DatatypeIntersection<T extends Comparable<T>> implements
      */
     public static Datatype<?>
             getHostDatatype(Collection<Datatype<?>> collection) {
-        List<Datatype<?>> list = new ArrayList<Datatype<?>>(collection);
+        List<Datatype<?>> list = new ArrayList<>(collection);
         // all types need to be compatible, or the intersection cannot be
         // anything but empty
         for (int i = 0; i < list.size(); i++) {
@@ -98,7 +98,7 @@ public class DatatypeIntersection<T extends Comparable<T>> implements
 
     @Override
     public DatatypeIntersection<T> add(Datatype<T> d) {
-        DatatypeIntersection<T> toReturn = new DatatypeIntersection<T>(host,
+        DatatypeIntersection<T> toReturn = new DatatypeIntersection<>(host,
                 basics);
         toReturn.basics.add(d);
         return toReturn;

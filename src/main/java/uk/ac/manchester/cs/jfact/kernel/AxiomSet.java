@@ -26,11 +26,11 @@ public class AxiomSet implements Serializable {
     protected final TBox tboxHost;
     /** set of axioms that accumilates incoming (and newly created) axioms */
     @PortedFrom(file = "tAxiomSet.h", name = "Accum")
-    private List<Axiom> accumulator = new ArrayList<Axiom>();
+    private List<Axiom> accumulator = new ArrayList<>();
     private final LogAdapter absorptionLog;
     /** set of absorption action, in order */
     @PortedFrom(file = "tAxiomSet.h", name = "ActionVector")
-    private final List<AbsorptionActions> actions = new ArrayList<AbsorptionActions>();
+    private final List<AbsorptionActions> actions = new ArrayList<>();
     @PortedFrom(file = "tAxiomSet.h", name = "curAxiom")
     private int curAxiom = 0;
 
@@ -135,7 +135,7 @@ public class AxiomSet implements Serializable {
     /** @return GCI of all non-absorbed axioms */
     @PortedFrom(file = "tAxiomSet.h", name = "getGCI")
     public DLTree getGCI() {
-        List<DLTree> l = new ArrayList<DLTree>();
+        List<DLTree> l = new ArrayList<>();
         for (Axiom p : accumulator) {
             l.add(p.createAnAxiom(null));
         }
@@ -156,7 +156,7 @@ public class AxiomSet implements Serializable {
             // nothing to split
             return false;
         }
-        List<Axiom> kept = new ArrayList<Axiom>();
+        List<Axiom> kept = new ArrayList<>();
         for (int i = 0; i < splitted.size(); i++) {
             Axiom q = splitted.get(i);
             if (q.isCyclic()) {
@@ -180,7 +180,7 @@ public class AxiomSet implements Serializable {
     @PortedFrom(file = "tAxiomSet.h", name = "absorb")
     public int absorb() {
         // GCIs to process
-        List<Axiom> GCIs = new ArrayList<Axiom>();
+        List<Axiom> GCIs = new ArrayList<>();
         // we will change Accum (via split rule), so indexing and compare with
         // size
         for (curAxiom = 0; curAxiom < accumulator.size(); curAxiom++) {

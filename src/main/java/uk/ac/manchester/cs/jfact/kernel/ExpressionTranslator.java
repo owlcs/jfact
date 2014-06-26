@@ -147,7 +147,7 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>,
      */
     // necessary
     @PortedFrom(file = "tExpressionTranslator.h", name = "matchEntry")
-    private NamedEntry matchEntry(NamedEntry entry, NamedEntity entity) {
+    private static NamedEntry matchEntry(NamedEntry entry, NamedEntity entity) {
         entry.setEntity(entity);
         entity.setEntry(entry);
         return entry;
@@ -160,7 +160,7 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>,
 
     @Original
     private List<DLTree> visitArgs(NAryExpression<? extends Expression> expr) {
-        List<DLTree> args = new ArrayList<DLTree>();
+        List<DLTree> args = new ArrayList<>();
         List<? extends Expression> list = expr.getArguments();
         for (int i = 0; i < list.size(); i++) {
             args.add(list.get(i).accept(this));
@@ -323,8 +323,7 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>,
 
     @Override
     public DLTree visit(ObjectRoleChain expr) {
-        List<ObjectRoleExpression> l = new ArrayList<ObjectRoleExpression>(
-                expr.getArguments());
+        List<ObjectRoleExpression> l = new ArrayList<>(expr.getArguments());
         if (l.isEmpty()) {
             throw new ReasonerInternalException(
                     "Unsupported expression 'empty role chain' in transformation");

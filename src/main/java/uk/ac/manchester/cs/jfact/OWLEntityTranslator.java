@@ -21,8 +21,8 @@ abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity>
         implements Serializable {
 
     private static final long serialVersionUID = 11000L;
-    private final Map<E, T> entity2dlentity = new HashMap<E, T>();
-    private final Map<T, E> dlentity2entity = new HashMap<T, E>();
+    private final Map<E, T> entity2dlentity = new HashMap<>();
+    private final Map<T, E> dlentity2entity = new HashMap<>();
     protected final ExpressionManager em;
     protected final OWLDataFactory df;
     protected final TranslationMachinery tr;
@@ -38,7 +38,7 @@ abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity>
         this.df = df;
         this.tr = tr;
         E topEntity = this.getTopEntity();
-            this.fillMaps(topEntity, this.getTopEntityPointer());
+        this.fillMaps(topEntity, this.getTopEntityPointer());
         E bottomEntity = this.getBottomEntity();
         if (bottomEntity != null) {
             this.fillMaps(bottomEntity, this.getBottomEntityPointer());

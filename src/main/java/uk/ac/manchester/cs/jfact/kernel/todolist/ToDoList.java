@@ -32,11 +32,10 @@ public class ToDoList implements Serializable {
     private final QueueQueue queueNN;
     /** waiting ops queues */
     @PortedFrom(file = "ToDoList.h", name = "Wait")
-    private final List<ArrayQueue> waitQueue = new ArrayList<ArrayQueue>(
-            nRegularOptions);
+    private final List<ArrayQueue> waitQueue = new ArrayList<>(nRegularOptions);
     /** stack of saved states */
     @PortedFrom(file = "ToDoList.h", name = "SaveStack")
-    private final SaveStack<TODOListSaveState> saveStack = new SaveStack<TODOListSaveState>();
+    private final SaveStack<TODOListSaveState> saveStack = new SaveStack<>();
     /** priority matrix */
     @PortedFrom(file = "ToDoList.h", name = "Matrix")
     private final ToDoPriorMatrix matrix = new ToDoPriorMatrix();

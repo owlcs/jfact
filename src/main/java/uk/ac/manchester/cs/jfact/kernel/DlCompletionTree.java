@@ -108,11 +108,11 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
     private final CGLabel label = new CGLabel();
     // TODO check for better access
     /** inequality relation information respecting current node */
-    protected final List<ConceptWDep> inequalityRelation = new ArrayList<ConceptWDep>();
-    protected final Map<Integer, ConceptWDep> inequalityRelation_helper = new HashMap<Integer, ConceptWDep>();
+    protected final List<ConceptWDep> inequalityRelation = new ArrayList<>();
+    protected final Map<Integer, ConceptWDep> inequalityRelation_helper = new HashMap<>();
     // TODO check whether access should be improved
     /** Neighbours information */
-    private final List<DlCompletionTreeArc> neighbour = new ArrayList<DlCompletionTreeArc>();
+    private final List<DlCompletionTreeArc> neighbour = new ArrayList<>();
     private int neighbourSize = 0;
     /** pointer to last saved node */
     private final SaveList saves = new SaveList();
@@ -677,7 +677,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
      * @return true if IR already has this label
      */
     public boolean initIR(int level, DepSet ds) {
-        Reference<DepSet> dummy = new Reference<DepSet>(DepSet.create());
+        Reference<DepSet> dummy = new Reference<>(DepSet.create());
         // we don't need a clash-set here
         if (inIRwithC(level, ds, dummy)) {
             return true;

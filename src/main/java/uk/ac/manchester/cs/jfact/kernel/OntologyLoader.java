@@ -127,7 +127,7 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
      */
     @PortedFrom(file = "tOntologyLoader.h", name = "prepareArgList")
     private <T extends Expression> List<DLTree> prepareArgList(Collection<T> c) {
-        List<DLTree> ArgList = new ArrayList<DLTree>();
+        List<DLTree> ArgList = new ArrayList<>();
         for (T t : c) {
             ensureNames(t);
             ArgList.add(t.accept(expressionTranslator));
@@ -189,10 +189,10 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         // first make a disjoint axiom
         tbox.processDisjointC(prepareArgList(axiom.getArguments()));
         // now define C as a union-of axiom
-        List<DLTree> ArgList = new ArrayList<DLTree>();
+        List<DLTree> ArgList = new ArrayList<>();
         ensureNames(axiom.getConcept());
         ArgList.add(axiom.getConcept().accept(expressionTranslator));
-        List<DLTree> list = new ArrayList<DLTree>();
+        List<DLTree> list = new ArrayList<>();
         for (Expression p : axiom.getArguments()) {
             list.add(p.accept(expressionTranslator));
         }

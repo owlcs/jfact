@@ -30,7 +30,7 @@ public class TModularizer implements Serializable {
     private final LocalityChecker Checker;
     /** module as a list of axioms */
     @PortedFrom(file = "Modularity.h", name = "Module")
-    private final List<AxiomInterface> Module = new ArrayList<AxiomInterface>();
+    private final List<AxiomInterface> Module = new ArrayList<>();
     /** pointer to a sig index; if not NULL then use optimized algo */
     @PortedFrom(file = "Modularity.h", name = "sigIndex")
     private final SigIndex sigIndex;
@@ -39,7 +39,7 @@ public class TModularizer implements Serializable {
     private boolean noAtomsProcessing;
     /** queue of unprocessed entities */
     @PortedFrom(file = "Modularity.h", name = "WorkQueue")
-    private final List<NamedEntity> WorkQueue = new ArrayList<NamedEntity>();
+    private final List<NamedEntity> WorkQueue = new ArrayList<>();
     /** number of locality check calls */
     @PortedFrom(file = "Modularity.h", name = "nChecks")
     private long nChecks;
@@ -279,7 +279,7 @@ public class TModularizer implements Serializable {
         }
         // here there is a star: do the cycle until stabilization
         int size;
-        List<AxiomInterface> oldModule = new ArrayList<AxiomInterface>();
+        List<AxiomInterface> oldModule = new ArrayList<>();
         do {
             size = Module.size();
             oldModule.clear();

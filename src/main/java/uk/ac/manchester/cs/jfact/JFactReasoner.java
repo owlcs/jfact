@@ -115,9 +115,9 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     @Nonnull
     private final BufferingMode bufferingMode;
     @Nonnull
-    private final List<OWLOntologyChange> rawChanges = new ArrayList<OWLOntologyChange>();
+    private final List<OWLOntologyChange> rawChanges = new ArrayList<>();
     @Nonnull
-    private final Set<OWLAxiom> reasonerAxioms = new LinkedHashSet<OWLAxiom>();
+    private final Set<OWLAxiom> reasonerAxioms = new LinkedHashSet<>();
     @Original
     private final JFactReasonerConfiguration configuration;
     private final OWLDataFactory df;
@@ -125,7 +125,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     // holds the consistency status: true for consistent, false for
     // inconsistent, null for not verified (or changes received)
     private Boolean consistencyVerified = null;
-    private final Set<OWLEntity> knownEntities = new HashSet<OWLEntity>();
+    private final Set<OWLEntity> knownEntities = new HashSet<>();
     private final DatatypeFactory datatypeFactory;
 
     /**
@@ -248,13 +248,13 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
 
     @Override
     public synchronized List<OWLOntologyChange> getPendingChanges() {
-        return new ArrayList<OWLOntologyChange>(rawChanges);
+        return new ArrayList<>(rawChanges);
     }
 
     @Override
     public synchronized Set<OWLAxiom> getPendingAxiomAdditions() {
         if (!rawChanges.isEmpty()) {
-            Set<OWLAxiom> added = new HashSet<OWLAxiom>();
+            Set<OWLAxiom> added = new HashSet<>();
             computeDiff(added, new HashSet<OWLAxiom>());
             return added;
         }
@@ -264,7 +264,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     @Override
     public synchronized Set<OWLAxiom> getPendingAxiomRemovals() {
         if (!rawChanges.isEmpty()) {
-            Set<OWLAxiom> removed = new HashSet<OWLAxiom>();
+            Set<OWLAxiom> removed = new HashSet<>();
             computeDiff(new HashSet<OWLAxiom>(), removed);
             return removed;
         }
@@ -275,8 +275,8 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     public synchronized void flush() {
         // Process the changes
         if (!rawChanges.isEmpty()) {
-            Set<OWLAxiom> added = new HashSet<OWLAxiom>();
-            Set<OWLAxiom> removed = new HashSet<OWLAxiom>();
+            Set<OWLAxiom> added = new HashSet<>();
+            Set<OWLAxiom> removed = new HashSet<>();
             computeDiff(added, removed);
             rawChanges.clear();
             if (!added.isEmpty() || !removed.isEmpty()) {
@@ -702,19 +702,17 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
 
     /** @return class actor */
     private TaxonomyActor<ConceptExpression> classActor() {
-        return new TaxonomyActor<ConceptExpression>(em, new ClassPolicy());
+        return new TaxonomyActor<>(em, new ClassPolicy());
     }
 
     /** @return object property actor */
     private TaxonomyActor<ObjectRoleExpression> objectActor() {
-        return new TaxonomyActor<ObjectRoleExpression>(em,
-                new ObjectPropertyPolicy());
+        return new TaxonomyActor<>(em, new ObjectPropertyPolicy());
     }
 
     /** @return data property actor */
     private TaxonomyActor<DataRoleExpression> dataActor() {
-        return new TaxonomyActor<DataRoleExpression>(em,
-                new DataPropertyPolicy());
+        return new TaxonomyActor<>(em, new DataPropertyPolicy());
     }
 
     /**
@@ -726,7 +724,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
      */
     private <T extends Expression> TaxonomyActor<T> individualActor(
             @SuppressWarnings("unused") Class<T> t) {
-        return new TaxonomyActor<T>(em, new IndividualPolicy(true));
+        return new TaxonomyActor<>(em, new IndividualPolicy(true));
     }
 
     @Override
@@ -745,7 +743,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         checkConsistency();
         List<Individual> fillers = kernel.getRoleFillers(tr.pointer(ind),
                 tr.pointer(pe));
-        List<IndividualExpression> acc = new ArrayList<IndividualExpression>();
+        List<IndividualExpression> acc = new ArrayList<>();
         for (NamedEntry p : fillers) {
             acc.add(em.individual(p.getName()));
         }
@@ -875,7 +873,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     @Override
     public Collection<RootNode> getObjectNeighbours(RootNode n,
             OWLObjectProperty property) {
-        List<RootNode> toReturn = new ArrayList<RootNode>();
+        List<RootNode> toReturn = new ArrayList<>();
         for (DlCompletionTree t : kernel.getNeighbours(
                 (DlCompletionTree) n.getNode(), tr.pointer(property))) {
             toReturn.add(new RootNodeImpl(checkNotNull(t)));
@@ -886,7 +884,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     @Override
     public Collection<RootNode> getDataNeighbours(RootNode n,
             OWLDataProperty property) {
-        List<RootNode> toReturn = new ArrayList<RootNode>();
+        List<RootNode> toReturn = new ArrayList<>();
         for (DlCompletionTree t : kernel.getNeighbours(
                 (DlCompletionTree) n.getNode(), tr.pointer(property))) {
             toReturn.add(new RootNodeImpl(checkNotNull(t)));
@@ -944,8 +942,8 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return axiomsToSet(kernel.getAtomAxioms(index));
     }
 
-    private Set<OWLAxiom> axiomsToSet(Collection<AxiomInterface> index) {
-        Set<OWLAxiom> toReturn = new HashSet<OWLAxiom>();
+    private static Set<OWLAxiom> axiomsToSet(Collection<AxiomInterface> index) {
+        Set<OWLAxiom> toReturn = new HashSet<>();
         for (AxiomInterface ax : index) {
             OWLAxiom owlAxiom = ax.getOWLAxiom();
             if (owlAxiom != null) {

@@ -24,10 +24,10 @@ public class Ontology implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** all the axioms */
     @PortedFrom(file = "tOntology.h", name = "Axioms")
-    private final List<AxiomInterface> axioms = new ArrayList<AxiomInterface>();
+    private final List<AxiomInterface> axioms = new ArrayList<>();
     /** all the axioms */
     @PortedFrom(file = "tOntology.h", name = "Retracted")
-    private final List<AxiomInterface> retracted = new ArrayList<AxiomInterface>();
+    private final List<AxiomInterface> retracted = new ArrayList<>();
     /** expression manager that builds all the expressions for the axioms */
     @PortedFrom(file = "tOntology.h", name = "EManager")
     private final ExpressionManager expressionManager = new ExpressionManager();

@@ -28,15 +28,15 @@ public class TaxonomyVertex implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** immediate parents and children */
     @PortedFrom(file = "taxVertex.h", name = "Links")
-    private List<TaxonomyVertex> linksParent = new ArrayList<TaxonomyVertex>();
+    private List<TaxonomyVertex> linksParent = new ArrayList<>();
     @PortedFrom(file = "taxVertex.h", name = "Links")
-    private List<TaxonomyVertex> linksChild = new ArrayList<TaxonomyVertex>();
+    private List<TaxonomyVertex> linksChild = new ArrayList<>();
     /** entry corresponding to current tax vertex */
     @PortedFrom(file = "taxVertex.h", name = "sample")
     private ClassifiableEntry sample = null;
     /** synonyms of the sample entry */
     @PortedFrom(file = "taxVertex.h", name = "synonyms")
-    private Set<ClassifiableEntry> synonyms = new LinkedHashSet<ClassifiableEntry>();
+    private Set<ClassifiableEntry> synonyms = new LinkedHashSet<>();
     // labels for different purposes. all for 2 directions: top-down and
     // bottom-up search
     /** flag if given vertex was checked; connected with checkLab */
@@ -215,7 +215,7 @@ public class TaxonomyVertex implements Serializable {
      */
     public TaxonomyVertex(TaxonomyVertex v) {
         sample = v.sample;
-        synonyms = new HashSet<ClassifiableEntry>(v.synonyms);
+        synonyms = new HashSet<>(v.synonyms);
         checked = v.checked;
         isValued = v.isValued;
         common = v.common;
@@ -342,10 +342,8 @@ public class TaxonomyVertex implements Serializable {
     public void incorporate(JFactReasonerConfiguration c) {
         // setup links
         // TODO doublecheck
-        List<TaxonomyVertex> falselist = new ArrayList<TaxonomyVertex>(
-                neigh(false));
-        List<TaxonomyVertex> truelist = new ArrayList<TaxonomyVertex>(
-                neigh(true));
+        List<TaxonomyVertex> falselist = new ArrayList<>(neigh(false));
+        List<TaxonomyVertex> truelist = new ArrayList<>(neigh(true));
         for (TaxonomyVertex d : falselist) {
             for (TaxonomyVertex u : truelist) {
                 if (d.removeLink(true, u)) {
@@ -488,7 +486,7 @@ public class TaxonomyVertex implements Serializable {
         o.append(" {");
         o.append(neigh(upDirection).size());
         o.append(':');
-        TreeSet<TaxonomyVertex> sorted = new TreeSet<TaxonomyVertex>(
+        TreeSet<TaxonomyVertex> sorted = new TreeSet<>(
                 new Comparator<TaxonomyVertex>() {
 
                     @Override

@@ -38,7 +38,7 @@ public abstract class AbstractNaryAxiom<I extends Expression> extends AxiomImpl
      */
     protected AbstractNaryAxiom(OWLAxiom ax, Collection<I> v) {
         super(ax);
-        delegate = new NAryExpressionImpl<I>();
+        delegate = new NAryExpressionImpl<>();
         delegate.add(v);
     }
 

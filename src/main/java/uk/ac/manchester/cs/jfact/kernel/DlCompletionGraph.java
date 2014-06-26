@@ -33,13 +33,13 @@ public class DlCompletionGraph implements Serializable {
     // XXX is this actually used?
     /** allocator for edges */
     @PortedFrom(file = "dlCompletionGraph.h", name = "CTEdgeHeap")
-    private final List<DlCompletionTreeArc> ctEdgeHeap = new ArrayList<DlCompletionTreeArc>();
+    private final List<DlCompletionTreeArc> ctEdgeHeap = new ArrayList<>();
     /** heap itself */
     @PortedFrom(file = "dlCompletionGraph.h", name = "NodeBase")
     private final List<DlCompletionTree> nodeBase;
     /** nodes, saved on current branching level */
     @PortedFrom(file = "dlCompletionGraph.h", name = "SavedNodes")
-    private final List<DlCompletionTree> savedNodes = new ArrayList<DlCompletionTree>();
+    private final List<DlCompletionTree> savedNodes = new ArrayList<>();
     /** host reasoner */
     @PortedFrom(file = "dlCompletionGraph.h", name = "pReasoner")
     private final DlSatTester pReasoner;
@@ -60,7 +60,7 @@ public class DlCompletionGraph implements Serializable {
     private final SaveStackRare rareStack = new SaveStackRare();
     /** stack for usual saving/restoring */
     @PortedFrom(file = "dlCompletionGraph.h", name = "Stack")
-    private final SaveStack<DLCompletionGraphSaveState> stack = new SaveStack<DLCompletionGraphSaveState>();
+    private final SaveStack<DLCompletionGraphSaveState> stack = new SaveStack<>();
     // helpers for the output
     /** bitmap to remember which node was printed */
     // TODO change to regular
@@ -294,7 +294,7 @@ public class DlCompletionGraph implements Serializable {
      *        p
      */
     public DlCompletionGraph(int initSize, DlSatTester p) {
-        nodeBase = new ArrayList<DlCompletionTree>();
+        nodeBase = new ArrayList<>();
         Helper.resize(nodeBase, initSize);
         pReasoner = p;
         nodeId = 0;

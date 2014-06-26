@@ -66,24 +66,24 @@ public class DatatypeFactory implements Serializable {
     /**  HEXBINARY          */  public static final Datatype<String>                HEXBINARY           = new HEXBINARY_DATATYPE();
     /**  STRING             */  public static final Datatype<String>                STRING              = new STRING_DATATYPE();
     /**  PLAINLITERAL       */  public static final Datatype<String>                PLAINLITERAL        = new PLAINLITERAL_DATATYPE();
-    /**  REAL               */  public static final NumericDatatype<BigDecimal>     REAL                = new REAL_DATATYPE<BigDecimal>();
-    /**  RATIONAL           */  public static final NumericDatatype<BigDecimal>     RATIONAL            = new RATIONAL_DATATYPE<BigDecimal>();
+    /**  REAL               */  public static final NumericDatatype<BigDecimal>     REAL                = new REAL_DATATYPE<>();
+    /**  RATIONAL           */  public static final NumericDatatype<BigDecimal>     RATIONAL            = new RATIONAL_DATATYPE<>();
     /**  DATETIMESTAMP      */  public static final Datatype<Calendar>              DATETIMESTAMP       = new DATETIMESTAMP_DATATYPE();
-    /**  DECIMAL            */  public static final NumericDatatype<BigDecimal>     DECIMAL             = new DECIMAL_DATATYPE<BigDecimal>();
-    /**  INTEGER            */  public static final NumericDatatype<BigInteger>     INTEGER             = new INTEGER_DATATYPE<BigInteger>();
+    /**  DECIMAL            */  public static final NumericDatatype<BigDecimal>     DECIMAL             = new DECIMAL_DATATYPE<>();
+    /**  INTEGER            */  public static final NumericDatatype<BigInteger>     INTEGER             = new INTEGER_DATATYPE<>();
     /**  DOUBLE             */  public static final NumericDatatype<Double>         DOUBLE              = new DOUBLE_DATATYPE();
     /**  FLOAT              */  public static final NumericDatatype<Float>          FLOAT               = new FLOAT_DATATYPE();
-    /**  NONPOSITIVEINTEGER */  public static final NumericDatatype<BigInteger>     NONPOSITIVEINTEGER  = new NONPOSITIVEINTEGER_DATATYPE<BigInteger>();
-    /**  NEGATIVEINTEGER    */  public static final NumericDatatype<BigInteger>     NEGATIVEINTEGER     = new NEGATIVEINTEGER_DATATYPE<BigInteger>();
-    /**  NONNEGATIVEINTEGER */  public static final NumericDatatype<BigInteger>     NONNEGATIVEINTEGER  = new NONNEGATIVEINTEGER_DATATYPE<BigInteger>();
-    /**  POSITIVEINTEGER    */  public static final NumericDatatype<BigInteger>     POSITIVEINTEGER     = new POSITIVEINTEGER_DATATYPE<BigInteger>();
-    /**  LONG               */  public static final NumericDatatype<Long>           LONG                = new LONG_DATATYPE<Long>();
-    /**  INT                */  public static final NumericDatatype<Integer>        INT                 = new INT_DATATYPE<Integer>();
-    /**  SHORT              */  public static final NumericDatatype<Short>          SHORT               = new SHORT_DATATYPE<Short>();
+    /**  NONPOSITIVEINTEGER */  public static final NumericDatatype<BigInteger>     NONPOSITIVEINTEGER  = new NONPOSITIVEINTEGER_DATATYPE<>();
+    /**  NEGATIVEINTEGER    */  public static final NumericDatatype<BigInteger>     NEGATIVEINTEGER     = new NEGATIVEINTEGER_DATATYPE<>();
+    /**  NONNEGATIVEINTEGER */  public static final NumericDatatype<BigInteger>     NONNEGATIVEINTEGER  = new NONNEGATIVEINTEGER_DATATYPE<>();
+    /**  POSITIVEINTEGER    */  public static final NumericDatatype<BigInteger>     POSITIVEINTEGER     = new POSITIVEINTEGER_DATATYPE<>();
+    /**  LONG               */  public static final NumericDatatype<Long>           LONG                = new LONG_DATATYPE<>();
+    /**  INT                */  public static final NumericDatatype<Integer>        INT                 = new INT_DATATYPE<>();
+    /**  SHORT              */  public static final NumericDatatype<Short>          SHORT               = new SHORT_DATATYPE<>();
     /**  BYTE               */  public static final NumericDatatype<Byte>           BYTE                = new BYTE_DATATYPE();
-    /**  UNSIGNEDLONG       */  public static final NumericDatatype<BigInteger>     UNSIGNEDLONG        = new UNSIGNEDLONG_DATATYPE<BigInteger>();
-    /**  UNSIGNEDINT        */  public static final NumericDatatype<Long>           UNSIGNEDINT         = new UNSIGNEDINT_DATATYPE<Long>();
-    /**  UNSIGNEDSHORT      */  public static final NumericDatatype<Integer>        UNSIGNEDSHORT       = new UNSIGNEDSHORT_DATATYPE<Integer>();
+    /**  UNSIGNEDLONG       */  public static final NumericDatatype<BigInteger>     UNSIGNEDLONG        = new UNSIGNEDLONG_DATATYPE<>();
+    /**  UNSIGNEDINT        */  public static final NumericDatatype<Long>           UNSIGNEDINT         = new UNSIGNEDINT_DATATYPE<>();
+    /**  UNSIGNEDSHORT      */  public static final NumericDatatype<Integer>        UNSIGNEDSHORT       = new UNSIGNEDSHORT_DATATYPE<>();
     /**  UNSIGNEDBYTE       */  public static final NumericDatatype<Short>          UNSIGNEDBYTE        = new UnsignedByteForShort();
     /**  NORMALIZEDSTRING   */  public static final Datatype<String>                NORMALIZEDSTRING    = new NORMALIZEDSTRING_DATATYPE();
     /**  TOKEN              */  public static final Datatype<String>                TOKEN               = new TOKEN_DATATYPE();
@@ -97,7 +97,7 @@ public class DatatypeFactory implements Serializable {
     private static final List<Datatype<?>> values = getList();
 
     private static List<Datatype<?>> getList() {
-        List<Datatype<?>> toReturn = new ArrayList<Datatype<?>>();
+        List<Datatype<?>> toReturn = new ArrayList<>();
         toReturn.add(ANYURI);
         toReturn.add(BASE64BINARY);
         toReturn.add(BOOLEAN);
@@ -150,10 +150,10 @@ public class DatatypeFactory implements Serializable {
      *         DatatypeFactory, so changes will not be reflected back.
      */
     public Collection<Datatype<?>> getKnownDatatypes() {
-        return new ArrayList<Datatype<?>>(knownDatatypes.values());
+        return new ArrayList<>(knownDatatypes.values());
     }
 
-    private final Map<IRI, Datatype<?>> knownDatatypes = new HashMap<IRI, Datatype<?>>();
+    private final Map<IRI, Datatype<?>> knownDatatypes = new HashMap<>();
     private static int uri_index = 0;
 
     static int getIndex() {
@@ -293,7 +293,7 @@ public class DatatypeFactory implements Serializable {
      */
     public static <R extends Comparable<R>> DatatypeExpression<R>
             getDatatypeExpression(Datatype<R> base) {
-        return new DatatypeExpressionImpl<R>(base);
+        return new DatatypeExpressionImpl<>(base);
     }
 
     /**
@@ -305,7 +305,7 @@ public class DatatypeFactory implements Serializable {
      */
     public static <R extends Comparable<R>> DatatypeExpression<R>
             getNumericDatatypeExpression(NumericDatatype<R> base) {
-        return new DatatypeNumericExpressionImpl<R>(base);
+        return new DatatypeNumericExpressionImpl<>(base);
     }
 
     /**
@@ -317,7 +317,7 @@ public class DatatypeFactory implements Serializable {
      */
     public static <R extends Comparable<R>> DatatypeExpression<R>
             getOrderedDatatypeExpression(Datatype<R> base) {
-        return new DatatypeOrderedExpressionImpl<R>(base);
+        return new DatatypeOrderedExpressionImpl<>(base);
     }
 
     abstract static class ABSTRACT_NUMERIC_DATATYPE<R extends Comparable<R>>
@@ -409,7 +409,8 @@ public class DatatypeFactory implements Serializable {
                 if (type instanceof NumericDatatype) {
                     wrapper = (NumericDatatype<R>) type;
                 } else {
-                    wrapper = this.wrap((Datatype<R>) type);
+                    wrapper = ABSTRACT_NUMERIC_DATATYPE
+                            .wrap((Datatype<R>) type);
                 }
                 // then both types are numeric
                 // if both have no max or both have no min -> there is an
@@ -467,9 +468,9 @@ public class DatatypeFactory implements Serializable {
             return getMax().compareTo(getMin()) < 0;
         }
 
-        private <O extends Comparable<O>> NumericDatatype<O>
-                wrap(Datatype<O> d) {
-            return new NumericDatatypeWrapper<O>(d);
+        private static <O extends Comparable<O>> NumericDatatype<O> wrap(
+                Datatype<O> d) {
+            return new NumericDatatypeWrapper<>(d);
         }
 
         @Override
@@ -614,7 +615,7 @@ public class DatatypeFactory implements Serializable {
         public Collection<Literal<Boolean>> listValues() {
             // if all datatypes are compatible, the intersection is the two
             // booleans minu any restriction
-            List<Literal<Boolean>> toReturn = new ArrayList<Literal<Boolean>>(2);
+            List<Literal<Boolean>> toReturn = new ArrayList<>(2);
             toReturn.add(buildLiteral(Boolean.toString(true)));
             toReturn.add(buildLiteral(Boolean.toString(false)));
             return toReturn;

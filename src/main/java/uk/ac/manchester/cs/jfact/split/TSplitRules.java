@@ -54,8 +54,8 @@ public class TSplitRules implements Serializable {
          *        p
          */
         TSplitRule(Set<NamedEntity> es, Set<NamedEntity> is, int p) {
-            eqSig = new HashSet<NamedEntity>(es);
-            impSig = new HashSet<NamedEntity>(is);
+            eqSig = new HashSet<>(es);
+            impSig = new HashSet<>(is);
             bpSplit = p;
         }
 
@@ -116,13 +116,13 @@ public class TSplitRules implements Serializable {
 
     /** all known rules */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "Base")
-    private final List<TSplitRule> Base = new ArrayList<TSplitRule>();
+    private final List<TSplitRule> Base = new ArrayList<>();
     /** all entities that appears in all the splits in a set */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "PossibleSignature")
-    private final Set<NamedEntity> PossibleSignature = new HashSet<NamedEntity>();
+    private final Set<NamedEntity> PossibleSignature = new HashSet<>();
     /** map between BP and TNamedEntities */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "EntityMap")
-    private final List<NamedEntity> EntityMap = new ArrayList<NamedEntity>();
+    private final List<NamedEntity> EntityMap = new ArrayList<>();
     @Original
     private final JFactReasonerConfiguration config;
 
@@ -233,7 +233,7 @@ public class TSplitRules implements Serializable {
      */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "buildSet")
     private Set<NamedEntity> buildSet(TSignature sig, NamedEntity entity) {
-        Set<NamedEntity> set = new HashSet<NamedEntity>();
+        Set<NamedEntity> set = new HashSet<>();
         for (NamedEntity p : sig.begin()) {
             if (!p.equals(entity) && p instanceof ConceptName) {
                 set.add(p);
@@ -262,11 +262,10 @@ public class TSplitRules implements Serializable {
                 addSplitRule(buildSet(p.sig, p.name), impSet, bp);
             } else {
                 // make set of all the seed signatures of for p.Module
-                Set<TSignature> Out = new HashSet<TSignature>();
+                Set<TSignature> Out = new HashSet<>();
                 // prepare vector of available entities
-                List<NamedEntity> Allowed = new ArrayList<NamedEntity>();
-                List<AxiomInterface> Module = new ArrayList<AxiomInterface>(
-                        p.Module);
+                List<NamedEntity> Allowed = new ArrayList<>();
+                List<AxiomInterface> Module = new ArrayList<>(p.Module);
                 // prepare signature for the process
                 TSignature sig = p.sig;
                 prepareStartSig(Module, sig, Allowed);
@@ -290,8 +289,8 @@ public class TSplitRules implements Serializable {
      *        Allowed
      */
     @PortedFrom(file = "tSplitExpansionRules.h", name = "prepareStartSig")
-    private void prepareStartSig(List<AxiomInterface> Module, TSignature sig,
-            List<NamedEntity> Allowed) {
+    private static void prepareStartSig(List<AxiomInterface> Module,
+            TSignature sig, List<NamedEntity> Allowed) {
         // remove all defined concepts from signature
         for (AxiomInterface p : Module) {
             if (p instanceof AxiomEquivalentConcepts) {
@@ -343,9 +342,9 @@ public class TSplitRules implements Serializable {
         // copy the signature
         TSignature sig = StartSig;
         // create a set of allowed entities for the next round
-        List<NamedEntity> RecAllowed = new ArrayList<NamedEntity>();
-        List<NamedEntity> Keepers = new ArrayList<NamedEntity>();
-        // Set<AxiomInterface> outModule = new HashSet<AxiomInterface>();
+        List<NamedEntity> RecAllowed = new ArrayList<>();
+        List<NamedEntity> Keepers = new ArrayList<>();
+        // Set<AxiomInterface> outModule = new HashSet<>();
         TModularizer mod = new TModularizer(config,
                 new SyntacticLocalityChecker());
         for (NamedEntity p : Allowed) {

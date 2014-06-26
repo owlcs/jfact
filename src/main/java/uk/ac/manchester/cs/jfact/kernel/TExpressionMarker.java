@@ -28,13 +28,13 @@ class TExpressionMarker extends DLExpressionVisitorAdapter {
     private static final long serialVersionUID = 11000L;
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "GoodTerms")
-    private final Map<ConceptExpression, Boolean> GoodTerms = new HashMap<ConceptExpression, Boolean>();
+    private final Map<ConceptExpression, Boolean> GoodTerms = new HashMap<>();
     // A term is called good, if all of its subterms don't contain nominals
     // different from x
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "SimpleTerms")
-    private final Map<ConceptExpression, Boolean> SimpleTerms = new HashMap<ConceptExpression, Boolean>();
+    private final Map<ConceptExpression, Boolean> SimpleTerms = new HashMap<>();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Path")
-    private final List<ConceptExpression> Path = new ArrayList<ConceptExpression>();
+    private final List<ConceptExpression> Path = new ArrayList<>();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Nominal")
     private final ConceptExpression Nominal;
 

@@ -25,7 +25,7 @@ public class NominalReasoner extends DlSatTester {
     private static final long serialVersionUID = 11000L;
     /** all nominals defined in TBox */
     @PortedFrom(file = "ReasonerNom.h", name = "Nominals")
-    protected final List<Individual> nominals = new ArrayList<Individual>();
+    protected final List<Individual> nominals = new ArrayList<>();
 
     /** there are nominals */
     @Override

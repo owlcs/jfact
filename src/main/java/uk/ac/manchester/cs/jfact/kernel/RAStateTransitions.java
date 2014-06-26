@@ -21,7 +21,7 @@ public class RAStateTransitions implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** all transitions */
     @PortedFrom(file = "RAutomaton.h", name = "Base")
-    protected final List<RATransition> base = new ArrayList<RATransition>();
+    protected final List<RATransition> base = new ArrayList<>();
     /** check whether there is an empty transition going from this state */
     @PortedFrom(file = "RAutomaton.h", name = "EmptyTransition")
     protected boolean emptyTransition;

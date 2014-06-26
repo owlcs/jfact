@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataProperty;
-import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 
@@ -1314,7 +1313,7 @@ public class VerifyComplianceOWLS extends VerifyComplianceBase {
         // actual__ KIF, refURI
         assertEquals(
                 reasoner.getDataPropertyValues(KIF, refURI),
-                new HashSet<OWLLiteral>(
+                new HashSet<>(
                         Arrays.asList(df
                                 .getOWLLiteral("http://logic.stanford.edu/kif/kif.html"))));
     }
@@ -1330,7 +1329,7 @@ public class VerifyComplianceOWLS extends VerifyComplianceBase {
         // actual__ DRS, refURI
         assertEquals(
                 reasoner.getDataPropertyValues(DRS, refURI),
-                new HashSet<OWLLiteral>(
+                new HashSet<>(
                         Arrays.asList(df
                                 .getOWLLiteral("http://www.daml.org/services/owl-s/1.1/generic/drs.owl"))));
     }
@@ -1345,7 +1344,7 @@ public class VerifyComplianceOWLS extends VerifyComplianceBase {
         // actual__ SWRL, refURI
         assertEquals(
                 reasoner.getDataPropertyValues(SWRL, refURI),
-                new HashSet<OWLLiteral>(Arrays.asList(df
+                new HashSet<>(Arrays.asList(df
                         .getOWLLiteral("http://www.w3.org/2003/11/swrl"))));
     }
 }

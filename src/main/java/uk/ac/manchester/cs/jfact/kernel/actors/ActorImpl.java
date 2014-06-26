@@ -22,7 +22,7 @@ public class ActorImpl implements Actor, Serializable {
     private static final long serialVersionUID = 11000L;
     /** vertices that satisfy the condition */
     @PortedFrom(file = "Actor.h", name = "found")
-    protected final List<TaxonomyVertex> found = new ArrayList<TaxonomyVertex>();
+    protected final List<TaxonomyVertex> found = new ArrayList<>();
     /** flag to look at concept-like or role-like entities */
     @PortedFrom(file = "Actor.h", name = "isRole")
     protected boolean isRole;
@@ -82,7 +82,7 @@ public class ActorImpl implements Actor, Serializable {
      */
     @PortedFrom(file = "Actor.h", name = "fillArray")
     protected List<ClassifiableEntry> fillArray(TaxonomyVertex v) {
-        List<ClassifiableEntry> array = new ArrayList<ClassifiableEntry>();
+        List<ClassifiableEntry> array = new ArrayList<>();
         if (tryEntry(v.getPrimer())) {
             array.add(v.getPrimer());
         }
@@ -176,7 +176,7 @@ public class ActorImpl implements Actor, Serializable {
      */
     @PortedFrom(file = "Actor.h", name = "getElements2D")
     public List<List<ClassifiableEntry>> getElements2D() {
-        List<List<ClassifiableEntry>> ret = new ArrayList<List<ClassifiableEntry>>();
+        List<List<ClassifiableEntry>> ret = new ArrayList<>();
         for (int i = 0; i < found.size(); ++i) {
             ret.add(fillArray(found.get(i)));
         }
@@ -189,7 +189,7 @@ public class ActorImpl implements Actor, Serializable {
      */
     @PortedFrom(file = "Actor.h", name = "getElements1D")
     public List<ClassifiableEntry> getElements1D() {
-        List<ClassifiableEntry> vec = new ArrayList<ClassifiableEntry>();
+        List<ClassifiableEntry> vec = new ArrayList<>();
         for (TaxonomyVertex p : found) {
             vec.addAll(fillArray(p));
         }

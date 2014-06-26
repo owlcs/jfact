@@ -34,7 +34,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     private final TBox tBox;
     /** common descendants of all parents of currently classified concept */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "Common")
-    private final List<TaxonomyVertex> common = new ArrayList<TaxonomyVertex>();
+    private final List<TaxonomyVertex> common = new ArrayList<>();
     // statistic counters
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "nConcepts")
     private long nConcepts = 0;
@@ -70,7 +70,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "nCommon")
     protected int nCommon = 1;
     /** set of possible parents */
-    protected final Set<TaxonomyVertex> candidates = new HashSet<TaxonomyVertex>();
+    protected final Set<TaxonomyVertex> candidates = new HashSet<>();
     /** whether look into it */
     protected boolean useCandidates = false;
     protected Set<NamedEntity> MPlus;
@@ -469,7 +469,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
                 return true;
             }
             ++nCommon;
-            List<TaxonomyVertex> aux = new ArrayList<TaxonomyVertex>(common);
+            List<TaxonomyVertex> aux = new ArrayList<>(common);
             common.clear();
             propagateOneCommon(p);
             pTax.clearVisited();
@@ -553,7 +553,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         }
         pTax.current.clearLinks(true);
         runTopDown();
-        List<TaxonomyVertex> vec = new ArrayList<TaxonomyVertex>();
+        List<TaxonomyVertex> vec = new ArrayList<>();
         for (TaxonomyVertex p : pTax.current.neigh(true)) {
             if (!isDirectParent(p)) {
                 vec.add(p);
@@ -575,7 +575,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
      */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "mergeSplitVars")
     private void mergeSplitVars(TSplitVar split) {
-        Set<TaxonomyVertex> splitVertices = new HashSet<TaxonomyVertex>();
+        Set<TaxonomyVertex> splitVertices = new HashSet<>();
         TaxonomyVertex v = split.getC().getTaxVertex();
         boolean cIn = v != null;
         if (v != null) {
@@ -656,8 +656,8 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         MMinus = minus;
         pTax.deFinalise();
         // fill in an order to
-        LinkedList<TaxonomyVertex> queue = new LinkedList<TaxonomyVertex>();
-        List<ClassifiableEntry> toProcess = new ArrayList<ClassifiableEntry>();
+        LinkedList<TaxonomyVertex> queue = new LinkedList<>();
+        List<ClassifiableEntry> toProcess = new ArrayList<>();
         queue.add(pTax.getTopVertex());
         while (!queue.isEmpty()) {
             TaxonomyVertex cur = queue.remove(0);
@@ -711,7 +711,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         if (removed) {
             // re-check all parents
             // List<TaxonomyVertex> pos = new ArrayList<TaxonomyVertex>();
-            List<TaxonomyVertex> neg = new ArrayList<TaxonomyVertex>();
+            List<TaxonomyVertex> neg = new ArrayList<>();
             for (TaxonomyVertex p : node.neigh(true)) {
                 if (isValued(p) && getValue(p)) {
                     continue;

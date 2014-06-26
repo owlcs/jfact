@@ -85,7 +85,7 @@ public class DLVertex extends DLVertexTagDFS {
                         sorted[i] = original.get(i);
                     }
                 } else {
-                    List<Integer> l = new ArrayList<Integer>();
+                    List<Integer> l = new ArrayList<>();
                     for (int i = 0; i < set.size(); ++i) {
                         l.add(set.get(i));
                     }
@@ -213,7 +213,7 @@ public class DLVertex extends DLVertexTagDFS {
     }
 
     @PortedFrom(file = "dlVertex.h", name = "compare")
-    private boolean compare(Object o1, Object o2) {
+    private static boolean compare(Object o1, Object o2) {
         if (o1 == null) {
             return o2 == null;
         }

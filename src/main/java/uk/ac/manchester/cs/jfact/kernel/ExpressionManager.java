@@ -91,7 +91,7 @@ public class ExpressionManager implements Serializable {
             // no cached entry -- create a new one and cache it
             ObjectRoleExpression concat = build(tail);
             if (map == null) {
-                map = new HashMap<ObjectRoleExpression, ObjectRoleExpression>();
+                map = new HashMap<>();
             }
             map.put(tail, concat);
             return concat;
@@ -156,19 +156,19 @@ public class ExpressionManager implements Serializable {
 
     /** nameset for concepts */
     @PortedFrom(file = "tExpressionManager.h", name = "NS_C")
-    private final NameSet<ConceptName, IRI> conceptNameset = new NameSet<ConceptName, IRI>(
+    private final NameSet<ConceptName, IRI> conceptNameset = new NameSet<>(
             new ConceptNameCreator());
     /** nameset for individuals */
     @PortedFrom(file = "tExpressionManager.h", name = "NS_I")
-    private final NameSet<IndividualName, IRI> individualNameset = new NameSet<IndividualName, IRI>(
+    private final NameSet<IndividualName, IRI> individualNameset = new NameSet<>(
             new IndividualNameCreator());
     /** nameset for object roles */
     @PortedFrom(file = "tExpressionManager.h", name = "NS_OR")
-    private final NameSet<ObjectRoleName, IRI> objectRoleNameset = new NameSet<ObjectRoleName, IRI>(
+    private final NameSet<ObjectRoleName, IRI> objectRoleNameset = new NameSet<>(
             new ObjectroleNameCreator());
     /** nameset for data roles */
     @PortedFrom(file = "tExpressionManager.h", name = "NS_DR")
-    private final NameSet<DataRoleName, IRI> dataRoleNameset = new NameSet<DataRoleName, IRI>(
+    private final NameSet<DataRoleName, IRI> dataRoleNameset = new NameSet<>(
             new DataroleNameCreator());
     /** TOP concept */
     @PortedFrom(file = "tExpressionManager.h", name = "CTop")
@@ -207,7 +207,7 @@ public class ExpressionManager implements Serializable {
     private final InverseRoleCache inverseRoleCache = new InverseRoleCache();
     /** cache for the one-of singletons */
     @PortedFrom(file = "tExpressionManager.h", name = "OneOfCache")
-    private final Map<IndividualExpression, ConceptExpression> OneOfCache = new HashMap<IndividualExpression, ConceptExpression>();
+    private final Map<IndividualExpression, ConceptExpression> OneOfCache = new HashMap<>();
 
     /**
      * set Top/Bot properties
@@ -401,12 +401,12 @@ public class ExpressionManager implements Serializable {
             IndividualExpression i = l.get(0);
             ConceptExpression c = OneOfCache.get(i);
             if (c == null) {
-                c = new ConceptOneOf<IndividualExpression>(l);
+                c = new ConceptOneOf<>(l);
                 OneOfCache.put(i, c);
             }
             return c;
         }
-        return new ConceptOneOf<IndividualExpression>(l);
+        return new ConceptOneOf<>(l);
     }
 
     /**

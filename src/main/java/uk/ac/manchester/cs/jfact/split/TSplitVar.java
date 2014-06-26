@@ -25,7 +25,7 @@ public class TSplitVar implements Serializable {
     private ConceptName oldName;
     // split concept itself
     private Concept C;
-    private final List<SplitVarEntry> Entries = new ArrayList<SplitVarEntry>();
+    private final List<SplitVarEntry> Entries = new ArrayList<>();
 
     /**
      * @param name

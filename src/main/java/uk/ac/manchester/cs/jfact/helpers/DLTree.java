@@ -299,7 +299,7 @@ class CloningVisitor implements DLTreeVisitorEx<DLTree>, Serializable {
 
     @Override
     public DLTree visit(NDLTree t) {
-        List<DLTree> l = new ArrayList<DLTree>();
+        List<DLTree> l = new ArrayList<>();
         for (DLTree tree : t.children) {
             l.add(tree.accept(this));
         }
@@ -330,8 +330,8 @@ class ReverseCloningVisitor implements DLTreeVisitorEx<DLTree>, Serializable {
 
     @Override
     public DLTree visit(NDLTree t) {
-        List<DLTree> l = new ArrayList<DLTree>(t.children);
-        List<DLTree> actual = new ArrayList<DLTree>();
+        List<DLTree> l = new ArrayList<>(t.children);
+        List<DLTree> actual = new ArrayList<>();
         Collections.reverse(l);
         for (DLTree tree : l) {
             actual.add(tree.accept(this));
@@ -450,7 +450,7 @@ class TWODLTree extends DLTree {
 
     TWODLTree(Lexeme l, DLTree t1, DLTree t2) {
         super(l);
-        children = new ArrayList<DLTree>(2);
+        children = new ArrayList<>(2);
         addChild(t1);
         addChild(t2);
     }
@@ -499,7 +499,7 @@ class NDLTree extends DLTree {
 
     public NDLTree(Lexeme l, Collection<DLTree> trees) {
         super(l);
-        children = new ArrayList<DLTree>();
+        children = new ArrayList<>();
         if (trees.size() < 2) {
             throw new ReasonerInternalException(
                     "not enough elements in the n-ary element");
@@ -511,7 +511,7 @@ class NDLTree extends DLTree {
 
     public NDLTree(Lexeme l, DLTree C, DLTree D) {
         super(l);
-        children = new ArrayList<DLTree>();
+        children = new ArrayList<>();
         if (C == null || D == null) {
             throw new ReasonerInternalException(
                     "not enough elements in the n-ary element");

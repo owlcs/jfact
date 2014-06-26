@@ -224,7 +224,7 @@ public class DatatypesTestCase {
     private final Map<String, NamedEntry> entries = getMap();
 
     public Map<String, NamedEntry> getMap() {
-        Map<String, NamedEntry> toReturn = new HashMap<String, NamedEntry>();
+        Map<String, NamedEntry> toReturn = new HashMap<>();
         toReturn.put(XMLTEXT1, xml1);
         toReturn.put(XMLTEXT2, xml2);
         toReturn.put(XMLTEXT3, xml3);

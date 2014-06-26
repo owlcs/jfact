@@ -95,7 +95,7 @@ public class DataRangeTranslator extends
 
     @Override
     public DataExpression visit(OWLDataOneOf node) {
-        List<Literal<?>> l = new ArrayList<Literal<?>>();
+        List<Literal<?>> l = new ArrayList<>();
         for (OWLLiteral literal : node.getValues()) {
             l.add(tr.pointer(literal));
         }
@@ -114,7 +114,7 @@ public class DataRangeTranslator extends
 
     private List<DataExpression> translateDataRangeSet(
             Set<OWLDataRange> dataRanges) {
-        List<DataExpression> l = new ArrayList<DataExpression>();
+        List<DataExpression> l = new ArrayList<>();
         for (OWLDataRange op : dataRanges) {
             l.add(op.accept(this));
         }

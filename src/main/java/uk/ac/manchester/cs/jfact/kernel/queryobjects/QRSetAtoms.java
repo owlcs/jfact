@@ -18,7 +18,7 @@ public class QRSetAtoms implements Serializable {
 
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "QR.h", name = "Base")
-    private final List<QRAtom> Base = new ArrayList<QRAtom>();
+    private final List<QRAtom> Base = new ArrayList<>();
 
     /** default constructor */
     public QRSetAtoms() {}

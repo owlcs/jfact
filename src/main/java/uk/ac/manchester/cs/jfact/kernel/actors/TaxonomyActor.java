@@ -30,13 +30,13 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
     private final ExpressionManager expressionManager;
     /** 2D array to return */
     @PortedFrom(file = "JNIActor.h", name = "acc")
-    private final List<List<T>> acc = new ArrayList<List<T>>();
+    private final List<List<T>> acc = new ArrayList<>();
     /** 1D array to return */
     @PortedFrom(file = "JNIActor.h", name = "plain")
-    private final List<T> plain = new ArrayList<T>();
+    private final List<T> plain = new ArrayList<>();
     /** temporary vector to keep synonyms */
     @PortedFrom(file = "JNIActor.h", name = "syn")
-    private final List<T> syn = new ArrayList<T>();
+    private final List<T> syn = new ArrayList<>();
 
     @Override
     public boolean applicable(TaxonomyVertex v) {
@@ -100,7 +100,7 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
     /** @return 2D array of all required elements of the taxonomy */
     @PortedFrom(file = "JNIActor.h", name = "getElements")
     public List<Collection<T>> getElements() {
-        List<Collection<T>> toReturn = new ArrayList<Collection<T>>();
+        List<Collection<T>> toReturn = new ArrayList<>();
         if (policy.needPlain()) {
             toReturn.add(plain);
         } else {
@@ -126,7 +126,7 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
         if (policy.needPlain()) {
             plain.addAll(syn);
         } else {
-            acc.add(new ArrayList<T>(syn));
+            acc.add(new ArrayList<>(syn));
         }
         return true;
     }

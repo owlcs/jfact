@@ -39,7 +39,7 @@ public class RATransition implements Serializable {
      */
     public RATransition(int st) {
         state = st;
-        label = new LinkedHashSet<Role>();
+        label = new LinkedHashSet<>();
     }
 
     /**
@@ -116,7 +116,7 @@ public class RATransition implements Serializable {
         if (isEmpty()) {
             o.print("e");
         } else {
-            List<Role> l = new ArrayList<Role>(label);
+            List<Role> l = new ArrayList<>(label);
             for (int i = 0; i < l.size(); i++) {
                 if (i > 0) {
                     o.print(",");

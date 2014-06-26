@@ -23,7 +23,7 @@ public class TaxonomyCreator implements Serializable {
     @PortedFrom(file = "TaxonomyCreator.h", name = "pTax")
     protected final Taxonomy pTax;
     @PortedFrom(file = "TaxonomyCreator.h", name = "Syns")
-    protected final List<ClassifiableEntry> Syns = new ArrayList<ClassifiableEntry>();
+    protected final List<ClassifiableEntry> Syns = new ArrayList<>();
     /** labeller for marking nodes with a label wrt classification */
     @PortedFrom(file = "TaxonomyCreator.h", name = "valueLabel")
     protected long valueLabel = 1;
@@ -47,13 +47,13 @@ public class TaxonomyCreator implements Serializable {
     protected boolean upDirection;
     /** stack for Taxonomy creation */
     @PortedFrom(file = "TaxonomyCreator.h", name = "waitStack")
-    private final LinkedList<ClassifiableEntry> waitStack = new LinkedList<ClassifiableEntry>();
+    private final LinkedList<ClassifiableEntry> waitStack = new LinkedList<>();
     /** told subsumers corresponding to a given entry */
     @PortedFrom(file = "TaxonomyCreator.h", name = "ksStack")
-    protected final LinkedList<KnownSubsumers> ksStack = new LinkedList<KnownSubsumers>();
+    protected final LinkedList<KnownSubsumers> ksStack = new LinkedList<>();
     /** signature of a \bot-module corresponding to a given entry */
     @PortedFrom(file = "TaxonomyCreator.h", name = "sigStack")
-    protected final LinkedList<TSignature> sigStack = new LinkedList<TSignature>();
+    protected final LinkedList<TSignature> sigStack = new LinkedList<>();
 
     /**
      * @param pTax2

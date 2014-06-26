@@ -24,7 +24,7 @@ public class TSignature implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** set to keep all the elements in signature */
     @PortedFrom(file = "tSignature.h", name = "Set")
-    private final Set<NamedEntity> set = new HashSet<NamedEntity>();
+    private final Set<NamedEntity> set = new HashSet<>();
     /** true if concept TOP-locality; false if concept BOTTOM-locality */
     @PortedFrom(file = "tSignature.h", name = "topCLocality")
     private boolean topCLocality = false;
@@ -208,8 +208,8 @@ public class TSignature implements Serializable {
      */
     @Original
     public List<NamedEntity> intersect(TSignature s2) {
-        List<NamedEntity> ret = new ArrayList<NamedEntity>();
-        Set<NamedEntity> s = new HashSet<NamedEntity>(set);
+        List<NamedEntity> ret = new ArrayList<>();
+        Set<NamedEntity> s = new HashSet<>(set);
         s.retainAll(s2.set);
         ret.addAll(s);
         return ret;

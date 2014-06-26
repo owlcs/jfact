@@ -61,7 +61,7 @@ public abstract class VerifyComplianceBase {
     }
 
     private static Set<String> set(Iterable<OWLEntity> i) {
-        Set<String> s = new HashSet<String>();
+        Set<String> s = new HashSet<>();
         for (OWLEntity e : i) {
             s.add(e.getIRI().getShortForm());
         }

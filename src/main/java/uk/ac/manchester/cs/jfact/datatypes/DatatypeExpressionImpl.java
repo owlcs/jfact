@@ -79,7 +79,7 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
-        DatatypeExpressionImpl<O> toReturn = new DatatypeExpressionImpl<O>(
+        DatatypeExpressionImpl<O> toReturn = new DatatypeExpressionImpl<>(
                 this.host);
         toReturn.knownNumericFacetValues.putAll(knownNumericFacetValues);
         toReturn.knownNonNumericFacetValues.putAll(knownNonNumericFacetValues);
@@ -107,7 +107,7 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
-        DatatypeExpressionImpl<O> toReturn = new DatatypeExpressionImpl<O>(
+        DatatypeExpressionImpl<O> toReturn = new DatatypeExpressionImpl<>(
                 this.host);
         toReturn.knownNumericFacetValues.putAll(knownNumericFacetValues);
         toReturn.knownNonNumericFacetValues.putAll(knownNonNumericFacetValues);

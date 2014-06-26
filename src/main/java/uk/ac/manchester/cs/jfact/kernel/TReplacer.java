@@ -25,7 +25,7 @@ class TReplacer extends DLExpressionVisitorAdapter {
     private static final long serialVersionUID = 11000L;
     private final ConjunctiveQueryFolding conjunctiveQueryFolding;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "ReplaceResult")
-    private final Map<ConceptExpression, ConceptExpression> ReplaceResult = new HashMap<ConceptExpression, ConceptExpression>();
+    private final Map<ConceptExpression, ConceptExpression> ReplaceResult = new HashMap<>();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "ExpressionToReplace")
     private final ConceptExpression ExpressionToReplace;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "PropositionalVariable")

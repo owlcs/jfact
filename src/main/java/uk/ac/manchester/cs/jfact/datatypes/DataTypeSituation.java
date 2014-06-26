@@ -30,13 +30,13 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
     /** negative type appearance */
     private DepSet nType;
     /** interval of possible values */
-    private Set<DepInterval<R>> constraints = new HashSet<DepInterval<R>>();
+    private Set<DepInterval<R>> constraints = new HashSet<>();
     /** accumulated dep-set */
     private final DepSet accDep = DepSet.create();
     /** dep-set for the clash */
     private final DataTypeReasoner reasoner;
     private final Datatype<R> type;
-    private final List<Literal<?>> literals = new ArrayList<Literal<?>>();
+    private final List<Literal<?>> literals = new ArrayList<>();
 
     protected DataTypeSituation(Datatype<R> p, DataTypeReasoner dep) {
         if (p == null) {
@@ -103,10 +103,10 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         if (interval instanceof DatatypeEnumeration) {
             this.literals.addAll(interval.listValues());
         }
-        Datatype<R> realInterval = pos ? interval : new DatatypeNegation<R>(
+        Datatype<R> realInterval = pos ? interval : new DatatypeNegation<>(
                 interval);
         Set<DepInterval<R>> c = this.constraints;
-        this.constraints = new HashSet<DepInterval<R>>();
+        this.constraints = new HashSet<>();
         for (DepInterval<R> d : c) {
             if (this.addUpdatedInterval(d, realInterval, DepSet.create(dep))) {
                 return true;
@@ -165,9 +165,9 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         if (literals.isEmpty() && emptyConstraints()) {
             return true;
         }
-        List<Literal<?>> allLiterals = new ArrayList<Literal<?>>(this.literals);
+        List<Literal<?>> allLiterals = new ArrayList<>(this.literals);
         allLiterals.addAll(other.literals);
-        List<Datatype<?>> allRestrictions = new ArrayList<Datatype<?>>();
+        List<Datatype<?>> allRestrictions = new ArrayList<>();
         for (DepInterval<?> d : other.constraints) {
             if (d.e != null) {
                 allRestrictions.add(d.e);

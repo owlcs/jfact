@@ -86,7 +86,7 @@ public class ReasoningKernel implements Serializable {
     @PortedFrom(file = "Kernel.h", name = "pET")
     private ExpressionTranslator pET;
     @PortedFrom(file = "Kernel.h", name = "Name2Sig")
-    private final Map<NamedEntity, TSignature> Name2Sig = new HashMap<NamedEntity, TSignature>();
+    private final Map<NamedEntity, TSignature> Name2Sig = new HashMap<>();
     /** ontology signature (used in incremental) */
     @PortedFrom(file = "Kernel.h", name = "OntoSig")
     private TSignature OntoSig;
@@ -136,7 +136,7 @@ public class ReasoningKernel implements Serializable {
     private boolean reasoningFailed = false;
     /** trace vector for the last operation (set from the TBox trace-sets) */
     @PortedFrom(file = "Kernel.h", name = "TraceVec")
-    private final List<AxiomInterface> traceVec = new ArrayList<AxiomInterface>();
+    private final List<AxiomInterface> traceVec = new ArrayList<>();
     /** flag to gather trace information for the next reasoner's call */
     @PortedFrom(file = "Kernel.h", name = "NeedTracing")
     private boolean needTracing = false;
@@ -157,7 +157,7 @@ public class ReasoningKernel implements Serializable {
     private OntologyBasedModularizer ModSem = null;
     /** set to return by the locality checking procedure */
     @PortedFrom(file = "Kernel.h", name = "Result")
-    private final Set<AxiomInterface> Result = new HashSet<AxiomInterface>();
+    private final Set<AxiomInterface> Result = new HashSet<>();
     /** cached query input description */
     @PortedFrom(file = "Kernel.h", name = "cachedQuery")
     private ConceptExpression cachedQuery;
@@ -305,7 +305,7 @@ public class ReasoningKernel implements Serializable {
     /** @return the trace-set of the last reasoning operation */
     @PortedFrom(file = "Kernel.h", name = "getTrace")
     public List<AxiomInterface> getTrace() {
-        List<AxiomInterface> toReturn = new ArrayList<AxiomInterface>(traceVec);
+        List<AxiomInterface> toReturn = new ArrayList<>(traceVec);
         traceVec.clear();
         return toReturn;
     }
@@ -381,13 +381,13 @@ public class ReasoningKernel implements Serializable {
      * @return true iff C is either named concept of Top/Bot
      */
     @PortedFrom(file = "Kernel.h", name = "isNameOrConst")
-    private boolean isNameOrConst(ConceptExpression C) {
+    private static boolean isNameOrConst(ConceptExpression C) {
         return C instanceof ConceptName || C instanceof ConceptTop
                 || C instanceof ConceptBottom;
     }
 
     @PortedFrom(file = "Kernel.h", name = "isNameOrConst")
-    private boolean isNameOrConst(DLTree C) {
+    private static boolean isNameOrConst(DLTree C) {
         return C.isBOTTOM() || C.isTOP() || C.isName();
     }
 
@@ -400,7 +400,8 @@ public class ReasoningKernel implements Serializable {
      */
     @PortedFrom(file = "Kernel.h", name = "checkSub")
     private boolean checkSub(ConceptExpression C, ConceptExpression D) {
-        if (this.isNameOrConst(D) && this.isNameOrConst(C)) {
+        if (ReasoningKernel.isNameOrConst(D)
+                && ReasoningKernel.isNameOrConst(C)) {
             return this.checkSub(getTBox().getCI(e(C)), getTBox().getCI(e(D)));
         }
         return !checkSat(getExpressionManager().and(C,
@@ -642,7 +643,7 @@ public class ReasoningKernel implements Serializable {
      *        R
      */
     @PortedFrom(file = "Kernel.h", name = "getTaxVertex")
-    private TaxonomyVertex getTaxVertex(Role R) {
+    private static TaxonomyVertex getTaxVertex(Role R) {
         return R.getTaxVertex();
     }
 
@@ -1069,7 +1070,7 @@ public class ReasoningKernel implements Serializable {
     @PortedFrom(file = "Kernel.h", name = "isDisjointRoles")
     public boolean isDisjointRoles(List<? extends RoleExpression> l) {
         int nTopRoles = 0;
-        List<Role> Roles = new ArrayList<Role>(l.size());
+        List<Role> Roles = new ArrayList<>(l.size());
         for (RoleExpression p : l) {
             uk.ac.manchester.cs.jfact.kernel.Role role = getRole(p,
                     "Role expression expected in isDisjointRoles()");
@@ -1215,7 +1216,8 @@ public class ReasoningKernel implements Serializable {
     @PortedFrom(file = "Kernel.h", name = "isSubsumedBy")
     public boolean isSubsumedBy(ConceptExpression C, ConceptExpression D) {
         preprocessKB();
-        if (this.isNameOrConst(D) && this.isNameOrConst(C)) {
+        if (ReasoningKernel.isNameOrConst(D)
+                && ReasoningKernel.isNameOrConst(C)) {
             return this.checkSub(getTBox().getCI(e(C)), getTBox().getCI(e(D)));
         }
         DLTree nD = DLTreeFactory.createSNFNot(e(D));
@@ -1248,7 +1250,8 @@ public class ReasoningKernel implements Serializable {
         }
         preprocessKB();
         // try to detect C=D wrt named concepts
-        if (isKBClassified() && this.isNameOrConst(D) && this.isNameOrConst(C)) {
+        if (isKBClassified() && ReasoningKernel.isNameOrConst(D)
+                && ReasoningKernel.isNameOrConst(C)) {
             TaxonomyVertex cV = getTBox().getCI(e(C)).getTaxVertex();
             TaxonomyVertex dV = getTBox().getCI(e(D)).getTaxVertex();
             if (cV == null && dV == null) {
@@ -1798,14 +1801,12 @@ public class ReasoningKernel implements Serializable {
         // re-set the modularizer to use updated ontology
         ModSyn = null;
         // System.out.println("Original Taxonomy:" + tax);
-        Set<NamedEntity> MPlus = new HashSet<NamedEntity>();
-        Set<NamedEntity> MMinus = new HashSet<NamedEntity>();
+        Set<NamedEntity> MPlus = new HashSet<>();
+        Set<NamedEntity> MMinus = new HashSet<>();
         TSignature NewSig = ontology.getSignature();
-        Set<NamedEntity> RemovedEntities = new HashSet<NamedEntity>(
-                OntoSig.begin());
+        Set<NamedEntity> RemovedEntities = new HashSet<>(OntoSig.begin());
         RemovedEntities.removeAll(NewSig.begin());
-        Set<NamedEntity> AddedEntities = new HashSet<NamedEntity>(
-                NewSig.begin());
+        Set<NamedEntity> AddedEntities = new HashSet<>(NewSig.begin());
         AddedEntities.removeAll(OntoSig.begin());
         Taxonomy tax = getCTaxonomy();
         // deal with removed concepts
@@ -1867,7 +1868,7 @@ public class ReasoningKernel implements Serializable {
         }
         t.stop();
         // build changed modules
-        Set<NamedEntity> toProcess = new HashSet<NamedEntity>(MPlus);
+        Set<NamedEntity> toProcess = new HashSet<>(MPlus);
         toProcess.addAll(MMinus);
         // process all entries recursively
         while (!toProcess.isEmpty()) {
@@ -1890,7 +1891,7 @@ public class ReasoningKernel implements Serializable {
         getOntology().setProcessed();
     }
 
-    private byte[] save(TBox tbox) {
+    private static byte[] save(TBox tbox) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         ObjectOutputStream oout;
         try {
@@ -1904,7 +1905,7 @@ public class ReasoningKernel implements Serializable {
         return out.toByteArray();
     }
 
-    private TBox load(byte[] tbox) {
+    private static TBox load(byte[] tbox) {
         try {
             return (TBox) new ObjectInputStream(new ByteArrayInputStream(tbox))
                     .readObject();
@@ -2004,7 +2005,7 @@ public class ReasoningKernel implements Serializable {
     public void initIncremental() {
         Name2Sig.clear();
         // found all entities
-        Set<NamedEntity> toProcess = new HashSet<NamedEntity>();
+        Set<NamedEntity> toProcess = new HashSet<>();
         getModExtractor(false);
         // fill the module signatures of the concepts
         for (Concept p : getTBox().getConcepts()) {
@@ -2174,7 +2175,7 @@ public class ReasoningKernel implements Serializable {
                 assert level == csClassified && cacheLevel != csClassified;
                 if (cacheLevel == csSat) {
                     // already check satisfiability
-                    classifyQuery(this.isNameOrConst(cachedQuery));
+                    classifyQuery(ReasoningKernel.isNameOrConst(cachedQuery));
                     return;
                 }
             }
@@ -2186,7 +2187,7 @@ public class ReasoningKernel implements Serializable {
         cachedVertex = null;
         cacheLevel = level;
         // check if concept-to-cache is defined in ontology
-        if (this.isNameOrConst(cachedQuery)) {
+        if (ReasoningKernel.isNameOrConst(cachedQuery)) {
             cachedConcept = getTBox().getCI(e(cachedQuery));
         } else {
             // case of complex query
@@ -2201,7 +2202,7 @@ public class ReasoningKernel implements Serializable {
             getTBox().preprocessQueryConcept(cachedConcept);
         }
         if (level == csClassified) {
-            classifyQuery(this.isNameOrConst(cachedQuery));
+            classifyQuery(ReasoningKernel.isNameOrConst(cachedQuery));
         }
     }
 
@@ -2258,7 +2259,7 @@ public class ReasoningKernel implements Serializable {
             RoleExpression R, RoleExpression S, int op,
             Collection<IndividualExpression> individuals) {
         realiseKB();    // ensure KB is ready to answer the query
-        List<IndividualName> toReturn = new ArrayList<IndividualName>();
+        List<IndividualName> toReturn = new ArrayList<>();
         Role r = getRole(R,
                 "Role expression expected in the getIndividualsWith()");
         Role s = getRole(S,
@@ -2446,7 +2447,7 @@ public class ReasoningKernel implements Serializable {
             return getRelated(I, ClassifiableEntry.resolveSynonym(R));
         }
         if (R.isDataRole() || R.isBottom()) {
-            return new ArrayList<Individual>();
+            return new ArrayList<>();
         }
         RIActor actor = new RIActor();
         ObjectRoleExpression InvR = R.getId() > 0 ? getExpressionManager()

@@ -25,7 +25,7 @@ public class CWDArray implements Serializable {
     private static final double distribution = 0.025;
     /** array of concepts together with dep-sets */
     @PortedFrom(file = "CWDArray.h", name = "Base")
-    private final List<ConceptWDep> base = new ArrayList<ConceptWDep>();
+    private final List<ConceptWDep> base = new ArrayList<>();
     @Original
     private BitSet cache;
     @Original
@@ -108,7 +108,7 @@ public class CWDArray implements Serializable {
     }
 
     @Original
-    private int asPositive(int p) {
+    private static int asPositive(int p) {
         return p >= 0 ? 2 * p : 1 - 2 * p;
     }
 
@@ -245,7 +245,7 @@ public class CWDArray implements Serializable {
         if (dep.isEmpty()) {
             throw new IllegalArgumentException();
         }
-        List<Restorer> toReturn = new ArrayList<Restorer>(size);
+        List<Restorer> toReturn = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             Restorer ret = new UnMerge(this, base.get(i), i);
             base.get(i).addDep(dep);

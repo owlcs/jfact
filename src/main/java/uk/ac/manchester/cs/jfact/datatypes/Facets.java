@@ -300,7 +300,7 @@ public class Facets implements Serializable {
 
     /** @return all facets */
     public static List<Facet> values() {
-        return new ArrayList<Facet>(values);
+        return new ArrayList<>(values);
     }
 
     private static final List<Facet> values = Arrays.asList(enumeration,

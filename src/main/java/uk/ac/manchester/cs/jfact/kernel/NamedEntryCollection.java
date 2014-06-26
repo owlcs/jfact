@@ -28,7 +28,7 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
 
     private static final long serialVersionUID = 11000L;
     /** vector of elements */
-    private final List<T> base = new ArrayList<T>();
+    private final List<T> base = new ArrayList<>();
     /** nameset to hold the elements */
     private final NameSet<T, IRI> nameset;
     /** name of the type */
@@ -75,7 +75,7 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
         typeName = name;
         locked = false;
         base.add(null);
-        nameset = new NameSet<T, IRI>(creator);
+        nameset = new NameSet<>(creator);
         this.options = options;
     }
 
