@@ -13,7 +13,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.formats.OWLFunctionalSyntaxOntologyFormat;
+import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormat;
 import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -40,7 +40,7 @@ public class JUnitRunner {
                 .loadOntologyFromOntologyDocument(
                         new StringDocumentSource(premise));
         o.getOWLOntologyManager().saveOntology(o,
-                new OWLFunctionalSyntaxOntologyFormat(),
+                new FunctionalSyntaxDocumentFormat(),
                 new SystemOutDocumentTarget());
     }
 
@@ -266,7 +266,7 @@ public class JUnitRunner {
             OWLOntologyCreationException {
         OWLOntology premise2 = getPremise();
         premise2.getOWLOntologyManager().saveOntology(premise2,
-                new OWLFunctionalSyntaxOntologyFormat(),
+                new FunctionalSyntaxDocumentFormat(),
                 new SystemOutDocumentTarget());
     }
 
@@ -274,7 +274,7 @@ public class JUnitRunner {
             OWLOntologyCreationException {
         OWLOntology consequence2 = getConsequence();
         consequence2.getOWLOntologyManager().saveOntology(consequence2,
-                new OWLFunctionalSyntaxOntologyFormat(),
+                new FunctionalSyntaxDocumentFormat(),
                 new SystemOutDocumentTarget());
     }
 }

@@ -258,7 +258,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             computeDiff(added, new HashSet<OWLAxiom>());
             return added;
         }
-        return CollectionFactory.emptySet();
+        return Collections.emptySet();
     }
 
     @Override
@@ -268,7 +268,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             computeDiff(new HashSet<OWLAxiom>(), removed);
             return removed;
         }
-        return CollectionFactory.emptySet();
+        return Collections.emptySet();
     }
 
     @Override
@@ -764,7 +764,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         // translationMachinery.toIndividualPointer(ind),
         // translationMachinery.pointer(pe)));
         // TODO:
-        return CollectionFactory.emptySet();
+        return Collections.emptySet();
     }
 
     @Override

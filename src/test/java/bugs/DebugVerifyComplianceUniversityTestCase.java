@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.formats.OWLFunctionalSyntaxOntologyFormat;
+import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormat;
 import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
 import org.semanticweb.owlapi.model.IRI;
@@ -66,7 +66,7 @@ public class DebugVerifyComplianceUniversityTestCase {
 
     protected void print(OWLOntology o) throws OWLOntologyStorageException {
         o.getOWLOntologyManager().saveOntology(o,
-                new OWLFunctionalSyntaxOntologyFormat(),
+                new FunctionalSyntaxDocumentFormat(),
                 new SystemOutDocumentTarget());
     }
 

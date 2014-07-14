@@ -10,7 +10,7 @@ import javax.annotation.Nonnull;
 
 import org.junit.Before;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.formats.OWLFunctionalSyntaxOntologyFormat;
+import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormat;
 import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
 import org.semanticweb.owlapi.model.IRI;
@@ -47,7 +47,7 @@ public abstract class VerifyComplianceBase {
                         VerifyComplianceBase.class.getResourceAsStream(in));
         OWLProfileReport checkOntology = Profiles.OWL2_DL.checkOntology(onto);
         if (!checkOntology.isInProfile()) {
-            for (OWLProfileViolation<?> v : checkOntology.getViolations()) {
+            for (OWLProfileViolation v : checkOntology.getViolations()) {
                 System.out.println("VerifyComplianceBase.load() " + v);
             }
         }
@@ -129,7 +129,7 @@ public abstract class VerifyComplianceBase {
         OWLOntology o = reasoner.getRootOntology();
         try {
             o.getOWLOntologyManager().saveOntology(o,
-                    new OWLFunctionalSyntaxOntologyFormat(),
+                    new FunctionalSyntaxDocumentFormat(),
                     new SystemOutDocumentTarget());
         } catch (OWLOntologyStorageException e) {
             e.printStackTrace();
