@@ -120,7 +120,7 @@ public class Bugs {
                 .loadOntologyFromOntologyDocument(
                         new StringDocumentSource(input2));
         JFactReasonerConfiguration c = new JFactReasonerConfiguration();
-        c.setLoggingActive(true);
+        // c.setLoggingActive(true);
         jfact1 = (JFactReasoner) new JFactFactory().createReasoner(o1, c);
         jfact1.precomputeInferences(InferenceType.CLASS_HIERARCHY);
         jfact2 = (JFactReasoner) new JFactFactory().createReasoner(o2, c);
