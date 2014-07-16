@@ -8,6 +8,7 @@ package uk.ac.manchester.cs.jfact.kernel;
 import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
 import static uk.ac.manchester.cs.jfact.kernel.DagTag.*;
 import static uk.ac.manchester.cs.jfact.kernel.Redo.*;
+import gnu.trove.set.TIntSet;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,7 +32,6 @@ import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.DLVertex;
 import uk.ac.manchester.cs.jfact.helpers.FastSet;
 import uk.ac.manchester.cs.jfact.helpers.FastSetFactory;
-import uk.ac.manchester.cs.jfact.helpers.FastSetSimple;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Reference;
 import uk.ac.manchester.cs.jfact.helpers.SaveStack;
@@ -1713,8 +1713,7 @@ public class DlSatTester implements Serializable {
             stats.getnTacticCalls().inc();
             DlCompletionTree oldNode = curNode;
             int oldConceptConcept = curConceptConcept;
-            FastSetSimple oldConceptDepSetDelegate = curConceptDepSet
-                    .getDelegate();
+            TIntSet oldConceptDepSetDelegate = curConceptDepSet.getDelegate();
             curNode = n;
             curConceptConcept = bp;
             curConceptDepSet = DepSet.create(curConceptDepSet);

@@ -5,9 +5,12 @@ package uk.ac.manchester.cs.jfact.dep;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import gnu.trove.iterator.TIntIterator;
+import gnu.trove.set.TIntSet;
+import gnu.trove.set.hash.TIntHashSet;
+
 import java.io.Serializable;
 
-import uk.ac.manchester.cs.jfact.helpers.FastSetSimple;
 import conformance.Original;
 import conformance.PortedFrom;
 
@@ -43,7 +46,7 @@ public class DepSet implements Serializable {
      * @return new depset with stated values
      */
     public static DepSet create(int... values) {
-        FastSetSimple set = new FastSetSimple();
+        TIntSet set = new TIntHashSet();
         for (int i : values) {
             set.add(i);
         }
@@ -71,6 +74,15 @@ public class DepSet implements Serializable {
      */
     @PortedFrom(file = "tDepSet.h", name = "+")
     public static DepSet plus(DepSet ds1, DepSet ds2) {
+        if (ds1 == null && ds2 == null) {
+            return new DepSet();
+        }
+        if (ds1 == null || ds1.isEmpty()) {
+            return new DepSet(ds2 == null ? null : ds2.delegate);
+        }
+        if (ds2 == null || ds2.isEmpty()) {
+            return new DepSet(ds1.delegate);
+        }
         DepSet toReturn = new DepSet();
         toReturn.add(ds1);
         toReturn.add(ds2);
@@ -83,12 +95,12 @@ public class DepSet implements Serializable {
      * @return depset wrapper over delegate
      */
     @PortedFrom(file = "tDepSet.h", name = "create")
-    public static DepSet create(FastSetSimple delegate) {
+    public static DepSet create(TIntSet delegate) {
         return new DepSet(delegate);
     }
 
     @Original
-    private FastSetSimple delegate = null;
+    private TIntSet delegate = null;
 
     protected DepSet() {}
 
@@ -96,7 +108,7 @@ public class DepSet implements Serializable {
      * @param d
      *        d
      */
-    public DepSet(FastSetSimple d) {
+    public DepSet(TIntSet d) {
         delegate = d;
     }
 
@@ -106,24 +118,35 @@ public class DepSet implements Serializable {
      * @return delegate
      */
     @Original
-    public FastSetSimple getDelegate() {
+    public TIntSet getDelegate() {
         return delegate;
     }
 
     protected DepSet(int i) {
         // only case in which the delegate is modified
-        delegate = new FastSetSimple();
+        delegate = new TIntHashSet();
         delegate.add(i);
     }
 
     /** @return last delegate */
     @PortedFrom(file = "tDepSet.h", name = "level")
     public int level() {
-        if (isEmpty()) {
+        return max(delegate);
+    }
+
+    private static int max(TIntSet set) {
+        if (set == null || set.isEmpty()) {
             return 0;
-        } else {
-            return delegate.get(delegate.size() - 1);
         }
+        int max = 0;
+        TIntIterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+            int next = iterator.next();
+            if (next > max) {
+                max = next;
+            }
+        }
+        return max;
     }
 
     /** @return true if empty or null delegate */
@@ -134,20 +157,19 @@ public class DepSet implements Serializable {
 
     @Override
     public String toString() {
-        if (delegate == null) {
+        if (isEmpty()) {
             return "";
         }
-        if (!delegate.isEmpty()) {
-            StringBuilder b = new StringBuilder("{");
-            b.append(delegate.get(0));
-            for (int i = 1; i < delegate.size(); i++) {
+        StringBuilder b = new StringBuilder("{");
+        TIntIterator iterator = delegate.iterator();
+        while (iterator.hasNext()) {
+            b.append(iterator.next());
+            if (iterator.hasNext()) {
                 b.append(',');
-                b.append(delegate.get(i));
             }
-            b.append('}');
-            return b.toString();
         }
-        return "";
+        b.append('}');
+        return b.toString();
     }
 
     @Override
@@ -186,11 +208,15 @@ public class DepSet implements Serializable {
     @PortedFrom(file = "tDepSet.h", name = "restrict")
     public void restrict(int level) {
         if (delegate != null) {
-            FastSetSimple f = new FastSetSimple();
-            for (int i = 0; i < delegate.size() && delegate.get(i) < level; i++) {
-                f.add(delegate.get(i));
+            TIntSet f = new TIntHashSet();
+            TIntIterator it = delegate.iterator();
+            while (it.hasNext()) {
+                int i = it.next();
+                if (i < level) {
+                    f.add(i);
+                }
             }
-            if (f.size() == 0) {
+            if (f.isEmpty()) {
                 delegate = null;
             } else {
                 delegate = f;
@@ -216,9 +242,14 @@ public class DepSet implements Serializable {
         }
         if (delegate == null) {
             delegate = toAdd.delegate;
-        } else {
-            delegate = new FastSetSimple(delegate, toAdd.delegate);
+            return;
         }
+        if (delegate.containsAll(toAdd.delegate)) {
+            return;
+        }
+        TIntSet newSet = new TIntHashSet(delegate);
+        newSet.addAll(toAdd.delegate);
+        delegate = newSet;
     }
 
     /**
@@ -226,14 +257,19 @@ public class DepSet implements Serializable {
      *        add all elements in the depset to this depset
      */
     @PortedFrom(file = "tDepSet.h", name = "add")
-    public void add(FastSetSimple d) {
+    public void add(TIntSet d) {
         if (d == null || d.size() == 0) {
             return;
         }
         if (delegate == null) {
             delegate = d;
-        } else {
-            delegate = new FastSetSimple(delegate, d);
+            return;
         }
+        if (delegate.containsAll(d)) {
+            return;
+        }
+        TIntSet newSet = new TIntHashSet(delegate);
+        newSet.addAll(d);
+        delegate = newSet;
     }
 }

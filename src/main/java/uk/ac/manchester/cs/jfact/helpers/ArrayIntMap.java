@@ -180,11 +180,6 @@ public class ArrayIntMap implements Serializable {
         return true;
     }
 
-    /** @return true if empty */
-    public boolean isEmpty() {
-        return values == null;
-    }
-
     /**
      * @param o
      *        o
@@ -228,25 +223,6 @@ public class ArrayIntMap implements Serializable {
     }
 
     /**
-     * @param value
-     *        value
-     * @return true if value is a value in
-     */
-    public boolean containsValue(int value) {
-        for (int i = 0; i < size; i++) {
-            if (values[1][i] == value) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /** @return all values */
-    public int[] values() {
-        return Arrays.copyOf(values[1], size);
-    }
-
-    /**
      * @param key
      *        key
      * @return value for key
@@ -257,11 +233,6 @@ public class ArrayIntMap implements Serializable {
             return Integer.MIN_VALUE;
         }
         return values[1][index];
-    }
-
-    /** @return all keys */
-    public int[] keySet() {
-        return Arrays.copyOf(values[0], size);
     }
 
     /**
