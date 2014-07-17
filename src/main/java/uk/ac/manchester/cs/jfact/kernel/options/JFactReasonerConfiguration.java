@@ -156,9 +156,12 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param useSortedReasoning
      *        the new use sorted reasoning
+     * @return modified instance
      */
-    public void setUseSortedReasoning(boolean useSortedReasoning) {
+    public JFactReasonerConfiguration setUseSortedReasoning(
+            boolean useSortedReasoning) {
         this.useSortedReasoning = useSortedReasoning;
+        return this;
     }
 
     /**
@@ -173,9 +176,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
     /**
      * @param b
      *        value for allow undefined entities
+     * @return modified instance
      */
-    public void setAllowUndefinedNames(boolean b) {
+    public JFactReasonerConfiguration setAllowUndefinedNames(boolean b) {
         allowUndefinedNames = b;
+        return this;
     }
 
     /** @return is allow undefined entities */
@@ -186,9 +191,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
     /**
      * @param b
      *        value for query answering
+     * @return modified instance
      */
-    public void setQueryAnswering(boolean b) {
+    public JFactReasonerConfiguration setQueryAnswering(boolean b) {
         queryAnswering = b;
+        return this;
     }
 
     /** @return is query answering */
@@ -201,9 +208,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param b
      *        the new use special domains
+     * @return modified instance
      */
-    public void setUseSpecialDomains(boolean b) {
+    public JFactReasonerConfiguration setUseSpecialDomains(boolean b) {
         useSpecialDomains = b;
+        return this;
     }
 
     /**
@@ -220,9 +229,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param b
      *        the new use lazy blocking
+     * @return modified instance
      */
-    public void setUseLazyBlocking(boolean b) {
+    public JFactReasonerConfiguration setUseLazyBlocking(boolean b) {
         useLazyBlocking = b;
+        return this;
     }
 
     /**
@@ -239,9 +250,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param b
      *        the new use anywhere blocking
+     * @return modified instance
      */
-    public void setUseAnywhereBlocking(boolean b) {
+    public JFactReasonerConfiguration setUseAnywhereBlocking(boolean b) {
         useAnywhereBlocking = b;
+        return this;
     }
 
     /**
@@ -258,9 +271,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param b
      *        the new use semantic branching
+     * @return modified instance
      */
-    public void setUseSemanticBranching(boolean b) {
+    public JFactReasonerConfiguration setUseSemanticBranching(boolean b) {
         useSemanticBranching = b;
+        return this;
     }
 
     /**
@@ -268,10 +283,12 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param val
      *        the new use node cache
+     * @return modified instance
      */
     @PortedFrom(file = "dlTBox.h", name = "setUseNodeCache")
-    public void setUseNodeCache(boolean val) {
+    public JFactReasonerConfiguration setUseNodeCache(boolean val) {
         useNodeCache = val;
+        return this;
     }
 
     /**
@@ -304,9 +321,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param defVal
      *        the def val
+     * @return modified instance
      */
-    private void registerOption(StringOption defVal) {
+    private JFactReasonerConfiguration registerOption(StringOption defVal) {
         base.put(defVal.getOptionName(), defVal);
+        return this;
     }
 
     /**
@@ -337,9 +356,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param defSat
      *        the new or sort sat
+     * @return modified instance
      */
-    public void setorSortSat(String defSat) {
+    public JFactReasonerConfiguration setorSortSat(String defSat) {
         registerOption(getOption("orSortSat", defSat));
+        return this;
     }
 
     /**
@@ -356,9 +377,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param defSat
      *        the new or sort sub
+     * @return modified instance
      */
-    public void setorSortSub(String defSat) {
+    public JFactReasonerConfiguration setorSortSub(String defSat) {
         registerOption(getOption("orSortSub", defSat));
+        return this;
     }
 
     /**
@@ -420,9 +443,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param value
      *        the new dump query
+     * @return modified instance
      */
-    public void setdumpQuery(boolean value) {
+    public JFactReasonerConfiguration setdumpQuery(boolean value) {
         dumpQuery = value;
+        return this;
     }
 
     /**
@@ -466,9 +491,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param b
      *        the new use anywhere blocking
+     * @return modified instance
      */
-    public void setuseAnywhereBlocking(boolean b) {
+    public JFactReasonerConfiguration setuseAnywhereBlocking(boolean b) {
         useAnywhereBlocking = b;
+        return this;
     }
 
     /** The progress monitor. */
@@ -571,9 +598,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param b
      *        the new verbose output
+     * @return modified instance
      */
-    public void setverboseOutput(boolean b) {
+    public JFactReasonerConfiguration setverboseOutput(boolean b) {
         verboseOutput = b;
+        return this;
     }
 
     /** The Class StringOption. */
@@ -670,9 +699,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param b
      *        the new logging active
+     * @return modified instance
      */
-    public void setLoggingActive(boolean b) {
+    public JFactReasonerConfiguration setLoggingActive(boolean b) {
         USE_LOGGING = b;
+        return this;
     }
 
     /**
@@ -689,9 +720,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param b
      *        the new absorption logging active
+     * @return modified instance
      */
-    public void setAbsorptionLoggingActive(boolean b) {
+    public JFactReasonerConfiguration setAbsorptionLoggingActive(boolean b) {
         RKG_DEBUG_ABSORPTION = b;
+        return this;
     }
 
     /**
@@ -708,9 +741,12 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param b
      *        the new rkg improve save restore depset
+     * @return modified instance
      */
-    public void setRKG_IMPROVE_SAVE_RESTORE_DEPSET(boolean b) {
+    public JFactReasonerConfiguration setRKG_IMPROVE_SAVE_RESTORE_DEPSET(
+            boolean b) {
         RKG_IMPROVE_SAVE_RESTORE_DEPSET = b;
+        return this;
     }
 
     /**
@@ -727,9 +763,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param b
      *        the new rkg print dag usage
+     * @return modified instance
      */
-    public void setRKG_PRINT_DAG_USAGE(boolean b) {
+    public JFactReasonerConfiguration setRKG_PRINT_DAG_USAGE(boolean b) {
         RKG_PRINT_DAG_USAGE = b;
+        return this;
     }
 
     /**
@@ -746,9 +784,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param b
      *        the new rkg use simple rules
+     * @return modified instance
      */
-    public void setRKG_USE_SIMPLE_RULES(boolean b) {
+    public JFactReasonerConfiguration setRKG_USE_SIMPLE_RULES(boolean b) {
         RKG_USE_SIMPLE_RULES = b;
+        return this;
     }
 
     /**
@@ -765,9 +805,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param b
      *        the new rkg use sorted reasoning
+     * @return modified instance
      */
-    public void setRKG_USE_SORTED_REASONING(boolean b) {
+    public JFactReasonerConfiguration setRKG_USE_SORTED_REASONING(boolean b) {
         RKG_USE_SORTED_REASONING = b;
+        return this;
     }
 
     /**
@@ -784,9 +826,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param b
      *        the new use reasoning statistics
+     * @return modified instance
      */
-    public void setUSE_REASONING_STATISTICS(boolean b) {
+    public JFactReasonerConfiguration setUSE_REASONING_STATISTICS(boolean b) {
         USE_REASONING_STATISTICS = b;
+        return this;
     }
 
     /**
@@ -803,9 +847,12 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param b
      *        the new rkg update rnd from superroles
+     * @return modified instance
      */
-    public void setRKG_UPDATE_RND_FROM_SUPERROLES(boolean b) {
+    public JFactReasonerConfiguration setRKG_UPDATE_RND_FROM_SUPERROLES(
+            boolean b) {
         RKG_UPDATE_RND_FROM_SUPERROLES = b;
+        return this;
     }
 
     /**
@@ -822,9 +869,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param b
      *        the new use blocking statistics
+     * @return modified instance
      */
-    public void setUSE_BLOCKING_STATISTICS(boolean b) {
+    public JFactReasonerConfiguration setUSE_BLOCKING_STATISTICS(boolean b) {
         USE_BLOCKING_STATISTICS = b;
+        return this;
     }
 
     /**
@@ -841,9 +890,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param b
      *        the new rkg use dynamic backjumping
+     * @return modified instance
      */
-    public void setRKG_USE_DYNAMIC_BACKJUMPING(boolean b) {
+    public JFactReasonerConfiguration setRKG_USE_DYNAMIC_BACKJUMPING(boolean b) {
         RKG_USE_DYNAMIC_BACKJUMPING = b;
+        return this;
     }
 
     /**
@@ -860,9 +911,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param b
      *        the new tmp print taxonomy info
+     * @return modified instance
      */
-    public void setTMP_PRINT_TAXONOMY_INFO(boolean b) {
+    public JFactReasonerConfiguration setTMP_PRINT_TAXONOMY_INFO(boolean b) {
         TMP_PRINT_TAXONOMY_INFO = b;
+        return this;
     }
 
     /**
@@ -879,9 +932,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param b
      *        the new debug save restore
+     * @return modified instance
      */
-    public void setDEBUG_SAVE_RESTORE(boolean b) {
+    public JFactReasonerConfiguration setDEBUG_SAVE_RESTORE(boolean b) {
         DEBUG_SAVE_RESTORE = b;
+        return this;
     }
 
     /**
@@ -898,9 +953,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param b
      *        the new rkg use fairness
+     * @return modified instance
      */
-    public void setRKG_USE_FAIRNESS(boolean b) {
+    public JFactReasonerConfiguration setRKG_USE_FAIRNESS(boolean b) {
         RKG_USE_FAIRNESS = b;
+        return this;
     }
 
     /**
@@ -917,9 +974,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param b
      *        the new fpp debug split modules
+     * @return modified instance
      */
-    public void setFPP_DEBUG_SPLIT_MODULES(boolean b) {
+    public JFactReasonerConfiguration setFPP_DEBUG_SPLIT_MODULES(boolean b) {
         FPP_DEBUG_SPLIT_MODULES = b;
+        return this;
     }
 
     /**
@@ -936,9 +995,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param splits
      *        the new splits
+     * @return modified instance
      */
-    public void setSplits(boolean splits) {
+    public JFactReasonerConfiguration setSplits(boolean splits) {
         this.splits = splits;
+        return this;
     }
 
     /**
@@ -983,9 +1044,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param o
      *        the new regular log output stream
+     * @return modified instance
      */
-    public void setRegularLogOutputStream(OutputStream o) {
+    public JFactReasonerConfiguration setRegularLogOutputStream(OutputStream o) {
         logAdapterStream = new LogAdapterStream(o);
+        return this;
     }
 
     /** The log absorption adapter stream. */
@@ -996,9 +1059,12 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param o
      *        the new absorption log output stream
+     * @return modified instance
      */
-    public void setAbsorptionLogOutputStream(OutputStream o) {
+    public JFactReasonerConfiguration setAbsorptionLogOutputStream(
+            OutputStream o) {
         logAbsorptionAdapterStream = new LogAdapterStream(o);
+        return this;
     }
 
     /** The Class LogAdapterStream. */
@@ -1264,9 +1330,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param useELReasoner
      *        the new use el reasoner
+     * @return modified instance
      */
-    public void setUseELReasoner(boolean useELReasoner) {
+    public JFactReasonerConfiguration setUseELReasoner(boolean useELReasoner) {
         this.useELReasoner = useELReasoner;
+        return this;
     }
 
     /**
@@ -1283,9 +1351,12 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param useUndefinedNames
      *        the new use undefined names
+     * @return modified instance
      */
-    public void setUseUndefinedNames(boolean useUndefinedNames) {
+    public JFactReasonerConfiguration setUseUndefinedNames(
+            boolean useUndefinedNames) {
         this.useUndefinedNames = useUndefinedNames;
+        return this;
     }
 
     /**
@@ -1302,9 +1373,12 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param useAxiomSplitting
      *        the new use axiom splitting
+     * @return modified instance
      */
-    public void setUseAxiomSplitting(boolean useAxiomSplitting) {
+    public JFactReasonerConfiguration setUseAxiomSplitting(
+            boolean useAxiomSplitting) {
         this.useAxiomSplitting = useAxiomSplitting;
+        return this;
     }
 
     /** The use ad in module extraction. */
@@ -1324,9 +1398,12 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param value
      *        the new rkg use ad in module extraction
+     * @return modified instance
      */
-    public void setRKG_USE_AD_IN_MODULE_EXTRACTION(boolean value) {
+    public JFactReasonerConfiguration setRKG_USE_AD_IN_MODULE_EXTRACTION(
+            boolean value) {
         useADInModuleExtraction = value;
+        return this;
     }
 
     /**
@@ -1343,8 +1420,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * 
      * @param useIncrementalReasoning
      *        the new use incremental reasoning
+     * @return modified instance
      */
-    public void setUseIncrementalReasoning(boolean useIncrementalReasoning) {
+    public JFactReasonerConfiguration setUseIncrementalReasoning(
+            boolean useIncrementalReasoning) {
         this.useIncrementalReasoning = useIncrementalReasoning;
+        return this;
     }
 }
