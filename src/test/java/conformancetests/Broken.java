@@ -241,8 +241,7 @@ public class Broken {
                 + "DataPropertyAssertion(<urn:t#p> <urn:t#john> \"0\"^^xsd:int)\n)";
         String id = "WebOnt_I5_8_010";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "0 is the only xsd:nonNegativeInteger which is\n"
-                + "also an xsd:nonPositiveInteger.";
+        String d = "0 is the only xsd:nonNegativeInteger which is also an xsd:nonPositiveInteger.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         r.setReasonerFactory(Factory.factory());
         // r.getConfiguration().setLoggingActive(true);
@@ -286,23 +285,6 @@ public class Broken {
                 + "EquivalentClasses(<urn:person> ObjectSomeValuesFrom(<urn:parent> <urn:person>))\n"
                 + "Declaration(ObjectProperty(<urn:parent>))\n"
                 + "ClassAssertion(<urn:person> <urn:fred>))";
-        // "<rdf:RDF\n"
-        // + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-        // + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-        // +
-        // "    xmlns:first=\"http://www.w3.org/2002/03owlt/someValuesFrom/premises003#\"\n"
-        // +
-        // "    xml:base=\"http://www.w3.org/2002/03owlt/someValuesFrom/premises003\" >\n"
-        // + "   <owl:Ontology/>\n"
-        // + "   <owl:Class rdf:ID=\"person\">\n"
-        // + "     <owl:equivalentClass><owl:Restriction>\n"
-        // +
-        // "         <owl:onProperty><owl:ObjectProperty rdf:ID=\"parent\"/></owl:onProperty>\n"
-        // + "         <owl:someValuesFrom rdf:resource=\"#person\" />\n"
-        // + "       </owl:Restriction></owl:equivalentClass>\n"
-        // + "    </owl:Class>\n"
-        // + "    <first:person rdf:ID=\"fred\" />\n" + "\n"
-        // + "</rdf:RDF>";
         String conclusion = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
                 + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
                 + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
@@ -317,19 +299,6 @@ public class Broken {
                 + "ClassAssertion(owl:Thing _:genid3)\n"
                 + "ClassAssertion(owl:Thing _:genid2)\n"
                 + "ObjectPropertyAssertion(<urn:parent> _:genid2 _:genid3))";
-        // "<rdf:RDF\n"
-        // + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-        // + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-        // +
-        // "    xmlns:first=\"http://www.w3.org/2002/03owlt/someValuesFrom/premises003#\"\n"
-        // +
-        // "    xml:base=\"http://www.w3.org/2002/03owlt/someValuesFrom/conclusions003\" >\n"
-        // + "   <owl:Ontology/>\n"
-        // + "   <owl:ObjectProperty rdf:about=\"premises003#parent\"/>\n"
-        // + "   <owl:Thing rdf:about=\"premises003#fred\">"
-        // +
-        // "<first:parent><owl:Thing><first:parent><owl:Thing/></first:parent></owl:Thing>\n"
-        // + "     </first:parent>\n" + "   </owl:Thing>\n" + "</rdf:RDF>";
         // XXX I do not understand these blank nodes used as existential
         // variables
         String id = "WebOnt_someValuesFrom_003";
@@ -342,42 +311,6 @@ public class Broken {
 
     @Test
     public void testsomevaluesfrom2bnode() throws OWLOntologyCreationException {
-        // String premise =
-        // "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"  \n"
-        // + "          xmlns:ex=\"http://example.org/\"\n"
-        // + "          xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-        // + "          xml:base=\"http://example.org/\">\n"
-        // + "  <owl:Ontology />\n"
-        // + "  <owl:ObjectProperty rdf:about=\"p\"/>\n"
-        // + "  <rdf:Description rdf:about=\"a\">\n"
-        // + "        <rdf:type>\n"
-        // + "            <owl:Restriction>\n"
-        // + "                <owl:onProperty rdf:resource=\"p\"/>\n"
-        // +
-        // "                <owl:someValuesFrom rdf:resource=\"http://www.w3.org/2002/07/owl#Thing\"/>\n"
-        // + "            </owl:Restriction>\n"
-        // + "        </rdf:type>\n"
-        // + "    </rdf:Description>\n"
-        // + "</rdf:RDF>";
-        // String conclusion =
-        // "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"  \n"
-        // + "          xmlns:ex=\"http://example.org/\"\n"
-        // + "          xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-        // + "          xml:base=\"http://example.org/\">\n"
-        // + "  <owl:Ontology />\n"
-        // + "  <owl:ObjectProperty rdf:about=\"p\"/>\n"
-        // + "  <rdf:Description rdf:about=\"a\">\n"
-        // + "    <ex:p><rdf:Description/></ex:p> \n"
-        // + "  </rdf:Description>\n" + "</rdf:RDF>";
-        //
-        // String id = "somevaluesfrom2bnode";
-        // TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        // String d = "Shows that a BNode is an existential variable.";
-        // JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        // r.setReasonerFactory(Factory.factory());
-        // r.printPremise();
-        // r.printConsequence();
-        // r.run();
         // XXX I do not understand these blank nodes used as existential
         // variables
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();

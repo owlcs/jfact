@@ -3,8 +3,8 @@ package bugs;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.annotation.Nonnull;
 
@@ -32,6 +32,7 @@ import org.semanticweb.owlapi.reasoner.NodeSet;
 
 import uk.ac.manchester.cs.jfact.JFactFactory;
 import uk.ac.manchester.cs.jfact.JFactReasoner;
+import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
 @SuppressWarnings("javadoc")
 public abstract class VerifyComplianceBase {
@@ -60,12 +61,13 @@ public abstract class VerifyComplianceBase {
                 .loadOntologyFromOntologyDocument(new StringDocumentSource(in));
     }
 
-    private static Set<String> set(Iterable<OWLEntity> i) {
-        Set<String> s = new HashSet<>();
+    private static String set(Iterable<OWLEntity> i) {
+        Set<String> s = new TreeSet<>();
         for (OWLEntity e : i) {
             s.add(e.getIRI().getShortForm());
         }
-        return s;
+        return s.toString().replace("[", "").replace("]", "")
+                .replace(", ", "\n");
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -116,8 +118,10 @@ public abstract class VerifyComplianceBase {
 
     @Before
     public void setUp() throws OWLOntologyCreationException {
-        reasoner = (JFactReasoner) new JFactFactory()
-                .createReasoner(load(input()));
+        reasoner = (JFactReasoner) new JFactFactory().createReasoner(
+                load(input()), new JFactReasonerConfiguration()
+        // .setAbsorptionLoggingActive(true)
+                );
         reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
     }
 
