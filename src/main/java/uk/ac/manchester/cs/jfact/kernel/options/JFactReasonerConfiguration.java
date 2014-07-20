@@ -135,6 +135,27 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
     /** Option 'allowUndefinedNames' describes the policy of undefined names. */
     @PortedFrom(file = "Kernel.h", name = "allowUndefinedNames")
     private boolean allowUndefinedNames = true;
+    private boolean needLogging = false;
+
+    /**
+     * @param b
+     *        new value
+     * @return modified object
+     */
+    public JFactReasonerConfiguration setNeedLogging(boolean b) {
+        needLogging = b;
+        return this;
+    }
+
+    /**
+     * check if it is necessary to log taxonomy action
+     * 
+     * @return true if necessary to log
+     */
+    public boolean isNeedLogging() {
+        return needLogging;
+    }
+
     /**
      * Option 'queryAnswering', if true, switches the reasoner to a query
      * answering mode.
