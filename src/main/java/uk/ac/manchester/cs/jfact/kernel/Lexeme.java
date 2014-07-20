@@ -121,12 +121,15 @@ public class Lexeme implements Serializable {
     @Override
     public String toString() {
         if (pName == null) {
+            if (token == Token.GE || token == Token.LE) {
+                return token.getName() + " " + data;
+            }
             return token.getName();
         }
         if (token == Token.INAME) {
-            return '(' + token.getName() + ' ' + pName.toString() + ')';
+            return '(' + pName.toString() + ')';
         } else {
-            return token.getName() + ' ' + pName.toString();
+            return pName.toString();
         }
     }
 }

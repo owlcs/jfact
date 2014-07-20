@@ -2221,7 +2221,7 @@ public class DlSatTester implements Serializable {
                 logAdapter.print("~");
             }
             DLVertex v = dlHeap.get(curConceptConcept);
-            logAdapter.print(v.getType().name());
+            logAdapter.print(v.getType());
             if (v.getConcept() != null) {
                 logAdapter.print("(", v.getConcept().getName(), ")");
             }

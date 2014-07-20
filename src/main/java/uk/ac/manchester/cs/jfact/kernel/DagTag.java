@@ -83,6 +83,11 @@ public enum DagTag {
         return name;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     // data type with restrictions
     /**
      * @return check whether given DagTag is a primitive named concept-like
