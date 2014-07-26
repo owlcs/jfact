@@ -97,7 +97,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
 
     private static final long serialVersionUID = 10000L;
     protected final AtomicBoolean interrupted = new AtomicBoolean(false);
-    private ReasoningKernel kernel;
+    public ReasoningKernel kernel;
     private final ExpressionManager em;
     @SuppressWarnings("null")
     @Nonnull

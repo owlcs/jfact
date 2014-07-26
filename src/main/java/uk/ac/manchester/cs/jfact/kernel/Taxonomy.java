@@ -92,13 +92,11 @@ public class Taxonomy implements Serializable {
                     return true;
                 }
             }
-            Queue<List<TaxonomyVertex>> queue = new LinkedList<>();
+            Queue<Iterable<TaxonomyVertex>> queue = new LinkedList<>();
             queue.add(node.neigh(upDirection));
             while (queue.size() > 0) {
-                List<TaxonomyVertex> neigh = queue.remove();
-                int size = neigh.size();
-                for (int i = 0; i < size; i++) {
-                    TaxonomyVertex _node = neigh.get(i);
+                Iterable<TaxonomyVertex> neigh = queue.remove();
+                for (TaxonomyVertex _node : neigh) {
                     // recursive applicability checking
                     if (!isVisited(_node)) {
                         // label node as visited

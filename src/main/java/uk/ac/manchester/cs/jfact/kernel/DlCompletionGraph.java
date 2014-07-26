@@ -666,7 +666,6 @@ public class DlCompletionGraph implements Serializable {
         while (p.hasParent() && p.isBlockableNode() && p.isAffected()) {
             findDBlocker(p);
             if (p.isBlocked()) {
-                // this.print(LL);
                 return;
             }
             p = p.getParentNode();

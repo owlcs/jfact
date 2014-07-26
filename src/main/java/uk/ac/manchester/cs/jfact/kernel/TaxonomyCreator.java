@@ -73,6 +73,7 @@ public class TaxonomyCreator implements Serializable {
     protected void setCurrentEntry(ClassifiableEntry p) {
         pTax.getCurrent().clear();
         pTax.getCurrent().setSample(p, true);
+        pTax.getCurrent().add(true, pTax.getTopVertex());
         curEntry = p;
     }
 
@@ -290,9 +291,8 @@ public class TaxonomyCreator implements Serializable {
         // overwise -- value it...
         setValue(node, true);
         // ... and value all parents
-        List<TaxonomyVertex> list = node.neigh(true);
-        for (int i = 0; i < list.size(); i++) {
-            propagateTrueUp(list.get(i));
+        for (TaxonomyVertex n : node.neigh(true)) {
+            propagateTrueUp(n);
         }
     }
 

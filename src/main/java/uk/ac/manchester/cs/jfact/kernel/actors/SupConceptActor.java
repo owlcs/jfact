@@ -38,7 +38,7 @@ public class SupConceptActor implements Actor, Serializable {
         if (!entry(v.getPrimer())) {
             return false;
         }
-        for (ClassifiableEntry p : v.begin_syn()) {
+        for (ClassifiableEntry p : v.synonyms()) {
             if (!entry(p)) {
                 return false;
             }
@@ -51,7 +51,7 @@ public class SupConceptActor implements Actor, Serializable {
         if (entry(v.getPrimer())) {
             return true;
         }
-        for (ClassifiableEntry p : v.begin_syn()) {
+        for (ClassifiableEntry p : v.synonyms()) {
             if (entry(p)) {
                 return true;
             }

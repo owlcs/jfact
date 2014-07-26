@@ -881,7 +881,7 @@ public class Role extends ClassifiableEntry {
 
     @Override
     public String toString() {
-        return extName + " " + extId;
+        return extName.toString();
     }
 
     /**
