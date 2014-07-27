@@ -9,6 +9,7 @@ import static org.semanticweb.owlapi.util.OWLAPIPreconditions.checkNotNull;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -30,9 +31,9 @@ public class TaxonomyVertex implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** immediate parents and children */
     @PortedFrom(file = "taxVertex.h", name = "Links")
-    private List<TaxonomyVertex> linksParent = new ArrayList<>();
+    private LinkedHashSet<TaxonomyVertex> linksParent = new LinkedHashSet<>();
     @PortedFrom(file = "taxVertex.h", name = "Links")
-    private List<TaxonomyVertex> linksChild = new ArrayList<>();
+    private LinkedHashSet<TaxonomyVertex> linksChild = new LinkedHashSet<>();
     /** entry corresponding to current tax vertex */
     @PortedFrom(file = "taxVertex.h", name = "sample")
     private ClassifiableEntry sample = null;
@@ -289,21 +290,6 @@ public class TaxonomyVertex implements Serializable {
     }
 
     /**
-     * remove latest link (usually to the BOTTOM node)
-     * 
-     * @param upDirection
-     *        upDirection
-     */
-    @PortedFrom(file = "taxVertex.h", name = "removeLastLink")
-    public void removeLastLink(boolean upDirection) {
-        if (upDirection) {
-            linksParent.remove(linksParent.size() - 1);
-        } else {
-            linksChild.remove(linksChild.size() - 1);
-        }
-    }
-
-    /**
      * clear all links in a given direction
      * 
      * @param upDirection
@@ -327,19 +313,10 @@ public class TaxonomyVertex implements Serializable {
      */
     @PortedFrom(file = "taxVertex.h", name = "removeLink")
     public boolean removeLink(boolean upDirection, TaxonomyVertex p) {
-        List<TaxonomyVertex> begin = null;
         if (upDirection) {
-            begin = linksParent;
-        } else {
-            begin = linksChild;
+            return linksParent.remove(p);
         }
-        int index = begin.indexOf(p);
-        if (index > -1 && index < begin.size() - 1) {
-            begin.set(index, begin.get(begin.size() - 1));
-            removeLastLink(upDirection);
-            return true;
-        }
-        return false;
+        return linksChild.remove(p);
     }
 
     // TODO does not work with synonyms
@@ -483,7 +460,7 @@ public class TaxonomyVertex implements Serializable {
      * @return neighbours debug print
      */
     @PortedFrom(file = "taxVertex.h", name = "printNeighbours")
-    private static String printNeighbours(List<TaxonomyVertex> list) {
+    private static String printNeighbours(Collection<TaxonomyVertex> list) {
         StringBuilder o = new StringBuilder();
         o.append(" {");
         o.append(list.size());
