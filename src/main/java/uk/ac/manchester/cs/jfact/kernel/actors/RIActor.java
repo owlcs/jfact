@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel.actors;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
@@ -73,5 +74,9 @@ public class RIActor implements Actor, Serializable {
     /** @return accumulator */
     public List<Individual> getAcc() {
         return acc;
+    }
+
+    @Override
+    public void removePastBoundaries(Collection<TaxonomyVertex> pastBoundary) {
     }
 }
