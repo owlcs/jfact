@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -76,25 +77,25 @@ public class Role extends ClassifiableEntry {
 
     /** role that are inverse of given one */
     @PortedFrom(file = "tRole.h", name = "Inverse")
-    private Role inverse;
+    private Role inverse = null;
     /** Domain of role as a concept description; default null */
     @PortedFrom(file = "tRole.h", name = "pDomain")
-    private DLTree pDomain;
+    private DLTree pDomain = null;
     /** Domain of role as a concept description; default NULL */
     @PortedFrom(file = "tRole.h", name = "pSpecialDomain")
-    private DLTree pSpecialDomain;
+    private DLTree pSpecialDomain = null;
     /** domain in the form AR.Range for the complex roles */
     @PortedFrom(file = "tRole.h", name = "bpSpecialDomain")
-    private int bpSpecialDomain;
+    private int bpSpecialDomain = bpINVALID;
     /** Domain of role as a pointer to DAG entry */
     @PortedFrom(file = "tRole.h", name = "bpDomain")
-    private int bpDomain;
+    private int bpDomain = bpINVALID;
     /** pointer to role's functional definition DAG entry (or just TOP) */
     @PortedFrom(file = "tRole.h", name = "Functional")
-    private int functional;
+    private int functional = bpINVALID;
     /** is role relevant to current query */
     @PortedFrom(file = "tRole.h", name = "rel")
-    private long rel;
+    private long rel = 0;
     /** label of a domain (inverse role is used for a range label) */
     @PortedFrom(file = "tRole.h", name = "domLabel")
     private final MergableLabel domLabel = new MergableLabel();
@@ -111,7 +112,7 @@ public class Role extends ClassifiableEntry {
     private final Set<Role> disjointRoles = new HashSet<>();
     /** all compositions in the form R1*R2*\ldots*Rn [= R */
     @PortedFrom(file = "tRole.h", name = "subCompositions")
-    private final List<List<Role>> subCompositions = new ArrayList<>();
+    private final LinkedHashSet<List<Role>> subCompositions = new LinkedHashSet<>();
     /** bit-vector of all parents */
     @PortedFrom(file = "tRole.h", name = "AncMap")
     private final FastSet ancestorMap = FastSetFactory.create();
@@ -141,7 +142,7 @@ public class Role extends ClassifiableEntry {
     private final KnownValue irreflexivity = new KnownValue();
     /** flag to show that this role needs special R and D processing */
     @PortedFrom(file = "tRole.h", name = "SpecialDomain")
-    private boolean specialDomain;
+    private boolean specialDomain = false;
 
     /**
      * add automaton of a sub-role to a given one
@@ -222,6 +223,7 @@ public class Role extends ClassifiableEntry {
     @PortedFrom(file = "tRole.h", name = "setInverse")
     public void setInverse(Role p) {
         assert inverse == null;
+        assert p != null;
         inverse = p;
     }
 
@@ -777,16 +779,8 @@ public class Role extends ClassifiableEntry {
 
     protected Role(IRI name) {
         super(name);
-        inverse = null;
-        pDomain = null;
-        pSpecialDomain = null;
-        bpDomain = bpINVALID;
-        bpSpecialDomain = bpINVALID;
-        functional = bpINVALID;
-        rel = 0;
-        specialDomain = false;
         setCompletelyDefined(true);
-        // role hierarchy is completely defined by it's parents
+        // role hierarchy is completely defined by its parents
         addTrivialTransition(this);
     }
 
@@ -819,26 +813,43 @@ public class Role extends ClassifiableEntry {
         if (!isSynonym()) {
             return;
         }
-        Role syn = resolveSynonym(this);
-        if (isFunctional() && !syn.isFunctional()) {
+        Role syn = (Role) pSynonym;
+        if (isFunctional() || syn.isFunctional()) {
             syn.setFunctional();
+            setFunctional();
         }
-        if (isTransitive()) {
+        if (isTransitive() || syn.isTransitive()) {
             syn.setTransitive(true);
+            setTransitive(true);
         }
-        if (isReflexive()) {
+        if (isReflexive() || syn.isReflexive()) {
             syn.setReflexive(true);
+            setReflexive(true);
         }
-        if (isDataRole()) {
+        if (isDataRole() || syn.isDataRole()) {
             syn.setDataRole(true);
+            setDataRole(true);
         }
         if (pDomain != null) {
             syn.setDomain(pDomain.copy());
         }
+        if (syn.getTDomain() != null) {
+            setDomain(syn.getTDomain().copy());
+        }
+        if (inverse.pDomain != null) {
+            syn.inverse.setDomain(inverse.pDomain.copy());
+        }
+        if (syn.inverse.getTDomain() != null) {
+            inverse.setDomain(syn.inverse.getTDomain().copy());
+        }
         if (this.isDisjoint()) {
             syn.disjointRoles.addAll(disjointRoles);
         }
+        if (syn.isDisjoint()) {
+            disjointRoles.addAll(syn.disjointRoles);
+        }
         syn.subCompositions.addAll(subCompositions);
+        subCompositions.addAll(syn.subCompositions);
         toldSubsumers.clear();
         addParent(syn);
     }
