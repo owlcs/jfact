@@ -1,7 +1,5 @@
 package bugs;
 
-import static org.junit.Assert.assertTrue;
-
 import javax.annotation.Nonnull;
 
 import org.junit.Test;
@@ -13,7 +11,7 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 public class VerifyComplianceMereology extends VerifyComplianceBase {
 
     @Nonnull
-    String input = "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
+    protected String input = "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
             + "Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\n"
             + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
             + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
@@ -96,54 +94,31 @@ public class VerifyComplianceMereology extends VerifyComplianceBase {
     }
 
     @Nonnull
-    OWLClass Abstract_Entity = C("urn:mereology#Abstract_Entity");
+    protected OWLClass Abstract_Entity = C("urn:mereology#Abstract_Entity");
     @Nonnull
-    OWLClass Composition = C("urn:mereology#Composition");
+    protected OWLClass Composition = C("urn:mereology#Composition");
     @Nonnull
-    OWLClass Whole = C("urn:mereology#Whole");
+    protected OWLClass Whole = C("urn:mereology#Whole");
     @Nonnull
-    OWLClass Pair = C("urn:mereology#Pair");
+    protected OWLClass Pair = C("urn:mereology#Pair");
     @Nonnull
-    OWLClass Atom = C("urn:mereology#Atom");
+    protected OWLClass Atom = C("urn:mereology#Atom");
     @Nonnull
-    OWLClass Nothing = C("http://www.w3.org/2002/07/owl#Nothing");
+    protected OWLClass Nothing = C("http://www.w3.org/2002/07/owl#Nothing");
     @Nonnull
-    OWLClass Part = C("urn:mereology#Part");
+    protected OWLClass Part = C("urn:mereology#Part");
     @Nonnull
-    OWLClass Physical_Entity = C("urn:mereology#Physical_Entity");
+    protected OWLClass Physical_Entity = C("urn:mereology#Physical_Entity");
     @Nonnull
-    OWLClass Occurrence = C("urn:mereology#Occurrence");
+    protected OWLClass Occurrence = C("urn:mereology#Occurrence");
     @Nonnull
-    OWLClass Mental_Entity = C("urn:mereology#Mental_Entity");
+    protected OWLClass Mental_Entity = C("urn:mereology#Mental_Entity");
     @Nonnull
-    OWLClass Thing = C("http://www.w3.org/2002/07/owl#Thing");
-
-    @Test
-    public void shouldPassgetSubClassesThingtrue() {
-        equal(reasoner.getSubClasses(Thing, true), Physical_Entity,
-                Abstract_Entity, Occurrence, Mental_Entity);
-    }
+    protected OWLClass Thing = C("http://www.w3.org/2002/07/owl#Thing");
 
     @Test
     public void shouldPassgetSuperClassesWholefalse() {
         equal(reasoner.getSuperClasses(Whole, false), Thing, Abstract_Entity);
-    }
-
-    @Test
-    public void shouldPassgetSuperClassesWholetrue() {
-        equal(reasoner.getSuperClasses(Whole, true), Abstract_Entity);
-    }
-
-    @Test
-    public void shouldPassisEntailedSubClassOfCompositionAbstract_Entity() {
-        assertTrue(reasoner.isEntailed(df.getOWLSubClassOfAxiom(Composition,
-                Abstract_Entity)));
-    }
-
-    @Test
-    public void shouldPassisEntailedSubClassOfPairAbstract_Entity() {
-        assertTrue(reasoner.isEntailed(df.getOWLSubClassOfAxiom(Pair,
-                Abstract_Entity)));
     }
 
     @Test
@@ -172,10 +147,5 @@ public class VerifyComplianceMereology extends VerifyComplianceBase {
     @Test
     public void shouldPassgetSuperClassesPartfalse() {
         equal(reasoner.getSuperClasses(Part, false), Thing, Abstract_Entity);
-    }
-
-    @Test
-    public void shouldPassgetSuperClassesParttrue() {
-        equal(reasoner.getSuperClasses(Part, true), Abstract_Entity);
     }
 }

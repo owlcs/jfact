@@ -30,12 +30,12 @@ import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 
-import uk.ac.manchester.cs.jfact.JFactFactory;
+import testbase.TestBase;
 import uk.ac.manchester.cs.jfact.JFactReasoner;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
 @SuppressWarnings("javadoc")
-public abstract class VerifyComplianceBase {
+public abstract class VerifyComplianceBase extends TestBase {
 
     protected abstract String input();
 
@@ -118,10 +118,8 @@ public abstract class VerifyComplianceBase {
 
     @Before
     public void setUp() throws OWLOntologyCreationException {
-        reasoner = (JFactReasoner) new JFactFactory().createReasoner(
-                load(input()), new JFactReasonerConfiguration()
-        // .setAbsorptionLoggingActive(true)
-                );
+        reasoner = (JFactReasoner) factory().createReasoner(load(input()),
+                new JFactReasonerConfiguration());
         reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
     }
 

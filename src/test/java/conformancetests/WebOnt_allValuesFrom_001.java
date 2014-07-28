@@ -7,8 +7,10 @@ package conformancetests;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import org.junit.Test;
 
+import testbase.TestBase;
+
 @SuppressWarnings("javadoc")
-public class WebOnt_allValuesFrom_001 {
+public class WebOnt_allValuesFrom_001 extends TestBase {
 
     @Test
     public void testWebOnt_miscellaneous_203() {
@@ -39,7 +41,7 @@ public class WebOnt_allValuesFrom_001 {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "This shows that initial whitespace in an rdf:XMLLiteral (http://www.w3.org/TR/rdf-concepts/#section-XMLLiteral) is significant within OWL.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -90,7 +92,7 @@ public class WebOnt_allValuesFrom_001 {
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
         String d = "This shows that insignificant whitespace in an rdf:XMLLiteral is not significant within OWL.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -107,7 +109,7 @@ public class WebOnt_allValuesFrom_001 {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "This shows a simple inconsistency depending on the datatype rdf:XMLLiteral. This file is inconsistent with a datatype map which supports rdf:XMLLiteral, and consistent otherwise.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -128,7 +130,7 @@ public class WebOnt_allValuesFrom_001 {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "A simple example.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -167,7 +169,7 @@ public class WebOnt_allValuesFrom_001 {
         TestClasses tc = TestClasses.valueOf("NEGATIVE_IMPL");
         String d = "Another simple example; contrast with owl:someValuesFrom.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -191,7 +193,7 @@ public class WebOnt_allValuesFrom_001 {
         TestClasses tc = TestClasses.valueOf("NEGATIVE_IMPL");
         String d = "owl:sameAs is stronger than owl:equivalentClass.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -391,7 +393,7 @@ public class WebOnt_allValuesFrom_001 {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The construct used here shows how to express mutual disjointness between classes with  O(N) triples.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -414,7 +416,7 @@ public class WebOnt_allValuesFrom_001 {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "All xsd:byte\n" + "are xsd:short.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 }

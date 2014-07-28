@@ -19,16 +19,15 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.NodeSet;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
-import uk.ac.manchester.cs.jfact.JFactFactory;
-import uk.ac.manchester.cs.jfact.JFactReasoner;
-import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
-public class Bugs {
+public class BugsFixed extends TestBase {
 
-    private JFactReasoner jfact1;
-    private JFactReasoner jfact2;
+    private OWLReasoner jfact1;
+    private OWLReasoner jfact2;
     private OWLDataFactory df = OWLManager.getOWLDataFactory();
     private OWLOntology o1;
     private OWLOntology o2;
@@ -119,11 +118,9 @@ public class Bugs {
         o2 = OWLManager.createOWLOntologyManager()
                 .loadOntologyFromOntologyDocument(
                         new StringDocumentSource(input2));
-        JFactReasonerConfiguration c = new JFactReasonerConfiguration();
-        // c.setLoggingActive(true);
-        jfact1 = (JFactReasoner) new JFactFactory().createReasoner(o1, c);
+        jfact1 = factory().createReasoner(o1);
         jfact1.precomputeInferences(InferenceType.CLASS_HIERARCHY);
-        jfact2 = (JFactReasoner) new JFactFactory().createReasoner(o2, c);
+        jfact2 = factory().createReasoner(o2);
         jfact2.precomputeInferences(InferenceType.CLASS_HIERARCHY);
     }
 
@@ -196,14 +193,6 @@ public class Bugs {
     }
 
     @Test
-    public void shouldTestgetgetSubClasses_top_true() {
-        NodeSet<OWLClass> result = jfact1.getSubClasses(df.getOWLThing(), true);
-        equal(result, abstractEntity, composition);
-        result = jfact2.getSubClasses(df.getOWLThing(), true);
-        equal(result, serviceModel);
-    }
-
-    @Test
     public void shouldTestgetgetSubClasses_AbstractEntity_false() {
         NodeSet<OWLClass> result = jfact1.getSubClasses(abstractEntity, false);
         equal(result, whole, pair, df.getOWLNothing(), part);
@@ -237,21 +226,5 @@ public class Bugs {
         NodeSet<OWLClass> result = jfact2.getSuperClasses(compositeProcess,
                 false);
         equal(result, df.getOWLThing(), serviceModel, process);
-    }
-
-    @Test
-    public void shouldTestgetgetSuperClasses_Part_true() {
-        NodeSet<OWLClass> result = jfact1.getSuperClasses(part, true);
-        equal(result, abstractEntity);
-    }
-
-    @Test
-    public void shouldTestgetgetSuperClasses_Part_true2() {
-        NodeSet<OWLClass> result = jfact2.getSuperClasses(simpleProcess, true);
-        equal(result, process);
-        result = jfact2.getSuperClasses(atomicProcess, true);
-        equal(result, process);
-        result = jfact2.getSuperClasses(process, true);
-        equal(result, serviceModel);
     }
 }

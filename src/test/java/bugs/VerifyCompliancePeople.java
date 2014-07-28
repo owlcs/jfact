@@ -141,113 +141,113 @@ public class VerifyCompliancePeople extends VerifyComplianceBase {
     }
 
     @Nonnull
-    OWLClass mad_cow = C("urn:people#mad_cow");
+    protected OWLClass mad_cow = C("urn:people#mad_cow");
     @Nonnull
-    OWLClass Nothing = df.getOWLNothing();
+    protected OWLClass Nothing = df.getOWLNothing();
     @Nonnull
-    OWLClass truck = C("urn:people#truck");
+    protected OWLClass truck = C("urn:people#truck");
     @Nonnull
-    OWLClass lorry = C("urn:people#lorry");
+    protected OWLClass lorry = C("urn:people#lorry");
     @Nonnull
-    OWLClass white_van_man = C("urn:people#white_van_man");
+    protected OWLClass white_van_man = C("urn:people#white_van_man");
     @Nonnull
-    OWLClass car = C("urn:people#car");
+    protected OWLClass car = C("urn:people#car");
     @Nonnull
-    OWLClass tiger = C("urn:people#tiger");
+    protected OWLClass tiger = C("urn:people#tiger");
     @Nonnull
-    OWLClass cat = C("urn:people#cat");
+    protected OWLClass cat = C("urn:people#cat");
     @Nonnull
-    OWLClass van = C("urn:people#van");
+    protected OWLClass van = C("urn:people#van");
     @Nonnull
-    OWLClass magazine = C("urn:people#magazine");
+    protected OWLClass magazine = C("urn:people#magazine");
     @Nonnull
-    OWLClass pet = C("urn:people#pet");
+    protected OWLClass pet = C("urn:people#pet");
     @Nonnull
-    OWLClass dog = C("urn:people#dog");
+    protected OWLClass dog = C("urn:people#dog");
     @Nonnull
-    OWLClass bus_driver = C("urn:people#bus_driver");
+    protected OWLClass bus_driver = C("urn:people#bus_driver");
     @Nonnull
-    OWLClass haulage_truck_driver = C("urn:people#haulage_truck_driver");
+    protected OWLClass haulage_truck_driver = C("urn:people#haulage_truck_driver");
     @Nonnull
-    OWLClass cow = C("urn:people#cow");
+    protected OWLClass cow = C("urn:people#cow");
     @Nonnull
-    OWLClass tree = C("urn:people#tree");
+    protected OWLClass tree = C("urn:people#tree");
     @Nonnull
-    OWLClass dog_owner = C("urn:people#dog_owner");
+    protected OWLClass dog_owner = C("urn:people#dog_owner");
     @Nonnull
-    OWLClass giraffe = C("urn:people#giraffe");
+    protected OWLClass giraffe = C("urn:people#giraffe");
     @Nonnull
-    OWLClass red_top = C("urn:people#red_top");
+    protected OWLClass red_top = C("urn:people#red_top");
     @Nonnull
-    OWLClass brain = C("urn:people#brain");
+    protected OWLClass brain = C("urn:people#brain");
     @Nonnull
-    OWLClass bus = C("urn:people#bus");
+    protected OWLClass bus = C("urn:people#bus");
     @Nonnull
-    OWLClass quality_broadsheet = C("urn:people#quality_broadsheet");
+    protected OWLClass quality_broadsheet = C("urn:people#quality_broadsheet");
     @Nonnull
-    OWLClass lorry_driver = C("urn:people#lorry_driver");
+    protected OWLClass lorry_driver = C("urn:people#lorry_driver");
     @Nonnull
-    OWLClass bicycle = C("urn:people#bicycle");
+    protected OWLClass bicycle = C("urn:people#bicycle");
     @Nonnull
-    OWLClass sheep = C("urn:people#sheep");
+    protected OWLClass sheep = C("urn:people#sheep");
     @Nonnull
-    OWLClass old_lady = C("urn:people#old_lady");
+    protected OWLClass old_lady = C("urn:people#old_lady");
     @Nonnull
-    OWLClass kid = C("urn:people#kid");
+    protected OWLClass kid = C("urn:people#kid");
     @Nonnull
-    OWLClass bus_company = C("urn:people#bus_company");
+    protected OWLClass bus_company = C("urn:people#bus_company");
     @Nonnull
-    OWLClass duck = C("urn:people#duck");
+    protected OWLClass duck = C("urn:people#duck");
     @Nonnull
-    OWLClass haulage_company = C("urn:people#haulage_company");
+    protected OWLClass haulage_company = C("urn:people#haulage_company");
     @Nonnull
-    OWLClass animal_lover = C("urn:people#animal_lover");
+    protected OWLClass animal_lover = C("urn:people#animal_lover");
     @Nonnull
-    OWLClass white_thing = C("urn:people#white_thing");
+    protected OWLClass white_thing = C("urn:people#white_thing");
     @Nonnull
-    OWLClass leaf = C("urn:people#leaf");
+    protected OWLClass leaf = C("urn:people#leaf");
     @Nonnull
-    OWLClass bone = C("urn:people#bone");
+    protected OWLClass bone = C("urn:people#bone");
     @Nonnull
-    OWLClass grass = C("urn:people#grass");
+    protected OWLClass grass = C("urn:people#grass");
     @Nonnull
-    OWLClass animal = C("urn:people#animal");
+    protected OWLClass animal = C("urn:people#animal");
     @Nonnull
-    OWLClass pet_owner = C("urn:people#pet_owner");
+    protected OWLClass pet_owner = C("urn:people#pet_owner");
     @Nonnull
-    OWLClass cat_owner = C("urn:people#cat_owner");
+    protected OWLClass cat_owner = C("urn:people#cat_owner");
     @Nonnull
-    OWLNamedIndividual Fluffy = I("urn:people#Fluffy");
+    protected OWLNamedIndividual Fluffy = I("urn:people#Fluffy");
     @Nonnull
-    OWLNamedIndividual Fred = I("urn:people#Fred");
+    protected OWLNamedIndividual Fred = I("urn:people#Fred");
     @Nonnull
-    OWLNamedIndividual Kevin = I("urn:people#Kevin");
+    protected OWLNamedIndividual Kevin = I("urn:people#Kevin");
     @Nonnull
-    OWLNamedIndividual Spike = I("urn:people#Spike");
+    protected OWLNamedIndividual Spike = I("urn:people#Spike");
     @Nonnull
-    OWLNamedIndividual Tom = I("urn:people#Tom");
+    protected OWLNamedIndividual Tom = I("urn:people#Tom");
     @Nonnull
-    OWLNamedIndividual Huey = I("urn:people#Huey");
+    protected OWLNamedIndividual Huey = I("urn:people#Huey");
     @Nonnull
-    OWLNamedIndividual Joe = I("urn:people#Joe");
+    protected OWLNamedIndividual Joe = I("urn:people#Joe");
     @Nonnull
-    OWLNamedIndividual Walt = I("urn:people#Walt");
+    protected OWLNamedIndividual Walt = I("urn:people#Walt");
     @Nonnull
-    OWLNamedIndividual Dewey = I("urn:people#Dewey");
+    protected OWLNamedIndividual Dewey = I("urn:people#Dewey");
     @Nonnull
-    OWLNamedIndividual Louie = I("urn:people#Louie");
+    protected OWLNamedIndividual Louie = I("urn:people#Louie");
     @Nonnull
-    OWLNamedIndividual Mick = I("urn:people#Mick");
+    protected OWLNamedIndividual Mick = I("urn:people#Mick");
     @Nonnull
-    OWLNamedIndividual Minnie = I("urn:people#Minnie");
+    protected OWLNamedIndividual Minnie = I("urn:people#Minnie");
     @Nonnull
-    OWLNamedIndividual Pete = I("urn:people#Pete");
+    protected OWLNamedIndividual Pete = I("urn:people#Pete");
     @Nonnull
-    OWLNamedIndividual Rex = I("urn:people#Rex");
+    protected OWLNamedIndividual Rex = I("urn:people#Rex");
     @Nonnull
-    OWLNamedIndividual Tibbs = I("urn:people#Tibbs");
+    protected OWLNamedIndividual Tibbs = I("urn:people#Tibbs");
     @Nonnull
-    OWLNamedIndividual Fido = I("urn:people#Fido");
+    protected OWLNamedIndividual Fido = I("urn:people#Fido");
 
     @Test
     public void shouldPassgetSubClassestigertrue() {
@@ -277,19 +277,6 @@ public class VerifyCompliancePeople extends VerifyComplianceBase {
     @Test
     public void shouldPassgetSubClassesvantrue() {
         equal(reasoner.getSubClasses(van, true), mad_cow, Nothing);
-    }
-
-    @Test
-    public void shouldPassgetSuperClassesmad_cowtrue() {
-        // expected white_van_man, tiger, cat, van, pet, dog, cow, dog_owner,
-        // old_lady, duck, animal_lover, white_thing
-        // actual__ , , , , , , , , , , , , , , , , , , , ,
-        equal(reasoner.getSuperClasses(mad_cow, true), truck, lorry,
-                white_van_man, car, tiger, cat, van, magazine, pet, dog,
-                bus_driver, haulage_truck_driver, cow, tree, dog_owner,
-                giraffe, red_top, brain, bus, quality_broadsheet, lorry_driver,
-                bicycle, sheep, old_lady, kid, bus_company, duck,
-                haulage_company, animal_lover, white_thing, leaf, bone, grass);
     }
 
     @Test

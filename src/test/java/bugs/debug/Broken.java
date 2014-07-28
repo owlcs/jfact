@@ -1,4 +1,4 @@
-package conformancetests;
+package bugs.debug;
 
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
@@ -24,11 +24,13 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 
-import uk.ac.manchester.cs.jfact.JFactFactory;
-import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import conformancetests.Changed;
+import conformancetests.JUnitRunner;
+import conformancetests.TestClasses;
+import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
-public class Broken {
+public class Broken extends TestBase {
 
     @Test
     public void testQualified_cardinality_boolean() {
@@ -53,7 +55,7 @@ public class Broken {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "According to qualified cardinality restriction individual a should have two boolean values. Since there are only two boolean values, the data property assertions can be entailed.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -146,9 +148,7 @@ public class Broken {
         m.addAxiom(o, FunctionalObjectProperty(twoatobandc));
         m.addAxiom(o, InverseFunctionalObjectProperty(twoatobandc));
         m.addAxiom(o, DifferentIndividuals(i, j, k));
-        JFactReasonerConfiguration config = new JFactReasonerConfiguration();
-        // config.setLoggingActive(true);
-        OWLReasoner reasoner = new JFactFactory().createReasoner(o, config);
+        OWLReasoner reasoner = factory().createReasoner(o);
         assertFalse(
                 "Start with 3 classes, a,b,c and relate them so instances have to be in a 1:1 relationship with each other.\n"
                         + "The class b-and-c is the union of b and c. Therefore there have to be 2 instances of b-and-c for every instance of a.\n"
@@ -179,7 +179,7 @@ public class Broken {
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
         String d = "The individual a must have dp fillers that are in the sets {3, 4} and {2, 3} (different types are used, but shorts and ints are integers). Furthermore, the dp filler must be 3, but since 3 is in both sets, the ontology is consistent.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -192,7 +192,7 @@ public class Broken {
                 .create("urn:test:datap1"));
         mngr.addAxiom(ont,
                 df.getOWLDataPropertyDomainAxiom(dp, df.getOWLNothing()));
-        OWLReasonerFactory fac = Factory.factory();
+        OWLReasonerFactory fac = factory();
         OWLReasoner r = fac.createNonBufferingReasoner(ont);
         assertEquals(r.getBottomDataPropertyNode().toString(), 2, r
                 .getBottomDataPropertyNode().getEntities().size());
@@ -223,7 +223,7 @@ public class Broken {
         // instead of a oneof from int or integer or any of the types in the
         // middle.
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -243,7 +243,7 @@ public class Broken {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "0 is the only xsd:nonNegativeInteger which is also an xsd:nonPositiveInteger.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         // r.getConfiguration().setLoggingActive(true);
         r.run();
     }
@@ -269,7 +269,7 @@ public class Broken {
         // TODO to make this work, the datatype reasoner must be able to infer
         // short and unsigned int equivalent unsigned short
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -305,7 +305,7 @@ public class Broken {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "A simple infinite loop for implementors to avoid.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -321,7 +321,7 @@ public class Broken {
         OWLObjectSomeValuesFrom c = f.getOWLObjectSomeValuesFrom(p,
                 f.getOWLThing());
         m.addAxiom(o, f.getOWLClassAssertionAxiom(c, a));
-        OWLReasoner r = Factory.factory().createReasoner(o);
+        OWLReasoner r = factory().createReasoner(o);
         assertTrue(r.isEntailed(f.getOWLObjectPropertyAssertionAxiom(p, a,
                 f.getOWLAnonymousIndividual())));
     }

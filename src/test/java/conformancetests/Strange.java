@@ -16,10 +16,10 @@ import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
-import uk.ac.manchester.cs.jfact.JFactFactory;
+import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
-public class Strange {
+public class Strange extends TestBase {
 
     @Test
     public void shouldFindThreeSubclasses() throws OWLOntologyCreationException {
@@ -34,7 +34,7 @@ public class Strange {
                 o,
                 d.getOWLSubClassOfAxiom(d.getOWLClass(IRI.create("urn:a")),
                         d.getOWLClass(IRI.create("urn:b"))));
-        OWLReasoner r = new JFactFactory().createReasoner(o);
+        OWLReasoner r = factory().createReasoner(o);
         r.precomputeInferences(InferenceType.CLASS_HIERARCHY);
         NodeSet<OWLClass> subClasses = r.getSubClasses(
                 d.getOWLClass(IRI.create("urn:c")), false);

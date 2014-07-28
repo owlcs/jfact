@@ -1,19 +1,25 @@
-package bugs;
+package bugs.debug;
 
-import org.junit.Before;
-import org.junit.Ignore;
+import java.util.Collections;
+import java.util.List;
+
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.StringDocumentSource;
+import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.reasoner.BufferingMode;
+import org.semanticweb.owlapi.reasoner.InferenceType;
+
+import uk.ac.manchester.cs.jfact.JFactReasoner;
+import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import bugs.VerifyComplianceBase;
 
 @SuppressWarnings("javadoc")
-public class VerifyComplianceOWLSNewFeatures extends VerifyComplianceBase {
+public class JFactTest extends VerifyComplianceBase {
 
     String in = "Prefix(:=<http://www.w3.org/2002/07/owl#>)\n"
             + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
@@ -25,31 +31,6 @@ public class VerifyComplianceOWLSNewFeatures extends VerifyComplianceBase {
             + "\n"
             + "Ontology(\n"
             + "Declaration(Class(<urn:process#Any-Order>))\nDeclaration(Class(<urn:process#AtomicProcess>))\nDeclaration(Class(<urn:process#Binding>))\nDeclaration(Class(<urn:process#Choice>))\nDeclaration(Class(<urn:process#CompositeProcess>))\nDeclaration(Class(<urn:process#ConditionalEffect>))\nDeclaration(Class(<urn:process#ConditionalOutput>))\nDeclaration(Class(<urn:process#ControlConstruct>))\nDeclaration(Class(<urn:process#ControlConstructBag>))\nDeclaration(Class(<urn:process#ControlConstructList>))\nDeclaration(Class(<urn:process#If-Then-Else>))\nDeclaration(Class(<urn:process#Input>))\nDeclaration(Class(<urn:process#InputBinding>))\nDeclaration(Class(<urn:process#Iterate>))\nDeclaration(Class(<urn:process#Local>))\nDeclaration(Class(<urn:process#Output>))\nDeclaration(Class(<urn:process#OutputBinding>))\nDeclaration(Class(<urn:process#Parameter>))\nDeclaration(Class(<urn:process#Participant>))\nDeclaration(Class(<urn:process#Perform>))\nDeclaration(Class(<urn:process#Process>))\nDeclaration(Class(<urn:process#ProcessComponent>))\nDeclaration(Class(<urn:process#Produce>))\nDeclaration(Class(<urn:process#Repeat-Until>))\nDeclaration(Class(<urn:process#Repeat-While>))\nDeclaration(Class(<urn:process#Result>))\nDeclaration(Class(<urn:process#ResultVar>))\nDeclaration(Class(<urn:process#Sequence>))\nDeclaration(Class(<urn:process#SimpleProcess>))\nDeclaration(Class(<urn:process#Split>))\nDeclaration(Class(<urn:process#Split-Join>))\nDeclaration(Class(<urn:process#Unordered>))\nDeclaration(Class(<urn:process#ValueOf>))\nDeclaration(Class(<urn:profile#Profile>))\nDeclaration(Class(<urn:profile#ServiceCategory>))\nDeclaration(Class(<urn:profile#ServiceParameter>))\nDeclaration(Class(<urn:Service.owl#Service>))\nDeclaration(Class(<urn:Service.owl#ServiceGrounding>))\nDeclaration(Class(<urn:Service.owl#ServiceModel>))\nDeclaration(Class(<urn:Service.owl#ServiceProfile>))\nDeclaration(Class(<urn:expr#Condition>))\nDeclaration(Class(<urn:expr#DRS-Condition>))\nDeclaration(Class(<urn:expr#DRS-Expression>))\nDeclaration(Class(<urn:expr#Expression>))\nDeclaration(Class(<urn:expr#KIF-Condition>))\nDeclaration(Class(<urn:expr#KIF-Expression>))\nDeclaration(Class(<urn:expr#LogicLanguage>))\nDeclaration(Class(<urn:expr#SWRL-Condition>))\nDeclaration(Class(<urn:expr#SWRL-Expression>))\nDeclaration(Class(<urn:generic/ObjectList.owl#List>))\nDeclaration(Class(<urn:timeentry#IntervalThing>))\nDeclaration(Class(<http://www.w3.org/2003/11/swrl#AtomList>))\nDeclaration(Class(<http://www.w3.org/2003/11/swrl#Variable>))\nDeclaration(ObjectProperty(<urn:process#collapse>))\nDeclaration(ObjectProperty(<urn:process#collapsesTo>))\nDeclaration(ObjectProperty(<urn:process#components>))\nDeclaration(ObjectProperty(<urn:process#composedOf>))\nDeclaration(ObjectProperty(<urn:process#computedEffect>))\nDeclaration(ObjectProperty(<urn:process#computedInput>))\nDeclaration(ObjectProperty(<urn:process#computedOutput>))\nDeclaration(ObjectProperty(<urn:process#computedPrecondition>))\nDeclaration(ObjectProperty(<urn:process#else>))\nDeclaration(ObjectProperty(<urn:process#expand>))\nDeclaration(ObjectProperty(<urn:process#expandsTo>))\nDeclaration(ObjectProperty(<urn:process#fromProcess>))\nDeclaration(ObjectProperty(<urn:process#hasClient>))\nDeclaration(ObjectProperty(<urn:process#hasDataFrom>))\nDeclaration(ObjectProperty(<urn:process#hasEffect>))\nDeclaration(ObjectProperty(<urn:process#hasInput>))\nDeclaration(ObjectProperty(<urn:process#hasLocal>))\nDeclaration(ObjectProperty(<urn:process#hasOutput>))\nDeclaration(ObjectProperty(<urn:process#hasParameter>))\nDeclaration(ObjectProperty(<urn:process#hasParticipant>))\nDeclaration(ObjectProperty(<urn:process#hasPrecondition>))\nDeclaration(ObjectProperty(<urn:process#hasResult>))\nDeclaration(ObjectProperty(<urn:process#hasResultVar>))\nDeclaration(ObjectProperty(<urn:process#ifCondition>))\nDeclaration(ObjectProperty(<urn:process#inCondition>))\nDeclaration(ObjectProperty(<urn:process#performedBy>))\nDeclaration(ObjectProperty(<urn:process#process>))\nDeclaration(ObjectProperty(<urn:process#producedBinding>))\nDeclaration(ObjectProperty(<urn:process#realizedBy>))\nDeclaration(ObjectProperty(<urn:process#realizes>))\nDeclaration(ObjectProperty(<urn:process#theVar>))\nDeclaration(ObjectProperty(<urn:process#then>))\nDeclaration(ObjectProperty(<urn:process#timeout>))\nDeclaration(ObjectProperty(<urn:process#toParam>))\nDeclaration(ObjectProperty(<urn:process#untilCondition>))\nDeclaration(ObjectProperty(<urn:process#untilProcess>))\nDeclaration(ObjectProperty(<urn:process#valueSource>))\nDeclaration(ObjectProperty(<urn:process#whileCondition>))\nDeclaration(ObjectProperty(<urn:process#whileProcess>))\nDeclaration(ObjectProperty(<urn:process#withOutput>))\nDeclaration(ObjectProperty(<urn:profile#contactInformation>))\nDeclaration(ObjectProperty(<urn:profile#hasInput>))\nDeclaration(ObjectProperty(<urn:profile#hasOutput>))\nDeclaration(ObjectProperty(<urn:profile#hasParameter>))\nDeclaration(ObjectProperty(<urn:profile#hasPrecondition>))\nDeclaration(ObjectProperty(<urn:profile#hasResult>))\nDeclaration(ObjectProperty(<urn:profile#has_process>))\nDeclaration(ObjectProperty(<urn:profile#sParameter>))\nDeclaration(ObjectProperty(<urn:profile#serviceCategory>))\nDeclaration(ObjectProperty(<urn:profile#serviceParameter>))\nDeclaration(ObjectProperty(<urn:Service.owl#describedBy>))\nDeclaration(ObjectProperty(<urn:Service.owl#describes>))\nDeclaration(ObjectProperty(<urn:Service.owl#isDescribedBy>))\nDeclaration(ObjectProperty(<urn:Service.owl#isPresentedBy>))\nDeclaration(ObjectProperty(<urn:Service.owl#isSupportedBy>))\nDeclaration(ObjectProperty(<urn:Service.owl#presentedBy>))\nDeclaration(ObjectProperty(<urn:Service.owl#presents>))\nDeclaration(ObjectProperty(<urn:Service.owl#providedBy>))\nDeclaration(ObjectProperty(<urn:Service.owl#provides>))\nDeclaration(ObjectProperty(<urn:Service.owl#supportedBy>))\nDeclaration(ObjectProperty(<urn:Service.owl#supports>))\nDeclaration(ObjectProperty(<urn:expr#expressionLanguage>))\nDeclaration(ObjectProperty(<urn:generic/ObjectList.owl#first>))\nDeclaration(ObjectProperty(<urn:generic/ObjectList.owl#rest>))\nDeclaration(DataProperty(<urn:process#invocable>))\nDeclaration(DataProperty(<urn:process#name>))\nDeclaration(DataProperty(<urn:process#parameterType>))\nDeclaration(DataProperty(<urn:process#parameterValue>))\nDeclaration(DataProperty(<urn:process#valueData>))\nDeclaration(DataProperty(<urn:process#valueForm>))\nDeclaration(DataProperty(<urn:process#valueFunction>))\nDeclaration(DataProperty(<urn:process#valueSpecifier>))\nDeclaration(DataProperty(<urn:process#valueType>))\nDeclaration(DataProperty(<urn:profile#categoryName>))\nDeclaration(DataProperty(<urn:profile#code>))\nDeclaration(DataProperty(<urn:profile#serviceClassification>))\nDeclaration(DataProperty(<urn:profile#serviceName>))\nDeclaration(DataProperty(<urn:profile#serviceParameterName>))\nDeclaration(DataProperty(<urn:profile#serviceProduct>))\nDeclaration(DataProperty(<urn:profile#taxonomy>))\nDeclaration(DataProperty(<urn:profile#textDescription>))\nDeclaration(DataProperty(<urn:profile#value>))\nDeclaration(DataProperty(<urn:expr#expressionBody>))\nDeclaration(DataProperty(<urn:expr#refURI>))\nDeclaration(NamedIndividual(<urn:process#TheClient>))\nDeclaration(NamedIndividual(<urn:process#TheParentPerform>))\nDeclaration(NamedIndividual(<urn:process#TheServer>))\nDeclaration(NamedIndividual(<urn:process#ThisPerform>))\nDeclaration(NamedIndividual(<urn:expr#AlwaysTrue>))\nDeclaration(NamedIndividual(<urn:expr#DRS>))\nDeclaration(NamedIndividual(<urn:expr#KIF>))\nDeclaration(NamedIndividual(<urn:expr#SWRL>))\nDeclaration(NamedIndividual(<urn:generic/ObjectList.owl#nil>))\n"
-            + "EquivalentClasses(<urn:process#Any-Order> <urn:process#Unordered>)\n"
-            + "SubClassOf(<urn:process#Any-Order> <urn:process#ControlConstruct>)\n"
-            + "SubClassOf(<urn:process#Any-Order> ObjectAllValuesFrom(<urn:process#components> <urn:process#ControlConstructBag>))\n"
-            + "SubClassOf(<urn:process#Any-Order> ObjectExactCardinality(1 <urn:process#components>))\n"
-            + "SubClassOf(<urn:process#AtomicProcess> <urn:process#Process>)\n"
-            + "SubClassOf(<urn:process#AtomicProcess> ObjectHasValue(<urn:process#hasClient> <urn:process#TheClient>))\n"
-            + "SubClassOf(<urn:process#AtomicProcess> ObjectHasValue(<urn:process#performedBy> <urn:process#TheServer>))\n"
-            + "DisjointClasses(<urn:process#AtomicProcess> <urn:process#CompositeProcess>)\n"
-            + "DisjointClasses(<urn:process#AtomicProcess> <urn:process#SimpleProcess>)\n"
-            + "SubClassOf(<urn:process#Binding> ObjectExactCardinality(1 <urn:process#toParam>))\n"
-            + "SubClassOf(<urn:process#Binding> ObjectMaxCardinality(1 <urn:process#valueSource>))\n"
-            + "SubClassOf(<urn:process#Binding> DataMaxCardinality(1 <urn:process#valueData>))\n"
-            + "SubClassOf(<urn:process#Binding> DataMaxCardinality(1 <urn:process#valueSpecifier>))\n"
-            + "SubClassOf(<urn:process#Choice> <urn:process#ControlConstruct>)\n"
-            + "SubClassOf(<urn:process#Choice> ObjectAllValuesFrom(<urn:process#components> <urn:process#ControlConstructBag>))\n"
-            + "SubClassOf(<urn:process#Choice> ObjectExactCardinality(1 <urn:process#components>))\n"
-            + "EquivalentClasses(<urn:process#CompositeProcess> ObjectIntersectionOf(ObjectExactCardinality(1 <urn:process#composedOf>) <urn:process#Process>))\n"
-            + "SubClassOf(<urn:process#CompositeProcess> <urn:process#Process>)\n"
-            + "SubClassOf(<urn:process#CompositeProcess> ObjectMaxCardinality(1 <urn:process#computedEffect>))\n"
-            + "SubClassOf(<urn:process#CompositeProcess> ObjectMaxCardinality(1 <urn:process#computedInput>))\n"
-            + "SubClassOf(<urn:process#CompositeProcess> ObjectMaxCardinality(1 <urn:process#computedOutput>))\n"
-            + "SubClassOf(<urn:process#CompositeProcess> ObjectMaxCardinality(1 <urn:process#computedPrecondition>))\n"
-            + "SubClassOf(<urn:process#CompositeProcess> DataMaxCardinality(1 <urn:process#invocable>))\n"
-            + "DisjointClasses(<urn:process#CompositeProcess> <urn:process#SimpleProcess>)\n"
-            + "EquivalentClasses(<urn:process#ControlConstruct> <urn:process#ProcessComponent>)\n"
             + "SubClassOf(<urn:process#ControlConstruct> ObjectMaxCardinality(1 <urn:process#timeout>))\n"
             + "SubClassOf(<urn:process#ControlConstructBag> <urn:generic/ObjectList.owl#List>)\n"
             + "SubClassOf(<urn:process#ControlConstructBag> ObjectAllValuesFrom(<urn:generic/ObjectList.owl#first> <urn:process#ControlConstruct>))\n"
@@ -244,63 +225,6 @@ public class VerifyComplianceOWLSNewFeatures extends VerifyComplianceBase {
             + "ObjectPropertyRange(<urn:Service.owl#presentedBy> <urn:Service.owl#Service>)\n"
             + "ObjectPropertyDomain(<urn:Service.owl#presents> <urn:Service.owl#Service>)\n"
             + "ObjectPropertyRange(<urn:Service.owl#presents> <urn:Service.owl#ServiceProfile>)\n"
-            + "InverseObjectProperties(<urn:Service.owl#providedBy> <urn:Service.owl#provides>)\n"
-            + "ObjectPropertyDomain(<urn:Service.owl#providedBy> <urn:Service.owl#Service>)\n"
-            + "ObjectPropertyRange(<urn:Service.owl#provides> <urn:Service.owl#Service>)\n"
-            + "InverseObjectProperties(<urn:Service.owl#supports> <urn:Service.owl#supportedBy>)\n"
-            + "ObjectPropertyDomain(<urn:Service.owl#supportedBy> <urn:Service.owl#ServiceGrounding>)\n"
-            + "ObjectPropertyRange(<urn:Service.owl#supportedBy> <urn:Service.owl#Service>)\n"
-            + "ObjectPropertyDomain(<urn:Service.owl#supports> <urn:Service.owl#Service>)\n"
-            + "ObjectPropertyRange(<urn:Service.owl#supports> <urn:Service.owl#ServiceGrounding>)\n"
-            + "ObjectPropertyDomain(<urn:expr#expressionLanguage> <urn:expr#Expression>)\n"
-            + "ObjectPropertyRange(<urn:expr#expressionLanguage> <urn:expr#LogicLanguage>)\n"
-            + "ObjectPropertyDomain(<urn:generic/ObjectList.owl#first> <urn:generic/ObjectList.owl#List>)\n"
-            + "ObjectPropertyDomain(<urn:generic/ObjectList.owl#rest> <urn:generic/ObjectList.owl#List>)\n"
-            + "DataPropertyDomain(<urn:process#invocable> <urn:process#CompositeProcess>)\n"
-            + "DataPropertyRange(<urn:process#invocable> xsd:boolean)\n"
-            + "DataPropertyDomain(<urn:process#name> <urn:process#Process>)\n"
-            + "DataPropertyDomain(<urn:process#parameterType> <urn:process#Parameter>)\n"
-            + "DataPropertyRange(<urn:process#parameterType> xsd:anyURI)\n"
-            + "DataPropertyDomain(<urn:process#parameterValue> <urn:process#Parameter>)\n"
-            + "DataPropertyRange(<urn:process#parameterValue> rdf:XMLLiteral)\n"
-            + "DataPropertyDomain(<urn:process#valueData> <urn:process#Binding>)\n"
-            + "SubDataPropertyOf(<urn:process#valueForm> <urn:process#valueSpecifier>)\n"
-            + "DataPropertyDomain(<urn:process#valueForm> <urn:process#Binding>)\n"
-            + "DataPropertyRange(<urn:process#valueForm> rdf:XMLLiteral)\n"
-            + "SubDataPropertyOf(<urn:process#valueFunction> <urn:process#valueSpecifier>)\n"
-            + "DataPropertyDomain(<urn:process#valueFunction> <urn:process#Binding>)\n"
-            + "DataPropertyRange(<urn:process#valueFunction> rdf:XMLLiteral)\n"
-            + "DataPropertyDomain(<urn:process#valueSpecifier> <urn:process#Binding>)\n"
-            + "SubDataPropertyOf(<urn:process#valueType> <urn:process#valueSpecifier>)\n"
-            + "DataPropertyDomain(<urn:process#valueType> <urn:process#Binding>)\n"
-            + "DataPropertyRange(<urn:process#valueType> xsd:anyURI)\n"
-            + "DataPropertyDomain(<urn:profile#categoryName> <urn:profile#ServiceCategory>)\n"
-            + "DataPropertyDomain(<urn:profile#code> <urn:profile#ServiceCategory>)\n"
-            + "DataPropertyDomain(<urn:profile#serviceClassification> <urn:profile#Profile>)\n"
-            + "DataPropertyRange(<urn:profile#serviceClassification> xsd:anyURI)\n"
-            + "DataPropertyDomain(<urn:profile#serviceName> <urn:profile#Profile>)\n"
-            + "DataPropertyDomain(<urn:profile#serviceParameterName> <urn:profile#ServiceParameter>)\n"
-            + "DataPropertyDomain(<urn:profile#serviceProduct> <urn:profile#Profile>)\n"
-            + "DataPropertyRange(<urn:profile#serviceProduct> xsd:anyURI)\n"
-            + "DataPropertyDomain(<urn:profile#taxonomy> <urn:profile#ServiceCategory>)\n"
-            + "DataPropertyDomain(<urn:profile#textDescription> <urn:profile#Profile>)\n"
-            + "DataPropertyDomain(<√.owl#value> <urn:profile#ServiceCategory>)\n"
-            + "DataPropertyDomain(<urn:expr#expressionBody> <urn:expr#Expression>)\n"
-            + "DataPropertyDomain(<urn:expr#refURI> <urn:expr#LogicLanguage>)\n"
-            + "DataPropertyRange(<urn:expr#refURI> xsd:anyURI)\n"
-            + "ClassAssertion(<urn:process#Participant> <urn:process#TheClient>)\n"
-            + "ClassAssertion(<urn:process#Perform> <urn:process#TheParentPerform>)\n"
-            + "ClassAssertion(<urn:process#Participant> <urn:process#TheServer>)\n"
-            + "ClassAssertion(<urn:process#Perform> <urn:process#ThisPerform>)\n"
-            + "ClassAssertion(<urn:expr#SWRL-Condition> <urn:expr#AlwaysTrue>)\n"
-            + "ObjectPropertyAssertion(<urn:expr#expressionLanguage> <urn:expr#AlwaysTrue> <urn:expr#SWRL>)\n"
-            + "ClassAssertion(<urn:expr#LogicLanguage> <urn:expr#DRS>)\n"
-            + "DataPropertyAssertion(<urn:expr#refURI> <urn:expr#DRS> \"urn:generic/drs.owl\"^^xsd:anyURI)\n"
-            + "ClassAssertion(<urn:expr#LogicLanguage> <urn:expr#KIF>)\n"
-            + "DataPropertyAssertion(<urn:expr#refURI> <urn:expr#KIF> \"http://logic.stanford.edu/kif/kif.html\"^^xsd:anyURI)\n"
-            + "ClassAssertion(<urn:expr#LogicLanguage> <urn:expr#SWRL>)\n"
-            + "DataPropertyAssertion(<urn:expr#refURI> <urn:expr#SWRL> \"http://www.w3.org/2003/11/swrl\"^^xsd:anyURI)\n"
-            + "ClassAssertion(<urn:generic/ObjectList.owl#List> <urn:generic/ObjectList.owl#nil>)\n"
             + ")";
 
     @Override
@@ -316,14 +240,23 @@ public class VerifyComplianceOWLSNewFeatures extends VerifyComplianceBase {
         return "";
     }
 
-    @Before
-    public void debugOntology() throws OWLOntologyStorageException {
-        // reasoner.getRootOntology().saveOntology(
-        // new FunctionalSyntaxDocumentFormat(), System.out);
-    }
+    @Override
+    public void setUp() throws OWLOntologyCreationException {}
 
     @Test
-    public void shouldPassgetObjectPropertyRangesisPresentedByfalse() {
+    public void shouldPassgetObjectPropertyRangesisPresentedByfalse1()
+            throws OWLOntologyCreationException {
+        reasoner = (JFactReasoner) factory().createReasoner(load(input()),
+                new JFactReasonerConfiguration()
+        // .setAbsorptionLoggingActive(true)
+        // .setUSE_REASONING_STATISTICS(true)
+        // .setLoggingActive(true)
+                );
+        reasoner.precomputeInferences(InferenceType.values());
+        // reasoner.getConfiguration()
+        // .setTMP_PRINT_TAXONOMY_INFO(true)
+        // .setAbsorptionLoggingActive(true)
+        // .setUSE_REASONING_STATISTICS(true).setLoggingActive(true);
         OWLClass Thing = C("http://www.w3.org/2002/07/owl#Thing");
         OWLClass Service = C("urn:Service.owl#Service");
         OWLObjectProperty isPresentedBy = OP("urn:Service.owl#isPresentedBy");
@@ -334,246 +267,37 @@ public class VerifyComplianceOWLSNewFeatures extends VerifyComplianceBase {
     }
 
     @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointObjectPropertieshasOutput1() {
-        OWLObjectProperty hasLocal = OP("urn:process#hasLocal");
-        OWLObjectProperty hasInput = OP("urn:process#hasInput");
-        OWLObjectProperty hasInput1 = OP("urn:profile#hasInput");
-        OWLObjectProperty hasResultVar = OP("urn:process#hasResultVar");
-        OWLObjectProperty hasOutput = OP("urn:profile#hasOutput");
-        // expected hasLocal, hasInput, hasInput, hasResultVar,
-        // bottomObjectProperty
-        // actual__ hasOutput
-        equal(reasoner.getDisjointObjectProperties(hasOutput), hasLocal,
-                hasInput, hasInput1, hasResultVar, bottomObjectProperty);
-    }
-
-    @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointObjectPropertieshasInput2() {
-        OWLObjectProperty hasOutput = OP("urn:profile#hasOutput");
-        OWLObjectProperty hasLocal = OP("urn:process#hasLocal");
-        OWLObjectProperty hasOutput1 = OP("urn:process#hasOutput");
-        OWLObjectProperty hasResultVar = OP("urn:process#hasResultVar");
-        OWLObjectProperty hasInput = OP("urn:process#hasInput");
-        // expected hasOutput, hasLocal, hasOutput, hasResultVar,
-        // bottomObjectProperty
-        // actual__ hasInput
-        equal(reasoner.getDisjointObjectProperties(hasInput), hasOutput,
-                hasLocal, hasOutput1, hasResultVar, bottomObjectProperty);
-    }
-
-    @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointObjectPropertieshasResultVar() {
-        OWLObjectProperty hasOutput = OP("urn:profile#hasOutput");
-        OWLObjectProperty hasLocal = OP("urn:process#hasLocal");
-        OWLObjectProperty hasInput = OP("urn:process#hasInput");
-        OWLObjectProperty hasOutput1 = OP("urn:process#hasOutput");
-        OWLObjectProperty hasInput1 = OP("urn:profile#hasInput");
-        OWLObjectProperty hasResultVar = OP("urn:process#hasResultVar");
-        // expected hasOutput, hasLocal, hasInput, hasOutput, hasInput,
-        // bottomObjectProperty
-        // actual__ hasResultVar
-        equal(reasoner.getDisjointObjectProperties(hasResultVar), hasOutput,
-                hasLocal, hasInput, hasOutput1, hasInput1, bottomObjectProperty);
-    }
-
-    @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointObjectPropertieshasLocal() {
-        OWLObjectProperty hasOutput = OP("urn:profile#hasOutput");
-        OWLObjectProperty hasInput = OP("urn:process#hasInput");
-        OWLObjectProperty hasOutput1 = OP("urn:process#hasOutput");
-        OWLObjectProperty hasInput1 = OP("urn:profile#hasInput");
-        OWLObjectProperty hasResultVar = OP("urn:process#hasResultVar");
-        OWLObjectProperty hasLocal = OP("urn:process#hasLocal");
-        // expected hasOutput, hasInput, hasOutput, hasInput, hasResultVar,
-        // bottomObjectProperty
-        // actual__ hasLocal
-        equal(reasoner.getDisjointObjectProperties(hasLocal), hasOutput,
-                hasInput, hasOutput1, hasInput1, hasResultVar,
-                bottomObjectProperty);
-    }
-
-    @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointObjectPropertieshasInput() {
-        OWLObjectProperty hasOutput = OP("urn:profile#hasOutput");
-        OWLObjectProperty hasLocal = OP("urn:process#hasLocal");
-        OWLObjectProperty hasOutput1 = OP("urn:process#hasOutput");
-        OWLObjectProperty hasResultVar = OP("urn:process#hasResultVar");
-        OWLObjectProperty hasInput = OP("urn:profile#hasInput");
-        // expected hasOutput, hasLocal, hasOutput, hasResultVar,
-        // bottomObjectProperty
-        // actual__ hasInput
-        equal(reasoner.getDisjointObjectProperties(hasInput), hasOutput,
-                hasLocal, hasOutput1, hasResultVar, bottomObjectProperty);
-    }
-
-    @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointObjectPropertieshasOutput() {
-        OWLObjectProperty hasLocal = OP("urn:process#hasLocal");
-        OWLObjectProperty hasInput = OP("urn:process#hasInput");
-        OWLObjectProperty hasInput1 = OP("urn:profile#hasInput");
-        OWLObjectProperty hasResultVar = OP("urn:process#hasResultVar");
-        OWLObjectProperty hasOutput = OP("urn:process#hasOutput");
-        // expected hasLocal, hasInput, hasInput, hasResultVar,
-        // bottomObjectProperty
-        // actual__ hasOutput
-        equal(reasoner.getDisjointObjectProperties(hasOutput), hasLocal,
-                hasInput, hasInput1, hasResultVar, bottomObjectProperty);
-    }
-
-    @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointDataPropertiesserviceProduct() {
-        OWLDataProperty valueForm = DP("urn:process#valueForm");
-        OWLDataProperty parameterValue = DP("urn:process#parameterValue");
-        OWLDataProperty valueFunction = DP("urn:process#valueFunction");
-        OWLDataProperty invocable = DP("urn:process#invocable");
-        OWLDataProperty serviceProduct = DP("urn:profile#serviceProduct");
-        // expected valueForm, parameterValue, bottomDataProperty,
-        // valueFunction, invocable
-        // actual__ serviceProduct
-        equal(reasoner.getDisjointDataProperties(serviceProduct), valueForm,
-                parameterValue, bottomDataProperty, valueFunction, invocable);
-    }
-
-    @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointDataPropertiesserviceClassification() {
-        OWLDataProperty valueForm = DP("urn:process#valueForm");
-        OWLDataProperty parameterValue = DP("urn:process#parameterValue");
-        OWLDataProperty valueFunction = DP("urn:process#valueFunction");
-        OWLDataProperty invocable = DP("urn:process#invocable");
-        OWLDataProperty serviceClassification = DP("urn:profile#serviceClassification");
-        // expected valueForm, parameterValue, bottomDataProperty,
-        // valueFunction, invocable
-        // actual__ serviceClassification
-        equal(reasoner.getDisjointDataProperties(serviceClassification),
-                valueForm, parameterValue, bottomDataProperty, valueFunction,
-                invocable);
-    }
-
-    @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointDataPropertiesrefURI() {
-        OWLDataProperty valueForm = DP("urn:process#valueForm");
-        OWLDataProperty parameterValue = DP("urn:process#parameterValue");
-        OWLDataProperty valueFunction = DP("urn:process#valueFunction");
-        OWLDataProperty invocable = DP("urn:process#invocable");
-        OWLDataProperty refURI = DP("urn:expr#refURI");
-        // expected valueForm, parameterValue, bottomDataProperty,
-        // valueFunction, invocable
-        // actual__ refURI
-        equal(reasoner.getDisjointDataProperties(refURI), valueForm,
-                parameterValue, bottomDataProperty, valueFunction, invocable);
-    }
-
-    @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointDataPropertiesvalueFunction() {
-        OWLDataProperty serviceProduct = DP("urn:profile#serviceProduct");
-        OWLDataProperty serviceClassification = DP("urn:profile#serviceClassification");
-        OWLDataProperty refURI = DP("urn:expr#refURI");
-        OWLDataProperty valueType = DP("urn:process#valueType");
-        OWLDataProperty parameterType = DP("urn:process#parameterType");
-        OWLDataProperty invocable = DP("urn:process#invocable");
-        OWLDataProperty valueFunction = DP("urn:process#valueFunction");
-        // expected serviceProduct, serviceClassification, refURI,
-        // bottomDataProperty, valueType, parameterType, invocable
-        // actual__ valueFunction
-        equal(reasoner.getDisjointDataProperties(valueFunction),
-                serviceProduct, serviceClassification, refURI,
-                bottomDataProperty, valueType, parameterType, invocable);
-    }
-
-    @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointDataPropertiesvalueType() {
-        OWLDataProperty valueForm = DP("urn:process#valueForm");
-        OWLDataProperty parameterValue = DP("urn:process#parameterValue");
-        OWLDataProperty valueFunction = DP("urn:process#valueFunction");
-        OWLDataProperty invocable = DP("urn:process#invocable");
-        OWLDataProperty valueType = DP("urn:process#valueType");
-        // expected valueForm, parameterValue, bottomDataProperty,
-        // valueFunction, invocable
-        // actual__ valueType
-        equal(reasoner.getDisjointDataProperties(valueType), valueForm,
-                parameterValue, bottomDataProperty, valueFunction, invocable);
-    }
-
-    @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointDataPropertiesinvocable() {
-        OWLDataProperty serviceProduct = DP("urn:profile#serviceProduct");
-        OWLDataProperty valueForm = DP("urn:process#valueForm");
-        OWLDataProperty serviceClassification = DP("urn:profile#serviceClassification");
-        OWLDataProperty parameterValue = DP("urn:process#parameterValue");
-        OWLDataProperty refURI = DP("urn:expr#refURI");
-        OWLDataProperty valueFunction = DP("urn:process#valueFunction");
-        OWLDataProperty valueType = DP("urn:process#valueType");
-        OWLDataProperty parameterType = DP("urn:process#parameterType");
-        OWLDataProperty invocable = DP("urn:process#invocable");
-        // expected serviceProduct, valueForm, serviceClassification,
-        // parameterValue, refURI, bottomDataProperty, valueFunction, valueType,
-        // parameterType
-        // actual__ invocable
-        equal(reasoner.getDisjointDataProperties(invocable), serviceProduct,
-                valueForm, serviceClassification, parameterValue, refURI,
-                bottomDataProperty, valueFunction, valueType, parameterType);
-    }
-
-    @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointDataPropertiesvalueForm() {
-        OWLDataProperty serviceProduct = DP("urn:profile#serviceProduct");
-        OWLDataProperty serviceClassification = DP("urn:profile#serviceClassification");
-        OWLDataProperty refURI = DP("urn:expr#refURI");
-        OWLDataProperty valueType = DP("urn:process#valueType");
-        OWLDataProperty parameterType = DP("urn:process#parameterType");
-        OWLDataProperty invocable = DP("urn:process#invocable");
-        OWLDataProperty valueForm = DP("urn:process#valueForm");
-        // expected serviceProduct, serviceClassification, refURI,
-        // bottomDataProperty, valueType, parameterType, invocable
-        // actual__ valueForm
-        equal(reasoner.getDisjointDataProperties(valueForm), serviceProduct,
-                serviceClassification, refURI, bottomDataProperty, valueType,
-                parameterType, invocable);
-    }
-
-    @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointDataPropertiesparameterValue() {
-        OWLDataProperty serviceProduct = DP("urn:profile#serviceProduct");
-        OWLDataProperty serviceClassification = DP("urn:profile#serviceClassification");
-        OWLDataProperty refURI = DP("urn:expr#refURI");
-        OWLDataProperty valueType = DP("urn:process#valueType");
-        OWLDataProperty parameterType = DP("urn:process#parameterType");
-        OWLDataProperty invocable = DP("urn:process#invocable");
-        OWLDataProperty parameterValue = DP("urn:process#parameterValue");
-        // expected serviceProduct, serviceClassification, refURI,
-        // bottomDataProperty, valueType, parameterType, invocable
-        // actual__ parameterValue
-        equal(reasoner.getDisjointDataProperties(parameterValue),
-                serviceProduct, serviceClassification, refURI,
-                bottomDataProperty, valueType, parameterType, invocable);
-    }
-
-    @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointDataPropertiesparameterType() {
-        OWLDataProperty valueForm = DP("urn:process#valueForm");
-        OWLDataProperty parameterValue = DP("urn:process#parameterValue");
-        OWLDataProperty valueFunction = DP("urn:process#valueFunction");
-        OWLDataProperty invocable = DP("urn:process#invocable");
-        OWLDataProperty parameterType = DP("urn:process#parameterType");
-        // expected valueForm, parameterValue, bottomDataProperty,
-        // valueFunction, invocable
-        // actual__ parameterType
-        equal(reasoner.getDisjointDataProperties(parameterType), valueForm,
-                parameterValue, bottomDataProperty, valueFunction, invocable);
+    public void shouldPassgetObjectPropertyRangesisPresentedByfalse2()
+            throws OWLOntologyCreationException {
+        OWLOntology load = load(input());
+        List<OWLAxiom> axioms = JFactReasoner.importsIncluded(load);
+        Collections.sort(axioms);
+        reasoner = new JFactReasoner(load, axioms,
+                new JFactReasonerConfiguration()
+                // .setAbsorptionLoggingActive(true)
+                // .setUSE_REASONING_STATISTICS(true)
+                // .setLoggingActive(true)
+                , BufferingMode.BUFFERING);
+        reasoner.precomputeInferences(InferenceType.values());
+        // List<AxiomInterface> list = ((JFactReasoner)
+        // reasoner).kernel.ontology.axioms;
+        // Collections.sort(list, new Comparator<AxiomInterface>() {
+        //
+        // @Override
+        // public int compare(AxiomInterface o1, AxiomInterface o2) {
+        // return o1.toString().compareTo(o2.toString());
+        // }
+        // });
+        // XStream xStream = new XStream();
+        // System.out
+        // .println("JFactTest.shouldPassgetObjectPropertyRangesisPresentedByfalse2()\n");
+        // System.out.println(xStream.toXML(reasoner));
+        OWLClass Thing = C("http://www.w3.org/2002/07/owl#Thing");
+        OWLClass Service = C("urn:Service.owl#Service");
+        OWLObjectProperty isPresentedBy = OP("urn:Service.owl#isPresentedBy");
+        // expected Thing, Service
+        // actual__ isPresentedBy, false
+        equal(reasoner.getObjectPropertyRanges(isPresentedBy, false), Thing,
+                Service);
     }
 }

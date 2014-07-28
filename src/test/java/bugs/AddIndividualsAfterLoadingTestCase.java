@@ -24,10 +24,10 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.semanticweb.owlapi.vocab.OWLFacet;
 
-import uk.ac.manchester.cs.jfact.JFactFactory;
+import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
-public class AddIndividualsAfterLoadingTestCase {
+public class AddIndividualsAfterLoadingTestCase extends TestBase {
 
     @Test
     public void shouldLoadAndNotFailQuery() throws Exception {
@@ -48,7 +48,7 @@ public class AddIndividualsAfterLoadingTestCase {
         m.addAxiom(o, f.getOWLObjectPropertyAssertionAxiom(p, i, j));
         // r.flush();
         // r.precomputeInferences(InferenceType.CLASS_HIERARCHY);
-        OWLReasoner r = new JFactFactory().createReasoner(o);
+        OWLReasoner r = factory().createReasoner(o);
         r.precomputeInferences(InferenceType.CLASS_HIERARCHY);
         OWLIndividual k = f.getOWLNamedIndividual(IRI.create("urn:test#k"));
         OWLIndividual l = f.getOWLNamedIndividual(IRI.create("urn:test#l"));
@@ -82,7 +82,7 @@ public class AddIndividualsAfterLoadingTestCase {
         OWLDatatype fdt = f.getFloatOWLDatatype();
         OWLFacetRestriction fLess20 = f.getOWLFacetRestriction(
                 OWLFacet.MAX_INCLUSIVE, 20f);
-        OWLReasoner r = new JFactFactory().createReasoner(o);
+        OWLReasoner r = factory().createReasoner(o);
         r.precomputeInferences(InferenceType.CLASS_HIERARCHY);
         assertFalse(r.getInstances(
                 f.getOWLDataAllValuesFrom(p,
@@ -124,7 +124,7 @@ public class AddIndividualsAfterLoadingTestCase {
                         new StringDocumentSource(input));
         OWLOntologyManager m = o.getOWLOntologyManager();
         OWLDataFactory f = m.getOWLDataFactory();
-        OWLReasoner r = new JFactFactory().createReasoner(o);
+        OWLReasoner r = factory().createReasoner(o);
         r.precomputeInferences(InferenceType.CLASS_HIERARCHY);
         OWLDataProperty p = f.getOWLDataProperty(IRI
                 .create("urn:test#hasEnergia"));

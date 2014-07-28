@@ -16,14 +16,14 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
-import uk.ac.manchester.cs.jfact.JFactFactory;
-import uk.ac.manchester.cs.jfact.JFactReasoner;
+import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
-public class DebugVerifyComplianceUniversityTestCase {
+public class DebugVerifyComplianceUniversityTestCase extends TestBase {
 
-    private JFactReasoner reasoner;
+    private OWLReasoner reasoner;
     private OWLDataFactory df = OWLManager.getOWLDataFactory();
 
     @Nonnull
@@ -61,7 +61,7 @@ public class DebugVerifyComplianceUniversityTestCase {
 
     @Before
     public void setUp() throws OWLOntologyCreationException {
-        reasoner = (JFactReasoner) new JFactFactory().createReasoner(load());
+        reasoner = factory().createReasoner(load());
     }
 
     protected void print(OWLOntology o) throws OWLOntologyStorageException {

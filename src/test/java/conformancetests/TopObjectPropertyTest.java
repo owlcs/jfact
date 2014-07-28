@@ -9,12 +9,20 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 
+import testbase.TestBase;
+
 @SuppressWarnings("javadoc")
-public class TopObjectPropertyTest {
+public class TopObjectPropertyTest extends TestBase {
 
     OWLDataFactory df = OWLManager.getOWLDataFactory();
 
@@ -27,7 +35,7 @@ public class TopObjectPropertyTest {
         // just so p is known in the ontology
         mngr.applyChange(new AddAxiom(ont, df
                 .getOWLFunctionalDataPropertyAxiom(p)));
-        OWLReasonerFactory fac = Factory.factory();
+        OWLReasonerFactory fac = factory();
         OWLReasoner r = fac.createNonBufferingReasoner(ont);
         assertTrue(r.isEntailed(df.getOWLSubClassOfAxiom(
                 df.getOWLDataSomeValuesFrom(p, df.getIntegerOWLDatatype()),
@@ -38,7 +46,7 @@ public class TopObjectPropertyTest {
     public void testReasoner4() throws OWLOntologyCreationException {
         OWLOntologyManager mngr = OWLManager.createOWLOntologyManager();
         OWLOntology ont = mngr.createOntology();
-        OWLReasonerFactory fac = Factory.factory();
+        OWLReasonerFactory fac = factory();
         OWLReasoner r = fac.createNonBufferingReasoner(ont);
         assertFalse(r.getTopDataPropertyNode().getEntities().isEmpty());
     }

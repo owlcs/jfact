@@ -7,8 +7,11 @@ package conformancetests;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import org.junit.Test;
 
+import testbase.TestBase;
+
 @SuppressWarnings("javadoc")
-public class WebOnt208 {
+public class WebOnt208 extends TestBase {
+
     @Test
     public void testWebOnt_description_logic_208() {
         String premise = "<rdf:RDF\n"
@@ -202,9 +205,10 @@ public class WebOnt208 {
                 + "</owl:Thing>\n" + "</rdf:RDF>";
         String id = "WebOnt_description_logic_208";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "DL Test: k_poly\n" + "ABox test from DL98 systems comparison.";
+        String d = "DL Test: k_poly\n"
+                + "ABox test from DL98 systems comparison.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 }
