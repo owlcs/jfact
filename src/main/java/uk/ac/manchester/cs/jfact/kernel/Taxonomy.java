@@ -107,7 +107,7 @@ public class Taxonomy implements Serializable {
                         // continue -- exit
                         // if node is NOT processed for some reasons -- go to
                         // another level
-                        if (!actor.apply(_node)) {
+                        if (!actor.apply(_node) && onlyDirect) {
                             return false;
                         }
                         if (onlyDirect) {
