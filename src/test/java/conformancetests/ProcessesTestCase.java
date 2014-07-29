@@ -24,7 +24,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
-public class BugsFixed extends TestBase {
+public class ProcessesTestCase extends TestBase {
 
     private OWLReasoner jfact1;
     private OWLReasoner jfact2;
@@ -127,6 +127,30 @@ public class BugsFixed extends TestBase {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private static void equal(NodeSet<?> node, Object... objects) {
         assertEquals(new HashSet(Arrays.asList(objects)), node.getFlattened());
+    }
+
+    @Test
+    public void shouldTestgetgetSuperClasses_Part_true() {
+        NodeSet<OWLClass> result = jfact1.getSuperClasses(part, true);
+        equal(result, abstractEntity);
+    }
+
+    @Test
+    public void shouldTestgetgetSuperClasses_Part_true2() {
+        NodeSet<OWLClass> result = jfact2.getSuperClasses(simpleProcess, true);
+        equal(result, process);
+        result = jfact2.getSuperClasses(atomicProcess, true);
+        equal(result, process);
+        result = jfact2.getSuperClasses(process, true);
+        equal(result, serviceModel);
+    }
+
+    @Test
+    public void shouldTestgetgetSubClasses_top_true() {
+        NodeSet<OWLClass> result = jfact1.getSubClasses(df.getOWLThing(), true);
+        equal(result, abstractEntity, composition);
+        result = jfact2.getSubClasses(df.getOWLThing(), true);
+        equal(result, serviceModel);
     }
 
     @Test

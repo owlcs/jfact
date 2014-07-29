@@ -209,6 +209,10 @@ public class VerifyCompliancePeople extends VerifyComplianceBase {
     @Nonnull
     protected OWLClass bone = C("urn:people#bone");
     @Nonnull
+    protected OWLClass broadsheet = C("urn:people#broadsheet");
+    @Nonnull
+    protected OWLClass tabloid = C("urn:people#tabloid");
+    @Nonnull
     protected OWLClass grass = C("urn:people#grass");
     @Nonnull
     protected OWLClass animal = C("urn:people#animal");
@@ -392,5 +396,15 @@ public class VerifyCompliancePeople extends VerifyComplianceBase {
     @Test
     public void shouldPassgetTypesSpiketrue() {
         equal(reasoner.getTypes(Spike, true), pet);
+    }
+
+    @Test
+    public void shouldPassgetSuperClassesmad_cowtrue() {
+        equal(reasoner.getSuperClasses(mad_cow, true), truck, lorry,
+                white_van_man, car, tiger, cat, van, magazine, pet, dog,
+                bus_driver, haulage_truck_driver, cow, tree, dog_owner,
+                giraffe, red_top, brain, bus, quality_broadsheet, lorry_driver,
+                bicycle, sheep, old_lady, kid, bus_company, duck,
+                haulage_company, animal_lover, white_thing, leaf, bone, grass);
     }
 }

@@ -61,7 +61,7 @@ public abstract class VerifyComplianceBase extends TestBase {
                 .loadOntologyFromOntologyDocument(new StringDocumentSource(in));
     }
 
-    private static String set(Iterable<OWLEntity> i) {
+    protected static String set(Iterable<OWLEntity> i) {
         Set<String> s = new TreeSet<>();
         for (OWLEntity e : i) {
             s.add(e.getIRI().getShortForm());

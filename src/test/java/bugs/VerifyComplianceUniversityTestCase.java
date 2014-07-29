@@ -1,10 +1,13 @@
 package bugs;
 
+import static org.junit.Assert.assertTrue;
+
 import javax.annotation.Nonnull;
 
 import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -961,5 +964,47 @@ public class VerifyComplianceUniversityTestCase extends VerifyComplianceBase {
     @Test
     public void shouldPassgetSuperDataPropertieshasTenuretrue() {
         equal(reasoner.getSuperDataProperties(hasTenure, true), topDataProperty);
+    }
+
+    @Test
+    public void shouldPassgetSubClassesowlThingtrue() {
+        equal(reasoner.getSubClasses(owlThing, true), PhoneBook, ResearchArea,
+                Department, Person, Library, Schedule, Course);
+    }
+
+    @Test
+    public void shouldPassgetSuperClassesProfessortrue() {
+        equal(reasoner.getSuperClasses(Professor, true), TeachingFaculty);
+    }
+
+    @Test
+    public void shouldPassgetSuperClassesProfessorInHCIorAItrue() {
+        equal(reasoner.getSuperClasses(ProfessorInHCIorAI, true), Professor);
+    }
+
+    @Test
+    public void shouldPassgetDataPropertyDomainshasTenurefalse() {
+        equal(reasoner.getDataPropertyDomains(hasTenure, false), owlThing,
+                Faculty, TeachingFaculty, Person);
+    }
+
+    @Test
+    public void shouldPassProfessorSubClassOfhasTenureTrue() {
+        OWLClassExpression c = df.getOWLDataSomeValuesFrom(hasTenure,
+                df.getOWLDataOneOf(df.getOWLLiteral(true)));
+        assertTrue(reasoner.isEntailed(df.getOWLSubClassOfAxiom(Professor, c)));
+        equal(reasoner.getSuperClasses(c, false), owlThing, Faculty,
+                TeachingFaculty, Person);
+    }
+
+    @Test
+    public void shouldPassgetDataPropertyDomainshasTenuretrue() {
+        equal(reasoner.getDataPropertyDomains(hasTenure, true), TeachingFaculty);
+    }
+
+    @Test
+    public void shouldPassgetDataPropertyDomainshasTenureFalse() {
+        equal(reasoner.getDataPropertyDomains(hasTenure, false), owlThing,
+                Faculty, TeachingFaculty, Person);
     }
 }

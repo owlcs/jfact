@@ -1,16 +1,22 @@
 package bugs;
 
-import org.junit.Before;
+import static org.junit.Assert.assertEquals;
+
+import java.util.Arrays;
+import java.util.HashSet;
+
 import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.StringDocumentSource;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 @SuppressWarnings("javadoc")
 public class VerifyComplianceOWLSNewFeatures extends VerifyComplianceBase {
@@ -316,14 +322,37 @@ public class VerifyComplianceOWLSNewFeatures extends VerifyComplianceBase {
         return "";
     }
 
-    @Before
-    public void debugOntology() throws OWLOntologyStorageException {
-        // reasoner.getRootOntology().saveOntology(
-        // new FunctionalSyntaxDocumentFormat(), System.out);
+    @Test
+    public void shouldPassgetObjectPropertyRangesisPresentedByfalse() {
+        OWLClass Thing = C("http://www.w3.org/2002/07/owl#Thing");
+        OWLClass Service = C("urn:Service.owl#Service");
+        OWLObjectProperty isPresentedBy = OP("urn:Service.owl#isPresentedBy");
+        // expected Thing, Service
+        // actual__ isPresentedBy, false
+        equal(reasoner.getObjectPropertyRanges(isPresentedBy, false), Thing,
+                Service);
     }
 
     @Test
-    public void shouldPassgetObjectPropertyRangesisPresentedByfalse() {
+    public void
+            shouldPassgetObjectPropertyRangesisPresentedByfalseBasicOntology()
+                    throws OWLOntologyCreationException {
+        String in = "Prefix(:=<http://www.w3.org/2002/07/owl#>)\n"
+                + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
+                + "Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\n"
+                + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
+                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+                + "Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)\n"
+                + "Ontology(\n"
+                + "Declaration(Class(<urn:Service.owl#Service>))\n"
+                + "Declaration(ObjectProperty(<urn:Service.owl#isPresentedBy>))\n"
+                + "Declaration(ObjectProperty(<urn:Service.owl#presentedBy>))\n\n"
+                + "EquivalentObjectProperties(<urn:Service.owl#isPresentedBy> <urn:Service.owl#presentedBy>)\n"
+                + "ObjectPropertyRange(<urn:Service.owl#presentedBy> <urn:Service.owl#Service>)\n"
+                + ")";
+        OWLOntology onto = OWLManager.createOWLOntologyManager()
+                .loadOntologyFromOntologyDocument(new StringDocumentSource(in));
+        OWLReasoner reasoner = factory().createReasoner(onto);
         OWLClass Thing = C("http://www.w3.org/2002/07/owl#Thing");
         OWLClass Service = C("urn:Service.owl#Service");
         OWLObjectProperty isPresentedBy = OP("urn:Service.owl#isPresentedBy");
@@ -575,5 +604,59 @@ public class VerifyComplianceOWLSNewFeatures extends VerifyComplianceBase {
         // actual__ parameterType
         equal(reasoner.getDisjointDataProperties(parameterType), valueForm,
                 parameterValue, bottomDataProperty, valueFunction, invocable);
+    }
+
+    @Test
+    @Ignore("disjoint properties not supported")
+    public void shouldPassgetDataPropertyValuesKIFrefURI() {
+        OWLNamedIndividual KIF = df.getOWLNamedIndividual(IRI
+                .create("urn:expr#KIF"));
+        OWLDataProperty refURI = DP("urn:expr#refURI");
+        // expected ["http://logic.stanford.edu/kif/kif.html"^^xsd:anyURI]
+        // actual__ KIF, refURI
+        assertEquals(
+                reasoner.getDataPropertyValues(KIF, refURI),
+                new HashSet<>(
+                        Arrays.asList(df
+                                .getOWLLiteral("http://logic.stanford.edu/kif/kif.html"))));
+    }
+
+    @Test
+    @Ignore("disjoint properties not supported")
+    public void shouldPassgetDataPropertyValuesDRSrefURI() {
+        OWLNamedIndividual DRS = df.getOWLNamedIndividual(IRI
+                .create("urn:expr#DRS"));
+        OWLDataProperty refURI = DP("urn:expr#refURI");
+        // expected
+        // ["http://www.daml.org/services/owl-s/1.1/generic/drs.owl"^^xsd:anyURI]
+        // actual__ DRS, refURI
+        assertEquals(
+                reasoner.getDataPropertyValues(DRS, refURI),
+                new HashSet<>(
+                        Arrays.asList(df
+                                .getOWLLiteral("http://www.daml.org/services/owl-s/1.1/generic/drs.owl"))));
+    }
+
+    @Test
+    @Ignore("disjoint properties not supported")
+    public void shouldPassgetDataPropertyValuesSWRLrefURI() {
+        OWLNamedIndividual SWRL = df.getOWLNamedIndividual(IRI
+                .create("urn:expr#SWRL"));
+        OWLDataProperty refURI = DP("urn:expr#refURI");
+        // expected ["http://www.w3.org/2003/11/swrl"^^xsd:anyURI]
+        // actual__ SWRL, refURI
+        assertEquals(
+                reasoner.getDataPropertyValues(SWRL, refURI),
+                new HashSet<>(Arrays.asList(df
+                        .getOWLLiteral("http://www.w3.org/2003/11/swrl"))));
+    }
+
+    @Test
+    public void shouldPassgetObjectPropertyRangesisPresentedBytrue() {
+        OWLClass Service = C("http://www.daml.org/services/owl-s/1.1/Service.owl#Service");
+        OWLObjectProperty isPresentedBy = OP("urn:Service.owl#isPresentedBy");
+        // expected Service
+        // actual__ isPresentedBy, true
+        equal(reasoner.getObjectPropertyRanges(isPresentedBy, true), Service);
     }
 }
