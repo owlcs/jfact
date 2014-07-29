@@ -18,7 +18,7 @@ import uk.ac.manchester.cs.jfact.kernel.Concept;
 import uk.ac.manchester.cs.jfact.kernel.ConceptWDep;
 import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
 import uk.ac.manchester.cs.jfact.kernel.DlCompletionTreeArc;
-import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
+import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.Individual;
 import uk.ac.manchester.cs.jfact.kernel.Role;
 import uk.ac.manchester.cs.jfact.kernel.TBox;
@@ -90,7 +90,7 @@ public class KnowledgeExplorer implements Serializable {
      * @param pEM
      *        pEM
      */
-    public KnowledgeExplorer(TBox box, ExpressionManager pEM) {
+    public KnowledgeExplorer(TBox box, ExpressionCache pEM) {
         D2I = new TDag2Interface(box.getDag(), pEM);
         // init all concepts
         for (Concept c : box.getConcepts()) {

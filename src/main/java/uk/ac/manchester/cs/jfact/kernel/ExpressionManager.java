@@ -7,13 +7,9 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
-
-import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptAnd;
@@ -24,7 +20,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataForall;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataMaxCardinality;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataMinCardinality;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataValue;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptNot;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectExactCardinality;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectExists;
@@ -33,7 +28,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectMaxCardinality;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectMinCardinality;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectSelf;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectValue;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptOneOf;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptOr;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptTop;
 import uk.ac.manchester.cs.jfact.kernel.dl.DataAnd;
@@ -42,14 +36,10 @@ import uk.ac.manchester.cs.jfact.kernel.dl.DataNot;
 import uk.ac.manchester.cs.jfact.kernel.dl.DataOneOf;
 import uk.ac.manchester.cs.jfact.kernel.dl.DataOr;
 import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleBottom;
-import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleName;
 import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleTop;
 import uk.ac.manchester.cs.jfact.kernel.dl.DataTop;
-import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleBottom;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleChain;
-import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleInverse;
-import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleName;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleProjectionFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleProjectionInto;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleTop;
@@ -69,183 +59,39 @@ import conformance.PortedFrom;
 public class ExpressionManager implements Serializable {
 
     private static final long serialVersionUID = 11000L;
-
-    /** Cache for the inverse roles */
-    protected class InverseRoleCache implements Serializable {
-
-        private static final long serialVersionUID = 11000L;
-        /** map tail into an object head(tail) */
-        private Map<ObjectRoleExpression, ObjectRoleExpression> map;
-
-        /**
-         * @param tail
-         *        tail
-         * @return an object corresponding to Head.Tail
-         */
-        @Nonnull
-        public ObjectRoleExpression get(ObjectRoleExpression tail) {
-            // try to find cached dep-set
-            if (map != null && map.containsKey(tail)) {
-                return map.get(tail);
-            }
-            // no cached entry -- create a new one and cache it
-            ObjectRoleExpression concat = build(tail);
-            if (map == null) {
-                map = new HashMap<>();
-            }
-            map.put(tail, concat);
-            return concat;
-        }
-
-        /** clear the cache */
-        public void clear() {
-            if (map != null) {
-                map.clear();
-            }
-        }
-
-        @Nonnull
-        public ObjectRoleExpression build(ObjectRoleExpression tail) {
-            return new ObjectRoleInverse(tail);
-        }
-    }
-
-    protected static class DataroleNameCreator implements
-            NameCreator<DataRoleName, IRI>, Serializable {
-
-        private static final long serialVersionUID = 11000L;
-
-        @Override
-        public DataRoleName makeEntry(IRI name) {
-            return new DataRoleName(name);
-        }
-    }
-
-    protected static class ObjectroleNameCreator implements
-            NameCreator<ObjectRoleName, IRI>, Serializable {
-
-        private static final long serialVersionUID = 11000L;
-
-        @Override
-        public ObjectRoleName makeEntry(IRI name) {
-            return new ObjectRoleName(name);
-        }
-    }
-
-    protected static class IndividualNameCreator implements
-            NameCreator<IndividualName, IRI>, Serializable {
-
-        private static final long serialVersionUID = 11000L;
-
-        @Override
-        public IndividualName makeEntry(IRI name) {
-            return new IndividualName(name);
-        }
-    }
-
-    protected static class ConceptNameCreator implements
-            NameCreator<ConceptName, IRI>, Serializable {
-
-        private static final long serialVersionUID = 11000L;
-
-        @Override
-        public ConceptName makeEntry(IRI name) {
-            return new ConceptName(name);
-        }
-    }
-
-    /** nameset for concepts */
-    @PortedFrom(file = "tExpressionManager.h", name = "NS_C")
-    private final NameSet<ConceptName, IRI> conceptNameset = new NameSet<>(
-            new ConceptNameCreator());
-    /** nameset for individuals */
-    @PortedFrom(file = "tExpressionManager.h", name = "NS_I")
-    private final NameSet<IndividualName, IRI> individualNameset = new NameSet<>(
-            new IndividualNameCreator());
-    /** nameset for object roles */
-    @PortedFrom(file = "tExpressionManager.h", name = "NS_OR")
-    private final NameSet<ObjectRoleName, IRI> objectRoleNameset = new NameSet<>(
-            new ObjectroleNameCreator());
-    /** nameset for data roles */
-    @PortedFrom(file = "tExpressionManager.h", name = "NS_DR")
-    private final NameSet<DataRoleName, IRI> dataRoleNameset = new NameSet<>(
-            new DataroleNameCreator());
     /** TOP concept */
     @PortedFrom(file = "tExpressionManager.h", name = "CTop")
     @Nonnull
-    private final ConceptTop top = new ConceptTop();
+    private static final ConceptTop top = new ConceptTop();
     /** BOTTOM concept */
     @PortedFrom(file = "tExpressionManager.h", name = "CBottom")
     @Nonnull
-    private final ConceptBottom bottom = new ConceptBottom();
+    private static final ConceptBottom bottom = new ConceptBottom();
     /** TOP data element */
     @PortedFrom(file = "tExpressionManager.h", name = "DTop")
     @Nonnull
-    private final DataTop dataTop = new DataTop();
+    private static final DataTop dataTop = new DataTop();
     /** TOP object role */
     @PortedFrom(file = "tExpressionManager.h", name = "ORTop")
     @Nonnull
-    private ObjectRoleExpression objectRoleTop = new ObjectRoleTop();
+    private static final ObjectRoleExpression objectRoleTop = new ObjectRoleTop();
     /** BOTTOM object role */
     @PortedFrom(file = "tExpressionManager.h", name = "ORBottom")
     @Nonnull
-    private ObjectRoleExpression objectRoleBottom = new ObjectRoleBottom();
+    private static final ObjectRoleExpression objectRoleBottom = new ObjectRoleBottom();
     /** TOP data role */
     @PortedFrom(file = "tExpressionManager.h", name = "DRTop")
     @Nonnull
-    private DataRoleExpression dataRoleTop = new DataRoleTop();
+    private static final DataRoleExpression dataRoleTop = new DataRoleTop();
     /** BOTTOM data role */
     @PortedFrom(file = "tExpressionManager.h", name = "DRBottom")
     @Nonnull
-    private DataRoleExpression dataRoleBottom = new DataRoleBottom();
+    private static final DataRoleExpression dataRoleBottom = new DataRoleBottom();
     @PortedFrom(file = "tExpressionManager.h", name = "DBottom")
     @Nonnull
-    private final DataBottom dataBottom = new DataBottom();
-    /** cache for the role inverses */
-    @PortedFrom(file = "tExpressionManager.h", name = "InverseRoleCache")
-    @Nonnull
-    private final InverseRoleCache inverseRoleCache = new InverseRoleCache();
-    /** cache for the one-of singletons */
-    @PortedFrom(file = "tExpressionManager.h", name = "OneOfCache")
-    private final Map<IndividualExpression, ConceptExpression> OneOfCache = new HashMap<>();
+    private static final DataBottom dataBottom = new DataBottom();
 
-    /**
-     * set Top/Bot properties
-     * 
-     * @param topORoleName
-     *        topORoleName
-     * @param botORoleName
-     *        botORoleName
-     * @param topDRoleName
-     *        topDRoleName
-     * @param botDRoleName
-     *        botDRoleName
-     */
-    @PortedFrom(file = "tExpressionManager.h", name = "setTopBottomRoles")
-    public void setTopBottomRoles(IRI topORoleName, IRI botORoleName,
-            IRI topDRoleName, IRI botDRoleName) {
-        objectRoleTop = new ObjectRoleName(topORoleName);
-        objectRoleBottom = new ObjectRoleName(botORoleName);
-        dataRoleTop = new DataRoleName(topDRoleName);
-        dataRoleBottom = new DataRoleName(botDRoleName);
-    }
-
-    /** clear name caches */
-    @PortedFrom(file = "tExpressionManager.h", name = "clearNameCache")
-    public void clearNameCache() {
-        conceptNameset.clear();
-        objectRoleNameset.clear();
-        dataRoleNameset.clear();
-        individualNameset.clear();
-    }
-
-    /** clear the maps */
-    @PortedFrom(file = "tExpressionManager.h", name = "clear")
-    public void clear() {
-        clearNameCache();
-        inverseRoleCache.clear();
-        OneOfCache.clear();
-    }
+    private ExpressionManager() {}
 
     // top/bottom roles
     /**
@@ -254,7 +100,7 @@ public class ExpressionManager implements Serializable {
      * @return true iff R is a top data/object role
      */
     @PortedFrom(file = "tExpressionManager.h", name = "isUniversalRole")
-    public boolean isUniversalRole(RoleExpression R) {
+    public static boolean isUniversalRole(RoleExpression R) {
         return R.equals(dataRoleTop) || R.equals(objectRoleTop);
     }
 
@@ -264,57 +110,22 @@ public class ExpressionManager implements Serializable {
      * @return true iff R is a bottom data/object role
      */
     @PortedFrom(file = "tExpressionManager.h", name = "isEmptyRole")
-    public boolean isEmptyRole(RoleExpression R) {
+    public static boolean isEmptyRole(RoleExpression R) {
         return R.equals(dataRoleBottom) || R.equals(objectRoleBottom);
-    }
-
-    /** @return number of registered concepts */
-    @PortedFrom(file = "tExpressionManager.h", name = "nConcepts")
-    public int nConcepts() {
-        return conceptNameset.size();
-    }
-
-    /** @return number of registered individuals */
-    @PortedFrom(file = "tExpressionManager.h", name = "nIndividuals")
-    public int nIndividuals() {
-        return individualNameset.size();
-    }
-
-    /** @return number of registered object roles */
-    @PortedFrom(file = "tExpressionManager.h", name = "nORoles")
-    public int nORoles() {
-        return objectRoleNameset.size();
-    }
-
-    /** @return number of registered data roles */
-    @PortedFrom(file = "tExpressionManager.h", name = "nDRoles")
-    public int nDRoles() {
-        return dataRoleNameset.size();
     }
 
     /** @return TOP concept */
     @PortedFrom(file = "tExpressionManager.h", name = "top")
     @Nonnull
-    public ConceptTop top() {
+    public static ConceptTop top() {
         return top;
     }
 
     /** @return BOTTOM concept */
     @PortedFrom(file = "tExpressionManager.h", name = "bottom")
     @Nonnull
-    public ConceptBottom bottom() {
+    public static ConceptBottom bottom() {
         return bottom;
-    }
-
-    /**
-     * @param name
-     *        name
-     * @return named concept
-     */
-    @PortedFrom(file = "tExpressionManager.h", name = "concept")
-    @Nonnull
-    public ConceptName concept(IRI name) {
-        return conceptNameset.insert(name);
     }
 
     /**
@@ -324,7 +135,7 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "Not")
     @Nonnull
-    public ConceptExpression not(ConceptExpression C) {
+    public static ConceptExpression not(ConceptExpression C) {
         return new ConceptNot(C);
     }
 
@@ -336,7 +147,7 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "and")
     @Nonnull
-    public ConceptExpression and(List<ConceptExpression> l) {
+    public static ConceptExpression and(List<ConceptExpression> l) {
         return new ConceptAnd(l);
     }
 
@@ -349,7 +160,7 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "and")
     @Nonnull
-    public ConceptExpression and(@Nonnull ConceptExpression C,
+    public static ConceptExpression and(@Nonnull ConceptExpression C,
             @Nonnull ConceptExpression D) {
         if (C.equals(D)) {
             return C;
@@ -372,7 +183,8 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "or")
     @Nonnull
-    public ConceptExpression or(ConceptExpression C, ConceptExpression D) {
+    public static ConceptExpression
+            or(ConceptExpression C, ConceptExpression D) {
         return or(Arrays.<ConceptExpression> asList(C, D));
     }
 
@@ -384,51 +196,8 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "or")
     @Nonnull
-    public ConceptExpression or(List<ConceptExpression> l) {
+    public static ConceptExpression or(List<ConceptExpression> l) {
         return new ConceptOr(l);
-    }
-
-    /**
-     * @param l
-     *        l
-     * @return an n-ary one-of expression; take the arguments from the last
-     *         argument list
-     */
-    @PortedFrom(file = "tExpressionManager.h", name = "OneOf")
-    @Nonnull
-    public ConceptExpression oneOf(List<IndividualExpression> l) {
-        if (l.size() == 1) {
-            IndividualExpression i = l.get(0);
-            ConceptExpression c = OneOfCache.get(i);
-            if (c == null) {
-                c = new ConceptOneOf<>(l);
-                OneOfCache.put(i, c);
-            }
-            return c;
-        }
-        return new ConceptOneOf<>(l);
-    }
-
-    /**
-     * @param R
-     *        R
-     * @return inverse of object role expression
-     */
-    @PortedFrom(file = "tExpressionManager.h", name = "inverse")
-    @Nonnull
-    public ObjectRoleExpression inverse(ObjectRoleExpression R) {
-        return inverseRoleCache.get(R);
-    }
-
-    /**
-     * @param I
-     *        I
-     * @return concept {I} for the individual I
-     */
-    @PortedFrom(file = "tExpressionManager.h", name = "OneOf")
-    @Nonnull
-    public ConceptExpression oneOf(IndividualExpression I) {
-        return oneOf(Arrays.<IndividualExpression> asList(I));
     }
 
     /**
@@ -438,7 +207,7 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "SelfReference")
     @Nonnull
-    public ConceptExpression selfReference(ObjectRoleExpression R) {
+    public static ConceptExpression selfReference(ObjectRoleExpression R) {
         return new ConceptObjectSelf(R);
     }
 
@@ -451,7 +220,7 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "value")
     @Nonnull
-    public ConceptExpression value(ObjectRoleExpression R,
+    public static ConceptExpression value(ObjectRoleExpression R,
             IndividualExpression I) {
         return new ConceptObjectValue(R, I);
     }
@@ -465,8 +234,8 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "Exists")
     @Nonnull
-    public ConceptExpression
-            exists(ObjectRoleExpression R, ConceptExpression C) {
+    public static ConceptExpression exists(ObjectRoleExpression R,
+            ConceptExpression C) {
         return new ConceptObjectExists(R, C);
     }
 
@@ -479,8 +248,8 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "Forall")
     @Nonnull
-    public ConceptExpression
-            forall(ObjectRoleExpression R, ConceptExpression C) {
+    public static ConceptExpression forall(ObjectRoleExpression R,
+            ConceptExpression C) {
         return new ConceptObjectForall(R, C);
     }
 
@@ -496,8 +265,8 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "MinCardinality")
     @Nonnull
-    public ConceptExpression minCardinality(int n, ObjectRoleExpression R,
-            ConceptExpression C) {
+    public static ConceptExpression minCardinality(int n,
+            ObjectRoleExpression R, ConceptExpression C) {
         return new ConceptObjectMinCardinality(n, R, C);
     }
 
@@ -513,8 +282,8 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "MaxCardinality")
     @Nonnull
-    public ConceptExpression maxCardinality(int n, ObjectRoleExpression R,
-            ConceptExpression C) {
+    public static ConceptExpression maxCardinality(int n,
+            ObjectRoleExpression R, ConceptExpression C) {
         return new ConceptObjectMaxCardinality(n, R, C);
     }
 
@@ -530,7 +299,7 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "cardinality")
     @Nonnull
-    public ConceptExpression cardinality(int n, ObjectRoleExpression R,
+    public static ConceptExpression cardinality(int n, ObjectRoleExpression R,
             ConceptExpression C) {
         return new ConceptObjectExactCardinality(n, R, C);
     }
@@ -544,7 +313,7 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "value")
     @Nonnull
-    public ConceptExpression value(DataRoleExpression R, Literal<?> V) {
+    public static ConceptExpression value(DataRoleExpression R, Literal<?> V) {
         return new ConceptDataValue(R, V);
     }
 
@@ -557,7 +326,8 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "Exists")
     @Nonnull
-    public ConceptExpression exists(DataRoleExpression R, DataExpression E) {
+    public static ConceptExpression exists(DataRoleExpression R,
+            DataExpression E) {
         return new ConceptDataExists(R, E);
     }
 
@@ -570,7 +340,8 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "Forall")
     @Nonnull
-    public ConceptExpression forall(DataRoleExpression R, DataExpression E) {
+    public static ConceptExpression forall(DataRoleExpression R,
+            DataExpression E) {
         return new ConceptDataForall(R, E);
     }
 
@@ -586,7 +357,7 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "MinCardinality")
     @Nonnull
-    public ConceptExpression minCardinality(int n, DataRoleExpression R,
+    public static ConceptExpression minCardinality(int n, DataRoleExpression R,
             DataExpression E) {
         return new ConceptDataMinCardinality(n, R, E);
     }
@@ -603,7 +374,7 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "MaxCardinality")
     @Nonnull
-    public ConceptExpression maxCardinality(int n, DataRoleExpression R,
+    public static ConceptExpression maxCardinality(int n, DataRoleExpression R,
             DataExpression E) {
         return new ConceptDataMaxCardinality(n, R, E);
     }
@@ -620,47 +391,24 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "cardinality")
     @Nonnull
-    public ConceptExpression cardinality(int n, DataRoleExpression R,
+    public static ConceptExpression cardinality(int n, DataRoleExpression R,
             DataExpression E) {
         return new ConceptDataExactCardinality(n, R, E);
-    }
-
-    // individuals
-    /**
-     * @param name
-     *        name
-     * @return named individual
-     */
-    @PortedFrom(file = "tExpressionManager.h", name = "individual")
-    @Nonnull
-    public IndividualName individual(IRI name) {
-        return individualNameset.insert(name);
     }
 
     // object roles
     /** @return TOP object role */
     @PortedFrom(file = "tExpressionManager.h", name = "ObjectRoleTop")
     @Nonnull
-    public ObjectRoleExpression objectRoleTop() {
+    public static ObjectRoleExpression objectRoleTop() {
         return objectRoleTop;
     }
 
     /** @return BOTTOM object role */
     @PortedFrom(file = "tExpressionManager.h", name = "ObjectRoleBottom")
     @Nonnull
-    public ObjectRoleExpression objectRoleBottom() {
+    public static ObjectRoleExpression objectRoleBottom() {
         return objectRoleBottom;
-    }
-
-    /**
-     * @param name
-     *        name
-     * @return named object role
-     */
-    @PortedFrom(file = "tExpressionManager.h", name = "ObjectRole")
-    @Nonnull
-    public ObjectRoleName objectRole(IRI name) {
-        return objectRoleNameset.insert(name);
     }
 
     /**
@@ -671,7 +419,8 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "Compose")
     @Nonnull
-    public ObjectRoleComplexExpression compose(List<ObjectRoleExpression> l) {
+    public static ObjectRoleComplexExpression compose(
+            List<ObjectRoleExpression> l) {
         return new ObjectRoleChain(l);
     }
 
@@ -684,7 +433,7 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "Compose")
     @Nonnull
-    public ObjectRoleComplexExpression compose(ObjectRoleExpression e1,
+    public static ObjectRoleComplexExpression compose(ObjectRoleExpression e1,
             ObjectRoleExpression e2) {
         return new ObjectRoleChain(Arrays.asList(e1, e2));
     }
@@ -698,8 +447,8 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "ProjectFrom")
     @Nonnull
-    public ObjectRoleComplexExpression projectFrom(ObjectRoleExpression R,
-            ConceptExpression C) {
+    public static ObjectRoleComplexExpression projectFrom(
+            ObjectRoleExpression R, ConceptExpression C) {
         return new ObjectRoleProjectionFrom(R, C);
     }
 
@@ -712,8 +461,8 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "ProjectInto")
     @Nonnull
-    public ObjectRoleComplexExpression projectInto(ObjectRoleExpression R,
-            ConceptExpression C) {
+    public static ObjectRoleComplexExpression projectInto(
+            ObjectRoleExpression R, ConceptExpression C) {
         return new ObjectRoleProjectionInto(R, C);
     }
 
@@ -721,47 +470,36 @@ public class ExpressionManager implements Serializable {
     /** @return TOP data role */
     @PortedFrom(file = "tExpressionManager.h", name = "DataRoleTop")
     @Nonnull
-    public DataRoleExpression dataRoleTop() {
+    public static DataRoleExpression dataRoleTop() {
         return dataRoleTop;
     }
 
     /** @return BOTTOM data role */
     @PortedFrom(file = "tExpressionManager.h", name = "DataRoleBottom")
     @Nonnull
-    public DataRoleExpression dataRoleBottom() {
+    public static DataRoleExpression dataRoleBottom() {
         return dataRoleBottom;
-    }
-
-    /**
-     * @param name
-     *        name
-     * @return named data role
-     */
-    @PortedFrom(file = "tExpressionManager.h", name = "DataRole")
-    @Nonnull
-    public DataRoleName dataRole(IRI name) {
-        return dataRoleNameset.insert(name);
     }
 
     // data expressions
     /** @return TOP data element */
     @PortedFrom(file = "tExpressionManager.h", name = "DataTop")
     @Nonnull
-    public DataExpression dataTop() {
+    public static DataExpression dataTop() {
         return dataTop;
     }
 
     /** @return BOTTOM data element */
     @PortedFrom(file = "tExpressionManager.h", name = "DataBottom")
     @Nonnull
-    public DataBottom dataBottom() {
+    public static DataBottom dataBottom() {
         return dataBottom;
     }
 
     /** @return basic string data type */
     @Original
     @Nonnull
-    public String getDataTop() {
+    public static String getDataTop() {
         // XXX there is no link between TDLDataTop and the uri
         return Vocabulary.LITERAL;
     }
@@ -773,7 +511,7 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "DataNot")
     @Nonnull
-    public DataExpression dataNot(DataExpression E) {
+    public static DataExpression dataNot(DataExpression E) {
         return new DataNot(E);
     }
 
@@ -784,7 +522,7 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "DataAnd")
     @Nonnull
-    public DataExpression dataAnd(List<DataExpression> l) {
+    public static DataExpression dataAnd(List<DataExpression> l) {
         return new DataAnd(l);
     }
 
@@ -795,7 +533,7 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "DataOr")
     @Nonnull
-    public DataExpression dataOr(List<DataExpression> l) {
+    public static DataExpression dataOr(List<DataExpression> l) {
         return new DataOr(l);
     }
 
@@ -806,7 +544,7 @@ public class ExpressionManager implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "DataOneOf")
     @Nonnull
-    public DataExpression dataOneOf(List<Literal<?>> l) {
+    public static DataExpression dataOneOf(List<Literal<?>> l) {
         return new DataOneOf(l);
     }
 }

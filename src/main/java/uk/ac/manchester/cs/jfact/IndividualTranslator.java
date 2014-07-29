@@ -7,7 +7,7 @@ import org.semanticweb.owlapi.reasoner.impl.DefaultNodeSet;
 import org.semanticweb.owlapi.reasoner.impl.OWLNamedIndividualNode;
 import org.semanticweb.owlapi.reasoner.impl.OWLNamedIndividualNodeSet;
 
-import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
+import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
 
 /** individual translator */
@@ -24,7 +24,7 @@ public class IndividualTranslator extends
      * @param tr
      *        tr
      */
-    public IndividualTranslator(ExpressionManager em, OWLDataFactory df,
+    public IndividualTranslator(ExpressionCache em, OWLDataFactory df,
             TranslationMachinery tr) {
         super(em, df, tr);
     }

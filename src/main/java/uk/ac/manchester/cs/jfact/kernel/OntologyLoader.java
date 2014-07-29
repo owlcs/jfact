@@ -113,7 +113,7 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
      */
     @PortedFrom(file = "tOntologyLoader.h", name = "ensureNames")
     public void ensureNames(Expression Expr) {
-        assert Expr != null; // temporarily
+        assert Expr != null; // TODO temporarily
     }
 
     /**
@@ -224,7 +224,8 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
                 "Role expression expected in Role Inverse axiom");
         Role iR = getRole(axiom.getInvRole(),
                 "Role expression expected in Role Inverse axiom");
-        tbox.getRM(R).addRoleSynonym(iR.inverse(), R);
+        tbox.getRM(R);
+        RoleMaster.addRoleSynonym(iR.inverse(), R);
     }
 
     @Override
@@ -234,7 +235,8 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         DLTree Sub = axiom.getSubRole().accept(expressionTranslator);
         Role R = getRole(axiom.getRole(),
                 "Role expression expected in Object Roles Subsumption axiom");
-        tbox.getRM(R).addRoleParent(Sub, R);
+        tbox.getRM(R);
+        RoleMaster.addRoleParent(Sub, R);
     }
 
     @Override
@@ -245,7 +247,8 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
                 "Role expression expected in Data Roles Subsumption axiom");
         Role S = getRole(axiom.getSubRole(),
                 "Role expression expected in Data Roles Subsumption axiom");
-        tbox.getDRM().addRoleParentProper(S, R);
+        tbox.getDRM();
+        RoleMaster.addRoleParentProper(S, R);
     }
 
     @Override
@@ -353,7 +356,8 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
                 "Role expression expected in Role Symmetry axiom");
         if (!R.isTop() && !R.isBottom()) {
             R.setSymmetric(true);
-            tbox.getORM().addRoleParentProper(R, R.inverse());
+            tbox.getORM();
+            RoleMaster.addRoleParentProper(R, R.inverse());
         }
     }
 

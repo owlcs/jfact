@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact;
 
+import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -30,7 +32,7 @@ import org.semanticweb.owlapi.reasoner.impl.DefaultNodeSet;
 import org.semanticweb.owlapi.reasoner.impl.OWLClassNode;
 import org.semanticweb.owlapi.reasoner.impl.OWLClassNodeSet;
 
-import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
+import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 
 /** class expression translator */
@@ -48,19 +50,19 @@ public class ClassExpressionTranslator extends
      * @param tr
      *        tr
      */
-    public ClassExpressionTranslator(ExpressionManager em, OWLDataFactory df,
+    public ClassExpressionTranslator(ExpressionCache em, OWLDataFactory df,
             TranslationMachinery tr) {
         super(em, df, tr);
     }
 
     @Override
     protected ConceptExpression getTopEntityPointer() {
-        return em.top();
+        return top();
     }
 
     @Override
     protected ConceptExpression getBottomEntityPointer() {
-        return em.bottom();
+        return bottom();
     }
 
     @Override
@@ -96,7 +98,7 @@ public class ClassExpressionTranslator extends
 
     @Override
     public ConceptExpression visit(OWLObjectIntersectionOf desc) {
-        return em.and(translateClassExpressionSet(desc.getOperands()));
+        return and(translateClassExpressionSet(desc.getOperands()));
     }
 
     private List<ConceptExpression> translateClassExpressionSet(
@@ -110,53 +112,53 @@ public class ClassExpressionTranslator extends
 
     @Override
     public ConceptExpression visit(OWLObjectUnionOf desc) {
-        return em.or(translateClassExpressionSet(desc.getOperands()));
+        return or(translateClassExpressionSet(desc.getOperands()));
     }
 
     @Override
     public ConceptExpression visit(OWLObjectComplementOf desc) {
-        return em.not(desc.getOperand().accept(this));
+        return not(desc.getOperand().accept(this));
     }
 
     @Override
     public ConceptExpression visit(OWLObjectSomeValuesFrom desc) {
-        return em.exists(tr.pointer(desc.getProperty()), desc.getFiller()
-                .accept(this));
+        return exists(tr.pointer(desc.getProperty()),
+                desc.getFiller().accept(this));
     }
 
     @Override
     public ConceptExpression visit(OWLObjectAllValuesFrom desc) {
-        return em.forall(tr.pointer(desc.getProperty()), desc.getFiller()
-                .accept(this));
+        return forall(tr.pointer(desc.getProperty()),
+                desc.getFiller().accept(this));
     }
 
     @Override
     public ConceptExpression visit(OWLObjectHasValue desc) {
-        return em.value(tr.pointer(desc.getProperty()),
+        return value(tr.pointer(desc.getProperty()),
                 tr.pointer(desc.getFiller()));
     }
 
     @Override
     public ConceptExpression visit(OWLObjectMinCardinality desc) {
-        return em.minCardinality(desc.getCardinality(),
+        return minCardinality(desc.getCardinality(),
                 tr.pointer(desc.getProperty()), desc.getFiller().accept(this));
     }
 
     @Override
     public ConceptExpression visit(OWLObjectExactCardinality desc) {
-        return em.cardinality(desc.getCardinality(),
+        return cardinality(desc.getCardinality(),
                 tr.pointer(desc.getProperty()), desc.getFiller().accept(this));
     }
 
     @Override
     public ConceptExpression visit(OWLObjectMaxCardinality desc) {
-        return em.maxCardinality(desc.getCardinality(),
+        return maxCardinality(desc.getCardinality(),
                 tr.pointer(desc.getProperty()), desc.getFiller().accept(this));
     }
 
     @Override
     public ConceptExpression visit(OWLObjectHasSelf desc) {
-        return em.selfReference(tr.pointer(desc.getProperty()));
+        return selfReference(tr.pointer(desc.getProperty()));
     }
 
     @Override
@@ -166,37 +168,37 @@ public class ClassExpressionTranslator extends
 
     @Override
     public ConceptExpression visit(OWLDataSomeValuesFrom desc) {
-        return em.exists(tr.pointer(desc.getProperty()),
+        return exists(tr.pointer(desc.getProperty()),
                 tr.pointer(desc.getFiller()));
     }
 
     @Override
     public ConceptExpression visit(OWLDataAllValuesFrom desc) {
-        return em.forall(tr.pointer(desc.getProperty()),
+        return forall(tr.pointer(desc.getProperty()),
                 tr.pointer(desc.getFiller()));
     }
 
     @Override
     public ConceptExpression visit(OWLDataHasValue desc) {
-        return em.value(tr.pointer(desc.getProperty()),
+        return value(tr.pointer(desc.getProperty()),
                 tr.pointer(desc.getFiller()));
     }
 
     @Override
     public ConceptExpression visit(OWLDataMinCardinality desc) {
-        return em.minCardinality(desc.getCardinality(),
+        return minCardinality(desc.getCardinality(),
                 tr.pointer(desc.getProperty()), tr.pointer(desc.getFiller()));
     }
 
     @Override
     public ConceptExpression visit(OWLDataExactCardinality desc) {
-        return em.cardinality(desc.getCardinality(),
+        return cardinality(desc.getCardinality(),
                 tr.pointer(desc.getProperty()), tr.pointer(desc.getFiller()));
     }
 
     @Override
     public ConceptExpression visit(OWLDataMaxCardinality desc) {
-        return em.maxCardinality(desc.getCardinality(),
+        return maxCardinality(desc.getCardinality(),
                 tr.pointer(desc.getProperty()), tr.pointer(desc.getFiller()));
     }
 }

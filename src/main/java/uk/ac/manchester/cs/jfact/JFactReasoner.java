@@ -58,12 +58,11 @@ import org.semanticweb.owlapi.reasoner.impl.OWLDataPropertyNodeSet;
 import org.semanticweb.owlapi.reasoner.impl.OWLObjectPropertyNodeSet;
 import org.semanticweb.owlapi.reasoner.knowledgeexploration.OWLKnowledgeExplorerReasoner;
 import org.semanticweb.owlapi.util.Version;
-import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
-import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
+import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.Individual;
 import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
@@ -97,8 +96,8 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
 
     private static final long serialVersionUID = 10000L;
     protected final AtomicBoolean interrupted = new AtomicBoolean(false);
-    public ReasoningKernel kernel;
-    private final ExpressionManager em;
+    private ReasoningKernel kernel;
+    private final ExpressionCache em;
     @SuppressWarnings("null")
     @Nonnull
     private static final EnumSet<InferenceType> supportedInferenceTypes = EnumSet
@@ -166,11 +165,6 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         for (OWLOntology o : root.getImportsClosure()) {
             knownEntities.addAll(o.getSignature());
         }
-        kernel.setTopBottomRoleNames(
-                OWLRDFVocabulary.OWL_TOP_OBJECT_PROPERTY.getIRI(),
-                OWLRDFVocabulary.OWL_BOTTOM_OBJECT_PROPERTY.getIRI(),
-                OWLRDFVocabulary.OWL_TOP_DATA_PROPERTY.getIRI(),
-                OWLRDFVocabulary.OWL_BOTTOM_DATA_PROPERTY.getIRI());
         kernel.setInterruptedSwitch(interrupted);
         kernel.clearKB();
         configuration.getProgressMonitor().reasonerTaskStarted(

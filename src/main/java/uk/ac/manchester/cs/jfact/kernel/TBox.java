@@ -25,6 +25,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import uk.ac.manchester.cs.jfact.datatypes.Datatype;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeEntry;
@@ -1665,21 +1666,11 @@ public class TBox implements Serializable {
      *        datatypeFactory
      * @param configuration
      *        configuration
-     * @param topObjectRoleName
-     *        topObjectRoleName
-     * @param botObjectRoleName
-     *        botObjectRoleName
-     * @param topDataRoleName
-     *        topDataRoleName
-     * @param botDataRoleName
-     *        botDataRoleName
      * @param interrupted
      *        interrupted
      */
     public TBox(DatatypeFactory datatypeFactory,
-            JFactReasonerConfiguration configuration, IRI topObjectRoleName,
-            IRI botObjectRoleName, IRI topDataRoleName, IRI botDataRoleName,
-            AtomicBoolean interrupted) {
+            JFactReasonerConfiguration configuration, AtomicBoolean interrupted) {
         this.datatypeFactory = datatypeFactory;
         this.interrupted = interrupted;
         config = configuration;
@@ -1692,10 +1683,12 @@ public class TBox implements Serializable {
                 config);
         individuals = new NamedEntryCollection<>("individual",
                 new IndividualCreator(), config);
-        objectRoleMaster = new RoleMaster(false, topObjectRoleName,
-                botObjectRoleName, config);
-        dataRoleMaster = new RoleMaster(true, topDataRoleName, botDataRoleName,
-                config);
+        objectRoleMaster = new RoleMaster(false,
+                OWLRDFVocabulary.OWL_TOP_OBJECT_PROPERTY.getIRI(),
+                OWLRDFVocabulary.OWL_BOTTOM_OBJECT_PROPERTY.getIRI(), config);
+        dataRoleMaster = new RoleMaster(true,
+                OWLRDFVocabulary.OWL_TOP_DATA_PROPERTY.getIRI(),
+                OWLRDFVocabulary.OWL_BOTTOM_DATA_PROPERTY.getIRI(), config);
         axioms = new AxiomSet(this);
         internalisedGeneralAxiom = bpTOP;
         duringClassification = false;
@@ -2487,7 +2480,7 @@ public class TBox implements Serializable {
      * @return true if range can be set
      */
     @PortedFrom(file = "dlTBox.h", name = "axiomToRangeDomain")
-    public boolean axiomToRangeDomain(DLTree sub, DLTree sup) {
+    public static boolean axiomToRangeDomain(DLTree sub, DLTree sup) {
         if (sub.isTOP() && sup.token() == FORALL) {
             Role.resolveRole(sup.getLeft()).setRange(sup.getRight().copy());
             return true;
@@ -2709,7 +2702,7 @@ public class TBox implements Serializable {
         if (!l.isEmpty()) {
             RoleMaster RM = getRM(Role.resolveRole(l.get(0)));
             for (int i = 0; i < l.size() - 1; i++) {
-                RM.addRoleSynonym(Role.resolveRole(l.get(i)),
+                RoleMaster.addRoleSynonym(Role.resolveRole(l.get(i)),
                         Role.resolveRole(l.get(i + 1)));
             }
             l.clear();

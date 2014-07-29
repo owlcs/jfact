@@ -36,7 +36,7 @@ import org.semanticweb.owlapi.reasoner.impl.OWLNamedIndividualNodeSet;
 import uk.ac.manchester.cs.jfact.datatypes.Datatype;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
-import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
+import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.ReasoningKernel;
 import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
@@ -70,7 +70,7 @@ public class TranslationMachinery implements Serializable {
     @Nonnull
     private final Map<AxiomInterface, OWLAxiom> ptr2AxiomMap = new HashMap<>();
     protected final ReasoningKernel kernel;
-    protected final ExpressionManager em;
+    protected final ExpressionCache em;
     protected final OWLDataFactory df;
     protected final DatatypeFactory datatypefactory;
 

@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact;
 
+import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +28,7 @@ import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
 import uk.ac.manchester.cs.jfact.datatypes.Facet;
 import uk.ac.manchester.cs.jfact.datatypes.Facets;
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
-import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
+import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 
 /** datarange translator */
@@ -47,7 +49,7 @@ public class DataRangeTranslator extends
      * @param f
      *        f
      */
-    public DataRangeTranslator(ExpressionManager em, OWLDataFactory df,
+    public DataRangeTranslator(ExpressionCache em, OWLDataFactory df,
             TranslationMachinery tr, DatatypeFactory f) {
         super(em, df, tr);
         this.f = f;
@@ -55,7 +57,7 @@ public class DataRangeTranslator extends
 
     @Override
     protected DataExpression getTopEntityPointer() {
-        return em.dataTop();
+        return dataTop();
     }
 
     @Override
@@ -99,17 +101,17 @@ public class DataRangeTranslator extends
         for (OWLLiteral literal : node.getValues()) {
             l.add(tr.pointer(literal));
         }
-        return em.dataOneOf(l);
+        return dataOneOf(l);
     }
 
     @Override
     public DataExpression visit(OWLDataComplementOf node) {
-        return em.dataNot(node.getDataRange().accept(this));
+        return dataNot(node.getDataRange().accept(this));
     }
 
     @Override
     public DataExpression visit(OWLDataIntersectionOf node) {
-        return em.dataAnd(translateDataRangeSet(node.getOperands()));
+        return dataAnd(translateDataRangeSet(node.getOperands()));
     }
 
     private List<DataExpression> translateDataRangeSet(
@@ -123,7 +125,7 @@ public class DataRangeTranslator extends
 
     @Override
     public DataExpression visit(OWLDataUnionOf node) {
-        return em.dataOr(translateDataRangeSet(node.getOperands()));
+        return dataOr(translateDataRangeSet(node.getOperands()));
     }
 
     @Override

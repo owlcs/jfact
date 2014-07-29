@@ -253,6 +253,12 @@ public class TaxonomyVertex implements Serializable {
         add(upDirection, p);
     }
 
+    /**
+     * @param direction
+     *        parent or child direction
+     * @param t
+     *        vertex to add
+     */
     public void add(boolean direction, TaxonomyVertex t) {
         if (direction) {
             linksParent.add(t);

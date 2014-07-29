@@ -5,6 +5,8 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.*;
+
 import java.io.Serializable;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
@@ -51,7 +53,7 @@ public abstract class BuildELIOConcept implements Serializable {
         // XXX unused?
         // visited.add(v);
         ConceptExpression t = createConceptByVar(v);
-        ConceptExpression s = conjunctiveQueryFolding.getpEM().top();
+        ConceptExpression s = top();
         for (QRAtom atomIterator : Query.getBody().begin()) {
             if (atomIterator instanceof QRRoleAtom) {
                 QRRoleAtom atom = (QRRoleAtom) atomIterator;
@@ -63,14 +65,14 @@ public abstract class BuildELIOConcept implements Serializable {
                 }
                 if (arg1.equals(v)) {
                     ConceptExpression p = Assign(query, atomIterator, arg2);
-                    p = conjunctiveQueryFolding.getpEM().exists(role, p);
-                    s = conjunctiveQueryFolding.getpEM().and(s, p);
+                    p = exists(role, p);
+                    s = and(s, p);
                 }
                 if (arg2.equals(v)) {
                     ConceptExpression p = Assign(query, atomIterator, arg1);
-                    p = conjunctiveQueryFolding.getpEM().exists(
-                            conjunctiveQueryFolding.getpEM().inverse(role), p);
-                    s = conjunctiveQueryFolding.getpEM().and(s, p);
+                    p = exists(conjunctiveQueryFolding.getpEM().inverse(role),
+                            p);
+                    s = and(s, p);
                 }
             }
             if (atomIterator instanceof QRConceptAtom) {
@@ -78,11 +80,11 @@ public abstract class BuildELIOConcept implements Serializable {
                 ConceptExpression concept = atom.getConcept();
                 QRVariable arg = (QRVariable) atom.getArg();
                 if (arg.equals(v)) {
-                    s = conjunctiveQueryFolding.getpEM().and(s, concept);
+                    s = and(s, concept);
                 }
             }
         }
-        return conjunctiveQueryFolding.getpEM().and(t, s);
+        return and(t, s);
     }
 
     protected abstract ConceptExpression createConceptByVar(QRVariable v);

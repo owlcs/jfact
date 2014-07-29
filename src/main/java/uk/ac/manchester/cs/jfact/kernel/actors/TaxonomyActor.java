@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
-import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
+import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import conformance.PortedFrom;
@@ -27,7 +27,7 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
 
     private static final long serialVersionUID = 11000L;
     private final Policy policy;
-    private final ExpressionManager expressionManager;
+    private final ExpressionCache cache;
     /** 2D array to return */
     @PortedFrom(file = "JNIActor.h", name = "acc")
     private final List<List<T>> acc = new ArrayList<>();
@@ -74,7 +74,7 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
      */
     @SuppressWarnings("unchecked")
     protected T asT(ClassifiableEntry p) {
-        return (T) policy.buildTree(expressionManager, p);
+        return (T) policy.buildTree(cache, p);
     }
 
     /**
@@ -84,8 +84,8 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
      *        p
      */
     @PortedFrom(file = "JNIActor.h", name = "TaxonomyActor")
-    public TaxonomyActor(ExpressionManager em, Policy p) {
-        expressionManager = em;
+    public TaxonomyActor(ExpressionCache em, Policy p) {
+        cache = em;
         policy = p;
     }
 

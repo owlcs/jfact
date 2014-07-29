@@ -22,7 +22,7 @@ public class Stats implements Serializable {
      *        the list
      * @return the accumulated statistic
      */
-    public AccumulatedStatistic build(List<AccumulatedStatistic> list) {
+    public static AccumulatedStatistic build(List<AccumulatedStatistic> list) {
         AccumulatedStatistic toReturn = new AccumulatedStatistic();
         list.add(toReturn);
         return toReturn;

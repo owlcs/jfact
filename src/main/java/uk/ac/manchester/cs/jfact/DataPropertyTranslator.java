@@ -8,7 +8,7 @@ import org.semanticweb.owlapi.reasoner.impl.OWLDataPropertyNode;
 import org.semanticweb.owlapi.reasoner.impl.OWLDataPropertyNodeSet;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
-import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
+import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 
 /** data property translator */
@@ -25,7 +25,7 @@ public class DataPropertyTranslator extends
      * @param tr
      *        tr
      */
-    public DataPropertyTranslator(ExpressionManager em, OWLDataFactory df,
+    public DataPropertyTranslator(ExpressionCache em, OWLDataFactory df,
             TranslationMachinery tr) {
         super(em, df, tr);
     }

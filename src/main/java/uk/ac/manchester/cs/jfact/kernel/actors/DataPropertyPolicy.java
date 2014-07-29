@@ -8,7 +8,7 @@ package uk.ac.manchester.cs.jfact.kernel.actors;
 import java.io.Serializable;
 
 import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
-import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
+import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 
 /** policy for data properties */
@@ -27,7 +27,7 @@ public class DataPropertyPolicy implements Policy, Serializable {
     }
 
     @Override
-    public Expression buildTree(ExpressionManager EM, ClassifiableEntry p) {
+    public Expression buildTree(ExpressionCache EM, ClassifiableEntry p) {
         return EM.dataRole(p.getName());
     }
 }

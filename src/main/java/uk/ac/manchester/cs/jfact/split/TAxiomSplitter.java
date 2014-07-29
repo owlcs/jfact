@@ -15,6 +15,7 @@ import java.util.Set;
 
 import org.semanticweb.owlapi.model.IRI;
 
+import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptTop;
@@ -292,7 +293,7 @@ public class TAxiomSplitter implements Serializable {
             rec.oldAxioms.add(s);
             args.add(s.getSupConcept());
         }
-        rec.setImpAx(O.getExpressionManager().and(args));
+        rec.setImpAx(ExpressionManager.and(args));
         registerRec(rec);
         return rec;
     }

@@ -30,7 +30,7 @@ public class Ontology implements Serializable {
     private final List<AxiomInterface> retracted = new ArrayList<>();
     /** expression manager that builds all the expressions for the axioms */
     @PortedFrom(file = "tOntology.h", name = "EManager")
-    private final ExpressionManager expressionManager = new ExpressionManager();
+    private final ExpressionCache expressionCache = new ExpressionCache();
     /** id to be given to the next axiom */
     @PortedFrom(file = "tOntology.h", name = "axiomId")
     private int axiomId;
@@ -109,7 +109,7 @@ public class Ontology implements Serializable {
     public void clear() {
         safeClear();
         retracted.clear();
-        expressionManager.clear();
+        expressionCache.clear();
         changed = false;
     }
 
@@ -122,8 +122,8 @@ public class Ontology implements Serializable {
     // access to axioms
     /** @return expression manager */
     @PortedFrom(file = "tOntology.h", name = "getExpressionManager")
-    public ExpressionManager getExpressionManager() {
-        return expressionManager;
+    public ExpressionCache getExpressionManager() {
+        return expressionCache;
     }
 
     /** @return axioms for the whole ontology */

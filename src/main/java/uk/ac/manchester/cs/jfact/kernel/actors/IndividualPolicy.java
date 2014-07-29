@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
 import uk.ac.manchester.cs.jfact.kernel.Concept;
-import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
+import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 
 /** policy for individuals */
@@ -37,7 +37,7 @@ public class IndividualPolicy implements Policy, Serializable {
     }
 
     @Override
-    public Expression buildTree(ExpressionManager EM, ClassifiableEntry p) {
+    public Expression buildTree(ExpressionCache EM, ClassifiableEntry p) {
         return EM.individual(p.getName());
     }
 }

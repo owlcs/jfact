@@ -5,6 +5,8 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.*;
+
 import java.io.Serializable;
 
 import org.semanticweb.owlapi.model.IRI;
@@ -50,8 +52,7 @@ class TEquationSolver implements Serializable {
                         .getOR();
                 ObjectRoleExpression role = invRole.getOR();
                 ConceptExpression newLeftPart = leftDiamond.getConcept();
-                ConceptExpression newRightPart = conjunctiveQueryFolding
-                        .getpEM().forall(role, RightPart);
+                ConceptExpression newRightPart = forall(role, RightPart);
                 LeftPart = newLeftPart;
                 RightPart = newRightPart;
             } else if (LeftPart instanceof ConceptAnd) {
@@ -69,9 +70,7 @@ class TEquationSolver implements Serializable {
                 if (arg2 instanceof ConceptTop) {
                     newRightPart = RightPart;
                 } else {
-                    newRightPart = conjunctiveQueryFolding.getpEM().or(
-                            conjunctiveQueryFolding.getpEM().not(arg2),
-                            RightPart);
+                    newRightPart = or(not(arg2), RightPart);
                 }
                 LeftPart = newLeftPart;
                 RightPart = newRightPart;

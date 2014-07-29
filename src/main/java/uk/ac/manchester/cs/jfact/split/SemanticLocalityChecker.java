@@ -11,8 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
-
+import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
 import uk.ac.manchester.cs.jfact.kernel.ReasoningKernel;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleChain;
@@ -69,7 +68,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor,
     private final ReasoningKernel Kernel;
     /** Expression manager of a kernel */
     @PortedFrom(file = "SemanticLocalityChecker.h", name = "pEM")
-    private final ExpressionManager pEM;
+    private final ExpressionCache pEM;
     /** map between axioms and concept expressions */
     @PortedFrom(file = "SemanticLocalityChecker.h", name = "ExprMap")
     private final Map<AxiomInterface, ConceptExpression> ExprMap = new HashMap<>();
@@ -118,12 +117,6 @@ public class SemanticLocalityChecker implements DLAxiomVisitor,
         Kernel = k;
         isLocal = true;
         pEM = Kernel.getExpressionManager();
-        // for tests we will need TB names to be from the OWL 2 namespace
-        pEM.setTopBottomRoles(
-                OWLRDFVocabulary.OWL_TOP_OBJECT_PROPERTY.getIRI(),
-                OWLRDFVocabulary.OWL_BOTTOM_OBJECT_PROPERTY.getIRI(),
-                OWLRDFVocabulary.OWL_TOP_DATA_PROPERTY.getIRI(),
-                OWLRDFVocabulary.OWL_BOTTOM_DATA_PROPERTY.getIRI());
     }
 
     // set fields
@@ -203,7 +196,8 @@ public class SemanticLocalityChecker implements DLAxiomVisitor,
         isLocal = false;
         // check A = (or C1... Cn)
         List<ConceptExpression> arguments = axiom.getArguments();
-        if (!Kernel.isEquivalent(axiom.getConcept(), pEM.or(arguments))) {
+        if (!Kernel.isEquivalent(axiom.getConcept(),
+                ExpressionManager.or(arguments))) {
             return;
         }
         // check disjoint(C1...Cn)

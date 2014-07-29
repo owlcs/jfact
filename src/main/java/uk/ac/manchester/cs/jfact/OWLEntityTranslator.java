@@ -14,7 +14,7 @@ import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.semanticweb.owlapi.reasoner.impl.DefaultNode;
 import org.semanticweb.owlapi.reasoner.impl.DefaultNodeSet;
 
-import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
+import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Entity;
 
 abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity>
@@ -23,7 +23,7 @@ abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity>
     private static final long serialVersionUID = 11000L;
     private final Map<E, T> entity2dlentity = new HashMap<>();
     private final Map<T, E> dlentity2entity = new HashMap<>();
-    protected final ExpressionManager em;
+    protected final ExpressionCache em;
     protected final OWLDataFactory df;
     protected final TranslationMachinery tr;
 
@@ -32,7 +32,7 @@ abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity>
         this.dlentity2entity.put(dlentity, entity);
     }
 
-    protected OWLEntityTranslator(ExpressionManager em, OWLDataFactory df,
+    protected OWLEntityTranslator(ExpressionCache em, OWLDataFactory df,
             TranslationMachinery tr) {
         this.em = em;
         this.df = df;

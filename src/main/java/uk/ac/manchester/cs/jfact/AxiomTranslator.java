@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact;
 
+import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.compose;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,7 +57,7 @@ import org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
-import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
+import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomConceptInclusion;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleDomain;
@@ -101,7 +103,7 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>,
     private final DeclarationVisitorEx v;
     private Ontology o;
     private TranslationMachinery tr;
-    private ExpressionManager em;
+    private ExpressionCache em;
 
     /**
      * @param o
@@ -114,7 +116,7 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>,
      *        em
      */
     public AxiomTranslator(Ontology o, OWLDataFactory df,
-            TranslationMachinery tr, ExpressionManager em) {
+            TranslationMachinery tr, ExpressionCache em) {
         v = new DeclarationVisitorEx(o, df, tr);
         this.o = o;
         this.tr = tr;
@@ -338,8 +340,8 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>,
 
     @Override
     public AxiomInterface visit(OWLSubPropertyChainOfAxiom axiom) {
-        return o.add(new AxiomORoleSubsumption(axiom, em
-                .compose(translateObjectPropertySet(axiom.getPropertyChain())),
+        return o.add(new AxiomORoleSubsumption(axiom,
+                compose(translateObjectPropertySet(axiom.getPropertyChain())),
                 tr.pointer(axiom.getSuperProperty())));
     }
 

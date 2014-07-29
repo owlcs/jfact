@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static uk.ac.manchester.cs.jfact.helpers.DLTree.equalTrees;
 import static uk.ac.manchester.cs.jfact.kernel.CacheStatus.*;
+import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.*;
 import static uk.ac.manchester.cs.jfact.kernel.KBStatus.*;
 
 import java.io.ByteArrayInputStream;
@@ -90,20 +91,6 @@ public class ReasoningKernel implements Serializable {
     /** ontology signature (used in incremental) */
     @PortedFrom(file = "Kernel.h", name = "OntoSig")
     private TSignature OntoSig;
-    // Top/Bottom role names: if set, they will appear in all hierarchy-related
-    // output
-    /** top object role name */
-    @PortedFrom(file = "Kernel.h", name = "topORoleName")
-    private IRI topORoleName;
-    /** bottom object role name */
-    @PortedFrom(file = "Kernel.h", name = "botORoleName")
-    private IRI botORoleName;
-    /** top data role name */
-    @PortedFrom(file = "Kernel.h", name = "topDRoleName")
-    private IRI topDRoleName;
-    /** bottom data role name */
-    @PortedFrom(file = "Kernel.h", name = "botDRoleName")
-    private IRI botDRoleName;
     // values to propagate to the new KB in case of clearance
     @Original
     private AtomicBoolean interrupted;
@@ -404,8 +391,7 @@ public class ReasoningKernel implements Serializable {
                 && ReasoningKernel.isNameOrConst(C)) {
             return this.checkSub(getTBox().getCI(e(C)), getTBox().getCI(e(D)));
         }
-        return !checkSat(getExpressionManager().and(C,
-                getExpressionManager().not(D)));
+        return !checkSat(and(C, not(D)));
     }
 
     /**
@@ -672,28 +658,6 @@ public class ReasoningKernel implements Serializable {
     }
 
     /**
-     * set top/bottom role names to use them in the related output
-     * 
-     * @param topO
-     *        topO
-     * @param botO
-     *        botO
-     * @param topD
-     *        topD
-     * @param botD
-     *        botD
-     */
-    @PortedFrom(file = "Kernel.h", name = "setTopBottomRoleNames")
-    public void setTopBottomRoleNames(IRI topO, IRI botO, IRI topD, IRI botD) {
-        topORoleName = topO;
-        botORoleName = botO;
-        topDRoleName = topD;
-        botDRoleName = botD;
-        ontology.getExpressionManager().setTopBottomRoles(topORoleName,
-                botORoleName, topDRoleName, botDRoleName);
-    }
-
-    /**
      * dump query processing TIME, reasoning statistics and a (preprocessed)
      * TBox
      * 
@@ -797,7 +761,7 @@ public class ReasoningKernel implements Serializable {
 
     /** @return expression manager */
     @PortedFrom(file = "Kernel.h", name = "getExpressionManager")
-    public ExpressionManager getExpressionManager() {
+    public ExpressionCache getExpressionManager() {
         return ontology.getExpressionManager();
     }
 
@@ -811,8 +775,7 @@ public class ReasoningKernel implements Serializable {
         if (pTBox != null) {
             return true;
         }
-        pTBox = new TBox(datatypeFactory, getOptions(), topORoleName,
-                botORoleName, topDRoleName, botDRoleName, interrupted);
+        pTBox = new TBox(datatypeFactory, getOptions(), interrupted);
         pET = new ExpressionTranslator(pTBox);
         initCacheAndFlags();
         return false;
@@ -1166,13 +1129,11 @@ public class ReasoningKernel implements Serializable {
             // as \top [= \bot leads to inconsistent ontology
             return false;
         }
-        if (getExpressionManager().isEmptyRole(R)
-                || getExpressionManager().isUniversalRole(S)) {
+        if (isEmptyRole(R) || isUniversalRole(S)) {
             // \bot [= X [= \top
             return true;
         }
-        if (getExpressionManager().isUniversalRole(R)
-                && getExpressionManager().isEmptyRole(S)) {
+        if (isUniversalRole(R) && isEmptyRole(S)) {
             // as \top [= \bot leads to inconsistent ontology
             return false;
         }
@@ -1233,7 +1194,7 @@ public class ReasoningKernel implements Serializable {
      */
     @PortedFrom(file = "Kernel.h", name = "isDisjoint")
     public boolean isDisjoint(ConceptExpression C, ConceptExpression D) {
-        return isSubsumedBy(C, getExpressionManager().not(D));
+        return isSubsumedBy(C, not(D));
     }
 
     /**
@@ -1357,7 +1318,7 @@ public class ReasoningKernel implements Serializable {
     public <T extends Expression> TaxonomyActor<T> getDisjointConcepts(
             ConceptExpression C, TaxonomyActor<T> actor) {
         classifyKB();
-        setUpCache(getExpressionManager().not(C), csClassified);
+        setUpCache(not(C), csClassified);
         actor.clear();
         // we are looking for all sub-concepts of (not C) (including synonyms)
         getCTaxonomy()
@@ -1433,9 +1394,7 @@ public class ReasoningKernel implements Serializable {
     public <T extends ConceptExpression> TaxonomyActor<T> getORoleDomain(
             ObjectRoleExpression r, boolean direct, TaxonomyActor<T> actor) {
         classifyKB();
-        setUpCache(
-                getExpressionManager().exists(r, getExpressionManager().top()),
-                csClassified);
+        setUpCache(exists(r, top()), csClassified);
         actor.clear();
         getCTaxonomy()
                 .getRelativesInfo(cachedVertex, actor, true, direct, true);
@@ -1460,9 +1419,7 @@ public class ReasoningKernel implements Serializable {
     public <T extends ConceptExpression> TaxonomyActor<T> getDRoleDomain(
             DataRoleExpression r, boolean direct, TaxonomyActor<T> actor) {
         classifyKB();
-        setUpCache(
-                getExpressionManager().exists(r,
-                        getExpressionManager().dataTop()), csClassified);
+        setUpCache(exists(r, dataTop()), csClassified);
         actor.clear();
         getCTaxonomy()
                 .getRelativesInfo(cachedVertex, actor, true, direct, true);
@@ -2418,13 +2375,11 @@ public class ReasoningKernel implements Serializable {
     @Nonnull
     public Boolean isSubRoles(DataRoleExpression R, DataRoleExpression S) {
         preprocessKB();
-        if (getExpressionManager().isEmptyRole(R)
-                || getExpressionManager().isUniversalRole(S)) {
+        if (isEmptyRole(R) || isUniversalRole(S)) {
             // \bot [= X [= \top
             return true;
         }
-        if (getExpressionManager().isUniversalRole(R)
-                && getExpressionManager().isEmptyRole(S)) {
+        if (isUniversalRole(R) && isEmptyRole(S)) {
             // as \top [= \bot leads to inconsistent ontology
             return false;
         }
@@ -2455,10 +2410,9 @@ public class ReasoningKernel implements Serializable {
                 : getExpressionManager().objectRole(R.inverse().getName());
         ConceptExpression query;
         if (R.isTop()) {
-            query = getExpressionManager().top();
+            query = top();
         } else {
-            query = getExpressionManager().value(InvR,
-                    getExpressionManager().individual(I.getName()));
+            query = value(InvR, getExpressionManager().individual(I.getName()));
         }
         this.getInstances(query, actor);
         return actor.getAcc();

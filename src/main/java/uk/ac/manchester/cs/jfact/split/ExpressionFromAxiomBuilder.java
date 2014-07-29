@@ -1,6 +1,7 @@
 package uk.ac.manchester.cs.jfact.split;
 
-import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
+import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.*;
+import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleDomain;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleRange;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleDomain;
@@ -17,7 +18,7 @@ public class ExpressionFromAxiomBuilder extends
         DLAxiomVisitorExAdapter<ConceptExpression> {
 
     private static final long serialVersionUID = 10201L;
-    private final ExpressionManager pEM;
+    private final ExpressionCache pEM;
 
     /**
      * @param a
@@ -25,49 +26,48 @@ public class ExpressionFromAxiomBuilder extends
      * @param e
      *        e
      */
-    public ExpressionFromAxiomBuilder(ConceptExpression a, ExpressionManager e) {
+    public ExpressionFromAxiomBuilder(ConceptExpression a, ExpressionCache e) {
         super(a);
         pEM = e;
     }
 
     @Override
     public ConceptExpression visit(AxiomRelatedTo axiom) {
-        return pEM.value(axiom.getRelation(), axiom.getRelatedIndividual());
+        return value(axiom.getRelation(), axiom.getRelatedIndividual());
     }
 
     @Override
     public ConceptExpression visit(AxiomValueOf axiom) {
-        return pEM.value(axiom.getAttribute(), axiom.getValue());
+        return value(axiom.getAttribute(), axiom.getValue());
     }
 
     @Override
     public ConceptExpression visit(AxiomORoleDomain axiom) {
-        return pEM.exists(axiom.getRole(), pEM.top());
+        return exists(axiom.getRole(), top());
     }
 
     @Override
     public ConceptExpression visit(AxiomORoleRange axiom) {
-        return pEM.exists(axiom.getRole(), pEM.not(axiom.getRange()));
+        return exists(axiom.getRole(), not(axiom.getRange()));
     }
 
     @Override
     public ConceptExpression visit(AxiomDRoleDomain axiom) {
-        return pEM.exists(axiom.getRole(), pEM.dataTop());
+        return exists(axiom.getRole(), dataTop());
     }
 
     @Override
     public ConceptExpression visit(AxiomDRoleRange axiom) {
-        return pEM.exists(axiom.getRole(), pEM.dataNot(axiom.getRange()));
+        return exists(axiom.getRole(), dataNot(axiom.getRange()));
     }
 
     @Override
     public ConceptExpression visit(AxiomRelatedToNot axiom) {
-        return pEM.not(pEM.value(axiom.getRelation(),
-                axiom.getRelatedIndividual()));
+        return not(value(axiom.getRelation(), axiom.getRelatedIndividual()));
     }
 
     @Override
     public ConceptExpression visit(AxiomValueOfNot axiom) {
-        return pEM.not(pEM.value(axiom.getAttribute(), axiom.getValue()));
+        return not(value(axiom.getAttribute(), axiom.getValue()));
     }
 }

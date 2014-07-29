@@ -201,7 +201,7 @@ public class RoleMaster implements Serializable {
      *        syn
      */
     @PortedFrom(file = "RoleMaster.h", name = "addRoleSynonym")
-    public void addRoleSynonym(Role role, Role syn) {
+    public static void addRoleSynonym(Role role, Role syn) {
         // no synonyms
         // FIXME!! 1st call can make one of them a synonym of a const
         addRoleParentProper(ClassifiableEntry.resolveSynonym(role),
@@ -219,7 +219,7 @@ public class RoleMaster implements Serializable {
      *        parent
      */
     @PortedFrom(file = "RoleMaster.h", name = "addRoleParentProper")
-    public void addRoleParentProper(Role role, Role parent) {
+    public static void addRoleParentProper(Role role, Role parent) {
         assert !role.isSynonym() && !parent.isSynonym();
         if (role.equals(parent)) {
             return;
@@ -342,7 +342,7 @@ public class RoleMaster implements Serializable {
      *        parent
      */
     @PortedFrom(file = "RoleMaster.h", name = "addRoleParent")
-    public void addRoleParent(DLTree tree, Role parent) {
+    public static void addRoleParent(DLTree tree, Role parent) {
         if (tree == null) {
             return;
         }

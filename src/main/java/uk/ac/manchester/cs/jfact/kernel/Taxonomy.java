@@ -196,6 +196,14 @@ public class Taxonomy implements Serializable {
         node.setChecked(visitedLabel);
     }
 
+    /**
+     * @param node
+     *        node to visit
+     * @param direction
+     *        up or down
+     * @param pastBoundary
+     *        set of vertexes past the boundary
+     */
     public void setAllVisited(TaxonomyVertex node, boolean direction,
             Set<TaxonomyVertex> pastBoundary) {
         pastBoundary.add(node);

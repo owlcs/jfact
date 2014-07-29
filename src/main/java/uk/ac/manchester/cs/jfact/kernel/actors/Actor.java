@@ -35,5 +35,9 @@ public interface Actor {
      */
     boolean applicable(TaxonomyVertex v);
 
+    /**
+     * @param pastBoundary
+     *        nodes to remove
+     */
     void removePastBoundaries(Collection<TaxonomyVertex> pastBoundary);
 }
