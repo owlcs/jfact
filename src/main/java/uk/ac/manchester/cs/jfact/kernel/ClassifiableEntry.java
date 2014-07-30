@@ -36,15 +36,13 @@ public class ClassifiableEntry extends NamedEntry {
      * current)
      */
     @PortedFrom(file = "taxNamEntry.h", name = "pSynonym")
-    protected ClassifiableEntry pSynonym;
+    protected ClassifiableEntry pSynonym = null;
     /** index as a vertex in the SubsumptionMap */
     @PortedFrom(file = "taxNamEntry.h", name = "Index")
-    protected int index;
+    protected int index = 0;
 
     protected ClassifiableEntry(IRI name) {
         super(name);
-        pSynonym = null;
-        index = 0;
     }
 
     /** @return is current entry classified */
