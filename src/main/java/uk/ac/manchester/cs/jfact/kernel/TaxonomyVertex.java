@@ -7,8 +7,8 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,9 +29,9 @@ public class TaxonomyVertex implements Serializable {
     private static final long serialVersionUID = 11000L;
     /** immediate parents and children */
     @PortedFrom(file = "taxVertex.h", name = "Links")
-    private List<TaxonomyVertex> linksParent = new ArrayList<TaxonomyVertex>();
+    private LinkedHashSet<TaxonomyVertex> linksParent = new LinkedHashSet<TaxonomyVertex>();
     @PortedFrom(file = "taxVertex.h", name = "Links")
-    private List<TaxonomyVertex> linksChild = new ArrayList<TaxonomyVertex>();
+    private LinkedHashSet<TaxonomyVertex> linksChild = new LinkedHashSet<TaxonomyVertex>();
     /** entry corresponding to current tax vertex */
     @PortedFrom(file = "taxVertex.h", name = "sample")
     private ClassifiableEntry sample = null;
@@ -290,21 +290,6 @@ public class TaxonomyVertex implements Serializable {
     }
 
     /**
-     * remove latest link (usually to the BOTTOM node)
-     * 
-     * @param upDirection
-     *        upDirection
-     */
-    @PortedFrom(file = "taxVertex.h", name = "removeLastLink")
-    public void removeLastLink(boolean upDirection) {
-        if (upDirection) {
-            linksParent.remove(linksParent.size() - 1);
-        } else {
-            linksChild.remove(linksChild.size() - 1);
-        }
-    }
-
-    /**
      * clear all links in a given direction
      * 
      * @param upDirection
@@ -328,20 +313,11 @@ public class TaxonomyVertex implements Serializable {
      */
     @PortedFrom(file = "taxVertex.h", name = "removeLink")
     public boolean removeLink(boolean upDirection, TaxonomyVertex p) {
-        List<TaxonomyVertex> begin = null;
         if (upDirection) {
-            begin = linksParent;
-        } else {
-            begin = linksChild;
+            return linksParent.remove(p);
         }
-        int index = begin.indexOf(p);
-        if (index > -1 && index < begin.size() - 1) {
-            begin.set(index, begin.get(begin.size() - 1));
-            removeLastLink(upDirection);
-            return true;
+        return linksChild.remove(p);
         }
-        return false;
-    }
 
     // TODO does not work with synonyms
     /**
@@ -484,7 +460,7 @@ public class TaxonomyVertex implements Serializable {
      * @return neighbours debug print
      */
     @PortedFrom(file = "taxVertex.h", name = "printNeighbours")
-    private static String printNeighbours(List<TaxonomyVertex> list) {
+    private static String printNeighbours(Collection<TaxonomyVertex> list) {
         StringBuilder o = new StringBuilder();
         o.append(" {");
         o.append(list.size());
