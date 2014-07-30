@@ -101,18 +101,18 @@ public class Role extends ClassifiableEntry {
     private final MergableLabel domLabel = new MergableLabel();
     // for later filling
     @PortedFrom(file = "tRole.h", name = "Ancestor")
-    private final List<Role> ancestorRoles = new ArrayList<>();
+    private final List<Role> ancestorRoles = new ArrayList<Role>();
     @PortedFrom(file = "tRole.h", name = "Descendant")
-    private final List<Role> descendantRoles = new ArrayList<>();
+    private final List<Role> descendantRoles = new ArrayList<Role>();
     /** set of the most functional super-roles */
     @PortedFrom(file = "tRole.h", name = "TopFunc")
-    private final List<Role> topFunctionalRoles = new ArrayList<>();
+    private final List<Role> topFunctionalRoles = new ArrayList<Role>();
     /** set of the roles that are disjoint with a given one */
     @PortedFrom(file = "tRole.h", name = "Disjoint")
-    private final Set<Role> disjointRoles = new HashSet<>();
+    private final Set<Role> disjointRoles = new HashSet<Role>();
     /** all compositions in the form R1*R2*\ldots*Rn [= R */
     @PortedFrom(file = "tRole.h", name = "subCompositions")
-    private final LinkedHashSet<List<Role>> subCompositions = new LinkedHashSet<>();
+    private final LinkedHashSet<List<Role>> subCompositions = new LinkedHashSet<List<Role>>();
     /** bit-vector of all parents */
     @PortedFrom(file = "tRole.h", name = "AncMap")
     private final FastSet ancestorMap = FastSetFactory.create();

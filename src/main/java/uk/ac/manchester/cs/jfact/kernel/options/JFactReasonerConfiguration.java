@@ -319,7 +319,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
     }
 
     /** set of all avaliable (given) options. */
-    private final Map<String, StringOption> base = new HashMap<>();
+    private final Map<String, StringOption> base = new HashMap<String, StringOption>();
 
     /**
      * Gets the option.

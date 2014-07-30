@@ -2,8 +2,8 @@ package bugs;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -12,6 +12,7 @@ import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -614,11 +615,11 @@ public class VerifyComplianceOWLSNewFeatures extends VerifyComplianceBase {
         OWLDataProperty refURI = DP("urn:expr#refURI");
         // expected ["http://logic.stanford.edu/kif/kif.html"^^xsd:anyURI]
         // actual__ KIF, refURI
-        assertEquals(
-                reasoner.getDataPropertyValues(KIF, refURI),
-                new HashSet<>(
-                        Arrays.asList(df
-                                .getOWLLiteral("http://logic.stanford.edu/kif/kif.html"))));
+        OWLLiteral lit = df
+                .getOWLLiteral("http://logic.stanford.edu/kif/kif.html");
+        Set<OWLLiteral> set = new HashSet<OWLLiteral>();
+        set.add(lit);
+        assertEquals(reasoner.getDataPropertyValues(KIF, refURI), set);
     }
 
     @Test
@@ -630,11 +631,11 @@ public class VerifyComplianceOWLSNewFeatures extends VerifyComplianceBase {
         // expected
         // ["http://www.daml.org/services/owl-s/1.1/generic/drs.owl"^^xsd:anyURI]
         // actual__ DRS, refURI
-        assertEquals(
-                reasoner.getDataPropertyValues(DRS, refURI),
-                new HashSet<>(
-                        Arrays.asList(df
-                                .getOWLLiteral("http://www.daml.org/services/owl-s/1.1/generic/drs.owl"))));
+        OWLLiteral lit = df
+                .getOWLLiteral("http://www.daml.org/services/owl-s/1.1/generic/drs.owl");
+        Set<OWLLiteral> set = new HashSet<OWLLiteral>();
+        set.add(lit);
+        assertEquals(reasoner.getDataPropertyValues(DRS, refURI), set);
     }
 
     @Test
@@ -645,10 +646,10 @@ public class VerifyComplianceOWLSNewFeatures extends VerifyComplianceBase {
         OWLDataProperty refURI = DP("urn:expr#refURI");
         // expected ["http://www.w3.org/2003/11/swrl"^^xsd:anyURI]
         // actual__ SWRL, refURI
-        assertEquals(
-                reasoner.getDataPropertyValues(SWRL, refURI),
-                new HashSet<>(Arrays.asList(df
-                        .getOWLLiteral("http://www.w3.org/2003/11/swrl"))));
+        OWLLiteral lit = df.getOWLLiteral("http://www.w3.org/2003/11/swrl");
+        Set<OWLLiteral> set = new HashSet<OWLLiteral>();
+        set.add(lit);
+        assertEquals(reasoner.getDataPropertyValues(SWRL, refURI), set);
     }
 
     @Test

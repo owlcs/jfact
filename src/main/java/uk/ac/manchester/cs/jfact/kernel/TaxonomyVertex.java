@@ -317,7 +317,7 @@ public class TaxonomyVertex implements Serializable {
             return linksParent.remove(p);
         }
         return linksChild.remove(p);
-        }
+    }
 
     // TODO does not work with synonyms
     /**
@@ -347,11 +347,11 @@ public class TaxonomyVertex implements Serializable {
             logAdapter.print("} and down = {");
             logAdapter.print(names(neigh(false)));
             logAdapter.print("}");
-                }
-            }
+        }
+    }
 
     Iterable<IRI> names(Iterable<TaxonomyVertex> l) {
-        List<IRI> toReturn = new ArrayList<>();
+        List<IRI> toReturn = new ArrayList<IRI>();
         for (TaxonomyVertex t : l) {
             toReturn.add(t.sample.getName());
         }

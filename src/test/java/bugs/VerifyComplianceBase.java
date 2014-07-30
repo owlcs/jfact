@@ -61,7 +61,7 @@ public abstract class VerifyComplianceBase extends TestBase {
     }
 
     protected static String set(Iterable<OWLEntity> i) {
-        Set<String> s = new TreeSet<>();
+        Set<String> s = new TreeSet<String>();
         for (OWLEntity e : i) {
             s.add(e.getIRI().getFragment());
         }

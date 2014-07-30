@@ -66,7 +66,7 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
         if (policy.applicable(p)) {
             syn.add(asT(p));
         }
-        }
+    }
 
     /**
      * @param p
@@ -143,7 +143,7 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
 
     @Override
     public void removePastBoundaries(Collection<TaxonomyVertex> pastBoundary) {
-        List<T> entries = new ArrayList<>();
+        List<T> entries = new ArrayList<T>();
         for (TaxonomyVertex t : pastBoundary) {
             entries.add(asT(t.getPrimer()));
             TaxonomyVertex t1 = t.getSynonymNode();

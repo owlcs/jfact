@@ -362,7 +362,7 @@ public class Fixed extends TestBase {
         OWLAxiom ax2 = ClassAssertion(c,
                 NamedIndividual(IRI("http://example.org/ontology/a")));
         OWLOntology o = OWLManager.createOWLOntologyManager().createOntology(
-                new HashSet<>(Arrays.asList(ax1, ax2, ax3)));
+                new HashSet<OWLAxiom>(Arrays.asList(ax1, ax2, ax3)));
         OWLReasoner r = factory().createReasoner(o);
         assertFalse(r.isConsistent());
     }
@@ -1391,7 +1391,7 @@ public class Fixed extends TestBase {
     @Test
     public void testContradicting_dateTime_restrictions_programmatic()
             throws OWLOntologyCreationException {
-        Set<OWLAxiom> axioms = new HashSet<>();
+        Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
         OWLClass A = Class(IRI("http://example.org/A"));
         OWLNamedIndividual a = NamedIndividual(IRI("http://example.org/a"));
         OWLDataProperty dp = DataProperty(IRI("http://example.org/dp"));
@@ -1416,7 +1416,7 @@ public class Fixed extends TestBase {
     @Test
     public void testContradicting_int_restrictions()
             throws OWLOntologyCreationException {
-        Set<OWLAxiom> axioms = new HashSet<>();
+        Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
         OWLClass A = Class(IRI("http://example.org/A"));
         OWLNamedIndividual a = NamedIndividual(IRI("http://example.org/a"));
         OWLDataProperty dp = DataProperty(IRI("http://example.org/dp"));

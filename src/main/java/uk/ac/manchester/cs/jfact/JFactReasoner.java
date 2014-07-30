@@ -174,7 +174,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
      * @return all axioms in the ontology and its import closure
      */
     public static List<OWLAxiom> importsIncluded(OWLOntology ont) {
-        List<OWLAxiom> axioms = new ArrayList<>();
+        List<OWLAxiom> axioms = new ArrayList<OWLAxiom>();
         for (OWLOntology o : ont.getImportsClosure()) {
             for (OWLAxiom ax : o.getLogicalAxioms()) {
                 axioms.add(ax);
