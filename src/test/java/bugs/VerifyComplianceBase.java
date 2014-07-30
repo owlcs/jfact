@@ -82,7 +82,7 @@ public abstract class VerifyComplianceBase extends TestBase {
                 set((Set<OWLEntity>) node.getEntities()));
     }
 
-    protected void equal(Object o, boolean object) {
+    protected static void equal(Object o, boolean object) {
         assertEquals(object, o);
     }
 
