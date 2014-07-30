@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel.actors;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
@@ -194,5 +195,17 @@ public class ActorImpl implements Actor, Serializable {
             vec.addAll(fillArray(p));
         }
         return vec;
+    }
+
+    @Override
+    public void removePastBoundaries(Collection<TaxonomyVertex> pastBoundary) {
+        for (TaxonomyVertex t : pastBoundary) {
+            found.remove(t.getPrimer());
+            TaxonomyVertex t1 = t.getSynonymNode();
+            while (t1 != null) {
+                found.remove(t1.getPrimer());
+                t1 = t1.getSynonymNode();
+            }
+        }
     }
 }

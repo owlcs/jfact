@@ -64,8 +64,18 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
             return;
         }
         if (policy.applicable(p)) {
-            syn.add((T) policy.buildTree(expressionManager, p));
+            syn.add(asT(p));
         }
+        }
+
+    /**
+     * @param p
+     *        classifiable entry
+     * @return p rebuilt as T
+     */
+    @SuppressWarnings("unchecked")
+    protected T asT(ClassifiableEntry p) {
+        return (T) policy.buildTree(expressionManager, p);
     }
 
     /**
@@ -129,5 +139,22 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
             acc.add(new ArrayList<T>(syn));
         }
         return true;
+    }
+
+    @Override
+    public void removePastBoundaries(Collection<TaxonomyVertex> pastBoundary) {
+        List<T> entries = new ArrayList<>();
+        for (TaxonomyVertex t : pastBoundary) {
+            entries.add(asT(t.getPrimer()));
+            TaxonomyVertex t1 = t.getSynonymNode();
+            while (t1 != null) {
+                entries.add(asT(t1.getPrimer()));
+                t1 = t1.getSynonymNode();
+            }
+        }
+        plain.removeAll(entries);
+        for (List<T> l : acc) {
+            l.removeAll(entries);
+        }
     }
 }

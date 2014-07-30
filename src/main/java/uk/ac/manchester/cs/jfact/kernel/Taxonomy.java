@@ -8,9 +8,11 @@ package uk.ac.manchester.cs.jfact.kernel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 import java.util.TreeSet;
 
 import uk.ac.manchester.cs.jfact.kernel.actors.Actor;
@@ -149,10 +151,9 @@ public class Taxonomy implements Serializable {
         }
         List<TaxonomyVertex> queue = new LinkedList<TaxonomyVertex>();
         for (TaxonomyVertex v : node.neigh(upDirection)) {
-            if (actor.applicable(v) || !onlyDirect) {
-                queue.add(v);
-            }
+            queue.add(v);
         }
+        Set<TaxonomyVertex> pastBoundary = new HashSet<TaxonomyVertex>();
         while (queue.size() > 0) {
             TaxonomyVertex _node = queue.remove(0);
             // recursive applicability checking
@@ -163,7 +164,11 @@ public class Taxonomy implements Serializable {
                 // continue -- exit
                 // if node is NOT processed for some reasons -- go to
                 // another level
-                if (actor.apply(_node) && onlyDirect) {
+                boolean applied = actor.apply(_node);
+                if (applied && onlyDirect) {
+                    for (TaxonomyVertex boundary : _node.neigh(upDirection)) {
+                        setAllVisited(boundary, upDirection, pastBoundary);
+                    }
                     continue;
                 }
                 // apply method to the proper neighbours with proper
@@ -176,6 +181,7 @@ public class Taxonomy implements Serializable {
                 }
             }
         }
+        actor.removePastBoundaries(pastBoundary);
         clearVisited();
     }
 
@@ -188,6 +194,16 @@ public class Taxonomy implements Serializable {
     @PortedFrom(file = "Taxonomy.h", name = "setVisited")
     public void setVisited(TaxonomyVertex node) {
         node.setChecked(visitedLabel);
+    }
+
+    public void setAllVisited(TaxonomyVertex node, boolean direction,
+            Set<TaxonomyVertex> pastBoundary) {
+        pastBoundary.add(node);
+        setVisited(node);
+        for (TaxonomyVertex v : node.neigh(direction)) {
+            setVisited(v);
+            setAllVisited(v, direction, pastBoundary);
+        }
     }
 
     /**
