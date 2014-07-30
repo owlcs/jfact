@@ -123,6 +123,7 @@ public class VerifyComplianceUniversityTestCase extends VerifyComplianceBase {
         return loadFromString(input);
     }
 
+    @Override
     protected String input() {
         return "/AF_university.owl.xml";
     }
@@ -970,7 +971,7 @@ public class VerifyComplianceUniversityTestCase extends VerifyComplianceBase {
     @Test
     public void shouldPassgetDataPropertyDomainshasTenurefalse() {
         equal(reasoner.getDataPropertyDomains(hasTenure, false), owlThing,
-                Faculty, TeachingFaculty, Person, Professor);
+                Faculty, TeachingFaculty, Person);
     }
 
     @Test
@@ -979,7 +980,7 @@ public class VerifyComplianceUniversityTestCase extends VerifyComplianceBase {
                 df.getOWLDataOneOf(df.getOWLLiteral(true)));
         assertTrue(reasoner.isEntailed(df.getOWLSubClassOfAxiom(Professor, c)));
         equal(reasoner.getSuperClasses(c, false), owlThing, Faculty,
-                TeachingFaculty, Person, Professor);
+                TeachingFaculty, Person);
     }
 
     @Test
@@ -995,6 +996,6 @@ public class VerifyComplianceUniversityTestCase extends VerifyComplianceBase {
 
     @Test
     public void shouldPassgetDataPropertyDomainshasTenuretrue() {
-        equal(reasoner.getDataPropertyDomains(hasTenure, true), Professor);
+        equal(reasoner.getDataPropertyDomains(hasTenure, true), TeachingFaculty);
     }
 }
