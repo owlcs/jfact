@@ -26,11 +26,8 @@ import org.semanticweb.owlapi.profiles.OWL2DLProfile;
 import org.semanticweb.owlapi.profiles.OWLProfileReport;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
-import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 
-import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
-
-@SuppressWarnings("javadoc")
+@SuppressWarnings({ "javadoc", "null" })
 public class JUnitRunner {
 
     private static final int _10000 = 1000000;
@@ -50,8 +47,6 @@ public class JUnitRunner {
     private final String premise;
     private final String consequence;
     private final String description;
-    private final JFactReasonerConfiguration c = new JFactReasonerConfiguration(
-            new SimpleConfiguration(_10000));
 
     public JUnitRunner(String premise, String consequence, String testId,
             TestClasses t, String description) {
@@ -66,15 +61,12 @@ public class JUnitRunner {
         this.f = f;
     }
 
-    public JFactReasonerConfiguration getConfiguration() {
-        return c;
-    }
-
-    private boolean isConsistent(OWLReasoner reasoner) {
+    private static boolean isConsistent(OWLReasoner reasoner) {
         return reasoner.isConsistent();
     }
 
-    private boolean isEntailed(OWLReasoner reasoner, OWLAxiom conclusion) {
+    private static boolean
+            isEntailed(OWLReasoner reasoner, OWLAxiom conclusion) {
         return reasoner.isEntailed(conclusion);
     }
 
@@ -153,15 +145,15 @@ public class JUnitRunner {
             b.append(ax1);
             b.append('\n');
         }
-        OWLReasoner reasoner = f.createReasoner(premiseOntology, c);
+        OWLReasoner reasoner = f.createReasoner(premiseOntology);
         actual(conclusionOntology, b, reasoner);
-        reasoner = roundtrip(reasoner);
-        actual(conclusionOntology, b, reasoner);
+        // reasoner = roundtrip(reasoner);
+        // actual(conclusionOntology, b, reasoner);
         premiseOntology.getOWLOntologyManager().removeOntologyChangeListener(
                 (OWLOntologyChangeListener) reasoner);
     }
 
-    private OWLReasoner roundtrip(OWLReasoner r) {
+    private static OWLReasoner roundtrip(OWLReasoner r) {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             ObjectOutputStream stream = new ObjectOutputStream(out);

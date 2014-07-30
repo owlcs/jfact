@@ -41,11 +41,10 @@ import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.semanticweb.owlapi.vocab.OWLFacet;
 import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
-import uk.ac.manchester.cs.jfact.JFactFactory;
-import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
-public class Fixed {
+public class Fixed extends TestBase {
 
     @Test
     public void testConsistent_owl_real_range_with_DataOneOf() {
@@ -63,7 +62,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
         String d = "The individual a must have either negative Infinity or 0 (-0 as integer is 0) as dp fillers and all dp successors must be from owl:real, which excludes negative infinity, but allows 0.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -87,7 +86,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "This test illustrates the use of dataRange in OWL DL. This test combines some of the ugliest features of XML, RDF and OWL.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -106,7 +105,7 @@ public class Fixed {
         OWLOntology o = OWLManager.createOWLOntologyManager()
                 .loadOntologyFromOntologyDocument(
                         new StringDocumentSource(premise));
-        OWLReasoner r = Factory.factory().createReasoner(o);
+        OWLReasoner r = factory().createReasoner(o);
         r.precomputeInferences(InferenceType.CLASS_HIERARCHY);
         assertTrue(r.isConsistent());
         OWLDataFactory df = o.getOWLOntologyManager().getOWLDataFactory();
@@ -116,21 +115,6 @@ public class Fixed {
         OWLLiteral l = df.getOWLLiteral("4",
                 df.getOWLDatatype(OWL2Datatype.XSD_INTEGER.getIRI()));
         assertTrue(r.isEntailed(df.getOWLDataPropertyAssertionAxiom(p, i, l)));
-        // String conclusion =
-        // "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
-        // +
-        // "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\nPrefix(xml:=<http://www.w3.org/XML/1998/namespace>)\nPrefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\nPrefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)\n"
-        // + "Ontology(\nDeclaration(DataProperty(<urn:t:p#p>))\n"
-        // + "ClassAssertion(owl:Thing <urn:t:p#i>)\n"
-        // +
-        // "DataPropertyAssertion(<urn:t:p#p> <urn:t:p#i> \"4\"^^xsd:integer))";
-        // String id = "WebOnt_oneOf_004";
-        // TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        // String d =
-        // "This test illustrates the use of dataRange in OWL DL. This test combines some of the ugliest features of XML, RDF and OWL.";
-        // JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        // r.setReasonerFactory(Factory.factory());
-        // r.run();
     }
 
     @Test
@@ -149,9 +133,7 @@ public class Fixed {
         m.addAxiom(o, DataPropertyRange(p, owlDataOneOf2));
         m.addAxiom(o,
                 ClassAssertion(DataMinCardinality(1, p, TopDatatype()), i));
-        JFactReasonerConfiguration config = new JFactReasonerConfiguration();
-        // config.setLoggingActive(true);
-        OWLReasoner r = Factory.factory().createReasoner(o, config);
+        OWLReasoner r = factory().createReasoner(o);
         OWLDataPropertyAssertionAxiom ass = DataPropertyAssertion(p, i,
                 Literal(4));
         assertTrue(r.isConsistent());
@@ -246,7 +228,7 @@ public class Fixed {
         m.addAxiom(o, InverseObjectProperties(r, w));
         m.addAxiom(o, FunctionalObjectProperty(r));
         m.addAxiom(o, InverseFunctionalObjectProperty(r));
-        OWLReasoner reasoner = new JFactFactory().createReasoner(o);
+        OWLReasoner reasoner = factory().createReasoner(o);
         reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
         assertTrue(reasoner.isEntailed(SubClassOf(a, OWLNothing())));
         assertTrue(reasoner.isEntailed(SubClassOf(b, OWLNothing())));
@@ -270,7 +252,7 @@ public class Fixed {
         String d = "For integers 0 and -0 are the same value, so the ontology is consistent.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         // r.getConfiguration().setLoggingActive(true);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -289,7 +271,7 @@ public class Fixed {
         String d = "For integers 0 and -0 are the same value, so the ontology is consistent.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         // r.getConfiguration().setLoggingActive(true);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -306,7 +288,7 @@ public class Fixed {
         m.addAxiom(o, DataPropertyAssertion(p, y, date));
         m.addAxiom(o, FunctionalDataProperty(p));
         m.addAxiom(o, SameIndividual(x, y));
-        OWLReasoner r = Factory.factory().createReasoner(o);
+        OWLReasoner r = factory().createReasoner(o);
         assertTrue(
                 "Ontology was supposed to be consistent!\n"
                         + o.getLogicalAxioms(), r.isConsistent());
@@ -327,7 +309,7 @@ public class Fixed {
         m.addAxiom(o, DataPropertyAssertion(p, y, date2));
         m.addAxiom(o, FunctionalDataProperty(p));
         m.addAxiom(o, SameIndividual(x, y));
-        OWLReasoner r = Factory.factory().createReasoner(o);
+        OWLReasoner r = factory().createReasoner(o);
         assertFalse(
                 "Ontology was supposed to be inconsistent!\n"
                         + o.getLogicalAxioms(), r.isConsistent());
@@ -337,7 +319,7 @@ public class Fixed {
     public void testReasoner6() throws OWLOntologyCreationException {
         OWLOntologyManager mngr = OWLManager.createOWLOntologyManager();
         OWLOntology ont = mngr.createOntology();
-        OWLReasonerFactory fac = Factory.factory();
+        OWLReasonerFactory fac = factory();
         OWLReasoner r = fac.createReasoner(ont);
         assertEquals(1, r.getBottomDataPropertyNode().getEntities().size());
     }
@@ -358,7 +340,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "The individual a is in A and thus must have a dp filler that is an integer >= 4. Furthermore the dp fillers must be in the set {3, 4} and in the set {2, 3}. Although 3 is in both sets, 3 is not >= 4, which causes the inconsistency.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -366,41 +348,6 @@ public class Fixed {
     @Changed(reason = "old test appears to use the wrong value")
     public void testDatatype_Float_Discrete_001()
             throws OWLOntologyCreationException {
-        // String premise = "<?xml version=\"1.0\"?>\n"
-        // + "<rdf:RDF\n"
-        // +
-        // "  xml:base  = \"http://example.org/ontology/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs= \"http://www.w3.org/2000/01/rdf-schema#\" xmlns:xsd = \"http://www.w3.org/2001/XMLSchema#\" >\n"
-        // + "\n"
-        // + "<owl:Ontology/>\n"
-        // + "\n"
-        // + "<owl:DatatypeProperty rdf:about=\"dp\" />\n"
-        // + "\n"
-        // + "<rdf:Description rdf:about=\"a\">\n"
-        // + "  <rdf:type>\n"
-        // + "    <owl:Restriction>\n"
-        // + "      <owl:onProperty rdf:resource=\"dp\" />\n"
-        // + "      <owl:someValuesFrom>\n"
-        // + "        <rdfs:Datatype>\n"
-        // +
-        // "          <owl:onDatatype rdf:resource=\"http://www.w3.org/2001/XMLSchema#float\" />\n"
-        // + "          <owl:withRestrictions rdf:parseType=\"Collection\">\n"
-        // + "            <rdf:Description>\n"
-        // +
-        // "              <xsd:minExclusive rdf:datatype=\"http://www.w3.org/2001/XMLSchema#float\">0.0</xsd:minExclusive></rdf:Description>\n"
-        // + "            <rdf:Description>\n"
-        // +
-        // "              <xsd:maxExclusive rdf:datatype=\"http://www.w3.org/2001/XMLSchema#float\">1.401298464324817e-45</xsd:maxExclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></owl:someValuesFrom></owl:Restriction></rdf:type>\n"
-        // + "</rdf:Description>\n" + "</rdf:RDF>";
-        // String conclusion = "";
-        // String id = "Datatype_Float_Discrete_001";
-        // TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
-        // String d =
-        // "The value space of xsd:float is discrete, shown with range defined on 0x00000000 and 0x00000001";
-        // JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        // r.setReasonerFactory(Factory.factory());
-        // r.printPremise();
-        // r.getConfiguration().setLoggingActive(true);
-        // r.run();
         OWLDataProperty dp = DataProperty(IRI("http://example.org/ontology/dp"));
         OWLDatatype f = Datatype(OWL2Datatype.XSD_FLOAT.getIRI());
         OWLAxiom ax1 = Declaration(dp);
@@ -415,11 +362,8 @@ public class Fixed {
         OWLAxiom ax2 = ClassAssertion(c,
                 NamedIndividual(IRI("http://example.org/ontology/a")));
         OWLOntology o = OWLManager.createOWLOntologyManager().createOntology(
-                new HashSet<OWLAxiom>(Arrays.asList(ax1, ax2, ax3)));
-        // JFactReasonerConfiguration config = new JFactReasonerConfiguration();
-        // config.setLoggingActive(true);
-        // OWLReasoner r = Factory.factory().createReasoner(o, config);
-        OWLReasoner r = Factory.factory().createReasoner(o);
+                new HashSet<>(Arrays.asList(ax1, ax2, ax3)));
+        OWLReasoner r = factory().createReasoner(o);
         assertFalse(r.isConsistent());
     }
 
@@ -444,7 +388,7 @@ public class Fixed {
         m.addAxiom(o, EquivalentClasses(c, psome));
         m.addAxiom(o, DataPropertyAssertion(p, x, date3));
         m.addAxiom(o, FunctionalDataProperty(p));
-        OWLReasoner r = Factory.factory().createReasoner(o);
+        OWLReasoner r = factory().createReasoner(o);
         assertTrue(r.isConsistent());
         assertTrue(
                 "x was supposed to be an instance of c!\n"
@@ -469,7 +413,7 @@ public class Fixed {
         String d = "The individual a is supposed to have an integer dp-successor >= 18, but all dp-successors must be <= 10, which is impossible.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
         // r.getConfiguration().setLoggingActive(true);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -488,7 +432,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "The property hasAge is functional, but the individual a has two distinct hasAge fillers.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -505,7 +449,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "The individual a is in the extension of the class A and is thus required to have a dp-successor that is an integer and at the same time all dp-successors are required to be strings, which causes the inconsistency.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -530,7 +474,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "An individual, which is an instance of every component class of an intersection, is an instance of the intersection class expression.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -556,7 +500,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "If a class is an intersection of other classes, then the original class is a subclass of each of the other classes.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -582,7 +526,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "An individual, which is an instance of one of the component classes of a union, is an instance of the union class expression.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -608,7 +552,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "If a class is a union of other classes, then each of the other classes are subclasses of the original class.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -625,7 +569,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "For two triples with the same functional property as their predicates and with the same subject, the objects are the same.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -644,7 +588,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "If a class defines an enumeration class expression from two individuals, than both individuals are instances of the class.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -661,7 +605,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "Diversity of two individuals is irreflexive.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -680,7 +624,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "Disjointness of two non-empty classes is irreflexive.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -698,7 +642,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "Two non-empty properties cannot both be equivalent and disjoint.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -715,7 +659,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "Triples with disjoint properties as their predicates have different subjects or different objects.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -733,7 +677,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "Disjointness of two non-empty properties is irreflexive.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -752,7 +696,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Two equivalent classes are sub classes of each other.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -776,7 +720,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Equality of two individuals allows for substituting the subject, predicate and object of an RDF triple by an equal individual.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -795,7 +739,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Equality of two individuals is symmetrical.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -809,7 +753,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Equality of two individuals is transitive.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -828,7 +772,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "All the members of an owl:AllDisjointProperties construct are mutually disjoint properties.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -845,7 +789,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "A negative data property assertion DNPA(s p \"data\") must not occur together with the corresponding positive data property assertion s p \"data\".";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -865,7 +809,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The left hand side individual in a given triple is entailed to be an instance of the domain of the predicate.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -885,7 +829,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The right hand side individual in a given triple is entailed to be an instance of the range of the predicate.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -916,7 +860,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "A universal restriction on some property and some class is a sub class of another universal restriction on the same property but on a super class.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -947,7 +891,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "A universal restriction on some property and some class is a sub class of another universal restriction on the same class but on a sub property.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -972,7 +916,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "If an individual w is an instance of the universal restriction on property p and class c, then for any triple w p x follows that x is an instance of c.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -1002,7 +946,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "A has-value restriction on some property and some value is a sub class of another has-value restriction on the same value but on a super property.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -1027,7 +971,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "If an individual w is an instance of the has-value restriction on property p to value u, then the triple w p u can be entailed.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -1051,7 +995,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "For a triple w p u, the individual w is an instance of the has-value restriction on p to u.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -1075,7 +1019,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "If an individual w is an instance of the max-1-cardinality restriction on property p, and if there are triples w p x1 and w p x2, then x1 equals x2.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -1095,7 +1039,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "If an individual w is an instance of the max-0-cardinality restriction on property p, then there cannot be any triple w p x.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -1120,7 +1064,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "If an individual w is an instance of the max-1-QCR on property p to class c, and if there are triples w p x1 and w p x2, with x1 and x2 being in c, then x1 equals x2.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -1142,7 +1086,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "If an individual w is an instance of the max-0-QCR on property p to class c, then there cannot be any triple w p x with x in c.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -1173,7 +1117,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "An existential restriction on some property and some class is a sub class of another existential restriction on the same property but on a super class.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -1204,7 +1148,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "An existential restriction on some property and some class is a sub class of another existential restriction on the same class but on a super property.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -1231,7 +1175,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "For a triple w p x, with x being an instance of a class c, the individual w is an instance of the existential restriction on p to c.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -1250,7 +1194,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "The range of hasAge is integer, but a has an asserted string hasAge filler.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         // r.getConfiguration().setLoggingActive(true);
         r.run();
     }
@@ -1322,7 +1266,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
         String d = "This is the classic 3 SAT problem.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -1393,7 +1337,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "This is the classic 3 SAT problem.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -1415,7 +1359,7 @@ public class Fixed {
         m.addAxiom(o, EquivalentClasses(c, psome));
         m.addAxiom(o, DataPropertyAssertion(p, x, date3));
         m.addAxiom(o, FunctionalDataProperty(p));
-        OWLReasoner r = Factory.factory().createReasoner(o);
+        OWLReasoner r = factory().createReasoner(o);
         assertTrue(r.isEntailed(ClassAssertion(c, x)));
     }
 
@@ -1440,14 +1384,14 @@ public class Fixed {
         m.addAxiom(o, EquivalentClasses(c, psome));
         m.addAxiom(o, DataPropertyAssertion(p, x, date3));
         m.addAxiom(o, FunctionalDataProperty(p));
-        OWLReasoner r = Factory.factory().createReasoner(o);
+        OWLReasoner r = factory().createReasoner(o);
         assertTrue(r.isEntailed(ClassAssertion(c, x)));
     }
 
     @Test
     public void testContradicting_dateTime_restrictions_programmatic()
             throws OWLOntologyCreationException {
-        Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
+        Set<OWLAxiom> axioms = new HashSet<>();
         OWLClass A = Class(IRI("http://example.org/A"));
         OWLNamedIndividual a = NamedIndividual(IRI("http://example.org/a"));
         OWLDataProperty dp = DataProperty(IRI("http://example.org/dp"));
@@ -1466,13 +1410,13 @@ public class Fixed {
         axioms.add(ClassAssertion(A, a));
         OWLOntology o = OWLManager.createOWLOntologyManager().createOntology(
                 axioms);
-        assertFalse(Factory.factory().createReasoner(o).isConsistent());
+        assertFalse(factory().createReasoner(o).isConsistent());
     }
 
     @Test
     public void testContradicting_int_restrictions()
             throws OWLOntologyCreationException {
-        Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
+        Set<OWLAxiom> axioms = new HashSet<>();
         OWLClass A = Class(IRI("http://example.org/A"));
         OWLNamedIndividual a = NamedIndividual(IRI("http://example.org/a"));
         OWLDataProperty dp = DataProperty(IRI("http://example.org/dp"));
@@ -1491,7 +1435,7 @@ public class Fixed {
         axioms.add(ClassAssertion(A, a));
         OWLOntology o = OWLManager.createOWLOntologyManager().createOntology(
                 axioms);
-        assertFalse(Factory.factory().createReasoner(o).isConsistent());
+        assertFalse(factory().createReasoner(o).isConsistent());
     }
 
     @Test
@@ -1515,7 +1459,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "The individual a must have a dp filler that is a date from 2007, but the restrictions on dp allow only values from 2008, which makes the ontology inconsistent.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -1539,7 +1483,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "The individual a must have dp fillers that are in the sets {3, 4} and {2, 3}, but at the same time 3 is not allowed as a dp filler for a, which causes the inconsistency.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -1558,7 +1502,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "For floats and double, +0.0 and -0.0 are distinct values, which contradicts the functionality for numberOfChildren.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -1580,7 +1524,7 @@ public class Fixed {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "The individual a must have the integer 6542145 as dp filler, but all fillers must also be bytes. Since 6542145 is not byte, the ontology is inconsistent.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 }

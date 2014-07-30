@@ -8,9 +8,11 @@ package conformancetests;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import testbase.TestBase;
+
 @SuppressWarnings("javadoc")
 @Ignore
-public class NewFeatures {
+public class NewFeatures extends TestBase {
 
     @Test
     public void testInconsistent_Disjoint_Dataproperties() {
@@ -27,7 +29,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "The data properties dp1 and dp2 are disjoint, but the individual a must have 10 as dp1 filler and 10 as dp2 filler (since 10 is the only integer satisfying >= 10 and <= 10), which causes the inconsistency.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -52,7 +54,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "The individual a must have either negative Infinity or 0 (-0 as integer is 0) as dp fillers and all dp successors must be from owl:real, which excludes negative infinity. Since 0 is excluded by the negative property assertion, the ontology is inconsistent.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -86,7 +88,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Demonstrates a qualified minimum cardinality data property restriction based on example in the Structural Specification and Functional-Style Syntax document.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -112,7 +114,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "Demonstrates use of a disjoint data properties axiom to create a trivial inconsistency based on the example in the Structural Specification and Functional-Style Syntax document.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -121,24 +123,31 @@ public class NewFeatures {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
                 + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                + '\n' + "<owl:Ontology/>\n" + '\n'
+                + '\n'
+                + "<owl:Ontology/>\n"
+                + '\n'
                 + "<owl:DatatypeProperty rdf:about=\"hasName\" />\n"
                 + "<owl:DatatypeProperty rdf:about=\"hasAddress\" />\n"
-                + "<owl:DatatypeProperty rdf:about=\"hasZip\" />\n" + '\n'
+                + "<owl:DatatypeProperty rdf:about=\"hasZip\" />\n"
+                + '\n'
                 + "<owl:AllDisjointProperties>\n"
                 + "  <owl:members rdf:parseType=\"Collection\">\n"
                 + "    <rdf:Description rdf:about=\"hasName\" />\n"
                 + "    <rdf:Description rdf:about=\"hasAddress\" />\n"
                 + "    <rdf:Description rdf:about=\"hasZip\" />\n"
-                + "  </owl:members></owl:AllDisjointProperties>\n" + '\n'
+                + "  </owl:members></owl:AllDisjointProperties>\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Peter\">\n"
                 + "  <hasName>Peter Griffin</hasName>\n"
-                + "</rdf:Description>\n" + '\n'
+                + "</rdf:Description>\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Peter_Griffin\">\n"
                 + "  <hasAddress>Peter Griffin</hasAddress>\n"
-                + "</rdf:Description>\n" + '\n'
+                + "</rdf:Description>\n"
+                + '\n'
                 + "<rdf:Description rdf:about=\"Petre\">\n"
-                + "  <hasZip>Peter Griffin</hasZip>\n" + "</rdf:Description>\n"
+                + "  <hasZip>Peter Griffin</hasZip>\n"
+                + "</rdf:Description>\n"
                 + "</rdf:RDF>";
         String conclusion = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
@@ -156,7 +165,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Demonstrates use of a ternary disjoint data properties axiom to infer different individuals.  Adapted from test New-Feature-DisjointDataProperties-001.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -192,7 +201,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Demonstrates use of a key axiom to merge individuals based on an example in the Structural Specification and Functional-Style Syntax document.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -227,7 +236,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "Demonstrates use of a key axiom to cause a trivial inconsistency based on an example in the Structural Specification and Functional-Style Syntax document.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -255,8 +264,10 @@ public class NewFeatures {
                 + "<rdf:Description rdf:about=\"Peter_Griffin\">\n"
                 + "  <hasName>Peter</hasName>\n"
                 + "  <rdf:type rdf:resource=\"GriffinFamilyMember\" /></rdf:Description>\n"
-                + '\n' + "<rdf:Description rdf:about=\"StPeter\">\n"
-                + "  <hasName>Peter</hasName>\n" + "</rdf:Description>\n"
+                + '\n'
+                + "<rdf:Description rdf:about=\"StPeter\">\n"
+                + "  <hasName>Peter</hasName>\n"
+                + "</rdf:Description>\n"
                 + "</rdf:RDF>";
         String conclusion = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
@@ -271,7 +282,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Demonstrates use of a \"localized\" key axiom to merge individuals based on an example in the Structural Specification and Functional-Style Syntax document.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -299,8 +310,10 @@ public class NewFeatures {
                 + "<rdf:Description rdf:about=\"Peter_Griffin\">\n"
                 + "  <hasName>Peter</hasName>\n"
                 + "  <rdf:type rdf:resource=\"GriffinFamilyMember\" /></rdf:Description>\n"
-                + '\n' + "<rdf:Description rdf:about=\"StPeter\">\n"
-                + "  <hasName>Peter</hasName>\n" + "</rdf:Description>\n"
+                + '\n'
+                + "<rdf:Description rdf:about=\"StPeter\">\n"
+                + "  <hasName>Peter</hasName>\n"
+                + "</rdf:Description>\n"
                 + "</rdf:RDF>";
         String conclusion = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
@@ -313,7 +326,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("NEGATIVE_IMPL");
         String d = "Demonstrates that use of a \"localized\" key axiom only merges individuals that are instances of the given class expression.  Based on an example in the Structural Specification and Functional-Style Syntax document.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -344,7 +357,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
         String d = "Demonstrates that a key axiom does not make all properties used in it functional. Based on an example in the Structural Specification and Functional-Style Syntax document.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -377,7 +390,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "Demonstrates that a key axiom does not make all properties used in it functional, but these properties may be made functional with other axioms. Based on an example in the Structural Specification and Functional-Style Syntax document.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -427,7 +440,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("NEGATIVE_IMPL");
         String d = "Demonstrates that a key axiom only applies to named individuals.  Based on an example in the Structural Specification and Functional-Style Syntax document.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -474,7 +487,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "A simple test of role chains and role hierarchy.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -505,7 +518,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
         String d = "A consistent ontology using owl:rational";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -524,7 +537,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "An inconsistent ontology using owl:rational";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -563,7 +576,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
         String d = "A consistent ontology demonstrating owl:rational is different from xsd:decimal.  The decimal literal requires 16 digits, the minimum required for conformance.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -589,7 +602,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Uses a reflexive object property axiom to infer a property value based on the example in the Structural Specification and Functional-Style Syntax document.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -621,7 +634,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Demonstrates use of a self-restriction to infer a property value based on example in the Structural Specification and Functional-Style Syntax document.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -653,7 +666,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Demonstrates use of an object property assertion to infer membership in a self restriction based on example in the Structural Specification and Functional-Style Syntax document.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -678,7 +691,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "Demonstrates use of the top object property to create an inconsistency.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -702,7 +715,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
         String d = "The datatype properties dp1 and dp2 are disjoint, but the individual a can have 10 as a filler for dp1 and 18 as filler for dp2, which satisfies the disjointness.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -725,7 +738,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "For two triples with the same inverse functional data property as their predicates and with the same data object, the subjects are the same. This test shows that the OWL 2 RDF-Based Semantics allows for IFDPs.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -754,7 +767,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "For two triples matching the conditions of a key axiom the subjects are identified.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -774,7 +787,7 @@ public class NewFeatures {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "A negative property assertion NPA(s p o) must not occur together with the corresponding positive property assertion s p o.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 }

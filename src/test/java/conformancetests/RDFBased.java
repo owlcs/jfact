@@ -7,8 +7,10 @@ package conformancetests;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import org.junit.Test;
 
+import testbase.TestBase;
+
 @SuppressWarnings("javadoc")
-public class RDFBased {
+public class RDFBased extends TestBase {
 
     @Test
     @Changed
@@ -25,7 +27,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "An individual cannot be an instance of both a class and its complement.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -53,7 +55,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "An individual, which is an instance of an intersection class expression of two classes, is an instance of every component class.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -83,7 +85,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "For a sub property chain axiom with super property p and chain properties p1 and p2, from x p1 y and y p2 z follows x p z.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -103,7 +105,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "For a triple having an asymmetrical property as its predicate, the reverse triple must not exist.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -119,7 +121,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "A non-empty property cannot be both symmetrical and asymmetrical.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -138,7 +140,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "For two triples with the same inverse functional property as their predicates and with the same object, the subjects are the same.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -155,7 +157,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "For an irreflexive property, there must not exist any reflexive triple.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -175,7 +177,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "For a triple having a symmetrical property as its predicate, the reverse triple also exists.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -198,7 +200,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "For two chained triples having the same transitive property as their predicate, the transitive result triple also exists.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -211,7 +213,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "The extension of the vocabulary class owl:Nothing is empty.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -228,7 +230,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Every OWL class is a super class of the vocabulary class owl:Nothing.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -241,7 +243,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The type of the vocabulary class owl:Nothing is the class of OWL classes.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -258,7 +260,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Every OWL class is a sub class of the vocabulary class owl:Thing.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -271,7 +273,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The type of the vocabulary class owl:Thing is the class of OWL classes.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -286,7 +288,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "Two individuals cannot both be the same and different.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -306,7 +308,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "Two non-empty classes cannot both be equivalent and disjoint.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -325,7 +327,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "Individuals being instances of disjoint classes are different from each other.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -349,7 +351,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "For two equivalent classes, any instance of one class is also an instance of the other class, and vice versa.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -364,7 +366,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Equivalence of two classes is reflexive.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -388,7 +390,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Two classes that are sub classes of each other are equivalent classes.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -418,7 +420,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Equivalence of two classes allows for substituting one class for the other in a sub class axiom.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -434,7 +436,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Equivalence of two classes is symmetrical.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -453,7 +455,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Equivalence of two classes is transitive.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -480,7 +482,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "For two equivalent properties and any triple having one property as its predicate, the corresponding triple having the other property as its predicate also exists, and vice versa.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -498,7 +500,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Equivalence of two properties is reflexive.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -522,7 +524,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Two equivalent properties are sub properties of each other.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -546,7 +548,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Two properties that are sub properties of each other are equivalent properties.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -576,7 +578,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Equivalence of two properties allows for substituting one property for the other in a sub property axiom.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -592,7 +594,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Equivalence of two properties is symmetrical.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -611,7 +613,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Equivalence of two properties is transitive.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -639,7 +641,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Equality of two individuals is reflexive.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -666,7 +668,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The subject and object of a triple are reversed by an inverse property.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -685,7 +687,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "All the members of an owl:AllDifferent construct are mutually different individuals.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -704,7 +706,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "All the members of an owl:AllDifferent construct are mutually different from each other. This test applies the legacy property owl:distinctMembers.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -727,7 +729,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("INCONSISTENCY");
         String d = "All the members of an owl:AllDisjointClasses construct are mutually disjoint classes.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -740,7 +742,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The type of the vocabulary property owl:backwardCompatibleWith is the class of annotation properties.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -753,7 +755,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The type of the vocabulary property rdfs:comment is the class of annotation properties.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -766,7 +768,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The type of the vocabulary property owl:deprecated is the class of annotation properties.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -779,7 +781,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The type of the vocabulary property owl:incompatibleWith is the class of annotation properties.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -792,7 +794,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The type of the vocabulary property rdfs:isDefinedBy is the class of annotation properties.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -805,7 +807,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The type of the vocabulary property rdfs:label is the class of annotation properties.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -818,7 +820,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The type of the vocabulary property owl:priorVersion is the class of annotation properties.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -831,7 +833,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The type of the vocabulary property rdfs:seeAlso is the class of annotation properties.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -844,7 +846,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The type of the vocabulary property owl:versionInfo is the class of annotation properties.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -866,7 +868,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The extensions of two classes related by rdfs:subClassOf are in a subsumption relationship.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -892,7 +894,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The property rdfs:subClassOf is transitive.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -915,7 +917,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The extensions of two properties related by rdfs:subPropertyOf are in a subsumption relationship.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -941,7 +943,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The property rdfs:subPropertyOf is transitive.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -967,7 +969,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Every sub property of a given property with a given domain also has this domain.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -993,7 +995,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Every super class of a domain for a given property is itself a domain for that property.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -1019,7 +1021,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Every sub property of a given property with a given range also has this range.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -1045,7 +1047,7 @@ public class RDFBased {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "Every super class of a range for a given property is itself a range for that property.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 }

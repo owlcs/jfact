@@ -3,8 +3,8 @@ package bugs;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.junit.Before;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -21,14 +21,19 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.profiles.OWL2DLProfile;
+import org.semanticweb.owlapi.profiles.OWLProfileReport;
+import org.semanticweb.owlapi.profiles.OWLProfileViolation;
+import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 
-import uk.ac.manchester.cs.jfact.JFactFactory;
+import testbase.TestBase;
 import uk.ac.manchester.cs.jfact.JFactReasoner;
+import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
 @SuppressWarnings("javadoc")
-public abstract class VerifyComplianceBase {
+public abstract class VerifyComplianceBase extends TestBase {
 
     protected abstract String input();
 
@@ -36,9 +41,17 @@ public abstract class VerifyComplianceBase {
     protected OWLDataFactory df = OWLManager.getOWLDataFactory();
 
     protected OWLOntology load(String in) throws OWLOntologyCreationException {
-        return OWLManager.createOWLOntologyManager()
+        OWLOntology onto = OWLManager.createOWLOntologyManager()
                 .loadOntologyFromOntologyDocument(
                         VerifyComplianceBase.class.getResourceAsStream(in));
+        OWLProfileReport checkOntology = new OWL2DLProfile()
+                .checkOntology(onto);
+        if (!checkOntology.isInProfile()) {
+            for (OWLProfileViolation v : checkOntology.getViolations()) {
+                System.out.println("VerifyComplianceBase.load() " + v);
+            }
+        }
+        return onto;
     }
 
     protected OWLOntology loadFromString(String in)
@@ -47,12 +60,13 @@ public abstract class VerifyComplianceBase {
                 .loadOntologyFromOntologyDocument(new StringDocumentSource(in));
     }
 
-    private Set<String> set(Iterable<OWLEntity> i) {
-        Set<String> s = new HashSet<String>();
+    protected static String set(Iterable<OWLEntity> i) {
+        Set<String> s = new TreeSet<>();
         for (OWLEntity e : i) {
             s.add(e.getIRI().getFragment());
         }
-        return s;
+        return s.toString().replace("[", "").replace("]", "")
+                .replace(", ", "\n");
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -67,7 +81,7 @@ public abstract class VerifyComplianceBase {
                 set((Set<OWLEntity>) node.getEntities()));
     }
 
-    protected void equal(Object o, boolean object) {
+    protected static void equal(Object o, boolean object) {
         assertEquals(object, o);
     }
 
@@ -99,8 +113,9 @@ public abstract class VerifyComplianceBase {
 
     @Before
     public void setUp() throws OWLOntologyCreationException {
-        reasoner = (JFactReasoner) new JFactFactory()
-                .createReasoner(load(input()));
+        reasoner = (JFactReasoner) factory().createReasoner(load(input()),
+                new JFactReasonerConfiguration());
+        reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
     }
 
     protected void switchLoggingOn() {

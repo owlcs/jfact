@@ -7,8 +7,10 @@ package conformancetests;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import org.junit.Test;
 
+import testbase.TestBase;
+
 @SuppressWarnings("javadoc")
-public class WebOnt661 {
+public class WebOnt661 extends TestBase {
 
     @Test
     @Changed
@@ -366,7 +368,7 @@ public class WebOnt661 {
         String d = "DL Test: k_branch\n"
                 + "ABox test from DL98 systems comparison.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 }

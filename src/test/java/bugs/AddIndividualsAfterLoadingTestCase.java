@@ -1,6 +1,6 @@
 package bugs;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -18,18 +18,16 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.semanticweb.owlapi.vocab.OWLFacet;
 
-import uk.ac.manchester.cs.jfact.JFactFactory;
-import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
-public class AddIndividualsAfterLoadingTestCase {
+public class AddIndividualsAfterLoadingTestCase extends TestBase {
 
     @Test
     public void shouldLoadAndNotFailQuery() throws Exception {
@@ -50,7 +48,7 @@ public class AddIndividualsAfterLoadingTestCase {
         m.addAxiom(o, f.getOWLObjectPropertyAssertionAxiom(p, i, j));
         // r.flush();
         // r.precomputeInferences(InferenceType.CLASS_HIERARCHY);
-        OWLReasoner r = new JFactFactory().createReasoner(o);
+        OWLReasoner r = factory().createReasoner(o);
         r.precomputeInferences(InferenceType.CLASS_HIERARCHY);
         OWLIndividual k = f.getOWLNamedIndividual(IRI.create("urn:test#k"));
         OWLIndividual l = f.getOWLNamedIndividual(IRI.create("urn:test#l"));
@@ -71,8 +69,29 @@ public class AddIndividualsAfterLoadingTestCase {
     }
 
     @Test
-    public void debug() throws OWLOntologyCreationException,
-            OWLOntologyStorageException {
+    public void shouldLoadAndNotFailQueryDataHasValue() throws Exception {
+        OWLOntology o = OWLManager.createOWLOntologyManager().createOntology();
+        OWLOntologyManager m = o.getOWLOntologyManager();
+        OWLDataFactory f = m.getOWLDataFactory();
+        OWLDataProperty p = f.getOWLDataProperty(IRI.create("urn:test#p"));
+        m.addAxiom(o,
+                f.getOWLDataPropertyRangeAxiom(p, f.getFloatOWLDatatype()));
+        OWLNamedIndividual i = f
+                .getOWLNamedIndividual(IRI.create("urn:test#i"));
+        m.addAxiom(o, f.getOWLDataPropertyAssertionAxiom(p, i, 19.0F));
+        OWLDatatype fdt = f.getFloatOWLDatatype();
+        OWLFacetRestriction fLess20 = f.getOWLFacetRestriction(
+                OWLFacet.MAX_INCLUSIVE, 20f);
+        OWLReasoner r = factory().createReasoner(o);
+        r.precomputeInferences(InferenceType.CLASS_HIERARCHY);
+        assertFalse(r.getInstances(
+                f.getOWLDataAllValuesFrom(p,
+                        f.getOWLDatatypeRestriction(fdt, fLess20)), false)
+                .containsEntity(i));
+    }
+
+    @Test
+    public void debug() throws OWLOntologyCreationException {
         String input = "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
                 + "Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\n"
                 + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
@@ -105,31 +124,18 @@ public class AddIndividualsAfterLoadingTestCase {
                         new StringDocumentSource(input));
         OWLOntologyManager m = o.getOWLOntologyManager();
         OWLDataFactory f = m.getOWLDataFactory();
-        JFactReasonerConfiguration config = new JFactReasonerConfiguration();
-        config.setLoggingActive(true);
-        OWLReasoner r = new JFactFactory().createReasoner(o, config);
-        // m.saveOntology(o, new OWLFunctionalSyntaxOntologyFormat(),
-        // new SystemOutDocumentTarget());
+        OWLReasoner r = factory().createReasoner(o);
         r.precomputeInferences(InferenceType.CLASS_HIERARCHY);
-        OWLClass c = f.getOWLClass(IRI.create("urn:test#Producto"));
         OWLDataProperty p = f.getOWLDataProperty(IRI
                 .create("urn:test#hasEnergia"));
         OWLNamedIndividual i = f.getOWLNamedIndividual(IRI
                 .create("urn:test#prod4"));
-        // OWLClass test = f.getOWLClass(IRI.create("urn:test#lessThan20"));
-        // System.out.println("AddIndividualsAfterLoadingTestCase.debug() "
-        // + r.getInstances(test, false));
-        // assertTrue(r.getInstances(c, false).containsEntity(i));
         OWLDatatype fdt = f.getFloatOWLDatatype();
         OWLFacetRestriction fLess20 = f.getOWLFacetRestriction(
                 OWLFacet.MAX_INCLUSIVE, 20f);
         OWLDataSomeValuesFrom dsv = f.getOWLDataSomeValuesFrom(p,
                 f.getOWLDatatypeRestriction(fdt, fLess20));
         NodeSet<OWLNamedIndividual> instances = r.getInstances(dsv, false);
-        for (OWLNamedIndividual inst : instances.getFlattened()) {
-            System.out.println("AddIndividualsAfterLoadingTestCase.debug() "
-                    + inst);
-        }
         assertTrue(instances.containsEntity(i));
     }
 }

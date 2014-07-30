@@ -7,8 +7,10 @@ package conformancetests;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import org.junit.Test;
 
+import testbase.TestBase;
+
 @SuppressWarnings("javadoc")
-public class WebOnt_AnnotationProperty_002 {
+public class WebOnt_AnnotationProperty_002 extends TestBase {
 
     @Test
     public void testWebOnt_AnnotationProperty_002() {
@@ -36,7 +38,7 @@ public class WebOnt_AnnotationProperty_002 {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "In OWL 1, this test was used to expose differences between the RDF Based and Direct semantics.  In OWL 2, the entailment ontology holds under both semantics.  Under the OWL 2 Direct Semantics, annotations in the conclusion ontology are ignored, so the only axiom evaluated in ClassAssertion(owl:Thing _:x).  Under the OWL 2 RDF Based semantics, annotations are relevant, and in this test, the entailment holds.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 }

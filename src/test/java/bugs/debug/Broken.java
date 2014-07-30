@@ -1,4 +1,4 @@
-package conformancetests;
+package bugs.debug;
 
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
@@ -24,11 +24,13 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 
-import uk.ac.manchester.cs.jfact.JFactFactory;
-import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import conformancetests.Changed;
+import conformancetests.JUnitRunner;
+import conformancetests.TestClasses;
+import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
-public class Broken {
+public class Broken extends TestBase {
 
     @Test
     public void testQualified_cardinality_boolean() {
@@ -53,7 +55,7 @@ public class Broken {
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "According to qualified cardinality restriction individual a should have two boolean values. Since there are only two boolean values, the data property assertions can be entailed.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -146,9 +148,7 @@ public class Broken {
         m.addAxiom(o, FunctionalObjectProperty(twoatobandc));
         m.addAxiom(o, InverseFunctionalObjectProperty(twoatobandc));
         m.addAxiom(o, DifferentIndividuals(i, j, k));
-        JFactReasonerConfiguration config = new JFactReasonerConfiguration();
-        // config.setLoggingActive(true);
-        OWLReasoner reasoner = new JFactFactory().createReasoner(o, config);
+        OWLReasoner reasoner = factory().createReasoner(o);
         assertFalse(
                 "Start with 3 classes, a,b,c and relate them so instances have to be in a 1:1 relationship with each other.\n"
                         + "The class b-and-c is the union of b and c. Therefore there have to be 2 instances of b-and-c for every instance of a.\n"
@@ -179,7 +179,7 @@ public class Broken {
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
         String d = "The individual a must have dp fillers that are in the sets {3, 4} and {2, 3} (different types are used, but shorts and ints are integers). Furthermore, the dp filler must be 3, but since 3 is in both sets, the ontology is consistent.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -192,7 +192,7 @@ public class Broken {
                 .create("urn:test:datap1"));
         mngr.addAxiom(ont,
                 df.getOWLDataPropertyDomainAxiom(dp, df.getOWLNothing()));
-        OWLReasonerFactory fac = Factory.factory();
+        OWLReasonerFactory fac = factory();
         OWLReasoner r = fac.createNonBufferingReasoner(ont);
         assertEquals(r.getBottomDataPropertyNode().toString(), 2, r
                 .getBottomDataPropertyNode().getEntities().size());
@@ -223,7 +223,7 @@ public class Broken {
         // instead of a oneof from int or integer or any of the types in the
         // middle.
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -241,10 +241,9 @@ public class Broken {
                 + "DataPropertyAssertion(<urn:t#p> <urn:t#john> \"0\"^^xsd:int)\n)";
         String id = "WebOnt_I5_8_010";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "0 is the only xsd:nonNegativeInteger which is\n"
-                + "also an xsd:nonPositiveInteger.";
+        String d = "0 is the only xsd:nonNegativeInteger which is also an xsd:nonPositiveInteger.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         // r.getConfiguration().setLoggingActive(true);
         r.run();
     }
@@ -270,7 +269,7 @@ public class Broken {
         // TODO to make this work, the datatype reasoner must be able to infer
         // short and unsigned int equivalent unsigned short
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
@@ -286,23 +285,6 @@ public class Broken {
                 + "EquivalentClasses(<urn:person> ObjectSomeValuesFrom(<urn:parent> <urn:person>))\n"
                 + "Declaration(ObjectProperty(<urn:parent>))\n"
                 + "ClassAssertion(<urn:person> <urn:fred>))";
-        // "<rdf:RDF\n"
-        // + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-        // + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-        // +
-        // "    xmlns:first=\"http://www.w3.org/2002/03owlt/someValuesFrom/premises003#\"\n"
-        // +
-        // "    xml:base=\"http://www.w3.org/2002/03owlt/someValuesFrom/premises003\" >\n"
-        // + "   <owl:Ontology/>\n"
-        // + "   <owl:Class rdf:ID=\"person\">\n"
-        // + "     <owl:equivalentClass><owl:Restriction>\n"
-        // +
-        // "         <owl:onProperty><owl:ObjectProperty rdf:ID=\"parent\"/></owl:onProperty>\n"
-        // + "         <owl:someValuesFrom rdf:resource=\"#person\" />\n"
-        // + "       </owl:Restriction></owl:equivalentClass>\n"
-        // + "    </owl:Class>\n"
-        // + "    <first:person rdf:ID=\"fred\" />\n" + "\n"
-        // + "</rdf:RDF>";
         String conclusion = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
                 + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
                 + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
@@ -317,67 +299,18 @@ public class Broken {
                 + "ClassAssertion(owl:Thing _:genid3)\n"
                 + "ClassAssertion(owl:Thing _:genid2)\n"
                 + "ObjectPropertyAssertion(<urn:parent> _:genid2 _:genid3))";
-        // "<rdf:RDF\n"
-        // + "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-        // + "    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-        // +
-        // "    xmlns:first=\"http://www.w3.org/2002/03owlt/someValuesFrom/premises003#\"\n"
-        // +
-        // "    xml:base=\"http://www.w3.org/2002/03owlt/someValuesFrom/conclusions003\" >\n"
-        // + "   <owl:Ontology/>\n"
-        // + "   <owl:ObjectProperty rdf:about=\"premises003#parent\"/>\n"
-        // + "   <owl:Thing rdf:about=\"premises003#fred\">"
-        // +
-        // "<first:parent><owl:Thing><first:parent><owl:Thing/></first:parent></owl:Thing>\n"
-        // + "     </first:parent>\n" + "   </owl:Thing>\n" + "</rdf:RDF>";
         // XXX I do not understand these blank nodes used as existential
         // variables
         String id = "WebOnt_someValuesFrom_003";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "A simple infinite loop for implementors to avoid.";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
     @Test
     public void testsomevaluesfrom2bnode() throws OWLOntologyCreationException {
-        // String premise =
-        // "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"  \n"
-        // + "          xmlns:ex=\"http://example.org/\"\n"
-        // + "          xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-        // + "          xml:base=\"http://example.org/\">\n"
-        // + "  <owl:Ontology />\n"
-        // + "  <owl:ObjectProperty rdf:about=\"p\"/>\n"
-        // + "  <rdf:Description rdf:about=\"a\">\n"
-        // + "        <rdf:type>\n"
-        // + "            <owl:Restriction>\n"
-        // + "                <owl:onProperty rdf:resource=\"p\"/>\n"
-        // +
-        // "                <owl:someValuesFrom rdf:resource=\"http://www.w3.org/2002/07/owl#Thing\"/>\n"
-        // + "            </owl:Restriction>\n"
-        // + "        </rdf:type>\n"
-        // + "    </rdf:Description>\n"
-        // + "</rdf:RDF>";
-        // String conclusion =
-        // "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"  \n"
-        // + "          xmlns:ex=\"http://example.org/\"\n"
-        // + "          xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-        // + "          xml:base=\"http://example.org/\">\n"
-        // + "  <owl:Ontology />\n"
-        // + "  <owl:ObjectProperty rdf:about=\"p\"/>\n"
-        // + "  <rdf:Description rdf:about=\"a\">\n"
-        // + "    <ex:p><rdf:Description/></ex:p> \n"
-        // + "  </rdf:Description>\n" + "</rdf:RDF>";
-        //
-        // String id = "somevaluesfrom2bnode";
-        // TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        // String d = "Shows that a BNode is an existential variable.";
-        // JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        // r.setReasonerFactory(Factory.factory());
-        // r.printPremise();
-        // r.printConsequence();
-        // r.run();
         // XXX I do not understand these blank nodes used as existential
         // variables
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
@@ -388,7 +321,7 @@ public class Broken {
         OWLObjectSomeValuesFrom c = f.getOWLObjectSomeValuesFrom(p,
                 f.getOWLThing());
         m.addAxiom(o, f.getOWLClassAssertionAxiom(c, a));
-        OWLReasoner r = Factory.factory().createReasoner(o);
+        OWLReasoner r = factory().createReasoner(o);
         assertTrue(r.isEntailed(f.getOWLObjectPropertyAssertionAxiom(p, a,
                 f.getOWLAnonymousIndividual())));
     }

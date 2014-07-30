@@ -7,8 +7,10 @@ package conformancetests;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import org.junit.Test;
 
+import testbase.TestBase;
+
 @SuppressWarnings("javadoc")
-public class WebOnt_miscellaneous_002 {
+public class WebOnt_miscellaneous_002 extends TestBase {
 
     @Test
     @Changed
@@ -19,54 +21,11 @@ public class WebOnt_miscellaneous_002 {
         String d = "Food example taken from the guide. Note that this is the same as the ontology http://www.w3.org/2002/03owlt/miscellaneous/consistent002 imported in other tests.";
         JUnitRunner r = new JUnitRunner(premise1 + premise2 + premise3
                 + premise4, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         r.run();
     }
 
-    // public void _testWebOnt_miscellaneous_002(String s1, String s2)
-    // throws OWLOntologyCreationException {
-    // String conclusion = "";
-    // String id = "WebOnt_miscellaneous_002";
-    // TestClasses tc = TestClasses.valueOf("CONSISTENCY");
-    // String d =
-    // "Food example taken from the guide. Note that this is the same as the ontology http://www.w3.org/2002/03owlt/miscellaneous/consistent002 imported in other tests.";
-    // JUnitRunner r = new JUnitRunner(premise1+premise2+premise3+premise4,
-    // conclusion, id, tc, d);
-    // r.getConfiguration().setorSortSat(s1);
-    // r.getConfiguration().setorSortSub(s2);
-    // // r.getConfiguration().setLoggingActive(true);
-    // // r.setReasonerFactory(Factory.factory());
-    // try {
-    // long start = System.currentTimeMillis();
-    // OWLReasoner reasoner = Factory.factory().createReasoner(r.getPremise(),
-    // r.getConfiguration());
-    // System.out.println("WebOnt_miscellaneous_002.testWebOnt_miscellaneous_002() "
-    // + reasoner.isConsistent());
-    // // r.run();
-    // System.out
-    // .println("WebOnt_miscellaneous_002.testWebOnt_miscellaneous_002() done in "
-    // + (System.currentTimeMillis() - start));
-    // } catch (RuntimeException e) {
-    // System.out.println("WebOnt_miscellaneous_002.testWebOnt_miscellaneous_002() "
-    // + e.getMessage());
-    // }
-    // }
-    //
-    // private static String[] options = new String[] { "Sap", "Sdp", "San",
-    // "Sdn", "Dap",
-    // "Ddp", "Dan", "Ddn", "Fap", "Fdp", "Fan", "Fdn", "Bap", "Bdp", "Ban",
-    // "Bdn",
-    // "Gap", "Gdp", "Gan", "Gdn" };
-    //
-    // public static void main(String[] args) throws
-    // OWLOntologyCreationException {
-    // WebOnt_miscellaneous_002 t = new WebOnt_miscellaneous_002();
-    // for (String s1 : options) {
-    // for (String s2 : options) {
-    // t._testWebOnt_miscellaneous_002(s1, s2);
-    // }
-    // }
-    // }
+
     private static String premise1 = "<!DOCTYPE owl ["
             + "<!ENTITY owl \"http://www.w3.org/2002/07/owl#\" >"
             + "<!ENTITY vin  \"http://www.w3.org/2002/03owlt/miscellaneous/consistent001#\" >"

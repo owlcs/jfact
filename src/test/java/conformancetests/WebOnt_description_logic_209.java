@@ -7,8 +7,10 @@ package conformancetests;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import org.junit.Test;
 
+import testbase.TestBase;
+
 @SuppressWarnings("javadoc")
-public class WebOnt_description_logic_209 {
+public class WebOnt_description_logic_209 extends TestBase {
 
     @Test
     public void testWebOnt_description_logic_209() {
@@ -998,20 +1000,7 @@ public class WebOnt_description_logic_209 {
                 + "                <owl:allValuesFrom>\n"
                 + "                    <owl:Class rdf:about=\"http://oiled.man.example.net/test#C34\"/></owl:allValuesFrom></owl:Restriction></rdf:type></owl:Thing>\n"
                 + "</rdf:RDF>";
-        String conclusion =
-        // "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-        // + "      xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-        // +
-        // "      xml:base=\"http://www.w3.org/2002/03owlt/description-logic/nonconclusions209\"\n"
-        // + ">\n"
-        // + "<owl:Ontology/>\n"
-        // +
-        // "<owl:Thing rdf:about=\"http://oiled.man.example.net/test#V16448\">\n"
-        // + "  <rdf:type>\n"
-        // +
-        // "<owl:Class rdf:about=\"http://oiled.man.example.net/test#C122\"/>\n"
-        // + "</rdf:type>\n" + "</owl:Thing>\n" + "</rdf:RDF>";
-        "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+        String conclusion = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
                 + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
                 + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
                 + "Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\n"
@@ -1029,7 +1018,7 @@ public class WebOnt_description_logic_209 {
                 + "ABox test from DL98 systems comparison.\n"
                 + "(Modified in light of implementation feedback, see test description-logic-208).";
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
-        r.setReasonerFactory(Factory.factory());
+        r.setReasonerFactory(factory());
         // r.printConsequence();
         r.run();
     }

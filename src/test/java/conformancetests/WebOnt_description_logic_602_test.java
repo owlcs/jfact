@@ -9,11 +9,20 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
+import testbase.TestBase;
+
 @SuppressWarnings("javadoc")
-public class WebOnt_description_logic_602_test {
+public class WebOnt_description_logic_602_test extends TestBase {
 
     @Test
     public void testWebOnt_description_logic_602()
@@ -42,7 +51,7 @@ public class WebOnt_description_logic_602_test {
                 o,
                 f.getOWLEquivalentClassesAxiom(B,
                         f.getOWLObjectMinCardinality(1, p)));
-        OWLReasoner reasoner = Factory.factory().createReasoner(o);
+        OWLReasoner reasoner = factory().createReasoner(o);
         assertTrue("cannot infer disjoint",
                 reasoner.isEntailed(f.getOWLDisjointClassesAxiom(D, B)));
         assertTrue("cannot infer U [= B",
