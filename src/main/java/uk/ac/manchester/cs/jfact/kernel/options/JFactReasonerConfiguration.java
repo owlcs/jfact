@@ -139,6 +139,26 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      */
     @PortedFrom(file = "Kernel.h", name = "queryAnswering")
     private boolean queryAnswering = false;
+    private boolean needLogging = false;
+
+    /**
+     * @param b
+     *        new value
+     * @return modified object
+     */
+    public JFactReasonerConfiguration setNeedLogging(boolean b) {
+        needLogging = b;
+        return this;
+    }
+
+    /**
+     * check if it is necessary to log taxonomy action
+     * 
+     * @return true if necessary to log
+     */
+    public boolean isNeedLogging() {
+        return needLogging;
+    }
 
     /**
      * Checks if is use sorted reasoning.
