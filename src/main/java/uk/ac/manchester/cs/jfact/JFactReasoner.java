@@ -26,7 +26,6 @@ import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLDataRange;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -35,7 +34,6 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.reasoner.FreshEntitiesException;
 import org.semanticweb.owlapi.reasoner.FreshEntityPolicy;
@@ -100,7 +98,6 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
                     InferenceType.DATA_PROPERTY_HIERARCHY,
                     InferenceType.OBJECT_PROPERTY_HIERARCHY,
                     InferenceType.SAME_INDIVIDUAL);
-    private final OWLOntologyManager manager;
     private final OWLOntology root;
     private final BufferingMode bufferingMode;
     private final List<OWLOntologyChange> rawChanges = new ArrayList<OWLOntologyChange>();
@@ -134,12 +131,14 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     /**
      * @param rootOntology
      *        rootOntology
+     * @param axioms
+     *        axioms to actually use
      * @param config
      *        config
      * @param bufferingMode
      *        bufferingMode
      */
-    public JFactReasoner(OWLOntology rootOntology,
+    public JFactReasoner(OWLOntology rootOntology, Collection<OWLAxiom> axioms,
             JFactReasonerConfiguration config, BufferingMode bufferingMode) {
         configuration = config;
         root = rootOntology;
@@ -148,18 +147,10 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         kernel = new ReasoningKernel(configuration, datatypeFactory);
         em = kernel.getExpressionManager();
         this.bufferingMode = bufferingMode;
-        manager = root.getOWLOntologyManager();
         knownEntities.add(df.getOWLThing());
         knownEntities.add(df.getOWLNothing());
-        for (OWLOntology ont : root.getImportsClosure()) {
-            for (OWLAxiom ax : ont.getLogicalAxioms()) {
-                reasonerAxioms.add(ax);
-                knownEntities.addAll(ax.getSignature());
-            }
-            for (OWLAxiom ax : ont.getAxioms(AxiomType.DECLARATION)) {
-                reasonerAxioms.add(ax);
-                knownEntities.addAll(ax.getSignature());
-            }
+        for (OWLOntology o : root.getImportsClosure()) {
+            knownEntities.addAll(o.getSignature());
         }
         kernel.setTopBottomRoleNames(
                 OWLRDFVocabulary.OWL_TOP_OBJECT_PROPERTY.getIRI(),
@@ -167,13 +158,45 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
                 OWLRDFVocabulary.OWL_TOP_DATA_PROPERTY.getIRI(),
                 OWLRDFVocabulary.OWL_BOTTOM_DATA_PROPERTY.getIRI());
         kernel.setInterruptedSwitch(interrupted);
+        kernel.clearKB();
         configuration.getProgressMonitor().reasonerTaskStarted(
                 ReasonerProgressMonitor.LOADING);
         configuration.getProgressMonitor().reasonerTaskBusy();
-        kernel.clearKB();
         tr = new TranslationMachinery(kernel, df, datatypeFactory);
+        reasonerAxioms.addAll(axioms);
         tr.loadAxioms(reasonerAxioms);
         configuration.getProgressMonitor().reasonerTaskStopped();
+    }
+
+    /**
+     * @param ont
+     *        ontology
+     * @return all axioms in the ontology and its import closure
+     */
+    public static List<OWLAxiom> importsIncluded(OWLOntology ont) {
+        List<OWLAxiom> axioms = new ArrayList<>();
+        for (OWLOntology o : ont.getImportsClosure()) {
+            for (OWLAxiom ax : o.getLogicalAxioms()) {
+                axioms.add(ax);
+            }
+            for (OWLAxiom ax : o.getAxioms(AxiomType.DECLARATION)) {
+                axioms.add(ax);
+            }
+        }
+        return axioms;
+    }
+
+    /**
+     * @param rootOntology
+     *        rootOntology
+     * @param config
+     *        config
+     * @param bufferingMode
+     *        bufferingMode
+     */
+    public JFactReasoner(OWLOntology rootOntology,
+            JFactReasonerConfiguration config, BufferingMode bufferingMode) {
+        this(rootOntology, importsIncluded(rootOntology), config, bufferingMode);
     }
 
     /**
@@ -209,7 +232,11 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
 
     @Override
     public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
-        handleRawOntologyChanges(changes);
+        rawChanges.addAll(changes);
+        // We auto-flush the changes if the reasoner is non-buffering
+        if (bufferingMode.equals(BufferingMode.NON_BUFFERING)) {
+            flush();
+        }
     }
 
     @Override
@@ -225,15 +252,6 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     @Override
     public OWLOntology getRootOntology() {
         return root;
-    }
-
-    private void handleRawOntologyChanges(
-            List<? extends OWLOntologyChange> changes) {
-        rawChanges.addAll(changes);
-        // We auto-flush the changes if the reasoner is non-buffering
-        if (bufferingMode.equals(BufferingMode.NON_BUFFERING)) {
-            flush();
-        }
     }
 
     @Override
@@ -299,13 +317,19 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     private synchronized void computeDiff(Set<OWLAxiom> added,
             Set<OWLAxiom> removed) {
         for (OWLOntologyChange change : rawChanges) {
+            OWLAxiom ax = change.getAxiom();
             if (change.isAddAxiom()) {
-                OWLAxiom ax = change.getAxiom();
-                if (!reasonerAxioms.contains(ax)) {
+                if (!reasonerAxioms.contains(ax)
+                        && !reasonerAxioms.contains(ax
+                                .getAxiomWithoutAnnotations())) {
                     added.add(ax);
                 }
             } else if (change.isRemoveAxiom()) {
-                removed.add(change.getAxiom());
+                if (reasonerAxioms.contains(ax)
+                        || reasonerAxioms.contains(ax
+                                .getAxiomWithoutAnnotations())) {
+                    removed.add(change.getAxiom());
+                }
             }
         }
         added.removeAll(removed);
@@ -765,7 +789,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
 
     @Override
     public synchronized void dispose() {
-        manager.removeOntologyChangeListener(this);
+        root.getOWLOntologyManager().removeOntologyChangeListener(this);
         tr = null;
         kernel = null;
     }
@@ -920,7 +944,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return axiomsToSet(kernel.getAtomAxioms(index));
     }
 
-    private Set<OWLAxiom> axiomsToSet(Collection<AxiomInterface> index) {
+    private static Set<OWLAxiom> axiomsToSet(Collection<AxiomInterface> index) {
         Set<OWLAxiom> toReturn = new HashSet<OWLAxiom>();
         for (AxiomInterface ax : index) {
             OWLAxiom owlAxiom = ax.getOWLAxiom();
