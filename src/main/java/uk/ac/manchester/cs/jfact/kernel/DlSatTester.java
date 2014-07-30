@@ -1982,6 +1982,9 @@ public class DlSatTester implements Serializable {
 
     @PortedFrom(file = "Reasoner.h", name = "finaliseStatistic")
     private void finaliseStatistic() {
+        if (options.isUSE_REASONING_STATISTICS()) {
+            writeTotalStatistic(options.getLog());
+        }
         cGraph.clearStatistics();
     }
 
