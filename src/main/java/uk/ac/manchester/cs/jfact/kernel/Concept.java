@@ -35,7 +35,7 @@ public class Concept extends ClassifiableEntry {
     /** temp concept iri */
     public static final IRI temp = IRI.create("urn:jfact#", "temp");
     /** query concept iri */
-    public static final IRI query = IRI.create("urn:jfact#", "default");
+    public static final IRI query = IRI.create("FaCT++.default");
     /** nothing concept iri */
     public static final IRI nothing = OWLRDFVocabulary.OWL_NOTHING.getIRI();
     /** thing concept iri */

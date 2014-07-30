@@ -515,7 +515,7 @@ public class DlSatTester implements Serializable {
      * @return true if node is valid for the reasoning
      */
     @PortedFrom(file = "Reasoner.h", name = "isNodeGloballyUsed")
-    private boolean isNodeGloballyUsed(DlCompletionTree node) {
+    private static boolean isNodeGloballyUsed(DlCompletionTree node) {
         return !(node.isDataNode() || node.isIBlocked() || node.isPBlocked());
     }
 
@@ -525,7 +525,7 @@ public class DlSatTester implements Serializable {
      * @return true if node is valid for the reasoning
      */
     @PortedFrom(file = "Reasoner.h", name = "isObjectNodeUnblocked")
-    private boolean isObjectNodeUnblocked(DlCompletionTree node) {
+    private static boolean isObjectNodeUnblocked(DlCompletionTree node) {
         return isNodeGloballyUsed(node) && !node.isDBlocked();
     }
 
@@ -667,10 +667,7 @@ public class DlSatTester implements Serializable {
      */
     @PortedFrom(file = "Reasoner.h", name = "addExistingToDoEntry")
     private void addExistingToDoEntry(DlCompletionTree node, ConceptWDep C,
-            String reason /*
-                           * =
-                           * null
-                           */) {
+            String reason) {
         int bp = C.getConcept();
         TODO.addEntry(node, dlHeap.get(bp).getType(), C);
         logNCEntry(node, C.getConcept(), C.getDep(), "+", reason);
@@ -864,7 +861,7 @@ public class DlSatTester implements Serializable {
      * @return true if clashing
      */
     @PortedFrom(file = "Reasoner.h", name = "checkNRclash")
-    private boolean checkNRclash(DLVertex atleast, DLVertex atmost) {
+    private static boolean checkNRclash(DLVertex atleast, DLVertex atmost) {
         // >= n R.C clash with <= m S.D iff...
         return (atmost.getConceptIndex() == bpTOP ||
         // either D is TOP or C == D...
@@ -2222,7 +2219,7 @@ public class DlSatTester implements Serializable {
                 logAdapter.print("~");
             }
             DLVertex v = dlHeap.get(curConceptConcept);
-            logAdapter.print(v.getType().name());
+            logAdapter.print(v.getType());
             if (v.getConcept() != null) {
                 logAdapter.print("(", v.getConcept().getName(), ")");
             }
@@ -3593,8 +3590,8 @@ public class DlSatTester implements Serializable {
     }
 
     @PortedFrom(file = "Tactic.cpp", name = "isNewEdge")
-    private boolean
-            isNewEdge(DlCompletionTree node, List<DlCompletionTreeArc> e) {
+    private static boolean isNewEdge(DlCompletionTree node,
+            List<DlCompletionTreeArc> e) {
         int size = e.size();
         for (int i = 0; i < size; i++) {
             if (e.get(i).getArcEnd().equals(node)) {

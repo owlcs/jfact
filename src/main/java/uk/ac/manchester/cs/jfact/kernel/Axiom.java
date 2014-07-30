@@ -211,7 +211,7 @@ public class Axiom implements Serializable {
         for (DLTree p : disjuncts) {
             if (InAx.isAnd(p)) {
                 SAbsSplit();
-                absorptionLog.print(" split AND espression ", p.getChild());
+                absorptionLog.print(" split AND expression ", p.getChild());
                 acc = this.split(acc, p, p.getChildren().iterator().next());
                 /**
                  * no need to split more than once: every extra splits would be

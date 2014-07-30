@@ -142,13 +142,6 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
                 .reasonerTaskProgressChanged((int) nConcepts, tBox.getNItems());
     }
 
-    /** check if it is necessary to log taxonomy action */
-    @Override
-    @PortedFrom(file = "DLConceptTaxonomy.h", name = "needLogging")
-    protected boolean needLogging() {
-        return true;
-    }
-
     /**
      * the only c'tor
      * 

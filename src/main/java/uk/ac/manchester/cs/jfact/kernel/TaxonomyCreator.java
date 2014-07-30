@@ -84,12 +84,12 @@ public class TaxonomyCreator implements Serializable {
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "setToldSubsumers")
     private void setToldSubsumers() {
         Collection<ClassifiableEntry> top = ksStack.peek().s_begin();
-        if (needLogging() && !top.isEmpty()) {
+        if (pTax.getOptions().isNeedLogging() && !top.isEmpty()) {
             pTax.getOptions().getLog().print("\nTAX: told subsumers");
         }
         for (ClassifiableEntry p : top) {
             if (p.isClassified()) {
-                if (needLogging()) {
+                if (pTax.getOptions().isNeedLogging()) {
                     pTax.getOptions()
                             .getLog()
                             .printTemplate(Templates.TOLD_SUBSUMERS,
@@ -112,11 +112,11 @@ public class TaxonomyCreator implements Serializable {
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "setNonRedundantCandidates")
     private
             void setNonRedundantCandidates() {
-        if (!curEntry.hasToldSubsumers()) {
+        if (!curEntry.hasToldSubsumers() && pTax.getOptions().isNeedLogging()) {
             pTax.getOptions().getLog().print("\nTAX: TOP");
-        }
         pTax.getOptions().getLog().print(" completely defines concept ");
         pTax.getOptions().getLog().print(curEntry.getName());
+        }
         // test if some "told subsumer" is not an immediate TS (ie, not a
         // border
         // element)
@@ -182,8 +182,11 @@ public class TaxonomyCreator implements Serializable {
         // do something before classification (tunable)
         preClassificationActions();
         ++nEntries;
-        pTax.getOptions().getLog().print("\n\nTAX: start classifying entry ");
+        if (pTax.getOptions().isNeedLogging()) {
+            // this output is currently disabled in FaCT++
+            pTax.getOptions().getLog().print("\nTAX: start classifying entry ");
         pTax.getOptions().getLog().print(curEntry.getName());
+        }
         // if no classification needed -- nothing to do
         if (immediatelyClassified()) {
             return;
@@ -331,16 +334,6 @@ public class TaxonomyCreator implements Serializable {
             propagateFalseDown(node);
         }
         return value;
-    }
-
-    /**
-     * check if it is necessary to log taxonomy action
-     * 
-     * @return true if necessary to log
-     */
-    @PortedFrom(file = "TaxonomyCreator.h", name = "needLogging")
-    protected boolean needLogging() {
-        return true;
     }
 
     /**
