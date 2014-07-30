@@ -114,8 +114,8 @@ public class TaxonomyCreator implements Serializable {
             void setNonRedundantCandidates() {
         if (!curEntry.hasToldSubsumers() && pTax.getOptions().isNeedLogging()) {
             pTax.getOptions().getLog().print("\nTAX: TOP");
-        pTax.getOptions().getLog().print(" completely defines concept ");
-        pTax.getOptions().getLog().print(curEntry.getName());
+            pTax.getOptions().getLog().print(" completely defines concept ");
+            pTax.getOptions().getLog().print(curEntry.getName());
         }
         // test if some "told subsumer" is not an immediate TS (ie, not a
         // border
@@ -185,7 +185,7 @@ public class TaxonomyCreator implements Serializable {
         if (pTax.getOptions().isNeedLogging()) {
             // this output is currently disabled in FaCT++
             pTax.getOptions().getLog().print("\nTAX: start classifying entry ");
-        pTax.getOptions().getLog().print(curEntry.getName());
+            pTax.getOptions().getLog().print(curEntry.getName());
         }
         // if no classification needed -- nothing to do
         if (immediatelyClassified()) {
@@ -290,9 +290,8 @@ public class TaxonomyCreator implements Serializable {
         // overwise -- value it...
         setValue(node, true);
         // ... and value all parents
-        List<TaxonomyVertex> list = node.neigh(true);
-        for (int i = 0; i < list.size(); i++) {
-            propagateTrueUp(list.get(i));
+        for (TaxonomyVertex t : node.neigh(true)) {
+            propagateTrueUp(t);
         }
     }
 

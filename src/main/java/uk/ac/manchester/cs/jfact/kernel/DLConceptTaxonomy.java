@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -330,10 +331,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         pTax.setVisited(cur);
         ++nSearchCalls;
         boolean noPosSucc = true;
-        List<TaxonomyVertex> neigh = cur.neigh(upDirection);
-        int size = neigh.size();
-        for (int i = 0; i < size; i++) {
-            TaxonomyVertex p = neigh.get(i);
+        for (TaxonomyVertex p : cur.neigh(upDirection)) {
             if (enhancedSubs(p)) {
                 if (!pTax.isVisited(p)) {
                     searchBaader(p);
@@ -357,10 +355,8 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         // need to be valued -- check all parents
         // propagate false
         // do this only if the concept is not it M-
-        List<TaxonomyVertex> neigh = cur.neigh(!upDirection);
-        int size = neigh.size();
-        for (int i = 0; i < size; i++) {
-            if (!enhancedSubs(neigh.get(i))) {
+        for (TaxonomyVertex n : cur.neigh(!upDirection)) {
+            if (!enhancedSubs(n)) {
                 return false;
             }
         }
@@ -435,25 +431,24 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
             common.add(node);
         }
         // mark all children
-        List<TaxonomyVertex> neigh = node.neigh(false);
-        for (int i = 0; i < neigh.size(); i++) {
-            propagateOneCommon(neigh.get(i));
+        for (TaxonomyVertex n : node.neigh(false)) {
+            propagateOneCommon(n);
         }
     }
 
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "propagateUp")
     private boolean propagateUp() {
         nCommon = 1;
-        List<TaxonomyVertex> list = pTax.getCurrent().neigh(upDirection);
-        int size = list.size();
-        assert size > 0;
+        Iterator<TaxonomyVertex> list = pTax.getCurrent().neigh(upDirection)
+                .iterator();
+        assert list.hasNext();
         // there is at least one parent (TOP)
-        TaxonomyVertex p = list.get(0);
+        TaxonomyVertex p = list.next();
         // define possible successors of the node
         propagateOneCommon(p);
         pTax.clearVisited();
-        for (int i = 1; i < size; i++) {
-            p = list.get(i);
+        while (list.hasNext()) {
+            p = list.next();
             if (p.noNeighbours(!upDirection)) {
                 return true;
             }
@@ -662,7 +657,9 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
                     || MMinus.contains(entry.getEntity())) {
                 toProcess.add(entry);
             }
-            queue.addAll(cur.neigh(false));
+            for (TaxonomyVertex t : cur.neigh(false)) {
+                queue.add(t);
+            }
         }
         pTax.clearVisited();
         // System.out.println("Determine concepts that need reclassification ("

@@ -86,7 +86,7 @@ public class ActorImpl implements Actor, Serializable {
         if (tryEntry(v.getPrimer())) {
             array.add(v.getPrimer());
         }
-        for (ClassifiableEntry p : v.begin_syn()) {
+        for (ClassifiableEntry p : v.synonyms()) {
             if (tryEntry(p)) {
                 array.add(p);
             }
@@ -99,7 +99,7 @@ public class ActorImpl implements Actor, Serializable {
         if (tryEntry(v.getPrimer())) {
             return true;
         }
-        for (ClassifiableEntry p : v.begin_syn()) {
+        for (ClassifiableEntry p : v.synonyms()) {
             if (tryEntry(p)) {
                 return true;
             }
@@ -125,7 +125,7 @@ public class ActorImpl implements Actor, Serializable {
         if (tryEntry(v.getPrimer())) {
             return true;
         }
-        for (ClassifiableEntry p : v.begin_syn()) {
+        for (ClassifiableEntry p : v.synonyms()) {
             if (tryEntry(p)) {
                 return true;
             }

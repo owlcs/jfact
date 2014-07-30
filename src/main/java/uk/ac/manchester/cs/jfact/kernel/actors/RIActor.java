@@ -42,7 +42,7 @@ public class RIActor implements Actor, Serializable {
     @Override
     public boolean apply(TaxonomyVertex v) {
         boolean ret = tryEntry(v.getPrimer());
-        for (ClassifiableEntry p : v.begin_syn()) {
+        for (ClassifiableEntry p : v.synonyms()) {
             ret |= tryEntry(p);
         }
         return ret;
@@ -53,7 +53,7 @@ public class RIActor implements Actor, Serializable {
         if (test(v.getPrimer())) {
             return true;
         }
-        for (ClassifiableEntry p : v.begin_syn()) {
+        for (ClassifiableEntry p : v.synonyms()) {
             if (test(p)) {
                 return true;
             }

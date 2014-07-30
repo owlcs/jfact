@@ -43,7 +43,7 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
         if (policy.applicable(v.getPrimer())) {
             return true;
         }
-        for (ClassifiableEntry p : v.begin_syn()) {
+        for (ClassifiableEntry p : v.synonyms()) {
             if (policy.applicable(p)) {
                 return true;
             }
@@ -116,7 +116,7 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
     public boolean apply(TaxonomyVertex v) {
         syn.clear();
         tryEntry(v.getPrimer());
-        for (ClassifiableEntry p : v.begin_syn()) {
+        for (ClassifiableEntry p : v.synonyms()) {
             tryEntry(p);
         }
         /** no applicable elements were found */
