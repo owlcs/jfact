@@ -65,6 +65,12 @@ public class ConceptObjectValue implements ConceptObjectRoleExpression,
 
     @Override
     public IRI getName() {
-        return IRI.create(toString());
+        return IRI.create("objectValue(" + delegate + " "
+                + individualExpression + ")");
+    }
+
+    @Override
+    public String toString() {
+        return getName().toString();
     }
 }

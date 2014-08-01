@@ -606,6 +606,32 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
 
     @Override
     public ReasonerProgressMonitor getProgressMonitor() {
+        if (progressMonitor == null) {
+            progressMonitor = new ReasonerProgressMonitor() {
+
+                private static final long serialVersionUID = 1L;
+
+                @Override
+                public void reasonerTaskStopped() {
+                    // TODO Auto-generated method stub
+                }
+
+                @Override
+                public void reasonerTaskStarted(String taskName) {
+                    // TODO Auto-generated method stub
+                }
+
+                @Override
+                public void reasonerTaskProgressChanged(int value, int max) {
+                    // TODO Auto-generated method stub
+                }
+
+                @Override
+                public void reasonerTaskBusy() {
+                    // TODO Auto-generated method stub
+                }
+            };
+        }
         return progressMonitor;
     }
 

@@ -42,6 +42,8 @@ public abstract class VerifyComplianceBase extends TestBase {
     protected JFactReasoner reasoner;
     protected OWLDataFactory df = OWLManager.getOWLDataFactory();
 
+    @SuppressWarnings("null")
+    @Nonnull
     protected OWLOntology load(String in) throws OWLOntologyCreationException {
         OWLOntology onto = OWLManager.createOWLOntologyManager()
                 .loadOntologyFromOntologyDocument(
@@ -55,6 +57,7 @@ public abstract class VerifyComplianceBase extends TestBase {
         return onto;
     }
 
+    @Nonnull
     protected OWLOntology loadFromString(@Nonnull String in)
             throws OWLOntologyCreationException {
         return OWLManager.createOWLOntologyManager()
@@ -71,13 +74,13 @@ public abstract class VerifyComplianceBase extends TestBase {
     }
 
     @SuppressWarnings({ "unchecked" })
-    protected void equal(NodeSet<?> node, OWLEntity... objects) {
+    protected static void equal(NodeSet<?> node, OWLEntity... objects) {
         assertEquals(set(Arrays.asList(objects)),
                 set((Set<OWLEntity>) node.getFlattened()));
     }
 
     @SuppressWarnings("unchecked")
-    protected void equal(Node<?> node, OWLEntity... objects) {
+    protected static void equal(Node<?> node, OWLEntity... objects) {
         assertEquals(set(Arrays.asList(objects)),
                 set((Set<OWLEntity>) node.getEntities()));
     }
@@ -106,14 +109,20 @@ public abstract class VerifyComplianceBase extends TestBase {
         return df.getOWLDataProperty(IRI.create(i));
     }
 
+    @Nonnull
     protected OWLDataProperty bottomDataProperty = df
             .getOWLBottomDataProperty();
+    @Nonnull
     protected OWLDataProperty topDataProperty = df.getOWLTopDataProperty();
+    @Nonnull
     protected OWLObjectProperty topObjectProperty = df
             .getOWLTopObjectProperty();
+    @Nonnull
     protected OWLObjectProperty bottomObjectProperty = df
             .getOWLBottomObjectProperty();
+    @Nonnull
     protected OWLClass owlThing = df.getOWLThing();
+    @Nonnull
     protected OWLClass owlNothing = df.getOWLNothing();
 
     @Before

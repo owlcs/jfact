@@ -67,6 +67,12 @@ public class ObjectRoleProjectionFrom implements ObjectRoleComplexExpression,
 
     @Override
     public IRI getName() {
-        return IRI.create(toString());
+        return IRI.create("objectProjectFrom(" + roleDelegate + " " + delegate
+                + ")");
+    }
+
+    @Override
+    public String toString() {
+        return getName().toString();
     }
 }

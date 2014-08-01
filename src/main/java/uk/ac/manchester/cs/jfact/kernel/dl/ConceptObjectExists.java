@@ -67,6 +67,12 @@ public class ConceptObjectExists implements ConceptObjectRCExpression,
 
     @Override
     public IRI getName() {
-        return IRI.create(toString());
+        return IRI.create("objectExists(" + delegate + " " + conceptExpression
+                + ")");
+    }
+
+    @Override
+    public String toString() {
+        return getName().toString();
     }
 }

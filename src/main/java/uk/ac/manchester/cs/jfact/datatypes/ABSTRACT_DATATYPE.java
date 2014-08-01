@@ -15,6 +15,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
@@ -28,23 +29,39 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
         Datatype<R>, Serializable {
 
     private static final long serialVersionUID = 11000L;
+    @Nonnull
     protected final Set<Facet> facets;
-    protected Set<Datatype<?>> ancestors;
+    @Nonnull
+    protected final Set<Datatype<?>> ancestors;
     @SuppressWarnings("rawtypes")
     protected final Map<Facet, Comparable> knownNumericFacetValues = new HashMap<>();
     @SuppressWarnings("rawtypes")
     protected final Map<Facet, Comparable> knownNonNumericFacetValues = new HashMap<>();
+    @Nonnull
     protected final IRI uri;
+
+    @Nonnull
+    protected static <O extends Comparable<O>> Datatype<O> host(Datatype<O> o) {
+        if (o.isExpression()) {
+            return o.asExpression().getHostType();
+        }
+        return o;
+    }
 
     /**
      * @param u
      *        u
      * @param f
      *        facets
+     * @param ancestors
+     *        ancestors
      */
-    public ABSTRACT_DATATYPE(IRI u, Set<Facet> f) {
+    @SuppressWarnings("null")
+    public ABSTRACT_DATATYPE(@Nonnull IRI u, Set<Facet> f,
+            Set<Datatype<?>> ancestors) {
         this.facets = Collections.unmodifiableSet(f);
         this.uri = u;
+        this.ancestors = ancestors;
     }
 
     @Override
@@ -95,7 +112,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
         return this.knownNonNumericFacetValues;
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings("unchecked")
     @Override
     public Comparable getFacetValue(Facet f) {
         if (f.isNumberFacet()) {
@@ -104,7 +121,6 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
         return this.knownNonNumericFacetValues.get(f);
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public Comparable getNumericFacetValue(Facet f) {
         return this.knownNumericFacetValues.get(f);
@@ -190,6 +206,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
         return new LiteralImpl<>(this, s);
     }
 
+    @SuppressWarnings("null")
     @Override
     public Collection<Literal<R>> listValues() {
         return Collections.emptyList();
@@ -236,7 +253,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
 
     @Override
     public NumericDatatype<R> asNumericDatatype() {
-        return null;
+        throw new ReasonerInternalException(this + " is not a numeric datatype");
     }
 
     @Override
@@ -246,7 +263,8 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
 
     @Override
     public OrderedDatatype<R> asOrderedDatatype() {
-        return null;
+        throw new ReasonerInternalException(this
+                + " is not an ordered datatype");
     }
 
     @Override

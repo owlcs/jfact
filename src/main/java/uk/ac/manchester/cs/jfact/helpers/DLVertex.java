@@ -358,27 +358,10 @@ public class DLVertex extends DLVertexTagDFS {
     public String toString(boolean extendedStats) {
         StringBuilder o = new StringBuilder();
         if (extendedStats) {
-            o.append("[d(");
-            o.append(stat[0]);
-            o.append('/');
-            o.append(stat[1]);
-            o.append("),s(");
-            o.append(stat[2]);
-            o.append('/');
-            o.append(stat[3]);
-            o.append("),b(");
-            o.append(stat[4]);
-            o.append('/');
-            o.append(stat[5]);
-            o.append("),g(");
-            o.append(stat[6]);
-            o.append('/');
-            o.append(stat[7]);
-            o.append("),f(");
-            o.append(stat[8]);
-            o.append('/');
-            o.append(stat[9]);
-            o.append(")] ");
+            o.append(String.format(
+                    "[d(%s/%s),s(%s/%s),b(%s/%s),g(%s/%s),f(%s/%s)] ", stat[0],
+                    stat[1], stat[2], stat[3], stat[4], stat[5], stat[6],
+                    stat[7], stat[8], stat[9]));
         }
         o.append(toString());
         return o.toString();
@@ -430,6 +413,12 @@ public class DLVertex extends DLVertexTagDFS {
                         "Error printing vertex of type %s(%s)", op.getName(),
                         op));
         }
+        return childrenToString();
+    }
+
+    @SuppressWarnings("null")
+    @Nonnull
+    protected String childrenToString() {
         StringBuilder o = new StringBuilder(op.getName());
         for (int q : child.sorted()) {
             o.append(' ').append(q);

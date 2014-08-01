@@ -29,14 +29,16 @@ public class DatatypeNegation<R extends Comparable<R>> implements
         DatatypeExpression<R>, Serializable {
 
     private static final long serialVersionUID = 11000L;
+    @Nonnull
     private final Datatype<R> host;
+    @Nonnull
     private final IRI uri;
 
     /**
      * @param d
      *        d
      */
-    public DatatypeNegation(Datatype<R> d) {
+    public DatatypeNegation(@Nonnull Datatype<R> d) {
         this.uri = IRI.create("urn:neg" + DatatypeFactory.getIndex());
         host = d;
     }
@@ -96,12 +98,11 @@ public class DatatypeNegation<R extends Comparable<R>> implements
     }
 
     @Override
-    public <O extends Comparable<O>> O getFacetValue(Facet<O> f) {
+    public <O extends Comparable<O>> O getFacetValue(Facet f) {
         O o = host.getFacetValue(f);
         return o;
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public Comparable getNumericFacetValue(Facet f) {
         return host.getNumericFacetValue(f);

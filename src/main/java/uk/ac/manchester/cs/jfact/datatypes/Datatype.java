@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
@@ -26,21 +28,25 @@ public interface Datatype<R extends Comparable<R>> extends DataExpression {
     boolean isExpression();
 
     /** @return this datatype as a datatype expression, if it is an expression. */
+    @Nonnull
     DatatypeExpression<R> asExpression();
 
     /** @return the known ancestors of this datatype */
+    @Nonnull
     Collection<Datatype<?>> getAncestors();
 
     /** @return true if this datatype value space is bounded */
     boolean getBounded();
 
     /** @return the cardinality of the value space: finite or countably infinite */
+    @Nonnull
     cardinality getCardinality();
 
     /**
      * @return the available facets for this datatype. The collection is
      *         immutable - only specs sanctioned facets allowed
      */
+    @Nonnull
     Set<Facet> getFacets();
 
     /** @return the known values for a subset of the available facets */
@@ -59,7 +65,7 @@ public interface Datatype<R extends Comparable<R>> extends DataExpression {
      * @return known value for f, or null if there is no known value for the
      *         facet
      */
-    <O extends Comparable<O>> O getFacetValue(Facet<O> f);
+    <O extends Comparable<O>> O getFacetValue(Facet f);
 
     /**
      * @param f
@@ -123,7 +129,8 @@ public interface Datatype<R extends Comparable<R>> extends DataExpression {
      *        use when building Literals
      * @return value
      */
-    R parseValue(String s);
+    @Nonnull
+    R parseValue(@Nonnull String s);
 
     /**
      * @param s
@@ -132,36 +139,40 @@ public interface Datatype<R extends Comparable<R>> extends DataExpression {
      *         to the internal class representing the type, and datatype this
      *         datatype.
      */
-    Literal<R> buildLiteral(String s);
+    @Nonnull
+    Literal<R> buildLiteral(@Nonnull String s);
 
     /**
      * @param type
      *        type
      * @return true if this datatype has type as an ancestor
      */
-    boolean isSubType(Datatype<?> type);
+    boolean isSubType(@Nonnull Datatype<?> type);
 
     /**
-     * @return the datatype uri as a string (there does seem to be no need for a
-     *         more complex representation)
+     * @return the datatype IRI
      */
+    @Nonnull
     IRI getDatatypeIRI();
 
     /**
      * @return the list of possible values for this datatype which are
      *         compatible with the listed datatypes.
      */
+    @Nonnull
     Collection<Literal<R>> listValues();
 
     /** @return true if the datatype is numeric */
     boolean isNumericDatatype();
 
     /** @return cast as numeric datatype */
+    @Nonnull
     NumericDatatype<R> asNumericDatatype();
 
     /** @return true if ordered */
     boolean isOrderedDatatype();
 
     /** @return cast as ordered datatype */
+    @Nonnull
     OrderedDatatype<R> asOrderedDatatype();
 }

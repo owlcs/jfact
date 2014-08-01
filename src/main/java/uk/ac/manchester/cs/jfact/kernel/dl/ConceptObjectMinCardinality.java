@@ -78,6 +78,12 @@ public class ConceptObjectMinCardinality implements
 
     @Override
     public IRI getName() {
-        return IRI.create(toString());
+        return IRI.create("objectMinCardinality(" + roleDelegate + " " + N
+                + " " + delegate + ")");
+    }
+
+    @Override
+    public String toString() {
+        return getName().toString();
     }
 }

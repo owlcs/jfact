@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
+import javax.annotation.Nonnull;
+
 import conformance.Original;
 
 /* This file is part of the JFact DL reasoner
@@ -19,6 +21,7 @@ public interface DatatypeExpression<R extends Comparable<R>> extends
         Datatype<R> {
 
     /** @return the predefined datatype which is host for this expression */
+    @Nonnull
     Datatype<R> getHostType();
 
     /**
@@ -30,6 +33,7 @@ public interface DatatypeExpression<R extends Comparable<R>> extends
      *        the value for the facet
      * @return modified expression
      */
+    @Nonnull
     DatatypeExpression<R> addNonNumericFacet(Facet f, Comparable<?> value);
 
     /**
@@ -39,5 +43,6 @@ public interface DatatypeExpression<R extends Comparable<R>> extends
      *        value
      * @return modified expression
      */
+    @Nonnull
     DatatypeExpression<R> addNumericFacet(Facet f, Comparable<?> value);
 }

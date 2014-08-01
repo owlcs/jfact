@@ -228,11 +228,15 @@ public class ExpressionCache {
         @Nonnull
         public ObjectRoleExpression get(ObjectRoleExpression tail) {
             // try to find cached dep-set
-            if (map != null && map.containsKey(tail)) {
-                return map.get(tail);
+            ObjectRoleExpression concat = null;
+            if (map != null) {
+                concat = map.get(tail);
+            }
+            if (concat != null) {
+                return concat;
             }
             // no cached entry -- create a new one and cache it
-            ObjectRoleExpression concat = build(tail);
+            concat = build(tail);
             if (map == null) {
                 map = new HashMap<>();
             }

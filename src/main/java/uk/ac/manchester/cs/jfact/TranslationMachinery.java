@@ -5,6 +5,8 @@ package uk.ac.manchester.cs.jfact;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static org.semanticweb.owlapi.util.OWLAPIPreconditions.checkNotNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,6 +41,7 @@ import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.ReasoningKernel;
 import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.Axioms;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
@@ -88,8 +91,7 @@ public class TranslationMachinery implements Serializable {
         datatypefactory = factory;
         em = kernel.getExpressionManager();
         this.df = df;
-        axiomTranslator = new AxiomTranslator(kernel.getOntology(), df, this,
-                em);
+        axiomTranslator = new AxiomTranslator(kernel.getOntology(), df, this);
         classExpressionTranslator = new ClassExpressionTranslator(em, df, this);
         dataRangeTranslator = new DataRangeTranslator(em, df, this,
                 datatypefactory);
@@ -126,7 +128,7 @@ public class TranslationMachinery implements Serializable {
             // TODO check valid axioms, such as those involving topDataProperty
             if (!axiom2PtrMap.containsKey(axiom)) {
                 AxiomInterface axiomPointer = axiom.accept(axiomTranslator);
-                if (axiomPointer != null) {
+                if (axiomPointer != Axioms.dummy()) {
                     axiom2PtrMap.put(axiom, axiomPointer);
                     ptr2AxiomMap.put(axiomPointer, axiom);
                 }
@@ -190,9 +192,7 @@ public class TranslationMachinery implements Serializable {
 
     @Nonnull
     protected synchronized Datatype<?> pointer(OWLDatatype datatype) {
-        if (datatype == null) {
-            throw new IllegalArgumentException("datatype cannot be null");
-        }
+        checkNotNull(datatype, "datatype cannot be null");
         return datatypefactory.getKnownDatatype(datatype.getIRI());
     }
 

@@ -1588,19 +1588,15 @@ public class TBox implements Serializable {
         arrayNP.clear();
         nItems += this.fillArrays(concepts.getList());
         nItems += this.fillArrays(individuals.getList());
-        if (config.getProgressMonitor() != null) {
-            config.getProgressMonitor().reasonerTaskStarted(
-                    ReasonerProgressMonitor.CLASSIFYING);
-        }
+        config.getProgressMonitor().reasonerTaskStarted(
+                ReasonerProgressMonitor.CLASSIFYING);
         duringClassification = true;
         classifyConcepts(arrayCD, true, "completely defined");
         classifyConcepts(arrayNoCD, false, "regular");
         classifyConcepts(arrayNP, false, "non-primitive");
         duringClassification = false;
         pTaxCreator.processSplits();
-        if (config.getProgressMonitor() != null) {
-            config.getProgressMonitor().reasonerTaskStopped();
-        }
+        config.getProgressMonitor().reasonerTaskStopped();
         pTax.finalise();
         locTimer.stop();
         if (config.getverboseOutput()) {
@@ -2700,7 +2696,6 @@ public class TBox implements Serializable {
     @PortedFrom(file = "dlTBox.h", name = "processEquivalentR")
     public void processEquivalentR(List<DLTree> l) {
         if (!l.isEmpty()) {
-            RoleMaster RM = getRM(Role.resolveRole(l.get(0)));
             for (int i = 0; i < l.size() - 1; i++) {
                 RoleMaster.addRoleSynonym(Role.resolveRole(l.get(i)),
                         Role.resolveRole(l.get(i + 1)));

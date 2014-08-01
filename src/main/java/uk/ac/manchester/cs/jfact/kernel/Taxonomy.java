@@ -153,7 +153,7 @@ public class Taxonomy implements Serializable {
         for (TaxonomyVertex v : node.neigh(upDirection)) {
             queue.add(v);
         }
-        Set<TaxonomyVertex> pastBoundary = new HashSet<TaxonomyVertex>();
+        Set<TaxonomyVertex> pastBoundary = new HashSet<>();
         while (queue.size() > 0) {
             TaxonomyVertex _node = queue.remove(0);
             // recursive applicability checking

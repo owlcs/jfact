@@ -19,6 +19,7 @@ public class DatatypeEntry extends NamedEntry {
 
     private static final long serialVersionUID = 11000L;
     /** corresponding type (Type has null in the field) */
+    @Nonnull
     private final Datatype<?> type;
     /** DAG index of the entry */
     private int pName;
@@ -29,7 +30,7 @@ public class DatatypeEntry extends NamedEntry {
      * @param type
      *        type
      */
-    public DatatypeEntry(Datatype<?> type) {
+    public DatatypeEntry(@Nonnull Datatype<?> type) {
         super(type.getDatatypeIRI());
         this.type = type;
         pName = bpINVALID;
@@ -37,10 +38,11 @@ public class DatatypeEntry extends NamedEntry {
 
     /** @return check if data entry represents basic data type */
     public boolean isBasicDataType() {
-        return type != null && !type.isExpression();
+        return !type.isExpression();
     }
 
     /** @return datatype */
+    @Nonnull
     public Datatype<?> getDatatype() {
         return type;
     }

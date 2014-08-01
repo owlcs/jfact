@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.Reference;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
@@ -88,7 +90,7 @@ public final class DataTypeReasoner implements Serializable {
     @SuppressWarnings("unchecked")
     @PortedFrom(file = "DataReasoning.h", name = "registerDataType")
     private <R extends Comparable<R>> DataTypeSituation<R> getType(
-            Datatype<R> datatype) {
+            @Nonnull Datatype<R> datatype) {
         DataTypeSituation<R> appearance = (DataTypeSituation<R>) map
                 .get(datatype);
         if (appearance != null) {
@@ -143,7 +145,7 @@ public final class DataTypeReasoner implements Serializable {
 
     @Original
     private <R extends Comparable<R>> boolean dataExpression(boolean positive,
-            DatatypeExpression<R> c, DepSet dep) {
+            @Nonnull DatatypeExpression<R> c, DepSet dep) {
         Datatype<R> typeToIndex = c.getHostType();
         if (c instanceof DatatypeEnumeration) {
             typeToIndex = c;
@@ -158,7 +160,7 @@ public final class DataTypeReasoner implements Serializable {
 
     @Original
     private <R extends Comparable<R>> boolean dataType(boolean positive,
-            Datatype<R> c, DepSet dep) {
+            @Nonnull Datatype<R> c, DepSet dep) {
         if (options.isLoggingActive()) {
             options.getLog().printTemplate(Templates.INTERVAL,
                     positive ? "+" : "-", c, "", "", "");

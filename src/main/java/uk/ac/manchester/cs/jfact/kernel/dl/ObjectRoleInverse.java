@@ -55,6 +55,11 @@ public class ObjectRoleInverse implements ObjectRoleExpression, ObjectRoleArg,
 
     @Override
     public IRI getName() {
-        return IRI.create(toString());
+        return IRI.create("inverse(" + objectRoleExpression + ")");
+    }
+
+    @Override
+    public String toString() {
+        return getName().toString();
     }
 }

@@ -57,7 +57,6 @@ import org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
-import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomConceptInclusion;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleDomain;
@@ -89,6 +88,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleTransitive;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomSameIndividuals;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOf;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOfNot;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.Axioms;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
@@ -103,7 +103,6 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>,
     private final DeclarationVisitorEx v;
     private Ontology o;
     private TranslationMachinery tr;
-    private ExpressionCache em;
 
     /**
      * @param o
@@ -112,15 +111,12 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>,
      *        df
      * @param tr
      *        tr
-     * @param em
-     *        em
      */
     public AxiomTranslator(Ontology o, OWLDataFactory df,
-            TranslationMachinery tr, ExpressionCache em) {
+            TranslationMachinery tr) {
         v = new DeclarationVisitorEx(o, df, tr);
         this.o = o;
         this.tr = tr;
-        this.em = em;
     }
 
     @Override
@@ -263,7 +259,7 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>,
     @Override
     public AxiomInterface visit(OWLAnnotationAssertionAxiom axiom) {
         // Ignore
-        return null;
+        return Axioms.dummy();
     }
 
     @Override
@@ -379,24 +375,24 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>,
     @Override
     public AxiomInterface visit(SWRLRule rule) {
         // Ignore
-        return null;
+        return Axioms.dummy();
     }
 
     @Override
     public AxiomInterface visit(OWLSubAnnotationPropertyOfAxiom axiom) {
         // Ignore
-        return null;
+        return Axioms.dummy();
     }
 
     @Override
     public AxiomInterface visit(OWLAnnotationPropertyDomainAxiom axiom) {
         // Ignore
-        return null;
+        return Axioms.dummy();
     }
 
     @Override
     public AxiomInterface visit(OWLAnnotationPropertyRangeAxiom axiom) {
         // Ignore
-        return null;
+        return Axioms.dummy();
     }
 }

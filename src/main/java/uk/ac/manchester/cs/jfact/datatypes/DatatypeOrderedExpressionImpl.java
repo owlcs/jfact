@@ -10,6 +10,8 @@ import static uk.ac.manchester.cs.jfact.datatypes.Facets.*;
 
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.model.IRI;
 
 class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
@@ -18,18 +20,15 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
 
     private static final long serialVersionUID = 11000L;
     // TODO handle all value space restrictions in the delegations
+    @Nonnull
     private final Datatype<O> host;
 
     public DatatypeOrderedExpressionImpl(Datatype<O> b) {
         super(
                 IRI.create(b.getDatatypeIRI() + "_"
-                        + DatatypeFactory.getIndex()), b.getFacets());
-        if (b.isExpression()) {
-            this.host = b.asExpression().getHostType();
-        } else {
-            this.host = b;
-        }
-        ancestors = Utils.generateAncestors(this.host);
+                        + DatatypeFactory.getIndex()), b.getFacets(), Utils
+                        .generateAncestors(host(b)));
+        this.host = host(b);
         knownNumericFacetValues.putAll(b.getKnownNumericFacetValues());
         knownNonNumericFacetValues.putAll(b.getKnownNonNumericFacetValues());
     }
@@ -278,7 +277,6 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
         return this.hasMaxInclusive() || this.hasMaxExclusive();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public O getMin() {
         if (this.hasMinInclusive()) {
@@ -290,7 +288,6 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
         return null;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public O getMax() {
         if (this.hasMaxInclusive()) {

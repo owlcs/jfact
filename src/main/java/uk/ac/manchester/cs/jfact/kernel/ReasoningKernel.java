@@ -898,8 +898,7 @@ public class ReasoningKernel implements Serializable {
      * @return true iff role is inverse-functional
      */
     @PortedFrom(file = "Kernel.h", name = "isInverseFunctional")
-    @Nonnull
-    public Boolean isInverseFunctional(ObjectRoleExpression R) {
+    public boolean isInverseFunctional(ObjectRoleExpression R) {
         // ensure KB is ready to answer the query
         preprocessKB();
         Role r = getRole(R, "Role expression expected in isInverseFunctional()")

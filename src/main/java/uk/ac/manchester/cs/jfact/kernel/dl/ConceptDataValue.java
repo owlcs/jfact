@@ -67,6 +67,11 @@ public class ConceptDataValue implements ConceptDataRoleExpression,
 
     @Override
     public IRI getName() {
-        return IRI.create(toString());
+        return IRI.create("dataValue(" + delegate + " " + dataValue + ")");
+    }
+
+    @Override
+    public String toString() {
+        return getName().toString();
     }
 }

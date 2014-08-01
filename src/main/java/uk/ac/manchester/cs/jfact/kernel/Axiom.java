@@ -75,9 +75,7 @@ public class Axiom implements Serializable {
         }
         SAbsNApply();
         // FIXME!! as for now: just take the 1st concept name
-        if (bestConcept == null) {
-            bestConcept = Cons.get(0);
-        }
+        bestConcept = Cons.get(0);
         // normal concept absorption
         Concept = InAx.getConcept(bestConcept.getChild());
         JFactReasonerConfiguration options = KB.getOptions();

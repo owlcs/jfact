@@ -78,6 +78,12 @@ public class ConceptObjectMaxCardinality implements
 
     @Override
     public IRI getName() {
-        return IRI.create(toString());
+        return IRI.create("objectMaxCardinality(" + roleDelegate + " "
+                + delegate + ")");
+    }
+
+    @Override
+    public String toString() {
+        return getName().toString();
     }
 }

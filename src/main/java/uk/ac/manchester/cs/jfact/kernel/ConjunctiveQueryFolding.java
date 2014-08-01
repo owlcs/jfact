@@ -5,7 +5,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.top;
+import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -106,10 +106,8 @@ public class ConjunctiveQueryFolding implements Serializable {
                 if (atom.getArg() instanceof QRVariable
                         && query.isFreeVar((QRVariable) atom.getArg())) {
                     QRVariable var = (QRVariable) atom.getArg();
-                    VarRestrictions.put(
-                            var.getName(),
-                            ExpressionManager.and(C,
-                                    VarRestrictions.get(var.getName())));
+                    VarRestrictions.put(var.getName(),
+                            and(C, VarRestrictions.get(var.getName())));
                 } else {
                     ret.addAtom(atom);
                 }
@@ -399,17 +397,16 @@ public class ConjunctiveQueryFolding implements Serializable {
         }
         for (QRVariable v : query.getFreeVars()) {
             QRVariable var = NewVarMap.get(v);
-            approx.put(
-                    var,
-                    ExpressionManager.and(approx.get(var),
-                            app.Assign(query, null, v)));
+            approx.put(var, and(approx.get(var), app.Assign(query, null, v)));
         }
         for (Map.Entry<QRVariable, ConceptExpression> e : approx.entrySet()) {
-            VarRestrictions.put(
-                    e.getKey().getName(),
-                    ExpressionManager.and(
-                            VarRestrictions.get(e.getKey().getName()),
-                            e.getValue()));
+            ConceptExpression value = e.getValue();
+            IRI name = e.getKey().getName();
+            ConceptExpression c = VarRestrictions.get(name);
+            VarRestrictions
+                    .put(name,
+                            and(c,
+                                    value));
         }
     }
 
@@ -493,7 +490,7 @@ public class ConjunctiveQueryFolding implements Serializable {
         for (int i = 0; i < I2Var.size(); ++i) {
             IRI var = I2Var.get(i);
             List<ConceptExpression> list = new ArrayList<>(query.get(var));
-            Concepts.add(kernel.e(ExpressionManager.and(list)));
+            Concepts.add(kernel.e(and(list)));
         }
         fillIVec(kernel, artificialABox);
         kernel.getTBox().answerQuery(Concepts);

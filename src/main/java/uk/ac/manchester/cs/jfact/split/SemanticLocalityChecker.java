@@ -5,6 +5,8 @@ package uk.ac.manchester.cs.jfact.split;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.or;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
@@ -12,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
-import uk.ac.manchester.cs.jfact.kernel.ExpressionManager;
 import uk.ac.manchester.cs.jfact.kernel.ReasoningKernel;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleChain;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomConceptInclusion;
@@ -82,7 +83,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor,
     @PortedFrom(file = "SemanticLocalityChecker.h", name = "getExpr")
     protected ConceptExpression getExpr(AxiomInterface axiom) {
         // everything else doesn't require expression to be build
-        return axiom.accept(new ExpressionFromAxiomBuilder(null, pEM));
+        return axiom.accept(new ExpressionFromAxiomBuilder(null));
     }
 
     /** signature to keep */
@@ -196,8 +197,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor,
         isLocal = false;
         // check A = (or C1... Cn)
         List<ConceptExpression> arguments = axiom.getArguments();
-        if (!Kernel.isEquivalent(axiom.getConcept(),
-                ExpressionManager.or(arguments))) {
+        if (!Kernel.isEquivalent(axiom.getConcept(), or(arguments))) {
             return;
         }
         // check disjoint(C1...Cn)

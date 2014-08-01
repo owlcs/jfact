@@ -29,15 +29,18 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
         DatatypeCombination<DatatypeEnumeration<R>, Literal<R>>,
         DatatypeExpression<R> {
 
+    @Nonnull
     private final IRI uri;
+    @Nonnull
     protected final Datatype<R> host;
+    @Nonnull
     protected final List<Literal<R>> literals = new ArrayList<>();
 
     /**
      * @param d
      *        d
      */
-    public DatatypeEnumeration(Datatype<R> d) {
+    public DatatypeEnumeration(@Nonnull Datatype<R> d) {
         this.uri = IRI.create("urn:enum" + DatatypeFactory.getIndex());
         this.host = d;
     }
@@ -48,7 +51,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
      * @param l
      *        l
      */
-    public DatatypeEnumeration(Datatype<R> d, Literal<R> l) {
+    public DatatypeEnumeration(@Nonnull Datatype<R> d, @Nonnull Literal<R> l) {
         this(d);
         this.literals.add(l);
     }
@@ -59,7 +62,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
      * @param c
      *        c
      */
-    public DatatypeEnumeration(Datatype<R> d, Collection<Literal<R>> c) {
+    public DatatypeEnumeration(@Nonnull Datatype<R> d, Collection<Literal<R>> c) {
         this(d);
         this.literals.addAll(c);
         Collections.sort(this.literals);
@@ -127,12 +130,11 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     }
 
     @Override
-    public <O extends Comparable<O>> O getFacetValue(Facet<O> f) {
+    public <O extends Comparable<O>> O getFacetValue(Facet f) {
         O o = this.host.getFacetValue(f);
         return o;
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public Comparable getNumericFacetValue(Facet f) {
         return this.host.getNumericFacetValue(f);
@@ -203,8 +205,8 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     @Override
     public boolean isContradictory(Datatype<?> type) {
         if (type instanceof DatatypeEnumeration) {
-            return Helper.intersectsWith(((DatatypeEnumeration) type).literals,
-                    literals);
+            return Helper.intersectsWith(
+                    ((DatatypeEnumeration<?>) type).literals, literals);
         }
         return !isCompatible(type);
     }

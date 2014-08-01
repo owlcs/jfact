@@ -54,6 +54,11 @@ public class DataNot implements DataExpression,
 
     @Override
     public IRI getName() {
-        return IRI.create(toString());
+        return IRI.create("dataNot(" + Expr + ")");
+    }
+
+    @Override
+    public String toString() {
+        return getName().toString();
     }
 }

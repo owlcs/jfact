@@ -1,7 +1,6 @@
 package uk.ac.manchester.cs.jfact.split;
 
 import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.*;
-import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleDomain;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleRange;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleDomain;
@@ -18,17 +17,13 @@ public class ExpressionFromAxiomBuilder extends
         DLAxiomVisitorExAdapter<ConceptExpression> {
 
     private static final long serialVersionUID = 10201L;
-    private final ExpressionCache pEM;
 
     /**
      * @param a
      *        a
-     * @param e
-     *        e
      */
-    public ExpressionFromAxiomBuilder(ConceptExpression a, ExpressionCache e) {
+    public ExpressionFromAxiomBuilder(ConceptExpression a) {
         super(a);
-        pEM = e;
     }
 
     @Override

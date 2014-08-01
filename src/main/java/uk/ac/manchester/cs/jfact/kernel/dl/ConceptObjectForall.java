@@ -67,6 +67,12 @@ public class ConceptObjectForall implements ConceptObjectRCExpression,
 
     @Override
     public IRI getName() {
-        return IRI.create(toString());
+        return IRI.create("objectForall(" + delegate + " " + conceptExpression
+                + ")");
+    }
+
+    @Override
+    public String toString() {
+        return getName().toString();
     }
 }

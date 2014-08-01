@@ -310,6 +310,7 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>,
                 tr.pointer(axiom.getSuperProperty()));
     }
 
+    @SuppressWarnings("null")
     @Override
     public Boolean visit(OWLInverseFunctionalObjectPropertyAxiom axiom) {
         return kernel.isInverseFunctional(tr.pointer(axiom.getProperty()));

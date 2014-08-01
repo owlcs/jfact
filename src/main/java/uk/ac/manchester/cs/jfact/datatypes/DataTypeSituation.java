@@ -5,6 +5,7 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static org.semanticweb.owlapi.util.OWLAPIPreconditions.checkNotNull;
 import static uk.ac.manchester.cs.jfact.datatypes.DatatypeClashes.*;
 import gnu.trove.set.TIntSet;
 
@@ -14,6 +15,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.annotation.Nonnull;
 
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 
@@ -35,14 +38,13 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
     private final DepSet accDep = DepSet.create();
     /** dep-set for the clash */
     private final DataTypeReasoner reasoner;
+    @Nonnull
     private final Datatype<R> type;
     private final List<Literal<?>> literals = new ArrayList<>();
 
-    protected DataTypeSituation(Datatype<R> p, DataTypeReasoner dep) {
-        if (p == null) {
-            throw new IllegalArgumentException("p cannot be null");
-        }
-        this.type = p;
+    protected DataTypeSituation(@Nonnull Datatype<R> p,
+            @Nonnull DataTypeReasoner dep) {
+        this.type = checkNotNull(p);
         this.reasoner = dep;
         this.constraints.add(new DepInterval<R>());
     }
@@ -80,6 +82,7 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
     }
 
     /** @return type */
+    @Nonnull
     public Datatype<?> getType() {
         return this.type;
     }
@@ -306,7 +309,7 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
          *        type
          * @return true if consistent
          */
-        private boolean consistent(Datatype<R> type) {
+        boolean consistent(Datatype<R> type) {
             return this.e == null || this.e.isCompatible(type);
         }
 

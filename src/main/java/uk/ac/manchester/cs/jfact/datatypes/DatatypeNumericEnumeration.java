@@ -7,6 +7,8 @@ package uk.ac.manchester.cs.jfact.datatypes;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
+
 /**
  * numeric enumeration
  * 
@@ -20,7 +22,7 @@ public class DatatypeNumericEnumeration<R extends Comparable<R>> extends
      * @param d
      *        d
      */
-    public DatatypeNumericEnumeration(NumericDatatype<R> d) {
+    public DatatypeNumericEnumeration(@Nonnull NumericDatatype<R> d) {
         super(d);
     }
 
@@ -30,7 +32,8 @@ public class DatatypeNumericEnumeration<R extends Comparable<R>> extends
      * @param l
      *        l
      */
-    public DatatypeNumericEnumeration(NumericDatatype<R> d, Literal<R> l) {
+    public DatatypeNumericEnumeration(@Nonnull NumericDatatype<R> d,
+            @Nonnull Literal<R> l) {
         this(d);
         literals.add(l);
     }
@@ -41,8 +44,8 @@ public class DatatypeNumericEnumeration<R extends Comparable<R>> extends
      * @param c
      *        c
      */
-    public DatatypeNumericEnumeration(NumericDatatype<R> d,
-            Collection<Literal<R>> c) {
+    public DatatypeNumericEnumeration(@Nonnull NumericDatatype<R> d,
+            @Nonnull Collection<Literal<R>> c) {
         this(d);
         literals.addAll(c);
     }
@@ -100,6 +103,7 @@ public class DatatypeNumericEnumeration<R extends Comparable<R>> extends
         return !literals.isEmpty();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public R getMin() {
         if (literals.isEmpty()) {
@@ -109,6 +113,7 @@ public class DatatypeNumericEnumeration<R extends Comparable<R>> extends
         return r;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public R getMax() {
         if (literals.isEmpty()) {

@@ -9,6 +9,8 @@ import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.*;
 
 import java.io.Serializable;
 
+import javax.annotation.Nonnull;
+
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.queryobjects.QRAtom;
@@ -46,6 +48,7 @@ public abstract class BuildELIOConcept implements Serializable {
      * @return assigned concept
      */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "Assign")
+    @Nonnull
     public ConceptExpression Assign(QRQuery query, QRAtom previousAtom,
             QRVariable v) {
         // System.out.println("Assign:\n variable: " + v + "\n atom:" +

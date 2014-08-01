@@ -21,11 +21,11 @@ public class QueueQueue implements Serializable {
 
     private static final long serialVersionUID = 11000L;
     /** waiting ops queue */
-    private List<ToDoEntry> _Wait = new ArrayList<>();
+    List<ToDoEntry> _Wait = new ArrayList<>();
     // / stack to save states for the overwritten queue
     SaveStackRare stack;
     /** start pointer; points to the 1st element in the queue */
-    private int sPointer = 0;
+    int sPointer = 0;
     private int size = 0;
 
     // type for restore the whole queue

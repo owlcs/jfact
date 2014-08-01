@@ -54,6 +54,11 @@ public class ConceptObjectSelf implements ConceptObjectRoleExpression,
 
     @Override
     public IRI getName() {
-        return IRI.create(toString());
+        return IRI.create("objectSelf(" + objectRoleExpression + ")");
+    }
+
+    @Override
+    public String toString() {
+        return getName().toString();
     }
 }

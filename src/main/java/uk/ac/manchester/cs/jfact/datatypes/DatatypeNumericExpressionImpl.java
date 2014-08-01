@@ -2,6 +2,8 @@ package uk.ac.manchester.cs.jfact.datatypes;
 
 import java.math.BigDecimal;
 
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.model.IRI;
 
 /* This file is part of the JFact DL reasoner
@@ -16,18 +18,15 @@ class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends
 
     private static final long serialVersionUID = 11000L;
     // TODO handle all value space restrictions in the delegations
+    @Nonnull
     private final Datatype<O> host;
 
     public DatatypeNumericExpressionImpl(Datatype<O> b) {
         super(
                 IRI.create(b.getDatatypeIRI() + "_"
-                        + DatatypeFactory.getIndex()), b.getFacets());
-        if (b.isExpression()) {
-            this.host = b.asExpression().getHostType();
-        } else {
-            this.host = b;
-        }
-        ancestors = Utils.generateAncestors(this.host);
+                        + DatatypeFactory.getIndex()), b.getFacets(), Utils
+                        .generateAncestors(host(b)));
+        this.host = host(b);
         knownNumericFacetValues.putAll(b.getKnownNumericFacetValues());
         knownNonNumericFacetValues.putAll(b.getKnownNonNumericFacetValues());
     }

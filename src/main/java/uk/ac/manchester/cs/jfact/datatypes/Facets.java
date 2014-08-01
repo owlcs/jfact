@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 import org.semanticweb.owlapi.vocab.OWLFacet;
@@ -62,7 +64,6 @@ public class Facets implements Serializable {
             return false;
         }
 
-        @SuppressWarnings("rawtypes")
         @Override
         public Comparable parseNumber(Object value) {
             if (!isNumberFacet()) {
@@ -100,7 +101,6 @@ public class Facets implements Serializable {
             }
         }
 
-        @SuppressWarnings("rawtypes")
         @Override
         public Comparable parse(Object o) {
             return (Comparable<?>) o;
@@ -162,15 +162,16 @@ public class Facets implements Serializable {
         preserve {
 
             @Override
-            public String normalize(String input) {
+            public String normalize(@Nonnull String input) {
                 return input;
             }
         },
         /** replace */
         replace {
 
+            @SuppressWarnings("null")
             @Override
-            public String normalize(String input) {
+            public String normalize(@Nonnull String input) {
                 return input.replace('\t', ' ').replace('\n', ' ')
                         .replace('\r', ' ');
             }
@@ -178,8 +179,9 @@ public class Facets implements Serializable {
         /** collapse */
         collapse {
 
+            @SuppressWarnings("null")
             @Override
-            public String normalize(String input) {
+            public String normalize(@Nonnull String input) {
                 StringBuilder b = new StringBuilder(replace.normalize(input));
                 for (int i = 0; i < b.length(); i++) {
                     if (b.charAt(i) == ' ') {
@@ -197,7 +199,8 @@ public class Facets implements Serializable {
          *        input
          * @return normalized input
          */
-        public abstract String normalize(String input);
+        @Nonnull
+        public abstract String normalize(@Nonnull String input);
     }
 
     /** length */

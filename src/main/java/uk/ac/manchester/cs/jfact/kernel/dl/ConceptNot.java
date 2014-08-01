@@ -53,6 +53,11 @@ public class ConceptNot implements ConceptExpression, ConceptArg, Serializable {
 
     @Override
     public IRI getName() {
-        return IRI.create(toString());
+        return IRI.create("not(" + conceptExpression + ")");
+    }
+
+    @Override
+    public String toString() {
+        return getName().toString();
     }
 }

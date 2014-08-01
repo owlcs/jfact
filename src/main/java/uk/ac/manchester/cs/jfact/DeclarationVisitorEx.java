@@ -2,6 +2,8 @@ package uk.ac.manchester.cs.jfact;
 
 import java.io.Serializable;
 
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -15,6 +17,7 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDeclaration;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.Axioms;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 
 /** declaration translator */
@@ -41,7 +44,7 @@ public class DeclarationVisitorEx implements
         this.tr = tr;
     }
 
-    private OWLDeclarationAxiom d(OWLEntity e) {
+    private OWLDeclarationAxiom d(@Nonnull OWLEntity e) {
         return df.getOWLDeclarationAxiom(e);
     }
 
@@ -72,6 +75,6 @@ public class DeclarationVisitorEx implements
 
     @Override
     public AxiomInterface visit(OWLAnnotationProperty property) {
-        return null;
+        return Axioms.dummy();
     }
 }

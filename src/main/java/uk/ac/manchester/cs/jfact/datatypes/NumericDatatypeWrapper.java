@@ -68,12 +68,11 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements
     }
 
     @Override
-    public <T extends Comparable<T>> T getFacetValue(Facet<T> f) {
+    public <T extends Comparable<T>> T getFacetValue(Facet f) {
         T o = this.d.getFacetValue(f);
         return o;
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public Comparable getNumericFacetValue(Facet f) {
         return this.d.getNumericFacetValue(f);
@@ -174,7 +173,6 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements
         return this.hasMaxInclusive() || this.hasMaxExclusive();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public O getMin() {
         if (this.hasMinExclusive()) {
@@ -186,7 +184,6 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements
         return null;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public O getMax() {
         if (this.hasMaxExclusive()) {
@@ -225,6 +222,11 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements
 
     @Override
     public IRI getName() {
-        return IRI.create(toString());
+        return IRI.create("numeric(" + d + ")");
+    }
+
+    @Override
+    public String toString() {
+        return getName().toString();
     }
 }

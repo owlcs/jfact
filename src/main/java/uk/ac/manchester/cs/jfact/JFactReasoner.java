@@ -269,6 +269,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return new ArrayList<>(rawChanges);
     }
 
+    @SuppressWarnings("null")
     @Override
     public synchronized Set<OWLAxiom> getPendingAxiomAdditions() {
         if (!rawChanges.isEmpty()) {
@@ -279,6 +280,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return Collections.emptySet();
     }
 
+    @SuppressWarnings("null")
     @Override
     public synchronized Set<OWLAxiom> getPendingAxiomRemovals() {
         if (!rawChanges.isEmpty()) {
@@ -768,6 +770,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return tr.translateNodeSet(acc);
     }
 
+    @SuppressWarnings("null")
     @Override
     public synchronized Set<OWLLiteral> getDataPropertyValues(
             OWLNamedIndividual ind, OWLDataProperty pe) {

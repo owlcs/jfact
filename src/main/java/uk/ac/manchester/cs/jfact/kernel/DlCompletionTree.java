@@ -121,7 +121,6 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
     /** concept that init the newly created node */
     private int init;
     /** blocker of a node */
-    @Nonnull
     protected DlCompletionTree blocker;
     /** dep-set for Purge op */
     protected DepSet pDep = DepSet.create();

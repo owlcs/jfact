@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import javax.annotation.Nonnull;
+
 import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -21,6 +23,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 @SuppressWarnings("javadoc")
 public class VerifyComplianceOWLSNewFeatures extends VerifyComplianceBase {
 
+    @Nonnull
     String in = "Prefix(:=<http://www.w3.org/2002/07/owl#>)\n"
             + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
             + "Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\n"
@@ -337,7 +340,7 @@ public class VerifyComplianceOWLSNewFeatures extends VerifyComplianceBase {
     public void
             shouldPassgetObjectPropertyRangesisPresentedByfalseBasicOntology()
                     throws OWLOntologyCreationException {
-        String in = "Prefix(:=<http://www.w3.org/2002/07/owl#>)\n"
+        String inputString = "Prefix(:=<http://www.w3.org/2002/07/owl#>)\n"
                 + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
                 + "Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\n"
                 + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
@@ -351,15 +354,15 @@ public class VerifyComplianceOWLSNewFeatures extends VerifyComplianceBase {
                 + "ObjectPropertyRange(<urn:Service.owl#presentedBy> <urn:Service.owl#Service>)\n"
                 + ")";
         OWLOntology onto = OWLManager.createOWLOntologyManager()
-                .loadOntologyFromOntologyDocument(new StringDocumentSource(in));
-        OWLReasoner reasoner = factory().createReasoner(onto);
+                .loadOntologyFromOntologyDocument(
+                        new StringDocumentSource(inputString));
+        OWLReasoner r = factory().createReasoner(onto);
         OWLClass Thing = C("http://www.w3.org/2002/07/owl#Thing");
         OWLClass Service = C("urn:Service.owl#Service");
         OWLObjectProperty isPresentedBy = OP("urn:Service.owl#isPresentedBy");
         // expected Thing, Service
         // actual__ isPresentedBy, false
-        equal(reasoner.getObjectPropertyRanges(isPresentedBy, false), Thing,
-                Service);
+        equal(r.getObjectPropertyRanges(isPresentedBy, false), Thing, Service);
     }
 
     @Test

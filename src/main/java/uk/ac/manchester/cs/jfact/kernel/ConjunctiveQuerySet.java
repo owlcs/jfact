@@ -12,7 +12,7 @@ import conformance.PortedFrom;
 public class ConjunctiveQuerySet {
 
     /** pointer to an expression manager */
-    protected ExpressionManager pEManager;
+    protected ExpressionCache pEManager;
     /** pointer to a query var factory */
     protected VariableFactory VarFactory;
     /** queries */
@@ -31,7 +31,7 @@ public class ConjunctiveQuerySet {
      * @param art
      *        artificual abox
      */
-    public ConjunctiveQuerySet(ExpressionManager pEM, VariableFactory VarFact,
+    public ConjunctiveQuerySet(ExpressionCache pEM, VariableFactory VarFact,
             boolean art) {
         pEManager = pEM;
         VarFactory = VarFact;
