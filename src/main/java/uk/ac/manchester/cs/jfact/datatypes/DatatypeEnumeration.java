@@ -131,9 +131,8 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     }
 
     @Override
-    public <O extends Comparable<O>> O getFacetValue(Facet f) {
-        O o = this.host.getFacetValue(f);
-        return o;
+    public Comparable getFacetValue(Facet f) {
+        return this.host.getFacetValue(f);
     }
 
     @Override

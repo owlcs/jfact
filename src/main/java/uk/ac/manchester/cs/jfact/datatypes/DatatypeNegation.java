@@ -98,9 +98,8 @@ public class DatatypeNegation<R extends Comparable<R>> implements
     }
 
     @Override
-    public <O extends Comparable<O>> O getFacetValue(Facet f) {
-        O o = host.getFacetValue(f);
-        return o;
+    public Comparable getFacetValue(Facet f) {
+        return host.getFacetValue(f);
     }
 
     @Override

@@ -60,12 +60,10 @@ public interface Datatype<R extends Comparable<R>> extends DataExpression {
     /**
      * @param f
      *        facet
-     * @param <O>
-     *        facet type
      * @return known value for f, or null if there is no known value for the
      *         facet
      */
-    <O extends Comparable<O>> O getFacetValue(Facet f);
+    Comparable getFacetValue(Facet f);
 
     /**
      * @param f

@@ -86,7 +86,8 @@
 						<Bundle-Name>${project.artifactId}</Bundle-Name>
 						<Export-Package>{local-packages}</Export-Package>
 						<Import-Package>org.protege.*, javax.*, org.w3c.dom.*,
-							org.semanticweb.owlapi.*, uk.ac.manchester.cs.owl.owlapi.*</Import-Package>
+							org.semanticweb.owlapi.*, uk.ac.manchester.cs.owl.owlapi.*,
+							com.google.common.collect, gnu.trove, gnu.trove.*</Import-Package>
 					</instructions>
 				</configuration>
 			</plugin>

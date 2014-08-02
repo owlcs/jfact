@@ -68,9 +68,8 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements
     }
 
     @Override
-    public <T extends Comparable<T>> T getFacetValue(Facet f) {
-        T o = this.d.getFacetValue(f);
-        return o;
+    public Comparable getFacetValue(Facet f) {
+        return this.d.getFacetValue(f);
     }
 
     @Override
