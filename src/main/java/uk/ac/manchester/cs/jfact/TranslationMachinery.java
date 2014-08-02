@@ -28,7 +28,6 @@ import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
-import org.semanticweb.owlapi.model.OWLLogicalEntity;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectInverseOf;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
@@ -109,11 +108,9 @@ public class TranslationMachinery implements Serializable {
     public List<Expression> translateExpressions(Set<OWLEntity> signature) {
         List<Expression> list = new ArrayList<>();
         for (OWLEntity entity : signature) {
-            if (entity instanceof OWLLogicalEntity) {
-                Expression ex = entity.accept(new EntityVisitorEx(this));
-                if (ex != null) {
-                    list.add(ex);
-                }
+            Expression ex = entity.accept(new EntityVisitorEx(this));
+            if (ex != Axioms.dummyExpression()) {
+                list.add(ex);
             }
         }
         return list;

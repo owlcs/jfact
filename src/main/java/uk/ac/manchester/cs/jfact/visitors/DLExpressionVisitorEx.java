@@ -10,6 +10,8 @@ package uk.ac.manchester.cs.jfact.visitors;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import javax.annotation.Nonnull;
+
 import uk.ac.manchester.cs.jfact.datatypes.Datatype;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeExpression;
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
@@ -65,140 +67,160 @@ public interface DLExpressionVisitorEx<O> {
      *        ConceptTop to visit
      * @return visitor value
      */
-    O visit(ConceptTop expr);
+    @Nonnull
+    O visit(@Nonnull ConceptTop expr);
 
     /**
      * @param expr
      *        ConceptBottom to visit
      * @return visitor value
      */
-    O visit(ConceptBottom expr);
+    @Nonnull
+    O visit(@Nonnull ConceptBottom expr);
 
     /**
      * @param expr
      *        ConceptName to visit
      * @return visitor value
      */
-    O visit(ConceptName expr);
+    @Nonnull
+    O visit(@Nonnull ConceptName expr);
 
     /**
      * @param expr
      *        ConceptNot to visit
      * @return visitor value
      */
-    O visit(ConceptNot expr);
+    @Nonnull
+    O visit(@Nonnull ConceptNot expr);
 
     /**
      * @param expr
      *        ConceptAnd to visit
      * @return visitor value
      */
-    O visit(ConceptAnd expr);
+    @Nonnull
+    O visit(@Nonnull ConceptAnd expr);
 
     /**
      * @param expr
      *        ConceptOr to visit
      * @return visitor value
      */
-    O visit(ConceptOr expr);
+    @Nonnull
+    O visit(@Nonnull ConceptOr expr);
 
     /**
      * @param expr
      *        ConceptOneOf to visit
      * @return visitor value
      */
-    O visit(ConceptOneOf<?> expr);
+    @Nonnull
+    O visit(@Nonnull ConceptOneOf<?> expr);
 
     /**
      * @param expr
      *        ConceptObjectSelf to visit
      * @return visitor value
      */
-    O visit(ConceptObjectSelf expr);
+    @Nonnull
+    O visit(@Nonnull ConceptObjectSelf expr);
 
     /**
      * @param expr
      *        ConceptObjectValue to visit
      * @return visitor value
      */
-    O visit(ConceptObjectValue expr);
+    @Nonnull
+    O visit(@Nonnull ConceptObjectValue expr);
 
     /**
      * @param expr
      *        ConceptObjectExists to visit
      * @return visitor value
      */
-    O visit(ConceptObjectExists expr);
+    @Nonnull
+    O visit(@Nonnull ConceptObjectExists expr);
 
     /**
      * @param expr
      *        ConceptObjectForall to visit
      * @return visitor value
      */
-    O visit(ConceptObjectForall expr);
+    @Nonnull
+    O visit(@Nonnull ConceptObjectForall expr);
 
     /**
      * @param expr
      *        ConceptObjectMinCardinality to visit
      * @return visitor value
      */
-    O visit(ConceptObjectMinCardinality expr);
+    @Nonnull
+    O visit(@Nonnull ConceptObjectMinCardinality expr);
 
     /**
      * @param expr
      *        ConceptObjectMaxCardinality to visit
      * @return visitor value
      */
-    O visit(ConceptObjectMaxCardinality expr);
+    @Nonnull
+    O visit(@Nonnull ConceptObjectMaxCardinality expr);
 
     /**
      * @param expr
      *        ConceptObjectExactCardinality to visit
      * @return visitor value
      */
-    O visit(ConceptObjectExactCardinality expr);
+    @Nonnull
+    O visit(@Nonnull ConceptObjectExactCardinality expr);
 
     /**
      * @param expr
      *        ConceptDataValue to visit
      * @return visitor value
      */
-    O visit(ConceptDataValue expr);
+    @Nonnull
+    O visit(@Nonnull ConceptDataValue expr);
 
     /**
      * @param expr
      *        ConceptDataExists to visit
      * @return visitor value
      */
-    O visit(ConceptDataExists expr);
+    @Nonnull
+    O visit(@Nonnull ConceptDataExists expr);
 
     /**
      * @param expr
      *        ConceptDataForall to visit
      * @return visitor value
      */
-    O visit(ConceptDataForall expr);
+    @Nonnull
+    O visit(@Nonnull ConceptDataForall expr);
 
     /**
      * @param expr
      *        ConceptDataMinCardinality to visit
      * @return visitor value
      */
-    O visit(ConceptDataMinCardinality expr);
+    @Nonnull
+    O visit(@Nonnull ConceptDataMinCardinality expr);
 
     /**
      * @param expr
      *        ConceptDataMaxCardinality to visit
      * @return visitor value
      */
-    O visit(ConceptDataMaxCardinality expr);
+    @Nonnull
+    O visit(@Nonnull ConceptDataMaxCardinality expr);
 
     /**
      * @param expr
      *        ConceptDataExactCardinality to visit
      * @return visitor value
      */
-    O visit(ConceptDataExactCardinality expr);
+    @Nonnull
+    O visit(@Nonnull ConceptDataExactCardinality expr);
 
     // individual expressions
     /**
@@ -206,7 +228,8 @@ public interface DLExpressionVisitorEx<O> {
      *        IndividualName to visit
      * @return visitor value
      */
-    O visit(IndividualName expr);
+    @Nonnull
+    O visit(@Nonnull IndividualName expr);
 
     // object role expressions
     /**
@@ -214,49 +237,56 @@ public interface DLExpressionVisitorEx<O> {
      *        ObjectRoleTop to visit
      * @return visitor value
      */
-    O visit(ObjectRoleTop expr);
+    @Nonnull
+    O visit(@Nonnull ObjectRoleTop expr);
 
     /**
      * @param expr
      *        ObjectRoleBottom to visit
      * @return visitor value
      */
-    O visit(ObjectRoleBottom expr);
+    @Nonnull
+    O visit(@Nonnull ObjectRoleBottom expr);
 
     /**
      * @param expr
      *        ObjectRoleName to visit
      * @return visitor value
      */
-    O visit(ObjectRoleName expr);
+    @Nonnull
+    O visit(@Nonnull ObjectRoleName expr);
 
     /**
      * @param expr
      *        ObjectRoleInverse to visit
      * @return visitor value
      */
-    O visit(ObjectRoleInverse expr);
+    @Nonnull
+    O visit(@Nonnull ObjectRoleInverse expr);
 
     /**
      * @param expr
      *        ObjectRoleChain to visit
      * @return visitor value
      */
-    O visit(ObjectRoleChain expr);
+    @Nonnull
+    O visit(@Nonnull ObjectRoleChain expr);
 
     /**
      * @param expr
      *        ObjectRoleProjectionFrom to visit
      * @return visitor value
      */
-    O visit(ObjectRoleProjectionFrom expr);
+    @Nonnull
+    O visit(@Nonnull ObjectRoleProjectionFrom expr);
 
     /**
      * @param expr
      *        ObjectRoleProjectionInto to visit
      * @return visitor value
      */
-    O visit(ObjectRoleProjectionInto expr);
+    @Nonnull
+    O visit(@Nonnull ObjectRoleProjectionInto expr);
 
     // data role expressions
     /**
@@ -264,21 +294,24 @@ public interface DLExpressionVisitorEx<O> {
      *        DataRoleTop to visit
      * @return visitor value
      */
-    O visit(DataRoleTop expr);
+    @Nonnull
+    O visit(@Nonnull DataRoleTop expr);
 
     /**
      * @param expr
      *        DataRoleBottom to visit
      * @return visitor value
      */
-    O visit(DataRoleBottom expr);
+    @Nonnull
+    O visit(@Nonnull DataRoleBottom expr);
 
     /**
      * @param expr
      *        DataRoleName to visit
      * @return visitor value
      */
-    O visit(DataRoleName expr);
+    @Nonnull
+    O visit(@Nonnull DataRoleName expr);
 
     // data expressions
     /**
@@ -286,61 +319,70 @@ public interface DLExpressionVisitorEx<O> {
      *        DataTop to visit
      * @return visitor value
      */
-    O visit(DataTop expr);
+    @Nonnull
+    O visit(@Nonnull DataTop expr);
 
     /**
      * @param expr
      *        DataBottom to visit
      * @return visitor value
      */
-    O visit(DataBottom expr);
+    @Nonnull
+    O visit(@Nonnull DataBottom expr);
 
     /**
      * @param expr
      *        Literal to visit
      * @return visitor value
      */
-    O visit(Literal<?> expr);
+    @Nonnull
+    O visit(@Nonnull Literal<?> expr);
 
     /**
      * @param expr
      *        Datatype to visit
      * @return visitor value
      */
-    O visit(Datatype<?> expr);
+    @Nonnull
+    O visit(@Nonnull Datatype<?> expr);
 
     /**
      * @param expr
      *        DatatypeExpression to visit
      * @return visitor value
      */
-    O visit(DatatypeExpression<?> expr);
+    @Nonnull
+    O visit(@Nonnull DatatypeExpression<?> expr);
 
     /**
      * @param expr
      *        DataNot to visit
      * @return visitor value
      */
-    O visit(DataNot expr);
+    @Nonnull
+    O visit(@Nonnull DataNot expr);
 
     /**
      * @param expr
      *        DataAnd to visit
      * @return visitor value
      */
-    O visit(DataAnd expr);
+    @Nonnull
+    O visit(@Nonnull DataAnd expr);
 
     /**
      * @param expr
      *        DataOr to visit
      * @return visitor value
      */
-    O visit(DataOr expr);
+    @Nonnull
+    O visit(@Nonnull DataOr expr);
 
     /**
      * @param expr
      *        DataOneOf to visit
      * @return visitor value
      */
-    O visit(DataOneOf expr);
+    @Nonnull
+    O visit(@Nonnull DataOneOf expr);
 }

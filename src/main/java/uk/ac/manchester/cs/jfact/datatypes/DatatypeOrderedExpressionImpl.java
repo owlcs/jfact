@@ -233,11 +233,6 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
     }
 
     @Override
-    public NumericDatatype<O> asNumericDatatype() {
-        return null;
-    }
-
-    @Override
     public boolean isOrderedDatatype() {
         return this.host.isOrderedDatatype();
     }

@@ -90,5 +90,6 @@ public abstract class BuildELIOConcept implements Serializable {
         return and(t, s);
     }
 
+    @Nonnull
     protected abstract ConceptExpression createConceptByVar(QRVariable v);
 }

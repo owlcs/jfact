@@ -63,7 +63,7 @@ public class DatatypesTestCase {
     private static final String T20 = "T20:44:11.656+01:00";
 
     @Nonnull
-    private static DatatypeEntry datatype(Datatype<?> d, int index) {
+    private static DatatypeEntry datatype(@Nonnull Datatype<?> d, int index) {
         return new DatatypeEntry(d).withIndex(index);
     }
 

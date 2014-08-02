@@ -604,6 +604,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
         return individualNodeSetPolicy;
     }
 
+    @SuppressWarnings("null")
     @Override
     public ReasonerProgressMonitor getProgressMonitor() {
         if (progressMonitor == null) {
@@ -612,24 +613,16 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
                 private static final long serialVersionUID = 1L;
 
                 @Override
-                public void reasonerTaskStopped() {
-                    // TODO Auto-generated method stub
-                }
+                public void reasonerTaskStopped() {}
 
                 @Override
-                public void reasonerTaskStarted(String taskName) {
-                    // TODO Auto-generated method stub
-                }
+                public void reasonerTaskStarted(String taskName) {}
 
                 @Override
-                public void reasonerTaskProgressChanged(int value, int max) {
-                    // TODO Auto-generated method stub
-                }
+                public void reasonerTaskProgressChanged(int value, int max) {}
 
                 @Override
-                public void reasonerTaskBusy() {
-                    // TODO Auto-generated method stub
-                }
+                public void reasonerTaskBusy() {}
             };
         }
         return progressMonitor;

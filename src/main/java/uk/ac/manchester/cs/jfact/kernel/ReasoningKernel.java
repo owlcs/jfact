@@ -386,7 +386,8 @@ public class ReasoningKernel implements Serializable {
      * @return true iff C [= D holds
      */
     @PortedFrom(file = "Kernel.h", name = "checkSub")
-    private boolean checkSub(ConceptExpression C, ConceptExpression D) {
+    private boolean checkSub(@Nonnull ConceptExpression C,
+            @Nonnull ConceptExpression D) {
         if (ReasoningKernel.isNameOrConst(D)
                 && ReasoningKernel.isNameOrConst(C)) {
             return this.checkSub(getTBox().getCI(e(C)), getTBox().getCI(e(D)));
@@ -964,6 +965,7 @@ public class ReasoningKernel implements Serializable {
      *        R
      * @return true iff role is asymmetric
      */
+    @SuppressWarnings("null")
     @PortedFrom(file = "Kernel.h", name = "isAsymmetric")
     @Nonnull
     public Boolean isAsymmetric(ObjectRoleExpression R) {

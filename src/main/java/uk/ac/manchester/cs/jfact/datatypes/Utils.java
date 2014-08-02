@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 /** @author ignazio */
 public class Utils implements Serializable {
 
@@ -19,8 +21,9 @@ public class Utils implements Serializable {
      *        facets
      * @return set of facets
      */
+    @Nonnull
     public static Set<Facet> getFacets(Facet... facets) {
-        Set<Facet> toReturn = new HashSet<>();
+        Set<Facet> toReturn = new HashSet<>(facets.length);
         for (Facet f : facets) {
             toReturn.add(f);
         }
@@ -32,8 +35,9 @@ public class Utils implements Serializable {
      *        facets
      * @return set of facets
      */
+    @Nonnull
     public static Set<Facet> getFacets(Facet[]... facets) {
-        Set<Facet> toReturn = new HashSet<>();
+        Set<Facet> toReturn = new HashSet<>(facets.length);
         for (Facet[] fac : facets) {
             for (Facet f : fac) {
                 toReturn.add(f);
@@ -47,6 +51,7 @@ public class Utils implements Serializable {
      *        d
      * @return ancestors
      */
+    @Nonnull
     public static Set<Datatype<?>> generateAncestors(Datatype<?> d) {
         Set<Datatype<?>> toReturn = new HashSet<>(d.getAncestors());
         toReturn.add(d);

@@ -11,6 +11,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 import uk.ac.manchester.cs.jfact.datatypes.Datatype;
@@ -255,9 +257,11 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>,
 
     @Override
     public DLTree visit(ConceptDataMinCardinality expr) {
-        return DLTreeFactory.createSNFGE(expr.getCardinality(), expr
-                .getDataRoleExpression().accept(this),
-                expr.getExpr().accept(this));
+        DLTree role = expr.getDataRoleExpression().accept(this);
+        DLTree filler = expr.getExpr().accept(this);
+        assert role != null;
+        assert filler != null;
+        return DLTreeFactory.createSNFGE(expr.getCardinality(), role, filler);
     }
 
     @Override
@@ -390,13 +394,13 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>,
     }
 
     @Override
-    public DLTree visit(Datatype<?> expr) {
+    public DLTree visit(@Nonnull Datatype<?> expr) {
         DatatypeEntry entry = new DatatypeEntry(expr);
         return DLTreeFactory.wrap(entry);
     }
 
     @Override
-    public DLTree visit(DatatypeExpression<?> expr) {
+    public DLTree visit(@Nonnull DatatypeExpression<?> expr) {
         DatatypeEntry entry = new DatatypeEntry(expr);
         return DLTreeFactory.wrap(entry);
     }

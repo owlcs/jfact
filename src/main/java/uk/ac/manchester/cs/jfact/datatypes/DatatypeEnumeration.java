@@ -15,6 +15,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
@@ -238,7 +239,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
 
     @Override
     public NumericDatatype<R> asNumericDatatype() {
-        return null;
+        throw new ReasonerInternalException(this + " is not a numeric datatype");
     }
 
     @Override
@@ -248,7 +249,8 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
 
     @Override
     public OrderedDatatype<R> asOrderedDatatype() {
-        return null;
+        throw new ReasonerInternalException(this
+                + " is not an ordered datatype");
     }
 
     @Override

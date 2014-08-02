@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
@@ -106,8 +108,9 @@ public class ConjunctiveQueryFolding implements Serializable {
                 if (atom.getArg() instanceof QRVariable
                         && query.isFreeVar((QRVariable) atom.getArg())) {
                     QRVariable var = (QRVariable) atom.getArg();
-                    VarRestrictions.put(var.getName(),
-                            and(C, VarRestrictions.get(var.getName())));
+                    ConceptExpression d = VarRestrictions.get(var.getName());
+                    assert d != null;
+                    VarRestrictions.put(var.getName(), and(C, d));
                 } else {
                     ret.addAtom(atom);
                 }
@@ -378,9 +381,14 @@ public class ConjunctiveQueryFolding implements Serializable {
      * @return concept for var
      */
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "createConceptByVar")
+    @Nonnull
     public
             ConceptExpression createConceptByVar(QRVariable v) {
-        return VarRestrictions.get(NewVarMap.get(v).getName());
+        QRVariable qrVariable = NewVarMap.get(v);
+        ConceptExpression conceptExpression = VarRestrictions.get(qrVariable
+                .getName());
+        assert conceptExpression != null;
+        return conceptExpression;
     }
 
     /**
@@ -397,16 +405,17 @@ public class ConjunctiveQueryFolding implements Serializable {
         }
         for (QRVariable v : query.getFreeVars()) {
             QRVariable var = NewVarMap.get(v);
-            approx.put(var, and(approx.get(var), app.Assign(query, null, v)));
+            ConceptExpression c = approx.get(var);
+            assert c != null;
+            approx.put(var, and(c, app.Assign(query, null, v)));
         }
         for (Map.Entry<QRVariable, ConceptExpression> e : approx.entrySet()) {
             ConceptExpression value = e.getValue();
             IRI name = e.getKey().getName();
             ConceptExpression c = VarRestrictions.get(name);
-            VarRestrictions
-                    .put(name,
-                            and(c,
-                                    value));
+            assert c != null;
+            assert value != null;
+            VarRestrictions.put(name, and(c, value));
         }
     }
 

@@ -37,8 +37,14 @@ abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity>
         this.em = em;
         this.df = df;
         this.tr = tr;
+        fillTopAndBottomEntities();
+    }
+
+    protected void fillTopAndBottomEntities() {
         E topEntity = this.getTopEntity();
-        this.fillMaps(topEntity, this.getTopEntityPointer());
+        if (topEntity != null) {
+            this.fillMaps(topEntity, this.getTopEntityPointer());
+        }
         E bottomEntity = this.getBottomEntity();
         if (bottomEntity != null) {
             this.fillMaps(bottomEntity, this.getBottomEntityPointer());
@@ -89,16 +95,13 @@ abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity>
     @Nonnull
     protected abstract DefaultNodeSet<E> createDefaultNodeSet();
 
-    @Nonnull
     protected abstract T getTopEntityPointer();
 
-    @Nonnull
     protected abstract T getBottomEntityPointer();
 
     @Nonnull
     protected abstract T createPointerForEntity(E entity);
 
-    @Nonnull
     protected abstract E getTopEntity();
 
     protected abstract E getBottomEntity();

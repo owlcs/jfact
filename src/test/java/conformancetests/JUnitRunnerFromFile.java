@@ -9,14 +9,16 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 
 @SuppressWarnings("javadoc")
 public class JUnitRunnerFromFile extends JUnitRunner {
+
     public static String readFile(File f) {
         StringBuilder b = new StringBuilder();
-        try {
-            BufferedReader r = new BufferedReader(new InputStreamReader(
-                    new FileInputStream(f)));
+        try (FileInputStream in = new FileInputStream(f);
+                Reader reader = new InputStreamReader(in);
+                BufferedReader r = new BufferedReader(reader);) {
             String l = r.readLine();
             while (l != null) {
                 b.append(l);

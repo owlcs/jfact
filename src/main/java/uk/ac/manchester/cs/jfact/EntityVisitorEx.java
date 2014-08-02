@@ -10,6 +10,7 @@ import org.semanticweb.owlapi.model.OWLEntityVisitorEx;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.Axioms;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 
 class EntityVisitorEx implements OWLEntityVisitorEx<Expression>, Serializable {
@@ -43,11 +44,11 @@ class EntityVisitorEx implements OWLEntityVisitorEx<Expression>, Serializable {
 
     @Override
     public Expression visit(OWLDatatype datatype) {
-        return null;
+        return Axioms.dummyExpression();
     }
 
     @Override
     public Expression visit(OWLAnnotationProperty property) {
-        return null;
+        return Axioms.dummyExpression();
     }
 }

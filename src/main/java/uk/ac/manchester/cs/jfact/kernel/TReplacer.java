@@ -65,10 +65,12 @@ class TReplacer extends DLExpressionVisitorAdapter {
             ConceptExpression s = null;
             for (ConceptExpression p : expr.getArguments()) {
                 p.accept(this);
-                if (p.equals(expr.getArguments().get(0))) {
-                    s = ReplaceResult.get(p);
+                ConceptExpression conceptExpression = ReplaceResult.get(p);
+                assert conceptExpression != null;
+                if (s == null) {
+                    s = conceptExpression;
                 } else {
-                    s = and(s, ReplaceResult.get(p));
+                    s = and(s, conceptExpression);
                 }
             }
             ReplaceResult.put(expr, s);

@@ -58,6 +58,7 @@ public class LiteralEntry extends NamedEntry {
     }
 
     /** @return host type */
+    @Nonnull
     public Datatype<?> getType() {
         return literal.getDatatypeExpression();
     }

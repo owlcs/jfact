@@ -22,6 +22,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
@@ -1233,10 +1235,7 @@ public class TBox implements Serializable {
             toReturn = p.getIndex();
         } else {
             DagTag dt = dtDataValue;
-            int hostBP = bpTOP;
-            if (p.getType() != null) {
-                hostBP = addDatatypeExpressionToHeap(p.getType());
-            }
+            int hostBP = addDatatypeExpressionToHeap(p.getType());
             DLVertex ver = new DLVertex(dt, 0, null, hostBP, null);
             ver.setConcept(p);
             p.setIndex(dlHeap.directAdd(ver));
@@ -1277,7 +1276,7 @@ public class TBox implements Serializable {
      * @return index of new element
      */
     @Original
-    public int addDatatypeExpressionToHeap(Datatype<?> p) {
+    public int addDatatypeExpressionToHeap(@Nonnull Datatype<?> p) {
         int hostBP = 0;
         DatatypeEntry concept = new DatatypeEntry(p);
         int index = dlHeap.index(concept);
@@ -2000,6 +1999,7 @@ public class TBox implements Serializable {
      * @return the root node
      */
     @PortedFrom(file = "dlTBox.h", name = "buildCompletionTree")
+    @Nonnull
     public DlCompletionTree buildCompletionTree(Concept pConcept) {
         DlCompletionTree ret = null;
         // perform reasoning with a proper logical features

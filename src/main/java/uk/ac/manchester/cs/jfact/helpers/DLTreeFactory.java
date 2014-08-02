@@ -14,6 +14,8 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
 import uk.ac.manchester.cs.jfact.kernel.Concept;
 import uk.ac.manchester.cs.jfact.kernel.Lexeme;
@@ -30,6 +32,7 @@ public class DLTreeFactory implements Serializable {
             SELF, RCOMPOSITION, PROJFROM, PROJINTO);
 
     /** @return BOTTOM element */
+    @Nonnull
     public static DLTree createBottom() {
         return new LEAFDLTree(new Lexeme(BOTTOM));
     }
@@ -39,6 +42,7 @@ public class DLTreeFactory implements Serializable {
      *        R
      * @return inverse
      */
+    @Nonnull
     public static DLTree createInverse(DLTree R) {
         assert R != null;
         if (R.token() == INV) {
@@ -96,6 +100,7 @@ public class DLTreeFactory implements Serializable {
      *        dr
      * @return simplified tree
      */
+    @Nonnull
     public static DLTree simplifyDataTopForall(DLTree dr) {
         // if the filler (dr) is TOP (syntactically or semantically), then the
         // forall is top
@@ -115,6 +120,7 @@ public class DLTreeFactory implements Serializable {
      *        dr
      * @return simplified tree
      */
+    @Nonnull
     public static DLTree simplifyDataTopLE(int n, DLTree dr) {
         // if the filler (dr) is BOTTOM (syntactically or semantically), then
         // the LE is top
@@ -135,6 +141,7 @@ public class DLTreeFactory implements Serializable {
      *        arguments to AND
      * @return a construction in the form AND (\neg q_i)
      */
+    @Nonnull
     public static DLTree buildDisjAux(List<DLTree> arguments) {
         List<DLTree> args = new ArrayList<>(arguments.size());
         for (DLTree i : arguments) {
@@ -150,11 +157,14 @@ public class DLTreeFactory implements Serializable {
      *        D
      * @return and
      */
+    @Nonnull
     public static DLTree createSNFAnd(DLTree C, DLTree D) {
         if (C == null) {
+            assert D != null;
             return D;
         }
         if (D == null) {
+            assert C != null;
             return C;
         }
         if (C.isTOP() || D.isBOTTOM()) {
@@ -171,12 +181,15 @@ public class DLTreeFactory implements Serializable {
      *        collection
      * @return and
      */
+    @Nonnull
     public static DLTree createSNFAnd(Collection<DLTree> collection) {
         if (collection.isEmpty()) {
             return createTop();
         }
         if (collection.size() == 1) {
-            return collection.iterator().next();
+            DLTree next = collection.iterator().next();
+            assert next != null;
+            return next;
         }
         List<DLTree> l = new ArrayList<>();
         for (DLTree d : collection) {
@@ -196,7 +209,9 @@ public class DLTreeFactory implements Serializable {
             return createTop();
         }
         if (l.size() == 1) {
-            return l.get(0);
+            DLTree dlTree = l.get(0);
+            assert dlTree != null;
+            return dlTree;
         }
         return new NDLTree(new Lexeme(AND), l);
     }
@@ -208,8 +223,9 @@ public class DLTreeFactory implements Serializable {
      *        ancestor
      * @return and
      */
+    @Nonnull
     public static DLTree createSNFAnd(Collection<DLTree> collection,
-            DLTree ancestor) {
+            @Nonnull DLTree ancestor) {
         boolean hasTop = false;
         List<DLTree> l = new ArrayList<>();
         for (DLTree d : collection) {
@@ -244,6 +260,7 @@ public class DLTreeFactory implements Serializable {
      *        C
      * @return exist R C
      */
+    @Nonnull
     public static DLTree createSNFExists(DLTree R, DLTree C) {
         // \ER.C . \not\AR.\not C
         return createSNFNot(createSNFForall(R, createSNFNot(C)));
@@ -256,6 +273,7 @@ public class DLTreeFactory implements Serializable {
      *        C
      * @return for all
      */
+    @Nonnull
     public static DLTree createSNFForall(DLTree R, DLTree C) {
         if (C.isTOP()) {
             return C;
@@ -273,6 +291,7 @@ public class DLTreeFactory implements Serializable {
      *        R
      * @return role
      */
+    @Nonnull
     public static DLTree createRole(Role R) {
         return createEntry(R.isDataRole() ? DNAME : RNAME, R);
     }
@@ -284,6 +303,7 @@ public class DLTreeFactory implements Serializable {
      *        entry
      * @return entry
      */
+    @Nonnull
     public static DLTree createEntry(Token tag, NamedEntry entry) {
         return new LEAFDLTree(new Lexeme(tag, entry));
     }
@@ -299,6 +319,7 @@ public class DLTreeFactory implements Serializable {
      *        C
      * @return at most
      */
+    @Nonnull
     public static DLTree createSNFLE(int n, DLTree R, DLTree C) {
         if (C.isBOTTOM()) {
             // <= n R.F -> T;
@@ -345,6 +366,7 @@ public class DLTreeFactory implements Serializable {
      *        R
      * @return self
      */
+    @Nonnull
     public static DLTree createSNFSelf(DLTree R) {
         if (isBotRole(R)) {
             return createBottom();
@@ -366,7 +388,7 @@ public class DLTreeFactory implements Serializable {
      *        C
      * @return at least
      */
-    public static DLTree createSNFGE(int n, DLTree R, DLTree C) {
+    public static @Nonnull DLTree createSNFGE(int n, DLTree R, DLTree C) {
         if (n == 0) {
             return createTop();
         }
@@ -382,6 +404,7 @@ public class DLTreeFactory implements Serializable {
      *        C
      * @return not
      */
+    @Nonnull
     public static DLTree createSNFNot(DLTree C) {
         assert C != null;
         if (C.isBOTTOM()) {
@@ -407,7 +430,9 @@ public class DLTreeFactory implements Serializable {
      *        ancestor
      * @return not
      */
-    public static DLTree createSNFNot(DLTree C, DLTree ancestor) {
+    @Nonnull
+    public static DLTree createSNFNot(@Nonnull DLTree C,
+            @Nonnull DLTree ancestor) {
         assert C != null;
         if (C.isBOTTOM()) {
             // \not F = T
@@ -432,6 +457,7 @@ public class DLTreeFactory implements Serializable {
      *        C
      * @return OR C
      */
+    @Nonnull
     public static DLTree createSNFOr(Collection<DLTree> C) {
         // C\or D . \not(\not C\and\not D)
         List<DLTree> list = new ArrayList<>();
@@ -442,6 +468,7 @@ public class DLTreeFactory implements Serializable {
     }
 
     /** @return TOP element */
+    @Nonnull
     public static DLTree createTop() {
         return new LEAFDLTree(new Lexeme(TOP));
     }
@@ -451,6 +478,7 @@ public class DLTreeFactory implements Serializable {
      *        tree
      * @return inverse
      */
+    @Nonnull
     public static DLTree inverseComposition(DLTree tree) {
         // XXX this needs to be checked with a proper test
         // see rolemaster.cpp, inverseComposition
@@ -469,6 +497,7 @@ public class DLTreeFactory implements Serializable {
      *        t
      * @return wrapped entry
      */
+    @Nonnull
     public static DLTree wrap(NamedEntry t) {
         return new LEAFDLTree(new Lexeme(DATAEXPR, t));
     }
@@ -480,6 +509,7 @@ public class DLTreeFactory implements Serializable {
      *        t
      * @return unwrapped entry
      */
+    @Nonnull
     public static NamedEntry unwrap(DLTree t) {
         return t.elem().getNE();
     }
@@ -493,6 +523,7 @@ public class DLTreeFactory implements Serializable {
      *        t2
      * @return tree with two children
      */
+    @Nonnull
     public static DLTree buildTree(Lexeme t, DLTree t1, DLTree t2) {
         return new TWODLTree(t, t1, t2);
     }
@@ -504,6 +535,7 @@ public class DLTreeFactory implements Serializable {
      *        t1
      * @return single child tree
      */
+    @Nonnull
     public static DLTree buildTree(Lexeme t, DLTree t1) {
         return new ONEDLTree(t, t1);
     }
@@ -513,6 +545,7 @@ public class DLTreeFactory implements Serializable {
      *        t
      * @return leaf tree
      */
+    @Nonnull
     public static DLTree buildTree(Lexeme t) {
         return new LEAFDLTree(t);
     }

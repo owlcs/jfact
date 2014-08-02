@@ -175,16 +175,11 @@ public class RoleMaster implements Serializable {
         }
         // new name from NS
         Role p = roleNS.insert(name);
-        // check what happens
-        if (p == null) {
-            throw new OWLRuntimeException("Unable to register '" + name
-                    + "' as a " + (dataRoles ? "data role" : "role"));
-        }
         if (isRegisteredRole(p)) {
             return p;
         }
-        if (p.getId() != 0 || // not registered but has non-null ID
-                !useUndefinedNames) {
+        // not registered but has non-null ID
+        if (p.getId() != 0 || !useUndefinedNames) {
             throw new OWLRuntimeException("Unable to register '" + name
                     + "' as a " + (dataRoles ? "data role" : "role"));
         }

@@ -13,6 +13,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 import uk.ac.manchester.cs.jfact.kernel.Lexeme;
@@ -181,6 +183,7 @@ public abstract class DLTree implements Serializable {
      *        visitor type
      * @return visitor value
      */
+    @Nonnull
     public abstract <O> O accept(DLTreeVisitorEx<O> v);
 
     /**
@@ -226,6 +229,7 @@ public abstract class DLTree implements Serializable {
     }
 
     /** @return copy of this tree */
+    @Nonnull
     public DLTree copy() {
         return this.accept(cloner);
     }
@@ -267,12 +271,16 @@ interface DLTreeVisitor {
 @Original
 interface DLTreeVisitorEx<O> {
 
+    @Nonnull
     O visit(LEAFDLTree t);
 
+    @Nonnull
     O visit(ONEDLTree t);
 
+    @Nonnull
     O visit(TWODLTree t);
 
+    @Nonnull
     O visit(NDLTree t);
 }
 

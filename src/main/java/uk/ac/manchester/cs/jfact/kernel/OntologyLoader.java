@@ -97,11 +97,13 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
      */
     @PortedFrom(file = "tOntologyLoader.h", name = "getIndividual")
     public Individual getIndividual(IndividualExpression I, String reason) {
-        DLTree i = I.accept(expressionTranslator);
-        if (i == null) {
-            throw new ReasonerInternalException(reason);
+        try {
+            DLTree i = I.accept(expressionTranslator);
+            return (Individual) tbox.getCI(i);
+        } catch (OWLRuntimeException e) {
+            throw new ReasonerInternalException(reason + '\t' + e.getMessage(),
+                    e);
         }
-        return (Individual) tbox.getCI(i);
     }
 
     /**

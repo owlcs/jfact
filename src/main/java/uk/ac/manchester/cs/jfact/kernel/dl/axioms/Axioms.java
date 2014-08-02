@@ -2,18 +2,46 @@ package uk.ac.manchester.cs.jfact.kernel.dl.axioms;
 
 import javax.annotation.Nonnull;
 
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.split.TOntologyAtom;
 import uk.ac.manchester.cs.jfact.split.TSignature;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
+import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
+import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 /**
  * Axiom utilities.
  */
 public class Axioms {
+
+    @Nonnull
+    private static final Expression DUMMY_EXPRESSION = new Expression() {
+
+        @Override
+        public IRI getName() {
+            return null;
+        }
+
+        @SuppressWarnings("null")
+        @Override
+        public <O> O accept(DLExpressionVisitorEx<O> visitor) {
+            return null;
+        }
+
+        @Override
+        public void accept(DLExpressionVisitor visitor) {}
+    };
+
+    /** @return a dummy implementation of Expression */
+    @Nonnull
+    public static Expression dummyExpression() {
+        return DUMMY_EXPRESSION;
+    }
 
     @Nonnull
     private static final AxiomInterface DUMMY = new AxiomInterface() {

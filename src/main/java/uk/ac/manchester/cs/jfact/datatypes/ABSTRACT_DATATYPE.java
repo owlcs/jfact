@@ -50,16 +50,15 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
 
     /**
      * @param u
-     *        u
+     *        iri for datatype
      * @param f
-     *        facets
+     *        facets for datatype
      * @param ancestors
-     *        ancestors
+     *        ancestors for datatype
      */
-    @SuppressWarnings("null")
-    public ABSTRACT_DATATYPE(@Nonnull IRI u, Set<Facet> f,
-            Set<Datatype<?>> ancestors) {
-        this.facets = Collections.unmodifiableSet(f);
+    public ABSTRACT_DATATYPE(@Nonnull IRI u, @Nonnull Set<Facet> f,
+            @Nonnull Set<Datatype<?>> ancestors) {
+        this.facets = f;
         this.uri = u;
         this.ancestors = ancestors;
     }
