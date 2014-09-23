@@ -39,7 +39,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.parameters.Imports;
-import org.semanticweb.owlapi.model.parameters.Search;
+import org.semanticweb.owlapi.model.parameters.AxiomAnnotations;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.reasoner.FreshEntitiesException;
 import org.semanticweb.owlapi.reasoner.FreshEntityPolicy;
@@ -462,7 +462,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     public synchronized boolean isEntailed(OWLAxiom axiom) {
         checkConsistency();
         if (root.containsAxiom(axiom, Imports.INCLUDED,
-                Search.IGNORE_ANNOTATIONS)) {
+                AxiomAnnotations.IGNORE_AXIOM_ANNOTATIONS)) {
             return true;
         }
         try {
