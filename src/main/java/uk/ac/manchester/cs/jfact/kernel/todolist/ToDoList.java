@@ -92,7 +92,7 @@ public class ToDoList implements Serializable {
     }
 
     /**
-     * default constructor
+     * Default constructor.
      * 
      * @param r
      *        rare stack

@@ -45,7 +45,7 @@ public class RAStateTransitions implements Serializable {
         return base;
     }
 
-    /** default constructor */
+    /** Default constructor. */
     public RAStateTransitions() {
         emptyTransition = false;
     }

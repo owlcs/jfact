@@ -18,7 +18,7 @@ public class Timer implements Serializable {
     /** flag to show timer is started */
     private boolean started;
 
-    /** default constructor */
+    /** Default constructor. */
     public Timer() {
         startTime = 0;
         resultTime = 0;

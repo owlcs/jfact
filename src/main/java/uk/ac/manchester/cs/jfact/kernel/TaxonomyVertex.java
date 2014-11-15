@@ -196,7 +196,7 @@ public class TaxonomyVertex implements Serializable {
         return synonyms;
     }
 
-    /** default constructor */
+    /** Default constructor. */
     public TaxonomyVertex() {
         initFlags();
     }

@@ -40,7 +40,7 @@ public class Ontology implements Serializable {
     @PortedFrom(file = "tOntology.h", name = "Splits")
     private final TSplitVars Splits = new TSplitVars();
 
-    /** default constructor */
+    /** Default constructor. */
     public Ontology() {
         axiomId = 0;
         changed = false;

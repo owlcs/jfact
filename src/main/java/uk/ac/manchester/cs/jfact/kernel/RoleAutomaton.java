@@ -54,7 +54,7 @@ public class RoleAutomaton implements Serializable {
         }
     }
 
-    /** default constructor */
+    /** Default constructor. */
     public RoleAutomaton() {
         initialRA = 0;
         inputSafe = true;

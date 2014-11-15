@@ -30,7 +30,7 @@ public class NAryExpressionImpl<A extends Expression> implements
     /** set of equivalent concept descriptions */
     private final List<A> Base = new ArrayList<>();
 
-    /** default constructor */
+    /** Default constructor. */
     public NAryExpressionImpl() {}
 
     @Override

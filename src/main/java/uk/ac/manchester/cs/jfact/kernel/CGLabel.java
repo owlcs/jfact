@@ -40,7 +40,7 @@ public class CGLabel implements Serializable {
     @Original
     private final int id;
 
-    /** default constructor */
+    /** Default constructor. */
     public CGLabel() {
         scLabel = new CWDArray();
         ccLabel = new CWDArray();

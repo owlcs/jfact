@@ -18,7 +18,7 @@ public class MergableLabel implements Serializable {
     @PortedFrom(file = "mergableLabel.h", name = "pSample")
     private MergableLabel pSample;
 
-    /** default constructor */
+    /** Default constructor. */
     public MergableLabel() {
         pSample = this;
     }

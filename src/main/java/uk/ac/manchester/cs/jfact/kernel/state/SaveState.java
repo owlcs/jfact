@@ -18,7 +18,7 @@ public class SaveState implements Serializable {
     private int sc;
     private int cc;
 
-    /** default constructor */
+    /** Default constructor. */
     public SaveState() {
         sc = Integer.MAX_VALUE;
         cc = Integer.MAX_VALUE;

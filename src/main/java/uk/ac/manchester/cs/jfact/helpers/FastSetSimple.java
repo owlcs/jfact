@@ -50,7 +50,7 @@ public class FastSetSimple extends AbstractFastSet {
         return -lowerbound - 1;
     }
 
-    /** default constructor */
+    /** Default constructor. */
     public FastSetSimple() {}
 
     /**

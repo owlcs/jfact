@@ -24,7 +24,7 @@ public class QRQuery implements Serializable {
     @PortedFrom(file = "QR.h", name = "FreeVars")
     private Set<QRVariable> FreeVars = new TreeSet<>();
 
-    /** default constructor */
+    /** Default constructor. */
     public QRQuery() {}
 
     /**

@@ -32,7 +32,7 @@ public class TSignature implements Serializable {
     @PortedFrom(file = "tSignature.h", name = "topRLocality")
     private boolean topRLocality = false;
 
-    /** default constructor */
+    /** Default constructor. */
     public TSignature() {}
 
     /**

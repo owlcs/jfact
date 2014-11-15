@@ -24,9 +24,7 @@ public class SaveStackRare implements Serializable {
     /** current level */
     private int curLevel;
 
-    /**
-     * default constructor
-     */
+    /** Default constructor. */
     public SaveStackRare() {
         curLevel = InitBranchingLevelValue;
     }

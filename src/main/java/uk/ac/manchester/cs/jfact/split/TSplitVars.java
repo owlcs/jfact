@@ -24,7 +24,7 @@ public class TSplitVars implements Serializable {
     @PortedFrom(file = "tSplitVars.h", name = "Index")
     protected final Map<ConceptName, TSplitVar> Index = new HashMap<>();
 
-    /** default constructor */
+    /** Default constructor. */
     public TSplitVars() {}
 
     /**

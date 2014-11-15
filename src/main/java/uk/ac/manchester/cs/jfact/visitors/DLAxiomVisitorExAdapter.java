@@ -53,7 +53,7 @@ public class DLAxiomVisitorExAdapter<A> implements DLAxiomVisitorEx<A>,
     private static final long serialVersionUID = 11000L;
     private A defaultValue;
 
-    /** default constructor */
+    /** Default constructor. */
     public DLAxiomVisitorExAdapter() {
         this(null);
     }

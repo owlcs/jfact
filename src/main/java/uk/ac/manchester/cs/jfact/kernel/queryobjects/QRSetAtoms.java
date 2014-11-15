@@ -20,7 +20,7 @@ public class QRSetAtoms implements Serializable {
     @PortedFrom(file = "QR.h", name = "Base")
     private final List<QRAtom> Base = new ArrayList<>();
 
-    /** default constructor */
+    /** Default constructor. */
     public QRSetAtoms() {}
 
     /**

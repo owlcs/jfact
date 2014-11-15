@@ -19,7 +19,7 @@ public class Reference<E> implements Serializable {
     private static final long serialVersionUID = 11000L;
     private E e;
 
-    /** default constructor */
+    /** Default constructor. */
     public Reference() {}
 
     /**
