@@ -27,6 +27,14 @@
 		</license>
 	</licenses>
 
+	<developers>
+		<developer>
+			<id>ignazio1977</id>
+			<name>Ignazio Palmisano</name>
+			<email>ignazio1977@users.sourceforge.net</email>
+		</developer>
+	</developers>
+
 	<mailingLists>
 		<mailingList>
 			<name>OWLAPI Development Mailing list</name>
@@ -68,13 +76,6 @@
 							</execution>
 						</executions>
 					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
-
-	<build>
-		<plugins>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
@@ -104,16 +105,28 @@
 					</execution>
 				</executions>
 			</plugin>
+		</plugins>
+	</build>
+</profile>
+
+</profiles>
+
+	<build>
+		<plugins>
+			<!-- In the Compiler Plugin we specify the encoding and the compiler version. -->
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>3.2</version>
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+
+			<!-- We need to configure the Source Plugin for deploying the sources. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -145,23 +158,20 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- The Surefire Plugin is for error reporting. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.17</version>
 				<configuration>
-					<useFile>false</useFile>
 					<printSummary>false</printSummary>
 					<argLine>-Xmx1024M -Djava.awt.headless=true</argLine>
-					<includes>
-						<include>**/*.java</include>
-					</includes>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.2</version>
+				<version>1.6.5</version>
 				<extensions>true</extensions>
 				<configuration>
 					<serverId>ossrh</serverId>
@@ -172,6 +182,12 @@
 		</plugins>
 	</build>
 
+	<!-- Specify the encoding of the source files. -->
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<!-- Parameters for the Source Code Management system. -->
 	<scm>
 		<connection>scm:git:git://github.com/owlcs/jfact.git</connection>
 		<developerConnection>scm:git:git@github.com:owlcs/jfact.git</developerConnection>
