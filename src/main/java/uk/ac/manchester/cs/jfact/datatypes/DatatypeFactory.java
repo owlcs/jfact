@@ -176,8 +176,9 @@ public class DatatypeFactory implements Serializable {
      * @return datatype for key
      */
     @Nonnull
-    public Datatype<?> getKnownDatatype(IRI key) {
-        return verifyNotNull(knownDatatypes.get(key), "unknown datatype");
+    public <R extends Comparable<R>> Datatype<R> getKnownDatatype(IRI key) {
+        return (Datatype<R>) verifyNotNull(knownDatatypes.get(key),
+                "unknown datatype");
     }
 
     /**
@@ -285,42 +286,6 @@ public class DatatypeFactory implements Serializable {
             return ((AtomicLong) v).get() + 1;
         }
         return null;
-    }
-
-    /**
-     * @param base
-     *        base
-     * @param <R>
-     *        expression type
-     * @return expression
-     */
-    public static <R extends Comparable<R>> DatatypeExpression<R>
-            getDatatypeExpression(Datatype<R> base) {
-        return new DatatypeExpressionImpl<>(base);
-    }
-
-    /**
-     * @param base
-     *        base
-     * @param <R>
-     *        expression type
-     * @return expression
-     */
-    public static <R extends Comparable<R>> DatatypeExpression<R>
-            getNumericDatatypeExpression(NumericDatatype<R> base) {
-        return new DatatypeNumericExpressionImpl<>(base);
-    }
-
-    /**
-     * @param base
-     *        base
-     * @param <R>
-     *        expression type
-     * @return expression
-     */
-    public static <R extends Comparable<R>> DatatypeExpression<R>
-            getOrderedDatatypeExpression(Datatype<R> base) {
-        return new DatatypeOrderedExpressionImpl<>(base);
     }
 
     abstract static class ABSTRACT_NUMERIC_DATATYPE<R extends Comparable<R>>

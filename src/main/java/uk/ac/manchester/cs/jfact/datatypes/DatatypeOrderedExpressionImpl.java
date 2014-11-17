@@ -27,8 +27,8 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
         super(
                 IRI.create(b.getDatatypeIRI() + "_"
                         + DatatypeFactory.getIndex()), b.getFacets(), Utils
-                        .generateAncestors(host(b)));
-        this.host = host(b);
+                        .generateAncestors(b.host()));
+        this.host = b.host();
         knownNumericFacetValues.putAll(b.getKnownNumericFacetValues());
         knownNonNumericFacetValues.putAll(b.getKnownNonNumericFacetValues());
     }

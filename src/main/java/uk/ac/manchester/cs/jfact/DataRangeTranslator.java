@@ -130,12 +130,11 @@ public class DataRangeTranslator extends
         }
         DatatypeExpression<?> toReturn = null;
         if (type.isNumericDatatype()) {
-            toReturn = DatatypeFactory.getNumericDatatypeExpression(type
-                    .asNumericDatatype());
+            toReturn = type.asNumericExpression();
         } else if (type.isOrderedDatatype()) {
-            toReturn = DatatypeFactory.getOrderedDatatypeExpression(type);
+            toReturn = type.asOrderedExpression();
         } else {
-            toReturn = DatatypeFactory.getDatatypeExpression(type);
+            toReturn = type.aDatatypeExpression();
         }
         while (facetRestrictions.hasNext()) {
             OWLFacetRestriction restriction = facetRestrictions.next();

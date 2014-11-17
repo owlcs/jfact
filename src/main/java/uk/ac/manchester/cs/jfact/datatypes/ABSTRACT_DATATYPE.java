@@ -40,14 +40,6 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
     @Nonnull
     protected final IRI uri;
 
-    @Nonnull
-    protected static <O extends Comparable<O>> Datatype<O> host(Datatype<O> o) {
-        if (o.isExpression()) {
-            return o.asExpression().getHostType();
-        }
-        return o;
-    }
-
     /**
      * @param u
      *        iri for datatype

@@ -173,4 +173,26 @@ public interface Datatype<R extends Comparable<R>> extends DataExpression {
     /** @return cast as ordered datatype */
     @Nonnull
     OrderedDatatype<R> asOrderedDatatype();
+
+    default DatatypeExpression<R> asNumericExpression() {
+        return isNumericDatatype() ? new DatatypeNumericExpressionImpl<>(this)
+                : null;
+    }
+
+    default DatatypeExpression<R> asOrderedExpression() {
+        return isOrderedDatatype() ? new DatatypeOrderedExpressionImpl(this)
+                : null;
+    }
+
+    default DatatypeExpression<R> aDatatypeExpression() {
+        return new DatatypeExpressionImpl<>(this);
+    }
+
+    @Nonnull
+    default Datatype<R> host() {
+        if (isExpression()) {
+            return asExpression().getHostType();
+        }
+        return this;
+    }
 }

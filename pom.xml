@@ -10,8 +10,8 @@
 	</parent>
 	<groupId>net.sourceforge.owlapi</groupId>
 	<artifactId>jfact</artifactId>
-	<packaging>bundle</packaging>
-	<version>4.0.0</version>
+	<packaging>jar</packaging>
+	<version>5.0.0-ALPHA</version>
 	<name>JFact</name>
 	<description>JFact is an OWL DL reasoner, based on FaCT++</description>
 	<url>http://jfact.sourceforge.net</url>
@@ -120,8 +120,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.2</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>

@@ -150,24 +150,23 @@ public class DatatypesTestCase {
     private final DatatypeEntry string4 = datatype(STRING, 4);
     private final LiteralEntry int0 = literal(INT, "0", 0);
     private final DatatypeEntry float_11 = datatype(
-            getNumericDatatypeExpression(FLOAT).addNumericFacet(minInclusive,
-                    0F).addNumericFacet(maxInclusive, 1.17549435E-38F), 5);
+            FLOAT.asNumericExpression().addNumericFacet(minInclusive, 0F)
+                    .addNumericFacet(maxInclusive, 1.17549435E-38F), 5);
     private final DatatypeEntry int_46 = datatype(
-            getNumericDatatypeExpression(INT).addNumericFacet(minInclusive,
-                    2008).addNumericFacet(maxInclusive, 2009), 7);
+            INT.asNumericExpression().addNumericFacet(minInclusive, 2008)
+                    .addNumericFacet(maxInclusive, 2009), 7);
     private final DatatypeEntry int_63 = datatype(
-            getNumericDatatypeExpression(INT)
-                    .addNumericFacet(minInclusive, 2007)
+            INT.asNumericExpression().addNumericFacet(minInclusive, 2007)
                     .addNumericFacet(maxInclusive, 2009)
                     .addNonNumericFacet(fractionDigits, 0), 5);
     private final DatatypeEntry integer_49 = datatype(
-            getNumericDatatypeExpression(INTEGER).addNumericFacet(minInclusive,
-                    new BigDecimal("4")).addNonNumericFacet(fractionDigits, 0),
-            9);
+            INTEGER.asNumericExpression()
+                    .addNumericFacet(minInclusive, new BigDecimal("4"))
+                    .addNonNumericFacet(fractionDigits, 0), 9);
     private final DatatypeEntry integer_7 = datatype(
-            getNumericDatatypeExpression(INTEGER).addNumericFacet(minInclusive,
-                    new BigDecimal("18")).addNonNumericFacet(fractionDigits, 0),
-            5);
+            INTEGER.asNumericExpression()
+                    .addNumericFacet(minInclusive, new BigDecimal("18"))
+                    .addNonNumericFacet(fractionDigits, 0), 5);
     private DataTypeReasoner datatypeReasoner;
 
     String s(NamedEntry dataEntry) {
@@ -299,7 +298,7 @@ public class DatatypesTestCase {
         toReturn.put(
                 "#dateTime( minInclusive 2008-09-08 19:44:11)",
                 datatype(
-                        getOrderedDatatypeExpression(DATETIME).addNumericFacet(
+                        DATETIME.asOrderedExpression().addNumericFacet(
                                 minInclusive,
                                 new DateTime(2008, 9, 8, 19, 44, 0, 0)
                                         .toGregorianCalendar()), toReturn
@@ -307,10 +306,11 @@ public class DatatypesTestCase {
         toReturn.put(
                 "#dateTime( minInclusive 2008-06-08 maxInclusive 2008-06-10)",
                 datatype(
-                        getOrderedDatatypeExpression(DATETIME).addNumericFacet(
-                                minInclusive,
-                                new DateTime(2008, 6, 8, 0, 0, 0, 0)
-                                        .toGregorianCalendar())
+                        DATETIME.asOrderedExpression()
+                                .addNumericFacet(
+                                        minInclusive,
+                                        new DateTime(2008, 6, 8, 0, 0, 0, 0)
+                                                .toGregorianCalendar())
                                 .addNumericFacet(
                                         maxInclusive,
                                         new DateTime(2008, 6, 10, 0, 0, 0, 0)
@@ -319,7 +319,7 @@ public class DatatypesTestCase {
         toReturn.put(
                 "#dateTime( minInclusive 2008-06-08 19:44:11 maxInclusive 2008-06-10 19:44:11)",
                 datatype(
-                        getOrderedDatatypeExpression(DATETIME)
+                        DATETIME.asOrderedExpression()
                                 .addNumericFacet(
                                         minInclusive,
                                         new DateTime(2008, 6, 8, 19, 44, 11, 0)
@@ -332,10 +332,11 @@ public class DatatypesTestCase {
         toReturn.put(
                 "#dateTime( minInclusive 2008-06-08 19:44:11 maxInclusive 2008-09-08 19:44:11)",
                 datatype(
-                        getOrderedDatatypeExpression(DATETIME).addNumericFacet(
-                                minInclusive,
-                                new DateTime(2008, 6, 8, 19, 44, 11, 0)
-                                        .toGregorianCalendar())
+                        DATETIME.asOrderedExpression()
+                                .addNumericFacet(
+                                        minInclusive,
+                                        new DateTime(2008, 6, 8, 19, 44, 11, 0)
+                                                .toGregorianCalendar())
                                 .addNumericFacet(
                                         maxInclusive,
                                         new DateTime(2008, 9, 8, 19, 44, 11, 0)
@@ -344,10 +345,11 @@ public class DatatypesTestCase {
         toReturn.put(
                 "#dateTime( minInclusive 2007-09-08 19:44:11 maxInclusive 2009-09-08 19:44:11)",
                 datatype(
-                        getOrderedDatatypeExpression(DATETIME).addNumericFacet(
-                                minInclusive,
-                                new DateTime(2007, 9, 8, 19, 44, 11, 0)
-                                        .toGregorianCalendar())
+                        DATETIME.asOrderedExpression()
+                                .addNumericFacet(
+                                        minInclusive,
+                                        new DateTime(2007, 9, 8, 19, 44, 11, 0)
+                                                .toGregorianCalendar())
                                 .addNumericFacet(
                                         maxInclusive,
                                         new DateTime(2009, 9, 8, 19, 44, 11, 0)
@@ -356,7 +358,7 @@ public class DatatypesTestCase {
         toReturn.put(
                 "#dateTime( maxInclusive 2008-09-08 19:44:11)",
                 datatype(
-                        getOrderedDatatypeExpression(DATETIME).addNumericFacet(
+                        DATETIME.asOrderedExpression().addNumericFacet(
                                 maxInclusive,
                                 new DateTime(2008, 9, 8, 19, 44, 11, 0)
                                         .toGregorianCalendar()), toReturn
@@ -364,10 +366,11 @@ public class DatatypesTestCase {
         toReturn.put(
                 "#dateTime( minInclusive 2008-06-08 maxInclusive 2008-10-10)",
                 datatype(
-                        getOrderedDatatypeExpression(DATETIME).addNumericFacet(
-                                minInclusive,
-                                new DateTime(2008, 6, 8, 0, 0, 0, 0)
-                                        .toGregorianCalendar())
+                        DATETIME.asOrderedExpression()
+                                .addNumericFacet(
+                                        minInclusive,
+                                        new DateTime(2008, 6, 8, 0, 0, 0, 0)
+                                                .toGregorianCalendar())
                                 .addNumericFacet(
                                         maxInclusive,
                                         new DateTime(2008, 10, 10, 0, 0, 0, 0)

@@ -244,7 +244,7 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
                 if (value.isExpression()) {
                     this.e = value.asExpression();
                 } else {
-                    this.e = DatatypeFactory.getDatatypeExpression(value);
+                    this.e = value.aDatatypeExpression();
                 }
                 if (locDep == null) {
                     locDep = dep == null ? null : dep.getDelegate();
