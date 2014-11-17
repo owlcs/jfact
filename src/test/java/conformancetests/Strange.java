@@ -2,8 +2,6 @@ package conformancetests;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Set;
-
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -38,7 +36,6 @@ public class Strange extends TestBase {
         r.precomputeInferences(InferenceType.CLASS_HIERARCHY);
         NodeSet<OWLClass> subClasses = r.getSubClasses(
                 d.getOWLClass(IRI.create("urn:c")), false);
-        Set<OWLClass> flat = subClasses.getFlattened();
-        assertEquals(flat.toString(), 3, flat.size());
+        assertEquals(3, subClasses.entities().count());
     }
 }

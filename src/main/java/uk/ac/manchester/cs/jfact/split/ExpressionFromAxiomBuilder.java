@@ -9,21 +9,27 @@ import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRelatedTo;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRelatedToNot;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOf;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOfNot;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
-import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorExAdapter;
+import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
 /** @author ignazio */
-public class ExpressionFromAxiomBuilder extends
-        DLAxiomVisitorExAdapter<ConceptExpression> {
+public class ExpressionFromAxiomBuilder implements
+        DLAxiomVisitorEx<ConceptExpression> {
 
-    private static final long serialVersionUID = 10201L;
+    private ConceptExpression a;
 
     /**
      * @param a
      *        a
      */
     public ExpressionFromAxiomBuilder(ConceptExpression a) {
-        super(a);
+        this.a = a;
+    }
+
+    @Override
+    public ConceptExpression doDefault(AxiomInterface axiom) {
+        return a;
     }
 
     @Override

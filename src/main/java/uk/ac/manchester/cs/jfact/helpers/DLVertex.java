@@ -416,7 +416,6 @@ public class DLVertex extends DLVertexTagDFS {
         return childrenToString();
     }
 
-    @SuppressWarnings("null")
     @Nonnull
     protected String childrenToString() {
         StringBuilder o = new StringBuilder(op.getName());

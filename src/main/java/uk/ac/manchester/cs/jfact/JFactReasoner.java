@@ -6,6 +6,7 @@ package uk.ac.manchester.cs.jfact;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static org.semanticweb.owlapi.util.OWLAPIPreconditions.checkNotNull;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,8 +16,10 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
@@ -38,8 +41,8 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
-import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.model.parameters.AxiomAnnotations;
+import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.reasoner.FreshEntitiesException;
 import org.semanticweb.owlapi.reasoner.FreshEntityPolicy;
@@ -98,7 +101,6 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     protected final AtomicBoolean interrupted = new AtomicBoolean(false);
     private ReasoningKernel kernel;
     private final ExpressionCache em;
-    @SuppressWarnings("null")
     @Nonnull
     private static final EnumSet<InferenceType> supportedInferenceTypes = EnumSet
             .of(InferenceType.CLASS_ASSERTIONS, InferenceType.CLASS_HIERARCHY,
@@ -162,9 +164,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         this.bufferingMode = bufferingMode;
         knownEntities.add(df.getOWLThing());
         knownEntities.add(df.getOWLNothing());
-        for (OWLOntology o : root.getImportsClosure()) {
-            knownEntities.addAll(o.getSignature());
-        }
+        add(knownEntities, root.importsClosure().flatMap(o -> o.signature()));
         kernel.setInterruptedSwitch(interrupted);
         kernel.clearKB();
         configuration.getProgressMonitor().reasonerTaskStarted(
@@ -184,14 +184,10 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     @Nonnull
     public static List<OWLAxiom> importsIncluded(OWLOntology ont) {
         List<OWLAxiom> axioms = new ArrayList<>();
-        for (OWLOntology o : ont.getImportsClosure()) {
-            for (OWLAxiom ax : o.getLogicalAxioms()) {
-                axioms.add(ax);
-            }
-            for (OWLAxiom ax : o.getAxioms(AxiomType.DECLARATION)) {
-                axioms.add(ax);
-            }
-        }
+        ont.importsClosure().forEach(o -> {
+            o.logicalAxioms().forEach(ax -> axioms.add(ax));
+            o.getAxioms(AxiomType.DECLARATION).forEach(ax -> axioms.add(ax));
+        });
         return axioms;
     }
 
@@ -269,7 +265,6 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return new ArrayList<>(rawChanges);
     }
 
-    @SuppressWarnings("null")
     @Override
     public synchronized Set<OWLAxiom> getPendingAxiomAdditions() {
         if (!rawChanges.isEmpty()) {
@@ -280,7 +275,6 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return Collections.emptySet();
     }
 
-    @SuppressWarnings("null")
     @Override
     public synchronized Set<OWLAxiom> getPendingAxiomRemovals() {
         if (!rawChanges.isEmpty()) {
@@ -310,7 +304,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
                 reasonerAxioms.addAll(added);
                 knownEntities.clear();
                 for (OWLAxiom ax : reasonerAxioms) {
-                    knownEntities.addAll(ax.getSignature());
+                    add(knownEntities, ax.signature());
                 }
                 // set the consistency status to not verified
                 consistencyVerified = null;
@@ -470,12 +464,12 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         } catch (ReasonerFreshEntityException e) {
             IRI iri = e.getIri();
             if (getFreshEntityPolicy() == FreshEntityPolicy.DISALLOW) {
-                for (OWLEntity o : axiom.getSignature()) {
-                    if (o.getIRI().equals(iri)) {
-                        throw new FreshEntitiesException(o, e);
-                    }
+                Optional<OWLEntity> fresh = axiom.signature()
+                        .filter(ent -> ent.getIRI().equals(iri)).findAny();
+                if (fresh.isPresent()) {
+                    throw new FreshEntitiesException(fresh.get(), e);
                 }
-                throw new FreshEntitiesException(axiom.getSignature(), e);
+                throw new FreshEntitiesException(asList(axiom.signature()), e);
             }
             System.out
                     .println("JFactReasoner.isEntailed() WARNING: fresh entity exception in the reasoner for entity: "
@@ -534,7 +528,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             boolean direct) {
         if (isFreshName(ce)) {
             if (configuration.getFreshEntityPolicy() == FreshEntityPolicy.DISALLOW) {
-                throw new FreshEntitiesException(ce.getSignature());
+                throw new FreshEntitiesException(asList(ce.signature()));
             }
             return new OWLClassNodeSet(getBottomClassNode());
         }
@@ -770,7 +764,6 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return tr.translateNodeSet(acc);
     }
 
-    @SuppressWarnings("null")
     @Override
     public synchronized Set<OWLLiteral> getDataPropertyValues(
             OWLNamedIndividual ind, OWLDataProperty pe) {
@@ -1049,7 +1042,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
      * @return data related individuals
      */
     public synchronized Node<OWLNamedIndividual> getDataRelatedIndividuals(
-            Set<OWLIndividual> individuals, OWLDataProperty r,
+            Stream<OWLIndividual> individuals, OWLDataProperty r,
             OWLDataProperty s, int op) {
         checkConsistency();
         // load all the individuals as parameters

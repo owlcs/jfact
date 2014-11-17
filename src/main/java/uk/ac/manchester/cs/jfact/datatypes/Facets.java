@@ -97,7 +97,8 @@ public class Facets implements Serializable {
                 return new BigDecimal(value.toString());
             } catch (NumberFormatException e) {
                 throw new NumberFormatException("Cannot parse '"
-                        + value.toString() + "' as a big decimal");
+                        + value.toString() + "' as a big decimal: "
+                        + e.getMessage());
             }
         }
 
@@ -169,7 +170,6 @@ public class Facets implements Serializable {
         /** replace */
         replace {
 
-            @SuppressWarnings("null")
             @Override
             public String normalize(@Nonnull String input) {
                 return input.replace('\t', ' ').replace('\n', ' ')
@@ -179,7 +179,6 @@ public class Facets implements Serializable {
         /** collapse */
         collapse {
 
-            @SuppressWarnings("null")
             @Override
             public String normalize(@Nonnull String input) {
                 StringBuilder b = new StringBuilder(replace.normalize(input));

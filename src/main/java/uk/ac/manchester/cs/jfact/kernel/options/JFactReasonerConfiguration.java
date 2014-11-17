@@ -604,7 +604,6 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
         return individualNodeSetPolicy;
     }
 
-    @SuppressWarnings("null")
     @Override
     public ReasonerProgressMonitor getProgressMonitor() {
         if (progressMonitor == null) {

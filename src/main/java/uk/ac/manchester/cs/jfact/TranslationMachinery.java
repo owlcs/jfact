@@ -6,6 +6,7 @@ package uk.ac.manchester.cs.jfact;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static org.semanticweb.owlapi.util.OWLAPIPreconditions.checkNotNull;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
@@ -227,12 +229,9 @@ public class TranslationMachinery implements Serializable {
      *        inds
      * @return individual set
      */
-    public List<IndividualExpression> translate(Set<OWLIndividual> inds) {
-        List<IndividualExpression> l = new ArrayList<>();
-        for (OWLIndividual ind : inds) {
-            l.add(pointer(ind));
-        }
-        return l;
+    public List<IndividualExpression> translate(
+            Stream<? extends OWLIndividual> inds) {
+        return asList(inds.map(i -> pointer(i)));
     }
 
     /** @return class translation */

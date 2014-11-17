@@ -1,10 +1,10 @@
 package uk.ac.manchester.cs.jfact;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Stream;
 
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
@@ -98,21 +98,17 @@ public class ClassExpressionTranslator extends
 
     @Override
     public ConceptExpression visit(OWLObjectIntersectionOf desc) {
-        return and(translateClassExpressionSet(desc.getOperands()));
+        return and(translateClassExpressionSet(desc.operands()));
     }
 
     private List<ConceptExpression> translateClassExpressionSet(
-            Set<OWLClassExpression> classExpressions) {
-        List<ConceptExpression> l = new ArrayList<>();
-        for (OWLClassExpression ce : classExpressions) {
-            l.add(ce.accept(this));
-        }
-        return l;
+            Stream<? extends OWLClassExpression> classExpressions) {
+        return asList(classExpressions.map(c -> c.accept(this)));
     }
 
     @Override
     public ConceptExpression visit(OWLObjectUnionOf desc) {
-        return or(translateClassExpressionSet(desc.getOperands()));
+        return or(translateClassExpressionSet(desc.operands()));
     }
 
     @Override
@@ -163,7 +159,7 @@ public class ClassExpressionTranslator extends
 
     @Override
     public ConceptExpression visit(OWLObjectOneOf desc) {
-        return em.oneOf(tr.translate(desc.getIndividuals()));
+        return em.oneOf(tr.translate(desc.individuals()));
     }
 
     @Override

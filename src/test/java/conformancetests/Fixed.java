@@ -289,9 +289,7 @@ public class Fixed extends TestBase {
         m.addAxiom(o, FunctionalDataProperty(p));
         m.addAxiom(o, SameIndividual(x, y));
         OWLReasoner r = factory().createReasoner(o);
-        assertTrue(
-                "Ontology was supposed to be consistent!\n"
-                        + o.getLogicalAxioms(), r.isConsistent());
+        assertTrue(r.isConsistent());
     }
 
     @Test
@@ -310,9 +308,7 @@ public class Fixed extends TestBase {
         m.addAxiom(o, FunctionalDataProperty(p));
         m.addAxiom(o, SameIndividual(x, y));
         OWLReasoner r = factory().createReasoner(o);
-        assertFalse(
-                "Ontology was supposed to be inconsistent!\n"
-                        + o.getLogicalAxioms(), r.isConsistent());
+        assertFalse(r.isConsistent());
     }
 
     @Test
@@ -321,7 +317,7 @@ public class Fixed extends TestBase {
         OWLOntology ont = mngr.createOntology();
         OWLReasonerFactory fac = factory();
         OWLReasoner r = fac.createReasoner(ont);
-        assertEquals(1, r.getBottomDataPropertyNode().getEntities().size());
+        assertEquals(1, r.getBottomDataPropertyNode().entities().count());
     }
 
     @Test
@@ -390,10 +386,7 @@ public class Fixed extends TestBase {
         m.addAxiom(o, FunctionalDataProperty(p));
         OWLReasoner r = factory().createReasoner(o);
         assertTrue(r.isConsistent());
-        assertTrue(
-                "x was supposed to be an instance of c!\n"
-                        + o.getLogicalAxioms(),
-                r.isEntailed(ClassAssertion(c, x)));
+        assertTrue(r.isEntailed(ClassAssertion(c, x)));
     }
 
     @Test

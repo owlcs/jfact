@@ -1,9 +1,7 @@
 package conformancetests;
 
 import static org.junit.Assert.assertEquals;
-
-import java.util.Arrays;
-import java.util.HashSet;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
 
 import javax.annotation.Nonnull;
 
@@ -22,6 +20,8 @@ import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 import testbase.TestBase;
+
+import com.google.common.collect.Sets;
 
 @SuppressWarnings("javadoc")
 public class ProcessesTestCase extends TestBase {
@@ -109,7 +109,6 @@ public class ProcessesTestCase extends TestBase {
             + "SubClassOf(<urn:Process#SimpleProcess> <urn:Process#Process>)\n"
             + "ObjectPropertyDomain(<urn:Process#composedOf> <urn:Process#CompositeProcess>))";
 
-    @SuppressWarnings("null")
     @Before
     public void setUp() throws OWLOntologyCreationException {
         o1 = OWLManager.createOWLOntologyManager()
@@ -124,9 +123,8 @@ public class ProcessesTestCase extends TestBase {
         jfact2.precomputeInferences(InferenceType.CLASS_HIERARCHY);
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     private static void equal(NodeSet<?> node, Object... objects) {
-        assertEquals(new HashSet(Arrays.asList(objects)), node.getFlattened());
+        assertEquals(Sets.newHashSet(objects), asSet(node.entities()));
     }
 
     @Test

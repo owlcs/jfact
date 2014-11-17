@@ -965,7 +965,6 @@ public class ReasoningKernel implements Serializable {
      *        R
      * @return true iff role is asymmetric
      */
-    @SuppressWarnings("null")
     @PortedFrom(file = "Kernel.h", name = "isAsymmetric")
     @Nonnull
     public Boolean isAsymmetric(ObjectRoleExpression R) {

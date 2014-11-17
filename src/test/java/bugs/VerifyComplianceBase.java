@@ -1,6 +1,7 @@
 package bugs;
 
 import static org.junit.Assert.assertEquals;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -42,7 +43,6 @@ public abstract class VerifyComplianceBase extends TestBase {
     protected JFactReasoner reasoner;
     protected OWLDataFactory df = OWLManager.getOWLDataFactory();
 
-    @SuppressWarnings("null")
     @Nonnull
     protected OWLOntology load(String in) throws OWLOntologyCreationException {
         OWLOntology onto = OWLManager.createOWLOntologyManager()
@@ -73,16 +73,14 @@ public abstract class VerifyComplianceBase extends TestBase {
                 .replace(", ", "\n");
     }
 
-    @SuppressWarnings({ "unchecked" })
     protected static void equal(NodeSet<?> node, OWLEntity... objects) {
         assertEquals(set(Arrays.asList(objects)),
-                set((Set<OWLEntity>) node.getFlattened()));
+                set(asSet(node.entities(), OWLEntity.class)));
     }
 
-    @SuppressWarnings("unchecked")
     protected static void equal(Node<?> node, OWLEntity... objects) {
         assertEquals(set(Arrays.asList(objects)),
-                set((Set<OWLEntity>) node.getEntities()));
+                set(asSet(node.entities(), OWLEntity.class)));
     }
 
     protected static void equal(Object o, boolean object) {

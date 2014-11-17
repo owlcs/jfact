@@ -37,6 +37,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleTransitive;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomSameIndividuals;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOf;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOfNot;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 
 /**
  * axiom visitor
@@ -47,226 +48,297 @@ import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOfNot;
 public interface DLAxiomVisitorEx<O> {
 
     /**
+     * @param a
+     *        parameter to visit
+     * @return default return value
+     */
+    O doDefault(AxiomInterface a);
+
+    /**
      * @param axiom
      *        AxiomDeclaration axiom to visit
      * @return visitor value
      */
-    O visit(AxiomDeclaration axiom);
+    default O visit(AxiomDeclaration axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomEquivalentConcepts axiom to visit
      * @return visitor value
      */
-    O visit(AxiomEquivalentConcepts axiom);
+    default O visit(AxiomEquivalentConcepts axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomDisjointConcepts axiom to visit
      * @return visitor value
      */
-    O visit(AxiomDisjointConcepts axiom);
+    default O visit(AxiomDisjointConcepts axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomEquivalentORoles axiom to visit
      * @return visitor value
      */
-    O visit(AxiomEquivalentORoles axiom);
+    default O visit(AxiomEquivalentORoles axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomEquivalentDRoles axiom to visit
      * @return visitor value
      */
-    O visit(AxiomEquivalentDRoles axiom);
+    default O visit(AxiomEquivalentDRoles axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomDisjointUnion axiom to visit
      * @return visitor value
      */
-    O visit(AxiomDisjointUnion axiom);
+    default O visit(AxiomDisjointUnion axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomDisjointORoles axiom to visit
      * @return visitor value
      */
-    O visit(AxiomDisjointORoles axiom);
+    default O visit(AxiomDisjointORoles axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomDisjointDRoles axiom to visit
      * @return visitor value
      */
-    O visit(AxiomDisjointDRoles axiom);
+    default O visit(AxiomDisjointDRoles axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomSameIndividuals axiom to visit
      * @return visitor value
      */
-    O visit(AxiomSameIndividuals axiom);
+    default O visit(AxiomSameIndividuals axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomDifferentIndividuals axiom to visit
      * @return visitor value
      */
-    O visit(AxiomDifferentIndividuals axiom);
+    default O visit(AxiomDifferentIndividuals axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomFairnessConstraint axiom to visit
      * @return visitor value
      */
-    O visit(AxiomFairnessConstraint axiom);
+    default O visit(AxiomFairnessConstraint axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomRoleInverse axiom to visit
      * @return visitor value
      */
-    O visit(AxiomRoleInverse axiom);
+    default O visit(AxiomRoleInverse axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomORoleSubsumption axiom to visit
      * @return visitor value
      */
-    O visit(AxiomORoleSubsumption axiom);
+    default O visit(AxiomORoleSubsumption axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomDRoleSubsumption axiom to visit
      * @return visitor value
      */
-    O visit(AxiomDRoleSubsumption axiom);
+    default O visit(AxiomDRoleSubsumption axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomORoleDomain axiom to visit
      * @return visitor value
      */
-    O visit(AxiomORoleDomain axiom);
+    default O visit(AxiomORoleDomain axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomDRoleDomain axiom to visit
      * @return visitor value
      */
-    O visit(AxiomDRoleDomain axiom);
+    default O visit(AxiomDRoleDomain axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomORoleRange axiom to visit
      * @return visitor value
      */
-    O visit(AxiomORoleRange axiom);
+    default O visit(AxiomORoleRange axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomDRoleRange axiom to visit
      * @return visitor value
      */
-    O visit(AxiomDRoleRange axiom);
+    default O visit(AxiomDRoleRange axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomRoleTransitive axiom to visit
      * @return visitor value
      */
-    O visit(AxiomRoleTransitive axiom);
+    default O visit(AxiomRoleTransitive axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomRoleReflexive axiom to visit
      * @return visitor value
      */
-    O visit(AxiomRoleReflexive axiom);
+    default O visit(AxiomRoleReflexive axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomRoleIrreflexive axiom to visit
      * @return visitor value
      */
-    O visit(AxiomRoleIrreflexive axiom);
+    default O visit(AxiomRoleIrreflexive axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomRoleSymmetric axiom to visit
      * @return visitor value
      */
-    O visit(AxiomRoleSymmetric axiom);
+    default O visit(AxiomRoleSymmetric axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomRoleAsymmetric axiom to visit
      * @return visitor value
      */
-    O visit(AxiomRoleAsymmetric axiom);
+    default O visit(AxiomRoleAsymmetric axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomORoleFunctional axiom to visit
      * @return visitor value
      */
-    O visit(AxiomORoleFunctional axiom);
+    default O visit(AxiomORoleFunctional axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomDRoleFunctional axiom to visit
      * @return visitor value
      */
-    O visit(AxiomDRoleFunctional axiom);
+    default O visit(AxiomDRoleFunctional axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomRoleInverseFunctional axiom to visit
      * @return visitor value
      */
-    O visit(AxiomRoleInverseFunctional axiom);
+    default O visit(AxiomRoleInverseFunctional axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomConceptInclusion axiom to visit
      * @return visitor value
      */
-    O visit(AxiomConceptInclusion axiom);
+    default O visit(AxiomConceptInclusion axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomInstanceOf axiom to visit
      * @return visitor value
      */
-    O visit(AxiomInstanceOf axiom);
+    default O visit(AxiomInstanceOf axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomRelatedTo axiom to visit
      * @return visitor value
      */
-    O visit(AxiomRelatedTo axiom);
+    default O visit(AxiomRelatedTo axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomRelatedToNot axiom to visit
      * @return visitor value
      */
-    O visit(AxiomRelatedToNot axiom);
+    default O visit(AxiomRelatedToNot axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomValueOf axiom to visit
      * @return visitor value
      */
-    O visit(AxiomValueOf axiom);
+    default O visit(AxiomValueOf axiom) {
+        return doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomValueOfNot axiom to visit
      * @return visitor value
      */
-    O visit(AxiomValueOfNot axiom);
+    default O visit(AxiomValueOfNot axiom) {
+        return doDefault(axiom);
+    }
 }

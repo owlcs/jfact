@@ -1,10 +1,11 @@
 package uk.ac.manchester.cs.jfact;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 
@@ -69,7 +70,6 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>,
     private final TranslationMachinery tr;
     private final OWLDataFactory df;
 
-    @SuppressWarnings("null")
     @Nonnull
     private static Boolean b(boolean b) {
         return Boolean.valueOf(b);
@@ -121,19 +121,18 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>,
 
     @Override
     public Boolean visit(OWLDisjointClassesAxiom axiom) {
-        Set<OWLClassExpression> classExpressions = axiom.getClassExpressions();
+        List<OWLClassExpression> classExpressions = asList(axiom
+                .classExpressions());
         if (classExpressions.size() == 2) {
-            Iterator<OWLClassExpression> it = classExpressions.iterator();
-            return b(kernel.isDisjoint(tr.pointer(it.next()),
-                    tr.pointer(it.next())));
-        } else {
-            for (OWLAxiom ax : axiom.asOWLSubClassOfAxioms()) {
-                if (!ax.accept(this)) {
-                    return b(false);
-                }
-            }
-            return b(true);
+            return b(kernel.isDisjoint(tr.pointer(classExpressions.get(0)),
+                    tr.pointer(classExpressions.get(1))));
         }
+        for (OWLAxiom ax : axiom.asOWLSubClassOfAxioms()) {
+            if (!ax.accept(this)) {
+                return b(false);
+            }
+        }
+        return b(true);
     }
 
     @Override
@@ -174,8 +173,7 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>,
     // TODO: this check is incomplete
     @Override
     public Boolean visit(OWLDisjointDataPropertiesAxiom axiom) {
-        List<OWLDataPropertyExpression> l = new ArrayList<>(
-                axiom.getProperties());
+        List<OWLDataPropertyExpression> l = asList(axiom.properties());
         for (int i = 0; i < l.size() - 1; i++) {
             for (int j = i + 1; j < l.size(); j++) {
                 if (!kernel.isDisjointRoles(tr.pointer(l.get(i)),
@@ -189,8 +187,7 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>,
 
     @Override
     public Boolean visit(OWLDisjointObjectPropertiesAxiom axiom) {
-        List<OWLObjectPropertyExpression> l = new ArrayList<>(
-                axiom.getProperties());
+        List<OWLObjectPropertyExpression> l = asList(axiom.properties());
         for (int i = 0; i < l.size() - 1; i++) {
             for (int j = i + 1; j < l.size(); j++) {
                 if (!kernel.isDisjointRoles(tr.pointer(l.get(i)),
@@ -272,20 +269,18 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>,
 
     @Override
     public Boolean visit(OWLEquivalentClassesAxiom axiom) {
-        Set<OWLClassExpression> classExpressionSet = axiom
-                .getClassExpressions();
-        if (classExpressionSet.size() == 2) {
-            Iterator<OWLClassExpression> it = classExpressionSet.iterator();
-            return b(kernel.isEquivalent(tr.pointer(it.next()),
-                    tr.pointer(it.next())));
-        } else {
-            for (OWLAxiom ax : axiom.asOWLSubClassOfAxioms()) {
-                if (!ax.accept(this)) {
-                    return b(false);
-                }
-            }
-            return b(true);
+        List<OWLClassExpression> classExpressions = asList(axiom
+                .classExpressions());
+        if (classExpressions.size() == 2) {
+            return b(kernel.isEquivalent(tr.pointer(classExpressions.get(0)),
+                    tr.pointer(classExpressions.get(1))));
         }
+        for (OWLAxiom ax : axiom.asOWLSubClassOfAxioms()) {
+            if (!ax.accept(this)) {
+                return b(false);
+            }
+        }
+        return b(true);
     }
 
     @Override
@@ -310,7 +305,6 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>,
                 tr.pointer(axiom.getSuperProperty()));
     }
 
-    @SuppressWarnings("null")
     @Override
     public Boolean visit(OWLInverseFunctionalObjectPropertyAxiom axiom) {
         return kernel.isInverseFunctional(tr.pointer(axiom.getProperty()));
@@ -319,7 +313,7 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>,
     @Override
     public Boolean visit(OWLSameIndividualAxiom axiom) {
         for (OWLSameIndividualAxiom ax : axiom.asPairwiseAxioms()) {
-            Iterator<OWLIndividual> it = ax.getIndividuals().iterator();
+            Iterator<OWLIndividual> it = ax.individuals().iterator();
             OWLIndividual indA = it.next();
             OWLIndividual indB = it.next();
             if (!kernel.isSameIndividuals(tr.pointer(indA), tr.pointer(indB))) {

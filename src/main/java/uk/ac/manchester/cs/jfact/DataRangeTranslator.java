@@ -1,10 +1,11 @@
 package uk.ac.manchester.cs.jfact;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.*;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Stream;
 
 import org.semanticweb.owlapi.model.OWLDataComplementOf;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -16,7 +17,6 @@ import org.semanticweb.owlapi.model.OWLDataUnionOf;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLDatatypeRestriction;
 import org.semanticweb.owlapi.model.OWLFacetRestriction;
-import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.reasoner.impl.DefaultNode;
 import org.semanticweb.owlapi.reasoner.impl.DefaultNodeSet;
 import org.semanticweb.owlapi.reasoner.impl.OWLDatatypeNode;
@@ -97,11 +97,7 @@ public class DataRangeTranslator extends
 
     @Override
     public DataExpression visit(OWLDataOneOf node) {
-        List<Literal<?>> l = new ArrayList<>();
-        for (OWLLiteral literal : node.getValues()) {
-            l.add(tr.pointer(literal));
-        }
-        return dataOneOf(l);
+        return dataOneOf(asList(node.values().map(lit -> tr.pointer(lit))));
     }
 
     @Override
@@ -111,30 +107,25 @@ public class DataRangeTranslator extends
 
     @Override
     public DataExpression visit(OWLDataIntersectionOf node) {
-        return dataAnd(translateDataRangeSet(node.getOperands()));
+        return dataAnd(translateDataRangeSet(node.operands()));
     }
 
     private List<DataExpression> translateDataRangeSet(
-            Set<OWLDataRange> dataRanges) {
-        List<DataExpression> l = new ArrayList<>();
-        for (OWLDataRange op : dataRanges) {
-            l.add(op.accept(this));
-        }
-        return l;
+            Stream<? extends OWLDataRange> dataRanges) {
+        return asList(dataRanges.map(op -> op.accept(this)));
     }
 
     @Override
     public DataExpression visit(OWLDataUnionOf node) {
-        return dataOr(translateDataRangeSet(node.getOperands()));
+        return dataOr(translateDataRangeSet(node.operands()));
     }
 
-    @SuppressWarnings("null")
     @Override
     public DataExpression visit(OWLDatatypeRestriction node) {
         Datatype<?> type = f.getKnownDatatype(node.getDatatype().getIRI());
-        Set<OWLFacetRestriction> facetRestrictions = node
-                .getFacetRestrictions();
-        if (facetRestrictions.isEmpty()) {
+        Iterator<OWLFacetRestriction> facetRestrictions = node
+                .facetRestrictions().iterator();
+        if (!facetRestrictions.hasNext()) {
             return type;
         }
         DatatypeExpression<?> toReturn = null;
@@ -146,7 +137,8 @@ public class DataRangeTranslator extends
         } else {
             toReturn = DatatypeFactory.getDatatypeExpression(type);
         }
-        for (OWLFacetRestriction restriction : facetRestrictions) {
+        while (facetRestrictions.hasNext()) {
+            OWLFacetRestriction restriction = facetRestrictions.next();
             Literal<?> dv = tr.pointer(restriction.getFacetValue());
             Facet facet = Facets.parse(restriction.getFacet());
             if (facet.isNumberFacet()) {

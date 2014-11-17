@@ -197,7 +197,7 @@ public class Broken extends TestBase {
         OWLReasonerFactory fac = factory();
         OWLReasoner r = fac.createNonBufferingReasoner(ont);
         assertEquals(r.getBottomDataPropertyNode().toString(), 2, r
-                .getBottomDataPropertyNode().getEntities().size());
+                .getBottomDataPropertyNode().entities().count());
     }
 
     @Test

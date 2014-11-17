@@ -11,6 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormat;
@@ -27,7 +28,7 @@ import org.semanticweb.owlapi.profiles.OWLProfileReport;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 
-@SuppressWarnings({ "javadoc", "null" })
+@SuppressWarnings({ "javadoc" })
 public class JUnitRunner {
 
     private static final int _10000 = 1000000;
@@ -141,10 +142,7 @@ public class JUnitRunner {
         StringBuilder b = new StringBuilder();
         b.append("JUnitRunner.logTroubles() premise");
         b.append('\n');
-        for (OWLAxiom ax1 : premiseOntology.getAxioms()) {
-            b.append(ax1);
-            b.append('\n');
-        }
+        premiseOntology.axioms().forEach(ax1 -> b.append(ax1).append('\n'));
         OWLReasoner reasoner = f.createReasoner(premiseOntology);
         actual(conclusionOntology, b, reasoner);
         // reasoner = roundtrip(reasoner);
@@ -173,57 +171,61 @@ public class JUnitRunner {
             OWLReasoner reasoner) {
         switch (t) {
             case CONSISTENCY: {
-                boolean consistent = isConsistent(reasoner);
-                if (!consistent) {
+                AtomicBoolean consistent = new AtomicBoolean(
+                        isConsistent(reasoner));
+                if (!consistent.get()) {
                     String message = b.toString()
                             + logTroubles(true, consistent, t, null);
-                    assertTrue(message, consistent);
+                    assertTrue(message, consistent.get());
                 }
             }
                 break;
             case INCONSISTENCY: {
-                boolean consistent = isConsistent(reasoner);
-                if (consistent) {
+                AtomicBoolean consistent = new AtomicBoolean(
+                        isConsistent(reasoner));
+                if (consistent.get()) {
                     String message = b.toString()
                             + logTroubles(false, consistent, t, null);
-                    assertFalse(message, consistent);
+                    assertFalse(message, consistent.get());
                 }
             }
                 break;
             case NEGATIVE_IMPL: {
-                boolean consistent = isConsistent(reasoner);
-                if (!consistent) {
+                AtomicBoolean consistent = new AtomicBoolean(
+                        isConsistent(reasoner));
+                if (!consistent.get()) {
                     String message = b.toString()
                             + logTroubles(true, consistent, t, null);
-                    assertTrue(message, consistent);
+                    assertTrue(message, consistent.get());
                 }
-                boolean entailed = false;
-                for (OWLAxiom ax : conclusionOntology.getLogicalAxioms()) {
+                AtomicBoolean entailed = new AtomicBoolean(false);
+                conclusionOntology.logicalAxioms().forEach(ax -> {
                     boolean temp = isEntailed(reasoner, ax);
-                    entailed |= temp;
+                    entailed.compareAndSet(false, temp);
                     if (temp) {
                         b.append(logTroubles(false, entailed, t, ax));
                     }
-                }
-                assertFalse(b.toString(), entailed);
+                });
+                assertFalse(b.toString(), entailed.get());
             }
                 break;
             case POSITIVE_IMPL: {
-                boolean consistent = isConsistent(reasoner);
-                if (!consistent) {
+                AtomicBoolean consistent = new AtomicBoolean(
+                        isConsistent(reasoner));
+                if (!consistent.get()) {
                     String message = b.toString()
                             + logTroubles(true, consistent, t, null);
-                    assertTrue(message, consistent);
+                    assertTrue(message, consistent.get());
                 }
-                boolean entailed = true;
-                for (OWLAxiom ax : conclusionOntology.getLogicalAxioms()) {
+                AtomicBoolean entailed = new AtomicBoolean(true);
+                conclusionOntology.logicalAxioms().forEach(ax -> {
                     boolean temp = isEntailed(reasoner, ax);
-                    entailed &= temp;
+                    entailed.compareAndSet(true, temp);
                     if (!temp) {
                         b.append(logTroubles(true, entailed, t, ax));
                     }
-                }
-                assertTrue(b.toString(), entailed);
+                });
+                assertTrue(b.toString(), entailed.get());
             }
                 break;
             default:
@@ -231,7 +233,7 @@ public class JUnitRunner {
         }
     }
 
-    public String logTroubles(boolean expected, boolean actual,
+    public String logTroubles(boolean expected, AtomicBoolean actual,
             TestClasses testclass, OWLAxiom axiom) {
         StringBuilder b = new StringBuilder();
         b.append("JUnitRunner.logTroubles() \t");
@@ -243,7 +245,7 @@ public class JUnitRunner {
         b.append("\nexpected: ");
         b.append(expected);
         b.append("\t actual: ");
-        b.append(actual);
+        b.append(actual.get());
         if (axiom != null) {
             b.append("\n for axiom: ");
             b.append(axiom.toString());
