@@ -174,20 +174,35 @@ public interface Datatype<R extends Comparable<R>> extends DataExpression {
     @Nonnull
     OrderedDatatype<R> asOrderedDatatype();
 
-    default DatatypeExpression<R> asNumericExpression() {
+    /**
+     * @return a new numeric expression if this is a numeric datatype, otherwise
+     *         null
+     */
+    default DatatypeExpression<R> wrapAsNumericExpression() {
         return isNumericDatatype() ? new DatatypeNumericExpressionImpl<>(this)
                 : null;
     }
 
-    default DatatypeExpression<R> asOrderedExpression() {
-        return isOrderedDatatype() ? new DatatypeOrderedExpressionImpl(this)
+    /**
+     * @return a new ordered expression if this is ano ordered datatype,
+     *         otherwise null
+     */
+    default DatatypeExpression<R> wrapAsOrderedExpression() {
+        return isOrderedDatatype() ? new DatatypeOrderedExpressionImpl<>(this)
                 : null;
     }
 
-    default DatatypeExpression<R> aDatatypeExpression() {
+    /**
+     * @return a new datatype expression
+     */
+    @Nonnull
+    default DatatypeExpression<R> wrapAsDatatypeExpression() {
         return new DatatypeExpressionImpl<>(this);
     }
 
+    /**
+     * @return host dataype
+     */
     @Nonnull
     default Datatype<R> host() {
         if (isExpression()) {
