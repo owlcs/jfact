@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import conformance.PortedFrom;
@@ -19,6 +20,7 @@ import conformance.PortedFrom;
 public class InAx implements Serializable {
 
     private static final long serialVersionUID = 11000L;
+    private static final AtomicInteger ZERO = new AtomicInteger(0);
 
     /**
      * @return an RW concept from a given [C|I]NAME-rooted DLTree
@@ -212,18 +214,15 @@ public class InAx implements Serializable {
         return !C.isName() || !getConcept(C).isSystem();
     }
 
-    private static final Map<String, Integer> created = new HashMap<>();
+    private static final Map<String, AtomicInteger> created = new HashMap<>();
 
     /**
      * @param s
      *        s
      */
     private static void add(String s) {
-        if (created.containsKey(s)) {
-            created.put(s, created.get(s) + 1);
-        } else {
-            created.put(s, 1);
-        }
+        created.computeIfAbsent(s, (x) -> new AtomicInteger())
+                .incrementAndGet();
     }
 
     /**
@@ -232,7 +231,7 @@ public class InAx implements Serializable {
      * @return index for s
      */
     private static int get(String s) {
-        return created.containsKey(s) ? created.get(s) : 0;
+        return created.getOrDefault(s, ZERO).intValue();
     }
 
     /** init SAbsRepCN */

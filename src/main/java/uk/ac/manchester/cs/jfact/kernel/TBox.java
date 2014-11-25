@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +53,6 @@ import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.split.SplitVarEntry;
 import uk.ac.manchester.cs.jfact.split.TSignature;
-import uk.ac.manchester.cs.jfact.split.TSplitRules;
 import uk.ac.manchester.cs.jfact.split.TSplitVar;
 import uk.ac.manchester.cs.jfact.split.TSplitVars;
 import conformance.Original;
@@ -137,9 +137,6 @@ public class TBox implements Serializable {
     /** all simple rules in KB */
     @PortedFrom(file = "dlTBox.h", name = "SimpleRules")
     private final List<SimpleRule> simpleRules = new ArrayList<>();
-    /** split rules */
-    @PortedFrom(file = "dlTBox.h", name = "SplitRules")
-    private final TSplitRules SplitRules;
     /** internalisation of a general axioms */
     @PortedFrom(file = "dlTBox.h", name = "T_G")
     private int internalisedGeneralAxiom;
@@ -1214,15 +1211,6 @@ public class TBox implements Serializable {
         }
     }
 
-    /** build up split rules for reasoners; create them after DAG is build */
-    @PortedFrom(file = "dlTBox.h", name = "buildSplitRules")
-    private void buildSplitRules() {
-        if (!getSplits().empty()) {
-            getSplitRules().createSplitRules(getSplits());
-            getSplitRules().initEntityMap(dlHeap);
-        }
-    }
-
     /**
      * @param p
      *        p
@@ -1669,7 +1657,6 @@ public class TBox implements Serializable {
         this.datatypeFactory = datatypeFactory;
         this.interrupted = interrupted;
         config = configuration;
-        SplitRules = new TSplitRules(configuration);
         axioms = new AxiomSet(this);
         dlHeap = new DLDag(configuration);
         kbStatus = kbLoading;
@@ -2730,7 +2717,6 @@ public class TBox implements Serializable {
         absorbAxioms();
         setToldTop();
         buildDAG();
-        buildSplitRules();
         fillsClassificationTag();
         calculateTSDepth();
         // set indexes for model caching
@@ -2834,13 +2820,14 @@ public class TBox implements Serializable {
     /** transform C [= E with C = D into GCIs */
     @PortedFrom(file = "Preprocess.cpp", name = "TransformExtraSubsumptions")
     void TransformExtraSubsumptions() {
-        for (Map.Entry<Concept, DLTree> p : ExtraConceptDefs.entrySet()) {
+        Iterator<Map.Entry<Concept, DLTree>> it = ExtraConceptDefs.entrySet()
+                .iterator();
+        while (it.hasNext()) {
+            Map.Entry<Concept, DLTree> p = it.next();
             Concept C = p.getKey();
             DLTree E = p.getValue();
             // for every C here we have C = D in KB and C [= E in ExtraDefs
-            // Set<Concept> processed = new HashSet<>();
             // if there is a cycle for C
-            // if (isReferenced(C, C, processed)) {
             if (isCyclic(C)) {
                 DLTree D = C.getDescription().copy();
                 // then we should make C [= (D and E) and go with GCI D [= C
@@ -2849,6 +2836,7 @@ public class TBox implements Serializable {
                 // it is safe to keep definition C = D and go with GCI D [= E
                 processGCI(getTree(C), E);
             }
+            it.remove();
         }
         ExtraConceptDefs.clear();
     }
@@ -3581,7 +3569,7 @@ public class TBox implements Serializable {
             Base.clear();
         }
 
-        // / move I'th iterable forward; deal with end-case
+        /** move I'th iterable forward; deal with end-case */
         public boolean next(int i) {
             if (Base.get(i).next()) {
                 return i == 0 ? true : next(i - 1);
@@ -3591,15 +3579,14 @@ public class TBox implements Serializable {
 
         private final List<IterableElem<Elem>> Base = new ArrayList<>();
 
-        // / empty c'tor
         IterableVec() {}
 
-        // / add a new iteralbe to a vec
+        /** add a new iterable to a vec */
         void add(IterableElem<Elem> It) {
             Base.add(It);
         }
 
-        // / get next position
+        /** get next position */
         boolean next() {
             return next(Base.size() - 1);
         }
@@ -3652,11 +3639,6 @@ public class TBox implements Serializable {
     /** @return true if in classification */
     public boolean isDuringClassification() {
         return duringClassification;
-    }
-
-    /** @return split rules */
-    public TSplitRules getSplitRules() {
-        return SplitRules;
     }
 
     /** @return individuals */

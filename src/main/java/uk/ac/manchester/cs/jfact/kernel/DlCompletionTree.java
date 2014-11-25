@@ -153,20 +153,23 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
      *        C
      * @return true if b2 holds
      */
+    @PortedFrom(file = "dlCompletionTree.h", name = "B2")
     private boolean B2(DLVertex v, int C) {
-        assert hasParent();
-        RAStateTransitions RST = v.getRole().getAutomaton().getBase()
-                .get(v.getState());
+        assert hasParent();// safety
+        RAStateTransitions RST = v.getRole().getAutomaton().get(v.getState());
         if (v.getRole().isSimple()) {
             return B2Simple(RST, v.getConceptIndex());
         } else {
-            if (RST.isEmpty()) {
+            if (RST.empty()) {
+                // no possible applications
                 return true;
             }
+            // pointer to current forall
+            int bp = C - v.getState();
             if (RST.isSingleton()) {
-                return B2Simple(RST, C - v.getState() + RST.getTransitionEnd());
+                return B2Simple(RST, bp + RST.getTransitionEnd());
             }
-            return B2Complex(RST, C - v.getState());
+            return B2Complex(RST, bp);
         }
     }
 
@@ -827,59 +830,65 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         return true;
     }
 
+    @PortedFrom(file = "Blocking.cpp", name = "B2Simple")
     private boolean B2Simple(RAStateTransitions RST, int C) {
         DlCompletionTree parent = getParentNode();
         CGLabel parLab = parent.label();
-        if (parLab.contains(C)) {
-            return true;
-        }
         for (int i = 0; i < neighbourSize; i++) {
             DlCompletionTreeArc p = neighbour.get(i);
-            if (!p.isIBlocked() && p.getArcEnd().equals(parent)
-                    && RST.recognise(p.getRole())) {
-                return false;
+            if (recognise(RST, parent, p)) {
+                return parLab.contains(C);
             }
         }
         return true;
     }
 
+    @PortedFrom(file = "Blocking.cpp", name = "B2Complex")
     private boolean B2Complex(RAStateTransitions RST, int C) {
         DlCompletionTree parent = getParentNode();
         CGLabel parLab = parent.label();
         for (int i = 0; i < neighbourSize; i++) {
             DlCompletionTreeArc p = neighbour.get(i);
-            if (p.isIBlocked() || !p.getArcEnd().equals(parent)) {
-                continue;
-            }
-            Role R = p.getRole();
-            if (RST.recognise(R)) {
-                List<RATransition> list = RST.begin();
-                for (int j = 0; j < list.size(); j++) {
-                    RATransition q = list.get(i);
-                    if (q.applicable(R)
-                            && !parLab.containsCC(C + q.final_state())) {
-                        return false;
-                    }
+            if (recognise(RST, parent, p)) {
+                if (RST.stream().anyMatch(
+                        q -> q.applicable(p.getRole())
+                                && !parLab.containsCC(C + q.final_state()))) {
+                    return false;
                 }
             }
         }
         return true;
     }
 
-    private boolean B3(DlCompletionTree p, int n, Role S, int C) {
+    protected boolean recognise(RAStateTransitions RST,
+            DlCompletionTree parent, DlCompletionTreeArc p) {
+        // XXX this equals() might be ==
+        return !p.isIBlocked() && p.getArcEnd().equals(parent)
+                && RST.recognise(p.getRole());
+    }
+
+    /** check if B3 holds for (<= n S.C)\in w' (p is a candidate for blocker) */
+    @PortedFrom(file = "Blocking.cpp", name = "B3")
+    private boolean B3(DlCompletionTree p, int n, Role T, int C) {
         assert hasParent();
+        // XXX here FaCT++ has blocking stats (tries), are they useful?
         boolean ret;
-        if (!isParentArcLabelled(S)) {
+        // if(<= n S C)\in L(w')then
+        // a)w is an inv(S)-succ of v or
+        if (!isParentArcLabelled(T)) {
             ret = true;
         } else if (getParentNode().isLabelledBy(-C)) {
+            // b)w is an inv(S)succ of v and ~C\in L(v)or
             ret = true;
         } else if (!getParentNode().isLabelledBy(C)) {
+            // c)w is an inv(S)succ of v and C\in L(v)...
             ret = false;
         } else {
+            // ...and <=n-1 S-succ. z with C\in L(z)
             int m = 0;
             for (int i = 0; i < p.neighbourSize; i++) {
                 DlCompletionTreeArc q = p.neighbour.get(i);
-                if (q.isSuccEdge() && q.isNeighbour(S)
+                if (q.isSuccEdge() && q.isNeighbour(T)
                         && q.getArcEnd().isLabelledBy(C)) {
                     ++m;
                 }
@@ -889,38 +898,56 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         return ret;
     }
 
+    /** check if B4 holds for(>= m T.E)\in w'(p is a candidate for blocker) */
+    @PortedFrom(file = "Blocking.cpp", name = "B4")
     private boolean B4(int m, Role T, int E) {
         assert hasParent();
+        // if(>= m T E)\in L(w')then
+        // b)w is an inv(T)succ of v and E\in L(v)and m == 1 or
         if (isParentArcLabelled(T) && m == 1 && getParentNode().isLabelledBy(E)) {
             return true;
         }
+        // a)w' has at least m T-succ z with E\in L(z)
+        // check all sons
         int n = 0;
         for (int i = 0; i < neighbourSize; i++) {
             DlCompletionTreeArc q = neighbour.get(i);
+            // check if node has enough successors
             if (q.isSuccEdge() && q.isNeighbour(T)
                     && q.getArcEnd().isLabelledBy(E) && ++n >= m) {
                 return true;
             }
         }
+        // rule check fails
         return false;
     }
 
+    /** check if B5 holds for(<= n T.E)\in w' */
+    @PortedFrom(file = "Blocking.cpp", name = "B5")
     private boolean B5(Role T, int E) {
         assert hasParent();
+        // if(<= n T E)\in L(w'), then
+        // either w is not an inv(T)-successor of v...
         if (!isParentArcLabelled(T)) {
             return true;
         }
+        // or ~E \in L(v)
         if (getParentNode().isLabelledBy(-E)) {
             return true;
         }
         return false;
     }
 
+    /** check if B6 holds for (>= m U.F)\in v */
+    @PortedFrom(file = "Blocking.cpp", name = "B6")
     private boolean B6(Role U, int F) {
         assert hasParent();
+        // if (>= m U F) \in L(v), and
+        // w is U-successor of v...
         if (!isParentArcLabelled(U.inverse())) {
             return true;
         }
+        // then ~F\in L(w)
         if (isLabelledBy(-F)) {
             return true;
         }

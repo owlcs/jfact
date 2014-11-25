@@ -116,7 +116,7 @@ public class RoleAutomaton implements Serializable {
         assert !isCompleted();
         if (RA.isSimple()) {
             boolean ok = base.get(initial).addToExisting(
-                    RA.getBase().get(initial).begin().get(0));
+                    RA.get(initial).begin().get(0));
             assert ok;
         } else {
             initChain(initial);
@@ -264,7 +264,7 @@ public class RoleAutomaton implements Serializable {
             int from = map[i];
             RAStateTransitions RST = base.get(from);
             RAStateTransitions RSTOrig = RA.base.get(i);
-            if (RSTOrig.isEmpty()) {
+            if (RSTOrig.empty()) {
                 continue;
             }
             List<RATransition> begin = RSTOrig.begin();
@@ -350,6 +350,11 @@ public class RoleAutomaton implements Serializable {
     @PortedFrom(file = "RAutomaton.h", name = "begin")
     public List<RAStateTransitions> getBase() {
         return base;
+    }
+
+    @PortedFrom(file = "RAutomaton.h", name = "begin")
+    public RAStateTransitions get(int i) {
+        return base.get(i);
     }
 
     // automaton completeness

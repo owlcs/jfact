@@ -203,13 +203,12 @@ public class AxiomSet implements Serializable {
     @PortedFrom(file = "tAxiomSet.h", name = "absorbGCI")
     private boolean absorbGCI(Axiom p) {
         SAbsAction();
-        for (AbsorptionActions abs : actions) {
-            if (abs.execute(p, this)) {
-                return true;
-            }
+        boolean absorbed = actions.stream().anyMatch(
+                abs -> abs.execute(p, this));
+        if (!absorbed) {
+            tboxHost.getOptions().getAbsorptionLog().print(" keep as GCI");
         }
-        tboxHost.getOptions().getAbsorptionLog().print(" keep as GCI");
-        return false;
+        return absorbed;
     }
 
     /**

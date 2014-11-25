@@ -47,7 +47,6 @@ import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.kernel.todolist.ToDoEntry;
 import uk.ac.manchester.cs.jfact.kernel.todolist.ToDoList;
-import uk.ac.manchester.cs.jfact.split.TSplitRules.TSplitRule;
 import conformance.Original;
 import conformance.PortedFrom;
 
@@ -702,7 +701,6 @@ public class DlSatTester implements Serializable {
     private void ensureDAGSize() {
         if (dagSize < dlHeap.size()) {
             dagSize = dlHeap.maxSize();
-            tBox.getSplitRules().ensureDagSize(dagSize);
         }
     }
 
@@ -2056,19 +2054,6 @@ public class DlSatTester implements Serializable {
         if (!TODO.isEmpty()) {
             return false;
         }
-        // check if any split expansion rule could be fired
-        if (!tBox.getSplits().empty()) {
-            logIndentation();
-            options.getLog().print("split:");
-            boolean clash = checkSplitRules();
-            options.getLog().print("]");
-            if (clash) {
-                return true;
-            }
-            if (!TODO.isEmpty()) {
-                return false;
-            }
-        }
         // check fairness constraints
         if (options.isRKG_USE_FAIRNESS() && tBox.hasFC()) {
             DlCompletionTree violator = null;
@@ -2086,57 +2071,6 @@ public class DlSatTester implements Serializable {
             }
             if (!TODO.isEmpty()) {
                 return false;
-            }
-        }
-        return false;
-    }
-
-    // split code implementation
-    /**
-     * apply split rule RULE to a reasoner.
-     * 
-     * @param rule
-     *        rule
-     * @return true if clash was found
-     */
-    @PortedFrom(file = "Reasoner.h", name = "applySplitRule")
-    private boolean applySplitRule(TSplitRule rule) {
-        DepSet dep = rule.fireDep(SessionSignature, SessionSigDepSet);
-        int bp = rule.bp() - 1;
-        // p.bp points to Choose(C) node, p.bp-1 -- to the split node
-        // split became active
-        ActiveSplits.add(bp);
-        // add corresponding choose to all
-        if (addSessionGCI(bp + 1, dep)) {
-            return true;
-        }
-        // make sure that all existing splits will be re-applied
-        this.updateName(bp);
-        return false;
-    }
-
-    /**
-     * check whether any split rules should be run and do it.
-     * 
-     * @return true iff clash was found
-     */
-    @PortedFrom(file = "Reasoner.h", name = "checkSplitRules")
-    private boolean checkSplitRules() {
-        if (splitRuleLevel == 0) {
-            // 1st application OR return was made before previous set
-            ActiveSplits.clear();
-            SessionSignature.clear();
-            SessionSigDepSet.clear();
-            splitRuleLevel = getCurLevel();
-        }
-        // fills in session signature for current CGraph. combine dep-sets for
-        // the same entities
-        this.updateSessionSignature();
-        // now for every split expansion rule check whether it can be fired
-        for (TSplitRule p : tBox.getSplitRules().getRules()) {
-            if (!ActiveSplits.contains(p.bp() - 1)
-                    && p.canFire(SessionSignature) && applySplitRule(p)) {
-                return true;
             }
         }
         return false;
@@ -2364,30 +2298,12 @@ public class DlSatTester implements Serializable {
         }
     }
 
-    /**
-     * update session signature with all names from a given node
-     * 
-     * @param node
-     *        node
-     */
-    @PortedFrom(file = "Reasoner.h", name = "updateSignatureByNode")
-    private void updateSignatureByNode(DlCompletionTree node) {
-        CGLabel lab = node.label();
-        for (ConceptWDep p : lab.get_sc()) {
-            this.updateSessionSignature(
-                    tBox.getSplitRules().getEntity(p.getConcept()), p.getDep());
-        }
-    }
-
     /** update session signature for all non-data nodes */
     @PortedFrom(file = "Reasoner.h", name = "updateSessionSignature")
     private void updateSessionSignature() {
         int n = 0;
         DlCompletionTree node = cGraph.getNode(n++);
         while (node != null) {
-            if (isObjectNodeUnblocked(node)) {
-                updateSignatureByNode(node);
-            }
             node = cGraph.getNode(n++);
         }
     }
@@ -2570,8 +2486,7 @@ public class DlSatTester implements Serializable {
         int state = cur.getState();
         // corresponds to AR{0}.X
         int C = curConceptConcept - state;
-        RAStateTransitions RST = cur.getRole().getAutomaton().getBase()
-                .get(state);
+        RAStateTransitions RST = cur.getRole().getAutomaton().get(state);
         // apply all empty transitions
         if (RST.hasEmptyTransition()) {
             List<RATransition> list = RST.begin();
@@ -2619,7 +2534,7 @@ public class DlSatTester implements Serializable {
 
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodyAllSimple")
     private boolean commonTacticBodyAllSimple(DLVertex cur) {
-        RAStateTransitions RST = cur.getRole().getAutomaton().getBase().get(0);
+        RAStateTransitions RST = cur.getRole().getAutomaton().get(0);
         int C = cur.getConceptIndex();
         // check whether automaton applicable to any edges
         stats.getnAllCalls().inc();
@@ -2710,7 +2625,7 @@ public class DlSatTester implements Serializable {
                         break;
                     }
                     /** check whether transition is possible */
-                    RAStateTransitions RST = vR.getAutomaton().getBase()
+                    RAStateTransitions RST = vR.getAutomaton()
                             .get(v.getState());
                     if (!RST.recognise(R)) {
                         break;

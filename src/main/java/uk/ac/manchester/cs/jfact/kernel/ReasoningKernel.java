@@ -27,7 +27,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nonnull;
 
-import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
@@ -63,9 +62,6 @@ import uk.ac.manchester.cs.jfact.split.OntologyBasedModularizer;
 import uk.ac.manchester.cs.jfact.split.TAxiomSplitter;
 import uk.ac.manchester.cs.jfact.split.TOntologyAtom;
 import uk.ac.manchester.cs.jfact.split.TSignature;
-
-import com.google.common.collect.Multimap;
-
 import conformance.Original;
 import conformance.PortedFrom;
 
@@ -2463,22 +2459,5 @@ public class ReasoningKernel implements Serializable {
             }
         }
         return false;
-    }
-
-    private final ConjunctiveQueryFolding conjunctiveQueryFolding = new ConjunctiveQueryFolding(
-            getExpressionManager());
-
-    /**
-     * call to underlying conjunctive query folding
-     * 
-     * @param query
-     *        query
-     * @param artificialABox
-     *        true if artificial abox
-     */
-    @Original
-    public void evaluateQuery(Multimap<IRI, ConceptExpression> query,
-            boolean artificialABox) {
-        conjunctiveQueryFolding.evaluateQuery(query, this, artificialABox);
     }
 }

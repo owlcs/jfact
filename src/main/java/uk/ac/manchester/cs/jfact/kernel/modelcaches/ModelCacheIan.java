@@ -275,7 +275,7 @@ public class ModelCacheIan extends ModelCacheInterface {
      */
     @PortedFrom(file = "modelCacheIan.h", name = "processAutomaton")
     public void processAutomaton(DLVertex cur) {
-        RAStateTransitions RST = cur.getRole().getAutomaton().getBase()
+        RAStateTransitions RST = cur.getRole().getAutomaton()
                 .get(cur.getState());
         // for every transition starting from a given state,
         // add the role that is accepted by a transition

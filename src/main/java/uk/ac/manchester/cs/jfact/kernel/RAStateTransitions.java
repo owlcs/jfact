@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
+import java.util.stream.Stream;
 
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import conformance.Original;
@@ -45,6 +46,12 @@ public class RAStateTransitions implements Serializable {
         return base;
     }
 
+    /** @return begin */
+    @PortedFrom(file = "RAutomaton.h", name = "begin")
+    public Stream<RATransition> stream() {
+        return base.stream();
+    }
+
     /** Default constructor. */
     public RAStateTransitions() {
         emptyTransition = false;
@@ -76,7 +83,7 @@ public class RAStateTransitions implements Serializable {
 
     /** @return true iff there are no transitions from this state */
     @PortedFrom(file = "RAutomaton.h", name = "empty")
-    public boolean isEmpty() {
+    public boolean empty() {
         return size == 0;
     }
 
