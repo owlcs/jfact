@@ -17,9 +17,7 @@ import uk.ac.manchester.cs.jfact.kernel.Concept.CTTag;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState;
-import uk.ac.manchester.cs.jfact.split.SplitVarEntry;
 import uk.ac.manchester.cs.jfact.split.TSignature;
-import uk.ac.manchester.cs.jfact.split.TSplitVar;
 import conformance.PortedFrom;
 
 /** Concept taxonomy */
@@ -154,14 +152,6 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     public DLConceptTaxonomy(Taxonomy pTax, TBox tbox) {
         super(pTax);
         tBox = tbox;
-    }
-
-    /** process all splits */
-    @PortedFrom(file = "DLConceptTaxonomy.h", name = "processSplits")
-    public void processSplits() {
-        for (TSplitVar v : tBox.getSplits().getEntries()) {
-            mergeSplitVars(v);
-        }
     }
 
     /**
@@ -553,45 +543,6 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         }
         clearLabels();
         inSplitCheck = false;
-    }
-
-    /**
-     * merge vars came from a given SPLIT together
-     * 
-     * @param split
-     *        split
-     */
-    @PortedFrom(file = "DLConceptTaxonomy.h", name = "mergeSplitVars")
-    private void mergeSplitVars(TSplitVar split) {
-        Set<TaxonomyVertex> splitVertices = new HashSet<>();
-        TaxonomyVertex v = split.getC().getTaxVertex();
-        boolean cIn = v != null;
-        if (v != null) {
-            splitVertices.add(v);
-        }
-        for (SplitVarEntry q : split.getEntries()) {
-            splitVertices.add(q.concept.getTaxVertex());
-        }
-        // set V to be a node-to-add
-        // FIXME!! check later the case whether both TOP and BOT are there
-        if (splitVertices.contains(pTax.getBottomVertex())) {
-            v = pTax.getBottomVertex();
-        } else if (splitVertices.contains(pTax.getTopVertex())) {
-            v = pTax.getTopVertex();
-        } else {
-            setCurrentEntry(split.getC());
-            v = pTax.current;
-        }
-        if (!v.equals(pTax.current) && !cIn) {
-            v.addSynonym(split.getC());
-        }
-        for (TaxonomyVertex p : splitVertices) {
-            mergeVertex(v, p, splitVertices);
-        }
-        if (v == pTax.current) {
-            checkExtraParents();
-            pTax.finishCurrentNode();
-        }
     }
 
     /**

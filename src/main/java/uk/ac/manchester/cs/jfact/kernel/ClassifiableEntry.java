@@ -136,9 +136,7 @@ public class ClassifiableEntry extends NamedEntry {
      */
     @PortedFrom(file = "taxNamEntry.h", name = "addParents")
     public void addParents(Collection<ClassifiableEntry> entries) {
-        for (ClassifiableEntry c : entries) {
-            addParentIfNew(c);
-        }
+        entries.forEach(c -> addParentIfNew(c));
     }
 
     // index interface
@@ -246,6 +244,6 @@ public class ClassifiableEntry extends NamedEntry {
         if (parent == this) {
             return;
         }
-        toldSubsumers.add(parent);
+        addParent(parent);
     }
 }

@@ -145,7 +145,7 @@ public class RAStateTransitions implements Serializable {
             // TODO index in Base
             if (p.final_state() == to && p.isEmpty() == tEmpty) {
                 // found existing transition
-                p.add(trans);
+                p.addIfNew(trans);
                 return true;
             }
         }

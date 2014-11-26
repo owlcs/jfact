@@ -330,6 +330,13 @@ public class RoleMaster implements Serializable {
         }
     }
 
+    /** add parent for the input role */
+    @PortedFrom(file = "RoleMaster.h", name = "addRoleParent")
+    public static void addRoleParent(Role role, Role parent) {
+        addRoleParentProper(ClassifiableEntry.resolveSynonym(role),
+                ClassifiableEntry.resolveSynonym(parent));
+    }
+
     /**
      * @param tree
      *        tree
@@ -346,7 +353,11 @@ public class RoleMaster implements Serializable {
             DLTree inv = DLTreeFactory.inverseComposition(tree);
             parent.inverse().addComposition(inv);
         } else if (tree.token() == PROJINTO) {
+            // here -R.C became -PARENT.
+            // encode this as PROJFROM(R-,PROJINTO(PARENT-,C)),
+            // added to the range of R
             Role R = Role.resolveRole(tree.getLeft());
+            // can't do anything ATM for the data roles
             if (R.isDataRole()) {
                 throw new ReasonerInternalException(
                         "Projection into not implemented for the data role");
@@ -362,6 +373,9 @@ public class RoleMaster implements Serializable {
             C = DLTreeFactory.buildTree(new Lexeme(PROJFROM), InvR, C);
             R.setRange(C);
         } else if (tree.token() == PROJFROM) {
+            // here C-R. became -PARENT.
+            // encode this as PROJFROM(R,PROJINTO(PARENT,C)),
+            // added to the domain of R
             Role R = Role.resolveRole(tree.getLeft());
             DLTree C = tree.getRight().copy();
             DLTree P = DLTreeFactory.buildTree(new Lexeme(RNAME, parent));
@@ -372,7 +386,7 @@ public class RoleMaster implements Serializable {
                     .copy(), C);
             R.setDomain(C);
         } else {
-            addRoleParentProper(Role.resolveRole(tree), parent);
+            addRoleParent(Role.resolveRole(tree), parent);
         }
     }
 

@@ -67,16 +67,9 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
             this.reasoner.reportClash(localDep, DT_C_IT);
             return true;
         }
-        if (!i.update(interval, localDep)) {
+        if (!i.update(interval, localDep) || !this.hasPType()
+                || !i.checkMinMaxClash()) {
             this.constraints.add(i);
-        }
-        if (!this.hasPType()) {
-            this.constraints.add(i);
-        }
-        if (!i.checkMinMaxClash()) {
-            this.constraints.add(i);
-        } else {
-            this.accDep.add(i.locDep);
         }
         return false;
     }

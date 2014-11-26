@@ -51,10 +51,7 @@ import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheSingleton;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
-import uk.ac.manchester.cs.jfact.split.SplitVarEntry;
 import uk.ac.manchester.cs.jfact.split.TSignature;
-import uk.ac.manchester.cs.jfact.split.TSplitVar;
-import uk.ac.manchester.cs.jfact.split.TSplitVars;
 import conformance.Original;
 import conformance.PortedFrom;
 
@@ -200,28 +197,10 @@ public class TBox implements Serializable {
     /** all the synonyms in the told subsumers' cycle */
     @PortedFrom(file = "dlTBox.h", name = "ToldSynonyms")
     private final Set<Concept> toldSynonyms = new HashSet<>();
-    /** set of split vars */
-    @PortedFrom(file = "dlTBox.h", name = "Splits")
-    private TSplitVars Splits;
     /** status of the KB */
     @PortedFrom(file = "dlTBox.h", name = "Status")
     private KBStatus status;
     private Map<Concept, DLTree> ExtraConceptDefs = new HashMap<>();
-
-    /**
-     * @param s
-     *        split vars
-     */
-    @PortedFrom(file = "dlTBox.h", name = "setSplitVars")
-    public void setSplitVars(TSplitVars s) {
-        Splits = s;
-    }
-
-    /** @return split vars */
-    @PortedFrom(file = "dlTBox.h", name = "getSplitVars")
-    public TSplitVars getSplits() {
-        return Splits;
-    }
 
     /** @return individuals */
     @PortedFrom(file = "dlTBox.h", name = "i_begin")
@@ -1131,10 +1110,6 @@ public class TBox implements Serializable {
         // builds Roles range and domain
         initRangeDomain(objectRoleMaster);
         initRangeDomain(dataRoleMaster);
-        // build all splits
-        for (TSplitVar s : getSplits().getEntries()) {
-            split2dag(s);
-        }
         DLTree GCI = axioms.getGCI();
         // add special domains to the GCIs
         List<DLTree> list = new ArrayList<>();
@@ -1301,8 +1276,10 @@ public class TBox implements Serializable {
         int desc = bpTOP;
         // translate body of a concept
         if (pConcept.getDescription() != null) {
+            // complex concept
             desc = tree2dag(pConcept.getDescription());
         } else {
+            // only primivive concepts here
             assert pConcept.isPrimitive();
         }
         // update concept's entry
@@ -1461,26 +1438,6 @@ public class TBox implements Serializable {
         return ret;
     }
 
-    /**
-     * transform splitted concept registered in SPLIT to a dag representation
-     * 
-     * @param split
-     *        split
-     */
-    @PortedFrom(file = "dlTBox.h", name = "split2dag")
-    private void split2dag(TSplitVar split) {
-        DLVertex v = new DLVertex(dtSplitConcept);
-        for (SplitVarEntry p : split.getEntries()) {
-            v.addChild(p.concept.getpName());
-        }
-        split.getC().setpBody(dlHeap.directAdd(v));
-        split.getC().setPrimitive(false);
-        dlHeap.replaceVertex(split.getC().getpName(), new DLVertex(dtNConcept,
-                0, null, split.getC().getpBody(), null), split.getC());
-        dlHeap.directAdd(new DLVertex(dtChoose, 0, null, split.getC()
-                .getpName(), null));
-    }
-
     @PortedFrom(file = "dlTBox.h", name = "fillANDVertex")
     private boolean fillANDVertex(DLVertex v, DLTree t) {
         if (t.isAND()) {
@@ -1582,7 +1539,6 @@ public class TBox implements Serializable {
         classifyConcepts(arrayNoCD, false, "regular");
         classifyConcepts(arrayNP, false, "non-primitive");
         duringClassification = false;
-        pTaxCreator.processSplits();
         config.getProgressMonitor().reasonerTaskStopped();
         pTax.finalise();
         locTimer.stop();
@@ -2341,21 +2297,26 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "addSubsumeAxiom")
     public void addSubsumeAxiom(DLTree sub, DLTree sup) {
+        // for C [= C: nothing to do
         if (DLTree.equalTrees(sub, sup)) {
             return;
         }
+        // try to apply C [= CN
         if (sup.isCN()) {
             sup = applyAxiomCToCN(sub, sup);
             if (sup == null) {
                 return;
             }
         }
+        // try to apply CN [= C
         if (sub.isCN()) {
             sub = applyAxiomCNToC(sub, sup);
             if (sub == null) {
                 return;
             }
         }
+        // check if an axiom looks like T [= \AR.C
+        // if not, treat as a GCI
         if (!axiomToRangeDomain(sub, sup)) {
             processGCI(sub, sup);
         }
@@ -2408,6 +2369,8 @@ public class TBox implements Serializable {
     }
 
     /**
+     * add an axiom CN [= E for defined CN (CN=D already in base)
+     * 
      * @param C
      *        C
      * @param E
@@ -2415,14 +2378,12 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "addSubsumeForDefined")
     public void addSubsumeForDefined(Concept C, DLTree E) {
+        // if E is a syntactic sub-class of D, then nothing to do
         if (DLTreeFactory.isSubTree(E, C.getDescription())) {
             return;
         }
-        // DLTree D = C.getDescription().copy();
         // // try to see whether C contains a reference to itself at the top
         // level
-        // // TODO: rewrite via hasSelfInDesc()
-        // C.removeSelfFromDescription();
         if (C.hasSelfInDesc()) {
             // remember the old description value
             DLTree D = C.getDescription().copy();
@@ -2444,6 +2405,7 @@ public class TBox implements Serializable {
                 // processing of C [= E
                 DLTree p = ExtraConceptDefs.get(C);
                 if (p == null) {
+                    // no such entry
                     // save C [= E
                     ExtraConceptDefs.put(C, E);
                 } else {
@@ -2478,18 +2440,29 @@ public class TBox implements Serializable {
 
     @PortedFrom(file = "dlTBox.h", name = "addEqualityAxiom")
     private void addEqualityAxiom(DLTree left, DLTree right) {
-        if (addNonprimitiveDefinition(left, right)) {
+        // check whether LHS is a named concept
+        Concept C = resolveSynonym(getCI(left));
+        boolean isNamedLHS = C != null && !C.isTop() && !C.isBottom();
+        // check whether LHS is a named concept
+        Concept D = resolveSynonym(getCI(right));
+        boolean isNamedRHS = D != null && !D.isTop() && !D.isBottom();
+        // try to make a definition C = RHS for C with no definition
+        if (isNamedLHS && addNonprimitiveDefinition(C, D, right)) {
             return;
         }
-        if (addNonprimitiveDefinition(right, left)) {
+        // try to make a definition RHS = LHS for RHS = C with no definition
+        if (isNamedRHS && addNonprimitiveDefinition(D, C, left)) {
             return;
         }
-        if (switchToNonprimitive(left, right)) {
+        // try to make a definition C = RHS for C [= D
+        if (isNamedLHS && switchToNonprimitive(left, right)) {
             return;
         }
-        if (switchToNonprimitive(right, left)) {
+        // try to make a definition RHS = LHS for RHS = C with C [= D
+        if (isNamedRHS && switchToNonprimitive(right, left)) {
             return;
         }
+        // fail to make a concept definition; separate the definition
         this.addSubsumeAxiom(left.copy(), right.copy());
         this.addSubsumeAxiom(right, left);
     }
@@ -2502,29 +2475,29 @@ public class TBox implements Serializable {
      * @return true if definition is added
      */
     @PortedFrom(file = "dlTBox.h", name = "addNonprimitiveDefinition")
-    public boolean addNonprimitiveDefinition(DLTree left, DLTree right) {
-        Concept C = resolveSynonym(getCI(left));
-        if (C == null || C.isTop() || C.isBottom()) {
-            return false;
-        }
-        Concept D = getCI(right);
-        if (D != null && resolveSynonym(D).equals(C)) {
+    public boolean addNonprimitiveDefinition(Concept left, Concept right,
+            DLTree rightOrigin) {
+        // nothing to do for the case C := D for named concepts C,D with D = C
+        // already
+        if (right != null && resolveSynonym(right).equals(left)) {
             return true;
         }
-        if (C.isSingleton() && D != null && !D.isSingleton()) {
+        // can't have C=D where C is a nominal and D is a concept
+        if (left.isSingleton() && right != null && !right.isSingleton()) {
             return false;
         }
-        if ((D == null || C.getDescription() == null || D.isPrimitive())
-                && !initNonPrimitive(C, right)) {
+        // check the case whether C=RHS or C [= \top
+        if (!initNonPrimitive(left, rightOrigin)) {
             return true;
         }
+        // can't make definition
         return false;
     }
 
     /**
-     * @param left
+     * @param lhs
      *        left
-     * @param right
+     * @param rhs
      *        right
      * @return true if concept is made non primitive
      */
@@ -3258,9 +3231,9 @@ public class TBox implements Serializable {
     @PortedFrom(file = "dlTBox.h", name = "initReasoner")
     public void initReasoner() {
         assert !reasonersInited();
-        stdReasoner = new DlSatTester(this, config, datatypeFactory);
+        stdReasoner = new DlSatTester(this, config);
         if (nominalCloudFeatures.hasSingletons()) {
-            nomReasoner = new NominalReasoner(this, config, datatypeFactory);
+            nomReasoner = new NominalReasoner(this, config);
         }
         setToDoPriorities();
     }
@@ -3604,21 +3577,6 @@ public class TBox implements Serializable {
     private final IterableVec<Individual> IV = new IterableVec<>();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "concepts")
     private final List<Integer> conceptsForQueryAnswering = new ArrayList<>();
-
-    /**
-     * @param Cs
-     *        Cs
-     */
-    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "answerQuery")
-    public void answerQuery(List<DLTree> Cs) {
-        dlHeap.removeQuery();
-        // System.out.print("Transforming concepts...");
-        // create BPs for all the concepts
-        getConceptsForQueryAnswering().clear();
-        for (DLTree q : Cs) {
-            getConceptsForQueryAnswering().add(tree2dag(q));
-        }
-    }
 
     /**
      * @param MPlus

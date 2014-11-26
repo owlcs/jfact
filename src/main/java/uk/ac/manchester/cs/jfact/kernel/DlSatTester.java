@@ -1353,12 +1353,6 @@ public class DlSatTester implements Serializable {
     }
 
     // flags section
-    /** @return true iff active signature is in use */
-    @PortedFrom(file = "Reasoner.h", name = "useActiveSignature")
-    private boolean useActiveSignature() {
-        return !tBox.getSplits().empty();
-    }
-
     @PortedFrom(file = "Reasoner.h", name = "resetSessionFlags")
     protected void resetSessionFlags() {
         // reflect possible change of DAG size

@@ -183,6 +183,7 @@ public class Concept extends ClassifiableEntry {
     @PortedFrom(file = "tConcept.h", name = "addExtraRule")
     public void addExtraRule(int ruleIndex) {
         extraRules.add(ruleIndex);
+        // FIXME!! double check this!
         setCompletelyDefined(false);
     }
 

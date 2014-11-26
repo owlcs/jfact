@@ -100,6 +100,7 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
      */
     @PortedFrom(file = "tOntologyAtom.h", name = "addDepAtom")
     public void addDepAtom(TOntologyAtom atom) {
+        // XXX != should be !equals() ?
         if (atom != null && atom != this) {
             DepAtoms.add(atom);
         }

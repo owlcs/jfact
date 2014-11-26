@@ -130,6 +130,7 @@ public class TModularizer implements Serializable {
     private void addNonLocal(Collection<AxiomInterface> AxSet, boolean noCheck) {
         for (AxiomInterface q : AxSet) {
             if (!q.isInModule() && q.isInSS()) {
+                // in the given range but not in module yet
                 this.addNonLocal(q, noCheck);
             }
         }

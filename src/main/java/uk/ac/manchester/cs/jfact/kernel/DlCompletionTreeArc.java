@@ -194,7 +194,7 @@ public class DlCompletionTreeArc implements Serializable {
      */
     public Restorer addDep(DepSet dep) {
         if (dep.isEmpty()) {
-            throw new IllegalArgumentException();
+            return null;
         }
         Restorer ret = new EdgeDepRestorer(this);
         depSet.add(dep);

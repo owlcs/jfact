@@ -305,23 +305,31 @@ public class DLVertex extends DLVertexTagDFS {
      */
     @PortedFrom(file = "dlVertex.h", name = "addChild")
     public boolean addChild(int p) {
-        if (p == bpTOP) {
-            return false;
-        }
+        // if adds to broken vertex -- do nothing;
         if (op == dtBad) {
             return true;
         }
-        if (p == bpBOTTOM) {
-            // clash:
+        // if adds TOP -- nothing to do
+        if (p == bpTOP) {
+            return false;
+        }
+        // if adding BOTTOM -- return clash (empty vertex) immediately
+        // this can happen in case of nested simplifications; see bNested1
+        if (p == bpBOTTOM || child.contains(-p)) {
             child.clear();
             op = dtBad;
             return true;
         }
-        if (child.contains(-p)) {
-            child.clear();
-            op = dtBad;
-            return true;
-        }
+        // XXX check this sorting:
+        // we need to insert p into set
+        // long offset = q - Child.begin();
+        // Child.push_back(Child.back());
+        // for (q_end = Child.begin()+offset, q = Child.end()-1; q != q_end;
+        // --q)
+        // *q=*(q-1); // copy the tail
+        // *q = p;
+        // // FIXME: add some simplification (about AR.C1, AR.c2 etc)
+        // return false;
         child.add(p);
         return false;
     }

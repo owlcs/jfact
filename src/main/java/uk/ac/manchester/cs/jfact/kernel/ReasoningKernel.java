@@ -59,7 +59,6 @@ import uk.ac.manchester.cs.jfact.split.KnowledgeExplorer;
 import uk.ac.manchester.cs.jfact.split.LocalityChecker;
 import uk.ac.manchester.cs.jfact.split.ModuleType;
 import uk.ac.manchester.cs.jfact.split.OntologyBasedModularizer;
-import uk.ac.manchester.cs.jfact.split.TAxiomSplitter;
 import uk.ac.manchester.cs.jfact.split.TOntologyAtom;
 import uk.ac.manchester.cs.jfact.split.TSignature;
 import conformance.Original;
@@ -1877,12 +1876,6 @@ public class ReasoningKernel implements Serializable {
         newKB();
         for (NamedEntity e : ontology.getSignature().begin()) {
             e.setEntry(null);
-        }
-        // split ontological axioms
-        if (kernelOptions.isSplits()) {
-            TAxiomSplitter AxiomSplitter = new TAxiomSplitter(kernelOptions,
-                    ontology);
-            AxiomSplitter.buildSplit();
         }
         OntologyLoader ontologyLoader = new OntologyLoader(getTBox());
         ontologyLoader.visitOntology(ontology);

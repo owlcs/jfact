@@ -124,16 +124,6 @@ public class KnowledgeExplorer implements Serializable {
         }
     }
 
-    /*
-     * # measurement update H.show() x.show() y =
-     * matrix([[measurements[n]]]).__sub__(H.__mul__(x)) y.show() S =
-     * R.__add__(H.__mul__(P.__mul__(H.transpose()))) K =
-     * P.__mul__(H.transpose().__mul__(S.inverse())) K.show() # y is constant yy
-     * = y.__repr__() print yy[0][0] x = x.__add__(K.__mul__(yy)) P =
-     * (I.__sub(K.__mul__(H))).__mul__(P) # prediction x =
-     * u.__add__(F.__mul__(x)) P = F.__mul__(P.__mul__(transpose(F))) print 'x=
-     * ' x.show() print 'P= ' P.show()
-     */
     /**
      * add concept-like entity E (possibly with synonyms) to CONCEPTS
      * 

@@ -52,8 +52,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
-import uk.ac.manchester.cs.jfact.split.SplitVarEntry;
-import uk.ac.manchester.cs.jfact.split.TSplitVar;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import conformance.PortedFrom;
 
@@ -135,17 +133,6 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
             ArgList.add(t.accept(expressionTranslator));
         }
         return ArgList;
-    }
-
-    @PortedFrom(file = "tOntologyLoader.h", name = "fillSplit")
-    private void fillSplit(TSplitVar sv) {
-        sv.setC(tbox.getConcept(sv.getOldName().getName()));
-        sv.getC().setNonClassifiable(true);
-        for (SplitVarEntry p : sv.getEntries()) {
-            Concept C = tbox.getConcept(p.name.getName());
-            C.setSystem();
-            p.concept = C;
-        }
     }
 
     @Override
@@ -550,10 +537,6 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
                 p.accept(this);
             }
         }
-        for (TSplitVar q : ontology.getSplits().getEntries()) {
-            fillSplit(q);
-        }
-        tbox.setSplitVars(ontology.getSplits());
         tbox.finishLoading();
     }
 }

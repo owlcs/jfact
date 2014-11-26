@@ -13,7 +13,6 @@ import javax.annotation.Nonnull;
 
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.split.TSignature;
-import uk.ac.manchester.cs.jfact.split.TSplitVars;
 import conformance.Original;
 import conformance.PortedFrom;
 
@@ -37,19 +36,11 @@ public class Ontology implements Serializable {
     /** true iff ontology was changed */
     @PortedFrom(file = "tOntology.h", name = "changed")
     private boolean changed;
-    @PortedFrom(file = "tOntology.h", name = "Splits")
-    private final TSplitVars Splits = new TSplitVars();
 
     /** Default constructor. */
     public Ontology() {
         axiomId = 0;
         changed = false;
-    }
-
-    /** @return splits */
-    @Original
-    public TSplitVars getSplits() {
-        return Splits;
     }
 
     /**

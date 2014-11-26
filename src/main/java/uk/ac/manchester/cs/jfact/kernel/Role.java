@@ -807,49 +807,45 @@ public class Role extends ClassifiableEntry {
         }
     }
 
-    /** add features */
+    /**
+     * copy role information (like transitivity, functionality, R&D etc) to
+     * synonym
+     */
     @PortedFrom(file = "tRole.h", name = "addFeaturesToSynonym")
     public void addFeaturesToSynonym() {
         if (!isSynonym()) {
             return;
         }
-        Role syn = (Role) pSynonym;
+        // don't copy parents: they are already copied during ToldSubsumers
+        // processing
+        Role syn = resolveSynonym(this);
+        // copy functionality
         if (isFunctional() || syn.isFunctional()) {
             syn.setFunctional();
-            setFunctional();
         }
+        // copy transitivity
         if (isTransitive() || syn.isTransitive()) {
             syn.setTransitive(true);
-            setTransitive(true);
         }
+        // copy reflexivity
         if (isReflexive() || syn.isReflexive()) {
             syn.setReflexive(true);
-            setReflexive(true);
         }
+        // copy data type
         if (isDataRole() || syn.isDataRole()) {
             syn.setDataRole(true);
-            setDataRole(true);
         }
+        // copy R&D
         if (pDomain != null) {
             syn.setDomain(pDomain.copy());
         }
-        if (syn.getTDomain() != null) {
-            setDomain(syn.getTDomain().copy());
-        }
-        if (inverse.pDomain != null) {
-            syn.inverse.setDomain(inverse.pDomain.copy());
-        }
-        if (syn.inverse.getTDomain() != null) {
-            inverse.setDomain(syn.inverse.getTDomain().copy());
-        }
-        if (this.isDisjoint()) {
+        // copy disjoint
+        if (isDisjoint()) {
             syn.disjointRoles.addAll(disjointRoles);
         }
-        if (syn.isDisjoint()) {
-            disjointRoles.addAll(syn.disjointRoles);
-        }
+        // copy subCompositions
         syn.subCompositions.addAll(subCompositions);
-        subCompositions.addAll(syn.subCompositions);
+        // syn should be the only parent for synonym
         toldSubsumers.clear();
         addParent(syn);
     }
@@ -1118,6 +1114,7 @@ public class Role extends ClassifiableEntry {
         // first preprocess the role chain
         preprocessComposition(RS);
         if (RS.isEmpty()) {
+            // fallout from transitivity axiom
             return;
         }
         // here we need a special treatment for R&D
