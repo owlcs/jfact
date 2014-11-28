@@ -10,6 +10,7 @@ import static uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheType.mctIan
 
 import java.util.BitSet;
 import java.util.List;
+import java.util.stream.Stream;
 
 import uk.ac.manchester.cs.jfact.helpers.DLVertex;
 import uk.ac.manchester.cs.jfact.helpers.FastSet;
@@ -79,12 +80,9 @@ public class ModelCacheIan extends ModelCacheInterface {
      *        start
      */
     @PortedFrom(file = "modelCacheIan.h", name = "processLabelInterval")
-    private void processLabelInterval(DLDag DLHeap, List<ConceptWDep> start) {
-        for (int i = 0; i < start.size(); i++) {
-            ConceptWDep p = start.get(i);
-            int bp = p.getConcept();
-            processConcept(DLHeap.get(bp), bp > 0, p.getDep().isEmpty());
-        }
+    private void processLabelInterval(DLDag DLHeap, Stream<ConceptWDep> start) {
+        start.forEach(p -> processConcept(DLHeap.get(p.getConcept()),
+                p.getConcept() > 0, p.getDep().isEmpty()));
     }
 
     /**
@@ -97,8 +95,8 @@ public class ModelCacheIan extends ModelCacheInterface {
      */
     @PortedFrom(file = "modelCacheIan.h", name = "initCacheByLabel")
     private void initCacheByLabel(DLDag DLHeap, DlCompletionTree pCT) {
-        processLabelInterval(DLHeap, pCT.beginl_sc());
-        processLabelInterval(DLHeap, pCT.beginl_cc());
+        processLabelInterval(DLHeap, pCT.beginl_sc().stream());
+        processLabelInterval(DLHeap, pCT.beginl_cc().stream());
     }
 
     /**
@@ -297,6 +295,7 @@ public class ModelCacheIan extends ModelCacheInterface {
     private void addRoleToCache(Role R) {
         existsRoles.add(R.getIndex());
         if (R.isTopFunc()) {
+            // all other top-funcs would be added separately
             funcRoles.add(R.getIndex());
         }
     }
@@ -310,11 +309,7 @@ public class ModelCacheIan extends ModelCacheInterface {
     @PortedFrom(file = "modelCacheIan.h", name = "addExistsRole")
     private void addExistsRole(Role R) {
         addRoleToCache(R);
-        List<Role> list = R.getAncestor();
-        int size = list.size();
-        for (int i = 0; i < size; i++) {
-            addRoleToCache(list.get(i));
-        }
+        R.getAncestor().forEach(a -> addRoleToCache(a));
     }
 
     @Override

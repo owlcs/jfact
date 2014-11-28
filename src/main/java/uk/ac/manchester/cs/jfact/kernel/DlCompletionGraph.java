@@ -10,6 +10,7 @@ import static uk.ac.manchester.cs.jfact.helpers.Helper.InitBranchingLevelValue;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.FastSet;
@@ -377,6 +378,11 @@ public class DlCompletionGraph implements Serializable {
             return null;
         }
         return nodeBase.get(i);
+    }
+
+    @PortedFrom(file = "dlCompletionGraph.h", name = "getNode")
+    public Stream<DlCompletionTree> nodes() {
+        return nodeBase.stream().limit(endUsed);
     }
 
     /** @return new node (with internal level) */

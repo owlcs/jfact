@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
@@ -804,28 +805,30 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         return true;
     }
 
-    private boolean isCBlockedBy(DLDag dag, DlCompletionTree p) {
-        List<ConceptWDep> list = p.beginl_cc();
-        for (int i = 0; i < list.size(); i++) {
-            int bp = list.get(i).getConcept();
-            if (bp > 0) {
-                DLVertex v = dag.get(bp);
-                if (v.getType() == dtLE
-                        && !B5(v.getRole(), v.getConceptIndex())) {
-                    return false;
-                }
+    private boolean isCBlockedBy(DLDag dag, DlCompletionTree t) {
+        Stream<ConceptWDep> list = t.beginl_cc().stream();
+        if (list.anyMatch(p -> {
+            if (p.getConcept() > 0) {
+                DLVertex v = dag.get(p.getConcept());
+                // (<= n T E) \in L(w')
+                return v.getType() == dtLE
+                        && !B5(v.getRole(), v.getConceptIndex());
             }
+            return false;
+        })) {
+            return false;
         }
-        list = getParentNode().beginl_cc();
-        for (int i = 0; i < list.size(); i++) {
-            int bp = list.get(i).getConcept();
-            if (bp < 0) {
-                DLVertex v = dag.get(bp);
-                if (v.getType() == dtLE
-                        && !B6(v.getRole(), v.getConceptIndex())) {
-                    return false;
-                }
+        list = getParentNode().beginl_cc().stream();
+        if (list.anyMatch(p -> {
+            if (p.getConcept() < 0) {
+                DLVertex v = dag.get(p.getConcept());
+                // (<= n T E) \in L(w')
+                return v.getType() == dtLE
+                        && !B6(v.getRole(), v.getConceptIndex());
             }
+            return false;
+        })) {
+            return false;
         }
         return true;
     }

@@ -10,7 +10,6 @@ import static uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry.resolveSynonym;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.Pair;
@@ -75,8 +74,8 @@ public class NominalReasoner extends DlSatTester {
         registerNominalCache(p);
         if (p.getNode().isPBlocked()) {
             // BP of the individual P is merged to
-            int bp = p.getNode().getBlocker().label().get_sc().get(0)
-                    .getConcept();
+            int bp = p.getNode().getBlocker().label().get_sc().iterator()
+                    .next().getConcept();
             Individual blocker = (Individual) dlHeap.get(bp).getConcept();
             assert blocker.getNode().equals(p.getNode().getBlocker());
             tBox.addSameIndividuals(p, new Pair(blocker, p.getNode()
@@ -89,12 +88,9 @@ public class NominalReasoner extends DlSatTester {
      *        tbox
      * @param Options
      *        Options
-     * @param datatypeFactory
-     *        datatypeFactory
      */
-    public NominalReasoner(TBox tbox, JFactReasonerConfiguration Options,
-            DatatypeFactory datatypeFactory) {
-        super(tbox, Options, datatypeFactory);
+    public NominalReasoner(TBox tbox, JFactReasonerConfiguration Options) {
+        super(tbox, Options);
         for (Individual pi : tBox.i_begin()) {
             if (!pi.isSynonym()) {
                 nominals.add(pi);

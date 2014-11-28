@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
 import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
 import uk.ac.manchester.cs.jfact.kernel.Concept;
-import uk.ac.manchester.cs.jfact.kernel.ConceptWDep;
 import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
 import uk.ac.manchester.cs.jfact.kernel.DlCompletionTreeArc;
 import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
@@ -244,16 +244,9 @@ public class KnowledgeExplorer implements Serializable {
         D2I.ensureDagSize();
         assert !node.isDataNode();
         Concepts.clear();
-        for (ConceptWDep p : node.beginl_sc()) {
-            if (!onlyDet || p.getDep().isEmpty()) {
-                addC(D2I.getExpr(p.getConcept(), false));
-            }
-        }
-        for (ConceptWDep p : node.beginl_cc()) {
-            if (!onlyDet || p.getDep().isEmpty()) {
-                addC(D2I.getExpr(p.getConcept(), false));
-            }
-        }
+        Stream.concat(node.beginl_sc().stream(), node.beginl_cc().stream())
+                .filter(p -> !onlyDet || p.getDep().isEmpty())
+                .forEach(p -> addC(D2I.getExpr(p.getConcept(), false)));
         List<ConceptExpression> toReturn = new ArrayList<>();
         for (Expression e : Concepts) {
             if (e instanceof ConceptExpression) {
@@ -277,16 +270,9 @@ public class KnowledgeExplorer implements Serializable {
         D2I.ensureDagSize();
         assert node.isDataNode();
         Concepts.clear();
-        for (ConceptWDep p : node.beginl_sc()) {
-            if (!onlyDet || p.getDep().isEmpty()) {
-                addC(D2I.getExpr(p.getConcept(), true));
-            }
-        }
-        for (ConceptWDep p : node.beginl_cc()) {
-            if (!onlyDet || p.getDep().isEmpty()) {
-                addC(D2I.getExpr(p.getConcept(), true));
-            }
-        }
+        Stream.concat(node.beginl_sc().stream(), node.beginl_cc().stream())
+                .filter(p -> !onlyDet || p.getDep().isEmpty())
+                .forEach(p -> addC(D2I.getExpr(p.getConcept(), true)));
         List<DataExpression> toReturn = new ArrayList<>();
         for (Expression e : Concepts) {
             if (e instanceof DataExpression) {
