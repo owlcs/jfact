@@ -91,11 +91,8 @@ public class NominalReasoner extends DlSatTester {
      */
     public NominalReasoner(TBox tbox, JFactReasonerConfiguration Options) {
         super(tbox, Options);
-        for (Individual pi : tBox.i_begin()) {
-            if (!pi.isSynonym()) {
-                nominals.add(pi);
-            }
-        }
+        tBox.i_begin().filter(pi -> !pi.isSynonym())
+                .forEach(pi -> nominals.add(pi));
     }
 
     /** prerpare Nominal Reasoner to a new job */

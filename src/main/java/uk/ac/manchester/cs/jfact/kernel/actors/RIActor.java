@@ -77,6 +77,5 @@ public class RIActor implements Actor, Serializable {
     }
 
     @Override
-    public void removePastBoundaries(Collection<TaxonomyVertex> pastBoundary) {
-    }
+    public void removePastBoundaries(Collection<TaxonomyVertex> pastBoundary) {}
 }

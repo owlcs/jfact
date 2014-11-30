@@ -25,7 +25,7 @@ import uk.ac.manchester.cs.jfact.kernel.DlCompletionTreeArc;
 import uk.ac.manchester.cs.jfact.kernel.RAStateTransitions;
 import uk.ac.manchester.cs.jfact.kernel.RATransition;
 import uk.ac.manchester.cs.jfact.kernel.Role;
-import conformance.Original;
+import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import conformance.PortedFrom;
 
 /** model cache Ian (Horrocks) */
@@ -67,9 +67,7 @@ public class ModelCacheIan extends ModelCacheInterface {
     // XXX these two fields should be used somehow
     private final int nC;
     private final int nR;
-    // XXX move to config
-    @Original
-    private final boolean simpleRules;
+    private final JFactReasonerConfiguration simpleRules;
 
     /**
      * process CT label in given interval; set Deterministic accordingly
@@ -116,7 +114,7 @@ public class ModelCacheIan extends ModelCacheInterface {
      *        simpleRules
      */
     public ModelCacheIan(DLDag heap, DlCompletionTree p, boolean flagNominals,
-            int nC, int nR, boolean simpleRules) {
+            int nC, int nR, JFactReasonerConfiguration simpleRules) {
         this(flagNominals, nC, nR, simpleRules);
         initCacheByLabel(heap, p);
         initRolesFromArcs(p);
@@ -133,7 +131,7 @@ public class ModelCacheIan extends ModelCacheInterface {
      *        simpleRules
      */
     public ModelCacheIan(boolean flagNominals, int nC, int nR,
-            boolean simpleRules) {
+            JFactReasonerConfiguration simpleRules) {
         super(flagNominals);
         curState = csValid;
         this.simpleRules = simpleRules;
@@ -211,7 +209,7 @@ public class ModelCacheIan extends ModelCacheInterface {
         posNConcepts.clear();
         negDConcepts.clear();
         negNConcepts.clear();
-        if (simpleRules) {
+        if (simpleRules.isRKG_USE_SIMPLE_RULES()) {
             extraDConcepts.clear();
             extraNConcepts.clear();
         }
@@ -384,10 +382,11 @@ public class ModelCacheIan extends ModelCacheInterface {
         ) {
             return csFailed;
         } else {
-            if (simpleRules && getExtra(true).intersect(q.getExtra(true))) {
+            if (simpleRules.isRKG_USE_SIMPLE_RULES()
+                    && getExtra(true).intersect(q.getExtra(true))) {
                 return csInvalid;
             }
-            if (simpleRules
+            if (simpleRules.isRKG_USE_SIMPLE_RULES()
                     && (getExtra(true).intersect(q.getExtra(false))
                             || getExtra(false).intersect(q.getExtra(true)) || getExtra(
                                 false).intersect(q.getExtra(false)))) {
@@ -462,7 +461,7 @@ public class ModelCacheIan extends ModelCacheInterface {
         posNConcepts.or(p.posNConcepts);
         negDConcepts.or(p.negDConcepts);
         negNConcepts.or(p.negNConcepts);
-        if (simpleRules) {
+        if (simpleRules.isRKG_USE_SIMPLE_RULES()) {
             extraDConcepts.addAll(p.extraDConcepts);
             extraNConcepts.addAll(p.extraNConcepts);
         }

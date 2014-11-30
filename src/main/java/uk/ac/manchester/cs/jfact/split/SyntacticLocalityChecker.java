@@ -12,5 +12,4 @@ import conformance.PortedFrom;
 public class SyntacticLocalityChecker extends GeneralSyntacticLocalityChecker {
 
     private static final long serialVersionUID = 11000L;
-    // XXX candidate for deletion
 }

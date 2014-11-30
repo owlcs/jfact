@@ -828,6 +828,8 @@ public class DlCompletionGraph implements Serializable {
     }
 
     /**
+     * merge labels; see SHOIN paper for detailed description
+     * 
      * @param from
      *        from
      * @param to
@@ -841,21 +843,28 @@ public class DlCompletionGraph implements Serializable {
     public void merge(DlCompletionTree from, DlCompletionTree to, DepSet dep,
             List<DlCompletionTreeArc> edges) {
         edges.clear();
-        List<DlCompletionTreeArc> neighbour = from.getNeighbour();
-        int size = neighbour.size();
-        for (int i = 0; i < size; i++) {
-            DlCompletionTreeArc p = neighbour.get(i);
-            if (p.isPredEdge() || p.getArcEnd().isNominalNode()) {
-                DlCompletionTreeArc temp = moveEdge(to, p, p.isPredEdge(), dep);
-                if (temp != null) {
-                    edges.add(temp);
-                }
-            }
-            if (p.isSuccEdge()) {
-                purgeEdge(p, to, dep);
-            }
-        }
+        // 1. For all x: x->FROM make x->TO
+        // FIXME!! no optimisations (in case there exists an edge TO->x labelled
+        // with R-)
+        // 2. For all nominal x: FROM->x make TO->x
+        // FIXME!! no optimisations (in case there exists an edge x->TO labelled
+        // with R-)
+        from.getNeighbour().forEach(
+                p -> {
+                    if (p.isPredEdge() || p.getArcEnd().isNominalNode()) {
+                        DlCompletionTreeArc temp = moveEdge(to, p,
+                                p.isPredEdge(), dep);
+                        if (temp != null) {
+                            edges.add(temp);
+                        }
+                    }
+                    if (p.isSuccEdge()) {
+                        purgeEdge(p, to, dep);
+                    }
+                });
+        // 4. For all x: FROM \neq x, add TO \neq x
         updateIR(to, from, dep);
+        // 5. Purge FROM
         purgeNode(from, to, dep);
     }
 
@@ -912,13 +921,14 @@ public class DlCompletionGraph implements Serializable {
         endUsed = s.getnNodes();
         int nSaved = s.getsNodes();
         if (endUsed < Math.abs(savedNodes.size() - nSaved)) {
+            // it's cheaper to restore all nodes
             for (int i = 0; i < endUsed; i++) {
-                // XXX check: it was taking into account also empty nodes
                 restoreNode(nodeBase.get(i), level);
             }
         } else {
             for (int i = nSaved; i < savedNodes.size(); i++) {
                 if (savedNodes.get(i).getId() < endUsed) {
+                    // don't restore nodes that are dead anyway
                     restoreNode(savedNodes.get(i), level);
                 }
             }

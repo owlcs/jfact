@@ -240,22 +240,30 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor
         } else if (isBotEquivalent(axiom.getConcept())) {
             lhsIsTopEq = false;
         } else {
+            // neither (1) nor (2)
             return;
-        }             // neither (1) nor (2)
+        }
         boolean topEqDesc = false;
         for (ConceptExpression p : axiom.getArguments()) {
             if (!isBotEquivalent(p)) {
                 if (lhsIsTopEq && isTopEquivalent(p)) {
                     if (topEqDesc) {
+                        // 2nd top in there -- violate (2) -- non-local
                         return;
                     } else {
                         topEqDesc = true;
                     }
                 } else {
+                    // either (1) or fail to have a top-eq for (2)
                     return;
                 }
             }
         }
+        // check whether for (2) we found a top-eq concept
+        if (lhsIsTopEq && !topEqDesc) {
+            return;
+        }
+        // it is local in the end!
         isLocal = true;
     }
 

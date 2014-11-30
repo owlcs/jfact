@@ -13,6 +13,7 @@ import java.util.List;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.ArrayIntMap;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
+import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import conformance.Original;
 import conformance.PortedFrom;
 
@@ -25,7 +26,7 @@ public class CWDArray implements Serializable {
     private static final double distribution = 0.025;
     /** array of concepts together with dep-sets */
     @PortedFrom(file = "CWDArray.h", name = "Base")
-    private final List<ConceptWDep> base = new ArrayList<>();
+    private final List<ConceptWDep> base;
     @Original
     private BitSet cache;
     @Original
@@ -36,6 +37,13 @@ public class CWDArray implements Serializable {
     private static final int cacheLimit = 1;
     @Original
     private int size = 0;
+    @Original
+    private JFactReasonerConfiguration options;
+
+    public CWDArray(JFactReasonerConfiguration config, int size) {
+        options = config;
+        base = new ArrayList<>(size);
+    }
 
     /** init/clear label */
     @PortedFrom(file = "CWDArray.h", name = "init")
@@ -262,15 +270,25 @@ public class CWDArray implements Serializable {
      */
     @PortedFrom(file = "CWDArray.h", name = "restore")
     public void restore(int ss, int level) {
+        // count the number of entries /not/ deleted
+        int count = 0;
         for (int i = ss; i < size; i++) {
-            int concept = base.get(i).getConcept();
-            indexes.remove(concept);
-            if (cache != null) {
-                cache.clear(asPositive(concept));
+            // if backjumping is enabled, an entity is deleted only if the
+            // depset level is the same or above level, otherwise the entry is
+            // kept
+            if (!options.isRKG_USE_DYNAMIC_BACKJUMPING()
+                    || base.get(i).getDep().level() >= level) {
+                int concept = base.get(i).getConcept();
+                indexes.remove(concept);
+                if (cache != null) {
+                    cache.clear(asPositive(concept));
+                }
+            } else {
+                count++;
             }
         }
-        Helper.resize(base, ss);
-        size = ss;
+        Helper.resize(base, ss + count);
+        size = ss + count;
     }
 
     @Override

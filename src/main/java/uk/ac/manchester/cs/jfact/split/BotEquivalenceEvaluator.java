@@ -219,6 +219,7 @@ public class BotEquivalenceEvaluator extends SigAccessor implements
 
     @Override
     public void visit(ConceptAnd expr) {
+        // XXX is this correct? never set to true?
         for (ConceptExpression p : expr.getArguments()) {
             if (isBotEquivalent(p)) {
                 return;
@@ -400,6 +401,7 @@ public class BotEquivalenceEvaluator extends SigAccessor implements
 
     @Override
     public void visit(DataAnd expr) {
+        // XXX no setting to true?
         for (DataExpression p : expr.getArguments()) {
             if (isBotEquivalent(p)) {
                 return;

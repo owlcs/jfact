@@ -6,13 +6,11 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Stream;
 
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.reasoner.FreshEntityPolicy;
 
-import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import conformance.Original;
 
@@ -27,8 +25,6 @@ import conformance.Original;
 public class NamedEntryCollection<T extends NamedEntry> implements Serializable {
 
     private static final long serialVersionUID = 11000L;
-    /** vector of elements */
-    private final List<T> base = new ArrayList<>();
     /** nameset to hold the elements */
     private final NameSet<T, IRI> nameset;
     /** name of the type */
@@ -37,28 +33,6 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
     private boolean locked;
     @Original
     private final JFactReasonerConfiguration options;
-
-    /**
-     * abstract method for additional tuning of newly created element
-     * 
-     * @param p
-     *        p
-     */
-    public void registerNew(@SuppressWarnings("unused") T p) {}
-
-    /**
-     * new element in a collection;
-     * 
-     * @param p
-     *        p
-     * @return this element
-     */
-    public T registerElem(T p) {
-        p.setId(base.size());
-        base.add(p);
-        registerNew(p);
-        return p;
-    }
 
     /**
      * c'tor: clear 0-th element
@@ -74,7 +48,6 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
             JFactReasonerConfiguration options) {
         typeName = name;
         locked = false;
-        base.add(null);
         nameset = new NameSet<>(creator);
         this.options = options;
     }
@@ -125,7 +98,7 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
                     + name + "' as a " + typeName, name);
         }
         // create name in name set, and register it
-        p = registerElem(nameset.add(name));
+        p = nameset.add(name);
         // if fresh entity -- mark it System
         if (isLocked()) {
             p.setSystem();
@@ -134,8 +107,6 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
             }
         }
         return p;
-        /** / name in name set, and it */
-        // return registerElem(nameset.add(name));
     }
 
     /**
@@ -150,23 +121,22 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
             // not in a name-set: just delete it
             return false;
         }
-        // we might delete vars in order (6,7), so the resize should be done to
-        // 6
-        if (p.getId() > 0 && base.size() > p.getId()) {
-            Helper.resize(base, p.getId());
-        }
         nameset.remove(p.getName());
         return false;
     }
 
-    // access to elements
-    /** @return list of elements */
-    public List<T> getList() {
-        return base.subList(1, base.size());
+    public Stream<T> getConcepts() {
+        return nameset.values().stream();
     }
 
-    /** @return size */
+    public T first() {
+        if (nameset.size() > 0) {
+            return nameset.values().iterator().next();
+        }
+        return null;
+    }
+
     public int size() {
-        return base.size() - 1;
+        return nameset.size();
     }
 }

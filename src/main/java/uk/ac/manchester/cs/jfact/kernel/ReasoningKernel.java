@@ -961,8 +961,7 @@ public class ReasoningKernel implements Serializable {
      * @return true iff role is asymmetric
      */
     @PortedFrom(file = "Kernel.h", name = "isAsymmetric")
-    @Nonnull
-    public Boolean isAsymmetric(ObjectRoleExpression R) {
+    public boolean isAsymmetric(ObjectRoleExpression R) {
         preprocessKB();
         Role r = getRole(R, "Role expression expected in isAsymmetric()");
         if (r.isTop()) {
@@ -1027,20 +1026,21 @@ public class ReasoningKernel implements Serializable {
      */
     @PortedFrom(file = "Kernel.h", name = "isDisjointRoles")
     public boolean isDisjointRoles(List<? extends RoleExpression> l) {
+        // grab all roles from the arg-list
         int nTopRoles = 0;
         List<Role> Roles = new ArrayList<>(l.size());
         for (RoleExpression p : l) {
             uk.ac.manchester.cs.jfact.kernel.Role role = getRole(p,
                     "Role expression expected in isDisjointRoles()");
-            if (role.isTop()) {
-                // universal role is not disjoint with anything
-                ++nTopRoles;
+            // empty role is disjoint with everything
+            if (!role.isBottom()) {
+                if (role.isTop()) {
+                    // count universal roles
+                    ++nTopRoles;
+                } else {
+                    Roles.add(role);
+                }
             }
-            if (role.isBottom()) {
-                // empty role is disjoint with everything
-                continue;
-            }
-            Roles.add(role);
         }
         // deal with top-roles
         if (nTopRoles > 0) {
@@ -1095,9 +1095,11 @@ public class ReasoningKernel implements Serializable {
         Role r = getRole(R, "Role expression expected in isDisjointRoles()");
         Role s = getRole(S, "Role expression expected in isDisjointRoles()");
         if (r.isTop() || s.isTop()) {
+            // universal role is not disjoint with anything
             return false;
         }
         if (r.isBottom() || s.isBottom()) {
+            // empty role is disjoint with everything
             return true;
         }
         return getTBox().isDisjointRoles(r, s);
@@ -1954,9 +1956,7 @@ public class ReasoningKernel implements Serializable {
         Set<NamedEntity> toProcess = new HashSet<>();
         getModExtractor(false);
         // fill the module signatures of the concepts
-        for (Concept p : getTBox().getConcepts()) {
-            toProcess.add(p.getEntity());
-        }
+        getTBox().getConcepts().forEach(p -> toProcess.add(p.getEntity()));
         // process all entries recursively
         while (!toProcess.isEmpty()) {
             buildSignature(toProcess.iterator().next(), ontology.getAxioms(),

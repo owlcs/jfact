@@ -177,7 +177,7 @@ public class DlCompletionTreeArc implements Serializable {
      */
     public Restorer save() {
         if (role == null) {
-            throw new IllegalArgumentException();
+            return null;
         }
         Restorer ret = new EdgeRestorer(this);
         role = null;

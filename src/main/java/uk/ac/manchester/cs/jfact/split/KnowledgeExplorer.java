@@ -93,19 +93,19 @@ public class KnowledgeExplorer implements Serializable {
     public KnowledgeExplorer(TBox box, ExpressionCache pEM) {
         D2I = new TDag2Interface(box.getDag(), pEM);
         // init all concepts
-        for (Concept c : box.getConcepts()) {
+        box.getConcepts().forEach(c -> {
             Cs.put(c.getEntity(), c);
             if (c.isSynonym()) {
                 Cs.put(c.getSynonym().getEntity(), c);
             }
-        }
+        });
         // init all individuals
-        for (Individual i : box.i_begin()) {
+        box.i_begin().forEach(i -> {
             Is.put(i.getEntity(), i);
             if (i.isSynonym()) {
                 Is.put(i.getSynonym().getEntity(), i);
             }
-        }
+        });
         // init all object roles
         for (Role R : box.getORM().getRoles()) {
             ORs.put(R.getEntity(), R);

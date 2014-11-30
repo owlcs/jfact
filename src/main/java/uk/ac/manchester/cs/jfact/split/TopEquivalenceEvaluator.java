@@ -227,6 +227,7 @@ public class TopEquivalenceEvaluator extends SigAccessor implements
 
     @Override
     public void visit(ConceptOr expr) {
+        // XXX no setting to true?
         for (ConceptExpression p : expr.getArguments()) {
             if (isTopEquivalent(p)) {
                 return;
@@ -300,25 +301,22 @@ public class TopEquivalenceEvaluator extends SigAccessor implements
 
     @Override
     public void visit(ConceptDataMinCardinality expr) {
-        isTopEq = expr.getCardinality() == 0;
-        if (sig.topRLocal()) {
-            isTopEq |= isTopEquivalent(expr.getDataRoleExpression())
-                    && (expr.getCardinality() == 1 ? isTopOrBuiltInDataType(expr
-                            .getExpr())
-                            : isTopOrBuiltInDataType(expr.getExpr()));
-        }
+        isTopEq = isMinTopEquivalent(expr.getCardinality(),
+                expr.getDataRoleExpression(), expr.getExpr());
     }
 
     @Override
     public void visit(ConceptDataMaxCardinality expr) {
-        isTopEq = !sig.topRLocal()
-                && isBotEquivalent(expr.getDataRoleExpression());
+        isTopEq = isMaxTopEquivalent(expr.getCardinality(),
+                expr.getDataRoleExpression(), expr.getExpr());
     }
 
     @Override
     public void visit(ConceptDataExactCardinality expr) {
-        isTopEq = !sig.topRLocal() && expr.getCardinality() == 0
-                && isBotEquivalent(expr.getDataRoleExpression());
+        isTopEq = isMinTopEquivalent(expr.getCardinality(),
+                expr.getDataRoleExpression(), expr.getExpr())
+                && isMaxTopEquivalent(expr.getCardinality(),
+                        expr.getDataRoleExpression(), expr.getExpr());
     }
 
     // object role expressions
@@ -407,6 +405,7 @@ public class TopEquivalenceEvaluator extends SigAccessor implements
 
     @Override
     public void visit(DataOr expr) {
+        // XXX check no setting to true
         for (DataExpression p : expr.getArguments()) {
             if (isTopEquivalent(p)) {
                 return;

@@ -613,9 +613,6 @@ public class DlSatTester implements Serializable {
     /** shift in order to determine the 1st non-det application */
     @PortedFrom(file = "Reasoner.h", name = "nonDetShift")
     protected int nonDetShift;
-    /** last level when split rules were applied */
-    @PortedFrom(file = "Reasoner.h", name = "splitRuleLevel")
-    private int splitRuleLevel;
     // current values
     /** currently processed CTree node */
     @PortedFrom(file = "Reasoner.h", name = "curNode")
@@ -704,7 +701,7 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "createModelCache")
     protected ModelCacheInterface createModelCache(DlCompletionTree p) {
         return new ModelCacheIan(dlHeap, p, encounterNominal, tBox.nC, tBox.nR,
-                options.isRKG_USE_SIMPLE_RULES());
+                options);
     }
 
     /**
@@ -1348,7 +1345,6 @@ public class DlSatTester implements Serializable {
         used.add(bpBOTTOM);
         encounterNominal = false;
         checkDataNode = true;
-        splitRuleLevel = 0;
     }
 
     @PortedFrom(file = "Reasoner.h", name = "initNewNode")
@@ -1535,10 +1531,8 @@ public class DlSatTester implements Serializable {
         dlHeap = tbox.getDLHeap();
         cGraph = new DlCompletionGraph(1, this);
         TODO = new ToDoList(cGraph.getRareStack());
-        newNodeCache = new ModelCacheIan(true, tbox.nC, tbox.nR,
-                options.isRKG_USE_SIMPLE_RULES());
-        newNodeEdges = new ModelCacheIan(false, tbox.nC, tbox.nR,
-                options.isRKG_USE_SIMPLE_RULES());
+        newNodeCache = new ModelCacheIan(true, tbox.nC, tbox.nR, options);
+        newNodeEdges = new ModelCacheIan(false, tbox.nC, tbox.nR, options);
         gcis = tbox.getGCIs();
         bContext = null;
         tryLevel = InitBranchingLevelValue;
@@ -2037,9 +2031,13 @@ public class DlSatTester implements Serializable {
 
     @PortedFrom(file = "Reasoner.h", name = "save")
     protected void save() {
+        // save tree
         cGraph.save();
+        // save ToDoList
         TODO.save();
+        // increase tryLevel
         ++tryLevel;
+        // init BC
         bContext = null;
         stats.getnStateSaves().inc();
         options.getLog().printTemplate(Templates.SAVE, getCurLevel() - 1);
@@ -2053,14 +2051,14 @@ public class DlSatTester implements Serializable {
     protected void restore(int newTryLevel) {
         assert !stack.isEmpty();
         assert newTryLevel > 0;
+        // skip all intermediate restores
         setCurLevel(newTryLevel);
-        // update split level
-        if (getCurLevel() < splitRuleLevel) {
-            splitRuleLevel = 0;
-        }
+        // restore local
         bContext = stack.top(getCurLevel());
         restoreBC();
+        // restore tree
         cGraph.restore(getCurLevel());
+        // restore TO DO list
         TODO.restore(getCurLevel());
         stats.getnStateRestores().inc();
         options.getLog().printTemplate(Templates.RESTORE, getCurLevel());
@@ -3361,21 +3359,27 @@ public class DlSatTester implements Serializable {
         return false;
     }
 
-    @PortedFrom(file = "Reasoner.h", name = "merge")
+    @PortedFrom(file = "Tactic.cpp", name = "Merge")
+    /**merge FROM node into TO node with additional dep-set DEPF*/
     private boolean merge(DlCompletionTree from, DlCompletionTree to,
             DepSet depF) {
+        // if node is already purged -- nothing to do
         assert !from.isPBlocked();
+        // prevent node to be merged to itself
         assert !from.equals(to);
+        // never merge nominal node to blockable one
         assert to.getNominalLevel() <= from.getNominalLevel();
         options.getLog().printTemplate(Templates.MERGE, from.getId(),
                 to.getId());
         stats.getnMergeCalls().inc();
+        // can't merge 2 nodes which are in inequality relation
         DepSet dep = DepSet.create(depF);
         Reference<DepSet> ref = new Reference<>(dep);
         if (cGraph.nonMergable(from, to, ref)) {
             this.setClashSet(ref.getReference());
             return true;
         }
+        // check for the clash before doing anything else
         if (checkMergeClash(from.label(), to.label(), depF, to.getId())) {
             return true;
         }
@@ -3383,21 +3387,26 @@ public class DlSatTester implements Serializable {
         if (mergeLabels(from.label(), to, depF)) {
             return true;
         }
+        // correct graph structure
         List<DlCompletionTreeArc> edges = new ArrayList<>();
         cGraph.merge(from, to, depF, edges);
+        // check whether a disjoint roles lead to clash
         int size = edges.size();
         for (int i = 0; i < size; i++) {
             DlCompletionTreeArc q = edges.get(i);
             if (q.getRole().isDisjoint()
                     && checkDisjointRoleClash(q.getReverse().getArcEnd(),
                             q.getArcEnd(), q.getRole(), depF)) {
-                // XXX dubious
                 return true;
             }
         }
+        // nothing more to do with data nodes
         if (to.isDataNode()) {
+            // data concept -- run data center for it
             return hasDataClash(to);
         }
+        // for every node added to TO, every ALL, Irr and <=-node should be
+        // checked
         for (DlCompletionTreeArc q : edges) {
             if (applyUniversalNR(
                     to,
@@ -3408,6 +3417,7 @@ public class DlSatTester implements Serializable {
                 return true;
             }
         }
+        // we do real action here, so the return value
         return false;
     }
 

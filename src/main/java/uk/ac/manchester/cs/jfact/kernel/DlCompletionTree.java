@@ -20,6 +20,7 @@ import javax.annotation.Nonnull;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.ArrayIntMap;
 import uk.ac.manchester.cs.jfact.helpers.DLVertex;
+import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Reference;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
@@ -106,7 +107,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
     }
 
     /** label of a node */
-    private final CGLabel label = new CGLabel();
+    private final CGLabel label;
     // TODO check for better access
     /** inequality relation information respecting current node */
     protected final List<ConceptWDep> inequalityRelation = new ArrayList<>();
@@ -228,6 +229,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
     public DlCompletionTree(int newId, JFactReasonerConfiguration c) {
         id = newId;
         options = c;
+        label = new CGLabel(c);
     }
 
     /**
@@ -679,6 +681,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
      *        ds
      * @return true if IR already has this label
      */
+    @PortedFrom(file = "dlCompletionTree.cpp", name = "initIR")
     public boolean initIR(int level, DepSet ds) {
         Reference<DepSet> dummy = new Reference<>(DepSet.create());
         // we don't need a clash-set here
@@ -702,6 +705,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
      *        dep
      * @return true if C contained
      */
+    @PortedFrom(file = "dlCompletionTree.cpp", name = "inIRwithC")
     private boolean inIRwithC(int level, DepSet ds, Reference<DepSet> dep) {
         if (inequalityRelation.isEmpty()) {
             return false;
@@ -969,16 +973,20 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         nominalLevel = BLOCKABLE_LEVEL;
         curLevel = level;
         cached = false;
-        affected = true;
         // every (newly created) node can be blocked
+        affected = true;
         dBlocked = true;
-        pBlocked = true;
         // unused flag combination
+        pBlocked = true;
         // cleans the cache where Label is involved
         label.init();
         init = bpTOP;
         // node was used -- clear all previous content
         saves.clear();
+        if (options.isUseIncrementalReasoning()) {
+            inequalityRelation.clear();
+            inequalityRelation_helper.clear();
+        }
         inequalityRelation.clear();
         inequalityRelation_helper.clear();
         neighbour.clear();
@@ -1058,6 +1066,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         return null;
     }
 
+    /** saving/restoring */
     private void save(DLCompletionTreeSaveState nss) {
         nss.setCurLevel(curLevel);
         nss.setnNeighbours(neighbourSize);
@@ -1069,13 +1078,24 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         if (nss == null) {
             return;
         }
+        // level restore
         curLevel = nss.getCurLevel();
+        // label restore
         label.restore(nss.getLab(), curLevel);
-        resize(neighbour, nss.getnNeighbours());
-        neighbourSize = nss.getnNeighbours();
-        if (neighbourSize == 0) {
-            cachedParent = null;
+        // remove new neighbours
+        if (!options.isRKG_USE_DYNAMIC_BACKJUMPING()) {
+            resize(neighbour, nss.getnNeighbours());
+            neighbourSize = nss.getnNeighbours();
+        } else {
+            for (int j = neighbour.size() - 1; j >= 0; --j) {
+                if (neighbour.get(j).getArcEnd().curLevel <= curLevel) {
+                    Helper.resize(neighbour, j + 1);
+                    neighbourSize = neighbour.size();
+                    break;
+                }
+            }
         }
+        // it's cheaper to dirty affected flag than to consistently save nodes
         affected = true;
         logSRNode("RestNode");
     }
@@ -1112,13 +1132,10 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
     }
 
     /**
-     * @param node
-     *        node
-     * @param dep
-     *        dep
-     * @return check if the NODE's and current node's IR are labelled with the
-     *         same level
+     * check if the NODE's and current node's IR are labelled with the same
+     * level
      */
+    @PortedFrom(file = "dlCompletionTree.cpp", name = "nonMergable")
     public boolean nonMergable(DlCompletionTree node, Reference<DepSet> dep) {
         if (inequalityRelation.isEmpty() || node.inequalityRelation.isEmpty()) {
             return false;
@@ -1134,15 +1151,12 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
     /**
      * update IR of the current node with IR from NODE and additional clash-set;
      * 
-     * @param node
-     *        node
-     * @param toAdd
-     *        toAdd
      * @return restorer
      */
+    @PortedFrom(file = "dlCompletionTree.cpp", name = "updateIR")
     public Restorer updateIR(DlCompletionTree node, DepSet toAdd) {
         if (node.inequalityRelation.isEmpty()) {
-            throw new IllegalArgumentException();
+            return null;    // nothing to do
         }
         // save current state
         Restorer ret = new IRRestorer();

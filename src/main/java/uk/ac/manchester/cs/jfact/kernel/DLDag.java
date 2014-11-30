@@ -350,6 +350,7 @@ public class DLDag implements Serializable {
     public int add(DLVertex v) {
         int ret = useDLVCache ? indexes.get(v.getType()).locate(v) : bpINVALID;
         if (!isValid(ret)) {
+            // we fail to find such vertex -- it's new
             ret = directAddAndCache(v);
             return ret;
         }
