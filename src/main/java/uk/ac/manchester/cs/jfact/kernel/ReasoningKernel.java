@@ -1007,9 +1007,11 @@ public class ReasoningKernel implements Serializable {
         preprocessKB();
         Role r = getRole(R, "Role expression expected in isIrreflexive()");
         if (r.isTop()) {
-            return true;
+            // universal role is not irreflexive
+            return false;
         }
         if (r.isBottom()) {
+            // empty role is irreflexive
             return true;
         }
         if (!r.isIrreflexivityKnown()) {
