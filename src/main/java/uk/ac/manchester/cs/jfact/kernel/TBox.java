@@ -2097,9 +2097,11 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "dumpConcept")
     public void dumpConcept(DumpInterface dump, Concept p) {
+        // dump defConcept
         dump.startAx(DIOp.diDefineC);
         dump.dumpConcept(p);
         dump.finishAx(DIOp.diDefineC);
+        // dump "p [= def"
         if (p.getpBody() != bpTOP) {
             DIOp Ax = p.isPrimitive() ? DIOp.diImpliesC : DIOp.diEqualsC;
             dump.startAx(Ax);
@@ -3241,13 +3243,17 @@ public class TBox implements Serializable {
             DagTag type = v.getType();
             switch (type) {
                 case dtDataType:
+                    // types and values are not relevant
                 case dtDataValue:
                 case dtDataExpr:
                 case dtNN:
+                    // not appear in any expression => not relevant
                     break;
                 case dtPConcept:
+                    // negated primitive entries -- does nothing
                 case dtPSingleton:
                 case dtNConcept:
+                    // named concepts
                 case dtNSingleton:
                     Concept concept = (Concept) v.getConcept();
                     if (!concept.isRelevant(relevance)) {
@@ -3277,6 +3283,8 @@ public class TBox implements Serializable {
                     queue.add(v.getConceptIndex());
                     break;
                 case dtProj:
+                    // no need to set (inverse) roles as it doesn't really
+                    // matter
                 case dtChoose:
                     queue.add(v.getConceptIndex());
                     break;

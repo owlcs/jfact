@@ -986,12 +986,15 @@ public class ReasoningKernel implements Serializable {
         preprocessKB();
         Role r = getRole(R, "Role expression expected in isReflexive()");
         if (r.isTop()) {
+            // universal role is reflexive
             return true;
         }
         if (r.isBottom()) {
-            return true;
+            // empty role is not reflexive
+            return false;
         }
         if (!r.isReflexivityKnown()) {
+            // calculate reflexivity
             r.setReflexive(checkReflexivity(e(R)));
         }
         return r.isReflexive();
@@ -1193,7 +1196,7 @@ public class ReasoningKernel implements Serializable {
      */
     @PortedFrom(file = "Kernel.h", name = "isDisjoint")
     public boolean isDisjoint(ConceptExpression C, ConceptExpression D) {
-        return isSubsumedBy(C, not(D));
+        return !isSatisfiable(and(C, D));
     }
 
     /**
