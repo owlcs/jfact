@@ -232,6 +232,7 @@ public class Axiom implements Serializable {
     @PortedFrom(file = "tAxiom.h", name = "add")
     public void add(DLTree p) {
         if (InAx.isBot(p)) {
+            // BOT or X == X
             // nothing to do
             return;
         }

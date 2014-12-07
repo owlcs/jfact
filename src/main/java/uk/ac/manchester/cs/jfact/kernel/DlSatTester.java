@@ -140,8 +140,13 @@ public class DlSatTester implements Serializable {
         }
 
         @Override
-        public void add(int e) {
-            pos.set(asPositive(e));
+        public boolean add(int e) {
+            int asPositive = asPositive(e);
+            if (!pos.get(asPositive)) {
+                pos.set(asPositive);
+                return true;
+            }
+            return false;
         }
 
         @Override

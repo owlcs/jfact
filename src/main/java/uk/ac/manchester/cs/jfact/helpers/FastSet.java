@@ -15,7 +15,7 @@ public interface FastSet {
      * @param e
      *        add e
      */
-    void add(int e);
+    boolean add(int e);
 
     /**
      * @param c

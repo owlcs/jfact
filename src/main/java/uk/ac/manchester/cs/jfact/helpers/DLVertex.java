@@ -108,9 +108,7 @@ public class DLVertex extends DLVertexTagDFS {
         }
 
         public boolean add(int p) {
-            int size = set.size();
-            set.add(p);
-            if (set.size() > size) {
+            if (set.add(p)) {
                 original.add(p);
                 sorted = null;
                 return true;
