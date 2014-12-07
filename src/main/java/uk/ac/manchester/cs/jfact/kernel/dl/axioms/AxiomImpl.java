@@ -68,6 +68,7 @@ abstract class AxiomImpl implements AxiomInterface, Serializable {
         return sig;
     }
 
+    /** build signature of an axiom */
     private void buildSignature() {
         sig = new TSignature();
         TSignatureUpdater Updater = new TSignatureUpdater(sig);

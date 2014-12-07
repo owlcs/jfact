@@ -314,21 +314,27 @@ public class ModelCacheIan extends ModelCacheInterface {
     @PortedFrom(file = "modelCacheIan.h", name = "canMerge")
     public ModelCacheState canMerge(ModelCacheInterface p) {
         if (hasNominalClash(p)) {
+            // fail to merge due to nominal precense
             return csFailed;
         }
+        // check if something goes wrong
         if (p.getState() != csValid || curState != csValid) {
             return mergeStatus(p.getState(), curState);
         }
+        // here both models are valid;
         switch (p.getCacheType()) {
             case mctConst:
+                // check for TOP (as the model is valid)
                 return csValid;
             case mctSingleton:
+                // check for the Singleton
                 int Singleton = ((ModelCacheSingleton) p).getValue();
                 return isMergableSingleton(Math.abs(Singleton), Singleton > 0);
             case mctIan:
                 return isMergableIan((ModelCacheIan) p);
             case mctBadType:
             default:
+                // something unexpected
                 return csUnknown;
         }
     }

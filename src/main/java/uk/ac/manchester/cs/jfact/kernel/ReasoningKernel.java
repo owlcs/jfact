@@ -857,11 +857,11 @@ public class ReasoningKernel implements Serializable {
         preprocessKB();
         Role r = getRole(R, "Role expression expected in isFunctional()");
         if (r.isTop()) {
-            // universal role is symmetric
-            return true;
+            // universal role is not functional
+            return false;
         }
         if (r.isBottom()) {
-            // empty role is symmetric
+            // empty role is functional
             return true;
         }
         return getFunctionality(r);
@@ -878,11 +878,11 @@ public class ReasoningKernel implements Serializable {
         preprocessKB();
         Role r = getRole(R, "Role expression expected in isFunctional()");
         if (r.isTop()) {
-            // universal role is symmetric
-            return true;
+            // universal role is not functional
+            return false;
         }
         if (r.isBottom()) {
-            // empty role is symmetric
+            // empty role is functional
             return true;
         }
         return getFunctionality(r);
