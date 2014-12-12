@@ -72,9 +72,7 @@ public class TSignatureUpdater implements DLAxiomVisitor, Serializable {
      */
     @PortedFrom(file = "tSignatureUpdater.h", name = "v")
     private void v(Collection<? extends Expression> arg) {
-        for (Expression e : arg) {
-            v(e);
-        }
+        arg.forEach(e -> v(e));
     }
 
     @Override

@@ -1750,13 +1750,17 @@ public class TBox implements Serializable {
     @PortedFrom(file = "dlTBox.h", name = "isSatisfiable")
     public boolean isSatisfiable(Concept pConcept) {
         assert pConcept != null;
+        // check whether we already did the test
         ModelCacheInterface cache = dlHeap.getCache(pConcept.getpName());
         if (cache != null) {
             return cache.getState() != ModelCacheState.csInvalid;
         }
+        // logging the startpoint
         config.getLog().printTemplate(Templates.IS_SATISFIABLE,
                 pConcept.getName());
+        // perform reasoning with a proper logical features
         prepareFeatures(pConcept, null);
+        // XXX next two lines not in FaCT++, see what they do
         int resolveId = pConcept.resolveId();
         if (resolveId == bpINVALID) {
             config.getLog().print(
@@ -1765,6 +1769,7 @@ public class TBox implements Serializable {
         }
         boolean result = getReasoner().runSat(resolveId, bpTOP);
         cache = getReasoner().buildCacheByCGraph(result);
+        // save cache
         dlHeap.setCache(pConcept.getpName(), cache);
         clearFeatures();
         config.getLog().printTemplate(Templates.IS_SATISFIABLE1,
@@ -1802,9 +1807,13 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "isSameIndividuals")
     public boolean isSameIndividuals(Individual _a, Individual _b) {
+        if (_a.equals(_b)) {
+            return true;
+        }
         Individual a = resolveSynonym(_a);
         Individual b = resolveSynonym(_b);
         if (a.equals(b)) {
+            // known synonyms
             return true;
         }
         if (!this.isIndividual(a.getName()) || !this.isIndividual(b.getName())) {

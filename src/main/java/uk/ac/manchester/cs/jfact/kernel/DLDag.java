@@ -576,12 +576,14 @@ public class DLDag implements Serializable {
         DLVertex v = get(p);
         boolean pos = p > 0;
         if (v.isVisited(pos)) {
+            // avoid cycles
             return;
         }
         // increment frequence of current vertex
         v.incFreqValue(pos);
         v.setVisited(pos);
         if (v.getType().omitStat(pos)) {
+            // negation of primitive concept-like
             return;
         }
         // increment frequence of all subvertex

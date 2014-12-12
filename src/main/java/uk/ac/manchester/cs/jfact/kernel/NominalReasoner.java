@@ -177,28 +177,6 @@ public class NominalReasoner extends DlSatTester {
         return false;
     }
 
-    @Override
-    @PortedFrom(file = "Reasoner.h", name = "isNNApplicable")
-    protected boolean isNNApplicable(Role r, int C, int stopper) {
-        if (!curNode.isNominalNode()) {
-            return false;
-        }
-        if (curNode.isLabelledBy(stopper)) {
-            return false;
-        }
-        List<DlCompletionTreeArc> neighbour = curNode.getNeighbour();
-        for (int i = 0; i < neighbour.size(); i++) {
-            DlCompletionTreeArc p = neighbour.get(i);
-            DlCompletionTree suspect = p.getArcEnd();
-            if (p.isPredEdge() && suspect.isBlockableNode() && p.isNeighbour(r)
-                    && suspect.isLabelledBy(C)) {
-                options.getLog().printTemplate(Templates.NN, suspect.getId());
-                return true;
-            }
-        }
-        return false;
-    }
-
     @PortedFrom(file = "ReasonerNom.h", name = "initRelatedNominals")
     private boolean initRelatedNominals(Related rel) {
         DlCompletionTree from = resolveSynonym(rel.getA()).getNode();

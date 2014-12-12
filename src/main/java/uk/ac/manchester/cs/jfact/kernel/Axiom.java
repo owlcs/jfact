@@ -210,13 +210,15 @@ public class Axiom implements Serializable {
             if (InAx.isAnd(p)) {
                 SAbsSplit();
                 absorptionLog.print(" split AND expression ", p.getChild());
+                // XXX doublecheck here because in FaCT++ these are binary trees
+                // but here they are n-ary
                 acc = this.split(acc, p, p.getChildren().iterator().next());
-                /**
-                 * no need to split more than once: every extra splits would be
-                 * together with unsplitted parts like: (A or B) and (C or D)
-                 * would be transform into A and (C or D), B and (C or D), (A or
-                 * B) and C, (A or B) and D so just return here
-                 */
+                // no need to split more than once:
+                // every extra splits would be together with unsplitted parts
+                // like: (A or B) and (C or D) would be transform into
+                // A and (C or D), B and (C or D), (A or B) and C, (A or B) and
+                // D
+                // so just return here
                 return acc;
             }
         }

@@ -154,7 +154,7 @@ public class RoleMaster implements Serializable {
         universalRole.setBPDomain(Helper.bpTOP);
         universalRole.setTop();
         // FIXME!! now it is not transitive => simple
-        universalRole.getAutomaton().setCompleted();
+        universalRole.getAutomaton().setCompleted(true);
         // create roles taxonomy
         pTax = new Taxonomy(universalRole, emptyRole, c);
     }

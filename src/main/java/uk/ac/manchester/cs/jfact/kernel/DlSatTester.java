@@ -3528,6 +3528,7 @@ public class DlSatTester implements Serializable {
                 curConceptConcept + cur.getNumberLE() - NN, curDep, "NN");
     }
 
+    /** @return true iff NN-rule wrt (<= R) is applicable to the curNode */
     @PortedFrom(file = "Reasoner.h", name = "isNNApplicable")
     protected boolean isNNApplicable(Role r, int C, int stopper) {
         // NN rule is only applicable to nominal nodes
@@ -3550,6 +3551,7 @@ public class DlSatTester implements Serializable {
                 return true;
             }
         }
+        // can't apply NN-rule
         return false;
     }
 

@@ -208,7 +208,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         // we DON'T need bottom-up phase for primitive concepts during CD-like
         // reasoning
         // if no GCIs are in the TBox (C [= T, T [= X or Y, X [= D, Y [= D)
-        // or no reflexive roles w/RnD precent (Refl(R), Range(R)=D)
+        // or no reflexive roles w/RnD present (Refl(R), Range(R)=D)
         return flagNeedBottomUp || !useCompletelyDefined
                 || !curConcept().isPrimitive();
     }

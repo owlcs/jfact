@@ -68,6 +68,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "Kernel.h", name = "ReasoningKernel")
 public class ReasoningKernel implements Serializable {
 
+    private static final String ROLE_EXPECTED = "Role expression expected in getNeighbours() method";
     private static final long serialVersionUID = 11000L;
     /** options for the kernel and all related substructures */
     @PortedFrom(file = "Kernel.h", name = "KernelOptions")
@@ -921,14 +922,15 @@ public class ReasoningKernel implements Serializable {
         preprocessKB();
         Role r = getRole(R, "Role expression expected in isTransitive()");
         if (r.isTop()) {
-            // universal role is symmetric
+            // universal role is transitive
             return true;
         }
-        // empty role is symmetric
+        // empty role is transitive
         if (r.isBottom()) {
             return true;
         }
         if (!r.isTransitivityKnown()) {
+            // calculate transitivity
             r.setTransitive(checkTransitivity(e(R)));
         }
         return r.isTransitive();
@@ -1652,10 +1654,7 @@ public class ReasoningKernel implements Serializable {
     @PortedFrom(file = "Kernel.h", name = "getNeighbours")
     public List<DlCompletionTree> getNeighbours(DlCompletionTree node,
             RoleExpression role) {
-        return KE.getNeighbours(
-                node,
-                getRole(role,
-                        "Role expression expected in getNeighbours() method"));
+        return KE.getNeighbours(node, getRole(role, ROLE_EXPECTED));
     }
 
     /**

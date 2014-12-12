@@ -19,7 +19,7 @@ public class AxiomORoleSubsumption extends AxiomSingleORole {
 
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "SubRole")
-    private final ObjectRoleComplexExpression complexRole;
+    private final ObjectRoleComplexExpression subRole;
 
     /**
      * @param ax
@@ -32,7 +32,7 @@ public class AxiomORoleSubsumption extends AxiomSingleORole {
     public AxiomORoleSubsumption(OWLAxiom ax,
             ObjectRoleComplexExpression subRole, ObjectRoleExpression supRole) {
         super(ax, supRole);
-        complexRole = subRole;
+        this.subRole = subRole;
     }
 
     @Override
@@ -50,6 +50,6 @@ public class AxiomORoleSubsumption extends AxiomSingleORole {
     /** @return sub role */
     @PortedFrom(file = "tDLAxiom.h", name = "getSubRole")
     public ObjectRoleComplexExpression getSubRole() {
-        return complexRole;
+        return subRole;
     }
 }

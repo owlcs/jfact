@@ -160,7 +160,7 @@ public class AxiomSet implements Serializable {
         for (int i = 0; i < splitted.size(); i++) {
             Axiom q = splitted.get(i);
             if (q.isCyclic()) {
-                // there is already such an axiom in process; delete it
+                // axiom is a copy of a processed one: fail to do split
                 return false;
             }
             // axiom is not a copy of a new one: keep it
