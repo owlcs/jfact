@@ -2536,17 +2536,11 @@ public class DlSatTester implements Serializable {
         Role vR = v.getRole();
         switch (v.getType()) {
             case dtIrr:
-                if ((flags & redoIrr.getValue()) > 0
-                        && this.checkIrreflexivity(arcSample, vR, dep)) {
-                    return true;
-                }
-                break;
+                return redoIrr.match(flags)
+                        && this.checkIrreflexivity(arcSample, vR, dep);
             case dtForall:
-                if ((flags & redoForall.getValue()) == 0) {
-                    break;
-                }
-                if (vR.isTop()) {
-                    break;
+                if (!redoForall.match(flags) || vR.isTop()) {
+                    return false;
                 }
                 /** check whether transition is possible */
                 RAStateTransitions RST = vR.getAutomaton().get(v.getState());
@@ -2570,15 +2564,30 @@ public class DlSatTester implements Serializable {
                 break;
             case dtLE:
                 if (isFunctionalVertex(v)) {
-                    if ((flags & redoFunc.getValue()) > 0
+                    if (redoFunc.match(flags)
                             && arcSample.getRole().lesserequal(vR)) {
                         addExistingToDoEntry(Node, p, "f");
                     }
-                } else if ((flags & redoAtMost.getValue()) > 0
+                } else if (redoAtMost.match(flags)
                         && arcSample.getRole().lesserequal(vR)) {
                     addExistingToDoEntry(Node, p, "le");
                 }
                 break;
+            case dtAnd:
+            case dtBad:
+            case dtChoose:
+            case dtCollection:
+            case dtDataExpr:
+            case dtDataType:
+            case dtDataValue:
+            case dtNConcept:
+            case dtNN:
+            case dtNSingleton:
+            case dtPConcept:
+            case dtPSingleton:
+            case dtProj:
+            case dtSplitConcept:
+            case dtTop:
             default:
                 break;
         }
@@ -2640,68 +2649,64 @@ public class DlSatTester implements Serializable {
         Reference<ConceptWDep> rFuncRestriction = new Reference<>(null);
         curNode.beginl_cc().stream()
                 .forEach(LC -> findRC(R, rFunc, RF, rFuncRestriction, LC));
-        if (rFunc.get()) {
-            DlCompletionTreeArc functionalArc = null;
-            DepSet newDep = DepSet.create();
-            for (int i = 0; i < curNode.getNeighbour().size()
-                    && functionalArc == null; i++) {
-                DlCompletionTreeArc pr = curNode.getNeighbour().get(i);
-                if (pr.isNeighbour(RF.getReference(), newDep)) {
-                    functionalArc = pr;
-                }
-            }
-            if (functionalArc != null) {
-                options.getLog().printTemplate(
-                        Templates.COMMON_TACTIC_BODY_SOME2,
-                        rFuncRestriction.getReference());
-                DlCompletionTree succ = functionalArc.getArcEnd();
-                newDep.add(curConceptDepSet);
-                if (R.isDisjoint()
-                        && checkDisjointRoleClash(curNode, succ, R, newDep)) {
-                    return true;
-                }
-                functionalArc = cGraph.addRoleLabel(curNode, succ,
-                        functionalArc.isPredEdge(), R, newDep);
-                // adds concept to the end of arc
-                if (addToDoEntry(succ, C, newDep, null)) {
-                    return true;
-                }
-                // if new role label was added...
-                if (!RF.equals(R)) {
-                    // add Range and Domain of a new role; this includes
-                    // functional, so remove it from the latter
-                    if (initHeadOfNewEdge(curNode, R, newDep, "RD")) {
-                        return true;
-                    }
-                    if (initHeadOfNewEdge(succ, R.inverse(), newDep, "RR")) {
-                        return true;
-                    }
-                    /**
-                     * check AR.C in both sides of functionalArc FIXME!! for
-                     * simplicity, check the functionality here (see bEx017). It
-                     * seems only necessary when R has several functional
-                     * super-roles, so the condition can be simplified
-                     */
-                    if (applyUniversalNR(curNode, functionalArc, newDep,
-                            redoForall.getValue() | redoFunc.getValue())) {
-                        return true;
-                    }
-                    /**
-                     * if new role label was added to a functionalArc, some
-                     * functional restrictions in the SUCC node might became
-                     * applicable. See bFunctional1x test
-                     */
-                    if (applyUniversalNR(succ, functionalArc.getReverse(),
-                            newDep, redoForall.getValue() | redoFunc.getValue()
-                                    | redoAtMost.getValue())) {
-                        return true;
-                    }
-                }
-                return false;
+        if (!rFunc.get()) {
+            return createNewEdge(cur.getRole(), C, redoForallAtmost());
+        }
+        DlCompletionTreeArc functionalArc = null;
+        DepSet newDep = null;
+        for (int i = 0; i < curNode.getNeighbour().size()
+                && functionalArc == null; i++) {
+            DlCompletionTreeArc pr = curNode.getNeighbour().get(i);
+            newDep = pr.neighbourDepSet(RF.getReference());
+            if (newDep != null) {
+                functionalArc = pr;
             }
         }
-        return createNewEdge(cur.getRole(), C, Redo.redoForall.getValue()
-                | Redo.redoAtMost.getValue());
+        if (functionalArc == null || newDep == null) {
+            return createNewEdge(cur.getRole(), C, redoForallAtmost());
+        }
+        options.getLog().printTemplate(Templates.COMMON_TACTIC_BODY_SOME2,
+                rFuncRestriction.getReference());
+        DlCompletionTree succ = functionalArc.getArcEnd();
+        newDep.add(curConceptDepSet);
+        if (R.isDisjoint() && checkDisjointRoleClash(curNode, succ, R, newDep)) {
+            return true;
+        }
+        functionalArc = cGraph.addRoleLabel(curNode, succ,
+                functionalArc.isPredEdge(), R, newDep);
+        // adds concept to the end of arc
+        if (addToDoEntry(succ, C, newDep, null)) {
+            return true;
+        }
+        // if new role label was added...
+        if (!RF.equals(R)) {
+            // add Range and Domain of a new role; this includes
+            // functional, so remove it from the latter
+            if (initHeadOfNewEdge(curNode, R, newDep, "RD")
+                    || initHeadOfNewEdge(succ, R.inverse(), newDep, "RR")) {
+                return true;
+            }
+            /**
+             * check AR.C in both sides of functionalArc FIXME!! for simplicity,
+             * check the functionality here (see bEx017). It seems only
+             * necessary when R has several functional super-roles, so the
+             * condition can be simplified
+             */
+            if (applyUniversalNR(curNode, functionalArc, newDep,
+                    redoForallFunc())) {
+                return true;
+            }
+            /**
+             * if new role label was added to a functionalArc, some functional
+             * restrictions in the SUCC node might became applicable. See
+             * bFunctional1x test
+             */
+            if (applyUniversalNR(succ, functionalArc.getReverse(), newDep,
+                    redoForallFuncAtMost())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected void findRC(Role R, AtomicBoolean rFunc, Reference<Role> RF,
@@ -2735,8 +2740,7 @@ public class DlSatTester implements Serializable {
         DlCompletionTreeArc edge = cGraph.addRoleLabel(curNode, realNode,
                 false, R, dep);
         // add all necessary concepts to both ends of the edge
-        return setupEdge(edge, dep, redoForall.getValue() | redoFunc.getValue()
-                | redoAtMost.getValue() | redoIrr.getValue());
+        return setupEdge(edge, dep, redoForallFuncAtmostIrr());
     }
 
     /**
@@ -3271,8 +3275,7 @@ public class DlSatTester implements Serializable {
         cGraph.finiIR();
         // re-apply all <= NR in curNode; do it only once for all created nodes;
         // no need for Irr
-        return applyUniversalNR(curNode, pA, dep, redoFunc.getValue()
-                | redoAtMost.getValue());
+        return applyUniversalNR(curNode, pA, dep, redoFuncAtMost());
     }
 
     @PortedFrom(file = "Reasoner.h", name = "isNRClash")
@@ -3413,12 +3416,7 @@ public class DlSatTester implements Serializable {
         // for every node added to TO, every ALL, Irr and <=-node should be
         // checked
         for (DlCompletionTreeArc q : edges) {
-            if (applyUniversalNR(
-                    to,
-                    q,
-                    depF,
-                    redoForall.getValue() | redoFunc.getValue()
-                            | redoAtMost.getValue() | redoIrr.getValue())) {
+            if (applyUniversalNR(to, q, depF, redoForallFuncAtmostIrr())) {
                 return true;
             }
         }
@@ -3567,8 +3565,7 @@ public class DlSatTester implements Serializable {
         }
         DepSet dep = DepSet.create(curConceptDepSet);
         DlCompletionTreeArc pA = cGraph.createLoop(curNode, R, dep);
-        return setupEdge(pA, dep, redoForall.getValue() | redoFunc.getValue()
-                | redoAtMost.getValue() | redoIrr.getValue());
+        return setupEdge(pA, dep, redoForallFuncAtmostIrr());
     }
 
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodyIrrefl")
@@ -3623,8 +3620,7 @@ public class DlSatTester implements Serializable {
         }
         DlCompletionTree child = pA.getArcEnd();
         return setupEdge(cGraph.addRoleLabel(curNode, child, pA.isPredEdge(),
-                ProjR, dep), dep, redoForall.getValue() | redoFunc.getValue()
-                | redoAtMost.getValue() | redoIrr.getValue());
+                ProjR, dep), dep, redoForallFuncAtmostIrr());
     }
 
     /** create BC for LE-rule */

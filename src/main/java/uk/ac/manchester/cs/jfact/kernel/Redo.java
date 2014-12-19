@@ -15,7 +15,32 @@ enum Redo {
         value = i;
     }
 
+    public boolean match(int flags) {
+        return (flags & value) > 0;
+    }
+
     protected int getValue() {
         return value;
+    }
+
+    public static int redoForallFuncAtmostIrr() {
+        return redoForall.value | redoFunc.value | redoAtMost.value
+                | redoIrr.value;
+    }
+
+    public static int redoForallAtmost() {
+        return redoForall.value | redoAtMost.value;
+    }
+
+    public static int redoForallFunc() {
+        return redoForall.value | redoFunc.value;
+    }
+
+    public static int redoForallFuncAtMost() {
+        return redoForall.value | redoFunc.value | redoAtMost.value;
+    }
+
+    public static int redoFuncAtMost() {
+        return redoFunc.value | redoAtMost.value;
     }
 }

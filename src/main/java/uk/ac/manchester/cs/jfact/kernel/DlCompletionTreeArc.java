@@ -141,23 +141,18 @@ public class DlCompletionTreeArc implements Serializable {
      * @return check if arc is labelled by a super-role of PROLE
      */
     public boolean isNeighbour(Role pRole) {
-        return role != null && role.lesserequal(pRole);
+        return !isIBlocked() && role.lesserequal(pRole);
     }
 
     /**
      * @param pRole
-     *        pRole
-     * @param dep
-     *        dep
-     * @return same as above; fills DEP with current DEPSET if so
+     *        pRole @return same as above; fills DEP with current DEPSET if so
      */
-    public boolean isNeighbour(Role pRole, DepSet dep) {
+    public DepSet neighbourDepSet(Role pRole) {
         if (isNeighbour(pRole)) {
-            dep.clear();
-            dep.add(depSet);
-            return true;
+            return DepSet.create(depSet);
         }
-        return false;
+        return null;
     }
 
     /** @return is arc merged to another */
