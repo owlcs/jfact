@@ -2256,17 +2256,26 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "applicable")
     protected boolean applicable(SimpleRule rule) {
         CWDArray lab = curNode.label().getLabel(DagTag.dtPConcept);
-        DepSet loc = DepSet.create(curConceptDepSet);
+        // dep-set to keep track for all the concepts in a rule-head
+        DepSet loc = null;
         for (Concept p : rule.getBody()) {
             if (p.getpName() != curConceptConcept) {
-                if (findConceptClash(lab, p.getpName(), loc)) {
-                    loc.add(clashSet);
+                if (findConceptClash(lab, p.getpName(),
+                        loc == null ? curConceptDepSet : loc)) {
+                    // such a concept exists -- rememeber clash set
+                    if (loc == null) {
+                        loc = DepSet.create(clashSet);
+                    } else {
+                        loc.add(clashSet);
+                    }
                 } else {
+                    // no such concept -- can not fire a rule
                     return false;
                 }
             }
         }
-        this.setClashSet(loc);
+        // rule will be fired -- set the dep-set
+        this.setClashSet(loc == null ? curConceptDepSet : loc);
         return true;
     }
 
