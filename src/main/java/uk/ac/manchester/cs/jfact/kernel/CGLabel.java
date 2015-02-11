@@ -233,11 +233,30 @@ public class CGLabel implements Serializable {
      */
     @PortedFrom(file = "CGLabel.h", name = "getConcept")
     public ConceptWDep getConceptWithBP(int bp) {
-        ConceptWDep toReturn = scLabel.getConceptWithBP(bp);
+        ConceptWDep toReturn = getSCConceptWithBP(bp);
         if (toReturn != null) {
             return toReturn;
         }
-        toReturn = ccLabel.getConceptWithBP(bp);
-        return toReturn;
+        return getCCConceptWithBP(bp);
+    }
+
+    /**
+     * @param bp
+     *        bp
+     * @return concept with index bp
+     */
+    @PortedFrom(file = "CGLabel.h", name = "getConcept")
+    public ConceptWDep getSCConceptWithBP(int bp) {
+        return scLabel.getConceptWithBP(bp);
+    }
+
+    /**
+     * @param bp
+     *        bp
+     * @return concept with index bp
+     */
+    @PortedFrom(file = "CGLabel.h", name = "getConcept")
+    public ConceptWDep getCCConceptWithBP(int bp) {
+        return ccLabel.getConceptWithBP(bp);
     }
 }

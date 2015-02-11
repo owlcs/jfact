@@ -605,6 +605,7 @@ public class Role extends ClassifiableEntry {
     public void checkHierarchicalDisjoint() {
         this.checkHierarchicalDisjoint(this);
         if (isReflexive()) {
+            // for reflexive roles check for R^- is necessary
             this.checkHierarchicalDisjoint(inverse());
         }
     }

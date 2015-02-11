@@ -546,9 +546,9 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "updateName")
     private void updateName(DlCompletionTree node, int bp) {
         CGLabel lab = node.label();
-        ConceptWDep c = lab.getConceptWithBP(bp);
+        ConceptWDep c = lab.getSCConceptWithBP(bp);
         if (c == null) {
-            c = lab.getConceptWithBP(-bp);
+            c = lab.getSCConceptWithBP(-bp);
         }
         if (c != null) {
             addExistingToDoEntry(node, c, "sp");
@@ -563,14 +563,8 @@ public class DlSatTester implements Serializable {
      */
     @PortedFrom(file = "Reasoner.h", name = "updateName")
     private void updateName(int bp) {
-        int n = 0;
-        DlCompletionTree node = cGraph.getNode(n++);
-        while (node != null) {
-            if (isNodeGloballyUsed(node)) {
-                this.updateName(node, bp);
-            }
-            node = cGraph.getNode(n++);
-        }
+        cGraph.nodes().filter(n -> isNodeGloballyUsed(n))
+                .forEach(n -> updateName(n, bp));
     }
 
     /** host TBox */

@@ -1120,8 +1120,7 @@ public class ReasoningKernel implements Serializable {
      * @return true if R is a sub-role of S
      */
     @PortedFrom(file = "Kernel.h", name = "isSubRoles")
-    public boolean isSubRoles(ObjectRoleComplexExpression R,
-            ObjectRoleExpression S) {
+    public boolean isSubRoles(RoleExpression R, RoleExpression S) {
         preprocessKB();
         Role r = getRole(R, "Role expression expected in isSubRoles()");
         Role s = getRole(S, "Role expression expected in isSubRoles()");
@@ -2355,38 +2354,6 @@ public class ReasoningKernel implements Serializable {
             return true;
         }
         return checkSubChain(r, l);
-    }
-
-    /**
-     * @param R
-     *        R
-     * @param S
-     *        S
-     * @return true if R is a sub-role of S
-     */
-    @PortedFrom(file = "Kernel.h", name = "isSubRoles")
-    @Nonnull
-    public Boolean isSubRoles(DataRoleExpression R, DataRoleExpression S) {
-        preprocessKB();
-        if (isEmptyRole(R) || isUniversalRole(S)) {
-            // \bot [= X [= \top
-            return true;
-        }
-        if (isUniversalRole(R) && isEmptyRole(S)) {
-            // as \top [= \bot leads to inconsistent ontology
-            return false;
-        }
-        // told case first
-        uk.ac.manchester.cs.jfact.kernel.Role r = getRole(R,
-                "Role expression expected in isSubRoles()");
-        uk.ac.manchester.cs.jfact.kernel.Role s = getRole(S,
-                "Role expression expected in isSubRoles()");
-        if (!r.isTop() && !s.isBottom() && r.lesserequal(s)) {
-            return true;
-        }
-        // check the general case
-        // FIXME!! cache it later
-        return checkRoleSubsumption(r, s);
     }
 
     @PortedFrom(file = "Kernel.h", name = "buildRelatedCache")
