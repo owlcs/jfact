@@ -510,7 +510,7 @@ public class DlCompletionGraph implements Serializable {
     @PortedFrom(file = "dlCompletionGraph.h", name = "saveRareCond")
     public void saveRareCond(List<Restorer> p) {
         for (int i = 0; i < p.size(); i++) {
-            rareStack.push(p.get(i));
+            saveRareCond(p.get(i));
         }
     }
 

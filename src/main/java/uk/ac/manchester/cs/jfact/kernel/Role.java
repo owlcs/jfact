@@ -854,21 +854,30 @@ public class Role extends ClassifiableEntry {
     @PortedFrom(file = "tRole.h", name = "eliminateToldCycles")
     private Role eliminateToldCycles(Set<Role> RInProcess,
             List<Role> ToldSynonyms) {
+        // skip synonyms
         if (isSynonym()) {
             return null;
         }
+        // if we found a cycle...
         if (RInProcess.contains(this)) {
             ToldSynonyms.add(this);
             return this;
         }
         Role ret = null;
+        // start processing role
         RInProcess.add(this);
+        // ensure that parents does not contain synonyms
         removeSynonymsFromParents();
+        // not involved in cycle -- check all told subsumers
         for (ClassifiableEntry r : toldSubsumers) {
+            // if cycle was detected
             if ((ret = ((Role) r).eliminateToldCycles(RInProcess, ToldSynonyms)) != null) {
                 if (ret.equals(this)) {
                     Collections.sort(ToldSynonyms, new RoleCompare());
+                    // now first element is representative; save it as RET
                     ret = ToldSynonyms.get(0);
+                    // make all others synonyms of RET
+                    // XXX check if role error is here
                     for (int i = 1; i < ToldSynonyms.size(); i++) {
                         Role p = ToldSynonyms.get(i);
                         p.setSynonym(ret);
@@ -876,8 +885,10 @@ public class Role extends ClassifiableEntry {
                     }
                     ToldSynonyms.clear();
                     RInProcess.remove(this);
+                    // restart search for the representative
                     return ret.eliminateToldCycles(RInProcess, ToldSynonyms);
                 } else {
+                    // some role inside a cycle: save it and return
                     ToldSynonyms.add(this);
                     break;
                 }

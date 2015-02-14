@@ -255,9 +255,7 @@ public class CWDArray implements Serializable {
         }
         List<Restorer> toReturn = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
-            Restorer ret = new UnMerge(this, base.get(i), i);
-            base.get(i).addDep(dep);
-            toReturn.add(ret);
+            toReturn.add(updateDepSet(i, dep));
         }
         return toReturn;
     }
