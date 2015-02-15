@@ -964,14 +964,18 @@ public class ReasoningKernel implements Serializable {
      */
     @PortedFrom(file = "Kernel.h", name = "isAsymmetric")
     public boolean isAsymmetric(ObjectRoleExpression R) {
+        // ensure KB is ready to answer the query
         preprocessKB();
         Role r = getRole(R, "Role expression expected in isAsymmetric()");
         if (r.isTop()) {
-            return true;
+            // universal role is not asymmetric
+            return false;
         }
         if (r.isBottom()) {
+            // empty role is asymmetric
             return true;
         }
+        // calculate asymmetry
         if (!r.isAsymmetryKnown()) {
             r.setAsymmetric(getTBox().isDisjointRoles(r, r.inverse()));
         }
