@@ -180,14 +180,9 @@ public class DlCompletionGraph implements Serializable {
      */
     @PortedFrom(file = "dlCompletionGraph.h", name = "unblockNodeChildren")
     private void unblockNodeChildren(DlCompletionTree node) {
-        List<DlCompletionTreeArc> neighbour = node.getNeighbour();
-        int size = neighbour.size();
-        for (int i = 0; i < size; i++) {
-            DlCompletionTreeArc q = neighbour.get(i);
-            if (q.isSuccEdge() && !q.isIBlocked() && !q.isReflexiveEdge()) {
-                unblockNode(q.getArcEnd(), false);
-            }
-        }
+        node.getNeighbour().stream().filter(q -> q.unblockable())
+        // all of them are i-blocked
+                .forEach(q -> unblockNode(q.getArcEnd(), false));
     }
 
     /**

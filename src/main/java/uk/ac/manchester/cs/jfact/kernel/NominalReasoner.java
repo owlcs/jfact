@@ -119,11 +119,14 @@ public class NominalReasoner extends DlSatTester {
         options.getLog().print(
                 "\n\nChecking consistency of an ontology with individuals:\n");
         boolean result = false;
+        // reserve the root for the forthcoming reasoning
         if (initNewNode(cGraph.getRoot(), DepSet.create(), Helper.bpTOP)
                 || initNominalCloud()) {
+            // clash during initialisation
             options.getLog().print("\ninit done\n");
             result = false;
         } else {
+            // perform a normal reasoning
             options.getLog().print("\nrunning sat...");
             result = runSat();
             options.getLog().print(" done: ");
@@ -131,10 +134,12 @@ public class NominalReasoner extends DlSatTester {
             options.getLog().print("\n");
         }
         if (result && noBranchingOps()) {
+            // all nominal cloud is classified w/o branching -- make a barrier
             options.getLog().print("InitNominalReasoner[");
             curNode = null;
             createBCBarrier();
             save();
+            // the barrier doesn't introduce branching itself
             nonDetShift = 1;
             options.getLog().print("]");
         }
@@ -143,6 +148,7 @@ public class NominalReasoner extends DlSatTester {
         if (!result) {
             return false;
         }
+        // ABox is consistent . create cache for every nominal in KB
         for (Individual p : nominals) {
             updateClassifiedSingleton(p);
         }

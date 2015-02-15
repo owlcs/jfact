@@ -120,6 +120,11 @@ public class DlCompletionTreeArc implements Serializable {
         return succEdge;
     }
 
+    /** @return true if isSuccEdge and not isBlocked and not isReflexiveEdge */
+    public boolean unblockable() {
+        return isSuccEdge() && !isIBlocked() && !isReflexiveEdge();
+    }
+
     /** @return true if the edge is the predecessor one */
     public boolean isPredEdge() {
         return !succEdge;

@@ -1104,6 +1104,7 @@ public class TBox implements Serializable {
         // mark GCI flags
         GCIs.setGCI(internalisedGeneralAxiom != bpTOP);
         GCIs.setReflexive(objectRoleMaster.hasReflexiveRoles());
+        // builds functional labels for roles
         for (Role p : objectRoleMaster.getRoles()) {
             if (!p.isSynonym() && p.isTopFunc()) {
                 p.setFunctional(atmost2dag(1, p, bpTOP));
@@ -1114,14 +1115,14 @@ public class TBox implements Serializable {
                 p.setFunctional(atmost2dag(1, p, bpTOP));
             }
         }
-        // concept2dag(pTemp);
+        // check the type of the ontology
         if (nNominalReferences > 0) {
             int nInd = individuals.size();
             if (nInd > 100 && nNominalReferences > nInd) {
                 isLikeWINE = true;
             }
         }
-        // here DAG is complete; set its size
+        // here DAG is complete; set its final size
         dlHeap.setFinalSize();
     }
 
@@ -1897,9 +1898,14 @@ public class TBox implements Serializable {
     /** classify query concept */
     @PortedFrom(file = "dlTBox.h", name = "classifyQueryConcept")
     public void classifyQueryConcept() {
+        // prepare told subsumers for classification; as it is non-primitive, it
+        // is not CD
         pQuery.initToldSubsumers();
+        // setup taxonomy behaviour flags
         assert pTax != null;
+        // non-primitive concept
         pTaxCreator.setCompletelyDefined(false);
+        // classify the concept
         pTaxCreator.classifyEntry(pQuery);
     }
 

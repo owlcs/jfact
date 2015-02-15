@@ -901,11 +901,11 @@ public class ReasoningKernel implements Serializable {
         Role r = getRole(R, "Role expression expected in isInverseFunctional()")
                 .inverse();
         if (r.isTop()) {
-            // universal role is symmetric
-            return true;
+            // universal role is not functional
+            return false;
         }
         if (r.isBottom()) {
-            // empty role is symmetric
+            // empty role is functional
             return true;
         }
         return getFunctionality(r);
@@ -2061,10 +2061,12 @@ public class ReasoningKernel implements Serializable {
         // make sure KB is classified
         classifyKB();
         if (!named) {
+            // general expression: classify query concept
             getTBox().classifyQueryConcept();
         }
         cachedVertex = cachedConcept.getTaxVertex();
         if (cachedVertex == null) {
+            // fresh concept
             cachedVertex = getCTaxonomy().getFreshVertex(cachedConcept);
         }
     }

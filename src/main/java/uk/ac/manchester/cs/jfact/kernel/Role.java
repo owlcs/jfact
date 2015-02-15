@@ -986,15 +986,14 @@ public class Role extends ClassifiableEntry {
 
     @PortedFrom(file = "tRole.h", name = "isRealTopFunc")
     private boolean isRealTopFunc() {
+        // all REAL top-funcs have their self-ref in TopFunc already
         if (!isFunctional()) {
             return false;
         }
-        for (int i = 0; i < ancestorRoles.size(); i++) {
-            if (ancestorRoles.get(i).isTopFunc()) {
-                return false;
-            }
-        }
-        return true;
+        // if any of the parent is self-proclaimed top-func -- this one is not
+        // top-func
+        // else this role is top-most functional
+        return ancestorRoles.stream().noneMatch(p -> p.isTopFunc());
     }
 
     @PortedFrom(file = "tRole.h", name = "initTopFunc")

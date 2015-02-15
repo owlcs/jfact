@@ -25,6 +25,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.reasoner.TimeOutException;
 
 import uk.ac.manchester.cs.jfact.datatypes.DataTypeReasoner;
@@ -1163,6 +1165,7 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "repeatUnblockedNode")
     public void repeatUnblockedNode(DlCompletionTree node, boolean direct) {
         if (direct) {
+            // not blocked -- clear blocked cache
             // re-apply all the generating rules
             applyAllGeneratingRules(node);
         } else {
@@ -1593,6 +1596,7 @@ public class DlSatTester implements Serializable {
     }
 
     @PortedFrom(file = "Reasoner.h", name = "checkAddedConcept")
+    @Nonnull
     private AddConceptResult checkAddedConcept(CWDArray lab, int p, DepSet dep) {
         assert isCorrect(p); // sanity checking
         // constants are not allowed here
@@ -1636,6 +1640,7 @@ public class DlSatTester implements Serializable {
     }
 
     @PortedFrom(file = "Reasoner.h", name = "tryAddConcept")
+    @Nonnull
     private AddConceptResult tryAddConcept(CWDArray lab, int bp, DepSet dep) {
         boolean canC = used.contains(bp);
         boolean canNegC = used.contains(-bp);
@@ -2600,13 +2605,16 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodySome")
     private boolean commonTacticBodySome(DLVertex cur) {
         Role R = cur.getRole();
-        int C = -cur.getConceptIndex();
         if (R.isTop()) {
             return commonTacticBodySomeUniv(cur);
         }
+        int C = -cur.getConceptIndex();
+        // check if we already have R-neighbour labelled with C
         if (isSomeExists(R, C)) {
             return false;
         }
+        // try to check the case (some R (or C D)), where C is in the label of
+        // an R-neighbour
         if (C < 0 && dlHeap.get(C).getType() == dtAnd) {
             for (int q : dlHeap.get(C).begin()) {
                 if (isSomeExists(R, -q)) {
@@ -2614,6 +2622,7 @@ public class DlSatTester implements Serializable {
                 }
             }
         }
+        // check for the case \ER.{o}
         if (C > 0 && tBox.testHasNominals()) {
             DLVertex nom = dlHeap.get(C);
             if (nom.getType() == dtPSingleton || nom.getType() == dtNSingleton) {
@@ -2621,40 +2630,50 @@ public class DlSatTester implements Serializable {
             }
         }
         stats.getnSomeCalls().inc();
+        // check if we have functional role
         if (R.isFunctional()) {
             List<Role> list = R.begin_topfunc();
             for (int i = 0; i < list.size(); i++) {
                 int functional = list.get(i).getFunctional();
-                switch (tryAddConcept(curNode.label().getLabel(DagTag.dtLE),
-                        functional, curConceptDepSet)) {
-                    case acrClash:
-                        return true;
-                    case acrDone:
-                        updateLevel(curNode, curConceptDepSet);
-                        ConceptWDep rFuncRestriction1 = new ConceptWDep(
-                                functional, curConceptDepSet);
-                        cGraph.addConceptToNode(curNode, rFuncRestriction1,
-                                DagTag.dtLE);
-                        used.add(rFuncRestriction1.getConcept());
-                        options.getLog().printTemplate(
-                                Templates.COMMON_TACTIC_BODY_SOME,
-                                rFuncRestriction1);
-                        break;
-                    case acrExist:
-                        break;
-                    default:
-                        throw new UnreachableSituationException();
+                AddConceptResult tryAddConcept = tryAddConcept(curNode.label()
+                        .getLabel(DagTag.dtLE), functional, curConceptDepSet);
+                if (tryAddConcept == AddConceptResult.acrClash) {
+                    // addition leads to clash
+                    return true;
                 }
+                if (tryAddConcept == AddConceptResult.acrDone) {
+                    // should be add to a label
+                    // we are changing current Node => save it
+                    updateLevel(curNode, curConceptDepSet);
+                    ConceptWDep rFuncRestriction1 = new ConceptWDep(functional,
+                            curConceptDepSet);
+                    // NOTE! not added into todo (because will be checked
+                    // right now)
+                    cGraph.addConceptToNode(curNode, rFuncRestriction1,
+                            DagTag.dtLE);
+                    used.add(rFuncRestriction1.getConcept());
+                    options.getLog().printTemplate(
+                            Templates.COMMON_TACTIC_BODY_SOME,
+                            rFuncRestriction1);
+                }
+                // only other possibility is acrExist. As the node already
+                // exists, nothing to do
             }
         }
+        // flag is true if we have functional restriction with this Role name
         AtomicBoolean rFunc = new AtomicBoolean(false);
+        // most general functional super-role of given one
         Reference<Role> RF = new Reference<>(R);
+        // role's functional restriction w/dep
         Reference<ConceptWDep> rFuncRestriction = new Reference<>(null);
+        // set up rFunc; rfRole contains more generic functional superrole of
+        // rName
         curNode.beginl_cc().stream()
                 .forEach(LC -> findRC(R, rFunc, RF, rFuncRestriction, LC));
         if (!rFunc.get()) {
             return createNewEdge(cur.getRole(), C, redoForallAtmost());
         }
+        // functional role found => add new concept to existing node
         DlCompletionTreeArc functionalArc = null;
         DepSet newDep = null;
         for (int i = 0; i < curNode.getNeighbour().size()
@@ -2714,6 +2733,7 @@ public class DlSatTester implements Serializable {
 
     protected void findRC(Role R, AtomicBoolean rFunc, Reference<Role> RF,
             Reference<ConceptWDep> rFuncRestriction, ConceptWDep LC) {
+        // found such vertex (<=1 R)
         DLVertex ver = dlHeap.get(LC.getConcept());
         if (LC.getConcept() > 0
                 && isFunctionalVertex(ver)
@@ -3334,11 +3354,16 @@ public class DlSatTester implements Serializable {
 
     @PortedFrom(file = "Reasoner.h", name = "mergeLabels")
     private boolean mergeLabels(CGLabel from, DlCompletionTree to, DepSet dep) {
+        // due to merging, all the concepts in the TO label
+        // should be updated to the new dep-set DEP
         if (!dep.isEmpty()) {
             cGraph.saveRareCond(to.label().getLabel(dtPConcept)
                     .updateDepSet(dep));
             cGraph.saveRareCond(to.label().getLabel(dtForall).updateDepSet(dep));
         }
+        // if the concept is already exists in the node label --
+        // we still need to update it with a new dep-set (due to merging)
+        // note that DEP is already there
         return from
                 .get_sc()
                 .stream()
