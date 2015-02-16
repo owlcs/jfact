@@ -3468,16 +3468,15 @@ public class DlSatTester implements Serializable {
         return false;
     }
 
+    /**
+     * aux method to check whether edge ended to NODE should be added to
+     * EdgetoMerge
+     */
     @PortedFrom(file = "Tactic.cpp", name = "isNewEdge")
     private static boolean isNewEdge(DlCompletionTree node,
             List<DlCompletionTreeArc> e) {
-        int size = e.size();
-        for (int i = 0; i < size; i++) {
-            if (e.get(i).getArcEnd().equals(node)) {
-                return false;
-            }
-        }
-        return true;
+        // skip edges to the same node
+        return e.stream().noneMatch(p -> p.getArcEnd().equals(node));
     }
 
     @PortedFrom(file = "Reasoner.h", name = "findNeighbours")
