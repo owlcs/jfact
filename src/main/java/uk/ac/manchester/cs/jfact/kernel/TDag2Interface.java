@@ -86,7 +86,6 @@ public class TDag2Interface implements Serializable {
             case dtProj:
             case dtNN:
             case dtChoose:
-            case dtSplitConcept:
                 // these are artificial constructions and shouldn't be visible
                 return top();
             default:

@@ -88,8 +88,6 @@ public class ToDoPriorMatrix implements Serializable {
         switch (Op) {
             case dtAnd:
                 return Sign ? indexAnd : indexOr;
-            case dtSplitConcept:
-                return indexAnd;
             case dtForall:
             case dtIrr: // process local (ir-)reflexivity as a FORALL
                 return Sign ? indexForall : indexExists;

@@ -474,7 +474,6 @@ public class DLDag implements Serializable {
                 // fallthrough
                 //$FALL-THROUGH$
             case dtAnd: // check all the conjuncts
-            case dtSplitConcept:
                 for (int q : v.begin()) {
                     int index = createBiPointer(q, pos);
                     DLVertex vertex = get(index);
@@ -817,7 +816,6 @@ public class DLDag implements Serializable {
                 break;
             case dtAnd:
             case dtCollection:
-            case dtSplitConcept:
                 for (int q : v.begin()) {
                     merge(v.getSort(), q);
                 }

@@ -304,10 +304,7 @@ public class Concept extends ClassifiableEntry {
             return pBody;
         }
         if (isSynonym()) {
-            Concept r = resolveSynonym(this);
-            if (r != this) {
-                return r.resolveId();
-            }
+            return resolveSynonym(this).resolveId();
         }
         // return concept's name
         return pName;

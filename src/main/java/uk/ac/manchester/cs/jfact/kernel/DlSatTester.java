@@ -2156,53 +2156,59 @@ public class DlSatTester implements Serializable {
         stats.getnTacticCalls().inc();
         switch (cur.getType()) {
             case dtTop:
+                // can't appear here; addToDoEntry deals with constants
                 throw new UnreachableSituationException();
             case dtDataType:
             case dtDataValue:
+                // data things are checked by data inferer
                 stats.getnUseless().inc();
                 return false;
             case dtPSingleton:
             case dtNSingleton:
                 if (curConceptConcept > 0) {
+                    // real singleton
                     return commonTacticBodySingleton(cur);
-                } else {
-                    return commonTacticBodyId(cur);
                 }
+                // negated singleton -- nothing to do with.
+                return commonTacticBodyId(cur);
             case dtNConcept:
             case dtPConcept:
                 return commonTacticBodyId(cur);
             case dtAnd:
                 if (curConceptConcept > 0) {
+                    // this is AND vertex
                     return commonTacticBodyAnd(cur);
-                } else {
-                    return commonTacticBodyOr(cur);
                 }
+                // this is OR vertex
+                return commonTacticBodyOr(cur);
             case dtForall:
                 if (curConceptConcept < 0) {
+                    // SOME vertex
                     return commonTacticBodySome(cur);
                 }
+                // ALL vertex
                 return commonTacticBodyAll(cur);
             case dtIrr:
                 if (curConceptConcept < 0) {
+                    // SOME R.Self vertex
                     return commonTacticBodySomeSelf(cur.getRole());
-                } else {
-                    return commonTacticBodyIrrefl(cur.getRole());
                 }
+                // don't need invalidate cache, as IRREFL can only lead to CLASH
+                return commonTacticBodyIrrefl(cur.getRole());
             case dtLE:
                 if (curConceptConcept < 0) {
+                    // >= vertex
                     return commonTacticBodyGE(cur);
                 }
+                // <= vertex
                 if (isFunctionalVertex(cur)) {
                     return commonTacticBodyFunc(cur);
-                } else {
-                    return commonTacticBodyLE(cur);
                 }
+                return commonTacticBodyLE(cur);
             case dtProj:
                 assert curConceptConcept > 0;
                 return commonTacticBodyProj(cur.getRole(),
                         cur.getConceptIndex(), cur.getProjRole());
-            case dtSplitConcept:
-                return commonTacticBodySplit(cur);
             case dtChoose:
                 assert curConceptConcept > 0;
                 return applyChooseRule(curNode, cur.getConceptIndex());
@@ -2594,7 +2600,6 @@ public class DlSatTester implements Serializable {
             case dtPConcept:
             case dtPSingleton:
             case dtProj:
-            case dtSplitConcept:
             case dtTop:
             default:
                 break;
@@ -3656,31 +3661,6 @@ public class DlSatTester implements Serializable {
     public void createBCTopLE() {
         bContext = stack.pushTopLE();
         initBC(bContext);
-    }
-
-    /**
-     * expansion rule for split
-     * 
-     * @param cur
-     *        cur
-     * @return true if clashing
-     */
-    @PortedFrom(file = "Reasoner.h", name = "commonTacticBodySplit")
-    private boolean commonTacticBodySplit(DLVertex cur) {
-        if (tBox.isDuringClassification()
-                && !ActiveSplits
-                        .contains(curConceptConcept > 0 ? curConceptConcept
-                                : -curConceptConcept)) {
-            return false;
-        }
-        DepSet dep = curConceptDepSet;
-        boolean pos = curConceptConcept > 0;
-        for (int q : cur.begin()) {
-            if (addToDoEntry(curNode, createBiPointer(q, pos), dep, null)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

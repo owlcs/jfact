@@ -45,9 +45,7 @@ public enum DagTag {
     /** data expression */
     dtDataExpr("data-expr"),
     /** choose */
-    dtChoose("choose"),
-    /** split concept */
-    dtSplitConcept("split-concept");
+    dtChoose("choose");
 
     private static final EnumSet<DagTag> TRUE = EnumSet.of(dtDataType,
             dtDataValue, dtDataExpr, dtNN, dtBad, dtTop, dtChoose);

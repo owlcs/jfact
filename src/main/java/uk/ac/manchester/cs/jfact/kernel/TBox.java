@@ -2022,7 +2022,6 @@ public class TBox implements Serializable {
                 return;
             case dtCollection:
             case dtAnd:
-            case dtSplitConcept:
                 o.print(" (");
                 o.print(type.getName());
                 for (int q : v.begin()) {
@@ -3321,7 +3320,6 @@ public class TBox implements Serializable {
                     break;
                 case dtAnd:
                 case dtCollection:
-                case dtSplitConcept:
                     for (int q : v.begin()) {
                         queue.add(q);
                     }

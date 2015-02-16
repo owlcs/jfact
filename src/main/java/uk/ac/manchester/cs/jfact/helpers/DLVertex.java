@@ -381,7 +381,6 @@ public class DLVertex extends DLVertexTagDFS {
         switch (op) {
             case dtAnd:
             case dtCollection:
-            case dtSplitConcept:
                 break;
             case dtTop:
             case dtNN:
