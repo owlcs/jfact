@@ -10,11 +10,9 @@ import static org.semanticweb.owlapi.util.OWLAPIPreconditions.checkNotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.semanticweb.owlapi.model.IRI;
 
@@ -468,35 +466,18 @@ public class TaxonomyVertex implements Serializable {
     @PortedFrom(file = "taxVertex.h", name = "printNeighbours")
     private static String printNeighbours(Collection<TaxonomyVertex> list) {
         StringBuilder o = new StringBuilder();
-        o.append(" {");
-        o.append(list.size());
-        o.append(':');
-        TreeSet<TaxonomyVertex> sorted = new TreeSet<>(
-                new Comparator<TaxonomyVertex>() {
-
-                    @Override
-                    public int compare(TaxonomyVertex o1, TaxonomyVertex o2) {
-                        return o1.getPrimer().getName()
-                                .compareTo(o2.getPrimer().getName());
-                    }
-                });
-        sorted.addAll(list);
-        for (TaxonomyVertex p : sorted) {
-            o.append(" \"");
-            o.append(p.sample.getName());
-            o.append('"');
-        }
+        o.append(" {").append(list.size()).append(':');
+        List<TaxonomyVertex> l = new ArrayList<>(list);
+        l.sort((o1, o2) -> o1.getPrimer().getName()
+                .compareTo(o2.getPrimer().getName()));
+        l.forEach(p -> o.append(" \"").append(p.sample.getName()).append('"'));
         o.append('}');
         return o.toString();
     }
 
     @Override
     public String toString() {
-        StringBuilder b = new StringBuilder();
-        b.append(printSynonyms());
-        b.append(printNeighbours(linksParent));
-        b.append(printNeighbours(linksChild));
-        b.append('\n');
-        return b.toString();
+        return printSynonyms() + printNeighbours(linksParent)
+                + printNeighbours(linksChild) + '\n';
     }
 }

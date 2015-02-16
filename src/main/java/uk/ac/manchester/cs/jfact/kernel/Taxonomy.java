@@ -307,7 +307,7 @@ public class Taxonomy implements Serializable {
      */
     @PortedFrom(file = "Taxonomy.h", name = "removeNode")
     public void removeNode(TaxonomyVertex node) {
-        graph.remove(node);
+        node.setInUse(false);
     }
 
     /**

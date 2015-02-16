@@ -186,6 +186,10 @@ public class ClassifiableEntry extends NamedEntry {
     public void setSynonym(ClassifiableEntry syn) {
         // do it only once
         assert pSynonym == null;
+        // XXX check this code
+        // FaCT++ has
+        // pSynonym = syn;
+        // canonicaliseSynonym();
         // check there are no cycles
         Set<ClassifiableEntry> set = new HashSet<>();
         set.add(this);

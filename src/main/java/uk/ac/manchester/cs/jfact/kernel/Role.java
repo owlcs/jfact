@@ -1040,31 +1040,38 @@ public class Role extends ClassifiableEntry {
 
     @PortedFrom(file = "tRole.h", name = "preprocessComposition")
     private void preprocessComposition(List<Role> RS) {
+        // XXX verify how this works, as it's manipulating the input list as
+        // well, replacing synonyms
         boolean same = false;
         int last = RS.size() - 1;
-        // TODO doublecheck, strange assignments to what is in the list
         for (int i = 0; i < RS.size(); i++) {
             Role p = RS.get(i);
             Role R = resolveSynonym(p);
             if (R.isBottom()) {
+                // empty role in composition -- nothing to do
                 RS.clear();
                 return;
             }
             if (R.equals(this)) {
+                // found R in composition
                 if (i != 0 && i != last) {
                     throw new ReasonerInternalException("Cycle in RIA "
                             + getName());
                 }
                 if (same) {
+                    // second one
                     if (last == 1) {
+                        // transitivity
                         RS.clear();
                         setTransitive(true);
                         return;
                     } else {
+                        // wrong (undecidable) axiom
                         throw new ReasonerInternalException("Cycle in RIA "
                                 + getName());
                     }
                 } else {
+                    // first one
                     same = true;
                 }
             }

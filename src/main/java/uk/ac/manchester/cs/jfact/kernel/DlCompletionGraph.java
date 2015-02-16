@@ -663,6 +663,8 @@ public class DlCompletionGraph implements Serializable {
         DlCompletionTree p = node;
         boolean wasBlocked = node.isBlocked();
         boolean wasDBlocked = node.isDBlocked();
+        // if we are here, then node *need* to be checked
+        // so this is to prevent from going out of the loop
         node.setAffected();
         while (p.hasParent() && p.isBlockableNode() && p.isAffected()) {
             findDBlocker(p);

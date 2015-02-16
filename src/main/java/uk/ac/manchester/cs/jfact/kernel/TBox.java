@@ -1021,6 +1021,7 @@ public class TBox implements Serializable {
         if (kbStatus.ordinal() < kbCChecked.ordinal()) {
             prepareReasoning();
             if (kbStatus.ordinal() < kbCChecked.ordinal() && consistent) {
+                // we can detect inconsistency during preprocessing
                 setConsistency(performConsistencyCheck());
             }
         }
@@ -2949,18 +2950,23 @@ public class TBox implements Serializable {
     /** transform singleton hierarchy */
     @PortedFrom(file = "dlTBox.h", name = "transformSingletonHierarchy")
     public void transformSingletonHierarchy() {
+        // remember number of synonyms appeared in KB
         long nSynonyms = countSynonyms();
+        // cycle until no new synonyms are created
         AtomicBoolean changed = new AtomicBoolean(false);
         do {
             changed.set(false);
-            individuals.getConcepts()
+            individuals
+                    .getConcepts()
                     .filter(pi -> !pi.isSynonym() && pi.isHasSP())
-                    .forEach(pi -> {
-                        Individual i = transformSingletonWithSP(pi);
-                        i.removeSelfFromDescription();
-                        changed.set(true);
-                    });
+                    .forEach(
+                            pi -> {
+                                transformSingletonWithSP(pi)
+                                        .removeSelfFromDescription();
+                                changed.set(true);
+                            });
         } while (changed.get());
+        // update nymber of synonyms
         nSynonyms = countSynonyms() - nSynonyms;
         if (nSynonyms > 0) {
             replaceAllSynonyms();
@@ -3345,15 +3351,19 @@ public class TBox implements Serializable {
         nRelevantCCalls = 0;
         nRelevantBCalls = 0;
         int bSize = 0;
+        // gather GCIs features
         curFeature = GCIFeatures;
         markGCIsRelevant();
         clearRelevanceInfo();
         KBFeatures.or(GCIFeatures);
+        // fills in nominal cloud relevance info
         nominalCloudFeatures = new LogicFeatures(GCIFeatures);
+        // set up relevance info
         individuals.getConcepts().forEach(pi -> {
             setConceptRelevant(pi);
             nominalCloudFeatures.or(pi.getPosFeatures());
         });
+        // correct NC inverse role information
         if (nominalCloudFeatures.hasSomeAll() && !relatedIndividuals.isEmpty()) {
             nominalCloudFeatures.setInverseRoles();
         }

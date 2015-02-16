@@ -785,27 +785,35 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
     }
 
     private boolean isABlockedBy(DLDag dag, DlCompletionTree p) {
+        // current = w; p = w'; parent = v
+        // there exists v
+        assert hasParent();
+        // B3,B4
         ArrayIntMap list = p.beginl_cc_concepts();
         for (int i = 0; i < list.size(); i++) {
             int bp = list.keySet(i);
             DLVertex v = dag.get(bp);
             if (v.getType() == dtForall && bp < 0) {
+                // (some T E) \in L(w')
                 if (!B4(1, v.getRole(), -v.getConceptIndex())) {
                     return false;
                 }
             } else if (v.getType() == dtLE) {
                 if (bp > 0) {
+                    // (<= n S C) \in L(w')
                     if (!B3(p, v.getNumberLE(), v.getRole(),
                             v.getConceptIndex())) {
                         return false;
                     }
                 } else {
+                    // (>= m T E) \in L(w')
                     if (!B4(v.getNumberGE(), v.getRole(), v.getConceptIndex())) {
                         return false;
                     }
                 }
             }
         }
+        // all other is OK -- done;
         return true;
     }
 

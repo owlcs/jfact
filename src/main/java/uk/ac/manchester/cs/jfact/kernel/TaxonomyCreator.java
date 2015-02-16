@@ -112,13 +112,12 @@ public class TaxonomyCreator implements Serializable {
     private
             void setNonRedundantCandidates() {
         if (!curEntry.hasToldSubsumers() && pTax.getOptions().isNeedLogging()) {
-            pTax.getOptions().getLog().print("\nTAX: TOP");
-            pTax.getOptions().getLog().print(" completely defines concept ");
-            pTax.getOptions().getLog().print(curEntry.getName());
+            pTax.getOptions().getLog()
+                    .print("\nTAX: TOP completely defines concept ")
+                    .print(curEntry.getName());
         }
         // test if some "told subsumer" is not an immediate TS (ie, not a
-        // border
-        // element)
+        // border element)
         for (ClassifiableEntry p : ksStack.peek().s_begin()) {
             addPossibleParent(p.getTaxVertex());
         }

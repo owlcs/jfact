@@ -3182,6 +3182,8 @@ public class DlSatTester implements Serializable {
                 // clash in LE-rule: skip the initial checks
                 needInit = false;
             } else {
+                // the only possible case is choose-rule; in this case just
+                // continue
                 assert bContext instanceof BCChoose;
             }
         } else {
@@ -3338,12 +3340,12 @@ public class DlSatTester implements Serializable {
         DepSet clashDep = DepSet.create(dep);
         Optional<ConceptWDep> clashConcept = from.get_sc().stream()
                 .filter(p -> usedInverseAndClash(dtPConcept, p, to)).findAny();
+        boolean clash = false;
         if (clashConcept.isPresent()) {
             clashDep.add(clashSet);
             options.getLog().printTemplate(Templates.CHECK_MERGE_CLASH, nodeId,
                     clashConcept.get().getConcept(), clashDep);
-            this.setClashSet(clashDep);
-            return true;
+            clash = true;
         }
         clashConcept = from.get_cc().stream()
                 .filter(p -> usedInverseAndClash(dtForall, p, to)).findAny();
@@ -3351,10 +3353,12 @@ public class DlSatTester implements Serializable {
             clashDep.add(clashSet);
             options.getLog().printTemplate(Templates.CHECK_MERGE_CLASH, nodeId,
                     clashConcept.get().getConcept(), clashDep);
-            this.setClashSet(clashDep);
-            return true;
+            clash = true;
         }
-        return false;
+        if (clash) {
+            this.setClashSet(clashDep);
+        }
+        return clash;
     }
 
     @PortedFrom(file = "Reasoner.h", name = "mergeLabels")
