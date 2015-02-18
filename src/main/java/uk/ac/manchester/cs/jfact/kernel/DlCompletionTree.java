@@ -1008,9 +1008,11 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         if (isLabelledBy(C)) {
             return this;
         }
+        // don't check nominal nodes (prevent cycles)
         if (isNominalNode()) {
             return null;
         }
+        // check all other successors
         DlCompletionTree ret = null;
         for (int i = 0; i < neighbourSize; i++) {
             DlCompletionTreeArc p = neighbour.get(i);
@@ -1027,9 +1029,11 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         if (isLabelledBy(C)) {
             return this;
         }
+        // don't check nominal nodes (prevent cycles)
         if (isNominalNode()) {
             return null;
         }
+        // check all other successors
         DlCompletionTree ret = null;
         for (int i = 0; i < neighbourSize; i++) {
             DlCompletionTreeArc p = neighbour.get(i);
@@ -1039,11 +1043,11 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
                 return ret;
             }
         }
+        // check predecessor
         if (hasParent() && isParentArcLabelled(R)) {
             return getParentNode().isTPredLabelled(R, C, this);
-        } else {
-            return null;
         }
+        return null;
     }
 
     private DlCompletionTree isNSomeApplicable(Role R, int C) {

@@ -1274,14 +1274,17 @@ public class DlSatTester implements Serializable {
 
     @PortedFrom(file = "Reasoner.h", name = "prepareCascadedCache")
     private void prepareCascadedCache(int p, FastSet f) {
+        // cycle found -- shall be processed without caching
         if (inProcess.contains(p)) {
             return;
         }
+        // XXX check what's in f and when it's reset
         if (f.contains(p)) {
             return;
         }
         DLVertex v = dlHeap.get(p);
         boolean pos = p > 0;
+        // check if a concept already cached
         if (v.getCache(pos) != null) {
             return;
         }
@@ -1303,8 +1306,11 @@ public class DlSatTester implements Serializable {
             inProcess.remove(p);
         } else if (handleforallle.contains(type)) {
             Role R = v.getRole();
+            // skip data-related stuff
+            // no need to cache top-role stuff
             if (!R.isDataRole() && !R.isTop()) {
                 int x = pos ? v.getConceptIndex() : -v.getConceptIndex();
+                // build cache for C in \AR.C
                 if (x != bpTOP) {
                     inProcess.add(x);
                     createCache(x, f);
@@ -1600,17 +1606,10 @@ public class DlSatTester implements Serializable {
     private AddConceptResult checkAddedConcept(CWDArray lab, int p, DepSet dep) {
         assert isCorrect(p); // sanity checking
         // constants are not allowed here
-        assert p != bpTOP;
-        assert p != bpBOTTOM;
-        stats.getnLookups().inc();
-        stats.getnLookups().inc();
-        if (lab.contains(p)) {
+        if (findConcept(lab, p)) {
             return AddConceptResult.acrExist;
         }
-        int inv_p = -p;
-        DepSet depset = lab.get(inv_p);
-        if (depset != null) {
-            clashSet = DepSet.plus(depset, dep);
+        if (findConceptClash(lab, -p, dep)) {
             return AddConceptResult.acrClash;
         }
         return AddConceptResult.acrDone;
@@ -2029,6 +2028,7 @@ public class DlSatTester implements Serializable {
         if (!SessionGCIs.isEmpty()) {
             resize(SessionGCIs, bContext.SGsize);
         }
+        // update branch dep-set
         updateBranchDep();
         bContext.nextOption();
     }
@@ -2138,11 +2138,15 @@ public class DlSatTester implements Serializable {
      */
     @PortedFrom(file = "Reasoner.h", name = "commonTactic")
     private boolean commonTactic() {
+        // check if Node is cached and we tries to expand existing result
+        // also don't do anything for p-blocked nodes (can't be unblocked)
         if (curNode.isCached() || curNode.isPBlocked()) {
             return false;
         }
+        // informs about starting calculations...
         logStartEntry();
         boolean ret = false;
+        // apply tactic only if Node is not an i-blocked
         if (!isIBlocked()) {
             ret = commonTacticBody(dlHeap.get(curConceptConcept));
         }
@@ -3148,8 +3152,7 @@ public class DlSatTester implements Serializable {
         }
         // locate all R-neighbours of curNode
         // not used
-        DepSet dummy = DepSet.create();
-        findCLabelledNodes(bpTOP, dummy);
+        findCLabelledNodes(bpTOP, null);
         // check if we have nodes to merge
         if (NodesToMerge.size() < 2) {
             return false;
@@ -3487,17 +3490,15 @@ public class DlSatTester implements Serializable {
     private void findNeighbours(Role Role, int c, DepSet Dep) {
         EdgesToMerge.clear();
         DagTag tag = dlHeap.get(c).getType();
-        List<DlCompletionTreeArc> neighbour = curNode.getNeighbour();
-        int size = neighbour.size();
-        for (int i = 0; i < size; i++) {
-            DlCompletionTreeArc p = neighbour.get(i);
-            if (p.isNeighbour(Role)
-                    && isNewEdge(p.getArcEnd(), EdgesToMerge)
-                    && findChooseRuleConcept(p.getArcEnd().label()
-                            .getLabel(tag), c, Dep)) {
-                EdgesToMerge.add(p);
-            }
-        }
+        curNode.getNeighbour()
+                .stream()
+                .filter(p -> p.isNeighbour(Role)
+                        && isNewEdge(p.getArcEnd(), EdgesToMerge)
+                        && findChooseRuleConcept(p.getArcEnd().label()
+                                .getLabel(tag), c, Dep))
+                .forEach(p -> EdgesToMerge.add(p));
+        // sort EdgesToMerge: From named nominals to generated nominals to
+        // blockable nodes
         Collections.sort(EdgesToMerge, new EdgeCompare());
     }
 
@@ -3533,16 +3534,22 @@ public class DlSatTester implements Serializable {
 
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodyNN")
     private boolean commonTacticBodyNN(DLVertex cur) {
+        // here we KNOW that NN-rule is applicable, so skip some tests
         stats.getnNNCalls().inc();
         if (isFirstBranchCall()) {
             createBCNN();
         }
         BCNN bcNN = (BCNN) bContext;
+        // check whether we did all possible tries
         if (bcNN.noMoreNNOptions(cur.getNumberLE())) {
+            // set global clashset to cummulative one from previous branch
+            // failures
             useBranchDep();
             return true;
         }
+        // take next NN number; save it as SAVE() will reset it to 0
         int NN = bcNN.getBranchIndex();
+        // prepare to addition to the label
         save();
         // new (just branched) dep-set
         DepSet curDep = getCurDepSet();

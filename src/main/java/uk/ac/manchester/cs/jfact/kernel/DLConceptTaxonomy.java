@@ -319,9 +319,11 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
 
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "searchBaader")
     private void searchBaader(TaxonomyVertex cur) {
+        // label 'visited'
         pTax.setVisited(cur);
         ++nSearchCalls;
         boolean noPosSucc = true;
+        // check if there are positive successors; use DFS on them.
         for (TaxonomyVertex p : cur.neigh(upDirection)) {
             if (enhancedSubs(p)) {
                 if (!pTax.isVisited(p)) {
@@ -335,6 +337,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         if (!isValued(cur)) {
             setValue(cur, testSubsumption(cur));
         }
+        // mark labelled leaf node as a parent (self check for incremental)
         if (noPosSucc && cur.getValue()) {
             pTax.getCurrent().addNeighbour(!upDirection, cur);
         }

@@ -1364,13 +1364,18 @@ public class TBox implements Serializable {
         if (R.isDataRole()) {
             return dataForall2dag(R, C);
         }
+        // create \all R.C == \all R{0}.C
         int ret = dlHeap.add(new DLVertex(dtForall, 0, R, C, null));
         if (R.isSimple()) {
+            // don't care about the rest
             return ret;
         }
+        // check if the concept is not last
         if (!dlHeap.isLast(ret)) {
+            // all sub-roles were added before
             return ret;
         }
+        // have appropriate concepts for all the automata states
         for (int i = 1; i < R.getAutomaton().size(); ++i) {
             dlHeap.directAddAndCache(new DLVertex(dtForall, i, R, C, null));
         }
@@ -1388,6 +1393,7 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "atmost2dag")
     public int atmost2dag(int n, Role R, int C) {
+        // input check: only simple roles are allowed in the (non-trivial) NR
         if (!R.isSimple()) {
             throw new ReasonerInternalException(
                     "Non simple role used as simple: " + R.getName());
@@ -1400,12 +1406,16 @@ public class TBox implements Serializable {
             return bpTOP;
         }
         int ret = dlHeap.add(new DLVertex(dtLE, n, R, C, null));
+        // check if the concept is not last
         if (!dlHeap.isLast(ret)) {
+            // all elements were added before
             return ret;
         }
+        // create entries for the transitive sub-roles
         for (int m = n - 1; m > 0; --m) {
             dlHeap.directAddAndCache(new DLVertex(dtLE, m, R, C, null));
         }
+        // create a blocker for the NN-rule
         dlHeap.directAddAndCache(new DLVertex(dtNN));
         return ret;
     }
@@ -1723,17 +1733,20 @@ public class TBox implements Serializable {
         prepareFeatures(test, null);
         boolean ret = false;
         if (test != null) {
+            // make a cache for TOP if it is not there
             if (dlHeap.getCache(bpTOP) == null) {
                 initConstCache(bpTOP);
             }
             ret = nomReasoner.consistentNominalCloud();
         } else {
             ret = isSatisfiable(top);
-            // setup cache for GCI
-            if (GCIs.isGCI()) {
-                dlHeap.setCache(-internalisedGeneralAxiom, new ModelCacheConst(
-                        false));
-            }
+        }
+        // setup cache for GCI
+        if (GCIs.isGCI()) {
+            // there is no much win to have it together with
+            // special-domains-as-GCIs ATM.
+            dlHeap.setCache(-internalisedGeneralAxiom, new ModelCacheConst(
+                    false));
         }
         pt.stop();
         consistTime = pt.calcDelta();
@@ -2528,15 +2541,19 @@ public class TBox implements Serializable {
                 rest.add(d);
             }
         }
+        // both primitive concept and others are in DISJ statement
         if (!prim.isEmpty() && !rest.isEmpty()) {
             DLTree nrest = DLTreeFactory.buildDisjAux(rest);
             for (DLTree q : prim) {
                 this.addSubsumeAxiom(q.copy(), nrest.copy());
             }
         }
+        // no primitive concepts between DJ elements
         if (!rest.isEmpty()) {
             processDisjoint(rest);
         }
+        // all non-PC are done; prim is non-empty
+        // FIXME!! do it in more optimal way later
         if (!prim.isEmpty()) {
             processDisjoint(prim);
         }
@@ -2603,6 +2620,7 @@ public class TBox implements Serializable {
         if (l.isEmpty()) {
             throw new ReasonerInternalException("Empty disjoint role axiom");
         }
+        // check that all ids are correct role names
         int size = l.size();
         for (int i = 0; i < size; i++) {
             if (DLTreeFactory.isTopRole(l.get(i))) {
@@ -2610,6 +2628,7 @@ public class TBox implements Serializable {
                         "Universal role in the disjoint roles axiom");
             }
         }
+        // make a disjoint roles
         List<Role> roles = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             roles.add(Role.resolveRole(l.get(i)));
@@ -2871,10 +2890,14 @@ public class TBox implements Serializable {
     @PortedFrom(file = "dlTBox.h", name = "checkToldCycle")
     public Concept checkToldCycle(Concept _p) {
         assert _p != null;
+        // resolve synonym (if happens) to prevent cases like A[=B[=C[=A,
+        // A[=D[=B
         Concept p = resolveSynonym(_p);
+        // no reason to process TOP here
         if (p.isTop()) {
             return null;
         }
+        // if we found a cycle...
         if (conceptInProcess.contains(p)) {
             return p;
         }
@@ -2882,22 +2905,29 @@ public class TBox implements Serializable {
             return null;
         }
         Concept ret = null;
+        // add concept in processing
         conceptInProcess.add(p);
         boolean redo = false;
         while (!redo) {
             redo = true;
             for (ClassifiableEntry r : p.getToldSubsumers()) {
+                // if cycle was detected
                 if ((ret = checkToldCycle((Concept) r)) != null) {
                     if (ret.equals(p)) {
                         toldSynonyms.add(p);
+                        // find a representative for the cycle; nominal is
+                        // preferable
                         for (Concept q : toldSynonyms) {
                             if (q.isSingleton()) {
                                 p = q;
                             }
                         }
+                        // now p is a representative for all the synonyms
+                        // fill the description
                         Set<DLTree> leaves = new HashSet<>();
                         for (Concept q : toldSynonyms) {
                             if (!q.equals(p)) {
+                                // make it a synonym of RET, save old desc
                                 DLTree d = makeNonPrimitive(q, getTree(p));
                                 if (d.isBOTTOM()) {
                                     leaves.clear();
@@ -2922,10 +2952,15 @@ public class TBox implements Serializable {
                             }
                         }
                         toldSynonyms.clear();
+                        // mark the returned concept primitive (to allow addDesc
+                        // to work)
                         p.setPrimitive(true);
                         p.addLeaves(leaves);
+                        // replace all synonyms with TOP
                         p.removeSelfFromDescription();
+                        // re-run the search starting from new sample
                         if (!ret.equals(p)) {
+                            // need to fix the stack
                             conceptInProcess.remove(ret);
                             conceptInProcess.add(p);
                             ret.setRelevant(relevance);
@@ -2937,11 +2972,13 @@ public class TBox implements Serializable {
                     } else {
                         toldSynonyms.add(p);
                         redo = true;
+                        // no need to continue; finish with this cycle first
                         break;
                     }
                 }
             }
         }
+        // remove processed concept from set
         conceptInProcess.remove(p);
         p.setRelevant(relevance);
         return ret;
@@ -2983,12 +3020,15 @@ public class TBox implements Serializable {
         for (ClassifiableEntry r : p.getToldSubsumers()) {
             Concept i = (Concept) r;
             if (i.isSingleton()) {
+                // found the end of the chain
                 return (Individual) i;
             }
             if (i.isHasSP()) {
+                // found the continuation of the chain
                 return transformSingletonWithSP(i);
             }
         }
+        // will always have found the entry
         throw new UnreachableSituationException();
     }
 
@@ -3431,6 +3471,7 @@ public class TBox implements Serializable {
         if (forall_R_C_Cache.containsKey(RC)) {
             return forall_R_C_Cache.get(RC);
         }
+        // see R and C at the first time
         Concept X = getAuxConcept(null);
         DLTree C = DLTreeFactory.createSNFNot(RC.getRight().copy());
         // create ax axiom C [= AR^-.X

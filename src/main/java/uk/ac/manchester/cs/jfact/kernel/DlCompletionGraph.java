@@ -685,6 +685,7 @@ public class DlCompletionGraph implements Serializable {
             return;
         }
         if (!wasDBlocked) {
+            // if it was DBlocked -- findDBlocker() made it
             saveRareCond(node.setUBlocked());
         }
         pReasoner.repeatUnblockedNode(node, wasDBlocked);
@@ -802,22 +803,28 @@ public class DlCompletionGraph implements Serializable {
     @PortedFrom(file = "dlCompletionGraph.h", name = "moveEdge")
     private DlCompletionTreeArc moveEdge(DlCompletionTree node,
             DlCompletionTreeArc edge, boolean isPredEdge, DepSet dep) {
+        // skip already purged edges
         if (edge.isIBlocked()) {
             return null;
         }
+        // skip edges not leading to nominal nodes
         if (!isPredEdge && !edge.getArcEnd().isNominalNode()) {
             return null;
         }
         Role R = edge.getRole();
+        // we shall copy reflexive edges in a specific way
         if (edge.isReflexiveEdge()) {
             return createLoop(node, R, dep);
         }
         DlCompletionTree to = edge.getArcEnd();
+        // invalidate old edge
         if (R != null) {
             invalidateEdge(edge);
         }
+        // try to find for NODE.TO (TO.NODE) whether we
+        // have TO.NODE (NODE.TO) edge already
         for (DlCompletionTreeArc p : node.getNeighbour()) {
-            if (p.getArcEnd().equals(to) && p.isPredEdge() != isPredEdge) {
+            if (p.getArcEnd() == to && p.isPredEdge() != isPredEdge) {
                 return addRoleLabel(node, to, !isPredEdge, R, dep);
             }
         }

@@ -442,7 +442,6 @@ public class InAx implements Serializable {
         }
         DLTree C = p.getChild().getRight();
         // forall is simple if its filler is a name of a primitive concept
-        // XXX check
         return C.isName() && getConcept(C).getDescription() == null;
     }
 }
