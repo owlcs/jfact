@@ -1886,6 +1886,7 @@ public class ReasoningKernel implements Serializable {
         for (NamedEntity e : ontology.getSignature().begin()) {
             e.setEntry(null);
         }
+        // (re)load ontology
         OntologyLoader ontologyLoader = new OntologyLoader(getTBox());
         ontologyLoader.visitOntology(ontology);
         if (kernelOptions.isUseIncrementalReasoning()) {
@@ -2364,18 +2365,24 @@ public class ReasoningKernel implements Serializable {
 
     @PortedFrom(file = "Kernel.h", name = "buildRelatedCache")
     private List<Individual> buildRelatedCache(Individual I, Role R) {
+        // for synonyms: use the representative's cache
         if (R.isSynonym()) {
             return getRelated(I, ClassifiableEntry.resolveSynonym(R));
         }
+        // FIXME!! return an empty set for data roles
+        // empty role has no fillers
         if (R.isDataRole() || R.isBottom()) {
             return new ArrayList<>();
         }
+        // now fills the query
         RIActor actor = new RIActor();
+        // ask for instances of \exists R^-.{i}
         ObjectRoleExpression InvR = R.getId() > 0 ? getExpressionManager()
                 .inverse(getExpressionManager().objectRole(R.getName()))
                 : getExpressionManager().objectRole(R.inverse().getName());
         ConceptExpression query;
         if (R.isTop()) {
+            // universal role has all the named individuals as a filler
             query = top();
         } else {
             query = value(InvR, getExpressionManager().individual(I.getName()));

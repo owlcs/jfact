@@ -11,7 +11,6 @@ import static uk.ac.manchester.cs.jfact.kernel.Token.RCOMPOSITION;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -519,6 +518,7 @@ public class Role extends ClassifiableEntry {
      */
     @PortedFrom(file = "tRole.h", name = "setDomain")
     public void setDomain(DLTree p) {
+        // not just a CName
         if (equalTrees(pDomain, p)) {
             // usual case when you have a name for inverse role
         } else if (DLTreeFactory.isFunctionalExpr(p, this)) {
@@ -526,7 +526,7 @@ public class Role extends ClassifiableEntry {
             // functional restriction in the role domain means the role is
             // functional
         } else {
-            pDomain = DLTreeFactory.createSNFAnd(Arrays.asList(pDomain, p));
+            pDomain = DLTreeFactory.createSNFReducedAnd(pDomain, p);
         }
     }
 

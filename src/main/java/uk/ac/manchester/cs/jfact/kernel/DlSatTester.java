@@ -1696,13 +1696,16 @@ public class DlSatTester implements Serializable {
     private boolean insertToDoEntry(DlCompletionTree n, int bp, DepSet dep,
             DagTag tag, String reason) {
         ConceptWDep p = new ConceptWDep(bp, dep);
+        // we will change current Node => save it if necessary
         updateLevel(n, dep);
         cGraph.addConceptToNode(n, p, tag);
         used.add(bp);
         if (n.isCached()) {
             return correctCachedEntry(n);
         }
+        // add new info in TODO list
         TODO.addEntry(n, tag, p);
+        // data concept -- run data center for it
         if (n.isDataNode()) {
             return checkDataNode ? hasDataClash(n) : false;
         }
@@ -2310,10 +2313,13 @@ public class DlSatTester implements Serializable {
         // safety check
         assert cur.getType() == dtPSingleton || cur.getType() == dtNSingleton;
         stats.getnSingletonCalls().inc();
+        // can use this rule only in the Nominal reasoner
         assert hasNominals();
+        // if the test REALLY uses nominals, remember this
         encounterNominal = true;
         Individual C = (Individual) cur.getConcept();
         assert C.getNode() != null;
+        // if node for C was purged due to merge -- find proper one
         DepSet dep = DepSet.create(curConceptDepSet);
         // blank nodes are set to be non classifiable and not initialized in
         // initNominalCloud
@@ -2323,9 +2329,13 @@ public class DlSatTester implements Serializable {
             return true;
         }
         DlCompletionTree realNode = C.getNode().resolvePBlocker(dep);
+        // check if o-rule is applicable
         if (!realNode.equals(curNode)) {
+            // apply o-rule: merge 2 nodes
+            // don't need to actually expand P: it was/will be done in C.node
             return merge(curNode, realNode, dep);
         }
+        // singleton behaves as a general named concepts besides nominal cloud
         return commonTacticBodyId(cur);
     }
 
@@ -3504,15 +3514,12 @@ public class DlSatTester implements Serializable {
 
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodyChoose")
     private boolean commonTacticBodyChoose(Role R, int C) {
-        List<DlCompletionTreeArc> neighbour = curNode.getNeighbour();
-        int size = neighbour.size();
-        for (int i = 0; i < size; i++) {
-            DlCompletionTreeArc p = neighbour.get(i);
-            if (p.isNeighbour(R) && applyChooseRule(p.getArcEnd(), C)) {
-                return true;
-            }
-        }
-        return false;
+        return curNode
+                .getNeighbour()
+                .stream()
+                .anyMatch(
+                        p -> p.isNeighbour(R)
+                                && applyChooseRule(p.getArcEnd(), C));
     }
 
     @PortedFrom(file = "Reasoner.h", name = "applyChooseRule")
@@ -3682,15 +3689,8 @@ public class DlSatTester implements Serializable {
      */
     @PortedFrom(file = "Reasoner.h", name = "applyChooseRuleGlobally")
     private boolean applyChooseRuleGlobally(int C) {
-        int i = 0;
-        DlCompletionTree p = cGraph.getNode(i++);
-        while (p != null) {
-            if (isObjectNodeUnblocked(p) && applyChooseRule(p, C)) {
-                return true;
-            }
-            p = cGraph.getNode(i++);
-        }
-        return false;
+        return cGraph.nodes().anyMatch(
+                p -> isObjectNodeUnblocked(p) && applyChooseRule(p, C));
     }
 
     @PortedFrom(file = "Reasoner.h", name = "findCLabelledNodes")

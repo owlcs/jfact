@@ -354,6 +354,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
                 return false;
             }
         }
+        // all subsumptions holds -- test current for subsumption
         return testSubsumption(cur);
     }
 
@@ -371,13 +372,6 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         if (upDirection && !cur.isCommon()) {
             return false;
         }
-        // for top-down search it's enough to look at defined concepts and
-        // non-det ones
-        // if (tBox.getOptions().isSplits()) {
-        // if (!inSplitCheck && !upDirection && !possibleSub(cur)) {
-        // return false;
-        // }
-        // }
         if (useCandidates && candidates.contains(cur)) {
             return false;
         }

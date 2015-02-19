@@ -252,7 +252,12 @@ public abstract class DLTree implements Serializable {
     // check if DL tree is a concept/individual name
     /** @return true if token is a cname or iname */
     public boolean isName() {
-        return token() == CNAME || token() == INAME;
+        return isCName() || token() == INAME;
+    }
+
+    /** @return true if token is a cname or iname */
+    public boolean isCName() {
+        return token() == CNAME;
     }
 }
 

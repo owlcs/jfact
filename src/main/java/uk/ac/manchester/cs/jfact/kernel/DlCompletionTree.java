@@ -432,8 +432,6 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
                 && (isCBlockedBy(dag, p) || isABlockedBy(dag, p));
     }
 
-    private DlCompletionTree cachedParent = null;
-
     // WARNING!! works only for blockable nodes
     // every non-root node will have first upcoming edge pointed to a parent
     /**
@@ -441,10 +439,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
      *         with hasParent()==TRUE
      */
     public DlCompletionTree getParentNode() {
-        if (cachedParent == null) {
-            cachedParent = neighbour.get(0).getArcEnd();
-        }
-        return cachedParent;
+        return neighbour.get(0).getArcEnd();
     }
 
     // managing AFFECTED flag
@@ -998,7 +993,6 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         inequalityRelation.clear();
         inequalityRelation_helper.clear();
         neighbour.clear();
-        cachedParent = null;
         neighbourSize = 0;
         setBlocker(null);
         pDep.clear();

@@ -1547,10 +1547,12 @@ public class TBox implements Serializable {
     @PortedFrom(file = "dlTBox.h", name = "classifyConcepts")
     public void classifyConcepts(List<Concept> collection,
             boolean curCompletelyDefined, String type) {
+        // set CD for taxonomy
         pTaxCreator.setCompletelyDefined(curCompletelyDefined);
         config.getLog().printTemplate(Templates.CLASSIFY_CONCEPTS, type);
         int n = 0;
         for (Concept q : collection) {
+            // check if concept is already classified
             if (!interrupted.get() && !q.isClassified()) {
                 // need to classify concept
                 classifyEntry(q);

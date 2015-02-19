@@ -77,6 +77,7 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
      */
     @PortedFrom(file = "tOntologyAtom.h", name = "setModule")
     public void setModule(Collection<AxiomInterface> module) {
+        // XXX check if the defensive copy is needed
         ModuleAxioms = new HashSet<>(module);
     }
 
