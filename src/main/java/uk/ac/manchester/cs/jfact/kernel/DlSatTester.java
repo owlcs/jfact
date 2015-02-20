@@ -2859,6 +2859,7 @@ public class DlSatTester implements Serializable {
         if (!options.getuseLazyBlocking()) {
             return curNode.isBlocked();
         }
+        // update blocked status
         if (!curNode.isBlocked() && curNode.isAffected()) {
             updateLevel(curNode, curConceptDepSet);
             cGraph.detectBlockedStatus(curNode);

@@ -332,25 +332,26 @@ public class TaxonomyVertex implements Serializable {
     public void incorporate(JFactReasonerConfiguration c) {
         // setup links
         for (TaxonomyVertex d : neigh(false)) {
+            // remove all down links
             for (TaxonomyVertex u : neigh(true)) {
                 if (d.removeLink(true, u)) {
                     u.removeLink(false, d);
                 }
             }
-            d.removeLink(/* upDirection= */true, this);
+            // add new link between v and current
             // safe in general case, crucial for incremental
+            d.removeLink(true, this);
             d.addNeighbour(true, this);
         }
+        // add new link between v and current
         for (TaxonomyVertex u : neigh(true)) {
             u.addNeighbour(false, this);
         }
         if (c.isLoggingActive()) {
             LogAdapter logAdapter = c.getLog();
-            logAdapter.printTemplate(Templates.INCORPORATE, sample.getName());
-            logAdapter.print(names(neigh(true)));
-            logAdapter.print("} and down = {");
-            logAdapter.print(names(neigh(false)));
-            logAdapter.print("}");
+            logAdapter.printTemplate(Templates.INCORPORATE, sample.getName())
+                    .print(names(neigh(true))).print("} and down = {")
+                    .print(names(neigh(false))).print("}");
         }
     }
 
