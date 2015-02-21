@@ -627,18 +627,23 @@ public class DlCompletionGraph implements Serializable {
             isBlockedBy(DlCompletionTree node, DlCompletionTree blocker) {
         assert !node.isNominalNode();
         assert !blocker.isNominalNode();
+        // blocked node can't be blocked itself
         if (blocker.isBlocked()) {
             return false;
         }
+        // easy check: Init is not in the label if a blocker
         if (!blocker.canBlockInit(node.getInit())) {
             return false;
         }
         boolean ret;
         if (sessionHasInverseRoles) {
+            // subset blocking
             DLDag dag = pReasoner.getDAG();
             if (sessionHasNumberRestrictions) {
+                // I+F -- optimised blocking
                 ret = node.isBlockedBy_SHIQ(dag, blocker);
             } else {
+                // just I -- equality blocking
                 ret = node.isBlockedBy_SHI(dag, blocker);
             }
         } else {
@@ -879,6 +884,7 @@ public class DlCompletionGraph implements Serializable {
             return;
         }
         saveRareCond(p.setPBlocked(root, dep));
+        // update successors
         List<DlCompletionTreeArc> neighbour = p.getNeighbour();
         int size = neighbour.size();
         for (int i = 0; i < size; i++) {
@@ -893,9 +899,11 @@ public class DlCompletionGraph implements Serializable {
     private void purgeEdge(DlCompletionTreeArc e, DlCompletionTree root,
             DepSet dep) {
         if (e.getRole() != null) {
+            // invalidate given link
             invalidateEdge(e);
         }
         if (e.getArcEnd().isBlockableNode()) {
+            // purge blockable successor
             purgeNode(e.getArcEnd(), root, dep);
         }
     }

@@ -1806,6 +1806,7 @@ public class TBox implements Serializable {
         assert pConcept != null && qConcept != null;
         config.getLog().printTemplate(Templates.ISSUBHOLDS1,
                 pConcept.getName(), qConcept.getName());
+        // perform reasoning with a proper logical features
         prepareFeatures(pConcept, qConcept);
         boolean result = !getReasoner().runSat(pConcept.resolveId(),
                 -qConcept.resolveId());
@@ -3037,6 +3038,7 @@ public class TBox implements Serializable {
     @PortedFrom(file = "dlTBox.h", name = "transformSingletonWithSP")
     private Individual transformSingletonWithSP(Concept p) {
         Individual i = getSPForConcept(p);
+        // make p a synonym of i
         if (p.isSingleton()) {
             i.addRelated((Individual) p);
         }

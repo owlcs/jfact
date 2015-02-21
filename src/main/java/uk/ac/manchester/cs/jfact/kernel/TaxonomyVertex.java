@@ -79,7 +79,7 @@ public class TaxonomyVertex implements Serializable {
     public void setSample(ClassifiableEntry entry, boolean linkBack) {
         sample = entry;
         if (linkBack) {
-            entry.setTaxVertex(this);
+            setVertexAsHost(entry);
         }
     }
 

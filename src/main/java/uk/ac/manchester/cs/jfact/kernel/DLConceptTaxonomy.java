@@ -430,7 +430,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         Iterator<TaxonomyVertex> list = pTax.getCurrent().neigh(upDirection)
                 .iterator();
         assert list.hasNext();
-        // there is at least one parent (TOP)
+        // including node always have some parents (TOP at least)
         TaxonomyVertex p = list.next();
         // define possible successors of the node
         propagateOneCommon(p);
@@ -444,10 +444,13 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
                 return true;
             }
             ++nCommon;
+            // aux set for the verteces in ...
             List<TaxonomyVertex> aux = new ArrayList<>(common);
             common.clear();
+            // now Aux contain data from previous run
             propagateOneCommon(p);
             pTax.clearVisited();
+            // clear all non-common nodes (visited on a previous run)
             int auxSize = aux.size();
             for (int j = 0; j < auxSize; j++) {
                 aux.get(j).correctCommon(nCommon);

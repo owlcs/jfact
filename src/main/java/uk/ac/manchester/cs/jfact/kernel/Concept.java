@@ -240,10 +240,7 @@ public class Concept extends ClassifiableEntry {
         if (description == null) {
             return true;
         }
-        if (!isPrimitive() && description.equals(desc)) {
-            return true;
-        }
-        return false;
+        return !isPrimitive() && description.equals(desc);
     }
 
     /**

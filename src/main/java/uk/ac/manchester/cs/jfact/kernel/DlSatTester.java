@@ -1215,6 +1215,7 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "buildCacheByCGraph")
     public ModelCacheInterface buildCacheByCGraph(boolean sat) {
         if (sat) {
+            // here we need actual (not a p-blocked) root of the tree
             return createModelCache(getRootNode());
         } else {
             // unsat => cache is just bottom
@@ -1629,6 +1630,11 @@ public class DlSatTester implements Serializable {
      */
     @PortedFrom(file = "Reasoner.h", name = "findConceptClash")
     private boolean findConceptClash(CWDArray lab, int bp, DepSet dep) {
+        // sanity checking
+        assert isCorrect(bp);
+        // constants are not allowed here
+        assert bp != bpTOP;
+        assert bp != bpBOTTOM;
         stats.getnLookups().inc();
         DepSet depset = lab.get(bp);
         if (depset != null) {
@@ -1948,6 +1954,8 @@ public class DlSatTester implements Serializable {
                 if (TODO.isEmpty()) {
                     // do run-once things
                     if (performAfterReasoning() && tunedRestore()) {
+                        // clash found
+                        // no more alternatives
                         return false;
                     }
                     // if nothing added -- that's it
@@ -1970,8 +1978,11 @@ public class DlSatTester implements Serializable {
                     throw new TimeOutException();
                 }
             }
+            // here curNode/curConcept are set
             if (commonTactic()) {
+                // clash found
                 if (tunedRestore()) {
+                    // the concept is unsatisfiable
                     return false;
                 }
             } else {
@@ -2352,33 +2363,47 @@ public class DlSatTester implements Serializable {
         return false;
     }
 
+    /**
+     * for C \or D concepts
+     * 
+     * @param cur
+     *        current vertex true if clash happens
+     */
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodyOr")
     private boolean commonTacticBodyOr(DLVertex cur) {
         // safety check
         assert curConceptConcept < 0 && cur.getType() == dtAnd;
         stats.getnOrCalls().inc();
         if (isFirstBranchCall()) {
+            // check the structure of OR operation (number of applicable
+            // concepts)
             Reference<DepSet> dep = new Reference<>(DepSet.create());
             if (planOrProcessing(cur, dep)) {
+                // found existing component
                 options.getLog().printTemplate(Templates.COMMON_TACTIC_BODY_OR,
                         orConceptsToTest.get(orConceptsToTest.size() - 1));
                 return false;
             }
             if (orConceptsToTest.isEmpty()) {
+                // no more applicable concepts:
+                // set global dep-set using accumulated deps
                 this.setClashSet(dep.getReference());
                 return true;
             }
+            // not a branching: just add a single concept
             if (orConceptsToTest.size() == 1) {
                 ConceptWDep C = orConceptsToTest.get(0);
                 return insertToDoEntry(curNode, C.getConcept(),
                         dep.getReference(), dlHeap.get(C.getConcept())
                                 .getType(), "bcp");
             }
+            // more than one alternative: use branching context
             createBCOr();
             bContext.branchDep = DepSet.create(dep.getReference());
             orConceptsToTest = ((BCOr) bContext)
                     .setApplicableOrEntries(orConceptsToTest);
         }
+        // now it is OR case with 1 or more applicable concepts
         return processOrEntry();
     }
 
@@ -2976,6 +3001,7 @@ public class DlSatTester implements Serializable {
         if (cur.getRole().isTop()) {
             return processTopRoleFunc(cur);
         }
+        // check whether we need to apply NN rule first
         if (isNNApplicable(cur.getRole(), bpTOP, curConceptConcept + 1)) {
             return commonTacticBodyNN(cur);
         }
@@ -2983,15 +3009,23 @@ public class DlSatTester implements Serializable {
         if (isQuickClashLE(cur)) {
             return true;
         }
+        // locate all R-neighbours of curNode
         findNeighbours(cur.getRole(), bpTOP, null);
+        // check if we have nodes to merge
         if (EdgesToMerge.size() < 2) {
             return false;
         }
+        // merge all nodes to the first (the least wrt nominal hierarchy) found
+        // node
         DlCompletionTreeArc q = EdgesToMerge.get(0);
         DlCompletionTree sample = q.getArcEnd();
+        // dep-set for merging
         DepSet depF = DepSet.create(curConceptDepSet);
         depF.add(q.getDep());
+        // merge all elements to sample (sample wouldn't be merge)
         for (int i = 1; i < EdgesToMerge.size(); i++) {
+            // XXX during merge EdgesToMerge may became purged (see Nasty4) =>
+            // check this
             q = EdgesToMerge.get(i);
             if (!q.getArcEnd().isPBlocked()
                     && merge(q.getArcEnd(), sample,
@@ -3606,14 +3640,17 @@ public class DlSatTester implements Serializable {
 
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodySomeSelf")
     private boolean commonTacticBodySomeSelf(Role R) {
+        // check blocking conditions
         if (isCurNodeBlocked()) {
             return false;
         }
+        // nothing to do if R-loop already exists
         for (DlCompletionTreeArc p : curNode.getNeighbour()) {
             if (p.getArcEnd().equals(curNode) && p.isNeighbour(R)) {
                 return false;
             }
         }
+        // create an R-loop through curNode
         DepSet dep = DepSet.create(curConceptDepSet);
         DlCompletionTreeArc pA = cGraph.createLoop(curNode, R, dep);
         return setupEdge(pA, dep, redoForallFuncAtmostIrr());
@@ -3647,17 +3684,21 @@ public class DlSatTester implements Serializable {
 
     @PortedFrom(file = "Reasoner.h", name = "checkProjection")
     private boolean checkProjection(DlCompletionTreeArc pA, int C, Role ProjR) {
+        // nothing to do if pA is labelled by ProjR as well
         if (pA.isNeighbour(ProjR)) {
             return false;
         }
+        // if ~C is in the label of curNode, do nothing
         if (curNode.isLabelledBy(-C)) {
             return false;
         }
+        // neither C nor ~C are in the label: make a choice
         DepSet dep = DepSet.create(curConceptDepSet);
         dep.add(pA.getDep());
         if (!curNode.isLabelledBy(C)) {
             if (isFirstBranchCall()) {
                 createBCCh();
+                // save current state
                 save();
                 return addToDoEntry(curNode, -C, getCurDepSet(), "cr0");
             } else {
@@ -3669,6 +3710,7 @@ public class DlSatTester implements Serializable {
                 }
             }
         }
+        // here C is in the label of curNode: add ProjR to the edge if necessary
         DlCompletionTree child = pA.getArcEnd();
         return setupEdge(cGraph.addRoleLabel(curNode, child, pA.isPredEdge(),
                 ProjR, dep), dep, redoForallFuncAtmostIrr());

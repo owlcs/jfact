@@ -446,8 +446,10 @@ public class ModelCacheIan extends ModelCacheInterface {
     private void mergeSingleton(int Singleton, boolean pos) {
         ModelCacheState newState = isMergableSingleton(Singleton, pos);
         if (newState != csValid) {
+            // some clash occured: adjust state
             curState = mergeStatus(curState, newState);
         } else {
+            // add singleton; no need to change state here
             getDConcepts(pos).set(Singleton);
         }
     }

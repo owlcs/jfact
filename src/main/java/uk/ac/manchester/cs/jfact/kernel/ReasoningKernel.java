@@ -28,6 +28,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.Nonnull;
 
 import org.semanticweb.owlapi.model.OWLRuntimeException;
+import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
@@ -1758,12 +1759,11 @@ public class ReasoningKernel implements Serializable {
     /** incrementally classify changes */
     @PortedFrom(file = "Incremental.cpp", name = "doIncremental")
     public void doIncremental() {
-        // System.out.println("Incremental!");
         // re-set the modularizer to use updated ontology
         ModSyn = null;
-        // System.out.println("Original Taxonomy:" + tax);
         Set<NamedEntity> MPlus = new HashSet<>();
         Set<NamedEntity> MMinus = new HashSet<>();
+        // detect new- and old- signature elements
         TSignature NewSig = ontology.getSignature();
         Set<NamedEntity> RemovedEntities = new HashSet<>(OntoSig.begin());
         RemovedEntities.removeAll(NewSig.begin());
@@ -1794,9 +1794,8 @@ public class ReasoningKernel implements Serializable {
                 TaxonomyVertex cur = tax.getCurrent();
                 cur.clear();
                 cur.setSample(C, true);
-                cur.addNeighbour( /* upDirection= */true, tax.getTopVertex());
+                cur.addNeighbour(true, tax.getTopVertex());
                 tax.finishCurrentNode();
-                // System.out.println("Insert " + C.getName());
             }
         }
         OntoSig = NewSig;
@@ -1985,11 +1984,13 @@ public class ReasoningKernel implements Serializable {
             throw new ReasonerInternalException(
                     "Can't answer queries due to previous errors");
         }
-        // check if something have to be done
+        // check if something has to be done
         KBStatus curStatus = getStatus();
         if (curStatus.ordinal() >= status.ordinal()) {
             // nothing to do; but make sure that we are consistent
-            isKBConsistent();
+            if (!isKBConsistent()) {
+                throw new InconsistentOntologyException();
+            }
             return;
         }
         // here curStatus < kbRealised, and status >= kbChecked
@@ -2009,6 +2010,7 @@ public class ReasoningKernel implements Serializable {
             pTBox.isConsistent();
             // if there were no exception thrown -- clear the failure status
             reasoningFailed = false;
+            // if the consistency check is all we need -- return
             if (status == kbCChecked) {
                 return;
             }
