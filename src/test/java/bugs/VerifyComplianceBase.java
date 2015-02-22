@@ -1,11 +1,9 @@
 package bugs;
 
+import static java.util.stream.Collectors.joining;
 import static org.junit.Assert.assertEquals;
-import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
 
-import java.util.Arrays;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
@@ -20,12 +18,12 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.profiles.OWLProfileReport;
-import org.semanticweb.owlapi.profiles.OWLProfileViolation;
 import org.semanticweb.owlapi.profiles.Profiles;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.Node;
@@ -50,9 +48,11 @@ public abstract class VerifyComplianceBase extends TestBase {
                         VerifyComplianceBase.class.getResourceAsStream(in));
         OWLProfileReport checkOntology = Profiles.OWL2_DL.checkOntology(onto);
         if (!checkOntology.isInProfile()) {
-            for (OWLProfileViolation v : checkOntology.getViolations()) {
-                System.out.println("VerifyComplianceBase.load() " + v);
-            }
+            checkOntology
+                    .getViolations()
+                    .forEach(
+                            v -> System.out
+                                    .println("VerifyComplianceBase.load() " + v));
         }
         return onto;
     }
@@ -64,23 +64,21 @@ public abstract class VerifyComplianceBase extends TestBase {
                 .loadOntologyFromOntologyDocument(new StringDocumentSource(in));
     }
 
-    protected static String set(Iterable<OWLEntity> i) {
-        Set<String> s = new TreeSet<>();
-        for (OWLEntity e : i) {
-            s.add(e.getIRI().getShortForm());
-        }
-        return s.toString().replace("[", "").replace("]", "")
-                .replace(", ", "\n");
+    protected static String set(Stream<OWLEntity> i) {
+        return i.sorted().map(e -> e.getIRI().getShortForm())
+                .collect(joining("\n"));
     }
 
-    protected static void equal(NodeSet<?> node, OWLEntity... objects) {
-        assertEquals(set(Arrays.asList(objects)),
-                set(asSet(node.entities(), OWLEntity.class)));
+    protected static void equal(NodeSet<? extends OWLObject> node,
+            OWLEntity... objects) {
+        assertEquals(set(Stream.of(objects)),
+                set((Stream<OWLEntity>) node.entities()));
     }
 
-    protected static void equal(Node<?> node, OWLEntity... objects) {
-        assertEquals(set(Arrays.asList(objects)),
-                set(asSet(node.entities(), OWLEntity.class)));
+    protected static void equal(Node<? extends OWLObject> node,
+            OWLEntity... objects) {
+        assertEquals(set(Stream.of(objects)),
+                set((Stream<OWLEntity>) node.entities()));
     }
 
     protected static void equal(Object o, boolean object) {
