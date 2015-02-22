@@ -235,6 +235,7 @@ public class ModelCacheIan extends ModelCacheInterface {
             case dtDataType:
             case dtDataValue:
             case dtDataExpr:
+                // data entries can not be cached
                 throw new UnreachableSituationException(
                         cur.toString()
                                 + " Top datatype property, datatype, data value or data expression used in an unexpected position");
@@ -242,6 +243,7 @@ public class ModelCacheIan extends ModelCacheInterface {
             case dtPConcept:
             case dtNSingleton:
             case dtPSingleton:
+                // add concepts to Concepts
                 int toAdd = ((ClassifiableEntry) cur.getConcept()).getIndex();
                 (det ? getDConcepts(pos) : getNConcepts(pos)).set(toAdd);
                 break;
@@ -249,6 +251,7 @@ public class ModelCacheIan extends ModelCacheInterface {
             case dtForall: // add AR.C roles to forallRoles
             case dtLE: // for <= n R: add R to forallRoles
                 if (cur.getRole().isTop()) {
+                    // force clash to every other edge
                     (pos ? forallRoles : existsRoles).completeSet(nR);
                 } else if (pos) {
                     // no need to deal with existentials here: they would be

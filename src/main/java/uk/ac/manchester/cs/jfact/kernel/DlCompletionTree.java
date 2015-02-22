@@ -1048,6 +1048,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         for (int i = 0; i < neighbourSize; i++) {
             DlCompletionTreeArc p = neighbour.get(i);
             if (p.isNeighbour(R) && p.getArcEnd().isLabelledBy(C)) {
+                // already contained such a label
                 return p.getArcEnd();
             }
         }
@@ -1065,6 +1066,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
                     ret = p.getArcEnd().isTSuccLabelled(R, C);
                 }
                 if (ret != null) {
+                    // already contained such a label
                     return ret;
                 }
             }

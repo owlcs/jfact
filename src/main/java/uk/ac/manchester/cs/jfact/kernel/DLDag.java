@@ -198,7 +198,8 @@ public class DLDag implements Serializable {
      */
     @PortedFrom(file = "dlDag.h", name = "isLast")
     public boolean isLast(int p) {
-        return p == heap.size() - 1 || -p == heap.size() - 1;
+        int last = heap.size() - 1;
+        return p == last || -p == last;
     }
 
     // access methods

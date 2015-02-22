@@ -364,15 +364,19 @@ public class Concept extends ClassifiableEntry {
     @PortedFrom(file = "tConcept.h", name = "determineClassTag")
     @SuppressWarnings("incomplete-switch")
     private CTTag determineClassTag() {
+        // for synonyms -- set tag as a primer's one
         if (isSynonym()) {
             return resolveSynonym(this).getClassTag();
         }
+        // check if it is non-primitive
         if (!isPrimitive()) {
             return CTTag.cttNonPrimitive;
         }
+        // no told subsumers
         if (!hasToldSubsumers()) {
             return CTTag.cttOrphan;
         }
+        // now need to check all the told subsumers
         boolean hasLCD = false;
         boolean hasOther = false;
         boolean hasNP = false;

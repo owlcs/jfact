@@ -1698,6 +1698,7 @@ public class TBox implements Serializable {
             updateAuxFeatures(nominalCloudFeatures);
         }
         curFeature = auxFeatures;
+        // set blocking method for the current reasoning session
         getReasoner().setBlockingMethod(isIRinQuery(), isNRinQuery());
     }
 
@@ -2461,6 +2462,8 @@ public class TBox implements Serializable {
      *        left
      * @param right
      *        right
+     * @param rightOrigin
+     *        original right tree
      * @return true if definition is added
      */
     @PortedFrom(file = "dlTBox.h", name = "addNonprimitiveDefinition")
@@ -2582,6 +2585,7 @@ public class TBox implements Serializable {
     public void processDifferent(List<DLTree> l) {
         List<Individual> acc = new ArrayList<>();
         for (int i = 0; i < l.size(); i++) {
+            // only nominals in DIFFERENT command
             if (this.isIndividual(l.get(i))) {
                 acc.add((Individual) l.get(i).elem().getNE());
                 l.set(i, null);
@@ -2590,6 +2594,7 @@ public class TBox implements Serializable {
                         "Only individuals allowed in processDifferent()");
             }
         }
+        // register vector of disjoint nominals in proper place
         if (acc.size() > 1) {
             differentIndividuals.add(acc);
         }
@@ -2604,13 +2609,14 @@ public class TBox implements Serializable {
         int size = l.size();
         for (int i = 0; i < size; i++) {
             if (!this.isIndividual(l.get(i))) {
+                // only nominals in SAME command
                 throw new ReasonerInternalException(
                         "Only individuals allowed in processSame()");
             }
         }
         for (int i = 0; i < size - 1; i++) {
             // TODO check if this is checking all combinations
-            addEqualityAxiom(l.get(i), l.get(i + 1).copy());
+            addEqualityAxiom(l.get(i), l.get(i + 1));
         }
     }
 
@@ -2870,6 +2876,7 @@ public class TBox implements Serializable {
     /** transform cycles */
     @PortedFrom(file = "dlTBox.h", name = "transformToldCycles")
     public void transformToldCycles() {
+        // remember number of synonyms appeared in KB
         long nSynonyms = countSynonyms();
         clearRelevanceInfo();
         concepts.getConcepts().filter(p -> !p.isSynonym())
@@ -2877,6 +2884,7 @@ public class TBox implements Serializable {
         individuals.getConcepts().filter(p -> !p.isSynonym())
                 .forEach(p -> checkToldCycle(p));
         clearRelevanceInfo();
+        // update nymber of synonyms
         nSynonyms = countSynonyms() - nSynonyms;
         if (nSynonyms > 0) {
             config.getLog().printTemplate(Templates.TRANSFORM_TOLD_CYCLES,

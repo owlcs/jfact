@@ -1647,21 +1647,27 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "tryAddConcept")
     @Nonnull
     private AddConceptResult tryAddConcept(CWDArray lab, int bp, DepSet dep) {
+        // check whether C or ~C can occurs in a node label
         boolean canC = used.contains(bp);
         boolean canNegC = used.contains(-bp);
+        // if either C or ~C is used already, it's not new in a label
         if (canC) {
             if (canNegC) {
+                // both C and ~C can be in the label
                 return checkAddedConcept(lab, bp, dep);
             } else {
+                // C but not ~C can be in the label
                 stats.getnLookups().inc();
                 return findConcept(lab, bp) ? AddConceptResult.acrExist
                         : AddConceptResult.acrDone;
             }
         } else {
             if (canNegC) {
+                // ~C but not C can be in the label
                 return findConceptClash(lab, -bp, dep) ? AddConceptResult.acrClash
                         : AddConceptResult.acrDone;
             } else {
+                // neither C nor ~C can be in the label
                 return AddConceptResult.acrDone;
             }
         }
@@ -1730,12 +1736,14 @@ public class DlSatTester implements Serializable {
             return false;
         }
         stats.getnCacheTry().inc();
+        // check applicability of the caching
         AtomicBoolean shallow = new AtomicBoolean(true);
         AtomicInteger size = new AtomicInteger(0);
         if (Stream.concat(node.beginl_sc().stream(), node.beginl_cc().stream())
                 .anyMatch(p -> canBeCachedCheck(shallow, size, p))) {
             return false;
         }
+        // it's useless to cache shallow nodes
         if (shallow.get() && size.get() > 0) {
             stats.getnCacheFailedShallow().inc();
             options.getLog().print(" cf(s)");
@@ -2794,16 +2802,21 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodyValue")
     private boolean commonTacticBodyValue(Role R, Individual nom) {
         DepSet dep = DepSet.create(curConceptDepSet);
+        // check blocking conditions
         if (isCurNodeBlocked()) {
             return false;
         }
         stats.getnSomeCalls().inc();
         assert nom.getNode() != null;
+        // if node for NOM was purged due to merge -- find proper one
         DlCompletionTree realNode = nom.getNode().resolvePBlocker(dep);
+        // check if merging will lead to clash because of disjoint roles
         if (R.isDisjoint() && checkDisjointRoleClash(curNode, realNode, R, dep)) {
             return true;
         }
+        // here we are sure that there is a nominal connected to a root node
         encounterNominal = true;
+        // create new edge between curNode and the given nominal node
         DlCompletionTreeArc edge = cGraph.addRoleLabel(curNode, realNode,
                 false, R, dep);
         // add all necessary concepts to both ends of the edge

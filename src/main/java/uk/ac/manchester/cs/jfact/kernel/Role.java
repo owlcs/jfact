@@ -721,17 +721,21 @@ public class Role extends ClassifiableEntry {
     @PortedFrom(file = "tRole.h", name = "consistent")
     public void consistent() {
         if (isSimple()) {
+            // all simple roles are consistent
             return;
         }
         if (isFunctional()) {
+            // non-simple role can not be functional
             throw new ReasonerInternalException(
                     "Non simple role used as simple: " + getName());
         }
         if (isDataRole()) {
+            // data role can not be non-simple
             throw new ReasonerInternalException(
                     "Non simple role used as simple: " + getName());
         }
         if (this.isDisjoint()) {
+            // non-simple role can not be disjoint with any role
             throw new ReasonerInternalException(
                     "Non simple role used as simple: " + getName());
         }

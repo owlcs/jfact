@@ -25,9 +25,6 @@ import conformance.PortedFrom;
 public class DLConceptTaxonomy extends TaxonomyCreator {
 
     private static final long serialVersionUID = 11000L;
-    /** flag shows that subsumption check could be simplified */
-    @PortedFrom(file = "DLConceptTaxonomy.h", name = "inSplitCheck")
-    private boolean inSplitCheck = false;
     /** host tBox */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "tBox")
     private final TBox tBox;
@@ -222,12 +219,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
             // singleton on the RHS is useless iff it is primitive
             return false;
         }
-        if (inSplitCheck) {
-            if (q.isPrimitive()) {
-                return false;
-            }
-            return testSubTBox(p, q);
-        }
+        // nominals should be classified as usual concepts
         tBox.getOptions().getLog()
                 .printTemplate(Templates.TAX_TRYING, p.getName(), q.getName());
         if (tBox.testSortedNonSubsumption(p, q)) {
@@ -242,14 +234,17 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         }
         switch (tBox.testCachedNonSubsumption(p, q)) {
             case csValid:
+                // cached result: satisfiable => non-subsumption
                 tBox.getOptions().getLog().print("NOT holds (cached result)");
                 ++nCachedNegative;
                 return false;
             case csInvalid:
+                // cached result: unsatisfiable => subsumption holds
                 tBox.getOptions().getLog().print("holds (cached result)");
                 ++nCachedPositive;
                 return true;
             default:
+                // need extra tests
                 tBox.getOptions().getLog().print("wasted cache test");
                 break;
         }
@@ -525,7 +520,6 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
      */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "checkExtraParents")
     private void checkExtraParents() {
-        inSplitCheck = true;
         for (TaxonomyVertex p : pTax.current.neigh(true)) {
             propagateTrueUp(p);
         }
@@ -542,7 +536,6 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
             pTax.current.removeLink(true, p);
         }
         clearLabels();
-        inSplitCheck = false;
     }
 
     /**

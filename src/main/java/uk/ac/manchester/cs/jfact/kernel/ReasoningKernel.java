@@ -844,7 +844,9 @@ public class ReasoningKernel implements Serializable {
         if (!isKBRealised()) {
             processKB(kbRealised);
         }
-        isKBConsistent();
+        if (!isKBConsistent()) {
+            throw new InconsistentOntologyException();
+        }
     }
 
     // role info retrieval
@@ -1404,6 +1406,9 @@ public class ReasoningKernel implements Serializable {
         classifyKB();
         setUpCache(exists(r, top()), csClassified);
         actor.clear();
+        // if direct, gets an exact domain is named concept; otherwise, set of
+        // the most specific concepts
+        // else gets all named classes that are in the domain of a role
         getCTaxonomy()
                 .getRelativesInfo(cachedVertex, actor, true, direct, true);
         return actor;
@@ -1429,6 +1434,9 @@ public class ReasoningKernel implements Serializable {
         classifyKB();
         setUpCache(exists(r, dataTop()), csClassified);
         actor.clear();
+        // if direct, gets an exact domain is named concept; otherwise, set of
+        // the most specific concepts
+        // else gets all named classes that are in the domain of a role
         getCTaxonomy()
                 .getRelativesInfo(cachedVertex, actor, true, direct, true);
         return actor;
@@ -2335,6 +2343,7 @@ public class ReasoningKernel implements Serializable {
             Role S = getRole(p,
                     "Role expression expected in chain of isSubChain()");
             if (S.isBottom()) {
+                // bottom in a chain makes it super of any role
                 return true;
             }
             tmp = DLTreeFactory.createSNFExists(DLTreeFactory.createRole(S),

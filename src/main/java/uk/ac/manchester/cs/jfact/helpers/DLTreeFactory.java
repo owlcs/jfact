@@ -674,6 +674,7 @@ public class DLTreeFactory implements Serializable {
             ClassifiableEntry entry = (ClassifiableEntry) desc.elem.getNE();
             if (entry.isSynonym()) {
                 entry = resolveSynonym(entry);
+                // check for TOP/BOTTOM
                 if (entry.isTop()) {
                     desc.elem = new Lexeme(TOP);
                 } else if (entry.isBottom()) {
