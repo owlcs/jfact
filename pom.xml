@@ -77,22 +77,6 @@
 						</executions>
 					</plugin>
 			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.5.3</version>
-				<extensions>true</extensions>
-				<configuration>
-					<instructions>
-						<Bundle-SymbolicName>net.sourceforge.owlapi.jfact;singleton:=true</Bundle-SymbolicName>
-						<Bundle-Name>${project.artifactId}</Bundle-Name>
-						<Export-Package>{local-packages}</Export-Package>
-						<Import-Package>org.protege.*, javax.*, org.w3c.dom.*,
-							org.semanticweb.owlapi.*, uk.ac.manchester.cs.owl.owlapi.*,
-							com.google.common.collect, gnu.trove, gnu.trove.*</Import-Package>
-					</instructions>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 				<version>2.1.2</version>
@@ -113,6 +97,23 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.5.3</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>net.sourceforge.owlapi.jfact;singleton:=true</Bundle-SymbolicName>
+						<Bundle-Name>${project.artifactId}</Bundle-Name>
+						<Export-Package>{local-packages}</Export-Package>
+						<Import-Package>org.protege.*, javax.*, org.w3c.dom.*,
+							org.semanticweb.owlapi.*, uk.ac.manchester.cs.owl.owlapi.*,
+							com.google.common.collect, gnu.trove, gnu.trove.*</Import-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+
 			<!-- In the Compiler Plugin we specify the encoding and the compiler version. -->
 			
 			<plugin>

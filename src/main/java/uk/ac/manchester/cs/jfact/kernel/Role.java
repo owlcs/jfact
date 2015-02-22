@@ -813,43 +813,26 @@ public class Role extends ClassifiableEntry {
         if (!isSynonym()) {
             return;
         }
-        Role syn = (Role) pSynonym;
-        if (isFunctional() || syn.isFunctional()) {
+        Role syn = resolveSynonym(this);
+        if (isFunctional() && !syn.isFunctional()) {
             syn.setFunctional();
-            setFunctional();
         }
-        if (isTransitive() || syn.isTransitive()) {
+        if (isTransitive()) {
             syn.setTransitive(true);
-            setTransitive(true);
         }
-        if (isReflexive() || syn.isReflexive()) {
+        if (isReflexive()) {
             syn.setReflexive(true);
-            setReflexive(true);
         }
-        if (isDataRole() || syn.isDataRole()) {
+        if (isDataRole()) {
             syn.setDataRole(true);
-            setDataRole(true);
         }
         if (pDomain != null) {
             syn.setDomain(pDomain.copy());
         }
-        if (syn.getTDomain() != null) {
-            setDomain(syn.getTDomain().copy());
-        }
-        if (inverse.pDomain != null) {
-            syn.inverse.setDomain(inverse.pDomain.copy());
-        }
-        if (syn.inverse.getTDomain() != null) {
-            inverse.setDomain(syn.inverse.getTDomain().copy());
-        }
         if (this.isDisjoint()) {
             syn.disjointRoles.addAll(disjointRoles);
         }
-        if (syn.isDisjoint()) {
-            disjointRoles.addAll(syn.disjointRoles);
-        }
         syn.subCompositions.addAll(subCompositions);
-        subCompositions.addAll(syn.subCompositions);
         toldSubsumers.clear();
         addParent(syn);
     }

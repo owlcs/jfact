@@ -206,13 +206,15 @@ public class ClassifiableEntry extends NamedEntry {
     /** if two synonyms are in 'told' list, merge them */
     @PortedFrom(file = "taxNamEntry.h", name = "removeSynonymsFromParents")
     public void removeSynonymsFromParents() {
-        List<ClassifiableEntry> toRemove = new ArrayList<>();
+        List<ClassifiableEntry> toKeep = new ArrayList<>();
         for (ClassifiableEntry c : toldSubsumers) {
-            if (this == resolveSynonym(c)) {
-                toRemove.add(c);
+            ClassifiableEntry resolved = resolveSynonym(c);
+            if (this != resolved) {
+                toKeep.add(c);
             }
         }
-        toldSubsumers.removeAll(toRemove);
+        toldSubsumers.clear();
+        toldSubsumers.addAll(toKeep);
     }
 
     /**
