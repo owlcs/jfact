@@ -1937,7 +1937,6 @@ public class TBox implements Serializable {
      * @return the root node
      */
     @PortedFrom(file = "dlTBox.h", name = "buildCompletionTree")
-    @Nonnull
     public DlCompletionTree buildCompletionTree(Concept pConcept) {
         DlCompletionTree ret = null;
         // perform reasoning with a proper logical features

@@ -507,7 +507,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     public synchronized Set<OWLAxiom> getTrace(@Nonnull OWLAxiom axiom) {
         kernel.needTracing();
         if (this.isEntailed(axiom)) {
-            return tr.translateTAxiomSet(kernel.getTrace());
+            return tr.translateTAxiomSet(kernel.getTrace().stream());
         }
         return Collections.emptySet();
     }
