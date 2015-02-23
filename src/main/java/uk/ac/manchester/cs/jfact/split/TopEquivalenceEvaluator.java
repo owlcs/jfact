@@ -44,10 +44,8 @@ import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleName;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleProjectionFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleProjectionInto;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleTop;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import conformance.PortedFrom;
@@ -217,23 +215,17 @@ public class TopEquivalenceEvaluator extends SigAccessor implements
 
     @Override
     public void visit(ConceptAnd expr) {
-        for (ConceptExpression p : expr.getArguments()) {
-            if (!isTopEquivalent(p)) {
-                return;
-            }
+        if (expr.getArguments().stream().allMatch(p -> isTopEquivalent(p))) {
+            isTopEq = true;
         }
-        isTopEq = true;
     }
 
     @Override
     public void visit(ConceptOr expr) {
         // XXX no setting to true?
-        for (ConceptExpression p : expr.getArguments()) {
-            if (isTopEquivalent(p)) {
-                return;
-            }
+        if (expr.getArguments().stream().allMatch(p -> !isTopEquivalent(p))) {
+            isTopEq = false;
         }
-        isTopEq = false;
     }
 
     @Override
@@ -343,12 +335,9 @@ public class TopEquivalenceEvaluator extends SigAccessor implements
     @Override
     public void visit(ObjectRoleChain expr) {
         isTopEq = false;
-        for (ObjectRoleExpression p : expr.getArguments()) {
-            if (!isTopEquivalent(p)) {
-                return;
-            }
+        if (expr.getArguments().stream().allMatch(p -> isTopEquivalent(p))) {
+            isTopEq = true;
         }
-        isTopEq = true;
     }
 
     // data role expressions
@@ -395,23 +384,17 @@ public class TopEquivalenceEvaluator extends SigAccessor implements
 
     @Override
     public void visit(DataAnd expr) {
-        for (DataExpression p : expr.getArguments()) {
-            if (!isTopEquivalent(p)) {
-                return;
-            }
+        if (expr.getArguments().stream().allMatch(p -> isTopEquivalent(p))) {
+            isTopEq = true;
         }
-        isTopEq = true;
     }
 
     @Override
     public void visit(DataOr expr) {
         // XXX check no setting to true
-        for (DataExpression p : expr.getArguments()) {
-            if (isTopEquivalent(p)) {
-                return;
-            }
+        if (expr.getArguments().stream().allMatch(p -> !isTopEquivalent(p))) {
+            isTopEq = false;
         }
-        isTopEq = false;
     }
 
     @Override

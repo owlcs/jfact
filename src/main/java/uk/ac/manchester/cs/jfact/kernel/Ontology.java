@@ -139,11 +139,8 @@ public class Ontology implements Serializable {
     @PortedFrom(file = "tOntology.h", name = "getSignature")
     public TSignature getSignature() {
         TSignature sig = new TSignature();
-        for (AxiomInterface p : axioms) {
-            if (p.isUsed()) {
-                sig.add(p.getSignature());
-            }
-        }
+        axioms.stream().filter(p -> p.isUsed())
+                .forEach(p -> sig.add(p.getSignature()));
         return sig;
     }
 }

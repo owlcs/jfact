@@ -91,20 +91,15 @@ public class TaxonomyCreator implements Serializable {
         if (needLogging && !top.isEmpty()) {
             log.print("\nTAX: told subsumers");
         }
-        for (ClassifiableEntry p : top) {
-            if (p.isClassified()) {
-                if (needLogging) {
-                    log.printTemplate(Templates.TOLD_SUBSUMERS, p.getName());
-                }
-                propagateTrueUp(p.getTaxVertex());
+        top.stream().filter(p -> p.isClassified()).peek(p -> {
+            if (needLogging) {
+                log.printTemplate(Templates.TOLD_SUBSUMERS, p.getName());
             }
-        }
+        }).forEach(p -> propagateTrueUp(p.getTaxVertex()));
         top = ksStack.peek().p_begin();
         if (!top.isEmpty() && needLogging) {
             log.print(" and possibly ");
-            for (ClassifiableEntry q : top) {
-                log.print(Templates.TOLD_SUBSUMERS, q.getName());
-            }
+            top.forEach(q -> log.print(Templates.TOLD_SUBSUMERS, q.getName()));
         }
     }
 
@@ -118,9 +113,8 @@ public class TaxonomyCreator implements Serializable {
         }
         // test if some "told subsumer" is not an immediate TS (ie, not a
         // border element)
-        for (ClassifiableEntry p : ksStack.peek().s_begin()) {
-            addPossibleParent(p.getTaxVertex());
-        }
+        ksStack.peek().s_begin()
+                .forEach(p -> addPossibleParent(p.getTaxVertex()));
     }
 
     /**
@@ -223,12 +217,7 @@ public class TaxonomyCreator implements Serializable {
      */
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "isDirectParent")
     public boolean isDirectParent(TaxonomyVertex v) {
-        for (TaxonomyVertex q : v.neigh(false)) {
-            if (isValued(q) && getValue(q)) {
-                return false;
-            }
-        }
-        return true;
+        return !v.neigh(false).anyMatch(q -> isValued(q) && getValue(q));
     }
 
     // -- DFS-based classification
@@ -288,9 +277,7 @@ public class TaxonomyCreator implements Serializable {
         // overwise -- value it...
         setValue(node, true);
         // ... and value all parents
-        for (TaxonomyVertex n : node.neigh(true)) {
-            propagateTrueUp(n);
-        }
+        node.neigh(true).forEach(n -> propagateTrueUp(n));
     }
 
     /**
@@ -309,9 +296,7 @@ public class TaxonomyCreator implements Serializable {
         // overwise -- value it...
         setValue(node, false);
         // ... and value all children
-        for (TaxonomyVertex p : node.neigh(false)) {
-            propagateFalseDown(p);
-        }
+        node.neigh(false).forEach(p -> propagateFalseDown(p));
     }
 
     /**
@@ -443,9 +428,7 @@ public class TaxonomyCreator implements Serializable {
         // now if CUR is the reason of cycle mark all SYNs as synonyms
         if (cycleFound) {
             TaxonomyVertex syn = cur.getTaxVertex();
-            for (ClassifiableEntry q : Syns) {
-                syn.addSynonym(q);
-            }
+            Syns.forEach(q -> syn.addSynonym(q));
             Syns.clear();
         }
         // here the cycle is gone

@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
 import uk.ac.manchester.cs.jfact.kernel.Concept;
@@ -42,11 +43,9 @@ public class RIActor implements Actor, Serializable {
 
     @Override
     public boolean apply(TaxonomyVertex v) {
-        boolean ret = tryEntry(v.getPrimer());
-        for (ClassifiableEntry p : v.synonyms()) {
-            ret |= tryEntry(p);
-        }
-        return ret;
+        AtomicBoolean ret = new AtomicBoolean(tryEntry(v.getPrimer()));
+        v.synonyms().forEach(p -> ret.compareAndSet(false, tryEntry(p)));
+        return ret.get();
     }
 
     @Override
@@ -54,12 +53,7 @@ public class RIActor implements Actor, Serializable {
         if (test(v.getPrimer())) {
             return true;
         }
-        for (ClassifiableEntry p : v.synonyms()) {
-            if (test(p)) {
-                return true;
-            }
-        }
-        return false;
+        return v.synonyms().stream().anyMatch(p -> test(p));
     }
 
     private static boolean test(ClassifiableEntry p) {

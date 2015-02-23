@@ -220,22 +220,16 @@ public class BotEquivalenceEvaluator extends SigAccessor implements
     @Override
     public void visit(ConceptAnd expr) {
         // XXX is this correct? never set to true?
-        for (ConceptExpression p : expr.getArguments()) {
-            if (isBotEquivalent(p)) {
-                return;
-            }
+        if (expr.getArguments().stream().allMatch(p -> !isBotEquivalent(p))) {
+            isBotEq = false;
         }
-        isBotEq = false;
     }
 
     @Override
     public void visit(ConceptOr expr) {
-        for (ConceptExpression p : expr.getArguments()) {
-            if (!isBotEquivalent(p)) {
-                return;
-            }
+        if (expr.getArguments().stream().allMatch(p -> isBotEquivalent(p))) {
+            isBotEq = true;
         }
-        isBotEq = true;
     }
 
     @Override
@@ -349,12 +343,9 @@ public class BotEquivalenceEvaluator extends SigAccessor implements
     @Override
     public void visit(ObjectRoleChain expr) {
         isBotEq = true;
-        for (ObjectRoleExpression p : expr.getArguments()) {
-            if (isBotEquivalent(p)) {
-                return;
-            }
+        if (expr.getArguments().stream().allMatch(p -> !isBotEquivalent(p))) {
+            isBotEq = false;
         }
-        isBotEq = false;
     }
 
     // data role expressions
@@ -402,22 +393,16 @@ public class BotEquivalenceEvaluator extends SigAccessor implements
     @Override
     public void visit(DataAnd expr) {
         // XXX no setting to true?
-        for (DataExpression p : expr.getArguments()) {
-            if (isBotEquivalent(p)) {
-                return;
-            }
+        if (expr.getArguments().stream().allMatch(p -> !isBotEquivalent(p))) {
+            isBotEq = false;
         }
-        isBotEq = false;
     }
 
     @Override
     public void visit(DataOr expr) {
-        for (DataExpression p : expr.getArguments()) {
-            if (!isBotEquivalent(p)) {
-                return;
-            }
+        if (expr.getArguments().stream().allMatch(p -> isBotEquivalent(p))) {
+            isBotEq = true;
         }
-        isBotEq = true;
     }
 
     @Override

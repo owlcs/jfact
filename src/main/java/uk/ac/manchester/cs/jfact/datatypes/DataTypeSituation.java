@@ -13,7 +13,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -63,8 +62,9 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
     private boolean addUpdatedInterval(DepInterval<R> i, Datatype<R> interval,
             DepSet localDep) {
         if (!i.consistent(interval)) {
-            localDep.add(i.locDep);
-            this.reasoner.reportClash(localDep, DT_C_IT);
+            DepSet copy = DepSet.create(localDep);
+            copy.add(i.locDep);
+            this.reasoner.reportClash(copy, DT_C_IT);
             return true;
         }
         if (!i.update(interval, localDep) || !this.hasPType()
@@ -103,10 +103,8 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
                 interval);
         Set<DepInterval<R>> c = this.constraints;
         this.constraints = new HashSet<>();
-        for (DepInterval<R> d : c) {
-            if (this.addUpdatedInterval(d, realInterval, DepSet.create(dep))) {
-                return true;
-            }
+        if (c.stream().anyMatch(d -> addUpdatedInterval(d, realInterval, dep))) {
+            return true;
         }
         if (this.constraints.isEmpty()) {
             this.reasoner.reportClash(this.accDep, DT_C_MM);
@@ -122,12 +120,10 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
             return true;
         }
         for (DepInterval<R> d : this.constraints) {
-            boolean checkMinMaxClash = d.checkMinMaxClash();
-            if (checkMinMaxClash) {
-                d.checkMinMaxClash();
+            if (d.checkMinMaxClash()) {
                 this.accDep.add(d.locDep);
                 this.reasoner.reportClash(this.accDep, DT_C_MM);
-                return checkMinMaxClash;
+                return true;
             }
         }
         return false;
@@ -164,16 +160,10 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         List<Literal<?>> allLiterals = new ArrayList<>(this.literals);
         allLiterals.addAll(other.literals);
         List<Datatype<?>> allRestrictions = new ArrayList<>();
-        for (DepInterval<?> d : other.constraints) {
-            if (d.e != null) {
-                allRestrictions.add(d.e);
-            }
-        }
-        for (DepInterval<?> d : this.constraints) {
-            if (d.e != null) {
-                allRestrictions.add(d.e);
-            }
-        }
+        other.constraints.stream().filter(d -> d.e != null)
+                .forEach(d -> allRestrictions.add(d.e));
+        constraints.stream().filter(d -> d.e != null)
+                .forEach(d -> allRestrictions.add(d.e));
         boolean toReturn = compareLiterals(other, allLiterals, allRestrictions);
         // if signs are the same, return the comparison
         if (hasNType() == other.hasNType() || hasPType() == other.hasPType()) {
@@ -190,18 +180,17 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
 
     private boolean compareLiterals(DataTypeSituation<?> other,
             List<Literal<?>> allLiterals, List<Datatype<?>> allRestrictions) {
-        boolean toReturn = true;
         for (Literal<?> l : allLiterals) {
             if (!this.type.isCompatible(l) || !other.type.isCompatible(l)) {
-                toReturn = false;
+                return false;
             }
             for (Datatype<?> d : allRestrictions) {
                 if (!d.isCompatible(l)) {
-                    toReturn = false;
+                    return false;
                 }
             }
         }
-        return toReturn;
+        return true;
     }
 
     /**
@@ -252,15 +241,10 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
                     // cannot update an enumeration
                     return false;
                 }
-                for (Map.Entry<Facet, Comparable> f : value
-                        .getKnownNumericFacetValues().entrySet()) {
-                    this.e = this.e.addNumericFacet(f.getKey(), f.getValue());
-                }
-                for (Map.Entry<Facet, Comparable> f : value
-                        .getKnownNonNumericFacetValues().entrySet()) {
-                    this.e = this.e
-                            .addNonNumericFacet(f.getKey(), f.getValue());
-                }
+                value.getKnownNumericFacetValues().forEach(
+                        (k, v) -> e = e.addNumericFacet(k, v));
+                value.getKnownNonNumericFacetValues().forEach(
+                        (k, v) -> e = e.addNonNumericFacet(k, v));
             }
             // TODO needs to return false if the new expression has the same
             // value space as the old one

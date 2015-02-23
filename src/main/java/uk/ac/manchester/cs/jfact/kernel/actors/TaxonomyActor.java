@@ -8,6 +8,7 @@ package uk.ac.manchester.cs.jfact.kernel.actors;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
@@ -43,12 +44,7 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
         if (policy.applicable(v.getPrimer())) {
             return true;
         }
-        for (ClassifiableEntry p : v.synonyms()) {
-            if (policy.applicable(p)) {
-                return true;
-            }
-        }
-        return false;
+        return v.synonyms().stream().anyMatch(p -> policy.applicable(p));
     }
 
     /**
@@ -109,15 +105,10 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
     /** @return 2D array of all required elements of the taxonomy */
     @PortedFrom(file = "JNIActor.h", name = "getElements")
     public List<Collection<T>> getElements() {
-        List<Collection<T>> toReturn = new ArrayList<>();
         if (policy.needPlain()) {
-            toReturn.add(plain);
-        } else {
-            for (int i = 0; i < acc.size(); ++i) {
-                toReturn.add(acc.get(i));
-            }
+            return Collections.singletonList(plain);
         }
-        return toReturn;
+        return new ArrayList<>(acc);
     }
 
     @Override
@@ -125,9 +116,7 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
     public boolean apply(TaxonomyVertex v) {
         syn.clear();
         tryEntry(v.getPrimer());
-        for (ClassifiableEntry p : v.synonyms()) {
-            tryEntry(p);
-        }
+        v.synonyms().forEach(p -> tryEntry(p));
         /** no applicable elements were found */
         if (syn.isEmpty()) {
             return false;
@@ -143,17 +132,17 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
     @Override
     public void removePastBoundaries(Collection<TaxonomyVertex> pastBoundary) {
         List<T> entries = new ArrayList<>();
-        for (TaxonomyVertex t : pastBoundary) {
-            entries.add(asT(t.getPrimer()));
-            TaxonomyVertex t1 = t.getSynonymNode();
-            while (t1 != null) {
-                entries.add(asT(t1.getPrimer()));
-                t1 = t1.getSynonymNode();
-            }
-        }
+        pastBoundary.forEach(t -> removePastBoundaries(entries, t));
         plain.removeAll(entries);
-        for (List<T> l : acc) {
-            l.removeAll(entries);
+        acc.forEach(l -> l.removeAll(entries));
+    }
+
+    protected void removePastBoundaries(List<T> entries, TaxonomyVertex t) {
+        entries.add(asT(t.getPrimer()));
+        TaxonomyVertex t1 = t.getSynonymNode();
+        while (t1 != null) {
+            entries.add(asT(t1.getPrimer()));
+            t1 = t1.getSynonymNode();
         }
     }
 }

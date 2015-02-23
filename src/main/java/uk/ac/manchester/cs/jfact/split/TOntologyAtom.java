@@ -42,9 +42,7 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
     /** remove all atoms in AllDepAtoms from DepAtoms */
     @PortedFrom(file = "tOntologyAtom.h", name = "filterDep")
     public void filterDep() {
-        for (TOntologyAtom p : AllDepAtoms) {
-            DepAtoms.remove(p);
-        }
+        AllDepAtoms.forEach(p -> DepAtoms.remove(p));
     }
 
     /**
@@ -56,10 +54,7 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
     @PortedFrom(file = "tOntologyAtom.h", name = "buildAllDepAtoms")
     public void buildAllDepAtoms(Set<TOntologyAtom> checked) {
         // first gather all dep atoms from all known dep atoms
-        for (TOntologyAtom p : DepAtoms) {
-            Set<TOntologyAtom> Dep = p.getAllDepAtoms(checked);
-            AllDepAtoms.addAll(Dep);
-        }
+        DepAtoms.forEach(p -> AllDepAtoms.addAll(p.getAllDepAtoms(checked)));
         // now filter them out from known dep atoms
         filterDep();
         // add direct deps to all deps

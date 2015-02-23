@@ -1111,6 +1111,12 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
 
         /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 11000L;
+
+        @Override
+        public boolean isEnabled() {
+            return true;
+        }
+
         /** The out. */
         private transient OutputStream out;
 
@@ -1272,6 +1278,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
 
         /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 11000L;
+
+        @Override
+        public boolean isEnabled() {
+            return false;
+        }
 
         @Override
         public LogAdapter printTemplate(Templates t, Object... strings) {

@@ -805,8 +805,7 @@ public class Role extends ClassifiableEntry {
     @PortedFrom(file = "tRole.h", name = "fillsComposition")
     private void fillsComposition(List<Role> Composition, DLTree tree) {
         if (tree.token() == RCOMPOSITION) {
-            fillsComposition(Composition, tree.getLeft());
-            fillsComposition(Composition, tree.getRight());
+            tree.getChildren().forEach(t -> fillsComposition(Composition, t));
         } else {
             Composition.add(resolveRole(tree));
         }

@@ -1504,9 +1504,7 @@ public class ReasoningKernel implements Serializable {
         // if not, just go 1 level down and apply the actor regardless of what's
         // found
         // FIXME!! check again after bucket-method will be implemented
-        for (TaxonomyVertex p : cachedVertex.neigh(/* upDirection= */false)) {
-            actor.apply(p);
-        }
+        cachedVertex.neigh(false).forEach(p -> actor.apply(p));
     }
 
     /**

@@ -5,10 +5,10 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static java.util.stream.Collectors.toList;
 import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -162,12 +162,8 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>,
 
     @Original
     private List<DLTree> visitArgs(NAryExpression<? extends Expression> expr) {
-        List<DLTree> args = new ArrayList<>();
-        List<? extends Expression> list = expr.getArguments();
-        for (int i = 0; i < list.size(); i++) {
-            args.add(list.get(i).accept(this));
-        }
-        return args;
+        return expr.getArguments().stream().map(a -> a.accept(this))
+                .collect(toList());
     }
 
     @Override
@@ -327,19 +323,14 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>,
 
     @Override
     public DLTree visit(ObjectRoleChain expr) {
-        List<ObjectRoleExpression> l = new ArrayList<>(expr.getArguments());
-        if (l.isEmpty()) {
+        List<ObjectRoleExpression> arguments = expr.getArguments();
+        if (arguments.isEmpty()) {
             throw new ReasonerInternalException(
                     "Unsupported expression 'empty role chain' in transformation");
         }
-        DLTree acc = l.get(0).accept(this);
-        for (int i = 1; i < l.size(); i++) {
-            // TODO this is still a binary tree while it should be n-ary with
-            // enforced order
-            acc = DLTreeFactory.buildTree(new Lexeme(RCOMPOSITION), acc,
-                    l.get(i).accept(this));
-        }
-        return acc;
+        List<DLTree> l = arguments.stream().map(p -> p.accept(this))
+                .collect(toList());
+        return DLTreeFactory.buildTree(new Lexeme(RCOMPOSITION), l);
     }
 
     @Override

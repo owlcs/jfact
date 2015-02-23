@@ -12,6 +12,8 @@ package uk.ac.manchester.cs.jfact.helpers;
  */
 public interface LogAdapter {
 
+    boolean isEnabled();
+
     /**
      * @param t
      *        t

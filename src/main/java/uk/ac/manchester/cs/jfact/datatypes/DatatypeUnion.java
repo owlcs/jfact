@@ -63,12 +63,7 @@ public class DatatypeUnion implements
         if (!host.isCompatible(l)) {
             return false;
         }
-        for (Datatype<?> d : basics) {
-            if (d.isCompatible(l)) {
-                return true;
-            }
-        }
-        return false;
+        return basics.stream().anyMatch(d -> d.isCompatible(l));
     }
 
     @Override
@@ -83,12 +78,7 @@ public class DatatypeUnion implements
         if (!host.isCompatible(type)) {
             return false;
         }
-        for (Datatype<?> d : basics) {
-            if (d.isCompatible(type)) {
-                return true;
-            }
-        }
-        return false;
+        return basics.stream().anyMatch(d -> d.isCompatible(type));
     }
 
     @Override
@@ -98,15 +88,10 @@ public class DatatypeUnion implements
 
     @Override
     public boolean emptyValueSpace() {
-        for (Datatype<?> d : basics) {
-            if (!d.isExpression()) {
-                return false;
-            }
-            if (!d.asExpression().emptyValueSpace()) {
-                return false;
-            }
-        }
-        return true;
+        // value space is empty if all the basics are expressions with empty
+        // value space
+        return basics.stream().allMatch(
+                d -> d.isExpression() && d.asExpression().emptyValueSpace());
     }
 
     @Override

@@ -142,9 +142,7 @@ public class Stats implements Serializable {
 
     /** Accumulate. */
     public void accumulate() {
-        for (AccumulatedStatistic cur : root) {
-            cur.accumulate();
-        }
+        root.forEach(cur -> cur.accumulate());
     }
 
     /**

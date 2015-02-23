@@ -5,6 +5,8 @@ package uk.ac.manchester.cs.jfact.kernel.actors;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static java.util.stream.Collectors.toList;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -87,11 +89,8 @@ public class ActorImpl implements Actor, Serializable {
         if (tryEntry(v.getPrimer())) {
             array.add(v.getPrimer());
         }
-        for (ClassifiableEntry p : v.synonyms()) {
-            if (tryEntry(p)) {
-                array.add(p);
-            }
-        }
+        v.synonyms().stream().filter(p -> tryEntry(p))
+                .forEach(p -> array.add(p));
         return array;
     }
 
@@ -100,12 +99,7 @@ public class ActorImpl implements Actor, Serializable {
         if (tryEntry(v.getPrimer())) {
             return true;
         }
-        for (ClassifiableEntry p : v.synonyms()) {
-            if (tryEntry(p)) {
-                return true;
-            }
-        }
-        return false;
+        return v.synonyms().stream().anyMatch(p -> tryEntry(p));
     }
 
     /**
@@ -126,12 +120,7 @@ public class ActorImpl implements Actor, Serializable {
         if (tryEntry(v.getPrimer())) {
             return true;
         }
-        for (ClassifiableEntry p : v.synonyms()) {
-            if (tryEntry(p)) {
-                return true;
-            }
-        }
-        return false;
+        return v.synonyms().stream().anyMatch(p -> tryEntry(p));
     }
 
     /** set the actor to look for classes */
@@ -177,11 +166,7 @@ public class ActorImpl implements Actor, Serializable {
      */
     @PortedFrom(file = "Actor.h", name = "getElements2D")
     public List<List<ClassifiableEntry>> getElements2D() {
-        List<List<ClassifiableEntry>> ret = new ArrayList<>();
-        for (int i = 0; i < found.size(); ++i) {
-            ret.add(fillArray(found.get(i)));
-        }
-        return ret;
+        return found.stream().map(p -> fillArray(p)).collect(toList());
     }
 
     /**
@@ -190,22 +175,19 @@ public class ActorImpl implements Actor, Serializable {
      */
     @PortedFrom(file = "Actor.h", name = "getElements1D")
     public List<ClassifiableEntry> getElements1D() {
-        List<ClassifiableEntry> vec = new ArrayList<>();
-        for (TaxonomyVertex p : found) {
-            vec.addAll(fillArray(p));
-        }
-        return vec;
+        return found.stream().flatMap(p -> fillArray(p).stream())
+                .collect(toList());
     }
 
     @Override
     public void removePastBoundaries(Collection<TaxonomyVertex> pastBoundary) {
-        for (TaxonomyVertex t : pastBoundary) {
+        pastBoundary.forEach(t -> {
             found.remove(t.getPrimer());
             TaxonomyVertex t1 = t.getSynonymNode();
             while (t1 != null) {
                 found.remove(t1.getPrimer());
                 t1 = t1.getSynonymNode();
             }
-        }
+        });
     }
 }

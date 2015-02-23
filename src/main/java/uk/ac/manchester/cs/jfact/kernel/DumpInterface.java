@@ -6,6 +6,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
+import java.util.stream.IntStream;
 
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import conformance.PortedFrom;
@@ -122,9 +123,7 @@ class DumpInterface implements Serializable {
             return;
         }
         o.print("\n");
-        for (int i = indent - 1; i >= 0; --i) {
-            o.print("  ");
-        }
+        IntStream.rangeClosed(1, indent).forEach(i -> o.print("  "));
     }
 
     @PortedFrom(file = "dumpInterface.h", name = "incIndent")

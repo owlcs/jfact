@@ -5,10 +5,14 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static java.util.stream.Collectors.*;
+import static uk.ac.manchester.cs.jfact.helpers.DLTreeFactory.*;
 import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
 import static uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry.resolveSynonym;
 import static uk.ac.manchester.cs.jfact.kernel.DagTag.*;
 import static uk.ac.manchester.cs.jfact.kernel.KBStatus.*;
+import static uk.ac.manchester.cs.jfact.kernel.Role.resolveRole;
+import static uk.ac.manchester.cs.jfact.kernel.RoleMaster.addRoleSynonym;
 import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 
 import java.io.Serializable;
@@ -189,7 +193,7 @@ public class TBox implements Serializable {
     protected int nC = 0;
     /** number of all distinct roles; used to set index for modelCache */
     @PortedFrom(file = "dlTBox.h", name = "nR")
-    protected int nR = 0;
+    protected AtomicInteger nR = new AtomicInteger(0);
     /** maps from concept index to concept itself */
     @PortedFrom(file = "dlTBox.h", name = "ConceptMap")
     private final List<Concept> ConceptMap = new ArrayList<>();
@@ -307,7 +311,7 @@ public class TBox implements Serializable {
     public void processDisjoint(List<DLTree> beg) {
         while (!beg.isEmpty()) {
             DLTree r = beg.remove(0);
-            this.addSubsumeAxiom(r, DLTreeFactory.buildDisjAux(beg));
+            this.addSubsumeAxiom(r, buildDisjAux(beg));
         }
     }
 
@@ -438,9 +442,7 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "initRuleFields")
     public void initRuleFields(List<Concept> v, int index) {
-        for (Concept q : v) {
-            q.addExtraRule(index);
-        }
+        v.forEach(q -> q.addExtraRule(index));
     }
 
     /** mark all concepts wrt their classification tag */
@@ -516,19 +518,14 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "PrintSimpleRules")
     public void printSimpleRules(LogAdapter o) {
-        if (simpleRules.isEmpty()) {
+        if (simpleRules.isEmpty() || !o.isEnabled()) {
             return;
         }
         o.print("Simple rules (", simpleRules.size(), "):\n");
         for (SimpleRule p : simpleRules) {
-            o.print("(");
-            for (int i = 0; i < p.getBody().size(); i++) {
-                if (i > 0) {
-                    o.print(", ");
-                }
-                o.print(p.getBody().get(i).getName());
-            }
-            o.print(") => ", p.tHead, "\n");
+            o.print(p.getBody().stream().map(b -> b.getName())
+                    .collect(joining(", ", "(", ")")));
+            o.print(" => ", p.tHead, "\n");
         }
     }
 
@@ -909,13 +906,15 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "setFairnessConstraint")
     public void setFairnessConstraintDLTrees(List<DLTree> l) {
-        for (int i = 0; i < l.size(); i++) {
-            // build a flag for a FC
-            Concept fc = getAuxConcept(null);
-            fairness.add(fc);
-            // make an axiom: C [= FC
-            this.addSubsumeAxiom(l.get(i), getTree(fc));
-        }
+        l.forEach(d -> setFairnessConstraintDLTrees(d));
+    }
+
+    protected void setFairnessConstraintDLTrees(DLTree d) {
+        // build a flag for a FC
+        Concept fc = getAuxConcept(null);
+        fairness.add(fc);
+        // make an axiom: C [= FC
+        addSubsumeAxiom(d, getTree(fc));
     }
 
     /** @return GCI Axioms */
@@ -1074,9 +1073,7 @@ public class TBox implements Serializable {
         concept2dag(pTemp);
         concepts.getConcepts().forEach(pc -> concept2dag(pc));
         individuals.getConcepts().forEach(pi -> concept2dag(pi));
-        for (SimpleRule q : simpleRules) {
-            q.setBpHead(tree2dag(q.tHead));
-        }
+        simpleRules.forEach(q -> q.setBpHead(tree2dag(q.tHead)));
         // builds Roles range and domain
         initRangeDomain(objectRoleMaster);
         initRangeDomain(dataRoleMaster);
@@ -1084,11 +1081,9 @@ public class TBox implements Serializable {
         // add special domains to the GCIs
         List<DLTree> list = new ArrayList<>();
         if (config.isUseSpecialDomains()) {
-            for (Role p : objectRoleMaster.getRoles()) {
-                if (!p.isSynonym() && p.hasSpecialDomain()) {
-                    list.add(p.getTSpecialDomain().copy());
-                }
-            }
+            objectRoleMaster.getRoles().stream()
+                    .filter(p -> !p.isSynonym() && p.hasSpecialDomain())
+                    .forEach(p -> list.add(p.getTSpecialDomain().copy()));
         }
         // take chains that lead to Bot role into account
         if (!objectRoleMaster.getBotRole().isSimple()) {
@@ -1106,16 +1101,10 @@ public class TBox implements Serializable {
         GCIs.setGCI(internalisedGeneralAxiom != bpTOP);
         GCIs.setReflexive(objectRoleMaster.hasReflexiveRoles());
         // builds functional labels for roles
-        for (Role p : objectRoleMaster.getRoles()) {
-            if (!p.isSynonym() && p.isTopFunc()) {
-                p.setFunctional(atmost2dag(1, p, bpTOP));
-            }
-        }
-        for (Role p : dataRoleMaster.getRoles()) {
-            if (!p.isSynonym() && p.isTopFunc()) {
-                p.setFunctional(atmost2dag(1, p, bpTOP));
-            }
-        }
+        Stream.concat(objectRoleMaster.getRoles().stream(),
+                dataRoleMaster.getRoles().stream())
+                .filter(p -> !p.isSynonym() && p.isTopFunc())
+                .forEach(p -> p.setFunctional(atmost2dag(1, p, bpTOP)));
         // check the type of the ontology
         if (nNominalReferences > 0) {
             int nInd = individuals.size();
@@ -1133,27 +1122,27 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "initRangeDomain")
     public void initRangeDomain(RoleMaster RM) {
-        for (Role p : RM.getRoles()) {
-            if (!p.isSynonym()) {
-                Role R = p;
-                if (config.isRKG_UPDATE_RND_FROM_SUPERROLES()) {
-                    // add R&D from super-roles (do it AFTER axioms are
-                    // transformed into R&D)
-                    R.collectDomainFromSupers();
-                }
-                DLTree dom = R.getTDomain();
-                int bp = bpTOP;
-                if (dom != null) {
-                    bp = tree2dag(dom);
-                    GCIs.setRnD(true);
-                }
-                R.setBPDomain(bp);
-                // special domain for R is AR.Range
-                R.initSpecialDomain();
-                if (R.hasSpecialDomain()) {
-                    R.setSpecialDomain(tree2dag(R.getTSpecialDomain()));
-                }
-            }
+        RM.getRoles().stream().filter(r -> !r.isSynonym())
+                .forEach(r -> initRangeDomain(r));
+    }
+
+    protected void initRangeDomain(Role r) {
+        if (config.isRKG_UPDATE_RND_FROM_SUPERROLES()) {
+            // add R&D from super-roles (do it AFTER axioms are
+            // transformed into R&D)
+            r.collectDomainFromSupers();
+        }
+        DLTree dom = r.getTDomain();
+        int bp = bpTOP;
+        if (dom != null) {
+            bp = tree2dag(dom);
+            GCIs.setRnD(true);
+        }
+        r.setBPDomain(bp);
+        // special domain for R is AR.Range
+        r.initSpecialDomain();
+        if (r.hasSpecialDomain()) {
+            r.setSpecialDomain(tree2dag(r.getTSpecialDomain()));
         }
     }
 
@@ -1305,22 +1294,20 @@ public class TBox implements Serializable {
                 ret = and2dag(new DLVertex(dtAnd), t);
                 break;
             case FORALL:
-                ret = forall2dag(Role.resolveRole(t.getLeft()),
+                ret = forall2dag(resolveRole(t.getLeft()),
                         tree2dag(t.getRight()));
                 break;
             case SELF:
-                ret = reflexive2dag(Role.resolveRole(t.getChild()));
+                ret = reflexive2dag(resolveRole(t.getChild()));
                 break;
             case LE:
-                ret = atmost2dag(cur.getData(), Role.resolveRole(t.getLeft()),
+                ret = atmost2dag(cur.getData(), resolveRole(t.getLeft()),
                         tree2dag(t.getRight()));
                 break;
             case PROJFROM:
-                ret = dlHeap
-                        .directAdd(new DLVertex(DagTag.dtProj, 0, Role
-                                .resolveRole(t.getLeft()), tree2dag(t
-                                .getRight().getRight()), Role.resolveRole(t
-                                .getRight().getLeft())));
+                ret = dlHeap.directAdd(new DLVertex(DagTag.dtProj, 0, Role
+                        .resolveRole(t.getLeft()), tree2dag(t.getRight()
+                        .getRight()), resolveRole(t.getRight().getLeft())));
                 break;
             default:
                 assert DLTreeFactory.isSNF(t);
@@ -1423,16 +1410,9 @@ public class TBox implements Serializable {
     @PortedFrom(file = "dlTBox.h", name = "fillANDVertex")
     private boolean fillANDVertex(DLVertex v, DLTree t) {
         if (t.isAND()) {
-            boolean ret = false;
-            List<DLTree> children = t.getChildren();
-            int size = children.size();
-            for (int i = 0; i < size; i++) {
-                ret |= fillANDVertex(v, children.get(i));
-            }
-            return ret;
-        } else {
-            return v.addChild(tree2dag(t));
+            return t.getChildren().stream().anyMatch(i -> fillANDVertex(v, i));
         }
+        return v.addChild(tree2dag(t));
     }
 
     @PortedFrom(file = "dlTBox.h", name = "arrayCD")
@@ -1550,17 +1530,12 @@ public class TBox implements Serializable {
         // set CD for taxonomy
         pTaxCreator.setCompletelyDefined(curCompletelyDefined);
         config.getLog().printTemplate(Templates.CLASSIFY_CONCEPTS, type);
-        int n = 0;
-        for (Concept q : collection) {
-            // check if concept is already classified
-            if (!interrupted.get() && !q.isClassified()) {
-                // need to classify concept
-                classifyEntry(q);
-                if (q.isClassified()) {
-                    ++n;
-                }
-            }
-        }
+        // check if concept is already classified
+        // classify and count otherwise
+        long n = collection.stream()
+                .filter(q -> !interrupted.get() && !q.isClassified())
+                .map(q -> classifyEntry(q)).filter(q -> q.isClassified())
+                .count();
         config.getLog().printTemplate(Templates.CLASSIFY_CONCEPTS2, n, type);
     }
 
@@ -1571,7 +1546,7 @@ public class TBox implements Serializable {
      *        entry
      */
     @PortedFrom(file = "dlTBox.h", name = "classifyEntry")
-    private void classifyEntry(Concept entry) {
+    private Concept classifyEntry(Concept entry) {
         if (isBlockedInd(entry)) {
             classifyEntry(getBlockingInd(entry));
             // make sure that the possible synonym is already classified
@@ -1579,6 +1554,7 @@ public class TBox implements Serializable {
         if (!entry.isClassified()) {
             pTaxCreator.classifyEntry(entry);
         }
+        return entry;
     }
 
     /**
@@ -2156,13 +2132,13 @@ public class TBox implements Serializable {
             dump.startAx(DIOp.diDefineR);
             dump.dumpRole(q);
             dump.finishAx(DIOp.diDefineR);
-            for (ClassifiableEntry i : q.getToldSubsumers()) {
+            q.getToldSubsumers().forEach(i -> {
                 dump.startAx(DIOp.diImpliesR);
                 dump.dumpRole(q);
                 dump.contAx(DIOp.diImpliesR);
                 dump.dumpRole((Role) i);
                 dump.finishAx(DIOp.diImpliesR);
-            }
+            });
         }
         if (p.isTransitive()) {
             dump.startAx(DIOp.diTransitiveR);
@@ -2264,18 +2240,10 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "dumpAllRoles")
     public void dumpAllRoles(DumpInterface dump) {
-        for (Role p : objectRoleMaster.getRoles()) {
-            if (p.isRelevant(relevance)) {
-                assert !p.isSynonym();
-                dumpRole(dump, p);
-            }
-        }
-        for (Role p : dataRoleMaster.getRoles()) {
-            if (p.isRelevant(relevance)) {
-                assert !p.isSynonym();
-                dumpRole(dump, p);
-            }
-        }
+        Stream.concat(objectRoleMaster.getRoles().stream(),
+                dataRoleMaster.getRoles().stream())
+                .filter(p -> p.isRelevant(relevance))
+                .forEach(p -> dumpRole(dump, p));
     }
 
     /**
@@ -2416,12 +2384,12 @@ public class TBox implements Serializable {
     @PortedFrom(file = "dlTBox.h", name = "axiomToRangeDomain")
     public static boolean axiomToRangeDomain(DLTree sub, DLTree sup) {
         if (sub.isTOP() && sup.token() == FORALL) {
-            Role.resolveRole(sup.getLeft()).setRange(sup.getRight().copy());
+            resolveRole(sup.getLeft()).setRange(sup.getRight().copy());
             return true;
         }
         if (sub.token() == NOT && sub.getChild().token() == FORALL
                 && sub.getChild().getRight().isBOTTOM()) {
-            Role.resolveRole(sub.getChild().getLeft()).setDomain(sup);
+            resolveRole(sub.getChild().getLeft()).setDomain(sup);
             return true;
         }
         return false;
@@ -2549,9 +2517,7 @@ public class TBox implements Serializable {
         // both primitive concept and others are in DISJ statement
         if (!prim.isEmpty() && !rest.isEmpty()) {
             DLTree nrest = DLTreeFactory.buildDisjAux(rest);
-            for (DLTree q : prim) {
-                this.addSubsumeAxiom(q.copy(), nrest.copy());
-            }
+            prim.forEach(q -> this.addSubsumeAxiom(q, nrest));
         }
         // no primitive concepts between DJ elements
         if (!rest.isEmpty()) {
@@ -2566,14 +2532,11 @@ public class TBox implements Serializable {
 
     /**
      * @param l
-     *        l
+     *        argument list
      */
     @PortedFrom(file = "dlTBox.h", name = "processEquivalentC")
     public void processEquivalentC(List<DLTree> l) {
-        // TODO check if this is taking into account all combinations
-        for (int i = 0; i < l.size() - 1; i++) {
-            addEqualityAxiom(l.get(i), l.get(i + 1).copy());
-        }
+        pairs(l, (a, b) -> addEqualityAxiom(a, b));
     }
 
     /**
@@ -2582,17 +2545,14 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "processDifferent")
     public void processDifferent(List<DLTree> l) {
-        List<Individual> acc = new ArrayList<>();
-        for (int i = 0; i < l.size(); i++) {
+        if (l.stream().anyMatch(i -> !isIndividual(i))) {
             // only nominals in DIFFERENT command
-            if (this.isIndividual(l.get(i))) {
-                acc.add((Individual) l.get(i).elem().getNE());
-                l.set(i, null);
-            } else {
-                throw new ReasonerInternalException(
-                        "Only individuals allowed in processDifferent()");
-            }
+            throw new ReasonerInternalException(
+                    "Only individuals allowed in processDifferent()");
         }
+        List<Individual> acc = l.stream()
+                .map(i -> (Individual) i.elem().getNE()).collect(toList());
+        l.clear();
         // register vector of disjoint nominals in proper place
         if (acc.size() > 1) {
             differentIndividuals.add(acc);
@@ -2605,18 +2565,12 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "processSame")
     public void processSame(List<DLTree> l) {
-        int size = l.size();
-        for (int i = 0; i < size; i++) {
-            if (!this.isIndividual(l.get(i))) {
-                // only nominals in SAME command
-                throw new ReasonerInternalException(
-                        "Only individuals allowed in processSame()");
-            }
+        if (l.stream().anyMatch(i -> !isIndividual(i))) {
+            // only nominals in SAME command
+            throw new ReasonerInternalException(
+                    "Only individuals allowed in processSame()");
         }
-        for (int i = 0; i < size - 1; i++) {
-            // TODO check if this is checking all combinations
-            addEqualityAxiom(l.get(i), l.get(i + 1));
-        }
+        pairs(l, (a, b) -> addEqualityAxiom(a, b));
     }
 
     /**
@@ -2629,24 +2583,15 @@ public class TBox implements Serializable {
             throw new ReasonerInternalException("Empty disjoint role axiom");
         }
         // check that all ids are correct role names
-        int size = l.size();
-        for (int i = 0; i < size; i++) {
-            if (DLTreeFactory.isTopRole(l.get(i))) {
-                throw new ReasonerInternalException(
-                        "Universal role in the disjoint roles axiom");
-            }
+        if (l.stream().anyMatch(p -> DLTreeFactory.isTopRole(p))) {
+            throw new ReasonerInternalException(
+                    "Universal role in the disjoint roles axiom");
         }
         // make a disjoint roles
-        List<Role> roles = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            roles.add(Role.resolveRole(l.get(i)));
-        }
+        List<Role> roles = l.stream().map(r -> resolveRole(r))
+                .collect(toList());
         RoleMaster RM = getRM(roles.get(0));
-        for (int i = 0; i < size - 1; i++) {
-            for (int j = i + 1; j < size; j++) {
-                RM.addDisjointRoles(roles.get(i), roles.get(j));
-            }
-        }
+        allPairs(roles, (a, b) -> RM.addDisjointRoles(a, b));
     }
 
     /**
@@ -2655,13 +2600,8 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "processEquivalentR")
     public void processEquivalentR(List<DLTree> l) {
-        if (!l.isEmpty()) {
-            for (int i = 0; i < l.size() - 1; i++) {
-                RoleMaster.addRoleSynonym(Role.resolveRole(l.get(i)),
-                        Role.resolveRole(l.get(i + 1)));
-            }
-            l.clear();
-        }
+        pairs(l, (a, b) -> addRoleSynonym(resolveRole(a), resolveRole(b)));
+        l.clear();
     }
 
     /** preprocess tbox */
@@ -2748,11 +2688,8 @@ public class TBox implements Serializable {
             return false;
         }
         if (tree.isAND() || tree.token() == OR) {
-            boolean b = false;
-            for (DLTree child : tree.getChildren()) {
-                b |= isReferenced(C, child, processed);
-            }
-            return b;
+            return tree.getChildren().stream()
+                    .anyMatch(child -> isReferenced(C, child, processed));
         }
         // non-concept expressions: should not be here
         throw new UnreachableSituationException("cannot match the tree type");
@@ -2830,46 +2767,30 @@ public class TBox implements Serializable {
         // place for the query concept
         ++nC;
         // start with 1 to make index 0 an indicator of "not processed"
-        nR = 1;
-        for (Role r : objectRoleMaster.getRoles()) {
-            if (!r.isSynonym()) {
-                r.setIndex(nR++);
-            }
-        }
-        for (Role r : dataRoleMaster.getRoles()) {
-            if (!r.isSynonym()) {
-                r.setIndex(nR++);
-            }
-        }
+        nR.set(1);
+        Stream.concat(objectRoleMaster.getRoles().stream(),
+                dataRoleMaster.getRoles().stream()).filter(r -> !r.isSynonym())
+                .forEach(r -> r.setIndex(nR.getAndIncrement()));
     }
 
     @PortedFrom(file = "dlTBox.h", name = "replaceAllSynonyms")
     private void replaceAllSynonyms() {
-        for (Role r : objectRoleMaster.getRoles()) {
-            if (!r.isSynonym()) {
-                DLTreeFactory.replaceSynonymsFromTree(r.getTDomain());
-            }
-        }
-        for (Role dr : dataRoleMaster.getRoles()) {
-            if (!dr.isSynonym()) {
-                DLTreeFactory.replaceSynonymsFromTree(dr.getTDomain());
-            }
-        }
+        objectRoleMaster.getRoles().stream().filter(r -> !r.isSynonym())
+                .forEach(r -> replaceSynonymsFromTree(r.getTDomain()));
+        dataRoleMaster.getRoles().stream().filter(r -> !r.isSynonym())
+                .forEach(r -> replaceSynonymsFromTree(r.getTDomain()));
         concepts.getConcepts()
-                .filter(p -> DLTreeFactory.replaceSynonymsFromTree(p
-                        .getDescription())).forEach(p -> p.initToldSubsumers());
-        individuals
-                .getConcepts()
-                .filter(p -> DLTreeFactory.replaceSynonymsFromTree(p
-                        .getDescription())).forEach(p -> p.initToldSubsumers());
+                .filter(p -> replaceSynonymsFromTree(p.getDescription()))
+                .forEach(p -> p.initToldSubsumers());
+        individuals.getConcepts()
+                .filter(p -> replaceSynonymsFromTree(p.getDescription()))
+                .forEach(p -> p.initToldSubsumers());
     }
 
     /** preprocess related individuals */
     @PortedFrom(file = "dlTBox.h", name = "preprocessRelated")
     public void preprocessRelated() {
-        for (Related q : relatedIndividuals) {
-            q.simplify();
-        }
+        relatedIndividuals.forEach(q -> q.simplify());
     }
 
     /** transform cycles */
@@ -3059,17 +2980,11 @@ public class TBox implements Serializable {
         if (config.isRKG_USE_SORTED_REASONING()) {
             // Related individuals does not appears in DLHeap,
             // so their sorts shall be determined explicitely
-            for (Related p : relatedIndividuals) {
-                dlHeap.updateSorts(p.getA().getpName(), p.getRole(), p.getB()
-                        .getpName());
-            }
+            relatedIndividuals.forEach(p -> dlHeap.updateSorts(p.getA()
+                    .getpName(), p.getRole(), p.getB().getpName()));
             // simple rules needs the same treatement
-            for (SimpleRule q : simpleRules) {
-                MergableLabel lab = dlHeap.get(q.bpHead).getSort();
-                for (Concept r : q.simpleRuleBody) {
-                    dlHeap.merge(lab, r.getpName());
-                }
-            }
+            simpleRules.forEach(q -> q.simpleRuleBody.forEach(r -> dlHeap
+                    .merge(dlHeap.get(q.bpHead).getSort(), r.getpName())));
             // create sorts for concept and/or roles
             dlHeap.determineSorts(objectRoleMaster, dataRoleMaster);
         }
@@ -3484,10 +3399,10 @@ public class TBox implements Serializable {
         }
         // see R and C at the first time
         Concept X = getAuxConcept(null);
-        DLTree C = DLTreeFactory.createSNFNot(RC.getRight().copy());
+        DLTree C = createSNFNot(RC.getRight().copy());
         // create ax axiom C [= AR^-.X
-        DLTree forAll = DLTreeFactory.createSNFForall(
-                DLTreeFactory.createInverse(RC.getLeft().copy()), getTree(X));
+        DLTree forAll = createSNFForall(createInverse(RC.getLeft().copy()),
+                getTree(X));
         config.getAbsorptionLog().print("\nReplaceForall: add").print(C)
                 .print(" [=").print(forAll);
         this.addSubsumeAxiom(C, forAll);

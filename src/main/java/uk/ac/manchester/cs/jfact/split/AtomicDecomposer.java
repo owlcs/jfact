@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
@@ -50,9 +51,7 @@ public class AtomicDecomposer implements Serializable {
     /** restore all tautologies back */
     @PortedFrom(file = "AtomicDecomposer.h", name = "restoreTautologies")
     private void restoreTautologies() {
-        for (AxiomInterface p : Tautologies) {
-            p.setUsed(true);
-        }
+        Tautologies.forEach(p -> p.setUsed(true));
     }
 
     /**
@@ -75,21 +74,22 @@ public class AtomicDecomposer implements Serializable {
     private void removeTautologies(Ontology O) {
         // we might use it for another decomposition
         Tautologies.clear();
-        long nAx = 0;
-        for (AxiomInterface p : O.getAxioms()) {
-            if (p.isUsed()) {
-                // check whether an axiom is local wrt its own signature
-                Modularizer.extract(p, p.getSignature(), type);
-                if (Modularizer.isTautology(p, type)) {
-                    Tautologies.add(p);
-                    p.setUsed(false);
-                } else {
-                    ++nAx;
-                }
-            }
-        }
+        AtomicLong nAx = new AtomicLong(0);
+        O.getAxioms().stream().filter(p -> p.isUsed())
+                .forEach(p -> checkAndAdd(nAx, p));
         if (PI != null) {
-            PI.setLimit(nAx);
+            PI.setLimit(nAx.get());
+        }
+    }
+
+    protected void checkAndAdd(AtomicLong nAx, AxiomInterface p) {
+        // check whether an axiom is local wrt its own signature
+        Modularizer.extract(p, p.getSignature(), type);
+        if (Modularizer.isTautology(p, type)) {
+            Tautologies.add(p);
+            p.setUsed(false);
+        } else {
+            nAx.incrementAndGet();
         }
     }
 
@@ -155,11 +155,8 @@ public class AtomicDecomposer implements Serializable {
         }
         // not the same as parent: for all atom's axioms check their atoms and
         // make ATOM depend on them
-        for (AxiomInterface q : atom.getModule()) {
-            if (!q.equals(ax)) {
-                atom.addDepAtom(createAtom(q, atom));
-            }
-        }
+        atom.getModule().stream().filter(q -> !q.equals(ax))
+                .forEach(q -> atom.addDepAtom(createAtom(q, atom)));
         return atom;
     }
 
@@ -198,16 +195,11 @@ public class AtomicDecomposer implements Serializable {
         // build the "bottom" atom for an empty signature
         TOntologyAtom BottomAtom = buildModule(new TSignature(), rootAtom);
         if (BottomAtom != null) {
-            for (AxiomInterface q : BottomAtom.getModule()) {
-                BottomAtom.addAxiom(q);
-            }
+            BottomAtom.getModule().forEach(q -> BottomAtom.addAxiom(q));
         }
         // create atoms for all the axioms in the ontology
-        for (AxiomInterface p : O.getAxioms()) {
-            if (p.isUsed() && p.getAtom() == null) {
-                createAtom(p, rootAtom);
-            }
-        }
+        O.getAxioms().stream().filter(p -> p.isUsed() && p.getAtom() == null)
+                .forEach(p -> createAtom(p, rootAtom));
         // restore tautologies in the ontology
         restoreTautologies();
         rootAtom = null;

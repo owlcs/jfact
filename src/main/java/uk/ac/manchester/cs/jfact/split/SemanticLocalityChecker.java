@@ -50,9 +50,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOf;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOfNot;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import conformance.Original;
@@ -136,16 +134,15 @@ public class SemanticLocalityChecker implements DLAxiomVisitor,
             void preprocessOntology(Collection<AxiomInterface> axioms) {
         TSignature s = new TSignature();
         ExprMap.clear();
-        for (AxiomInterface q : axioms) {
+        axioms.forEach(q -> {
             ExprMap.put(q, getExpr(q));
             s.add(q.getSignature());
-        }
+        });
         Kernel.clearKB();
         // register all the objects in the ontology signature
-        for (NamedEntity p : s.begin()) {
-            Kernel.getOntology()
-                    .add(new AxiomDeclaration(null, (Expression) p));
-        }
+        s.begin().forEach(
+                p -> Kernel.getOntology().add(
+                        new AxiomDeclaration(null, (Expression) p)));
         // prepare the reasoner to check tautologies
         Kernel.realiseKB();
         // after TBox appears there, set signature to translate
@@ -162,34 +159,12 @@ public class SemanticLocalityChecker implements DLAxiomVisitor,
 
     @Override
     public void visit(AxiomEquivalentConcepts axiom) {
-        isLocal = false;
-        List<ConceptExpression> arguments = axiom.getArguments();
-        int size = arguments.size();
-        ConceptExpression C = arguments.get(0);
-        for (int i = 1; i < size; i++) {
-            ConceptExpression p = arguments.get(i);
-            if (!Kernel.isEquivalent(C, p)) {
-                return;
-            }
-        }
-        isLocal = true;
+        isLocal = axiom.allMatchWithFirst((a, b) -> Kernel.isEquivalent(a, b));
     }
 
     @Override
     public void visit(AxiomDisjointConcepts axiom) {
-        isLocal = false;
-        List<ConceptExpression> arguments = axiom.getArguments();
-        int size = arguments.size();
-        for (int i = 0; i < size; i++) {
-            ConceptExpression p = arguments.get(i);
-            for (int j = i + 1; j < size; j++) {
-                ConceptExpression q = arguments.get(j);
-                if (!Kernel.isDisjoint(p, q)) {
-                    return;
-                }
-            }
-        }
-        isLocal = true;
+        isLocal = axiom.allMatch((a, b) -> Kernel.isDisjoint(a, b));
     }
 
     @Override
@@ -201,45 +176,20 @@ public class SemanticLocalityChecker implements DLAxiomVisitor,
             return;
         }
         // check disjoint(C1...Cn)
-        int size = arguments.size();
-        for (int i = 0; i < size; i++) {
-            for (int j = i + 1; j < size; j++) {
-                if (!Kernel.isDisjoint(arguments.get(i), arguments.get(j))) {
-                    return;
-                }
-            }
-        }
-        isLocal = true;
+        isLocal = axiom.allMatch((a, b) -> Kernel.isDisjoint(a, b));
     }
 
     @Override
     public void visit(AxiomEquivalentORoles axiom) {
-        isLocal = false;
-        List<ObjectRoleExpression> arguments = axiom.getArguments();
-        int size = arguments.size();
-        ObjectRoleExpression R = arguments.get(0);
-        for (int i = 1; i < size; i++) {
-            if (!(Kernel.isSubRoles(R, arguments.get(i)) && Kernel.isSubRoles(
-                    arguments.get(i), R))) {
-                return;
-            }
-        }
-        isLocal = true;
+        isLocal = axiom.allMatchWithFirst((a, b) -> Kernel.isSubRoles(a, b)
+                && Kernel.isSubRoles(b, a));
     }
 
     // tautology if all the subsumptions Ri [= Rj holds
     @Override
     public void visit(AxiomEquivalentDRoles axiom) {
-        isLocal = false;
-        List<DataRoleExpression> arguments = axiom.getArguments();
-        DataRoleExpression R = arguments.get(0);
-        for (int i = 1; i < arguments.size(); i++) {
-            if (!(Kernel.isSubRoles(R, arguments.get(i)) && Kernel.isSubRoles(
-                    arguments.get(i), R))) {
-                return;
-            }
-        }
-        isLocal = true;
+        isLocal = axiom.allMatchWithFirst((a, b) -> Kernel.isSubRoles(a, b)
+                && Kernel.isSubRoles(b, a));
     }
 
     @Override

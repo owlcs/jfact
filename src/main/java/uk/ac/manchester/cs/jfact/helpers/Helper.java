@@ -8,11 +8,72 @@ import java.util.Collection;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.List;
+import java.util.Optional;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 
 /** static methods */
 public class Helper implements Serializable {
 
     private static final long serialVersionUID = 11000L;
+
+    public static <T> void pairs(List<T> l, BiConsumer<T, T> f) {
+        for (int i = 0; i < l.size() - 1; i++) {
+            f.accept(l.get(i), l.get(i + 1));
+        }
+    }
+
+    public static <T> void allPairs(List<T> l, BiConsumer<T, T> f) {
+        for (int i = 0; i < l.size() - 1; i++) {
+            for (int j = i + 1; j < l.size(); j++) {
+                f.accept(l.get(i), l.get(j));
+            }
+        }
+    }
+
+    public static <T> boolean anyMatchOnAllPairs(List<T> l,
+            BiFunction<T, T, Boolean> f) {
+        for (int i = 0; i < l.size() - 1; i++) {
+            for (int j = i + 1; j < l.size(); j++) {
+                if (f.apply(l.get(i), l.get(j))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static <T> boolean allMatchOnAllPairs(List<T> l,
+            BiFunction<T, T, Boolean> f) {
+        for (int i = 0; i < l.size() - 1; i++) {
+            for (int j = i + 1; j < l.size(); j++) {
+                if (!f.apply(l.get(i), l.get(j))) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static <T> boolean anyMatchOnPairs(List<T> l,
+            BiFunction<T, T, Boolean> f) {
+        for (int i = 0; i < l.size() - 1; i++) {
+            if (f.apply(l.get(i), l.get(i + 1))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static <T> boolean allMatchOnPairs(List<T> l,
+            BiFunction<T, T, Boolean> f) {
+        for (int i = 0; i < l.size() - 1; i++) {
+            if (!f.apply(l.get(i), l.get(i + 1))) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     /**
      * check whether set S1 intersects with the set S2
@@ -24,12 +85,21 @@ public class Helper implements Serializable {
      * @return true if S1 and S2 intersect
      */
     public static boolean intersectsWith(Collection<?> S1, Collection<?> S2) {
-        for (Object o : S1) {
-            if (S2.contains(o)) {
-                return true;
-            }
-        }
-        return false;
+        return S1.stream().anyMatch(o -> S2.contains(o));
+    }
+
+    /**
+     * Find an element in the intersection of two collections
+     * 
+     * @param S1
+     *        S1
+     * @param S2
+     *        S2
+     * @return one element from the intersection if S1 and S2 intersect
+     */
+    public static <T> Optional<T> elementFromIntersection(Collection<T> S1,
+            Collection<T> S2) {
+        return S1.stream().filter(o -> S2.contains(o)).findAny();
     }
 
     /**

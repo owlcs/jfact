@@ -163,9 +163,7 @@ public class DatatypeFactory implements Serializable {
     }
 
     private DatatypeFactory() {
-        for (Datatype<?> d : values) {
-            knownDatatypes.put(d.getDatatypeIRI(), d);
-        }
+        values.forEach(d -> knownDatatypes.put(d.getDatatypeIRI(), d));
         // XXX handle dates as datetimes
         knownDatatypes.put(XSDVocabulary.DATE.getIRI(), DATETIME);
     }
@@ -547,14 +545,9 @@ public class DatatypeFactory implements Serializable {
         @Override
         public boolean isInValueSpace(String s) {
             // all characters are letters, numbers, or +/=
-            for (int i = 0; i < s.length(); i++) {
-                char c = s.charAt(i);
-                if (!Character.isLetter(c) && !Character.isDigit(c)
-                        && "+/=".indexOf(c) == -1) {
-                    return false;
-                }
-            }
-            return true;
+            return s.chars().allMatch(
+                    c -> Character.isLetterOrDigit((char) c)
+                            || "+/=".indexOf(c) > -1);
         }
     }
 
@@ -788,13 +781,9 @@ public class DatatypeFactory implements Serializable {
         @Override
         public boolean isInValueSpace(String s) {
             // all characters are numbers, or ABCDEF
-            for (int i = 0; i < s.length(); i++) {
-                char c = s.charAt(i);
-                if (!Character.isDigit(c) && "ABCDEF".indexOf(c) == -1) {
-                    return false;
-                }
-            }
-            return true;
+            return s.chars().allMatch(
+                    c -> Character.isDigit((char) c)
+                            || "ABCDEF".indexOf(c) > -1);
         }
     }
 

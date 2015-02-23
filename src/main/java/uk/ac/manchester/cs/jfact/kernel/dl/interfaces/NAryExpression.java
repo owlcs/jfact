@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel.dl.interfaces;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.Collection;
 import java.util.List;
+import java.util.function.BiFunction;
 
 import conformance.PortedFrom;
 
@@ -48,6 +49,70 @@ public interface NAryExpression<A extends Expression> {
     /** @return members */
     @PortedFrom(file = "tDLExpression.h", name = "begin")
     List<A> getArguments();
+
+    /**
+     * @param f
+     *        function to apply to first element and all others pairs
+     * @return true if any matches
+     */
+    default boolean anyMatchWithFirst(BiFunction<A, A, Boolean> f) {
+        List<A> arguments = getArguments();
+        for (int i = 1; i < arguments.size(); i++) {
+            if (f.apply(arguments.get(0), arguments.get(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param f
+     *        function to apply to first element and all others pairs
+     * @return true if all match
+     */
+    default boolean allMatchWithFirst(BiFunction<A, A, Boolean> f) {
+        List<A> arguments = getArguments();
+        for (int i = 1; i < arguments.size(); i++) {
+            if (!f.apply(arguments.get(0), arguments.get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @param f
+     *        function to apply to all pairs
+     * @return true if any matches
+     */
+    default boolean anyMatch(BiFunction<A, A, Boolean> f) {
+        List<A> arguments = getArguments();
+        for (int i = 0; i < arguments.size() - 1; i++) {
+            for (int j = i + 1; j < arguments.size(); i++) {
+                if (f.apply(arguments.get(i), arguments.get(j))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param f
+     *        function to apply to all pairs
+     * @return true if all match
+     */
+    default boolean allMatch(BiFunction<A, A, Boolean> f) {
+        List<A> arguments = getArguments();
+        for (int i = 0; i < arguments.size() - 1; i++) {
+            for (int j = i + 1; j < arguments.size(); i++) {
+                if (!f.apply(arguments.get(i), arguments.get(j))) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
     /** @return true if empty */
     @PortedFrom(file = "tDLExpression.h", name = "empty")

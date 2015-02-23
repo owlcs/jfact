@@ -5,6 +5,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static java.util.stream.Collectors.toList;
 import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
 import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 
@@ -350,9 +351,7 @@ public class Concept extends ClassifiableEntry {
             description = DLTreeFactory.createSNFAnd(Desc);
         } else {
             if (description.isAND()) {
-                for (DLTree d : Desc) {
-                    description.addChild(d);
-                }
+                Desc.forEach(d -> description.addChild(d));
             } else {
                 List<DLTree> l = new ArrayList<>(Desc);
                 l.add(description);
@@ -428,11 +427,8 @@ public class Concept extends ClassifiableEntry {
     public void push(LinkedList<DLTree> stack, DLTree current) {
         // push subtrees: stack size increases by one or two, or current is a
         // leaf
-        for (DLTree t : current.getChildren()) {
-            if (t != null) {
-                stack.push(t);
-            }
-        }
+        current.getChildren().stream().filter(p -> p != null)
+                .forEach(p -> stack.push(p));
     }
 
     @PortedFrom(file = "tConcept.h", name = "replaceSelfWithConst")
@@ -448,11 +444,9 @@ public class Concept extends ClassifiableEntry {
             return DLTreeFactory.createTop();
         }
         if (token == AND) {
-            List<DLTree> l = new ArrayList<>();
-            for (DLTree d : t.getChildren()) {
-                l.add(replaceWithConstOld(d));
-            }
-            return DLTreeFactory.createSNFAnd(l, t);
+            return DLTreeFactory.createSNFAnd(
+                    t.getChildren().stream().map(d -> replaceWithConstOld(d))
+                            .collect(toList()), t);
         }
         if (token == NOT
                 && (t.getChild().isAND() || replacements.contains(t.getChild()
@@ -475,12 +469,7 @@ public class Concept extends ClassifiableEntry {
                     this);
         }
         if (token == AND) {
-            for (DLTree d : t.getChildren()) {
-                if (hasSelfInDesc(d)) {
-                    return true;
-                }
-            }
-            return false;
+            return t.getChildren().stream().anyMatch(d -> hasSelfInDesc(d));
         }
         if (token == NOT
                 && (t.getChild().isAND() || replacements.contains(t.getChild()
@@ -528,11 +517,8 @@ public class Concept extends ClassifiableEntry {
             // push all AND children on the list and traverse the list removing
             // n-th level ANDs and pushing their children in turn; ends up with
             // the leaves of the AND subtree
-            boolean toReturn = true;
-            for (DLTree t : desc.getChildren()) {
-                toReturn &= this.initToldSubsumers(t, RolesProcessed);
-            }
-            return toReturn;
+            return !desc.getChildren().stream()
+                    .anyMatch(t -> !initToldSubsumers(t, RolesProcessed));
         }
         return false;
     }
@@ -559,11 +545,7 @@ public class Concept extends ClassifiableEntry {
     @PortedFrom(file = "tConcept.h", name = "SearchTSbyRoleAndSupers")
     public void searchTSbyRoleAndSupers(Role r, Set<Role> RolesProcessed) {
         searchTSbyRole(r, RolesProcessed);
-        List<Role> list = r.getAncestor();
-        for (int i = 0; i < list.size(); i++) {
-            Role q = list.get(i);
-            searchTSbyRole(q, RolesProcessed);
-        }
+        r.getAncestor().forEach(q -> searchTSbyRole(q, RolesProcessed));
     }
 
     /** @return told subsumers depth */
@@ -572,18 +554,9 @@ public class Concept extends ClassifiableEntry {
         if (tsDepth > 0) {
             return tsDepth;
         }
-        int max = 0;
-        for (ClassifiableEntry p : toldSubsumers) {
-            // XXX should not be needed
-            if (!p.getToldSubsumers().contains(this)) {
-                int cur = ((Concept) p).calculateTSDepth();
-                if (max < cur) {
-                    max = cur;
-                }
-            }
-            // else both nodes are each other subsumers: same depth?
-        }
-        tsDepth = max + 1;
+        tsDepth = toldSubsumers.stream()
+                .mapToInt(p -> ((Concept) p).calculateTSDepth()).max()
+                .orElse(1);
         return tsDepth;
     }
 

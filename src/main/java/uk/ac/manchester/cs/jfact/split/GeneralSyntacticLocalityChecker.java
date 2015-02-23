@@ -82,24 +82,13 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor
         List<? extends Expression> list = axiom.getArguments();
         if (isBotEquivalent(list.get(0))) {
             // all should be \bot-eq
-            for (int i = 1; i < list.size(); i++) {
-                if (!isBotEquivalent(list.get(i))) {
-                    return false;
-                }
-            }
+            return list.stream().skip(1).allMatch(p -> isBotEquivalent(p));
         } else if (isTopEquivalent(list.get(0))) {
             // all should be \top-eq
-            for (int i = 1; i < list.size(); i++) {
-                if (!isTopEquivalent(list.get(i))) {
-                    return false;
-                }
-            }
-        } else {
-            // neither \bot- no \top-eq: non-local
-            return false;
+            return list.stream().skip(1).allMatch(p -> isTopEquivalent(p));
         }
-        // all elements have the same locality
-        return true;
+        // neither \bot- no \top-eq: non-local
+        return false;
     }
 
     /**
@@ -182,9 +171,7 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor
     @Original
     public void preprocessOntology(Collection<AxiomInterface> s) {
         sig = new TSignature();
-        for (AxiomInterface ax : s) {
-            sig.add(ax.getSignature());
-        }
+        s.forEach(ax -> sig.add(ax.getSignature()));
     }
 
     /**

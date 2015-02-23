@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -376,12 +377,12 @@ public final class DataTypeReasoner implements Serializable {
      * @return true if a clash is found
      */
     private boolean findClash(List<DataTypeSituation<?>> types, int size) {
-        for (int i = 0; i < size; i++) {
-            if (types.get(i).checkPNTypeClash()) {
-                reportClash(types.get(i).getPType(), types.get(i).getNType(),
-                        DT_TT);
-                return true;
-            }
+        Optional<DataTypeSituation<?>> findAny = types.stream()
+                .filter(p -> p.checkPNTypeClash()).findAny();
+        if (findAny.isPresent()) {
+            reportClash(findAny.get().getPType(), findAny.get().getNType(),
+                    DT_TT);
+            return true;
         }
         return false;
     }

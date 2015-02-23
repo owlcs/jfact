@@ -5,8 +5,9 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static uk.ac.manchester.cs.jfact.helpers.Helper.anyMatchOnAllPairs;
+
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,18 +31,13 @@ public class DatatypeIntersection<T extends Comparable<T>> implements
      *        collection
      * @return datatype host for a set of datatypes
      */
-    public static Datatype<?>
-            getHostDatatype(Collection<Datatype<?>> collection) {
-        List<Datatype<?>> list = new ArrayList<>(collection);
+    public static Datatype<?> getHostDatatype(List<Datatype<?>> collection) {
         // all types need to be compatible, or the intersection cannot be
         // anything but empty
-        for (int i = 0; i < list.size(); i++) {
-            for (int j = i + 1; j < list.size(); j++) {
-                if (!list.get(i).isCompatible(list.get(j))) {
-                    return null;
-                }
-            }
+        if (anyMatchOnAllPairs(collection, (a, b) -> !a.isCompatible(b))) {
+            return null;
         }
+        List<Datatype<?>> list = new ArrayList<>(collection);
         // the most specific type needs to be returned
         int old_size;
         do {
@@ -85,9 +81,7 @@ public class DatatypeIntersection<T extends Comparable<T>> implements
      */
     public DatatypeIntersection(Datatype<T> host, Iterable<Datatype<T>> list) {
         this(host);
-        for (Datatype<T> d : list) {
-            basics.add(d);
-        }
+        list.forEach(d -> basics.add(d));
     }
 
     @Override
@@ -115,12 +109,7 @@ public class DatatypeIntersection<T extends Comparable<T>> implements
         if (!host.isCompatible(l)) {
             return false;
         }
-        for (Datatype<?> d : basics) {
-            if (!d.isCompatible(l)) {
-                return false;
-            }
-        }
-        return true;
+        return basics.stream().allMatch(d -> d.isCompatible(l));
     }
 
     @Override
@@ -135,12 +124,7 @@ public class DatatypeIntersection<T extends Comparable<T>> implements
         if (!host.isCompatible(type)) {
             return false;
         }
-        for (Datatype<?> d : basics) {
-            if (!d.isCompatible(type)) {
-                return false;
-            }
-        }
-        return true;
+        return basics.stream().allMatch(d -> d.isCompatible(type));
     }
 
     @Override

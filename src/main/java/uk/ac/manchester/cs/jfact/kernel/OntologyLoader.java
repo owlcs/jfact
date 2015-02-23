@@ -6,6 +6,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static java.util.stream.Collectors.toList;
+import static uk.ac.manchester.cs.jfact.helpers.DLTreeFactory.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -50,7 +51,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleTransitive;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomSameIndividuals;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOf;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOfNot;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
@@ -180,11 +180,9 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         List<DLTree> ArgList = new ArrayList<>();
         ensureNames(axiom.getConcept());
         ArgList.add(axiom.getConcept().accept(expressionTranslator));
-        List<DLTree> list = new ArrayList<>();
-        for (Expression p : axiom.getArguments()) {
-            list.add(p.accept(expressionTranslator));
-        }
-        ArgList.add(DLTreeFactory.createSNFOr(list));
+        List<DLTree> list = axiom.getArguments().stream()
+                .map(p -> p.accept(expressionTranslator)).collect(toList());
+        ArgList.add(createSNFOr(list));
         tbox.processEquivalentC(ArgList);
     }
 
@@ -248,7 +246,7 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         DLTree C = axiom.getDomain().accept(expressionTranslator);
         if (R.isTop()) {
             // add GCI
-            tbox.addSubsumeAxiom(DLTreeFactory.createTop(), C);
+            tbox.addSubsumeAxiom(createTop(), C);
         } else if (!R.isBottom()) {
             // nothing to do for bottom
             R.setDomain(C);
@@ -264,7 +262,7 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         DLTree C = axiom.getDomain().accept(expressionTranslator);
         if (R.isTop()) {
             // add GCI
-            tbox.addSubsumeAxiom(DLTreeFactory.createTop(), C);
+            tbox.addSubsumeAxiom(createTop(), C);
         } else if (!R.isBottom()) {
             // nothing to do for bottom
             R.setDomain(C);
@@ -280,7 +278,7 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         DLTree C = axiom.getRange().accept(expressionTranslator);
         if (R.isTop()) {
             // add GCI
-            tbox.addSubsumeAxiom(DLTreeFactory.createTop(), C);
+            tbox.addSubsumeAxiom(createTop(), C);
         } else if (!R.isBottom()) {
             // nothing to do for bottom
             R.setRange(C);
@@ -328,11 +326,10 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
             throw new InconsistentOntologyException();
         }
         if (!R.isBottom()) {
-            R.setDomain(DLTreeFactory.createSNFNot(DLTreeFactory
-                    .createSNFSelf(axiom.getRole().accept(expressionTranslator))));
-            R.setDomain(DLTreeFactory.createSNFNot(DLTreeFactory.buildTree(
-                    new Lexeme(Token.SELF),
-                    axiom.getRole().accept(expressionTranslator))));
+            R.setDomain(createSNFNot(DLTreeFactory.createSNFSelf(axiom
+                    .getRole().accept(expressionTranslator))));
+            R.setDomain(createSNFNot(buildTree(new Lexeme(Token.SELF), axiom
+                    .getRole().accept(expressionTranslator))));
             R.setIrreflexive(true);
         }
     }
@@ -462,11 +459,10 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
             // make an axiom i:AR.\neg{j}
             tbox.addSubsumeAxiom(
                     axiom.getIndividual().accept(expressionTranslator),
-                    DLTreeFactory.createSNFForall(
+                    createSNFForall(
                             axiom.getRelation().accept(expressionTranslator),
-                            DLTreeFactory.createSNFNot(axiom
-                                    .getRelatedIndividual().accept(
-                                            expressionTranslator))));
+                            createSNFNot(axiom.getRelatedIndividual().accept(
+                                    expressionTranslator))));
         }
     }
 
@@ -486,7 +482,7 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
             // make an axiom i:EA.V
             tbox.addSubsumeAxiom(
                     axiom.getIndividual().accept(expressionTranslator),
-                    DLTreeFactory.createSNFExists(
+                    createSNFExists(
                             axiom.getAttribute().accept(expressionTranslator),
                             axiom.getValue().accept(expressionTranslator)));
         }
@@ -507,9 +503,9 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
             // make an axiom i:AA.\neg V
             tbox.addSubsumeAxiom(
                     axiom.getIndividual().accept(expressionTranslator),
-                    DLTreeFactory.createSNFForall(
+                    createSNFForall(
                             axiom.getAttribute().accept(expressionTranslator),
-                            DLTreeFactory.createSNFNot(axiom.getValue().accept(
+                            createSNFNot(axiom.getValue().accept(
                                     expressionTranslator))));
         }
     }
@@ -531,11 +527,8 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
      */
     @PortedFrom(file = "tOntologyLoader.h", name = "visitOntology")
     public void visitOntology(Ontology ontology) {
-        for (AxiomInterface p : ontology.getAxioms()) {
-            if (p.isUsed()) {
-                p.accept(this);
-            }
-        }
+        ontology.getAxioms().stream().filter(p -> p.isUsed())
+                .forEach(p -> p.accept(this));
         tbox.finishLoading();
     }
 }

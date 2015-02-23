@@ -5,6 +5,7 @@ package uk.ac.manchester.cs.jfact.helpers;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static java.util.stream.Collectors.toList;
 import static uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry.resolveSynonym;
 import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 
@@ -143,11 +144,9 @@ public class DLTreeFactory implements Serializable {
      */
     @Nonnull
     public static DLTree buildDisjAux(List<DLTree> arguments) {
-        List<DLTree> args = new ArrayList<>(arguments.size());
-        for (DLTree i : arguments) {
-            args.add(DLTreeFactory.createSNFNot(i.copy()));
-        }
-        return DLTreeFactory.createSNFAnd(args);
+        return DLTreeFactory.createSNFAnd(arguments.stream()
+                .map(i -> DLTreeFactory.createSNFNot(i.copy()))
+                .collect(toList()));
     }
 
     /**
@@ -216,6 +215,47 @@ public class DLTreeFactory implements Serializable {
         return new NDLTree(new Lexeme(AND), l);
     }
 
+    /**
+     * @param collection
+     *        collection
+     * @param ancestor
+     *        ancestor
+     * @return and
+     */
+    @Nonnull
+    public static DLTree createSNFAnd(Collection<DLTree> collection,
+            @Nonnull DLTree ancestor) {
+        if (collection.size() == 1) {
+            return collection.iterator().next();
+        }
+        boolean hasTop = false;
+        List<DLTree> l = new ArrayList<>();
+        for (DLTree d : collection) {
+            if (d.isTOP()) {
+                hasTop = true;
+            }
+            if (d.isBOTTOM()) {
+                return createBottom();
+            }
+            if (d.isAND()) {
+                l.addAll(d.getChildren());
+            } else {
+                l.add(d);
+            }
+        }
+        if (hasTop && l.isEmpty()) {
+            return createTop();
+        }
+        if (l.size() == 1) {
+            return l.get(0);
+        }
+        if (l.size() == collection.size()) {
+            // no changes, return the ancestor
+            return ancestor;
+        }
+        return new NDLTree(new Lexeme(AND), l);
+    }
+
     public static boolean containsC(DLTree C, DLTree D) {
         if (C.isCName()) {
             return DLTree.equalTrees(C, D);
@@ -240,41 +280,6 @@ public class DLTreeFactory implements Serializable {
         } else {
             return createSNFAnd(C, D);
         }
-    }
-
-    /**
-     * @param collection
-     *        collection
-     * @param ancestor
-     *        ancestor
-     * @return and
-     */
-    @Nonnull
-    public static DLTree createSNFAnd(Collection<DLTree> collection,
-            @Nonnull DLTree ancestor) {
-        boolean hasTop = false;
-        List<DLTree> l = new ArrayList<>();
-        for (DLTree d : collection) {
-            if (d.isTOP()) {
-                hasTop = true;
-            }
-            if (d.isBOTTOM()) {
-                return createBottom();
-            }
-            if (d.isAND()) {
-                l.addAll(d.getChildren());
-            } else {
-                l.add(d);
-            }
-        }
-        if (hasTop && l.isEmpty()) {
-            return createTop();
-        }
-        if (l.size() == collection.size()) {
-            // no changes, return the ancestor
-            return ancestor;
-        }
-        return new NDLTree(new Lexeme(AND), l);
     }
 
     /**
@@ -486,11 +491,8 @@ public class DLTreeFactory implements Serializable {
     @Nonnull
     public static DLTree createSNFOr(Collection<DLTree> C) {
         // C\or D . \not(\not C\and\not D)
-        List<DLTree> list = new ArrayList<>();
-        for (DLTree d : C) {
-            list.add(createSNFNot(d));
-        }
-        return createSNFNot(createSNFAnd(list));
+        return createSNFNot(createSNFAnd(C.stream().map(d -> createSNFNot(d))
+                .collect(toList())));
     }
 
     /** @return TOP element */
@@ -552,6 +554,18 @@ public class DLTreeFactory implements Serializable {
     @Nonnull
     public static DLTree buildTree(Lexeme t, DLTree t1, DLTree t2) {
         return new TWODLTree(t, t1, t2);
+    }
+
+    /**
+     * @param t
+     *        t
+     * @param l
+     *        list
+     * @return tree with multiple children
+     */
+    @Nonnull
+    public static DLTree buildTree(Lexeme t, Collection<DLTree> l) {
+        return new NDLTree(t, l);
     }
 
     /**
@@ -632,20 +646,10 @@ public class DLTreeFactory implements Serializable {
             return false;
         }
         if (t1.isAND()) {
-            for (DLTree t : t1.getChildren()) {
-                if (!isSubTree(t, t2)) {
-                    return false;
-                }
-            }
-            return true;
+            return t1.getChildren().stream().allMatch(t -> isSubTree(t, t2));
         }
         if (t2.isAND()) {
-            for (DLTree t : t2.getChildren()) {
-                if (isSubTree(t1, t)) {
-                    return true;
-                }
-            }
-            return false;
+            return t2.getChildren().stream().anyMatch(t -> isSubTree(t1, t));
         }
         return t1.equals(t2);
     }
@@ -689,11 +693,7 @@ public class DLTreeFactory implements Serializable {
                 return false;
             }
         } else {
-            boolean ret = false;
-            for (DLTree d : desc.getChildren()) {
-                ret |= replaceSynonymsFromTree(d);
-            }
-            return ret;
+            return desc.children().anyMatch(d -> replaceSynonymsFromTree(d));
         }
     }
 }

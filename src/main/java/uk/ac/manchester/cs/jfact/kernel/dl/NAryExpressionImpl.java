@@ -35,9 +35,7 @@ public class NAryExpressionImpl<A extends Expression> implements
 
     @Override
     public void add(Collection<A> v) {
-        for (Expression e : v) {
-            add(e);
-        }
+        v.forEach(e -> add(e));
     }
 
     @Override

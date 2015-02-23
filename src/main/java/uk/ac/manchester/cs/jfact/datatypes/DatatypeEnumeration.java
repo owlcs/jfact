@@ -158,12 +158,8 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
 
     @Override
     public boolean isInValueSpace(R l) {
-        for (Literal<R> lit : this.literals) {
-            if (lit.typedValue().equals(l)) {
-                return true;
-            }
-        }
-        return false;
+        return this.literals.stream().map(p -> p.typedValue())
+                .anyMatch(p -> p.equals(l));
     }
 
     @Override
@@ -194,12 +190,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
             return false;
         }
         // at least one value must be admissible in both
-        for (Literal<?> l : this.literals) {
-            if (type.isCompatible(l)) {
-                return true;
-            }
-        }
-        return false;
+        return this.literals.stream().anyMatch(l -> type.isCompatible(l));
     }
 
     @Override

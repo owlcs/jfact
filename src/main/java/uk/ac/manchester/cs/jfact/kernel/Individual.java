@@ -79,9 +79,7 @@ public class Individual extends Concept {
     @PortedFrom(file = "tIndividual.h", name = "updateTold")
     private <T extends Related> void updateTold(List<T> begin,
             Set<Role> RolesProcessed) {
-        for (int i = 0; i < begin.size(); i++) {
-            searchTSbyRoleAndSupers(begin.get(i).getRole(), RolesProcessed);
-        }
+        begin.forEach(t -> searchTSbyRoleAndSupers(t.getRole(), RolesProcessed));
     }
 
     /**

@@ -9,7 +9,6 @@ import static uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState.*;
 import static uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheType.mctIan;
 
 import java.util.BitSet;
-import java.util.List;
 import java.util.stream.Stream;
 
 import uk.ac.manchester.cs.jfact.helpers.DLVertex;
@@ -21,9 +20,7 @@ import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
 import uk.ac.manchester.cs.jfact.kernel.ConceptWDep;
 import uk.ac.manchester.cs.jfact.kernel.DLDag;
 import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
-import uk.ac.manchester.cs.jfact.kernel.DlCompletionTreeArc;
 import uk.ac.manchester.cs.jfact.kernel.RAStateTransitions;
-import uk.ac.manchester.cs.jfact.kernel.RATransition;
 import uk.ac.manchester.cs.jfact.kernel.Role;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import conformance.PortedFrom;
@@ -179,12 +176,8 @@ public class ModelCacheIan extends ModelCacheInterface {
      */
     @PortedFrom(file = "modelCacheIan.h", name = "initRolesFromArcs")
     public void initRolesFromArcs(DlCompletionTree pCT) {
-        List<DlCompletionTreeArc> list = pCT.getNeighbour();
-        for (int i = 0; i < list.size(); i++) {
-            if (!list.get(i).isIBlocked()) {
-                addExistsRole(list.get(i).getRole());
-            }
-        }
+        pCT.getNeighbour().stream().filter(p -> !p.isIBlocked())
+                .forEach(p -> addExistsRole(p.getRole()));
         curState = csValid;
     }
 
@@ -278,12 +271,8 @@ public class ModelCacheIan extends ModelCacheInterface {
                 .get(cur.getState());
         // for every transition starting from a given state,
         // add the role that is accepted by a transition
-        List<RATransition> begin = RST.begin();
-        for (int i = 0; i < begin.size(); i++) {
-            for (Role r : begin.get(i).begin()) {
-                forallRoles.add(r.getIndex());
-            }
-        }
+        RST.begin().stream().flatMap(p -> p.begin().stream())
+                .forEach(r -> forallRoles.add(r.getIndex()));
     }
 
     /**

@@ -47,7 +47,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleTop;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
 
 abstract class CardinalityEvaluatorBase extends SigAccessor {
@@ -316,13 +315,11 @@ class UpperBoundDirectEvaluator extends CardinalityEvaluatorBase {
 
     // / helper for And
     protected <C extends Expression> int getAndValue(NAryExpression<C> expr) {
-        int max = getNoneValue();
         // we are looking for the maximal value here; -1 will be dealt with
         // automagically
-        for (C p : expr.getArguments()) {
-            max = Math.max(max, getUpperBoundDirect(p));
-        }
-        return max;
+        return expr.getArguments().stream()
+                .mapToInt(p -> getUpperBoundDirect(p))
+                .reduce(getNoneValue(), Math::max);
     }
 
     // / helper for Or
@@ -407,13 +404,11 @@ class UpperBoundDirectEvaluator extends CardinalityEvaluatorBase {
 
     @Override
     public void visit(ObjectRoleChain expr) {
-        for (ObjectRoleExpression p : expr.getArguments()) {
-            if (isBotEquivalent(p)) {
-                value = getAllValue();
-                return;
-            }
+        if (expr.getArguments().stream().anyMatch(p -> isBotEquivalent(p))) {
+            value = getAllValue();
+        } else {
+            value = getNoneValue();
         }
-        value = getNoneValue();
     }
 
     // data role expressions
@@ -560,13 +555,11 @@ class UpperBoundComplementEvaluator extends CardinalityEvaluatorBase {
 
     // / helper for Or
     protected <C extends Expression> int getOrValue(NAryExpression<C> expr) {
-        int max = getNoneValue();
         // we are looking for the maximal value here; -1 will be dealt with
         // automagically
-        for (C p : expr.getArguments()) {
-            max = Math.max(max, getUpperBoundComplement(p));
-        }
-        return max;
+        return expr.getArguments().stream()
+                .mapToInt(p -> getUpperBoundComplement(p))
+                .reduce(getNoneValue(), Math::max);
     }
 
     // / init c'tor
@@ -639,13 +632,11 @@ class UpperBoundComplementEvaluator extends CardinalityEvaluatorBase {
 
     @Override
     public void visit(ObjectRoleChain expr) {
-        for (ObjectRoleExpression p : expr.getArguments()) {
-            if (!isTopEquivalent(p)) {
-                value = getNoneValue();
-                return;
-            }
+        if (expr.getArguments().stream().anyMatch(p -> !isTopEquivalent(p))) {
+            value = getNoneValue();
+        } else {
+            value = getAllValue();
         }
-        value = getAllValue();
     }
 
     // data role expressions
@@ -939,13 +930,11 @@ class LowerBoundDirectEvaluator extends CardinalityEvaluatorBase {
 
     @Override
     public void visit(ObjectRoleChain expr) {
-        for (ObjectRoleExpression p : expr.getArguments()) {
-            if (!isTopEquivalent(p)) {
-                value = getNoneValue();
-                return;
-            }
+        if (expr.getArguments().stream().anyMatch(p -> !isTopEquivalent(p))) {
+            value = getNoneValue();
+        } else {
+            value = getAllValue();
         }
-        value = getAllValue();
     }
 
     @Override
@@ -1231,13 +1220,11 @@ class LowerBoundComplementEvaluator extends CardinalityEvaluatorBase {
 
     @Override
     public void visit(ObjectRoleChain expr) {
-        for (ObjectRoleExpression p : expr.getArguments()) {
-            if (isBotEquivalent(p)) {
-                value = getAllValue();
-                return;
-            }
+        if (expr.getArguments().stream().anyMatch(p -> isBotEquivalent(p))) {
+            value = getAllValue();
+        } else {
+            value = getNoneValue();
         }
-        value = getNoneValue();
     }
 
     // data role expressions

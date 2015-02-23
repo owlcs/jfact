@@ -5,7 +5,9 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static java.util.stream.Collectors.*;
 import static org.semanticweb.owlapi.util.OWLAPIPreconditions.checkNotNull;
+import static uk.ac.manchester.cs.jfact.helpers.Helper.elementFromIntersection;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.semanticweb.owlapi.model.IRI;
 
@@ -89,8 +92,8 @@ public class TaxonomyVertex implements Serializable {
      * @return Links
      */
     @PortedFrom(file = "taxVertex.h", name = "neigh")
-    public Iterable<TaxonomyVertex> neigh(boolean upDirection) {
-        return upDirection ? linksParent : linksChild;
+    public Stream<TaxonomyVertex> neigh(boolean upDirection) {
+        return upDirection ? linksParent.stream() : linksChild.stream();
     }
 
     // checked part
@@ -283,14 +286,7 @@ public class TaxonomyVertex implements Serializable {
     @PortedFrom(file = "taxVertex.h", name = "getSynonymNode")
     public TaxonomyVertex getSynonymNode() {
         // try to find Vertex such that Vertex\in Up and Vertex\in Down
-        for (TaxonomyVertex q : neigh(true)) {
-            for (TaxonomyVertex r : neigh(false)) {
-                if (q.equals(r)) {
-                    return q;
-                }
-            }
-        }
-        return null;
+        return elementFromIntersection(linksParent, linksChild).orElse(null);
     }
 
     /**
@@ -331,9 +327,9 @@ public class TaxonomyVertex implements Serializable {
     @PortedFrom(file = "taxVertex.h", name = "incorporate")
     public void incorporate(JFactReasonerConfiguration c) {
         // setup links
-        for (TaxonomyVertex d : neigh(false)) {
+        for (TaxonomyVertex d : linksChild) {
             // remove all down links
-            for (TaxonomyVertex u : neigh(true)) {
+            for (TaxonomyVertex u : linksParent) {
                 if (d.removeLink(true, u)) {
                     u.removeLink(false, d);
                 }
@@ -344,23 +340,17 @@ public class TaxonomyVertex implements Serializable {
             d.addNeighbour(true, this);
         }
         // add new link between v and current
-        for (TaxonomyVertex u : neigh(true)) {
-            u.addNeighbour(false, this);
-        }
+        neigh(true).forEach(u -> u.addNeighbour(false, this));
         if (c.isLoggingActive()) {
             LogAdapter logAdapter = c.getLog();
             logAdapter.printTemplate(Templates.INCORPORATE, sample.getName())
-                    .print(names(neigh(true))).print("} and down = {")
-                    .print(names(neigh(false))).print("}");
+                    .print(names(linksParent)).print("} and down = {")
+                    .print(names(linksChild)).print("}");
         }
     }
 
-    Iterable<IRI> names(Iterable<TaxonomyVertex> l) {
-        List<IRI> toReturn = new ArrayList<>();
-        for (TaxonomyVertex t : l) {
-            toReturn.add(t.sample.getName());
-        }
-        return toReturn;
+    Iterable<IRI> names(Collection<TaxonomyVertex> l) {
+        return l.stream().map(t -> t.sample.getName()).collect(toList());
     }
 
     /**
@@ -371,9 +361,7 @@ public class TaxonomyVertex implements Serializable {
      */
     @PortedFrom(file = "taxVertex.h", name = "removeLinks")
     public void removeLinks(boolean upDirection) {
-        for (TaxonomyVertex p : neigh(upDirection)) {
-            p.removeLink(!upDirection, this);
-        }
+        neigh(upDirection).forEach(p -> p.removeLink(!upDirection, this));
         clearLinks(upDirection);
     }
 
@@ -419,22 +407,18 @@ public class TaxonomyVertex implements Serializable {
         if (!node.getPrimer().equals(curEntry)) {
             addSynonym(node.getPrimer());
         }
-        for (ClassifiableEntry q : node.synonyms()) {
-            addSynonym(q);
-        }
-        boolean upDirection = true;
-        for (TaxonomyVertex p : node.neigh(upDirection)) {
+        node.synonyms().forEach(q -> addSynonym(q));
+        for (TaxonomyVertex p : linksParent) {
             if (!excludes.contains(p)) {
-                addNeighbour(upDirection, p);
+                addNeighbour(true, p);
             }
-            p.removeLink(!upDirection, node);
+            p.removeLink(false, node);
         }
-        upDirection = false;
-        for (TaxonomyVertex p : node.neigh(upDirection)) {
+        for (TaxonomyVertex p : linksChild) {
             if (!excludes.contains(p)) {
-                addNeighbour(upDirection, p);
+                addNeighbour(false, p);
             }
-            p.removeLink(!upDirection, node);
+            p.removeLink(true, node);
         }
     }
 
@@ -444,16 +428,11 @@ public class TaxonomyVertex implements Serializable {
         assert sample != null;
         StringBuilder o = new StringBuilder();
         if (synonyms.isEmpty()) {
-            o.append('"');
-            o.append(sample.getName());
-            o.append('"');
+            o.append('"').append(sample.getName()).append('"');
         } else {
-            o.append("(\"");
-            o.append(sample.getName());
-            for (ClassifiableEntry q : synonyms()) {
-                o.append("\"=\"");
-                o.append(q.getName());
-            }
+            o.append("(\"").append(sample.getName());
+            o.append(synonyms().stream().map(q -> q.getName())
+                    .collect(joining("\"=\"")));
             o.append("\")");
         }
         return o.toString();

@@ -35,9 +35,7 @@ public class AOStructure implements Serializable {
     @PortedFrom(file = "AtomicDecomposer.h", name = "reduceGraph")
     public void reduceGraph() {
         Set<TOntologyAtom> checked = new HashSet<>();
-        for (TOntologyAtom p : Atoms) {
-            p.getAllDepAtoms(checked);
-        }
+        Atoms.forEach(p -> p.getAllDepAtoms(checked));
     }
 
     /** @return atoms */

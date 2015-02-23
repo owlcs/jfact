@@ -46,11 +46,7 @@ public class DepSet implements Serializable {
      * @return new depset with stated values
      */
     public static DepSet create(int... values) {
-        TIntSet set = new TIntHashSet();
-        for (int i : values) {
-            set.add(i);
-        }
-        return create(set);
+        return create(new TIntHashSet(values));
     }
 
     /**

@@ -105,9 +105,7 @@ public class CGLabel implements Serializable {
 
     @Original
     protected void clearOthersCache() {
-        for (CGLabel c : lesserEquals) {
-            c.lesserEquals.remove(this);
-        }
+        lesserEquals.forEach(c -> c.lesserEquals.remove(this));
     }
 
     /**

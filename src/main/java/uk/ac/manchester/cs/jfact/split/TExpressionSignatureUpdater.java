@@ -120,9 +120,7 @@ class TExpressionSignatureUpdater extends DLExpressionVisitorAdapter implements
      */
     @PortedFrom(file = "tSignatureUpdater.h", name = "processArray")
     private void processArray(NAryExpression<? extends Expression> expr) {
-        for (Expression p : expr.getArguments()) {
-            p.accept(this);
-        }
+        expr.getArguments().forEach(p -> p.accept(this));
     }
 
     public TExpressionSignatureUpdater(TSignature s) {

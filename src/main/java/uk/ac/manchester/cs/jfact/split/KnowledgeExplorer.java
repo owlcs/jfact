@@ -5,9 +5,10 @@ package uk.ac.manchester.cs.jfact.split;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static java.util.stream.Collectors.*;
+
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -93,35 +94,29 @@ public class KnowledgeExplorer implements Serializable {
     public KnowledgeExplorer(TBox box, ExpressionCache pEM) {
         D2I = new TDag2Interface(box.getDag(), pEM);
         // init all concepts
-        box.getConcepts().forEach(c -> {
-            Cs.put(c.getEntity(), c);
-            if (c.isSynonym()) {
-                Cs.put(c.getSynonym().getEntity(), c);
-            }
-        });
+        box.getConcepts().forEach(c -> addConceptsAndIndividuals(Cs, c));
         // init all individuals
-        box.i_begin().forEach(i -> {
-            Is.put(i.getEntity(), i);
-            if (i.isSynonym()) {
-                Is.put(i.getSynonym().getEntity(), i);
-            }
-        });
+        box.i_begin().forEach(i -> addConceptsAndIndividuals(Is, i));
         // init all object roles
-        for (Role R : box.getORM().getRoles()) {
-            ORs.put(R.getEntity(), R);
-            if (R.isSynonym()) {
-                ORs.put(R.getSynonym().getEntity(), R);
-            }
-            ORs.putAll(R.getEntity(), R.getAncestor());
-        }
+        box.getORM().getRoles().forEach(r -> addRoles(ORs, r));
         // init all data roles
-        for (Role R : box.getDRM().getRoles()) {
-            DRs.put(R.getEntity(), R);
-            if (R.isSynonym()) {
-                DRs.put(R.getSynonym().getEntity(), R);
-            }
-            DRs.putAll(R.getEntity(), R.getAncestor());
+        box.getDRM().getRoles().forEach(r -> addRoles(DRs, r));
+    }
+
+    <T extends ClassifiableEntry> void addConceptsAndIndividuals(
+            Multimap<NamedEntity, T> m, T t) {
+        m.put(t.getEntity(), t);
+        if (t.isSynonym()) {
+            m.put(t.getSynonym().getEntity(), t);
         }
+    }
+
+    void addRoles(Multimap<NamedEntity, Role> m, Role t) {
+        m.put(t.getEntity(), t);
+        if (t.isSynonym()) {
+            m.put(t.getSynonym().getEntity(), t);
+        }
+        m.putAll(t.getEntity(), t.getAncestor());
     }
 
     /**
@@ -134,29 +129,14 @@ public class KnowledgeExplorer implements Serializable {
     private void addC(Expression e) {
         // check named concepts
         if (e instanceof ConceptName) {
-            ConceptName C = (ConceptName) e;
-            for (Concept p : Cs.get(C)) {
-                if (p == null) {
-                    System.err.println("Null found while processing class "
-                            + C.getName());
-                } else {
-                    Concepts.add(D2I.getCExpr(p.getId()));
-                }
-            }
+            Cs.get((ConceptName) e).forEach(
+                    p -> Concepts.add(D2I.getCExpr(p.getId())));
             return;
         }
         // check named individuals
         if (e instanceof IndividualName) {
-            IndividualName I = (IndividualName) e;
-            for (Individual p : Is.get(I)) {
-                if (p == null) {
-                    System.err
-                            .println("Null found while processing individual "
-                                    + I.getName());
-                } else {
-                    Concepts.add(D2I.getCExpr(p.getId()));
-                }
-            }
+            Is.get((IndividualName) e).forEach(
+                    p -> Concepts.add(D2I.getCExpr(p.getId())));
             return;
         }
         Concepts.add(e);
@@ -172,16 +152,16 @@ public class KnowledgeExplorer implements Serializable {
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getDataRoles")
     public Set<DataRoleExpression> getDataRoles(DlCompletionTree node,
             boolean onlyDet) {
-        Set<DataRoleExpression> roles = new HashSet<>();
-        for (DlCompletionTreeArc p : node.getNeighbour()) {
-            if (!p.isIBlocked() && p.getArcEnd().isDataNode()
-                    && (!onlyDet || p.getDep().isEmpty())) {
-                for (Role r : DRs.get(p.getRole().getEntity())) {
-                    roles.add((DataRoleExpression) D2I.getDataRoleExpression(r));
-                }
-            }
-        }
-        return roles;
+        return node.getNeighbour().stream()
+                .filter(p -> notBlockedData(onlyDet, p))
+                .flatMap(p -> DRs.get(p.getRole().getEntity()).stream())
+                .map(r -> (DataRoleExpression) D2I.getDataRoleExpression(r))
+                .collect(toSet());
+    }
+
+    protected boolean notBlockedData(boolean onlyDet, DlCompletionTreeArc p) {
+        return !p.isIBlocked() && p.getArcEnd().isDataNode()
+                && (!onlyDet || p.getDep().isEmpty());
     }
 
     /**
@@ -197,18 +177,20 @@ public class KnowledgeExplorer implements Serializable {
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getObjectRoles")
     public Set<ObjectRoleExpression> getObjectRoles(DlCompletionTree node,
             boolean onlyDet, boolean needIncoming) {
-        Set<ObjectRoleExpression> roles = new HashSet<>();
-        for (DlCompletionTreeArc p : node.getNeighbour()) {
-            if (!p.isIBlocked() && !p.getArcEnd().isDataNode()
-                    && (!onlyDet || p.getDep().isEmpty())
-                    && (needIncoming || p.isSuccEdge())) {
-                for (Role r : ORs.get(p.getRole().getEntity())) {
-                    roles.add((ObjectRoleExpression) D2I
-                            .getObjectRoleExpression(r));
-                }
-            }
-        }
-        return roles;
+        return node
+                .getNeighbour()
+                .stream()
+                .filter(p -> notBlockedNotData(onlyDet, needIncoming, p))
+                .flatMap(p -> ORs.get(p.getRole().getEntity()).stream())
+                .map(r -> (ObjectRoleExpression) D2I.getObjectRoleExpression(r))
+                .collect(toSet());
+    }
+
+    protected boolean notBlockedNotData(boolean onlyDet, boolean needIncoming,
+            DlCompletionTreeArc p) {
+        return !p.isIBlocked() && !p.getArcEnd().isDataNode()
+                && (!onlyDet || p.getDep().isEmpty())
+                && (needIncoming || p.isSuccEdge());
     }
 
     /**
@@ -222,11 +204,9 @@ public class KnowledgeExplorer implements Serializable {
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getNeighbours")
     public List<DlCompletionTree> getNeighbours(DlCompletionTree node, Role R) {
         Nodes.clear();
-        for (DlCompletionTreeArc p : node.getNeighbour()) {
-            if (!p.isIBlocked() && p.isNeighbour(R)) {
-                Nodes.add(p.getArcEnd());
-            }
-        }
+        node.getNeighbour().stream()
+                .filter(p -> !p.isIBlocked() && p.isNeighbour(R))
+                .forEach(p -> Nodes.add(p.getArcEnd()));
         return Nodes;
     }
 
@@ -247,13 +227,8 @@ public class KnowledgeExplorer implements Serializable {
         Stream.concat(node.beginl_sc().stream(), node.beginl_cc().stream())
                 .filter(p -> !onlyDet || p.getDep().isEmpty())
                 .forEach(p -> addC(D2I.getExpr(p.getConcept(), false)));
-        List<ConceptExpression> toReturn = new ArrayList<>();
-        for (Expression e : Concepts) {
-            if (e instanceof ConceptExpression) {
-                toReturn.add((ConceptExpression) e);
-            }
-        }
-        return toReturn;
+        return Concepts.stream().filter(e -> e instanceof ConceptExpression)
+                .map(e -> (ConceptExpression) e).collect(toList());
     }
 
     /**
@@ -273,13 +248,8 @@ public class KnowledgeExplorer implements Serializable {
         Stream.concat(node.beginl_sc().stream(), node.beginl_cc().stream())
                 .filter(p -> !onlyDet || p.getDep().isEmpty())
                 .forEach(p -> addC(D2I.getExpr(p.getConcept(), true)));
-        List<DataExpression> toReturn = new ArrayList<>();
-        for (Expression e : Concepts) {
-            if (e instanceof DataExpression) {
-                toReturn.add((DataExpression) e);
-            }
-        }
-        return toReturn;
+        return Concepts.stream().filter(e -> e instanceof DataExpression)
+                .map(e -> (DataExpression) e).collect(toList());
     }
 
     /**

@@ -5,6 +5,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static java.util.stream.Collectors.toList;
 import static uk.ac.manchester.cs.jfact.kernel.InAx.*;
 
 import java.io.Serializable;
@@ -135,10 +136,8 @@ public class AxiomSet implements Serializable {
     /** @return GCI of all non-absorbed axioms */
     @PortedFrom(file = "tAxiomSet.h", name = "getGCI")
     public DLTree getGCI() {
-        List<DLTree> l = new ArrayList<>();
-        for (Axiom p : accumulator) {
-            l.add(p.createAnAxiom(null));
-        }
+        List<DLTree> l = accumulator.stream().map(p -> p.createAnAxiom(null))
+                .collect(toList());
         return DLTreeFactory.createSNFAnd(l);
     }
 
@@ -157,8 +156,7 @@ public class AxiomSet implements Serializable {
             return false;
         }
         List<Axiom> kept = new ArrayList<>();
-        for (int i = 0; i < splitted.size(); i++) {
-            Axiom q = splitted.get(i);
+        for (Axiom q : splitted) {
             if (q.isCyclic()) {
                 // axiom is a copy of a processed one: fail to do split
                 return false;
@@ -170,9 +168,7 @@ public class AxiomSet implements Serializable {
         }
         // no failure: delete all the unneded axioms, add all kept ones
         // do the actual insertion if necessary
-        for (Axiom q : kept) {
-            insertGCI(q);
-        }
+        kept.forEach(q -> insertGCI(q));
         return true;
     }
 

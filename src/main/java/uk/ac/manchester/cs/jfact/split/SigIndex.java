@@ -93,9 +93,7 @@ public class SigIndex implements Serializable {
      */
     @PortedFrom(file = "SigIndex.h", name = "registerAx")
     private void registerAx(AxiomInterface ax) {
-        for (NamedEntity p : ax.getSignature().begin()) {
-            Base.put(p, ax);
-        }
+        ax.getSignature().begin().forEach(p -> Base.put(p, ax));
         // check whether the axiom is non-local
         checkNonLocal(ax, false);
         checkNonLocal(ax, true);
@@ -110,9 +108,7 @@ public class SigIndex implements Serializable {
      */
     @PortedFrom(file = "SigIndex.h", name = "unregisterAx")
     private void unregisterAx(AxiomInterface ax) {
-        for (NamedEntity p : ax.getSignature().begin()) {
-            Base.get(p).remove(ax);
-        }
+        ax.getSignature().begin().forEach(p -> Base.get(p).remove(ax));
         // remove from the non-locality
         NonLocalFalse.remove(ax);
         NonLocalTrue.remove(ax);
@@ -142,9 +138,7 @@ public class SigIndex implements Serializable {
      */
     @PortedFrom(file = "SigIndex.h", name = "preprocessOntology")
     public void preprocessOntology(Collection<AxiomInterface> axioms) {
-        for (AxiomInterface ax : axioms) {
-            processAx(ax);
-        }
+        axioms.forEach(ax -> processAx(ax));
     }
 
     /** clear internal structures */

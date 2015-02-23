@@ -20,9 +20,7 @@ abstract class AbstractFastSet implements FastSet, Serializable {
             b.append(get(0));
         }
         for (int i = 1; i < size(); i++) {
-            b.append(',');
-            b.append(' ');
-            b.append(get(i));
+            b.append(", ").append(get(i));
         }
         b.append(']');
         return b.toString();

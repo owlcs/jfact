@@ -5,12 +5,15 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.Concept.CTTag;
@@ -317,23 +320,21 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         // label 'visited'
         pTax.setVisited(cur);
         ++nSearchCalls;
-        boolean noPosSucc = true;
+        AtomicBoolean noPosSucc = new AtomicBoolean(true);
         // check if there are positive successors; use DFS on them.
-        for (TaxonomyVertex p : cur.neigh(upDirection)) {
-            if (enhancedSubs(p)) {
-                if (!pTax.isVisited(p)) {
-                    searchBaader(p);
-                }
-                noPosSucc = false;
+        cur.neigh(upDirection).filter(p -> enhancedSubs(p)).forEach(p -> {
+            if (!pTax.isVisited(p)) {
+                searchBaader(p);
             }
-        }
+            noPosSucc.set(false);
+        });
         // in case current node is unchecked (no BOTTOM node) -- check it
         // explicitly
         if (!isValued(cur)) {
             setValue(cur, testSubsumption(cur));
         }
         // mark labelled leaf node as a parent (self check for incremental)
-        if (noPosSucc && cur.getValue()) {
+        if (noPosSucc.get() && cur.getValue()) {
             pTax.getCurrent().addNeighbour(!upDirection, cur);
         }
     }
@@ -344,10 +345,8 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         // need to be valued -- check all parents
         // propagate false
         // do this only if the concept is not it M-
-        for (TaxonomyVertex n : cur.neigh(!upDirection)) {
-            if (!enhancedSubs(n)) {
-                return false;
-            }
+        if (cur.neigh(!upDirection).anyMatch(n -> !enhancedSubs(n))) {
+            return false;
         }
         // all subsumptions holds -- test current for subsumption
         return testSubsumption(cur);
@@ -414,9 +413,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
             common.add(node);
         }
         // mark all children
-        for (TaxonomyVertex n : node.neigh(false)) {
-            propagateOneCommon(n);
-        }
+        node.neigh(false).forEach(p -> propagateOneCommon(p));
     }
 
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "propagateUp")
@@ -520,17 +517,11 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
      */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "checkExtraParents")
     private void checkExtraParents() {
-        for (TaxonomyVertex p : pTax.current.neigh(true)) {
-            propagateTrueUp(p);
-        }
+        pTax.current.neigh(true).forEach(p -> propagateTrueUp(p));
         pTax.current.clearLinks(true);
         runTopDown();
-        List<TaxonomyVertex> vec = new ArrayList<>();
-        for (TaxonomyVertex p : pTax.current.neigh(true)) {
-            if (!isDirectParent(p)) {
-                vec.add(p);
-            }
-        }
+        List<TaxonomyVertex> vec = pTax.current.neigh(true)
+                .filter(p -> !isDirectParent(p)).collect(toList());
         for (TaxonomyVertex p : vec) {
             p.removeLink(false, pTax.current);
             pTax.current.removeLink(true, p);
@@ -572,9 +563,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         } else {
             candidates.add(cur);
         }
-        for (TaxonomyVertex p : cur.neigh(true)) {
-            fillCandidates(p);
-        }
+        cur.neigh(true).forEach(p -> fillCandidates(p));
     }
 
     /**
@@ -602,9 +591,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
                     || MMinus.contains(entry.getEntity())) {
                 toProcess.add(entry);
             }
-            for (TaxonomyVertex t : cur.neigh(false)) {
-                queue.add(t);
-            }
+            cur.neigh(false).forEach(t -> queue.add(t));
         }
         pTax.clearVisited();
         // System.out.println("Determine concepts that need reclassification ("
@@ -644,35 +631,24 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         candidates.clear();
         if (removed) {
             // re-check all parents
-            // List<TaxonomyVertex> pos = new ArrayList<TaxonomyVertex>();
             List<TaxonomyVertex> neg = new ArrayList<>();
-            for (TaxonomyVertex p : node.neigh(true)) {
-                if (isValued(p) && getValue(p)) {
-                    continue;
+            node.neigh(true).forEach(p -> {
+                if (!isValued(p) || !getValue(p)) {
+                    if (testSubsumption(p)) {
+                        propagateTrueUp(p);
+                    } else {
+                        setValue(p, false);
+                        neg.add(p);
+                    }
                 }
-                boolean sub = testSubsumption(p);
-                if (sub) {
-                    // pos.add(p);
-                    propagateTrueUp(p);
-                } else {
-                    setValue(p, sub);
-                    neg.add(p);
-                }
-            }
+            });
             node.removeLinks(true);
-            // for (TaxonomyVertex q : pos) {
-            // node.addNeighbour(true, q);
-            // }
             if (useCandidates) {
-                for (TaxonomyVertex q : neg) {
-                    fillCandidates(q);
-                }
+                neg.forEach(q -> fillCandidates(q));
             }
         } else {
             // all parents are there
-            for (TaxonomyVertex p : node.neigh(true)) {
-                propagateTrueUp(p);
-            }
+            node.neigh(true).forEach(p -> propagateTrueUp(p));
             node.removeLinks(true);
         }
         // FIXME!! for now. later check the equivalence etc

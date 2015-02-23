@@ -701,8 +701,8 @@ public class DlSatTester implements Serializable {
      */
     @PortedFrom(file = "Reasoner.h", name = "createModelCache")
     protected ModelCacheInterface createModelCache(DlCompletionTree p) {
-        return new ModelCacheIan(dlHeap, p, encounterNominal, tBox.nC, tBox.nR,
-                options);
+        return new ModelCacheIan(dlHeap, p, encounterNominal, tBox.nC,
+                tBox.nR.get(), options);
     }
 
     /**
@@ -1540,8 +1540,8 @@ public class DlSatTester implements Serializable {
         dlHeap = tbox.getDLHeap();
         cGraph = new DlCompletionGraph(1, this);
         TODO = new ToDoList(cGraph.getRareStack());
-        newNodeCache = new ModelCacheIan(true, tbox.nC, tbox.nR, options);
-        newNodeEdges = new ModelCacheIan(false, tbox.nC, tbox.nR, options);
+        newNodeCache = new ModelCacheIan(true, tbox.nC, tbox.nR.get(), options);
+        newNodeEdges = new ModelCacheIan(false, tbox.nC, tbox.nR.get(), options);
         gcis = tbox.getGCIs();
         bContext = null;
         tryLevel = InitBranchingLevelValue;

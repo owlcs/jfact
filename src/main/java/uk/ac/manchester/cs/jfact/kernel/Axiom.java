@@ -5,14 +5,19 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static java.util.stream.Collectors.*;
 import static uk.ac.manchester.cs.jfact.kernel.InAx.*;
 import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+
+import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
@@ -56,46 +61,38 @@ public class Axiom implements Serializable {
      */
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoNegConcept")
     public boolean absorbIntoNegConcept(TBox KB) {
-        List<DLTree> Cons = new ArrayList<>();
-        Concept Concept;
-        DLTree bestConcept = null;
         // finds all primitive negated concept names without description
-        for (DLTree p : disjuncts) {
-            if (p.token() == NOT && p.getChild().isName()
-                    && (Concept = getConcept(p.getChild())).isPrimitive()
-                    && !Concept.isSingleton()
-                    && Concept.getDescription() == null) {
-                SAbsNAttempt();
-                Cons.add(p);
-            }
-        }
+        List<DLTree> Cons = disjuncts.stream()
+                .filter(p -> primitiveNegatedConceptNamesWithoutDescription(p))
+                .peek(p -> SAbsNAttempt()).collect(toList());
         // if no concept names -- return;
         if (Cons.isEmpty()) {
             return false;
         }
         SAbsNApply();
         // FIXME!! as for now: just take the 1st concept name
-        bestConcept = Cons.get(0);
+        DLTree bestConcept = Cons.get(0);
         // normal concept absorption
-        Concept = InAx.getConcept(bestConcept.getChild());
+        Concept Concept = InAx.getConcept(bestConcept.getChild());
         JFactReasonerConfiguration options = KB.getOptions();
-        if (options.isAbsorptionLoggingActive()) {
-            absorptionLog.print(" N-Absorb GCI to concept ", Concept.getName());
-            if (Cons.size() > 1) {
-                absorptionLog.print(" (other options are");
-                for (int j = 1; j < Cons.size(); ++j) {
-                    absorptionLog.print(" ",
-                            InAx.getConcept(Cons.get(j).getChild()).getName());
-                }
-                absorptionLog.print(")");
-            }
-        }
+        logOptions(" N-Absorb GCI to concept ", Cons, Concept.getName(),
+                options);
         // replace ~C [= D with C=~notC, notC [= D:
         // make notC [= D
         Concept nC = KB.getAuxConcept(createAnAxiom(bestConcept));
         // define C = ~notC; C had an empty desc, so it's safe not to delete it
         KB.makeNonPrimitive(Concept, DLTreeFactory.createSNFNot(KB.getTree(nC)));
         return true;
+    }
+
+    protected boolean primitiveNegatedConceptNamesWithoutDescription(DLTree p) {
+        boolean b = p.token() == NOT && p.getChild().isName();
+        if (!b) {
+            return b;
+        }
+        Concept Concept = getConcept(p.getChild());
+        return Concept.isPrimitive() && !Concept.isSingleton()
+                && Concept.getDescription() == null;
     }
 
     /** GCI is presented in the form (or Disjuncts); */
@@ -114,11 +111,8 @@ public class Axiom implements Serializable {
     @PortedFrom(file = "tAxiom.h", name = "copy")
     private Axiom copy(DLTree skip) {
         Axiom ret = new Axiom(this);
-        for (DLTree i : disjuncts) {
-            if (!i.equals(skip)) {
-                ret.disjuncts.add(i.copy());
-            }
-        }
+        disjuncts.stream().filter(i -> !i.equals(skip))
+                .forEach(i -> ret.disjuncts.add(i.copy()));
         return ret;
     }
 
@@ -205,24 +199,24 @@ public class Axiom implements Serializable {
      */
     @PortedFrom(file = "tAxiom.h", name = "split")
     public List<Axiom> split() {
-        List<Axiom> acc = new ArrayList<>();
-        for (DLTree p : disjuncts) {
-            if (InAx.isAnd(p)) {
-                SAbsSplit();
-                absorptionLog.print(" split AND expression ", p.getChild());
-                // XXX doublecheck here because in FaCT++ these are binary trees
-                // but here they are n-ary
-                acc = this.split(acc, p, p.getChildren().iterator().next());
-                // no need to split more than once:
-                // every extra splits would be together with unsplitted parts
-                // like: (A or B) and (C or D) would be transform into
-                // A and (C or D), B and (C or D), (A or B) and C, (A or B) and
-                // D
-                // so just return here
-                return acc;
-            }
+        Optional<DLTree> findAny = disjuncts
+                .stream()
+                .filter(p -> InAx.isAnd(p))
+                .peek(p -> SAbsSplit())
+                .peek(p -> absorptionLog.print(" split AND expression ",
+                        p.getChild())).findAny();
+        // no need to split more than once:
+        // every extra splits would be together with unsplitted parts
+        // like: (A or B) and (C or D) would be transform into
+        // A and (C or D), B and (C or D), (A or B) and C, (A or B) and
+        // D, so just return here
+        // XXX doublecheck here because in FaCT++ these are binary trees
+        // but here they are n-ary
+        if (findAny.isPresent()) {
+            return this.split(new ArrayList<>(), findAny.get(), findAny.get()
+                    .getChildren().iterator().next());
         }
-        return acc;
+        return new ArrayList<>();
     }
 
     /**
@@ -240,9 +234,7 @@ public class Axiom implements Serializable {
         }
         // flatten the disjunctions on the fly
         if (InAx.isOr(p)) {
-            for (DLTree d : p.getChildren()) {
-                add(d);
-            }
+            p.getChildren().forEach(d -> add(d));
             return;
         }
         disjuncts.add(p);
@@ -251,12 +243,8 @@ public class Axiom implements Serializable {
     /** dump GCI for debug purposes */
     @Override
     public String toString() {
-        StringBuilder b = new StringBuilder(" (neg-and ");
-        for (DLTree p : disjuncts) {
-            b.append(p);
-        }
-        b.append(')');
-        return b.toString();
+        return disjuncts.stream().map(p -> p.toString())
+                .collect(joining("", " (neg-and ", ")"));
     }
 
     /**
@@ -287,10 +275,10 @@ public class Axiom implements Serializable {
      */
     @PortedFrom(file = "tAxiom.h", name = "simplifyForall")
     public Axiom simplifyForall(TBox KB) {
-        for (DLTree i : disjuncts) {
-            if (InAx.isAbsForall(i)) {
-                return this.simplifyForall(i, KB);
-            }
+        Optional<DLTree> findany = disjuncts.stream()
+                .filter(i -> InAx.isAbsForall(i)).findAny();
+        if (findany.isPresent()) {
+            return this.simplifyForall(findany.get(), KB);
         }
         return null;
     }
@@ -303,10 +291,10 @@ public class Axiom implements Serializable {
      * @return simplified axiom
      */
     public Axiom simplifySForall(TBox KB) {
-        for (DLTree i : disjuncts) {
-            if (InAx.isSimpleForall(i)) {
-                return simplifyForall(i, KB);
-            }
+        Optional<DLTree> findany = disjuncts.stream()
+                .filter(i -> InAx.isSimpleForall(i)).findAny();
+        if (findany.isPresent()) {
+            return simplifyForall(findany.get(), KB);
         }
         return null;
     }
@@ -337,12 +325,9 @@ public class Axiom implements Serializable {
             return DLTreeFactory.createBottom();
         }
         // assert !disjuncts.isEmpty();
-        List<DLTree> leaves = new ArrayList<>();
-        for (DLTree d : disjuncts) {
-            if (!d.equals(replaced)) {
-                leaves.add(d.copy());
-            }
-        }
+        List<DLTree> leaves = disjuncts.stream()
+                .filter(d -> !d.equals(replaced)).map(d -> d.copy())
+                .collect(toList());
         DLTree result = DLTreeFactory.createSNFAnd(leaves);
         return DLTreeFactory.createSNFNot(result);
     }
@@ -355,8 +340,8 @@ public class Axiom implements Serializable {
     @SuppressWarnings("incomplete-switch")
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoBottom")
     public boolean absorbIntoBottom() {
-        List<DLTree> Pos = new ArrayList<>();
-        List<DLTree> Neg = new ArrayList<>();
+        Set<DLTree> Pos = new HashSet<>();
+        Set<DLTree> Neg = new HashSet<>();
         for (DLTree p : disjuncts) {
             switch (p.token()) {
                 case BOTTOM: // axiom in the form T [= T or ...; nothing to do
@@ -365,24 +350,36 @@ public class Axiom implements Serializable {
                     return true;
                 case TOP: // skip it here
                     break;
-                case NOT: // something negated: put it into NEG
+                case NOT:
+                    // something negated: put it into NEG
+                    if (Pos.contains(p)) {
+                        SAbsBApply();
+                        absorptionLog.print(" Absorb into BOTTOM due to (not",
+                                p, ") and", p);
+                        return true;
+                    }
                     Neg.add(p.getChild());
                     break;
-                default: // something positive: save in POS
+                default:
+                    // something positive: save in POS
+                    if (Neg.contains(p)) {
+                        SAbsBApply();
+                        absorptionLog.print(" Absorb into BOTTOM due to (not",
+                                p, ") and", p);
+                        return true;
+                    }
                     Pos.add(p);
                     break;
             }
         }
         // now check whether there is a concept in both POS and NEG
-        for (DLTree q : Neg) {
-            for (DLTree s : Pos) {
-                if (q.equals(s)) {
-                    SAbsBApply();
-                    absorptionLog.print(" Absorb into BOTTOM due to (not", q,
-                            ") and", s);
-                    return true;
-                }
-            }
+        Optional<DLTree> findAny = Neg.stream().filter(q -> Pos.contains(q))
+                .findAny();
+        if (findAny.isPresent()) {
+            SAbsBApply();
+            absorptionLog.print(" Absorb into BOTTOM due to (not",
+                    findAny.get(), ") and", findAny.get());
+            return true;
         }
         return false;
     }
@@ -421,17 +418,8 @@ public class Axiom implements Serializable {
         }
         // normal concept absorption
         Concept Concept = InAx.getConcept(bestConcept);
-        if (KB.getOptions().isAbsorptionLoggingActive()) {
-            absorptionLog.print(" C-Absorb GCI to concept ", Concept.getName());
-            if (Cons.size() > 1) {
-                absorptionLog.print(" (other options are");
-                for (int j = 1; j < Cons.size(); ++j) {
-                    absorptionLog.print(" ", InAx.getConcept(Cons.get(j))
-                            .getName());
-                }
-                absorptionLog.print(")");
-            }
-        }
+        logOptions(" C-Absorb GCI to concept ", Cons, Concept.getName(),
+                KB.getOptions());
         // adds a new definition
         Concept.addDesc(createAnAxiom(bestConcept));
         Concept.removeSelfFromDescription();
@@ -443,6 +431,20 @@ public class Axiom implements Serializable {
         KB.checkToldCycle(Concept);
         KB.clearRelevanceInfo();
         return true;
+    }
+
+    protected void logOptions(String prefix, List<DLTree> Cons,
+            IRI conceptName, JFactReasonerConfiguration options) {
+        if (options.isAbsorptionLoggingActive()) {
+            absorptionLog.print(prefix, conceptName);
+            if (Cons.size() > 1) {
+                String collect = Cons.stream().skip(1)
+                        .map(p -> InAx.getConcept(p.getChild()).getName())
+                        .collect(joining(" "));
+                absorptionLog.print(" (other options are ").print(collect)
+                        .print(")");
+            }
+        }
     }
 
     /**
@@ -483,19 +485,8 @@ public class Axiom implements Serializable {
             // FIXME!! as for now: just take the 1st role name
             role = Role.resolveRole(Cons.get(0).getChild().getLeft());
         }
-        if (KB.getOptions().isAbsorptionLoggingActive()) {
-            absorptionLog.print(" R-Absorb GCI to the domain of role ",
-                    role.getName());
-            if (Cons.size() > 1) {
-                absorptionLog.print(" (other options are");
-                for (int j = 1; j < Cons.size(); ++j) {
-                    absorptionLog.print(" ",
-                            Role.resolveRole(Cons.get(j).getChild().getLeft())
-                                    .getName());
-                }
-                absorptionLog.print(")");
-            }
-        }
+        logOptions(" R-Absorb GCI to the domain of role ", Cons,
+                role.getName(), KB.getOptions());
         // here bestSome is either actual domain, or END(); both cases are fine
         role.setDomain(createAnAxiom(bestSome));
         return true;
@@ -514,21 +505,21 @@ public class Axiom implements Serializable {
         // check whether the axiom is Top [= C
         for (DLTree p : disjuncts) {
             // BOTTOMS are fine
-            if (InAx.isBot(p)) {
-                continue;
-            } else if (InAx.isPosCN(p)) {
-                // CN found
-                if (C != null) {
-                    // more than one concept
+            if (!InAx.isBot(p)) {
+                if (InAx.isPosCN(p)) {
+                    // CN found
+                    if (C != null) {
+                        // more than one concept
+                        return false;
+                    }
+                    C = InAx.getConcept(p.getChild());
+                    if (C.isSingleton()) {
+                        // doesn't work with nominals
+                        return false;
+                    }
+                } else {
                     return false;
                 }
-                C = InAx.getConcept(p.getChild());
-                if (C.isSingleton()) {
-                    // doesn't work with nominals
-                    return false;
-                }
-            } else {
-                return false;
             }
         }
         if (C == null) {

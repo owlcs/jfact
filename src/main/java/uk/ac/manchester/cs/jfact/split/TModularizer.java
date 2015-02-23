@@ -59,13 +59,14 @@ public class TModularizer implements Serializable {
     private void addAxiomSig(AxiomInterface axiom) {
         TSignature axiomSig = axiom.getSignature();
         if (sigIndex != null) {
-            for (NamedEntity p : axiomSig.begin()) {
-                if (!sig.containsNamedEntity(p)) {
-                    WorkQueue.add(p);
-                    sig.add(p);
-                }
-            }
+            axiomSig.begin().stream().filter(p -> !sig.containsNamedEntity(p))
+                    .forEach(p -> addEntity(p));
         }
+    }
+
+    protected void addEntity(NamedEntity p) {
+        WorkQueue.add(p);
+        sig.add(p);
     }
 
     /**
@@ -128,21 +129,16 @@ public class TModularizer implements Serializable {
      */
     @PortedFrom(file = "Modularity.h", name = "addNonLocal")
     private void addNonLocal(Collection<AxiomInterface> AxSet, boolean noCheck) {
-        for (AxiomInterface q : AxSet) {
-            if (!q.isInModule() && q.isInSS()) {
-                // in the given range but not in module yet
-                this.addNonLocal(q, noCheck);
-            }
-        }
+        // in the given range but not in module yet
+        AxSet.stream().filter(q -> !q.isInModule() && q.isInSS())
+                .forEach(q -> addNonLocal(q, noCheck));
     }
 
     /** build a module traversing axioms by a signature */
     @PortedFrom(file = "Modularity.h", name = "extractModuleQueue")
     private void extractModuleQueue() {
         // init queue with a sig
-        for (NamedEntity p : sig.begin()) {
-            WorkQueue.add(p);
-        }
+        sig.begin().forEach(p -> WorkQueue.add(p));
         // add all the axioms that are non-local wrt given value of a
         // top-locality
         this.addNonLocal(sigIndex.getNonLocal(sig.topCLocal()), true);
@@ -164,18 +160,14 @@ public class TModularizer implements Serializable {
     private void extractModule(Collection<AxiomInterface> args) {
         Module.clear();
         // clear the module flag in the input
-        for (AxiomInterface p : args) {
+        args.forEach(p -> {
             p.setInModule(false);
-        }
-        for (AxiomInterface p : args) {
             if (p.isUsed()) {
                 p.setInSS(true);
             }
-        }
+        });
         extractModuleQueue();
-        for (AxiomInterface p : args) {
-            p.setInSS(false);
-        }
+        args.forEach(p -> p.setInSS(false));
     }
 
     /**
