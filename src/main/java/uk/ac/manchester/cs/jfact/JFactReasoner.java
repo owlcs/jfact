@@ -67,7 +67,6 @@ import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
 import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.Individual;
-import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.ReasonerFreshEntityException;
 import uk.ac.manchester.cs.jfact.kernel.ReasoningKernel;
@@ -172,7 +171,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         configuration.getProgressMonitor().reasonerTaskBusy();
         tr = new TranslationMachinery(kernel, df, datatypeFactory);
         reasonerAxioms.addAll(axioms);
-        tr.loadAxioms(reasonerAxioms);
+        tr.loadAxioms(reasonerAxioms.stream());
         configuration.getProgressMonitor().reasonerTaskStopped();
     }
 
@@ -294,21 +293,14 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             computeDiff(added, removed);
             rawChanges.clear();
             if (!added.isEmpty() || !removed.isEmpty()) {
-                // for (OWLAxiom a : removed) {
-                // breakCycles(a, false);
-                // }
-                // for (OWLAxiom a : added) {
-                // breakCycles(a, true);
-                // }
                 reasonerAxioms.removeAll(removed);
                 reasonerAxioms.addAll(added);
                 knownEntities.clear();
-                for (OWLAxiom ax : reasonerAxioms) {
-                    add(knownEntities, ax.signature());
-                }
+                reasonerAxioms
+                        .forEach(ax -> add(knownEntities, ax.signature()));
                 // set the consistency status to not verified
                 consistencyVerified = null;
-                handleChanges(added, removed);
+                handleChanges(added.stream(), removed.stream());
             }
         }
     }
@@ -367,12 +359,10 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
      * @param removeAxioms
      *        The axioms to be removed from the reasoner
      */
-    private synchronized void handleChanges(Set<OWLAxiom> addAxioms,
-            Set<OWLAxiom> removeAxioms) {
+    private synchronized void handleChanges(Stream<OWLAxiom> addAxioms,
+            Stream<OWLAxiom> removeAxioms) {
         tr.loadAxioms(addAxioms);
-        for (OWLAxiom ax_r : removeAxioms) {
-            tr.retractAxiom(ax_r);
-        }
+        removeAxioms.forEach(ax_r -> tr.retractAxiom(ax_r));
     }
 
     @Override
@@ -748,7 +738,8 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         TaxonomyActor<IndividualExpression> actor = kernel.getInstances(
                 tr.pointer(ce), individualActor(IndividualExpression.class),
                 direct);
-        return tr.translateNodeSet(actor.getElements().iterator().next());
+        return tr.translateNodeSet(actor.getElements().iterator().next()
+                .stream());
     }
 
     @Override
@@ -757,11 +748,8 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         checkConsistency();
         List<Individual> fillers = kernel.getRoleFillers(tr.pointer(ind),
                 tr.pointer(pe));
-        List<IndividualExpression> acc = new ArrayList<>();
-        for (NamedEntry p : fillers) {
-            acc.add(em.individual(p.getName()));
-        }
-        return tr.translateNodeSet(acc);
+        return tr.translateNodeSet(fillers.stream().map(
+                p -> em.individual(p.getName())));
     }
 
     @Override
@@ -1002,7 +990,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
      */
     public Set<OWLAxiom> getModule(Set<OWLEntity> signature,
             boolean useSemantic, ModuleType moduletype) {
-        List<Expression> list = tr.translateExpressions(signature);
+        List<Expression> list = tr.translateExpressions(signature.stream());
         List<AxiomInterface> axioms = kernel.getModule(list, useSemantic,
                 moduletype);
         return axiomsToSet(axioms);
@@ -1019,7 +1007,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
      */
     public Set<OWLAxiom> getNonLocal(Set<OWLEntity> signature,
             boolean useSemantic, ModuleType moduletype) {
-        List<Expression> list = tr.translateExpressions(signature);
+        List<Expression> list = tr.translateExpressions(signature.stream());
         Set<AxiomInterface> axioms = kernel.getNonLocal(list, useSemantic,
                 moduletype);
         return axiomsToSet(axioms);

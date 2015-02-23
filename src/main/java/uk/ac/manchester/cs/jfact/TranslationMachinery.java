@@ -5,13 +5,11 @@ package uk.ac.manchester.cs.jfact;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.*;
 import static org.semanticweb.owlapi.util.OWLAPIPreconditions.checkNotNull;
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +75,7 @@ public class TranslationMachinery implements Serializable {
     protected final ExpressionCache em;
     protected final OWLDataFactory df;
     protected final DatatypeFactory datatypefactory;
+    protected final EntityVisitorEx entityVisitor;
 
     /**
      * @param kernel
@@ -100,6 +99,7 @@ public class TranslationMachinery implements Serializable {
         dataPropertyTranslator = new DataPropertyTranslator(em, df, this);
         individualTranslator = new IndividualTranslator(em, df, this);
         entailmentChecker = new EntailmentChecker(kernel, df, this);
+        entityVisitor = new EntityVisitorEx(this);
     }
 
     /**
@@ -107,31 +107,25 @@ public class TranslationMachinery implements Serializable {
      *        signature
      * @return expressions
      */
-    public List<Expression> translateExpressions(Set<OWLEntity> signature) {
-        List<Expression> list = new ArrayList<>();
-        for (OWLEntity entity : signature) {
-            Expression ex = entity.accept(new EntityVisitorEx(this));
-            if (ex != Axioms.dummyExpression()) {
-                list.add(ex);
-            }
-        }
-        return list;
+    public List<Expression> translateExpressions(Stream<OWLEntity> signature) {
+        return signature.map(e -> e.accept(entityVisitor))
+                .filter(e -> e != Axioms.dummyExpression()).collect(toList());
     }
 
     /**
      * @param axioms
      *        axioms
      */
-    public void loadAxioms(Collection<OWLAxiom> axioms) {
-        for (OWLAxiom axiom : axioms) {
-            // TODO check valid axioms, such as those involving topDataProperty
-            if (!axiom2PtrMap.containsKey(axiom)) {
-                AxiomInterface axiomPointer = axiom.accept(axiomTranslator);
-                if (axiomPointer != Axioms.dummy()) {
-                    axiom2PtrMap.put(axiom, axiomPointer);
-                    ptr2AxiomMap.put(axiomPointer, axiom);
-                }
-            }
+    public void loadAxioms(Stream<OWLAxiom> axioms) {
+        // TODO check valid axioms, such as those involving topDataProperty
+        axioms.filter(ax -> !axiom2PtrMap.containsKey(ax)).forEach(
+                ax -> checkAndAdd(ax, ax.accept(axiomTranslator)));
+    }
+
+    protected void checkAndAdd(OWLAxiom ax, AxiomInterface axiomPointer) {
+        if (axiomPointer != Axioms.dummy()) {
+            axiom2PtrMap.put(ax, axiomPointer);
+            ptr2AxiomMap.put(axiomPointer, ax);
         }
     }
 
@@ -208,19 +202,18 @@ public class TranslationMachinery implements Serializable {
 
     @Nonnull
     protected NodeSet<OWLNamedIndividual> translateNodeSet(
-            Iterable<IndividualExpression> pointers) {
+            Stream<IndividualExpression> pointers) {
         OWLNamedIndividualNodeSet ns = new OWLNamedIndividualNodeSet();
-        for (IndividualExpression pointer : pointers) {
-            if (pointer instanceof IndividualName) {
-                OWLNamedIndividual ind = individualTranslator
-                        .getEntityFromPointer((IndividualName) pointer);
-                // XXX skipping anonymous individuals - counterintuitive but
-                // that's the specs for you
-                if (ind != null) {
-                    ns.addEntity(ind);
-                }
-            }
-        }
+        // XXX skipping anonymous individuals - counterintuitive but
+        // that's the specs for you
+        pointers.filter(p -> p instanceof IndividualName).forEach(
+                p -> {
+                    OWLNamedIndividual i = individualTranslator
+                            .getEntityFromPointer((IndividualName) p);
+                    if (i != null) {
+                        ns.addEntity(i);
+                    }
+                });
         return ns;
     }
 
