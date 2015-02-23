@@ -5,6 +5,7 @@ package uk.ac.manchester.cs.jfact;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static java.util.stream.Collectors.toList;
 import static org.semanticweb.owlapi.util.OWLAPIPreconditions.checkNotNull;
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.*;
 
@@ -78,6 +79,7 @@ import uk.ac.manchester.cs.jfact.kernel.actors.TaxonomyActor;
 import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
@@ -219,13 +221,14 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     @Override
     public synchronized Node<OWLClass> getEquivalentClasses(
             OWLClassExpression ce) {
-        Collection<ConceptExpression> pointers = Collections.emptyList();
-        if (!isFreshName(ce)) {
-            checkConsistency();
-            pointers = kernel.getEquivalentConcepts(tr.pointer(ce),
-                    classActor()).getSynonyms();
+        if (isFreshName(ce)) {
+            return tr.getClassExpressionTranslator().node(Stream.empty());
         }
-        return tr.getClassExpressionTranslator().node(pointers);
+        checkConsistency();
+        Stream<ConceptExpression> stream = kernel
+                .getEquivalentConcepts(tr.pointer(ce), classActor())
+                .getSynonyms().stream();
+        return tr.getClassExpressionTranslator().node(stream);
     }
 
     private boolean isFreshName(OWLClassExpression ce) {
@@ -532,7 +535,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             pointers.add(kernel.getEquivalentConcepts(
                     tr.pointer(df.getOWLNothing()), classActor()).getSynonyms());
         }
-        return tr.getClassExpressionTranslator().nodeSet(pointers);
+        return tr.getClassExpressionTranslator().nodeSet(pointers.stream());
     }
 
     @Override
@@ -542,16 +545,18 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             return new OWLClassNodeSet(getTopClassNode());
         }
         checkConsistency();
-        return tr.getClassExpressionTranslator().nodeSet(
-                askSuperClasses(tr.pointer(ce), direct));
+        Stream<Collection<ConceptExpression>> stream = askSuperClasses(
+                tr.pointer(ce), direct).stream();
+        return tr.getClassExpressionTranslator().nodeSet(stream);
     }
 
     @Override
     public synchronized NodeSet<OWLClass> getDisjointClasses(
             OWLClassExpression ce) {
         ConceptExpression p = tr.pointer(ce);
-        return tr.getClassExpressionTranslator().nodeSet(
-                kernel.getDisjointConcepts(p, classActor()).getElements());
+        Stream<Collection<ConceptExpression>> stream = kernel
+                .getDisjointConcepts(p, classActor()).getElements().stream();
+        return tr.getClassExpressionTranslator().nodeSet(stream);
     }
 
     // object properties
@@ -570,9 +575,10 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             getSubObjectProperties(OWLObjectPropertyExpression pe,
                     boolean direct) {
         checkConsistency();
-        return tr.getObjectPropertyTranslator().nodeSet(
-                kernel.getRoles(tr.pointer(pe), direct, objectActor(), false)
-                        .getElements());
+        Stream<Collection<ObjectRoleExpression>> stream = kernel
+                .getRoles(tr.pointer(pe), direct, objectActor(), false)
+                .getElements().stream();
+        return tr.getObjectPropertyTranslator().nodeSet(stream);
     }
 
     @Override
@@ -588,16 +594,17 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
                     tr.pointer(df.getOWLTopObjectProperty()), objectActor())
                     .getSynonyms());
         }
-        return tr.getObjectPropertyTranslator().nodeSet(elements);
+        return tr.getObjectPropertyTranslator().nodeSet(elements.stream());
     }
 
     @Override
     public synchronized Node<OWLObjectPropertyExpression>
             getEquivalentObjectProperties(OWLObjectPropertyExpression pe) {
         checkConsistency();
-        return tr.getObjectPropertyTranslator().node(
-                kernel.getEquivalentRoles(tr.pointer(pe), objectActor())
-                        .getSynonyms());
+        Stream<ObjectRoleExpression> stream = kernel
+                .getEquivalentRoles(tr.pointer(pe), objectActor())
+                .getSynonyms().stream();
+        return tr.getObjectPropertyTranslator().node(stream);
     }
 
     @Override
@@ -618,9 +625,10 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     public synchronized NodeSet<OWLClass> getObjectPropertyDomains(
             OWLObjectPropertyExpression pe, boolean direct) {
         checkConsistency();
-        return tr.getClassExpressionTranslator().nodeSet(
-                kernel.getORoleDomain(tr.pointer(pe), direct, classActor())
-                        .getElements());
+        Stream<Collection<ConceptExpression>> stream = kernel
+                .getORoleDomain(tr.pointer(pe), direct, classActor())
+                .getElements().stream();
+        return tr.getClassExpressionTranslator().nodeSet(stream);
     }
 
     @Override
@@ -648,9 +656,10 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     public synchronized NodeSet<OWLDataProperty> getSubDataProperties(
             OWLDataProperty pe, boolean direct) {
         checkConsistency();
-        return tr.getDataPropertyTranslator().nodeSet(
-                kernel.getRoles(tr.pointer(pe), direct, dataActor(), false)
-                        .getElements());
+        Stream<Collection<DataRoleExpression>> stream = kernel
+                .getRoles(tr.pointer(pe), direct, dataActor(), false)
+                .getElements().stream();
+        return tr.getDataPropertyTranslator().nodeSet(stream);
     }
 
     @Override
@@ -665,7 +674,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
                     tr.pointer(df.getOWLTopDataProperty()), dataActor())
                     .getSynonyms());
         }
-        return tr.getDataPropertyTranslator().nodeSet(elements);
+        return tr.getDataPropertyTranslator().nodeSet(elements.stream());
     }
 
     @Override
@@ -673,8 +682,8 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             OWLDataProperty pe) {
         checkConsistency();
         DataRoleExpression p = tr.pointer(pe);
-        Collection<DataRoleExpression> dataPropertySynonyms = kernel
-                .getEquivalentRoles(p, dataActor()).getSynonyms();
+        Stream<DataRoleExpression> dataPropertySynonyms = kernel
+                .getEquivalentRoles(p, dataActor()).getSynonyms().stream();
         return tr.getDataPropertyTranslator().node(dataPropertySynonyms);
     }
 
@@ -689,9 +698,10 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     @Override
     public NodeSet<OWLClass> getDataPropertyDomains(OWLDataProperty pe,
             boolean direct) {
-        return tr.getClassExpressionTranslator().nodeSet(
-                kernel.getDRoleDomain(tr.pointer(pe), direct, classActor())
-                        .getElements());
+        Stream<Collection<ConceptExpression>> stream = kernel
+                .getDRoleDomain(tr.pointer(pe), direct, classActor())
+                .getElements().stream();
+        return tr.getClassExpressionTranslator().nodeSet(stream);
     }
 
     // individuals
@@ -699,8 +709,9 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     public synchronized NodeSet<OWLClass> getTypes(OWLNamedIndividual ind,
             boolean direct) {
         checkConsistency();
-        Collection<Collection<ConceptExpression>> classElements = kernel
-                .getTypes(tr.pointer(ind), direct, classActor()).getElements();
+        Stream<Collection<ConceptExpression>> classElements = kernel
+                .getTypes(tr.pointer(ind), direct, classActor()).getElements()
+                .stream();
         return tr.getClassExpressionTranslator().nodeSet(classElements);
     }
 
@@ -773,9 +784,11 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     public synchronized Node<OWLNamedIndividual> getSameIndividuals(
             OWLNamedIndividual ind) {
         checkConsistency();
-        return tr.getIndividualTranslator().node(
-                kernel.getSameAs(tr.pointer(ind),
-                        individualActor(IndividualName.class)).getSynonyms());
+        Stream<IndividualName> stream = kernel
+                .getSameAs(tr.pointer(ind),
+                        individualActor(IndividualName.class)).getSynonyms()
+                .stream();
+        return tr.getIndividualTranslator().node(stream);
     }
 
     @Override
@@ -859,28 +872,28 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     @Override
     public Node<? extends OWLObjectPropertyExpression> getObjectNeighbours(
             RootNode object, boolean deterministicOnly) {
-        return tr.getObjectPropertyTranslator().node(
-                kernel.getObjectRoles((DlCompletionTree) object.getNode(),
-                        deterministicOnly, false));
+        Stream<ObjectRoleExpression> stream = kernel.getObjectRoles(
+                (DlCompletionTree) object.getNode(), deterministicOnly, false)
+                .stream();
+        return tr.getObjectPropertyTranslator().node(stream);
     }
 
     @Override
     public Node<OWLDataProperty> getDataNeighbours(RootNode object,
             boolean deterministicOnly) {
-        return tr.getDataPropertyTranslator().node(
-                kernel.getDataRoles((DlCompletionTree) object.getNode(),
-                        deterministicOnly));
+        Stream<DataRoleExpression> stream = kernel.getDataRoles(
+                (DlCompletionTree) object.getNode(), deterministicOnly)
+                .stream();
+        return tr.getDataPropertyTranslator().node(stream);
     }
 
     @Override
     public Collection<RootNode> getObjectNeighbours(RootNode n,
             OWLObjectProperty property) {
-        List<RootNode> toReturn = new ArrayList<>();
-        for (DlCompletionTree t : kernel.getNeighbours(
-                (DlCompletionTree) n.getNode(), tr.pointer(property))) {
-            toReturn.add(new RootNodeImpl(checkNotNull(t)));
-        }
-        return toReturn;
+        Stream<DlCompletionTree> stream = kernel.getNeighbours(
+                (DlCompletionTree) n.getNode(), tr.pointer(property)).stream();
+        return stream.map(t -> new RootNodeImpl(checkNotNull(t))).collect(
+                toList());
     }
 
     @Override
@@ -897,19 +910,19 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     @Override
     public Node<? extends OWLClassExpression> getObjectLabel(RootNode object,
             boolean deterministicOnly) {
-        Node<OWLClass> nodeFromPointers = tr
-                .getClassExpressionTranslator()
-                .node(kernel.getObjectLabel(
-                        (DlCompletionTree) object.getNode(), deterministicOnly));
-        return nodeFromPointers;
+        Stream<ConceptExpression> stream = kernel.getObjectLabel(
+                (DlCompletionTree) object.getNode(), deterministicOnly)
+                .stream();
+        return tr.getClassExpressionTranslator().node(stream);
     }
 
     @Override
     public Node<? extends OWLDataRange> getDataLabel(RootNode object,
             boolean deterministicOnly) {
-        return tr.getDataRangeTranslator().node(
-                kernel.getDataLabel((DlCompletionTree) object.getNode(),
-                        deterministicOnly));
+        Stream<DataExpression> stream = kernel.getDataLabel(
+                (DlCompletionTree) object.getNode(), deterministicOnly)
+                .stream();
+        return tr.getDataRangeTranslator().node(stream);
     }
 
     @Override
@@ -1034,8 +1047,9 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
             OWLDataProperty s, int op) {
         checkConsistency();
         // load all the individuals as parameters
-        return tr.getIndividualTranslator().node(
-                kernel.getDataRelatedIndividuals(tr.pointer(r), tr.pointer(s),
-                        op, tr.translate(individuals)));
+        Stream<IndividualName> stream = kernel.getDataRelatedIndividuals(
+                tr.pointer(r), tr.pointer(s), op, tr.translate(individuals))
+                .stream();
+        return tr.getIndividualTranslator().node(stream);
     }
 }

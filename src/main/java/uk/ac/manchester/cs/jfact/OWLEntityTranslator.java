@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
@@ -72,28 +73,22 @@ abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity>
     }
 
     @Nonnull
-    public Node<E> node(Collection<T> pointers) {
-        DefaultNode<E> node = this.createDefaultNode();
-        for (T pointer : pointers) {
-            node.add(this.getEntityFromPointer(pointer));
-        }
-        return node;
+    public Node<E> node(Stream<T> pointers) {
+        return createDefaultNode(pointers.map(p -> getEntityFromPointer(p)));
     }
 
     @Nonnull
-    public NodeSet<E> nodeSet(Collection<Collection<T>> pointers) {
-        DefaultNodeSet<E> nodeSet = this.createDefaultNodeSet();
-        for (Collection<T> pointerArray : pointers) {
-            nodeSet.addNode(this.node(pointerArray));
-        }
-        return nodeSet;
+    public NodeSet<E> nodeSet(Stream<Collection<T>> pointers) {
+        return createDefaultNodeSet(pointers.map(p -> node(p.stream())));
     }
 
     @Nonnull
-    protected abstract DefaultNode<E> createDefaultNode();
+    protected abstract DefaultNode<E> createDefaultNode(
+            @Nonnull Stream<E> stream);
 
     @Nonnull
-    protected abstract DefaultNodeSet<E> createDefaultNodeSet();
+    protected abstract DefaultNodeSet<E> createDefaultNodeSet(
+            @Nonnull Stream<Node<E>> stream);
 
     protected abstract T getTopEntityPointer();
 

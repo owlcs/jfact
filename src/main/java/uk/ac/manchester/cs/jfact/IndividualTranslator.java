@@ -1,7 +1,10 @@
 package uk.ac.manchester.cs.jfact;
 
+import java.util.stream.Stream;
+
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.impl.DefaultNode;
 import org.semanticweb.owlapi.reasoner.impl.DefaultNodeSet;
 import org.semanticweb.owlapi.reasoner.impl.OWLNamedIndividualNode;
@@ -55,12 +58,14 @@ public class IndividualTranslator extends
     }
 
     @Override
-    protected DefaultNode<OWLNamedIndividual> createDefaultNode() {
-        return new OWLNamedIndividualNode();
+    protected DefaultNode<OWLNamedIndividual> createDefaultNode(
+            Stream<OWLNamedIndividual> stream) {
+        return new OWLNamedIndividualNode(stream);
     }
 
     @Override
-    protected DefaultNodeSet<OWLNamedIndividual> createDefaultNodeSet() {
-        return new OWLNamedIndividualNodeSet();
+    protected DefaultNodeSet<OWLNamedIndividual> createDefaultNodeSet(
+            Stream<Node<OWLNamedIndividual>> stream) {
+        return new OWLNamedIndividualNodeSet(stream);
     }
 }

@@ -17,6 +17,7 @@ import org.semanticweb.owlapi.model.OWLDataUnionOf;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLDatatypeRestriction;
 import org.semanticweb.owlapi.model.OWLFacetRestriction;
+import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.impl.DefaultNode;
 import org.semanticweb.owlapi.reasoner.impl.DefaultNodeSet;
 import org.semanticweb.owlapi.reasoner.impl.OWLDatatypeNode;
@@ -66,8 +67,9 @@ public class DataRangeTranslator extends
     }
 
     @Override
-    protected DefaultNode<OWLDatatype> createDefaultNode() {
-        return new OWLDatatypeNode();
+    protected DefaultNode<OWLDatatype> createDefaultNode(
+            Stream<OWLDatatype> stream) {
+        return new OWLDatatypeNode(stream);
     }
 
     @Override
@@ -81,8 +83,9 @@ public class DataRangeTranslator extends
     }
 
     @Override
-    protected DefaultNodeSet<OWLDatatype> createDefaultNodeSet() {
-        return new OWLDatatypeNodeSet();
+    protected DefaultNodeSet<OWLDatatype> createDefaultNodeSet(
+            Stream<Node<OWLDatatype>> stream) {
+        return new OWLDatatypeNodeSet(stream);
     }
 
     @Override

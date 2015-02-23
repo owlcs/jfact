@@ -1,7 +1,10 @@
 package uk.ac.manchester.cs.jfact;
 
+import java.util.stream.Stream;
+
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.impl.DefaultNode;
 import org.semanticweb.owlapi.reasoner.impl.DefaultNodeSet;
 import org.semanticweb.owlapi.reasoner.impl.OWLDataPropertyNode;
@@ -56,12 +59,14 @@ public class DataPropertyTranslator extends
     }
 
     @Override
-    protected DefaultNode<OWLDataProperty> createDefaultNode() {
-        return new OWLDataPropertyNode();
+    protected DefaultNode<OWLDataProperty> createDefaultNode(
+            Stream<OWLDataProperty> stream) {
+        return new OWLDataPropertyNode(stream);
     }
 
     @Override
-    protected DefaultNodeSet<OWLDataProperty> createDefaultNodeSet() {
-        return new OWLDataPropertyNodeSet();
+    protected DefaultNodeSet<OWLDataProperty> createDefaultNodeSet(
+            Stream<Node<OWLDataProperty>> stream) {
+        return new OWLDataPropertyNodeSet(stream);
     }
 }

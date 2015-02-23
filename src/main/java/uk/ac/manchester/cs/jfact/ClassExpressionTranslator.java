@@ -27,6 +27,7 @@ import org.semanticweb.owlapi.model.OWLObjectMinCardinality;
 import org.semanticweb.owlapi.model.OWLObjectOneOf;
 import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectUnionOf;
+import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.impl.DefaultNode;
 import org.semanticweb.owlapi.reasoner.impl.DefaultNodeSet;
 import org.semanticweb.owlapi.reasoner.impl.OWLClassNode;
@@ -82,13 +83,14 @@ public class ClassExpressionTranslator extends
     }
 
     @Override
-    protected DefaultNode<OWLClass> createDefaultNode() {
-        return new OWLClassNode();
+    protected DefaultNode<OWLClass> createDefaultNode(Stream<OWLClass> stream) {
+        return new OWLClassNode(stream);
     }
 
     @Override
-    protected DefaultNodeSet<OWLClass> createDefaultNodeSet() {
-        return new OWLClassNodeSet();
+    protected DefaultNodeSet<OWLClass> createDefaultNodeSet(
+            Stream<Node<OWLClass>> stream) {
+        return new OWLClassNodeSet(stream);
     }
 
     @Override
