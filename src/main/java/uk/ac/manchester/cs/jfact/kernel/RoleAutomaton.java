@@ -9,8 +9,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
-import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import conformance.Original;
 import conformance.PortedFrom;
@@ -44,14 +44,8 @@ public class RoleAutomaton implements Serializable {
      */
     @PortedFrom(file = "RAutomaton.h", name = "ensureState")
     private void ensureState(int state) {
-        if (state >= base.size()) {
-            Helper.resize(base, state + 1);
-        }
-        for (int i = 0; i < base.size(); i++) {
-            if (base.get(i) == null) {
-                base.set(i, new RAStateTransitions());
-            }
-        }
+        IntStream.range(base.size(), state + 1).forEach(
+                i -> base.add(new RAStateTransitions()));
     }
 
     /** Default constructor. */
@@ -245,9 +239,7 @@ public class RoleAutomaton implements Serializable {
      */
     @PortedFrom(file = "RAutomaton.h", name = "print")
     public void print(LogAdapter o) {
-        for (int state = 0; state < base.size(); ++state) {
-            base.get(state).print(o);
-        }
+        base.forEach(p -> p.print(o));
     }
 
     /**
@@ -260,20 +252,17 @@ public class RoleAutomaton implements Serializable {
             int from = map[i];
             RAStateTransitions RST = base.get(from);
             RAStateTransitions RSTOrig = RA.base.get(i);
-            if (RSTOrig.empty()) {
-                continue;
-            }
-            List<RATransition> begin = RSTOrig.begin();
-            for (int j = 0; j < begin.size(); j++) {
-                RATransition p = begin.get(j);
-                int to = p.final_state();
-                RATransition trans = new RATransition(map[to]);
-                checkTransition(from, trans.final_state());
-                trans.add(p);
-                // try to merge transitions going to the original state
-                if (to == 1 && RST.addToExisting(trans)) {} else {
-                    RST.add(trans);
-                }
+            if (!RSTOrig.empty()) {
+                RSTOrig.begin().forEach(p -> {
+                    int to = p.final_state();
+                    RATransition trans = new RATransition(map[to]);
+                    checkTransition(from, trans.final_state());
+                    trans.add(p);
+                    // try to merge transitions going to the original state
+                        if (to != 1 || !RST.addToExisting(trans)) {
+                            RST.add(trans);
+                        }
+                    });
             }
         }
     }

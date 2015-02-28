@@ -6,6 +6,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static uk.ac.manchester.cs.jfact.helpers.DLTree.equalTrees;
+import static uk.ac.manchester.cs.jfact.helpers.Helper.anyMatchOnAllPairs;
 import static uk.ac.manchester.cs.jfact.kernel.CacheStatus.*;
 import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.*;
 import static uk.ac.manchester.cs.jfact.kernel.KBStatus.*;
@@ -430,11 +431,8 @@ public class ReasoningKernel implements Serializable {
         // init signature
         TSignature Sig = new TSignature();
         Sig.setLocality(false);
-        for (Expression q : signature) {
-            if (q instanceof NamedEntity) {
-                Sig.add((NamedEntity) q);
-            }
-        }
+        signature.stream().filter(p -> p instanceof NamedEntity)
+                .forEach(p -> Sig.add((NamedEntity) p));
         return getModExtractor(useSemantic).getModule(Sig, type);
     }
 
@@ -453,21 +451,15 @@ public class ReasoningKernel implements Serializable {
         // init signature
         TSignature Sig = new TSignature();
         Sig.setLocality(type == ModuleType.M_TOP);
-        for (Expression q : signature) {
-            if (q instanceof NamedEntity) {
-                Sig.add((NamedEntity) q);
-            }
-        }
+        signature.stream().filter(p -> p instanceof NamedEntity)
+                .forEach(p -> Sig.add((NamedEntity) p));
         // do check
         LocalityChecker LC = getModExtractor(useSemantic).getModularizer()
                 .getLocalityChecker();
         LC.setSignatureValue(Sig);
         Result.clear();
-        for (AxiomInterface p : getOntology().getAxioms()) {
-            if (!LC.local(p)) {
-                Result.add(p);
-            }
-        }
+        getOntology().getAxioms().stream().filter(p -> !LC.local(p))
+                .forEach(p -> Result.add(p));
         return Result;
     }
 
@@ -1062,14 +1054,8 @@ public class ReasoningKernel implements Serializable {
             return !(nTopRoles > 1 || !Roles.isEmpty());
         }
         // test pair-wise disjointness
-        for (int i = 0; i < Roles.size() - 1; i++) {
-            for (int j = i + 1; j < Roles.size(); j++) {
-                if (!getTBox().isDisjointRoles(Roles.get(i), Roles.get(j))) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return !anyMatchOnAllPairs(Roles,
+                (a, b) -> !getTBox().isDisjointRoles(a, b));
     }
 
     /**
@@ -1888,9 +1874,7 @@ public class ReasoningKernel implements Serializable {
     private void forceReload() {
         clearTBox();
         newKB();
-        for (NamedEntity e : ontology.getSignature().begin()) {
-            e.setEntry(null);
-        }
+        ontology.getSignature().begin().forEach(p -> p.setEntry(null));
         // (re)load ontology
         OntologyLoader ontologyLoader = new OntologyLoader(getTBox());
         ontologyLoader.visitOntology(ontology);
@@ -1953,12 +1937,8 @@ public class ReasoningKernel implements Serializable {
         // smaller module: recurse
         TSignature ModSig = getModExtractor(false).getModularizer()
                 .getSignature();
-        for (NamedEntity p : ModSig.begin()) {
-            if (toProcess.contains(p)) {
-                // need to process
-                buildSignature(p, NewModule, toProcess);
-            }
-        }
+        ModSig.begin().stream().filter(p -> toProcess.contains(p))
+                .forEach(p -> buildSignature(p, NewModule, toProcess));
     }
 
     /** initialise the incremental bits on full reload */
@@ -2438,12 +2418,7 @@ public class ReasoningKernel implements Serializable {
         }
         Individual j = getIndividual(J,
                 "Individual name expected in the isRelated()");
-        List<Individual> vec = getRelated(i, r);
-        for (Individual p : vec) {
-            if (j.equals(p)) {
-                return true;
-            }
-        }
-        return false;
+        // set instead of list?
+        return getRelated(i, r).stream().anyMatch(p -> j.equals(p));
     }
 }

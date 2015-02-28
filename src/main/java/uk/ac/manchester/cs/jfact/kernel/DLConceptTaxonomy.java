@@ -5,8 +5,6 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static java.util.stream.Collectors.toList;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -120,12 +118,8 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
                 return;
             }
             // during classification -- have to find leaf nodes
-            for (int i = 0; i < common.size(); i++) {
-                TaxonomyVertex p = common.get(i);
-                if (p.noNeighbours(false)) {
-                    searchBaader(p);
-                }
-            }
+            common.stream().filter(p -> p.noNeighbours(false))
+                    .forEach(p -> searchBaader(p));
         } finally {
             clearCommon();
         }
@@ -443,20 +437,14 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
             propagateOneCommon(p);
             pTax.clearVisited();
             // clear all non-common nodes (visited on a previous run)
-            int auxSize = aux.size();
-            for (int j = 0; j < auxSize; j++) {
-                aux.get(j).correctCommon(nCommon);
-            }
+            aux.forEach(q -> q.correctCommon(nCommon));
         }
         return false;
     }
 
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "clearCommon")
     private void clearCommon() {
-        int size = common.size();
-        for (int i = 0; i < size; i++) {
-            common.get(i).clearCommon();
-        }
+        common.forEach(p -> p.clearCommon());
         common.clear();
     }
 
@@ -520,12 +508,10 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         pTax.current.neigh(true).forEach(p -> propagateTrueUp(p));
         pTax.current.clearLinks(true);
         runTopDown();
-        List<TaxonomyVertex> vec = pTax.current.neigh(true)
-                .filter(p -> !isDirectParent(p)).collect(toList());
-        for (TaxonomyVertex p : vec) {
+        pTax.current.neigh(true).filter(p -> !isDirectParent(p)).forEach(p -> {
             p.removeLink(false, pTax.current);
             pTax.current.removeLink(true, p);
-        }
+        });
         clearLabels();
     }
 
@@ -597,10 +583,8 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         // System.out.println("Determine concepts that need reclassification ("
         // + toProcess.size() + "): done in " + t);
         // System.out.println("Add/Del names Taxonomy:" + tax);
-        for (int i = 0; i < toProcess.size(); i++) {
-            ClassifiableEntry p = toProcess.get(i);
-            reclassify(p.getTaxVertex(), tBox.getSignature(p));
-        }
+        toProcess.forEach(p -> reclassify(p.getTaxVertex(),
+                tBox.getSignature(p)));
         pTax.finalise();
     }
 

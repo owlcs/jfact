@@ -5,6 +5,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static java.util.stream.Collectors.joining;
 import static uk.ac.manchester.cs.jfact.helpers.DLTree.equalTrees;
 import static uk.ac.manchester.cs.jfact.helpers.Helper.bpINVALID;
 import static uk.ac.manchester.cs.jfact.kernel.Token.RCOMPOSITION;
@@ -182,21 +183,17 @@ public class Role extends ClassifiableEntry {
     /** merge domains */
     @PortedFrom(file = "tRole.h", name = "mergeSupersDomain")
     public void mergeSupersDomain() {
-        for (int i = 0; i < ancestorRoles.size(); i++) {
-            domLabel.merge(ancestorRoles.get(i).domLabel);
-        }
+        ancestorRoles.forEach(p -> domLabel.merge(p.domLabel));
         // for reflexive role -- merge domain and range labels
         if (isReflexive()) {
             domLabel.merge(getRangeLabel());
         }
         // for R1*R2*...*Rn [= R, merge dom(R) with dom(R1) and ran(R) with
         // ran(Rn)
-        for (List<Role> q : subCompositions) {
-            if (!q.isEmpty()) {
-                domLabel.merge(q.get(0).domLabel);
-                getRangeLabel().merge(q.get(q.size() - 1).getRangeLabel());
-            }
-        }
+        subCompositions.stream().filter(p -> !p.isEmpty()).forEach(q -> {
+            domLabel.merge(q.get(0).domLabel);
+            getRangeLabel().merge(q.get(q.size() - 1).getRangeLabel());
+        });
     }
 
     /** @return inverse of given role (non- version) */
@@ -556,9 +553,7 @@ public class Role extends ClassifiableEntry {
     /** merge to Domain all domains from super-roles */
     @PortedFrom(file = "tRole.h", name = "collectDomainFromSupers")
     public void collectDomainFromSupers() {
-        for (int i = 0; i < ancestorRoles.size(); i++) {
-            setDomain(ancestorRoles.get(i).pDomain.copy());
-        }
+        ancestorRoles.forEach(p -> setDomain(p.pDomain.copy()));
     }
 
     /**
@@ -594,10 +589,10 @@ public class Role extends ClassifiableEntry {
     @PortedFrom(file = "tRole.h", name = "addDisjointRole")
     public void addDisjointRole(Role R) {
         disjointRoles.add(R);
-        for (Role p : R.descendantRoles) {
+        R.descendantRoles.forEach(p -> {
             disjointRoles.add(p);
             p.disjointRoles.add(this);
-        }
+        });
     }
 
     /** check (and correct) case whether R != S for R [= S */
@@ -922,26 +917,12 @@ public class Role extends ClassifiableEntry {
             return;
         }
         if (!toldSubsumers.isEmpty()) {
-            o.print(" parents={\"");
-            List<ClassifiableEntry> l = new ArrayList<>(toldSubsumers);
-            for (int i = 0; i < l.size(); i++) {
-                if (i > 0) {
-                    o.print("\", \"");
-                }
-                o.print(l.get(i).getName());
-            }
-            o.print("\"}");
+            o.print(toldSubsumers.stream().map(p -> p.getName())
+                    .collect(joining("\", \"", " parents={\"", "\"}")));
         }
         if (!disjointRoles.isEmpty()) {
-            o.print(" disjoint with {\"");
-            List<Role> l = new ArrayList<>(disjointRoles);
-            for (int i = 0; i < disjointRoles.size(); i++) {
-                if (i > 0) {
-                    o.print("\", \"");
-                }
-                o.print(l.get(i).getName());
-            }
-            o.print("\"}");
+            o.print(disjointRoles.stream().map(p -> p.getName())
+                    .collect(joining("\", \"", " disjoint with {\"", "\"}")));
         }
         if (pDomain != null) {
             o.print(" Domain=(").print(bpDomain).print(")=", pDomain);
@@ -1007,12 +988,8 @@ public class Role extends ClassifiableEntry {
         if (isTopFunc()) {
             topFunctionalRoles.clear();
         }
-        for (int i = 0; i < ancestorRoles.size(); i++) {
-            Role p = ancestorRoles.get(i);
-            if (p.isRealTopFunc()) {
-                topFunctionalRoles.add(p);
-            }
-        }
+        ancestorRoles.stream().filter(p -> p.isRealTopFunc())
+                .forEach(p -> topFunctionalRoles.add(p));
         if (!topFunctionalRoles.isEmpty()) {
             functionality.setValue(true);
         }
@@ -1025,20 +1002,18 @@ public class Role extends ClassifiableEntry {
             disjointRoles.clear();
             return;
         }
-        for (Role p : R.descendantRoles) {
-            if (disjointRoles.contains(p)) {
-                p.setDomain(DLTreeFactory.createBottom());
-                disjointRoles.remove(p);
-                p.disjointRoles.clear();
-            }
-        }
+        R.descendantRoles.stream().filter(p -> disjointRoles.contains(p))
+                .forEach(p -> {
+                    p.setDomain(DLTreeFactory.createBottom());
+                    disjointRoles.remove(p);
+                    p.disjointRoles.clear();
+                });
     }
 
     @PortedFrom(file = "tRole.h", name = "initDJMap")
     private void initDJMap() {
-        for (Role q : disjointRoles) {
-            disjointRolesIndex.add(q.getAbsoluteIndex());
-        }
+        disjointRoles
+                .forEach(p -> disjointRolesIndex.add(p.getAbsoluteIndex()));
     }
 
     @PortedFrom(file = "tRole.h", name = "preprocessComposition")
@@ -1094,13 +1069,9 @@ public class Role extends ClassifiableEntry {
         // start processing role
         RInProcess.add(this);
         // make sure that all sub-roles already have completed automata
-        for (Role p : descendantRoles) {
-            p.completeAutomaton(RInProcess);
-        }
+        descendantRoles.forEach(p -> p.completeAutomaton(RInProcess));
         // add automata for complex role inclusions
-        for (List<Role> q : subCompositions) {
-            addSubCompositionAutomaton(q, RInProcess);
-        }
+        subCompositions.forEach(q -> addSubCompositionAutomaton(q, RInProcess));
         // check for the transitivity
         if (isTransitive()) {
             automaton.addTransitionSafe(RoleAutomaton.final_state,
@@ -1109,13 +1080,13 @@ public class Role extends ClassifiableEntry {
         // here automaton is complete
         automaton.setCompleted(true);
         if (!isBottom()) {
-            for (ClassifiableEntry p : toldSubsumers) {
+            toldSubsumers.forEach(p -> {
                 Role R = (Role) resolveSynonym(p);
                 R.addSubRoleAutomaton(this);
                 if (hasSpecialDomain()) {
                     R.specialDomain = true;
                 }
-            }
+            });
         }
         // finish processing role
         RInProcess.remove(this);

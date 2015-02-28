@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -811,8 +812,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     private void dumpSubClasses(Node<OWLClass> node, LogAdapter pw, int depth,
             boolean includeBottomNode) {
         if (includeBottomNode || !node.isBottomNode()) {
-            Stream.iterate(0, n -> n + 1).limit(depth)
-                    .forEach(n -> pw.print("    "));
+            IntStream.range(0, depth).forEach(n -> pw.print("    "));
             pw.print(node).println();
             getSubClasses(node.getRepresentativeElement(), true)
                     .forEach(

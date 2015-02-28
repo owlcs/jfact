@@ -149,23 +149,17 @@ public class NominalReasoner extends DlSatTester {
             return false;
         }
         // ABox is consistent . create cache for every nominal in KB
-        for (Individual p : nominals) {
-            updateClassifiedSingleton(p);
-        }
+        nominals.forEach(p -> updateClassifiedSingleton(p));
         return true;
     }
 
     @PortedFrom(file = "ReasonerNom.h", name = "initNominalCloud")
     private boolean initNominalCloud() {
-        for (Individual p : nominals) {
-            if (initNominalNode(p)) {
-                return true;
-            }
+        if (nominals.stream().anyMatch(p -> initNominalNode(p))) {
+            return true;
         }
-        for (int i = 0; i < tBox.getRelatedI().size(); i += 2) {
-            if (initRelatedNominals(tBox.getRelatedI().get(i))) {
-                return true;
-            }
+        if (tBox.getRelatedI().stream().anyMatch(p -> initRelatedNominals(p))) {
+            return true;
         }
         if (tBox.getDifferent().isEmpty()) {
             return false;
@@ -173,10 +167,9 @@ public class NominalReasoner extends DlSatTester {
         DepSet dummy = DepSet.create();
         for (List<Individual> r : tBox.getDifferent()) {
             cGraph.initIR();
-            for (Individual p : r) {
-                if (cGraph.setCurIR(resolveSynonym(p).getNode(), dummy)) {
-                    return true;
-                }
+            if (r.stream().anyMatch(
+                    p -> cGraph.setCurIR(resolveSynonym(p).getNode(), dummy))) {
+                return true;
             }
             cGraph.finiIR();
         }

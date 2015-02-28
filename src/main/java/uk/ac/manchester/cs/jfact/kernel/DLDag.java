@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 
@@ -132,9 +133,7 @@ public class DLDag implements Serializable {
     /** clear all DFS info from elements of DAG */
     @PortedFrom(file = "dlDag.h", name = "clearDFS")
     private void clearDFS() {
-        for (DLVertex d : heap) {
-            d.clearDFS();
-        }
+        heap.forEach(d -> d.clearDFS());
     }
 
     /**
@@ -333,10 +332,7 @@ public class DLDag implements Serializable {
     public String toString() {
         StringBuilder o = new StringBuilder("\nDag structure");
         for (int i = 1; i < size(); ++i) {
-            o.append('\n');
-            o.append(i);
-            o.append(' ');
-            o.append(get(i));
+            o.append('\n').append(i).append(' ').append(get(i));
         }
         o.append('\n');
         return o.toString();
@@ -723,52 +719,40 @@ public class DLDag implements Serializable {
         sortArraySize = heap.size();
         // init roles R&D sorts
         List<Role> ORM_Begin = ORM.getRoles();
-        for (Role p : ORM_Begin) {
-            if (!p.isSynonym()) {
-                mergeSorts(p);
-            }
-        }
+        ORM_Begin.stream().filter(p -> !p.isSynonym())
+                .forEach(p -> mergeSorts(p));
         List<Role> DRM_Begin = DRM.getRoles();
-        for (Role p : DRM_Begin) {
-            if (!p.isSynonym()) {
-                mergeSorts(p);
-            }
-        }
-        for (int i = 2; i < heap.size(); ++i) {
-            mergeSorts(heap.get(i));
-        }
-        int sum = 0;
-        for (int i = 2; i < heap.size(); ++i) {
-            MergableLabel lab = heap.get(i).getSort();
+        DRM_Begin.stream().filter(p -> !p.isSynonym())
+                .forEach(p -> mergeSorts(p));
+        heap.stream().skip(2).forEach(p -> mergeSorts(p));
+        AtomicInteger sum = new AtomicInteger();
+        heap.stream().skip(2).forEach(p -> {
+            MergableLabel lab = p.getSort();
             lab.resolve();
             if (lab.isSample()) {
-                ++sum;
+                sum.incrementAndGet();
             }
-        }
-        for (Role p : ORM_Begin) {
-            if (!p.isSynonym()) {
-                MergableLabel lab = p.getDomainLabel();
-                lab.resolve();
-                if (lab.isSample()) {
-                    ++sum;
-                }
+        });
+        ORM_Begin.stream().filter(p -> !p.isSynonym()).forEach(p -> {
+            MergableLabel lab = p.getDomainLabel();
+            lab.resolve();
+            if (lab.isSample()) {
+                sum.incrementAndGet();
             }
-        }
-        for (Role p : DRM_Begin) {
-            if (!p.isSynonym()) {
-                MergableLabel lab = p.getDomainLabel();
-                lab.resolve();
-                if (lab.isSample()) {
-                    ++sum;
-                }
+        });
+        DRM_Begin.stream().filter(p -> !p.isSynonym()).forEach(p -> {
+            MergableLabel lab = p.getDomainLabel();
+            lab.resolve();
+            if (lab.isSample()) {
+                sum.incrementAndGet();
             }
-        }
+        });
         // we added a temp concept here; don't count it
-        if (sum > 0) {
-            sum--;
+        if (sum.get() > 0) {
+            sum.decrementAndGet();
         }
         options.getLog().printTemplate(Templates.DETERMINE_SORTS,
-                sum > 0 ? sum : "no");
+                sum.get() > 0 ? sum : "no");
     }
 
     /**
@@ -783,9 +767,8 @@ public class DLDag implements Serializable {
         R.mergeSupersDomain();
         merge(R.getDomainLabel(), R.getBPDomain());
         // also associate functional nodes (if any)
-        for (Role q : R.begin_topfunc()) {
-            merge(R.getDomainLabel(), q.getFunctional());
-        }
+        R.begin_topfunc().forEach(
+                q -> merge(R.getDomainLabel(), q.getFunctional()));
     }
 
     /**

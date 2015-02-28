@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -97,12 +99,12 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
             resize(inequalityRelation, n);
             inequalityRelation_helper.clear();
             // TODO check performances of this
-            for (int i = 0; i < inequalityRelation.size(); i++) {
-                if (inequalityRelation.get(i) != null) {
-                    inequalityRelation_helper.put(inequalityRelation.get(i)
-                            .getConcept(), inequalityRelation.get(i));
-                }
-            }
+            inequalityRelation
+                    .stream()
+                    .filter(p -> p != null)
+                    .forEach(
+                            p -> inequalityRelation_helper.put(p.getConcept(),
+                                    p));
         }
     }
 
@@ -455,12 +457,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
             return;
         }
         affected = true;
-        for (int i = 0; i < neighbourSize; i++) {
-            DlCompletionTreeArc q = neighbour.get(i);
-            if (q.isSuccEdge()) {
-                q.getArcEnd().setAffected();
-            }
-        }
+        neighbour.stream().limit(neighbourSize).filter(q -> q.isSuccEdge())
+                .forEach(q -> q.getArcEnd().setAffected());
     }
 
     /** clear affected flag */
@@ -646,13 +644,9 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
      * @return null if does not
      */
     public DlCompletionTreeArc getEdgeLabelled(Role R, DlCompletionTree node) {
-        for (int i = 0; i < neighbourSize; i++) {
-            DlCompletionTreeArc p = neighbour.get(i);
-            if (p.getArcEnd().equals(node) && p.isNeighbour(R)) {
-                return p;
-            }
-        }
-        return null;
+        return neighbour.stream().limit(neighbourSize)
+                .filter(p -> p.getArcEnd().equals(node) && p.isNeighbour(R))
+                .findAny().orElse(null);
     }
 
     /**
@@ -857,17 +851,15 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
     private boolean B2Complex(RAStateTransitions RST, int C) {
         DlCompletionTree parent = getParentNode();
         CGLabel parLab = parent.label();
-        for (int i = 0; i < neighbourSize; i++) {
-            DlCompletionTreeArc p = neighbour.get(i);
-            if (recognise(RST, parent, p)) {
-                if (RST.stream().anyMatch(
-                        q -> q.applicable(p.getRole())
-                                && !parLab.containsCC(C + q.final_state()))) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return !neighbour
+                .stream()
+                .limit(neighbourSize)
+                .filter(p -> recognise(RST, parent, p))
+                .anyMatch(
+                        p -> RST.stream().anyMatch(
+                                q -> q.applicable(p.getRole())
+                                        && !parLab.containsCC(C
+                                                + q.final_state())));
     }
 
     protected boolean recognise(RAStateTransitions RST,
@@ -895,14 +887,11 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
             ret = false;
         } else {
             // ...and <=n-1 S-succ. z with C\in L(z)
-            int m = 0;
-            for (int i = 0; i < p.neighbourSize; i++) {
-                DlCompletionTreeArc q = p.neighbour.get(i);
-                if (q.isSuccEdge() && q.isNeighbour(T)
-                        && q.getArcEnd().isLabelledBy(C)) {
-                    ++m;
-                }
-            }
+            long m = p.neighbour
+                    .stream()
+                    .limit(neighbourSize)
+                    .filter(q -> q.isSuccEdge() && q.isNeighbour(T)
+                            && q.getArcEnd().isLabelledBy(C)).count();
             ret = m < n;
         }
         return ret;
@@ -919,17 +908,15 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         }
         // a)w' has at least m T-succ z with E\in L(z)
         // check all sons
-        int n = 0;
-        for (int i = 0; i < neighbourSize; i++) {
-            DlCompletionTreeArc q = neighbour.get(i);
-            // check if node has enough successors
-            if (q.isSuccEdge() && q.isNeighbour(T)
-                    && q.getArcEnd().isLabelledBy(E) && ++n >= m) {
-                return true;
-            }
-        }
-        // rule check fails
-        return false;
+        AtomicInteger n = new AtomicInteger(0);
+        return neighbour
+                .stream()
+                .limit(neighbourSize)
+                .anyMatch(q ->
+                // check if node has enough successors
+                        q.isSuccEdge() && q.isNeighbour(T)
+                                && q.getArcEnd().isLabelledBy(E)
+                                && n.incrementAndGet() >= m);
     }
 
     /** check if B5 holds for(<= n T.E)\in w' */
@@ -1045,12 +1032,12 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
     }
 
     private DlCompletionTree isNSomeApplicable(Role R, int C) {
-        for (int i = 0; i < neighbourSize; i++) {
-            DlCompletionTreeArc p = neighbour.get(i);
-            if (p.isNeighbour(R) && p.getArcEnd().isLabelledBy(C)) {
-                // already contained such a label
-                return p.getArcEnd();
-            }
+        Optional<DlCompletionTreeArc> findAny = neighbour.stream()
+                .limit(neighbourSize)
+                .filter(p -> p.isNeighbour(R) && p.getArcEnd().isLabelledBy(C))
+                .findAny();
+        if (findAny.isPresent()) {
+            return findAny.get().getArcEnd();
         }
         return null;
     }

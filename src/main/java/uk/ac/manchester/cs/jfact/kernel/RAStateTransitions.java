@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
@@ -101,9 +102,7 @@ public class RAStateTransitions implements Serializable {
      */
     @PortedFrom(file = "RAutomaton.h", name = "print")
     public void print(LogAdapter o) {
-        for (int i = 0; i < size; i++) {
-            base.get(i).print(o, from);
-        }
+        base.forEach(p -> p.print(o, from));
     }
 
     /**
@@ -121,11 +120,8 @@ public class RAStateTransitions implements Serializable {
         from = state;
         dataRole = data;
         // fills the set of recognisable roles
-        for (int i = 0; i < size; i++) {
-            for (Role t : base.get(i).begin()) {
-                applicableRoles.set(t.getAbsoluteIndex());
-            }
-        }
+        base.stream().flatMap(p -> p.begin().stream())
+                .forEach(p -> applicableRoles.set(p.getAbsoluteIndex()));
     }
 
     /**
@@ -140,14 +136,13 @@ public class RAStateTransitions implements Serializable {
     public boolean addToExisting(RATransition trans) {
         int to = trans.final_state();
         boolean tEmpty = trans.isEmpty();
-        for (int i = 0; i < size; i++) {
-            RATransition p = base.get(i);
-            // TODO index in Base
-            if (p.final_state() == to && p.isEmpty() == tEmpty) {
-                // found existing transition
-                p.addIfNew(trans);
-                return true;
-            }
+        Optional<RATransition> findAny = base.stream()
+                .filter(p -> p.final_state() == to && p.isEmpty() == tEmpty)
+                .findAny();
+        if (findAny.isPresent()) {
+            // found existing transition
+            findAny.get().addIfNew(trans);
+            return true;
         }
         // no transition from->to found
         return false;

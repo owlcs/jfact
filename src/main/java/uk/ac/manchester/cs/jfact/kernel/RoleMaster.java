@@ -10,6 +10,7 @@ import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
@@ -284,6 +285,10 @@ public class RoleMaster implements Serializable {
         return pTax;
     }
 
+    public Stream<Role> roles() {
+        return roles.stream().skip(firstRoleIndex);
+    }
+
     /**
      * @param o
      *        o
@@ -297,22 +302,13 @@ public class RoleMaster implements Serializable {
         }
         o.print(type, " Roles (").print(size()).print("):\n");
         o.print(emptyRole);
-        for (int i = firstRoleIndex; i < roles.size(); i++) {
-            Role p = roles.get(i);
-            p.print(o);
-        }
+        roles().forEach(p -> p.print(o));
     }
 
     /** @return true if there are reflexive roles */
     @PortedFrom(file = "RoleMaster.h", name = "hasReflexiveRoles")
     public boolean hasReflexiveRoles() {
-        for (int i = firstRoleIndex; i < roles.size(); i++) {
-            Role p = roles.get(i);
-            if (p.isReflexive()) {
-                return true;
-            }
-        }
-        return false;
+        return roles().anyMatch(p -> p.isReflexive());
     }
 
     /**
@@ -322,12 +318,8 @@ public class RoleMaster implements Serializable {
     @PortedFrom(file = "RoleMaster.h", name = "fillReflexiveRoles")
     public void fillReflexiveRoles(List<Role> RR) {
         RR.clear();
-        for (int i = firstRoleIndex; i < roles.size(); i++) {
-            Role p = roles.get(i);
-            if (!p.isSynonym() && p.isReflexive()) {
-                RR.add(p);
-            }
-        }
+        roles().filter(p -> !p.isSynonym() && p.isReflexive()).forEach(
+                p -> RR.add(p));
     }
 
     /** add parent for the input role */
@@ -394,52 +386,26 @@ public class RoleMaster implements Serializable {
     @PortedFrom(file = "RoleMaster.h", name = "initAncDesc")
     public void initAncDesc() {
         int nRoles = roles.size();
-        for (int i = firstRoleIndex; i < roles.size(); i++) {
-            Role p = roles.get(i);
-            p.eliminateToldCycles();
-        }
-        for (int i = firstRoleIndex; i < roles.size(); i++) {
-            Role p = roles.get(i);
-            if (p.isSynonym()) {
-                p.canonicaliseSynonym();
-                p.addFeaturesToSynonym();
-            }
-        }
-        for (int i = firstRoleIndex; i < roles.size(); i++) {
-            Role p = roles.get(i);
-            if (!p.isSynonym()) {
-                p.removeSynonymsFromParents();
-            }
-        }
+        roles().forEach(p -> p.eliminateToldCycles());
+        roles().filter(p -> p.isSynonym()).forEach(p -> {
+            p.canonicaliseSynonym();
+            p.addFeaturesToSynonym();
+        });
+        roles().filter(p -> !p.isSynonym()).forEach(
+                p -> p.removeSynonymsFromParents());
         // here TOP-role has no children yet, so it's safe to complete the
         // automaton
         universalRole.completeAutomaton(nRoles);
-        for (int i = firstRoleIndex; i < roles.size(); i++) {
-            Role p = roles.get(i);
-            if (!p.isSynonym() && !p.hasToldSubsumers()) {
-                p.addParent(universalRole);
-            }
-        }
+        roles().filter(p -> !p.isSynonym() && !p.hasToldSubsumers()).forEach(
+                p -> p.addParent(universalRole));
         TaxonomyCreator taxCreator = new TaxonomyCreator(pTax);
         taxCreator.setCompletelyDefined(true);
-        for (int i = firstRoleIndex; i < roles.size(); i++) {
-            Role p = roles.get(i);
-            if (!p.isClassified()) {
-                taxCreator.classifyEntry(p);
-            }
-        }
-        for (int i = firstRoleIndex; i < roles.size(); i++) {
-            Role p = roles.get(i);
-            if (!p.isSynonym()) {
-                p.initADbyTaxonomy(pTax, nRoles);
-            }
-        }
-        for (int i = firstRoleIndex; i < roles.size(); i++) {
-            Role p = roles.get(i);
-            if (!p.isSynonym()) {
-                p.completeAutomaton(nRoles);
-            }
-        }
+        roles().filter(p -> !p.isClassified()).forEach(
+                p -> taxCreator.classifyEntry(p));
+        roles().filter(p -> !p.isSynonym()).forEach(
+                p -> p.initADbyTaxonomy(pTax, nRoles));
+        roles().filter(p -> !p.isSynonym()).forEach(
+                p -> p.completeAutomaton(nRoles));
         pTax.finalise();
         if (!disjointRolesA.isEmpty()) {
             for (int i = 0; i < disjointRolesA.size(); i++) {
@@ -452,25 +418,11 @@ public class RoleMaster implements Serializable {
                 R.inverse().addDisjointRole(S.inverse());
                 S.inverse().addDisjointRole(R.inverse());
             }
-            for (int i = firstRoleIndex; i < roles.size(); i++) {
-                Role p = roles.get(i);
-                if (!p.isSynonym() && p.isDisjoint()) {
-                    p.checkHierarchicalDisjoint();
-                }
-            }
+            roles().filter(p -> !p.isSynonym() && p.isDisjoint()).forEach(
+                    p -> p.checkHierarchicalDisjoint());
         }
-        for (int i = firstRoleIndex; i < roles.size(); i++) {
-            Role p = roles.get(i);
-            if (!p.isSynonym()) {
-                p.postProcess();
-            }
-        }
-        for (int i = firstRoleIndex; i < roles.size(); i++) {
-            Role p = roles.get(i);
-            if (!p.isSynonym()) {
-                p.consistent();
-            }
-        }
+        roles().filter(p -> !p.isSynonym()).forEach(p -> p.postProcess());
+        roles().filter(p -> !p.isSynonym()).forEach(p -> p.consistent());
     }
 
     /** @return pointer to a TOP role */

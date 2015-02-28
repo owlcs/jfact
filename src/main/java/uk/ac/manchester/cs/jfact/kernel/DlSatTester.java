@@ -23,6 +23,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -153,9 +154,7 @@ public class DlSatTester implements Serializable {
 
         @Override
         public void completeSet(int value) {
-            for (int i = 0; i <= value; i++) {
-                pos.set(i);
-            }
+            IntStream.range(0, value + 1).forEach(i -> pos.set(i));
         }
     }
 
@@ -1100,11 +1099,9 @@ public class DlSatTester implements Serializable {
     }
 
     @PortedFrom(file = "Reasoner.h", name = "setClashSet")
-    private void setClashSet(List<DepSet> d) {
+    private void setClashSet(List<DepSet> depsets) {
         DepSet dep = DepSet.create();
-        for (int i = 0; i < d.size(); i++) {
-            dep.add(d.get(i));
-        }
+        depsets.forEach(d -> dep.add(d));
         clashSet = dep;
     }
 
@@ -1374,14 +1371,8 @@ public class DlSatTester implements Serializable {
         if (gcis.isReflexive() && applyReflexiveRoles(node, dep)) {
             return true;
         }
-        if (!SessionGCIs.isEmpty()) {
-            for (int i : SessionGCIs) {
-                if (addToDoEntry(node, i, dep, "sg")) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return SessionGCIs.stream().anyMatch(
+                i -> addToDoEntry(node, i, dep, "sg"));
     }
 
     /**
@@ -1927,7 +1918,7 @@ public class DlSatTester implements Serializable {
                 .print(testTimer.getResultTime()).print(" milliseconds");
         testTimer.reset();
         finaliseStatistic();
-        if (result) {
+        if (result && options.getLog().isEnabled()) {
             cGraph.print(options.getLog());
         }
         return result;
@@ -1943,14 +1934,9 @@ public class DlSatTester implements Serializable {
 
     @PortedFrom(file = "Reasoner.h", name = "applyReflexiveRoles")
     private boolean applyReflexiveRoles(DlCompletionTree node, DepSet dep) {
-        for (Role p : reflexiveRoles) {
-            DlCompletionTreeArc pA = cGraph.addRoleLabel(node, node, false, p,
-                    dep);
-            if (setupEdge(pA, dep, 0)) {
-                return true;
-            }
-        }
-        return false;
+        return reflexiveRoles.stream()
+                .map(r -> cGraph.addRoleLabel(node, node, false, r, dep))
+                .anyMatch(p -> setupEdge(p, dep, 0));
     }
 
     @PortedFrom(file = "Reasoner.h", name = "checkSatisfiability")
@@ -2098,9 +2084,7 @@ public class DlSatTester implements Serializable {
     private void logIndentation() {
         LogAdapter logAdapter = options.getLog();
         logAdapter.print("\n");
-        for (int i = 1; i < getCurLevel(); i++) {
-            logAdapter.print(' ');
-        }
+        IntStream.range(1, getCurLevel()).forEach(i -> logAdapter.print(' '));
         logAdapter.print('[');
     }
 
@@ -2362,8 +2346,7 @@ public class DlSatTester implements Serializable {
     private boolean commonTacticBodyAnd(DLVertex cur) {
         assert curConceptConcept > 0 && cur.getType() == dtAnd; // safety check
         stats.getnAndCalls().inc();
-        int[] begin = cur.begin();
-        for (int q : begin) {
+        for (int q : cur.begin()) {
             if (addToDoEntry(curNode, q, curConceptDepSet, null)) {
                 return true;
             }
@@ -2982,13 +2965,9 @@ public class DlSatTester implements Serializable {
             DepSet dep, String reason) {
         // if R is functional, then add FR with given DEP-set to NODE
         if (R.isFunctional()) {
-            List<Role> begin_topfunc = R.begin_topfunc();
-            int size = begin_topfunc.size();
-            for (int i = 0; i < size; i++) {
-                if (addToDoEntry(node, begin_topfunc.get(i).getFunctional(),
-                        dep, "fr")) {
-                    return true;
-                }
+            Stream<Role> s = R.begin_topfunc().stream();
+            if (s.anyMatch(p -> addToDoEntry(node, p.getFunctional(), dep, "fr"))) {
+                return true;
             }
         }
         // setup Domain for R
@@ -2996,12 +2975,9 @@ public class DlSatTester implements Serializable {
             return true;
         }
         if (!options.isRKG_UPDATE_RND_FROM_SUPERROLES()) {
-            List<Role> list = R.getAncestor();
-            for (int i = 0; i < list.size(); i++) {
-                Role q = list.get(i);
-                if (addToDoEntry(node, q.getBPDomain(), dep, reason)) {
-                    return true;
-                }
+            Stream<Role> s = R.getAncestor().stream();
+            if (s.anyMatch(q -> addToDoEntry(node, q.getBPDomain(), dep, reason))) {
+                return true;
             }
         }
         return false;
@@ -3035,17 +3011,15 @@ public class DlSatTester implements Serializable {
         DepSet depF = DepSet.create(curConceptDepSet);
         depF.add(q.getDep());
         // merge all elements to sample (sample wouldn't be merge)
-        for (int i = 1; i < EdgesToMerge.size(); i++) {
-            // XXX during merge EdgesToMerge may became purged (see Nasty4) =>
-            // check this
-            q = EdgesToMerge.get(i);
-            if (!q.getArcEnd().isPBlocked()
-                    && merge(q.getArcEnd(), sample,
-                            DepSet.plus(depF, q.getDep()))) {
-                return true;
-            }
-        }
-        return false;
+        // XXX during merge EdgesToMerge may became purged (see Nasty4) =>
+        // check this
+        return EdgesToMerge
+                .stream()
+                .skip(1)
+                .anyMatch(
+                        t -> !t.getArcEnd().isPBlocked()
+                                && merge(t.getArcEnd(), sample,
+                                        DepSet.plus(depF, t.getDep())));
     }
 
     @SuppressWarnings("unchecked")
@@ -3219,15 +3193,10 @@ public class DlSatTester implements Serializable {
         DlCompletionTree sample = NodesToMerge.get(0);
         DepSet dep = DepSet.create(curConceptDepSet);   // dep-set for merging
         // merge all elements to sample (sample wouldn't be merge)
-        for (int i = 0; i < NodesToMerge.size(); i++) {
-            // during merge EdgesToMerge may became purged (see Nasty4) => check
-            // this
-            if (!NodesToMerge.get(i).isPBlocked()
-                    && merge(NodesToMerge.get(i), sample, dep)) {
-                return true;
-            }
-        }
-        return false;
+        // during merge EdgesToMerge may became purged (see Nasty4) => check
+        // this
+        return NodesToMerge.stream().skip(1)
+                .anyMatch(p -> !p.isPBlocked() && merge(p, sample, dep));
     }
 
     @SuppressWarnings("unchecked")
@@ -3496,14 +3465,11 @@ public class DlSatTester implements Serializable {
         List<DlCompletionTreeArc> edges = new ArrayList<>();
         cGraph.merge(from, to, depF, edges);
         // check whether a disjoint roles lead to clash
-        int size = edges.size();
-        for (int i = 0; i < size; i++) {
-            DlCompletionTreeArc q = edges.get(i);
-            if (q.getRole().isDisjoint()
-                    && checkDisjointRoleClash(q.getReverse().getArcEnd(),
-                            q.getArcEnd(), q.getRole(), depF)) {
-                return true;
-            }
+        if (edges.stream().anyMatch(
+                q -> q.getRole().isDisjoint()
+                        && checkDisjointRoleClash(q.getReverse().getArcEnd(),
+                                q.getArcEnd(), q.getRole(), depF))) {
+            return true;
         }
         // nothing more to do with data nodes
         if (to.isDataNode()) {
@@ -3512,24 +3478,15 @@ public class DlSatTester implements Serializable {
         }
         // for every node added to TO, every ALL, Irr and <=-node should be
         // checked
-        for (DlCompletionTreeArc q : edges) {
-            if (applyUniversalNR(to, q, depF, redoForallFuncAtmostIrr())) {
-                return true;
-            }
-        }
-        // we do real action here, so the return value
-        return false;
+        return edges.stream().anyMatch(
+                q -> applyUniversalNR(to, q, depF, redoForallFuncAtmostIrr()));
     }
 
     @PortedFrom(file = "Reasoner.h", name = "checkDisjointRoleClash")
     protected boolean checkDisjointRoleClash(DlCompletionTree from,
             DlCompletionTree to, Role R, DepSet dep) {
-        for (DlCompletionTreeArc p : from.getNeighbour()) {
-            if (checkDisjointRoleClash(p, to, R, dep)) {
-                return true;
-            }
-        }
-        return false;
+        return from.getNeighbour().stream()
+                .anyMatch(p -> checkDisjointRoleClash(p, to, R, dep));
     }
 
     /**
@@ -3636,18 +3593,16 @@ public class DlSatTester implements Serializable {
             return false;
         }
         // check for the real applicability of the NN-rule here
-        for (DlCompletionTreeArc p : curNode.getNeighbour()) {
-            DlCompletionTree suspect = p.getArcEnd();
-            // if there is an edge that require to run the rule, then we need it
-            if (p.isPredEdge() && suspect.isBlockableNode() && p.isNeighbour(r)
-                    && suspect.isLabelledBy(C)) {
-                options.getLog().print(" NN(").print(suspect.getId())
-                        .print(")");
-                return true;
-            }
-        }
-        // can't apply NN-rule
-        return false;
+        // if there is an edge that require to run the rule, then we need it
+        // otherwise the rulle canot be applied
+        return curNode
+                .getNeighbour()
+                .stream()
+                .filter(p -> p.isPredEdge() && p.getArcEnd().isBlockableNode()
+                        && p.isNeighbour(r) && p.getArcEnd().isLabelledBy(C))
+                .peek(p -> options.getLog().print(" NN(")
+                        .print(p.getArcEnd().getId()).print(")")).findAny()
+                .isPresent();
     }
 
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodySomeSelf")
@@ -3657,10 +3612,12 @@ public class DlSatTester implements Serializable {
             return false;
         }
         // nothing to do if R-loop already exists
-        for (DlCompletionTreeArc p : curNode.getNeighbour()) {
-            if (p.getArcEnd().equals(curNode) && p.isNeighbour(R)) {
-                return false;
-            }
+        if (curNode
+                .getNeighbour()
+                .stream()
+                .anyMatch(
+                        p -> p.getArcEnd().equals(curNode) && p.isNeighbour(R))) {
+            return false;
         }
         // create an R-loop through curNode
         DepSet dep = DepSet.create(curConceptDepSet);
@@ -3670,12 +3627,8 @@ public class DlSatTester implements Serializable {
 
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodyIrrefl")
     private boolean commonTacticBodyIrrefl(Role R) {
-        for (DlCompletionTreeArc p : curNode.getNeighbour()) {
-            if (this.checkIrreflexivity(p, R, curConceptDepSet)) {
-                return true;
-            }
-        }
-        return false;
+        return curNode.getNeighbour().stream()
+                .anyMatch(p -> checkIrreflexivity(p, R, curConceptDepSet));
     }
 
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodyProj")
@@ -3685,13 +3638,10 @@ public class DlSatTester implements Serializable {
         }
         // checkProjection() might change curNode's edge vector and thusly
         // invalidate iterators
-        for (int i = 0; i < curNode.getNeighbour().size(); i++) {
-            if (curNode.getNeighbour().get(i).isNeighbour(R)
-                    && checkProjection(curNode.getNeighbour().get(i), C, ProjR)) {
-                return true;
-            }
-        }
-        return false;
+        return curNode
+                .getNeighbour()
+                .stream()
+                .anyMatch(p -> p.isNeighbour(R) && checkProjection(p, C, ProjR));
     }
 
     @PortedFrom(file = "Reasoner.h", name = "checkProjection")
