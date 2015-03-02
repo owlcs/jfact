@@ -7,7 +7,6 @@ package conformancetests;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
@@ -26,7 +25,6 @@ public class TopObjectPropertyTest extends TestBase {
 
     OWLDataFactory df = OWLManager.getOWLDataFactory();
 
-    @Test
     public void testReasoner3() throws OWLOntologyCreationException {
         OWLOntologyManager mngr = OWLManager.createOWLOntologyManager();
         OWLOntology ont = mngr.createOntology();
@@ -36,18 +34,17 @@ public class TopObjectPropertyTest extends TestBase {
         mngr.applyChange(new AddAxiom(ont, df
                 .getOWLFunctionalDataPropertyAxiom(p)));
         OWLReasonerFactory fac = factory();
-        OWLReasoner r = fac.createNonBufferingReasoner(ont);
+        OWLReasoner r = fac.createReasoner(ont);
         assertTrue(r.isEntailed(df.getOWLSubClassOfAxiom(
                 df.getOWLDataSomeValuesFrom(p, df.getIntegerOWLDatatype()),
                 df.getOWLDataSomeValuesFrom(p, df.getTopDatatype()))));
     }
 
-    @Test
     public void testReasoner4() throws OWLOntologyCreationException {
         OWLOntologyManager mngr = OWLManager.createOWLOntologyManager();
         OWLOntology ont = mngr.createOntology();
         OWLReasonerFactory fac = factory();
-        OWLReasoner r = fac.createNonBufferingReasoner(ont);
+        OWLReasoner r = fac.createReasoner(ont);
         assertTrue(r.getTopDataPropertyNode().entities().findAny().isPresent());
     }
 }
