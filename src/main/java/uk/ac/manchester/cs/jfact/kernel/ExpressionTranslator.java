@@ -186,12 +186,7 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>,
     @Override
     public DLTree visit(ConceptObjectSelf expr) {
         DLTree r = expr.getOR().accept(this);
-        if (r.elem().getNE().isBottom()) {
-            return DLTreeFactory.createBottom();
-        }
-        DLTree toReturn = DLTreeFactory.createSNFSelf(DLTreeFactory.buildTree(
-                new Lexeme(Token.SELF), r));
-        return toReturn;
+        return DLTreeFactory.createSNFSelf(r);
     }
 
     @Override
