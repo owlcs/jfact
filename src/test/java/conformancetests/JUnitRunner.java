@@ -26,7 +26,9 @@ import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.profiles.OWL2DLProfile;
 import org.semanticweb.owlapi.profiles.OWLProfileReport;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
+import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 
 @SuppressWarnings({ "javadoc" })
 public class JUnitRunner {
@@ -48,6 +50,11 @@ public class JUnitRunner {
     private final String premise;
     private final String consequence;
     private final String description;
+    private OWLReasonerConfiguration config = new SimpleConfiguration();
+
+    public void setConfig(OWLReasonerConfiguration c) {
+        config = c;
+    }
 
     public JUnitRunner(String premise, String consequence, String testId,
             TestClasses t, String description) {
@@ -143,7 +150,7 @@ public class JUnitRunner {
         b.append("JUnitRunner.logTroubles() premise");
         b.append('\n');
         premiseOntology.axioms().forEach(ax1 -> b.append(ax1).append('\n'));
-        OWLReasoner reasoner = f.createReasoner(premiseOntology);
+        OWLReasoner reasoner = f.createReasoner(premiseOntology, config);
         actual(conclusionOntology, b, reasoner);
         // reasoner = roundtrip(reasoner);
         // actual(conclusionOntology, b, reasoner);
