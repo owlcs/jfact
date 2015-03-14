@@ -117,7 +117,6 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
     // TODO check whether access should be improved
     /** Neighbours information */
     private final List<DlCompletionTreeArc> neighbour = new ArrayList<>();
-    private int neighbourSize = 0;
     /** pointer to last saved node */
     private final SaveList saves = new SaveList();
     /** ID of node (used in print) */
@@ -242,7 +241,6 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
      */
     public void addNeighbour(DlCompletionTreeArc p) {
         neighbour.add(p);
-        neighbourSize++;
     }
 
     /** @return Node's id */
@@ -346,7 +344,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
 
     /** @return true if node is a non-root; works for reflexive roles */
     public boolean hasParent() {
-        if (neighbourSize == 0) {
+        if (neighbour.isEmpty()) {
             return false;
         }
         return neighbour.get(0).isPredEdge();
@@ -457,7 +455,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
             return;
         }
         affected = true;
-        neighbour.stream().limit(neighbourSize).filter(q -> q.isSuccEdge())
+        neighbour.stream().filter(q -> q.isSuccEdge())
                 .forEach(q -> q.getArcEnd().setAffected());
     }
 
@@ -644,7 +642,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
      * @return null if does not
      */
     public DlCompletionTreeArc getEdgeLabelled(Role R, DlCompletionTree node) {
-        return neighbour.stream().limit(neighbourSize)
+        return neighbour.stream()
                 .filter(p -> p.getArcEnd().equals(node) && p.isNeighbour(R))
                 .findAny().orElse(null);
     }
@@ -837,12 +835,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
     @PortedFrom(file = "Blocking.cpp", name = "B2Simple")
     private boolean B2Simple(RAStateTransitions RST, int C) {
         DlCompletionTree parent = getParentNode();
-        CGLabel parLab = parent.label();
-        for (int i = 0; i < neighbourSize; i++) {
-            DlCompletionTreeArc p = neighbour.get(i);
-            if (recognise(RST, parent, p)) {
-                return parLab.contains(C);
-            }
+        if (neighbour.stream().anyMatch(p -> recognise(RST, parent, p))) {
+            return parent.label().contains(C);
         }
         return true;
     }
@@ -853,7 +847,6 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         CGLabel parLab = parent.label();
         return !neighbour
                 .stream()
-                .limit(neighbourSize)
                 .filter(p -> recognise(RST, parent, p))
                 .anyMatch(
                         p -> RST.stream().anyMatch(
@@ -889,7 +882,6 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
             // ...and <=n-1 S-succ. z with C\in L(z)
             long m = p.neighbour
                     .stream()
-                    .limit(neighbourSize)
                     .filter(q -> q.isSuccEdge() && q.isNeighbour(T)
                             && q.getArcEnd().isLabelledBy(C)).count();
             ret = m < n;
@@ -909,14 +901,11 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         // a)w' has at least m T-succ z with E\in L(z)
         // check all sons
         AtomicInteger n = new AtomicInteger(0);
-        return neighbour
-                .stream()
-                .limit(neighbourSize)
-                .anyMatch(q ->
-                // check if node has enough successors
-                        q.isSuccEdge() && q.isNeighbour(T)
-                                && q.getArcEnd().isLabelledBy(E)
-                                && n.incrementAndGet() >= m);
+        return neighbour.stream().anyMatch(q ->
+        // check if node has enough successors
+                q.isSuccEdge() && q.isNeighbour(T)
+                        && q.getArcEnd().isLabelledBy(E)
+                        && n.incrementAndGet() >= m);
     }
 
     /** check if B5 holds for(<= n T.E)\in w' */
@@ -980,7 +969,6 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         inequalityRelation.clear();
         inequalityRelation_helper.clear();
         neighbour.clear();
-        neighbourSize = 0;
         setBlocker(null);
         pDep.clear();
     }
@@ -995,8 +983,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         }
         // check all other successors
         DlCompletionTree ret = null;
-        for (int i = 0; i < neighbourSize; i++) {
-            DlCompletionTreeArc p = neighbour.get(i);
+        for (DlCompletionTreeArc p : neighbour) {
             if (p.isSuccEdge() && p.isNeighbour(R) && !p.isReflexiveEdge()
                     && (ret = p.getArcEnd().isTSuccLabelled(R, C)) != null) {
                 return ret;
@@ -1016,8 +1003,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         }
         // check all other successors
         DlCompletionTree ret = null;
-        for (int i = 0; i < neighbourSize; i++) {
-            DlCompletionTreeArc p = neighbour.get(i);
+        for (DlCompletionTreeArc p : neighbour) {
             if (p.isSuccEdge() && p.isNeighbour(R)
                     && !p.getArcEnd().equals(from)
                     && (ret = p.getArcEnd().isTSuccLabelled(R, C)) != null) {
@@ -1033,7 +1019,6 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
 
     private DlCompletionTree isNSomeApplicable(Role R, int C) {
         Optional<DlCompletionTreeArc> findAny = neighbour.stream()
-                .limit(neighbourSize)
                 .filter(p -> p.isNeighbour(R) && p.getArcEnd().isLabelledBy(C))
                 .findAny();
         if (findAny.isPresent()) {
@@ -1044,8 +1029,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
 
     private DlCompletionTree isTSomeApplicable(Role R, int C) {
         DlCompletionTree ret = null;
-        for (int i = 0; i < neighbourSize; i++) {
-            DlCompletionTreeArc p = neighbour.get(i);
+        for (DlCompletionTreeArc p : neighbour) {
             if (p.isNeighbour(R)) {
                 if (p.isPredEdge()) {
                     ret = p.getArcEnd().isTPredLabelled(R, C, this);
@@ -1064,7 +1048,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
     /** saving/restoring */
     private void save(DLCompletionTreeSaveState nss) {
         nss.setCurLevel(curLevel);
-        nss.setnNeighbours(neighbourSize);
+        nss.setnNeighbours(neighbour.size());
         label.save(nss.getLab());
         logSRNode("SaveNode");
     }
@@ -1080,12 +1064,10 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         // remove new neighbours
         if (!options.isRKG_USE_DYNAMIC_BACKJUMPING()) {
             resize(neighbour, nss.getnNeighbours());
-            neighbourSize = nss.getnNeighbours();
         } else {
             for (int j = neighbour.size() - 1; j >= 0; --j) {
                 if (neighbour.get(j).getArcEnd().curLevel <= curLevel) {
                     Helper.resize(neighbour, j + 1);
-                    neighbourSize = neighbour.size();
                     break;
                 }
             }

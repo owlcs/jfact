@@ -2569,8 +2569,12 @@ public class DlSatTester implements Serializable {
         }
         DepSet dep = DepSet.plus(dep_, arcSample.getDep());
         // need only AR.C concepts where ARC is labelled with R
-        return Node.beginl_cc().stream().filter(p -> p.getConcept() > 0)
-                .anyMatch(p -> universalNR(Node, p, arcSample, dep, flags));
+        return Node
+                .beginl_cc()
+                .stream()
+                .anyMatch(
+                        p -> p.getConcept() > 0
+                                && universalNR(Node, p, arcSample, dep, flags));
     }
 
     private boolean universalNR(DlCompletionTree Node, ConceptWDep p,
@@ -3013,13 +3017,22 @@ public class DlSatTester implements Serializable {
         // merge all elements to sample (sample wouldn't be merge)
         // XXX during merge EdgesToMerge may became purged (see Nasty4) =>
         // check this
-        return EdgesToMerge
-                .stream()
-                .skip(1)
-                .anyMatch(
-                        t -> !t.getArcEnd().isPBlocked()
-                                && merge(t.getArcEnd(), sample,
-                                        DepSet.plus(depF, t.getDep())));
+        for (int i = 1; i < EdgesToMerge.size(); i++) {
+            q = EdgesToMerge.get(i);
+            if (!q.getArcEnd().isPBlocked()
+                    && merge(q.getArcEnd(), sample,
+                            DepSet.plus(depF, q.getDep()))) {
+                return true;
+            }
+        }
+        return false;
+        // return EdgesToMerge
+        // .stream()
+        // .skip(1)
+        // .anyMatch(
+        // t -> !t.getArcEnd().isPBlocked()
+        // && merge(t.getArcEnd(), sample,
+        // DepSet.plus(depF, t.getDep())));
     }
 
     @SuppressWarnings("unchecked")
