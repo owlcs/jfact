@@ -11,7 +11,7 @@
 	<groupId>net.sourceforge.owlapi</groupId>
 	<artifactId>jfact</artifactId>
 	<packaging>bundle</packaging>
-	<version>4.0.0</version>
+	<version>4.0.1</version>
 	<name>JFact</name>
 	<description>JFact is an OWL DL reasoner, based on FaCT++</description>
 	<url>http://jfact.sourceforge.net</url>
@@ -199,7 +199,7 @@
 		<dependency>
 			<groupId>net.sourceforge.owlapi</groupId>
 			<artifactId>owlapi-distribution</artifactId>
-			<version>4.0.0</version>
+			<version>[4.0.2,4.1)</version>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.javaewah</groupId>
@@ -231,7 +231,7 @@
 		<dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.editor.owl</artifactId>
-			<version>5.0.0-beta-16-SNAPSHOT</version>
+			<version>[4.3,5]</version>
 			<optional>true</optional>
 		</dependency>
 	</dependencies>
