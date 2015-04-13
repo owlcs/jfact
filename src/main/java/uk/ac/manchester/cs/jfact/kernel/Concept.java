@@ -19,13 +19,13 @@ import java.util.Set;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.helpers.FastSet;
 import uk.ac.manchester.cs.jfact.helpers.FastSetFactory;
 import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** concept */
 @PortedFrom(file = "ConceptWithDep.h", name = "Concept")
@@ -183,6 +183,7 @@ public class Concept extends ClassifiableEntry {
     @PortedFrom(file = "tConcept.h", name = "addExtraRule")
     public void addExtraRule(int ruleIndex) {
         extraRules.add(ruleIndex);
+        // FIXME!! double check this!
         setCompletelyDefined(false);
     }
 
@@ -369,15 +370,19 @@ public class Concept extends ClassifiableEntry {
     @PortedFrom(file = "tConcept.h", name = "determineClassTag")
     @SuppressWarnings("incomplete-switch")
     private CTTag determineClassTag() {
+        // for synonyms -- set tag as a primer's one
         if (isSynonym()) {
             return resolveSynonym(this).getClassTag();
         }
+        // check if it is non-primitive
         if (!isPrimitive()) {
             return CTTag.cttNonPrimitive;
         }
+        // no told subsumers
         if (!hasToldSubsumers()) {
             return CTTag.cttOrphan;
         }
+        // now need to check all the told subsumers
         boolean hasLCD = false;
         boolean hasOther = false;
         boolean hasNP = false;

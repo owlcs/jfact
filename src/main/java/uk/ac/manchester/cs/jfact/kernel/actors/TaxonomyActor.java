@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
 import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
-import conformance.PortedFrom;
 
 /**
  * class for acting with concept taxonomy

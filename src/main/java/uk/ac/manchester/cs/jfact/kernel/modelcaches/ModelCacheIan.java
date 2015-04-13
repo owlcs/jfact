@@ -11,6 +11,7 @@ import static uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheType.mctIan
 import java.util.BitSet;
 import java.util.List;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.DLVertex;
 import uk.ac.manchester.cs.jfact.helpers.FastSet;
 import uk.ac.manchester.cs.jfact.helpers.FastSetFactory;
@@ -24,8 +25,7 @@ import uk.ac.manchester.cs.jfact.kernel.DlCompletionTreeArc;
 import uk.ac.manchester.cs.jfact.kernel.RAStateTransitions;
 import uk.ac.manchester.cs.jfact.kernel.RATransition;
 import uk.ac.manchester.cs.jfact.kernel.Role;
-import conformance.Original;
-import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
 /** model cache Ian (Horrocks) */
 @PortedFrom(file = "modelCacheIan.h", name = "modelCacheIan")
@@ -66,9 +66,7 @@ public class ModelCacheIan extends ModelCacheInterface {
     // XXX these two fields should be used somehow
     private final int nC;
     private final int nR;
-    // XXX move to config
-    @Original
-    private final boolean simpleRules;
+    private final JFactReasonerConfiguration simpleRules;
 
     /**
      * process CT label in given interval; set Deterministic accordingly
@@ -118,7 +116,7 @@ public class ModelCacheIan extends ModelCacheInterface {
      *        simpleRules
      */
     public ModelCacheIan(DLDag heap, DlCompletionTree p, boolean flagNominals,
-            int nC, int nR, boolean simpleRules) {
+            int nC, int nR, JFactReasonerConfiguration simpleRules) {
         this(flagNominals, nC, nR, simpleRules);
         initCacheByLabel(heap, p);
         initRolesFromArcs(p);
@@ -135,7 +133,7 @@ public class ModelCacheIan extends ModelCacheInterface {
      *        simpleRules
      */
     public ModelCacheIan(boolean flagNominals, int nC, int nR,
-            boolean simpleRules) {
+            JFactReasonerConfiguration simpleRules) {
         super(flagNominals);
         curState = csValid;
         this.simpleRules = simpleRules;
@@ -213,7 +211,7 @@ public class ModelCacheIan extends ModelCacheInterface {
         posNConcepts.clear();
         negDConcepts.clear();
         negNConcepts.clear();
-        if (simpleRules) {
+        if (simpleRules.isRKG_USE_SIMPLE_RULES()) {
             extraDConcepts.clear();
             extraNConcepts.clear();
         }
@@ -239,6 +237,7 @@ public class ModelCacheIan extends ModelCacheInterface {
             case dtDataType:
             case dtDataValue:
             case dtDataExpr:
+                // data entries can not be cached
                 throw new UnreachableSituationException(
                         cur.toString()
                                 + " Top datatype property, datatype, data value or data expression used in an unexpected position");
@@ -246,6 +245,7 @@ public class ModelCacheIan extends ModelCacheInterface {
             case dtPConcept:
             case dtNSingleton:
             case dtPSingleton:
+                // add concepts to Concepts
                 int toAdd = ((ClassifiableEntry) cur.getConcept()).getIndex();
                 (det ? getDConcepts(pos) : getNConcepts(pos)).set(toAdd);
                 break;
@@ -253,6 +253,7 @@ public class ModelCacheIan extends ModelCacheInterface {
             case dtForall: // add AR.C roles to forallRoles
             case dtLE: // for <= n R: add R to forallRoles
                 if (cur.getRole().isTop()) {
+                    // force clash to every other edge
                     (pos ? forallRoles : existsRoles).completeSet(nR);
                 } else if (pos) {
                     // no need to deal with existentials here: they would be
@@ -275,7 +276,7 @@ public class ModelCacheIan extends ModelCacheInterface {
      */
     @PortedFrom(file = "modelCacheIan.h", name = "processAutomaton")
     public void processAutomaton(DLVertex cur) {
-        RAStateTransitions RST = cur.getRole().getAutomaton().getBase()
+        RAStateTransitions RST = cur.getRole().getAutomaton()
                 .get(cur.getState());
         // for every transition starting from a given state,
         // add the role that is accepted by a transition
@@ -297,6 +298,7 @@ public class ModelCacheIan extends ModelCacheInterface {
     private void addRoleToCache(Role R) {
         existsRoles.add(R.getIndex());
         if (R.isTopFunc()) {
+            // all other top-funcs would be added separately
             funcRoles.add(R.getIndex());
         }
     }
@@ -321,21 +323,27 @@ public class ModelCacheIan extends ModelCacheInterface {
     @PortedFrom(file = "modelCacheIan.h", name = "canMerge")
     public ModelCacheState canMerge(ModelCacheInterface p) {
         if (hasNominalClash(p)) {
+            // fail to merge due to nominal precense
             return csFailed;
         }
+        // check if something goes wrong
         if (p.getState() != csValid || curState != csValid) {
             return mergeStatus(p.getState(), curState);
         }
+        // here both models are valid;
         switch (p.getCacheType()) {
             case mctConst:
+                // check for TOP (as the model is valid)
                 return csValid;
             case mctSingleton:
+                // check for the Singleton
                 int Singleton = ((ModelCacheSingleton) p).getValue();
                 return isMergableSingleton(Math.abs(Singleton), Singleton > 0);
             case mctIan:
                 return isMergableIan((ModelCacheIan) p);
             case mctBadType:
             default:
+                // something unexpected
                 return csUnknown;
         }
     }
@@ -389,10 +397,11 @@ public class ModelCacheIan extends ModelCacheInterface {
         ) {
             return csFailed;
         } else {
-            if (simpleRules && getExtra(true).intersect(q.getExtra(true))) {
+            if (simpleRules.isRKG_USE_SIMPLE_RULES()
+                    && getExtra(true).intersect(q.getExtra(true))) {
                 return csInvalid;
             }
-            if (simpleRules
+            if (simpleRules.isRKG_USE_SIMPLE_RULES()
                     && (getExtra(true).intersect(q.getExtra(false))
                             || getExtra(false).intersect(q.getExtra(true)) || getExtra(
                                 false).intersect(q.getExtra(false)))) {
@@ -446,8 +455,10 @@ public class ModelCacheIan extends ModelCacheInterface {
     private void mergeSingleton(int Singleton, boolean pos) {
         ModelCacheState newState = isMergableSingleton(Singleton, pos);
         if (newState != csValid) {
+            // some clash occured: adjust state
             curState = mergeStatus(curState, newState);
         } else {
+            // add singleton; no need to change state here
             getDConcepts(pos).set(Singleton);
         }
     }
@@ -467,7 +478,7 @@ public class ModelCacheIan extends ModelCacheInterface {
         posNConcepts.or(p.posNConcepts);
         negDConcepts.or(p.negDConcepts);
         negNConcepts.or(p.negNConcepts);
-        if (simpleRules) {
+        if (simpleRules.isRKG_USE_SIMPLE_RULES()) {
             extraDConcepts.addAll(p.extraDConcepts);
             extraNConcepts.addAll(p.extraNConcepts);
         }

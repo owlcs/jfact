@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
 import uk.ac.manchester.cs.jfact.kernel.Concept;
 import uk.ac.manchester.cs.jfact.kernel.Individual;
 import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
-import conformance.PortedFrom;
 
 /** RI actor */
 @PortedFrom(file = "Kernel.cpp", name = "RIActor")

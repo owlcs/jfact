@@ -11,11 +11,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** class to create modules of an ontology wrt module type */
 @PortedFrom(file = "Modularity.h", name = "TModularizer")
@@ -130,6 +130,7 @@ public class TModularizer implements Serializable {
     private void addNonLocal(Collection<AxiomInterface> AxSet, boolean noCheck) {
         for (AxiomInterface q : AxSet) {
             if (!q.isInModule() && q.isInSS()) {
+                // in the given range but not in module yet
                 this.addNonLocal(q, noCheck);
             }
         }

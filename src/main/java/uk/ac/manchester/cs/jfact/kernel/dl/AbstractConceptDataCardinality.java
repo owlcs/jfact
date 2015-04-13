@@ -11,12 +11,12 @@ import javax.annotation.Nonnull;
 
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptDataCardinalityExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleArg;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** base class for data cardinality */
 @Original

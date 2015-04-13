@@ -9,9 +9,9 @@ import java.io.Serializable;
 
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
-import conformance.PortedFrom;
 
 /** named entity base class */
 @PortedFrom(file = "tDLExpression.h", name = "TNamedEntity")

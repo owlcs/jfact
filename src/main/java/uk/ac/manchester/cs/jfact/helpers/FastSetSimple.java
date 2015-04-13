@@ -111,7 +111,7 @@ public class FastSetSimple extends AbstractFastSet {
     }
 
     @Override
-    public void add(int e) {
+    public boolean add(int e) {
         int pos = -1;
         if (values == null) {
             init();
@@ -122,7 +122,7 @@ public class FastSetSimple extends AbstractFastSet {
             pos = insertionIndex(e);
         }
         if (pos > -1) {
-            return;
+            return false;
         }
         int i = -pos - 1;
         // i is now the insertion point
@@ -137,6 +137,7 @@ public class FastSetSimple extends AbstractFastSet {
         values[i] = e;
         // increase used size
         size++;
+        return true;
     }
 
     @Override

@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import uk.ac.manchester.cs.jfact.helpers.Helper;
-import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import conformance.Original;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.helpers.Helper;
+import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 
 /** role automaton */
 @PortedFrom(file = "RAutomaton.h", name = "RoleAutomaton")
@@ -113,14 +113,14 @@ public class RoleAutomaton implements Serializable {
         if (isCompleted()) {
             return;
         }
-        assert !isCompleted();
+        //assert !isCompleted();
         if (RA.isSimple()) {
             boolean ok = base.get(initial).addToExisting(
                     RA.getBase().get(initial).begin().get(0));
             assert ok;
         } else {
             initChain(initial);
-            addToChain(RA, /* oSafe= */false, final_state);
+            addToChain(RA, false, final_state);
         }
     }
 
@@ -264,7 +264,7 @@ public class RoleAutomaton implements Serializable {
             int from = map[i];
             RAStateTransitions RST = base.get(from);
             RAStateTransitions RSTOrig = RA.base.get(i);
-            if (RSTOrig.isEmpty()) {
+            if (RSTOrig.empty()) {
                 continue;
             }
             List<RATransition> begin = RSTOrig.begin();
@@ -331,7 +331,7 @@ public class RoleAutomaton implements Serializable {
      */
     @PortedFrom(file = "RAutomaton.h", name = "addToChain")
     public boolean addToChain(RoleAutomaton RA, boolean oSafe, int fRA) {
-        assert !isCompleted();
+        // XXX assert !isCompleted();
         boolean needFinalTrans = fRA < size() && !RA.isOSafe();
         // we can skip transition if chaining automata are i- and o-safe
         if (!oSafe && !RA.isISafe()) {
@@ -352,20 +352,16 @@ public class RoleAutomaton implements Serializable {
         return base;
     }
 
+    @PortedFrom(file = "RAutomaton.h", name = "begin")
+    public RAStateTransitions get(int i) {
+        return base.get(i);
+    }
+
     // automaton completeness
     @PortedFrom(file = "RAutomaton.h", name = "Complete")
     private boolean Complete;
 
     /** mark an automaton as completed */
-    @PortedFrom(file = "RAutomaton.h", name = "setCompleted")
-    public void setCompleted() {
-        Complete = true;
-    }
-
-    /**
-     * @param b
-     *        b
-     */
     @PortedFrom(file = "RAutomaton.h", name = "setCompleted")
     public void setCompleted(boolean b) {
         Complete = b;
@@ -380,7 +376,7 @@ public class RoleAutomaton implements Serializable {
     /** @return true iff the automaton is simple */
     @PortedFrom(file = "RAutomaton.h", name = "isSimple")
     public boolean isSimple() {
-        // assert isCompleted();
+        // XXX assert isCompleted();
         return size() == 2 && inputSafe && outputSafe;
     }
 }

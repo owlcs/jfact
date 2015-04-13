@@ -7,12 +7,12 @@ package uk.ac.manchester.cs.jfact.kernel.dl.interfaces;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import org.semanticweb.owlapi.model.OWLAxiom;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.split.TOntologyAtom;
 import uk.ac.manchester.cs.jfact.split.TSignature;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** Axiom interface */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiom")

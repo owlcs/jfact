@@ -12,9 +12,9 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
-import conformance.PortedFrom;
 
 /**
  * nary expression base

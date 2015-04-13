@@ -9,12 +9,12 @@ import java.io.Serializable;
 
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleArg;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** object role inverse */
 @PortedFrom(file = "tDLExpression.h", name = "TDLObjectRoleInverse")

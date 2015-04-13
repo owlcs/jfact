@@ -21,14 +21,14 @@ import java.util.Set;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.helpers.FastSet;
 import uk.ac.manchester.cs.jfact.helpers.FastSetFactory;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.kernel.actors.AddRoleActor;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** Role */
 @PortedFrom(file = "tRole.h", name = "Role")
@@ -519,6 +519,7 @@ public class Role extends ClassifiableEntry {
      */
     @PortedFrom(file = "tRole.h", name = "setDomain")
     public void setDomain(DLTree p) {
+        // not just a CName
         if (equalTrees(pDomain, p)) {
             // usual case when you have a name for inverse role
         } else if (DLTreeFactory.isFunctionalExpr(p, this)) {
@@ -605,6 +606,7 @@ public class Role extends ClassifiableEntry {
     public void checkHierarchicalDisjoint() {
         this.checkHierarchicalDisjoint(this);
         if (isReflexive()) {
+            // for reflexive roles check for R^- is necessary
             this.checkHierarchicalDisjoint(inverse());
         }
     }
@@ -720,17 +722,21 @@ public class Role extends ClassifiableEntry {
     @PortedFrom(file = "tRole.h", name = "consistent")
     public void consistent() {
         if (isSimple()) {
+            // all simple roles are consistent
             return;
         }
         if (isFunctional()) {
+            // non-simple role can not be functional
             throw new ReasonerInternalException(
                     "Non simple role used as simple: " + getName());
         }
         if (isDataRole()) {
+            // data role can not be non-simple
             throw new ReasonerInternalException(
                     "Non simple role used as simple: " + getName());
         }
         if (this.isDisjoint()) {
+            // non-simple role can not be disjoint with any role
             throw new ReasonerInternalException(
                     "Non simple role used as simple: " + getName());
         }
@@ -807,32 +813,45 @@ public class Role extends ClassifiableEntry {
         }
     }
 
-    /** add features */
+    /**
+     * copy role information (like transitivity, functionality, R&D etc) to
+     * synonym
+     */
     @PortedFrom(file = "tRole.h", name = "addFeaturesToSynonym")
     public void addFeaturesToSynonym() {
         if (!isSynonym()) {
             return;
         }
+        // don't copy parents: they are already copied during ToldSubsumers
+        // processing
         Role syn = resolveSynonym(this);
+        // copy functionality
         if (isFunctional() && !syn.isFunctional()) {
             syn.setFunctional();
         }
+        // copy transitivity
         if (isTransitive()) {
             syn.setTransitive(true);
         }
+        // copy reflexivity
         if (isReflexive()) {
             syn.setReflexive(true);
         }
+        // copy data type
         if (isDataRole()) {
             syn.setDataRole(true);
         }
+        // copy R&D
         if (pDomain != null) {
             syn.setDomain(pDomain.copy());
         }
-        if (this.isDisjoint()) {
+        // copy disjoint
+        if (isDisjoint()) {
             syn.disjointRoles.addAll(disjointRoles);
         }
+        // copy subCompositions
         syn.subCompositions.addAll(subCompositions);
+        // syn should be the only parent for synonym
         toldSubsumers.clear();
         addParent(syn);
     }
@@ -840,21 +859,30 @@ public class Role extends ClassifiableEntry {
     @PortedFrom(file = "tRole.h", name = "eliminateToldCycles")
     private Role eliminateToldCycles(Set<Role> RInProcess,
             List<Role> ToldSynonyms) {
+        // skip synonyms
         if (isSynonym()) {
             return null;
         }
+        // if we found a cycle...
         if (RInProcess.contains(this)) {
             ToldSynonyms.add(this);
             return this;
         }
         Role ret = null;
+        // start processing role
         RInProcess.add(this);
+        // ensure that parents does not contain synonyms
         removeSynonymsFromParents();
+        // not involved in cycle -- check all told subsumers
         for (ClassifiableEntry r : toldSubsumers) {
+            // if cycle was detected
             if ((ret = ((Role) r).eliminateToldCycles(RInProcess, ToldSynonyms)) != null) {
                 if (ret.equals(this)) {
                     Collections.sort(ToldSynonyms, new RoleCompare());
+                    // now first element is representative; save it as RET
                     ret = ToldSynonyms.get(0);
+                    // make all others synonyms of RET
+                    // XXX check if role error is here
                     for (int i = 1; i < ToldSynonyms.size(); i++) {
                         Role p = ToldSynonyms.get(i);
                         p.setSynonym(ret);
@@ -862,8 +890,10 @@ public class Role extends ClassifiableEntry {
                     }
                     ToldSynonyms.clear();
                     RInProcess.remove(this);
+                    // restart search for the representative
                     return ret.eliminateToldCycles(RInProcess, ToldSynonyms);
                 } else {
+                    // some role inside a cycle: save it and return
                     ToldSynonyms.add(this);
                     break;
                 }
@@ -961,9 +991,13 @@ public class Role extends ClassifiableEntry {
 
     @PortedFrom(file = "tRole.h", name = "isRealTopFunc")
     private boolean isRealTopFunc() {
+        // all REAL top-funcs have their self-ref in TopFunc already
         if (!isFunctional()) {
             return false;
         }
+        // if any of the parent is self-proclaimed top-func -- this one is not
+        // top-func
+        // else this role is top-most functional
         for (int i = 0; i < ancestorRoles.size(); i++) {
             if (ancestorRoles.get(i).isTopFunc()) {
                 return false;
@@ -1016,31 +1050,38 @@ public class Role extends ClassifiableEntry {
 
     @PortedFrom(file = "tRole.h", name = "preprocessComposition")
     private void preprocessComposition(List<Role> RS) {
+        // XXX verify how this works, as it's manipulating the input list as
+        // well, replacing synonyms
         boolean same = false;
         int last = RS.size() - 1;
-        // TODO doublecheck, strange assignments to what is in the list
         for (int i = 0; i < RS.size(); i++) {
             Role p = RS.get(i);
             Role R = resolveSynonym(p);
             if (R.isBottom()) {
+                // empty role in composition -- nothing to do
                 RS.clear();
                 return;
             }
             if (R.equals(this)) {
+                // found R in composition
                 if (i != 0 && i != last) {
                     throw new ReasonerInternalException("Cycle in RIA "
                             + getName());
                 }
                 if (same) {
+                    // second one
                     if (last == 1) {
+                        // transitivity
                         RS.clear();
                         setTransitive(true);
                         return;
                     } else {
+                        // wrong (undecidable) axiom
                         throw new ReasonerInternalException("Cycle in RIA "
                                 + getName());
                     }
                 } else {
+                    // first one
                     same = true;
                 }
             }
@@ -1101,6 +1142,7 @@ public class Role extends ClassifiableEntry {
         // first preprocess the role chain
         preprocessComposition(RS);
         if (RS.isEmpty()) {
+            // fallout from transitivity axiom
             return;
         }
         // here we need a special treatment for R&D

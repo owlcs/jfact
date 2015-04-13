@@ -11,6 +11,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptAnd;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptBottom;
@@ -51,8 +53,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleComplexExpressio
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.voc.Vocabulary;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** expression factory */
 @PortedFrom(file = "tExpressionManager.h", name = "TExpressionManager")

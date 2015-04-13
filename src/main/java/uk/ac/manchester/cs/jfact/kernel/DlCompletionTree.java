@@ -16,17 +16,18 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.ArrayIntMap;
 import uk.ac.manchester.cs.jfact.helpers.DLVertex;
+import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Reference;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.kernel.state.DLCompletionTreeSaveState;
 import uk.ac.manchester.cs.jfact.kernel.state.SaveList;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** completion tree */
 @PortedFrom(file = "dlCompletionTree.h", name = "DlCompletionTree")
@@ -105,7 +106,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
     }
 
     /** label of a node */
-    private final CGLabel label = new CGLabel();
+    private final CGLabel label;
     // TODO check for better access
     /** inequality relation information respecting current node */
     protected final List<ConceptWDep> inequalityRelation = new ArrayList<>();
@@ -153,20 +154,23 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
      *        C
      * @return true if b2 holds
      */
+    @PortedFrom(file = "dlCompletionTree.h", name = "B2")
     private boolean B2(DLVertex v, int C) {
-        assert hasParent();
-        RAStateTransitions RST = v.getRole().getAutomaton().getBase()
-                .get(v.getState());
+        assert hasParent();// safety
+        RAStateTransitions RST = v.getRole().getAutomaton().get(v.getState());
         if (v.getRole().isSimple()) {
             return B2Simple(RST, v.getConceptIndex());
         } else {
-            if (RST.isEmpty()) {
+            if (RST.empty()) {
+                // no possible applications
                 return true;
             }
+            // pointer to current forall
+            int bp = C - v.getState();
             if (RST.isSingleton()) {
-                return B2Simple(RST, C - v.getState() + RST.getTransitionEnd());
+                return B2Simple(RST, bp + RST.getTransitionEnd());
             }
-            return B2Complex(RST, C - v.getState());
+            return B2Complex(RST, bp);
         }
     }
 
@@ -224,6 +228,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
     public DlCompletionTree(int newId, JFactReasonerConfiguration c) {
         id = newId;
         options = c;
+        label = new CGLabel(c);
     }
 
     /**
@@ -426,8 +431,6 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
                 && (isCBlockedBy(dag, p) || isABlockedBy(dag, p));
     }
 
-    private DlCompletionTree cachedParent = null;
-
     // WARNING!! works only for blockable nodes
     // every non-root node will have first upcoming edge pointed to a parent
     /**
@@ -435,10 +438,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
      *         with hasParent()==TRUE
      */
     public DlCompletionTree getParentNode() {
-        if (cachedParent == null) {
-            cachedParent = neighbour.get(0).getArcEnd();
-        }
-        return cachedParent;
+        return neighbour.get(0).getArcEnd();
     }
 
     // managing AFFECTED flag
@@ -675,6 +675,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
      *        ds
      * @return true if IR already has this label
      */
+    @PortedFrom(file = "dlCompletionTree.cpp", name = "initIR")
     public boolean initIR(int level, DepSet ds) {
         Reference<DepSet> dummy = new Reference<>(DepSet.create());
         // we don't need a clash-set here
@@ -698,6 +699,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
      *        dep
      * @return true if C contained
      */
+    @PortedFrom(file = "dlCompletionTree.cpp", name = "inIRwithC")
     private boolean inIRwithC(int level, DepSet ds, Reference<DepSet> dep) {
         if (inequalityRelation.isEmpty()) {
             return false;
@@ -777,27 +779,35 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
     }
 
     private boolean isABlockedBy(DLDag dag, DlCompletionTree p) {
+        // current = w; p = w'; parent = v
+        // there exists v
+        assert hasParent();
+        // B3,B4
         ArrayIntMap list = p.beginl_cc_concepts();
         for (int i = 0; i < list.size(); i++) {
             int bp = list.keySet(i);
             DLVertex v = dag.get(bp);
             if (v.getType() == dtForall && bp < 0) {
+                // (some T E) \in L(w')
                 if (!B4(1, v.getRole(), -v.getConceptIndex())) {
                     return false;
                 }
             } else if (v.getType() == dtLE) {
                 if (bp > 0) {
+                    // (<= n S C) \in L(w')
                     if (!B3(p, v.getNumberLE(), v.getRole(),
                             v.getConceptIndex())) {
                         return false;
                     }
                 } else {
+                    // (>= m T E) \in L(w')
                     if (!B4(v.getNumberGE(), v.getRole(), v.getConceptIndex())) {
                         return false;
                     }
                 }
             }
         }
+        // all other is OK -- done;
         return true;
     }
 
@@ -807,6 +817,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
             int bp = list.get(i).getConcept();
             if (bp > 0) {
                 DLVertex v = dag.get(bp);
+                // (<= n T E) \in L(w')
                 if (v.getType() == dtLE
                         && !B5(v.getRole(), v.getConceptIndex())) {
                     return false;
@@ -818,6 +829,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
             int bp = list.get(i).getConcept();
             if (bp < 0) {
                 DLVertex v = dag.get(bp);
+                // (<= n T E) \in L(w')
                 if (v.getType() == dtLE
                         && !B6(v.getRole(), v.getConceptIndex())) {
                     return false;
@@ -827,9 +839,11 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         return true;
     }
 
+    @PortedFrom(file = "Blocking.cpp", name = "B2Simple")
     private boolean B2Simple(RAStateTransitions RST, int C) {
         DlCompletionTree parent = getParentNode();
         CGLabel parLab = parent.label();
+        //XXX this shortcut is not in version 5, double check
         if (parLab.contains(C)) {
             return true;
         }
@@ -843,6 +857,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         return true;
     }
 
+    @PortedFrom(file = "Blocking.cpp", name = "B2Complex")
     private boolean B2Complex(RAStateTransitions RST, int C) {
         DlCompletionTree parent = getParentNode();
         CGLabel parLab = parent.label();
@@ -866,20 +881,28 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         return true;
     }
 
-    private boolean B3(DlCompletionTree p, int n, Role S, int C) {
+    /** check if B3 holds for (<= n S.C)\in w' (p is a candidate for blocker) */
+    @PortedFrom(file = "Blocking.cpp", name = "B3")
+    private boolean B3(DlCompletionTree p, int n, Role T, int C) {
         assert hasParent();
+        // XXX here FaCT++ has blocking stats (tries), are they useful?
         boolean ret;
-        if (!isParentArcLabelled(S)) {
+        // if(<= n S C)\in L(w')then
+        // a)w is an inv(S)-succ of v or
+        if (!isParentArcLabelled(T)) {
             ret = true;
         } else if (getParentNode().isLabelledBy(-C)) {
+            // b)w is an inv(S)succ of v and ~C\in L(v)or
             ret = true;
         } else if (!getParentNode().isLabelledBy(C)) {
+            // c)w is an inv(S)succ of v and C\in L(v)...
             ret = false;
         } else {
+            // ...and <=n-1 S-succ. z with C\in L(z)
             int m = 0;
             for (int i = 0; i < p.neighbourSize; i++) {
                 DlCompletionTreeArc q = p.neighbour.get(i);
-                if (q.isSuccEdge() && q.isNeighbour(S)
+                if (q.isSuccEdge() && q.isNeighbour(T)
                         && q.getArcEnd().isLabelledBy(C)) {
                     ++m;
                 }
@@ -889,38 +912,56 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         return ret;
     }
 
+    /** check if B4 holds for(>= m T.E)\in w'(p is a candidate for blocker) */
+    @PortedFrom(file = "Blocking.cpp", name = "B4")
     private boolean B4(int m, Role T, int E) {
         assert hasParent();
+        // if(>= m T E)\in L(w')then
+        // b)w is an inv(T)succ of v and E\in L(v)and m == 1 or
         if (isParentArcLabelled(T) && m == 1 && getParentNode().isLabelledBy(E)) {
             return true;
         }
+        // a)w' has at least m T-succ z with E\in L(z)
+        // check all sons
         int n = 0;
         for (int i = 0; i < neighbourSize; i++) {
             DlCompletionTreeArc q = neighbour.get(i);
+            // check if node has enough successors
             if (q.isSuccEdge() && q.isNeighbour(T)
                     && q.getArcEnd().isLabelledBy(E) && ++n >= m) {
                 return true;
             }
         }
+        // rule check fails
         return false;
     }
 
+    /** check if B5 holds for(<= n T.E)\in w' */
+    @PortedFrom(file = "Blocking.cpp", name = "B5")
     private boolean B5(Role T, int E) {
         assert hasParent();
+        // if(<= n T E)\in L(w'), then
+        // either w is not an inv(T)-successor of v...
         if (!isParentArcLabelled(T)) {
             return true;
         }
+        // or ~E \in L(v)
         if (getParentNode().isLabelledBy(-E)) {
             return true;
         }
         return false;
     }
 
+    /** check if B6 holds for (>= m U.F)\in v */
+    @PortedFrom(file = "Blocking.cpp", name = "B6")
     private boolean B6(Role U, int F) {
         assert hasParent();
+        // if (>= m U F) \in L(v), and
+        // w is U-successor of v...
         if (!isParentArcLabelled(U.inverse())) {
             return true;
         }
+        // then ~F\in L(w)
         if (isLabelledBy(-F)) {
             return true;
         }
@@ -939,11 +980,11 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         nominalLevel = BLOCKABLE_LEVEL;
         curLevel = level;
         cached = false;
-        affected = true;
         // every (newly created) node can be blocked
+        affected = true;
         dBlocked = true;
-        pBlocked = true;
         // unused flag combination
+        pBlocked = true;
         // cleans the cache where Label is involved
         label.init();
         init = bpTOP;
@@ -952,7 +993,6 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         inequalityRelation.clear();
         inequalityRelation_helper.clear();
         neighbour.clear();
-        cachedParent = null;
         neighbourSize = 0;
         setBlocker(null);
         pDep.clear();
@@ -962,9 +1002,11 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         if (isLabelledBy(C)) {
             return this;
         }
+        // don't check nominal nodes (prevent cycles)
         if (isNominalNode()) {
             return null;
         }
+        // check all other successors
         DlCompletionTree ret = null;
         for (int i = 0; i < neighbourSize; i++) {
             DlCompletionTreeArc p = neighbour.get(i);
@@ -981,9 +1023,11 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         if (isLabelledBy(C)) {
             return this;
         }
+        // don't check nominal nodes (prevent cycles)
         if (isNominalNode()) {
             return null;
         }
+        // check all other successors
         DlCompletionTree ret = null;
         for (int i = 0; i < neighbourSize; i++) {
             DlCompletionTreeArc p = neighbour.get(i);
@@ -993,6 +1037,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
                 return ret;
             }
         }
+        // check predecessor
         if (hasParent() && isParentArcLabelled(R)) {
             return getParentNode().isTPredLabelled(R, C, this);
         } else {
@@ -1004,6 +1049,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         for (int i = 0; i < neighbourSize; i++) {
             DlCompletionTreeArc p = neighbour.get(i);
             if (p.isNeighbour(R) && p.getArcEnd().isLabelledBy(C)) {
+                // already contained such a label
                 return p.getArcEnd();
             }
         }
@@ -1021,6 +1067,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
                     ret = p.getArcEnd().isTSuccLabelled(R, C);
                 }
                 if (ret != null) {
+                    // already contained such a label
                     return ret;
                 }
             }
@@ -1028,6 +1075,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         return null;
     }
 
+    /** saving/restoring */
     private void save(DLCompletionTreeSaveState nss) {
         nss.setCurLevel(curLevel);
         nss.setnNeighbours(neighbourSize);
@@ -1039,13 +1087,14 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         if (nss == null) {
             return;
         }
+        // level restore
         curLevel = nss.getCurLevel();
+        // label restore
         label.restore(nss.getLab(), curLevel);
+        // remove new neighbours
         resize(neighbour, nss.getnNeighbours());
         neighbourSize = nss.getnNeighbours();
-        if (neighbourSize == 0) {
-            cachedParent = null;
-        }
+        // it's cheaper to dirty affected flag than to consistently save nodes
         affected = true;
         logSRNode("RestNode");
     }
@@ -1086,9 +1135,10 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
      *        node
      * @param dep
      *        dep
-     * @return check if the NODE's and current node's IR are labelled with the
-     *         same level
+     * @return check if the NODE's and current node's IR are labelled with the same
+     * level
      */
+    @PortedFrom(file = "dlCompletionTree.cpp", name = "nonMergable")
     public boolean nonMergable(DlCompletionTree node, Reference<DepSet> dep) {
         if (inequalityRelation.isEmpty() || node.inequalityRelation.isEmpty()) {
             return false;
@@ -1110,6 +1160,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
      *        toAdd
      * @return restorer
      */
+    @PortedFrom(file = "dlCompletionTree.cpp", name = "updateIR")
     public Restorer updateIR(DlCompletionTree node, DepSet toAdd) {
         if (node.inequalityRelation.isEmpty()) {
             throw new IllegalArgumentException();

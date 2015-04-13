@@ -10,13 +10,12 @@ import static uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry.resolveSynonym;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.Pair;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
-import conformance.PortedFrom;
 
 /** nominal reasoner */
 @PortedFrom(file = "ReasonerNom.h", name = "NominalReasoner")
@@ -89,12 +88,9 @@ public class NominalReasoner extends DlSatTester {
      *        tbox
      * @param Options
      *        Options
-     * @param datatypeFactory
-     *        datatypeFactory
      */
-    public NominalReasoner(TBox tbox, JFactReasonerConfiguration Options,
-            DatatypeFactory datatypeFactory) {
-        super(tbox, Options, datatypeFactory);
+    public NominalReasoner(TBox tbox, JFactReasonerConfiguration Options) {
+        super(tbox, Options);
         for (Individual pi : tBox.i_begin()) {
             if (!pi.isSynonym()) {
                 nominals.add(pi);
@@ -126,11 +122,14 @@ public class NominalReasoner extends DlSatTester {
         options.getLog().print(
                 "\n\nChecking consistency of an ontology with individuals:\n");
         boolean result = false;
+        // reserve the root for the forthcoming reasoning
         if (initNewNode(cGraph.getRoot(), DepSet.create(), Helper.bpTOP)
                 || initNominalCloud()) {
+            // clash during initialisation
             options.getLog().print("\ninit done\n");
             result = false;
         } else {
+            // perform a normal reasoning
             options.getLog().print("\nrunning sat...");
             result = runSat();
             options.getLog().print(" done: ");
@@ -138,10 +137,12 @@ public class NominalReasoner extends DlSatTester {
             options.getLog().print("\n");
         }
         if (result && noBranchingOps()) {
+            // all nominal cloud is classified w/o branching -- make a barrier
             options.getLog().print("InitNominalReasoner[");
             curNode = null;
             createBCBarrier();
             save();
+            // the barrier doesn't introduce branching itself
             nonDetShift = 1;
             options.getLog().print("]");
         }
@@ -150,6 +151,7 @@ public class NominalReasoner extends DlSatTester {
         if (!result) {
             return false;
         }
+        // ABox is consistent . create cache for every nominal in KB
         for (Individual p : nominals) {
             updateClassifiedSingleton(p);
         }
@@ -180,28 +182,6 @@ public class NominalReasoner extends DlSatTester {
                 }
             }
             cGraph.finiIR();
-        }
-        return false;
-    }
-
-    @Override
-    @PortedFrom(file = "Reasoner.h", name = "isNNApplicable")
-    protected boolean isNNApplicable(Role r, int C, int stopper) {
-        if (!curNode.isNominalNode()) {
-            return false;
-        }
-        if (curNode.isLabelledBy(stopper)) {
-            return false;
-        }
-        List<DlCompletionTreeArc> neighbour = curNode.getNeighbour();
-        for (int i = 0; i < neighbour.size(); i++) {
-            DlCompletionTreeArc p = neighbour.get(i);
-            DlCompletionTree suspect = p.getArcEnd();
-            if (p.isPredEdge() && suspect.isBlockableNode() && p.isNeighbour(r)
-                    && suspect.isLabelledBy(C)) {
-                options.getLog().printTemplate(Templates.NN, suspect.getId());
-                return true;
-            }
         }
         return false;
     }

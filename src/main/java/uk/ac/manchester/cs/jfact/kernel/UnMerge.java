@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
+import conformance.PortedFrom;
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -7,7 +8,6 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import gnu.trove.set.TIntSet;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
-import conformance.PortedFrom;
 
 @PortedFrom(file = "CWDArray.cpp", name = "UnMerge")
 class UnMerge extends Restorer {

@@ -9,10 +9,10 @@ import java.util.List;
 
 import org.semanticweb.owlapi.model.OWLAxiom;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
-import conformance.PortedFrom;
 
 /** Data Role disjointness axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDisjointDRoles")

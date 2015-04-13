@@ -16,13 +16,13 @@ import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** role master */
 @PortedFrom(file = "RoleMaster.h", name = "RoleMaster")
@@ -154,7 +154,7 @@ public class RoleMaster implements Serializable {
         universalRole.setBPDomain(Helper.bpTOP);
         universalRole.setTop();
         // FIXME!! now it is not transitive => simple
-        universalRole.getAutomaton().setCompleted();
+        universalRole.getAutomaton().setCompleted(true);
         // create roles taxonomy
         pTax = new Taxonomy(universalRole, emptyRole, c);
     }
@@ -346,7 +346,11 @@ public class RoleMaster implements Serializable {
             DLTree inv = DLTreeFactory.inverseComposition(tree);
             parent.inverse().addComposition(inv);
         } else if (tree.token() == PROJINTO) {
+            // here -R.C became -PARENT.
+            // encode this as PROJFROM(R-,PROJINTO(PARENT-,C)),
+            // added to the range of R
             Role R = Role.resolveRole(tree.getLeft());
+            // can't do anything ATM for the data roles
             if (R.isDataRole()) {
                 throw new ReasonerInternalException(
                         "Projection into not implemented for the data role");
@@ -362,6 +366,9 @@ public class RoleMaster implements Serializable {
             C = DLTreeFactory.buildTree(new Lexeme(PROJFROM), InvR, C);
             R.setRange(C);
         } else if (tree.token() == PROJFROM) {
+            // here C-R. became -PARENT.
+            // encode this as PROJFROM(R,PROJINTO(PARENT,C)),
+            // added to the domain of R
             Role R = Role.resolveRole(tree.getLeft());
             DLTree C = tree.getRight().copy();
             DLTree P = DLTreeFactory.buildTree(new Lexeme(RNAME, parent));

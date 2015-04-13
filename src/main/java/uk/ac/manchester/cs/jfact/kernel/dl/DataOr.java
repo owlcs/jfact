@@ -10,11 +10,11 @@ import java.util.List;
 
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
-import conformance.PortedFrom;
 
 /** data union */
 @PortedFrom(file = "tDLExpression.h", name = "TDLDataOr")

@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import uk.ac.manchester.cs.jfact.kernel.Ontology;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import conformance.Original;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.kernel.Ontology;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 
 /** atomical decomposer of the ontology */
 @PortedFrom(file = "AtomicDecomposer.h", name = "AtomicDecomposer")

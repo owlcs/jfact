@@ -9,14 +9,14 @@ import java.io.Serializable;
 
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptDataRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpressionArg;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** concept data value */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptDataValue")

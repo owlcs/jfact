@@ -9,10 +9,10 @@ import java.io.Serializable;
 
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
-import conformance.PortedFrom;
 
 /** individual name */
 @PortedFrom(file = "tDLExpression.h", name = "TDLIndividualName")

@@ -10,12 +10,12 @@ import java.util.List;
 
 import org.semanticweb.owlapi.model.OWLAxiom;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.NAryExpressionImpl;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /**
  * n-ary axiom base class

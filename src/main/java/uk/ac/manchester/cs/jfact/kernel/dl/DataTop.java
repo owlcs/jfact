@@ -10,10 +10,10 @@ import java.io.Serializable;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
-import conformance.PortedFrom;
 
 /** data top */
 @PortedFrom(file = "tDLExpression.h", name = "TDLDataTop")

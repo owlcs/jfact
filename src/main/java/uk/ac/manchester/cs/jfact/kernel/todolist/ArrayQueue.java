@@ -9,10 +9,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.kernel.ConceptWDep;
 import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
-import conformance.PortedFrom;
 
 /** class to represent single queue */
 public class ArrayQueue implements Serializable {

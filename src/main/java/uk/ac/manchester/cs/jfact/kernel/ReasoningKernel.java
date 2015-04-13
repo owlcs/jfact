@@ -27,10 +27,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nonnull;
 
-import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
+import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
 import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
@@ -60,19 +62,14 @@ import uk.ac.manchester.cs.jfact.split.KnowledgeExplorer;
 import uk.ac.manchester.cs.jfact.split.LocalityChecker;
 import uk.ac.manchester.cs.jfact.split.ModuleType;
 import uk.ac.manchester.cs.jfact.split.OntologyBasedModularizer;
-import uk.ac.manchester.cs.jfact.split.TAxiomSplitter;
 import uk.ac.manchester.cs.jfact.split.TOntologyAtom;
 import uk.ac.manchester.cs.jfact.split.TSignature;
-
-import com.google.common.collect.Multimap;
-
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** Reasoning kernel */
 @PortedFrom(file = "Kernel.h", name = "ReasoningKernel")
 public class ReasoningKernel implements Serializable {
 
+    private static final String ROLE_EXPECTED = "Role expression expected in getNeighbours() method";
     private static final long serialVersionUID = 11000L;
     /** options for the kernel and all related substructures */
     @PortedFrom(file = "Kernel.h", name = "KernelOptions")
@@ -847,7 +844,9 @@ public class ReasoningKernel implements Serializable {
         if (!isKBRealised()) {
             processKB(kbRealised);
         }
-        isKBConsistent();
+        if (!isKBConsistent()) {
+            throw new InconsistentOntologyException();
+        }
     }
 
     // role info retrieval
@@ -862,11 +861,11 @@ public class ReasoningKernel implements Serializable {
         preprocessKB();
         Role r = getRole(R, "Role expression expected in isFunctional()");
         if (r.isTop()) {
-            // universal role is symmetric
-            return true;
+            // universal role is not functional
+            return false;
         }
         if (r.isBottom()) {
-            // empty role is symmetric
+            // empty role is functional
             return true;
         }
         return getFunctionality(r);
@@ -883,11 +882,11 @@ public class ReasoningKernel implements Serializable {
         preprocessKB();
         Role r = getRole(R, "Role expression expected in isFunctional()");
         if (r.isTop()) {
-            // universal role is symmetric
-            return true;
+            // universal role is not functional
+            return false;
         }
         if (r.isBottom()) {
-            // empty role is symmetric
+            // empty role is functional
             return true;
         }
         return getFunctionality(r);
@@ -905,11 +904,11 @@ public class ReasoningKernel implements Serializable {
         Role r = getRole(R, "Role expression expected in isInverseFunctional()")
                 .inverse();
         if (r.isTop()) {
-            // universal role is symmetric
-            return true;
+            // universal role is not functional
+            return false;
         }
         if (r.isBottom()) {
-            // empty role is symmetric
+            // empty role is functional
             return true;
         }
         return getFunctionality(r);
@@ -926,14 +925,15 @@ public class ReasoningKernel implements Serializable {
         preprocessKB();
         Role r = getRole(R, "Role expression expected in isTransitive()");
         if (r.isTop()) {
-            // universal role is symmetric
+            // universal role is transitive
             return true;
         }
-        // empty role is symmetric
+        // empty role is transitive
         if (r.isBottom()) {
             return true;
         }
         if (!r.isTransitivityKnown()) {
+            // calculate transitivity
             r.setTransitive(checkTransitivity(e(R)));
         }
         return r.isTransitive();
@@ -965,18 +965,20 @@ public class ReasoningKernel implements Serializable {
      *        R
      * @return true iff role is asymmetric
      */
-    @SuppressWarnings("null")
     @PortedFrom(file = "Kernel.h", name = "isAsymmetric")
-    @Nonnull
-    public Boolean isAsymmetric(ObjectRoleExpression R) {
+    public boolean isAsymmetric(ObjectRoleExpression R) {
+        // ensure KB is ready to answer the query
         preprocessKB();
         Role r = getRole(R, "Role expression expected in isAsymmetric()");
         if (r.isTop()) {
-            return true;
+            // universal role is not asymmetric
+            return false;
         }
         if (r.isBottom()) {
+            // empty role is asymmetric
             return true;
         }
+        // calculate asymmetry
         if (!r.isAsymmetryKnown()) {
             r.setAsymmetric(getTBox().isDisjointRoles(r, r.inverse()));
         }
@@ -993,12 +995,15 @@ public class ReasoningKernel implements Serializable {
         preprocessKB();
         Role r = getRole(R, "Role expression expected in isReflexive()");
         if (r.isTop()) {
+            // universal role is reflexive
             return true;
         }
         if (r.isBottom()) {
-            return true;
+            // empty role is not reflexive
+            return false;
         }
         if (!r.isReflexivityKnown()) {
+            // calculate reflexivity
             r.setReflexive(checkReflexivity(e(R)));
         }
         return r.isReflexive();
@@ -1014,9 +1019,11 @@ public class ReasoningKernel implements Serializable {
         preprocessKB();
         Role r = getRole(R, "Role expression expected in isIrreflexive()");
         if (r.isTop()) {
-            return true;
+            // universal role is not irreflexive
+            return false;
         }
         if (r.isBottom()) {
+            // empty role is irreflexive
             return true;
         }
         if (!r.isIrreflexivityKnown()) {
@@ -1033,20 +1040,21 @@ public class ReasoningKernel implements Serializable {
      */
     @PortedFrom(file = "Kernel.h", name = "isDisjointRoles")
     public boolean isDisjointRoles(List<? extends RoleExpression> l) {
+        // grab all roles from the arg-list
         int nTopRoles = 0;
         List<Role> Roles = new ArrayList<>(l.size());
         for (RoleExpression p : l) {
             uk.ac.manchester.cs.jfact.kernel.Role role = getRole(p,
                     "Role expression expected in isDisjointRoles()");
+            // empty role is disjoint with everything
+            if (!role.isBottom()) {
             if (role.isTop()) {
-                // universal role is not disjoint with anything
+                    // count universal roles
                 ++nTopRoles;
+                } else {
+                    Roles.add(role);
             }
-            if (role.isBottom()) {
-                // empty role is disjoint with everything
-                continue;
             }
-            Roles.add(role);
         }
         // deal with top-roles
         if (nTopRoles > 0) {
@@ -1101,9 +1109,11 @@ public class ReasoningKernel implements Serializable {
         Role r = getRole(R, "Role expression expected in isDisjointRoles()");
         Role s = getRole(S, "Role expression expected in isDisjointRoles()");
         if (r.isTop() || s.isTop()) {
+            // universal role is not disjoint with anything
             return false;
         }
         if (r.isBottom() || s.isBottom()) {
+            // empty role is disjoint with everything
             return true;
         }
         return getTBox().isDisjointRoles(r, s);
@@ -1117,8 +1127,7 @@ public class ReasoningKernel implements Serializable {
      * @return true if R is a sub-role of S
      */
     @PortedFrom(file = "Kernel.h", name = "isSubRoles")
-    public boolean isSubRoles(ObjectRoleComplexExpression R,
-            ObjectRoleExpression S) {
+    public boolean isSubRoles(RoleExpression R, RoleExpression S) {
         preprocessKB();
         Role r = getRole(R, "Role expression expected in isSubRoles()");
         Role s = getRole(S, "Role expression expected in isSubRoles()");
@@ -1195,7 +1204,7 @@ public class ReasoningKernel implements Serializable {
      */
     @PortedFrom(file = "Kernel.h", name = "isDisjoint")
     public boolean isDisjoint(ConceptExpression C, ConceptExpression D) {
-        return isSubsumedBy(C, not(D));
+        return !isSatisfiable(and(C, D));
     }
 
     /**
@@ -1397,6 +1406,9 @@ public class ReasoningKernel implements Serializable {
         classifyKB();
         setUpCache(exists(r, top()), csClassified);
         actor.clear();
+        // if direct, gets an exact domain is named concept; otherwise, set of
+        // the most specific concepts
+        // else gets all named classes that are in the domain of a role
         getCTaxonomy()
                 .getRelativesInfo(cachedVertex, actor, true, direct, true);
         return actor;
@@ -1422,6 +1434,9 @@ public class ReasoningKernel implements Serializable {
         classifyKB();
         setUpCache(exists(r, dataTop()), csClassified);
         actor.clear();
+        // if direct, gets an exact domain is named concept; otherwise, set of
+        // the most specific concepts
+        // else gets all named classes that are in the domain of a role
         getCTaxonomy()
                 .getRelativesInfo(cachedVertex, actor, true, direct, true);
         return actor;
@@ -1651,10 +1666,7 @@ public class ReasoningKernel implements Serializable {
     @PortedFrom(file = "Kernel.h", name = "getNeighbours")
     public List<DlCompletionTree> getNeighbours(DlCompletionTree node,
             RoleExpression role) {
-        return KE.getNeighbours(
-                node,
-                getRole(role,
-                        "Role expression expected in getNeighbours() method"));
+        return KE.getNeighbours(node, getRole(role, ROLE_EXPECTED));
     }
 
     /**
@@ -1755,12 +1767,11 @@ public class ReasoningKernel implements Serializable {
     /** incrementally classify changes */
     @PortedFrom(file = "Incremental.cpp", name = "doIncremental")
     public void doIncremental() {
-        // System.out.println("Incremental!");
         // re-set the modularizer to use updated ontology
         ModSyn = null;
-        // System.out.println("Original Taxonomy:" + tax);
         Set<NamedEntity> MPlus = new HashSet<>();
         Set<NamedEntity> MMinus = new HashSet<>();
+        // detect new- and old- signature elements
         TSignature NewSig = ontology.getSignature();
         Set<NamedEntity> RemovedEntities = new HashSet<>(OntoSig.begin());
         RemovedEntities.removeAll(NewSig.begin());
@@ -1791,9 +1802,8 @@ public class ReasoningKernel implements Serializable {
                 TaxonomyVertex cur = tax.getCurrent();
                 cur.clear();
                 cur.setSample(C, true);
-                cur.addNeighbour( /* upDirection= */true, tax.getTopVertex());
+                cur.addNeighbour(true, tax.getTopVertex());
                 tax.finishCurrentNode();
-                // System.out.println("Insert " + C.getName());
             }
         }
         OntoSig = NewSig;
@@ -1883,12 +1893,7 @@ public class ReasoningKernel implements Serializable {
         for (NamedEntity e : ontology.getSignature().begin()) {
             e.setEntry(null);
         }
-        // split ontological axioms
-        if (kernelOptions.isSplits()) {
-            TAxiomSplitter AxiomSplitter = new TAxiomSplitter(kernelOptions,
-                    ontology);
-            AxiomSplitter.buildSplit();
-        }
+        // (re)load ontology
         OntologyLoader ontologyLoader = new OntologyLoader(getTBox());
         ontologyLoader.visitOntology(ontology);
         if (kernelOptions.isUseIncrementalReasoning()) {
@@ -1989,11 +1994,13 @@ public class ReasoningKernel implements Serializable {
             throw new ReasonerInternalException(
                     "Can't answer queries due to previous errors");
         }
-        // check if something have to be done
+        // check if something has to be done
         KBStatus curStatus = getStatus();
         if (curStatus.ordinal() >= status.ordinal()) {
             // nothing to do; but make sure that we are consistent
-            isKBConsistent();
+            if (!isKBConsistent()) {
+                throw new InconsistentOntologyException();
+            }
             return;
         }
         // here curStatus < kbRealised, and status >= kbChecked
@@ -2013,6 +2020,7 @@ public class ReasoningKernel implements Serializable {
             pTBox.isConsistent();
             // if there were no exception thrown -- clear the failure status
             reasoningFailed = false;
+            // if the consistency check is all we need -- return
             if (status == kbCChecked) {
                 return;
             }
@@ -2066,10 +2074,12 @@ public class ReasoningKernel implements Serializable {
         // make sure KB is classified
         classifyKB();
         if (!named) {
+            // general expression: classify query concept
             getTBox().classifyQueryConcept();
         }
         cachedVertex = cachedConcept.getTaxVertex();
         if (cachedVertex == null) {
+            // fresh concept
             cachedVertex = getCTaxonomy().getFreshVertex(cachedConcept);
         }
     }
@@ -2335,6 +2345,7 @@ public class ReasoningKernel implements Serializable {
             Role S = getRole(p,
                     "Role expression expected in chain of isSubChain()");
             if (S.isBottom()) {
+                // bottom in a chain makes it super of any role
                 return true;
             }
             tmp = DLTreeFactory.createSNFExists(DLTreeFactory.createRole(S),
@@ -2365,52 +2376,26 @@ public class ReasoningKernel implements Serializable {
         return checkSubChain(r, l);
     }
 
-    /**
-     * @param R
-     *        R
-     * @param S
-     *        S
-     * @return true if R is a sub-role of S
-     */
-    @PortedFrom(file = "Kernel.h", name = "isSubRoles")
-    @Nonnull
-    public Boolean isSubRoles(DataRoleExpression R, DataRoleExpression S) {
-        preprocessKB();
-        if (isEmptyRole(R) || isUniversalRole(S)) {
-            // \bot [= X [= \top
-            return true;
-        }
-        if (isUniversalRole(R) && isEmptyRole(S)) {
-            // as \top [= \bot leads to inconsistent ontology
-            return false;
-        }
-        // told case first
-        uk.ac.manchester.cs.jfact.kernel.Role r = getRole(R,
-                "Role expression expected in isSubRoles()");
-        uk.ac.manchester.cs.jfact.kernel.Role s = getRole(S,
-                "Role expression expected in isSubRoles()");
-        if (!r.isTop() && !s.isBottom() && r.lesserequal(s)) {
-            return true;
-        }
-        // check the general case
-        // FIXME!! cache it later
-        return checkRoleSubsumption(r, s);
-    }
-
     @PortedFrom(file = "Kernel.h", name = "buildRelatedCache")
     private List<Individual> buildRelatedCache(Individual I, Role R) {
+        // for synonyms: use the representative's cache
         if (R.isSynonym()) {
             return getRelated(I, ClassifiableEntry.resolveSynonym(R));
         }
+        // FIXME!! return an empty set for data roles
+        // empty role has no fillers
         if (R.isDataRole() || R.isBottom()) {
             return new ArrayList<>();
         }
+        // now fills the query
         RIActor actor = new RIActor();
+        // ask for instances of \exists R^-.{i}
         ObjectRoleExpression InvR = R.getId() > 0 ? getExpressionManager()
                 .inverse(getExpressionManager().objectRole(R.getName()))
                 : getExpressionManager().objectRole(R.inverse().getName());
         ConceptExpression query;
         if (R.isTop()) {
+            // universal role has all the named individuals as a filler
             query = top();
         } else {
             query = value(InvR, getExpressionManager().individual(I.getName()));
@@ -2464,22 +2449,5 @@ public class ReasoningKernel implements Serializable {
             }
         }
         return false;
-    }
-
-    private final ConjunctiveQueryFolding conjunctiveQueryFolding = new ConjunctiveQueryFolding(
-            getExpressionManager());
-
-    /**
-     * call to underlying conjunctive query folding
-     * 
-     * @param query
-     *        query
-     * @param artificialABox
-     *        true if artificial abox
-     */
-    @Original
-    public void evaluateQuery(Multimap<IRI, ConceptExpression> query,
-            boolean artificialABox) {
-        conjunctiveQueryFolding.evaluateQuery(query, this, artificialABox);
     }
 }

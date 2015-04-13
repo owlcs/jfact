@@ -13,9 +13,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import conformance.Original;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 
 /** role automaton transition */
 @PortedFrom(file = "RAutomaton.h", name = "RATransition")
@@ -68,13 +68,17 @@ public class RATransition implements Serializable {
     }
 
     // query the transition
-    /** @return the 1st role in (multi-)transition */
+    /**
+     * @return the 1st role in (multi-)transition
+     */
     @PortedFrom(file = "RAutomaton.h", name = "begin")
     public Collection<Role> begin() {
         return label;
     }
 
-    /** @return a point of the transition */
+    /**
+     * @return a point of the transition
+     */
     @PortedFrom(file = "RAutomaton.h", name = "final")
     public int final_state() {
         return state;
@@ -96,7 +100,9 @@ public class RATransition implements Serializable {
         return cache.get(R.getAbsoluteIndex());
     }
 
-    /** @return whether transition is empty */
+    /**
+     * @return whether transition is empty
+     */
     @PortedFrom(file = "RAutomaton.h", name = "empty")
     public boolean isEmpty() {
         return label.isEmpty();
@@ -130,7 +136,9 @@ public class RATransition implements Serializable {
         o.print(final_state());
     }
 
-    /** @return check whether transition is TopRole one */
+    /**
+     * @return check whether transition is TopRole one
+     */
     @PortedFrom(file = "RAutomaton.h", name = "isTop")
     public boolean isTop() {
         return label.size() == 1 && label.iterator().next().isTop();

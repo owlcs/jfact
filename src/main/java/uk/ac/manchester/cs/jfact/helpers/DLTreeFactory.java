@@ -31,7 +31,9 @@ public class DLTreeFactory implements Serializable {
             CNAME, INAME, RNAME, DNAME, DATAEXPR, NOT, INV, AND, FORALL, LE,
             SELF, RCOMPOSITION, PROJFROM, PROJINTO);
 
-    /** @return BOTTOM element */
+    /**
+     * @return BOTTOM element
+     */
     @Nonnull
     public static DLTree createBottom() {
         return new LEAFDLTree(new Lexeme(BOTTOM));
@@ -467,7 +469,9 @@ public class DLTreeFactory implements Serializable {
         return createSNFNot(createSNFAnd(list));
     }
 
-    /** @return TOP element */
+    /**
+     * @return TOP element
+     */
     @Nonnull
     public static DLTree createTop() {
         return new LEAFDLTree(new Lexeme(TOP));
@@ -485,8 +489,8 @@ public class DLTreeFactory implements Serializable {
         if (tree.token() == RCOMPOSITION) {
             return tree.accept(new ReverseCloningVisitor());
         } else {
-            return new LEAFDLTree(new Lexeme(RNAME, Role.resolveRole(tree)
-                    .inverse()));
+            return new LEAFDLTree(
+                    new Lexeme(RNAME, Role.resolveRole(tree).inverse()));
         }
     }
 
@@ -648,6 +652,7 @@ public class DLTreeFactory implements Serializable {
             ClassifiableEntry entry = (ClassifiableEntry) desc.elem.getNE();
             if (entry.isSynonym()) {
                 entry = resolveSynonym(entry);
+                // check for TOP/BOTTOM
                 if (entry.isTop()) {
                     desc.elem = new Lexeme(TOP);
                 } else if (entry.isBottom()) {

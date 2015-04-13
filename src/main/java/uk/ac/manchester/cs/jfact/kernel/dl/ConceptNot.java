@@ -9,11 +9,11 @@ import java.io.Serializable;
 
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptArg;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
-import conformance.PortedFrom;
 
 /** concept negation */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptNot")

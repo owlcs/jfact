@@ -10,10 +10,10 @@ import static uk.ac.manchester.cs.jfact.helpers.Helper.bpTOP;
 import java.io.Serializable;
 import java.util.BitSet;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.DLVertex;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
-import conformance.PortedFrom;
 
 /** logic features */
 @PortedFrom(file = "LogicFeature.h", name = "LogicFeatures")

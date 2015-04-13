@@ -10,14 +10,13 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
-
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
 import conformance.Original;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 
 /** signature index */
 @PortedFrom(file = "SigIndex.h", name = "SigIndex")

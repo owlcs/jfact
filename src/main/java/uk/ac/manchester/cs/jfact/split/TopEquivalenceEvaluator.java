@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.jfact.split;
 
+import conformance.PortedFrom;
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -50,7 +51,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
-import conformance.PortedFrom;
 
 /**
  * check whether class expressions are equivalent to top wrt given locality
@@ -227,6 +227,7 @@ public class TopEquivalenceEvaluator extends SigAccessor implements
 
     @Override
     public void visit(ConceptOr expr) {
+        // XXX no setting to true?
         for (ConceptExpression p : expr.getArguments()) {
             if (isTopEquivalent(p)) {
                 return;
@@ -300,25 +301,22 @@ public class TopEquivalenceEvaluator extends SigAccessor implements
 
     @Override
     public void visit(ConceptDataMinCardinality expr) {
-        isTopEq = expr.getCardinality() == 0;
-        if (sig.topRLocal()) {
-            isTopEq |= isTopEquivalent(expr.getDataRoleExpression())
-                    && (expr.getCardinality() == 1 ? isTopOrBuiltInDataType(expr
-                            .getExpr())
-                            : isTopOrBuiltInDataType(expr.getExpr()));
+        isTopEq = isMinTopEquivalent(expr.getCardinality(),
+                expr.getDataRoleExpression(), expr.getExpr());
         }
-    }
 
     @Override
     public void visit(ConceptDataMaxCardinality expr) {
-        isTopEq = !sig.topRLocal()
-                && isBotEquivalent(expr.getDataRoleExpression());
+        isTopEq = isMaxTopEquivalent(expr.getCardinality(),
+                expr.getDataRoleExpression(), expr.getExpr());
     }
 
     @Override
     public void visit(ConceptDataExactCardinality expr) {
-        isTopEq = !sig.topRLocal() && expr.getCardinality() == 0
-                && isBotEquivalent(expr.getDataRoleExpression());
+        isTopEq = isMinTopEquivalent(expr.getCardinality(),
+                expr.getDataRoleExpression(), expr.getExpr())
+                && isMaxTopEquivalent(expr.getCardinality(),
+                        expr.getDataRoleExpression(), expr.getExpr());
     }
 
     // object role expressions
@@ -407,6 +405,7 @@ public class TopEquivalenceEvaluator extends SigAccessor implements
 
     @Override
     public void visit(DataOr expr) {
+        // XXX check no setting to true
         for (DataExpression p : expr.getArguments()) {
             if (isTopEquivalent(p)) {
                 return;

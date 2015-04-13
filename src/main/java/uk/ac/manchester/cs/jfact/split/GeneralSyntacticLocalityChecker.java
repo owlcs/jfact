@@ -8,6 +8,8 @@ package uk.ac.manchester.cs.jfact.split;
 import java.util.Collection;
 import java.util.List;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomConceptInclusion;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleDomain;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleFunctional;
@@ -45,8 +47,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** syntactic locality checker for DL axioms */
 @PortedFrom(file = "GeneralSyntacticLocalityChecker.h", name = "GeneralSyntacticLocalityChecker")
@@ -240,18 +240,21 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor
         } else if (isBotEquivalent(axiom.getConcept())) {
             lhsIsTopEq = false;
         } else {
+            // neither (1) nor (2)
             return;
-        }             // neither (1) nor (2)
+        }
         boolean topEqDesc = false;
         for (ConceptExpression p : axiom.getArguments()) {
             if (!isBotEquivalent(p)) {
                 if (lhsIsTopEq && isTopEquivalent(p)) {
                     if (topEqDesc) {
+                        // 2nd top in there -- violate (2) -- non-local
                         return;
                     } else {
                         topEqDesc = true;
                     }
                 } else {
+                    // either (1) or fail to have a top-eq for (2)
                     return;
                 }
             }

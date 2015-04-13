@@ -15,6 +15,8 @@ import javax.annotation.Nonnull;
 
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.datatypes.Datatype;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeEntry;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeExpression;
@@ -65,8 +67,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.split.TSignature;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** expression translator */
 @PortedFrom(file = "tExpressionTranslator.h", name = "TExpressionTranslator")

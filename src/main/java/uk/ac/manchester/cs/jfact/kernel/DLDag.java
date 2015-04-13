@@ -14,6 +14,8 @@ import java.util.List;
 
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeEntry;
 import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
 import uk.ac.manchester.cs.jfact.helpers.DLVertex;
@@ -25,8 +27,6 @@ import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** directed acyclic graph */
 @PortedFrom(file = "dlDag.h", name = "DLDag")
@@ -198,7 +198,8 @@ public class DLDag implements Serializable {
      */
     @PortedFrom(file = "dlDag.h", name = "isLast")
     public boolean isLast(int p) {
-        return p == heap.size() - 1 || -p == heap.size() - 1;
+        int last = heap.size() - 1;
+        return p == last || -p == last;
     }
 
     // access methods
@@ -350,6 +351,7 @@ public class DLDag implements Serializable {
     public int add(DLVertex v) {
         int ret = useDLVCache ? indexes.get(v.getType()).locate(v) : bpINVALID;
         if (!isValid(ret)) {
+            // we fail to find such vertex -- it's new
             ret = directAddAndCache(v);
             return ret;
         }
@@ -473,7 +475,6 @@ public class DLDag implements Serializable {
                 // fallthrough
                 //$FALL-THROUGH$
             case dtAnd: // check all the conjuncts
-            case dtSplitConcept:
                 for (int q : v.begin()) {
                     int index = createBiPointer(q, pos);
                     DLVertex vertex = get(index);
@@ -575,12 +576,14 @@ public class DLDag implements Serializable {
         DLVertex v = get(p);
         boolean pos = p > 0;
         if (v.isVisited(pos)) {
+            // avoid cycles
             return;
         }
         // increment frequence of current vertex
         v.incFreqValue(pos);
         v.setVisited(pos);
         if (v.getType().omitStat(pos)) {
+            // negation of primitive concept-like
             return;
         }
         // increment frequence of all subvertex
@@ -814,7 +817,6 @@ public class DLDag implements Serializable {
                 break;
             case dtAnd:
             case dtCollection:
-            case dtSplitConcept:
                 for (int q : v.begin()) {
                     merge(v.getSort(), q);
                 }

@@ -11,14 +11,14 @@ import javax.annotation.Nonnull;
 
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptDataRVExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleArg;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** exist data restriction */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptDataExists")

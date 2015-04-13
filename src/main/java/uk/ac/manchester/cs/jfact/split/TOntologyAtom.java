@@ -10,8 +10,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 
 /** ontology atom */
 @PortedFrom(file = "tOntologyAtom.h", name = "TOntologyAtom")
@@ -77,6 +77,7 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
      */
     @PortedFrom(file = "tOntologyAtom.h", name = "setModule")
     public void setModule(Collection<AxiomInterface> module) {
+        // XXX check if the defensive copy is needed
         ModuleAxioms = new HashSet<>(module);
     }
 
@@ -100,6 +101,7 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
      */
     @PortedFrom(file = "tOntologyAtom.h", name = "addDepAtom")
     public void addDepAtom(TOntologyAtom atom) {
+        // XXX != should be !equals() ?
         if (atom != null && atom != this) {
             DepAtoms.add(atom);
         }

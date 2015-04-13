@@ -18,11 +18,11 @@ import java.util.TreeSet;
 
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** taxonomy vertex */
 @PortedFrom(file = "taxVertex.h", name = "TaxonomyVertex")
@@ -81,7 +81,7 @@ public class TaxonomyVertex implements Serializable {
     public void setSample(ClassifiableEntry entry, boolean linkBack) {
         sample = entry;
         if (linkBack) {
-            entry.setTaxVertex(this);
+            setVertexAsHost(entry);
         }
     }
 
@@ -334,15 +334,18 @@ public class TaxonomyVertex implements Serializable {
     public void incorporate(JFactReasonerConfiguration c) {
         // setup links
         for (TaxonomyVertex d : neigh(false)) {
+            // remove all down links
             for (TaxonomyVertex u : neigh(true)) {
                 if (d.removeLink(true, u)) {
                     u.removeLink(false, d);
                 }
             }
-            d.removeLink(/* upDirection= */true, this);
+            // add new link between v and current
             // safe in general case, crucial for incremental
+            d.removeLink(true, this);
             d.addNeighbour(true, this);
         }
+        // add new link between v and current
         for (TaxonomyVertex u : neigh(true)) {
             u.addNeighbour(false, this);
         }
@@ -492,11 +495,7 @@ public class TaxonomyVertex implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder b = new StringBuilder();
-        b.append(printSynonyms());
-        b.append(printNeighbours(linksParent));
-        b.append(printNeighbours(linksChild));
-        b.append('\n');
-        return b.toString();
+        return printSynonyms() + printNeighbours(linksParent)
+                + printNeighbours(linksChild) + '\n';
     }
 }

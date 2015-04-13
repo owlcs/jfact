@@ -11,11 +11,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleInverse;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** class to hold the signature of a module */
 @PortedFrom(file = "tSignature.h", name = "TSignature")

@@ -13,8 +13,8 @@ import javax.annotation.Nonnull;
 
 import org.semanticweb.owlapi.model.IRI;
 
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import conformance.Original;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 
 /**
  * @author ignazio

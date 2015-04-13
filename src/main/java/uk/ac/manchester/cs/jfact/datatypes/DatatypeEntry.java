@@ -11,8 +11,8 @@ import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
-import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 
 /** datatype entry */
 public class DatatypeEntry extends NamedEntry {

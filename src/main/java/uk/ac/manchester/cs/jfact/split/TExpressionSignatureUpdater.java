@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.split;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptAnd;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataExactCardinality;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataExists;
@@ -41,7 +42,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleArg;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorAdapter;
-import conformance.PortedFrom;
 
 /** update the signature by adding all signature elements from the expression */
 @PortedFrom(file = "tSignatureUpdater.h", name = "TExpressionSignatureUpdater")

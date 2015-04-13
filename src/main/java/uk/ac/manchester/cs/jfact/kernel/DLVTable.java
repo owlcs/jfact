@@ -11,10 +11,10 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.DLVertex;
 import uk.ac.manchester.cs.jfact.helpers.FastSet;
 import uk.ac.manchester.cs.jfact.helpers.FastSetFactory;
-import conformance.PortedFrom;
 
 @PortedFrom(file = "dlVHash.h", name = "dlVHashTable")
 class DLVTable implements Serializable {

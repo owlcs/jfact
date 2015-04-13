@@ -7,7 +7,6 @@ package uk.ac.manchester.cs.jfact.datatypes;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static org.semanticweb.owlapi.util.OWLAPIPreconditions.checkNotNull;
 import static uk.ac.manchester.cs.jfact.datatypes.DatatypeClashes.*;
-import gnu.trove.set.TIntSet;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,6 +17,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import gnu.trove.set.TIntSet;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 
 /**
@@ -76,6 +76,7 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         if (!i.checkMinMaxClash()) {
             this.constraints.add(i);
         } else {
+            // XXX this is not in version 5
             this.accDep.add(i.locDep);
         }
         return false;

@@ -11,13 +11,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.SaveStack;
 import uk.ac.manchester.cs.jfact.kernel.ConceptWDep;
 import uk.ac.manchester.cs.jfact.kernel.DagTag;
 import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
 import uk.ac.manchester.cs.jfact.kernel.SaveStackRare;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** todo list */
 @PortedFrom(file = "ToDoList.h", name = "ToDoList")

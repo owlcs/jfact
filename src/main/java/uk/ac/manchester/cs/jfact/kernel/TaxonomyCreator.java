@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.split.TSignature;
 import conformance.PortedFrom;
@@ -85,29 +86,26 @@ public class TaxonomyCreator implements Serializable {
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "setToldSubsumers")
     private void setToldSubsumers() {
         Collection<ClassifiableEntry> top = ksStack.peek().s_begin();
-        if (pTax.getOptions().isNeedLogging() && !top.isEmpty()) {
-            pTax.getOptions().getLog().print("\nTAX: told subsumers");
+        boolean needLogging = pTax.getOptions().isNeedLogging();
+        LogAdapter log = pTax.getOptions().getLog();
+        if (needLogging && !top.isEmpty()) {
+            log.print("\nTAX: told subsumers");
         }
         for (ClassifiableEntry p : top) {
             if (p.isClassified()) {
-                if (pTax.getOptions().isNeedLogging()) {
-                    pTax.getOptions()
-                            .getLog()
-                            .printTemplate(Templates.TOLD_SUBSUMERS,
-                                    p.getName());
+                if (needLogging) {
+                    log.printTemplate(Templates.TOLD_SUBSUMERS, p.getName());
                 }
                 propagateTrueUp(p.getTaxVertex());
             }
         }
-        // XXX this is misleading: in the C++ code the only implementation
-        // available will always say that top is empty here even if it never
-        // is.
-        // if (!top.isEmpty() && needLogging()) {
-        // LL.print(" and possibly ");
-        // for (ClassifiableEntry q : top) {
-        // LL.print(Templates.TOLD_SUBSUMERS, q.getName());
-        // }
-        // }
+        top = ksStack.peek().p_begin();
+        if (!top.isEmpty() && needLogging) {
+            log.print(" and possibly ");
+            for (ClassifiableEntry q : top) {
+                log.print(Templates.TOLD_SUBSUMERS, q.getName());
+            }
+        }
     }
 
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "setNonRedundantCandidates")
@@ -119,8 +117,7 @@ public class TaxonomyCreator implements Serializable {
             pTax.getOptions().getLog().print(curEntry.getName());
         }
         // test if some "told subsumer" is not an immediate TS (ie, not a
-        // border
-        // element)
+        // border element)
         for (ClassifiableEntry p : ksStack.peek().s_begin()) {
             addPossibleParent(p.getTaxVertex());
         }

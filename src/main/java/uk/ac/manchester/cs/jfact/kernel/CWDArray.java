@@ -10,11 +10,12 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.ArrayIntMap;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
-import conformance.Original;
-import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
 /** List of concepts with dependencies */
 @PortedFrom(file = "CWDArray.h", name = "CWDArray")
@@ -25,7 +26,7 @@ public class CWDArray implements Serializable {
     private static final double distribution = 0.025;
     /** array of concepts together with dep-sets */
     @PortedFrom(file = "CWDArray.h", name = "Base")
-    private final List<ConceptWDep> base = new ArrayList<>();
+    private final List<ConceptWDep> base;
     @Original
     private BitSet cache;
     @Original
@@ -36,6 +37,13 @@ public class CWDArray implements Serializable {
     private static final int cacheLimit = 1;
     @Original
     private int size = 0;
+    @Original
+    private JFactReasonerConfiguration options;
+
+    public CWDArray(JFactReasonerConfiguration config, int size) {
+        options = config;
+        base = new ArrayList<>(size);
+    }
 
     /** init/clear label */
     @PortedFrom(file = "CWDArray.h", name = "init")

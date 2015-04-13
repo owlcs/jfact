@@ -9,14 +9,14 @@ import java.io.Serializable;
 
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptObjectCardinalityExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NumberArg;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** object max cardinality */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectMaxCardinality")

@@ -8,9 +8,9 @@ package uk.ac.manchester.cs.jfact.kernel.actors;
 import java.io.Serializable;
 import java.util.Collection;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
 import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
-import conformance.PortedFrom;
 
 /** class for exploring concept taxonomy to find super classes */
 @PortedFrom(file = "Kernel.cpp", name = "SupConceptActor")

@@ -7,11 +7,11 @@ package uk.ac.manchester.cs.jfact.kernel.dl.axioms;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import org.semanticweb.owlapi.model.OWLAxiom;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleComplexExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
-import conformance.PortedFrom;
 
 /** object role subsumption */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomORoleSubsumption")
@@ -19,7 +19,7 @@ public class AxiomORoleSubsumption extends AxiomSingleORole {
 
     private static final long serialVersionUID = 11000L;
     @PortedFrom(file = "tDLAxiom.h", name = "SubRole")
-    private final ObjectRoleComplexExpression complexRole;
+    private final ObjectRoleComplexExpression subRole;
 
     /**
      * @param ax
@@ -32,7 +32,7 @@ public class AxiomORoleSubsumption extends AxiomSingleORole {
     public AxiomORoleSubsumption(OWLAxiom ax,
             ObjectRoleComplexExpression subRole, ObjectRoleExpression supRole) {
         super(ax, supRole);
-        complexRole = subRole;
+        this.subRole = subRole;
     }
 
     @Override
@@ -50,6 +50,6 @@ public class AxiomORoleSubsumption extends AxiomSingleORole {
     /** @return sub role */
     @PortedFrom(file = "tDLAxiom.h", name = "getSubRole")
     public ObjectRoleComplexExpression getSubRole() {
-        return complexRole;
+        return subRole;
     }
 }

@@ -9,12 +9,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.kernel.ConceptWDep;
 import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
 import uk.ac.manchester.cs.jfact.kernel.Restorer;
 import uk.ac.manchester.cs.jfact.kernel.SaveStackRare;
-import conformance.PortedFrom;
 
 /** class to represent single priority queue */
 public class QueueQueue implements Serializable {

@@ -11,6 +11,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.DLVertex;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
@@ -18,8 +20,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** class to translate DAG entities into the TDL* expressions */
 @PortedFrom(file = "tDag2Interface.h", name = "TDag2Interface")
@@ -86,7 +86,6 @@ public class TDag2Interface implements Serializable {
             case dtProj:
             case dtNN:
             case dtChoose:
-            case dtSplitConcept:
                 // these are artificial constructions and shouldn't be visible
                 return top();
             default:

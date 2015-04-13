@@ -34,7 +34,7 @@ public class Timer implements Serializable {
     /** @return delta */
     public long calcDelta() {
         long finishTime = System.currentTimeMillis();
-        // calculate difference between cuttent time and start time
+        // calculate difference between current time and start time
         return finishTime - startTime;
     }
 

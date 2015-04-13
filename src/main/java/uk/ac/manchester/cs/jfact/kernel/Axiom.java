@@ -14,13 +14,13 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.split.TOntologyAtom;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** inner axiom class */
 @PortedFrom(file = "tAxiom.h", name = "TAxiom")
@@ -48,7 +48,7 @@ public class Axiom implements Serializable {
 
     // NS for different DLTree matchers for trees in axiom
     /**
-     * absorb into negation of a concept;
+     * absorb single concept into negation of a concept;
      * 
      * @param KB
      *        KB
@@ -210,13 +210,15 @@ public class Axiom implements Serializable {
             if (InAx.isAnd(p)) {
                 SAbsSplit();
                 absorptionLog.print(" split AND expression ", p.getChild());
+                // XXX doublecheck here because in FaCT++ these are binary trees
+                // but here they are n-ary
                 acc = this.split(acc, p, p.getChildren().iterator().next());
-                /**
-                 * no need to split more than once: every extra splits would be
-                 * together with unsplitted parts like: (A or B) and (C or D)
-                 * would be transform into A and (C or D), B and (C or D), (A or
-                 * B) and C, (A or B) and D so just return here
-                 */
+                // no need to split more than once:
+                // every extra splits would be together with unsplitted parts
+                // like: (A or B) and (C or D) would be transform into
+                // A and (C or D), B and (C or D), (A or B) and C, (A or B) and
+                // D
+                // so just return here
                 return acc;
             }
         }
@@ -232,6 +234,7 @@ public class Axiom implements Serializable {
     @PortedFrom(file = "tAxiom.h", name = "add")
     public void add(DLTree p) {
         if (InAx.isBot(p)) {
+            // BOT or X == X
             // nothing to do
             return;
         }
@@ -385,6 +388,8 @@ public class Axiom implements Serializable {
     }
 
     /**
+     * absorb into concept; @return true if absorption is performed
+     * 
      * @param KB
      *        KB
      * @return false if there are no absorptions
@@ -393,8 +398,11 @@ public class Axiom implements Serializable {
     public boolean absorbIntoConcept(TBox KB) {
         List<DLTree> Cons = new ArrayList<>();
         DLTree bestConcept = null;
+        // finds all primitive concept names
         for (DLTree p : disjuncts) {
             if (InAx.isNegPC(p)) {
+                // FIXME!! review this during implementation of Nominal
+                // Absorption
                 SAbsCAttempt();
                 Cons.add(p);
                 if (getConcept(p).isSystem()) {
@@ -402,10 +410,12 @@ public class Axiom implements Serializable {
                 }
             }
         }
+        // if no concept names -- return;
         if (Cons.isEmpty()) {
             return false;
         }
         SAbsCApply();
+        // FIXME!! as for now: just take the 1st concept name
         if (bestConcept == null) {
             bestConcept = Cons.get(0);
         }
@@ -422,8 +432,13 @@ public class Axiom implements Serializable {
                 absorptionLog.print(")");
             }
         }
+        // adds a new definition
         Concept.addDesc(createAnAxiom(bestConcept));
         Concept.removeSelfFromDescription();
+        // in case T [= (A or \neg B) and (B and \neg A) there appears a cycle A
+        // [= B [= A
+        // so remove potential cycle
+        // FIXME!! just because TConcept can't get rid of cycle by itself
         KB.clearRelevanceInfo();
         KB.checkToldCycle(Concept);
         KB.clearRelevanceInfo();
@@ -431,6 +446,8 @@ public class Axiom implements Serializable {
     }
 
     /**
+     * absorb single axiom AX into role domain; @return true if succeed
+     * 
      * @param KB
      *        KB
      * @return false if there are no absorptions
@@ -439,17 +456,22 @@ public class Axiom implements Serializable {
     public boolean absorbIntoDomain(TBox KB) {
         List<DLTree> Cons = new ArrayList<>();
         DLTree bestSome = null;
+        // find all forall concepts
         for (DLTree p : disjuncts) {
+            // \neg ER.C and \neg >= n R.C
             if (p.token() == NOT
                     && (p.getChild().token() == FORALL || p.getChild().token() == LE)) {
                 SAbsRAttempt();
                 Cons.add(p);
+                // check for the direct domain case
                 if (p.getChild().getRight().isBOTTOM()) {
+                    // found proper absorption candidate
                     bestSome = p;
                     break;
                 }
             }
         }
+        // if there are no EXISTS concepts -- return;
         if (Cons.isEmpty()) {
             return false;
         }
@@ -458,6 +480,7 @@ public class Axiom implements Serializable {
         if (bestSome != null) {
             role = Role.resolveRole(bestSome.getChild().getLeft());
         } else {
+            // FIXME!! as for now: just take the 1st role name
             role = Role.resolveRole(Cons.get(0).getChild().getLeft());
         }
         if (KB.getOptions().isAbsorptionLoggingActive()) {
@@ -473,6 +496,7 @@ public class Axiom implements Serializable {
                 absorptionLog.print(")");
             }
         }
+        // here bestSome is either actual domain, or END(); both cases are fine
         role.setDomain(createAnAxiom(bestSome));
         return true;
     }
@@ -489,15 +513,18 @@ public class Axiom implements Serializable {
         Concept C = null;
         // check whether the axiom is Top [= C
         for (DLTree p : disjuncts) {
+            // BOTTOMS are fine
             if (InAx.isBot(p)) {
                 continue;
             } else if (InAx.isPosCN(p)) {
-                // C found
+                // CN found
                 if (C != null) {
+                    // more than one concept
                     return false;
                 }
                 C = InAx.getConcept(p.getChild());
                 if (C.isSingleton()) {
+                    // doesn't work with nominals
                     return false;
                 }
             } else {

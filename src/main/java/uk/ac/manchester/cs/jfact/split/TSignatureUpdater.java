@@ -8,6 +8,7 @@ package uk.ac.manchester.cs.jfact.split;
 import java.io.Serializable;
 import java.util.Collection;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomConceptInclusion;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleDomain;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleFunctional;
@@ -42,7 +43,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOf;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOfNot;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
-import conformance.PortedFrom;
 
 /** update signature by adding the signature of a given axiom to it */
 @PortedFrom(file = "tSignatureUpdater.h", name = "TSignatureUpdater")

@@ -17,6 +17,8 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.Reference;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
@@ -24,8 +26,6 @@ import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import uk.ac.manchester.cs.jfact.kernel.DagTag;
 import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** @author ignazio Datatype reasoner implementation */
 @PortedFrom(file = "DataReasoning.h", name = "DataTypeReasoner")

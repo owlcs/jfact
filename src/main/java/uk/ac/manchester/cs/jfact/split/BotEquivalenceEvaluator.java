@@ -7,6 +7,7 @@ package uk.ac.manchester.cs.jfact.split;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.datatypes.Datatype;
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.datatypes.cardinality;
@@ -52,7 +53,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
-import conformance.PortedFrom;
 
 /**
  * check whether class expressions are equivalent to bottom wrt given locality
@@ -219,6 +219,7 @@ public class BotEquivalenceEvaluator extends SigAccessor implements
 
     @Override
     public void visit(ConceptAnd expr) {
+        // XXX is this correct? never set to true?
         for (ConceptExpression p : expr.getArguments()) {
             if (isBotEquivalent(p)) {
                 return;
@@ -400,6 +401,7 @@ public class BotEquivalenceEvaluator extends SigAccessor implements
 
     @Override
     public void visit(DataAnd expr) {
+        // XXX no setting to true?
         for (DataExpression p : expr.getArguments()) {
             if (isBotEquivalent(p)) {
                 return;

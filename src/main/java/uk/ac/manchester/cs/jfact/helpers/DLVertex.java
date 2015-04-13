@@ -18,13 +18,13 @@ import javax.annotation.Nonnull;
 
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.DLDag;
 import uk.ac.manchester.cs.jfact.kernel.DagTag;
 import uk.ac.manchester.cs.jfact.kernel.MergableLabel;
 import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 import uk.ac.manchester.cs.jfact.kernel.Role;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /**
  * DL Vertex
@@ -108,9 +108,7 @@ public class DLVertex extends DLVertexTagDFS {
         }
 
         public boolean add(int p) {
-            int size = set.size();
-            set.add(p);
-            if (set.size() > size) {
+            if (set.add(p)) {
                 original.add(p);
                 sorted = null;
                 return true;
@@ -305,19 +303,17 @@ public class DLVertex extends DLVertexTagDFS {
      */
     @PortedFrom(file = "dlVertex.h", name = "addChild")
     public boolean addChild(int p) {
-        if (p == bpTOP) {
-            return false;
-        }
+        // if adds to broken vertex -- do nothing;
         if (op == dtBad) {
             return true;
         }
-        if (p == bpBOTTOM) {
-            // clash:
-            child.clear();
-            op = dtBad;
-            return true;
+        // if adds TOP -- nothing to do
+        if (p == bpTOP) {
+            return false;
         }
-        if (child.contains(-p)) {
+        // if adding BOTTOM -- return clash (empty vertex) immediately
+        // this can happen in case of nested simplifications; see bNested1
+        if (p == bpBOTTOM || child.contains(-p)) {
             child.clear();
             op = dtBad;
             return true;
@@ -375,7 +371,6 @@ public class DLVertex extends DLVertexTagDFS {
         switch (op) {
             case dtAnd:
             case dtCollection:
-            case dtSplitConcept:
                 break;
             case dtTop:
             case dtNN:
@@ -416,7 +411,6 @@ public class DLVertex extends DLVertexTagDFS {
         return childrenToString();
     }
 
-    @SuppressWarnings("null")
     @Nonnull
     protected String childrenToString() {
         StringBuilder o = new StringBuilder(op.getName());

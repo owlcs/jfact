@@ -13,10 +13,11 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Set;
 
-import uk.ac.manchester.cs.jfact.helpers.ArrayIntMap;
-import uk.ac.manchester.cs.jfact.kernel.state.SaveState;
 import conformance.Original;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.helpers.ArrayIntMap;
+import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
+import uk.ac.manchester.cs.jfact.kernel.state.SaveState;
 
 /** Completion graph label */
 @PortedFrom(file = "CGLabel.h", name = "CGLabel")
@@ -41,9 +42,11 @@ public class CGLabel implements Serializable {
     private final int id;
 
     /** Default constructor. */
-    public CGLabel() {
-        scLabel = new CWDArray();
-        ccLabel = new CWDArray();
+    public CGLabel(JFactReasonerConfiguration config) {
+        // init label with reasonable size
+        // XXX size might need tuning
+        scLabel = new CWDArray(config, 8);
+        ccLabel = new CWDArray(config, 4);
         id = getnewId();
     }
 
@@ -230,11 +233,30 @@ public class CGLabel implements Serializable {
      */
     @PortedFrom(file = "CGLabel.h", name = "getConcept")
     public ConceptWDep getConceptWithBP(int bp) {
-        ConceptWDep toReturn = scLabel.getConceptWithBP(bp);
+        ConceptWDep toReturn = getSCConceptWithBP(bp);
         if (toReturn != null) {
             return toReturn;
         }
-        toReturn = ccLabel.getConceptWithBP(bp);
-        return toReturn;
+        return getCCConceptWithBP(bp);
+    }
+
+    /**
+     * @param bp
+     *        bp
+     * @return concept with index bp
+     */
+    @PortedFrom(file = "CGLabel.h", name = "getConcept")
+    public ConceptWDep getSCConceptWithBP(int bp) {
+        return scLabel.getConceptWithBP(bp);
+    }
+
+    /**
+     * @param bp
+     *        bp
+     * @return concept with index bp
+     */
+    @PortedFrom(file = "CGLabel.h", name = "getConcept")
+    public ConceptWDep getCCConceptWithBP(int bp) {
+        return ccLabel.getConceptWithBP(bp);
     }
 }

@@ -11,9 +11,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import conformance.Original;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.helpers.DLTree;
 
 /**
  * class for simple rules like Ch :- Cb1, Cbi, CbN; all C are primitive named

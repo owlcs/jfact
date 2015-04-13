@@ -21,9 +21,14 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import javax.annotation.Nonnull;
 
 import org.semanticweb.owlapi.reasoner.TimeOutException;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.datatypes.DataTypeReasoner;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeEntry;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
@@ -47,9 +52,6 @@ import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.kernel.todolist.ToDoEntry;
 import uk.ac.manchester.cs.jfact.kernel.todolist.ToDoList;
-import uk.ac.manchester.cs.jfact.split.TSplitRules.TSplitRule;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** sat tester */
 @PortedFrom(file = "Reasoner.h", name = "DlSatTester")
@@ -139,8 +141,13 @@ public class DlSatTester implements Serializable {
         }
 
         @Override
-        public void add(int e) {
-            pos.set(asPositive(e));
+        public boolean add(int e) {
+            int asPositive = asPositive(e);
+            if (!pos.get(asPositive)) {
+                pos.set(asPositive);
+                return true;
+            }
+            return false;
         }
 
         @Override
@@ -612,9 +619,6 @@ public class DlSatTester implements Serializable {
     /** shift in order to determine the 1st non-det application */
     @PortedFrom(file = "Reasoner.h", name = "nonDetShift")
     protected int nonDetShift;
-    /** last level when split rules were applied */
-    @PortedFrom(file = "Reasoner.h", name = "splitRuleLevel")
-    private int splitRuleLevel;
     // current values
     /** currently processed CTree node */
     @PortedFrom(file = "Reasoner.h", name = "curNode")
@@ -650,8 +654,6 @@ public class DlSatTester implements Serializable {
     private final ModelCacheIan newNodeEdges;
     @Original
     private final Stats stats = new Stats();
-    @Original
-    protected final DatatypeFactory datatypeFactory;
 
     /**
      * Adds ToDo entry which already exists in label of NODE. There is no need
@@ -667,10 +669,7 @@ public class DlSatTester implements Serializable {
      */
     @PortedFrom(file = "Reasoner.h", name = "addExistingToDoEntry")
     private void addExistingToDoEntry(DlCompletionTree node, ConceptWDep C,
-            String reason /*
-                           * =
-                           * null
-                           */) {
+            String reason) {
         int bp = C.getConcept();
         TODO.addEntry(node, dlHeap.get(bp).getType(), C);
         logNCEntry(node, C.getConcept(), C.getDep(), "+", reason);
@@ -702,7 +701,6 @@ public class DlSatTester implements Serializable {
     private void ensureDAGSize() {
         if (dagSize < dlHeap.size()) {
             dagSize = dlHeap.maxSize();
-            tBox.getSplitRules().ensureDagSize(dagSize);
         }
     }
 
@@ -715,7 +713,7 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "createModelCache")
     protected ModelCacheInterface createModelCache(DlCompletionTree p) {
         return new ModelCacheIan(dlHeap, p, encounterNominal, tBox.nC, tBox.nR,
-                options.isRKG_USE_SIMPLE_RULES());
+                options);
     }
 
     /**
@@ -1182,6 +1180,7 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "repeatUnblockedNode")
     public void repeatUnblockedNode(DlCompletionTree node, boolean direct) {
         if (direct) {
+            // not blocked -- clear blocked cache
             // re-apply all the generating rules
             applyAllGeneratingRules(node);
         } else {
@@ -1231,6 +1230,7 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "buildCacheByCGraph")
     public ModelCacheInterface buildCacheByCGraph(boolean sat) {
         if (sat) {
+            // here we need actual (not a p-blocked) root of the tree
             return createModelCache(getRootNode());
         } else {
             // unsat => cache is just bottom
@@ -1295,16 +1295,19 @@ public class DlSatTester implements Serializable {
         }
         if (f.contains(p)) {
             return;
+            // cycle found -- shall be processed without caching
         }
         DLVertex v = dlHeap.get(p);
         boolean pos = p > 0;
         if (v.getCache(pos) != null) {
+            // XXX check what's in f and when it's reset
             return;
         }
         DagTag type = v.getType();
         if (handlecollection.contains(type)) {
             for (int q : v.begin()) {
                 int p2 = pos ? q : -q;
+              // check if a concept already cached
                 inProcess.add(p2);
                 prepareCascadedCache(p2, f);
                 inProcess.remove(p2);
@@ -1325,10 +1328,13 @@ public class DlSatTester implements Serializable {
                     inProcess.add(x);
                     createCache(x, f);
                     inProcess.remove(x);
+                // skip data-related stuff
+            // no need to cache top-role stuff
                 }
                 x = R.getBPRange();
                 if (x != bpTOP) {
                     inProcess.add(x);
+                 // build cache for C in \AR.C
                     createCache(x, f);
                     inProcess.remove(x);
                 }
@@ -1355,12 +1361,6 @@ public class DlSatTester implements Serializable {
     }
 
     // flags section
-    /** @return true iff active signature is in use */
-    @PortedFrom(file = "Reasoner.h", name = "useActiveSignature")
-    private boolean useActiveSignature() {
-        return !tBox.getSplits().empty();
-    }
-
     @PortedFrom(file = "Reasoner.h", name = "resetSessionFlags")
     protected void resetSessionFlags() {
         // reflect possible change of DAG size
@@ -1369,7 +1369,6 @@ public class DlSatTester implements Serializable {
         used.add(bpBOTTOM);
         encounterNominal = false;
         checkDataNode = true;
-        splitRuleLevel = 0;
     }
 
     @PortedFrom(file = "Reasoner.h", name = "initNewNode")
@@ -1542,7 +1541,7 @@ public class DlSatTester implements Serializable {
      *        dep
      * @return true if node existed
      */
-    @PortedFrom(file = "Reasoner.h", name = "addSessionGCI")
+    @PortedFrom(file = "Tactic.cpp", name = "addSessionGCI")
     private boolean addSessionGCI(int C, DepSet dep) {
         SessionGCIs.add(C);
         int n = 0;
@@ -1556,18 +1555,14 @@ public class DlSatTester implements Serializable {
         return false;
     }
 
-    protected DlSatTester(TBox tbox, JFactReasonerConfiguration Options,
-            DatatypeFactory datatypeFactory) {
+    protected DlSatTester(TBox tbox, JFactReasonerConfiguration Options) {
         options = Options;
-        this.datatypeFactory = datatypeFactory;
         tBox = tbox;
         dlHeap = tbox.getDLHeap();
         cGraph = new DlCompletionGraph(1, this);
         TODO = new ToDoList(cGraph.getRareStack());
-        newNodeCache = new ModelCacheIan(true, tbox.nC, tbox.nR,
-                options.isRKG_USE_SIMPLE_RULES());
-        newNodeEdges = new ModelCacheIan(false, tbox.nC, tbox.nR,
-                options.isRKG_USE_SIMPLE_RULES());
+        newNodeCache = new ModelCacheIan(true, tbox.nC, tbox.nR, options);
+        newNodeEdges = new ModelCacheIan(false, tbox.nC, tbox.nR, options);
         gcis = tbox.getGCIs();
         bContext = null;
         tryLevel = InitBranchingLevelValue;
@@ -1672,22 +1667,29 @@ public class DlSatTester implements Serializable {
     }
 
     @PortedFrom(file = "Reasoner.h", name = "tryAddConcept")
+    @Nonnull
     private AddConceptResult tryAddConcept(CWDArray lab, int bp, DepSet dep) {
+        // check whether C or ~C can occurs in a node label
         boolean canC = used.contains(bp);
         boolean canNegC = used.contains(-bp);
+        // if either C or ~C is used already, it's not new in a label
         if (canC) {
             if (canNegC) {
+                // both C and ~C can be in the label
                 return checkAddedConcept(lab, bp, dep);
             } else {
+                // C but not ~C can be in the label
                 stats.getnLookups().inc();
                 return findConcept(lab, bp) ? AddConceptResult.acrExist
                         : AddConceptResult.acrDone;
             }
         } else {
             if (canNegC) {
+                // ~C but not C can be in the label
                 return findConceptClash(lab, -bp, dep) ? AddConceptResult.acrClash
                         : AddConceptResult.acrDone;
             } else {
+                // neither C nor ~C can be in the label
                 return AddConceptResult.acrDone;
             }
         }
@@ -1706,6 +1708,7 @@ public class DlSatTester implements Serializable {
         }
         DLVertex v = dlHeap.get(bp);
         DagTag tag = v.getType();
+        // try to add a concept to a node label
         if (tag == DagTag.dtCollection) {
             if (bp < 0) {
                 return false;
@@ -1725,13 +1728,17 @@ public class DlSatTester implements Serializable {
         }
         switch (tryAddConcept(n.label().getLabel(tag), bp, dep)) {
             case acrClash:
+                // clash -- return
                 logNCEntry(n, bp, dep, "x", dlHeap.get(bp).getType().getName());
                 return true;
             case acrExist:
+                // already exists -- nothing new
                 return false;
             case acrDone:
+                // try was done
                 return insertToDoEntry(n, bp, dep, tag, reason);
             default:
+                // safety check
                 throw new UnreachableSituationException();
         }
     }
@@ -1740,13 +1747,16 @@ public class DlSatTester implements Serializable {
     private boolean insertToDoEntry(DlCompletionTree n, int bp, DepSet dep,
             DagTag tag, String reason) {
         ConceptWDep p = new ConceptWDep(bp, dep);
+        // we will change current Node => save it if necessary
         updateLevel(n, dep);
         cGraph.addConceptToNode(n, p, tag);
         used.add(bp);
         if (n.isCached()) {
             return correctCachedEntry(n);
         }
+        // add new info in TODO list
         TODO.addEntry(n, tag, p);
+        // data concept -- run data center for it
         if (n.isDataNode()) {
             return checkDataNode ? hasDataClash(n) : false;
         }
@@ -1973,7 +1983,7 @@ public class DlSatTester implements Serializable {
                 .print(testTimer.getResultTime()).print(" milliseconds");
         testTimer.reset();
         finaliseStatistic();
-        if (result) {
+        if (result && options.getLog().isEnabled()) {
             cGraph.print(options.getLog());
         }
         return result;
@@ -2008,6 +2018,8 @@ public class DlSatTester implements Serializable {
                 if (TODO.isEmpty()) {
                     // do run-once things
                     if (performAfterReasoning() && tunedRestore()) {
+                        // clash found
+                        // no more alternatives
                         return false;
                     }
                     // if nothing added -- that's it
@@ -2030,8 +2042,11 @@ public class DlSatTester implements Serializable {
                     throw new TimeOutException();
                 }
             }
+            // here curNode/curConcept are set
             if (commonTactic()) {
+                // clash found
                 if (tunedRestore()) {
+                    // the concept is unsatisfiable
                     return false;
                 }
             } else {
@@ -2056,19 +2071,6 @@ public class DlSatTester implements Serializable {
         if (!TODO.isEmpty()) {
             return false;
         }
-        // check if any split expansion rule could be fired
-        if (!tBox.getSplits().empty()) {
-            logIndentation();
-            options.getLog().print("split:");
-            boolean clash = checkSplitRules();
-            options.getLog().print("]");
-            if (clash) {
-                return true;
-            }
-            if (!TODO.isEmpty()) {
-                return false;
-            }
-        }
         // check fairness constraints
         if (options.isRKG_USE_FAIRNESS() && tBox.hasFC()) {
             DlCompletionTree violator = null;
@@ -2091,57 +2093,6 @@ public class DlSatTester implements Serializable {
         return false;
     }
 
-    // split code implementation
-    /**
-     * apply split rule RULE to a reasoner.
-     * 
-     * @param rule
-     *        rule
-     * @return true if clash was found
-     */
-    @PortedFrom(file = "Reasoner.h", name = "applySplitRule")
-    private boolean applySplitRule(TSplitRule rule) {
-        DepSet dep = rule.fireDep(SessionSignature, SessionSigDepSet);
-        int bp = rule.bp() - 1;
-        // p.bp points to Choose(C) node, p.bp-1 -- to the split node
-        // split became active
-        ActiveSplits.add(bp);
-        // add corresponding choose to all
-        if (addSessionGCI(bp + 1, dep)) {
-            return true;
-        }
-        // make sure that all existing splits will be re-applied
-        this.updateName(bp);
-        return false;
-    }
-
-    /**
-     * check whether any split rules should be run and do it.
-     * 
-     * @return true iff clash was found
-     */
-    @PortedFrom(file = "Reasoner.h", name = "checkSplitRules")
-    private boolean checkSplitRules() {
-        if (splitRuleLevel == 0) {
-            // 1st application OR return was made before previous set
-            ActiveSplits.clear();
-            SessionSignature.clear();
-            SessionSigDepSet.clear();
-            splitRuleLevel = getCurLevel();
-        }
-        // fills in session signature for current CGraph. combine dep-sets for
-        // the same entities
-        this.updateSessionSignature();
-        // now for every split expansion rule check whether it can be fired
-        for (TSplitRule p : tBox.getSplitRules().getRules()) {
-            if (!ActiveSplits.contains(p.bp() - 1)
-                    && p.canFire(SessionSignature) && applySplitRule(p)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     @PortedFrom(file = "Reasoner.h", name = "restoreBC")
     private void restoreBC() {
         curNode = bContext.node;
@@ -2155,15 +2106,20 @@ public class DlSatTester implements Serializable {
         if (!SessionGCIs.isEmpty()) {
             resize(SessionGCIs, bContext.SGsize);
         }
+        // update branch dep-set
         updateBranchDep();
         bContext.nextOption();
     }
 
     @PortedFrom(file = "Reasoner.h", name = "save")
     protected void save() {
+        // save tree
         cGraph.save();
+        // save ToDoList
         TODO.save();
+        // increase tryLevel
         ++tryLevel;
+        // init BC
         bContext = null;
         stats.getnStateSaves().inc();
         options.getLog().printTemplate(Templates.SAVE, getCurLevel() - 1);
@@ -2177,14 +2133,14 @@ public class DlSatTester implements Serializable {
     protected void restore(int newTryLevel) {
         assert !stack.isEmpty();
         assert newTryLevel > 0;
+        // skip all intermediate restores
         setCurLevel(newTryLevel);
-        // update split level
-        if (getCurLevel() < splitRuleLevel) {
-            splitRuleLevel = 0;
-        }
+        // restore local
         bContext = stack.top(getCurLevel());
         restoreBC();
+        // restore tree
         cGraph.restore(getCurLevel());
+        // restore TO DO list
         TODO.restore(getCurLevel());
         stats.getnStateRestores().inc();
         options.getLog().printTemplate(Templates.RESTORE, getCurLevel());
@@ -2260,11 +2216,15 @@ public class DlSatTester implements Serializable {
      */
     @PortedFrom(file = "Reasoner.h", name = "commonTactic")
     private boolean commonTactic() {
+        // check if Node is cached and we tries to expand existing result
+        // also don't do anything for p-blocked nodes (can't be unblocked)
         if (curNode.isCached() || curNode.isPBlocked()) {
             return false;
         }
+        // informs about starting calculations...
         logStartEntry();
         boolean ret = false;
+        // apply tactic only if Node is not an i-blocked
         if (!isIBlocked()) {
             ret = commonTacticBody(dlHeap.get(curConceptConcept));
         }
@@ -2278,16 +2238,20 @@ public class DlSatTester implements Serializable {
         stats.getnTacticCalls().inc();
         switch (cur.getType()) {
             case dtTop:
+                // can't appear here; addToDoEntry deals with constants
                 throw new UnreachableSituationException();
             case dtDataType:
             case dtDataValue:
+                // data things are checked by data inferer
                 stats.getnUseless().inc();
                 return false;
             case dtPSingleton:
             case dtNSingleton:
                 if (curConceptConcept > 0) {
+                    // real singleton
                     return commonTacticBodySingleton(cur);
                 } else {
+                    // negated singleton -- nothing to do with.
                     return commonTacticBodyId(cur);
                 }
             case dtNConcept:
@@ -2295,25 +2259,33 @@ public class DlSatTester implements Serializable {
                 return commonTacticBodyId(cur);
             case dtAnd:
                 if (curConceptConcept > 0) {
+                    // this is AND vertex
                     return commonTacticBodyAnd(cur);
                 } else {
+                    // this is OR vertex
                     return commonTacticBodyOr(cur);
                 }
             case dtForall:
                 if (curConceptConcept < 0) {
+                    // SOME vertex
                     return commonTacticBodySome(cur);
                 }
+                // ALL vertex
                 return commonTacticBodyAll(cur);
             case dtIrr:
                 if (curConceptConcept < 0) {
+                    // SOME R.Self vertex
                     return commonTacticBodySomeSelf(cur.getRole());
                 } else {
+                    // don't need invalidate cache, as IRREFL can only lead to CLASH
                     return commonTacticBodyIrrefl(cur.getRole());
                 }
             case dtLE:
                 if (curConceptConcept < 0) {
+                    // >= vertex
                     return commonTacticBodyGE(cur);
                 }
+                // <= vertex
                 if (isFunctionalVertex(cur)) {
                     return commonTacticBodyFunc(cur);
                 } else {
@@ -2323,8 +2295,6 @@ public class DlSatTester implements Serializable {
                 assert curConceptConcept > 0;
                 return commonTacticBodyProj(cur.getRole(),
                         cur.getConceptIndex(), cur.getProjRole());
-            case dtSplitConcept:
-                return commonTacticBodySplit(cur);
             case dtChoose:
                 assert curConceptConcept > 0;
                 return applyChooseRule(curNode, cur.getConceptIndex());
@@ -2364,52 +2334,28 @@ public class DlSatTester implements Serializable {
         }
     }
 
-    /**
-     * update session signature with all names from a given node
-     * 
-     * @param node
-     *        node
-     */
-    @PortedFrom(file = "Reasoner.h", name = "updateSignatureByNode")
-    private void updateSignatureByNode(DlCompletionTree node) {
-        CGLabel lab = node.label();
-        for (ConceptWDep p : lab.get_sc()) {
-            this.updateSessionSignature(
-                    tBox.getSplitRules().getEntity(p.getConcept()), p.getDep());
-        }
-    }
-
-    /** update session signature for all non-data nodes */
-    @PortedFrom(file = "Reasoner.h", name = "updateSessionSignature")
-    private void updateSessionSignature() {
-        int n = 0;
-        DlCompletionTree node = cGraph.getNode(n++);
-        while (node != null) {
-            if (isObjectNodeUnblocked(node)) {
-                updateSignatureByNode(node);
-            }
-            node = cGraph.getNode(n++);
-        }
-    }
-
     @PortedFrom(file = "Reasoner.h", name = "applicable")
     protected boolean applicable(SimpleRule rule) {
         CWDArray lab = curNode.label().getLabel(DagTag.dtPConcept);
+        // dep-set to keep track for all the concepts in a rule-head
         DepSet loc = DepSet.create(curConceptDepSet);
         for (Concept p : rule.getBody()) {
             if (p.getpName() != curConceptConcept) {
+                // such a concept exists -- rememeber clash set
                 if (findConceptClash(lab, p.getpName(), loc)) {
                     loc.add(clashSet);
                 } else {
+                    // no such concept -- can not fire a rule
                     return false;
                 }
             }
         }
+        // rule will be fired -- set the dep-set
         this.setClashSet(loc);
         return true;
     }
 
-    @PortedFrom(file = "Reasoner.h", name = "applyExtraRules")
+    @PortedFrom(file = "Tactic.cpp", name = "applyExtraRules")
     private boolean applyExtraRules(Concept C) {
         FastSet er_begin = C.getExtraRules();
         for (int i = 0; i < er_begin.size(); i++) {
@@ -2431,10 +2377,13 @@ public class DlSatTester implements Serializable {
         // safety check
         assert cur.getType() == dtPSingleton || cur.getType() == dtNSingleton;
         stats.getnSingletonCalls().inc();
+        // can use this rule only in the Nominal reasoner
         assert hasNominals();
+        // if the test REALLY uses nominals, remember this
         encounterNominal = true;
         Individual C = (Individual) cur.getConcept();
         assert C.getNode() != null;
+        // if node for C was purged due to merge -- find proper one
         DepSet dep = DepSet.create(curConceptDepSet);
         // blank nodes are set to be non classifiable and not initialized in
         // initNominalCloud
@@ -2444,9 +2393,13 @@ public class DlSatTester implements Serializable {
             return true;
         }
         DlCompletionTree realNode = C.getNode().resolvePBlocker(dep);
+        // check if o-rule is applicable
         if (!realNode.equals(curNode)) {
+            // apply o-rule: merge 2 nodes
+            // don't need to actually expand P: it was/will be done in C.node
             return merge(curNode, realNode, dep);
         }
+        // singleton behaves as a general named concepts besides nominal cloud
         return commonTacticBodyId(cur);
     }
 
@@ -2463,33 +2416,47 @@ public class DlSatTester implements Serializable {
         return false;
     }
 
+    /**
+     * for C \or D concepts
+     * 
+     * @param cur
+     *        current vertex true if clash happens
+     */
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodyOr")
     private boolean commonTacticBodyOr(DLVertex cur) {
         // safety check
         assert curConceptConcept < 0 && cur.getType() == dtAnd;
         stats.getnOrCalls().inc();
         if (isFirstBranchCall()) {
+            // check the structure of OR operation (number of applicable
+            // concepts)
             Reference<DepSet> dep = new Reference<>(DepSet.create());
             if (planOrProcessing(cur, dep)) {
+                // found existing component
                 options.getLog().printTemplate(Templates.COMMON_TACTIC_BODY_OR,
                         orConceptsToTest.get(orConceptsToTest.size() - 1));
                 return false;
             }
             if (orConceptsToTest.isEmpty()) {
+                // no more applicable concepts:
+                // set global dep-set using accumulated deps
                 this.setClashSet(dep.getReference());
                 return true;
             }
+            // not a branching: just add a single concept
             if (orConceptsToTest.size() == 1) {
                 ConceptWDep C = orConceptsToTest.get(0);
                 return insertToDoEntry(curNode, C.getConcept(),
                         dep.getReference(), dlHeap.get(C.getConcept())
                                 .getType(), "bcp");
             }
+            // more than one alternative: use branching context
             createBCOr();
             bContext.branchDep = DepSet.create(dep.getReference());
             orConceptsToTest = ((BCOr) bContext)
                     .setApplicableOrEntries(orConceptsToTest);
         }
+        // now it is OR case with 1 or more applicable concepts
         return processOrEntry();
     }
 
@@ -2565,12 +2532,13 @@ public class DlSatTester implements Serializable {
         }
     }
 
+    /** expansion rule for universal restriction with non-simple role using RA */
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodyAllComplex")
     private boolean commonTacticBodyAllComplex(DLVertex cur) {
         int state = cur.getState();
         // corresponds to AR{0}.X
         int C = curConceptConcept - state;
-        RAStateTransitions RST = cur.getRole().getAutomaton().getBase()
+        RAStateTransitions RST = cur.getRole().getAutomaton()
                 .get(state);
         // apply all empty transitions
         if (RST.hasEmptyTransition()) {
@@ -2617,9 +2585,9 @@ public class DlSatTester implements Serializable {
         return false;
     }
 
-    @PortedFrom(file = "Reasoner.h", name = "commonTacticBodyAllSimple")
+    @PortedFrom(file = "Tactic.cpp", name = "commonTacticBodyAllSimple")
     private boolean commonTacticBodyAllSimple(DLVertex cur) {
-        RAStateTransitions RST = cur.getRole().getAutomaton().getBase().get(0);
+        RAStateTransitions RST = cur.getRole().getAutomaton().get(0);
         int C = cur.getConceptIndex();
         // check whether automaton applicable to any edges
         stats.getnAllCalls().inc();
@@ -2638,7 +2606,7 @@ public class DlSatTester implements Serializable {
         return false;
     }
 
-    @PortedFrom(file = "Reasoner.h", name = "applyTransitions")
+    @PortedFrom(file = "Tactic.cpp", name = "applyTransitions")
     private boolean applyTransitions(DlCompletionTreeArc edge,
             RAStateTransitions RST, int C, DepSet dep, String reason) {
         Role R = edge.getRole();
@@ -2710,7 +2678,7 @@ public class DlSatTester implements Serializable {
                         break;
                     }
                     /** check whether transition is possible */
-                    RAStateTransitions RST = vR.getAutomaton().getBase()
+                    RAStateTransitions RST = vR.getAutomaton()
                             .get(v.getState());
                     if (!RST.recognise(R)) {
                         break;
@@ -2755,9 +2723,12 @@ public class DlSatTester implements Serializable {
         if (R.isTop()) {
             return commonTacticBodySomeUniv(cur);
         }
+        // check if we already have R-neighbour labelled with C
         if (isSomeExists(R, C)) {
             return false;
         }
+        // try to check the case (some R (or C D)), where C is in the label of
+        // an R-neighbour
         if (C < 0 && dlHeap.get(C).getType() == dtAnd) {
             for (int q : dlHeap.get(C).begin()) {
                 if (isSomeExists(R, -q)) {
@@ -2765,6 +2736,7 @@ public class DlSatTester implements Serializable {
                 }
             }
         }
+        // check for the case \ER.{o}
         if (C > 0 && tBox.testHasNominals()) {
             DLVertex nom = dlHeap.get(C);
             if (nom.getType() == dtPSingleton || nom.getType() == dtNSingleton) {
@@ -2772,6 +2744,7 @@ public class DlSatTester implements Serializable {
             }
         }
         stats.getnSomeCalls().inc();
+        // check if we have functional role
         if (R.isFunctional()) {
             List<Role> list = R.begin_topfunc();
             for (int i = 0; i < list.size(); i++) {
@@ -2779,11 +2752,16 @@ public class DlSatTester implements Serializable {
                 switch (tryAddConcept(curNode.label().getLabel(DagTag.dtLE),
                         functional, curConceptDepSet)) {
                     case acrClash:
+                        // addition leads to clash
                         return true;
                     case acrDone:
+                        // should be add to a label
+                        // we are changing current Node => save it
                         updateLevel(curNode, curConceptDepSet);
                         ConceptWDep rFuncRestriction1 = new ConceptWDep(
                                 functional, curConceptDepSet);
+                        // NOTE! not added into todo (because will be checked
+                        // right now)
                         cGraph.addConceptToNode(curNode, rFuncRestriction1,
                                 DagTag.dtLE);
                         used.add(rFuncRestriction1.getConcept());
@@ -2796,6 +2774,8 @@ public class DlSatTester implements Serializable {
                     default:
                         throw new UnreachableSituationException();
                 }
+                // only other possibility is acrExist. As the node already
+                // exists, nothing to do
             }
         }
         boolean rFunc = false;
@@ -2879,16 +2859,21 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodyValue")
     private boolean commonTacticBodyValue(Role R, Individual nom) {
         DepSet dep = DepSet.create(curConceptDepSet);
+        // check blocking conditions
         if (isCurNodeBlocked()) {
             return false;
         }
         stats.getnSomeCalls().inc();
         assert nom.getNode() != null;
+        // if node for NOM was purged due to merge -- find proper one
         DlCompletionTree realNode = nom.getNode().resolvePBlocker(dep);
+        // check if merging will lead to clash because of disjoint roles
         if (R.isDisjoint() && checkDisjointRoleClash(curNode, realNode, R, dep)) {
             return true;
         }
+        // here we are sure that there is a nominal connected to a root node
         encounterNominal = true;
+        // create new edge between curNode and the given nominal node
         DlCompletionTreeArc edge = cGraph.addRoleLabel(curNode, realNode,
                 false, R, dep);
         // add all necessary concepts to both ends of the edge
@@ -2970,6 +2955,7 @@ public class DlSatTester implements Serializable {
         if (!options.getuseLazyBlocking()) {
             return curNode.isBlocked();
         }
+        // update blocked status
         if (!curNode.isBlocked() && curNode.isAffected()) {
             updateLevel(curNode, curConceptDepSet);
             cGraph.detectBlockedStatus(curNode);
@@ -2979,6 +2965,7 @@ public class DlSatTester implements Serializable {
 
     @PortedFrom(file = "Reasoner.h", name = "applyAllGeneratingRules")
     private void applyAllGeneratingRules(DlCompletionTree node) {
+        // need only ER.C or >=nR.C concepts
         List<ConceptWDep> base = node.label().get_cc();
         for (int i = 0; i < base.size(); i++) {
             ConceptWDep p = base.get(i);
@@ -3086,6 +3073,7 @@ public class DlSatTester implements Serializable {
         if (cur.getRole().isTop()) {
             return processTopRoleFunc(cur);
         }
+        // check whether we need to apply NN rule first
         if (isNNApplicable(cur.getRole(), bpTOP, curConceptConcept + 1)) {
             return commonTacticBodyNN(cur);
         }
@@ -3093,14 +3081,22 @@ public class DlSatTester implements Serializable {
         if (isQuickClashLE(cur)) {
             return true;
         }
+        // locate all R-neighbours of curNode
         findNeighbours(cur.getRole(), bpTOP, null);
+        // check if we have nodes to merge
         if (EdgesToMerge.size() < 2) {
             return false;
         }
+        // merge all nodes to the first (the least wrt nominal hierarchy) found
+        // node
         DlCompletionTreeArc q = EdgesToMerge.get(0);
         DlCompletionTree sample = q.getArcEnd();
+        // dep-set for merging
         DepSet depF = DepSet.create(curConceptDepSet);
         depF.add(q.getDep());
+        // merge all elements to sample (sample wouldn't be merge)
+        // XXX during merge EdgesToMerge may became purged (see Nasty4) =>
+        // check this
         for (int i = 1; i < EdgesToMerge.size(); i++) {
             q = EdgesToMerge.get(i);
             if (!q.getArcEnd().isPBlocked()
@@ -3307,6 +3303,8 @@ public class DlSatTester implements Serializable {
                 // clash in LE-rule: skip the initial checks
                 needInit = false;
             } else {
+                // the only possible case is choose-rule; in this case just
+                // continue
                 assert bContext instanceof BCChoose;
             }
         } else {
@@ -3488,6 +3486,8 @@ public class DlSatTester implements Serializable {
 
     @PortedFrom(file = "Reasoner.h", name = "mergeLabels")
     private boolean mergeLabels(CGLabel from, DlCompletionTree to, DepSet dep) {
+        // due to merging, all the concepts in the TO label
+        // should be updated to the new dep-set DEP
         CGLabel lab = to.label();
         CWDArray sc = lab.getLabel(dtPConcept);
         CWDArray cc = lab.getLabel(dtForall);
@@ -3495,6 +3495,9 @@ public class DlSatTester implements Serializable {
             cGraph.saveRareCond(sc.updateDepSet(dep));
             cGraph.saveRareCond(cc.updateDepSet(dep));
         }
+        // if the concept is already exists in the node label --
+        // we still need to update it with a new dep-set (due to merging)
+        // note that DEP is already there
         List<ConceptWDep> list = from.get_sc();
         for (int i = 0; i < list.size(); i++) {
             ConceptWDep p = list.get(i);
@@ -3532,21 +3535,27 @@ public class DlSatTester implements Serializable {
         return false;
     }
 
-    @PortedFrom(file = "Reasoner.h", name = "merge")
+    @PortedFrom(file = "Tactic.cpp", name = "Merge")
+    /**merge FROM node into TO node with additional dep-set DEPF*/
     private boolean merge(DlCompletionTree from, DlCompletionTree to,
             DepSet depF) {
+        // if node is already purged -- nothing to do
         assert !from.isPBlocked();
+        // prevent node to be merged to itself
         assert !from.equals(to);
+        // never merge nominal node to blockable one
         assert to.getNominalLevel() <= from.getNominalLevel();
         options.getLog().printTemplate(Templates.MERGE, from.getId(),
                 to.getId());
         stats.getnMergeCalls().inc();
+        // can't merge 2 nodes which are in inequality relation
         DepSet dep = DepSet.create(depF);
         Reference<DepSet> ref = new Reference<>(dep);
         if (cGraph.nonMergable(from, to, ref)) {
             this.setClashSet(ref.getReference());
             return true;
         }
+        // check for the clash before doing anything else
         if (checkMergeClash(from.label(), to.label(), depF, to.getId())) {
             return true;
         }
@@ -3554,21 +3563,26 @@ public class DlSatTester implements Serializable {
         if (mergeLabels(from.label(), to, depF)) {
             return true;
         }
+        // correct graph structure
         List<DlCompletionTreeArc> edges = new ArrayList<>();
         cGraph.merge(from, to, depF, edges);
+        // check whether a disjoint roles lead to clash
         int size = edges.size();
         for (int i = 0; i < size; i++) {
             DlCompletionTreeArc q = edges.get(i);
             if (q.getRole().isDisjoint()
                     && checkDisjointRoleClash(q.getReverse().getArcEnd(),
                             q.getArcEnd(), q.getRole(), depF)) {
-                // XXX dubious
                 return true;
             }
         }
+        // nothing more to do with data nodes
         if (to.isDataNode()) {
+            // data concept -- run data center for it
             return hasDataClash(to);
         }
+        // for every node added to TO, every ALL, Irr and <=-node should be
+        // checked
         for (DlCompletionTreeArc q : edges) {
             if (applyUniversalNR(
                     to,
@@ -3579,6 +3593,7 @@ public class DlSatTester implements Serializable {
                 return true;
             }
         }
+        // we do real action here, so the return value
         return false;
     }
 
@@ -3593,9 +3608,14 @@ public class DlSatTester implements Serializable {
         return false;
     }
 
+    /**
+     * aux method to check whether edge ended to NODE should be added to
+     * EdgetoMerge
+     */
     @PortedFrom(file = "Tactic.cpp", name = "isNewEdge")
     private static boolean isNewEdge(DlCompletionTree node,
             List<DlCompletionTreeArc> e) {
+        // skip edges to the same node
         int size = e.size();
         for (int i = 0; i < size; i++) {
             if (e.get(i).getArcEnd().equals(node)) {
@@ -3620,6 +3640,8 @@ public class DlSatTester implements Serializable {
                 EdgesToMerge.add(p);
             }
         }
+        // sort EdgesToMerge: From named nominals to generated nominals to
+        // blockable nodes
         Collections.sort(EdgesToMerge, new EdgeCompare());
     }
 
@@ -3655,16 +3677,22 @@ public class DlSatTester implements Serializable {
 
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodyNN")
     private boolean commonTacticBodyNN(DLVertex cur) {
+        // here we KNOW that NN-rule is applicable, so skip some tests
         stats.getnNNCalls().inc();
         if (isFirstBranchCall()) {
             createBCNN();
         }
         BCNN bcNN = (BCNN) bContext;
+        // check whether we did all possible tries
         if (bcNN.noMoreNNOptions(cur.getNumberLE())) {
+            // set global clashset to cummulative one from previous branch
+            // failures
             useBranchDep();
             return true;
         }
+        // take next NN number; save it as SAVE() will reset it to 0
         int NN = bcNN.getBranchIndex();
+        // prepare to addition to the label
         save();
         // new (just branched) dep-set
         DepSet curDep = getCurDepSet();
@@ -3684,6 +3712,7 @@ public class DlSatTester implements Serializable {
                 curConceptConcept + cur.getNumberLE() - NN, curDep, "NN");
     }
 
+    /** @return true iff NN-rule wrt (<= R) is applicable to the curNode */
     @PortedFrom(file = "Reasoner.h", name = "isNNApplicable")
     protected boolean isNNApplicable(Role r, int C, int stopper) {
         // NN rule is only applicable to nominal nodes
@@ -3696,6 +3725,8 @@ public class DlSatTester implements Serializable {
             return false;
         }
         // check for the real applicability of the NN-rule here
+        // if there is an edge that require to run the rule, then we need it
+        // otherwise the rulle canot be applied
         for (DlCompletionTreeArc p : curNode.getNeighbour()) {
             DlCompletionTree suspect = p.getArcEnd();
             // if there is an edge that require to run the rule, then we need it
@@ -3711,14 +3742,17 @@ public class DlSatTester implements Serializable {
 
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodySomeSelf")
     private boolean commonTacticBodySomeSelf(Role R) {
+        // check blocking conditions
         if (isCurNodeBlocked()) {
             return false;
         }
+        // nothing to do if R-loop already exists
         for (DlCompletionTreeArc p : curNode.getNeighbour()) {
             if (p.getArcEnd().equals(curNode) && p.isNeighbour(R)) {
                 return false;
             }
         }
+        // create an R-loop through curNode
         DepSet dep = DepSet.create(curConceptDepSet);
         DlCompletionTreeArc pA = cGraph.createLoop(curNode, R, dep);
         return setupEdge(pA, dep, redoForall.getValue() | redoFunc.getValue()
@@ -3753,17 +3787,21 @@ public class DlSatTester implements Serializable {
 
     @PortedFrom(file = "Reasoner.h", name = "checkProjection")
     private boolean checkProjection(DlCompletionTreeArc pA, int C, Role ProjR) {
+        // nothing to do if pA is labelled by ProjR as well
         if (pA.isNeighbour(ProjR)) {
             return false;
         }
+        // if ~C is in the label of curNode, do nothing
         if (curNode.isLabelledBy(-C)) {
             return false;
         }
+        // neither C nor ~C are in the label: make a choice
         DepSet dep = DepSet.create(curConceptDepSet);
         dep.add(pA.getDep());
         if (!curNode.isLabelledBy(C)) {
             if (isFirstBranchCall()) {
                 createBCCh();
+                // save current state
                 save();
                 return addToDoEntry(curNode, -C, getCurDepSet(), "cr0");
             } else {
@@ -3775,6 +3813,7 @@ public class DlSatTester implements Serializable {
                 }
             }
         }
+        // here C is in the label of curNode: add ProjR to the edge if necessary
         DlCompletionTree child = pA.getArcEnd();
         return setupEdge(cGraph.addRoleLabel(curNode, child, pA.isPredEdge(),
                 ProjR, dep), dep, redoForall.getValue() | redoFunc.getValue()

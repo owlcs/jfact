@@ -8,10 +8,10 @@ package uk.ac.manchester.cs.jfact.split;
 import java.io.Serializable;
 import java.util.List;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.ReasoningKernel;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
-import conformance.PortedFrom;
 
 /** modularizer */
 @PortedFrom(file = "OntologyBasedModularizer.h", name = "OntologyBasedModularizer")

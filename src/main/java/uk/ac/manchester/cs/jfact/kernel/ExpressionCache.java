@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptOneOf;
 import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleName;
@@ -19,7 +20,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
-import conformance.PortedFrom;
 
 /**
  * Cache for expressions. This is the only stateful part of ExpressionManager

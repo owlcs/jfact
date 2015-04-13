@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
-import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import conformance.Original;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 
 /** class to represent transitions from a single state in an automaton */
 @PortedFrom(file = "RAutomaton.h", name = "RAStateTransitions")
@@ -76,7 +76,7 @@ public class RAStateTransitions implements Serializable {
 
     /** @return true iff there are no transitions from this state */
     @PortedFrom(file = "RAutomaton.h", name = "empty")
-    public boolean isEmpty() {
+    public boolean empty() {
         return size == 0;
     }
 

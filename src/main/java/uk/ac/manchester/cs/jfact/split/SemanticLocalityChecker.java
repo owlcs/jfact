@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.ReasoningKernel;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleChain;
@@ -55,8 +57,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** semantic locality checker for DL axioms */
 @PortedFrom(file = "SemanticLocalityChecker.h", name = "SemanticLocalityChecker")

@@ -15,11 +15,11 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.actors.Actor;
 import uk.ac.manchester.cs.jfact.kernel.actors.SupConceptActor;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** taxonomy */
 @PortedFrom(file = "Taxonomy.h", name = "Taxonomy")
@@ -81,6 +81,7 @@ public class Taxonomy implements Serializable {
     @PortedFrom(file = "Taxonomy.h", name = "getRelativesInfo")
     public boolean getRelativesInfo(TaxonomyVertex node, SupConceptActor actor,
             boolean needCurrent, boolean onlyDirect, boolean upDirection) {
+        // XXX complexity here
         // if current node processed OK and there is no need to continue -- exit
         // this is the helper to the case like getDomain():
         // if there is a named concept that represent's a domain -- that's what
@@ -142,6 +143,7 @@ public class Taxonomy implements Serializable {
     @PortedFrom(file = "Taxonomy.h", name = "getRelativesInfo")
     public void getRelativesInfo(TaxonomyVertex node, Actor actor,
             boolean needCurrent, boolean onlyDirect, boolean upDirection) {
+        // XXX complexity here
         // if current node processed OK and there is no need to continue -- exit
         // this is the helper to the case like getDomain():
         // if there is a named concept that represent's a domain -- that's what

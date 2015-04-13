@@ -12,24 +12,19 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.Concept.CTTag;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState;
-import uk.ac.manchester.cs.jfact.split.SplitVarEntry;
 import uk.ac.manchester.cs.jfact.split.TSignature;
-import uk.ac.manchester.cs.jfact.split.TSplitVar;
-import conformance.PortedFrom;
 
 /** Concept taxonomy */
 @PortedFrom(file = "DLConceptTaxonomy.h", name = "DLConceptTaxonomy")
 public class DLConceptTaxonomy extends TaxonomyCreator {
 
     private static final long serialVersionUID = 11000L;
-    /** flag shows that subsumption check could be simplified */
-    @PortedFrom(file = "DLConceptTaxonomy.h", name = "inSplitCheck")
-    private boolean inSplitCheck = false;
     /** host tBox */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "tBox")
     private final TBox tBox;
@@ -156,14 +151,6 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         tBox = tbox;
     }
 
-    /** process all splits */
-    @PortedFrom(file = "DLConceptTaxonomy.h", name = "processSplits")
-    public void processSplits() {
-        for (TSplitVar v : tBox.getSplits().getEntries()) {
-            mergeSplitVars(v);
-        }
-    }
-
     /**
      * set bottom-up flag
      * 
@@ -218,7 +205,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         // we DON'T need bottom-up phase for primitive concepts during CD-like
         // reasoning
         // if no GCIs are in the TBox (C [= T, T [= X or Y, X [= D, Y [= D)
-        // or no reflexive roles w/RnD precent (Refl(R), Range(R)=D)
+        // or no reflexive roles w/RnD present (Refl(R), Range(R)=D)
         return flagNeedBottomUp || !useCompletelyDefined
                 || !curConcept().isPrimitive();
     }
@@ -232,12 +219,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
             // singleton on the RHS is useless iff it is primitive
             return false;
         }
-        if (inSplitCheck) {
-            if (q.isPrimitive()) {
-                return false;
-            }
-            return testSubTBox(p, q);
-        }
+        // nominals should be classified as usual concepts
         tBox.getOptions().getLog()
                 .printTemplate(Templates.TAX_TRYING, p.getName(), q.getName());
         if (tBox.testSortedNonSubsumption(p, q)) {
@@ -252,14 +234,17 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         }
         switch (tBox.testCachedNonSubsumption(p, q)) {
             case csValid:
+                // cached result: satisfiable => non-subsumption
                 tBox.getOptions().getLog().print("NOT holds (cached result)");
                 ++nCachedNegative;
                 return false;
             case csInvalid:
+                // cached result: unsatisfiable => subsumption holds
                 tBox.getOptions().getLog().print("holds (cached result)");
                 ++nCachedPositive;
                 return true;
             default:
+                // need extra tests
                 tBox.getOptions().getLog().print("wasted cache test");
                 break;
         }
@@ -329,9 +314,11 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
 
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "searchBaader")
     private void searchBaader(TaxonomyVertex cur) {
+        // label 'visited'
         pTax.setVisited(cur);
         ++nSearchCalls;
         boolean noPosSucc = true;
+        // check if there are positive successors; use DFS on them.
         for (TaxonomyVertex p : cur.neigh(upDirection)) {
             if (enhancedSubs(p)) {
                 if (!pTax.isVisited(p)) {
@@ -345,6 +332,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         if (!isValued(cur)) {
             setValue(cur, testSubsumption(cur));
         }
+        // mark labelled leaf node as a parent (self check for incremental)
         if (noPosSucc && cur.getValue()) {
             pTax.getCurrent().addNeighbour(!upDirection, cur);
         }
@@ -361,6 +349,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
                 return false;
             }
         }
+        // all subsumptions holds -- test current for subsumption
         return testSubsumption(cur);
     }
 
@@ -378,13 +367,6 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         if (upDirection && !cur.isCommon()) {
             return false;
         }
-        // for top-down search it's enough to look at defined concepts and
-        // non-det ones
-        // if (tBox.getOptions().isSplits()) {
-        // if (!inSplitCheck && !upDirection && !possibleSub(cur)) {
-        // return false;
-        // }
-        // }
         if (useCandidates && candidates.contains(cur)) {
             return false;
         }
@@ -443,7 +425,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         Iterator<TaxonomyVertex> list = pTax.getCurrent().neigh(upDirection)
                 .iterator();
         assert list.hasNext();
-        // there is at least one parent (TOP)
+        // including node always have some parents (TOP at least)
         TaxonomyVertex p = list.next();
         // define possible successors of the node
         propagateOneCommon(p);
@@ -457,10 +439,13 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
                 return true;
             }
             ++nCommon;
+            // aux set for the verteces in ...
             List<TaxonomyVertex> aux = new ArrayList<>(common);
             common.clear();
+            // now Aux contain data from previous run
             propagateOneCommon(p);
             pTax.clearVisited();
+            // clear all non-common nodes (visited on a previous run)
             int auxSize = aux.size();
             for (int j = 0; j < auxSize; j++) {
                 aux.get(j).correctCommon(nCommon);
@@ -535,7 +520,6 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
      */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "checkExtraParents")
     private void checkExtraParents() {
-        inSplitCheck = true;
         for (TaxonomyVertex p : pTax.current.neigh(true)) {
             propagateTrueUp(p);
         }
@@ -552,46 +536,6 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
             pTax.current.removeLink(true, p);
         }
         clearLabels();
-        inSplitCheck = false;
-    }
-
-    /**
-     * merge vars came from a given SPLIT together
-     * 
-     * @param split
-     *        split
-     */
-    @PortedFrom(file = "DLConceptTaxonomy.h", name = "mergeSplitVars")
-    private void mergeSplitVars(TSplitVar split) {
-        Set<TaxonomyVertex> splitVertices = new HashSet<>();
-        TaxonomyVertex v = split.getC().getTaxVertex();
-        boolean cIn = v != null;
-        if (v != null) {
-            splitVertices.add(v);
-        }
-        for (SplitVarEntry q : split.getEntries()) {
-            splitVertices.add(q.concept.getTaxVertex());
-        }
-        // set V to be a node-to-add
-        // FIXME!! check later the case whether both TOP and BOT are there
-        if (splitVertices.contains(pTax.getBottomVertex())) {
-            v = pTax.getBottomVertex();
-        } else if (splitVertices.contains(pTax.getTopVertex())) {
-            v = pTax.getTopVertex();
-        } else {
-            setCurrentEntry(split.getC());
-            v = pTax.current;
-        }
-        if (!v.equals(pTax.current) && !cIn) {
-            v.addSynonym(split.getC());
-        }
-        for (TaxonomyVertex p : splitVertices) {
-            mergeVertex(v, p, splitVertices);
-        }
-        if (v == pTax.current) {
-            checkExtraParents();
-            pTax.finishCurrentNode();
-        }
     }
 
     /**

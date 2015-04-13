@@ -17,10 +17,10 @@ import javax.annotation.Nonnull;
 
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
-import uk.ac.manchester.cs.jfact.kernel.Lexeme;
-import uk.ac.manchester.cs.jfact.kernel.Token;
 import conformance.Original;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.kernel.Lexeme;
+import uk.ac.manchester.cs.jfact.kernel.Token;
 
 /**
  * DLTree class
@@ -252,7 +252,12 @@ public abstract class DLTree implements Serializable {
     // check if DL tree is a concept/individual name
     /** @return true if token is a cname or iname */
     public boolean isName() {
-        return token() == CNAME || token() == INAME;
+        return isCName() || token() == INAME;
+    }
+
+    /** @return true if token is a cname or iname */
+    public boolean isCName() {
+        return token() == CNAME;
     }
 }
 

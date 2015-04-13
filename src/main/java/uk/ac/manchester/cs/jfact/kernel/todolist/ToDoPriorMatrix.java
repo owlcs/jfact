@@ -9,9 +9,9 @@ import java.io.Serializable;
 
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import uk.ac.manchester.cs.jfact.kernel.DagTag;
-import conformance.PortedFrom;
 
 /** priority matrix */
 @PortedFrom(file = "PriorityMatrix.h", name = "ToDoPriorMatrix")
@@ -88,8 +88,6 @@ public class ToDoPriorMatrix implements Serializable {
         switch (Op) {
             case dtAnd:
                 return Sign ? indexAnd : indexOr;
-            case dtSplitConcept:
-                return indexAnd;
             case dtForall:
             case dtIrr: // process local (ir-)reflexivity as a FORALL
                 return Sign ? indexForall : indexExists;

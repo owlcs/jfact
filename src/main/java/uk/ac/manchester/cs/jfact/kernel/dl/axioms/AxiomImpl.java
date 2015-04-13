@@ -9,11 +9,11 @@ import java.io.Serializable;
 
 import org.semanticweb.owlapi.model.OWLAxiom;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.split.TOntologyAtom;
 import uk.ac.manchester.cs.jfact.split.TSignature;
 import uk.ac.manchester.cs.jfact.split.TSignatureUpdater;
-import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiom")
 abstract class AxiomImpl implements AxiomInterface, Serializable {
@@ -68,6 +68,7 @@ abstract class AxiomImpl implements AxiomInterface, Serializable {
         return sig;
     }
 
+    /** build signature of an axiom */
     private void buildSignature() {
         sig = new TSignature();
         TSignatureUpdater Updater = new TSignatureUpdater(sig);

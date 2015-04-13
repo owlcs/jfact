@@ -1,7 +1,7 @@
 package uk.ac.manchester.cs.jfact.kernel.dl.interfaces;
 
-import uk.ac.manchester.cs.jfact.kernel.HasName;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.kernel.HasName;
 
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester

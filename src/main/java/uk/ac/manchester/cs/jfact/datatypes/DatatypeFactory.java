@@ -35,8 +35,8 @@ import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
-import uk.ac.manchester.cs.jfact.datatypes.Facets.whitespace;
 import conformance.Original;
+import uk.ac.manchester.cs.jfact.datatypes.Facets.whitespace;
 
 /**
  * Factory for datatypes

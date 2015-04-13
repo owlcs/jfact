@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.FastSet;
 import uk.ac.manchester.cs.jfact.helpers.FastSetFactory;
@@ -20,7 +21,6 @@ import uk.ac.manchester.cs.jfact.helpers.Reference;
 import uk.ac.manchester.cs.jfact.helpers.SaveStack;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.state.DLCompletionGraphSaveState;
-import conformance.PortedFrom;
 
 /** completion graph */
 @PortedFrom(file = "dlCompletionGraph.h", name = "DlCompletionGraph")
@@ -184,6 +184,7 @@ public class DlCompletionGraph implements Serializable {
         for (int i = 0; i < size; i++) {
             DlCompletionTreeArc q = neighbour.get(i);
             if (q.isSuccEdge() && !q.isIBlocked() && !q.isReflexiveEdge()) {
+                // all of them are i-blocked
                 unblockNode(q.getArcEnd(), false);
             }
         }
@@ -504,7 +505,7 @@ public class DlCompletionGraph implements Serializable {
     @PortedFrom(file = "dlCompletionGraph.h", name = "saveRareCond")
     public void saveRareCond(List<Restorer> p) {
         for (int i = 0; i < p.size(); i++) {
-            rareStack.push(p.get(i));
+            saveRareCond(p.get(i));
         }
     }
 
@@ -626,18 +627,23 @@ public class DlCompletionGraph implements Serializable {
             isBlockedBy(DlCompletionTree node, DlCompletionTree blocker) {
         assert !node.isNominalNode();
         assert !blocker.isNominalNode();
+        // blocked node can't be blocked itself
         if (blocker.isBlocked()) {
             return false;
         }
+        // easy check: Init is not in the label if a blocker
         if (!blocker.canBlockInit(node.getInit())) {
             return false;
         }
         boolean ret;
         if (sessionHasInverseRoles) {
+            // subset blocking
             DLDag dag = pReasoner.getDAG();
             if (sessionHasNumberRestrictions) {
+                // I+F -- optimised blocking
                 ret = node.isBlockedBy_SHIQ(dag, blocker);
             } else {
+                // just I -- equality blocking
                 ret = node.isBlockedBy_SHI(dag, blocker);
             }
         } else {
@@ -662,6 +668,8 @@ public class DlCompletionGraph implements Serializable {
         DlCompletionTree p = node;
         boolean wasBlocked = node.isBlocked();
         boolean wasDBlocked = node.isDBlocked();
+        // if we are here, then node *need* to be checked
+        // so this is to prevent from going out of the loop
         node.setAffected();
         while (p.hasParent() && p.isBlockableNode() && p.isAffected()) {
             findDBlocker(p);
@@ -682,6 +690,7 @@ public class DlCompletionGraph implements Serializable {
             return;
         }
         if (!wasDBlocked) {
+            // if it was DBlocked -- findDBlocker() made it
             saveRareCond(node.setUBlocked());
         }
         pReasoner.repeatUnblockedNode(node, wasDBlocked);
@@ -799,20 +808,26 @@ public class DlCompletionGraph implements Serializable {
     @PortedFrom(file = "dlCompletionGraph.h", name = "moveEdge")
     private DlCompletionTreeArc moveEdge(DlCompletionTree node,
             DlCompletionTreeArc edge, boolean isPredEdge, DepSet dep) {
+        // skip already purged edges
         if (edge.isIBlocked()) {
             return null;
         }
+        // skip edges not leading to nominal nodes
         if (!isPredEdge && !edge.getArcEnd().isNominalNode()) {
             return null;
         }
         Role R = edge.getRole();
+        // we shall copy reflexive edges in a specific way
         if (edge.isReflexiveEdge()) {
             return createLoop(node, R, dep);
         }
         DlCompletionTree to = edge.getArcEnd();
+        // invalidate old edge
         if (R != null) {
             invalidateEdge(edge);
         }
+        // try to find for NODE.TO (TO.NODE) whether we
+        // have TO.NODE (NODE.TO) edge already
         for (DlCompletionTreeArc p : node.getNeighbour()) {
             if (p.getArcEnd().equals(to) && p.isPredEdge() != isPredEdge) {
                 return addRoleLabel(node, to, !isPredEdge, R, dep);
@@ -822,6 +837,8 @@ public class DlCompletionGraph implements Serializable {
     }
 
     /**
+     * merge labels; see SHOIN paper for detailed description
+     * 
      * @param from
      *        from
      * @param to
@@ -835,6 +852,12 @@ public class DlCompletionGraph implements Serializable {
     public void merge(DlCompletionTree from, DlCompletionTree to, DepSet dep,
             List<DlCompletionTreeArc> edges) {
         edges.clear();
+        // 1. For all x: x->FROM make x->TO
+        // FIXME!! no optimisations (in case there exists an edge TO->x labelled
+        // with R-)
+        // 2. For all nominal x: FROM->x make TO->x
+        // FIXME!! no optimisations (in case there exists an edge x->TO labelled
+        // with R-)
         List<DlCompletionTreeArc> neighbour = from.getNeighbour();
         int size = neighbour.size();
         for (int i = 0; i < size; i++) {
@@ -849,7 +872,9 @@ public class DlCompletionGraph implements Serializable {
                 purgeEdge(p, to, dep);
             }
         }
+        // 4. For all x: FROM \neq x, add TO \neq x
         updateIR(to, from, dep);
+        // 5. Purge FROM
         purgeNode(from, to, dep);
     }
 
@@ -860,6 +885,7 @@ public class DlCompletionGraph implements Serializable {
             return;
         }
         saveRareCond(p.setPBlocked(root, dep));
+        // update successors
         List<DlCompletionTreeArc> neighbour = p.getNeighbour();
         int size = neighbour.size();
         for (int i = 0; i < size; i++) {
@@ -874,9 +900,11 @@ public class DlCompletionGraph implements Serializable {
     private void purgeEdge(DlCompletionTreeArc e, DlCompletionTree root,
             DepSet dep) {
         if (e.getRole() != null) {
+            // invalidate given link
             invalidateEdge(e);
         }
         if (e.getArcEnd().isBlockableNode()) {
+            // purge blockable successor
             purgeNode(e.getArcEnd(), root, dep);
         }
     }
@@ -906,13 +934,14 @@ public class DlCompletionGraph implements Serializable {
         endUsed = s.getnNodes();
         int nSaved = s.getsNodes();
         if (endUsed < Math.abs(savedNodes.size() - nSaved)) {
+            // it's cheaper to restore all nodes
             for (int i = 0; i < endUsed; i++) {
-                // XXX check: it was taking into account also empty nodes
                 restoreNode(nodeBase.get(i), level);
             }
         } else {
             for (int i = nSaved; i < savedNodes.size(); i++) {
                 if (savedNodes.get(i).getId() < endUsed) {
+                    // don't restore nodes that are dead anyway
                     restoreNode(savedNodes.get(i), level);
                 }
             }
