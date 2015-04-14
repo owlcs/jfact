@@ -218,6 +218,36 @@ public class DLTreeFactory implements Serializable {
         return new NDLTree(new Lexeme(AND), l);
     }
 
+    public static boolean containsC(DLTree C, DLTree D) {
+        if (C.isCName()) {
+            return DLTree.equalTrees(C, D);
+        }
+        if (C.isAND()) {
+            for (DLTree p : C.getChildren()) {
+                if (containsC(p, D)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Nonnull
+    public static DLTree createSNFReducedAnd(DLTree C, DLTree D) {
+        if (C == null || D == null) {
+            return createSNFAnd(C, D);
+        }
+        if (D.isCName() && containsC(C, D)) {
+            return C;
+        } else if (D.isAND()) {
+            C = createSNFReducedAnd(C, D.getLeft().copy());
+            C = createSNFReducedAnd(C, D.getRight().copy());
+            return C;
+        } else {
+            return createSNFAnd(C, D);
+        }
+    }
+
     /**
      * @param collection
      *        collection

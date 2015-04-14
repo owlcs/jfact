@@ -527,7 +527,7 @@ public class Role extends ClassifiableEntry {
             // functional restriction in the role domain means the role is
             // functional
         } else {
-            pDomain = DLTreeFactory.createSNFAnd(Arrays.asList(pDomain, p));
+            pDomain = DLTreeFactory.createSNFReducedAnd(pDomain, p);
         }
     }
 
@@ -826,6 +826,7 @@ public class Role extends ClassifiableEntry {
         // processing
         Role syn = resolveSynonym(this);
         // copy functionality
+        //XXX double check and fix in 5
         if (isFunctional() && !syn.isFunctional()) {
             syn.setFunctional();
         }

@@ -849,8 +849,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         }
         for (int i = 0; i < neighbourSize; i++) {
             DlCompletionTreeArc p = neighbour.get(i);
-            if (!p.isIBlocked() && p.getArcEnd().equals(parent)
-                    && RST.recognise(p.getRole())) {
+            if (recognise(RST, parent, p)) {
                 return false;
             }
         }
@@ -863,11 +862,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         CGLabel parLab = parent.label();
         for (int i = 0; i < neighbourSize; i++) {
             DlCompletionTreeArc p = neighbour.get(i);
-            if (p.isIBlocked() || !p.getArcEnd().equals(parent)) {
-                continue;
-            }
+            if (recognise(RST, parent, p)) {
             Role R = p.getRole();
-            if (RST.recognise(R)) {
                 List<RATransition> list = RST.begin();
                 for (int j = 0; j < list.size(); j++) {
                     RATransition q = list.get(i);
@@ -879,6 +875,12 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
             }
         }
         return true;
+    }
+    protected boolean recognise(RAStateTransitions RST,
+            DlCompletionTree parent, DlCompletionTreeArc p) {
+        // XXX this equals() might be ==
+        return !p.isIBlocked() && p.getArcEnd().equals(parent)
+                && RST.recognise(p.getRole());
     }
 
     /** check if B3 holds for (<= n S.C)\in w' (p is a candidate for blocker) */
@@ -990,8 +992,11 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         init = bpTOP;
         // node was used -- clear all previous content
         saves.clear();
+       // if (options.isUseIncrementalReasoning()) {
         inequalityRelation.clear();
         inequalityRelation_helper.clear();
+       // }
+        // XXX fix in 5
         neighbour.clear();
         neighbourSize = 0;
         setBlocker(null);
@@ -1040,10 +1045,9 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         // check predecessor
         if (hasParent() && isParentArcLabelled(R)) {
             return getParentNode().isTPredLabelled(R, C, this);
-        } else {
+        }
             return null;
         }
-    }
 
     private DlCompletionTree isNSomeApplicable(Role R, int C) {
         for (int i = 0; i < neighbourSize; i++) {
@@ -1092,8 +1096,18 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         // label restore
         label.restore(nss.getLab(), curLevel);
         // remove new neighbours
+        if (!options.isRKG_USE_DYNAMIC_BACKJUMPING()) {
         resize(neighbour, nss.getnNeighbours());
         neighbourSize = nss.getnNeighbours();
+        } else {
+            for (int j = neighbour.size() - 1; j >= 0; --j) {
+                if (neighbour.get(j).getArcEnd().curLevel <= curLevel) {
+                    Helper.resize(neighbour, j + 1);
+                    neighbourSize = neighbour.size();
+                    break;
+                }
+            }
+        }
         // it's cheaper to dirty affected flag than to consistently save nodes
         affected = true;
         logSRNode("RestNode");
@@ -1163,7 +1177,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
     @PortedFrom(file = "dlCompletionTree.cpp", name = "updateIR")
     public Restorer updateIR(DlCompletionTree node, DepSet toAdd) {
         if (node.inequalityRelation.isEmpty()) {
-            throw new IllegalArgumentException();
+            return null;    // nothing to do
         }
         // save current state
         Restorer ret = new IRRestorer();

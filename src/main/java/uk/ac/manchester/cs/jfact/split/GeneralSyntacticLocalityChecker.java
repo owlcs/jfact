@@ -259,6 +259,11 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor
                 }
             }
         }
+        // check whether for (2) we found a top-eq concept
+        if (lhsIsTopEq && !topEqDesc) {
+            return;
+        }
+        // it is local in the end!
         isLocal = true;
     }
 

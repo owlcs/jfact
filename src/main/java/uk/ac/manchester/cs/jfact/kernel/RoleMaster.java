@@ -330,6 +330,13 @@ public class RoleMaster implements Serializable {
         }
     }
 
+    /** add parent for the input role */
+    @PortedFrom(file = "RoleMaster.h", name = "addRoleParent")
+    public static void addRoleParent(Role role, Role parent) {
+        addRoleParentProper(ClassifiableEntry.resolveSynonym(role),
+                ClassifiableEntry.resolveSynonym(parent));
+    }
+
     /**
      * @param tree
      *        tree
@@ -379,7 +386,7 @@ public class RoleMaster implements Serializable {
                     .copy(), C);
             R.setDomain(C);
         } else {
-            addRoleParentProper(Role.resolveRole(tree), parent);
+            addRoleParent(Role.resolveRole(tree), parent);
         }
     }
 

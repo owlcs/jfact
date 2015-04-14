@@ -116,7 +116,7 @@ public class RoleAutomaton implements Serializable {
         //assert !isCompleted();
         if (RA.isSimple()) {
             boolean ok = base.get(initial).addToExisting(
-                    RA.getBase().get(initial).begin().get(0));
+                    RA.get(initial).begin().get(0));
             assert ok;
         } else {
             initChain(initial);

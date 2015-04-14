@@ -67,6 +67,18 @@ public class RATransition implements Serializable {
         cache = null;
     }
 
+    /**
+     * add label of transition TRANS to transition's label only if they are new
+     */
+    @PortedFrom(file = "RAutomaton.h", name = "addIfNew")
+    public void addIfNew(RATransition trans) {
+        for (Role r : trans.label) {
+            if (!applicable(r)) {
+                label.add(r);
+            }
+        }
+    }
+
     // query the transition
     /**
      * @return the 1st role in (multi-)transition

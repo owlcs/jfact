@@ -270,15 +270,25 @@ public class CWDArray implements Serializable {
      */
     @PortedFrom(file = "CWDArray.h", name = "restore")
     public void restore(int ss, int level) {
+        // count the number of entries /not/ deleted
+        int count = 0;
         for (int i = ss; i < size; i++) {
+            // if backjumping is enabled, an entity is deleted only if the
+            // depset level is the same or above level, otherwise the entry is
+            // kept
+            if (!options.isRKG_USE_DYNAMIC_BACKJUMPING()
+                    || base.get(i).getDep().level() >= level) {
             int concept = base.get(i).getConcept();
             indexes.remove(concept);
             if (cache != null) {
                 cache.clear(asPositive(concept));
             }
+            } else {
+                count++;
+            }
         }
-        Helper.resize(base, ss);
-        size = ss;
+        Helper.resize(base, ss + count);
+        size = ss + count;
     }
 
     @Override

@@ -120,6 +120,11 @@ public class DlCompletionTreeArc implements Serializable {
         return succEdge;
     }
 
+    /** @return true if isSuccEdge and not isBlocked and not isReflexiveEdge */
+    public boolean unblockable() {
+        return isSuccEdge() && !isIBlocked() && !isReflexiveEdge();
+    }
+
     /** @return true if the edge is the predecessor one */
     public boolean isPredEdge() {
         return !succEdge;
@@ -141,14 +146,12 @@ public class DlCompletionTreeArc implements Serializable {
      * @return check if arc is labelled by a super-role of PROLE
      */
     public boolean isNeighbour(Role pRole) {
-        return role != null && role.lesserequal(pRole);
+        return !isIBlocked() && role.lesserequal(pRole);
     }
 
     /**
      * @param pRole
      *        pRole
-     * @param dep
-     *        dep
      * @return same as above; fills DEP with current DEPSET if so
      */
     public boolean isNeighbour(Role pRole, DepSet dep) {
@@ -177,7 +180,7 @@ public class DlCompletionTreeArc implements Serializable {
      */
     public Restorer save() {
         if (role == null) {
-            throw new IllegalArgumentException();
+            return null;
         }
         Restorer ret = new EdgeRestorer(this);
         role = null;
@@ -194,7 +197,7 @@ public class DlCompletionTreeArc implements Serializable {
      */
     public Restorer addDep(DepSet dep) {
         if (dep.isEmpty()) {
-            throw new IllegalArgumentException();
+            return null;
         }
         Restorer ret = new EdgeDepRestorer(this);
         depSet.add(dep);

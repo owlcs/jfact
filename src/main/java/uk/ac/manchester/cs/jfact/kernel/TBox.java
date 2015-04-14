@@ -2478,18 +2478,29 @@ public class TBox implements Serializable {
 
     @PortedFrom(file = "dlTBox.h", name = "addEqualityAxiom")
     private void addEqualityAxiom(DLTree left, DLTree right) {
-        if (addNonprimitiveDefinition(left, right)) {
+        // check whether LHS is a named concept
+        Concept C = resolveSynonym(getCI(left));
+        boolean isNamedLHS = C != null && !C.isTop() && !C.isBottom();
+        // check whether LHS is a named concept
+        Concept D = resolveSynonym(getCI(right));
+        boolean isNamedRHS = D != null && !D.isTop() && !D.isBottom();
+        // try to make a definition C = RHS for C with no definition
+        if (isNamedLHS && addNonprimitiveDefinition(C, D, right)) {
             return;
         }
-        if (addNonprimitiveDefinition(right, left)) {
+        // try to make a definition RHS = LHS for RHS = C with no definition
+        if (isNamedRHS && addNonprimitiveDefinition(D, C, left)) {
             return;
         }
-        if (switchToNonprimitive(left, right)) {
+        // try to make a definition C = RHS for C [= D
+        if (isNamedLHS && switchToNonprimitive(left, right)) {
             return;
         }
-        if (switchToNonprimitive(right, left)) {
+        // try to make a definition RHS = LHS for RHS = C with C [= D
+        if (isNamedRHS && switchToNonprimitive(right, left)) {
             return;
         }
+        // fail to make a concept definition; separate the definition
         this.addSubsumeAxiom(left.copy(), right.copy());
         this.addSubsumeAxiom(right, left);
     }
@@ -2499,25 +2510,27 @@ public class TBox implements Serializable {
      *        left
      * @param right
      *        right
+     * @param rightOrigin
+     *        original right tree
      * @return true if definition is added
      */
     @PortedFrom(file = "dlTBox.h", name = "addNonprimitiveDefinition")
-    public boolean addNonprimitiveDefinition(DLTree left, DLTree right) {
-        Concept C = resolveSynonym(getCI(left));
-        if (C == null || C.isTop() || C.isBottom()) {
-            return false;
-        }
-        Concept D = getCI(right);
-        if (D != null && resolveSynonym(D).equals(C)) {
+    public boolean addNonprimitiveDefinition(Concept left, Concept right,
+            DLTree rightOrigin) {
+        // nothing to do for the case C := D for named concepts C,D with D = C
+        // already
+        if (right != null && resolveSynonym(right).equals(left)) {
             return true;
         }
-        if (C.isSingleton() && D != null && !D.isSingleton()) {
+        // can't have C=D where C is a nominal and D is a concept
+        if (left.isSingleton() && right != null && !right.isSingleton()) {
             return false;
         }
-        if ((D == null || C.getDescription() == null || D.isPrimitive())
-                && !initNonPrimitive(C, right)) {
+        // check the case whether C=RHS or C [= \top
+        if (!initNonPrimitive(left, rightOrigin)) {
             return true;
         }
+        // can't make definition
         return false;
     }
 

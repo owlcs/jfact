@@ -829,7 +829,7 @@ public class DlCompletionGraph implements Serializable {
         // try to find for NODE.TO (TO.NODE) whether we
         // have TO.NODE (NODE.TO) edge already
         for (DlCompletionTreeArc p : node.getNeighbour()) {
-            if (p.getArcEnd().equals(to) && p.isPredEdge() != isPredEdge) {
+            if (p.getArcEnd() == to && p.isPredEdge() != isPredEdge) {
                 return addRoleLabel(node, to, !isPredEdge, R, dep);
             }
         }

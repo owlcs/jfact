@@ -1709,23 +1709,6 @@ public class DlSatTester implements Serializable {
         DLVertex v = dlHeap.get(bp);
         DagTag tag = v.getType();
         // try to add a concept to a node label
-        if (tag == DagTag.dtCollection) {
-            if (bp < 0) {
-                return false;
-            }
-            stats.getnTacticCalls().inc();
-            DlCompletionTree oldNode = curNode;
-            int oldConceptConcept = curConceptConcept;
-            TIntSet oldConceptDepSetDelegate = curConceptDepSet.getDelegate();
-            curNode = n;
-            curConceptConcept = bp;
-            curConceptDepSet = DepSet.create(curConceptDepSet);
-            boolean ret = commonTacticBodyAnd(v);
-            curNode = oldNode;
-            curConceptConcept = oldConceptConcept;
-            curConceptDepSet = DepSet.create(oldConceptDepSetDelegate);
-            return ret;
-        }
         switch (tryAddConcept(n.label().getLabel(tag), bp, dep)) {
             case acrClash:
                 // clash -- return
@@ -2250,10 +2233,9 @@ public class DlSatTester implements Serializable {
                 if (curConceptConcept > 0) {
                     // real singleton
                     return commonTacticBodySingleton(cur);
-                } else {
+                }
                     // negated singleton -- nothing to do with.
                     return commonTacticBodyId(cur);
-                }
             case dtNConcept:
             case dtPConcept:
                 return commonTacticBodyId(cur);
@@ -2261,10 +2243,9 @@ public class DlSatTester implements Serializable {
                 if (curConceptConcept > 0) {
                     // this is AND vertex
                     return commonTacticBodyAnd(cur);
-                } else {
+                }
                     // this is OR vertex
                     return commonTacticBodyOr(cur);
-                }
             case dtForall:
                 if (curConceptConcept < 0) {
                     // SOME vertex
@@ -2276,10 +2257,9 @@ public class DlSatTester implements Serializable {
                 if (curConceptConcept < 0) {
                     // SOME R.Self vertex
                     return commonTacticBodySomeSelf(cur.getRole());
-                } else {
+                }
                     // don't need invalidate cache, as IRREFL can only lead to CLASH
                     return commonTacticBodyIrrefl(cur.getRole());
-                }
             case dtLE:
                 if (curConceptConcept < 0) {
                     // >= vertex
@@ -2288,9 +2268,8 @@ public class DlSatTester implements Serializable {
                 // <= vertex
                 if (isFunctionalVertex(cur)) {
                     return commonTacticBodyFunc(cur);
-                } else {
-                    return commonTacticBodyLE(cur);
                 }
+                    return commonTacticBodyLE(cur);
             case dtProj:
                 assert curConceptConcept > 0;
                 return commonTacticBodyProj(cur.getRole(),
@@ -2719,10 +2698,10 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodySome")
     private boolean commonTacticBodySome(DLVertex cur) {
         Role R = cur.getRole();
-        int C = -cur.getConceptIndex();
         if (R.isTop()) {
             return commonTacticBodySomeUniv(cur);
         }
+        int C = -cur.getConceptIndex();
         // check if we already have R-neighbour labelled with C
         if (isSomeExists(R, C)) {
             return false;
@@ -2749,17 +2728,18 @@ public class DlSatTester implements Serializable {
             List<Role> list = R.begin_topfunc();
             for (int i = 0; i < list.size(); i++) {
                 int functional = list.get(i).getFunctional();
-                switch (tryAddConcept(curNode.label().getLabel(DagTag.dtLE),
-                        functional, curConceptDepSet)) {
-                    case acrClash:
+                AddConceptResult tryAddConcept = tryAddConcept(curNode.label()
+                        .getLabel(DagTag.dtLE), functional, curConceptDepSet);
+                if (tryAddConcept == AddConceptResult.acrClash) {
                         // addition leads to clash
                         return true;
-                    case acrDone:
+                }
+                if (tryAddConcept == AddConceptResult.acrDone) {
                         // should be add to a label
                         // we are changing current Node => save it
                         updateLevel(curNode, curConceptDepSet);
-                        ConceptWDep rFuncRestriction1 = new ConceptWDep(
-                                functional, curConceptDepSet);
+                    ConceptWDep rFuncRestriction1 = new ConceptWDep(functional,
+                            curConceptDepSet);
                         // NOTE! not added into todo (because will be checked
                         // right now)
                         cGraph.addConceptToNode(curNode, rFuncRestriction1,
@@ -2768,19 +2748,19 @@ public class DlSatTester implements Serializable {
                         options.getLog().printTemplate(
                                 Templates.COMMON_TACTIC_BODY_SOME,
                                 rFuncRestriction1);
-                        break;
-                    case acrExist:
-                        break;
-                    default:
-                        throw new UnreachableSituationException();
                 }
                 // only other possibility is acrExist. As the node already
                 // exists, nothing to do
             }
         }
+        // flag is true if we have functional restriction with this Role name
         boolean rFunc = false;
+        // most general functional super-role of given one
         Role RF = R;
+        // role's functional restriction w/dep
         ConceptWDep rFuncRestriction = null;
+        // set up rFunc; rfRole contains more generic functional superrole of
+        // rName
         List<ConceptWDep> list = curNode.beginl_cc();
         for (int i = 0; i < list.size(); i++) {
             ConceptWDep LC = list.get(i);
@@ -2794,6 +2774,7 @@ public class DlSatTester implements Serializable {
             }
         }
         if (rFunc) {
+            // functional role found => add new concept to existing node
             DlCompletionTreeArc functionalArc = null;
             DepSet newDep = DepSet.create();
             for (int i = 0; i < curNode.getNeighbour().size()
