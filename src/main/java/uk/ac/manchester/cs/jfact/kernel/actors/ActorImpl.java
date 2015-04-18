@@ -64,8 +64,8 @@ public class ActorImpl implements Actor, Serializable {
             if (isStandard) {
                 return true;
             } else {
-                // data role -- need only direct ones
-                return entry.getId() > 0;
+                // data role -- need only direct ones and TOP/BOT
+                return entry.getId() > -1;
             }
         } else {
             // concept or individual: standard are concepts

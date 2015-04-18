@@ -1,1 +1,1 @@
-FaCT++ revision to which this code refers: 1694
+FaCT++ revision to which this code refers: 10 april 2015 8a744c4d58fcd3e4682bc083da26a28f1a8e4f61 https://bitbucket.org/dtsarkov/factplusplus/commits/8a744c4d58fcd3e4682bc083da26a28f1a8e4f61
