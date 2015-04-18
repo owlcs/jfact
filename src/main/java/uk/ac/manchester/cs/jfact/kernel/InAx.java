@@ -20,7 +20,6 @@ import uk.ac.manchester.cs.jfact.helpers.DLTree;
 public class InAx implements Serializable {
 
     private static final long serialVersionUID = 11000L;
-    private static final AtomicInteger ZERO = new AtomicInteger(0);
 
     /**
      * @return an RW concept from a given [C|I]NAME-rooted DLTree

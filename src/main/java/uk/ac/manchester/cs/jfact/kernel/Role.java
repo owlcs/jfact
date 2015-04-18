@@ -11,7 +11,6 @@ import static uk.ac.manchester.cs.jfact.kernel.Token.RCOMPOSITION;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;

@@ -352,6 +352,11 @@ public class RoleAutomaton implements Serializable {
         return base;
     }
 
+    /**
+     * @param i
+     *        index
+     * @return transitions in position i
+     */
     @PortedFrom(file = "RAutomaton.h", name = "begin")
     public RAStateTransitions get(int i) {
         return base.get(i);
@@ -361,7 +366,12 @@ public class RoleAutomaton implements Serializable {
     @PortedFrom(file = "RAutomaton.h", name = "Complete")
     private boolean Complete;
 
-    /** mark an automaton as completed */
+    /**
+     * mark an automaton as completed
+     * 
+     * @param b
+     *        new value
+     */
     @PortedFrom(file = "RAutomaton.h", name = "setCompleted")
     public void setCompleted(boolean b) {
         Complete = b;

@@ -218,6 +218,13 @@ public class DLTreeFactory implements Serializable {
         return new NDLTree(new Lexeme(AND), l);
     }
 
+    /**
+     * @param C
+     *        c
+     * @param D
+     *        d
+     * @return true if c equals d or d is contained in c
+     */
     public static boolean containsC(DLTree C, DLTree D) {
         if (C.isCName()) {
             return DLTree.equalTrees(C, D);
@@ -232,6 +239,13 @@ public class DLTreeFactory implements Serializable {
         return false;
     }
 
+    /**
+     * @param C
+     *        c
+     * @param D
+     *        d
+     * @return C and D
+     */
     @Nonnull
     public static DLTree createSNFReducedAnd(DLTree C, DLTree D) {
         if (C == null || D == null) {
@@ -258,6 +272,9 @@ public class DLTreeFactory implements Serializable {
     @Nonnull
     public static DLTree createSNFAnd(Collection<DLTree> collection,
             @Nonnull DLTree ancestor) {
+        if (collection.size() == 1) {
+            return collection.iterator().next();
+        }
         boolean hasTop = false;
         List<DLTree> l = new ArrayList<>();
         for (DLTree d : collection) {

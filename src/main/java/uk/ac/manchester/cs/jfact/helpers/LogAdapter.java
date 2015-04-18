@@ -142,5 +142,8 @@ public interface LogAdapter {
      */
     LogAdapter print(Object s1, Object s2, Object s3, Object s4, Object s5);
 
+    /**
+     * @return true if any output actually happens
+     */
     boolean isEnabled();
 }

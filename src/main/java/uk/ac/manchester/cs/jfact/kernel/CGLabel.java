@@ -41,7 +41,12 @@ public class CGLabel implements Serializable {
     @Original
     private final int id;
 
-    /** Default constructor. */
+    /**
+     * Default constructor.
+     * 
+     * @param config
+     *        configuration
+     */
     public CGLabel(JFactReasonerConfiguration config) {
         // init label with reasonable size
         // XXX size might need tuning

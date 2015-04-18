@@ -98,7 +98,6 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
     protected final AtomicBoolean interrupted = new AtomicBoolean(false);
     private ReasoningKernel kernel;
     private final ExpressionCache em;
-    @SuppressWarnings("null")
     @Nonnull
     private static final EnumSet<InferenceType> supportedInferenceTypes = EnumSet
             .of(InferenceType.CLASS_ASSERTIONS, InferenceType.CLASS_HIERARCHY,
@@ -269,7 +268,6 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return new ArrayList<>(rawChanges);
     }
 
-    @SuppressWarnings("null")
     @Override
     public synchronized Set<OWLAxiom> getPendingAxiomAdditions() {
         if (!rawChanges.isEmpty()) {
@@ -280,7 +278,6 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return Collections.emptySet();
     }
 
-    @SuppressWarnings("null")
     @Override
     public synchronized Set<OWLAxiom> getPendingAxiomRemovals() {
         if (!rawChanges.isEmpty()) {
@@ -770,7 +767,6 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener,
         return tr.translateNodeSet(acc);
     }
 
-    @SuppressWarnings("null")
     @Override
     public synchronized Set<OWLLiteral> getDataPropertyValues(
             OWLNamedIndividual ind, OWLDataProperty pe) {

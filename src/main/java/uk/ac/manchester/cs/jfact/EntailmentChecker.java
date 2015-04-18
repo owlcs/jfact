@@ -69,7 +69,6 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>,
     private final TranslationMachinery tr;
     private final OWLDataFactory df;
 
-    @SuppressWarnings("null")
     @Nonnull
     private static Boolean b(boolean b) {
         return Boolean.valueOf(b);
@@ -310,7 +309,6 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>,
                 tr.pointer(axiom.getSuperProperty()));
     }
 
-    @SuppressWarnings("null")
     @Override
     public Boolean visit(OWLInverseFunctionalObjectPropertyAxiom axiom) {
         return kernel.isInverseFunctional(tr.pointer(axiom.getProperty()));

@@ -109,7 +109,6 @@ public class ProcessesTestCase extends TestBase {
             + "SubClassOf(<urn:Process#SimpleProcess> <urn:Process#Process>)\n"
             + "ObjectPropertyDomain(<urn:Process#composedOf> <urn:Process#CompositeProcess>))";
 
-    @SuppressWarnings("null")
     @Before
     public void setUp() throws OWLOntologyCreationException {
         o1 = OWLManager.createOWLOntologyManager()

@@ -40,6 +40,12 @@ public class CWDArray implements Serializable {
     @Original
     private JFactReasonerConfiguration options;
 
+    /**
+     * @param config
+     *        configuration
+     * @param size
+     *        initial size
+     */
     public CWDArray(JFactReasonerConfiguration config, int size) {
         options = config;
         base = new ArrayList<>(size);

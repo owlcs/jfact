@@ -111,7 +111,6 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
         return this.knownNonNumericFacetValues;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Comparable getFacetValue(Facet f) {
         if (f.isNumberFacet()) {
@@ -205,7 +204,6 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
         return new LiteralImpl<>(this, s);
     }
 
-    @SuppressWarnings("null")
     @Override
     public Collection<Literal<R>> listValues() {
         return Collections.emptyList();

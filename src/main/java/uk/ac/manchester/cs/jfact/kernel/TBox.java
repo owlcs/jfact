@@ -1603,6 +1603,7 @@ public class TBox implements Serializable {
      * 
      * @param entry
      *        entry
+     * @return input entry
      */
     @PortedFrom(file = "dlTBox.h", name = "classifyEntry")
     private Concept classifyEntry(Concept entry) {
@@ -3624,7 +3625,13 @@ public class TBox implements Serializable {
             Base.clear();
         }
 
-        /** move I'th iterable forward; deal with end-case */
+        /**
+         * move I'th iterable forward; deal with end-case
+         * 
+         * @param i
+         *        index
+         * @return true if there's a next
+         */
         public boolean next(int i) {
             if (Base.get(i).next()) {
                 return i == 0 ? true : next(i - 1);
@@ -3636,12 +3643,19 @@ public class TBox implements Serializable {
 
         IterableVec() {}
 
-        /** add a new iterable to a vec */
+        /**
+         * add a new iterable to a vec
+         * 
+         * @param It
+         *        iterable to add
+         */
         void add(IterableElem<Elem> It) {
             Base.add(It);
         }
 
-        /** get next position */
+        /**
+         * @return next position
+         */
         boolean next() {
             return next(Base.size() - 1);
         }

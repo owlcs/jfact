@@ -152,6 +152,8 @@ public class DlCompletionTreeArc implements Serializable {
     /**
      * @param pRole
      *        pRole
+     * @param dep
+     *        depset to update
      * @return same as above; fills DEP with current DEPSET if so
      */
     public boolean isNeighbour(Role pRole, DepSet dep) {

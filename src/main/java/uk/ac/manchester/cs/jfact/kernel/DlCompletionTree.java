@@ -883,7 +883,19 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
                 && RST.recognise(p.getRole());
     }
 
-    /** check if B3 holds for (<= n S.C)\in w' (p is a candidate for blocker) */
+    /**
+     * check if B3 holds for (<= n S.C)\in w' (p is a candidate for blocker)
+     * 
+     * @param p
+     *        node
+     * @param n
+     *        cardinality
+     * @param T
+     *        role
+     * @param C
+     *        filler
+     * @return true if B3 holds
+     */
     @PortedFrom(file = "Blocking.cpp", name = "B3")
     private boolean B3(DlCompletionTree p, int n, Role T, int C) {
         assert hasParent();
@@ -914,7 +926,17 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         return ret;
     }
 
-    /** check if B4 holds for(>= m T.E)\in w'(p is a candidate for blocker) */
+    /**
+     * check if B4 holds for(>= m T.E)\in w'(p is a candidate for blocker)
+     * 
+     * @param m
+     *        cardinality
+     * @param T
+     *        role
+     * @param E
+     *        filler
+     * @return true if B4 holds
+     */
     @PortedFrom(file = "Blocking.cpp", name = "B4")
     private boolean B4(int m, Role T, int E) {
         assert hasParent();
@@ -938,7 +960,15 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         return false;
     }
 
-    /** check if B5 holds for(<= n T.E)\in w' */
+    /**
+     * check if B5 holds for(<= n T.E)\in w'
+     * 
+     * @param T
+     *        role
+     * @param E
+     *        filler
+     * @return true if B5 holds
+     */
     @PortedFrom(file = "Blocking.cpp", name = "B5")
     private boolean B5(Role T, int E) {
         assert hasParent();
@@ -954,7 +984,15 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         return false;
     }
 
-    /** check if B6 holds for (>= m U.F)\in v */
+    /**
+     * check if B6 holds for (>= m U.F)\in v
+     * 
+     * @param U
+     *        role
+     * @param F
+     *        fillter
+     * @return true if B6 holds
+     */
     @PortedFrom(file = "Blocking.cpp", name = "B6")
     private boolean B6(Role U, int F) {
         assert hasParent();
@@ -1079,7 +1117,12 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         return null;
     }
 
-    /** saving/restoring */
+    /**
+     * saving/restoring
+     * 
+     * @param nss
+     *        node to restore
+     */
     private void save(DLCompletionTreeSaveState nss) {
         nss.setCurLevel(curLevel);
         nss.setnNeighbours(neighbourSize);

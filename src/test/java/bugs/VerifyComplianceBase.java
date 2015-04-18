@@ -42,7 +42,6 @@ public abstract class VerifyComplianceBase extends TestBase {
     protected JFactReasoner reasoner;
     protected OWLDataFactory df = OWLManager.getOWLDataFactory();
 
-    @SuppressWarnings("null")
     @Nonnull
     protected OWLOntology load(String in) throws OWLOntologyCreationException {
         OWLOntology onto = OWLManager.createOWLOntologyManager()

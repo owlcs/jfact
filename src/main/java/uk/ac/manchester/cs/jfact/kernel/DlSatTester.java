@@ -8,7 +8,6 @@ package uk.ac.manchester.cs.jfact.kernel;
 import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
 import static uk.ac.manchester.cs.jfact.kernel.DagTag.*;
 import static uk.ac.manchester.cs.jfact.kernel.Redo.*;
-import gnu.trove.set.TIntSet;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,7 +20,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nonnull;
 
@@ -31,7 +29,6 @@ import conformance.Original;
 import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.datatypes.DataTypeReasoner;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeEntry;
-import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
 import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.DLVertex;
@@ -2400,6 +2397,7 @@ public class DlSatTester implements Serializable {
      * 
      * @param cur
      *        current vertex true if clash happens
+     * @return true if a clash happens
      */
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodyOr")
     private boolean commonTacticBodyOr(DLVertex cur) {
@@ -2511,7 +2509,13 @@ public class DlSatTester implements Serializable {
         }
     }
 
-    /** expansion rule for universal restriction with non-simple role using RA */
+    /**
+     * expansion rule for universal restriction with non-simple role using RA
+     * 
+     * @param cur
+     *        vertex
+     * @return true if clash
+     */
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodyAllComplex")
     private boolean commonTacticBodyAllComplex(DLVertex cur) {
         int state = cur.getState();
@@ -3592,6 +3596,12 @@ public class DlSatTester implements Serializable {
     /**
      * aux method to check whether edge ended to NODE should be added to
      * EdgetoMerge
+     * 
+     * @param node
+     *        node
+     * @param e
+     *        list of arcs
+     * @return true if the node is not among the arcs
      */
     @PortedFrom(file = "Tactic.cpp", name = "isNewEdge")
     private static boolean isNewEdge(DlCompletionTree node,
@@ -3693,7 +3703,15 @@ public class DlSatTester implements Serializable {
                 curConceptConcept + cur.getNumberLE() - NN, curDep, "NN");
     }
 
-    /** @return true iff NN-rule wrt (<= R) is applicable to the curNode */
+    /**
+     * @param r
+     *        role
+     * @param C
+     *        filler
+     * @param stopper
+     *        stopper
+     * @return true iff NN-rule wrt (<= R) is applicable to the curNode
+     */
     @PortedFrom(file = "Reasoner.h", name = "isNNApplicable")
     protected boolean isNNApplicable(Role r, int C, int stopper) {
         // NN rule is only applicable to nominal nodes

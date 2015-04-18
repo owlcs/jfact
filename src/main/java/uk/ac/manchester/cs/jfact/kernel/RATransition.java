@@ -69,6 +69,9 @@ public class RATransition implements Serializable {
 
     /**
      * add label of transition TRANS to transition's label only if they are new
+     * 
+     * @param trans
+     *        transition to check
      */
     @PortedFrom(file = "RAutomaton.h", name = "addIfNew")
     public void addIfNew(RATransition trans) {

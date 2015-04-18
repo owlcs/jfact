@@ -125,6 +125,9 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
         return false;
     }
 
+    /**
+     * @return concepts
+     */
     public Collection<T> getConcepts() {
         return nameset.values();
     }

@@ -27,7 +27,7 @@ import org.semanticweb.owlapi.profiles.OWLProfileReport;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 
-@SuppressWarnings({ "javadoc", "null" })
+@SuppressWarnings({ "javadoc" })
 public class JUnitRunner {
 
     private static final int _10000 = 1000000;

@@ -169,7 +169,6 @@ public class Facets implements Serializable {
         /** replace */
         replace {
 
-            @SuppressWarnings("null")
             @Override
             public String normalize(@Nonnull String input) {
                 return input.replace('\t', ' ').replace('\n', ' ')
@@ -179,7 +178,6 @@ public class Facets implements Serializable {
         /** collapse */
         collapse {
 
-            @SuppressWarnings("null")
             @Override
             public String normalize(@Nonnull String input) {
                 StringBuilder b = new StringBuilder(replace.normalize(input));

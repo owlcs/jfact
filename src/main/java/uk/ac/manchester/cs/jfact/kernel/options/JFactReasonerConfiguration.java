@@ -608,7 +608,6 @@ public class JFactReasonerConfiguration
         return individualNodeSetPolicy;
     }
 
-    @SuppressWarnings("null")
     @Override
     public ReasonerProgressMonitor getProgressMonitor() {
         if (progressMonitor == null) {

@@ -110,6 +110,7 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
      * 
      * @param Expr
      *        Expr
+     * @return input expression
      */
     @PortedFrom(file = "tOntologyLoader.h", name = "ensureNames")
     public Expression ensureNames(Expression Expr) {

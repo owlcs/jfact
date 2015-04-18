@@ -612,7 +612,6 @@ public class DatatypeFactory implements Serializable {
             return cardinality.FINITE;
         }
 
-        @SuppressWarnings("null")
         @Override
         public Collection<Literal<Boolean>> listValues() {
             // if all datatypes are compatible, the intersection is the two
@@ -623,7 +622,6 @@ public class DatatypeFactory implements Serializable {
             return toReturn;
         }
 
-        @SuppressWarnings("null")
         @Override
         public Boolean parseValue(String s) {
             whitespace facet = (whitespace) whiteSpace
@@ -669,7 +667,6 @@ public class DatatypeFactory implements Serializable {
             return this;
         }
 
-        @SuppressWarnings("null")
         @Override
         public Calendar parseValue(String s) {
             try {
@@ -840,7 +837,6 @@ public class DatatypeFactory implements Serializable {
 
         private static final long serialVersionUID = 11000L;
 
-        @SuppressWarnings("null")
         LITERAL_DATATYPE() {
             super(OWLRDFVocabulary.RDFS_LITERAL.getIRI(), Collections
                     .<Facet> emptySet(), Collections.<Datatype<?>> emptySet());
@@ -1029,7 +1025,6 @@ public class DatatypeFactory implements Serializable {
             return true;
         }
 
-        @SuppressWarnings("null")
         @Override
         public Double parseValue(String s) {
             return Double.parseDouble(s);
@@ -1075,7 +1070,6 @@ public class DatatypeFactory implements Serializable {
             return true;
         }
 
-        @SuppressWarnings("null")
         @Override
         public Float parseValue(String s) {
             String trim = s.trim();
@@ -1133,7 +1127,6 @@ public class DatatypeFactory implements Serializable {
                     Byte.MAX_VALUE));
         }
 
-        @SuppressWarnings("null")
         @Override
         public Byte parseValue(String s) {
             return Byte.parseByte(s);
@@ -1163,7 +1156,7 @@ public class DatatypeFactory implements Serializable {
         }
 
         @Override
-        @SuppressWarnings({ "unchecked", "null" })
+        @SuppressWarnings({ "unchecked" })
         public R parseValue(String s) {
             return (R) Integer.valueOf(s);
         }
@@ -1221,7 +1214,7 @@ public class DatatypeFactory implements Serializable {
         }
 
         @Override
-        @SuppressWarnings({ "unchecked", "null" })
+        @SuppressWarnings({ "unchecked" })
         public R parseValue(String s) {
             return (R) Long.valueOf(s);
         }
@@ -1383,7 +1376,7 @@ public class DatatypeFactory implements Serializable {
         }
 
         @Override
-        @SuppressWarnings({ "unchecked", "null" })
+        @SuppressWarnings({ "unchecked" })
         public R parseValue(String s) {
             return (R) Short.valueOf(s);
         }
@@ -1560,7 +1553,6 @@ public class DatatypeFactory implements Serializable {
             this(IRI.create("http://www.w3.org/2002/07/owl#", "rational"));
         }
 
-        @SuppressWarnings("null")
         protected RATIONAL_DATATYPE(@Nonnull IRI uri) {
             this(uri, Collections.<Facet> emptySet(), Utils
                     .generateAncestors(REAL));
@@ -1708,7 +1700,6 @@ public class DatatypeFactory implements Serializable {
 
         private static final long serialVersionUID = 11000L;
 
-        @SuppressWarnings("null")
         protected XMLLITERAL_DATATYPE() {
             super(IRI.create("http://www.w3.org/1999/02/22-rdf-syntax-ns#",
                     "XMLLiteral"), Collections.<Facet> emptySet(), Utils

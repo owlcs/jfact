@@ -128,7 +128,6 @@ public class DataRangeTranslator extends
         return dataOr(translateDataRangeSet(node.getOperands()));
     }
 
-    @SuppressWarnings("null")
     @Override
     public DataExpression visit(OWLDatatypeRestriction node) {
         Datatype<?> type = f.getKnownDatatype(node.getDatatype().getIRI());

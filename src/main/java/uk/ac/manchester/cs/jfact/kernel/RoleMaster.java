@@ -330,7 +330,14 @@ public class RoleMaster implements Serializable {
         }
     }
 
-    /** add parent for the input role */
+    /**
+     * add parent for the input role
+     * 
+     * @param role
+     *        role
+     * @param parent
+     *        parent
+     */
     @PortedFrom(file = "RoleMaster.h", name = "addRoleParent")
     public static void addRoleParent(Role role, Role parent) {
         addRoleParentProper(ClassifiableEntry.resolveSynonym(role),
