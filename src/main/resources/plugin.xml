@@ -4,8 +4,8 @@
 
     <extension point="org.protege.editor.owl.inference_reasonerfactory"
                id="jfact-factory">
-        <name value="JFact 4.0.0-SNAPSHOT"/>
-        <label value="JFact 4.0.0-SNAPSHOT" />
+        <name value="JFact 5.0.0-ALPHA"/>
+        <label value="JFact 5.0.0-ALPHA" />
         <class value="jfact.plugin.protege.JFactProtegeFactory"/>
     </extension>
 </plugin>
