@@ -19,6 +19,8 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.ArrayIntMap;
 import uk.ac.manchester.cs.jfact.helpers.DLVertex;
@@ -29,8 +31,6 @@ import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.kernel.state.DLCompletionTreeSaveState;
 import uk.ac.manchester.cs.jfact.kernel.state.SaveList;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** completion tree */
 @PortedFrom(file = "dlCompletionTree.h", name = "DlCompletionTree")
@@ -962,10 +962,6 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>,
         init = bpTOP;
         // node was used -- clear all previous content
         saves.clear();
-        if (options.isUseIncrementalReasoning()) {
-            inequalityRelation.clear();
-            inequalityRelation_helper.clear();
-        }
         inequalityRelation.clear();
         inequalityRelation_helper.clear();
         neighbour.clear();
