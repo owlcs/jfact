@@ -9,6 +9,7 @@ import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -25,7 +26,9 @@ import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.profiles.OWL2DLProfile;
 import org.semanticweb.owlapi.profiles.OWLProfileReport;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
+import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 
 @SuppressWarnings({ "javadoc" })
 public class JUnitRunner {
@@ -34,27 +37,41 @@ public class JUnitRunner {
 
     public static void print(String premise) throws OWLException {
         OWLOntology o = OWLManager.createOWLOntologyManager()
-                .loadOntologyFromOntologyDocument(
-                        new StringDocumentSource(premise));
+            .loadOntologyFromOntologyDocument(
+                new StringDocumentSource(premise));
         o.getOWLOntologyManager().saveOntology(o,
-                new FunctionalSyntaxDocumentFormat(),
-                new SystemOutDocumentTarget());
+            new FunctionalSyntaxDocumentFormat(),
+            new SystemOutDocumentTarget());
     }
 
     private final TestClasses t;
     private OWLReasonerFactory f;
     private final String testId;
-    private final String premise;
+    private final OWLOntology premise;
     private final String consequence;
     private final String description;
+    private OWLReasonerConfiguration config;
 
     public JUnitRunner(String premise, String consequence, String testId,
-            TestClasses t, String description) {
+        TestClasses t, String description) {
         this.testId = testId;
-        this.premise = premise;
+        this.premise = premise(premise);
         this.consequence = consequence;
         this.description = description;
         this.t = t;
+    }
+
+    public JUnitRunner(InputStream premise, String consequence, String testId,
+        TestClasses t, String description) {
+        this.testId = testId;
+        this.premise = premise(premise);
+        this.consequence = consequence;
+        this.description = description;
+        this.t = t;
+    }
+
+    public void setConfig(OWLReasonerConfiguration c) {
+        config = c;
     }
 
     public void setReasonerFactory(OWLReasonerFactory f) {
@@ -65,27 +82,36 @@ public class JUnitRunner {
         return reasoner.isConsistent();
     }
 
-    private static boolean
-            isEntailed(OWLReasoner reasoner, OWLAxiom conclusion) {
+    private static boolean isEntailed(OWLReasoner reasoner,
+        OWLAxiom conclusion) {
         return reasoner.isEntailed(conclusion);
     }
 
-    public OWLOntology getPremise() throws OWLOntologyCreationException {
-        if (premise != null) {
-            StringDocumentSource documentSource = new StringDocumentSource(
-                    premise);
+    public OWLOntology premise(InputStream in) {
+        try {
             return OWLManager.createOWLOntologyManager()
-                    .loadOntologyFromOntologyDocument(documentSource);
+                .loadOntologyFromOntologyDocument(in);
+        } catch (OWLOntologyCreationException e) {
+            throw new RuntimeException(e);
         }
-        return null;
+    }
+
+    public OWLOntology premise(String p) {
+        try {
+            StringDocumentSource documentSource = new StringDocumentSource(p);
+            return OWLManager.createOWLOntologyManager()
+                .loadOntologyFromOntologyDocument(documentSource);
+        } catch (OWLOntologyCreationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public OWLOntology getConsequence() throws OWLOntologyCreationException {
         if (consequence != null) {
             StringDocumentSource documentSource = new StringDocumentSource(
-                    consequence);
+                consequence);
             return OWLManager.createOWLOntologyManager()
-                    .loadOntologyFromOntologyDocument(documentSource);
+                .loadOntologyFromOntologyDocument(documentSource);
         }
         return null;
     }
@@ -96,15 +122,14 @@ public class JUnitRunner {
         // m.setSilentMissingImportsHandling(true);
         try {
             if (premise != null) {
-                premiseOntology = getPremise();
+                premiseOntology = premise;
                 OWL2DLProfile profile = new OWL2DLProfile();
                 OWLProfileReport report = profile
-                        .checkOntology(premiseOntology);
+                    .checkOntology(premiseOntology);
                 if (report.getViolations().size() > 0) {
                     System.out.println("JUnitRunner.run() " + testId);
-                    System.out
-                            .println("JUnitRunner.run() premise violations:\n"
-                                    + report.toString());
+                    System.out.println("JUnitRunner.run() premise violations:\n"
+                        + report.toString());
                     throw new RuntimeException("errors!\n" + report.toString());
                 }
             }
@@ -119,13 +144,13 @@ public class JUnitRunner {
                 conclusionOntology = getConsequence();
                 OWL2DLProfile profile = new OWL2DLProfile();
                 OWLProfileReport report = profile
-                        .checkOntology(conclusionOntology);
+                    .checkOntology(conclusionOntology);
                 if (report.getViolations().size() > 0) {
                     System.out.println("JUnitRunner.run() " + testId
-                            + report.getViolations().size());
+                        + report.getViolations().size());
                     System.out
-                            .println("JUnitRunner.run() conclusion violations:\n"
-                                    + report.toString());
+                        .println("JUnitRunner.run() conclusion violations:\n"
+                            + report.toString());
                     throw new RuntimeException("errors!");
                 }
             }
@@ -137,7 +162,7 @@ public class JUnitRunner {
     }
 
     protected void run(OWLOntology premiseOntology,
-            OWLOntology conclusionOntology) {
+        OWLOntology conclusionOntology) {
         StringBuilder b = new StringBuilder();
         b.append("JUnitRunner.logTroubles() premise");
         b.append('\n');
@@ -145,12 +170,15 @@ public class JUnitRunner {
             b.append(ax1);
             b.append('\n');
         }
-        OWLReasoner reasoner = f.createReasoner(premiseOntology);
+        if (config == null) {
+            config = new SimpleConfiguration();
+        }
+        OWLReasoner reasoner = f.createReasoner(premiseOntology, config);
         actual(conclusionOntology, b, reasoner);
         // reasoner = roundtrip(reasoner);
         // actual(conclusionOntology, b, reasoner);
-        premiseOntology.getOWLOntologyManager().removeOntologyChangeListener(
-                (OWLOntologyChangeListener) reasoner);
+        premiseOntology.getOWLOntologyManager()
+            .removeOntologyChangeListener((OWLOntologyChangeListener) reasoner);
     }
 
     private static OWLReasoner roundtrip(OWLReasoner r) {
@@ -160,7 +188,7 @@ public class JUnitRunner {
             stream.writeObject(r);
             stream.flush();
             ByteArrayInputStream in = new ByteArrayInputStream(
-                    out.toByteArray());
+                out.toByteArray());
             ObjectInputStream inStream = new ObjectInputStream(in);
             return (OWLReasoner) inStream.readObject();
         } catch (Exception e) {
@@ -170,13 +198,13 @@ public class JUnitRunner {
     }
 
     private void actual(OWLOntology conclusionOntology, StringBuilder b,
-            OWLReasoner reasoner) {
+        OWLReasoner reasoner) {
         switch (t) {
             case CONSISTENCY: {
                 boolean consistent = isConsistent(reasoner);
                 if (!consistent) {
                     String message = b.toString()
-                            + logTroubles(true, consistent, t, null);
+                        + logTroubles(true, consistent, t, null);
                     assertTrue(message, consistent);
                 }
             }
@@ -185,7 +213,7 @@ public class JUnitRunner {
                 boolean consistent = isConsistent(reasoner);
                 if (consistent) {
                     String message = b.toString()
-                            + logTroubles(false, consistent, t, null);
+                        + logTroubles(false, consistent, t, null);
                     assertFalse(message, consistent);
                 }
             }
@@ -194,7 +222,7 @@ public class JUnitRunner {
                 boolean consistent = isConsistent(reasoner);
                 if (!consistent) {
                     String message = b.toString()
-                            + logTroubles(true, consistent, t, null);
+                        + logTroubles(true, consistent, t, null);
                     assertTrue(message, consistent);
                 }
                 boolean entailed = false;
@@ -212,7 +240,7 @@ public class JUnitRunner {
                 boolean consistent = isConsistent(reasoner);
                 if (!consistent) {
                     String message = b.toString()
-                            + logTroubles(true, consistent, t, null);
+                        + logTroubles(true, consistent, t, null);
                     assertTrue(message, consistent);
                 }
                 boolean entailed = true;
@@ -232,7 +260,7 @@ public class JUnitRunner {
     }
 
     public String logTroubles(boolean expected, boolean actual,
-            TestClasses testclass, OWLAxiom axiom) {
+        TestClasses testclass, OWLAxiom axiom) {
         StringBuilder b = new StringBuilder();
         b.append("JUnitRunner.logTroubles() \t");
         b.append(testclass);
@@ -253,19 +281,17 @@ public class JUnitRunner {
         return string;
     }
 
-    public void printPremise() throws OWLOntologyStorageException,
-            OWLOntologyCreationException {
-        OWLOntology premise2 = getPremise();
-        premise2.getOWLOntologyManager().saveOntology(premise2,
-                new FunctionalSyntaxDocumentFormat(),
-                new SystemOutDocumentTarget());
+    public void printPremise()
+ throws OWLOntologyStorageException {
+        premise.saveOntology(new FunctionalSyntaxDocumentFormat(),
+            new SystemOutDocumentTarget());
     }
 
-    public void printConsequence() throws OWLOntologyStorageException,
-            OWLOntologyCreationException {
+    public void printConsequence()
+        throws OWLOntologyStorageException, OWLOntologyCreationException {
         OWLOntology consequence2 = getConsequence();
         consequence2.getOWLOntologyManager().saveOntology(consequence2,
-                new FunctionalSyntaxDocumentFormat(),
-                new SystemOutDocumentTarget());
+            new FunctionalSyntaxDocumentFormat(),
+            new SystemOutDocumentTarget());
     }
 }

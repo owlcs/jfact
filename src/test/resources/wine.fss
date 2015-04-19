@@ -1,0 +1,2279 @@
+Prefix(:=<http://www.w3.org/2002/03owlt/miscellaneous/consistent001#>)
+Prefix(owl:=<http://www.w3.org/2002/07/owl#>)
+Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)
+Prefix(vin:=<http://www.w3.org/2002/03owlt/miscellaneous/consistent001#>)
+Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)
+Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)
+Prefix(food:=<http://www.w3.org/2002/03owlt/miscellaneous/consistent002#>)
+Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
+
+
+Ontology(<http://www.w3.org/2002/03owlt/miscellaneous/consistent001>
+Annotation(rdfs:comment "An example OWL ontology")
+Annotation(rdfs:comment "Derived from the DAML Wine ontology at  http://ontolingua.stanford.edu/doc/chimaera/ontologies/wines.daml  Substantially changed, in particular the Region based relations.")
+Annotation(rdfs:label "Wine Ontology")
+Annotation(owl:priorVersion <http://www.example.org/wine-020303>)
+
+Declaration(Class(vin:AlsatianWine))
+Declaration(Class(vin:AmericanWine))
+Declaration(Class(vin:Anjou))
+Declaration(Class(vin:Beaujolais))
+Declaration(Class(vin:BlandFish))
+Declaration(Class(vin:BlandFishCourse))
+Declaration(Class(vin:Bordeaux))
+Declaration(Class(vin:Burgundy))
+Declaration(Class(vin:CabernetFranc))
+Declaration(Class(vin:CabernetSauvignon))
+Declaration(Class(vin:CaliforniaWine))
+Declaration(Class(vin:Chardonnay))
+Declaration(Class(vin:CheeseNutsDessert))
+Declaration(Class(vin:CheeseNutsDessertCourse))
+Declaration(Class(vin:CheninBlanc))
+Declaration(Class(vin:Chianti))
+Declaration(Class(vin:ConsumableThing))
+Declaration(Class(vin:CotesDOr))
+Declaration(Class(vin:DarkMeatFowl))
+Declaration(Class(vin:DarkMeatFowlCourse))
+Declaration(Class(vin:Dessert))
+Declaration(Class(vin:DessertCourse))
+Declaration(Class(vin:DessertWine))
+Declaration(Class(vin:DryRedWine))
+Declaration(Class(vin:DryRiesling))
+Declaration(Class(vin:DryWhiteWine))
+Declaration(Class(vin:DryWine))
+Declaration(Class(vin:EarlyHarvest))
+Declaration(Class(vin:EatingGrape))
+Declaration(Class(vin:EdibleThing))
+Declaration(Class(vin:Fish))
+Declaration(Class(vin:FishCourse))
+Declaration(Class(vin:Fowl))
+Declaration(Class(vin:FrenchWine))
+Declaration(Class(vin:Fruit))
+Declaration(Class(vin:FruitCourse))
+Declaration(Class(vin:FullBodiedWine))
+Declaration(Class(vin:Gamay))
+Declaration(Class(vin:GermanWine))
+Declaration(Class(vin:Grape))
+Declaration(Class(vin:IceWine))
+Declaration(Class(vin:ItalianWine))
+Declaration(Class(vin:Juice))
+Declaration(Class(vin:LateHarvest))
+Declaration(Class(vin:LightMeatFowl))
+Declaration(Class(vin:LightMeatFowlCourse))
+Declaration(Class(vin:Loire))
+Declaration(Class(vin:Margaux))
+Declaration(Class(vin:Meal))
+Declaration(Class(vin:MealCourse))
+Declaration(Class(vin:Meat))
+Declaration(Class(vin:Medoc))
+Declaration(Class(vin:Meritage))
+Declaration(Class(vin:Merlot))
+Declaration(Class(vin:Meursault))
+Declaration(Class(vin:Muscadet))
+Declaration(Class(vin:NonBlandFish))
+Declaration(Class(vin:NonBlandFishCourse))
+Declaration(Class(vin:NonConsumableThing))
+Declaration(Class(vin:NonOysterShellfish))
+Declaration(Class(vin:NonOysterShellfishCourse))
+Declaration(Class(vin:NonRedMeat))
+Declaration(Class(vin:NonRedMeatCourse))
+Declaration(Class(vin:NonSpicyRedMeat))
+Declaration(Class(vin:NonSpicyRedMeatCourse))
+Declaration(Class(vin:NonSweetFruit))
+Declaration(Class(vin:NonSweetFruitCourse))
+Declaration(Class(vin:OtherTomatoBasedFood))
+Declaration(Class(vin:OtherTomatoBasedFoodCourse))
+Declaration(Class(vin:OysterShellfish))
+Declaration(Class(vin:OysterShellfishCourse))
+Declaration(Class(vin:Pasta))
+Declaration(Class(vin:PastaWithHeavyCreamCourse))
+Declaration(Class(vin:PastaWithHeavyCreamSauce))
+Declaration(Class(vin:PastaWithLightCreamCourse))
+Declaration(Class(vin:PastaWithLightCreamSauce))
+Declaration(Class(vin:PastaWithNonSpicyRedSauce))
+Declaration(Class(vin:PastaWithNonSpicyRedSauceCourse))
+Declaration(Class(vin:PastaWithRedSauce))
+Declaration(Class(vin:PastaWithSpicyRedSauce))
+Declaration(Class(vin:PastaWithSpicyRedSauceCourse))
+Declaration(Class(vin:PastaWithWhiteSauce))
+Declaration(Class(vin:Pauillac))
+Declaration(Class(vin:PetiteSyrah))
+Declaration(Class(vin:PinotBlanc))
+Declaration(Class(vin:PinotNoir))
+Declaration(Class(vin:Port))
+Declaration(Class(vin:PotableLiquid))
+Declaration(Class(vin:RedBordeaux))
+Declaration(Class(vin:RedBurgundy))
+Declaration(Class(vin:RedMeat))
+Declaration(Class(vin:RedMeatCourse))
+Declaration(Class(vin:RedTableWine))
+Declaration(Class(vin:RedWine))
+Declaration(Class(vin:Region))
+Declaration(Class(vin:Riesling))
+Declaration(Class(vin:RoseWine))
+Declaration(Class(vin:Sancerre))
+Declaration(Class(vin:Sauterne))
+Declaration(Class(vin:SauvignonBlanc))
+Declaration(Class(vin:Seafood))
+Declaration(Class(vin:SeafoodCourse))
+Declaration(Class(vin:Semillon))
+Declaration(Class(vin:SemillonOrSauvignonBlanc))
+Declaration(Class(vin:Shellfish))
+Declaration(Class(vin:ShellfishCourse))
+Declaration(Class(vin:SpicyRedMeat))
+Declaration(Class(vin:SpicyRedMeatCourse))
+Declaration(Class(vin:StEmilion))
+Declaration(Class(vin:SweetDessert))
+Declaration(Class(vin:SweetDessertCourse))
+Declaration(Class(vin:SweetFruit))
+Declaration(Class(vin:SweetFruitCourse))
+Declaration(Class(vin:SweetRiesling))
+Declaration(Class(vin:SweetWine))
+Declaration(Class(vin:TableWine))
+Declaration(Class(vin:TexasWine))
+Declaration(Class(vin:Tours))
+Declaration(Class(vin:Vintage))
+Declaration(Class(vin:VintageYear))
+Declaration(Class(vin:WhiteBordeaux))
+Declaration(Class(vin:WhiteBurgundy))
+Declaration(Class(vin:WhiteLoire))
+Declaration(Class(vin:WhiteNonSweetWine))
+Declaration(Class(vin:WhiteTableWine))
+Declaration(Class(vin:WhiteWine))
+Declaration(Class(vin:Wine))
+Declaration(Class(vin:WineBody))
+Declaration(Class(vin:WineColor))
+Declaration(Class(vin:WineDescriptor))
+Declaration(Class(vin:WineFlavor))
+Declaration(Class(vin:WineGrape))
+Declaration(Class(vin:WineSugar))
+Declaration(Class(vin:WineTaste))
+Declaration(Class(vin:Winery))
+Declaration(Class(vin:Zinfandel))
+Declaration(Class(food:Grape))
+Declaration(Class(food:PotableLiquid))
+Declaration(ObjectProperty(vin:adjacentRegion))
+Declaration(ObjectProperty(vin:course))
+Declaration(ObjectProperty(vin:hasBody))
+Declaration(ObjectProperty(vin:hasColor))
+Declaration(ObjectProperty(vin:hasDrink))
+Declaration(ObjectProperty(vin:hasFlavor))
+Declaration(ObjectProperty(vin:hasFood))
+Declaration(ObjectProperty(vin:hasMaker))
+Declaration(ObjectProperty(vin:hasSugar))
+Declaration(ObjectProperty(vin:hasVintageYear))
+Declaration(ObjectProperty(vin:hasWineDescriptor))
+Declaration(ObjectProperty(vin:locatedIn))
+Declaration(ObjectProperty(vin:madeFromFruit))
+Declaration(ObjectProperty(vin:madeFromGrape))
+Declaration(ObjectProperty(vin:madeIntoWine))
+Declaration(ObjectProperty(vin:producesWine))
+Declaration(ObjectProperty(food:madeFromFruit))
+Declaration(DataProperty(vin:yearValue))
+Declaration(NamedIndividual(vin:AlsaceRegion))
+Declaration(NamedIndividual(vin:AnjouRegion))
+Declaration(NamedIndividual(vin:ArroyoGrandeRegion))
+Declaration(NamedIndividual(vin:AustralianRegion))
+Declaration(NamedIndividual(vin:Bananas))
+Declaration(NamedIndividual(vin:Bancroft))
+Declaration(NamedIndividual(vin:BancroftChardonnay))
+Declaration(NamedIndividual(vin:BeaujolaisRegion))
+Declaration(NamedIndividual(vin:BeefCurry))
+Declaration(NamedIndividual(vin:Beringer))
+Declaration(NamedIndividual(vin:BordeauxRegion))
+Declaration(NamedIndividual(vin:BourgogneRegion))
+Declaration(NamedIndividual(vin:CabernetFrancGrape))
+Declaration(NamedIndividual(vin:CabernetSauvignonGrape))
+Declaration(NamedIndividual(vin:Cake))
+Declaration(NamedIndividual(vin:CaliforniaRegion))
+Declaration(NamedIndividual(vin:CentralCoastRegion))
+Declaration(NamedIndividual(vin:CentralTexasRegion))
+Declaration(NamedIndividual(vin:ChardonnayGrape))
+Declaration(NamedIndividual(vin:ChateauChevalBlanc))
+Declaration(NamedIndividual(vin:ChateauChevalBlancStEmilion))
+Declaration(NamedIndividual(vin:ChateauDYchem))
+Declaration(NamedIndividual(vin:ChateauDYchemSauterne))
+Declaration(NamedIndividual(vin:ChateauDeMeursault))
+Declaration(NamedIndividual(vin:ChateauDeMeursaultMeursault))
+Declaration(NamedIndividual(vin:ChateauLafiteRothschild))
+Declaration(NamedIndividual(vin:ChateauLafiteRothschildPauillac))
+Declaration(NamedIndividual(vin:ChateauMargaux))
+Declaration(NamedIndividual(vin:ChateauMargauxWinery))
+Declaration(NamedIndividual(vin:ChateauMorgon))
+Declaration(NamedIndividual(vin:ChateauMorgonBeaujolais))
+Declaration(NamedIndividual(vin:Cheese))
+Declaration(NamedIndividual(vin:CheninBlancGrape))
+Declaration(NamedIndividual(vin:ChiantiClassico))
+Declaration(NamedIndividual(vin:ChiantiRegion))
+Declaration(NamedIndividual(vin:Chicken))
+Declaration(NamedIndividual(vin:Clams))
+Declaration(NamedIndividual(vin:ClosDeLaPoussie))
+Declaration(NamedIndividual(vin:ClosDeLaPoussieSancerre))
+Declaration(NamedIndividual(vin:ClosDeVougeot))
+Declaration(NamedIndividual(vin:ClosDeVougeotCotesDOr))
+Declaration(NamedIndividual(vin:CongressSprings))
+Declaration(NamedIndividual(vin:CongressSpringsSemillon))
+Declaration(NamedIndividual(vin:Corbans))
+Declaration(NamedIndividual(vin:CorbansDryWhiteRiesling))
+Declaration(NamedIndividual(vin:CorbansPrivateBinSauvignonBlanc))
+Declaration(NamedIndividual(vin:CorbansSauvignonBlanc))
+Declaration(NamedIndividual(vin:CortonMontrachet))
+Declaration(NamedIndividual(vin:CortonMontrachetWhiteBurgundy))
+Declaration(NamedIndividual(vin:CotesDOrRegion))
+Declaration(NamedIndividual(vin:Cotturi))
+Declaration(NamedIndividual(vin:CotturiZinfandel))
+Declaration(NamedIndividual(vin:Crab))
+Declaration(NamedIndividual(vin:DAnjou))
+Declaration(NamedIndividual(vin:Delicate))
+Declaration(NamedIndividual(vin:Dry))
+Declaration(NamedIndividual(vin:Duck))
+Declaration(NamedIndividual(vin:EdnaValleyRegion))
+Declaration(NamedIndividual(vin:Elyse))
+Declaration(NamedIndividual(vin:ElyseZinfandel))
+Declaration(NamedIndividual(vin:FettucineAlfRedo))
+Declaration(NamedIndividual(vin:Flounder))
+Declaration(NamedIndividual(vin:Forman))
+Declaration(NamedIndividual(vin:FormanCabernetSauvignon))
+Declaration(NamedIndividual(vin:FormanChardonnay))
+Declaration(NamedIndividual(vin:Foxen))
+Declaration(NamedIndividual(vin:FoxenCheninBlanc))
+Declaration(NamedIndividual(vin:FraDiavolo))
+Declaration(NamedIndividual(vin:FrenchRegion))
+Declaration(NamedIndividual(vin:Full))
+Declaration(NamedIndividual(vin:GamayGrape))
+Declaration(NamedIndividual(vin:GarlickyRoast))
+Declaration(NamedIndividual(vin:GaryFarrell))
+Declaration(NamedIndividual(vin:GaryFarrellMerlot))
+Declaration(NamedIndividual(vin:GermanyRegion))
+Declaration(NamedIndividual(vin:Goose))
+Declaration(NamedIndividual(vin:Halibut))
+Declaration(NamedIndividual(vin:Handley))
+Declaration(NamedIndividual(vin:ItalianRegion))
+Declaration(NamedIndividual(vin:KalinCellars))
+Declaration(NamedIndividual(vin:KalinCellarsSemillon))
+Declaration(NamedIndividual(vin:KathrynKennedy))
+Declaration(NamedIndividual(vin:KathrynKennedyLateral))
+Declaration(NamedIndividual(vin:LaneTanner))
+Declaration(NamedIndividual(vin:LaneTannerPinotNoir))
+Declaration(NamedIndividual(vin:Light))
+Declaration(NamedIndividual(vin:Lobster))
+Declaration(NamedIndividual(vin:LoireRegion))
+Declaration(NamedIndividual(vin:Longridge))
+Declaration(NamedIndividual(vin:LongridgeMerlot))
+Declaration(NamedIndividual(vin:MalbecGrape))
+Declaration(NamedIndividual(vin:MargauxRegion))
+Declaration(NamedIndividual(vin:Marietta))
+Declaration(NamedIndividual(vin:MariettaCabernetSauvignon))
+Declaration(NamedIndividual(vin:MariettaOldVinesRed))
+Declaration(NamedIndividual(vin:MariettaPetiteSyrah))
+Declaration(NamedIndividual(vin:MariettaZinfandel))
+Declaration(NamedIndividual(vin:McGuinnesso))
+Declaration(NamedIndividual(vin:Medium))
+Declaration(NamedIndividual(vin:MedocRegion))
+Declaration(NamedIndividual(vin:MendocinoRegion))
+Declaration(NamedIndividual(vin:MerlotGrape))
+Declaration(NamedIndividual(vin:MeursaultRegion))
+Declaration(NamedIndividual(vin:MixedFruit))
+Declaration(NamedIndividual(vin:Moderate))
+Declaration(NamedIndividual(vin:MountEdenVineyard))
+Declaration(NamedIndividual(vin:MountEdenVineyardEdnaValleyChardonnay))
+Declaration(NamedIndividual(vin:MountEdenVineyardEstatePinotNoir))
+Declaration(NamedIndividual(vin:Mountadam))
+Declaration(NamedIndividual(vin:MountadamChardonnay))
+Declaration(NamedIndividual(vin:MountadamPinotNoir))
+Declaration(NamedIndividual(vin:MountadamRiesling))
+Declaration(NamedIndividual(vin:MuscadetRegion))
+Declaration(NamedIndividual(vin:Mussels))
+Declaration(NamedIndividual(vin:NapaRegion))
+Declaration(NamedIndividual(vin:NewZealandRegion))
+Declaration(NamedIndividual(vin:Nuts))
+Declaration(NamedIndividual(vin:OffDry))
+Declaration(NamedIndividual(vin:Oysters))
+Declaration(NamedIndividual(vin:PageMillWinery))
+Declaration(NamedIndividual(vin:PageMillWineryCabernetSauvignon))
+Declaration(NamedIndividual(vin:PastaWithWhiteClamSauce))
+Declaration(NamedIndividual(vin:PauillacRegion))
+Declaration(NamedIndividual(vin:Peaches))
+Declaration(NamedIndividual(vin:PeterMccoy))
+Declaration(NamedIndividual(vin:PeterMccoyChardonnay))
+Declaration(NamedIndividual(vin:PetiteSyrahGrape))
+Declaration(NamedIndividual(vin:PetiteVerdotGrape))
+Declaration(NamedIndividual(vin:Pie))
+Declaration(NamedIndividual(vin:PinotBlancGrape))
+Declaration(NamedIndividual(vin:PinotNoirGrape))
+Declaration(NamedIndividual(vin:Pizza))
+Declaration(NamedIndividual(vin:Pork))
+Declaration(NamedIndividual(vin:PortugalRegion))
+Declaration(NamedIndividual(vin:PulignyMontrachet))
+Declaration(NamedIndividual(vin:PulignyMontrachetWhiteBurgundy))
+Declaration(NamedIndividual(vin:Red))
+Declaration(NamedIndividual(vin:RieslingGrape))
+Declaration(NamedIndividual(vin:RoastBeef))
+Declaration(NamedIndividual(vin:Rose))
+Declaration(NamedIndividual(vin:RoseDAnjou))
+Declaration(NamedIndividual(vin:SancerreRegion))
+Declaration(NamedIndividual(vin:SangioveseGrape))
+Declaration(NamedIndividual(vin:SantaBarbaraRegion))
+Declaration(NamedIndividual(vin:SantaCruzMountainVineyard))
+Declaration(NamedIndividual(vin:SantaCruzMountainVineyardCabernetSauvignon))
+Declaration(NamedIndividual(vin:SantaCruzMountainsRegion))
+Declaration(NamedIndividual(vin:SaucelitoCanyon))
+Declaration(NamedIndividual(vin:SaucelitoCanyonZinfandel))
+Declaration(NamedIndividual(vin:SaucelitoCanyonZinfandel1998))
+Declaration(NamedIndividual(vin:SauterneRegion))
+Declaration(NamedIndividual(vin:SauvignonBlancGrape))
+Declaration(NamedIndividual(vin:SchlossRothermel))
+Declaration(NamedIndividual(vin:SchlossRothermelTrochenbierenausleseRiesling))
+Declaration(NamedIndividual(vin:SchlossVolrad))
+Declaration(NamedIndividual(vin:SchlossVolradTrochenbierenausleseRiesling))
+Declaration(NamedIndividual(vin:Scrod))
+Declaration(NamedIndividual(vin:SeanThackrey))
+Declaration(NamedIndividual(vin:SeanThackreySiriusPetiteSyrah))
+Declaration(NamedIndividual(vin:Selaks))
+Declaration(NamedIndividual(vin:SelaksIceWine))
+Declaration(NamedIndividual(vin:SelaksSauvignonBlanc))
+Declaration(NamedIndividual(vin:SemillonGrape))
+Declaration(NamedIndividual(vin:SevreEtMaine))
+Declaration(NamedIndividual(vin:SevreEtMaineMuscadet))
+Declaration(NamedIndividual(vin:SonomaRegion))
+Declaration(NamedIndividual(vin:SouthAustraliaRegion))
+Declaration(NamedIndividual(vin:SpaghettiWithTomatoSauce))
+Declaration(NamedIndividual(vin:StEmilionRegion))
+Declaration(NamedIndividual(vin:StGenevieve))
+Declaration(NamedIndividual(vin:StGenevieveTexasWhite))
+Declaration(NamedIndividual(vin:Steak))
+Declaration(NamedIndividual(vin:Stonleigh))
+Declaration(NamedIndividual(vin:StonleighSauvignonBlanc))
+Declaration(NamedIndividual(vin:Strong))
+Declaration(NamedIndividual(vin:Sweet))
+Declaration(NamedIndividual(vin:Swordfish))
+Declaration(NamedIndividual(vin:Taylor))
+Declaration(NamedIndividual(vin:TaylorPort))
+Declaration(NamedIndividual(vin:TexasRegion))
+Declaration(NamedIndividual(vin:ThompsonSeedless))
+Declaration(NamedIndividual(vin:ToursRegion))
+Declaration(NamedIndividual(vin:Tuna))
+Declaration(NamedIndividual(vin:Turkey))
+Declaration(NamedIndividual(vin:USRegion))
+Declaration(NamedIndividual(vin:Veal))
+Declaration(NamedIndividual(vin:Ventana))
+Declaration(NamedIndividual(vin:VentanaCheninBlanc))
+Declaration(NamedIndividual(vin:White))
+Declaration(NamedIndividual(vin:WhitehallLane))
+Declaration(NamedIndividual(vin:WhitehallLaneCabernetFranc))
+Declaration(NamedIndividual(vin:WhitehallLanePrimavera))
+Declaration(NamedIndividual(vin:Year1998))
+Declaration(NamedIndividual(vin:ZinfandelGrape))
+
+############################
+#   Object Properties
+############################
+
+# Object Property: vin:adjacentRegion (vin:adjacentRegion)
+
+SymmetricObjectProperty(vin:adjacentRegion)
+ObjectPropertyDomain(vin:adjacentRegion vin:Region)
+ObjectPropertyRange(vin:adjacentRegion vin:Region)
+
+# Object Property: vin:course (vin:course)
+
+ObjectPropertyDomain(vin:course vin:Meal)
+ObjectPropertyRange(vin:course vin:MealCourse)
+
+# Object Property: vin:hasBody (vin:hasBody)
+
+SubObjectPropertyOf(vin:hasBody vin:hasWineDescriptor)
+FunctionalObjectProperty(vin:hasBody)
+ObjectPropertyRange(vin:hasBody vin:WineBody)
+
+# Object Property: vin:hasColor (vin:hasColor)
+
+SubObjectPropertyOf(vin:hasColor vin:hasWineDescriptor)
+FunctionalObjectProperty(vin:hasColor)
+ObjectPropertyDomain(vin:hasColor vin:Wine)
+ObjectPropertyRange(vin:hasColor vin:WineColor)
+
+# Object Property: vin:hasDrink (vin:hasDrink)
+
+ObjectPropertyDomain(vin:hasDrink vin:MealCourse)
+ObjectPropertyRange(vin:hasDrink vin:PotableLiquid)
+
+# Object Property: vin:hasFlavor (vin:hasFlavor)
+
+SubObjectPropertyOf(vin:hasFlavor vin:hasWineDescriptor)
+FunctionalObjectProperty(vin:hasFlavor)
+ObjectPropertyRange(vin:hasFlavor vin:WineFlavor)
+
+# Object Property: vin:hasFood (vin:hasFood)
+
+ObjectPropertyDomain(vin:hasFood vin:MealCourse)
+ObjectPropertyRange(vin:hasFood vin:EdibleThing)
+
+# Object Property: vin:hasMaker (vin:hasMaker)
+
+InverseObjectProperties(vin:hasMaker vin:producesWine)
+FunctionalObjectProperty(vin:hasMaker)
+
+# Object Property: vin:hasSugar (vin:hasSugar)
+
+SubObjectPropertyOf(vin:hasSugar vin:hasWineDescriptor)
+FunctionalObjectProperty(vin:hasSugar)
+ObjectPropertyRange(vin:hasSugar vin:WineSugar)
+
+# Object Property: vin:hasVintageYear (vin:hasVintageYear)
+
+FunctionalObjectProperty(vin:hasVintageYear)
+ObjectPropertyDomain(vin:hasVintageYear vin:Vintage)
+ObjectPropertyRange(vin:hasVintageYear vin:VintageYear)
+
+# Object Property: vin:hasWineDescriptor (vin:hasWineDescriptor)
+
+ObjectPropertyDomain(vin:hasWineDescriptor vin:Wine)
+ObjectPropertyRange(vin:hasWineDescriptor vin:WineDescriptor)
+
+# Object Property: vin:locatedIn (vin:locatedIn)
+
+TransitiveObjectProperty(vin:locatedIn)
+ObjectPropertyDomain(vin:locatedIn owl:Thing)
+ObjectPropertyRange(vin:locatedIn vin:Region)
+
+# Object Property: vin:madeFromFruit (vin:madeFromFruit)
+
+ObjectPropertyDomain(vin:madeFromFruit vin:ConsumableThing)
+ObjectPropertyRange(vin:madeFromFruit vin:Fruit)
+
+# Object Property: vin:madeFromGrape (vin:madeFromGrape)
+
+SubObjectPropertyOf(vin:madeFromGrape food:madeFromFruit)
+InverseObjectProperties(vin:madeFromGrape vin:madeIntoWine)
+ObjectPropertyDomain(vin:madeFromGrape vin:Wine)
+ObjectPropertyRange(vin:madeFromGrape vin:WineGrape)
+
+
+############################
+#   Data Properties
+############################
+
+# Data Property: vin:yearValue (vin:yearValue)
+
+DataPropertyDomain(vin:yearValue vin:VintageYear)
+DataPropertyRange(vin:yearValue xsd:positiveInteger)
+
+
+
+############################
+#   Classes
+############################
+
+# Class: vin:AlsatianWine (vin:AlsatianWine)
+
+EquivalentClasses(vin:AlsatianWine ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:locatedIn vin:AlsaceRegion)))
+
+# Class: vin:AmericanWine (vin:AmericanWine)
+
+EquivalentClasses(vin:AmericanWine ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:locatedIn vin:USRegion)))
+
+# Class: vin:Anjou (vin:Anjou)
+
+EquivalentClasses(vin:Anjou ObjectIntersectionOf(vin:Loire ObjectHasValue(vin:locatedIn vin:AnjouRegion)))
+SubClassOf(vin:Anjou ObjectHasValue(vin:hasBody vin:Light))
+SubClassOf(vin:Anjou ObjectHasValue(vin:hasColor vin:Rose))
+SubClassOf(vin:Anjou ObjectHasValue(vin:hasFlavor vin:Delicate))
+SubClassOf(vin:Anjou ObjectHasValue(vin:hasSugar vin:OffDry))
+
+# Class: vin:Beaujolais (vin:Beaujolais)
+
+EquivalentClasses(vin:Beaujolais ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:locatedIn vin:BeaujolaisRegion)))
+SubClassOf(vin:Beaujolais ObjectHasValue(vin:hasBody vin:Light))
+SubClassOf(vin:Beaujolais ObjectHasValue(vin:hasColor vin:Red))
+SubClassOf(vin:Beaujolais ObjectHasValue(vin:hasFlavor vin:Delicate))
+SubClassOf(vin:Beaujolais ObjectHasValue(vin:hasSugar vin:Dry))
+SubClassOf(vin:Beaujolais ObjectHasValue(vin:madeFromGrape vin:GamayGrape))
+SubClassOf(vin:Beaujolais ObjectMaxCardinality(1 vin:madeFromGrape))
+
+# Class: vin:BlandFish (vin:BlandFish)
+
+SubClassOf(vin:BlandFish vin:Fish)
+DisjointClasses(vin:BlandFish vin:NonBlandFish)
+
+# Class: vin:BlandFishCourse (vin:BlandFishCourse)
+
+EquivalentClasses(vin:BlandFishCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:BlandFish)))
+SubClassOf(vin:BlandFishCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasFlavor vin:Delicate)))
+
+# Class: vin:Bordeaux (vin:Bordeaux)
+
+EquivalentClasses(vin:Bordeaux ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:locatedIn vin:BordeauxRegion)))
+
+# Class: vin:Burgundy (vin:Burgundy)
+
+EquivalentClasses(vin:Burgundy ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:locatedIn vin:BourgogneRegion)))
+SubClassOf(vin:Burgundy ObjectHasValue(vin:hasSugar vin:Dry))
+
+# Class: vin:CabernetFranc (vin:CabernetFranc)
+
+EquivalentClasses(vin:CabernetFranc ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:madeFromGrape vin:CabernetFrancGrape) ObjectMaxCardinality(1 vin:madeFromGrape)))
+SubClassOf(vin:CabernetFranc ObjectHasValue(vin:hasBody vin:Medium))
+SubClassOf(vin:CabernetFranc ObjectHasValue(vin:hasColor vin:Red))
+SubClassOf(vin:CabernetFranc ObjectHasValue(vin:hasFlavor vin:Moderate))
+SubClassOf(vin:CabernetFranc ObjectHasValue(vin:hasSugar vin:Dry))
+
+# Class: vin:CabernetSauvignon (vin:CabernetSauvignon)
+
+EquivalentClasses(vin:CabernetSauvignon ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:madeFromGrape vin:CabernetSauvignonGrape) ObjectMaxCardinality(1 vin:madeFromGrape)))
+SubClassOf(vin:CabernetSauvignon ObjectAllValuesFrom(vin:hasBody ObjectOneOf(vin:Full vin:Medium)))
+SubClassOf(vin:CabernetSauvignon ObjectAllValuesFrom(vin:hasFlavor ObjectOneOf(vin:Moderate vin:Strong)))
+SubClassOf(vin:CabernetSauvignon ObjectHasValue(vin:hasColor vin:Red))
+SubClassOf(vin:CabernetSauvignon ObjectHasValue(vin:hasSugar vin:Dry))
+
+# Class: vin:CaliforniaWine (vin:CaliforniaWine)
+
+EquivalentClasses(vin:CaliforniaWine ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:locatedIn vin:CaliforniaRegion)))
+
+# Class: vin:Chardonnay (vin:Chardonnay)
+
+EquivalentClasses(vin:Chardonnay ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:madeFromGrape vin:ChardonnayGrape) ObjectMaxCardinality(1 vin:madeFromGrape)))
+SubClassOf(vin:Chardonnay ObjectAllValuesFrom(vin:hasBody ObjectOneOf(vin:Full vin:Medium)))
+SubClassOf(vin:Chardonnay ObjectAllValuesFrom(vin:hasFlavor ObjectOneOf(vin:Moderate vin:Strong)))
+SubClassOf(vin:Chardonnay ObjectHasValue(vin:hasColor vin:White))
+
+# Class: vin:CheeseNutsDessert (vin:CheeseNutsDessert)
+
+SubClassOf(vin:CheeseNutsDessert vin:Dessert)
+DisjointClasses(vin:CheeseNutsDessert vin:SweetDessert)
+
+# Class: vin:CheeseNutsDessertCourse (vin:CheeseNutsDessertCourse)
+
+EquivalentClasses(vin:CheeseNutsDessertCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:CheeseNutsDessert)))
+SubClassOf(vin:CheeseNutsDessertCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasColor vin:Red)))
+
+# Class: vin:CheninBlanc (vin:CheninBlanc)
+
+EquivalentClasses(vin:CheninBlanc ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:madeFromGrape vin:CheninBlancGrape) ObjectMaxCardinality(1 vin:madeFromGrape)))
+SubClassOf(vin:CheninBlanc ObjectAllValuesFrom(vin:hasBody ObjectOneOf(vin:Full vin:Medium)))
+SubClassOf(vin:CheninBlanc ObjectAllValuesFrom(vin:hasSugar ObjectOneOf(vin:Dry vin:OffDry)))
+SubClassOf(vin:CheninBlanc ObjectHasValue(vin:hasColor vin:White))
+SubClassOf(vin:CheninBlanc ObjectHasValue(vin:hasFlavor vin:Moderate))
+
+# Class: vin:Chianti (vin:Chianti)
+
+SubClassOf(vin:Chianti vin:ItalianWine)
+SubClassOf(vin:Chianti ObjectAllValuesFrom(vin:hasBody ObjectOneOf(vin:Light vin:Medium)))
+SubClassOf(vin:Chianti ObjectHasValue(vin:hasColor vin:Red))
+SubClassOf(vin:Chianti ObjectHasValue(vin:hasFlavor vin:Moderate))
+SubClassOf(vin:Chianti ObjectHasValue(vin:hasSugar vin:Dry))
+SubClassOf(vin:Chianti ObjectHasValue(vin:locatedIn vin:ChiantiRegion))
+SubClassOf(vin:Chianti ObjectHasValue(vin:madeFromGrape vin:SangioveseGrape))
+
+# Class: vin:CotesDOr (vin:CotesDOr)
+
+EquivalentClasses(vin:CotesDOr ObjectIntersectionOf(vin:RedBurgundy ObjectHasValue(vin:locatedIn vin:CotesDOrRegion)))
+SubClassOf(vin:CotesDOr ObjectHasValue(vin:hasFlavor vin:Moderate))
+
+# Class: vin:DarkMeatFowl (vin:DarkMeatFowl)
+
+SubClassOf(vin:DarkMeatFowl vin:Fowl)
+DisjointClasses(vin:DarkMeatFowl vin:LightMeatFowl)
+
+# Class: vin:DarkMeatFowlCourse (vin:DarkMeatFowlCourse)
+
+EquivalentClasses(vin:DarkMeatFowlCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:DarkMeatFowl)))
+SubClassOf(vin:DarkMeatFowlCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasBody vin:Light)))
+SubClassOf(vin:DarkMeatFowlCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasColor vin:Red)))
+SubClassOf(vin:DarkMeatFowlCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasFlavor vin:Delicate)))
+SubClassOf(vin:DarkMeatFowlCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasSugar vin:Dry)))
+
+# Class: vin:Dessert (vin:Dessert)
+
+SubClassOf(vin:Dessert vin:EdibleThing)
+DisjointClasses(vin:Dessert vin:Fowl)
+DisjointClasses(vin:Dessert vin:Fruit)
+DisjointClasses(vin:Dessert vin:Meat)
+DisjointClasses(vin:Dessert vin:OtherTomatoBasedFood)
+DisjointClasses(vin:Dessert vin:Pasta)
+DisjointClasses(vin:Dessert vin:Seafood)
+
+# Class: vin:DessertCourse (vin:DessertCourse)
+
+EquivalentClasses(vin:DessertCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:Dessert)))
+SubClassOf(vin:DessertCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasBody vin:Full)))
+SubClassOf(vin:DessertCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasFlavor vin:Strong)))
+SubClassOf(vin:DessertCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasSugar vin:Sweet)))
+
+# Class: vin:DessertWine (vin:DessertWine)
+
+SubClassOf(vin:DessertWine vin:Wine)
+SubClassOf(vin:DessertWine ObjectAllValuesFrom(vin:hasSugar ObjectOneOf(vin:OffDry vin:Sweet)))
+
+# Class: vin:DryRedWine (vin:DryRedWine)
+
+EquivalentClasses(vin:DryRedWine ObjectIntersectionOf(vin:DryWine vin:RedWine))
+
+# Class: vin:DryRiesling (vin:DryRiesling)
+
+EquivalentClasses(vin:DryRiesling ObjectIntersectionOf(vin:Riesling ObjectHasValue(vin:hasSugar vin:Dry)))
+SubClassOf(vin:DryRiesling ObjectAllValuesFrom(vin:hasBody ObjectOneOf(vin:Light vin:Medium)))
+SubClassOf(vin:DryRiesling ObjectHasValue(vin:hasColor vin:White))
+SubClassOf(vin:DryRiesling ObjectHasValue(vin:hasFlavor vin:Delicate))
+
+# Class: vin:DryWhiteWine (vin:DryWhiteWine)
+
+EquivalentClasses(vin:DryWhiteWine ObjectIntersectionOf(vin:DryWine vin:WhiteWine))
+
+# Class: vin:DryWine (vin:DryWine)
+
+EquivalentClasses(vin:DryWine ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:hasSugar vin:Dry)))
+
+# Class: vin:EarlyHarvest (vin:EarlyHarvest)
+
+SubClassOf(vin:EarlyHarvest vin:Wine)
+SubClassOf(vin:EarlyHarvest ObjectAllValuesFrom(vin:hasSugar ObjectOneOf(vin:Dry vin:OffDry)))
+DisjointClasses(vin:EarlyHarvest vin:LateHarvest)
+
+# Class: vin:EatingGrape (vin:EatingGrape)
+
+SubClassOf(vin:EatingGrape vin:Grape)
+
+# Class: vin:EdibleThing (vin:EdibleThing)
+
+SubClassOf(vin:EdibleThing vin:ConsumableThing)
+DisjointClasses(vin:EdibleThing vin:Meal)
+DisjointClasses(vin:EdibleThing vin:MealCourse)
+DisjointClasses(vin:EdibleThing vin:PotableLiquid)
+
+# Class: vin:Fish (vin:Fish)
+
+SubClassOf(vin:Fish vin:Seafood)
+DisjointClasses(vin:Fish vin:Shellfish)
+
+# Class: vin:FishCourse (vin:FishCourse)
+
+EquivalentClasses(vin:FishCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:Fish)))
+SubClassOf(vin:FishCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasBody vin:Medium)))
+SubClassOf(vin:FishCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasSugar vin:Dry)))
+
+# Class: vin:Fowl (vin:Fowl)
+
+SubClassOf(vin:Fowl vin:EdibleThing)
+DisjointClasses(vin:Fowl vin:Fruit)
+DisjointClasses(vin:Fowl vin:Meat)
+DisjointClasses(vin:Fowl vin:OtherTomatoBasedFood)
+DisjointClasses(vin:Fowl vin:Pasta)
+DisjointClasses(vin:Fowl vin:Seafood)
+
+# Class: vin:FrenchWine (vin:FrenchWine)
+
+EquivalentClasses(vin:FrenchWine ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:locatedIn vin:FrenchRegion)))
+
+# Class: vin:Fruit (vin:Fruit)
+
+EquivalentClasses(vin:Fruit ObjectUnionOf(vin:NonSweetFruit vin:SweetFruit))
+DisjointClasses(vin:Fruit vin:Meat)
+DisjointClasses(vin:Fruit vin:OtherTomatoBasedFood)
+DisjointClasses(vin:Fruit vin:Pasta)
+DisjointClasses(vin:Fruit vin:Seafood)
+
+# Class: vin:FruitCourse (vin:FruitCourse)
+
+EquivalentClasses(vin:FruitCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:Fruit)))
+SubClassOf(vin:FruitCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasBody vin:Medium)))
+SubClassOf(vin:FruitCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasColor vin:White)))
+
+# Class: vin:FullBodiedWine (vin:FullBodiedWine)
+
+EquivalentClasses(vin:FullBodiedWine ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:hasBody vin:Full)))
+
+# Class: vin:Gamay (vin:Gamay)
+
+EquivalentClasses(vin:Gamay ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:madeFromGrape vin:GamayGrape) ObjectMaxCardinality(1 vin:madeFromGrape)))
+
+# Class: vin:GermanWine (vin:GermanWine)
+
+EquivalentClasses(vin:GermanWine ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:locatedIn vin:GermanyRegion)))
+
+# Class: vin:Grape (vin:Grape)
+
+SubClassOf(vin:Grape vin:SweetFruit)
+
+# Class: vin:IceWine (vin:IceWine)
+
+EquivalentClasses(vin:IceWine ObjectIntersectionOf(vin:DessertWine vin:LateHarvest ObjectHasValue(vin:hasColor vin:White)))
+SubClassOf(vin:IceWine ObjectAllValuesFrom(vin:hasBody ObjectOneOf(vin:Full vin:Medium)))
+SubClassOf(vin:IceWine ObjectAllValuesFrom(vin:hasFlavor ObjectOneOf(vin:Moderate vin:Strong)))
+
+# Class: vin:ItalianWine (vin:ItalianWine)
+
+EquivalentClasses(vin:ItalianWine ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:locatedIn vin:ItalianRegion)))
+
+# Class: vin:Juice (vin:Juice)
+
+SubClassOf(vin:Juice vin:PotableLiquid)
+SubClassOf(vin:Juice ObjectMinCardinality(1 vin:madeFromFruit))
+
+# Class: vin:LateHarvest (vin:LateHarvest)
+
+SubClassOf(vin:LateHarvest vin:Wine)
+SubClassOf(vin:LateHarvest ObjectAllValuesFrom(vin:hasFlavor ObjectOneOf(vin:Moderate vin:Strong)))
+SubClassOf(vin:LateHarvest ObjectHasValue(vin:hasSugar vin:Sweet))
+
+# Class: vin:LightMeatFowl (vin:LightMeatFowl)
+
+SubClassOf(vin:LightMeatFowl vin:Fowl)
+
+# Class: vin:LightMeatFowlCourse (vin:LightMeatFowlCourse)
+
+EquivalentClasses(vin:LightMeatFowlCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:LightMeatFowl)))
+SubClassOf(vin:LightMeatFowlCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasBody vin:Medium)))
+SubClassOf(vin:LightMeatFowlCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasColor vin:White)))
+SubClassOf(vin:LightMeatFowlCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasFlavor vin:Moderate)))
+SubClassOf(vin:LightMeatFowlCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasSugar vin:Dry)))
+
+# Class: vin:Loire (vin:Loire)
+
+EquivalentClasses(vin:Loire ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:locatedIn vin:LoireRegion)))
+
+# Class: vin:Margaux (vin:Margaux)
+
+EquivalentClasses(vin:Margaux ObjectIntersectionOf(vin:Medoc ObjectHasValue(vin:locatedIn vin:MargauxRegion)))
+SubClassOf(vin:Margaux ObjectHasValue(vin:hasFlavor vin:Delicate))
+SubClassOf(vin:Margaux ObjectHasValue(vin:madeFromGrape vin:MerlotGrape))
+SubClassOf(vin:Margaux ObjectMaxCardinality(1 vin:madeFromGrape))
+
+# Class: vin:Meal (vin:Meal)
+
+SubClassOf(vin:Meal vin:ConsumableThing)
+SubClassOf(vin:Meal ObjectAllValuesFrom(vin:course vin:MealCourse))
+SubClassOf(vin:Meal ObjectMinCardinality(1 vin:course))
+DisjointClasses(vin:Meal vin:MealCourse)
+DisjointClasses(vin:Meal vin:PotableLiquid)
+
+# Class: vin:MealCourse (vin:MealCourse)
+
+SubClassOf(vin:MealCourse vin:ConsumableThing)
+SubClassOf(vin:MealCourse ObjectAllValuesFrom(vin:hasDrink vin:Wine))
+SubClassOf(vin:MealCourse ObjectMinCardinality(1 vin:hasDrink))
+SubClassOf(vin:MealCourse ObjectMinCardinality(1 vin:hasFood))
+DisjointClasses(vin:MealCourse vin:PotableLiquid)
+
+# Class: vin:Meat (vin:Meat)
+
+SubClassOf(vin:Meat vin:EdibleThing)
+DisjointClasses(vin:Meat vin:OtherTomatoBasedFood)
+DisjointClasses(vin:Meat vin:Pasta)
+DisjointClasses(vin:Meat vin:Seafood)
+
+# Class: vin:Medoc (vin:Medoc)
+
+EquivalentClasses(vin:Medoc ObjectIntersectionOf(vin:Bordeaux ObjectHasValue(vin:locatedIn vin:MedocRegion)))
+SubClassOf(vin:Medoc ObjectHasValue(vin:hasColor vin:Red))
+SubClassOf(vin:Medoc ObjectHasValue(vin:hasSugar vin:Dry))
+
+# Class: vin:Meritage (vin:Meritage)
+
+EquivalentClasses(vin:Meritage ObjectIntersectionOf(vin:Wine ObjectAllValuesFrom(vin:madeFromGrape ObjectOneOf(vin:CabernetFrancGrape vin:CabernetSauvignonGrape vin:MalbecGrape vin:MerlotGrape vin:PetiteVerdotGrape)) ObjectMinCardinality(2 vin:madeFromGrape)))
+SubClassOf(vin:Meritage ObjectHasValue(vin:hasColor vin:Red))
+
+# Class: vin:Merlot (vin:Merlot)
+
+EquivalentClasses(vin:Merlot ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:madeFromGrape vin:MerlotGrape) ObjectMaxCardinality(1 vin:madeFromGrape)))
+SubClassOf(vin:Merlot ObjectAllValuesFrom(vin:hasBody ObjectOneOf(vin:Light vin:Medium)))
+SubClassOf(vin:Merlot ObjectAllValuesFrom(vin:hasFlavor ObjectOneOf(vin:Delicate vin:Moderate)))
+SubClassOf(vin:Merlot ObjectHasValue(vin:hasColor vin:Red))
+SubClassOf(vin:Merlot ObjectHasValue(vin:hasSugar vin:Dry))
+
+# Class: vin:Meursault (vin:Meursault)
+
+EquivalentClasses(vin:Meursault ObjectIntersectionOf(vin:WhiteBurgundy ObjectHasValue(vin:locatedIn vin:MeursaultRegion)))
+SubClassOf(vin:Meursault ObjectHasValue(vin:hasBody vin:Full))
+
+# Class: vin:Muscadet (vin:Muscadet)
+
+EquivalentClasses(vin:Muscadet ObjectIntersectionOf(vin:Loire ObjectHasValue(vin:locatedIn vin:MuscadetRegion)))
+SubClassOf(vin:Muscadet ObjectHasValue(vin:hasBody vin:Light))
+SubClassOf(vin:Muscadet ObjectHasValue(vin:hasFlavor vin:Delicate))
+SubClassOf(vin:Muscadet ObjectHasValue(vin:hasSugar vin:Dry))
+SubClassOf(vin:Muscadet ObjectHasValue(vin:madeFromGrape vin:PinotBlancGrape))
+SubClassOf(vin:Muscadet ObjectMaxCardinality(1 vin:madeFromGrape))
+
+# Class: vin:NonBlandFish (vin:NonBlandFish)
+
+SubClassOf(vin:NonBlandFish vin:Fish)
+
+# Class: vin:NonBlandFishCourse (vin:NonBlandFishCourse)
+
+EquivalentClasses(vin:NonBlandFishCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:NonBlandFish)))
+SubClassOf(vin:NonBlandFishCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasFlavor vin:Moderate)))
+
+# Class: vin:NonConsumableThing (vin:NonConsumableThing)
+
+EquivalentClasses(vin:NonConsumableThing ObjectComplementOf(vin:ConsumableThing))
+
+# Class: vin:NonOysterShellfish (vin:NonOysterShellfish)
+
+SubClassOf(vin:NonOysterShellfish vin:Shellfish)
+DisjointClasses(vin:NonOysterShellfish vin:OysterShellfish)
+
+# Class: vin:NonOysterShellfishCourse (vin:NonOysterShellfishCourse)
+
+EquivalentClasses(vin:NonOysterShellfishCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:NonOysterShellfish)))
+SubClassOf(vin:NonOysterShellfishCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasSugar vin:Dry)))
+
+# Class: vin:NonRedMeat (vin:NonRedMeat)
+
+SubClassOf(vin:NonRedMeat vin:Meat)
+DisjointClasses(vin:NonRedMeat vin:RedMeat)
+
+# Class: vin:NonRedMeatCourse (vin:NonRedMeatCourse)
+
+EquivalentClasses(vin:NonRedMeatCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:NonRedMeat)))
+SubClassOf(vin:NonRedMeatCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasBody vin:Medium)))
+SubClassOf(vin:NonRedMeatCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasColor vin:White)))
+SubClassOf(vin:NonRedMeatCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasFlavor vin:Strong)))
+SubClassOf(vin:NonRedMeatCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasSugar vin:Dry)))
+
+# Class: vin:NonSpicyRedMeat (vin:NonSpicyRedMeat)
+
+SubClassOf(vin:NonSpicyRedMeat vin:RedMeat)
+DisjointClasses(vin:NonSpicyRedMeat vin:SpicyRedMeat)
+
+# Class: vin:NonSpicyRedMeatCourse (vin:NonSpicyRedMeatCourse)
+
+EquivalentClasses(vin:NonSpicyRedMeatCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:NonSpicyRedMeat)))
+SubClassOf(vin:NonSpicyRedMeatCourse ObjectAllValuesFrom(vin:hasDrink ObjectAllValuesFrom(vin:hasFlavor ObjectOneOf(vin:Moderate vin:Strong))))
+SubClassOf(vin:NonSpicyRedMeatCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasBody vin:Medium)))
+SubClassOf(vin:NonSpicyRedMeatCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasColor vin:Red)))
+SubClassOf(vin:NonSpicyRedMeatCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasSugar vin:Dry)))
+
+# Class: vin:NonSweetFruit (vin:NonSweetFruit)
+
+SubClassOf(vin:NonSweetFruit vin:EdibleThing)
+DisjointClasses(vin:NonSweetFruit vin:SweetFruit)
+
+# Class: vin:NonSweetFruitCourse (vin:NonSweetFruitCourse)
+
+EquivalentClasses(vin:NonSweetFruitCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:NonSweetFruit)))
+SubClassOf(vin:NonSweetFruitCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasFlavor vin:Delicate)))
+SubClassOf(vin:NonSweetFruitCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasSugar vin:OffDry)))
+
+# Class: vin:OtherTomatoBasedFood (vin:OtherTomatoBasedFood)
+
+SubClassOf(vin:OtherTomatoBasedFood vin:EdibleThing)
+DisjointClasses(vin:OtherTomatoBasedFood vin:Pasta)
+DisjointClasses(vin:OtherTomatoBasedFood vin:Seafood)
+
+# Class: vin:OtherTomatoBasedFoodCourse (vin:OtherTomatoBasedFoodCourse)
+
+EquivalentClasses(vin:OtherTomatoBasedFoodCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:OtherTomatoBasedFood)))
+SubClassOf(vin:OtherTomatoBasedFoodCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasBody vin:Medium)))
+SubClassOf(vin:OtherTomatoBasedFoodCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasColor vin:Red)))
+SubClassOf(vin:OtherTomatoBasedFoodCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasFlavor vin:Moderate)))
+SubClassOf(vin:OtherTomatoBasedFoodCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasSugar vin:Dry)))
+
+# Class: vin:OysterShellfish (vin:OysterShellfish)
+
+SubClassOf(vin:OysterShellfish vin:Shellfish)
+
+# Class: vin:OysterShellfishCourse (vin:OysterShellfishCourse)
+
+EquivalentClasses(vin:OysterShellfishCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:OysterShellfish)))
+SubClassOf(vin:OysterShellfishCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasSugar vin:Sweet)))
+
+# Class: vin:Pasta (vin:Pasta)
+
+SubClassOf(vin:Pasta vin:EdibleThing)
+DisjointClasses(vin:Pasta vin:Seafood)
+
+# Class: vin:PastaWithHeavyCreamCourse (vin:PastaWithHeavyCreamCourse)
+
+EquivalentClasses(vin:PastaWithHeavyCreamCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:PastaWithHeavyCreamSauce)))
+SubClassOf(vin:PastaWithHeavyCreamCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasBody vin:Medium)))
+SubClassOf(vin:PastaWithHeavyCreamCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasColor vin:White)))
+SubClassOf(vin:PastaWithHeavyCreamCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasFlavor vin:Moderate)))
+SubClassOf(vin:PastaWithHeavyCreamCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasSugar vin:Dry)))
+
+# Class: vin:PastaWithHeavyCreamSauce (vin:PastaWithHeavyCreamSauce)
+
+SubClassOf(vin:PastaWithHeavyCreamSauce vin:PastaWithWhiteSauce)
+DisjointClasses(vin:PastaWithHeavyCreamSauce vin:PastaWithLightCreamSauce)
+
+# Class: vin:PastaWithLightCreamCourse (vin:PastaWithLightCreamCourse)
+
+EquivalentClasses(vin:PastaWithLightCreamCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:PastaWithLightCreamSauce)))
+SubClassOf(vin:PastaWithLightCreamCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasBody vin:Light)))
+SubClassOf(vin:PastaWithLightCreamCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasColor vin:White)))
+SubClassOf(vin:PastaWithLightCreamCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasFlavor vin:Delicate)))
+SubClassOf(vin:PastaWithLightCreamCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasSugar vin:Dry)))
+
+# Class: vin:PastaWithLightCreamSauce (vin:PastaWithLightCreamSauce)
+
+SubClassOf(vin:PastaWithLightCreamSauce vin:PastaWithWhiteSauce)
+
+# Class: vin:PastaWithNonSpicyRedSauce (vin:PastaWithNonSpicyRedSauce)
+
+SubClassOf(vin:PastaWithNonSpicyRedSauce vin:PastaWithRedSauce)
+DisjointClasses(vin:PastaWithNonSpicyRedSauce vin:PastaWithSpicyRedSauce)
+
+# Class: vin:PastaWithNonSpicyRedSauceCourse (vin:PastaWithNonSpicyRedSauceCourse)
+
+EquivalentClasses(vin:PastaWithNonSpicyRedSauceCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:PastaWithNonSpicyRedSauce)))
+SubClassOf(vin:PastaWithNonSpicyRedSauceCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasBody vin:Medium)))
+SubClassOf(vin:PastaWithNonSpicyRedSauceCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasColor vin:Red)))
+SubClassOf(vin:PastaWithNonSpicyRedSauceCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasFlavor vin:Moderate)))
+SubClassOf(vin:PastaWithNonSpicyRedSauceCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasSugar vin:Dry)))
+
+# Class: vin:PastaWithRedSauce (vin:PastaWithRedSauce)
+
+SubClassOf(vin:PastaWithRedSauce vin:Pasta)
+DisjointClasses(vin:PastaWithRedSauce vin:PastaWithWhiteSauce)
+
+# Class: vin:PastaWithSpicyRedSauce (vin:PastaWithSpicyRedSauce)
+
+SubClassOf(vin:PastaWithSpicyRedSauce vin:PastaWithRedSauce)
+
+# Class: vin:PastaWithSpicyRedSauceCourse (vin:PastaWithSpicyRedSauceCourse)
+
+EquivalentClasses(vin:PastaWithSpicyRedSauceCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:PastaWithSpicyRedSauce)))
+SubClassOf(vin:PastaWithSpicyRedSauceCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasBody vin:Full)))
+SubClassOf(vin:PastaWithSpicyRedSauceCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasColor vin:Red)))
+SubClassOf(vin:PastaWithSpicyRedSauceCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasFlavor vin:Strong)))
+SubClassOf(vin:PastaWithSpicyRedSauceCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasSugar vin:Dry)))
+
+# Class: vin:PastaWithWhiteSauce (vin:PastaWithWhiteSauce)
+
+SubClassOf(vin:PastaWithWhiteSauce vin:Pasta)
+
+# Class: vin:Pauillac (vin:Pauillac)
+
+EquivalentClasses(vin:Pauillac ObjectIntersectionOf(vin:Medoc ObjectHasValue(vin:locatedIn vin:PauillacRegion)))
+SubClassOf(vin:Pauillac ObjectHasValue(vin:hasBody vin:Full))
+SubClassOf(vin:Pauillac ObjectHasValue(vin:hasFlavor vin:Strong))
+SubClassOf(vin:Pauillac ObjectHasValue(vin:madeFromGrape vin:CabernetSauvignonGrape))
+SubClassOf(vin:Pauillac ObjectMaxCardinality(1 vin:madeFromGrape))
+
+# Class: vin:PetiteSyrah (vin:PetiteSyrah)
+
+EquivalentClasses(vin:PetiteSyrah ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:madeFromGrape vin:PetiteSyrahGrape) ObjectMaxCardinality(1 vin:madeFromGrape)))
+SubClassOf(vin:PetiteSyrah ObjectAllValuesFrom(vin:hasBody ObjectOneOf(vin:Full vin:Medium)))
+SubClassOf(vin:PetiteSyrah ObjectAllValuesFrom(vin:hasFlavor ObjectOneOf(vin:Moderate vin:Strong)))
+SubClassOf(vin:PetiteSyrah ObjectHasValue(vin:hasColor vin:Red))
+SubClassOf(vin:PetiteSyrah ObjectHasValue(vin:hasSugar vin:Dry))
+
+# Class: vin:PinotBlanc (vin:PinotBlanc)
+
+EquivalentClasses(vin:PinotBlanc ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:madeFromGrape vin:PinotBlancGrape) ObjectMaxCardinality(1 vin:madeFromGrape)))
+SubClassOf(vin:PinotBlanc ObjectHasValue(vin:hasColor vin:White))
+
+# Class: vin:PinotNoir (vin:PinotNoir)
+
+EquivalentClasses(vin:PinotNoir ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:madeFromGrape vin:PinotNoirGrape) ObjectMaxCardinality(1 vin:madeFromGrape)))
+SubClassOf(vin:PinotNoir ObjectHasValue(vin:hasColor vin:Red))
+
+# Class: vin:Port (vin:Port)
+
+SubClassOf(vin:Port vin:RedWine)
+SubClassOf(vin:Port ObjectHasValue(vin:hasBody vin:Full))
+SubClassOf(vin:Port ObjectHasValue(vin:hasFlavor vin:Strong))
+SubClassOf(vin:Port ObjectHasValue(vin:hasSugar vin:Sweet))
+SubClassOf(vin:Port ObjectHasValue(vin:locatedIn vin:PortugalRegion))
+
+# Class: vin:PotableLiquid (vin:PotableLiquid)
+
+SubClassOf(vin:PotableLiquid vin:ConsumableThing)
+
+# Class: vin:RedBordeaux (vin:RedBordeaux)
+
+EquivalentClasses(vin:RedBordeaux ObjectIntersectionOf(vin:Bordeaux vin:RedWine))
+SubClassOf(vin:RedBordeaux ObjectAllValuesFrom(vin:madeFromGrape ObjectOneOf(vin:CabernetSauvignonGrape vin:MerlotGrape)))
+
+# Class: vin:RedBurgundy (vin:RedBurgundy)
+
+EquivalentClasses(vin:RedBurgundy ObjectIntersectionOf(vin:Burgundy vin:RedWine))
+SubClassOf(vin:RedBurgundy ObjectHasValue(vin:madeFromGrape vin:PinotNoirGrape))
+SubClassOf(vin:RedBurgundy ObjectMaxCardinality(1 vin:madeFromGrape))
+
+# Class: vin:RedMeat (vin:RedMeat)
+
+SubClassOf(vin:RedMeat vin:Meat)
+
+# Class: vin:RedMeatCourse (vin:RedMeatCourse)
+
+EquivalentClasses(vin:RedMeatCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:RedMeat)))
+SubClassOf(vin:RedMeatCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasColor vin:Red)))
+
+# Class: vin:RedTableWine (vin:RedTableWine)
+
+EquivalentClasses(vin:RedTableWine ObjectIntersectionOf(vin:TableWine ObjectHasValue(vin:hasColor vin:Red)))
+
+# Class: vin:RedWine (vin:RedWine)
+
+EquivalentClasses(vin:RedWine ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:hasColor vin:Red)))
+
+# Class: vin:Riesling (vin:Riesling)
+
+EquivalentClasses(vin:Riesling ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:madeFromGrape vin:RieslingGrape) ObjectMaxCardinality(1 vin:madeFromGrape)))
+SubClassOf(vin:Riesling ObjectHasValue(vin:hasColor vin:White))
+
+# Class: vin:RoseWine (vin:RoseWine)
+
+EquivalentClasses(vin:RoseWine ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:hasColor vin:Rose)))
+
+# Class: vin:Sancerre (vin:Sancerre)
+
+EquivalentClasses(vin:Sancerre ObjectIntersectionOf(vin:Loire ObjectHasValue(vin:locatedIn vin:SancerreRegion)))
+SubClassOf(vin:Sancerre ObjectHasValue(vin:hasBody vin:Medium))
+SubClassOf(vin:Sancerre ObjectHasValue(vin:hasFlavor vin:Delicate))
+SubClassOf(vin:Sancerre ObjectHasValue(vin:hasSugar vin:OffDry))
+SubClassOf(vin:Sancerre ObjectHasValue(vin:madeFromGrape vin:SauvignonBlancGrape))
+SubClassOf(vin:Sancerre ObjectMaxCardinality(1 vin:madeFromGrape))
+
+# Class: vin:Sauterne (vin:Sauterne)
+
+SubClassOf(vin:Sauterne vin:Bordeaux)
+SubClassOf(vin:Sauterne vin:LateHarvest)
+SubClassOf(vin:Sauterne ObjectHasValue(vin:hasBody vin:Medium))
+SubClassOf(vin:Sauterne ObjectHasValue(vin:hasColor vin:White))
+SubClassOf(vin:Sauterne ObjectHasValue(vin:locatedIn vin:SauterneRegion))
+
+# Class: vin:SauvignonBlanc (vin:SauvignonBlanc)
+
+EquivalentClasses(vin:SauvignonBlanc ObjectIntersectionOf(vin:SemillonOrSauvignonBlanc ObjectHasValue(vin:madeFromGrape vin:SauvignonBlancGrape) ObjectMaxCardinality(1 vin:madeFromGrape)))
+
+# Class: vin:Seafood (vin:Seafood)
+
+SubClassOf(vin:Seafood vin:EdibleThing)
+
+# Class: vin:SeafoodCourse (vin:SeafoodCourse)
+
+EquivalentClasses(vin:SeafoodCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:Seafood)))
+SubClassOf(vin:SeafoodCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasColor vin:White)))
+
+# Class: vin:Semillon (vin:Semillon)
+
+EquivalentClasses(vin:Semillon ObjectIntersectionOf(vin:SemillonOrSauvignonBlanc ObjectHasValue(vin:madeFromGrape vin:SemillonGrape) ObjectMaxCardinality(1 vin:madeFromGrape)))
+
+# Class: vin:SemillonOrSauvignonBlanc (vin:SemillonOrSauvignonBlanc)
+
+EquivalentClasses(vin:SemillonOrSauvignonBlanc ObjectIntersectionOf(vin:Wine ObjectAllValuesFrom(vin:madeFromGrape ObjectOneOf(vin:SauvignonBlancGrape vin:SemillonGrape))))
+SubClassOf(vin:SemillonOrSauvignonBlanc ObjectAllValuesFrom(vin:hasBody ObjectOneOf(vin:Full vin:Medium)))
+SubClassOf(vin:SemillonOrSauvignonBlanc ObjectHasValue(vin:hasColor vin:White))
+
+# Class: vin:Shellfish (vin:Shellfish)
+
+SubClassOf(vin:Shellfish vin:Seafood)
+
+# Class: vin:ShellfishCourse (vin:ShellfishCourse)
+
+EquivalentClasses(vin:ShellfishCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:Shellfish)))
+SubClassOf(vin:ShellfishCourse ObjectAllValuesFrom(vin:hasDrink ObjectAllValuesFrom(vin:hasFlavor ObjectOneOf(vin:Moderate vin:Strong))))
+SubClassOf(vin:ShellfishCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasBody vin:Full)))
+
+# Class: vin:SpicyRedMeat (vin:SpicyRedMeat)
+
+SubClassOf(vin:SpicyRedMeat vin:RedMeat)
+
+# Class: vin:SpicyRedMeatCourse (vin:SpicyRedMeatCourse)
+
+EquivalentClasses(vin:SpicyRedMeatCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:SpicyRedMeat)))
+SubClassOf(vin:SpicyRedMeatCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasBody vin:Full)))
+SubClassOf(vin:SpicyRedMeatCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasColor vin:Red)))
+SubClassOf(vin:SpicyRedMeatCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasFlavor vin:Moderate)))
+SubClassOf(vin:SpicyRedMeatCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasSugar vin:Dry)))
+
+# Class: vin:StEmilion (vin:StEmilion)
+
+EquivalentClasses(vin:StEmilion ObjectIntersectionOf(vin:Bordeaux ObjectHasValue(vin:locatedIn vin:StEmilionRegion)))
+SubClassOf(vin:StEmilion ObjectHasValue(vin:hasColor vin:Red))
+SubClassOf(vin:StEmilion ObjectHasValue(vin:hasFlavor vin:Strong))
+SubClassOf(vin:StEmilion ObjectHasValue(vin:madeFromGrape vin:CabernetSauvignonGrape))
+SubClassOf(vin:StEmilion ObjectMaxCardinality(1 vin:madeFromGrape))
+
+# Class: vin:SweetDessert (vin:SweetDessert)
+
+SubClassOf(vin:SweetDessert vin:Dessert)
+
+# Class: vin:SweetDessertCourse (vin:SweetDessertCourse)
+
+EquivalentClasses(vin:SweetDessertCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:SweetDessert)))
+SubClassOf(vin:SweetDessertCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasColor vin:White)))
+
+# Class: vin:SweetFruit (vin:SweetFruit)
+
+SubClassOf(vin:SweetFruit vin:EdibleThing)
+
+# Class: vin:SweetFruitCourse (vin:SweetFruitCourse)
+
+EquivalentClasses(vin:SweetFruitCourse ObjectIntersectionOf(vin:MealCourse ObjectAllValuesFrom(vin:hasFood vin:SweetFruit)))
+SubClassOf(vin:SweetFruitCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasFlavor vin:Moderate)))
+SubClassOf(vin:SweetFruitCourse ObjectAllValuesFrom(vin:hasDrink ObjectHasValue(vin:hasSugar vin:Sweet)))
+
+# Class: vin:SweetRiesling (vin:SweetRiesling)
+
+EquivalentClasses(vin:SweetRiesling ObjectIntersectionOf(vin:Riesling ObjectHasValue(vin:hasSugar vin:Sweet)))
+SubClassOf(vin:SweetRiesling vin:DessertWine)
+SubClassOf(vin:SweetRiesling ObjectAllValuesFrom(vin:hasFlavor ObjectOneOf(vin:Moderate vin:Strong)))
+SubClassOf(vin:SweetRiesling ObjectHasValue(vin:hasBody vin:Full))
+
+# Class: vin:SweetWine (vin:SweetWine)
+
+EquivalentClasses(vin:SweetWine ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:hasSugar vin:Sweet)))
+
+# Class: vin:TableWine (vin:TableWine)
+
+EquivalentClasses(vin:TableWine ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:hasSugar vin:Dry)))
+
+# Class: vin:TexasWine (vin:TexasWine)
+
+EquivalentClasses(vin:TexasWine ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:locatedIn vin:TexasRegion)))
+
+# Class: vin:Tours (vin:Tours)
+
+EquivalentClasses(vin:Tours ObjectIntersectionOf(vin:Loire ObjectHasValue(vin:locatedIn vin:ToursRegion)))
+SubClassOf(vin:Tours ObjectHasValue(vin:madeFromGrape vin:CheninBlancGrape))
+SubClassOf(vin:Tours ObjectMaxCardinality(1 vin:madeFromGrape))
+
+# Class: vin:Vintage (vin:Vintage)
+
+SubClassOf(vin:Vintage ObjectExactCardinality(1 vin:hasVintageYear))
+
+# Class: vin:WhiteBordeaux (vin:WhiteBordeaux)
+
+EquivalentClasses(vin:WhiteBordeaux ObjectIntersectionOf(vin:Bordeaux vin:WhiteWine))
+SubClassOf(vin:WhiteBordeaux ObjectAllValuesFrom(vin:madeFromGrape ObjectOneOf(vin:SauvignonBlancGrape vin:SemillonGrape)))
+
+# Class: vin:WhiteBurgundy (vin:WhiteBurgundy)
+
+EquivalentClasses(vin:WhiteBurgundy ObjectIntersectionOf(vin:Burgundy vin:WhiteWine))
+SubClassOf(vin:WhiteBurgundy ObjectHasValue(vin:madeFromGrape vin:ChardonnayGrape))
+SubClassOf(vin:WhiteBurgundy ObjectMaxCardinality(1 vin:madeFromGrape))
+
+# Class: vin:WhiteLoire (vin:WhiteLoire)
+
+EquivalentClasses(vin:WhiteLoire ObjectIntersectionOf(vin:Loire vin:WhiteWine))
+SubClassOf(vin:WhiteLoire ObjectAllValuesFrom(vin:madeFromGrape ObjectOneOf(vin:CheninBlancGrape vin:PinotBlancGrape vin:SauvignonBlancGrape)))
+
+# Class: vin:WhiteNonSweetWine (vin:WhiteNonSweetWine)
+
+EquivalentClasses(vin:WhiteNonSweetWine ObjectIntersectionOf(vin:WhiteWine ObjectAllValuesFrom(vin:hasSugar ObjectOneOf(vin:Dry vin:OffDry))))
+
+# Class: vin:WhiteTableWine (vin:WhiteTableWine)
+
+EquivalentClasses(vin:WhiteTableWine ObjectIntersectionOf(vin:TableWine ObjectHasValue(vin:hasColor vin:White)))
+
+# Class: vin:WhiteWine (vin:WhiteWine)
+
+EquivalentClasses(vin:WhiteWine ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:hasColor vin:White)))
+
+# Class: vin:Wine (vin)
+
+AnnotationAssertion(rdfs:label vin:Wine "vin"@fr)
+AnnotationAssertion(rdfs:label vin:Wine "wine"@en)
+SubClassOf(vin:Wine food:PotableLiquid)
+SubClassOf(vin:Wine ObjectSomeValuesFrom(vin:locatedIn vin:Region))
+SubClassOf(vin:Wine ObjectAllValuesFrom(vin:hasMaker vin:Winery))
+SubClassOf(vin:Wine ObjectMinCardinality(1 vin:madeFromGrape))
+SubClassOf(vin:Wine ObjectExactCardinality(1 vin:hasBody))
+SubClassOf(vin:Wine ObjectExactCardinality(1 vin:hasColor))
+SubClassOf(vin:Wine ObjectExactCardinality(1 vin:hasFlavor))
+SubClassOf(vin:Wine ObjectExactCardinality(1 vin:hasMaker))
+SubClassOf(vin:Wine ObjectExactCardinality(1 vin:hasSugar))
+
+# Class: vin:WineBody (vin:WineBody)
+
+EquivalentClasses(vin:WineBody ObjectOneOf(vin:Full vin:Light vin:Medium))
+SubClassOf(vin:WineBody vin:WineTaste)
+
+# Class: vin:WineColor (vin:WineColor)
+
+EquivalentClasses(vin:WineColor ObjectOneOf(vin:Red vin:Rose vin:White))
+SubClassOf(vin:WineColor vin:WineDescriptor)
+
+# Class: vin:WineDescriptor (vin:WineDescriptor)
+
+AnnotationAssertion(rdfs:comment vin:WineDescriptor "Made WineDescriptor unionType of tastes and color")
+EquivalentClasses(vin:WineDescriptor ObjectUnionOf(vin:WineColor vin:WineTaste))
+
+# Class: vin:WineFlavor (vin:WineFlavor)
+
+EquivalentClasses(vin:WineFlavor ObjectOneOf(vin:Delicate vin:Moderate vin:Strong))
+SubClassOf(vin:WineFlavor vin:WineTaste)
+
+# Class: vin:WineGrape (vin:WineGrape)
+
+SubClassOf(vin:WineGrape food:Grape)
+
+# Class: vin:WineSugar (vin:WineSugar)
+
+EquivalentClasses(vin:WineSugar ObjectOneOf(vin:Dry vin:OffDry vin:Sweet))
+SubClassOf(vin:WineSugar vin:WineTaste)
+
+# Class: vin:WineTaste (vin:WineTaste)
+
+SubClassOf(vin:WineTaste vin:WineDescriptor)
+
+# Class: vin:Zinfandel (vin:Zinfandel)
+
+EquivalentClasses(vin:Zinfandel ObjectIntersectionOf(vin:Wine ObjectHasValue(vin:madeFromGrape vin:ZinfandelGrape) ObjectMaxCardinality(1 vin:madeFromGrape)))
+SubClassOf(vin:Zinfandel ObjectAllValuesFrom(vin:hasBody ObjectOneOf(vin:Full vin:Medium)))
+SubClassOf(vin:Zinfandel ObjectAllValuesFrom(vin:hasFlavor ObjectOneOf(vin:Moderate vin:Strong)))
+SubClassOf(vin:Zinfandel ObjectHasValue(vin:hasColor vin:Red))
+SubClassOf(vin:Zinfandel ObjectHasValue(vin:hasSugar vin:Dry))
+
+
+############################
+#   Named Individuals
+############################
+
+# Individual: vin:AlsaceRegion (vin:AlsaceRegion)
+
+ClassAssertion(vin:Region vin:AlsaceRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:AlsaceRegion vin:FrenchRegion)
+
+# Individual: vin:AnjouRegion (vin:AnjouRegion)
+
+ClassAssertion(vin:Region vin:AnjouRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:AnjouRegion vin:LoireRegion)
+
+# Individual: vin:ArroyoGrandeRegion (vin:ArroyoGrandeRegion)
+
+ClassAssertion(vin:Region vin:ArroyoGrandeRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:ArroyoGrandeRegion vin:CaliforniaRegion)
+
+# Individual: vin:AustralianRegion (vin:AustralianRegion)
+
+ClassAssertion(vin:Region vin:AustralianRegion)
+
+# Individual: vin:Bananas (vin:Bananas)
+
+ClassAssertion(vin:SweetFruit vin:Bananas)
+
+# Individual: vin:Bancroft (vin:Bancroft)
+
+ClassAssertion(vin:Winery vin:Bancroft)
+
+# Individual: vin:BancroftChardonnay (vin:BancroftChardonnay)
+
+ClassAssertion(vin:Chardonnay vin:BancroftChardonnay)
+ObjectPropertyAssertion(vin:hasBody vin:BancroftChardonnay vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:BancroftChardonnay vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:BancroftChardonnay vin:Bancroft)
+ObjectPropertyAssertion(vin:hasSugar vin:BancroftChardonnay vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:BancroftChardonnay vin:NapaRegion)
+
+# Individual: vin:BeaujolaisRegion (vin:BeaujolaisRegion)
+
+ClassAssertion(vin:Region vin:BeaujolaisRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:BeaujolaisRegion vin:FrenchRegion)
+
+# Individual: vin:BeefCurry (vin:BeefCurry)
+
+ClassAssertion(vin:SpicyRedMeat vin:BeefCurry)
+
+# Individual: vin:Beringer (vin:Beringer)
+
+ClassAssertion(vin:Winery vin:Beringer)
+
+# Individual: vin:BordeauxRegion (vin:BordeauxRegion)
+
+ClassAssertion(vin:Region vin:BordeauxRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:BordeauxRegion vin:FrenchRegion)
+
+# Individual: vin:BourgogneRegion (vin:BourgogneRegion)
+
+ClassAssertion(vin:Region vin:BourgogneRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:BourgogneRegion vin:FrenchRegion)
+
+# Individual: vin:CabernetFrancGrape (vin:CabernetFrancGrape)
+
+ClassAssertion(vin:WineGrape vin:CabernetFrancGrape)
+ClassAssertion(owl:Thing vin:CabernetFrancGrape)
+
+# Individual: vin:CabernetSauvignonGrape (vin:CabernetSauvignonGrape)
+
+ClassAssertion(vin:WineGrape vin:CabernetSauvignonGrape)
+ClassAssertion(owl:Thing vin:CabernetSauvignonGrape)
+
+# Individual: vin:Cake (vin:Cake)
+
+ClassAssertion(vin:SweetDessert vin:Cake)
+
+# Individual: vin:CaliforniaRegion (vin:CaliforniaRegion)
+
+ClassAssertion(vin:Region vin:CaliforniaRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:CaliforniaRegion vin:USRegion)
+
+# Individual: vin:CentralCoastRegion (vin:CentralCoastRegion)
+
+ClassAssertion(vin:Region vin:CentralCoastRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:CentralCoastRegion vin:CaliforniaRegion)
+
+# Individual: vin:CentralTexasRegion (vin:CentralTexasRegion)
+
+ClassAssertion(vin:Region vin:CentralTexasRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:CentralTexasRegion vin:TexasRegion)
+
+# Individual: vin:ChardonnayGrape (vin:ChardonnayGrape)
+
+ClassAssertion(vin:WineGrape vin:ChardonnayGrape)
+
+# Individual: vin:ChateauChevalBlanc (vin:ChateauChevalBlanc)
+
+ClassAssertion(vin:Winery vin:ChateauChevalBlanc)
+
+# Individual: vin:ChateauChevalBlancStEmilion (vin:ChateauChevalBlancStEmilion)
+
+ClassAssertion(vin:StEmilion vin:ChateauChevalBlancStEmilion)
+ObjectPropertyAssertion(vin:hasMaker vin:ChateauChevalBlancStEmilion vin:ChateauChevalBlanc)
+
+# Individual: vin:ChateauDYchem (vin:ChateauDYchem)
+
+ClassAssertion(vin:Winery vin:ChateauDYchem)
+
+# Individual: vin:ChateauDYchemSauterne (vin:ChateauDYchemSauterne)
+
+ClassAssertion(vin:Sauterne vin:ChateauDYchemSauterne)
+ObjectPropertyAssertion(vin:hasFlavor vin:ChateauDYchemSauterne vin:Strong)
+ObjectPropertyAssertion(vin:hasMaker vin:ChateauDYchemSauterne vin:ChateauDYchem)
+ObjectPropertyAssertion(vin:madeFromGrape vin:ChateauDYchemSauterne vin:SauvignonBlancGrape)
+ObjectPropertyAssertion(vin:madeFromGrape vin:ChateauDYchemSauterne vin:SemillonGrape)
+
+# Individual: vin:ChateauDeMeursault (vin:ChateauDeMeursault)
+
+ClassAssertion(vin:Winery vin:ChateauDeMeursault)
+
+# Individual: vin:ChateauDeMeursaultMeursault (vin:ChateauDeMeursaultMeursault)
+
+ClassAssertion(vin:Meursault vin:ChateauDeMeursaultMeursault)
+ObjectPropertyAssertion(vin:hasFlavor vin:ChateauDeMeursaultMeursault vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:ChateauDeMeursaultMeursault vin:ChateauDeMeursault)
+
+# Individual: vin:ChateauLafiteRothschild (vin:ChateauLafiteRothschild)
+
+ClassAssertion(vin:Winery vin:ChateauLafiteRothschild)
+
+# Individual: vin:ChateauLafiteRothschildPauillac (vin:ChateauLafiteRothschildPauillac)
+
+ClassAssertion(vin:Pauillac vin:ChateauLafiteRothschildPauillac)
+ObjectPropertyAssertion(vin:hasMaker vin:ChateauLafiteRothschildPauillac vin:ChateauLafiteRothschild)
+
+# Individual: vin:ChateauMargaux (vin:ChateauMargaux)
+
+ClassAssertion(vin:Margaux vin:ChateauMargaux)
+ObjectPropertyAssertion(vin:hasMaker vin:ChateauMargaux vin:ChateauMargauxWinery)
+
+# Individual: vin:ChateauMargauxWinery (vin:ChateauMargauxWinery)
+
+ClassAssertion(vin:Winery vin:ChateauMargauxWinery)
+
+# Individual: vin:ChateauMorgon (vin:ChateauMorgon)
+
+ClassAssertion(vin:Winery vin:ChateauMorgon)
+
+# Individual: vin:ChateauMorgonBeaujolais (vin:ChateauMorgonBeaujolais)
+
+ClassAssertion(vin:Beaujolais vin:ChateauMorgonBeaujolais)
+ObjectPropertyAssertion(vin:hasMaker vin:ChateauMorgonBeaujolais vin:ChateauMorgon)
+
+# Individual: vin:Cheese (vin:Cheese)
+
+ClassAssertion(vin:CheeseNutsDessert vin:Cheese)
+
+# Individual: vin:CheninBlancGrape (vin:CheninBlancGrape)
+
+ClassAssertion(vin:WineGrape vin:CheninBlancGrape)
+ClassAssertion(owl:Thing vin:CheninBlancGrape)
+
+# Individual: vin:ChiantiClassico (vin:ChiantiClassico)
+
+ClassAssertion(vin:Chianti vin:ChiantiClassico)
+ObjectPropertyAssertion(vin:hasBody vin:ChiantiClassico vin:Medium)
+ObjectPropertyAssertion(vin:hasMaker vin:ChiantiClassico vin:McGuinnesso)
+
+# Individual: vin:ChiantiRegion (vin:ChiantiRegion)
+
+ClassAssertion(vin:Region vin:ChiantiRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:ChiantiRegion vin:ItalianRegion)
+
+# Individual: vin:Chicken (vin:Chicken)
+
+ClassAssertion(vin:LightMeatFowl vin:Chicken)
+
+# Individual: vin:Clams (vin:Clams)
+
+ClassAssertion(vin:NonOysterShellfish vin:Clams)
+
+# Individual: vin:ClosDeLaPoussie (vin:ClosDeLaPoussie)
+
+ClassAssertion(vin:Winery vin:ClosDeLaPoussie)
+
+# Individual: vin:ClosDeLaPoussieSancerre (vin:ClosDeLaPoussieSancerre)
+
+ClassAssertion(vin:Sancerre vin:ClosDeLaPoussieSancerre)
+ObjectPropertyAssertion(vin:hasMaker vin:ClosDeLaPoussieSancerre vin:ClosDeLaPoussie)
+
+# Individual: vin:ClosDeVougeot (vin:ClosDeVougeot)
+
+ClassAssertion(vin:Winery vin:ClosDeVougeot)
+
+# Individual: vin:ClosDeVougeotCotesDOr (vin:ClosDeVougeotCotesDOr)
+
+ClassAssertion(vin:CotesDOr vin:ClosDeVougeotCotesDOr)
+ObjectPropertyAssertion(vin:hasMaker vin:ClosDeVougeotCotesDOr vin:ClosDeVougeot)
+
+# Individual: vin:CongressSprings (vin:CongressSprings)
+
+ClassAssertion(vin:Winery vin:CongressSprings)
+
+# Individual: vin:CongressSpringsSemillon (vin:CongressSpringsSemillon)
+
+ClassAssertion(vin:Semillon vin:CongressSpringsSemillon)
+ObjectPropertyAssertion(vin:hasBody vin:CongressSpringsSemillon vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:CongressSpringsSemillon vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:CongressSpringsSemillon vin:CongressSprings)
+ObjectPropertyAssertion(vin:hasSugar vin:CongressSpringsSemillon vin:Dry)
+
+# Individual: vin:Corbans (vin:Corbans)
+
+ClassAssertion(vin:Winery vin:Corbans)
+
+# Individual: vin:CorbansDryWhiteRiesling (vin:CorbansDryWhiteRiesling)
+
+ClassAssertion(vin:Riesling vin:CorbansDryWhiteRiesling)
+ObjectPropertyAssertion(vin:hasBody vin:CorbansDryWhiteRiesling vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:CorbansDryWhiteRiesling vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:CorbansDryWhiteRiesling vin:Corbans)
+ObjectPropertyAssertion(vin:hasSugar vin:CorbansDryWhiteRiesling vin:OffDry)
+ObjectPropertyAssertion(vin:locatedIn vin:CorbansDryWhiteRiesling vin:NewZealandRegion)
+
+# Individual: vin:CorbansPrivateBinSauvignonBlanc (vin:CorbansPrivateBinSauvignonBlanc)
+
+ClassAssertion(vin:SauvignonBlanc vin:CorbansPrivateBinSauvignonBlanc)
+ObjectPropertyAssertion(vin:hasBody vin:CorbansPrivateBinSauvignonBlanc vin:Full)
+ObjectPropertyAssertion(vin:hasFlavor vin:CorbansPrivateBinSauvignonBlanc vin:Strong)
+ObjectPropertyAssertion(vin:hasMaker vin:CorbansPrivateBinSauvignonBlanc vin:Corbans)
+ObjectPropertyAssertion(vin:hasSugar vin:CorbansPrivateBinSauvignonBlanc vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:CorbansPrivateBinSauvignonBlanc vin:NewZealandRegion)
+
+# Individual: vin:CorbansSauvignonBlanc (vin:CorbansSauvignonBlanc)
+
+ClassAssertion(vin:SauvignonBlanc vin:CorbansSauvignonBlanc)
+ObjectPropertyAssertion(vin:hasBody vin:CorbansSauvignonBlanc vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:CorbansSauvignonBlanc vin:Strong)
+ObjectPropertyAssertion(vin:hasMaker vin:CorbansSauvignonBlanc vin:Corbans)
+ObjectPropertyAssertion(vin:hasSugar vin:CorbansSauvignonBlanc vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:CorbansSauvignonBlanc vin:NewZealandRegion)
+
+# Individual: vin:CortonMontrachet (vin:CortonMontrachet)
+
+ClassAssertion(vin:Winery vin:CortonMontrachet)
+
+# Individual: vin:CortonMontrachetWhiteBurgundy (vin:CortonMontrachetWhiteBurgundy)
+
+ClassAssertion(vin:WhiteBurgundy vin:CortonMontrachetWhiteBurgundy)
+ObjectPropertyAssertion(vin:hasBody vin:CortonMontrachetWhiteBurgundy vin:Full)
+ObjectPropertyAssertion(vin:hasFlavor vin:CortonMontrachetWhiteBurgundy vin:Strong)
+ObjectPropertyAssertion(vin:hasMaker vin:CortonMontrachetWhiteBurgundy vin:CortonMontrachet)
+ObjectPropertyAssertion(vin:hasSugar vin:CortonMontrachetWhiteBurgundy vin:Dry)
+
+# Individual: vin:CotesDOrRegion (vin:CotesDOrRegion)
+
+ClassAssertion(vin:Region vin:CotesDOrRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:CotesDOrRegion vin:BourgogneRegion)
+
+# Individual: vin:Cotturi (vin:Cotturi)
+
+ClassAssertion(vin:Winery vin:Cotturi)
+
+# Individual: vin:CotturiZinfandel (vin:CotturiZinfandel)
+
+ClassAssertion(vin:Zinfandel vin:CotturiZinfandel)
+ObjectPropertyAssertion(vin:hasBody vin:CotturiZinfandel vin:Full)
+ObjectPropertyAssertion(vin:hasFlavor vin:CotturiZinfandel vin:Strong)
+ObjectPropertyAssertion(vin:hasMaker vin:CotturiZinfandel vin:Cotturi)
+ObjectPropertyAssertion(vin:hasSugar vin:CotturiZinfandel vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:CotturiZinfandel vin:SonomaRegion)
+
+# Individual: vin:Crab (vin:Crab)
+
+ClassAssertion(vin:NonOysterShellfish vin:Crab)
+
+# Individual: vin:DAnjou (vin:DAnjou)
+
+ClassAssertion(vin:Winery vin:DAnjou)
+
+# Individual: vin:Delicate (vin:Delicate)
+
+ClassAssertion(vin:WineFlavor vin:Delicate)
+ClassAssertion(owl:Thing vin:Delicate)
+
+# Individual: vin:Dry (vin:Dry)
+
+ClassAssertion(vin:WineSugar vin:Dry)
+ClassAssertion(owl:Thing vin:Dry)
+
+# Individual: vin:Duck (vin:Duck)
+
+ClassAssertion(vin:DarkMeatFowl vin:Duck)
+
+# Individual: vin:EdnaValleyRegion (vin:EdnaValleyRegion)
+
+ClassAssertion(vin:Region vin:EdnaValleyRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:EdnaValleyRegion vin:CaliforniaRegion)
+
+# Individual: vin:Elyse (vin:Elyse)
+
+ClassAssertion(vin:Winery vin:Elyse)
+
+# Individual: vin:ElyseZinfandel (vin:ElyseZinfandel)
+
+ClassAssertion(vin:Zinfandel vin:ElyseZinfandel)
+ObjectPropertyAssertion(vin:hasBody vin:ElyseZinfandel vin:Full)
+ObjectPropertyAssertion(vin:hasFlavor vin:ElyseZinfandel vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:ElyseZinfandel vin:Elyse)
+ObjectPropertyAssertion(vin:hasSugar vin:ElyseZinfandel vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:ElyseZinfandel vin:NapaRegion)
+
+# Individual: vin:FettucineAlfRedo (vin:FettucineAlfRedo)
+
+ClassAssertion(vin:PastaWithHeavyCreamSauce vin:FettucineAlfRedo)
+
+# Individual: vin:Flounder (vin:Flounder)
+
+ClassAssertion(vin:BlandFish vin:Flounder)
+
+# Individual: vin:Forman (vin:Forman)
+
+ClassAssertion(vin:Winery vin:Forman)
+
+# Individual: vin:FormanCabernetSauvignon (vin:FormanCabernetSauvignon)
+
+ClassAssertion(vin:CabernetSauvignon vin:FormanCabernetSauvignon)
+ObjectPropertyAssertion(vin:hasBody vin:FormanCabernetSauvignon vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:FormanCabernetSauvignon vin:Strong)
+ObjectPropertyAssertion(vin:hasMaker vin:FormanCabernetSauvignon vin:Forman)
+ObjectPropertyAssertion(vin:hasSugar vin:FormanCabernetSauvignon vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:FormanCabernetSauvignon vin:NapaRegion)
+
+# Individual: vin:FormanChardonnay (vin:FormanChardonnay)
+
+ClassAssertion(vin:Chardonnay vin:FormanChardonnay)
+ObjectPropertyAssertion(vin:hasBody vin:FormanChardonnay vin:Full)
+ObjectPropertyAssertion(vin:hasFlavor vin:FormanChardonnay vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:FormanChardonnay vin:Forman)
+ObjectPropertyAssertion(vin:hasSugar vin:FormanChardonnay vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:FormanChardonnay vin:NapaRegion)
+
+# Individual: vin:Foxen (vin:Foxen)
+
+ClassAssertion(vin:Winery vin:Foxen)
+
+# Individual: vin:FoxenCheninBlanc (vin:FoxenCheninBlanc)
+
+ClassAssertion(vin:CheninBlanc vin:FoxenCheninBlanc)
+ObjectPropertyAssertion(vin:hasBody vin:FoxenCheninBlanc vin:Full)
+ObjectPropertyAssertion(vin:hasFlavor vin:FoxenCheninBlanc vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:FoxenCheninBlanc vin:Foxen)
+ObjectPropertyAssertion(vin:hasSugar vin:FoxenCheninBlanc vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:FoxenCheninBlanc vin:SantaBarbaraRegion)
+
+# Individual: vin:FraDiavolo (vin:FraDiavolo)
+
+ClassAssertion(vin:PastaWithSpicyRedSauce vin:FraDiavolo)
+
+# Individual: vin:FrenchRegion (vin:FrenchRegion)
+
+ClassAssertion(vin:Region vin:FrenchRegion)
+
+# Individual: vin:Full (vin:Full)
+
+ClassAssertion(vin:WineBody vin:Full)
+ClassAssertion(owl:Thing vin:Full)
+
+# Individual: vin:GamayGrape (vin:GamayGrape)
+
+ClassAssertion(vin:WineGrape vin:GamayGrape)
+
+# Individual: vin:GarlickyRoast (vin:GarlickyRoast)
+
+ClassAssertion(vin:SpicyRedMeat vin:GarlickyRoast)
+
+# Individual: vin:GaryFarrell (vin:GaryFarrell)
+
+ClassAssertion(vin:Winery vin:GaryFarrell)
+
+# Individual: vin:GaryFarrellMerlot (vin:GaryFarrellMerlot)
+
+ClassAssertion(vin:Merlot vin:GaryFarrellMerlot)
+ObjectPropertyAssertion(vin:hasBody vin:GaryFarrellMerlot vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:GaryFarrellMerlot vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:GaryFarrellMerlot vin:GaryFarrell)
+ObjectPropertyAssertion(vin:hasSugar vin:GaryFarrellMerlot vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:GaryFarrellMerlot vin:SonomaRegion)
+
+# Individual: vin:GermanyRegion (vin:GermanyRegion)
+
+ClassAssertion(vin:Region vin:GermanyRegion)
+
+# Individual: vin:Goose (vin:Goose)
+
+ClassAssertion(vin:DarkMeatFowl vin:Goose)
+
+# Individual: vin:Halibut (vin:Halibut)
+
+ClassAssertion(vin:BlandFish vin:Halibut)
+
+# Individual: vin:Handley (vin:Handley)
+
+ClassAssertion(vin:Winery vin:Handley)
+
+# Individual: vin:ItalianRegion (vin:ItalianRegion)
+
+ClassAssertion(vin:Region vin:ItalianRegion)
+
+# Individual: vin:KalinCellars (vin:KalinCellars)
+
+ClassAssertion(vin:Winery vin:KalinCellars)
+
+# Individual: vin:KalinCellarsSemillon (vin:KalinCellarsSemillon)
+
+ClassAssertion(vin:Semillon vin:KalinCellarsSemillon)
+ObjectPropertyAssertion(vin:hasBody vin:KalinCellarsSemillon vin:Full)
+ObjectPropertyAssertion(vin:hasFlavor vin:KalinCellarsSemillon vin:Strong)
+ObjectPropertyAssertion(vin:hasMaker vin:KalinCellarsSemillon vin:KalinCellars)
+ObjectPropertyAssertion(vin:hasSugar vin:KalinCellarsSemillon vin:Dry)
+
+# Individual: vin:KathrynKennedy (vin:KathrynKennedy)
+
+ClassAssertion(vin:Winery vin:KathrynKennedy)
+
+# Individual: vin:KathrynKennedyLateral (vin:KathrynKennedyLateral)
+
+ClassAssertion(vin:Meritage vin:KathrynKennedyLateral)
+ObjectPropertyAssertion(vin:hasBody vin:KathrynKennedyLateral vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:KathrynKennedyLateral vin:Delicate)
+ObjectPropertyAssertion(vin:hasMaker vin:KathrynKennedyLateral vin:KathrynKennedy)
+ObjectPropertyAssertion(vin:hasSugar vin:KathrynKennedyLateral vin:Dry)
+
+# Individual: vin:LaneTanner (vin:LaneTanner)
+
+ClassAssertion(vin:Winery vin:LaneTanner)
+
+# Individual: vin:LaneTannerPinotNoir (vin:LaneTannerPinotNoir)
+
+ClassAssertion(vin:PinotNoir vin:LaneTannerPinotNoir)
+ObjectPropertyAssertion(vin:hasBody vin:LaneTannerPinotNoir vin:Light)
+ObjectPropertyAssertion(vin:hasFlavor vin:LaneTannerPinotNoir vin:Delicate)
+ObjectPropertyAssertion(vin:hasMaker vin:LaneTannerPinotNoir vin:LaneTanner)
+ObjectPropertyAssertion(vin:hasSugar vin:LaneTannerPinotNoir vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:LaneTannerPinotNoir vin:SantaBarbaraRegion)
+
+# Individual: vin:Light (vin:Light)
+
+ClassAssertion(vin:WineBody vin:Light)
+ClassAssertion(owl:Thing vin:Light)
+
+# Individual: vin:Lobster (vin:Lobster)
+
+ClassAssertion(vin:NonOysterShellfish vin:Lobster)
+
+# Individual: vin:LoireRegion (vin:LoireRegion)
+
+ClassAssertion(vin:Region vin:LoireRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:LoireRegion vin:FrenchRegion)
+
+# Individual: vin:Longridge (vin:Longridge)
+
+ClassAssertion(vin:Winery vin:Longridge)
+
+# Individual: vin:LongridgeMerlot (vin:LongridgeMerlot)
+
+ClassAssertion(vin:Merlot vin:LongridgeMerlot)
+ObjectPropertyAssertion(vin:hasBody vin:LongridgeMerlot vin:Light)
+ObjectPropertyAssertion(vin:hasFlavor vin:LongridgeMerlot vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:LongridgeMerlot vin:Longridge)
+ObjectPropertyAssertion(vin:hasSugar vin:LongridgeMerlot vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:LongridgeMerlot vin:NewZealandRegion)
+
+# Individual: vin:MalbecGrape (vin:MalbecGrape)
+
+ClassAssertion(vin:WineGrape vin:MalbecGrape)
+ClassAssertion(owl:Thing vin:MalbecGrape)
+
+# Individual: vin:MargauxRegion (vin:MargauxRegion)
+
+ClassAssertion(vin:Region vin:MargauxRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:MargauxRegion vin:MedocRegion)
+
+# Individual: vin:Marietta (vin:Marietta)
+
+ClassAssertion(vin:Winery vin:Marietta)
+
+# Individual: vin:MariettaCabernetSauvignon (vin:MariettaCabernetSauvignon)
+
+ClassAssertion(vin:CabernetSauvignon vin:MariettaCabernetSauvignon)
+ObjectPropertyAssertion(vin:hasBody vin:MariettaCabernetSauvignon vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:MariettaCabernetSauvignon vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:MariettaCabernetSauvignon vin:Marietta)
+ObjectPropertyAssertion(vin:hasSugar vin:MariettaCabernetSauvignon vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:MariettaCabernetSauvignon vin:SonomaRegion)
+
+# Individual: vin:MariettaOldVinesRed (vin:MariettaOldVinesRed)
+
+ClassAssertion(vin:RedTableWine vin:MariettaOldVinesRed)
+ObjectPropertyAssertion(vin:hasBody vin:MariettaOldVinesRed vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:MariettaOldVinesRed vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:MariettaOldVinesRed vin:Marietta)
+ObjectPropertyAssertion(vin:hasSugar vin:MariettaOldVinesRed vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:MariettaOldVinesRed vin:SonomaRegion)
+
+# Individual: vin:MariettaPetiteSyrah (vin:MariettaPetiteSyrah)
+
+ClassAssertion(vin:PetiteSyrah vin:MariettaPetiteSyrah)
+ObjectPropertyAssertion(vin:hasBody vin:MariettaPetiteSyrah vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:MariettaPetiteSyrah vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:MariettaPetiteSyrah vin:Marietta)
+ObjectPropertyAssertion(vin:hasSugar vin:MariettaPetiteSyrah vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:MariettaPetiteSyrah vin:SonomaRegion)
+
+# Individual: vin:MariettaZinfandel (vin:MariettaZinfandel)
+
+ClassAssertion(vin:Zinfandel vin:MariettaZinfandel)
+ObjectPropertyAssertion(vin:hasBody vin:MariettaZinfandel vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:MariettaZinfandel vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:MariettaZinfandel vin:Marietta)
+ObjectPropertyAssertion(vin:hasSugar vin:MariettaZinfandel vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:MariettaZinfandel vin:SonomaRegion)
+
+# Individual: vin:McGuinnesso (vin:McGuinnesso)
+
+ClassAssertion(vin:Winery vin:McGuinnesso)
+
+# Individual: vin:Medium (vin:Medium)
+
+ClassAssertion(vin:WineBody vin:Medium)
+ClassAssertion(owl:Thing vin:Medium)
+
+# Individual: vin:MedocRegion (vin:MedocRegion)
+
+ClassAssertion(vin:Region vin:MedocRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:MedocRegion vin:BordeauxRegion)
+
+# Individual: vin:MendocinoRegion (vin:MendocinoRegion)
+
+ClassAssertion(vin:Region vin:MendocinoRegion)
+ObjectPropertyAssertion(vin:adjacentRegion vin:MendocinoRegion vin:SonomaRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:MendocinoRegion vin:CaliforniaRegion)
+
+# Individual: vin:MerlotGrape (vin:MerlotGrape)
+
+ClassAssertion(vin:WineGrape vin:MerlotGrape)
+ClassAssertion(owl:Thing vin:MerlotGrape)
+
+# Individual: vin:MeursaultRegion (vin:MeursaultRegion)
+
+ClassAssertion(vin:Region vin:MeursaultRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:MeursaultRegion vin:BourgogneRegion)
+
+# Individual: vin:MixedFruit (vin:MixedFruit)
+
+ClassAssertion(vin:SweetFruit vin:MixedFruit)
+
+# Individual: vin:Moderate (vin:Moderate)
+
+ClassAssertion(vin:WineFlavor vin:Moderate)
+ClassAssertion(owl:Thing vin:Moderate)
+
+# Individual: vin:MountEdenVineyard (vin:MountEdenVineyard)
+
+ClassAssertion(vin:Winery vin:MountEdenVineyard)
+
+# Individual: vin:MountEdenVineyardEdnaValleyChardonnay (vin:MountEdenVineyardEdnaValleyChardonnay)
+
+ClassAssertion(vin:Chardonnay vin:MountEdenVineyardEdnaValleyChardonnay)
+ObjectPropertyAssertion(vin:hasBody vin:MountEdenVineyardEdnaValleyChardonnay vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:MountEdenVineyardEdnaValleyChardonnay vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:MountEdenVineyardEdnaValleyChardonnay vin:MountEdenVineyard)
+ObjectPropertyAssertion(vin:hasSugar vin:MountEdenVineyardEdnaValleyChardonnay vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:MountEdenVineyardEdnaValleyChardonnay vin:EdnaValleyRegion)
+
+# Individual: vin:MountEdenVineyardEstatePinotNoir (vin:MountEdenVineyardEstatePinotNoir)
+
+ClassAssertion(vin:PinotNoir vin:MountEdenVineyardEstatePinotNoir)
+ObjectPropertyAssertion(vin:hasBody vin:MountEdenVineyardEstatePinotNoir vin:Full)
+ObjectPropertyAssertion(vin:hasFlavor vin:MountEdenVineyardEstatePinotNoir vin:Strong)
+ObjectPropertyAssertion(vin:hasMaker vin:MountEdenVineyardEstatePinotNoir vin:MountEdenVineyard)
+ObjectPropertyAssertion(vin:hasSugar vin:MountEdenVineyardEstatePinotNoir vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:MountEdenVineyardEstatePinotNoir vin:EdnaValleyRegion)
+
+# Individual: vin:Mountadam (vin:Mountadam)
+
+ClassAssertion(vin:Winery vin:Mountadam)
+
+# Individual: vin:MountadamChardonnay (vin:MountadamChardonnay)
+
+ClassAssertion(vin:Chardonnay vin:MountadamChardonnay)
+ObjectPropertyAssertion(vin:hasBody vin:MountadamChardonnay vin:Full)
+ObjectPropertyAssertion(vin:hasFlavor vin:MountadamChardonnay vin:Strong)
+ObjectPropertyAssertion(vin:hasMaker vin:MountadamChardonnay vin:Mountadam)
+ObjectPropertyAssertion(vin:hasSugar vin:MountadamChardonnay vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:MountadamChardonnay vin:SouthAustraliaRegion)
+
+# Individual: vin:MountadamPinotNoir (vin:MountadamPinotNoir)
+
+ClassAssertion(vin:PinotNoir vin:MountadamPinotNoir)
+ObjectPropertyAssertion(vin:hasBody vin:MountadamPinotNoir vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:MountadamPinotNoir vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:MountadamPinotNoir vin:Mountadam)
+ObjectPropertyAssertion(vin:hasSugar vin:MountadamPinotNoir vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:MountadamPinotNoir vin:SouthAustraliaRegion)
+
+# Individual: vin:MountadamRiesling (vin:MountadamRiesling)
+
+ClassAssertion(vin:DryRiesling vin:MountadamRiesling)
+ObjectPropertyAssertion(vin:hasBody vin:MountadamRiesling vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:MountadamRiesling vin:Delicate)
+ObjectPropertyAssertion(vin:hasMaker vin:MountadamRiesling vin:Mountadam)
+ObjectPropertyAssertion(vin:hasSugar vin:MountadamRiesling vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:MountadamRiesling vin:SouthAustraliaRegion)
+
+# Individual: vin:MuscadetRegion (vin:MuscadetRegion)
+
+ClassAssertion(vin:Region vin:MuscadetRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:MuscadetRegion vin:LoireRegion)
+
+# Individual: vin:Mussels (vin:Mussels)
+
+ClassAssertion(vin:NonOysterShellfish vin:Mussels)
+
+# Individual: vin:NapaRegion (vin:NapaRegion)
+
+ClassAssertion(vin:Region vin:NapaRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:NapaRegion vin:CaliforniaRegion)
+
+# Individual: vin:NewZealandRegion (vin:NewZealandRegion)
+
+ClassAssertion(vin:Region vin:NewZealandRegion)
+
+# Individual: vin:Nuts (vin:Nuts)
+
+ClassAssertion(vin:CheeseNutsDessert vin:Nuts)
+
+# Individual: vin:OffDry (vin:OffDry)
+
+ClassAssertion(vin:WineSugar vin:OffDry)
+ClassAssertion(owl:Thing vin:OffDry)
+
+# Individual: vin:Oysters (vin:Oysters)
+
+ClassAssertion(vin:OysterShellfish vin:Oysters)
+
+# Individual: vin:PageMillWinery (vin:PageMillWinery)
+
+ClassAssertion(vin:Winery vin:PageMillWinery)
+
+# Individual: vin:PageMillWineryCabernetSauvignon (vin:PageMillWineryCabernetSauvignon)
+
+ClassAssertion(vin:CabernetSauvignon vin:PageMillWineryCabernetSauvignon)
+ObjectPropertyAssertion(vin:hasBody vin:PageMillWineryCabernetSauvignon vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:PageMillWineryCabernetSauvignon vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:PageMillWineryCabernetSauvignon vin:PageMillWinery)
+ObjectPropertyAssertion(vin:hasSugar vin:PageMillWineryCabernetSauvignon vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:PageMillWineryCabernetSauvignon vin:NapaRegion)
+
+# Individual: vin:PastaWithWhiteClamSauce (vin:PastaWithWhiteClamSauce)
+
+ClassAssertion(vin:PastaWithLightCreamSauce vin:PastaWithWhiteClamSauce)
+
+# Individual: vin:PauillacRegion (vin:PauillacRegion)
+
+ClassAssertion(vin:Region vin:PauillacRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:PauillacRegion vin:MedocRegion)
+
+# Individual: vin:Peaches (vin:Peaches)
+
+ClassAssertion(vin:SweetFruit vin:Peaches)
+
+# Individual: vin:PeterMccoy (vin:PeterMccoy)
+
+ClassAssertion(vin:Winery vin:PeterMccoy)
+
+# Individual: vin:PeterMccoyChardonnay (vin:PeterMccoyChardonnay)
+
+ClassAssertion(vin:Chardonnay vin:PeterMccoyChardonnay)
+ObjectPropertyAssertion(vin:hasBody vin:PeterMccoyChardonnay vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:PeterMccoyChardonnay vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:PeterMccoyChardonnay vin:PeterMccoy)
+ObjectPropertyAssertion(vin:hasSugar vin:PeterMccoyChardonnay vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:PeterMccoyChardonnay vin:SonomaRegion)
+
+# Individual: vin:PetiteSyrahGrape (vin:PetiteSyrahGrape)
+
+ClassAssertion(vin:WineGrape vin:PetiteSyrahGrape)
+
+# Individual: vin:PetiteVerdotGrape (vin:PetiteVerdotGrape)
+
+ClassAssertion(vin:WineGrape vin:PetiteVerdotGrape)
+ClassAssertion(owl:Thing vin:PetiteVerdotGrape)
+
+# Individual: vin:Pie (vin:Pie)
+
+ClassAssertion(vin:SweetDessert vin:Pie)
+
+# Individual: vin:PinotBlancGrape (vin:PinotBlancGrape)
+
+ClassAssertion(vin:WineGrape vin:PinotBlancGrape)
+ClassAssertion(owl:Thing vin:PinotBlancGrape)
+
+# Individual: vin:PinotNoirGrape (vin:PinotNoirGrape)
+
+ClassAssertion(vin:WineGrape vin:PinotNoirGrape)
+
+# Individual: vin:Pizza (vin:Pizza)
+
+ClassAssertion(vin:OtherTomatoBasedFood vin:Pizza)
+
+# Individual: vin:Pork (vin:Pork)
+
+ClassAssertion(vin:NonRedMeat vin:Pork)
+
+# Individual: vin:PortugalRegion (vin:PortugalRegion)
+
+ClassAssertion(vin:Region vin:PortugalRegion)
+
+# Individual: vin:PulignyMontrachet (vin:PulignyMontrachet)
+
+ClassAssertion(vin:Winery vin:PulignyMontrachet)
+
+# Individual: vin:PulignyMontrachetWhiteBurgundy (vin:PulignyMontrachetWhiteBurgundy)
+
+ClassAssertion(vin:WhiteBurgundy vin:PulignyMontrachetWhiteBurgundy)
+ObjectPropertyAssertion(vin:hasBody vin:PulignyMontrachetWhiteBurgundy vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:PulignyMontrachetWhiteBurgundy vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:PulignyMontrachetWhiteBurgundy vin:PulignyMontrachet)
+ObjectPropertyAssertion(vin:hasSugar vin:PulignyMontrachetWhiteBurgundy vin:Dry)
+
+# Individual: vin:Red (vin:Red)
+
+ClassAssertion(vin:WineColor vin:Red)
+ClassAssertion(owl:Thing vin:Red)
+
+# Individual: vin:RieslingGrape (vin:RieslingGrape)
+
+ClassAssertion(vin:WineGrape vin:RieslingGrape)
+
+# Individual: vin:RoastBeef (vin:RoastBeef)
+
+ClassAssertion(vin:NonSpicyRedMeat vin:RoastBeef)
+
+# Individual: vin:Rose (vin:Rose)
+
+ClassAssertion(vin:WineColor vin:Rose)
+ClassAssertion(owl:Thing vin:Rose)
+
+# Individual: vin:RoseDAnjou (vin:RoseDAnjou)
+
+ClassAssertion(vin:Anjou vin:RoseDAnjou)
+ObjectPropertyAssertion(vin:hasMaker vin:RoseDAnjou vin:DAnjou)
+
+# Individual: vin:SancerreRegion (vin:SancerreRegion)
+
+ClassAssertion(vin:Region vin:SancerreRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:SancerreRegion vin:LoireRegion)
+
+# Individual: vin:SangioveseGrape (vin:SangioveseGrape)
+
+ClassAssertion(vin:WineGrape vin:SangioveseGrape)
+
+# Individual: vin:SantaBarbaraRegion (vin:SantaBarbaraRegion)
+
+ClassAssertion(vin:Region vin:SantaBarbaraRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:SantaBarbaraRegion vin:CaliforniaRegion)
+
+# Individual: vin:SantaCruzMountainVineyard (vin:SantaCruzMountainVineyard)
+
+ClassAssertion(vin:Winery vin:SantaCruzMountainVineyard)
+
+# Individual: vin:SantaCruzMountainVineyardCabernetSauvignon (vin:SantaCruzMountainVineyardCabernetSauvignon)
+
+ClassAssertion(vin:CabernetSauvignon vin:SantaCruzMountainVineyardCabernetSauvignon)
+ObjectPropertyAssertion(vin:hasBody vin:SantaCruzMountainVineyardCabernetSauvignon vin:Full)
+ObjectPropertyAssertion(vin:hasFlavor vin:SantaCruzMountainVineyardCabernetSauvignon vin:Strong)
+ObjectPropertyAssertion(vin:hasMaker vin:SantaCruzMountainVineyardCabernetSauvignon vin:SantaCruzMountainVineyard)
+ObjectPropertyAssertion(vin:hasSugar vin:SantaCruzMountainVineyardCabernetSauvignon vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:SantaCruzMountainVineyardCabernetSauvignon vin:SantaCruzMountainsRegion)
+
+# Individual: vin:SantaCruzMountainsRegion (vin:SantaCruzMountainsRegion)
+
+ClassAssertion(vin:Region vin:SantaCruzMountainsRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:SantaCruzMountainsRegion vin:CaliforniaRegion)
+
+# Individual: vin:SaucelitoCanyon (vin:SaucelitoCanyon)
+
+ClassAssertion(vin:Winery vin:SaucelitoCanyon)
+
+# Individual: vin:SaucelitoCanyonZinfandel (vin:SaucelitoCanyonZinfandel)
+
+ClassAssertion(vin:Zinfandel vin:SaucelitoCanyonZinfandel)
+ObjectPropertyAssertion(vin:hasBody vin:SaucelitoCanyonZinfandel vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:SaucelitoCanyonZinfandel vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:SaucelitoCanyonZinfandel vin:SaucelitoCanyon)
+ObjectPropertyAssertion(vin:hasSugar vin:SaucelitoCanyonZinfandel vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:SaucelitoCanyonZinfandel vin:ArroyoGrandeRegion)
+
+# Individual: vin:SaucelitoCanyonZinfandel1998 (vin:SaucelitoCanyonZinfandel1998)
+
+ClassAssertion(vin:Zinfandel vin:SaucelitoCanyonZinfandel1998)
+ObjectPropertyAssertion(vin:hasBody vin:SaucelitoCanyonZinfandel1998 vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:SaucelitoCanyonZinfandel1998 vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:SaucelitoCanyonZinfandel1998 vin:SaucelitoCanyon)
+ObjectPropertyAssertion(vin:hasSugar vin:SaucelitoCanyonZinfandel1998 vin:Dry)
+ObjectPropertyAssertion(vin:hasVintageYear vin:SaucelitoCanyonZinfandel1998 vin:Year1998)
+ObjectPropertyAssertion(vin:locatedIn vin:SaucelitoCanyonZinfandel1998 vin:ArroyoGrandeRegion)
+
+# Individual: vin:SauterneRegion (vin:SauterneRegion)
+
+ClassAssertion(vin:Region vin:SauterneRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:SauterneRegion vin:BordeauxRegion)
+
+# Individual: vin:SauvignonBlancGrape (vin:SauvignonBlancGrape)
+
+ClassAssertion(vin:WineGrape vin:SauvignonBlancGrape)
+ClassAssertion(owl:Thing vin:SauvignonBlancGrape)
+
+# Individual: vin:SchlossRothermel (vin:SchlossRothermel)
+
+ClassAssertion(vin:Winery vin:SchlossRothermel)
+
+# Individual: vin:SchlossRothermelTrochenbierenausleseRiesling (vin:SchlossRothermelTrochenbierenausleseRiesling)
+
+ClassAssertion(vin:SweetRiesling vin:SchlossRothermelTrochenbierenausleseRiesling)
+ObjectPropertyAssertion(vin:hasBody vin:SchlossRothermelTrochenbierenausleseRiesling vin:Full)
+ObjectPropertyAssertion(vin:hasFlavor vin:SchlossRothermelTrochenbierenausleseRiesling vin:Strong)
+ObjectPropertyAssertion(vin:hasMaker vin:SchlossRothermelTrochenbierenausleseRiesling vin:SchlossRothermel)
+ObjectPropertyAssertion(vin:hasSugar vin:SchlossRothermelTrochenbierenausleseRiesling vin:Sweet)
+ObjectPropertyAssertion(vin:locatedIn vin:SchlossRothermelTrochenbierenausleseRiesling vin:GermanyRegion)
+
+# Individual: vin:SchlossVolrad (vin:SchlossVolrad)
+
+ClassAssertion(vin:Winery vin:SchlossVolrad)
+
+# Individual: vin:SchlossVolradTrochenbierenausleseRiesling (vin:SchlossVolradTrochenbierenausleseRiesling)
+
+ClassAssertion(vin:SweetRiesling vin:SchlossVolradTrochenbierenausleseRiesling)
+ObjectPropertyAssertion(vin:hasBody vin:SchlossVolradTrochenbierenausleseRiesling vin:Full)
+ObjectPropertyAssertion(vin:hasFlavor vin:SchlossVolradTrochenbierenausleseRiesling vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:SchlossVolradTrochenbierenausleseRiesling vin:SchlossVolrad)
+ObjectPropertyAssertion(vin:hasSugar vin:SchlossVolradTrochenbierenausleseRiesling vin:Sweet)
+ObjectPropertyAssertion(vin:locatedIn vin:SchlossVolradTrochenbierenausleseRiesling vin:GermanyRegion)
+
+# Individual: vin:Scrod (vin:Scrod)
+
+ClassAssertion(vin:BlandFish vin:Scrod)
+
+# Individual: vin:SeanThackrey (vin:SeanThackrey)
+
+ClassAssertion(vin:Winery vin:SeanThackrey)
+
+# Individual: vin:SeanThackreySiriusPetiteSyrah (vin:SeanThackreySiriusPetiteSyrah)
+
+ClassAssertion(vin:PetiteSyrah vin:SeanThackreySiriusPetiteSyrah)
+ObjectPropertyAssertion(vin:hasBody vin:SeanThackreySiriusPetiteSyrah vin:Full)
+ObjectPropertyAssertion(vin:hasFlavor vin:SeanThackreySiriusPetiteSyrah vin:Strong)
+ObjectPropertyAssertion(vin:hasMaker vin:SeanThackreySiriusPetiteSyrah vin:SeanThackrey)
+ObjectPropertyAssertion(vin:hasSugar vin:SeanThackreySiriusPetiteSyrah vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:SeanThackreySiriusPetiteSyrah vin:NapaRegion)
+
+# Individual: vin:Selaks (vin:Selaks)
+
+ClassAssertion(vin:Winery vin:Selaks)
+
+# Individual: vin:SelaksIceWine (vin:SelaksIceWine)
+
+ClassAssertion(vin:IceWine vin:SelaksIceWine)
+ObjectPropertyAssertion(vin:hasBody vin:SelaksIceWine vin:Medium)
+ObjectPropertyAssertion(vin:hasColor vin:SelaksIceWine vin:White)
+ObjectPropertyAssertion(vin:hasFlavor vin:SelaksIceWine vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:SelaksIceWine vin:Selaks)
+ObjectPropertyAssertion(vin:locatedIn vin:SelaksIceWine vin:NewZealandRegion)
+
+# Individual: vin:SelaksSauvignonBlanc (vin:SelaksSauvignonBlanc)
+
+ClassAssertion(vin:SauvignonBlanc vin:SelaksSauvignonBlanc)
+ObjectPropertyAssertion(vin:hasBody vin:SelaksSauvignonBlanc vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:SelaksSauvignonBlanc vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:SelaksSauvignonBlanc vin:Selaks)
+ObjectPropertyAssertion(vin:hasSugar vin:SelaksSauvignonBlanc vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:SelaksSauvignonBlanc vin:NewZealandRegion)
+
+# Individual: vin:SemillonGrape (vin:SemillonGrape)
+
+ClassAssertion(vin:WineGrape vin:SemillonGrape)
+ClassAssertion(owl:Thing vin:SemillonGrape)
+
+# Individual: vin:SevreEtMaine (vin:SevreEtMaine)
+
+ClassAssertion(vin:Winery vin:SevreEtMaine)
+
+# Individual: vin:SevreEtMaineMuscadet (vin:SevreEtMaineMuscadet)
+
+ClassAssertion(vin:Muscadet vin:SevreEtMaineMuscadet)
+ObjectPropertyAssertion(vin:hasMaker vin:SevreEtMaineMuscadet vin:SevreEtMaine)
+
+# Individual: vin:SonomaRegion (vin:SonomaRegion)
+
+ClassAssertion(vin:Region vin:SonomaRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:SonomaRegion vin:CaliforniaRegion)
+
+# Individual: vin:SouthAustraliaRegion (vin:SouthAustraliaRegion)
+
+ClassAssertion(vin:Region vin:SouthAustraliaRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:SouthAustraliaRegion vin:AustralianRegion)
+
+# Individual: vin:SpaghettiWithTomatoSauce (vin:SpaghettiWithTomatoSauce)
+
+ClassAssertion(vin:PastaWithNonSpicyRedSauce vin:SpaghettiWithTomatoSauce)
+
+# Individual: vin:StEmilionRegion (vin:StEmilionRegion)
+
+ClassAssertion(vin:Region vin:StEmilionRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:StEmilionRegion vin:BordeauxRegion)
+
+# Individual: vin:StGenevieve (vin:StGenevieve)
+
+ClassAssertion(vin:Winery vin:StGenevieve)
+
+# Individual: vin:StGenevieveTexasWhite (vin:StGenevieveTexasWhite)
+
+ClassAssertion(vin:WhiteWine vin:StGenevieveTexasWhite)
+ObjectPropertyAssertion(vin:hasFlavor vin:StGenevieveTexasWhite vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:StGenevieveTexasWhite vin:StGenevieve)
+ObjectPropertyAssertion(vin:hasSugar vin:StGenevieveTexasWhite vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:StGenevieveTexasWhite vin:CentralTexasRegion)
+
+# Individual: vin:Steak (vin:Steak)
+
+ClassAssertion(vin:NonSpicyRedMeat vin:Steak)
+
+# Individual: vin:Stonleigh (vin:Stonleigh)
+
+ClassAssertion(vin:Winery vin:Stonleigh)
+
+# Individual: vin:StonleighSauvignonBlanc (vin:StonleighSauvignonBlanc)
+
+ClassAssertion(vin:SauvignonBlanc vin:StonleighSauvignonBlanc)
+ObjectPropertyAssertion(vin:hasBody vin:StonleighSauvignonBlanc vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:StonleighSauvignonBlanc vin:Delicate)
+ObjectPropertyAssertion(vin:hasMaker vin:StonleighSauvignonBlanc vin:Stonleigh)
+ObjectPropertyAssertion(vin:hasSugar vin:StonleighSauvignonBlanc vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:StonleighSauvignonBlanc vin:NewZealandRegion)
+
+# Individual: vin:Strong (vin:Strong)
+
+ClassAssertion(vin:WineFlavor vin:Strong)
+ClassAssertion(owl:Thing vin:Strong)
+
+# Individual: vin:Sweet (vin:Sweet)
+
+ClassAssertion(vin:WineSugar vin:Sweet)
+ClassAssertion(owl:Thing vin:Sweet)
+
+# Individual: vin:Swordfish (vin:Swordfish)
+
+ClassAssertion(vin:NonBlandFish vin:Swordfish)
+
+# Individual: vin:Taylor (vin:Taylor)
+
+ClassAssertion(vin:Winery vin:Taylor)
+
+# Individual: vin:TaylorPort (vin:TaylorPort)
+
+ClassAssertion(vin:Port vin:TaylorPort)
+ObjectPropertyAssertion(vin:hasMaker vin:TaylorPort vin:Taylor)
+
+# Individual: vin:TexasRegion (vin:TexasRegion)
+
+ClassAssertion(vin:Region vin:TexasRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:TexasRegion vin:USRegion)
+
+# Individual: vin:ThompsonSeedless (vin:ThompsonSeedless)
+
+ClassAssertion(vin:EatingGrape vin:ThompsonSeedless)
+
+# Individual: vin:ToursRegion (vin:ToursRegion)
+
+ClassAssertion(vin:Region vin:ToursRegion)
+ObjectPropertyAssertion(vin:locatedIn vin:ToursRegion vin:LoireRegion)
+
+# Individual: vin:Tuna (vin:Tuna)
+
+ClassAssertion(vin:NonBlandFish vin:Tuna)
+
+# Individual: vin:Turkey (vin:Turkey)
+
+ClassAssertion(vin:LightMeatFowl vin:Turkey)
+
+# Individual: vin:USRegion (vin:USRegion)
+
+ClassAssertion(vin:Region vin:USRegion)
+
+# Individual: vin:Veal (vin:Veal)
+
+ClassAssertion(vin:NonSpicyRedMeat vin:Veal)
+
+# Individual: vin:Ventana (vin:Ventana)
+
+ClassAssertion(vin:Winery vin:Ventana)
+
+# Individual: vin:VentanaCheninBlanc (vin:VentanaCheninBlanc)
+
+ClassAssertion(vin:CheninBlanc vin:VentanaCheninBlanc)
+ObjectPropertyAssertion(vin:hasBody vin:VentanaCheninBlanc vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:VentanaCheninBlanc vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:VentanaCheninBlanc vin:Ventana)
+ObjectPropertyAssertion(vin:hasSugar vin:VentanaCheninBlanc vin:OffDry)
+ObjectPropertyAssertion(vin:locatedIn vin:VentanaCheninBlanc vin:CentralCoastRegion)
+
+# Individual: vin:White (vin:White)
+
+ClassAssertion(vin:WineColor vin:White)
+ClassAssertion(owl:Thing vin:White)
+
+# Individual: vin:WhitehallLane (vin:WhitehallLane)
+
+ClassAssertion(vin:Winery vin:WhitehallLane)
+
+# Individual: vin:WhitehallLaneCabernetFranc (vin:WhitehallLaneCabernetFranc)
+
+ClassAssertion(vin:CabernetFranc vin:WhitehallLaneCabernetFranc)
+ObjectPropertyAssertion(vin:hasBody vin:WhitehallLaneCabernetFranc vin:Medium)
+ObjectPropertyAssertion(vin:hasFlavor vin:WhitehallLaneCabernetFranc vin:Moderate)
+ObjectPropertyAssertion(vin:hasMaker vin:WhitehallLaneCabernetFranc vin:WhitehallLane)
+ObjectPropertyAssertion(vin:hasSugar vin:WhitehallLaneCabernetFranc vin:Dry)
+ObjectPropertyAssertion(vin:locatedIn vin:WhitehallLaneCabernetFranc vin:NapaRegion)
+
+# Individual: vin:WhitehallLanePrimavera (vin:WhitehallLanePrimavera)
+
+ClassAssertion(vin:DessertWine vin:WhitehallLanePrimavera)
+ObjectPropertyAssertion(vin:hasBody vin:WhitehallLanePrimavera vin:Light)
+ObjectPropertyAssertion(vin:hasFlavor vin:WhitehallLanePrimavera vin:Delicate)
+ObjectPropertyAssertion(vin:hasSugar vin:WhitehallLanePrimavera vin:Sweet)
+ObjectPropertyAssertion(vin:locatedIn vin:WhitehallLanePrimavera vin:NapaRegion)
+
+# Individual: vin:Year1998 (vin:Year1998)
+
+ClassAssertion(vin:VintageYear vin:Year1998)
+DataPropertyAssertion(vin:yearValue vin:Year1998 "1998"^^xsd:positiveInteger)
+
+# Individual: vin:ZinfandelGrape (vin:ZinfandelGrape)
+
+ClassAssertion(vin:WineGrape vin:ZinfandelGrape)
+
+
+DifferentIndividuals(vin:Bancroft vin:ChateauChevalBlanc vin:ChateauDYchem vin:ChateauDeMeursault vin:ChateauLafiteRothschild vin:ChateauMargauxWinery vin:ChateauMorgon vin:ClosDeLaPoussie vin:ClosDeVougeot vin:CongressSprings vin:Corbans vin:CortonMontrachet vin:Cotturi vin:DAnjou vin:Elyse vin:Forman vin:Foxen vin:GaryFarrell vin:KalinCellars vin:KathrynKennedy vin:LaneTanner vin:Longridge vin:Marietta vin:McGuinnesso vin:MountEdenVineyard vin:Mountadam vin:PageMillWinery vin:PeterMccoy vin:PulignyMontrachet vin:SantaCruzMountainVineyard vin:SaucelitoCanyon vin:SchlossRothermel vin:SchlossVolrad vin:SeanThackrey vin:Selaks vin:SevreEtMaine vin:StGenevieve vin:Stonleigh vin:Taylor vin:Ventana vin:WhitehallLane)
+DifferentIndividuals(vin:Delicate vin:Moderate vin:Strong)
+DifferentIndividuals(vin:Dry vin:OffDry)
+DifferentIndividuals(vin:Dry vin:OffDry vin:Sweet)
+DifferentIndividuals(vin:Dry vin:Sweet)
+DifferentIndividuals(vin:Full vin:Light vin:Medium)
+DifferentIndividuals(vin:OffDry vin:Sweet)
+DifferentIndividuals(vin:Red vin:Rose vin:White)
+)
