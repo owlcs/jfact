@@ -19,11 +19,11 @@ import java.util.stream.Stream;
 
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** taxonomy vertex */
 @PortedFrom(file = "taxVertex.h", name = "TaxonomyVertex")
@@ -319,7 +319,6 @@ public class TaxonomyVertex implements Serializable {
         return linksChild.remove(p);
     }
 
-    // TODO does not work with synonyms
     /**
      * @param c
      *        c

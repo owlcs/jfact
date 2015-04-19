@@ -32,12 +32,6 @@ public class TestDateTime extends TestBase {
 
     @Test
     public void testEqual() throws OWLOntologyCreationException {
-        // try {
-        // System.in.read();
-        // } catch (IOException e) {
-        // // TODO Auto-generated catch block
-        // e.printStackTrace();
-        // }
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLOntology o = m.createOntology();
         OWLDataFactory f = m.getOWLDataFactory();

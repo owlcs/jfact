@@ -30,6 +30,8 @@ import javax.annotation.Nonnull;
 
 import org.semanticweb.owlapi.reasoner.TimeOutException;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.datatypes.DataTypeReasoner;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeEntry;
 import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
@@ -52,8 +54,6 @@ import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.kernel.todolist.ToDoEntry;
 import uk.ac.manchester.cs.jfact.kernel.todolist.ToDoList;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** sat tester */
 @PortedFrom(file = "Reasoner.h", name = "DlSatTester")
@@ -713,7 +713,6 @@ public class DlSatTester implements Serializable {
      */
     @PortedFrom(file = "Reasoner.h", name = "tryCacheNode")
     private ModelCacheState tryCacheNode(DlCompletionTree node) {
-        // TODO verify
         ModelCacheState ret = canBeCached(node) ? reportNodeCached(node)
                 : ModelCacheState.csFailed;
         // node is cached if RET is csvalid
@@ -756,7 +755,6 @@ public class DlSatTester implements Serializable {
      */
     @PortedFrom(file = "Reasoner.h", name = "isSomeExists")
     private boolean isSomeExists(Role R, int C) {
-        // TODO verify whether a cache is worth the effort
         if (!used.contains(C)) {
             return false;
         }

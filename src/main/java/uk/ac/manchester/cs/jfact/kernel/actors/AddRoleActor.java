@@ -19,7 +19,6 @@ public class AddRoleActor extends ActorImpl {
     @PortedFrom(file = "tRole.cpp", name = "rset")
     private final List<Role> rset;
 
-    // TODO check other actors
     /**
      * @param v
      *        lit to accumulate primers

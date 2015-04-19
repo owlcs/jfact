@@ -236,7 +236,6 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
                 }
                 return false;
             } else {
-                // TODO compare value spaces
                 if (this.e instanceof DatatypeEnumeration
                         || this.e instanceof DatatypeNegation) {
                     // cannot update an enumeration
@@ -266,7 +265,6 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
             if (this.e == null) {
                 return true;
             } else {
-                // TODO compare value spaces
                 if (this.e instanceof DatatypeNegation) {
                     // cannot update a negation
                     return false;

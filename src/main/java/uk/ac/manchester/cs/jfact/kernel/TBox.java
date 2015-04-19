@@ -36,6 +36,8 @@ import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.datatypes.Datatype;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeEntry;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeExpression;
@@ -58,8 +60,6 @@ import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheSingleton;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.split.TSignature;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** tbox */
 @PortedFrom(file = "dlTBox.h", name = "TBox")
@@ -760,7 +760,6 @@ public class TBox implements Serializable {
                 && this.isIndividual(tree.elem().getNE().getName());
     }
 
-    // TODO move
     /**
      * @param name
      *        name
@@ -1647,7 +1646,6 @@ public class TBox implements Serializable {
     @Original
     private void dumpQuery() {
         if (config.getdumpQuery()) {
-            // TODO
             markAllRelevant();
             DumpLisp lDump = new DumpLisp(config.getLog());
             dump(lDump);
