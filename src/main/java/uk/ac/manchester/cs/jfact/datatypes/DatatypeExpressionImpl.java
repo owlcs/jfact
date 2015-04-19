@@ -15,7 +15,6 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends
         ABSTRACT_DATATYPE<O> implements DatatypeExpression<O> {
 
     private static final long serialVersionUID = 11000L;
-    // TODO handle all value space restrictions in the delegations
     @Nonnull
     private final Datatype<O> host;
 

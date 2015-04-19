@@ -805,8 +805,9 @@ public class Role extends ClassifiableEntry {
     @PortedFrom(file = "tRole.h", name = "fillsComposition")
     private void fillsComposition(List<Role> Composition, DLTree tree) {
         if (tree.token() == RCOMPOSITION) {
-            fillsComposition(Composition, tree.getLeft());
-            fillsComposition(Composition, tree.getRight());
+            for (DLTree d : tree.getChildren()) {
+                fillsComposition(Composition, d);
+            }
         } else {
             Composition.add(resolveRole(tree));
         }
@@ -1050,8 +1051,6 @@ public class Role extends ClassifiableEntry {
 
     @PortedFrom(file = "tRole.h", name = "preprocessComposition")
     private void preprocessComposition(List<Role> RS) {
-        // XXX verify how this works, as it's manipulating the input list as
-        // well, replacing synonyms
         boolean same = false;
         int last = RS.size() - 1;
         for (int i = 0; i < RS.size(); i++) {

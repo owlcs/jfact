@@ -135,7 +135,6 @@ public class RAStateTransitions implements Serializable {
         boolean tEmpty = trans.isEmpty();
         for (int i = 0; i < size; i++) {
             RATransition p = base.get(i);
-            // TODO index in Base
             if (p.final_state() == to && p.isEmpty() == tEmpty) {
                 // found existing transition
                 p.addIfNew(trans);

@@ -325,7 +325,6 @@ public class Taxonomy implements Serializable {
     public void finalise() {
         // create links from leaf concepts to bottom
         boolean upDirection = false;
-        // TODO maybe useful to index Graph
         for (int i = 1; i < graph.size(); i++) {
             TaxonomyVertex p = graph.get(i);
             if (p.noNeighbours(upDirection)) {

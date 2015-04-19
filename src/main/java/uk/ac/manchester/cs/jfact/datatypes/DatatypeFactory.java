@@ -962,7 +962,6 @@ public class DatatypeFactory implements Serializable {
         DATETIMESTAMP_DATATYPE() {
             super(XSDVocabulary.DATE_TIME_STAMP.getIRI(), Utils
                     .generateAncestors(DATETIME));
-            // TODO check what's required for this
         }
     }
 
@@ -1521,9 +1520,7 @@ public class DatatypeFactory implements Serializable {
 
         private static final long serialVersionUID = 11000L;
 
-        public UnsignedByteForShort() {
-            // TODO Auto-generated constructor stub
-        }
+        public UnsignedByteForShort() {}
 
         @Override
         public Short parseValue(String s) {

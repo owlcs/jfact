@@ -325,7 +325,6 @@ public class TaxonomyVertex implements Serializable {
         return linksChild.remove(p);
     }
 
-    // TODO does not work with synonyms
     /**
      * @param c
      *        c

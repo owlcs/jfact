@@ -67,7 +67,7 @@ public class JFactReasonerConfiguration
      */
     private static StringOption orSortSat = getOption("orSortSat", "0");
     /**
-     * Option 'IAOEFLG' define the priorities of different operations in TODO
+     * Option 'IAOEFLG' define the priorities of different operations in TO DO
      * list. Possible values are 7-digit strings with ony possible digit are
      * 0-6. The digits on the places 1, 2, ..., 7 are for priority of Id, And,
      * Or, Exists, Forall, LE and GE operations respectively. The smaller number

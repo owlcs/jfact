@@ -327,14 +327,11 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>,
             throw new ReasonerInternalException(
                     "Unsupported expression 'empty role chain' in transformation");
         }
-        DLTree acc = l.get(0).accept(this);
-        for (int i = 1; i < l.size(); i++) {
-            // TODO this is still a binary tree while it should be n-ary with
-            // enforced order
-            acc = DLTreeFactory.buildTree(new Lexeme(RCOMPOSITION), acc,
-                    l.get(i).accept(this));
+        List<DLTree> replacements = new ArrayList<>();
+        for (ObjectRoleExpression e : l) {
+            replacements.add(e.accept(this));
         }
-        return acc;
+        return DLTreeFactory.buildTree(new Lexeme(RCOMPOSITION), replacements);
     }
 
     @Override

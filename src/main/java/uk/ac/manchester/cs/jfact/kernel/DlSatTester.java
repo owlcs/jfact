@@ -534,7 +534,7 @@ public class DlSatTester implements Serializable {
     }
 
     /**
-     * put TODO entry for either BP or inverse(BP) in NODE's label
+     * put TO DO entry for either BP or inverse(BP) in NODE's label
      * 
      * @param node
      *        node
@@ -722,7 +722,6 @@ public class DlSatTester implements Serializable {
      */
     @PortedFrom(file = "Reasoner.h", name = "tryCacheNode")
     private ModelCacheState tryCacheNode(DlCompletionTree node) {
-        // TODO verify
         ModelCacheState ret = canBeCached(node) ? reportNodeCached(node)
                 : ModelCacheState.csFailed;
         // node is cached if RET is csvalid
@@ -765,7 +764,6 @@ public class DlSatTester implements Serializable {
      */
     @PortedFrom(file = "Reasoner.h", name = "isSomeExists")
     private boolean isSomeExists(Role R, int C) {
-        // TODO verify whether a cache is worth the effort
         if (!used.contains(C)) {
             return false;
         }
@@ -805,9 +803,6 @@ public class DlSatTester implements Serializable {
         c.node = curNode;
         c.concept = new ConceptWDep(curConceptConcept, curConceptDepSet);
         c.branchDep = DepSet.create(curConceptDepSet);
-        // TODO check why these commented lines do not appear
-        // bContext.pUsedIndex = pUsed.size();
-        // bContext.nUsedIndex = nUsed.size();
         c.SGsize = SessionGCIs.size();
     }
 
@@ -1734,7 +1729,7 @@ public class DlSatTester implements Serializable {
         if (n.isCached()) {
             return correctCachedEntry(n);
         }
-        // add new info in TODO list
+        // add new info in TO DO list
         TODO.addEntry(n, tag, p);
         // data concept -- run data center for it
         if (n.isDataNode()) {

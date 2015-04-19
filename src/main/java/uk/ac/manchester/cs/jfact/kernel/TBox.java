@@ -789,7 +789,6 @@ public class TBox implements Serializable {
                 && this.isIndividual(tree.elem().getNE().getName());
     }
 
-    // TODO move
     /**
      * @param name
      *        name
@@ -1707,7 +1706,6 @@ public class TBox implements Serializable {
     @Original
     private void dumpQuery() {
         if (config.getdumpQuery()) {
-            // TODO
             markAllRelevant();
             DumpLisp lDump = new DumpLisp(config.getLog());
             dump(lDump);
@@ -2620,7 +2618,6 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "processEquivalentC")
     public void processEquivalentC(List<DLTree> l) {
-        // TODO check if this is taking into account all combinations
         for (int i = 0; i < l.size() - 1; i++) {
             addEqualityAxiom(l.get(i), l.get(i + 1).copy());
         }
@@ -2664,7 +2661,6 @@ public class TBox implements Serializable {
             }
         }
         for (int i = 0; i < size - 1; i++) {
-            // TODO check if this is checking all combinations
             addEqualityAxiom(l.get(i), l.get(i + 1).copy());
         }
     }

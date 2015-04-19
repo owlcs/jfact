@@ -582,6 +582,18 @@ public class DLTreeFactory implements Serializable {
     /**
      * @param t
      *        t
+     * @param l
+     *        list
+     * @return tree with multiple children
+     */
+    @Nonnull
+    public static DLTree buildTree(Lexeme t, Collection<DLTree> l) {
+        return new NDLTree(t, l);
+    }
+
+    /**
+     * @param t
+     *        t
      * @param t1
      *        t1
      * @return single child tree
