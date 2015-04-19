@@ -107,7 +107,7 @@ public class DepSet implements Serializable {
      * @param d
      *        d
      */
-    public DepSet(TIntSet d) {
+    private DepSet(TIntSet d) {
         delegate = d;
     }
 
@@ -256,7 +256,7 @@ public class DepSet implements Serializable {
      *        add all elements in the depset to this depset
      */
     @PortedFrom(file = "tDepSet.h", name = "add")
-    public void add(TIntSet d) {
+    private void add(TIntSet d) {
         if (d == null || d.size() == 0) {
             return;
         }

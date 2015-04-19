@@ -17,7 +17,6 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import gnu.trove.set.TIntSet;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 
 /**
@@ -223,7 +222,7 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         private static final long serialVersionUID = 11000L;
         protected DatatypeExpression<R> e;
         /** local dep-set */
-        protected TIntSet locDep;
+        protected DepSet locDep;
 
         @Override
         public String toString() {
@@ -248,9 +247,9 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
                     this.e = DatatypeFactory.getDatatypeExpression(value);
                 }
                 if (locDep == null) {
-                    locDep = dep == null ? null : dep.getDelegate();
+                    locDep = dep;
                 } else if (dep != null) {
-                    locDep.addAll(dep.getDelegate());
+                    locDep.add(dep);
                 }
                 return false;
             } else {
@@ -273,9 +272,9 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
             // TODO needs to return false if the new expression has the same
             // value space as the old one
             if (locDep == null) {
-                locDep = dep == null ? null : dep.getDelegate();
+                locDep = dep;
             } else if (dep != null) {
-                locDep.addAll(dep.getDelegate());
+                locDep.add(dep);
             }
             return true;
         }
