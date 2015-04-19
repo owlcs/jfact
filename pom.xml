@@ -76,24 +76,24 @@
 							</execution>
 						</executions>
 					</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.1.2</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-</profile>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>2.1.2</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 
-</profiles>
+	</profiles>
 
 	<build>
 		<plugins>
@@ -115,7 +115,7 @@
 			</plugin>
 
 			<!-- In the Compiler Plugin we specify the encoding and the compiler version. -->
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -202,11 +202,6 @@
 			<version>[4.0.2,4.1)</version>
 		</dependency>
 		<dependency>
-			<groupId>com.googlecode.javaewah</groupId>
-			<artifactId>JavaEWAH</artifactId>
-			<version>0.8.6</version>
-		</dependency>
-		<dependency>
 			<groupId>net.sf.trove4j</groupId>
 			<artifactId>trove4j</artifactId>
 			<version>3.0.3</version>
@@ -233,6 +228,11 @@
 			<artifactId>org.protege.editor.owl</artifactId>
 			<version>[4.3,5]</version>
 			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.roaringbitmap</groupId>
+			<artifactId>RoaringBitmap</artifactId>
+			<version>0.4.9</version>
 		</dependency>
 	</dependencies>
 </project>
