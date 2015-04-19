@@ -9,6 +9,8 @@ import gnu.trove.set.TIntSet;
 
 import java.io.Serializable;
 
+import org.roaringbitmap.RoaringBitmap;
+
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.kernel.ConceptWDep;
 import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
@@ -20,7 +22,7 @@ public class ToDoEntry implements Serializable {
     /** node to include concept */
     private final DlCompletionTree node;
     private final int concept;
-    private final TIntSet delegate;
+    private final RoaringBitmap delegate;
 
     protected ToDoEntry(DlCompletionTree n, ConceptWDep off) {
         node = n;
@@ -39,7 +41,7 @@ public class ToDoEntry implements Serializable {
     }
 
     /** @return offset dep set */
-    public TIntSet getOffsetDepSet() {
+    public RoaringBitmap getOffsetDepSet() {
         return delegate;
     }
 

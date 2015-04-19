@@ -5,9 +5,8 @@ package uk.ac.manchester.cs.jfact.dep;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import gnu.trove.iterator.TIntIterator;
-import gnu.trove.set.TIntSet;
-import gnu.trove.set.hash.TIntHashSet;
+import org.roaringbitmap.IntIterator;
+import org.roaringbitmap.RoaringBitmap;
 
 import java.io.Serializable;
 
@@ -46,7 +45,7 @@ public class DepSet implements Serializable {
      * @return new depset with stated values
      */
     public static DepSet create(int... values) {
-        return create(new TIntHashSet(values));
+        return create(RoaringBitmap.bitmapOf(values));
     }
 
     /**
@@ -91,12 +90,12 @@ public class DepSet implements Serializable {
      * @return depset wrapper over delegate
      */
     @PortedFrom(file = "tDepSet.h", name = "create")
-    public static DepSet create(TIntSet delegate) {
+    public static DepSet create(RoaringBitmap delegate) {
         return new DepSet(delegate);
     }
 
     @Original
-    private TIntSet delegate = null;
+    private RoaringBitmap delegate = null;
 
     protected DepSet() {}
 
@@ -104,7 +103,7 @@ public class DepSet implements Serializable {
      * @param d
      *        d
      */
-    private DepSet(TIntSet d) {
+    private DepSet(RoaringBitmap d) {
         delegate = d;
     }
 
@@ -114,14 +113,12 @@ public class DepSet implements Serializable {
      * @return delegate
      */
     @Original
-    public TIntSet getDelegate() {
+    public RoaringBitmap getDelegate() {
         return delegate;
     }
 
     protected DepSet(int i) {
-        // only case in which the delegate is modified
-        delegate = new TIntHashSet();
-        delegate.add(i);
+        delegate = RoaringBitmap.bitmapOf(i);
     }
 
     /** @return last delegate */
@@ -130,19 +127,11 @@ public class DepSet implements Serializable {
         return max(delegate);
     }
 
-    private static int max(TIntSet set) {
+    private static int max(RoaringBitmap set) {
         if (set == null || set.isEmpty()) {
             return 0;
         }
-        int max = 0;
-        TIntIterator iterator = set.iterator();
-        while (iterator.hasNext()) {
-            int next = iterator.next();
-            if (next > max) {
-                max = next;
-            }
-        }
-        return max;
+        return set.getReverseIntIterator().next();
     }
 
     /** @return true if empty or null delegate */
@@ -156,16 +145,7 @@ public class DepSet implements Serializable {
         if (isEmpty()) {
             return "";
         }
-        StringBuilder b = new StringBuilder("{");
-        TIntIterator iterator = delegate.iterator();
-        while (iterator.hasNext()) {
-            b.append(iterator.next());
-            if (iterator.hasNext()) {
-                b.append(',');
-            }
-        }
-        b.append('}');
-        return b.toString();
+        return "{" + delegate.toString() + "}";
     }
 
     @Override
@@ -194,7 +174,7 @@ public class DepSet implements Serializable {
     /** @return delegate size */
     @PortedFrom(file = "tDepSet.h", name = "size")
     public int size() {
-        return delegate == null ? 0 : delegate.size();
+        return delegate == null ? 0 : delegate.getCardinality();
     }
 
     /**
@@ -204,8 +184,8 @@ public class DepSet implements Serializable {
     @PortedFrom(file = "tDepSet.h", name = "restrict")
     public void restrict(int level) {
         if (delegate != null) {
-            TIntSet f = new TIntHashSet();
-            TIntIterator it = delegate.iterator();
+            RoaringBitmap f = new RoaringBitmap();
+            IntIterator it = delegate.getIntIterator();
             while (it.hasNext()) {
                 int i = it.next();
                 if (i < level) {
@@ -240,32 +220,6 @@ public class DepSet implements Serializable {
             delegate = toAdd.delegate;
             return;
         }
-        if (delegate.containsAll(toAdd.delegate)) {
-            return;
-        }
-        TIntSet newSet = new TIntHashSet(delegate);
-        newSet.addAll(toAdd.delegate);
-        delegate = newSet;
-    }
-
-    /**
-     * @param d
-     *        add all elements in the depset to this depset
-     */
-    @PortedFrom(file = "tDepSet.h", name = "add")
-    private void add(TIntSet d) {
-        if (d == null || d.size() == 0) {
-            return;
-        }
-        if (delegate == null) {
-            delegate = d;
-            return;
-        }
-        if (delegate.containsAll(d)) {
-            return;
-        }
-        TIntSet newSet = new TIntHashSet(delegate);
-        newSet.addAll(d);
-        delegate = newSet;
+        delegate = RoaringBitmap.or(delegate, toAdd.delegate);
     }
 }
