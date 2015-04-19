@@ -7,12 +7,12 @@ package uk.ac.manchester.cs.jfact.datatypes;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static org.semanticweb.owlapi.util.OWLAPIPreconditions.checkNotNull;
 import static uk.ac.manchester.cs.jfact.datatypes.DatatypeClashes.*;
-import gnu.trove.set.TIntSet;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -62,14 +62,15 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
     private boolean addUpdatedInterval(DepInterval<R> i, Datatype<R> interval,
             DepSet localDep) {
         if (!i.consistent(interval)) {
-            DepSet copy = DepSet.create(localDep);
-            copy.add(i.locDep);
-            this.reasoner.reportClash(copy, DT_C_IT);
+            localDep.add(i.locDep);
+            this.reasoner.reportClash(localDep, DT_C_IT);
             return true;
         }
         if (!i.update(interval, localDep) || !this.hasPType()
                 || !i.checkMinMaxClash()) {
             this.constraints.add(i);
+        } else {
+            this.accDep.add(i.locDep);
         }
         return false;
     }
@@ -204,7 +205,7 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         private static final long serialVersionUID = 11000L;
         protected DatatypeExpression<R> e;
         /** local dep-set */
-        protected TIntSet locDep;
+        protected DepSet locDep;
 
         @Override
         public String toString() {
@@ -229,9 +230,9 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
                     this.e = value.wrapAsDatatypeExpression();
                 }
                 if (locDep == null) {
-                    locDep = dep == null ? null : dep.getDelegate();
+                    locDep = dep;
                 } else if (dep != null) {
-                    locDep.addAll(dep.getDelegate());
+                    locDep.add(dep);
                 }
                 return false;
             } else {
@@ -249,9 +250,9 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
             // TODO needs to return false if the new expression has the same
             // value space as the old one
             if (locDep == null) {
-                locDep = dep == null ? null : dep.getDelegate();
+                locDep = dep;
             } else if (dep != null) {
-                locDep.addAll(dep.getDelegate());
+                locDep.add(dep);
             }
             return true;
         }
