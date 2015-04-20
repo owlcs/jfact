@@ -10,7 +10,7 @@ import org.junit.Test;
 import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
-public class OWL2 extends TestBase {
+public class OWL2TestCase extends TestBase {
 
     @Test
     public void testowl2_rl_anonymous_individual() {
@@ -605,7 +605,7 @@ public class OWL2 extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testNew_Feature_ObjectPropertyChain_001() {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"

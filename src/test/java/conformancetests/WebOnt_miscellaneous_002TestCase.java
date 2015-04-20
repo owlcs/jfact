@@ -11,10 +11,10 @@ import org.junit.Test;
 import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
-public class WebOnt_miscellaneous_002 extends TestBase {
+public class WebOnt_miscellaneous_002TestCase extends TestBase {
     @Ignore("Too slow")
     @Test
-    @Changed
+    @ChangedTestCase
     public void testWebOnt_miscellaneous_002() {
         String conclusion = "";
         String id = "WebOnt_miscellaneous_002";

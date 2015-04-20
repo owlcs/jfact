@@ -44,7 +44,7 @@ import org.semanticweb.owlapi.vocab.XSDVocabulary;
 import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
-public class Fixed extends TestBase {
+public class FixedTestCase extends TestBase {
 
     @Test
     public void testConsistent_owl_real_range_with_DataOneOf() {
@@ -142,7 +142,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed(reason = "original test had unreliable iris, e.g., http://example.com/2a")
+    @ChangedTestCase(reason = "original test had unreliable iris, e.g., http://example.com/2a")
     public
             void testConsistent_but_all_unsat() throws Exception {
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
@@ -345,7 +345,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed(reason = "old test appears to use the wrong value")
+    @ChangedTestCase(reason = "old test appears to use the wrong value")
     public void testDatatype_Float_Discrete_001()
             throws OWLOntologyCreationException {
         OWLDataProperty dp = DataProperty(IRI("http://example.org/ontology/dp"));
@@ -454,7 +454,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_bool_intersection_inst_comp() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x\"/>\n"
@@ -479,7 +479,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_bool_intersection_term() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
@@ -505,7 +505,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_bool_union_inst_comp() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x\"/>\n"
@@ -531,7 +531,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_bool_union_term() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
@@ -557,7 +557,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_char_functional_inst() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p\"/>\n"
@@ -574,7 +574,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_enum_inst_included() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#e\"/>\n"
@@ -593,7 +593,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_eqdis_different_irrflxv() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "<owl:Thing rdf:about=\"http://www.example.org#x\"/>\n"
@@ -610,7 +610,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_eqdis_disclass_irrflxv() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
@@ -629,7 +629,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_eqdis_disprop_eqprop() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p1\"/>\n"
@@ -647,7 +647,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_eqdis_disprop_inst() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p1\"/>\n"
@@ -664,7 +664,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_eqdis_disprop_irrflxv() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p\"/>\n"
@@ -682,7 +682,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_eqdis_eqclass_subclass_1() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c1\"/>\n"
@@ -701,7 +701,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_eqdis_sameas_subst() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "<owl:ObjectProperty rdf:about=\"http://www.example.org#p1\"/>\n"
@@ -725,7 +725,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_eqdis_sameas_sym() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "<owl:Thing rdf:about=\"http://www.example.org#x\"/>\n"
@@ -758,7 +758,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed(reason = "without declarations, some properties default to datatype properties and some to annotation properties")
+    @ChangedTestCase(reason = "without declarations, some properties default to datatype properties and some to annotation properties")
     public
             void testrdfbased_sem_ndis_alldisjointproperties_fw() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
@@ -777,7 +777,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_npa_dat_fw() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#z\"/>\n"
@@ -794,7 +794,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_rdfs_domain_cond() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
@@ -814,7 +814,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_rdfs_range_cond() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
@@ -834,7 +834,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_restrict_allvalues_cmp_class() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c1\"/>\n"
@@ -865,7 +865,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_restrict_allvalues_cmp_prop() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p1\"/>\n"
@@ -896,7 +896,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_restrict_allvalues_inst_obj() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "<owl:Class rdf:about=\"http://www.example.org#z\"/>\n"
@@ -921,7 +921,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_restrict_hasvalue_cmp_prop() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x1\"/>\n"
@@ -951,7 +951,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_restrict_hasvalue_inst_obj() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "<owl:Class rdf:about=\"http://www.example.org#z\"/>\n"
@@ -976,7 +976,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_restrict_hasvalue_inst_subj() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#z\"/>\n"
@@ -1000,7 +1000,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_restrict_maxcard_inst_obj_one() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#z\"/>\n"
@@ -1024,7 +1024,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_restrict_maxcard_inst_obj_zero() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "<owl:Class rdf:about=\"http://www.example.org#z\"/>"
@@ -1044,7 +1044,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_restrict_maxqcr_inst_obj_one() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
@@ -1069,7 +1069,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_restrict_maxqcr_inst_obj_zero() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
@@ -1091,7 +1091,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_restrict_somevalues_cmp_class() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c1\"/>\n"
@@ -1122,7 +1122,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_restrict_somevalues_cmp_prop() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#x1\"/>\n"
@@ -1153,7 +1153,7 @@ public class Fixed extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_restrict_somevalues_inst_subj() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Thing rdf:about=\"http://www.example.org#x\"/>\n"

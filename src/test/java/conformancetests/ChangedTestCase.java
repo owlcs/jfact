@@ -16,7 +16,7 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention(RetentionPolicy.CLASS)
 @Documented
-public @interface Changed {
+public @interface ChangedTestCase {
 
     /** @return reason for the change to have happened */
     String reason() default "Not OWL 2 Compliant";

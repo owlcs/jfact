@@ -21,7 +21,7 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 @SuppressWarnings("javadoc")
-public class VerifyComplianceOWLSNewFeatures extends VerifyComplianceBase {
+public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBase {
 
     @Nonnull
     String in = "Prefix(:=<http://www.w3.org/2002/07/owl#>)\n"

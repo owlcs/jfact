@@ -22,7 +22,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
-public class TopObjectPropertyTest extends TestBase {
+public class TopObjectPropertyTestCase extends TestBase {
 
     OWLDataFactory df = OWLManager.getOWLDataFactory();
 

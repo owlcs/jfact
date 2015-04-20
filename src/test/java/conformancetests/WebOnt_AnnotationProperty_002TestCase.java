@@ -10,7 +10,7 @@ import org.junit.Test;
 import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
-public class WebOnt_AnnotationProperty_002 extends TestBase {
+public class WebOnt_AnnotationProperty_002TestCase extends TestBase {
 
     @Test
     public void testWebOnt_AnnotationProperty_002() {

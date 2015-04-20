@@ -28,7 +28,7 @@ import org.semanticweb.owlapi.vocab.XSDVocabulary;
 import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
-public class TestDateTime extends TestBase {
+public class DateTimeTestCase extends TestBase {
 
     @Test
     public void testEqual() throws OWLOntologyCreationException {

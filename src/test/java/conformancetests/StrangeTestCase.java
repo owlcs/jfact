@@ -19,7 +19,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
-public class Strange extends TestBase {
+public class StrangeTestCase extends TestBase {
 
     @Test
     public void shouldFindThreeSubclasses() throws OWLOntologyCreationException {

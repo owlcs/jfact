@@ -10,7 +10,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 @SuppressWarnings("javadoc")
-public class VerifyComplianceMereology extends VerifyComplianceBase {
+public class VerifyComplianceMereologyTestCase extends VerifyComplianceBase {
 
     @Nonnull
     protected String input = "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"

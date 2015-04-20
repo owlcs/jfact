@@ -11,10 +11,10 @@ import org.junit.Test;
 import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
-public class WebOnt661 extends TestBase {
+public class WebOnt661TestCase extends TestBase {
 @Ignore("Too slow")
     @Test
-    @Changed
+    @ChangedTestCase
     public void testWebOnt_description_logic_661() {
         String premise = "<rdf:RDF xmlns:oiled=\"http://oiled.man.example.net/test#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
                 + " xml:base=\"http://www.w3.org/2002/03owlt/description-logic/premises661\">\n"

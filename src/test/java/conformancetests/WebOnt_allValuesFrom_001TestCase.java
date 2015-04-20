@@ -10,7 +10,7 @@ import org.junit.Test;
 import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
-public class WebOnt_allValuesFrom_001 extends TestBase {
+public class WebOnt_allValuesFrom_001TestCase extends TestBase {
 
     @Test
     public void testWebOnt_miscellaneous_203() {

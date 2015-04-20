@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLClass;
 
 @SuppressWarnings("javadoc")
-public class VerifyComplianceHost extends VerifyComplianceBase {
+public class VerifyComplianceHostTestCase extends VerifyComplianceBase {
 
     @Override
     protected String input() {
