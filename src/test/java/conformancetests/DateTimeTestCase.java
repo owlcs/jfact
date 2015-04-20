@@ -28,7 +28,7 @@ import org.semanticweb.owlapi.vocab.XSDVocabulary;
 import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
-public class TestDateTime extends TestBase {
+public class DateTimeTestCase extends TestBase {
 
     @Test
     public void testEqual() throws OWLOntologyCreationException {
@@ -47,7 +47,9 @@ public class TestDateTime extends TestBase {
         m.addAxiom(o, f.getOWLFunctionalDataPropertyAxiom(p));
         m.addAxiom(o, f.getOWLSameIndividualAxiom(x, y));
         OWLReasoner r = factory().createReasoner(o);
-        assertTrue(r.isConsistent());
+        assertTrue(
+                "Ontology was supposed to be consistent!\n"
+                        + o.getLogicalAxioms(), r.isConsistent());
     }
 
     @Test
@@ -69,7 +71,9 @@ public class TestDateTime extends TestBase {
         m.addAxiom(o, f.getOWLFunctionalDataPropertyAxiom(p));
         m.addAxiom(o, f.getOWLSameIndividualAxiom(x, y));
         OWLReasoner r = factory().createReasoner(o);
-        assertFalse(r.isConsistent());
+        assertFalse(
+                "Ontology was supposed to be inconsistent!\n"
+                        + o.getLogicalAxioms(), r.isConsistent());
     }
 
     @Test
@@ -96,7 +100,10 @@ public class TestDateTime extends TestBase {
         m.addAxiom(o, f.getOWLDataPropertyAssertionAxiom(p, x, date3));
         m.addAxiom(o, f.getOWLFunctionalDataPropertyAxiom(p));
         OWLReasoner r = factory().createReasoner(o);
-        assertTrue(r.isEntailed(f.getOWLClassAssertionAxiom(c, x)));
+        assertTrue(
+                "x was supposed to be an instance of c!\n"
+                        + o.getLogicalAxioms(),
+                r.isEntailed(f.getOWLClassAssertionAxiom(c, x)));
     }
 
     @Test
@@ -116,7 +123,9 @@ public class TestDateTime extends TestBase {
         m.addAxiom(o, f.getOWLFunctionalDataPropertyAxiom(p));
         m.addAxiom(o, f.getOWLSameIndividualAxiom(x, y));
         OWLReasoner r = factory().createReasoner(o);
-        assertTrue(r.isConsistent());
+        assertTrue(
+                "Ontology was supposed to be consistent!\n"
+                        + o.getLogicalAxioms(), r.isConsistent());
     }
 
     @Test
@@ -138,7 +147,9 @@ public class TestDateTime extends TestBase {
         m.addAxiom(o, f.getOWLFunctionalDataPropertyAxiom(p));
         m.addAxiom(o, f.getOWLSameIndividualAxiom(x, y));
         OWLReasoner r = factory().createReasoner(o);
-        assertFalse(r.isConsistent());
+        assertFalse(
+                "Ontology was supposed to be inconsistent!\n"
+                        + o.getLogicalAxioms(), r.isConsistent());
     }
 
     @Test
@@ -165,6 +176,9 @@ public class TestDateTime extends TestBase {
         m.addAxiom(o, f.getOWLDataPropertyAssertionAxiom(p, x, date3));
         m.addAxiom(o, f.getOWLFunctionalDataPropertyAxiom(p));
         OWLReasoner r = factory().createReasoner(o);
-        assertTrue(r.isEntailed(f.getOWLClassAssertionAxiom(c, x)));
+        assertTrue(
+                "x was supposed to be an instance of c!\n"
+                        + o.getLogicalAxioms(),
+                r.isEntailed(f.getOWLClassAssertionAxiom(c, x)));
     }
 }

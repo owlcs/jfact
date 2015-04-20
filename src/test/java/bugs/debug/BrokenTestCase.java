@@ -26,13 +26,13 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 
 import testbase.TestBase;
-import conformancetests.Changed;
+import conformancetests.ChangedTestCase;
 import conformancetests.JUnitRunner;
 import conformancetests.TestClasses;
 
 @Ignore("disabling for release")
 @SuppressWarnings("javadoc")
-public class Broken extends TestBase {
+public class BrokenTestCase extends TestBase {
 
     @Test
     public void testQualified_cardinality_boolean() {
@@ -63,7 +63,7 @@ public class Broken extends TestBase {
 
     // XXX this needs to be fixed
     @Test
-    @Changed(reason = "changed to fix unreliable iris")
+    @ChangedTestCase(reason = "changed to fix unreliable iris")
     public void testone_two() throws OWLException {
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         IRI ontoIRI = IRI("urn:onetwo");
@@ -197,7 +197,7 @@ public class Broken extends TestBase {
         OWLReasonerFactory fac = factory();
         OWLReasoner r = fac.createNonBufferingReasoner(ont);
         assertEquals(r.getBottomDataPropertyNode().toString(), 2, r
-                .getBottomDataPropertyNode().entities().count());
+                .getBottomDataPropertyNode().getEntities().size());
     }
 
     @Test

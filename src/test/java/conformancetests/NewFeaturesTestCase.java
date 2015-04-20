@@ -12,7 +12,7 @@ import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
 @Ignore
-public class NewFeatures extends TestBase {
+public class NewFeaturesTestCase extends TestBase {
 
     @Test
     public void testInconsistent_Disjoint_Dataproperties() {
@@ -445,7 +445,7 @@ public class NewFeatures extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testNew_Feature_ObjectPropertyChain_BJP_003() {
         String premise = "<?xml version=\"1.0\"?>\n"
                 + "<rdf:RDF\n"
@@ -720,7 +720,7 @@ public class NewFeatures extends TestBase {
     }
 
     @Test
-    @Changed(reason = "not OWL 2 DL - data properties cannt be inverse functional properties")
+    @ChangedTestCase(reason = "not OWL 2 DL - data properties cannt be inverse functional properties")
     public
             void testrdfbased_sem_char_inversefunc_data() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
@@ -743,7 +743,7 @@ public class NewFeatures extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_key_def() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
@@ -772,7 +772,7 @@ public class NewFeatures extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testrdfbased_sem_npa_ind_fw() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p\"/>\n"

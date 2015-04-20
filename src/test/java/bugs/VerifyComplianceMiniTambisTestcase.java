@@ -1,7 +1,7 @@
 package bugs;
 
 @SuppressWarnings("javadoc")
-public class VerifyComplianceMiniTambis extends VerifyComplianceBase {
+public class VerifyComplianceMiniTambisTestcase extends VerifyComplianceBase {
 
     @Override
     protected String input() {

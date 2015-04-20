@@ -28,7 +28,7 @@ import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
-public class WebOnt extends TestBase {
+public class WebOntTestCase extends TestBase {
 
     @Test
     public void testWebOnt_AnnotationProperty_003() {
@@ -245,7 +245,7 @@ public class WebOnt extends TestBase {
     }
 
     @Test
-    @Changed
+    @ChangedTestCase
     public void testWebOnt_I5_26_005() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xml:base=\"http://www.w3.org/2002/03owlt/I5.26/consistent005\" ><owl:Ontology/>\n"
                 + "   <owl:Class rdf:nodeID=\"B\"><owl:intersectionOf rdf:parseType=\"Collection\"><owl:Class rdf:ID=\"A\"/><owl:Class rdf:ID=\"B\"/>"
@@ -261,7 +261,7 @@ public class WebOnt extends TestBase {
     }
 
     @Test
-    @Changed(reason = "test doesn't make sense; This code does the test in a meaningful way")
+    @ChangedTestCase(reason = "test doesn't make sense; This code does the test in a meaningful way")
     public
             void testWebOnt_I5_26_009() throws OWLOntologyCreationException {
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();

@@ -6,7 +6,7 @@ import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 
 @SuppressWarnings("javadoc")
-public class VerifyComplianceOWLS extends VerifyComplianceBase {
+public class VerifyComplianceOWLSTestCase extends VerifyComplianceBase {
 
     @Override
     protected String input() {

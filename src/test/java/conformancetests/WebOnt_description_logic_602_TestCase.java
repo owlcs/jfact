@@ -22,7 +22,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
-public class WebOnt_description_logic_602_test extends TestBase {
+public class WebOnt_description_logic_602_TestCase extends TestBase {
 
     @Test
     public void testWebOnt_description_logic_602()

@@ -2,6 +2,8 @@ package conformancetests;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Set;
+
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -17,7 +19,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import testbase.TestBase;
 
 @SuppressWarnings("javadoc")
-public class Strange extends TestBase {
+public class StrangeTestCase extends TestBase {
 
     @Test
     public void shouldFindThreeSubclasses() throws OWLOntologyCreationException {
