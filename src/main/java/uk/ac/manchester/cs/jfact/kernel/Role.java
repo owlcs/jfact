@@ -826,32 +826,48 @@ public class Role extends ClassifiableEntry {
         // processing
         Role syn = resolveSynonym(this);
         // copy functionality
-        //XXX double check and fix in 5
-        if (isFunctional() && !syn.isFunctional()) {
+        if (isFunctional() || syn.isFunctional()) {
             syn.setFunctional();
+            setFunctional();
         }
         // copy transitivity
-        if (isTransitive()) {
+        if (isTransitive() || syn.isTransitive()) {
             syn.setTransitive(true);
+            setTransitive(true);
         }
         // copy reflexivity
-        if (isReflexive()) {
+        if (isReflexive() || syn.isReflexive()) {
             syn.setReflexive(true);
+            setReflexive(true);
         }
         // copy data type
-        if (isDataRole()) {
+        if (isDataRole() || syn.isDataRole()) {
             syn.setDataRole(true);
+            setDataRole(true);
         }
         // copy R&D
         if (pDomain != null) {
             syn.setDomain(pDomain.copy());
         }
+        if (syn.getTDomain() != null) {
+            setDomain(syn.getTDomain().copy());
+        }
+        if (inverse.pDomain != null) {
+            syn.inverse.setDomain(inverse.pDomain.copy());
+        }
+        if (syn.inverse.getTDomain() != null) {
+            inverse.setDomain(syn.inverse.getTDomain().copy());
+        }
         // copy disjoint
         if (isDisjoint()) {
             syn.disjointRoles.addAll(disjointRoles);
         }
+        if (syn.isDisjoint()) {
+            disjointRoles.addAll(syn.disjointRoles);
+        }
         // copy subCompositions
         syn.subCompositions.addAll(subCompositions);
+        subCompositions.addAll(syn.subCompositions);
         // syn should be the only parent for synonym
         toldSubsumers.clear();
         addParent(syn);
