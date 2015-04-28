@@ -74,15 +74,29 @@ class LiteralImpl<T extends Comparable<T>> implements Literal<T>, Serializable {
             return true;
         }
         if (obj instanceof Literal) {
-            return this.type.equals(((Literal<?>) obj).getDatatypeExpression())
-                    && this.typedValue()
-                            .equals(((Literal<?>) obj).typedValue());
+            Literal<?> other = (Literal<?>) obj;
+            if (type.equals(DatatypeFactory.PLAINLITERAL) || type.equals(
+            DatatypeFactory.STRING)) {
+                if (other.getDatatypeExpression().equals(
+                DatatypeFactory.PLAINLITERAL) || other.getDatatypeExpression()
+                .equals(DatatypeFactory.STRING)) {
+                    return this.value.replace("@", "").equals(other.value()
+                    .replace("@", ""));
+                }
+            }
+            return this.type.equals(other.getDatatypeExpression()) && this
+            .typedValue().equals(other.typedValue());
         }
         return false;
     }
 
     @Override
     public int hashCode() {
+        if (type.equals(DatatypeFactory.PLAINLITERAL) || type.equals(
+        DatatypeFactory.STRING)) {
+            return DatatypeFactory.PLAINLITERAL.hashCode() + this.value.replace(
+            "@", "").hashCode();
+        }
         return this.type.hashCode() + this.typedValue().hashCode();
     }
 }

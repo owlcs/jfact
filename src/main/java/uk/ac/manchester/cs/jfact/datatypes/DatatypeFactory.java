@@ -66,8 +66,8 @@ public class DatatypeFactory implements Serializable {
     /**  BOOLEAN            */  @Nonnull  public static final Datatype<Boolean>               BOOLEAN             = new BOOLEAN_DATATYPE();
     /**  DATETIME           */  @Nonnull  public static final Datatype<Calendar>              DATETIME            = new DATETIME_DATATYPE();
     /**  HEXBINARY          */  @Nonnull  public static final Datatype<String>                HEXBINARY           = new HEXBINARY_DATATYPE();
-    /**  STRING             */  @Nonnull  public static final Datatype<String>                STRING              = new STRING_DATATYPE();
     /**  PLAINLITERAL       */  @Nonnull  public static final Datatype<String>                PLAINLITERAL        = new PLAINLITERAL_DATATYPE();
+    /**  STRING             */  @Nonnull  public static final Datatype<String>                STRING              = new STRING_DATATYPE();
     /**  REAL               */  @Nonnull  public static final NumericDatatype<BigDecimal>     REAL                = new REAL_DATATYPE<>();
     /**  RATIONAL           */  @Nonnull  public static final NumericDatatype<BigDecimal>     RATIONAL            = new RATIONAL_DATATYPE<>();
     /**  DATETIMESTAMP      */  @Nonnull  public static final Datatype<Calendar>              DATETIMESTAMP       = new DATETIMESTAMP_DATATYPE();
@@ -189,7 +189,9 @@ public class DatatypeFactory implements Serializable {
         return knownDatatypes.containsKey(key);
     }
 
-    /** @return datatype factory instance */
+    /**
+     * @return datatype factory instance
+     */
     public static DatatypeFactory getInstance() {
         return new DatatypeFactory();
     }
@@ -205,7 +207,7 @@ public class DatatypeFactory implements Serializable {
      */
     @SuppressWarnings("rawtypes")
     public static boolean intervalWithValues(Comparable min, Comparable max,
-            int excluded) {
+        int excluded) {
         if (min == null) {
             // unbound lower limit - value space cannot be empty
             // even if the actual type used to represent the literal is bounded,
@@ -294,8 +296,8 @@ public class DatatypeFactory implements Serializable {
      *        expression type
      * @return expression
      */
-    public static <R extends Comparable<R>> DatatypeExpression<R>
-            getDatatypeExpression(Datatype<R> base) {
+    public static <R extends Comparable<R>> DatatypeExpression<R> getDatatypeExpression(
+        Datatype<R> base) {
         return new DatatypeExpressionImpl<>(base);
     }
 
@@ -306,8 +308,8 @@ public class DatatypeFactory implements Serializable {
      *        expression type
      * @return expression
      */
-    public static <R extends Comparable<R>> DatatypeExpression<R>
-            getNumericDatatypeExpression(NumericDatatype<R> base) {
+    public static <R extends Comparable<R>> DatatypeExpression<R> getNumericDatatypeExpression(
+        NumericDatatype<R> base) {
         return new DatatypeNumericExpressionImpl<>(base);
     }
 
@@ -318,18 +320,18 @@ public class DatatypeFactory implements Serializable {
      *        expression type
      * @return expression
      */
-    public static <R extends Comparable<R>> DatatypeExpression<R>
-            getOrderedDatatypeExpression(Datatype<R> base) {
+    public static <R extends Comparable<R>> DatatypeExpression<R> getOrderedDatatypeExpression(
+        Datatype<R> base) {
         return new DatatypeOrderedExpressionImpl<>(base);
     }
 
     abstract static class ABSTRACT_NUMERIC_DATATYPE<R extends Comparable<R>>
-            extends ABSTRACT_DATATYPE<R> implements NumericDatatype<R> {
+    extends ABSTRACT_DATATYPE<R>implements NumericDatatype<R> {
 
         private static final long serialVersionUID = 11000L;
 
         public ABSTRACT_NUMERIC_DATATYPE(@Nonnull IRI uri,
-                @Nonnull Set<Facet> f, @Nonnull Set<Datatype<?>> ancestors) {
+        @Nonnull Set<Facet> f, @Nonnull Set<Datatype<?>> ancestors) {
             super(uri, f, ancestors);
         }
 
@@ -413,8 +415,8 @@ public class DatatypeFactory implements Serializable {
                 if (type instanceof NumericDatatype) {
                     wrapper = (NumericDatatype<R>) type;
                 } else {
-                    wrapper = ABSTRACT_NUMERIC_DATATYPE
-                            .wrap((Datatype<R>) type);
+                    wrapper = ABSTRACT_NUMERIC_DATATYPE.wrap(
+                    (Datatype<R>) type);
                 }
                 // then both types are numeric
                 // if both have no max or both have no min -> there is an
@@ -473,7 +475,7 @@ public class DatatypeFactory implements Serializable {
         }
 
         private static <O extends Comparable<O>> NumericDatatype<O> wrap(
-                Datatype<O> d) {
+            Datatype<O> d) {
             return new NumericDatatypeWrapper<>(d);
         }
 
@@ -536,11 +538,11 @@ public class DatatypeFactory implements Serializable {
 
         ANYURI_DATATYPE() {
             super(XSDVocabulary.ANY_URI.getIRI(), StringFacets, Utils
-                    .generateAncestors(LITERAL));
+            .generateAncestors(LITERAL));
             knownNonNumericFacetValues.putAll(LITERAL
-                    .getKnownNonNumericFacetValues());
-            knownNumericFacetValues
-                    .putAll(LITERAL.getKnownNumericFacetValues());
+            .getKnownNonNumericFacetValues());
+            knownNumericFacetValues.putAll(LITERAL
+            .getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
         }
 
@@ -566,11 +568,11 @@ public class DatatypeFactory implements Serializable {
 
         BASE64BINARY_DATATYPE() {
             super(XSDVocabulary.BASE_64_BINARY.getIRI(), StringFacets, Utils
-                    .generateAncestors(LITERAL));
+            .generateAncestors(LITERAL));
             knownNonNumericFacetValues.putAll(LITERAL
-                    .getKnownNonNumericFacetValues());
-            knownNumericFacetValues
-                    .putAll(LITERAL.getKnownNumericFacetValues());
+            .getKnownNonNumericFacetValues());
+            knownNumericFacetValues.putAll(LITERAL
+            .getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, collapse);
         }
 
@@ -584,8 +586,8 @@ public class DatatypeFactory implements Serializable {
             // all characters are letters, numbers, or +/=
             for (int i = 0; i < s.length(); i++) {
                 char c = s.charAt(i);
-                if (!Character.isLetter(c) && !Character.isDigit(c)
-                        && "+/=".indexOf(c) == -1) {
+                if (!Character.isLetter(c) && !Character.isDigit(c) && "+/="
+                .indexOf(c) == -1) {
                     return false;
                 }
             }
@@ -599,11 +601,11 @@ public class DatatypeFactory implements Serializable {
 
         BOOLEAN_DATATYPE() {
             super(XSDVocabulary.BOOLEAN.getIRI(), Utils.getFacets(pattern,
-                    whiteSpace), Utils.generateAncestors(LITERAL));
+            whiteSpace), Utils.generateAncestors(LITERAL));
             knownNonNumericFacetValues.putAll(LITERAL
-                    .getKnownNonNumericFacetValues());
-            knownNumericFacetValues
-                    .putAll(LITERAL.getKnownNumericFacetValues());
+            .getKnownNonNumericFacetValues());
+            knownNumericFacetValues.putAll(LITERAL
+            .getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
         }
 
@@ -624,14 +626,14 @@ public class DatatypeFactory implements Serializable {
 
         @Override
         public Boolean parseValue(String s) {
-            whitespace facet = (whitespace) whiteSpace
-                    .parse(knownNonNumericFacetValues.get(whiteSpace));
+            whitespace facet = (whitespace) whiteSpace.parse(
+            knownNonNumericFacetValues.get(whiteSpace));
             return Boolean.parseBoolean(facet.normalize(s));
         }
     }
 
-    static class DATETIME_DATATYPE extends ABSTRACT_DATATYPE<Calendar>
-            implements OrderedDatatype<Calendar> {
+    static class DATETIME_DATATYPE extends ABSTRACT_DATATYPE<Calendar>implements
+    OrderedDatatype<Calendar> {
 
         private static final long serialVersionUID = 11000L;
 
@@ -646,9 +648,9 @@ public class DatatypeFactory implements Serializable {
         DATETIME_DATATYPE(@Nonnull IRI u) {
             super(u, FACETS4, Utils.generateAncestors(LITERAL));
             knownNonNumericFacetValues.putAll(LITERAL
-                    .getKnownNonNumericFacetValues());
-            knownNumericFacetValues
-                    .putAll(LITERAL.getKnownNumericFacetValues());
+            .getKnownNonNumericFacetValues());
+            knownNumericFacetValues.putAll(LITERAL
+            .getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
         }
 
@@ -671,7 +673,7 @@ public class DatatypeFactory implements Serializable {
         public Calendar parseValue(String s) {
             try {
                 XMLGregorianCalendar cal = javax.xml.datatype.DatatypeFactory
-                        .newInstance().newXMLGregorianCalendar(s);
+                .newInstance().newXMLGregorianCalendar(s);
                 return cal.normalize().toGregorianCalendar();
             } catch (DatatypeConfigurationException e) {
                 throw new ReasonerInternalException(e);
@@ -741,8 +743,8 @@ public class DatatypeFactory implements Serializable {
                 // exclusives:
                 // one minInclusive/exclusive is strictly larger than the other
                 // maxinclusive/exclusive
-                return this.overlapping(this, wrapper)
-                        || this.overlapping(wrapper, this);
+                return this.overlapping(this, wrapper) || this.overlapping(
+                wrapper, this);
             } else {
                 return false;
             }
@@ -807,11 +809,11 @@ public class DatatypeFactory implements Serializable {
 
         HEXBINARY_DATATYPE() {
             super(XSDVocabulary.HEX_BINARY.getIRI(), StringFacets, Utils
-                    .generateAncestors(LITERAL));
+            .generateAncestors(LITERAL));
             knownNonNumericFacetValues.putAll(LITERAL
-                    .getKnownNonNumericFacetValues());
-            knownNumericFacetValues
-                    .putAll(LITERAL.getKnownNumericFacetValues());
+            .getKnownNonNumericFacetValues());
+            knownNumericFacetValues.putAll(LITERAL
+            .getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
         }
 
@@ -839,7 +841,7 @@ public class DatatypeFactory implements Serializable {
 
         LITERAL_DATATYPE() {
             super(OWLRDFVocabulary.RDFS_LITERAL.getIRI(), Collections
-                    .<Facet> emptySet(), Collections.<Datatype<?>> emptySet());
+            .<Facet> emptySet(), Collections.<Datatype<?>> emptySet());
         }
 
         @Override
@@ -854,12 +856,12 @@ public class DatatypeFactory implements Serializable {
 
         PLAINLITERAL_DATATYPE() {
             super(OWLRDFVocabulary.RDF_PLAIN_LITERAL.getIRI(), Utils.getFacets(
-                    length, minLength, maxLength, pattern, enumeration), Utils
-                    .generateAncestors(LITERAL));
+            length, minLength, maxLength, pattern, enumeration), Utils
+            .generateAncestors(LITERAL));
             knownNonNumericFacetValues.putAll(LITERAL
-                    .getKnownNonNumericFacetValues());
-            knownNumericFacetValues
-                    .putAll(LITERAL.getKnownNumericFacetValues());
+            .getKnownNonNumericFacetValues());
+            knownNumericFacetValues.putAll(LITERAL
+            .getKnownNumericFacetValues());
         }
 
         @Override
@@ -869,7 +871,7 @@ public class DatatypeFactory implements Serializable {
     }
 
     static class REAL_DATATYPE<R extends Comparable<R>> extends
-            ABSTRACT_NUMERIC_DATATYPE<R> {
+    ABSTRACT_NUMERIC_DATATYPE<R> {
 
         private static final long serialVersionUID = 11000L;
 
@@ -878,16 +880,17 @@ public class DatatypeFactory implements Serializable {
         }
 
         REAL_DATATYPE(@Nonnull IRI uri) {
-            this(uri, Utils.getFacets(minmax), Utils.generateAncestors(LITERAL));
+            this(uri, Utils.getFacets(minmax), Utils.generateAncestors(
+            LITERAL));
         }
 
         REAL_DATATYPE(@Nonnull IRI uri, @Nonnull Set<Facet> f,
-                @Nonnull Set<Datatype<?>> ancestors) {
+        @Nonnull Set<Datatype<?>> ancestors) {
             super(uri, f, ancestors);
             knownNonNumericFacetValues.putAll(LITERAL
-                    .getKnownNonNumericFacetValues());
-            knownNumericFacetValues
-                    .putAll(LITERAL.getKnownNumericFacetValues());
+            .getKnownNonNumericFacetValues());
+            knownNumericFacetValues.putAll(LITERAL
+            .getKnownNumericFacetValues());
         }
 
         @SuppressWarnings("unchecked")
@@ -936,16 +939,16 @@ public class DatatypeFactory implements Serializable {
         private static final long serialVersionUID = 11000L;
 
         public STRING_DATATYPE() {
-            this(XSDVocabulary.STRING.getIRI(), Utils
-                    .generateAncestors(LITERAL));
+            this(XSDVocabulary.STRING.getIRI(), Utils.generateAncestors(
+            PLAINLITERAL));
         }
 
         STRING_DATATYPE(@Nonnull IRI uri, @Nonnull Set<Datatype<?>> ancestors) {
             super(uri, StringFacets, ancestors);
             knownNonNumericFacetValues.putAll(LITERAL
-                    .getKnownNonNumericFacetValues());
-            knownNumericFacetValues
-                    .putAll(LITERAL.getKnownNumericFacetValues());
+            .getKnownNonNumericFacetValues());
+            knownNumericFacetValues.putAll(LITERAL
+            .getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, preserve);
         }
 
@@ -961,24 +964,25 @@ public class DatatypeFactory implements Serializable {
 
         DATETIMESTAMP_DATATYPE() {
             super(XSDVocabulary.DATE_TIME_STAMP.getIRI(), Utils
-                    .generateAncestors(DATETIME));
+            .generateAncestors(DATETIME));
         }
     }
 
     static class DECIMAL_DATATYPE<R extends Comparable<R>> extends
-            RATIONAL_DATATYPE<R> {
+    RATIONAL_DATATYPE<R> {
 
         private static final long serialVersionUID = 11000L;
 
         DECIMAL_DATATYPE() {
-            this(XSDVocabulary.DECIMAL.getIRI(), Utils
-                    .generateAncestors(RATIONAL));
+            this(XSDVocabulary.DECIMAL.getIRI(), Utils.generateAncestors(
+            RATIONAL));
         }
 
-        DECIMAL_DATATYPE(@Nonnull IRI uri, @Nonnull Set<Datatype<?>> ancestors) {
+        DECIMAL_DATATYPE(@Nonnull IRI uri,
+        @Nonnull Set<Datatype<?>> ancestors) {
             super(uri, Utils.getFacets(digs, pew, minmax), ancestors);
-            knownNonNumericFacetValues.putAll(super
-                    .getKnownNonNumericFacetValues());
+            knownNonNumericFacetValues.putAll(
+            super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
         }
@@ -1001,11 +1005,11 @@ public class DatatypeFactory implements Serializable {
 
         DOUBLE_DATATYPE() {
             super(XSDVocabulary.DOUBLE.getIRI(), Utils.getFacets(pew, minmax),
-                    Utils.generateAncestors(LITERAL));
+            Utils.generateAncestors(LITERAL));
             knownNonNumericFacetValues.putAll(LITERAL
-                    .getKnownNonNumericFacetValues());
-            knownNumericFacetValues
-                    .putAll(LITERAL.getKnownNumericFacetValues());
+            .getKnownNonNumericFacetValues());
+            knownNumericFacetValues.putAll(LITERAL
+            .getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
         }
 
@@ -1036,7 +1040,7 @@ public class DatatypeFactory implements Serializable {
                 type = type.asExpression().getHostType();
             }
             return type.equals(this) || type.equals(DatatypeFactory.LITERAL)
-                    || type.isSubType(this) || isSubType(type);
+            || type.isSubType(this) || isSubType(type);
         }
     }
 
@@ -1046,11 +1050,11 @@ public class DatatypeFactory implements Serializable {
 
         protected FLOAT_DATATYPE() {
             super(XSDVocabulary.FLOAT.getIRI(), FACETS4, Utils
-                    .generateAncestors(LITERAL));
+            .generateAncestors(LITERAL));
             knownNonNumericFacetValues.putAll(LITERAL
-                    .getKnownNonNumericFacetValues());
-            knownNumericFacetValues
-                    .putAll(LITERAL.getKnownNumericFacetValues());
+            .getKnownNonNumericFacetValues());
+            knownNumericFacetValues.putAll(LITERAL
+            .getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
         }
 
@@ -1088,7 +1092,7 @@ public class DatatypeFactory implements Serializable {
                 type = type.asExpression().getHostType();
             }
             return type.equals(this) || type.equals(DatatypeFactory.LITERAL)
-                    || type.isSubType(this) || isSubType(type);
+            || type.isSubType(this) || isSubType(type);
         }
 
         @Override
@@ -1115,15 +1119,15 @@ public class DatatypeFactory implements Serializable {
 
         protected BYTE_DATATYPE() {
             super(XSDVocabulary.BYTE.getIRI(), Utils.generateAncestors(SHORT));
-            knownNonNumericFacetValues.putAll(super
-                    .getKnownNonNumericFacetValues());
+            knownNonNumericFacetValues.putAll(
+            super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
             knownNumericFacetValues.put(minInclusive, new BigDecimal(
-                    Byte.MIN_VALUE));
+            Byte.MIN_VALUE));
             knownNumericFacetValues.put(maxInclusive, new BigDecimal(
-                    Byte.MAX_VALUE));
+            Byte.MAX_VALUE));
         }
 
         @Override
@@ -1132,7 +1136,8 @@ public class DatatypeFactory implements Serializable {
         }
     }
 
-    static class INT_DATATYPE<R extends Comparable<R>> extends LONG_DATATYPE<R> {
+    static class INT_DATATYPE<R extends Comparable<R>> extends
+    LONG_DATATYPE<R> {
 
         private static final long serialVersionUID = 11000L;
 
@@ -1141,17 +1146,17 @@ public class DatatypeFactory implements Serializable {
         }
 
         protected INT_DATATYPE(@Nonnull IRI uri,
-                @Nonnull Set<Datatype<?>> ancestors) {
+        @Nonnull Set<Datatype<?>> ancestors) {
             super(uri, ancestors);
-            knownNonNumericFacetValues.putAll(super
-                    .getKnownNonNumericFacetValues());
+            knownNonNumericFacetValues.putAll(
+            super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
             knownNumericFacetValues.put(minInclusive, new BigDecimal(
-                    Integer.MIN_VALUE));
+            Integer.MIN_VALUE));
             knownNumericFacetValues.put(maxInclusive, new BigDecimal(
-                    Integer.MAX_VALUE));
+            Integer.MAX_VALUE));
         }
 
         @Override
@@ -1162,20 +1167,20 @@ public class DatatypeFactory implements Serializable {
     }
 
     static class INTEGER_DATATYPE<R extends Comparable<R>> extends
-            DECIMAL_DATATYPE<R> {
+    DECIMAL_DATATYPE<R> {
 
         private static final long serialVersionUID = 11000L;
 
         protected INTEGER_DATATYPE() {
-            this(XSDVocabulary.INTEGER.getIRI(), Utils
-                    .generateAncestors(DECIMAL));
+            this(XSDVocabulary.INTEGER.getIRI(), Utils.generateAncestors(
+            DECIMAL));
         }
 
         protected INTEGER_DATATYPE(@Nonnull IRI uri,
-                @Nonnull Set<Datatype<?>> ancestors) {
+        @Nonnull Set<Datatype<?>> ancestors) {
             super(uri, ancestors);
-            knownNonNumericFacetValues.putAll(super
-                    .getKnownNonNumericFacetValues());
+            knownNonNumericFacetValues.putAll(
+            super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
@@ -1190,7 +1195,7 @@ public class DatatypeFactory implements Serializable {
     }
 
     static class LONG_DATATYPE<R extends Comparable<R>> extends
-            INTEGER_DATATYPE<R> {
+    INTEGER_DATATYPE<R> {
 
         private static final long serialVersionUID = 11000L;
 
@@ -1199,17 +1204,17 @@ public class DatatypeFactory implements Serializable {
         }
 
         protected LONG_DATATYPE(@Nonnull IRI uri,
-                @Nonnull Set<Datatype<?>> ancestors) {
+        @Nonnull Set<Datatype<?>> ancestors) {
             super(uri, ancestors);
-            knownNonNumericFacetValues.putAll(super
-                    .getKnownNonNumericFacetValues());
+            knownNonNumericFacetValues.putAll(
+            super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
             knownNumericFacetValues.put(minInclusive, new BigDecimal(
-                    Long.MIN_VALUE));
+            Long.MIN_VALUE));
             knownNumericFacetValues.put(maxInclusive, new BigDecimal(
-                    Long.MAX_VALUE));
+            Long.MAX_VALUE));
         }
 
         @Override
@@ -1230,15 +1235,15 @@ public class DatatypeFactory implements Serializable {
     }
 
     static class NEGATIVEINTEGER_DATATYPE<R extends Comparable<R>> extends
-            NONPOSITIVEINTEGER_DATATYPE<R> {
+    NONPOSITIVEINTEGER_DATATYPE<R> {
 
         private static final long serialVersionUID = 11000L;
 
         protected NEGATIVEINTEGER_DATATYPE() {
             super(XSDVocabulary.NEGATIVE_INTEGER.getIRI(), Utils
-                    .generateAncestors(NONPOSITIVEINTEGER));
-            knownNonNumericFacetValues.putAll(super
-                    .getKnownNonNumericFacetValues());
+            .generateAncestors(NONPOSITIVEINTEGER));
+            knownNonNumericFacetValues.putAll(
+            super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
@@ -1251,27 +1256,27 @@ public class DatatypeFactory implements Serializable {
             BigInteger parse = new BigInteger(s);
             if (parse.compareTo(new BigInteger("-1")) > 0) {
                 throw new ArithmeticException(
-                        "Negative integer required, but found: " + s);
+                "Negative integer required, but found: " + s);
             }
             return (R) parse;
         }
     }
 
     static class NONNEGATIVEINTEGER_DATATYPE<R extends Comparable<R>> extends
-            INTEGER_DATATYPE<R> {
+    INTEGER_DATATYPE<R> {
 
         private static final long serialVersionUID = 11000L;
 
         protected NONNEGATIVEINTEGER_DATATYPE() {
             this(XSDVocabulary.NON_NEGATIVE_INTEGER.getIRI(), Utils
-                    .generateAncestors(INTEGER));
+            .generateAncestors(INTEGER));
         }
 
         protected NONNEGATIVEINTEGER_DATATYPE(@Nonnull IRI uri,
-                @Nonnull Set<Datatype<?>> ancestors) {
+        @Nonnull Set<Datatype<?>> ancestors) {
             super(uri, ancestors);
-            knownNonNumericFacetValues.putAll(super
-                    .getKnownNonNumericFacetValues());
+            knownNonNumericFacetValues.putAll(
+            super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
@@ -1284,27 +1289,27 @@ public class DatatypeFactory implements Serializable {
             BigInteger parseValue = new BigInteger(s);
             if (parseValue.compareTo(BigInteger.ZERO) < 0) {
                 throw new ArithmeticException(
-                        "Non negative integer required, but found: " + s);
+                "Non negative integer required, but found: " + s);
             }
             return (R) parseValue;
         }
     }
 
     static class NONPOSITIVEINTEGER_DATATYPE<R extends Comparable<R>> extends
-            INTEGER_DATATYPE<R> {
+    INTEGER_DATATYPE<R> {
 
         private static final long serialVersionUID = 11000L;
 
         protected NONPOSITIVEINTEGER_DATATYPE() {
             this(XSDVocabulary.NON_POSITIVE_INTEGER.getIRI(), Utils
-                    .generateAncestors(INTEGER));
+            .generateAncestors(INTEGER));
         }
 
         protected NONPOSITIVEINTEGER_DATATYPE(@Nonnull IRI uri,
-                @Nonnull Set<Datatype<?>> ancestors) {
+        @Nonnull Set<Datatype<?>> ancestors) {
             super(uri, ancestors);
-            knownNonNumericFacetValues.putAll(super
-                    .getKnownNonNumericFacetValues());
+            knownNonNumericFacetValues.putAll(
+            super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
@@ -1317,22 +1322,22 @@ public class DatatypeFactory implements Serializable {
             BigInteger parse = new BigInteger(s);
             if (parse.compareTo(BigInteger.ZERO) > 0) {
                 throw new ArithmeticException(
-                        "Non positive integer required, but found: " + s);
+                "Non positive integer required, but found: " + s);
             }
             return (R) parse;
         }
     }
 
     static class POSITIVEINTEGER_DATATYPE<R extends Comparable<R>> extends
-            NONNEGATIVEINTEGER_DATATYPE<R> {
+    NONNEGATIVEINTEGER_DATATYPE<R> {
 
         private static final long serialVersionUID = 11000L;
 
         protected POSITIVEINTEGER_DATATYPE() {
             super(XSDVocabulary.POSITIVE_INTEGER.getIRI(), Utils
-                    .generateAncestors(NONNEGATIVEINTEGER));
-            knownNonNumericFacetValues.putAll(super
-                    .getKnownNonNumericFacetValues());
+            .generateAncestors(NONNEGATIVEINTEGER));
+            knownNonNumericFacetValues.putAll(
+            super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
@@ -1345,14 +1350,14 @@ public class DatatypeFactory implements Serializable {
             BigInteger parseValue = new BigInteger(s);
             if (parseValue.compareTo(BigInteger.ZERO) <= 0) {
                 throw new ArithmeticException(
-                        "Positive integer required, but found: " + s);
+                "Positive integer required, but found: " + s);
             }
             return (R) parseValue;
         }
     }
 
     static class SHORT_DATATYPE<R extends Comparable<R>> extends
-            INT_DATATYPE<R> {
+    INT_DATATYPE<R> {
 
         private static final long serialVersionUID = 11000L;
 
@@ -1361,17 +1366,17 @@ public class DatatypeFactory implements Serializable {
         }
 
         protected SHORT_DATATYPE(@Nonnull IRI uri,
-                @Nonnull Set<Datatype<?>> ancestors) {
+        @Nonnull Set<Datatype<?>> ancestors) {
             super(uri, ancestors);
-            knownNonNumericFacetValues.putAll(super
-                    .getKnownNonNumericFacetValues());
+            knownNonNumericFacetValues.putAll(
+            super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
             knownNumericFacetValues.put(minInclusive, new BigDecimal(
-                    Short.MIN_VALUE));
+            Short.MIN_VALUE));
             knownNumericFacetValues.put(maxInclusive, new BigDecimal(
-                    Short.MAX_VALUE));
+            Short.MAX_VALUE));
         }
 
         @Override
@@ -1381,47 +1386,47 @@ public class DatatypeFactory implements Serializable {
         }
     }
 
-    abstract static class UNSIGNEDBYTE_DATATYPE<R extends Comparable<R>>
-            extends UNSIGNEDSHORT_DATATYPE<R> {
+    abstract static class UNSIGNEDBYTE_DATATYPE<R extends Comparable<R>> extends
+    UNSIGNEDSHORT_DATATYPE<R> {
 
         private static final long serialVersionUID = 11000L;
 
         protected UNSIGNEDBYTE_DATATYPE() {
-            super(XSDVocabulary.UNSIGNED_BYTE.getIRI(), Utils
-                    .generateAncestors(UNSIGNEDSHORT));
-            knownNonNumericFacetValues.putAll(super
-                    .getKnownNonNumericFacetValues());
+            super(XSDVocabulary.UNSIGNED_BYTE.getIRI(), Utils.generateAncestors(
+            UNSIGNEDSHORT));
+            knownNonNumericFacetValues.putAll(
+            super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
-            knownNumericFacetValues
-                    .put(minInclusive, new BigDecimal((short) 0));
+            knownNumericFacetValues.put(minInclusive, new BigDecimal(
+            (short) 0));
             knownNumericFacetValues.put(maxInclusive, new BigDecimal(
-                    (short) 255));
+            (short) 255));
         }
     }
 
     static class UNSIGNEDINT_DATATYPE<R extends Comparable<R>> extends
-            UNSIGNEDLONG_DATATYPE<R> {
+    UNSIGNEDLONG_DATATYPE<R> {
 
         private static final long serialVersionUID = 11000L;
 
         protected UNSIGNEDINT_DATATYPE() {
-            this(XSDVocabulary.UNSIGNED_INT.getIRI(), Utils
-                    .generateAncestors(UNSIGNEDLONG));
+            this(XSDVocabulary.UNSIGNED_INT.getIRI(), Utils.generateAncestors(
+            UNSIGNEDLONG));
         }
 
         protected UNSIGNEDINT_DATATYPE(@Nonnull IRI uri,
-                @Nonnull Set<Datatype<?>> ancestors) {
+        @Nonnull Set<Datatype<?>> ancestors) {
             super(uri, ancestors);
-            knownNonNumericFacetValues.putAll(super
-                    .getKnownNonNumericFacetValues());
+            knownNonNumericFacetValues.putAll(
+            super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
             knownNumericFacetValues.put(minInclusive, new BigDecimal(0L));
             knownNumericFacetValues.put(maxInclusive, new BigDecimal(
-                    4294967295L));
+            4294967295L));
         }
 
         @Override
@@ -1430,33 +1435,33 @@ public class DatatypeFactory implements Serializable {
             Long parseInt = Long.valueOf(s);
             if (parseInt.longValue() < 0) {
                 throw new ArithmeticException(
-                        "Unsigned int required, but found: " + s);
+                "Unsigned int required, but found: " + s);
             }
             return (R) parseInt;
         }
     }
 
     static class UNSIGNEDLONG_DATATYPE<R extends Comparable<R>> extends
-            NONNEGATIVEINTEGER_DATATYPE<R> {
+    NONNEGATIVEINTEGER_DATATYPE<R> {
 
         private static final long serialVersionUID = 11000L;
 
         protected UNSIGNEDLONG_DATATYPE() {
-            this(XSDVocabulary.UNSIGNED_LONG.getIRI(), Utils
-                    .generateAncestors(NONNEGATIVEINTEGER));
+            this(XSDVocabulary.UNSIGNED_LONG.getIRI(), Utils.generateAncestors(
+            NONNEGATIVEINTEGER));
         }
 
         protected UNSIGNEDLONG_DATATYPE(@Nonnull IRI uri,
-                @Nonnull Set<Datatype<?>> ancestors) {
+        @Nonnull Set<Datatype<?>> ancestors) {
             super(uri, ancestors);
-            knownNonNumericFacetValues.putAll(super
-                    .getKnownNonNumericFacetValues());
+            knownNonNumericFacetValues.putAll(
+            super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
             knownNumericFacetValues.put(minInclusive, BigDecimal.ZERO);
             knownNumericFacetValues.put(maxInclusive, new BigDecimal(
-                    "18446744073709551615"));
+            "18446744073709551615"));
         }
 
         @Override
@@ -1465,7 +1470,7 @@ public class DatatypeFactory implements Serializable {
             BigInteger b = new BigInteger(s);
             if (b.compareTo(BigInteger.ZERO) < 0) {
                 throw new ArithmeticException(
-                        "Unsigned long required, but found: " + s);
+                "Unsigned long required, but found: " + s);
             }
             return (R) b;
         }
@@ -1482,20 +1487,20 @@ public class DatatypeFactory implements Serializable {
     }
 
     static class UNSIGNEDSHORT_DATATYPE<R extends Comparable<R>> extends
-            UNSIGNEDINT_DATATYPE<R> {
+    UNSIGNEDINT_DATATYPE<R> {
 
         private static final long serialVersionUID = 11000L;
 
         protected UNSIGNEDSHORT_DATATYPE() {
-            this(XSDVocabulary.UNSIGNED_SHORT.getIRI(), Utils
-                    .generateAncestors(UNSIGNEDINT));
+            this(XSDVocabulary.UNSIGNED_SHORT.getIRI(), Utils.generateAncestors(
+            UNSIGNEDINT));
         }
 
         protected UNSIGNEDSHORT_DATATYPE(@Nonnull IRI uri,
-                @Nonnull Set<Datatype<?>> ancestors) {
+        @Nonnull Set<Datatype<?>> ancestors) {
             super(uri, ancestors);
-            knownNonNumericFacetValues.putAll(super
-                    .getKnownNonNumericFacetValues());
+            knownNonNumericFacetValues.putAll(
+            super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, NUMBER_EXPRESSION);
@@ -1509,14 +1514,14 @@ public class DatatypeFactory implements Serializable {
             Integer parseShort = Integer.valueOf(s);
             if (parseShort.intValue() < 0) {
                 throw new ArithmeticException(
-                        "Unsigned short required, but found: " + s);
+                "Unsigned short required, but found: " + s);
             }
             return (R) parseShort;
         }
     }
 
     private static class UnsignedByteForShort extends
-            UNSIGNEDBYTE_DATATYPE<Short> {
+    UNSIGNEDBYTE_DATATYPE<Short> {
 
         private static final long serialVersionUID = 11000L;
 
@@ -1527,22 +1532,22 @@ public class DatatypeFactory implements Serializable {
             short parseByte = Short.parseShort(s);
             if (parseByte < 0) {
                 throw new ArithmeticException(
-                        "Unsigned short required, but found: " + s);
+                "Unsigned short required, but found: " + s);
             }
             return parseByte;
         }
     }
 
     static class RATIONAL_DATATYPE<R extends Comparable<R>> extends
-            REAL_DATATYPE<R> {
+    REAL_DATATYPE<R> {
 
         private static final long serialVersionUID = 11000L;
 
         protected RATIONAL_DATATYPE(@Nonnull IRI uri, @Nonnull Set<Facet> f,
-                @Nonnull Set<Datatype<?>> ancestors) {
+        @Nonnull Set<Datatype<?>> ancestors) {
             super(uri, f, ancestors);
-            knownNonNumericFacetValues.putAll(super
-                    .getKnownNonNumericFacetValues());
+            knownNonNumericFacetValues.putAll(
+            super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
         }
 
@@ -1551,8 +1556,8 @@ public class DatatypeFactory implements Serializable {
         }
 
         protected RATIONAL_DATATYPE(@Nonnull IRI uri) {
-            this(uri, Collections.<Facet> emptySet(), Utils
-                    .generateAncestors(REAL));
+            this(uri, Collections.<Facet> emptySet(), Utils.generateAncestors(
+            REAL));
         }
 
         @Override
@@ -1567,14 +1572,14 @@ public class DatatypeFactory implements Serializable {
         private static final long serialVersionUID = 11000L;
 
         protected LANGUAGE_DATATYPE() {
-            super(XSDVocabulary.LANGUAGE.getIRI(), Utils
-                    .generateAncestors(TOKEN));
-            knownNonNumericFacetValues.putAll(super
-                    .getKnownNonNumericFacetValues());
+            super(XSDVocabulary.LANGUAGE.getIRI(), Utils.generateAncestors(
+            TOKEN));
+            knownNonNumericFacetValues.putAll(
+            super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern,
-                    "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*");
+            "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*");
         }
     }
 
@@ -1587,10 +1592,10 @@ public class DatatypeFactory implements Serializable {
         }
 
         protected NAME_DATATYPE(@Nonnull IRI uri,
-                @Nonnull Set<Datatype<?>> ancestors) {
+        @Nonnull Set<Datatype<?>> ancestors) {
             super(uri, ancestors);
-            knownNonNumericFacetValues.putAll(super
-                    .getKnownNonNumericFacetValues());
+            knownNonNumericFacetValues.putAll(
+            super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, "\\i\\c*");
@@ -1603,8 +1608,8 @@ public class DatatypeFactory implements Serializable {
 
         protected NCNAME_DATATYPE() {
             super(XSDVocabulary.NCNAME.getIRI(), Utils.generateAncestors(NAME));
-            knownNonNumericFacetValues.putAll(super
-                    .getKnownNonNumericFacetValues());
+            knownNonNumericFacetValues.putAll(
+            super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, "[\\i-[:]][\\c-[:]]*");
@@ -1621,14 +1626,15 @@ public class DatatypeFactory implements Serializable {
         private static final long serialVersionUID = 11000L;
 
         protected NMTOKEN_DATATYPE() {
-            this(XSDVocabulary.NMTOKEN.getIRI(), Utils.generateAncestors(TOKEN));
+            this(XSDVocabulary.NMTOKEN.getIRI(), Utils.generateAncestors(
+            TOKEN));
         }
 
         protected NMTOKEN_DATATYPE(@Nonnull IRI uri,
-                @Nonnull Set<Datatype<?>> ancestors) {
+        @Nonnull Set<Datatype<?>> ancestors) {
             super(uri, ancestors);
-            knownNonNumericFacetValues.putAll(super
-                    .getKnownNonNumericFacetValues());
+            knownNonNumericFacetValues.putAll(
+            super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(pattern, "\\c+");
@@ -1645,10 +1651,10 @@ public class DatatypeFactory implements Serializable {
         private static final long serialVersionUID = 11000L;
 
         protected NMTOKENS_DATATYPE() {
-            super(IRI.create(namespace, "NMTOKENS"), Utils
-                    .generateAncestors(NMTOKEN));
-            knownNonNumericFacetValues.putAll(super
-                    .getKnownNonNumericFacetValues());
+            super(IRI.create(namespace, "NMTOKENS"), Utils.generateAncestors(
+            NMTOKEN));
+            knownNonNumericFacetValues.putAll(
+            super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
             knownNonNumericFacetValues.put(minLength, 1);
@@ -1661,14 +1667,14 @@ public class DatatypeFactory implements Serializable {
 
         protected NORMALIZEDSTRING_DATATYPE() {
             this(XSDVocabulary.NORMALIZED_STRING.getIRI(), Utils
-                    .generateAncestors(STRING));
+            .generateAncestors(STRING));
         }
 
         protected NORMALIZEDSTRING_DATATYPE(@Nonnull IRI uri,
-                @Nonnull Set<Datatype<?>> ancestors) {
+        @Nonnull Set<Datatype<?>> ancestors) {
             super(uri, ancestors);
-            knownNonNumericFacetValues.putAll(super
-                    .getKnownNonNumericFacetValues());
+            knownNonNumericFacetValues.putAll(
+            super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, replace);
         }
@@ -1679,15 +1685,15 @@ public class DatatypeFactory implements Serializable {
         private static final long serialVersionUID = 11000L;
 
         protected TOKEN_DATATYPE() {
-            this(XSDVocabulary.TOKEN.getIRI(), Utils
-                    .generateAncestors(NORMALIZEDSTRING));
+            this(XSDVocabulary.TOKEN.getIRI(), Utils.generateAncestors(
+            NORMALIZEDSTRING));
         }
 
         protected TOKEN_DATATYPE(@Nonnull IRI uri,
-                @Nonnull Set<Datatype<?>> ancestors) {
+        @Nonnull Set<Datatype<?>> ancestors) {
             super(uri, ancestors);
-            knownNonNumericFacetValues.putAll(super
-                    .getKnownNonNumericFacetValues());
+            knownNonNumericFacetValues.putAll(
+            super.getKnownNonNumericFacetValues());
             knownNumericFacetValues.putAll(super.getKnownNumericFacetValues());
             knownNonNumericFacetValues.put(whiteSpace, WHITESPACE);
         }
@@ -1699,12 +1705,12 @@ public class DatatypeFactory implements Serializable {
 
         protected XMLLITERAL_DATATYPE() {
             super(IRI.create("http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-                    "XMLLiteral"), Collections.<Facet> emptySet(), Utils
-                    .generateAncestors(LITERAL));
+            "XMLLiteral"), Collections.<Facet> emptySet(), Utils
+            .generateAncestors(LITERAL));
             knownNonNumericFacetValues.putAll(LITERAL
-                    .getKnownNonNumericFacetValues());
-            knownNumericFacetValues
-                    .putAll(LITERAL.getKnownNumericFacetValues());
+            .getKnownNonNumericFacetValues());
+            knownNumericFacetValues.putAll(LITERAL
+            .getKnownNumericFacetValues());
         }
 
         @Override
@@ -1718,8 +1724,8 @@ public class DatatypeFactory implements Serializable {
         @Override
         public boolean isInValueSpace(String l) {
             try {
-                DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                        .parse(new ByteArrayInputStream(l.getBytes()));
+                DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
+                new ByteArrayInputStream(l.getBytes()));
             } catch (Exception e) {
                 return false;
             }
@@ -1727,7 +1733,9 @@ public class DatatypeFactory implements Serializable {
         }
     }
 
-    /** @return namespace */
+    /**
+     * @return namespace
+     */
     public static String getNamespace() {
         return namespace;
     }
