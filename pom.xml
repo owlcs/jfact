@@ -199,7 +199,6 @@
 		<dependency>
 			<groupId>net.sourceforge.owlapi</groupId>
 			<artifactId>owlapi-distribution</artifactId>
-			<version>[4.0.2,4.1)</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.trove4j</groupId>
@@ -235,4 +234,11 @@
 			<version>0.4.9</version>
 		</dependency>
 	</dependencies>
+	<dependencyManagement><dependencies>
+		<dependency>
+			<groupId>net.sourceforge.owlapi</groupId>
+			<artifactId>owlapi-distribution</artifactId>
+			<version>4.0.2</version>
+		</dependency></dependencies>
+	</dependencyManagement>
 </project>
