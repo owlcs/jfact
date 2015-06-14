@@ -16,20 +16,14 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
-import uk.ac.manchester.cs.jfact.kernel.Concept;
-import uk.ac.manchester.cs.jfact.kernel.Lexeme;
-import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
-import uk.ac.manchester.cs.jfact.kernel.Role;
-import uk.ac.manchester.cs.jfact.kernel.Token;
+import uk.ac.manchester.cs.jfact.kernel.*;
 
 /** dl tree factory */
 public class DLTreeFactory implements Serializable {
 
     private static final long serialVersionUID = 11000L;
-    private static final EnumSet<Token> snfCalls = EnumSet.of(TOP, BOTTOM,
-            CNAME, INAME, RNAME, DNAME, DATAEXPR, NOT, INV, AND, FORALL, LE,
-            SELF, RCOMPOSITION, PROJFROM, PROJINTO);
+    private static final EnumSet<Token> snfCalls = EnumSet.of(TOP, BOTTOM, CNAME, INAME, RNAME, DNAME, DATAEXPR, NOT,
+        INV, AND, FORALL, LE, SELF, RCOMPOSITION, PROJFROM, PROJINTO);
 
     /**
      * @return BOTTOM element
@@ -254,8 +248,9 @@ public class DLTreeFactory implements Serializable {
         if (D.isCName() && containsC(C, D)) {
             return C;
         } else if (D.isAND()) {
-            C = createSNFReducedAnd(C, D.getLeft().copy());
-            C = createSNFReducedAnd(C, D.getRight().copy());
+            for (DLTree d : D.getChildren()) {
+                C = createSNFReducedAnd(C, d.copy());
+            }
             return C;
         } else {
             return createSNFAnd(C, D);
@@ -270,8 +265,7 @@ public class DLTreeFactory implements Serializable {
      * @return and
      */
     @Nonnull
-    public static DLTree createSNFAnd(Collection<DLTree> collection,
-            @Nonnull DLTree ancestor) {
+    public static DLTree createSNFAnd(Collection<DLTree> collection, @Nonnull DLTree ancestor) {
         if (collection.size() == 1) {
             return collection.iterator().next();
         }
@@ -480,8 +474,7 @@ public class DLTreeFactory implements Serializable {
      * @return not
      */
     @Nonnull
-    public static DLTree createSNFNot(@Nonnull DLTree C,
-            @Nonnull DLTree ancestor) {
+    public static DLTree createSNFNot(@Nonnull DLTree C, @Nonnull DLTree ancestor) {
         assert C != null;
         if (C.isBOTTOM()) {
             // \not F = T
@@ -536,8 +529,7 @@ public class DLTreeFactory implements Serializable {
         if (tree.token() == RCOMPOSITION) {
             return tree.accept(new ReverseCloningVisitor());
         } else {
-            return new LEAFDLTree(
-                    new Lexeme(RNAME, Role.resolveRole(tree).inverse()));
+            return new LEAFDLTree(new Lexeme(RNAME, Role.resolveRole(tree).inverse()));
         }
     }
 
@@ -634,9 +626,8 @@ public class DLTreeFactory implements Serializable {
      * @return true if functional
      */
     public static boolean isFunctionalExpr(DLTree t, NamedEntry R) {
-        return t != null && t.token() == LE
-                && R.equals(t.getLeft().elem().getNE())
-                && t.elem().getData() == 1 && t.getRight().isTOP();
+        return t != null && t.token() == LE && R.equals(t.getLeft().elem().getNE()) && t.elem().getData() == 1 && t
+            .getRight().isTOP();
     }
 
     /**
@@ -717,9 +708,7 @@ public class DLTreeFactory implements Serializable {
                 } else if (entry.isBottom()) {
                     desc.elem = new Lexeme(BOTTOM);
                 } else {
-                    desc.elem = new Lexeme(
-                            ((Concept) entry).isSingleton() ? INAME : CNAME,
-                            entry);
+                    desc.elem = new Lexeme(((Concept) entry).isSingleton() ? INAME : CNAME, entry);
                 }
                 return true;
             } else {
