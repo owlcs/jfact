@@ -55,9 +55,10 @@ public class DepSet implements Serializable {
      */
     @PortedFrom(file = "tDepSet.h", name = "create")
     public static DepSet create(DepSet dep) {
-        DepSet toReturn = new DepSet();
-        toReturn.add(dep);
-        return toReturn;
+        if (dep == null) {
+            return create();
+        }
+        return new DepSet(dep.delegate, dep.cardinality);
     }
 
     /**
@@ -73,10 +74,13 @@ public class DepSet implements Serializable {
             return new DepSet();
         }
         if (ds1 == null || ds1.isEmpty()) {
-            return new DepSet(ds2 == null ? null : ds2.delegate);
+            if (ds2 == null || ds2.isEmpty()) {
+                return new DepSet();
+            }
+            return new DepSet(ds2.delegate, ds2.cardinality);
         }
         if (ds2 == null || ds2.isEmpty()) {
-            return new DepSet(ds1.delegate);
+            return new DepSet(ds1.delegate, ds1.cardinality);
         }
         DepSet toReturn = new DepSet();
         toReturn.add(ds1);
@@ -91,20 +95,25 @@ public class DepSet implements Serializable {
      */
     @PortedFrom(file = "tDepSet.h", name = "create")
     public static DepSet create(RoaringBitmap delegate) {
-        return new DepSet(delegate);
+        return new DepSet(delegate, delegate == null ? 0
+        : delegate.getCardinality());
     }
 
     @Original
     private RoaringBitmap delegate = null;
+    private int cardinality = 0;
 
     protected DepSet() {}
 
     /**
      * @param d
      *        d
+     * @param card
+     *        cardinality of the input
      */
-    private DepSet(RoaringBitmap d) {
+    private DepSet(RoaringBitmap d, int card) {
         delegate = d;
+        cardinality = card;
     }
 
     /**
@@ -119,6 +128,7 @@ public class DepSet implements Serializable {
 
     protected DepSet(int i) {
         delegate = RoaringBitmap.bitmapOf(i);
+        cardinality = 1;
     }
 
     /** @return last delegate */
@@ -137,7 +147,7 @@ public class DepSet implements Serializable {
     /** @return true if empty or null delegate */
     @PortedFrom(file = "tDepSet.h", name = "empty")
     public boolean isEmpty() {
-        return delegate == null || delegate.isEmpty();
+        return cardinality == 0;
     }
 
     @Override
@@ -161,6 +171,13 @@ public class DepSet implements Serializable {
             if (delegate == null) {
                 return obj2.delegate == null;
             }
+            if (cardinality != obj2.cardinality) {
+                return false;
+            }
+            assert cardinality == obj2.cardinality;
+            if (cardinality == 0) {
+                return true;
+            }
             return delegate.equals(obj2.delegate);
         }
         return false;
@@ -174,7 +191,7 @@ public class DepSet implements Serializable {
     /** @return delegate size */
     @PortedFrom(file = "tDepSet.h", name = "size")
     public int size() {
-        return delegate == null ? 0 : delegate.getCardinality();
+        return cardinality;
     }
 
     /**
@@ -194,8 +211,10 @@ public class DepSet implements Serializable {
             }
             if (f.isEmpty()) {
                 delegate = null;
+                cardinality = 0;
             } else {
                 delegate = f;
+                cardinality = delegate.getCardinality();
             }
         }
         // if the depset is empty, no operation
@@ -205,6 +224,7 @@ public class DepSet implements Serializable {
     @PortedFrom(file = "tDepSet.h", name = "clear")
     public void clear() {
         delegate = null;
+        cardinality = 0;
     }
 
     /**
@@ -218,8 +238,10 @@ public class DepSet implements Serializable {
         }
         if (delegate == null) {
             delegate = toAdd.delegate;
+            cardinality = delegate.getCardinality();
             return;
         }
         delegate = RoaringBitmap.or(delegate, toAdd.delegate);
+        cardinality = delegate.getCardinality();
     }
 }
