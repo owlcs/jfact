@@ -183,13 +183,14 @@ public class ArrayIntMap implements Serializable {
     /**
      * @param o
      *        o
+     * @return value removed
      */
-    public void remove(int o) {
+    public int remove(int o) {
         if (values == null) {
-            return;
+            return -1;
         }
         int i = insertionIndex(o);
-        removeAt(i);
+        return removeAt(i);
     }
 
     /** @return size */
@@ -200,16 +201,19 @@ public class ArrayIntMap implements Serializable {
     /**
      * @param i
      *        i
+     * @return value at it
      */
-    public void removeAt(int i) {
+    public int removeAt(int i) {
+        int toReturn = -1;
         if (values == null) {
-            return;
+            return toReturn;
         }
         if (i > -1 && i < size) {
+            toReturn = values[1][i];
             if (size == 1) {
                 values = null;
                 size = 0;
-                return;
+                return toReturn;
             }
             for (int j = i; j < size - 1; j++) {
                 values[0][j] = values[0][j + 1];
@@ -220,6 +224,7 @@ public class ArrayIntMap implements Serializable {
         if (size == 0) {
             values = null;
         }
+        return toReturn;
     }
 
     /**
