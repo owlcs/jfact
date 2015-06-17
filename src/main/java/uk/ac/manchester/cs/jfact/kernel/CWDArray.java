@@ -9,16 +9,19 @@ import static java.util.stream.Collectors.toList;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import javax.annotation.Nonnull;
+
+import org.roaringbitmap.RoaringBitmap;
+
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.ArrayIntMap;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** List of concepts with dependencies */
 @PortedFrom(file = "CWDArray.h", name = "CWDArray")
@@ -31,18 +34,21 @@ public class CWDArray implements Serializable {
     @PortedFrom(file = "CWDArray.h", name = "Base")
     private final List<ConceptWDep> base;
     @Original
-    private BitSet cache;
+    @Nonnull
+    private RoaringBitmap cache = new RoaringBitmap();
     @Original
     private final ArrayIntMap indexes = new ArrayIntMap();
-    @Original
-    private boolean createCache = false;
-    @Original
-    private static final int cacheLimit = 1;
     @Original
     private int size = 0;
     @Original
     private JFactReasonerConfiguration options;
 
+    /**
+     * @param config
+     *        configuration
+     * @param size
+     *        initial size
+     */
     public CWDArray(JFactReasonerConfiguration config, int size) {
         options = config;
         base = new ArrayList<>(size);
@@ -52,19 +58,22 @@ public class CWDArray implements Serializable {
     @PortedFrom(file = "CWDArray.h", name = "init")
     public void init() {
         base.clear();
-        cache = null;
+        cache.clear();
         indexes.clear();
-        createCache = false;
         size = 0;
     }
 
-    /** @return list of concepts */
+    /**
+     * @return list of concepts
+     */
     @PortedFrom(file = "CWDArray.h", name = "begin")
     public List<ConceptWDep> getBase() {
         return base;
     }
 
-    /** @return contained concept map */
+    /**
+     * @return contained concept map
+     */
     @Original
     public ArrayIntMap getContainedConcepts() {
         return indexes;
@@ -80,17 +89,8 @@ public class CWDArray implements Serializable {
     protected void private_add(ConceptWDep p) {
         base.add(p);
         size++;
-        if (cache != null) {
-            cache.set(asPositive(p.getConcept()));
-        }
+        cache.add(asPositive(p.getConcept()));
         indexes.put(p.getConcept(), size - 1);
-        int span = Math.max(asPositive(indexes.keySet(0)),
-                indexes.keySet(indexes.size() - 1));
-        // create a cache only if the size is higher than a preset minimum and
-        // there is at least an element in 20; caches with very dispersed
-        // elements eat up too much memory
-        createCache = size > cacheLimit
-                && (double) size / (span + 1) > distribution;
     }
 
     /**
@@ -100,22 +100,7 @@ public class CWDArray implements Serializable {
      */
     @PortedFrom(file = "CWDArray.h", name = "contains")
     public boolean contains(int bp) {
-        if (cache == null && createCache) {
-            initCache();
-        }
-        if (cache != null) {
-            return cache.get(asPositive(bp));
-        } else {
-            return indexes.containsKey(bp);
-        }
-    }
-
-    @Original
-    private void initCache() {
-        cache = new BitSet();
-        for (int i = 0; i < indexes.size(); i++) {
-            cache.set(asPositive(indexes.keySet(i)));
-        }
+        return cache.contains(asPositive(bp));
     }
 
     @Original
@@ -131,7 +116,7 @@ public class CWDArray implements Serializable {
     @PortedFrom(file = "CWDArray.h", name = "index")
     public int index(int bp) {
         // check that the index actually exist: quicker
-        if (cache != null && !cache.get(asPositive(bp))) {
+        if (!cache.contains(asPositive(bp))) {
             return -1;
         }
         return indexes.get(bp);
@@ -144,15 +129,11 @@ public class CWDArray implements Serializable {
      */
     @PortedFrom(file = "CWDArray.h", name = "get")
     public DepSet get(int bp) {
-        // check that the index actually exist: quicker
-        if (cache != null && !cache.get(asPositive(bp))) {
+        ConceptWDep cwd = getConceptWithBP(bp);
+        if (cwd == null) {
             return null;
         }
-        int i = indexes.get(bp);
-        if (i < 0) {
-            return null;
-        }
-        return base.get(i).getDep();
+        return cwd.getDep();
     }
 
     /**
@@ -163,7 +144,7 @@ public class CWDArray implements Serializable {
     @Original
     public ConceptWDep getConceptWithBP(int bp) {
         // check that the index actually exist: quicker
-        if (cache != null && !cache.get(asPositive(bp))) {
+        if (!cache.contains(asPositive(bp))) {
             return null;
         }
         int i = indexes.get(bp);
@@ -173,7 +154,9 @@ public class CWDArray implements Serializable {
         return base.get(i);
     }
 
-    /** @return size of list */
+    /**
+     * @return size of list
+     */
     @PortedFrom(file = "CWDArray.h", name = "size")
     public int size() {
         return size;
@@ -187,16 +170,12 @@ public class CWDArray implements Serializable {
     @PortedFrom(file = "CWDArray.h", name = "<=")
     public boolean lesserequal(CWDArray label) {
         // use the cache on the label if there is one
-        if (label.cache != null) {
-            for (int i = 0; i < indexes.size(); i++) {
-                if (!label.cache.get(asPositive(indexes.keySet(i)))) {
-                    return false;
-                }
+        for (int i : cache) {
+            if (!label.cache.contains(i)) {
+                return false;
             }
-            return true;
         }
-        // checks the keys are in both maps
-        return label.indexes.containsAll(indexes);
+        return true;
     }
 
     @Override
@@ -256,8 +235,7 @@ public class CWDArray implements Serializable {
         if (dep.isEmpty()) {
             throw new IllegalArgumentException();
         }
-        return IntStream.range(0, size).mapToObj(i -> updateDepSet(i, dep))
-                .collect(toList());
+        return IntStream.range(0, size).mapToObj(i -> updateDepSet(i, dep)).collect(toList());
     }
 
     /**
@@ -274,13 +252,10 @@ public class CWDArray implements Serializable {
             // if backjumping is enabled, an entity is deleted only if the
             // depset level is the same or above level, otherwise the entry is
             // kept
-            if (!options.isRKG_USE_DYNAMIC_BACKJUMPING()
-                    || base.get(i).getDep().level() >= level) {
+            if (!options.isRKG_USE_DYNAMIC_BACKJUMPING() || base.get(i).getDep().level() >= level) {
                 int concept = base.get(i).getConcept();
                 indexes.remove(concept);
-                if (cache != null) {
-                    cache.clear(asPositive(concept));
-                }
+                cache.remove(asPositive(concept));
             } else {
                 count++;
             }
