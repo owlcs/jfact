@@ -120,11 +120,16 @@ public abstract class VerifyComplianceBase extends TestBase {
     protected OWLClass owlThing = df.getOWLThing();
     @Nonnull
     protected OWLClass owlNothing = df.getOWLNothing();
+    protected JFactReasonerConfiguration config = new JFactReasonerConfiguration();
+
+    protected void enableLogging() {
+        config = config.setAbsorptionLoggingActive(true).setLoggingActive(true);
+    }
 
     @Before
     public void setUp() throws OWLOntologyCreationException {
         reasoner = (JFactReasoner) factory().createReasoner(load(input()),
-                new JFactReasonerConfiguration());
+        config);
         reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
     }
 
