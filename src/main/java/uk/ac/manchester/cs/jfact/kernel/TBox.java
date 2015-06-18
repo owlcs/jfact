@@ -1160,7 +1160,7 @@ public class TBox implements Serializable {
             int hostBP = addDatatypeExpressionToHeap(p.getType());
             DLVertex ver = new DLVertex(dt, 0, null, hostBP, null);
             ver.setConcept(p);
-            p.setIndex(dlHeap.directAdd(ver));
+            p.setIndex(dlHeap.directAdd(ver, false));
             toReturn = p.getIndex();
         }
         return toReturn;
@@ -1185,7 +1185,7 @@ public class TBox implements Serializable {
             }
             DLVertex ver = new DLVertex(dt, 0, null, hostBP, null);
             ver.setConcept(p);
-            p.setIndex(dlHeap.directAdd(ver));
+            p.setIndex(dlHeap.directAdd(ver, false));
             toReturn = p.getIndex();
         }
         return toReturn;
@@ -1207,7 +1207,7 @@ public class TBox implements Serializable {
             // else, create a new vertex and add it
             DLVertex ver = new DLVertex(dtDataType, 0, null, bpTOP, null);
             ver.setConcept(concept);
-            int directAdd = dlHeap.directAdd(ver);
+            int directAdd = dlHeap.directAdd(ver, true);
             hostBP = directAdd;
         }
         return hostBP;
@@ -1229,7 +1229,7 @@ public class TBox implements Serializable {
         // new concept's addition
         DLVertex ver = new DLVertex(tag);
         ver.setConcept(pConcept);
-        pConcept.setpName(dlHeap.directAdd(ver));
+        pConcept.setpName(dlHeap.directAdd(ver, false));
         int desc = bpTOP;
         // translate body of a concept
         if (pConcept.getDescription() != null) {
@@ -1300,8 +1300,9 @@ public class TBox implements Serializable {
             ret = atmost2dag(cur.getData(), resolveRole(t.getLeft()), tree2dag(t.getRight()));
             break;
         case PROJFROM:
+            // XXX verify if new object necessary?
             ret = dlHeap.directAdd(new DLVertex(DagTag.dtProj, 0, Role.resolveRole(t.getLeft()), tree2dag(t.getRight()
-                .getRight()), resolveRole(t.getRight().getLeft())));
+                .getRight()), resolveRole(t.getRight().getLeft())), false);
             break;
         default:
             assert DLTreeFactory.isSNF(t);
