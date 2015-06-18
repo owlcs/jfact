@@ -27,6 +27,8 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 import org.semanticweb.owlapi.vocab.XSDVocabulary;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import conformance.Original;
 import uk.ac.manchester.cs.jfact.datatypes.Facets.whitespace;
@@ -39,6 +41,7 @@ import uk.ac.manchester.cs.jfact.datatypes.Facets.whitespace;
 @Original
 public class DatatypeFactory implements Serializable {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(DatatypeFactory.class);
     private static final long serialVersionUID = 11000L;
     //@formatter:off
     private static final String namespace = "http://www.w3.org/2001/XMLSchema#";
@@ -168,8 +171,34 @@ public class DatatypeFactory implements Serializable {
      */
     @Nonnull
     public <R extends Comparable<R>> Datatype<R> getKnownDatatype(IRI key) {
-        return (Datatype<R>) verifyNotNull(knownDatatypes.get(key), "unknown datatype");
-    }
+            Datatype<?> datatype = knownDatatypes.get(key);
+            if (datatype != null) {
+                return (Datatype<R>)datatype;
+            }
+            // defend against incorrect datatype IRIs: some ontologies use
+            // ^^<xsd:dateTime> instead of ^^xsd:dateTime, and this causes the
+            // xsd: prefix not to be correctly replaced.
+            String iriString = key.toString();
+            if (iriString.startsWith("xsd:")) {
+                String name = iriString.substring(4);
+                for (XSDVocabulary v : XSDVocabulary.values()) {
+                    if (v.getShortForm().equals(name)) {
+                        datatype = knownDatatypes.get(v.getIRI());
+                        if (datatype == null) {
+                            LOGGER.error(
+                                "A known datatype for {} cannot be found; literal will be replaced with rdfs:Literal",
+                                iriString);
+                            knownDatatypes.put(key, LITERAL);
+                            return (Datatype<R>)LITERAL;
+                        }
+                        return (Datatype<R>)datatype;
+                    }
+                }
+            }
+            LOGGER.error("A known datatype for {} cannot be found; literal will be replaced with rdfs:Literal", iriString);
+            knownDatatypes.put(key, LITERAL);
+            return (Datatype<R>)LITERAL;
+        }
 
     /**
      * @param key
