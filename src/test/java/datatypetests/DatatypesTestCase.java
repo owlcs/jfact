@@ -27,6 +27,7 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.roaringbitmap.RoaringBitmap;
 import org.w3c.dom.Document;
 
 import uk.ac.manchester.cs.jfact.datatypes.DataTypeReasoner;
@@ -68,10 +69,8 @@ public class DatatypesTestCase {
     }
 
     @Nonnull
-    private static LiteralEntry literal(Datatype<?> d, @Nonnull String name,
-            int index) {
-        return new LiteralEntry(name).withLiteral(d.buildLiteral(name))
-                .withIndex(index);
+    private static LiteralEntry literal(Datatype<?> d, @Nonnull String name, int index) {
+        return new LiteralEntry(name).withLiteral(d.buildLiteral(name)).withIndex(index);
     }
 
     private JFactReasonerConfiguration config;
@@ -79,30 +78,19 @@ public class DatatypesTestCase {
     private final DatatypeEntry integerDatatypeEntry6 = datatype(INTEGER, 6);
     private final DatatypeEntry nonposinteger4 = datatype(NONPOSITIVEINTEGER, 4);
     private final DatatypeEntry shortDatatypeEntry5 = datatype(SHORT, 5);
-    private final DatatypeEntry unsignedbyteDatatypeEntry5 = datatype(
-            UNSIGNEDBYTE, 5);
+    private final DatatypeEntry unsignedbyteDatatypeEntry5 = datatype(UNSIGNEDBYTE, 5);
     private final LiteralEntry Agamidae = literal(PLAINLITERAL, "Agamidae@", 26);
-    private final LiteralEntry Amphisbaenidae = literal(PLAINLITERAL,
-            "Amphisbaenidae@", 10);
-    private final LiteralEntry Anomalepidae = literal(PLAINLITERAL,
-            "Anomalepidae@", 22);
-    private final LiteralEntry Bipedidae = literal(PLAINLITERAL, "Bipedidae@",
-            34);
-    private final LiteralEntry Cordylidae = literal(PLAINLITERAL,
-            "Cordylidae@", 50);
-    private final LiteralEntry Crocodylidae = literal(PLAINLITERAL,
-            "Crocodylidae@", 30);
+    private final LiteralEntry Amphisbaenidae = literal(PLAINLITERAL, "Amphisbaenidae@", 10);
+    private final LiteralEntry Anomalepidae = literal(PLAINLITERAL, "Anomalepidae@", 22);
+    private final LiteralEntry Bipedidae = literal(PLAINLITERAL, "Bipedidae@", 34);
+    private final LiteralEntry Cordylidae = literal(PLAINLITERAL, "Cordylidae@", 50);
+    private final LiteralEntry Crocodylidae = literal(PLAINLITERAL, "Crocodylidae@", 30);
     private final LiteralEntry Emydidae = literal(PLAINLITERAL, "Emydidae@", 14);
-    private final LiteralEntry Gekkonidae = literal(PLAINLITERAL,
-            "Gekkonidae@", 42);
-    private final LiteralEntry Leptotyphlopidae = literal(PLAINLITERAL,
-            "Leptotyphlopidae@", 38);
-    private final LiteralEntry Loxocemidae = literal(PLAINLITERAL,
-            "Loxocemidae@", 46);
-    private final LiteralEntry Sphenodontidae = literal(PLAINLITERAL,
-            "Sphenodontidae@", 54);
-    private final LiteralEntry Xantusiidae = literal(PLAINLITERAL,
-            "Xantusiidae@", 18);
+    private final LiteralEntry Gekkonidae = literal(PLAINLITERAL, "Gekkonidae@", 42);
+    private final LiteralEntry Leptotyphlopidae = literal(PLAINLITERAL, "Leptotyphlopidae@", 38);
+    private final LiteralEntry Loxocemidae = literal(PLAINLITERAL, "Loxocemidae@", 46);
+    private final LiteralEntry Sphenodontidae = literal(PLAINLITERAL, "Sphenodontidae@", 54);
+    private final LiteralEntry Xantusiidae = literal(PLAINLITERAL, "Xantusiidae@", 18);
     private final LiteralEntry aString = literal(STRING, "aString", 5);
     private final LiteralEntry valueLiteral = literal(PLAINLITERAL, "value@", 5);
     private final LiteralEntry a_String = literal(STRING, "A string", 8);
@@ -111,22 +99,17 @@ public class DatatypesTestCase {
     private final LiteralEntry name0_float = literal(FLOAT, "-0.0", 5);
     private final LiteralEntry name0integer = literal(INTEGER, "0", 5);
     private final LiteralEntry name18integer = literal(INTEGER, "18", 5);
-    private final LiteralEntry name1998_679 = literal(POSITIVEINTEGER, "1998",
-            679);
-    private final LiteralEntry name1998_729 = literal(POSITIVEINTEGER, "1998",
-            729);
+    private final LiteralEntry name1998_679 = literal(POSITIVEINTEGER, "1998", 679);
+    private final LiteralEntry name1998_729 = literal(POSITIVEINTEGER, "1998", 729);
     private final LiteralEntry name19integer = literal(INTEGER, "19", 7);
     private final LiteralEntry name200710 = literal(DATETIME, oct82007 + T20, 7);
-    private final LiteralEntry name2008075 = literal(DATETIME, jul82008 + T20,
-            5);
+    private final LiteralEntry name2008075 = literal(DATETIME, jul82008 + T20, 5);
     private final LiteralEntry name2007 = literal(INT, "2007", 5);
     private final LiteralEntry name20080708 = literal(DATETIME, jul82008, 5);
     private final LiteralEntry name20080709 = literal(DATETIME, jul92008, 8);
-    private final LiteralEntry name2008070920 = literal(DATETIME, jul92008
-            + T20, 8);
+    private final LiteralEntry name2008070920 = literal(DATETIME, jul92008 + T20, 8);
     private final LiteralEntry name20080710 = literal(DATETIME, jul102008, 8);
-    private final LiteralEntry name2008071020 = literal(DATETIME, jul102008
-            + T20, 7);
+    private final LiteralEntry name2008071020 = literal(DATETIME, jul102008 + T20, 7);
     private final LiteralEntry name2008 = literal(INT, "2008", 8);
     private final LiteralEntry name3integer6 = literal(INTEGER, "3", 6);
     private final LiteralEntry name3int7 = literal(INT, "3", 7);
@@ -142,31 +125,21 @@ public class DatatypesTestCase {
     private final LiteralEntry xml5 = literal(XMLLITERAL, XMLTEXT5, 5);
     private final DatatypeEntry byte4 = datatype(BYTE, 4);
     private final DatatypeEntry integer7 = datatype(INTEGER, 7);
-    private final DatatypeEntry nonNegativeInteger6 = datatype(
-            NONNEGATIVEINTEGER, 6);
-    private final DatatypeEntry positiveInteger11 = datatype(POSITIVEINTEGER,
-            11);
+    private final DatatypeEntry nonNegativeInteger6 = datatype(NONNEGATIVEINTEGER, 6);
+    private final DatatypeEntry positiveInteger11 = datatype(POSITIVEINTEGER, 11);
     private final DatatypeEntry short3 = datatype(SHORT, 3);
     private final DatatypeEntry string4 = datatype(STRING, 4);
     private final LiteralEntry int0 = literal(INT, "0", 0);
-    private final DatatypeEntry float_11 = datatype(
-            FLOAT.wrapAsNumericExpression().addNumericFacet(minInclusive, 0F)
-                    .addNumericFacet(maxInclusive, 1.17549435E-38F), 5);
-    private final DatatypeEntry int_46 = datatype(
-            INT.wrapAsNumericExpression().addNumericFacet(minInclusive, 2008)
-                    .addNumericFacet(maxInclusive, 2009), 7);
-    private final DatatypeEntry int_63 = datatype(
-            INT.wrapAsNumericExpression().addNumericFacet(minInclusive, 2007)
-                    .addNumericFacet(maxInclusive, 2009)
-                    .addNonNumericFacet(fractionDigits, 0), 5);
-    private final DatatypeEntry integer_49 = datatype(
-            INTEGER.wrapAsNumericExpression()
-                    .addNumericFacet(minInclusive, new BigDecimal("4"))
-                    .addNonNumericFacet(fractionDigits, 0), 9);
-    private final DatatypeEntry integer_7 = datatype(
-            INTEGER.wrapAsNumericExpression()
-                    .addNumericFacet(minInclusive, new BigDecimal("18"))
-                    .addNonNumericFacet(fractionDigits, 0), 5);
+    private final DatatypeEntry float_11 = datatype(FLOAT.wrapAsNumericExpression().addNumericFacet(minInclusive, 0F)
+        .addNumericFacet(maxInclusive, 1.17549435E-38F), 5);
+    private final DatatypeEntry int_46 = datatype(INT.wrapAsNumericExpression().addNumericFacet(minInclusive, 2008)
+        .addNumericFacet(maxInclusive, 2009), 7);
+    private final DatatypeEntry int_63 = datatype(INT.wrapAsNumericExpression().addNumericFacet(minInclusive, 2007)
+        .addNumericFacet(maxInclusive, 2009).addNonNumericFacet(fractionDigits, 0), 5);
+    private final DatatypeEntry integer_49 = datatype(INTEGER.wrapAsNumericExpression().addNumericFacet(minInclusive,
+        new BigDecimal("4")).addNonNumericFacet(fractionDigits, 0), 9);
+    private final DatatypeEntry integer_7 = datatype(INTEGER.wrapAsNumericExpression().addNumericFacet(minInclusive,
+        new BigDecimal("18")).addNonNumericFacet(fractionDigits, 0), 5);
     private DataTypeReasoner datatypeReasoner;
 
     String s(NamedEntry dataEntry) {
@@ -195,18 +168,15 @@ public class DatatypesTestCase {
         datatypeReasoner = new DataTypeReasoner(config);
     }
 
-    private boolean makeCall(boolean positive, DagTag t, String s,
-            int... depset) {
-        return datatypeReasoner.addDataEntry(positive, t, getNamedEntry(s),
-                getDepSet(depset));
+    private boolean makeCall(boolean positive, DagTag t, String s, int... depset) {
+        return datatypeReasoner.addDataEntry(positive, t, getNamedEntry(s), getDepSet(depset));
     }
 
     private static DepSet getDepSet(int... s) {
-        return DepSet.create(s);
+        return DepSet.create(RoaringBitmap.bitmapOf(s));
     }
 
-    public static String printDocument(Document doc)
-            throws TransformerException {
+    public static String printDocument(Document doc) throws TransformerException {
         StringWriter w = new StringWriter();
         TransformerFactory tf = TransformerFactory.newInstance();
         Transformer transformer = tf.newTransformer();
@@ -214,8 +184,7 @@ public class DatatypesTestCase {
         transformer.setOutputProperty(OutputKeys.METHOD, "xml");
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-        transformer.setOutputProperty(
-                "{http://xml.apache.org/xslt}indent-amount", "4");
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
         transformer.transform(new DOMSource(doc), new StreamResult(w));
         return w.toString();
     }
@@ -264,16 +233,13 @@ public class DatatypesTestCase {
         toReturn.put("\"1998\"^^#positiveInteger", name1998_729);
         toReturn.put("\"19\"^^#integer", name19integer);
         toReturn.put("\"2007-10-08T20:44:11.656+01:00\"^^#dateTime", name200710);
-        toReturn.put("\"2008-07-08T20:44:11.656+01:00\"^^#dateTime",
-                name2008075);
+        toReturn.put("\"2008-07-08T20:44:11.656+01:00\"^^#dateTime", name2008075);
         toReturn.put("\"2007\"^^#int", name2007);
         toReturn.put("\"2008-07-08\"^^#dateTime", name20080708);
         toReturn.put("\"2008-07-09\"^^#dateTime", name20080709);
-        toReturn.put("\"2008-07-09T20:44:11.656+01:00\"^^#dateTime",
-                name2008070920);
+        toReturn.put("\"2008-07-09T20:44:11.656+01:00\"^^#dateTime", name2008070920);
         toReturn.put("\"2008-07-10\"^^#dateTime", name20080710);
-        toReturn.put("\"2008-07-10T20:44:11.656+01:00\"^^#dateTime",
-                name2008071020);
+        toReturn.put("\"2008-07-10T20:44:11.656+01:00\"^^#dateTime", name2008071020);
         toReturn.put("\"2008\"^^#int", name2008);
         toReturn.put("\"3\"^^#integer", name3integer6);
         toReturn.put("\"3\"^^#int", name3int7);
@@ -289,93 +255,37 @@ public class DatatypesTestCase {
         toReturn.put("#short", short3);
         toReturn.put("#string", string4);
         toReturn.put("\"0\"^^#int", int0);
-        toReturn.put("numeric(#float(extra facets:0.0 1.17549435E-38))",
-                float_11);
+        toReturn.put("numeric(#float(extra facets:0.0 1.17549435E-38))", float_11);
         toReturn.put("numeric(#int(extra facets:2008 2009))", int_46);
         toReturn.put("numeric(#int(extra facets:2007 2009))", int_63);
         toReturn.put("numeric(#integer(extra facets:4 null))", integer_49);
         toReturn.put("numeric(#integer(extra facets:18 null))", integer_7);
-        toReturn.put(
-                "#dateTime( minInclusive 2008-09-08 19:44:11)",
-                datatype(
-                        DATETIME.wrapAsOrderedExpression().addNumericFacet(
-                                minInclusive,
-                                new DateTime(2008, 9, 8, 19, 44, 0, 0)
-                                        .toGregorianCalendar()), toReturn
-                                .size()));
-        toReturn.put(
-                "#dateTime( minInclusive 2008-06-08 maxInclusive 2008-06-10)",
-                datatype(
-                        DATETIME.wrapAsOrderedExpression()
-                                .addNumericFacet(
-                                        minInclusive,
-                                        new DateTime(2008, 6, 8, 0, 0, 0, 0)
-                                                .toGregorianCalendar())
-                                .addNumericFacet(
-                                        maxInclusive,
-                                        new DateTime(2008, 6, 10, 0, 0, 0, 0)
-                                                .toGregorianCalendar()),
-                        toReturn.size()));
-        toReturn.put(
-                "#dateTime( minInclusive 2008-06-08 19:44:11 maxInclusive 2008-06-10 19:44:11)",
-                datatype(
-                        DATETIME.wrapAsOrderedExpression()
-                                .addNumericFacet(
-                                        minInclusive,
-                                        new DateTime(2008, 6, 8, 19, 44, 11, 0)
-                                                .toGregorianCalendar())
-                                .addNumericFacet(
-                                        maxInclusive,
-                                        new DateTime(2008, 6, 10, 19, 44, 11, 0)
-                                                .toGregorianCalendar()),
-                        toReturn.size()));
-        toReturn.put(
-                "#dateTime( minInclusive 2008-06-08 19:44:11 maxInclusive 2008-09-08 19:44:11)",
-                datatype(
-                        DATETIME.wrapAsOrderedExpression()
-                                .addNumericFacet(
-                                        minInclusive,
-                                        new DateTime(2008, 6, 8, 19, 44, 11, 0)
-                                                .toGregorianCalendar())
-                                .addNumericFacet(
-                                        maxInclusive,
-                                        new DateTime(2008, 9, 8, 19, 44, 11, 0)
-                                                .toGregorianCalendar()),
-                        toReturn.size()));
-        toReturn.put(
-                "#dateTime( minInclusive 2007-09-08 19:44:11 maxInclusive 2009-09-08 19:44:11)",
-                datatype(
-                        DATETIME.wrapAsOrderedExpression()
-                                .addNumericFacet(
-                                        minInclusive,
-                                        new DateTime(2007, 9, 8, 19, 44, 11, 0)
-                                                .toGregorianCalendar())
-                                .addNumericFacet(
-                                        maxInclusive,
-                                        new DateTime(2009, 9, 8, 19, 44, 11, 0)
-                                                .toGregorianCalendar()),
-                        toReturn.size()));
-        toReturn.put(
-                "#dateTime( maxInclusive 2008-09-08 19:44:11)",
-                datatype(
-                        DATETIME.wrapAsOrderedExpression().addNumericFacet(
-                                maxInclusive,
-                                new DateTime(2008, 9, 8, 19, 44, 11, 0)
-                                        .toGregorianCalendar()), toReturn
-                                .size()));
-        toReturn.put(
-                "#dateTime( minInclusive 2008-06-08 maxInclusive 2008-10-10)",
-                datatype(
-                        DATETIME.wrapAsOrderedExpression()
-                                .addNumericFacet(
-                                        minInclusive,
-                                        new DateTime(2008, 6, 8, 0, 0, 0, 0)
-                                                .toGregorianCalendar())
-                                .addNumericFacet(
-                                        maxInclusive,
-                                        new DateTime(2008, 10, 10, 0, 0, 0, 0)
-                                                .toGregorianCalendar()),
-                        toReturn.size()));
+        toReturn.put("#dateTime( minInclusive 2008-09-08 19:44:11)", datatype(DATETIME.wrapAsOrderedExpression()
+            .addNumericFacet(minInclusive, new DateTime(2008, 9, 8, 19, 44, 0, 0).toGregorianCalendar()), toReturn
+                .size()));
+        toReturn.put("#dateTime( minInclusive 2008-06-08 maxInclusive 2008-06-10)", datatype(DATETIME
+            .wrapAsOrderedExpression().addNumericFacet(minInclusive, new DateTime(2008, 6, 8, 0, 0, 0, 0)
+                .toGregorianCalendar()).addNumericFacet(maxInclusive, new DateTime(2008, 6, 10, 0, 0, 0, 0)
+                    .toGregorianCalendar()), toReturn.size()));
+        toReturn.put("#dateTime( minInclusive 2008-06-08 19:44:11 maxInclusive 2008-06-10 19:44:11)", datatype(DATETIME
+            .wrapAsOrderedExpression().addNumericFacet(minInclusive, new DateTime(2008, 6, 8, 19, 44, 11, 0)
+                .toGregorianCalendar()).addNumericFacet(maxInclusive, new DateTime(2008, 6, 10, 19, 44, 11, 0)
+                    .toGregorianCalendar()), toReturn.size()));
+        toReturn.put("#dateTime( minInclusive 2008-06-08 19:44:11 maxInclusive 2008-09-08 19:44:11)", datatype(DATETIME
+            .wrapAsOrderedExpression().addNumericFacet(minInclusive, new DateTime(2008, 6, 8, 19, 44, 11, 0)
+                .toGregorianCalendar()).addNumericFacet(maxInclusive, new DateTime(2008, 9, 8, 19, 44, 11, 0)
+                    .toGregorianCalendar()), toReturn.size()));
+        toReturn.put("#dateTime( minInclusive 2007-09-08 19:44:11 maxInclusive 2009-09-08 19:44:11)", datatype(DATETIME
+            .wrapAsOrderedExpression().addNumericFacet(minInclusive, new DateTime(2007, 9, 8, 19, 44, 11, 0)
+                .toGregorianCalendar()).addNumericFacet(maxInclusive, new DateTime(2009, 9, 8, 19, 44, 11, 0)
+                    .toGregorianCalendar()), toReturn.size()));
+        toReturn.put("#dateTime( maxInclusive 2008-09-08 19:44:11)", datatype(DATETIME.wrapAsOrderedExpression()
+            .addNumericFacet(maxInclusive, new DateTime(2008, 9, 8, 19, 44, 11, 0).toGregorianCalendar()), toReturn
+                .size()));
+        toReturn.put("#dateTime( minInclusive 2008-06-08 maxInclusive 2008-10-10)", datatype(DATETIME
+            .wrapAsOrderedExpression().addNumericFacet(minInclusive, new DateTime(2008, 6, 8, 0, 0, 0, 0)
+                .toGregorianCalendar()).addNumericFacet(maxInclusive, new DateTime(2008, 10, 10, 0, 0, 0, 0)
+                    .toGregorianCalendar()), toReturn.size()));
         return toReturn;
     }
 
@@ -652,37 +562,31 @@ public class DatatypesTestCase {
     @Test
     public void test34() {
         makeCall(true, dtDataExpr, "numeric(#integer(extra facets:18 null))");
-        assertFalse(makeCall(true, dtDataExpr,
-                "numeric(#integer(extra facets:18 null))"));
+        assertFalse(makeCall(true, dtDataExpr, "numeric(#integer(extra facets:18 null))"));
     }
 
     @Test
     public void test35() {
-        makeCall(true, dtDataValue,
-                "\"2008-07-08T20:44:11.656+01:00\"^^#dateTime");
+        makeCall(true, dtDataValue, "\"2008-07-08T20:44:11.656+01:00\"^^#dateTime");
         assertFalse(datatypeReasoner.checkClash());
     }
 
     @Test
     @Ignore
     public void test36() {
-        makeCall(true, dtDataExpr,
-                "numeric(#float(extra facets:0.0 1.17549435E-38))");
-        assertTrue(makeCall(true, dtDataExpr,
-                "numeric(#float(extra facets:0.0 1.17549435E-38))"));
+        makeCall(true, dtDataExpr, "numeric(#float(extra facets:0.0 1.17549435E-38))");
+        assertTrue(makeCall(true, dtDataExpr, "numeric(#float(extra facets:0.0 1.17549435E-38))"));
     }
 
     @Test
     public void test37() {
-        makeCall(true, dtDataValue,
-                "\"2008-07-09T20:44:11.656+01:00\"^^#dateTime");
+        makeCall(true, dtDataValue, "\"2008-07-09T20:44:11.656+01:00\"^^#dateTime");
         assertFalse(datatypeReasoner.checkClash());
     }
 
     @Test
     public void test38() {
-        makeCall(true, dtDataExpr,
-                "#dateTime( minInclusive 2008-06-08 19:44:11 maxInclusive 2008-06-10 19:44:11)");
+        makeCall(true, dtDataExpr, "#dateTime( minInclusive 2008-06-08 19:44:11 maxInclusive 2008-06-10 19:44:11)");
         assertFalse(datatypeReasoner.checkClash());
     }
 
@@ -924,19 +828,15 @@ public class DatatypesTestCase {
 
     @Test
     public void test70() {
-        makeCall(true, dtDataValue,
-                "\"2007-10-08T20:44:11.656+01:00\"^^#dateTime");
-        makeCall(true, dtDataExpr,
-                "#dateTime( minInclusive 2008-06-08 19:44:11 maxInclusive 2008-09-08 19:44:11)");
+        makeCall(true, dtDataValue, "\"2007-10-08T20:44:11.656+01:00\"^^#dateTime");
+        makeCall(true, dtDataExpr, "#dateTime( minInclusive 2008-06-08 19:44:11 maxInclusive 2008-09-08 19:44:11)");
         assertTrue(datatypeReasoner.checkClash());
     }
 
     @Test
     public void test71() {
-        makeCall(true, dtDataValue,
-                "\"2007-10-08T20:44:11.656+01:00\"^^#dateTime");
-        makeCall(true, dtDataExpr,
-                "#dateTime( minInclusive 2008-06-08 19:44:11 maxInclusive 2008-09-08 19:44:11)");
+        makeCall(true, dtDataValue, "\"2007-10-08T20:44:11.656+01:00\"^^#dateTime");
+        makeCall(true, dtDataExpr, "#dateTime( minInclusive 2008-06-08 19:44:11 maxInclusive 2008-09-08 19:44:11)");
         assertTrue(datatypeReasoner.checkClash());
     }
 
@@ -1024,8 +924,7 @@ public class DatatypesTestCase {
     @Test
     public void test84() {
         makeCall(true, dtDataExpr, "numeric(#integer(extra facets:4 null))");
-        assertFalse(makeCall(true, dtDataExpr,
-                "numeric(#integer(extra facets:4 null))"));
+        assertFalse(makeCall(true, dtDataExpr, "numeric(#integer(extra facets:4 null))"));
     }
 
     @Test
@@ -1050,33 +949,27 @@ public class DatatypesTestCase {
 
     @Test
     public void test88() {
-        makeCall(true, dtDataValue,
-                "\"2008-07-08T20:44:11.656+01:00\"^^#dateTime");
+        makeCall(true, dtDataValue, "\"2008-07-08T20:44:11.656+01:00\"^^#dateTime");
         assertFalse(datatypeReasoner.checkClash());
     }
 
     @Test
     public void test89() {
-        makeCall(true, dtDataExpr,
-                "#dateTime( minInclusive 2007-09-08 19:44:11 maxInclusive 2009-09-08 19:44:11)");
+        makeCall(true, dtDataExpr, "#dateTime( minInclusive 2007-09-08 19:44:11 maxInclusive 2009-09-08 19:44:11)");
         assertFalse(datatypeReasoner.checkClash());
     }
 
     @Test
     public void test90() {
-        makeCall(true, dtDataValue,
-                "\"2008-07-08T20:44:11.656+01:00\"^^#dateTime");
-        makeCall(false, dtDataExpr,
-                "#dateTime( minInclusive 2007-09-08 19:44:11 maxInclusive 2009-09-08 19:44:11)");
+        makeCall(true, dtDataValue, "\"2008-07-08T20:44:11.656+01:00\"^^#dateTime");
+        makeCall(false, dtDataExpr, "#dateTime( minInclusive 2007-09-08 19:44:11 maxInclusive 2009-09-08 19:44:11)");
         assertTrue(datatypeReasoner.checkClash());
     }
 
     @Test
     public void test91() {
-        makeCall(true, dtDataValue,
-                "\"2008-07-08T20:44:11.656+01:00\"^^#dateTime");
-        makeCall(false, dtDataExpr,
-                "#dateTime( minInclusive 2007-09-08 19:44:11 maxInclusive 2009-09-08 19:44:11)");
+        makeCall(true, dtDataValue, "\"2008-07-08T20:44:11.656+01:00\"^^#dateTime");
+        makeCall(false, dtDataExpr, "#dateTime( minInclusive 2007-09-08 19:44:11 maxInclusive 2009-09-08 19:44:11)");
         assertTrue(datatypeReasoner.checkClash());
     }
 
@@ -1344,17 +1237,14 @@ public class DatatypesTestCase {
 
     @Test
     public void test125() {
-        makeCall(true, dtDataValue,
-                "\"2008-07-10T20:44:11.656+01:00\"^^#dateTime");
+        makeCall(true, dtDataValue, "\"2008-07-10T20:44:11.656+01:00\"^^#dateTime");
         assertFalse(datatypeReasoner.checkClash());
     }
 
     @Test
     public void test126() {
-        makeCall(true, dtDataValue,
-                "\"2008-07-10T20:44:11.656+01:00\"^^#dateTime");
-        makeCall(true, dtDataValue,
-                "\"2008-07-08T20:44:11.656+01:00\"^^#dateTime");
+        makeCall(true, dtDataValue, "\"2008-07-10T20:44:11.656+01:00\"^^#dateTime");
+        makeCall(true, dtDataValue, "\"2008-07-08T20:44:11.656+01:00\"^^#dateTime");
         assertTrue(datatypeReasoner.checkClash());
     }
 
@@ -1381,10 +1271,8 @@ public class DatatypesTestCase {
 
     @Test
     public void test130() {
-        makeCall(true, dtDataExpr,
-                "#dateTime( minInclusive 2008-09-08 19:44:11)");
-        makeCall(true, dtDataExpr,
-                "#dateTime( maxInclusive 2008-09-08 19:44:11)");
+        makeCall(true, dtDataExpr, "#dateTime( minInclusive 2008-09-08 19:44:11)");
+        makeCall(true, dtDataExpr, "#dateTime( maxInclusive 2008-09-08 19:44:11)");
         assertFalse(datatypeReasoner.checkClash());
     }
 
@@ -5640,8 +5528,7 @@ public class DatatypesTestCase {
 
     @Test
     public void test891() {
-        makeCall(true, dtDataValue,
-                "\"2008-07-08T20:44:11.656+01:00\"^^#dateTime");
+        makeCall(true, dtDataValue, "\"2008-07-08T20:44:11.656+01:00\"^^#dateTime");
         assertFalse(datatypeReasoner.checkClash());
     }
 
@@ -5660,15 +5547,13 @@ public class DatatypesTestCase {
 
     @Test
     public void test894() {
-        makeCall(true, dtDataValue,
-                "\"2008-07-09T20:44:11.656+01:00\"^^#dateTime");
+        makeCall(true, dtDataValue, "\"2008-07-09T20:44:11.656+01:00\"^^#dateTime");
         assertFalse(datatypeReasoner.checkClash());
     }
 
     @Test
     public void test895() {
-        makeCall(true, dtDataExpr,
-                "#dateTime( minInclusive 2008-06-08 19:44:11 maxInclusive 2008-06-10 19:44:11)");
+        makeCall(true, dtDataExpr, "#dateTime( minInclusive 2008-06-08 19:44:11 maxInclusive 2008-06-10 19:44:11)");
         assertFalse(datatypeReasoner.checkClash());
     }
 
@@ -5680,24 +5565,21 @@ public class DatatypesTestCase {
 
     @Test
     public void test899() {
-        makeCall(true, dtDataExpr,
-                "#dateTime( minInclusive 2008-06-08 maxInclusive 2008-06-10)");
+        makeCall(true, dtDataExpr, "#dateTime( minInclusive 2008-06-08 maxInclusive 2008-06-10)");
         assertFalse(datatypeReasoner.checkClash());
     }
 
     @Test
     public void test901() {
         makeCall(true, dtDataValue, "\"2008-07-09\"^^#dateTime");
-        makeCall(false, dtDataExpr,
-                "#dateTime( minInclusive 2008-06-08 maxInclusive 2008-06-10)");
+        makeCall(false, dtDataExpr, "#dateTime( minInclusive 2008-06-08 maxInclusive 2008-06-10)");
         assertFalse(datatypeReasoner.checkClash());
     }
 
     @Test
     public void test901_() {
         makeCall(true, dtDataValue, "\"2008-07-09\"^^#dateTime");
-        makeCall(false, dtDataExpr,
-                "#dateTime( minInclusive 2008-06-08 maxInclusive 2008-10-10)");
+        makeCall(false, dtDataExpr, "#dateTime( minInclusive 2008-06-08 maxInclusive 2008-10-10)");
         assertTrue(datatypeReasoner.checkClash());
     }
 
@@ -5709,17 +5591,14 @@ public class DatatypesTestCase {
 
     @Test
     public void test903() {
-        makeCall(true, dtDataValue,
-                "\"2008-07-10T20:44:11.656+01:00\"^^#dateTime");
+        makeCall(true, dtDataValue, "\"2008-07-10T20:44:11.656+01:00\"^^#dateTime");
         assertFalse(datatypeReasoner.checkClash());
     }
 
     @Test
     public void test904() {
-        makeCall(true, dtDataValue,
-                "\"2008-07-10T20:44:11.656+01:00\"^^#dateTime");
-        makeCall(true, dtDataValue,
-                "\"2008-07-08T20:44:11.656+01:00\"^^#dateTime");
+        makeCall(true, dtDataValue, "\"2008-07-10T20:44:11.656+01:00\"^^#dateTime");
+        makeCall(true, dtDataValue, "\"2008-07-08T20:44:11.656+01:00\"^^#dateTime");
         assertTrue(datatypeReasoner.checkClash());
     }
 }

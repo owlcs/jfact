@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.dep;
 
+import java.io.Serializable;
+
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -7,8 +9,6 @@ package uk.ac.manchester.cs.jfact.dep;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import org.roaringbitmap.IntIterator;
 import org.roaringbitmap.RoaringBitmap;
-
-import java.io.Serializable;
 
 import conformance.Original;
 import conformance.PortedFrom;
@@ -23,7 +23,9 @@ public class DepSet implements Serializable {
 
     private static final long serialVersionUID = 11000L;
 
-    /** @return empty depset */
+    /**
+     * @return empty depset
+     */
     @PortedFrom(file = "tDepSet.h", name = "create")
     public static DepSet create() {
         return new DepSet();
@@ -40,15 +42,6 @@ public class DepSet implements Serializable {
     }
 
     /**
-     * @param values
-     *        values
-     * @return new depset with stated values
-     */
-    public static DepSet create(int... values) {
-        return create(RoaringBitmap.bitmapOf(values));
-    }
-
-    /**
      * @param dep
      *        dep
      * @return copy of dep
@@ -58,7 +51,7 @@ public class DepSet implements Serializable {
         if (dep == null) {
             return create();
         }
-        return new DepSet(dep.delegate, dep.cardinality);
+        return new DepSet(dep.delegate);
     }
 
     /**
@@ -77,10 +70,10 @@ public class DepSet implements Serializable {
             if (ds2 == null || ds2.isEmpty()) {
                 return new DepSet();
             }
-            return new DepSet(ds2.delegate, ds2.cardinality);
+            return new DepSet(ds2.delegate);
         }
         if (ds2 == null || ds2.isEmpty()) {
-            return new DepSet(ds1.delegate, ds1.cardinality);
+            return new DepSet(ds1.delegate);
         }
         DepSet toReturn = new DepSet();
         toReturn.add(ds1);
@@ -95,25 +88,20 @@ public class DepSet implements Serializable {
      */
     @PortedFrom(file = "tDepSet.h", name = "create")
     public static DepSet create(RoaringBitmap delegate) {
-        return new DepSet(delegate, delegate == null ? 0
-        : delegate.getCardinality());
+        return new DepSet(delegate);
     }
 
     @Original
     private RoaringBitmap delegate = null;
-    private int cardinality = 0;
 
     protected DepSet() {}
 
     /**
      * @param d
      *        d
-     * @param card
-     *        cardinality of the input
      */
-    private DepSet(RoaringBitmap d, int card) {
+    private DepSet(RoaringBitmap d) {
         delegate = d;
-        cardinality = card;
     }
 
     /**
@@ -128,10 +116,11 @@ public class DepSet implements Serializable {
 
     protected DepSet(int i) {
         delegate = RoaringBitmap.bitmapOf(i);
-        cardinality = 1;
     }
 
-    /** @return last delegate */
+    /**
+     * @return last delegate
+     */
     @PortedFrom(file = "tDepSet.h", name = "level")
     public int level() {
         return max(delegate);
@@ -144,10 +133,12 @@ public class DepSet implements Serializable {
         return set.getReverseIntIterator().next();
     }
 
-    /** @return true if empty or null delegate */
+    /**
+     * @return true if empty or null delegate
+     */
     @PortedFrom(file = "tDepSet.h", name = "empty")
     public boolean isEmpty() {
-        return cardinality == 0;
+        return delegate == null || delegate.isEmpty();
     }
 
     @Override
@@ -171,11 +162,10 @@ public class DepSet implements Serializable {
             if (delegate == null) {
                 return obj2.delegate == null;
             }
-            if (cardinality != obj2.cardinality) {
+            if (isEmpty() != obj2.isEmpty()) {
                 return false;
             }
-            assert cardinality == obj2.cardinality;
-            if (cardinality == 0) {
+            if (isEmpty()) {
                 return true;
             }
             return delegate.equals(obj2.delegate);
@@ -186,12 +176,6 @@ public class DepSet implements Serializable {
     @Override
     public int hashCode() {
         return delegate == null ? 0 : delegate.hashCode();
-    }
-
-    /** @return delegate size */
-    @PortedFrom(file = "tDepSet.h", name = "size")
-    public int size() {
-        return cardinality;
     }
 
     /**
@@ -211,10 +195,8 @@ public class DepSet implements Serializable {
             }
             if (f.isEmpty()) {
                 delegate = null;
-                cardinality = 0;
             } else {
                 delegate = f;
-                cardinality = delegate.getCardinality();
             }
         }
         // if the depset is empty, no operation
@@ -224,7 +206,6 @@ public class DepSet implements Serializable {
     @PortedFrom(file = "tDepSet.h", name = "clear")
     public void clear() {
         delegate = null;
-        cardinality = 0;
     }
 
     /**
@@ -233,15 +214,18 @@ public class DepSet implements Serializable {
      */
     @PortedFrom(file = "tDepSet.h", name = "add")
     public void add(DepSet toAdd) {
-        if (toAdd == null || toAdd.size() == 0) {
+        if (toAdd == null || toAdd.isEmpty()) {
             return;
         }
         if (delegate == null) {
             delegate = toAdd.delegate;
-            cardinality = delegate.getCardinality();
             return;
         }
+        if (delegate.equals(toAdd.delegate)) {
+            return;
+        }
+        // System.out.println("DepSet.add() " + delegate + "\t" +
+        // toAdd.delegate);
         delegate = RoaringBitmap.or(delegate, toAdd.delegate);
-        cardinality = delegate.getCardinality();
     }
 }
