@@ -19,8 +19,7 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
         String id = "WebOnt_miscellaneous_001";
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
         String d = "Wine example taken from the guide. Note that this is the same as the ontology http://www.w3.org/2002/03owlt/miscellaneous/consistent002 imported in other tests.";
-        JUnitRunner r = new JUnitRunner(
-            WebOnt_miscellaneous_wineTestCase.class.getResourceAsStream("/wine.fss"),
+        JUnitRunner r = new JUnitRunner(WebOnt_miscellaneous_wineTestCase.class.getResourceAsStream("/wine.fss"),
             conclusion, id, tc, d);
         // r.setConfig(new JFactReasonerConfiguration().setLoggingActive(true));
         r.setReasonerFactory(factory());
