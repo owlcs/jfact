@@ -145,7 +145,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener, OW
     public static List<OWLAxiom> importsIncluded(OWLOntology ont) {
         // for each imported ontology,
         // take all axioms in the sequence defined in types
-        return asList(ont.importsClosure().flatMap(o -> types.stream().flatMap(t -> o.axioms(t, Imports.EXCLUDED))));
+        return asList(ont.importsClosure().flatMap(o -> types.stream().flatMap(t -> o.axioms(t))));
     }
 
     /**
