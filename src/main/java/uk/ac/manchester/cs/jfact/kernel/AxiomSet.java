@@ -12,10 +12,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
-import conformance.PortedFrom;
 
 /** set of axioms */
 @PortedFrom(file = "tAxiomSet.h", name = "TAxiomSet")
@@ -127,17 +127,20 @@ public class AxiomSet implements Serializable {
         return accumulator.size();
     }
 
-    /** @return true if non-concept aborption were executed */
+    /**
+     * @return true if non-concept aborption were executed
+     */
     @PortedFrom(file = "tAxiomSet.h", name = "wasRoleAbsorptionApplied")
     public boolean wasRoleAbsorptionApplied() {
         return InAx.containsSAbsRApply();
     }
 
-    /** @return GCI of all non-absorbed axioms */
+    /**
+     * @return GCI of all non-absorbed axioms
+     */
     @PortedFrom(file = "tAxiomSet.h", name = "getGCI")
     public DLTree getGCI() {
-        List<DLTree> l = accumulator.stream().map(p -> p.createAnAxiom(null))
-                .collect(toList());
+        List<DLTree> l = accumulator.stream().map(p -> p.createAnAxiom(null)).collect(toList());
         return DLTreeFactory.createSNFAnd(l);
     }
 
@@ -172,7 +175,9 @@ public class AxiomSet implements Serializable {
         return true;
     }
 
-    /** @return new size */
+    /**
+     * @return new size
+     */
     @PortedFrom(file = "tAxiomSet.h", name = "absorb")
     public int absorb() {
         // GCIs to process
@@ -189,9 +194,8 @@ public class AxiomSet implements Serializable {
         }
         // clear absorbed and remove them from Accum
         accumulator = GCIs;
-        tboxHost.getOptions().getAbsorptionLog()
-                .print("\nAbsorption done with ").print(accumulator.size())
-                .print(" GCIs left\n");
+        tboxHost.getOptions().getAbsorptionLog().print("\nAbsorption done with ").print(accumulator.size()).print(
+            " GCIs left\n");
         printStatistics();
         return size();
     }
@@ -199,8 +203,7 @@ public class AxiomSet implements Serializable {
     @PortedFrom(file = "tAxiomSet.h", name = "absorbGCI")
     private boolean absorbGCI(Axiom p) {
         SAbsAction();
-        boolean absorbed = actions.stream().anyMatch(
-                abs -> abs.execute(p, this));
+        boolean absorbed = actions.stream().anyMatch(abs -> abs.execute(p, this));
         if (!absorbed) {
             tboxHost.getOptions().getAbsorptionLog().print(" keep as GCI");
         }
@@ -218,8 +221,7 @@ public class AxiomSet implements Serializable {
         for (char c : flags.toCharArray()) {
             actions.add(AbsorptionActions.get(c));
         }
-        tboxHost.getOptions().getAbsorptionLog()
-                .print("Init absorption order as ").print(flags).print("\n");
+        tboxHost.getOptions().getAbsorptionLog().print("Init absorption order as ").print(flags).print("\n");
         return false;
     }
 
@@ -229,46 +231,37 @@ public class AxiomSet implements Serializable {
             return;
         }
         LogAdapter log = tboxHost.getOptions().getAbsorptionLog();
-        log.print("\nAbsorption dealt with ").print(getSAbsInput())
-                .print(" input axioms\nThere were made ")
-                .print(getSAbsAction()).print(" absorption actions, of which:");
+        log.print("\nAbsorption dealt with ").print(getSAbsInput()).print(" input axioms\nThere were made ").print(
+            getSAbsAction()).print(" absorption actions, of which:");
         if (containsSAbsRepCN()) {
-            log.print("\n\t").print(getSAbsRepCN())
-                    .print(" concept name replacements");
+            log.print("\n\t").print(getSAbsRepCN()).print(" concept name replacements");
         }
         if (containsSAbsRepForall()) {
-            log.print("\n\t").print(getSAbsRepForall())
-                    .print(" universals replacements");
+            log.print("\n\t").print(getSAbsRepForall()).print(" universals replacements");
         }
         if (containsSAbsSplit()) {
-            log.print("\n\t").print(getSAbsSplit())
-                    .print(" conjunction splits");
+            log.print("\n\t").print(getSAbsSplit()).print(" conjunction splits");
         }
         if (containsSAbsBApply()) {
-            log.print("\n\t").print(getSAbsBApply())
-                    .print(" BOTTOM absorptions");
+            log.print("\n\t").print(getSAbsBApply()).print(" BOTTOM absorptions");
         }
         if (containsSAbsTApply()) {
             log.print("\n\t").print(getSAbsTApply()).print(" TOP absorptions");
         }
         if (containsSAbsCApply()) {
-            log.print("\n\t").print(getSAbsCApply())
-                    .print(" concept absorption with ")
-                    .print(getSAbsCAttempt()).print(" possibilities");
+            log.print("\n\t").print(getSAbsCApply()).print(" concept absorption with ").print(getSAbsCAttempt()).print(
+                " possibilities");
         }
         if (containsSAbsNApply()) {
-            log.print("\n\t").print(getSAbsNApply())
-                    .print(" negated concept absorption with ")
-                    .print(getSAbsNAttempt()).print(" possibilities");
+            log.print("\n\t").print(getSAbsNApply()).print(" negated concept absorption with ").print(getSAbsNAttempt())
+                .print(" possibilities");
         }
         if (containsSAbsRApply()) {
-            log.print("\n\t").print(getSAbsRApply())
-                    .print(" role domain absorption with ")
-                    .print(getSAbsRAttempt()).print(" possibilities");
+            log.print("\n\t").print(getSAbsRApply()).print(" role domain absorption with ").print(getSAbsRAttempt())
+                .print(" possibilities");
         }
         if (!accumulator.isEmpty()) {
-            log.print("\nThere are ").print(accumulator.size())
-                    .print(" GCIs left");
+            log.print("\nThere are ").print(accumulator.size()).print(" GCIs left");
         }
     }
 }

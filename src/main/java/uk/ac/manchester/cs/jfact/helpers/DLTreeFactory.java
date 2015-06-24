@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nonnull;
 
@@ -693,7 +694,9 @@ public class DLTreeFactory implements Serializable {
             }
         } else {
             // XXX port to 4
-            return desc.children().anyMatch(d -> replaceSynonymsFromTree(d));
+            AtomicBoolean b = new AtomicBoolean(false);
+            desc.children().forEach(d -> b.set( replaceSynonymsFromTree(d)||b.get()));
+            return b.get();
         }
     }
 }

@@ -9,24 +9,19 @@ import static java.util.stream.Collectors.toList;
 import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
 import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.helpers.FastSet;
 import uk.ac.manchester.cs.jfact.helpers.FastSetFactory;
 import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** concept */
 @PortedFrom(file = "ConceptWithDep.h", name = "Concept")
@@ -42,7 +37,9 @@ public class Concept extends ClassifiableEntry {
     /** thing concept iri */
     public static final IRI thing = OWLRDFVocabulary.OWL_THING.getIRI();
 
-    /** @return bottom concept */
+    /**
+     * @return bottom concept
+     */
     @Original
     public static Concept getBOTTOM() {
         Concept toReturn = new Concept(nothing);
@@ -53,7 +50,9 @@ public class Concept extends ClassifiableEntry {
         return toReturn;
     }
 
-    /** @return top concept */
+    /**
+     * @return top concept
+     */
     @Original
     public static Concept getTOP() {
         Concept toReturn = new Concept(thing);
@@ -66,7 +65,9 @@ public class Concept extends ClassifiableEntry {
         return toReturn;
     }
 
-    /** @return temporary concept */
+    /**
+     * @return temporary concept
+     */
     @Original
     public static Concept getTEMP() {
         Concept TEMP = new Concept(temp);
@@ -76,7 +77,9 @@ public class Concept extends ClassifiableEntry {
         return TEMP;
     }
 
-    /** @return query concept */
+    /**
+     * @return query concept
+     */
     public static Concept getQuery() {
         Concept p = new Concept(query);
         p.setSystem();
@@ -188,25 +191,33 @@ public class Concept extends ClassifiableEntry {
         setCompletelyDefined(false);
     }
 
-    /** @return if a concept is in a disjoint relation with anything */
+    /**
+     * @return if a concept is in a disjoint relation with anything
+     */
     @PortedFrom(file = "tConcept.h", name = "hasExtraRules")
     public boolean hasExtraRules() {
         return !extraRules.isEmpty();
     }
 
-    /** @return accessing DJ elements */
+    /**
+     * @return accessing DJ elements
+     */
     @PortedFrom(file = "tConcept.h", name = "er_begin")
     public FastSet getExtraRules() {
         return extraRules;
     }
 
-    /** @return class tag */
+    /**
+     * @return class tag
+     */
     @Original
     public CTTag getClassTagPlain() {
         return classTag;
     }
 
-    /** @return value of a tag; determine it if unset */
+    /**
+     * @return value of a tag; determine it if unset
+     */
     @PortedFrom(file = "tConcept.h", name = "getClassTag")
     public CTTag getClassTag() {
         if (classTag == CTTag.cttUnspecified) {
@@ -295,7 +306,9 @@ public class Concept extends ClassifiableEntry {
         }
     }
 
-    /** @return resolve synonym id */
+    /**
+     * @return resolve synonym id
+     */
     @PortedFrom(file = "tConcept.h", name = "resolveId")
     public int resolveId() {
         if (pName == bpINVALID) {
@@ -381,21 +394,21 @@ public class Concept extends ClassifiableEntry {
         boolean hasNP = false;
         for (ClassifiableEntry p : toldSubsumers) {
             switch (((Concept) p).getClassTag()) {
-                case cttTrueCompletelyDefined:
-                    break;
-                case cttOrphan:
-                case cttLikeCompletelyDefined:
-                    hasLCD = true;
-                    break;
-                case cttRegular:
-                    hasOther = true;
-                    break;
-                case cttHasNonPrimitiveTS:
-                case cttNonPrimitive:
-                    hasNP = true;
-                    break;
-                default:
-                    throw new UnreachableSituationException();
+            case cttTrueCompletelyDefined:
+                break;
+            case cttOrphan:
+            case cttLikeCompletelyDefined:
+                hasLCD = true;
+                break;
+            case cttRegular:
+                hasOther = true;
+                break;
+            case cttHasNonPrimitiveTS:
+            case cttNonPrimitive:
+                hasNP = true;
+                break;
+            default:
+                throw new UnreachableSituationException();
             }
         }
         // there are non-primitive TS
@@ -414,8 +427,7 @@ public class Concept extends ClassifiableEntry {
     }
 
     @Original
-    private static final EnumSet<Token> replacements = EnumSet.of(CNAME, INAME,
-            RNAME, DNAME);
+    private static final EnumSet<Token> replacements = EnumSet.of(CNAME, INAME, RNAME, DNAME);
 
     /**
      * @param stack
@@ -427,8 +439,7 @@ public class Concept extends ClassifiableEntry {
     public void push(LinkedList<DLTree> stack, DLTree current) {
         // push subtrees: stack size increases by one or two, or current is a
         // leaf
-        current.getChildren().stream().filter(p -> p != null)
-                .forEach(p -> stack.push(p));
+        current.getChildren().stream().filter(p -> p != null).forEach(p -> stack.push(p));
     }
 
     @PortedFrom(file = "tConcept.h", name = "replaceSelfWithConst")
@@ -438,21 +449,15 @@ public class Concept extends ClassifiableEntry {
         }
         Token token = t.token();
         // the three ifs are actually exclusive
-        if (replacements.contains(token)
-                && resolveSynonym((ClassifiableEntry) t.elem().getNE()).equals(
-                        this)) {
+        if (replacements.contains(token) && resolveSynonym((ClassifiableEntry) t.elem().getNE()).equals(this)) {
             return DLTreeFactory.createTop();
         }
         if (token == AND) {
-            return DLTreeFactory.createSNFAnd(
-                    t.getChildren().stream().map(d -> replaceWithConstOld(d))
-                            .collect(toList()), t);
+            return DLTreeFactory.createSNFAnd(t.getChildren().stream().map(d -> replaceWithConstOld(d)).collect(
+                toList()), t);
         }
-        if (token == NOT
-                && (t.getChild().isAND() || replacements.contains(t.getChild()
-                        .token()))) {
-            return DLTreeFactory
-                    .createSNFNot(replaceWithConstOld(t.getChild()));
+        if (token == NOT && (t.getChild().isAND() || replacements.contains(t.getChild().token()))) {
+            return DLTreeFactory.createSNFNot(replaceWithConstOld(t.getChild()));
         }
         return t;
     }
@@ -465,15 +470,12 @@ public class Concept extends ClassifiableEntry {
         Token token = t.token();
         // the three ifs are actually exclusive
         if (replacements.contains(token)) {
-            return resolveSynonym((ClassifiableEntry) t.elem().getNE()).equals(
-                    this);
+            return resolveSynonym((ClassifiableEntry) t.elem().getNE()).equals(this);
         }
         if (token == AND) {
             return t.getChildren().stream().anyMatch(d -> hasSelfInDesc(d));
         }
-        if (token == NOT
-                && (t.getChild().isAND() || replacements.contains(t.getChild()
-                        .token()))) {
+        if (token == NOT && (t.getChild().isAND() || replacements.contains(t.getChild().token()))) {
             return hasSelfInDesc(t.getChild());
         }
         return false;
@@ -499,11 +501,8 @@ public class Concept extends ClassifiableEntry {
             return addToldSubsumer((Concept) desc.elem().getNE());
         }
         if (token == NOT) {
-            if (desc.getChild().token() == FORALL
-                    || desc.getChild().token() == LE) {
-                searchTSbyRoleAndSupers(
-                        Role.resolveRole(desc.getChild().getLeft()),
-                        RolesProcessed);
+            if (desc.getChild().token() == FORALL || desc.getChild().token() == LE) {
+                searchTSbyRoleAndSupers(Role.resolveRole(desc.getChild().getLeft()), RolesProcessed);
             }
             return false;
         }
@@ -517,8 +516,9 @@ public class Concept extends ClassifiableEntry {
             // push all AND children on the list and traverse the list removing
             // n-th level ANDs and pushing their children in turn; ends up with
             // the leaves of the AND subtree
-            return !desc.getChildren().stream()
-                    .anyMatch(t -> !initToldSubsumers(t, RolesProcessed));
+            AtomicBoolean b = new AtomicBoolean(true);
+            desc.getChildren().stream().forEach(t -> b.set(b.get() && initToldSubsumers(t, RolesProcessed)));
+            return b.get();
         }
         return false;
     }
@@ -548,15 +548,15 @@ public class Concept extends ClassifiableEntry {
         r.getAncestor().forEach(q -> searchTSbyRole(q, RolesProcessed));
     }
 
-    /** @return told subsumers depth */
+    /**
+     * @return told subsumers depth
+     */
     @PortedFrom(file = "tConcept.h", name = "calculateTSDepth")
     public int calculateTSDepth() {
         if (tsDepth > 0) {
             return tsDepth;
         }
-        tsDepth = toldSubsumers.stream()
-                .mapToInt(p -> ((Concept) p).calculateTSDepth()).max()
-                .orElse(1);
+        tsDepth = toldSubsumers.stream().mapToInt(p -> ((Concept) p).calculateTSDepth()).max().orElse(1);
         return tsDepth;
     }
 
@@ -586,7 +586,9 @@ public class Concept extends ClassifiableEntry {
         return hasSelfInDesc(description);
     }
 
-    /** @return p name */
+    /**
+     * @return p name
+     */
     @Original
     public int getpName() {
         return pName;
@@ -601,7 +603,9 @@ public class Concept extends ClassifiableEntry {
         this.pName = pName;
     }
 
-    /** @return p body */
+    /**
+     * @return p body
+     */
     @Original
     public int getpBody() {
         return pBody;
@@ -616,13 +620,17 @@ public class Concept extends ClassifiableEntry {
         this.pBody = pBody;
     }
 
-    /** @return description */
+    /**
+     * @return description
+     */
     @Original
     public DLTree getDescription() {
         return description;
     }
 
-    /** @return told subsumers depth */
+    /**
+     * @return told subsumers depth
+     */
     @Original
     public int getTsDepth() {
         return tsDepth;
@@ -633,13 +641,17 @@ public class Concept extends ClassifiableEntry {
         this.tsDepth = tsDepth;
     }
 
-    /** @return neg features */
+    /**
+     * @return neg features
+     */
     @Original
     public LogicFeatures getNegFeatures() {
         return negFeatures;
     }
 
-    /** @return pos features */
+    /**
+     * @return pos features
+     */
     @Original
     public LogicFeatures getPosFeatures() {
         return posFeatures;
@@ -654,13 +666,17 @@ public class Concept extends ClassifiableEntry {
     @Original
     private boolean primitive;
 
-    /** @return true if primitive */
+    /**
+     * @return true if primitive
+     */
     @Original
     public boolean isPrimitive() {
         return primitive;
     }
 
-    /** @return false if primitive */
+    /**
+     * @return false if primitive
+     */
     @Original
     public boolean isNonPrimitive() {
         return !isPrimitive();
@@ -678,7 +694,9 @@ public class Concept extends ClassifiableEntry {
     @Original
     private boolean hasSP;
 
-    /** @return HasSingletonParent flag */
+    /**
+     * @return HasSingletonParent flag
+     */
     @Original
     public boolean isHasSP() {
         return hasSP;
@@ -696,7 +714,9 @@ public class Concept extends ClassifiableEntry {
     @Original
     private boolean nominal;
 
-    /** @return nominal */
+    /**
+     * @return nominal
+     */
     @Original
     public boolean isNominal() {
         return nominal;
@@ -714,7 +734,9 @@ public class Concept extends ClassifiableEntry {
     @Original
     private boolean singleton;
 
-    /** @return singleton */
+    /**
+     * @return singleton
+     */
     @Original
     public boolean isSingleton() {
         return singleton;

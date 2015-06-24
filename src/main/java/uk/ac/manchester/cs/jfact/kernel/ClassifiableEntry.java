@@ -46,7 +46,9 @@ public class ClassifiableEntry extends NamedEntry {
         super(name);
     }
 
-    /** @return is current entry classified */
+    /**
+     * @return is current entry classified
+     */
     @PortedFrom(file = "taxNamEntry.h", name = "isClassified")
     public boolean isClassified() {
         return taxVertex != null;
@@ -63,7 +65,9 @@ public class ClassifiableEntry extends NamedEntry {
         taxVertex = vertex;
     }
 
-    /** @return taxonomy vertex of the entry */
+    /**
+     * @return taxonomy vertex of the entry
+     */
     @PortedFrom(file = "taxNamEntry.h", name = "getTaxVertex")
     public TaxonomyVertex getTaxVertex() {
         return taxVertex;
@@ -73,7 +77,9 @@ public class ClassifiableEntry extends NamedEntry {
     private boolean completelyDefined;
 
     // completely defined interface
-    /** @return a Completely Defined flag */
+    /**
+     * @return a Completely Defined flag
+     */
     @Original
     public boolean isCompletelyDefined() {
         return completelyDefined;
@@ -91,7 +97,9 @@ public class ClassifiableEntry extends NamedEntry {
     @Original
     private boolean nonClassifiable;
 
-    /** @return non classifiable? */
+    /**
+     * @return non classifiable?
+     */
     @Original
     public boolean isNonClassifiable() {
         return nonClassifiable;
@@ -106,13 +114,17 @@ public class ClassifiableEntry extends NamedEntry {
         nonClassifiable = action;
     }
 
-    /** @return told subsumers */
+    /**
+     * @return told subsumers
+     */
     @PortedFrom(file = "taxNamEntry.h", name = "told_begin")
     public Collection<ClassifiableEntry> getToldSubsumers() {
         return toldSubsumers;
     }
 
-    /** @return whether entry ihas any TS */
+    /**
+     * @return whether entry ihas any TS
+     */
     @PortedFrom(file = "taxNamEntry.h", name = "hasToldSubsumers")
     public boolean hasToldSubsumers() {
         return !toldSubsumers.isEmpty();
@@ -156,13 +168,17 @@ public class ClassifiableEntry extends NamedEntry {
     }
 
     // synonym interface
-    /** @return if current entry is a synonym */
+    /**
+     * @return if current entry is a synonym
+     */
     @PortedFrom(file = "taxNamEntry.h", name = "isSynonym")
     public boolean isSynonym() {
         return pSynonym != null;
     }
 
-    /** @return synonym of current entry */
+    /**
+     * @return synonym of current entry
+     */
     @PortedFrom(file = "taxNamEntry.h", name = "getSynonym")
     public ClassifiableEntry getSynonym() {
         return pSynonym;
@@ -209,9 +225,8 @@ public class ClassifiableEntry extends NamedEntry {
     /** if two synonyms are in 'told' list, merge them */
     @PortedFrom(file = "taxNamEntry.h", name = "removeSynonymsFromParents")
     public void removeSynonymsFromParents() {
-        List<ClassifiableEntry> toKeep = toldSubsumers.stream()
-                .map(p -> resolveSynonym(p)).filter(p -> this != p)
-                .collect(toList());
+        List<ClassifiableEntry> toKeep = toldSubsumers.stream().map(p -> resolveSynonym(p)).filter(p -> this != p)
+            .collect(toList());
         toldSubsumers.clear();
         toldSubsumers.addAll(toKeep);
     }

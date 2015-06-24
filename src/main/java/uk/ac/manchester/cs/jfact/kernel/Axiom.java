@@ -11,6 +11,7 @@ import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Stream;
 
 import org.semanticweb.owlapi.model.IRI;
 
@@ -413,8 +414,16 @@ public class Axiom implements Serializable {
         if (options.isAbsorptionLoggingActive()) {
             absorptionLog.print(prefix, conceptName);
             if (Cons.size() > 1) {
-                String collect = Cons.stream().skip(1).flatMap(p -> p.getChildren().stream()).map(p -> InAx.getConcept(
-                    p).getName()).collect(joining(" "));
+                Stream<DLTree> skip = Cons.stream().skip(1);
+                List<DLTree> l = new ArrayList<>();
+                skip.forEach(t -> {
+                    if (t.getChildren().isEmpty()) {
+                        l.add(t);
+                    } else {
+                        l.addAll(t.getChildren());
+                    }
+                });
+                String collect = l.stream().map(p -> InAx.getConcept(p).getName()).collect(joining(" "));
                 absorptionLog.print(" (other options are ").print(collect).print(")");
             }
         }
