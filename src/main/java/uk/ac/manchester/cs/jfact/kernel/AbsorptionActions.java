@@ -7,14 +7,16 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
-/** @author ignazio */
+/**
+ * @author ignazio
+ */
 public enum AbsorptionActions {
     /** absorb bottom action */
     B('B') {
 
         @Override
         public boolean execute(Axiom ax, AxiomSet tb) {
-            return ax.absorbIntoBottom();
+            return ax.absorbIntoBottom(tb.tboxHost);
         }
     },
     /** absorb top action */
@@ -78,7 +80,7 @@ public enum AbsorptionActions {
 
         @Override
         public boolean execute(Axiom ax, AxiomSet tb) {
-            return tb.split(ax);
+            return tb.split(ax, tb.tboxHost);
         }
     };
 
@@ -99,8 +101,7 @@ public enum AbsorptionActions {
                 return v;
             }
         }
-        throw new ReasonerInternalException(
-                "Incorrect absorption flags given: " + ch);
+        throw new ReasonerInternalException("Incorrect absorption flags given: " + ch);
     }
 
     /**

@@ -191,6 +191,11 @@ public class TBox implements Serializable {
     @PortedFrom(file = "dlTBox.h", name = "Status")
     private KBStatus status;
     private Map<Concept, DLTree> ExtraConceptDefs = new HashMap<>();
+    private InAx statistics = new InAx();
+
+    public InAx getStatistics() {
+        return statistics;
+    }
 
     /**
      * @return individuals

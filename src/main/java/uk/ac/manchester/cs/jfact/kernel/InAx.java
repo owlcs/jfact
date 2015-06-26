@@ -12,13 +12,39 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.helpers.DLTree;
 
 /** DLTREE utils */
 @PortedFrom(file = "tAxiom.h", name = "InAx")
 public class InAx implements Serializable {
 
+    /** statistics */
+    public static final String S_ABS_N_ATTEMPT = "SAbsNAttempt";
+    /** statistics */
+    public static final String S_ABS_N_APPLY = "SAbsNApply";
+    /** statistics */
+    public static final String S_ABS_ACTION = "SAbsAction";
+    /** statistics */
+    public static final String S_ABS_INPUT = "SAbsInput";
+    /** statistics */
+    public static final String S_ABS_R_ATTEMPT = "SAbsRAttempt";
+    /** statistics */
+    public static final String S_ABS_R_APPLY = "SAbsRApply";
+    /** statistics */
+    public static final String S_ABS_C_ATTEMPT = "SAbsCAttempt";
+    /** statistics */
+    public static final String S_ABS_C_APPLY = "SAbsCApply";
+    /** statistics */
+    public static final String S_ABS_T_APPLY = "SAbsTApply";
+    /** statistics */
+    public static final String S_ABS_SPLIT = "SAbsSplit";
+    /** statistics */
+    public static final String S_ABS_B_APPLY = "SAbsBApply";
+    /** statistics */
+    public static final String S_ABS_REP_FORALL = "SAbsRepForall";
+    /** statistics */
+    public static final String S_ABS_REP_CN = "SAbsRepCN";
     private static final long serialVersionUID = 11000L;
     private static final AtomicInteger ZERO = new AtomicInteger(0);
 
@@ -194,8 +220,7 @@ public class InAx implements Serializable {
      *        the tree
      */
     public static boolean isOForall(DLTree p) {
-        return isForall(p)
-                && !Role.resolveRole(p.getChild().getLeft()).isDataRole();
+        return isForall(p) && !Role.resolveRole(p.getChild().getLeft()).isDataRole();
     }
 
     /**
@@ -214,15 +239,14 @@ public class InAx implements Serializable {
         return !C.isName() || !getConcept(C).isSystem();
     }
 
-    private static final Map<String, AtomicInteger> created = new HashMap<>();
+    private final Map<String, AtomicInteger> created = new HashMap<>();
 
     /**
      * @param s
      *        s
      */
-    private static void add(String s) {
-        created.computeIfAbsent(s, (x) -> new AtomicInteger())
-                .incrementAndGet();
+    private void add(String s) {
+        created.computeIfAbsent(s, (x) -> new AtomicInteger()).incrementAndGet();
     }
 
     /**
@@ -230,203 +254,255 @@ public class InAx implements Serializable {
      *        s
      * @return index for s
      */
-    private static int get(String s) {
+    private int get(String s) {
         return created.getOrDefault(s, ZERO).intValue();
     }
 
     /** init SAbsRepCN */
-    public static void SAbsRepCN() {
-        add("SAbsRepCN");
+    public void SAbsRepCN() {
+        add(S_ABS_REP_CN);
     }
 
     /** init SAbsRepForall */
-    public static void SAbsRepForall() {
-        add("SAbsRepForall");
+    public void SAbsRepForall() {
+        add(S_ABS_REP_FORALL);
     }
 
     /** init SAbsBApply */
-    public static void SAbsBApply() {
-        add("SAbsBApply");
+    public void SAbsBApply() {
+        add(S_ABS_B_APPLY);
     }
 
     /** init SAbsSplit */
-    public static void SAbsSplit() {
-        add("SAbsSplit");
+    public void SAbsSplit() {
+        add(S_ABS_SPLIT);
     }
 
     /** init SAbsTApply */
-    public static void SAbsTApply() {
-        add("SAbsTApply");
+    public void SAbsTApply() {
+        add(S_ABS_T_APPLY);
     }
 
     /** init SAbsCApply */
-    public static void SAbsCApply() {
-        add("SAbsCApply");
+    public void SAbsCApply() {
+        add(S_ABS_C_APPLY);
     }
 
     /** init SAbsCAttempt */
-    public static void SAbsCAttempt() {
-        add("SAbsCAttempt");
+    public void SAbsCAttempt() {
+        add(S_ABS_C_ATTEMPT);
     }
 
     /** init SAbsRApply */
-    public static void SAbsRApply() {
-        add("SAbsRApply");
+    public void SAbsRApply() {
+        add(S_ABS_R_APPLY);
     }
 
     /** init SAbsRAttempt */
-    public static void SAbsRAttempt() {
-        add("SAbsRAttempt");
+    public void SAbsRAttempt() {
+        add(S_ABS_R_ATTEMPT);
     }
 
     /** init SAbsInput */
-    public static void SAbsInput() {
-        add("SAbsInput");
+    public void SAbsInput() {
+        add(S_ABS_INPUT);
     }
 
     /** init SAbsAction */
-    public static void SAbsAction() {
-        add("SAbsAction");
+    public void SAbsAction() {
+        add(S_ABS_ACTION);
     }
 
     /** init SAbsNApply */
-    public static void SAbsNApply() {
-        add("SAbsNApply");
+    public void SAbsNApply() {
+        add(S_ABS_N_APPLY);
     }
 
     /** init SAbsNAttempt */
-    public static void SAbsNAttempt() {
-        add("SAbsNAttempt");
+    public void SAbsNAttempt() {
+        add(S_ABS_N_ATTEMPT);
     }
 
-    /** @return true if map contains SAbsRepCN */
-    public static boolean containsSAbsRepCN() {
-        return created.containsKey("SAbsRepCN");
+    /**
+     * @return true if map contains SAbsRepCN
+     */
+    public boolean containsSAbsRepCN() {
+        return created.containsKey(S_ABS_REP_CN);
     }
 
-    /** @return true if map contains SAbsRepForall */
-    public static boolean containsSAbsRepForall() {
-        return created.containsKey("SAbsRepForall");
+    /**
+     * @return true if map contains SAbsRepForall
+     */
+    public boolean containsSAbsRepForall() {
+        return created.containsKey(S_ABS_REP_FORALL);
     }
 
-    /** @return true if map contains SAbsBApply */
-    public static boolean containsSAbsBApply() {
-        return created.containsKey("SAbsBApply");
+    /**
+     * @return true if map contains SAbsBApply
+     */
+    public boolean containsSAbsBApply() {
+        return created.containsKey(S_ABS_B_APPLY);
     }
 
-    /** @return true if map contains SAbsSplit */
-    public static boolean containsSAbsSplit() {
-        return created.containsKey("SAbsSplit");
+    /**
+     * @return true if map contains SAbsSplit
+     */
+    public boolean containsSAbsSplit() {
+        return created.containsKey(S_ABS_SPLIT);
     }
 
-    /** @return true if map contains SAbsTApply */
-    public static boolean containsSAbsTApply() {
-        return created.containsKey("SAbsTApply");
+    /**
+     * @return true if map contains SAbsTApply
+     */
+    public boolean containsSAbsTApply() {
+        return created.containsKey(S_ABS_T_APPLY);
     }
 
-    /** @return true if map contains SAbsCApply */
-    public static boolean containsSAbsCApply() {
-        return created.containsKey("SAbsCApply");
+    /**
+     * @return true if map contains SAbsCApply
+     */
+    public boolean containsSAbsCApply() {
+        return created.containsKey(S_ABS_C_APPLY);
     }
 
-    /** @return true if map contains SAbsCAttempt */
-    public static boolean containsSAbsCAttempt() {
-        return created.containsKey("SAbsCAttempt");
+    /**
+     * @return true if map contains SAbsCAttempt
+     */
+    public boolean containsSAbsCAttempt() {
+        return created.containsKey(S_ABS_C_ATTEMPT);
     }
 
-    /** @return true if map contains SAbsRApply */
-    public static boolean containsSAbsRApply() {
-        return created.containsKey("SAbsRApply");
+    /**
+     * @return true if map contains SAbsRApply
+     */
+    public boolean containsSAbsRApply() {
+        return created.containsKey(S_ABS_R_APPLY);
     }
 
-    /** @return true if map contains SAbsRAttempt */
-    public static boolean containsSAbsRAttempt() {
-        return created.containsKey("SAbsRAttempt");
+    /**
+     * @return true if map contains SAbsRAttempt
+     */
+    public boolean containsSAbsRAttempt() {
+        return created.containsKey(S_ABS_R_ATTEMPT);
     }
 
-    /** @return true if map contains SAbsInput */
-    public static boolean containsSAbsInput() {
-        return created.containsKey("SAbsInput");
+    /**
+     * @return true if map contains SAbsInput
+     */
+    public boolean containsSAbsInput() {
+        return created.containsKey(S_ABS_INPUT);
     }
 
-    /** @return true if map contains SAbsAction */
-    public static boolean containsSAbsAction() {
-        return created.containsKey("SAbsAction");
+    /**
+     * @return true if map contains SAbsAction
+     */
+    public boolean containsSAbsAction() {
+        return created.containsKey(S_ABS_ACTION);
     }
 
-    /** @return true if map contains SAbsNApply */
-    public static boolean containsSAbsNApply() {
-        return created.containsKey("SAbsNApply");
+    /**
+     * @return true if map contains SAbsNApply
+     */
+    public boolean containsSAbsNApply() {
+        return created.containsKey(S_ABS_N_APPLY);
     }
 
-    /** @return true if map contains SAbsNAttempt */
-    public static boolean containsSAbsNAttempt() {
-        return created.containsKey("SAbsNAttempt");
+    /**
+     * @return true if map contains SAbsNAttempt
+     */
+    public boolean containsSAbsNAttempt() {
+        return created.containsKey(S_ABS_N_ATTEMPT);
     }
 
-    /** @return value for SAbsRepCN */
-    public static int getSAbsRepCN() {
-        return get("SAbsRepCN");
+    /**
+     * @return value for SAbsRepCN
+     */
+    public int getSAbsRepCN() {
+        return get(S_ABS_REP_CN);
     }
 
-    /** @return value for SAbsRepForall */
-    public static int getSAbsRepForall() {
-        return get("SAbsRepForall");
+    /**
+     * @return value for SAbsRepForall
+     */
+    public int getSAbsRepForall() {
+        return get(S_ABS_REP_FORALL);
     }
 
-    /** @return value for SAbsBApply */
-    public static int getSAbsBApply() {
-        return get("SAbsBApply");
+    /**
+     * @return value for SAbsBApply
+     */
+    public int getSAbsBApply() {
+        return get(S_ABS_B_APPLY);
     }
 
-    /** @return value for SAbsSplit */
-    public static int getSAbsSplit() {
-        return get("SAbsSplit");
+    /**
+     * @return value for SAbsSplit
+     */
+    public int getSAbsSplit() {
+        return get(S_ABS_SPLIT);
     }
 
-    /** @return value for SAbsTApply */
-    public static int getSAbsTApply() {
-        return get("SAbsTApply");
+    /**
+     * @return value for SAbsTApply
+     */
+    public int getSAbsTApply() {
+        return get(S_ABS_T_APPLY);
     }
 
-    /** @return value for SAbsCApply */
-    public static int getSAbsCApply() {
-        return get("SAbsCApply");
+    /**
+     * @return value for SAbsCApply
+     */
+    public int getSAbsCApply() {
+        return get(S_ABS_C_APPLY);
     }
 
-    /** @return value for SAbsCAttempt */
-    public static int getSAbsCAttempt() {
-        return get("SAbsCAttempt");
+    /**
+     * @return value for SAbsCAttempt
+     */
+    public int getSAbsCAttempt() {
+        return get(S_ABS_C_ATTEMPT);
     }
 
-    /** @return value for SAbsRApply */
-    public static int getSAbsRApply() {
-        return get("SAbsRApply");
+    /**
+     * @return value for SAbsRApply
+     */
+    public int getSAbsRApply() {
+        return get(S_ABS_R_APPLY);
     }
 
-    /** @return value for SAbsRAttempt */
-    public static int getSAbsRAttempt() {
-        return get("SAbsRAttempt");
+    /**
+     * @return value for SAbsRAttempt
+     */
+    public int getSAbsRAttempt() {
+        return get(S_ABS_R_ATTEMPT);
     }
 
-    /** @return value for SAbsInput */
-    public static int getSAbsInput() {
-        return get("SAbsInput");
+    /**
+     * @return value for SAbsInput
+     */
+    public int getSAbsInput() {
+        return get(S_ABS_INPUT);
     }
 
-    /** @return value for SAbsAction */
-    public static int getSAbsAction() {
-        return get("SAbsAction");
+    /**
+     * @return value for SAbsAction
+     */
+    public int getSAbsAction() {
+        return get(S_ABS_ACTION);
     }
 
-    /** @return value for SAbsNApply */
-    public static int getSAbsNApply() {
-        return get("SAbsNApply");
+    /**
+     * @return value for SAbsNApply
+     */
+    public int getSAbsNApply() {
+        return get(S_ABS_N_APPLY);
     }
 
-    /** @return value for SAbsNAttempt */
-    public static int getSAbsNAttempt() {
-        return get("SAbsNAttempt");
+    /**
+     * @return value for SAbsNAttempt
+     */
+    public int getSAbsNAttempt() {
+        return get(S_ABS_N_ATTEMPT);
     }
 
     /**

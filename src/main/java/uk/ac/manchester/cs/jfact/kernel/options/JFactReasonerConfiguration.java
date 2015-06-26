@@ -20,13 +20,12 @@ import org.semanticweb.owlapi.reasoner.NullReasonerProgressMonitor;
 import org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration;
 import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
-import conformance.PortedFrom;
 
 /** configuration. */
-public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
-        Serializable {
+public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Serializable {
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 11000L;
@@ -43,8 +42,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      * expression replacement, (R)ole absorption, (S)plit, Simple (f)orall
      * expression replacement
      */
-    private static StringOption absorptionFlags = getOption("absorptionFlags",
-            "BTEfCFSR");
+    private static StringOption absorptionFlags = getOption("absorptionFlags", "BTEfCFSR");
     /**
      * Option 'alwaysPreferEquals' allows user to enforce usage of C=D
      * definition instead of C[=D during absorption, even if implication
@@ -179,8 +177,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      *        the new use sorted reasoning
      * @return modified instance
      */
-    public JFactReasonerConfiguration setUseSortedReasoning(
-            boolean useSortedReasoning) {
+    public JFactReasonerConfiguration setUseSortedReasoning(boolean useSortedReasoning) {
         this.useSortedReasoning = useSortedReasoning;
         return this;
     }
@@ -204,7 +201,9 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
         return this;
     }
 
-    /** @return is allow undefined entities */
+    /**
+     * @return is allow undefined entities
+     */
     public boolean isAllowUndefinedNames() {
         return allowUndefinedNames;
     }
@@ -219,7 +218,9 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
         return this;
     }
 
-    /** @return is query answering */
+    /**
+     * @return is query answering
+     */
     public boolean isQueryAnswering() {
         return queryAnswering;
     }
@@ -782,8 +783,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      *        the new rkg improve save restore depset
      * @return modified instance
      */
-    public JFactReasonerConfiguration setRKG_IMPROVE_SAVE_RESTORE_DEPSET(
-            boolean b) {
+    public JFactReasonerConfiguration setRKG_IMPROVE_SAVE_RESTORE_DEPSET(boolean b) {
         RKG_IMPROVE_SAVE_RESTORE_DEPSET = b;
         return this;
     }
@@ -888,8 +888,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      *        the new rkg update rnd from superroles
      * @return modified instance
      */
-    public JFactReasonerConfiguration setRKG_UPDATE_RND_FROM_SUPERROLES(
-            boolean b) {
+    public JFactReasonerConfiguration setRKG_UPDATE_RND_FROM_SUPERROLES(boolean b) {
         RKG_UPDATE_RND_FROM_SUPERROLES = b;
         return this;
     }
@@ -1073,6 +1072,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
         }
     }
 
+    public JFactReasonerConfiguration setAbsorptionLog(OutputStream out) {
+        logAbsorptionAdapterStream = new LogAdapterStream(out);
+        return this;
+    }
+
     /** The empty. */
     protected final LogAdapter empty = new LogAdapterImpl();
     /** The log adapter stream. */
@@ -1100,8 +1104,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      *        the new absorption log output stream
      * @return modified instance
      */
-    public JFactReasonerConfiguration setAbsorptionLogOutputStream(
-            OutputStream o) {
+    public JFactReasonerConfiguration setAbsorptionLogOutputStream(OutputStream o) {
         logAbsorptionAdapterStream = new LogAdapterStream(o);
         return this;
     }
@@ -1130,8 +1133,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
          * @throws ClassNotFoundException
          *         the class not found exception
          */
-        private void readObject(ObjectInputStream in) throws IOException,
-                ClassNotFoundException {
+        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
             in.defaultReadObject();
             out = System.out;
         }
@@ -1262,8 +1264,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
         }
 
         @Override
-        public LogAdapter print(Object s1, Object s2, Object s3, Object s4,
-                Object s5) {
+        public LogAdapter print(Object s1, Object s2, Object s3, Object s4, Object s5) {
             this.print(s1.toString());
             this.print(s2.toString());
             this.print(s3.toString());
@@ -1360,8 +1361,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
         }
 
         @Override
-        public LogAdapter print(Object s1, Object s2, Object s3, Object s4,
-                Object s5) {
+        public LogAdapter print(Object s1, Object s2, Object s3, Object s4, Object s5) {
             return this;
         }
     }
@@ -1403,8 +1403,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      *        the new use undefined names
      * @return modified instance
      */
-    public JFactReasonerConfiguration setUseUndefinedNames(
-            boolean useUndefinedNames) {
+    public JFactReasonerConfiguration setUseUndefinedNames(boolean useUndefinedNames) {
         this.useUndefinedNames = useUndefinedNames;
         return this;
     }
@@ -1425,8 +1424,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      *        the new use axiom splitting
      * @return modified instance
      */
-    public JFactReasonerConfiguration setUseAxiomSplitting(
-            boolean useAxiomSplitting) {
+    public JFactReasonerConfiguration setUseAxiomSplitting(boolean useAxiomSplitting) {
         this.useAxiomSplitting = useAxiomSplitting;
         return this;
     }
@@ -1450,8 +1448,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      *        the new rkg use ad in module extraction
      * @return modified instance
      */
-    public JFactReasonerConfiguration setRKG_USE_AD_IN_MODULE_EXTRACTION(
-            boolean value) {
+    public JFactReasonerConfiguration setRKG_USE_AD_IN_MODULE_EXTRACTION(boolean value) {
         useADInModuleExtraction = value;
         return this;
     }
@@ -1472,8 +1469,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration,
      *        the new use incremental reasoning
      * @return modified instance
      */
-    public JFactReasonerConfiguration setUseIncrementalReasoning(
-            boolean useIncrementalReasoning) {
+    public JFactReasonerConfiguration setUseIncrementalReasoning(boolean useIncrementalReasoning) {
         this.useIncrementalReasoning = useIncrementalReasoning;
         return this;
     }
