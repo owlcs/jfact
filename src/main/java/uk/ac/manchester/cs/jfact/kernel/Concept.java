@@ -88,6 +88,7 @@ public class Concept extends ClassifiableEntry {
 
     /** type of concept wrt classifiability */
     public enum CTTag {
+        //@formatter:off
         /** not specified */
         cttUnspecified('u'),
         /** concept with all parents -- TCD */
@@ -102,7 +103,7 @@ public class Concept extends ClassifiableEntry {
         cttRegular('r'),
         /** any non-primitive concept (except synonyms) */
         cttNonPrimitive('n');
-
+        //@formatter:on
         private final char c;
 
         private CTTag(char c) {
@@ -252,7 +253,7 @@ public class Concept extends ClassifiableEntry {
         if (description == null) {
             return true;
         }
-        return !isPrimitive() && description.equals(desc);
+        return description.equals(desc);
     }
 
     /**

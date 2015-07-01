@@ -239,24 +239,6 @@ public class TBox implements Serializable {
     }
 
     /**
-     * add description to a concept;
-     * 
-     * @param p
-     *        p
-     * @param desc
-     *        desc
-     * @return true in case of error
-     */
-    @PortedFrom(file = "dlTBox.h", name = "initNonPrimitive")
-    public boolean initNonPrimitive(Concept p, DLTree desc) {
-        if (!p.canInitNonPrim(desc)) {
-            return true;
-        }
-        makeNonPrimitive(p, desc);
-        return false;
-    }
-
-    /**
      * make concept non-primitive;
      * 
      * @param p
@@ -2412,7 +2394,8 @@ public class TBox implements Serializable {
             return false;
         }
         // check the case whether C=RHS or C [= \top
-        if (!initNonPrimitive(left, rightOrigin)) {
+        if (left.canInitNonPrim(rightOrigin)) {
+            makeNonPrimitive(left, rightOrigin);
             return true;
         }
         // can't make definition
@@ -2420,9 +2403,9 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param lhs
+     * @param left
      *        left
-     * @param rhs
+     * @param right
      *        right
      * @return true if concept is made non primitive
      */
