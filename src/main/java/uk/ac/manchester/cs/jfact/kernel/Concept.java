@@ -277,7 +277,7 @@ public class Concept extends ClassifiableEntry {
         return extName.toString();
     }
 
-    /** init told subsumers of the concept by it's description */
+    /** init told subsumers of the concept by its description */
     @PortedFrom(file = "tConcept.h", name = "initToldSubsumers")
     public void initToldSubsumers() {
         toldSubsumers.clear();
@@ -518,7 +518,7 @@ public class Concept extends ClassifiableEntry {
             // n-th level ANDs and pushing their children in turn; ends up with
             // the leaves of the AND subtree
             AtomicBoolean b = new AtomicBoolean(true);
-            desc.getChildren().stream().forEach(t -> b.set(b.get() && initToldSubsumers(t, RolesProcessed)));
+            desc.getChildren().stream().forEach(t -> b.set(b.get() & initToldSubsumers(t, RolesProcessed)));
             return b.get();
         }
         return false;

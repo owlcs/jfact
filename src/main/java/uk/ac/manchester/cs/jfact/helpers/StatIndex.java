@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.helpers;
 
+import java.util.Arrays;
+
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -7,16 +9,13 @@ package uk.ac.manchester.cs.jfact.helpers;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** stat index enum */
 public enum StatIndex {
-    /** Depth */
-    Depth,
-    /** Size */
-    Size,
-    /** Branch */
-    Branch,
-    /** Gener */
-    Gener,
-    /** Freq */
-    Freq;
+    //@formatter:off
+    /** Depth */    Depth, 
+    /** Size */     Size, 
+    /** Branch */   Branch, 
+    /** Gener */    Gener, 
+    /** Freq */     Freq;
+    //@formatter:on
 
     /**
      * @param pos
@@ -34,16 +33,16 @@ public enum StatIndex {
      */
     public static int choose(char c) {
         switch (c) {
-            case 'S':
-                return Size.getIndex(false);
-            case 'D':
-                return Depth.getIndex(false);
-            case 'B':
-                return Branch.getIndex(false);
-            case 'G':
-                return Gener.getIndex(false);
-            default:
-                return Freq.getIndex(false);
+        case 'S':
+            return Size.getIndex(false);
+        case 'D':
+            return Depth.getIndex(false);
+        case 'B':
+            return Branch.getIndex(false);
+        case 'G':
+            return Gener.getIndex(false);
+        default:
+            return Freq.getIndex(false);
         }
     }
 
@@ -63,8 +62,12 @@ public enum StatIndex {
      * @param stat
      *        stat
      */
-    public static void updateStatValues(int d, int s, int b, int g,
-            boolean pos, int[] stat) {
+    public static void updateStatValues(int d, int s, int b, int g, boolean pos, int[] stat, boolean debug) {
+        if (debug) {//XXX debug statements
+            System.out.println("StatIndex.updateStatValues() " + d + "\t" + s + "\t" + b + "\t" + g + "\t" + pos + "\t"
+                + Arrays.toString(stat));
+            System.out.println("StatIndex.updateStatValues() value pre increment " + stat[Size.getIndex(pos)]);
+        }
         stat[Size.getIndex(pos)] += s;
         stat[Branch.getIndex(pos)] += b;
         stat[Gener.getIndex(pos)] += g;
@@ -85,10 +88,13 @@ public enum StatIndex {
      * @param stat
      *        stat
      */
-    public static void updateStatValues(DLVertex v, boolean posV, boolean pos,
-            int[] stat) {
-        updateStatValues(getDepth(posV, v.stat), getSize(posV, v.stat),
-                getBranch(posV, v.stat), getGener(posV, v.stat), pos, stat);
+    public static void updateStatValues(DLVertex v, boolean posV, boolean pos, int[] stat, boolean debug) {
+        if (debug) {
+            System.out.println("StatIndex.updateStatValues() " + posV + "\t" + pos + "\t" + Arrays.toString(stat) + "\t"
+                + v.toString(true));
+        }
+        updateStatValues(getDepth(posV, v.stat), getSize(posV, v.stat), getBranch(posV, v.stat), getGener(posV, v.stat),
+            pos, stat, debug);
     }
 
     /**

@@ -11,24 +11,19 @@ import static uk.ac.manchester.cs.jfact.helpers.Helper.bpINVALID;
 import static uk.ac.manchester.cs.jfact.kernel.Token.RCOMPOSITION;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.helpers.FastSet;
 import uk.ac.manchester.cs.jfact.helpers.FastSetFactory;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.kernel.actors.AddRoleActor;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** Role */
 @PortedFrom(file = "tRole.h", name = "Role")
@@ -53,12 +48,16 @@ public class Role extends ClassifiableEntry {
             this(false);
         }
 
-        /** @return true iff the value is known to be set */
+        /**
+         * @return true iff the value is known to be set
+         */
         protected boolean isKnown() {
             return known;
         }
 
-        /** @return the value */
+        /**
+         * @return the value
+         */
         protected boolean getValue() {
             return value;
         }
@@ -159,8 +158,7 @@ public class Role extends ClassifiableEntry {
 
     @PortedFrom(file = "tRole.h", name = "addTrivialTransition")
     private void addTrivialTransition(Role r) {
-        automaton.addTransitionSafe(RoleAutomaton.initial, new RATransition(
-                RoleAutomaton.final_state, r));
+        automaton.addTransitionSafe(RoleAutomaton.initial, new RATransition(RoleAutomaton.final_state, r));
     }
 
     /**
@@ -173,7 +171,7 @@ public class Role extends ClassifiableEntry {
     @PortedFrom(file = "tRole.h", name = "completeAutomatonByRole")
     private RoleAutomaton completeAutomatonByRole(Role R, Set<Role> RInProcess) {
         // no synonyms here
-        assert !R.isSynonym();
+        assert!R.isSynonym();
         // no case ...*S*... [= S
         assert R != this;
         R.completeAutomaton(RInProcess);
@@ -196,14 +194,18 @@ public class Role extends ClassifiableEntry {
         });
     }
 
-    /** @return inverse of given role (non- version) */
+    /**
+     * @return inverse of given role (non- version)
+     */
     @PortedFrom(file = "tRole.h", name = "inverse")
     public Role inverse() {
         assert inverse != null;
         return resolveSynonym(inverse);
     }
 
-    /** @return real inverse of a role (RO) */
+    /**
+     * @return real inverse of a role (RO)
+     */
     @PortedFrom(file = "tRole.h", name = "realInverse")
     public Role realInverse() {
         assert inverse != null;
@@ -232,13 +234,17 @@ public class Role extends ClassifiableEntry {
         return automaton.isSimple();
     }
 
-    /** @return special domain */
+    /**
+     * @return special domain
+     */
     @PortedFrom(file = "tRole.h", name = "getTSpecialDomain")
     public DLTree getTSpecialDomain() {
         return pSpecialDomain;
     }
 
-    /** @return true iff role has a special domain */
+    /**
+     * @return true iff role has a special domain
+     */
     @PortedFrom(file = "tRole.h", name = "hasSpecialDomain")
     public boolean hasSpecialDomain() {
         return specialDomain;
@@ -250,11 +256,9 @@ public class Role extends ClassifiableEntry {
         if (!hasSpecialDomain() || getTRange() == null) {
             pSpecialDomain = DLTreeFactory.createTop();
         } else {
-            pSpecialDomain = DLTreeFactory.createSNFForall(
-                    DLTreeFactory.createRole(this), getTRange().copy());
-            pSpecialDomain = DLTreeFactory.createSNFForall(
-                    DLTreeFactory.buildTree(new Lexeme(Token.RNAME, this)),
-                    getTRange().copy());
+            pSpecialDomain = DLTreeFactory.createSNFForall(DLTreeFactory.createRole(this), getTRange().copy());
+            pSpecialDomain = DLTreeFactory.createSNFForall(DLTreeFactory.buildTree(new Lexeme(Token.RNAME, this)),
+                getTRange().copy());
         }
     }
 
@@ -272,7 +276,9 @@ public class Role extends ClassifiableEntry {
     @Original
     private boolean dataRole;
 
-    /** @return distinguish data- and non-data role */
+    /**
+     * @return distinguish data- and non-data role
+     */
     @Original
     public boolean isDataRole() {
         return dataRole;
@@ -287,13 +293,17 @@ public class Role extends ClassifiableEntry {
         dataRole = action;
     }
 
-    /** @return test if role is functional (ie, have some functional ancestors) */
+    /**
+     * @return test if role is functional (ie, have some functional ancestors)
+     */
     @PortedFrom(file = "tRole.h", name = "isFunctional")
     public boolean isFunctional() {
         return functionality.getValue();
     }
 
-    /** @return check whether the functionality of a role is known */
+    /**
+     * @return check whether the functionality of a role is known
+     */
     @PortedFrom(file = "tRole.h", name = "isFunctionalityKnown")
     public boolean isFunctionalityKnown() {
         return functionality.isKnown();
@@ -320,13 +330,17 @@ public class Role extends ClassifiableEntry {
     }
 
     // transitivity
-    /** @return check whether the role is transitive */
+    /**
+     * @return check whether the role is transitive
+     */
     @PortedFrom(file = "tRole.h", name = "isTransitive")
     public boolean isTransitive() {
         return transitivity.getValue();
     }
 
-    /** @return check whether the transitivity of a role is known */
+    /**
+     * @return check whether the transitivity of a role is known
+     */
     @PortedFrom(file = "tRole.h", name = "isTransitivityKnown")
     public boolean isTransitivityKnown() {
         return transitivity.isKnown();
@@ -345,13 +359,17 @@ public class Role extends ClassifiableEntry {
     }
 
     // symmetry
-    /** @return check whether the role is symmetric */
+    /**
+     * @return check whether the role is symmetric
+     */
     @PortedFrom(file = "tRole.h", name = "isSymmetric")
     public boolean isSymmetric() {
         return symmetry.getValue();
     }
 
-    /** @return check whether the symmetry of a role is known */
+    /**
+     * @return check whether the symmetry of a role is known
+     */
     @PortedFrom(file = "tRole.h", name = "isSymmetryKnown")
     public boolean isSymmetryKnown() {
         return symmetry.isKnown();
@@ -370,13 +388,17 @@ public class Role extends ClassifiableEntry {
     }
 
     // asymmetry
-    /** @return check whether the role is asymmetric */
+    /**
+     * @return check whether the role is asymmetric
+     */
     @PortedFrom(file = "tRole.h", name = "isAsymmetric")
     public boolean isAsymmetric() {
         return asymmetry.getValue();
     }
 
-    /** @return check whether the asymmetry of a role is known */
+    /**
+     * @return check whether the asymmetry of a role is known
+     */
     @PortedFrom(file = "tRole.h", name = "isAsymmetryKnown")
     public boolean isAsymmetryKnown() {
         return asymmetry.isKnown();
@@ -394,13 +416,17 @@ public class Role extends ClassifiableEntry {
         inverse().asymmetry.setValue(value);
     }
 
-    /** @return check whether the role is reflexive */
+    /**
+     * @return check whether the role is reflexive
+     */
     @PortedFrom(file = "tRole.h", name = "isReflexive")
     public boolean isReflexive() {
         return reflexivity.getValue();
     }
 
-    /** @return check whether the reflexivity of a role is known */
+    /**
+     * @return check whether the reflexivity of a role is known
+     */
     @PortedFrom(file = "tRole.h", name = "isReflexivityKnown")
     public boolean isReflexivityKnown() {
         return reflexivity.isKnown();
@@ -419,13 +445,17 @@ public class Role extends ClassifiableEntry {
     }
 
     // irreflexivity
-    /** @return check whether the role is irreflexive */
+    /**
+     * @return check whether the role is irreflexive
+     */
     @PortedFrom(file = "tRole.h", name = "isIrreflexive")
     public boolean isIrreflexive() {
         return irreflexivity.getValue();
     }
 
-    /** @return check whether the irreflexivity of a role is known */
+    /**
+     * @return check whether the irreflexivity of a role is known
+     */
     @PortedFrom(file = "tRole.h", name = "isIrreflexivityKnown")
     public boolean isIrreflexivityKnown() {
         return irreflexivity.isKnown();
@@ -451,8 +481,7 @@ public class Role extends ClassifiableEntry {
     public boolean isTopFunc() {
         // check for emptyness is here due to case where a role is determined to
         // be a functional
-        return !topFunctionalRoles.isEmpty()
-                && topFunctionalRoles.get(0).equals(this);
+        return !topFunctionalRoles.isEmpty() && topFunctionalRoles.get(0).equals(this);
     }
 
     /**
@@ -466,7 +495,9 @@ public class Role extends ClassifiableEntry {
         functional = fNode;
     }
 
-    /** @return get the Functional DAG vertex */
+    /**
+     * @return get the Functional DAG vertex
+     */
     @PortedFrom(file = "tRole.h", name = "getFunctional")
     public int getFunctional() {
         return functional;
@@ -495,13 +526,17 @@ public class Role extends ClassifiableEntry {
     }
 
     // Sorted reasoning interface
-    /** @return label of the role's domain */
+    /**
+     * @return label of the role's domain
+     */
     @PortedFrom(file = "tRole.h", name = "getDomainLabel")
     public MergableLabel getDomainLabel() {
         return domLabel;
     }
 
-    /** @return label of the role's range */
+    /**
+     * @return label of the role's range
+     */
     @PortedFrom(file = "tRole.h", name = "getRangeLabel")
     public MergableLabel getRangeLabel() {
         return inverse().domLabel;
@@ -538,13 +573,17 @@ public class Role extends ClassifiableEntry {
         inverse().setDomain(p);
     }
 
-    /** @return domain-as-a-tree of the role */
+    /**
+     * @return domain-as-a-tree of the role
+     */
     @PortedFrom(file = "tRole.h", name = "getTDomain")
     public DLTree getTDomain() {
         return pDomain;
     }
 
-    /** @return range-as-a-tree of the role */
+    /**
+     * @return range-as-a-tree of the role
+     */
     @PortedFrom(file = "tRole.h", name = "getTRange")
     private DLTree getTRange() {
         return inverse().pDomain;
@@ -567,13 +606,17 @@ public class Role extends ClassifiableEntry {
         bpDomain = p;
     }
 
-    /** @return domain-as-a-bipointer of the role */
+    /**
+     * @return domain-as-a-bipointer of the role
+     */
     @PortedFrom(file = "tRole.h", name = "getBPDomain")
     public int getBPDomain() {
         return bpDomain;
     }
 
-    /** @return range-as-a-bipointer of the role */
+    /**
+     * @return range-as-a-bipointer of the role
+     */
     @PortedFrom(file = "tRole.h", name = "getBPRange")
     public int getBPRange() {
         return inverse().bpDomain;
@@ -605,7 +648,9 @@ public class Role extends ClassifiableEntry {
         }
     }
 
-    /** @return check whether a role is disjoint with anything */
+    /**
+     * @return check whether a role is disjoint with anything
+     */
     @PortedFrom(file = "tRole.h", name = "isDisjoint")
     public boolean isDisjoint() {
         return !disjointRoles.isEmpty();
@@ -628,8 +673,7 @@ public class Role extends ClassifiableEntry {
      */
     @PortedFrom(file = "tRole.h", name = "<")
     private boolean lesser(Role r) {
-        return isDataRole() == r.isDataRole()
-                && ancestorMap.contains(r.getAbsoluteIndex());
+        return isDataRole() == r.isDataRole() && ancestorMap.contains(r.getAbsoluteIndex());
     }
 
     /**
@@ -642,13 +686,17 @@ public class Role extends ClassifiableEntry {
         return equals(r) || lesser(r);
     }
 
-    /** @return list of ancestor roles */
+    /**
+     * @return list of ancestor roles
+     */
     @PortedFrom(file = "tRole.h", name = "begin_anc")
     public List<Role> getAncestor() {
         return ancestorRoles;
     }
 
-    /** @return func super-roles w/o func parents via iterator */
+    /**
+     * @return func super-roles w/o func parents via iterator
+     */
     @PortedFrom(file = "tRole.h", name = "begin_topfunc")
     public List<Role> begin_topfunc() {
         return topFunctionalRoles;
@@ -680,7 +728,19 @@ public class Role extends ClassifiableEntry {
         subCompositions.add(RS);
     }
 
-    /** @return RA for the role */
+    @Override
+    public void addParent(ClassifiableEntry parent) {
+        toldSubsumers.add(parent);
+    }
+
+    @Override
+    public void addParents(Collection<ClassifiableEntry> entries) {
+        entries.forEach(c -> addParentIfNew(c));
+    }
+
+    /**
+     * @return RA for the role
+     */
     @PortedFrom(file = "tRole.h", name = "getAutomaton")
     public RoleAutomaton getAutomaton() {
         return automaton;
@@ -721,18 +781,15 @@ public class Role extends ClassifiableEntry {
         }
         if (isFunctional()) {
             // non-simple role can not be functional
-            throw new ReasonerInternalException(
-                    "Non simple role used as simple: " + getName());
+            throw new ReasonerInternalException("Non simple role used as simple: " + getName());
         }
         if (isDataRole()) {
             // data role can not be non-simple
-            throw new ReasonerInternalException(
-                    "Non simple role used as simple: " + getName());
+            throw new ReasonerInternalException("Non simple role used as simple: " + getName());
         }
         if (this.isDisjoint()) {
             // non-simple role can not be disjoint with any role
-            throw new ReasonerInternalException(
-                    "Non simple role used as simple: " + getName());
+            throw new ReasonerInternalException("Non simple role used as simple: " + getName());
         }
     }
 
@@ -740,18 +797,16 @@ public class Role extends ClassifiableEntry {
     @SuppressWarnings("incomplete-switch")
     private static Role resolveRoleHelper(DLTree t, String r) {
         if (t == null) {
-            throw new ReasonerInternalException("Role expression expected: "
-                    + r);
+            throw new ReasonerInternalException("Role expression expected: " + r);
         }
         switch (t.token()) {
-            case RNAME: // role name
-            case DNAME: // data role name
-                return (Role) t.elem().getNE();
-            case INV: // inversion
-                return resolveRoleHelper(t.getChild(), r).inverse();
-            default: // error
-                throw new ReasonerInternalException("Invalid role expression: "
-                        + r + " but got: " + t);
+        case RNAME: // role name
+        case DNAME: // data role name
+            return (Role) t.elem().getNE();
+        case INV: // inversion
+            return resolveRoleHelper(t.getChild(), r).inverse();
+        default: // error
+            throw new ReasonerInternalException("Invalid role expression: " + r + " but got: " + t);
         }
     }
 
@@ -784,7 +839,9 @@ public class Role extends ClassifiableEntry {
         addTrivialTransition(this);
     }
 
-    /** @return (unsigned) unique index of the role */
+    /**
+     * @return (unsigned) unique index of the role
+     */
     @PortedFrom(file = "tRole.h", name = "getIndex")
     public int getAbsoluteIndex() {
         int i = 2 * extId;
@@ -850,8 +907,7 @@ public class Role extends ClassifiableEntry {
     }
 
     @PortedFrom(file = "tRole.h", name = "eliminateToldCycles")
-    private Role eliminateToldCycles(Set<Role> RInProcess,
-            List<Role> ToldSynonyms) {
+    private Role eliminateToldCycles(Set<Role> RInProcess, List<Role> ToldSynonyms) {
         // skip synonyms
         if (isSynonym()) {
             return null;
@@ -907,22 +963,18 @@ public class Role extends ClassifiableEntry {
      */
     @PortedFrom(file = "tRole.h", name = "print")
     public void print(LogAdapter o) {
-        o.print("Role \"", getName(), "\"(")
-                .print(getId())
-                .print(")", isTransitive() ? "T" : "",
-                        isReflexive() ? "R" : "", isTopFunc() ? "t" : "",
-                        isFunctional() ? "F" : "", isDataRole() ? "D" : "");
+        o.print("Role \"", getName(), "\"(").print(getId()).print(")", isTransitive() ? "T" : "", isReflexive() ? "R"
+            : "", isTopFunc() ? "t" : "", isFunctional() ? "F" : "", isDataRole() ? "D" : "");
         if (isSynonym()) {
             o.print(" = \"", getSynonym().getName(), "\"\n");
             return;
         }
         if (!toldSubsumers.isEmpty()) {
-            o.print(toldSubsumers.stream().map(p -> p.getName())
-                    .collect(joining("\", \"", " parents={\"", "\"}")));
+            o.print(toldSubsumers.stream().map(p -> p.getName()).collect(joining("\", \"", " parents={\"", "\"}")));
         }
         if (!disjointRoles.isEmpty()) {
-            o.print(disjointRoles.stream().map(p -> p.getName())
-                    .collect(joining("\", \"", " disjoint with {\"", "\"}")));
+            o.print(disjointRoles.stream().map(p -> p.getName()).collect(joining("\", \"", " disjoint with {\"",
+                "\"}")));
         }
         if (pDomain != null) {
             o.print(" Domain=(").print(bpDomain).print(")=", pDomain);
@@ -930,10 +982,8 @@ public class Role extends ClassifiableEntry {
         if (getTRange() != null) {
             o.print(" Range=(").print(getBPRange()).print(")=", getTRange());
         }
-        o.print("\nAutomaton (size ")
-                .print(automaton.size())
-                .print("): ", automaton.isISafe() ? "I" : "i",
-                        automaton.isOSafe() ? "O" : "o");
+        o.print("\nAutomaton (size ").print(automaton.size()).print("): ", automaton.isISafe() ? "I" : "i", automaton
+            .isOSafe() ? "O" : "o");
         automaton.print(o);
         o.print("\n");
     }
@@ -988,8 +1038,7 @@ public class Role extends ClassifiableEntry {
         if (isTopFunc()) {
             topFunctionalRoles.clear();
         }
-        ancestorRoles.stream().filter(p -> p.isRealTopFunc())
-                .forEach(p -> topFunctionalRoles.add(p));
+        ancestorRoles.stream().filter(p -> p.isRealTopFunc()).forEach(p -> topFunctionalRoles.add(p));
         if (!topFunctionalRoles.isEmpty()) {
             functionality.setValue(true);
         }
@@ -1002,18 +1051,16 @@ public class Role extends ClassifiableEntry {
             disjointRoles.clear();
             return;
         }
-        R.descendantRoles.stream().filter(p -> disjointRoles.contains(p))
-                .forEach(p -> {
-                    p.setDomain(DLTreeFactory.createBottom());
-                    disjointRoles.remove(p);
-                    p.disjointRoles.clear();
-                });
+        R.descendantRoles.stream().filter(p -> disjointRoles.contains(p)).forEach(p -> {
+            p.setDomain(DLTreeFactory.createBottom());
+            disjointRoles.remove(p);
+            p.disjointRoles.clear();
+        });
     }
 
     @PortedFrom(file = "tRole.h", name = "initDJMap")
     private void initDJMap() {
-        disjointRoles
-                .forEach(p -> disjointRolesIndex.add(p.getAbsoluteIndex()));
+        disjointRoles.forEach(p -> disjointRolesIndex.add(p.getAbsoluteIndex()));
     }
 
     @PortedFrom(file = "tRole.h", name = "preprocessComposition")
@@ -1033,8 +1080,7 @@ public class Role extends ClassifiableEntry {
             if (R.equals(this)) {
                 // found R in composition
                 if (i != 0 && i != last) {
-                    throw new ReasonerInternalException("Cycle in RIA "
-                            + getName());
+                    throw new ReasonerInternalException("Cycle in RIA " + getName());
                 }
                 if (same) {
                     // second one
@@ -1045,8 +1091,7 @@ public class Role extends ClassifiableEntry {
                         return;
                     } else {
                         // wrong (undecidable) axiom
-                        throw new ReasonerInternalException("Cycle in RIA "
-                                + getName());
+                        throw new ReasonerInternalException("Cycle in RIA " + getName());
                     }
                 } else {
                     // first one
@@ -1074,8 +1119,7 @@ public class Role extends ClassifiableEntry {
         subCompositions.forEach(q -> addSubCompositionAutomaton(q, RInProcess));
         // check for the transitivity
         if (isTransitive()) {
-            automaton.addTransitionSafe(RoleAutomaton.final_state,
-                    new RATransition(RoleAutomaton.initial));
+            automaton.addTransitionSafe(RoleAutomaton.final_state, new RATransition(RoleAutomaton.initial));
         }
         // here automaton is complete
         automaton.setCompleted(true);
@@ -1101,8 +1145,7 @@ public class Role extends ClassifiableEntry {
      *        RInProcess
      */
     @PortedFrom(file = "tRole.h", name = "addSubCompositionAutomaton")
-    private void
-            addSubCompositionAutomaton(List<Role> RS, Set<Role> RInProcess) {
+    private void addSubCompositionAutomaton(List<Role> RS, Set<Role> RInProcess) {
         // first preprocess the role chain
         preprocessComposition(RS);
         if (RS.isEmpty()) {
@@ -1130,15 +1173,15 @@ public class Role extends ClassifiableEntry {
         // automaton is i- or o-safe
         automaton.initChain(from);
         for (; p != p_last; ++p) {
-            oSafe = automaton.addToChain(
-                    completeAutomatonByRole(RS.get(p), RInProcess), oSafe);
+            oSafe = automaton.addToChain(completeAutomatonByRole(RS.get(p), RInProcess), oSafe);
         }
         // add the last automaton to chain
-        automaton.addToChain(completeAutomatonByRole(RS.get(p), RInProcess),
-                oSafe, to);
+        automaton.addToChain(completeAutomatonByRole(RS.get(p), RInProcess), oSafe, to);
     }
 
-    /** @return inverse */
+    /**
+     * @return inverse
+     */
     @Original
     public Role getInverse() {
         return inverse;
