@@ -32,7 +32,7 @@ public class DLDag implements Serializable {
     /** body of DAG */
     @PortedFrom(file = "dlDag.h", name = "Heap")
     private final List<DLVertex> heap = new ArrayList<>();
-    private Set<NamedEntry> cache = new HashSet<NamedEntry>();
+    private Set<NamedEntry> cache = new HashSet<>();
     /** all the AND nodes (needs to recompute) */
     @PortedFrom(file = "dlDag.h", name = "listAnds")
     private final FastSet listAnds = FastSetFactory.create();

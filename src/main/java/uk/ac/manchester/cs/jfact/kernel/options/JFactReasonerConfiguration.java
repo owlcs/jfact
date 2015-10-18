@@ -1078,6 +1078,11 @@ public class JFactReasonerConfiguration
         }
     }
 
+    public JFactReasonerConfiguration setAbsorptionLog(OutputStream out) {
+        logAbsorptionAdapterStream = new LogAdapterStream(out);
+        return this;
+    }
+
     /** The empty. */
     protected final LogAdapter empty = new LogAdapterImpl();
     /** The log adapter stream. */
@@ -1117,6 +1122,12 @@ public class JFactReasonerConfiguration
 
         /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 11000L;
+
+        @Override
+        public boolean isEnabled() {
+            return true;
+        }
+
         /** The out. */
         private transient OutputStream out;
 
@@ -1271,11 +1282,6 @@ public class JFactReasonerConfiguration
             this.print(s5.toString());
             return this;
         }
-
-        @Override
-        public boolean isEnabled() {
-            return false;
-        }
     }
 
     /** The Class LogAdapterImpl. */
@@ -1283,6 +1289,11 @@ public class JFactReasonerConfiguration
 
         /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 11000L;
+
+        @Override
+        public boolean isEnabled() {
+            return false;
+        }
 
         @Override
         public LogAdapter printTemplate(Templates t, Object... strings) {
@@ -1363,11 +1374,6 @@ public class JFactReasonerConfiguration
         public LogAdapter print(Object s1, Object s2, Object s3, Object s4,
                 Object s5) {
             return this;
-        }
-
-        @Override
-        public boolean isEnabled() {
-            return false;
         }
     }
 
