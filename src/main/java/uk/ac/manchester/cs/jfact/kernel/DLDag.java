@@ -155,6 +155,8 @@ public class DLDag implements Serializable {
      * 
      * @param v
      *        v
+     * @param knownNew
+     *        true if the vertex is known to be new
      * @return size of heap
      */
     @PortedFrom(file = "dlDag.h", name = "directAdd")
@@ -411,19 +413,19 @@ public class DLDag implements Serializable {
         for (int i = size() - 1; i >= finalDagSize; --i) {
             DLVertex v = heap.get(i);
             switch (v.getType()) {
-            case dtDataType:
-            case dtDataExpr:
-                ((DatatypeEntry) v.getConcept()).setIndex(bpINVALID);
-                break;
-            case dtDataValue:
-                ((LiteralEntry) v.getConcept()).setIndex(bpINVALID);
-                break;
-            case dtPConcept:
-            case dtNConcept:
-                ((Concept) v.getConcept()).clear();
-                break;
-            default:
-                break;
+                case dtDataType:
+                case dtDataExpr:
+                    ((DatatypeEntry) v.getConcept()).setIndex(bpINVALID);
+                    break;
+                case dtDataValue:
+                    ((LiteralEntry) v.getConcept()).setIndex(bpINVALID);
+                    break;
+                case dtPConcept:
+                case dtNConcept:
+                    ((Concept) v.getConcept()).clear();
+                    break;
+                default:
+                    break;
             }
         }
         resize(heap, finalDagSize);
@@ -478,44 +480,44 @@ public class DLDag implements Serializable {
         // ensure that the statistic is gather for all sub-concepts of the
         // expression
         switch (v.getType()) {
-        case dtCollection: // if pos then behaves like and
-            if (!pos) {
+            case dtCollection: // if pos then behaves like and
+                if (!pos) {
+                    break;
+                }
+                // fallthrough
+                //$FALL-THROUGH$
+            case dtAnd: // check all the conjuncts
+                for (int q : v.begin()) {
+                    int index = createBiPointer(q, pos);
+                    DLVertex vertex = get(index);
+                    boolean pos2 = index > 0;
+                    if (!vertex.isProcessed(pos2)) {
+                        computeVertexStat(vertex, pos2, depth + 1);
+                    }
+                }
                 break;
-            }
-            // fallthrough
-            //$FALL-THROUGH$
-        case dtAnd: // check all the conjuncts
-            for (int q : v.begin()) {
-                int index = createBiPointer(q, pos);
+            case dtProj:
+                if (!pos) {
+                    break;
+                }
+                // fallthrough
+                //$FALL-THROUGH$
+            case dtPConcept:
+            case dtNConcept:
+            case dtPSingleton:
+            case dtNSingleton:
+            case dtForall:
+            case dtChoose:
+            case dtLE: // check a single referenced concept
+                int index = createBiPointer(v.getConceptIndex(), pos);
                 DLVertex vertex = get(index);
                 boolean pos2 = index > 0;
                 if (!vertex.isProcessed(pos2)) {
                     computeVertexStat(vertex, pos2, depth + 1);
                 }
-            }
-            break;
-        case dtProj:
-            if (!pos) {
                 break;
-            }
-            // fallthrough
-            //$FALL-THROUGH$
-        case dtPConcept:
-        case dtNConcept:
-        case dtPSingleton:
-        case dtNSingleton:
-        case dtForall:
-        case dtChoose:
-        case dtLE: // check a single referenced concept
-            int index = createBiPointer(v.getConceptIndex(), pos);
-            DLVertex vertex = get(index);
-            boolean pos2 = index > 0;
-            if (!vertex.isProcessed(pos2)) {
-                computeVertexStat(vertex, pos2, depth + 1);
-            }
-            break;
-        default: // nothing to do
-            break;
+            default: // nothing to do
+                break;
         }
         v.setProcessed(pos);
         // here all the necessary statistics is gathered -- use it in the init
@@ -538,39 +540,39 @@ public class DLDag implements Serializable {
         // correct values wrt POS
         d = v.getDepth(pos);
         switch (v.getType()) {
-        case dtAnd:
-            if (!pos) {
-                ++b;
-                // OR is branching
-            }
-            break;
-        case dtForall:
-            ++d;
-            // increase depth
-            if (!pos) {
-                ++g;
-                // SOME is generating
-            }
-            break;
-        case dtLE:
-            ++d;
-            // increase depth
-            if (!pos) {
-                ++g;
-                // >= is generating
-            } else if (v.getNumberLE() != 1) {
-                ++b;
-                // <= is branching
-            }
-            break;
-        case dtProj:
-            if (pos) {
-                ++b;
-                // projection sometimes involves branching
-            }
-            break;
-        default:
-            break;
+            case dtAnd:
+                if (!pos) {
+                    ++b;
+                    // OR is branching
+                }
+                break;
+            case dtForall:
+                ++d;
+                // increase depth
+                if (!pos) {
+                    ++g;
+                    // SOME is generating
+                }
+                break;
+            case dtLE:
+                ++d;
+                // increase depth
+                if (!pos) {
+                    ++g;
+                    // >= is generating
+                } else if (v.getNumberLE() != 1) {
+                    ++b;
+                    // <= is branching
+                }
+                break;
+            case dtProj:
+                if (pos) {
+                    ++b;
+                    // projection sometimes involves branching
+                }
+                break;
+            default:
+                break;
         }
         v.updateStatValues(d, s, b, g, pos);
     }
@@ -806,43 +808,43 @@ public class DLDag implements Serializable {
     @SuppressWarnings("incomplete-switch")
     private void mergeSorts(DLVertex v) {
         switch (v.getType()) {
-        case dtLE: // set R&D for role
-        case dtForall:
-            v.merge(v.getRole().getDomainLabel()); // domain(role)=cur
-            merge(v.getRole().getRangeLabel(), v.getConceptIndex());
-            break;
-        case dtProj: // projection: equate R&D of R and ProjR, and D(R) with
-                     // C
-            v.merge(v.getRole().getDomainLabel());
-            v.merge(v.getProjRole().getDomainLabel());
-            merge(v.getRole().getDomainLabel(), v.getConceptIndex());
-            v.getRole().getRangeLabel().merge(v.getProjRole().getRangeLabel());
-            break;
-        case dtIrr: // equate R&D for role
-            v.merge(v.getRole().getDomainLabel());
-            v.merge(v.getRole().getRangeLabel());
-            break;
-        case dtAnd:
-        case dtCollection:
-            for (int q : v.begin()) {
-                merge(v.getSort(), q);
-            }
-            break;
-        case dtNSingleton:
-        case dtPSingleton:
-        case dtPConcept:
-        case dtNConcept: // merge with description
-        case dtChoose:
-            merge(v.getSort(), v.getConceptIndex());
-            break;
-        case dtDataType: // nothing to do
-        case dtDataValue:
-        case dtDataExpr:
-        case dtNN:
-            break;
-        case dtTop:
-        default:
-            throw new UnreachableSituationException();
+            case dtLE: // set R&D for role
+            case dtForall:
+                v.merge(v.getRole().getDomainLabel()); // domain(role)=cur
+                merge(v.getRole().getRangeLabel(), v.getConceptIndex());
+                break;
+            case dtProj: // projection: equate R&D of R and ProjR, and D(R) with
+                         // C
+                v.merge(v.getRole().getDomainLabel());
+                v.merge(v.getProjRole().getDomainLabel());
+                merge(v.getRole().getDomainLabel(), v.getConceptIndex());
+                v.getRole().getRangeLabel().merge(v.getProjRole().getRangeLabel());
+                break;
+            case dtIrr: // equate R&D for role
+                v.merge(v.getRole().getDomainLabel());
+                v.merge(v.getRole().getRangeLabel());
+                break;
+            case dtAnd:
+            case dtCollection:
+                for (int q : v.begin()) {
+                    merge(v.getSort(), q);
+                }
+                break;
+            case dtNSingleton:
+            case dtPSingleton:
+            case dtPConcept:
+            case dtNConcept: // merge with description
+            case dtChoose:
+                merge(v.getSort(), v.getConceptIndex());
+                break;
+            case dtDataType: // nothing to do
+            case dtDataValue:
+            case dtDataExpr:
+            case dtNN:
+                break;
+            case dtTop:
+            default:
+                throw new UnreachableSituationException();
         }
     }
 

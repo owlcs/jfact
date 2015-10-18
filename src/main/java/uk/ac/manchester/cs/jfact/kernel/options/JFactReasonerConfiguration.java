@@ -26,7 +26,7 @@ import uk.ac.manchester.cs.jfact.helpers.Templates;
 
 /** configuration. */
 public class JFactReasonerConfiguration
-        implements OWLReasonerConfiguration, Serializable {
+    implements OWLReasonerConfiguration, Serializable {
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 11000L;
@@ -44,7 +44,7 @@ public class JFactReasonerConfiguration
      * expression replacement
      */
     private static StringOption absorptionFlags = getOption("absorptionFlags",
-            "BTEfCFSR");
+        "BTEfCFSR");
     /**
      * Option 'alwaysPreferEquals' allows user to enforce usage of C=D
      * definition instead of C[=D during absorption, even if implication
@@ -179,8 +179,7 @@ public class JFactReasonerConfiguration
      *        the new use sorted reasoning
      * @return modified instance
      */
-    public JFactReasonerConfiguration
-            setUseSortedReasoning(boolean useSortedReasoning) {
+    public JFactReasonerConfiguration setUseSortedReasoning(boolean useSortedReasoning) {
         this.useSortedReasoning = useSortedReasoning;
         return this;
     }
@@ -786,8 +785,7 @@ public class JFactReasonerConfiguration
      *        the new rkg improve save restore depset
      * @return modified instance
      */
-    public JFactReasonerConfiguration
-            setRKG_IMPROVE_SAVE_RESTORE_DEPSET(boolean b) {
+    public JFactReasonerConfiguration setRKG_IMPROVE_SAVE_RESTORE_DEPSET(boolean b) {
         RKG_IMPROVE_SAVE_RESTORE_DEPSET = b;
         return this;
     }
@@ -892,8 +890,7 @@ public class JFactReasonerConfiguration
      *        the new rkg update rnd from superroles
      * @return modified instance
      */
-    public JFactReasonerConfiguration
-            setRKG_UPDATE_RND_FROM_SUPERROLES(boolean b) {
+    public JFactReasonerConfiguration setRKG_UPDATE_RND_FROM_SUPERROLES(boolean b) {
         RKG_UPDATE_RND_FROM_SUPERROLES = b;
         return this;
     }
@@ -935,8 +932,7 @@ public class JFactReasonerConfiguration
      *        the new rkg use dynamic backjumping
      * @return modified instance
      */
-    public JFactReasonerConfiguration
-            setRKG_USE_DYNAMIC_BACKJUMPING(boolean b) {
+    public JFactReasonerConfiguration setRKG_USE_DYNAMIC_BACKJUMPING(boolean b) {
         RKG_USE_DYNAMIC_BACKJUMPING = b;
         return this;
     }
@@ -1078,6 +1074,11 @@ public class JFactReasonerConfiguration
         }
     }
 
+    /**
+     * @param out
+     *        stream for absorption out
+     * @return this object, updated
+     */
     public JFactReasonerConfiguration setAbsorptionLog(OutputStream out) {
         logAbsorptionAdapterStream = new LogAdapterStream(out);
         return this;
@@ -1095,8 +1096,7 @@ public class JFactReasonerConfiguration
      *        the new regular log output stream
      * @return modified instance
      */
-    public JFactReasonerConfiguration
-            setRegularLogOutputStream(OutputStream o) {
+    public JFactReasonerConfiguration setRegularLogOutputStream(OutputStream o) {
         logAdapterStream = new LogAdapterStream(o);
         return this;
     }
@@ -1111,8 +1111,7 @@ public class JFactReasonerConfiguration
      *        the new absorption log output stream
      * @return modified instance
      */
-    public JFactReasonerConfiguration
-            setAbsorptionLogOutputStream(OutputStream o) {
+    public JFactReasonerConfiguration setAbsorptionLogOutputStream(OutputStream o) {
         logAbsorptionAdapterStream = new LogAdapterStream(o);
         return this;
     }
@@ -1142,7 +1141,7 @@ public class JFactReasonerConfiguration
          *         the class not found exception
          */
         private void readObject(ObjectInputStream in)
-                throws IOException, ClassNotFoundException {
+            throws IOException, ClassNotFoundException {
             in.defaultReadObject();
             out = System.out;
         }
@@ -1274,7 +1273,7 @@ public class JFactReasonerConfiguration
 
         @Override
         public LogAdapter print(Object s1, Object s2, Object s3, Object s4,
-                Object s5) {
+            Object s5) {
             this.print(s1.toString());
             this.print(s2.toString());
             this.print(s3.toString());
@@ -1372,7 +1371,7 @@ public class JFactReasonerConfiguration
 
         @Override
         public LogAdapter print(Object s1, Object s2, Object s3, Object s4,
-                Object s5) {
+            Object s5) {
             return this;
         }
     }
@@ -1414,8 +1413,7 @@ public class JFactReasonerConfiguration
      *        the new use undefined names
      * @return modified instance
      */
-    public JFactReasonerConfiguration
-            setUseUndefinedNames(boolean useUndefinedNames) {
+    public JFactReasonerConfiguration setUseUndefinedNames(boolean useUndefinedNames) {
         this.useUndefinedNames = useUndefinedNames;
         return this;
     }
@@ -1436,8 +1434,7 @@ public class JFactReasonerConfiguration
      *        the new use axiom splitting
      * @return modified instance
      */
-    public JFactReasonerConfiguration
-            setUseAxiomSplitting(boolean useAxiomSplitting) {
+    public JFactReasonerConfiguration setUseAxiomSplitting(boolean useAxiomSplitting) {
         this.useAxiomSplitting = useAxiomSplitting;
         return this;
     }
@@ -1461,8 +1458,7 @@ public class JFactReasonerConfiguration
      *        the new rkg use ad in module extraction
      * @return modified instance
      */
-    public JFactReasonerConfiguration
-            setRKG_USE_AD_IN_MODULE_EXTRACTION(boolean value) {
+    public JFactReasonerConfiguration setRKG_USE_AD_IN_MODULE_EXTRACTION(boolean value) {
         useADInModuleExtraction = value;
         return this;
     }
@@ -1483,8 +1479,7 @@ public class JFactReasonerConfiguration
      *        the new use incremental reasoning
      * @return modified instance
      */
-    public JFactReasonerConfiguration
-            setUseIncrementalReasoning(boolean useIncrementalReasoning) {
+    public JFactReasonerConfiguration setUseIncrementalReasoning(boolean useIncrementalReasoning) {
         this.useIncrementalReasoning = useIncrementalReasoning;
         return this;
     }
