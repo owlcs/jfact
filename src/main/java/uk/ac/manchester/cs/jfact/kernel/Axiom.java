@@ -112,7 +112,7 @@ public class Axiom implements Serializable {
      * @return true iff an axiom is the same as one of its ancestors
      */
     @PortedFrom(file = "tAxiom.h", name = "isCyclic")
-    boolean isCyclic() {
+        boolean isCyclic() {
         Axiom p = origin;
         while (p != null) {
             if (p.equals(this)) {
@@ -129,6 +129,8 @@ public class Axiom implements Serializable {
      * 
      * @param pos
      *        pos
+     * @param tbox
+     *        tbox
      * @return simplified axiom
      */
     @PortedFrom(file = "tAxiom.h", name = "simplifyPosNP")
@@ -145,6 +147,8 @@ public class Axiom implements Serializable {
      * 
      * @param pos
      *        pos
+     * @param tbox
+     *        tbox
      * @return simplified axiom
      */
     @PortedFrom(file = "tAxiom.h", name = "simplifyNegNP")
@@ -185,6 +189,8 @@ public class Axiom implements Serializable {
     /**
      * split an axiom;
      * 
+     * @param tbox
+     *        tbox
      * @return new axiom and/or NULL
      */
     @PortedFrom(file = "tAxiom.h", name = "split")
@@ -315,6 +321,8 @@ public class Axiom implements Serializable {
     /**
      * absorb into BOTTOM;
      * 
+     * @param tbox
+     *        tbox
      * @return true if absorption is performed
      */
     @SuppressWarnings("incomplete-switch")
@@ -324,30 +332,30 @@ public class Axiom implements Serializable {
         Set<DLTree> Neg = new HashSet<>();
         for (DLTree p : disjuncts) {
             switch (p.token()) {
-            case BOTTOM: // axiom in the form T [= T or ...; nothing to do
-                tbox.getStatistics().SAbsBApply();
-                absorptionLog.print(" Absorb into BOTTOM");
-                return true;
-            case TOP: // skip it here
-                break;
-            case NOT:
-                // something negated: put it into NEG
-                if (Pos.contains(p)) {
+                case BOTTOM: // axiom in the form T [= T or ...; nothing to do
                     tbox.getStatistics().SAbsBApply();
-                    absorptionLog.print(" Absorb into BOTTOM due to (not", p, ") and", p);
+                    absorptionLog.print(" Absorb into BOTTOM");
                     return true;
-                }
-                Neg.add(p.getChild());
-                break;
-            default:
-                // something positive: save in POS
-                if (Neg.contains(p)) {
-                    tbox.getStatistics().SAbsBApply();
-                    absorptionLog.print(" Absorb into BOTTOM due to (not", p, ") and", p);
-                    return true;
-                }
-                Pos.add(p);
-                break;
+                case TOP: // skip it here
+                    break;
+                case NOT:
+                    // something negated: put it into NEG
+                    if (Pos.contains(p)) {
+                        tbox.getStatistics().SAbsBApply();
+                        absorptionLog.print(" Absorb into BOTTOM due to (not", p, ") and", p);
+                        return true;
+                    }
+                    Neg.add(p.getChild());
+                    break;
+                default:
+                    // something positive: save in POS
+                    if (Neg.contains(p)) {
+                        tbox.getStatistics().SAbsBApply();
+                        absorptionLog.print(" Absorb into BOTTOM due to (not", p, ") and", p);
+                        return true;
+                    }
+                    Pos.add(p);
+                    break;
             }
         }
         // now check whether there is a concept in both POS and NEG
@@ -363,8 +371,8 @@ public class Axiom implements Serializable {
     /**
      * absorb into concept; @return true if absorption is performed
      * 
-     * @param KB
-     *        KB
+     * @param tbox
+     *        tbox
      * @return false if there are no absorptions
      */
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoConcept")
@@ -430,8 +438,8 @@ public class Axiom implements Serializable {
     /**
      * absorb single axiom AX into role domain; @return true if succeed
      * 
-     * @param KB
-     *        KB
+     * @param tbox
+     *        tbox
      * @return false if there are no absorptions
      */
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoDomain")
@@ -473,8 +481,8 @@ public class Axiom implements Serializable {
     /**
      * absorb into TOP;
      * 
-     * @param KB
-     *        KB
+     * @param tbox
+     *        tbox
      * @return true if any absorption is performed
      */
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoTop")

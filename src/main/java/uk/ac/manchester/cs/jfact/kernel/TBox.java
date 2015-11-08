@@ -193,6 +193,9 @@ public class TBox implements Serializable {
     private Map<Concept, DLTree> ExtraConceptDefs = new HashMap<>();
     private InAx statistics = new InAx();
 
+    /**
+     * @return statistics
+     */
     public InAx getStatistics() {
         return statistics;
     }
@@ -1554,6 +1557,7 @@ public class TBox implements Serializable {
      * 
      * @param entry
      *        entry
+     * @return modified input
      */
     @PortedFrom(file = "dlTBox.h", name = "classifyEntry")
     private Concept classifyEntry(Concept entry) {
@@ -2358,7 +2362,7 @@ public class TBox implements Serializable {
             // remove C from the description
             C.removeSelfFromDescription();
             // the trees should differ here
-            assert!DLTree.equalTrees(D, C.getDescription());
+            assert !DLTree.equalTrees(D, C.getDescription());
             // note that we don't know exact semantics of C for now;
             // we need to split its definition and work via GCIs
             makeDefinitionPrimitive(C, E, D);
@@ -2719,7 +2723,7 @@ public class TBox implements Serializable {
      * @return true if C is referenced in the definition of concept D; use
      *         PROCESSED to record explored names
      */
-        boolean isReferenced(Concept C, Concept D, Set<Concept> processed) {
+    boolean isReferenced(Concept C, Concept D, Set<Concept> processed) {
         // mark D as processed
         processed.add(D);
         // check the description of D
@@ -3164,7 +3168,7 @@ public class TBox implements Serializable {
     /** init reasoner */
     @PortedFrom(file = "dlTBox.h", name = "initReasoner")
     public void initReasoner() {
-        assert!reasonersInited();
+        assert !reasonersInited();
         stdReasoner = new DlSatTester(this, config);
         if (nominalCloudFeatures.hasSingletons()) {
             nomReasoner = new NominalReasoner(this, config);
@@ -3496,7 +3500,13 @@ public class TBox implements Serializable {
             Base.clear();
         }
 
-        /** move I'th iterable forward; deal with end-case */
+        /**
+         * move I'th iterable forward; deal with end-case
+         * 
+         * @param i
+         *        index
+         * @return true if there is a next
+         */
         public boolean next(int i) {
             if (Base.get(i).next()) {
                 return i == 0 ? true : next(i - 1);
@@ -3508,13 +3518,18 @@ public class TBox implements Serializable {
 
         IterableVec() {}
 
-        /** add a new iterable to a vec */
-            void add(IterableElem<Elem> It) {
+        /**
+         * add a new iterable to a vec
+         * 
+         * @param It
+         *        iterable to add
+         */
+        void add(IterableElem<Elem> It) {
             Base.add(It);
         }
 
-        /** get next position */
-            boolean next() {
+        /** @return next position */
+        boolean next() {
             return next(Base.size() - 1);
         }
 

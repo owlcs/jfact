@@ -33,16 +33,16 @@ public enum StatIndex {
      */
     public static int choose(char c) {
         switch (c) {
-        case 'S':
-            return Size.getIndex(false);
-        case 'D':
-            return Depth.getIndex(false);
-        case 'B':
-            return Branch.getIndex(false);
-        case 'G':
-            return Gener.getIndex(false);
-        default:
-            return Freq.getIndex(false);
+            case 'S':
+                return Size.getIndex(false);
+            case 'D':
+                return Depth.getIndex(false);
+            case 'B':
+                return Branch.getIndex(false);
+            case 'G':
+                return Gener.getIndex(false);
+            default:
+                return Freq.getIndex(false);
         }
     }
 
@@ -61,9 +61,11 @@ public enum StatIndex {
      *        pos
      * @param stat
      *        stat
+     * @param debug
+     *        true if debug values
      */
     public static void updateStatValues(int d, int s, int b, int g, boolean pos, int[] stat, boolean debug) {
-        if (debug) {//XXX debug statements
+        if (debug) {// XXX debug statements
             System.out.println("StatIndex.updateStatValues() " + d + "\t" + s + "\t" + b + "\t" + g + "\t" + pos + "\t"
                 + Arrays.toString(stat));
             System.out.println("StatIndex.updateStatValues() value pre increment " + stat[Size.getIndex(pos)]);
@@ -87,6 +89,8 @@ public enum StatIndex {
      *        pos
      * @param stat
      *        stat
+     * @param debug
+     *        true if debug values
      */
     public static void updateStatValues(DLVertex v, boolean posV, boolean pos, int[] stat, boolean debug) {
         if (debug) {

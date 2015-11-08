@@ -7,10 +7,10 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
-import conformance.PortedFrom;
 
 /** completion tree arc */
 @PortedFrom(file = "dlCompletionTreeArc.h", name = "DlCompletionTreeArc")
@@ -151,7 +151,8 @@ public class DlCompletionTreeArc implements Serializable {
 
     /**
      * @param pRole
-     *        pRole @return same as above; fills DEP with current DEPSET if so
+     *        pRole
+     * @return same as above; fills DEP with current DEPSET if so
      */
     public DepSet neighbourDepSet(Role pRole) {
         if (isNeighbour(pRole)) {
@@ -209,6 +210,6 @@ public class DlCompletionTreeArc implements Serializable {
      */
     public void print(LogAdapter o) {
         o.printTemplate(Templates.DLCOMPLETIONTREEARC, isIBlocked() ? "-"
-                : role.getName(), depSet);
+            : role.getName(), depSet);
     }
 }

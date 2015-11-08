@@ -252,6 +252,13 @@ public class DLTreeFactory implements Serializable {
         return new NDLTree(new Lexeme(AND), l);
     }
 
+    /**
+     * @param C
+     *        tree to check
+     * @param D
+     *        contained tree
+     * @return true if C contains D
+     */
     public static boolean containsC(DLTree C, DLTree D) {
         if (C.isCName()) {
             return DLTree.equalTrees(C, D);
@@ -695,7 +702,7 @@ public class DLTreeFactory implements Serializable {
         } else {
             // XXX port to 4
             AtomicBoolean b = new AtomicBoolean(false);
-            desc.children().forEach(d -> b.set( replaceSynonymsFromTree(d)||b.get()));
+            desc.children().forEach(d -> b.set(replaceSynonymsFromTree(d) || b.get()));
             return b.get();
         }
     }

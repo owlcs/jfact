@@ -19,10 +19,10 @@ import javax.annotation.Nonnull;
 
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
-import uk.ac.manchester.cs.jfact.kernel.Lexeme;
-import uk.ac.manchester.cs.jfact.kernel.Token;
 import conformance.Original;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.kernel.Lexeme;
+import uk.ac.manchester.cs.jfact.kernel.Token;
 
 /**
  * DLTree class
@@ -144,7 +144,7 @@ public abstract class DLTree implements Serializable {
     public String toString() {
         if (getChildren().size() > 0) {
             String rendering = children().map(t -> t.toString()).collect(
-                    joining(" "));
+                joining(" "));
             return "(" + elem + " " + rendering + ")";
         }
         return elem.toString();
@@ -184,6 +184,9 @@ public abstract class DLTree implements Serializable {
         return children;
     }
 
+    /**
+     * @return children stream
+     */
     public Stream<DLTree> children() {
         return getChildren().stream();
     }
@@ -212,7 +215,7 @@ public abstract class DLTree implements Serializable {
             Collection<DLTree> c1 = t1.getChildren();
             Collection<DLTree> c2 = t2.getChildren();
             return c1.size() == c2.size() && c1.containsAll(c2)
-                    && c2.containsAll(c1);
+                && c2.containsAll(c1);
         }
         return false;
     }
@@ -266,16 +269,16 @@ interface DLTreeVisitor {
 interface DLTreeVisitorEx<O> {
 
     @Nonnull
-    O visit(LEAFDLTree t);
+        O visit(LEAFDLTree t);
 
     @Nonnull
-    O visit(ONEDLTree t);
+        O visit(ONEDLTree t);
 
     @Nonnull
-    O visit(TWODLTree t);
+        O visit(TWODLTree t);
 
     @Nonnull
-    O visit(NDLTree t);
+        O visit(NDLTree t);
 }
 
 @Original
@@ -296,13 +299,13 @@ class CloningVisitor implements DLTreeVisitorEx<DLTree>, Serializable {
     @Override
     public DLTree visit(TWODLTree t) {
         return new TWODLTree(new Lexeme(t.elem), t.getLeft().accept(this), t
-                .getRight().accept(this));
+            .getRight().accept(this));
     }
 
     @Override
     public DLTree visit(NDLTree t) {
         return new NDLTree(new Lexeme(t.elem), t.children()
-                .map(tree -> tree.accept(this)).collect(toList()));
+            .map(tree -> tree.accept(this)).collect(toList()));
     }
 }
 
@@ -324,7 +327,7 @@ class ReverseCloningVisitor implements DLTreeVisitorEx<DLTree>, Serializable {
     @Override
     public DLTree visit(TWODLTree t) {
         return new TWODLTree(new Lexeme(t.elem), t.getRight().accept(this), t
-                .getLeft().accept(this));
+            .getLeft().accept(this));
     }
 
     @Override
@@ -496,7 +499,7 @@ class NDLTree extends DLTree {
         super(l);
         if (trees.size() < 2) {
             throw new ReasonerInternalException(
-                    "not enough elements in the n-ary element");
+                "not enough elements in the n-ary element");
         }
         children = new ArrayList<>();
         trees.forEach(d -> addChild(d));
@@ -507,7 +510,7 @@ class NDLTree extends DLTree {
         children = new ArrayList<>();
         if (C == null || D == null) {
             throw new ReasonerInternalException(
-                    "not enough elements in the n-ary element");
+                "not enough elements in the n-ary element");
         }
         addChild(C);
         addChild(D);

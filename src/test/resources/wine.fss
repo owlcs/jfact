@@ -1,14 +1,13 @@
-Prefix(:=<http://www.w3.org/2002/03owlt/miscellaneous/consistent001#>)
+Prefix(:=<urn:wine:>)
 Prefix(owl:=<http://www.w3.org/2002/07/owl#>)
 Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)
-Prefix(vin:=<http://www.w3.org/2002/03owlt/miscellaneous/consistent001#>)
+Prefix(vin:=<urn:wine:>)
 Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)
 Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)
-Prefix(food:=<http://www.w3.org/2002/03owlt/miscellaneous/consistent002#>)
 Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
 
 
-Ontology(<http://www.w3.org/2002/03owlt/miscellaneous/consistent001>
+Ontology(<urn:wine>
 Annotation(rdfs:comment "An example OWL ontology")
 Annotation(rdfs:comment "Derived from the DAML Wine ontology at  http://ontolingua.stanford.edu/doc/chimaera/ontologies/wines.daml  Substantially changed, in particular the Region based relations.")
 Annotation(rdfs:label "Wine Ontology")
@@ -150,8 +149,6 @@ Declaration(Class(vin:WineSugar))
 Declaration(Class(vin:WineTaste))
 Declaration(Class(vin:Winery))
 Declaration(Class(vin:Zinfandel))
-Declaration(Class(food:Grape))
-Declaration(Class(food:PotableLiquid))
 Declaration(ObjectProperty(vin:adjacentRegion))
 Declaration(ObjectProperty(vin:course))
 Declaration(ObjectProperty(vin:hasBody))
@@ -168,7 +165,6 @@ Declaration(ObjectProperty(vin:madeFromFruit))
 Declaration(ObjectProperty(vin:madeFromGrape))
 Declaration(ObjectProperty(vin:madeIntoWine))
 Declaration(ObjectProperty(vin:producesWine))
-Declaration(ObjectProperty(food:madeFromFruit))
 Declaration(DataProperty(vin:yearValue))
 Declaration(NamedIndividual(vin:AlsaceRegion))
 Declaration(NamedIndividual(vin:AnjouRegion))
@@ -444,7 +440,7 @@ ObjectPropertyRange(vin:madeFromFruit vin:Fruit)
 
 # Object Property: vin:madeFromGrape (vin:madeFromGrape)
 
-SubObjectPropertyOf(vin:madeFromGrape food:madeFromFruit)
+SubObjectPropertyOf(vin:madeFromGrape vin:madeFromFruit)
 InverseObjectProperties(vin:madeFromGrape vin:madeIntoWine)
 ObjectPropertyDomain(vin:madeFromGrape vin:Wine)
 ObjectPropertyRange(vin:madeFromGrape vin:WineGrape)
@@ -1167,7 +1163,7 @@ EquivalentClasses(vin:WhiteWine ObjectIntersectionOf(vin:Wine ObjectHasValue(vin
 
 AnnotationAssertion(rdfs:label vin:Wine "vin"@fr)
 AnnotationAssertion(rdfs:label vin:Wine "wine"@en)
-SubClassOf(vin:Wine food:PotableLiquid)
+SubClassOf(vin:Wine vin:PotableLiquid)
 SubClassOf(vin:Wine ObjectSomeValuesFrom(vin:locatedIn vin:Region))
 SubClassOf(vin:Wine ObjectAllValuesFrom(vin:hasMaker vin:Winery))
 SubClassOf(vin:Wine ObjectMinCardinality(1 vin:madeFromGrape))
@@ -1189,7 +1185,7 @@ SubClassOf(vin:WineColor vin:WineDescriptor)
 
 # Class: vin:WineDescriptor (vin:WineDescriptor)
 
-AnnotationAssertion(rdfs:comment vin:WineDescriptor "Made WineDescriptor unionType of tastes and color")
+AnnotationAssertion(rdfs:comment vin:WineDescriptor "Made WineDescriptor unionType of tastes and color"^^xsd:string)
 EquivalentClasses(vin:WineDescriptor ObjectUnionOf(vin:WineColor vin:WineTaste))
 
 # Class: vin:WineFlavor (vin:WineFlavor)
@@ -1199,7 +1195,7 @@ SubClassOf(vin:WineFlavor vin:WineTaste)
 
 # Class: vin:WineGrape (vin:WineGrape)
 
-SubClassOf(vin:WineGrape food:Grape)
+SubClassOf(vin:WineGrape vin:Grape)
 
 # Class: vin:WineSugar (vin:WineSugar)
 

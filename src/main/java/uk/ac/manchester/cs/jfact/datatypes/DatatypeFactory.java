@@ -1,11 +1,5 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
-/* This file is part of the JFact DL reasoner
- Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
- This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
- This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
- You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static org.semanticweb.owlapi.util.OWLAPIPreconditions.verifyNotNull;
 import static uk.ac.manchester.cs.jfact.datatypes.Facets.*;
 import static uk.ac.manchester.cs.jfact.datatypes.Facets.whitespace.*;
 
@@ -167,38 +161,40 @@ public class DatatypeFactory implements Serializable {
     /**
      * @param key
      *        key
+     * @param <R>
+     *        type
      * @return datatype for key
      */
     @Nonnull
     public <R extends Comparable<R>> Datatype<R> getKnownDatatype(IRI key) {
-            Datatype<?> datatype = knownDatatypes.get(key);
-            if (datatype != null) {
-                return (Datatype<R>)datatype;
-            }
-            // defend against incorrect datatype IRIs: some ontologies use
-            // ^^<xsd:dateTime> instead of ^^xsd:dateTime, and this causes the
-            // xsd: prefix not to be correctly replaced.
-            String iriString = key.toString();
-            if (iriString.startsWith("xsd:")) {
-                String name = iriString.substring(4);
-                for (XSDVocabulary v : XSDVocabulary.values()) {
-                    if (v.getShortForm().equals(name)) {
-                        datatype = knownDatatypes.get(v.getIRI());
-                        if (datatype == null) {
-                            LOGGER.error(
-                                "A known datatype for {} cannot be found; literal will be replaced with rdfs:Literal",
-                                iriString);
-                            knownDatatypes.put(key, LITERAL);
-                            return (Datatype<R>)LITERAL;
-                        }
-                        return (Datatype<R>)datatype;
+        Datatype<?> datatype = knownDatatypes.get(key);
+        if (datatype != null) {
+            return (Datatype<R>) datatype;
+        }
+        // defend against incorrect datatype IRIs: some ontologies use
+        // ^^<xsd:dateTime> instead of ^^xsd:dateTime, and this causes the
+        // xsd: prefix not to be correctly replaced.
+        String iriString = key.toString();
+        if (iriString.startsWith("xsd:")) {
+            String name = iriString.substring(4);
+            for (XSDVocabulary v : XSDVocabulary.values()) {
+                if (v.getShortForm().equals(name)) {
+                    datatype = knownDatatypes.get(v.getIRI());
+                    if (datatype == null) {
+                        LOGGER.error(
+                            "A known datatype for {} cannot be found; literal will be replaced with rdfs:Literal",
+                            iriString);
+                        knownDatatypes.put(key, LITERAL);
+                        return (Datatype<R>) LITERAL;
                     }
+                    return (Datatype<R>) datatype;
                 }
             }
-            LOGGER.error("A known datatype for {} cannot be found; literal will be replaced with rdfs:Literal", iriString);
-            knownDatatypes.put(key, LITERAL);
-            return (Datatype<R>)LITERAL;
         }
+        LOGGER.error("A known datatype for {} cannot be found; literal will be replaced with rdfs:Literal", iriString);
+        knownDatatypes.put(key, LITERAL);
+        return (Datatype<R>) LITERAL;
+    }
 
     /**
      * @param key
@@ -308,7 +304,7 @@ public class DatatypeFactory implements Serializable {
         return null;
     }
 
-    abstract static class ABSTRACT_NUMERIC_DATATYPE<R extends Comparable<R>> extends ABSTRACT_DATATYPE<R>implements
+    abstract static class ABSTRACT_NUMERIC_DATATYPE<R extends Comparable<R>> extends ABSTRACT_DATATYPE<R> implements
         NumericDatatype<R> {
 
         private static final long serialVersionUID = 11000L;
@@ -596,7 +592,7 @@ public class DatatypeFactory implements Serializable {
         }
     }
 
-    static class DATETIME_DATATYPE extends ABSTRACT_DATATYPE<Calendar>implements OrderedDatatype<Calendar> {
+    static class DATETIME_DATATYPE extends ABSTRACT_DATATYPE<Calendar> implements OrderedDatatype<Calendar> {
 
         private static final long serialVersionUID = 11000L;
 

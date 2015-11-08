@@ -166,6 +166,8 @@ public class DLVertex extends DLVertexTagDFS {
      * 
      * @param op
      *        op
+     * @param heap
+     *        heap
      */
     public DLVertex(DagTag op, DLDag heap) {
         this(op, 0, null, bpINVALID, null, heap);
@@ -184,6 +186,8 @@ public class DLVertex extends DLVertexTagDFS {
      *        c
      * @param ProjR
      *        ProjR
+     * @param heap
+     *        heap
      */
     public DLVertex(DagTag op, int m, Role R, int c, Role ProjR, DLDag heap) {
         super(op);

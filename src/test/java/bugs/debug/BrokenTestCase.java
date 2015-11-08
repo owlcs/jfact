@@ -11,24 +11,14 @@ import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.*;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLDataProperty;
-import org.semanticweb.owlapi.model.OWLException;
-import org.semanticweb.owlapi.model.OWLNamedIndividual;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
-import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 
-import testbase.TestBase;
 import conformancetests.ChangedTestCase;
 import conformancetests.JUnitRunner;
 import conformancetests.TestClasses;
+import testbase.TestBase;
 
 @Ignore("disabling for release")
 @SuppressWarnings("javadoc")
@@ -37,22 +27,22 @@ public class BrokenTestCase extends TestBase {
     @Test
     public void testQualified_cardinality_boolean() {
         String premise = "Prefix( : = <http://example.org/test#> )\n"
-                + "Prefix( xsd: = <http://www.w3.org/2001/XMLSchema#> )\n"
-                + '\n'
-                + "Ontology(<http://owl.semanticweb.org/page/Special:GetOntology/Qualified-cardinality-boolean?m=p>\n"
-                + "  Declaration(NamedIndividual(:a))\n"
-                + "  Declaration(Class(:A))\n"
-                + "  Declaration(DataProperty(:dp))\n" + '\n'
-                + "  SubClassOf(:A DataExactCardinality(2 :dp xsd:boolean))\n"
-                + '\n' + "  ClassAssertion(:A :a)\n" + ')';
+            + "Prefix( xsd: = <http://www.w3.org/2001/XMLSchema#> )\n"
+            + '\n'
+            + "Ontology(<http://owl.semanticweb.org/page/Special:GetOntology/Qualified-cardinality-boolean?m=p>\n"
+            + "  Declaration(NamedIndividual(:a))\n"
+            + "  Declaration(Class(:A))\n"
+            + "  Declaration(DataProperty(:dp))\n" + '\n'
+            + "  SubClassOf(:A DataExactCardinality(2 :dp xsd:boolean))\n"
+            + '\n' + "  ClassAssertion(:A :a)\n" + ')';
         String conclusion = "Prefix( : = <http://example.org/test#> )\n"
-                + "Prefix( xsd: = <http://www.w3.org/2001/XMLSchema#> )\n"
-                + '\n'
-                + "Ontology(<http://owl.semanticweb.org/page/Special:GetOntology/Qualified-cardinality-boolean?m=c>\n"
-                + "  Declaration(DataProperty(:dp))\n" + '\n'
-                + "  DataPropertyAssertion(:dp :a \"true\"^^xsd:boolean)\n"
-                + "  DataPropertyAssertion(:dp :a \"false\"^^xsd:boolean)\n"
-                + ')';
+            + "Prefix( xsd: = <http://www.w3.org/2001/XMLSchema#> )\n"
+            + '\n'
+            + "Ontology(<http://owl.semanticweb.org/page/Special:GetOntology/Qualified-cardinality-boolean?m=c>\n"
+            + "  Declaration(DataProperty(:dp))\n" + '\n'
+            + "  DataPropertyAssertion(:dp :a \"true\"^^xsd:boolean)\n"
+            + "  DataPropertyAssertion(:dp :a \"false\"^^xsd:boolean)\n"
+            + ')';
         String id = "Qualified_cardinality_boolean";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "According to qualified cardinality restriction individual a should have two boolean values. Since there are only two boolean values, the data property assertions can be entailed.";
@@ -81,7 +71,7 @@ public class BrokenTestCase extends TestBase {
         OWLNamedIndividual i = NamedIndividual(IRI(ns + 'i'));
         OWLNamedIndividual k = NamedIndividual(IRI(ns + 'k'));
         OWLObjectProperty bandctotwoaprime = ObjectProperty(IRI(ns
-                + "bandctotwoaprime"));
+            + "bandctotwoaprime"));
         OWLObjectProperty btoaprime = ObjectProperty(IRI(ns + "btoaprime"));
         OWLObjectProperty btoc = ObjectProperty(IRI(ns + "btoc"));
         OWLObjectProperty ctobprime = ObjectProperty(IRI(ns + "ctobprime"));
@@ -102,7 +92,7 @@ public class BrokenTestCase extends TestBase {
         m.addAxiom(o, Declaration(bandc));
         m.addAxiom(o, EquivalentClasses(bandc, ObjectUnionOf(c, b)));
         m.addAxiom(o,
-                SubClassOf(bandc, ObjectSomeValuesFrom(bandctotwoaprime, twoa)));
+            SubClassOf(bandc, ObjectSomeValuesFrom(bandctotwoaprime, twoa)));
         m.addAxiom(o, DisjointClasses(bandc, twoa));
         m.addAxiom(o, Declaration(c));
         m.addAxiom(o, SubClassOf(c, ObjectSomeValuesFrom(ctobprime, b)));
@@ -112,7 +102,7 @@ public class BrokenTestCase extends TestBase {
         m.addAxiom(o, Declaration(twoa));
         m.addAxiom(o, SubClassOf(twoa, ObjectSomeValuesFrom(twoatoa, a)));
         m.addAxiom(o,
-                SubClassOf(twoa, ObjectSomeValuesFrom(twoatobandc, bandc)));
+            SubClassOf(twoa, ObjectSomeValuesFrom(twoatobandc, bandc)));
         m.addAxiom(o, DisjointClasses(twoa, a));
         m.addAxiom(o, DisjointClasses(twoa, b));
         m.addAxiom(o, DisjointClasses(twoa, bandc));
@@ -152,30 +142,30 @@ public class BrokenTestCase extends TestBase {
         m.addAxiom(o, DifferentIndividuals(i, j, k));
         OWLReasoner reasoner = factory().createReasoner(o);
         assertFalse(
-                "Start with 3 classes, a,b,c and relate them so instances have to be in a 1:1 relationship with each other.\n"
-                        + "The class b-and-c is the union of b and c. Therefore there have to be 2 instances of b-and-c for every instance of a.\n"
-                        + "Relate the class 2a to b-and-c so that *their* instances are in 1:1 relationship.\n"
-                        + "Now relate 2a to a so that *their* instances are in a 1:1 relationship. This should lead to a situation in which every instance\n"
-                        + "of 2a is 1:1 with an instance of a, and at the same time 2:1 with an instance of a.\n"
-                        + "Unless all the classes have an infinite number of members or are empty this doesn't work. This example has a is the enumerated class {i,j,k} (i,j,k all different individuals). So it should be inconsistent.",
-                reasoner.isConsistent());
+            "Start with 3 classes, a,b,c and relate them so instances have to be in a 1:1 relationship with each other.\n"
+                + "The class b-and-c is the union of b and c. Therefore there have to be 2 instances of b-and-c for every instance of a.\n"
+                + "Relate the class 2a to b-and-c so that *their* instances are in 1:1 relationship.\n"
+                + "Now relate 2a to a so that *their* instances are in a 1:1 relationship. This should lead to a situation in which every instance\n"
+                + "of 2a is 1:1 with an instance of a, and at the same time 2:1 with an instance of a.\n"
+                + "Unless all the classes have an infinite number of members or are empty this doesn't work. This example has a is the enumerated class {i,j,k} (i,j,k all different individuals). So it should be inconsistent.",
+            reasoner.isConsistent());
     }
 
     @Test
     public void testConsistent_Datatype_restrictions_with_Different_Types() {
         String premise = "Prefix(:=<http://example.org/>)\n"
-                + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
-                + "Ontology(\n"
-                + "  Declaration(NamedIndividual(:a))\n"
-                + "  Declaration(DataProperty(:dp))\n"
-                + "  Declaration(Class(:A))\n"
-                + "  SubClassOf(:A "
-                + "DataAllValuesFrom(:dp DataOneOf(\"3\"^^xsd:integer \"4\"^^xsd:int))) \n"
-                + "  SubClassOf(:A "
-                + "DataAllValuesFrom(:dp DataOneOf(\"2\"^^xsd:short \"3\"^^xsd:int)))\n"
-                + "  ClassAssertion(:A :a)\n"
-                + "  ClassAssertion(DataSomeValuesFrom(:dp DataOneOf(\"3\"^^xsd:integer)) :a\n"
-                + "  )\n" + ')';
+            + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+            + "Ontology(\n"
+            + "  Declaration(NamedIndividual(:a))\n"
+            + "  Declaration(DataProperty(:dp))\n"
+            + "  Declaration(Class(:A))\n"
+            + "  SubClassOf(:A "
+            + "DataAllValuesFrom(:dp DataOneOf(\"3\"^^xsd:integer \"4\"^^xsd:int))) \n"
+            + "  SubClassOf(:A "
+            + "DataAllValuesFrom(:dp DataOneOf(\"2\"^^xsd:short \"3\"^^xsd:int)))\n"
+            + "  ClassAssertion(:A :a)\n"
+            + "  ClassAssertion(DataSomeValuesFrom(:dp DataOneOf(\"3\"^^xsd:integer)) :a\n"
+            + "  )\n" + ')';
         String conclusion = "";
         String id = "Consistent_Datatype_restrictions_with_Different_Types";
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
@@ -191,36 +181,36 @@ public class BrokenTestCase extends TestBase {
         OWLOntology ont = mngr.createOntology();
         OWLDataFactory df = OWLManager.getOWLDataFactory();
         OWLDataProperty dp = df.getOWLDataProperty(IRI
-                .create("urn:test:datap1"));
+            .create("urn:test:datap1"));
         mngr.addAxiom(ont,
-                df.getOWLDataPropertyDomainAxiom(dp, df.getOWLNothing()));
+            df.getOWLDataPropertyDomainAxiom(dp, df.getOWLNothing()));
         OWLReasonerFactory fac = factory();
         OWLReasoner r = fac.createNonBufferingReasoner(ont);
-        assertEquals(r.getBottomDataPropertyNode().toString(), 2, r
-                .getBottomDataPropertyNode().getEntities().size());
+        assertEquals(r.getBottomDataPropertyNode().toString(), 2L, r
+            .getBottomDataPropertyNode().entities().count());
     }
 
     @Test
     public void testWebOnt_I5_8_009() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-                + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.8/premises009\" >\n"
-                + "  <owl:Ontology/>\n"
-                + "  <owl:DatatypeProperty rdf:ID=\"p\">\n"
-                + "    <rdfs:range rdf:resource=\n"
-                + "  \"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\" />\n"
-                + "    <rdfs:range rdf:resource=\n"
-                + "  \"http://www.w3.org/2001/XMLSchema#nonPositiveInteger\" /></owl:DatatypeProperty></rdf:RDF>";
+            + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.8/premises009\" >\n"
+            + "  <owl:Ontology/>\n"
+            + "  <owl:DatatypeProperty rdf:ID=\"p\">\n"
+            + "    <rdfs:range rdf:resource=\n"
+            + "  \"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\" />\n"
+            + "    <rdfs:range rdf:resource=\n"
+            + "  \"http://www.w3.org/2001/XMLSchema#nonPositiveInteger\" /></owl:DatatypeProperty></rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-                + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.8/conclusions009\" >\n"
-                + "  <owl:Ontology/>\n"
-                + "  <owl:DatatypeProperty rdf:about=\"premises009#p\">\n"
-                + "    <rdfs:range rdf:resource=\n"
-                + "  \"http://www.w3.org/2001/XMLSchema#short\" /></owl:DatatypeProperty>\n"
-                + '\n' + "</rdf:RDF>";
+            + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.8/conclusions009\" >\n"
+            + "  <owl:Ontology/>\n"
+            + "  <owl:DatatypeProperty rdf:about=\"premises009#p\">\n"
+            + "    <rdfs:range rdf:resource=\n"
+            + "  \"http://www.w3.org/2001/XMLSchema#short\" /></owl:DatatypeProperty>\n"
+            + '\n' + "</rdf:RDF>";
         String id = "WebOnt_I5_8_009";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "0 is the only xsd:nonNegativeInteger which is\n"
-                + "also an xsd:nonPositiveInteger. 0 is an\n" + "xsd:short.";
+            + "also an xsd:nonPositiveInteger. 0 is an\n" + "xsd:short.";
         // XXX while it is true, I don't see why the zero should be a short
         // instead of a oneof from int or integer or any of the types in the
         // middle.
@@ -232,15 +222,15 @@ public class BrokenTestCase extends TestBase {
     @Test
     public void testWebOnt_I5_8_010() {
         String premise = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
-                + "Ontology(\n"
-                + "Declaration(DataProperty(<urn:t#p>))\n"
-                + "DataPropertyRange(<urn:t#p> xsd:nonNegativeInteger)\n"
-                + "ClassAssertion(DataSomeValuesFrom(<urn:t#p> xsd:nonPositiveInteger) <urn:t#john>)\n)";
+            + "Ontology(\n"
+            + "Declaration(DataProperty(<urn:t#p>))\n"
+            + "DataPropertyRange(<urn:t#p> xsd:nonNegativeInteger)\n"
+            + "ClassAssertion(DataSomeValuesFrom(<urn:t#p> xsd:nonPositiveInteger) <urn:t#john>)\n)";
         String conclusion = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
-                + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
-                + "Ontology(\nDeclaration(DataProperty(<urn:t#p>))\n"
-                + "ClassAssertion(owl:Thing <urn:t#john>)\n"
-                + "DataPropertyAssertion(<urn:t#p> <urn:t#john> \"0\"^^xsd:int)\n)";
+            + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
+            + "Ontology(\nDeclaration(DataProperty(<urn:t#p>))\n"
+            + "ClassAssertion(owl:Thing <urn:t#john>)\n"
+            + "DataPropertyAssertion(<urn:t#p> <urn:t#john> \"0\"^^xsd:int)\n)";
         String id = "WebOnt_I5_8_010";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "0 is the only xsd:nonNegativeInteger which is also an xsd:nonPositiveInteger.";
@@ -253,21 +243,21 @@ public class BrokenTestCase extends TestBase {
     @Test
     public void testWebOnt_I5_8_008() {
         String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-                + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.8/premises008\" >\n"
-                + "  <owl:Ontology/>\n"
-                + "  <owl:DatatypeProperty rdf:ID=\"p\">\n"
-                + "    <rdfs:range rdf:resource=\"http://www.w3.org/2001/XMLSchema#short\" />\n"
-                + "    <rdfs:range rdf:resource=\"http://www.w3.org/2001/XMLSchema#unsignedInt\" />"
-                + "</owl:DatatypeProperty></rdf:RDF>";
+            + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.8/premises008\" >\n"
+            + "  <owl:Ontology/>\n"
+            + "  <owl:DatatypeProperty rdf:ID=\"p\">\n"
+            + "    <rdfs:range rdf:resource=\"http://www.w3.org/2001/XMLSchema#short\" />\n"
+            + "    <rdfs:range rdf:resource=\"http://www.w3.org/2001/XMLSchema#unsignedInt\" />"
+            + "</owl:DatatypeProperty></rdf:RDF>";
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-                + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.8/conclusions008\" >\n<owl:Ontology/>\n"
-                + "  <owl:DatatypeProperty rdf:about=\"premises008#p\">\n"
-                + "    <rdfs:range rdf:resource=\"http://www.w3.org/2001/XMLSchema#unsignedShort\" /></owl:DatatypeProperty></rdf:RDF>";
+            + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.8/conclusions008\" >\n<owl:Ontology/>\n"
+            + "  <owl:DatatypeProperty rdf:about=\"premises008#p\">\n"
+            + "    <rdfs:range rdf:resource=\"http://www.w3.org/2001/XMLSchema#unsignedShort\" /></owl:DatatypeProperty></rdf:RDF>";
         String id = "WebOnt_I5_8_008";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "-1 is an xsd:short that is not an xsd:unsignedShort; 100000 is an "
-                + "xsd:unsignedInt that is not an xsd:unsignedShort; but there are no\n"
-                + "xsd:unsignedShort which are neither xsd:short nor xsd:unsignedInt";
+            + "xsd:unsignedInt that is not an xsd:unsignedShort; but there are no\n"
+            + "xsd:unsignedShort which are neither xsd:short nor xsd:unsignedInt";
         // TODO to make this work, the datatype reasoner must be able to infer
         // short and unsigned int equivalent unsigned short
         JUnitRunner r = new JUnitRunner(premise, conclusion, id, tc, d);
@@ -278,29 +268,29 @@ public class BrokenTestCase extends TestBase {
     @Test
     public void testWebOnt_someValuesFrom_003() {
         String premise = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
-                + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
-                + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
-                + "Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\n"
-                + "Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)\n"
-                + "Ontology(\n"
-                + "Declaration(Class(<urn:person>))\n"
-                + "EquivalentClasses(<urn:person> ObjectSomeValuesFrom(<urn:parent> <urn:person>))\n"
-                + "Declaration(ObjectProperty(<urn:parent>))\n"
-                + "ClassAssertion(<urn:person> <urn:fred>))";
+            + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
+            + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
+            + "Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\n"
+            + "Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)\n"
+            + "Ontology(\n"
+            + "Declaration(Class(<urn:person>))\n"
+            + "EquivalentClasses(<urn:person> ObjectSomeValuesFrom(<urn:parent> <urn:person>))\n"
+            + "Declaration(ObjectProperty(<urn:parent>))\n"
+            + "ClassAssertion(<urn:person> <urn:fred>))";
         String conclusion = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
-                + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
-                + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
-                + "Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\n"
-                + "Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)\n"
-                + "Ontology(\n"
-                + "Declaration(ObjectProperty(<urn:parent>))\n"
-                +
-                // "Declaration(ObjectProperty(<urn:parent>))\n"+
-                // "ClassAssertion(owl:Thing <urn:fred>)\n"+
-                "ObjectPropertyAssertion(<urn:parent> <urn:fred> _:genid2)\n"
-                + "ClassAssertion(owl:Thing _:genid3)\n"
-                + "ClassAssertion(owl:Thing _:genid2)\n"
-                + "ObjectPropertyAssertion(<urn:parent> _:genid2 _:genid3))";
+            + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
+            + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
+            + "Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\n"
+            + "Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)\n"
+            + "Ontology(\n"
+            + "Declaration(ObjectProperty(<urn:parent>))\n"
+            +
+            // "Declaration(ObjectProperty(<urn:parent>))\n"+
+            // "ClassAssertion(owl:Thing <urn:fred>)\n"+
+            "ObjectPropertyAssertion(<urn:parent> <urn:fred> _:genid2)\n"
+            + "ClassAssertion(owl:Thing _:genid3)\n"
+            + "ClassAssertion(owl:Thing _:genid2)\n"
+            + "ObjectPropertyAssertion(<urn:parent> _:genid2 _:genid3))";
         // XXX I do not understand these blank nodes used as existential
         // variables
         String id = "WebOnt_someValuesFrom_003";
@@ -321,10 +311,10 @@ public class BrokenTestCase extends TestBase {
         OWLObjectProperty p = f.getOWLObjectProperty(IRI.create("urn:p"));
         OWLNamedIndividual a = f.getOWLNamedIndividual(IRI.create("urn:a"));
         OWLObjectSomeValuesFrom c = f.getOWLObjectSomeValuesFrom(p,
-                f.getOWLThing());
+            f.getOWLThing());
         m.addAxiom(o, f.getOWLClassAssertionAxiom(c, a));
         OWLReasoner r = factory().createReasoner(o);
         assertTrue(r.isEntailed(f.getOWLObjectPropertyAssertionAxiom(p, a,
-                f.getOWLAnonymousIndividual())));
+            f.getOWLAnonymousIndividual())));
     }
 }

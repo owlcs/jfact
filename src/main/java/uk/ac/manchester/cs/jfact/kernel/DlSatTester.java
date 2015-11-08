@@ -10,17 +10,7 @@ import static uk.ac.manchester.cs.jfact.kernel.DagTag.*;
 import static uk.ac.manchester.cs.jfact.kernel.Redo.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
@@ -36,16 +26,8 @@ import uk.ac.manchester.cs.jfact.datatypes.DataTypeReasoner;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeEntry;
 import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
-import uk.ac.manchester.cs.jfact.helpers.DLVertex;
-import uk.ac.manchester.cs.jfact.helpers.FastSet;
-import uk.ac.manchester.cs.jfact.helpers.FastSetFactory;
-import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
-import uk.ac.manchester.cs.jfact.helpers.Reference;
-import uk.ac.manchester.cs.jfact.helpers.SaveStack;
-import uk.ac.manchester.cs.jfact.helpers.Stats;
-import uk.ac.manchester.cs.jfact.helpers.Templates;
+import uk.ac.manchester.cs.jfact.helpers.*;
 import uk.ac.manchester.cs.jfact.helpers.Timer;
-import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheConst;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheIan;
@@ -185,9 +167,9 @@ public class DlSatTester implements Serializable {
         @Override
         public String toString() {
             return this.getClass().getSimpleName() + " dep '" + branchDep
-                    + "' curconcept '"
-                    + (concept == null ? new ConceptWDep(bpINVALID) : concept)
-                    + "' curnode '" + node + '\'';
+                + "' curconcept '"
+                + (concept == null ? new ConceptWDep(bpINVALID) : concept)
+                + "' curnode '" + node + '\'';
         }
     }
 
@@ -472,7 +454,7 @@ public class DlSatTester implements Serializable {
         }
 
         protected List<ConceptWDep> setApplicableOrEntries(
-                List<ConceptWDep> list) {
+            List<ConceptWDep> list) {
             List<ConceptWDep> toReturn = applicableOrEntries;
             applicableOrEntries = list;
             size = applicableOrEntries.size();
@@ -565,7 +547,7 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "updateName")
     private void updateName(int bp) {
         cGraph.nodes().filter(n -> isNodeGloballyUsed(n))
-                .forEach(n -> updateName(n, bp));
+            .forEach(n -> updateName(n, bp));
     }
 
     /** host TBox */
@@ -640,7 +622,9 @@ public class DlSatTester implements Serializable {
     /** flag to show if it is necessary to produce DT reasoning immediately */
     @PortedFrom(file = "Reasoner.h", name = "checkDataNode")
     private boolean checkDataNode;
-    /** cache for testing whether it's possible to non-expand newly created node */
+    /**
+     * cache for testing whether it's possible to non-expand newly created node
+     */
     @PortedFrom(file = "Reasoner.h", name = "newNodeCache")
     private final ModelCacheIan newNodeCache;
     /** auxilliary cache that is built from the edges of newly created node */
@@ -663,7 +647,7 @@ public class DlSatTester implements Serializable {
      */
     @PortedFrom(file = "Reasoner.h", name = "addExistingToDoEntry")
     private void addExistingToDoEntry(DlCompletionTree node, ConceptWDep C,
-            String reason) {
+        String reason) {
         int bp = C.getConcept();
         TODO.addEntry(node, dlHeap.get(bp).getType(), C);
         logNCEntry(node, C.getConcept(), C.getDep(), "+", reason);
@@ -701,7 +685,7 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "createModelCache")
     protected ModelCacheInterface createModelCache(DlCompletionTree p) {
         return new ModelCacheIan(dlHeap, p, encounterNominal, tBox.nC,
-                tBox.nR.get(), options);
+            tBox.nR.get(), options);
     }
 
     /**
@@ -714,7 +698,7 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "tryCacheNode")
     private ModelCacheState tryCacheNode(DlCompletionTree node) {
         ModelCacheState ret = canBeCached(node) ? reportNodeCached(node)
-                : ModelCacheState.csFailed;
+            : ModelCacheState.csFailed;
         // node is cached if RET is csvalid
         boolean val = ret == ModelCacheState.csValid;
         if (node.isCached() != val) {
@@ -740,7 +724,9 @@ public class DlSatTester implements Serializable {
         return false;
     }
 
-    /** @return true iff current node is i-blocked (ie, no expansion necessary) */
+    /**
+     * @return true iff current node is i-blocked (ie, no expansion necessary)
+     */
     @PortedFrom(file = "Reasoner.h", name = "isIBlocked")
     private boolean isIBlocked() {
         return curNode.isIBlocked();
@@ -761,7 +747,7 @@ public class DlSatTester implements Serializable {
         DlCompletionTree where = curNode.isSomeApplicable(R, C);
         if (where != null) {
             options.getLog().printTemplate(Templates.E, R.getName(),
-                    where.getId(), C);
+                where.getId(), C);
         }
         return where != null;
     }
@@ -834,7 +820,7 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "isFunctionalVertex")
     private static boolean isFunctionalVertex(DLVertex v) {
         return v.getType() == DagTag.dtLE && v.getNumberLE() == 1
-                && v.getConceptIndex() == bpTOP;
+            && v.getConceptIndex() == bpTOP;
     }
 
     /**
@@ -851,13 +837,13 @@ public class DlSatTester implements Serializable {
     private static boolean checkNRclash(DLVertex atleast, DLVertex atmost) {
         // >= n R.C clash with <= m S.D iff...
         return (atmost.getConceptIndex() == bpTOP ||
-        // either D is TOP or C == D...
-                atleast.getConceptIndex() == atmost.getConceptIndex())
-                &&
-                // and n is greater than m...
-                atleast.getNumberGE() > atmost.getNumberLE() &&
-                // and R [= S
-                atleast.getRole().lesserequal(atmost.getRole());
+            // either D is TOP or C == D...
+            atleast.getConceptIndex() == atmost.getConceptIndex())
+            &&
+            // and n is greater than m...
+            atleast.getNumberGE() > atmost.getNumberLE() &&
+            // and R [= S
+            atleast.getRole().lesserequal(atmost.getRole());
     }
 
     /**
@@ -871,12 +857,12 @@ public class DlSatTester implements Serializable {
     private boolean isQuickClashLE(DLVertex atmost) {
         // need at-least restriction
         return curNode
-                .beginl_cc()
-                .stream()
-                .anyMatch(
-                        q -> q.getConcept() < 0
-                                && isNRClash(dlHeap.get(q.getConcept()),
-                                        atmost, q));
+            .beginl_cc()
+            .stream()
+            .anyMatch(
+                q -> q.getConcept() < 0
+                    && isNRClash(dlHeap.get(q.getConcept()),
+                        atmost, q));
     }
 
     /**
@@ -890,12 +876,12 @@ public class DlSatTester implements Serializable {
     private boolean isQuickClashGE(DLVertex atleast) {
         // need at-most restriction
         return curNode
-                .beginl_cc()
-                .stream()
-                .anyMatch(
-                        q -> q.getConcept() > 0
-                                && isNRClash(atleast,
-                                        dlHeap.get(q.getConcept()), q));
+            .beginl_cc()
+            .stream()
+            .anyMatch(
+                q -> q.getConcept() > 0
+                    && isNRClash(atleast,
+                        dlHeap.get(q.getConcept()), q));
     }
 
     /**
@@ -944,7 +930,7 @@ public class DlSatTester implements Serializable {
      */
     @PortedFrom(file = "Reasoner.h", name = "checkDisjointRoleClash")
     private boolean checkDisjointRoleClash(DlCompletionTreeArc edge,
-            DlCompletionTree to, Role R, DepSet dep) {
+        DlCompletionTree to, Role R, DepSet dep) {
         // clash found
         if (edge.getArcEnd().equals(to) && edge.getRole().isDisjoint(R)) {
             this.setClashSet(dep);
@@ -968,7 +954,7 @@ public class DlSatTester implements Serializable {
      */
     @PortedFrom(file = "Reasoner.h", name = "checkIrreflexivity")
     private boolean checkIrreflexivity(DlCompletionTreeArc edge, Role R,
-            DepSet dep) {
+        DepSet dep) {
         // only loops counts here...
         if (!edge.getArcEnd().equals(edge.getReverse().getArcEnd())) {
             return false;
@@ -999,11 +985,11 @@ public class DlSatTester implements Serializable {
      */
     @PortedFrom(file = "Reasoner.h", name = "logNCEntry")
     private void logNCEntry(DlCompletionTree n, int bp, DepSet dep,
-            String action, String reason) {
+        String action, String reason) {
         if (options.isLoggingActive()) {
             LogAdapter logAdapter = options.getLog();
             logAdapter.print(" ").print(action).print("(").print(n.logNode())
-                    .print(",").print(bp).print(dep, ")");
+                .print(",").print(bp).print(dep, ")");
             if (reason != null) {
                 logAdapter.print(reason);
             }
@@ -1260,13 +1246,13 @@ public class DlSatTester implements Serializable {
 
     @Original
     private static final EnumSet<DagTag> handlecollection = EnumSet.of(dtAnd,
-            dtCollection);
+        dtCollection);
     @Original
     private static final EnumSet<DagTag> handleforallle = EnumSet.of(dtForall,
-            dtLE);
+        dtLE);
     @Original
     private static final EnumSet<DagTag> handlesingleton = EnumSet.of(
-            dtPSingleton, dtNSingleton, dtNConcept, dtPConcept);
+        dtPSingleton, dtNSingleton, dtNConcept, dtPConcept);
 
     @PortedFrom(file = "Reasoner.h", name = "prepareCascadedCache")
     private void prepareCascadedCache(int p, FastSet f) {
@@ -1298,7 +1284,7 @@ public class DlSatTester implements Serializable {
             }
             inProcess.add(p);
             prepareCascadedCache(
-                    pos ? v.getConceptIndex() : -v.getConceptIndex(), f);
+                pos ? v.getConceptIndex() : -v.getConceptIndex(), f);
             inProcess.remove(p);
         } else if (handleforallle.contains(type)) {
             Role R = v.getRole();
@@ -1329,7 +1315,7 @@ public class DlSatTester implements Serializable {
         LogAdapter logAdapter = options.getLog();
         if (options.isLoggingActive()) {
             logAdapter.print("\nChecking satisfiability of DAG entry ")
-                    .print(p);
+                .print(p);
             tBox.printDagEntry(logAdapter, p);
             logAdapter.print(":\n");
         }
@@ -1370,7 +1356,7 @@ public class DlSatTester implements Serializable {
             return true;
         }
         return SessionGCIs.stream().anyMatch(
-                i -> addToDoEntry(node, i, dep, "sg"));
+            i -> addToDoEntry(node, i, dep, "sg"));
     }
 
     /**
@@ -1385,7 +1371,7 @@ public class DlSatTester implements Serializable {
         prepareReasoner();
         // use general method to init node with P and add Q then
         if (initNewNode(cGraph.getRoot(), DepSet.create(), p)
-                || addToDoEntry(cGraph.getRoot(), q, DepSet.create(), null)) {
+            || addToDoEntry(cGraph.getRoot(), q, DepSet.create(), null)) {
             // concept[s] unsatisfiable
             return false;
         }
@@ -1419,9 +1405,9 @@ public class DlSatTester implements Serializable {
         // init new nodes/edges. No need to apply restrictions, as no reasoning
         // have been done yet.
         if (initNewNode(edgeR.getArcEnd(), dummy, bpTOP)
-                || initNewNode(edgeS.getArcEnd(), dummy, bpTOP)
-                || setupEdge(edgeR, dummy, 0) || setupEdge(edgeS, dummy, 0)
-                || merge(edgeS.getArcEnd(), edgeR.getArcEnd(), dummy)) {
+            || initNewNode(edgeS.getArcEnd(), dummy, bpTOP)
+            || setupEdge(edgeR, dummy, 0) || setupEdge(edgeS, dummy, 0)
+            || merge(edgeS.getArcEnd(), edgeR.getArcEnd(), dummy)) {
             return true;
         }
         // 2 roles are disjoint if current setting is unsatisfiable
@@ -1448,8 +1434,8 @@ public class DlSatTester implements Serializable {
         // init new nodes/edges. No need to apply restrictions, as no reasoning
         // have been done yet.
         if (initNewNode(edgeR.getArcEnd(), dummy, bpTOP)
-                || setupEdge(edgeR, dummy, 0)
-                || merge(edgeR.getArcEnd(), cGraph.getRoot(), dummy)) {
+            || setupEdge(edgeR, dummy, 0)
+            || merge(edgeR.getArcEnd(), cGraph.getRoot(), dummy)) {
             return true;
         }
         // R is irreflexive if current setting is unsatisfiable
@@ -1519,8 +1505,8 @@ public class DlSatTester implements Serializable {
     private boolean addSessionGCI(int C, DepSet dep) {
         SessionGCIs.add(C);
         return cGraph.nodes().anyMatch(
-                node -> isNodeGloballyUsed(node)
-                        && addToDoEntry(node, C, dep, "sg"));
+            node -> isNodeGloballyUsed(node)
+                && addToDoEntry(node, C, dep, "sg"));
     }
 
     protected DlSatTester(TBox tbox, JFactReasonerConfiguration Options) {
@@ -1538,15 +1524,15 @@ public class DlSatTester implements Serializable {
         curNode = null;
         dagSize = 0;
         options.getLog().printTemplate(Templates.READCONFIG,
-                options.getuseSemanticBranching(), options.getuseBackjumping(),
-                options.getuseLazyBlocking(), options.getuseAnywhereBlocking());
+            options.getuseSemanticBranching(), options.getuseBackjumping(),
+            options.getuseLazyBlocking(), options.getuseAnywhereBlocking());
         if (tBox.hasFC() && options.getuseAnywhereBlocking()) {
             options.setuseAnywhereBlocking(false);
             options.getLog().print(
-                    "Fairness constraints: set useAnywhereBlocking = false\n");
+                "Fairness constraints: set useAnywhereBlocking = false\n");
         }
         cGraph.initContext(tbox.getnSkipBeforeBlock(),
-                options.getuseLazyBlocking(), options.getuseAnywhereBlocking());
+            options.getuseLazyBlocking(), options.getuseAnywhereBlocking());
         tbox.getORM().fillReflexiveRoles(reflexiveRoles);
         resetSessionFlags();
     }
@@ -1648,13 +1634,13 @@ public class DlSatTester implements Serializable {
                 // C but not ~C can be in the label
                 stats.getnLookups().inc();
                 return findConcept(lab, bp) ? AddConceptResult.acrExist
-                        : AddConceptResult.acrDone;
+                    : AddConceptResult.acrDone;
             }
         } else {
             if (canNegC) {
                 // ~C but not C can be in the label
                 return findConceptClash(lab, -bp, dep) ? AddConceptResult.acrClash
-                        : AddConceptResult.acrDone;
+                    : AddConceptResult.acrDone;
             } else {
                 // neither C nor ~C can be in the label
                 return AddConceptResult.acrDone;
@@ -1664,7 +1650,7 @@ public class DlSatTester implements Serializable {
 
     @PortedFrom(file = "Reasoner.h", name = "addToDoEntry")
     protected boolean addToDoEntry(DlCompletionTree n, int bp, DepSet dep,
-            String reason) {
+        String reason) {
         if (bp == bpTOP) {
             return false;
         }
@@ -1695,7 +1681,7 @@ public class DlSatTester implements Serializable {
 
     @PortedFrom(file = "Reasoner.h", name = "insertToDoEntry")
     private boolean insertToDoEntry(DlCompletionTree n, int bp, DepSet dep,
-            DagTag tag, String reason) {
+        DagTag tag, String reason) {
         ConceptWDep p = new ConceptWDep(bp, dep);
         // we will change current Node => save it if necessary
         updateLevel(n, dep);
@@ -1729,7 +1715,7 @@ public class DlSatTester implements Serializable {
         AtomicBoolean shallow = new AtomicBoolean(true);
         AtomicInteger size = new AtomicInteger(0);
         if (Stream.concat(node.beginl_sc().stream(), node.beginl_cc().stream())
-                .anyMatch(p -> canBeCachedCheck(shallow, size, p))) {
+            .anyMatch(p -> canBeCachedCheck(shallow, size, p))) {
             return false;
         }
         // it's useless to cache shallow nodes
@@ -1742,15 +1728,15 @@ public class DlSatTester implements Serializable {
     }
 
     protected boolean canBeCachedCheck(AtomicBoolean shallow,
-            AtomicInteger size, ConceptWDep p) {
+        AtomicInteger size, ConceptWDep p) {
         if (dlHeap.getCache(p.getConcept()) == null) {
             stats.getnCacheFailedNoCache().inc();
             options.getLog().printTemplate(Templates.CAN_BE_CACHED,
-                    p.getConcept());
+                p.getConcept());
             return true;
         }
         shallow.compareAndSet(true, dlHeap.getCache(p.getConcept())
-                .shallowCache());
+            .shallowCache());
         size.incrementAndGet();
         return false;
     }
@@ -1767,7 +1753,7 @@ public class DlSatTester implements Serializable {
         List<DepSet> deps = new ArrayList<>();
         newNodeCache.clear();
         if (Stream.concat(node.beginl_sc().stream(), node.beginl_cc().stream())
-                .anyMatch(p -> doCacheNodeCheck(deps, p))) {
+            .anyMatch(p -> doCacheNodeCheck(deps, p))) {
             // all concepts in label are mergable; now try to add input arc
             newNodeEdges.clear();
             newNodeEdges.initRolesFromArcs(node);
@@ -1778,7 +1764,7 @@ public class DlSatTester implements Serializable {
     protected boolean doCacheNodeCheck(List<DepSet> deps, ConceptWDep p) {
         deps.add(p.getDep());
         ModelCacheState merge = newNodeCache.merge(dlHeap.getCache(p
-                .getConcept()));
+            .getConcept()));
         if (merge != ModelCacheState.csValid) {
             if (merge == ModelCacheState.csInvalid) {
                 this.setClashSet(deps);
@@ -1832,7 +1818,7 @@ public class DlSatTester implements Serializable {
         @Override
         public int hashCode() {
             return ((positive ? 1 : 2) * 37 + d.hashCode()) * 37
-                    + dataEntry.hashCode();
+                + dataEntry.hashCode();
         }
 
         @Override
@@ -1848,7 +1834,7 @@ public class DlSatTester implements Serializable {
             }
             DataCall o = (DataCall) obj;
             return positive == o.positive && d.equals(o.d)
-                    && dataEntry.equals(o.dataEntry);
+                && dataEntry.equals(o.dataEntry);
         }
 
         @Override
@@ -1862,8 +1848,8 @@ public class DlSatTester implements Serializable {
                 o = dataEntry;
             }
             return positive + ", " + d + ", \""
-                    + o.toString().replace("\"", "\\\"") + "\", "
-                    + r.getDep().toString().replace("{", "").replace("}", "");
+                + o.toString().replace("\"", "\\\"") + "\", "
+                + r.getDep().toString().replace("{", "").replace("}", "");
         }
     }
 
@@ -1892,7 +1878,7 @@ public class DlSatTester implements Serializable {
         for (DataCall dc : calls) {
             // System.out.print(" makeCall( " + dc + ");");
             if (datatypeReasoner.addDataEntry(dc.positive, dc.d, dc.dataEntry,
-                    dc.r.getDep())) {
+                dc.r.getDep())) {
                 this.setClashSet(datatypeReasoner.getClashSet());
                 // System.out.println("assertTrue(makeCall( " + dc + "));}");
                 return true;
@@ -1913,7 +1899,7 @@ public class DlSatTester implements Serializable {
         boolean result = checkSatisfiability();
         testTimer.stop();
         options.getLog().print("\nChecking time was ")
-                .print(testTimer.getResultTime()).print(" milliseconds");
+            .print(testTimer.getResultTime()).print(" milliseconds");
         testTimer.reset();
         finaliseStatistic();
         if (result && options.getLog().isEnabled()) {
@@ -1933,8 +1919,8 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "applyReflexiveRoles")
     private boolean applyReflexiveRoles(DlCompletionTree node, DepSet dep) {
         return reflexiveRoles.stream()
-                .map(r -> cGraph.addRoleLabel(node, node, false, r, dep))
-                .anyMatch(p -> setupEdge(p, dep, 0));
+            .map(r -> cGraph.addRoleLabel(node, node, false, r, dep))
+            .anyMatch(p -> setupEdge(p, dep, 0));
     }
 
     @PortedFrom(file = "Reasoner.h", name = "checkSatisfiability")
@@ -2009,7 +1995,7 @@ public class DlSatTester implements Serializable {
                     stats.getnFairnessViolations().inc();
                     // try to fix violators
                     if (addToDoEntry(violator, p.getpName(), getCurDepSet(),
-                            "fair")) {
+                        "fair")) {
                         return true;
                     }
                 }
@@ -2118,7 +2104,7 @@ public class DlSatTester implements Serializable {
             options.getLog().print("]");
             if (res) {
                 options.getLog().printTemplate(Templates.LOG_FINISH_ENTRY,
-                        clashSet);
+                    clashSet);
             }
         }
     }
@@ -2131,7 +2117,7 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "printReasoningTime")
     public float printReasoningTime(LogAdapter o) {
         o.print("\n     SAT takes ", satTimer, " seconds\n     SUB takes ",
-                subTimer, " seconds");
+            subTimer, " seconds");
         return satTimer.calcDelta() + subTimer.calcDelta();
     }
 
@@ -2216,7 +2202,7 @@ public class DlSatTester implements Serializable {
             case dtProj:
                 assert curConceptConcept > 0;
                 return commonTacticBodyProj(cur.getRole(),
-                        cur.getConceptIndex(), cur.getProjRole());
+                    cur.getConceptIndex(), cur.getProjRole());
             case dtChoose:
                 assert curConceptConcept > 0;
                 return applyChooseRule(curNode, cur.getConceptIndex());
@@ -2231,12 +2217,12 @@ public class DlSatTester implements Serializable {
         stats.getnIdCalls().inc();
         // check if we have some simple rules
         if (options.isRKG_USE_SIMPLE_RULES() && curConceptConcept > 0
-                && applyExtraRulesIf((Concept) cur.getConcept())) {
+            && applyExtraRulesIf((Concept) cur.getConcept())) {
             return true;
         }
         // get either body(p) or inverse(body(p)), depends on sign of current ID
         int C = curConceptConcept > 0 ? cur.getConceptIndex() : -cur
-                .getConceptIndex();
+            .getConceptIndex();
         return addToDoEntry(curNode, C, curConceptDepSet, null);
     }
 
@@ -2274,7 +2260,7 @@ public class DlSatTester implements Serializable {
         for (Concept p : rule.getBody()) {
             if (p.getpName() != curConceptConcept) {
                 if (findConceptClash(lab, p.getpName(),
-                        loc == null ? curConceptDepSet : loc)) {
+                    loc == null ? curConceptDepSet : loc)) {
                     // such a concept exists -- rememeber clash set
                     if (loc == null) {
                         loc = DepSet.create(clashSet);
@@ -2357,6 +2343,7 @@ public class DlSatTester implements Serializable {
      * 
      * @param cur
      *        current vertex true if clash happens
+     * @return true if clash occurs
      */
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodyOr")
     private boolean commonTacticBodyOr(DLVertex cur) {
@@ -2370,7 +2357,7 @@ public class DlSatTester implements Serializable {
             if (planOrProcessing(cur, dep)) {
                 // found existing component
                 options.getLog().printTemplate(Templates.COMMON_TACTIC_BODY_OR,
-                        orConceptsToTest.get(orConceptsToTest.size() - 1));
+                    orConceptsToTest.get(orConceptsToTest.size() - 1));
                 return false;
             }
             if (orConceptsToTest.isEmpty()) {
@@ -2383,14 +2370,14 @@ public class DlSatTester implements Serializable {
             if (orConceptsToTest.size() == 1) {
                 ConceptWDep C = orConceptsToTest.get(0);
                 return insertToDoEntry(curNode, C.getConcept(),
-                        dep.getReference(), dlHeap.get(C.getConcept())
-                                .getType(), "bcp");
+                    dep.getReference(), dlHeap.get(C.getConcept())
+                        .getType(), "bcp");
             }
             // more than one alternative: use branching context
             createBCOr();
             bContext.branchDep = DepSet.create(dep.getReference());
             orConceptsToTest = ((BCOr) bContext)
-                    .setApplicableOrEntries(orConceptsToTest);
+                .setApplicableOrEntries(orConceptsToTest);
         }
         // now it is OR case with 1 or more applicable concepts
         return processOrEntry();
@@ -2405,7 +2392,7 @@ public class DlSatTester implements Serializable {
         for (int q : cur.begin()) {
             int inverse = -q;
             switch (tryAddConcept(lab.getLabel(dlHeap.get(inverse).getType()),
-                    inverse, null)) {
+                inverse, null)) {
                 case acrClash:
                     // clash found -- OK
                     dep.getReference().add(clashSet);
@@ -2464,11 +2451,17 @@ public class DlSatTester implements Serializable {
             return addToDoEntry(curNode, bcOr.orCur().getConcept(), dep, reason);
         } else {
             return insertToDoEntry(curNode, bcOr.orCur().getConcept(), dep,
-                    dlHeap.get(bcOr.orCur().getConcept()).getType(), reason);
+                dlHeap.get(bcOr.orCur().getConcept()).getType(), reason);
         }
     }
 
-    /** expansion rule for universal restriction with non-simple role using RA */
+    /**
+     * expansion rule for universal restriction with non-simple role using RA
+     * 
+     * @param cur
+     *        vertex
+     * @return true if clash occurs
+     */
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodyAllComplex")
     private boolean commonTacticBodyAllComplex(DLVertex cur) {
         int state = cur.getState();
@@ -2477,21 +2470,21 @@ public class DlSatTester implements Serializable {
         RAStateTransitions RST = cur.getRole().getAutomaton().get(state);
         // apply all empty transitions
         if (RST.hasEmptyTransition()
-                && RST.stream().anyMatch(q -> applyEmptyTransition(C, q))) {
+            && RST.stream().anyMatch(q -> applyEmptyTransition(C, q))) {
             return true;
         }
         // apply all top-role transitions
         if (RST.hasTopTransition()
-                && RST.stream().anyMatch(
-                        q -> q.isTop()
-                                && addSessionGCI(C + q.final_state(),
-                                        curConceptDepSet))) {
+            && RST.stream().anyMatch(
+                q -> q.isTop()
+                    && addSessionGCI(C + q.final_state(),
+                        curConceptDepSet))) {
             return true;
         }
         // apply final-state rule
         if (state == 1
-                && addToDoEntry(curNode, cur.getConceptIndex(),
-                        curConceptDepSet, null)) {
+            && addToDoEntry(curNode, cur.getConceptIndex(),
+                curConceptDepSet, null)) {
             return true;
         }
         // check whether automaton applicable to any edges
@@ -2499,15 +2492,15 @@ public class DlSatTester implements Serializable {
         // check all neighbours
         Stream<DlCompletionTreeArc> neighbors = curNode.getNeighbour().stream();
         return neighbors.anyMatch(p -> RST.recognise(p.getRole())
-                && applyTransitions(p, RST, C,
-                        DepSet.plus(curConceptDepSet, p.getDep()), null));
+            && applyTransitions(p, RST, C,
+                DepSet.plus(curConceptDepSet, p.getDep()), null));
     }
 
     protected boolean applyEmptyTransition(int C, RATransition q) {
         stats.getnAutoEmptyLookups().inc();
         return q.isEmpty()
-                && addToDoEntry(curNode, C + q.final_state(), curConceptDepSet,
-                        "e");
+            && addToDoEntry(curNode, C + q.final_state(), curConceptDepSet,
+                "e");
     }
 
     @PortedFrom(file = "Tactic.cpp", name = "commonTacticBodyAllSimple")
@@ -2520,13 +2513,13 @@ public class DlSatTester implements Serializable {
         // applicable()
         Stream<DlCompletionTreeArc> neighbors = curNode.getNeighbour().stream();
         return neighbors.anyMatch(p -> RST.recognise(p.getRole())
-                && addToDoEntry(p.getArcEnd(), C,
-                        DepSet.plus(curConceptDepSet, p.getDep()), null));
+            && addToDoEntry(p.getArcEnd(), C,
+                DepSet.plus(curConceptDepSet, p.getDep()), null));
     }
 
     @PortedFrom(file = "Tactic.cpp", name = "applyTransitions")
     private boolean applyTransitions(DlCompletionTreeArc edge,
-            RAStateTransitions RST, int C, DepSet dep, String reason) {
+        RAStateTransitions RST, int C, DepSet dep, String reason) {
         DlCompletionTree node = edge.getArcEnd();
         // fast lane: the single transition which is applicable
         if (RST.isSingleton()) {
@@ -2534,14 +2527,14 @@ public class DlSatTester implements Serializable {
         }
         // try to apply all transitions to edge
         return RST.stream().anyMatch(
-                q -> applyTransitionsCheck(edge, C, dep, reason, node, q));
+            q -> applyTransitionsCheck(edge, C, dep, reason, node, q));
     }
 
     protected boolean applyTransitionsCheck(DlCompletionTreeArc edge, int C,
-            DepSet dep, String reason, DlCompletionTree node, RATransition q) {
+        DepSet dep, String reason, DlCompletionTree node, RATransition q) {
         stats.getnAutoTransLookups().inc();
         return q.applicable(edge.getRole())
-                && addToDoEntry(node, C + q.final_state(), dep, reason);
+            && addToDoEntry(node, C + q.final_state(), dep, reason);
     }
 
     /**
@@ -2560,7 +2553,7 @@ public class DlSatTester implements Serializable {
      */
     @PortedFrom(file = "Reasoner.h", name = "applyUniversalNR")
     private boolean applyUniversalNR(DlCompletionTree Node,
-            DlCompletionTreeArc arcSample, DepSet dep_, int flags) {
+        DlCompletionTreeArc arcSample, DepSet dep_, int flags) {
         // check whether a flag is set
         if (flags == 0) {
             return false;
@@ -2568,21 +2561,21 @@ public class DlSatTester implements Serializable {
         DepSet dep = DepSet.plus(dep_, arcSample.getDep());
         // need only AR.C concepts where ARC is labelled with R
         return Node
-                .beginl_cc()
-                .stream()
-                .anyMatch(
-                        p -> p.getConcept() > 0
-                                && universalNR(Node, p, arcSample, dep, flags));
+            .beginl_cc()
+            .stream()
+            .anyMatch(
+                p -> p.getConcept() > 0
+                    && universalNR(Node, p, arcSample, dep, flags));
     }
 
     private boolean universalNR(DlCompletionTree Node, ConceptWDep p,
-            DlCompletionTreeArc arcSample, DepSet dep, int flags) {
+        DlCompletionTreeArc arcSample, DepSet dep, int flags) {
         DLVertex v = dlHeap.get(p.getConcept());
         Role vR = v.getRole();
         switch (v.getType()) {
             case dtIrr:
                 return redoIrr.match(flags)
-                        && this.checkIrreflexivity(arcSample, vR, dep);
+                    && this.checkIrreflexivity(arcSample, vR, dep);
             case dtForall:
                 if (!redoForall.match(flags) || vR.isTop()) {
                     return false;
@@ -2595,14 +2588,14 @@ public class DlSatTester implements Serializable {
                 if (vR.isSimple()) {
                     // R is recognised so just add the state!
                     if (addToDoEntry(arcSample.getArcEnd(),
-                            v.getConceptIndex(), DepSet.plus(dep, p.getDep()),
-                            "ae")) {
+                        v.getConceptIndex(), DepSet.plus(dep, p.getDep()),
+                        "ae")) {
                         return true;
                     }
                 } else {
                     if (applyTransitions(arcSample, RST,
-                            p.getConcept() - v.getState(),
-                            DepSet.plus(dep, p.getDep()), "ae")) {
+                        p.getConcept() - v.getState(),
+                        DepSet.plus(dep, p.getDep()), "ae")) {
                         return true;
                     }
                 }
@@ -2610,11 +2603,11 @@ public class DlSatTester implements Serializable {
             case dtLE:
                 if (isFunctionalVertex(v)) {
                     if (redoFunc.match(flags)
-                            && arcSample.getRole().lesserequal(vR)) {
+                        && arcSample.getRole().lesserequal(vR)) {
                         addExistingToDoEntry(Node, p, "f");
                     }
                 } else if (redoAtMost.match(flags)
-                        && arcSample.getRole().lesserequal(vR)) {
+                    && arcSample.getRole().lesserequal(vR)) {
                     addExistingToDoEntry(Node, p, "le");
                 }
                 break;
@@ -2672,7 +2665,7 @@ public class DlSatTester implements Serializable {
             for (int i = 0; i < list.size(); i++) {
                 int functional = list.get(i).getFunctional();
                 AddConceptResult tryAddConcept = tryAddConcept(curNode.label()
-                        .getLabel(DagTag.dtLE), functional, curConceptDepSet);
+                    .getLabel(DagTag.dtLE), functional, curConceptDepSet);
                 if (tryAddConcept == AddConceptResult.acrClash) {
                     // addition leads to clash
                     return true;
@@ -2682,15 +2675,15 @@ public class DlSatTester implements Serializable {
                     // we are changing current Node => save it
                     updateLevel(curNode, curConceptDepSet);
                     ConceptWDep rFuncRestriction1 = new ConceptWDep(functional,
-                            curConceptDepSet);
+                        curConceptDepSet);
                     // NOTE! not added into todo (because will be checked
                     // right now)
                     cGraph.addConceptToNode(curNode, rFuncRestriction1,
-                            DagTag.dtLE);
+                        DagTag.dtLE);
                     used.add(rFuncRestriction1.getConcept());
                     options.getLog().printTemplate(
-                            Templates.COMMON_TACTIC_BODY_SOME,
-                            rFuncRestriction1);
+                        Templates.COMMON_TACTIC_BODY_SOME,
+                        rFuncRestriction1);
                 }
                 // only other possibility is acrExist. As the node already
                 // exists, nothing to do
@@ -2705,7 +2698,7 @@ public class DlSatTester implements Serializable {
         // set up rFunc; rfRole contains more generic functional superrole of
         // rName
         curNode.beginl_cc().stream()
-                .forEach(LC -> findRC(R, rFunc, RF, rFuncRestriction, LC));
+            .forEach(LC -> findRC(R, rFunc, RF, rFuncRestriction, LC));
         if (!rFunc.get()) {
             return createNewEdge(cur.getRole(), C, redoForallAtmost());
         }
@@ -2713,7 +2706,7 @@ public class DlSatTester implements Serializable {
         DlCompletionTreeArc functionalArc = null;
         DepSet newDep = null;
         for (int i = 0; i < curNode.getNeighbour().size()
-                && functionalArc == null; i++) {
+            && functionalArc == null; i++) {
             DlCompletionTreeArc pr = curNode.getNeighbour().get(i);
             newDep = pr.neighbourDepSet(RF.getReference());
             if (newDep != null) {
@@ -2724,14 +2717,14 @@ public class DlSatTester implements Serializable {
             return createNewEdge(cur.getRole(), C, redoForallAtmost());
         }
         options.getLog().printTemplate(Templates.COMMON_TACTIC_BODY_SOME2,
-                rFuncRestriction.getReference());
+            rFuncRestriction.getReference());
         DlCompletionTree succ = functionalArc.getArcEnd();
         newDep.add(curConceptDepSet);
         if (R.isDisjoint() && checkDisjointRoleClash(curNode, succ, R, newDep)) {
             return true;
         }
         functionalArc = cGraph.addRoleLabel(curNode, succ,
-                functionalArc.isPredEdge(), R, newDep);
+            functionalArc.isPredEdge(), R, newDep);
         // adds concept to the end of arc
         if (addToDoEntry(succ, C, newDep, null)) {
             return true;
@@ -2741,7 +2734,7 @@ public class DlSatTester implements Serializable {
             // add Range and Domain of a new role; this includes
             // functional, so remove it from the latter
             if (initHeadOfNewEdge(curNode, R, newDep, "RD")
-                    || initHeadOfNewEdge(succ, R.inverse(), newDep, "RR")) {
+                || initHeadOfNewEdge(succ, R.inverse(), newDep, "RR")) {
                 return true;
             }
             /**
@@ -2751,7 +2744,7 @@ public class DlSatTester implements Serializable {
              * condition can be simplified
              */
             if (applyUniversalNR(curNode, functionalArc, newDep,
-                    redoForallFunc())) {
+                redoForallFunc())) {
                 return true;
             }
             /**
@@ -2760,7 +2753,7 @@ public class DlSatTester implements Serializable {
              * bFunctional1x test
              */
             if (applyUniversalNR(succ, functionalArc.getReverse(), newDep,
-                    redoForallFuncAtMost())) {
+                redoForallFuncAtMost())) {
                 return true;
             }
         }
@@ -2768,14 +2761,14 @@ public class DlSatTester implements Serializable {
     }
 
     protected void findRC(Role R, AtomicBoolean rFunc, Reference<Role> RF,
-            Reference<ConceptWDep> rFuncRestriction, ConceptWDep LC) {
+        Reference<ConceptWDep> rFuncRestriction, ConceptWDep LC) {
         // found such vertex (<=1 R)
         DLVertex ver = dlHeap.get(LC.getConcept());
         if (LC.getConcept() > 0
-                && isFunctionalVertex(ver)
-                && R.lesserequal(ver.getRole())
-                && (!rFunc.get() || RF.getReference()
-                        .lesserequal(ver.getRole()))) {
+            && isFunctionalVertex(ver)
+            && R.lesserequal(ver.getRole())
+            && (!rFunc.get() || RF.getReference()
+                .lesserequal(ver.getRole()))) {
             if (rFunc.compareAndSet(false, true)) {
                 RF.setReference(ver.getRole());
                 rFuncRestriction.setReference(LC);
@@ -2802,7 +2795,7 @@ public class DlSatTester implements Serializable {
         encounterNominal = true;
         // create new edge between curNode and the given nominal node
         DlCompletionTreeArc edge = cGraph.addRoleLabel(curNode, realNode,
-                false, R, dep);
+            false, R, dep);
         // add all necessary concepts to both ends of the edge
         return setupEdge(edge, dep, redoForallFuncAtmostIrr());
     }
@@ -2844,18 +2837,18 @@ public class DlSatTester implements Serializable {
         DlCompletionTreeArc pA = this.createOneNeighbour(R, curConceptDepSet);
         // add necessary label
         return initNewNode(pA.getArcEnd(), curConceptDepSet, C)
-                || setupEdge(pA, curConceptDepSet, flags);
+            || setupEdge(pA, curConceptDepSet, flags);
     }
 
     @PortedFrom(file = "Reasoner.h", name = "createOneNeighbour")
     private DlCompletionTreeArc createOneNeighbour(Role R, DepSet dep) {
         return this
-                .createOneNeighbour(R, dep, DlCompletionTree.BLOCKABLE_LEVEL);
+            .createOneNeighbour(R, dep, DlCompletionTree.BLOCKABLE_LEVEL);
     }
 
     @PortedFrom(file = "Reasoner.h", name = "createOneNeighbour")
     private DlCompletionTreeArc
-            createOneNeighbour(Role R, DepSet dep, int level) {
+        createOneNeighbour(Role R, DepSet dep, int level) {
         boolean forNN = level != DlCompletionTree.BLOCKABLE_LEVEL;
         DlCompletionTreeArc pA = cGraph.createNeighbour(curNode, forNN, R, dep);
         DlCompletionTree node = pA.getArcEnd();
@@ -2866,8 +2859,8 @@ public class DlSatTester implements Serializable {
             node.setDataNode();
         }
         options.getLog()
-                .printTemplate(R.isDataRole() ? Templates.DN : Templates.CN,
-                        node.getId(), dep);
+            .printTemplate(R.isDataRole() ? Templates.DN : Templates.CN,
+                node.getId(), dep);
         return pA;
     }
 
@@ -2893,7 +2886,7 @@ public class DlSatTester implements Serializable {
     private void applyAllGeneratingRules(DlCompletionTree node) {
         // need only ER.C or >=nR.C concepts
         node.label().get_cc().stream().filter(p -> p.getConcept() <= 0)
-                .forEach(p -> addLEForAll(node, p));
+            .forEach(p -> addLEForAll(node, p));
     }
 
     private void addLEForAll(DlCompletionTree node, ConceptWDep p) {
@@ -2964,7 +2957,7 @@ public class DlSatTester implements Serializable {
      */
     @PortedFrom(file = "Reasoner.h", name = "initHeadOfNewEdge")
     private boolean initHeadOfNewEdge(DlCompletionTree node, Role R,
-            DepSet dep, String reason) {
+        DepSet dep, String reason) {
         // if R is functional, then add FR with given DEP-set to NODE
         if (R.isFunctional()) {
             Stream<Role> s = R.begin_topfunc().stream();
@@ -3018,8 +3011,8 @@ public class DlSatTester implements Serializable {
         for (int i = 1; i < EdgesToMerge.size(); i++) {
             q = EdgesToMerge.get(i);
             if (!q.getArcEnd().isPBlocked()
-                    && merge(q.getArcEnd(), sample,
-                            DepSet.plus(depF, q.getDep()))) {
+                && merge(q.getArcEnd(), sample,
+                    DepSet.plus(depF, q.getDep()))) {
                 return true;
             }
         }
@@ -3109,12 +3102,12 @@ public class DlSatTester implements Serializable {
                     boolean test;
                     // here dep contains the clash-set
                     test = findConceptClash(from.label().getLabel(tag), C,
-                            dep.getReference());
+                        dep.getReference());
                     assert test;
                     // save new dep-set
                     dep.getReference().add(clashSet);
                     test = findConceptClash(to.label().getLabel(tag), C,
-                            dep.getReference());
+                        dep.getReference());
                     assert test;
                     // both clash-sets are now in common clash-set
                 }
@@ -3179,8 +3172,8 @@ public class DlSatTester implements Serializable {
         }
         // create N new different edges
         return createDifferentNeighbours(cur.getRole(), cur.getConceptIndex(),
-                curConceptDepSet, cur.getNumberGE(),
-                DlCompletionTree.BLOCKABLE_LEVEL);
+            curConceptDepSet, cur.getNumberGE(),
+            DlCompletionTree.BLOCKABLE_LEVEL);
     }
 
     // Func/LE/GE with top role processing
@@ -3207,7 +3200,7 @@ public class DlSatTester implements Serializable {
         // during merge EdgesToMerge may became purged (see Nasty4) => check
         // this
         return NodesToMerge.stream().skip(1)
-                .anyMatch(p -> !p.isPBlocked() && merge(p, sample, dep));
+            .anyMatch(p -> !p.isPBlocked() && merge(p, sample, dep));
     }
 
     @SuppressWarnings("unchecked")
@@ -3266,12 +3259,12 @@ public class DlSatTester implements Serializable {
                     boolean test;
                     // here dep contains the clash-set
                     test = findConceptClash(from.label().getLabel(tag), C,
-                            dep.getReference());
+                        dep.getReference());
                     assert test;
                     // save new dep-set
                     dep.getReference().add(clashSet);
                     test = findConceptClash(to.label().getLabel(tag), C,
-                            dep.getReference());
+                        dep.getReference());
                     assert test;
                     // both clash-sets are now in common clash-set
                 }
@@ -3301,8 +3294,8 @@ public class DlSatTester implements Serializable {
         // create N new different edges
         // FIXME!! for now
         return createDifferentNeighbours(cur.getRole(), cur.getConceptIndex(),
-                curConceptDepSet, cur.getNumberGE(),
-                DlCompletionTree.BLOCKABLE_LEVEL);
+            curConceptDepSet, cur.getNumberGE(),
+            DlCompletionTree.BLOCKABLE_LEVEL);
     }
 
     @SuppressWarnings("unchecked")
@@ -3327,7 +3320,7 @@ public class DlSatTester implements Serializable {
 
     @PortedFrom(file = "Reasoner.h", name = "createDifferentNeighbours")
     private boolean createDifferentNeighbours(Role R, int C, DepSet dep, int n,
-            int level) {
+        int level) {
         DlCompletionTreeArc pA = null;
         cGraph.initIR();
         for (int i = 0; i < n; ++i) {
@@ -3350,7 +3343,7 @@ public class DlSatTester implements Serializable {
 
     @PortedFrom(file = "Reasoner.h", name = "isNRClash")
     private boolean isNRClash(DLVertex atleast, DLVertex atmost,
-            ConceptWDep reason) {
+        ConceptWDep reason) {
         if (atmost.getType() != DagTag.dtLE || atleast.getType() != DagTag.dtLE) {
             return false;
         }
@@ -3359,15 +3352,15 @@ public class DlSatTester implements Serializable {
         }
         this.setClashSet(DepSet.plus(curConceptDepSet, reason.getDep()));
         logNCEntry(curNode, reason.getConcept(), reason.getDep(), "x", dlHeap
-                .get(reason.getConcept()).getType().getName());
+            .get(reason.getConcept()).getType().getName());
         return true;
     }
 
     private boolean usedInverseAndClash(DagTag dt, ConceptWDep p, CGLabel to) {
         try {
             return used.contains(-p.getConcept())
-                    && findConceptClash(to.getLabel(dtPConcept),
-                            -p.getConcept(), p.getDep());
+                && findConceptClash(to.getLabel(dtPConcept),
+                    -p.getConcept(), p.getDep());
         } catch (NullPointerException e) {
             e.printStackTrace();
             throw e;
@@ -3376,23 +3369,23 @@ public class DlSatTester implements Serializable {
 
     @PortedFrom(file = "Reasoner.h", name = "checkMergeClash")
     private boolean checkMergeClash(CGLabel from, CGLabel to, DepSet dep,
-            int nodeId) {
+        int nodeId) {
         DepSet clashDep = DepSet.create(dep);
         Optional<ConceptWDep> clashConcept = from.get_sc().stream()
-                .filter(p -> usedInverseAndClash(dtPConcept, p, to)).findAny();
+            .filter(p -> usedInverseAndClash(dtPConcept, p, to)).findAny();
         boolean clash = false;
         if (clashConcept.isPresent()) {
             clashDep.add(clashSet);
             options.getLog().printTemplate(Templates.CHECK_MERGE_CLASH, nodeId,
-                    clashConcept.get().getConcept(), clashDep);
+                clashConcept.get().getConcept(), clashDep);
             clash = true;
         }
         clashConcept = from.get_cc().stream()
-                .filter(p -> usedInverseAndClash(dtForall, p, to)).findAny();
+            .filter(p -> usedInverseAndClash(dtForall, p, to)).findAny();
         if (clashConcept.isPresent()) {
             clashDep.add(clashSet);
             options.getLog().printTemplate(Templates.CHECK_MERGE_CLASH, nodeId,
-                    clashConcept.get().getConcept(), clashDep);
+                clashConcept.get().getConcept(), clashDep);
             clash = true;
         }
         if (clash) {
@@ -3407,37 +3400,37 @@ public class DlSatTester implements Serializable {
         // should be updated to the new dep-set DEP
         if (!dep.isEmpty()) {
             cGraph.saveRareCond(to.label().getLabel(dtPConcept)
-                    .updateDepSet(dep));
+                .updateDepSet(dep));
             cGraph.saveRareCond(to.label().getLabel(dtForall).updateDepSet(dep));
         }
         // if the concept is already exists in the node label --
         // we still need to update it with a new dep-set (due to merging)
         // note that DEP is already there
         return from
-                .get_sc()
+            .get_sc()
+            .stream()
+            .anyMatch(
+                p -> checkIndexAndSaveOrAddEntry(p, dtPConcept, to, dep))
+            || from.get_cc()
                 .stream()
                 .anyMatch(
-                        p -> checkIndexAndSaveOrAddEntry(p, dtPConcept, to, dep))
-                || from.get_cc()
-                        .stream()
-                        .anyMatch(
-                                p -> checkIndexAndSaveOrAddEntry(p, dtForall,
-                                        to, dep));
+                    p -> checkIndexAndSaveOrAddEntry(p, dtForall,
+                        to, dep));
     }
 
     private boolean checkIndexAndSaveOrAddEntry(ConceptWDep p, DagTag dt,
-            DlCompletionTree to, DepSet dep) {
+        DlCompletionTree to, DepSet dep) {
         int bp = p.getConcept();
         stats.getnLookups().inc();
         int index = to.label().getLabel(dt).index(bp);
         if (index > -1) {
             if (!p.getDep().isEmpty()) {
                 cGraph.saveRareCond(to.label().getLabel(dt)
-                        .updateDepSet(index, p.getDep()));
+                    .updateDepSet(index, p.getDep()));
             }
         } else {
             if (insertToDoEntry(to, bp, DepSet.plus(dep, p.getDep()), dlHeap
-                    .get(bp).getType(), "M")) {
+                .get(bp).getType(), "M")) {
                 return true;
             }
         }
@@ -3445,9 +3438,9 @@ public class DlSatTester implements Serializable {
     }
 
     @PortedFrom(file = "Tactic.cpp", name = "Merge")
-    /**merge FROM node into TO node with additional dep-set DEPF*/
+    /** merge FROM node into TO node with additional dep-set DEPF */
     private boolean merge(DlCompletionTree from, DlCompletionTree to,
-            DepSet depF) {
+        DepSet depF) {
         // if node is already purged -- nothing to do
         assert !from.isPBlocked();
         // prevent node to be merged to itself
@@ -3455,7 +3448,7 @@ public class DlSatTester implements Serializable {
         // never merge nominal node to blockable one
         assert to.getNominalLevel() <= from.getNominalLevel();
         options.getLog().printTemplate(Templates.MERGE, from.getId(),
-                to.getId());
+            to.getId());
         stats.getnMergeCalls().inc();
         // can't merge 2 nodes which are in inequality relation
         DepSet dep = DepSet.create(depF);
@@ -3477,9 +3470,9 @@ public class DlSatTester implements Serializable {
         cGraph.merge(from, to, depF, edges);
         // check whether a disjoint roles lead to clash
         if (edges.stream().anyMatch(
-                q -> q.getRole().isDisjoint()
-                        && checkDisjointRoleClash(q.getReverse().getArcEnd(),
-                                q.getArcEnd(), q.getRole(), depF))) {
+            q -> q.getRole().isDisjoint()
+                && checkDisjointRoleClash(q.getReverse().getArcEnd(),
+                    q.getArcEnd(), q.getRole(), depF))) {
             return true;
         }
         // nothing more to do with data nodes
@@ -3490,23 +3483,29 @@ public class DlSatTester implements Serializable {
         // for every node added to TO, every ALL, Irr and <=-node should be
         // checked
         return edges.stream().anyMatch(
-                q -> applyUniversalNR(to, q, depF, redoForallFuncAtmostIrr()));
+            q -> applyUniversalNR(to, q, depF, redoForallFuncAtmostIrr()));
     }
 
     @PortedFrom(file = "Reasoner.h", name = "checkDisjointRoleClash")
     protected boolean checkDisjointRoleClash(DlCompletionTree from,
-            DlCompletionTree to, Role R, DepSet dep) {
+        DlCompletionTree to, Role R, DepSet dep) {
         return from.getNeighbour().stream()
-                .anyMatch(p -> checkDisjointRoleClash(p, to, R, dep));
+            .anyMatch(p -> checkDisjointRoleClash(p, to, R, dep));
     }
 
     /**
      * aux method to check whether edge ended to NODE should be added to
      * EdgetoMerge
+     * 
+     * @param node
+     *        completion tree node
+     * @param e
+     *        completion arcs
+     * @return true if edge is new
      */
     @PortedFrom(file = "Tactic.cpp", name = "isNewEdge")
     private static boolean isNewEdge(DlCompletionTree node,
-            List<DlCompletionTreeArc> e) {
+        List<DlCompletionTreeArc> e) {
         // skip edges to the same node
         return e.stream().noneMatch(p -> p.getArcEnd().equals(node));
     }
@@ -3516,12 +3515,12 @@ public class DlSatTester implements Serializable {
         EdgesToMerge.clear();
         DagTag tag = dlHeap.get(c).getType();
         curNode.getNeighbour()
-                .stream()
-                .filter(p -> p.isNeighbour(Role)
-                        && isNewEdge(p.getArcEnd(), EdgesToMerge)
-                        && findChooseRuleConcept(p.getArcEnd().label()
-                                .getLabel(tag), c, Dep))
-                .forEach(p -> EdgesToMerge.add(p));
+            .stream()
+            .filter(p -> p.isNeighbour(Role)
+                && isNewEdge(p.getArcEnd(), EdgesToMerge)
+                && findChooseRuleConcept(p.getArcEnd().label()
+                    .getLabel(tag), c, Dep))
+            .forEach(p -> EdgesToMerge.add(p));
         // sort EdgesToMerge: From named nominals to generated nominals to
         // blockable nodes
         Collections.sort(EdgesToMerge, new EdgeCompare());
@@ -3530,11 +3529,11 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodyChoose")
     private boolean commonTacticBodyChoose(Role R, int C) {
         return curNode
-                .getNeighbour()
-                .stream()
-                .anyMatch(
-                        p -> p.isNeighbour(R)
-                                && applyChooseRule(p.getArcEnd(), C));
+            .getNeighbour()
+            .stream()
+            .anyMatch(
+                p -> p.isNeighbour(R)
+                    && applyChooseRule(p.getArcEnd(), C));
     }
 
     @PortedFrom(file = "Reasoner.h", name = "applyChooseRule")
@@ -3577,21 +3576,29 @@ public class DlSatTester implements Serializable {
         DepSet curDep = getCurDepSet();
         // make a stopper to mark that NN-rule is applied
         if (addToDoEntry(curNode, curConceptConcept + cur.getNumberLE(),
-                DepSet.create(), "NNs")) {
+            DepSet.create(), "NNs")) {
             return true;
         }
         // create curNN new different edges
         if (createDifferentNeighbours(cur.getRole(), cur.getConceptIndex(),
-                curDep, NN, curNode.getNominalLevel() + 1)) {
+            curDep, NN, curNode.getNominalLevel() + 1)) {
             return true;
         }
         // now remember NR we just created: it is (<= curNN R), so have to find
         // it
         return addToDoEntry(curNode,
-                curConceptConcept + cur.getNumberLE() - NN, curDep, "NN");
+            curConceptConcept + cur.getNumberLE() - NN, curDep, "NN");
     }
 
-    /** @return true iff NN-rule wrt (<= R) is applicable to the curNode */
+    /**
+     * @param r
+     *        role
+     * @param C
+     *        filler
+     * @param stopper
+     *        stopper
+     * @return true iff NN-rule wrt (<= R) is applicable to the curNode
+     */
     @PortedFrom(file = "Reasoner.h", name = "isNNApplicable")
     protected boolean isNNApplicable(Role r, int C, int stopper) {
         // NN rule is only applicable to nominal nodes
@@ -3607,13 +3614,13 @@ public class DlSatTester implements Serializable {
         // if there is an edge that require to run the rule, then we need it
         // otherwise the rulle canot be applied
         return curNode
-                .getNeighbour()
-                .stream()
-                .filter(p -> p.isPredEdge() && p.getArcEnd().isBlockableNode()
-                        && p.isNeighbour(r) && p.getArcEnd().isLabelledBy(C))
-                .peek(p -> options.getLog().print(" NN(")
-                        .print(p.getArcEnd().getId()).print(")")).findAny()
-                .isPresent();
+            .getNeighbour()
+            .stream()
+            .filter(p -> p.isPredEdge() && p.getArcEnd().isBlockableNode()
+                && p.isNeighbour(r) && p.getArcEnd().isLabelledBy(C))
+            .peek(p -> options.getLog().print(" NN(")
+                .print(p.getArcEnd().getId()).print(")")).findAny()
+            .isPresent();
     }
 
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodySomeSelf")
@@ -3624,10 +3631,10 @@ public class DlSatTester implements Serializable {
         }
         // nothing to do if R-loop already exists
         if (curNode
-                .getNeighbour()
-                .stream()
-                .anyMatch(
-                        p -> p.getArcEnd().equals(curNode) && p.isNeighbour(R))) {
+            .getNeighbour()
+            .stream()
+            .anyMatch(
+                p -> p.getArcEnd().equals(curNode) && p.isNeighbour(R))) {
             return false;
         }
         // create an R-loop through curNode
@@ -3639,7 +3646,7 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodyIrrefl")
     private boolean commonTacticBodyIrrefl(Role R) {
         return curNode.getNeighbour().stream()
-                .anyMatch(p -> checkIrreflexivity(p, R, curConceptDepSet));
+            .anyMatch(p -> checkIrreflexivity(p, R, curConceptDepSet));
     }
 
     @PortedFrom(file = "Reasoner.h", name = "commonTacticBodyProj")
@@ -3650,9 +3657,9 @@ public class DlSatTester implements Serializable {
         // checkProjection() might change curNode's edge vector and thusly
         // invalidate iterators
         return curNode
-                .getNeighbour()
-                .stream()
-                .anyMatch(p -> p.isNeighbour(R) && checkProjection(p, C, ProjR));
+            .getNeighbour()
+            .stream()
+            .anyMatch(p -> p.isNeighbour(R) && checkProjection(p, C, ProjR));
     }
 
     @PortedFrom(file = "Reasoner.h", name = "checkProjection")
@@ -3686,7 +3693,7 @@ public class DlSatTester implements Serializable {
         // here C is in the label of curNode: add ProjR to the edge if necessary
         DlCompletionTree child = pA.getArcEnd();
         return setupEdge(cGraph.addRoleLabel(curNode, child, pA.isPredEdge(),
-                ProjR, dep), dep, redoForallFuncAtmostIrr());
+            ProjR, dep), dep, redoForallFuncAtmostIrr());
     }
 
     /** create BC for LE-rule */
@@ -3706,7 +3713,7 @@ public class DlSatTester implements Serializable {
     @PortedFrom(file = "Reasoner.h", name = "applyChooseRuleGlobally")
     private boolean applyChooseRuleGlobally(int C) {
         return cGraph.nodes().anyMatch(
-                p -> isObjectNodeUnblocked(p) && applyChooseRule(p, C));
+            p -> isObjectNodeUnblocked(p) && applyChooseRule(p, C));
     }
 
     @PortedFrom(file = "Reasoner.h", name = "findCLabelledNodes")
@@ -3718,7 +3725,7 @@ public class DlSatTester implements Serializable {
         DlCompletionTree arc = cGraph.getNode(i++);
         while (arc != null) {
             if (isNodeGloballyUsed(arc)
-                    && findChooseRuleConcept(arc.label().getLabel(tag), C, Dep)) {
+                && findChooseRuleConcept(arc.label().getLabel(tag), C, Dep)) {
                 NodesToMerge.add(arc);
             }
             arc = cGraph.getNode(i++);

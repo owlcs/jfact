@@ -11,8 +11,8 @@ import java.util.stream.Stream;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.reasoner.FreshEntityPolicy;
 
-import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import conformance.Original;
+import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
 /**
  * class for collect TNamedEntry'es together. Template parameter should be
@@ -45,7 +45,7 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
      *        options
      */
     public NamedEntryCollection(String name, NameCreator<T, IRI> creator,
-            JFactReasonerConfiguration options) {
+        JFactReasonerConfiguration options) {
         typeName = name;
         locked = false;
         nameset = new NameSet<>(creator);
@@ -93,9 +93,9 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
         }
         // check if it is possible to insert name
         if (isLocked() && !options.isUseUndefinedNames()
-                && options.getFreshEntityPolicy() == FreshEntityPolicy.DISALLOW) {
+            && options.getFreshEntityPolicy() == FreshEntityPolicy.DISALLOW) {
             throw new ReasonerFreshEntityException("Unable to register '"
-                    + name + "' as a " + typeName, name);
+                + name + "' as a " + typeName, name);
         }
         // create name in name set, and register it
         p = nameset.add(name);
@@ -125,10 +125,16 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
         return false;
     }
 
+    /**
+     * @return concept stream
+     */
     public Stream<T> getConcepts() {
         return nameset.values().stream();
     }
 
+    /**
+     * @return first element
+     */
     public T first() {
         if (nameset.size() > 0) {
             return nameset.values().iterator().next();
@@ -136,6 +142,9 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
         return null;
     }
 
+    /**
+     * @return size
+     */
     public int size() {
         return nameset.size();
     }

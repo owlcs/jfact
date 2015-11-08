@@ -157,6 +157,8 @@ public class DLDag implements Serializable {
      * 
      * @param v
      *        v
+     * @param knownNew
+     *        true if new object is known to be required
      * @return size of heap
      */
     @PortedFrom(file = "dlDag.h", name = "directAdd")

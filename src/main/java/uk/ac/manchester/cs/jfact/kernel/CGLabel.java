@@ -13,11 +13,11 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Set;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.ArrayIntMap;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.kernel.state.SaveState;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** Completion graph label */
 @PortedFrom(file = "CGLabel.h", name = "CGLabel")
@@ -41,7 +41,12 @@ public class CGLabel implements Serializable {
     @Original
     private final int id;
 
-    /** Default constructor. */
+    /**
+     * Default constructor.
+     * 
+     * @param config
+     *        config object
+     */
     public CGLabel(JFactReasonerConfiguration config) {
         // init label with reasonable size
         // XXX size might need tuning
@@ -125,7 +130,7 @@ public class CGLabel implements Serializable {
 
     @Original
     private final Set<CGLabel> lesserEquals = Collections
-            .newSetFromMap(new IdentityHashMap<CGLabel, Boolean>());
+        .newSetFromMap(new IdentityHashMap<CGLabel, Boolean>());
 
     /**
      * @param label
@@ -141,7 +146,7 @@ public class CGLabel implements Serializable {
             return true;
         }
         boolean toReturn = scLabel.lesserequal(label.scLabel)
-                && ccLabel.lesserequal(label.ccLabel);
+            && ccLabel.lesserequal(label.ccLabel);
         if (toReturn) {
             lesserEquals.add(label);
         }
@@ -159,7 +164,7 @@ public class CGLabel implements Serializable {
         if (obj instanceof CGLabel) {
             CGLabel obj2 = (CGLabel) obj;
             boolean toReturn = scLabel.equals(obj2.scLabel)
-                    && ccLabel.equals(obj2.ccLabel);
+                && ccLabel.equals(obj2.ccLabel);
             return toReturn;
         }
         return false;

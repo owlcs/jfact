@@ -17,12 +17,28 @@ public class Helper implements Serializable {
 
     private static final long serialVersionUID = 11000L;
 
+    /**
+     * @param l
+     *        list to walk
+     * @param f
+     *        consumer
+     * @param <T>
+     *        type
+     */
     public static <T> void pairs(List<T> l, BiConsumer<T, T> f) {
         for (int i = 0; i < l.size() - 1; i++) {
             f.accept(l.get(i), l.get(i + 1));
         }
     }
 
+    /**
+     * @param l
+     *        list to walk
+     * @param f
+     *        consumer
+     * @param <T>
+     *        type
+     */
     public static <T> void allPairs(List<T> l, BiConsumer<T, T> f) {
         for (int i = 0; i < l.size() - 1; i++) {
             for (int j = i + 1; j < l.size(); j++) {
@@ -31,8 +47,17 @@ public class Helper implements Serializable {
         }
     }
 
+    /**
+     * @param l
+     *        list to walk
+     * @param f
+     *        consumer
+     * @param <T>
+     *        type
+     * @return true if any match
+     */
     public static <T> boolean anyMatchOnAllPairs(List<T> l,
-            BiFunction<T, T, Boolean> f) {
+        BiFunction<T, T, Boolean> f) {
         for (int i = 0; i < l.size() - 1; i++) {
             for (int j = i + 1; j < l.size(); j++) {
                 if (f.apply(l.get(i), l.get(j))) {
@@ -43,8 +68,17 @@ public class Helper implements Serializable {
         return false;
     }
 
+    /**
+     * @param l
+     *        list to walk
+     * @param f
+     *        consumer
+     * @param <T>
+     *        type
+     * @return true if all match
+     */
     public static <T> boolean allMatchOnAllPairs(List<T> l,
-            BiFunction<T, T, Boolean> f) {
+        BiFunction<T, T, Boolean> f) {
         for (int i = 0; i < l.size() - 1; i++) {
             for (int j = i + 1; j < l.size(); j++) {
                 if (!f.apply(l.get(i), l.get(j))) {
@@ -55,8 +89,17 @@ public class Helper implements Serializable {
         return true;
     }
 
+    /**
+     * @param l
+     *        list to walk
+     * @param f
+     *        consumer
+     * @param <T>
+     *        type
+     * @return true if all match
+     */
     public static <T> boolean anyMatchOnPairs(List<T> l,
-            BiFunction<T, T, Boolean> f) {
+        BiFunction<T, T, Boolean> f) {
         for (int i = 0; i < l.size() - 1; i++) {
             if (f.apply(l.get(i), l.get(i + 1))) {
                 return true;
@@ -65,8 +108,17 @@ public class Helper implements Serializable {
         return false;
     }
 
+    /**
+     * @param l
+     *        list to walk
+     * @param f
+     *        consumer
+     * @param <T>
+     *        type
+     * @return true if aall match
+     */
     public static <T> boolean allMatchOnPairs(List<T> l,
-            BiFunction<T, T, Boolean> f) {
+        BiFunction<T, T, Boolean> f) {
         for (int i = 0; i < l.size() - 1; i++) {
             if (!f.apply(l.get(i), l.get(i + 1))) {
                 return false;
@@ -95,10 +147,12 @@ public class Helper implements Serializable {
      *        S1
      * @param S2
      *        S2
+     * @param <T>
+     *        type
      * @return one element from the intersection if S1 and S2 intersect
      */
     public static <T> Optional<T> elementFromIntersection(Collection<T> S1,
-            Collection<T> S2) {
+        Collection<T> S2) {
         return S1.stream().filter(o -> S2.contains(o)).findAny();
     }
 

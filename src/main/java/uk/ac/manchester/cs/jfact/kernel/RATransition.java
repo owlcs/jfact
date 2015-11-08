@@ -13,9 +13,9 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import conformance.Original;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 
 /** role automaton transition */
 @PortedFrom(file = "RAutomaton.h", name = "RATransition")
@@ -67,11 +67,16 @@ public class RATransition implements Serializable {
         cache = null;
     }
 
-    /** add label of transition TRANS to transition's label only if they are new */
+    /**
+     * add label of transition TRANS to transition's label only if they are new
+     * 
+     * @param trans
+     *        transition
+     */
     @PortedFrom(file = "RAutomaton.h", name = "addIfNew")
     public void addIfNew(RATransition trans) {
         trans.label.stream().filter(p -> !applicable(p))
-                .forEach(p -> label.add(p));
+            .forEach(p -> label.add(p));
     }
 
     // query the transition
@@ -125,7 +130,7 @@ public class RATransition implements Serializable {
             o.print("e");
         } else {
             o.print(label.stream().map(p -> p.getName())
-                    .collect(joining("\",\"", "\"", "\"")));
+                .collect(joining("\",\"", "\"", "\"")));
         }
         o.print(" -> ");
         o.print(final_state());

@@ -171,7 +171,7 @@ public class Role extends ClassifiableEntry {
     @PortedFrom(file = "tRole.h", name = "completeAutomatonByRole")
     private RoleAutomaton completeAutomatonByRole(Role R, Set<Role> RInProcess) {
         // no synonyms here
-        assert!R.isSynonym();
+        assert !R.isSynonym();
         // no case ...*S*... [= S
         assert R != this;
         R.completeAutomaton(RInProcess);
@@ -800,13 +800,13 @@ public class Role extends ClassifiableEntry {
             throw new ReasonerInternalException("Role expression expected: " + r);
         }
         switch (t.token()) {
-        case RNAME: // role name
-        case DNAME: // data role name
-            return (Role) t.elem().getNE();
-        case INV: // inversion
-            return resolveRoleHelper(t.getChild(), r).inverse();
-        default: // error
-            throw new ReasonerInternalException("Invalid role expression: " + r + " but got: " + t);
+            case RNAME: // role name
+            case DNAME: // data role name
+                return (Role) t.elem().getNE();
+            case INV: // inversion
+                return resolveRoleHelper(t.getChild(), r).inverse();
+            default: // error
+                throw new ReasonerInternalException("Invalid role expression: " + r + " but got: " + t);
         }
     }
 
@@ -864,8 +864,7 @@ public class Role extends ClassifiableEntry {
     }
 
     /**
-     * copy role information (like transitivity, functionality, R&D etc) to
-     * synonym
+     * copy role information (like transitivity, functionality, etc) to synonym
      */
     @PortedFrom(file = "tRole.h", name = "addFeaturesToSynonym")
     public void addFeaturesToSynonym() {

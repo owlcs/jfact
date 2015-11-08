@@ -148,8 +148,8 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
     }
 
     public void shouldBeSame() throws Exception {
-        OWLOntology o = OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(readWine());
-        List<OWLAxiom> importsIncluded = JFactReasoner.importsIncluded(o);
+        OWLOntology ont = OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(readWine());
+        List<OWLAxiom> importsIncluded = JFactReasoner.importsIncluded(ont);
         PrintStream out1 = new PrintStream(new File("wineaxioms7.txt"));
         PrintStream out2 = new PrintStream(new File("wineaxioms8.txt"));
         importsIncluded.forEach(x -> out1.println(x.toString()));

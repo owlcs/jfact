@@ -11,9 +11,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import conformance.Original;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 
 /** role automaton */
 @PortedFrom(file = "RAutomaton.h", name = "RoleAutomaton")
@@ -45,7 +45,7 @@ public class RoleAutomaton implements Serializable {
     @PortedFrom(file = "RAutomaton.h", name = "ensureState")
     private void ensureState(int state) {
         IntStream.range(base.size(), state + 1).forEach(
-                i -> base.add(new RAStateTransitions()));
+            i -> base.add(new RAStateTransitions()));
     }
 
     /** Default constructor. */
@@ -106,7 +106,7 @@ public class RoleAutomaton implements Serializable {
         // assert !isCompleted();
         if (RA.isSimple()) {
             boolean ok = base.get(initial).addToExisting(
-                    RA.get(initial).begin().get(0));
+                RA.get(initial).begin().get(0));
             assert ok;
         } else {
             initChain(initial);
@@ -259,10 +259,10 @@ public class RoleAutomaton implements Serializable {
                     checkTransition(from, trans.final_state());
                     trans.add(p);
                     // try to merge transitions going to the original state
-                        if (to != 1 || !RST.addToExisting(trans)) {
-                            RST.add(trans);
-                        }
-                    });
+                    if (to != 1 || !RST.addToExisting(trans)) {
+                        RST.add(trans);
+                    }
+                });
             }
         }
     }
@@ -337,6 +337,11 @@ public class RoleAutomaton implements Serializable {
         return base;
     }
 
+    /**
+     * @param i
+     *        index
+     * @return transitions
+     */
     @PortedFrom(file = "RAutomaton.h", name = "begin")
     public RAStateTransitions get(int i) {
         return base.get(i);
@@ -346,7 +351,12 @@ public class RoleAutomaton implements Serializable {
     @PortedFrom(file = "RAutomaton.h", name = "Complete")
     private boolean Complete;
 
-    /** mark an automaton as completed */
+    /**
+     * mark an automaton as completed
+     * 
+     * @param b
+     *        new value
+     */
     @PortedFrom(file = "RAutomaton.h", name = "setCompleted")
     public void setCompleted(boolean b) {
         Complete = b;

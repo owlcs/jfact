@@ -1072,6 +1072,11 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
         }
     }
 
+    /**
+     * @param out
+     *        output stream to use
+     * @return modified object
+     */
     public JFactReasonerConfiguration setAbsorptionLog(OutputStream out) {
         logAbsorptionAdapterStream = new LogAdapterStream(out);
         return this;

@@ -14,6 +14,7 @@ public interface FastSet {
     /**
      * @param e
      *        add e
+     * @return true if set modified
      */
     boolean add(int e);
 

@@ -55,7 +55,7 @@ public class AxiomSet implements Serializable {
      * @return true iff axiom q is a copy of an axiom in range [p,p_end)
      */
     @PortedFrom(file = "tAxiomSet.h", name = "copyOf")
-    boolean copyOfExisting(Axiom q) {
+        boolean copyOfExisting(Axiom q) {
         int i = accumulator.indexOf(q);
         if (i > -1) {
             absorptionLog.print(" same as (").print(i).print(")");
@@ -150,6 +150,8 @@ public class AxiomSet implements Serializable {
      * 
      * @param p
      *        p
+     * @param tbox
+     *        tbox
      * @return true if any spit happens
      */
     @PortedFrom(file = "tAxiomSet.h", name = "split")
