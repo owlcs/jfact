@@ -462,13 +462,22 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener, OW
         checkConsistency();
         List<Collection<ConceptExpression>> pointers = kernel.getConcepts(tr.pointer(ce), direct, classActor(), false)
             .getElements();
-        if (pointers.isEmpty() || pointers.get(0).isEmpty()) {
-            // XXX trick: empty sets imply the ony subclasses are the equivalent
-            // to bottom.
-            // should happen in the reasoner proper, but something stops that
-            pointers.add(kernel.getEquivalentConcepts(tr.pointer(df.getOWLNothing()), classActor()).getSynonyms());
+        // XXX trick: empty sets imply the ony subclasses are the equivalent
+        // to bottom.
+        // should happen in the reasoner proper, but something stops that
+        Optional<Collection<ConceptExpression>> empty = pointers.stream().filter(c -> c.isEmpty()).findAny();
+        if (empty.isPresent()) {
+            empty.get().addAll(bottomNode());
+        } else {
+            if (pointers.isEmpty()) {
+                pointers.add(bottomNode());
+            }
         }
         return tr.getClassExpressionTranslator().nodeSet(pointers.stream());
+    }
+
+    private Collection<ConceptExpression> bottomNode() {
+        return kernel.getEquivalentConcepts(tr.pointer(df.getOWLNothing()), classActor()).getSynonyms();
     }
 
     @Override

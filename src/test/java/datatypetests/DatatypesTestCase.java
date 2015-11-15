@@ -12,6 +12,7 @@ import static uk.ac.manchester.cs.jfact.kernel.DagTag.*;
 
 import java.io.StringWriter;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -261,32 +262,43 @@ public class DatatypesTestCase {
         toReturn.put("numeric(#integer(extra facets:4 null))", integer_49);
         toReturn.put("numeric(#integer(extra facets:18 null))", integer_7);
         toReturn.put("#dateTime( minInclusive 2008-09-08 19:44:11)", datatype(DATETIME.wrapAsOrderedExpression()
-            .addNumericFacet(minInclusive, new DateTime(2008, 9, 8, 19, 44, 0, 0).toGregorianCalendar()), toReturn
-                .size()));
-        toReturn.put("#dateTime( minInclusive 2008-06-08 maxInclusive 2008-06-10)", datatype(DATETIME
-            .wrapAsOrderedExpression().addNumericFacet(minInclusive, new DateTime(2008, 6, 8, 0, 0, 0, 0)
-                .toGregorianCalendar()).addNumericFacet(maxInclusive, new DateTime(2008, 6, 10, 0, 0, 0, 0)
-                    .toGregorianCalendar()), toReturn.size()));
-        toReturn.put("#dateTime( minInclusive 2008-06-08 19:44:11 maxInclusive 2008-06-10 19:44:11)", datatype(DATETIME
-            .wrapAsOrderedExpression().addNumericFacet(minInclusive, new DateTime(2008, 6, 8, 19, 44, 11, 0)
-                .toGregorianCalendar()).addNumericFacet(maxInclusive, new DateTime(2008, 6, 10, 19, 44, 11, 0)
-                    .toGregorianCalendar()), toReturn.size()));
-        toReturn.put("#dateTime( minInclusive 2008-06-08 19:44:11 maxInclusive 2008-09-08 19:44:11)", datatype(DATETIME
-            .wrapAsOrderedExpression().addNumericFacet(minInclusive, new DateTime(2008, 6, 8, 19, 44, 11, 0)
-                .toGregorianCalendar()).addNumericFacet(maxInclusive, new DateTime(2008, 9, 8, 19, 44, 11, 0)
-                    .toGregorianCalendar()), toReturn.size()));
-        toReturn.put("#dateTime( minInclusive 2007-09-08 19:44:11 maxInclusive 2009-09-08 19:44:11)", datatype(DATETIME
-            .wrapAsOrderedExpression().addNumericFacet(minInclusive, new DateTime(2007, 9, 8, 19, 44, 11, 0)
-                .toGregorianCalendar()).addNumericFacet(maxInclusive, new DateTime(2009, 9, 8, 19, 44, 11, 0)
-                    .toGregorianCalendar()), toReturn.size()));
-        toReturn.put("#dateTime( maxInclusive 2008-09-08 19:44:11)", datatype(DATETIME.wrapAsOrderedExpression()
-            .addNumericFacet(maxInclusive, new DateTime(2008, 9, 8, 19, 44, 11, 0).toGregorianCalendar()), toReturn
-                .size()));
-        toReturn.put("#dateTime( minInclusive 2008-06-08 maxInclusive 2008-10-10)", datatype(DATETIME
-            .wrapAsOrderedExpression().addNumericFacet(minInclusive, new DateTime(2008, 6, 8, 0, 0, 0, 0)
-                .toGregorianCalendar()).addNumericFacet(maxInclusive, new DateTime(2008, 10, 10, 0, 0, 0, 0)
-                    .toGregorianCalendar()), toReturn.size()));
+            .addNumericFacet(minInclusive, date(2008, 9, 8, 19, 44)), toReturn.size()));
+        toReturn.put("#dateTime( minInclusive 2008-06-08 maxInclusive 2008-06-10)",
+            datatype(DATETIME.wrapAsOrderedExpression()
+                .addNumericFacet(minInclusive, date(2008, 6, 8))
+                .addNumericFacet(maxInclusive, date(2008, 6, 10)), toReturn.size()));
+        toReturn.put("#dateTime( minInclusive 2008-06-08 19:44:11 maxInclusive 2008-06-10 19:44:11)",
+            datatype(DATETIME.wrapAsOrderedExpression()
+                .addNumericFacet(minInclusive, date(2008, 6, 8, 19, 44, 11))
+                .addNumericFacet(maxInclusive, date(2008, 6, 10, 19, 44, 11)), toReturn.size()));
+        toReturn.put("#dateTime( minInclusive 2008-06-08 19:44:11 maxInclusive 2008-09-08 19:44:11)",
+            datatype(DATETIME.wrapAsOrderedExpression()
+                .addNumericFacet(minInclusive, date(2008, 6, 8, 19, 44, 11))
+                .addNumericFacet(maxInclusive, date(2008, 9, 8, 19, 44, 11)), toReturn.size()));
+        toReturn.put("#dateTime( minInclusive 2007-09-08 19:44:11 maxInclusive 2009-09-08 19:44:11)",
+            datatype(DATETIME.wrapAsOrderedExpression()
+                .addNumericFacet(minInclusive, date(2007, 9, 8, 19, 44, 11))
+                .addNumericFacet(maxInclusive, date(2009, 9, 8, 19, 44, 11)), toReturn.size()));
+        toReturn.put("#dateTime( maxInclusive 2008-09-08 19:44:11)",
+            datatype(DATETIME.wrapAsOrderedExpression()
+                .addNumericFacet(maxInclusive, date(2008, 9, 8, 19, 44, 11)), toReturn.size()));
+        toReturn.put("#dateTime( minInclusive 2008-06-08 maxInclusive 2008-10-10)",
+            datatype(DATETIME.wrapAsOrderedExpression()
+                .addNumericFacet(minInclusive, date(2008, 6, 8))
+                .addNumericFacet(maxInclusive, date(2008, 10, 10)), toReturn.size()));
         return toReturn;
+    }
+
+    private Date date(int year, int month, int day) {
+        return new DateTime(year, month, day, 0, 0).toDate();
+    }
+
+    private Date date(int year, int month, int day, int hour, int minute) {
+        return new DateTime(year, month, day, hour, minute).toDate();
+    }
+
+    private Date date(int year, int month, int day, int hour, int minute, int second) {
+        return new DateTime(year, month, day, hour, minute, second, 0).toDate();
     }
 
     private NamedEntry getNamedEntry(String e) {

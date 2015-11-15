@@ -8,7 +8,7 @@ package uk.ac.manchester.cs.jfact.datatypes;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,7 +26,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
  *        type
  */
 public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
-        Datatype<R>, Serializable {
+    Datatype<R>, Serializable {
 
     private static final long serialVersionUID = 11000L;
     @Nonnull
@@ -34,9 +34,9 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
     @Nonnull
     protected final Set<Datatype<?>> ancestors;
     @SuppressWarnings("rawtypes")
-    protected final Map<Facet, Comparable> knownNumericFacetValues = new HashMap<>();
+    protected final Map<Facet, Comparable> knownNumericFacetValues = new LinkedHashMap<>();
     @SuppressWarnings("rawtypes")
-    protected final Map<Facet, Comparable> knownNonNumericFacetValues = new HashMap<>();
+    protected final Map<Facet, Comparable> knownNonNumericFacetValues = new LinkedHashMap<>();
     @Nonnull
     protected final IRI uri;
 
@@ -49,7 +49,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
      *        ancestors for datatype
      */
     public ABSTRACT_DATATYPE(@Nonnull IRI u, @Nonnull Set<Facet> f,
-            @Nonnull Set<Datatype<?>> ancestors) {
+        @Nonnull Set<Datatype<?>> ancestors) {
         this.facets = f;
         this.uri = u;
         this.ancestors = ancestors;
@@ -133,7 +133,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
             type = type.asExpression().getHostType();
         }
         return type.equals(this) || type.equals(DatatypeFactory.LITERAL)
-                || type.isSubType(this) || this.isSubType(type);
+            || type.isSubType(this) || this.isSubType(type);
     }
 
     @Override
@@ -183,7 +183,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
     public DatatypeExpression<R> asExpression() {
         if (!this.isExpression()) {
             throw new UnsupportedOperationException("Type: "
-                    + this.getDatatypeIRI() + " is not an expression");
+                + this.getDatatypeIRI() + " is not an expression");
         }
         return (DatatypeExpression<R>) this;
     }
@@ -222,7 +222,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
     }
 
     protected <T extends Comparable<T>> boolean overlapping(
-            OrderedDatatype<T> first, OrderedDatatype<T> second) {
+        OrderedDatatype<T> first, OrderedDatatype<T> second) {
         T max = first.getMax();
         T min = second.getMin();
         if (first.hasMaxInclusive() && second.hasMinInclusive()) {
@@ -253,7 +253,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
     @Override
     public OrderedDatatype<R> asOrderedDatatype() {
         throw new ReasonerInternalException(this
-                + " is not an ordered datatype");
+            + " is not an ordered datatype");
     }
 
     @Override

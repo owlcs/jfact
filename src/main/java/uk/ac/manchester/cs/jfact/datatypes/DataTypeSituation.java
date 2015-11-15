@@ -83,15 +83,13 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
     /**
      * add restrictions [POS]INT to intervals
      * 
-     * @param pos
-     *        pos
      * @param interval
      *        interval
      * @param dep
      *        dep
      * @return true if clash occurs
      */
-    public boolean addInterval(boolean pos, Datatype<R> interval, DepSet dep) {
+    public boolean addInterval(Datatype<R> interval, DepSet dep) {
         if (interval.emptyValueSpace()) {
             this.reasoner.reportClash(this.accDep, DT_Empty_interval);
             return true;
@@ -99,11 +97,9 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         if (interval instanceof DatatypeEnumeration) {
             this.literals.addAll(interval.listValues());
         }
-        Datatype<R> realInterval = pos ? interval : new DatatypeNegation<>(
-            interval);
         Set<DepInterval<R>> c = this.constraints;
         this.constraints = new HashSet<>();
-        if (c.stream().anyMatch(d -> addUpdatedInterval(d, realInterval, dep))) {
+        if (c.stream().anyMatch(d -> addUpdatedInterval(d, interval, dep))) {
             return true;
         }
         if (this.constraints.isEmpty()) {
@@ -145,7 +141,7 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
                 && other.emptyConstraints()) {
             return true;
         }
-        if (!this.type.isCompatible(other.type)) {
+        if (incompatible(other)) {
             return false;
         }
         if (this.emptyConstraints() && other.emptyConstraints()) {
@@ -176,6 +172,10 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         // opposite
         // example: -short and {0}
         return !toReturn;
+    }
+
+    protected boolean incompatible(DataTypeSituation<?> other) {
+        return !this.type.isCompatible(other.type);
     }
 
     private boolean compareLiterals(DataTypeSituation<?> other,
@@ -283,8 +283,8 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
          *        type
          * @return true if consistent
          */
-        boolean consistent(Datatype<R> type) {
-            return this.e == null || this.e.isCompatible(type);
+        boolean consistent(Datatype<?> type) {
+            return this.e == null || type == null || this.e.isCompatible(type);
         }
 
         public boolean checkMinMaxClash() {
@@ -364,7 +364,38 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + ' ' + type + ' '
-            + this.constraints;
+        return this.getClass().getSimpleName() + ' ' + type + ' ' + this.constraints;
+    }
+
+    private boolean noConstraints() {
+        return constraints.isEmpty() ||
+            constraints.stream().allMatch(c -> c.e == null && c.locDep == null);
+    }
+
+    /**
+     * @param other
+     *        situation to test
+     * @return true if this situation represents a subtype of the other
+     *         situation, i.e., type is a subtype of other type and all
+     *         constraints in this situation are compatible with other
+     *         constraints
+     */
+    public boolean isSubType(DataTypeSituation<?> other) {
+        // if the types are not compatible, this is not subtype of the input
+        if (incompatible(other)) {
+            return false;
+        }
+        if (!type.isSubType(other.type)) {
+            return false;
+        }
+        // if the supertype does nto have any constraints, the result must be
+        // true
+        if (other.noConstraints()) {
+            return true;
+        }
+        // each constraint must be compatible with the supertype
+        return constraints.stream()
+            .allMatch(c -> other.constraints.stream()
+                .allMatch(c1 -> c.consistent(c1.e)));
     }
 }

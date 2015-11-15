@@ -54,13 +54,13 @@ public class DatatypeFactory implements Serializable {
     /**  ANYURI             */  @Nonnull  public static final Datatype<String>                ANYURI              = new ANYURI_DATATYPE();
     /**  BASE64BINARY       */  @Nonnull  public static final Datatype<String>                BASE64BINARY        = new BASE64BINARY_DATATYPE();
     /**  BOOLEAN            */  @Nonnull  public static final Datatype<Boolean>               BOOLEAN             = new BOOLEAN_DATATYPE();
-    /**  DATETIME           */  @Nonnull  public static final Datatype<Calendar>              DATETIME            = new DATETIME_DATATYPE();
+    /**  DATETIME           */  @Nonnull  public static final Datatype<Date>                  DATETIME            = new DATETIME_DATATYPE();
     /**  HEXBINARY          */  @Nonnull  public static final Datatype<String>                HEXBINARY           = new HEXBINARY_DATATYPE();
     /**  PLAINLITERAL       */  @Nonnull  public static final Datatype<String>                PLAINLITERAL        = new PLAINLITERAL_DATATYPE();
     /**  STRING             */  @Nonnull  public static final Datatype<String>                STRING              = new STRING_DATATYPE();
     /**  REAL               */  @Nonnull  public static final NumericDatatype<BigDecimal>     REAL                = new REAL_DATATYPE<>();
     /**  RATIONAL           */  @Nonnull  public static final NumericDatatype<BigDecimal>     RATIONAL            = new RATIONAL_DATATYPE<>();
-    /**  DATETIMESTAMP      */  @Nonnull  public static final Datatype<Calendar>              DATETIMESTAMP       = new DATETIMESTAMP_DATATYPE();
+    /**  DATETIMESTAMP      */  @Nonnull  public static final Datatype<Date>                  DATETIMESTAMP       = new DATETIMESTAMP_DATATYPE();
     /**  DECIMAL            */  @Nonnull  public static final NumericDatatype<BigDecimal>     DECIMAL             = new DECIMAL_DATATYPE<>();
     /**  INTEGER            */  @Nonnull  public static final NumericDatatype<BigInteger>     INTEGER             = new INTEGER_DATATYPE<>();
     /**  DOUBLE             */  @Nonnull  public static final NumericDatatype<Double>         DOUBLE              = new DOUBLE_DATATYPE();
@@ -592,7 +592,7 @@ public class DatatypeFactory implements Serializable {
         }
     }
 
-    static class DATETIME_DATATYPE extends ABSTRACT_DATATYPE<Calendar> implements OrderedDatatype<Calendar> {
+    static class DATETIME_DATATYPE extends ABSTRACT_DATATYPE<Date> implements OrderedDatatype<Date> {
 
         private static final long serialVersionUID = 11000L;
 
@@ -622,22 +622,22 @@ public class DatatypeFactory implements Serializable {
         }
 
         @Override
-        public OrderedDatatype<Calendar> asOrderedDatatype() {
+        public OrderedDatatype<Date> asOrderedDatatype() {
             return this;
         }
 
         @Override
-        public Calendar parseValue(String s) {
+        public Date parseValue(String s) {
             try {
                 XMLGregorianCalendar cal = javax.xml.datatype.DatatypeFactory.newInstance().newXMLGregorianCalendar(s);
-                return cal.normalize().toGregorianCalendar();
+                return cal.normalize().toGregorianCalendar().getTime();
             } catch (DatatypeConfigurationException e) {
                 throw new ReasonerInternalException(e);
             }
         }
 
         @Override
-        public boolean isInValueSpace(Calendar l) {
+        public boolean isInValueSpace(Date l) {
             if (hasMinExclusive() && getMin().compareTo(l) <= 0) {
                 return false;
             }
@@ -661,7 +661,7 @@ public class DatatypeFactory implements Serializable {
             }
             if (type.isSubType(this)) {
                 // then its representation must be Calendars
-                OrderedDatatype<Calendar> wrapper = (OrderedDatatype<Calendar>) type;
+                OrderedDatatype<Date> wrapper = (OrderedDatatype<Date>) type;
                 // then both types are numeric
                 // if both have no max or both have no min -> there is an
                 // overlap
@@ -736,23 +736,23 @@ public class DatatypeFactory implements Serializable {
         }
 
         @Override
-        public Calendar getMin() {
+        public Date getMin() {
             if (hasMinExclusive()) {
-                return (Calendar) getFacetValue(minExclusive);
+                return (Date) getFacetValue(minExclusive);
             }
             if (hasMinInclusive()) {
-                return (Calendar) getFacetValue(minInclusive);
+                return (Date) getFacetValue(minInclusive);
             }
             return null;
         }
 
         @Override
-        public Calendar getMax() {
+        public Date getMax() {
             if (hasMaxExclusive()) {
-                return (Calendar) getFacetValue(maxExclusive);
+                return (Date) getFacetValue(maxExclusive);
             }
             if (hasMaxInclusive()) {
-                return (Calendar) getFacetValue(maxInclusive);
+                return (Date) getFacetValue(maxInclusive);
             }
             return null;
         }

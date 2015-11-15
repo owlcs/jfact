@@ -15,8 +15,8 @@ import javax.annotation.Nonnull;
 import org.semanticweb.owlapi.model.IRI;
 
 class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
-        ABSTRACT_DATATYPE<O> implements DatatypeExpression<O>,
-        OrderedDatatype<O> {
+    ABSTRACT_DATATYPE<O> implements DatatypeExpression<O>,
+    OrderedDatatype<O> {
 
     private static final long serialVersionUID = 11000L;
     @Nonnull
@@ -24,9 +24,9 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
 
     public DatatypeOrderedExpressionImpl(Datatype<O> b) {
         super(
-                IRI.create(b.getDatatypeIRI() + "_"
-                        + DatatypeFactory.getIndex()), b.getFacets(), Utils
-                        .generateAncestors(b.host()));
+            IRI.create(b.getDatatypeIRI() + "_"
+                + DatatypeFactory.getIndex()), b.getFacets(), Utils
+                    .generateAncestors(b.host()));
         this.host = b.host();
         knownNumericFacetValues.putAll(b.getKnownNumericFacetValues());
         knownNonNumericFacetValues.putAll(b.getKnownNonNumericFacetValues());
@@ -72,7 +72,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
         // }
         if (type.isOrderedDatatype()) {
             OrderedDatatype<O> wrapper = (OrderedDatatype<O>) type
-                    .asOrderedDatatype();
+                .asOrderedDatatype();
             // if both have no max or both have no min -> there is an
             // overlap
             // if one has no max, then min must be smaller than max of the
@@ -110,7 +110,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
             // one minInclusive/exclusive is strictly larger than the other
             // maxinclusive/exclusive
             return this.overlapping(this, wrapper)
-                    || this.overlapping(wrapper, this);
+                || this.overlapping(wrapper, this);
         } else {
             return false;
         }
@@ -148,22 +148,22 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
 
     @Override
     public DatatypeExpression<O>
-            addNonNumericFacet(Facet f, Comparable<?> value) {
+        addNonNumericFacet(Facet f, Comparable<?> value) {
         if (!facets.contains(f)) {
             throw new IllegalArgumentException("Facet " + f
-                    + " not allowed tor datatype " + this.getHostType());
+                + " not allowed tor datatype " + this.getHostType());
         }
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
         if (value instanceof Literal
-                && !this.host.isCompatible((Literal<?>) value)) {
+            && !this.host.isCompatible((Literal<?>) value)) {
             throw new IllegalArgumentException(
-                    "Not a valid value for this expression: " + f + '\t'
-                            + value + " for: " + this);
+                "Not a valid value for this expression: " + f + '\t'
+                    + value + " for: " + this);
         }
         DatatypeOrderedExpressionImpl<O> toReturn = new DatatypeOrderedExpressionImpl<>(
-                this.host);
+            this.host);
         toReturn.knownNumericFacetValues.putAll(knownNumericFacetValues);
         toReturn.knownNonNumericFacetValues.putAll(knownNonNumericFacetValues);
         toReturn.knownNonNumericFacetValues.put(f, value);
@@ -174,13 +174,13 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
     public DatatypeExpression<O> addNumericFacet(Facet f, Comparable<?> value) {
         if (!facets.contains(f)) {
             throw new IllegalArgumentException("Facet " + f
-                    + " not allowed tor datatype " + this.getHostType());
+                + " not allowed tor datatype " + this.getHostType());
         }
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
         DatatypeOrderedExpressionImpl<O> toReturn = new DatatypeOrderedExpressionImpl<>(
-                this.host);
+            this.host);
         toReturn.knownNumericFacetValues.putAll(knownNumericFacetValues);
         toReturn.knownNonNumericFacetValues.putAll(knownNonNumericFacetValues);
         // cannot have noth min/maxInclusive and min/maxExclusive values, so
@@ -295,7 +295,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
 
     @Override
     public String toString() {
-        return this.getClass().getName() + '(' + this.host.toString()
-                + "(extra facets:" + knownNumericFacetValues + "))";
+        return this.getClass().getSimpleName() + '(' + this.host.toString()
+            + "(extra facets:" + knownNumericFacetValues + "))";
     }
 }
