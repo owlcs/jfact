@@ -146,15 +146,16 @@ public final class DataTypeReasoner implements Serializable {
         if (c instanceof DatatypeEnumeration) {
             typeToIndex = c;
         }
+        DataTypeSituation<R> type = this.getType(typeToIndex);
         if (positive) {
-            this.getType(typeToIndex).setPType(dep);
+            type.setPType(dep);
         } else {
-            this.getType(typeToIndex).setNType(dep);
+            type.setNType(dep);
         }
         if (options.isLoggingActive()) {
             options.getLog().printTemplate(Templates.INTERVAL, positive ? "+" : "-", c, "", "", "");
         }
-        return this.getType(typeToIndex).addInterval(c, dep);
+        return type.addInterval(c, dep);
     }
 
     @Original
@@ -209,7 +210,7 @@ public final class DataTypeReasoner implements Serializable {
         }
         // check if any value is already clashing with itself
         List<DataTypeSituation<?>> types = new ArrayList<>(map.values());
-        if (findClash(types, size)) {
+        if (findClash(types)) {
             return true;
         }
         // for every two datatypes, they must either be disjoint and
@@ -351,7 +352,7 @@ public final class DataTypeReasoner implements Serializable {
      *        size
      * @return true if a clash is found
      */
-    private boolean findClash(List<DataTypeSituation<?>> types, int size) {
+    private boolean findClash(List<DataTypeSituation<?>> types) {
         Optional<DataTypeSituation<?>> findAny = types.stream()
             .filter(p -> p.checkPNTypeClash()).findAny();
         if (findAny.isPresent()) {

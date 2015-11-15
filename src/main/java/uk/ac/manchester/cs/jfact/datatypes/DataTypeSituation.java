@@ -367,9 +367,14 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         return this.getClass().getSimpleName() + ' ' + type + ' ' + this.constraints;
     }
 
-    private boolean noConstraints() {
+    private boolean hasNoConstraints() {
         return constraints.isEmpty() ||
-            constraints.stream().allMatch(c -> c.e == null && c.locDep == null);
+            constraints.stream().allMatch(c -> c.e == null);
+    }
+
+    private boolean hasConstraints() {
+        return !constraints.isEmpty() ||
+            constraints.stream().anyMatch(c -> c.e != null);
     }
 
     /**
@@ -390,8 +395,13 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         }
         // if the supertype does nto have any constraints, the result must be
         // true
-        if (other.noConstraints()) {
+        if (other.hasNoConstraints()) {
             return true;
+        }
+        // same type but other has constraints and this does not: this cannot be
+        // a subtype
+        if (type.equals(other.type) && hasConstraints()) {
+            return false;
         }
         // each constraint must be compatible with the supertype
         return constraints.stream()
