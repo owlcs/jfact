@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
 import org.semanticweb.owlapi.model.IRI;
 
 class DatatypeExpressionImpl<O extends Comparable<O>> extends
-        ABSTRACT_DATATYPE<O> implements DatatypeExpression<O> {
+    ABSTRACT_DATATYPE<O> implements DatatypeExpression<O> {
 
     private static final long serialVersionUID = 11000L;
     @Nonnull
@@ -20,9 +20,9 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends
 
     public DatatypeExpressionImpl(Datatype<O> b) {
         super(
-                IRI.create(b.getDatatypeIRI() + "_"
-                        + DatatypeFactory.getIndex()), b.getFacets(), Utils
-                        .generateAncestors(host(b)));
+            IRI.create(b.getDatatypeIRI() + "_"
+                + DatatypeFactory.getIndex()), b.getFacets(), Utils
+                    .generateAncestors(host(b)));
         this.host = host(b);
         knownNumericFacetValues.putAll(b.getKnownNumericFacetValues());
         knownNonNumericFacetValues.putAll(b.getKnownNonNumericFacetValues());
@@ -72,13 +72,13 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends
     public DatatypeExpression<O> addNumericFacet(Facet f, Comparable<?> value) {
         if (!facets.contains(f)) {
             throw new IllegalArgumentException("Facet " + f
-                    + " not allowed tor datatype " + this.getHostType());
+                + " not allowed tor datatype " + this.getHostType());
         }
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
         DatatypeExpressionImpl<O> toReturn = new DatatypeExpressionImpl<>(
-                this.host);
+            this.host);
         toReturn.knownNumericFacetValues.putAll(knownNumericFacetValues);
         toReturn.knownNonNumericFacetValues.putAll(knownNonNumericFacetValues);
         // cannot have noth min/maxInclusive and min/maxExclusive values, so
@@ -97,16 +97,16 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends
 
     @Override
     public DatatypeExpression<O>
-            addNonNumericFacet(Facet f, Comparable<?> value) {
+        addNonNumericFacet(Facet f, Comparable<?> value) {
         if (!facets.contains(f)) {
             throw new IllegalArgumentException("Facet " + f
-                    + " not allowed tor datatype " + this.getHostType());
+                + " not allowed tor datatype " + this.getHostType());
         }
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
         DatatypeExpressionImpl<O> toReturn = new DatatypeExpressionImpl<>(
-                this.host);
+            this.host);
         toReturn.knownNumericFacetValues.putAll(knownNumericFacetValues);
         toReturn.knownNonNumericFacetValues.putAll(knownNonNumericFacetValues);
         toReturn.knownNonNumericFacetValues.put(f, value);
@@ -166,8 +166,8 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends
 
     @Override
     public String toString() {
-        return this.getClass().getName() + '(' + this.host.toString()
-                + "(extra facets:" + knownNumericFacetValues + "))";
+        return this.getClass().getSimpleName() + '(' + this.host.toString()
+            + "(extra facets:" + knownNumericFacetValues + "))";
     }
 
     @Override
@@ -178,10 +178,10 @@ class DatatypeExpressionImpl<O extends Comparable<O>> extends
         if (obj instanceof DatatypeExpression) {
             DatatypeExpression<?> datatypeExpression = (DatatypeExpression<?>) obj;
             return this.host.equals(datatypeExpression.getHostType())
-                    && knownNumericFacetValues.equals(datatypeExpression
-                            .getKnownNumericFacetValues())
-                    && knownNonNumericFacetValues.equals(datatypeExpression
-                            .getKnownNonNumericFacetValues());
+                && knownNumericFacetValues.equals(datatypeExpression
+                    .getKnownNumericFacetValues())
+                && knownNonNumericFacetValues.equals(datatypeExpression
+                    .getKnownNonNumericFacetValues());
         }
         return false;
     }

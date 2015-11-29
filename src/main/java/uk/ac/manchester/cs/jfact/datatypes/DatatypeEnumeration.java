@@ -5,12 +5,7 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.Nonnull;
 
@@ -27,8 +22,8 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
  *        type
  */
 public class DatatypeEnumeration<R extends Comparable<R>> implements
-        DatatypeCombination<DatatypeEnumeration<R>, Literal<R>>,
-        DatatypeExpression<R> {
+    DatatypeCombination<DatatypeEnumeration<R>, Literal<R>>,
+    DatatypeExpression<R> {
 
     @Nonnull
     private final IRI uri;
@@ -77,7 +72,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     @Override
     public DatatypeEnumeration<R> add(Literal<R> d) {
         DatatypeEnumeration<R> toReturn = new DatatypeEnumeration<>(this.host,
-                this.literals);
+            this.literals);
         toReturn.literals.add(d);
         Collections.sort(toReturn.literals);
         return toReturn;
@@ -153,7 +148,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     @Override
     public boolean isCompatible(Literal<?> l) {
         return this.literals.contains(l)
-                && this.host.isCompatible(l.getDatatypeExpression());
+            && this.host.isCompatible(l.getDatatypeExpression());
     }
 
     @Override
@@ -179,7 +174,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
 
     @Override
     public boolean isSubType(Datatype<?> type) {
-        return this.host.isSubType(type);
+        return this.host.isSubType(type) && isCompatible(type);
     }
 
     @Override
@@ -206,7 +201,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     public boolean isContradictory(Datatype<?> type) {
         if (type instanceof DatatypeEnumeration) {
             return Helper.intersectsWith(
-                    ((DatatypeEnumeration<?>) type).literals, literals);
+                ((DatatypeEnumeration<?>) type).literals, literals);
         }
         return !isCompatible(type);
     }
@@ -249,7 +244,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     @Override
     public OrderedDatatype<R> asOrderedDatatype() {
         throw new ReasonerInternalException(this
-                + " is not an ordered datatype");
+            + " is not an ordered datatype");
     }
 
     @Override
@@ -265,7 +260,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
         }
         if (obj instanceof DatatypeEnumeration) {
             return this.literals
-                    .equals(((DatatypeEnumeration<?>) obj).literals);
+                .equals(((DatatypeEnumeration<?>) obj).literals);
         }
         return false;
     }
@@ -283,15 +278,17 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     @Override
     public DatatypeExpression<R> addNumericFacet(Facet f, Comparable<?> value) {
         System.out
-                .println("DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object");
+            .println(
+                "DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object");
         return this;
     }
 
     @Override
     public DatatypeExpression<R>
-            addNonNumericFacet(Facet f, Comparable<?> value) {
+        addNonNumericFacet(Facet f, Comparable<?> value) {
         System.out
-                .println("DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object");
+            .println(
+                "DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object");
         return this;
     }
 

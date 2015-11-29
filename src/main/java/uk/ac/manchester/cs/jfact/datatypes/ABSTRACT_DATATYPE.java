@@ -8,7 +8,7 @@ package uk.ac.manchester.cs.jfact.datatypes;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,9 +34,9 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
     @Nonnull
     protected final Set<Datatype<?>> ancestors;
     @SuppressWarnings("rawtypes")
-    protected final Map<Facet, Comparable> knownNumericFacetValues = new HashMap<>();
+    protected final Map<Facet, Comparable> knownNumericFacetValues = new LinkedHashMap<>();
     @SuppressWarnings("rawtypes")
-    protected final Map<Facet, Comparable> knownNonNumericFacetValues = new HashMap<>();
+    protected final Map<Facet, Comparable> knownNonNumericFacetValues = new LinkedHashMap<>();
     @Nonnull
     protected final IRI uri;
 
