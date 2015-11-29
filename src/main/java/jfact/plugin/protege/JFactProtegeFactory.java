@@ -11,17 +11,7 @@ import uk.ac.manchester.cs.jfact.JFactFactory;
  */
 public class JFactProtegeFactory extends AbstractProtegeOWLReasonerInfo {
 
-    private JFactFactory fac;
-
-    @Override
-    public void initialise() {
-        fac = new JFactFactory();
-    }
-
-    @Override
-    public void dispose() {
-        fac = null;
-    }
+    private JFactFactory fac= new JFactFactory();
 
     @Override
     public BufferingMode getRecommendedBuffering() {
