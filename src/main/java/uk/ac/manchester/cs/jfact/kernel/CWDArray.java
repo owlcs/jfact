@@ -1,11 +1,6 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
-/* This file is part of the JFact DL reasoner
- Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
- This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
- This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
- You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static java.util.stream.Collectors.toList;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,6 +8,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.roaringbitmap.RoaringBitmap;
 
@@ -27,21 +23,12 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 @PortedFrom(file = "CWDArray.h", name = "CWDArray")
 public class CWDArray implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
-    @Original
-    private static final double distribution = 0.025;
     /** array of concepts together with dep-sets */
-    @PortedFrom(file = "CWDArray.h", name = "Base")
-    private final List<ConceptWDep> base;
-    @Original
-    @Nonnull
-    private RoaringBitmap cache = new RoaringBitmap();
-    @Original
-    private final ArrayIntMap indexes = new ArrayIntMap();
-    @Original
-    private int size = 0;
-    @Original
-    private JFactReasonerConfiguration options;
+    @PortedFrom(file = "CWDArray.h", name = "Base") private final List<ConceptWDep> base;
+    @Original @Nonnull private RoaringBitmap cache = new RoaringBitmap();
+    @Original private final ArrayIntMap indexes = new ArrayIntMap();
+    @Original private int size = 0;
+    @Original private JFactReasonerConfiguration options;
 
     /**
      * @param config
@@ -86,7 +73,7 @@ public class CWDArray implements Serializable {
      *        p
      */
     @Original
-    protected void private_add(ConceptWDep p) {
+    protected void privateAdd(ConceptWDep p) {
         base.add(p);
         size++;
         cache.add(asPositive(p.getConcept()));
@@ -127,6 +114,7 @@ public class CWDArray implements Serializable {
      *        bp
      * @return depset for given bp
      */
+    @Nullable
     @PortedFrom(file = "CWDArray.h", name = "get")
     public DepSet get(int bp) {
         ConceptWDep cwd = getConceptWithBP(bp);
@@ -141,6 +129,7 @@ public class CWDArray implements Serializable {
      *        bp
      * @return concept with given bp
      */
+    @Nullable
     @Original
     public ConceptWDep getConceptWithBP(int bp) {
         // check that the index actually exist: quicker
@@ -184,7 +173,7 @@ public class CWDArray implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@Nullable Object obj) {
         if (obj == null) {
             return false;
         }
@@ -235,7 +224,7 @@ public class CWDArray implements Serializable {
         if (dep.isEmpty()) {
             throw new IllegalArgumentException();
         }
-        return IntStream.range(0, size).mapToObj(i -> updateDepSet(i, dep)).collect(toList());
+        return asList(IntStream.range(0, size).mapToObj(i -> updateDepSet(i, dep)));
     }
 
     /**
@@ -252,7 +241,7 @@ public class CWDArray implements Serializable {
             // if backjumping is enabled, an entity is deleted only if the
             // depset level is the same or above level, otherwise the entry is
             // kept
-            if (!options.isRKG_USE_DYNAMIC_BACKJUMPING() || base.get(i).getDep().level() >= level) {
+            if (!options.isUseDynamicBackjumping() || base.get(i).getDep().level() >= level) {
                 int concept = base.get(i).getConcept();
                 indexes.remove(concept);
                 cache.remove(asPositive(concept));

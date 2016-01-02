@@ -17,17 +17,15 @@ import conformance.PortedFrom;
 @PortedFrom(file = "AtomicDecomposer.h", name = "AOStructure")
 public class AOStructure implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** all the atoms */
-    @PortedFrom(file = "AtomicDecomposer.h", name = "Atoms")
-    private final List<TOntologyAtom> Atoms = new ArrayList<>();
+    @PortedFrom(file = "AtomicDecomposer.h", name = "Atoms") private final List<TOntologyAtom> atoms = new ArrayList<>();
 
     /** @return a new atom */
     @PortedFrom(file = "AtomicDecomposer.h", name = "newAtom")
     public TOntologyAtom newAtom() {
         TOntologyAtom ret = new TOntologyAtom();
-        ret.setId(Atoms.size());
-        Atoms.add(ret);
+        ret.setId(atoms.size());
+        atoms.add(ret);
         return ret;
     }
 
@@ -35,13 +33,13 @@ public class AOStructure implements Serializable {
     @PortedFrom(file = "AtomicDecomposer.h", name = "reduceGraph")
     public void reduceGraph() {
         Set<TOntologyAtom> checked = new HashSet<>();
-        Atoms.forEach(p -> p.getAllDepAtoms(checked));
+        atoms.forEach(p -> p.getAllDepAtoms(checked));
     }
 
     /** @return atoms */
     @PortedFrom(file = "AtomicDecomposer.h", name = "begin")
     public List<TOntologyAtom> getAtoms() {
-        return Atoms;
+        return atoms;
     }
 
     /**
@@ -51,12 +49,12 @@ public class AOStructure implements Serializable {
      */
     @PortedFrom(file = "AtomicDecomposer.h", name = "get")
     public TOntologyAtom get(int index) {
-        return Atoms.get(index);
+        return atoms.get(index);
     }
 
     /** @return size of the structure */
     @PortedFrom(file = "AtomicDecomposer.h", name = "size")
     public int size() {
-        return Atoms.size();
+        return atoms.size();
     }
 }

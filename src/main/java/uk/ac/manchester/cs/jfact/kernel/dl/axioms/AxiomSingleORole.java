@@ -14,7 +14,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomSingleORole")
 public abstract class AxiomSingleORole extends AxiomImpl {
 
-    private static final long serialVersionUID = 11000L;
+
     @PortedFrom(file = "tDLAxiom.h", name = "Role")
     private final ObjectRoleExpression role;
 

@@ -11,50 +11,40 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.split.TSignature;
-import conformance.PortedFrom;
 
 /** taxonomy creator for DL */
 @PortedFrom(file = "TaxonomyCreator.h", name = "TaxonomyCreator")
 public class TaxonomyCreator implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
-    @PortedFrom(file = "TaxonomyCreator.h", name = "pTax")
-    protected final Taxonomy pTax;
-    @PortedFrom(file = "TaxonomyCreator.h", name = "Syns")
-    protected final List<ClassifiableEntry> Syns = new ArrayList<>();
+    @PortedFrom(file = "TaxonomyCreator.h", name = "pTax") protected final Taxonomy pTax;
+    @PortedFrom(file = "TaxonomyCreator.h", name = "Syns") protected final List<ClassifiableEntry> syns = new ArrayList<>();
     /** labeller for marking nodes with a label wrt classification */
-    @PortedFrom(file = "TaxonomyCreator.h", name = "valueLabel")
-    protected long valueLabel = 1;
+    @PortedFrom(file = "TaxonomyCreator.h", name = "valueLabel") protected long valueLabel = 1;
     /** pointer to currently classified entry */
-    @PortedFrom(file = "TaxonomyCreator.h", name = "curEntry")
-    protected ClassifiableEntry curEntry = null;
+    @PortedFrom(file = "TaxonomyCreator.h", name = "curEntry") protected ClassifiableEntry curEntry = null;
     /** number of tested entryes */
-    @PortedFrom(file = "TaxonomyCreator.h", name = "nEntries")
-    protected int nEntries = 0;
+    @PortedFrom(file = "TaxonomyCreator.h", name = "nEntries") protected int nEntries = 0;
     /** number of completely-defined entries */
-    @PortedFrom(file = "TaxonomyCreator.h", name = "nCDEntries")
-    protected long nCDEntries = 0;
+    @PortedFrom(file = "TaxonomyCreator.h", name = "nCDEntries") protected long nCDEntries = 0;
     /**
      * optimisation flag: if entry is completely defined by it's told subsumers,
      * no other classification required
      */
-    @PortedFrom(file = "TaxonomyCreator.h", name = "useCompletelyDefined")
-    protected boolean useCompletelyDefined = false;
+    @PortedFrom(file = "TaxonomyCreator.h", name = "useCompletelyDefined") protected boolean useCompletelyDefined = false;
     /** session flag: shows the direction of the search */
-    @PortedFrom(file = "TaxonomyCreator.h", name = "upDirection")
-    protected boolean upDirection;
+    @PortedFrom(file = "TaxonomyCreator.h", name = "upDirection") protected boolean upDirection;
     /** stack for Taxonomy creation */
-    @PortedFrom(file = "TaxonomyCreator.h", name = "waitStack")
-    private final LinkedList<ClassifiableEntry> waitStack = new LinkedList<>();
+    @PortedFrom(file = "TaxonomyCreator.h", name = "waitStack") private final LinkedList<ClassifiableEntry> waitStack = new LinkedList<>();
     /** told subsumers corresponding to a given entry */
-    @PortedFrom(file = "TaxonomyCreator.h", name = "ksStack")
-    protected final LinkedList<KnownSubsumers> ksStack = new LinkedList<>();
+    @PortedFrom(file = "TaxonomyCreator.h", name = "ksStack") protected final LinkedList<KnownSubsumers> ksStack = new LinkedList<>();
     /** signature of a \bot-module corresponding to a given entry */
-    @PortedFrom(file = "TaxonomyCreator.h", name = "sigStack")
-    protected final LinkedList<TSignature> sigStack = new LinkedList<>();
+    @PortedFrom(file = "TaxonomyCreator.h", name = "sigStack") protected final LinkedList<TSignature> sigStack = new LinkedList<>();
 
     /**
      * @param pTax2
@@ -85,7 +75,7 @@ public class TaxonomyCreator implements Serializable {
 
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "setToldSubsumers")
     private void setToldSubsumers() {
-        Collection<ClassifiableEntry> top = ksStack.peek().s_begin();
+        Collection<ClassifiableEntry> top = ksStack.peek().sure();
         boolean needLogging = pTax.getOptions().isNeedLogging();
         LogAdapter log = pTax.getOptions().getLog();
         if (needLogging && !top.isEmpty()) {
@@ -93,28 +83,24 @@ public class TaxonomyCreator implements Serializable {
         }
         top.stream().filter(p -> p.isClassified()).peek(p -> {
             if (needLogging) {
-                log.printTemplate(Templates.TOLD_SUBSUMERS, p.getName());
+                log.printTemplate(Templates.TOLD_SUBSUMERS, p.getIRI());
             }
         }).forEach(p -> propagateTrueUp(p.getTaxVertex()));
-        top = ksStack.peek().p_begin();
+        top = ksStack.peek().possible();
         if (!top.isEmpty() && needLogging) {
             log.print(" and possibly ");
-            top.forEach(q -> log.print(Templates.TOLD_SUBSUMERS, q.getName()));
+            top.forEach(q -> log.print(Templates.TOLD_SUBSUMERS, q.getIRI()));
         }
     }
 
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "setNonRedundantCandidates")
-    private
-            void setNonRedundantCandidates() {
+    private void setNonRedundantCandidates() {
         if (!curEntry.hasToldSubsumers() && pTax.getOptions().isNeedLogging()) {
-            pTax.getOptions().getLog()
-                    .print("\nTAX: TOP completely defines concept ")
-                    .print(curEntry.getName());
+            pTax.getOptions().getLog().print("\nTAX: TOP completely defines concept ").print(curEntry.getIRI());
         }
         // test if some "told subsumer" is not an immediate TS (ie, not a
         // border element)
-        ksStack.peek().s_begin()
-                .forEach(p -> addPossibleParent(p.getTaxVertex()));
+        ksStack.peek().sure().forEach(p -> addPossibleParent(p.getTaxVertex()));
     }
 
     /**
@@ -166,8 +152,7 @@ public class TaxonomyCreator implements Serializable {
 
     /** actions that to be done BEFORE entry will be classified */
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "preClassificationActions")
-    protected
-            void preClassificationActions() {}
+    protected void preClassificationActions() {}
 
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "performClassification")
     private void performClassification() {
@@ -177,7 +162,7 @@ public class TaxonomyCreator implements Serializable {
         if (pTax.getOptions().isNeedLogging()) {
             // this output is currently disabled in FaCT++
             pTax.getOptions().getLog().print("\nTAX: start classifying entry ");
-            pTax.getOptions().getLog().print(curEntry.getName());
+            pTax.getOptions().getLog().print(curEntry.getIRI());
         }
         // if no classification needed -- nothing to do
         if (immediatelyClassified()) {
@@ -192,8 +177,7 @@ public class TaxonomyCreator implements Serializable {
     }
 
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "generalTwoPhaseClassification")
-    private
-            void generalTwoPhaseClassification() {
+    private void generalTwoPhaseClassification() {
         setupTopDown();
         if (needTopDown()) {
             setValue(pTax.getTopVertex(), true);
@@ -247,15 +231,12 @@ public class TaxonomyCreator implements Serializable {
         assert !waitStack.isEmpty();
         // load last concept
         setCurrentEntry(waitStack.peek());
-        if (pTax.getOptions().isTMP_PRINT_TAXONOMY_INFO()) {
-            pTax.getOptions()
-                    .getLog()
-                    .print("\nTrying classify",
-                            curEntry.isCompletelyDefined() ? " CD " : " ",
-                            curEntry.getName(), "... ");
+        if (pTax.getOptions().isPrintTaxonomyInfo()) {
+            pTax.getOptions().getLog().print("\nTrying classify", curEntry.isCompletelyDefined() ? " CD " : " ",
+                curEntry.getIRI(), "... ");
         }
         performClassification();
-        if (pTax.getOptions().isTMP_PRINT_TAXONOMY_INFO()) {
+        if (pTax.getOptions().isPrintTaxonomyInfo()) {
             pTax.getOptions().getLog().print("done");
         }
         removeTop();
@@ -277,7 +258,7 @@ public class TaxonomyCreator implements Serializable {
         // overwise -- value it...
         setValue(node, true);
         // ... and value all parents
-        node.neigh(true).forEach(n -> propagateTrueUp(n));
+        node.neigh(true).forEach(this::propagateTrueUp);
     }
 
     /**
@@ -296,7 +277,7 @@ public class TaxonomyCreator implements Serializable {
         // overwise -- value it...
         setValue(node, false);
         // ... and value all children
-        node.neigh(false).forEach(p -> propagateFalseDown(p));
+        node.neigh(false).forEach(this::propagateFalseDown);
     }
 
     /**
@@ -325,7 +306,7 @@ public class TaxonomyCreator implements Serializable {
      *        parent
      */
     @PortedFrom(file = "TaxonomyCreator.h", name = "addPossibleParent")
-    public void addPossibleParent(TaxonomyVertex parent) {
+    public void addPossibleParent(@Nullable TaxonomyVertex parent) {
         if (parent != null && isDirectParent(parent)) {
             pTax.getCurrent().addNeighbour(true, parent);
         }
@@ -380,6 +361,7 @@ public class TaxonomyCreator implements Serializable {
      *        cur
      * @return the reason of cycle or NULL.
      */
+    @Nullable
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "prepareTS")
     private ClassifiableEntry prepareTS(ClassifiableEntry cur) {
         // we just found that TS forms a cycle -- return stop-marker
@@ -391,7 +373,7 @@ public class TaxonomyCreator implements Serializable {
         // true iff CUR is a reason of the cycle
         boolean cycleFound = false;
         // for all the told subsumers...
-        for (ClassifiableEntry p : ksStack.peek().s_begin()) {
+        for (ClassifiableEntry p : ksStack.peek().sure()) {
             if (!p.isClassified()) {
                 // need to classify it first
                 if (p.isNonClassifiable()) {
@@ -415,7 +397,7 @@ public class TaxonomyCreator implements Serializable {
                     // arbitrary vertex in a cycle: save in synonyms of a
                     // root
                     // cause
-                    Syns.add(cur);
+                    syns.add(cur);
                     // don't need to classify it
                     removeTop();
                     // return the cycle cause
@@ -428,8 +410,8 @@ public class TaxonomyCreator implements Serializable {
         // now if CUR is the reason of cycle mark all SYNs as synonyms
         if (cycleFound) {
             TaxonomyVertex syn = cur.getTaxVertex();
-            Syns.forEach(q -> syn.addSynonym(q));
-            Syns.clear();
+            syns.forEach(syn::addSynonym);
+            syns.clear();
         }
         // here the cycle is gone
         return null;
@@ -479,9 +461,9 @@ public class TaxonomyCreator implements Serializable {
      *        p
      * @return signature
      */
+    @Nullable
     @PortedFrom(file = "TaxonomyCreator.h", name = "buildSignature")
-    protected TSignature buildSignature(
-            @SuppressWarnings("unused") ClassifiableEntry p) {
+    protected TSignature buildSignature(@SuppressWarnings("unused") ClassifiableEntry p) {
         return null;
     }
 }

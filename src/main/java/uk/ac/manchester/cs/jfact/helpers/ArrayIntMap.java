@@ -8,6 +8,8 @@ import java.io.Serializable;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.Arrays;
 
+import javax.annotation.Nullable;
+
 /**
  * map int to int
  * 
@@ -15,10 +17,9 @@ import java.util.Arrays;
  */
 public class ArrayIntMap implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
     private int[][] values;
     private int size = 0;
-    private static final int defaultSize = 16;
+    private static final int DEFAULTSIZE = 16;
 
     private int insertionIndex(int key) {
         if (size == 0) {
@@ -31,7 +32,7 @@ public class ArrayIntMap implements Serializable {
             return -size - 1;
         }
         int lowerbound = 0;
-        if (size < AbstractFastSet.limit) {
+        if (size < AbstractFastSet.LIMIT) {
             for (; lowerbound < size; lowerbound++) {
                 if (values[0][lowerbound] == key) {
                     return lowerbound;
@@ -58,7 +59,7 @@ public class ArrayIntMap implements Serializable {
     }
 
     private void init() {
-        values = new int[2][defaultSize];
+        values = new int[2][DEFAULTSIZE];
         size = 0;
     }
 
@@ -85,8 +86,7 @@ public class ArrayIntMap implements Serializable {
         // i is now the insertion point
         if (i >= values[0].length || size >= values[0].length) {
             // no space left, increase
-            int[][] replacementvalues = new int[2][values[0].length
-                    + defaultSize];
+            int[][] replacementvalues = new int[2][values[0].length + DEFAULTSIZE];
             for (int j = 0; j < values[0].length; j++) {
                 replacementvalues[0][j] = values[0][j];
                 replacementvalues[1][j] = values[1][j];
@@ -145,8 +145,7 @@ public class ArrayIntMap implements Serializable {
             }
             return true;
         }
-        if (values[0][0] > c.values[0][0]
-                || values[0][size - 1] < c.values[0][c.size() - 1]) {
+        if (values[0][0] > c.values[0][0] || values[0][size - 1] < c.values[0][c.size() - 1]) {
             // c boundaries are outside this set
             return false;
         }
@@ -259,7 +258,7 @@ public class ArrayIntMap implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@Nullable Object obj) {
         if (obj == null) {
             return false;
         }
@@ -289,7 +288,7 @@ public class ArrayIntMap implements Serializable {
     public String toString() {
         if (values != null) {
             return Arrays.toString(Arrays.copyOf(values[0], size)) + '\n'
-                    + Arrays.toString(Arrays.copyOf(values[1], size));
+                + Arrays.toString(Arrays.copyOf(values[1], size));
         }
         return "[]";
     }

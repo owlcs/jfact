@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.kernel.dl.axioms;
 
+import javax.annotation.Nullable;
+
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -7,19 +9,17 @@ package uk.ac.manchester.cs.jfact.kernel.dl.axioms;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import org.semanticweb.owlapi.model.OWLAxiom;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleComplexExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
-import conformance.PortedFrom;
 
 /** object role subsumption */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomORoleSubsumption")
 public class AxiomORoleSubsumption extends AxiomSingleORole {
 
-    private static final long serialVersionUID = 11000L;
-    @PortedFrom(file = "tDLAxiom.h", name = "SubRole")
-    private final ObjectRoleComplexExpression subRole;
+    @PortedFrom(file = "tDLAxiom.h", name = "SubRole") private final ObjectRoleComplexExpression subRole;
 
     /**
      * @param ax
@@ -29,8 +29,7 @@ public class AxiomORoleSubsumption extends AxiomSingleORole {
      * @param supRole
      *        supRole
      */
-    public AxiomORoleSubsumption(OWLAxiom ax,
-            ObjectRoleComplexExpression subRole, ObjectRoleExpression supRole) {
+    public AxiomORoleSubsumption(OWLAxiom ax, ObjectRoleComplexExpression subRole, ObjectRoleExpression supRole) {
         super(ax, supRole);
         this.subRole = subRole;
     }
@@ -41,6 +40,7 @@ public class AxiomORoleSubsumption extends AxiomSingleORole {
         visitor.visit(this);
     }
 
+    @Nullable
     @Override
     @PortedFrom(file = "tDLAxiom.h", name = "accept")
     public <O> O accept(DLAxiomVisitorEx<O> visitor) {

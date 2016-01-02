@@ -7,20 +7,19 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
-import uk.ac.manchester.cs.jfact.dep.DepSet;
+import javax.annotation.Nullable;
+
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.dep.DepSet;
 
 /** concept and dependency set */
 @PortedFrom(file = "ConceptWithDep.h", name = "Concept")
 public class ConceptWDep implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** "pointer" to a concept in DAG */
-    @PortedFrom(file = "ConceptWithDep.h", name = "Concept")
-    private final int concept;
+    @PortedFrom(file = "ConceptWithDep.h", name = "Concept") private final int concept;
     /** dep-set for a concept */
-    @PortedFrom(file = "ConceptWithDep.h", name = "depSet")
-    private final DepSet depSet;
+    @PortedFrom(file = "ConceptWithDep.h", name = "depSet") private final DepSet depSet;
 
     /**
      * c'tor with empty dep-set
@@ -79,7 +78,7 @@ public class ConceptWDep implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@Nullable Object obj) {
         if (obj == null) {
             return false;
         }

@@ -13,7 +13,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tSaveList.h", name = "TSaveList")
 public class SaveList extends LinkedList<DLCompletionTreeSaveState> {
 
-    private static final long serialVersionUID = 11000L;
+
 
     @Override
     @PortedFrom(file = "tSaveList.h", name = "pop")

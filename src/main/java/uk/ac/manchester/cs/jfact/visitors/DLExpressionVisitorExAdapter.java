@@ -59,21 +59,20 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 public abstract class DLExpressionVisitorExAdapter<A> implements
         DLExpressionVisitorEx<A>, Serializable {
 
-    private static final long serialVersionUID = 11000L;
-    @Nonnull
-    private A defaultValue;
 
     @Nonnull
-    protected A doDefault(@SuppressWarnings("unused") Expression e) {
-        return defaultValue;
-    }
+    private A defaultValue;
 
     /**
      * @param a
      *        return value
      */
-    public DLExpressionVisitorExAdapter(@Nonnull A a) {
+    public DLExpressionVisitorExAdapter(A a) {
         defaultValue = a;
+    }
+
+    protected A doDefault(@SuppressWarnings("unused") Expression e) {
+        return defaultValue;
     }
 
     @Override

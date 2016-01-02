@@ -11,22 +11,18 @@ import static uk.ac.manchester.cs.jfact.datatypes.Facets.*;
 import java.util.Collection;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.IRI;
 
-class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
-    ABSTRACT_DATATYPE<O> implements DatatypeExpression<O>,
-    OrderedDatatype<O> {
+class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends AbstractDatatype<O>
+    implements DatatypeExpression<O>, OrderedDatatype<O> {
 
-    private static final long serialVersionUID = 11000L;
-    @Nonnull
-    private final Datatype<O> host;
+    @Nonnull private final Datatype<O> host;
 
     public DatatypeOrderedExpressionImpl(Datatype<O> b) {
-        super(
-            IRI.create(b.getDatatypeIRI() + "_"
-                + DatatypeFactory.getIndex()), b.getFacets(), Utils
-                    .generateAncestors(b.host()));
+        super(IRI.create(b.getDatatypeIRI() + "_" + DatatypeFactory.getIndex()), b.getFacets(),
+            Utils.generateAncestors(b.host()));
         this.host = b.host();
         knownNumericFacetValues.putAll(b.getKnownNumericFacetValues());
         knownNonNumericFacetValues.putAll(b.getKnownNonNumericFacetValues());
@@ -71,8 +67,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
         // return true;
         // }
         if (type.isOrderedDatatype()) {
-            OrderedDatatype<O> wrapper = (OrderedDatatype<O>) type
-                .asOrderedDatatype();
+            OrderedDatatype<O> wrapper = (OrderedDatatype<O>) type.asOrderedDatatype();
             // if both have no max or both have no min -> there is an
             // overlap
             // if one has no max, then min must be smaller than max of the
@@ -109,8 +104,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
             // exclusives:
             // one minInclusive/exclusive is strictly larger than the other
             // maxinclusive/exclusive
-            return this.overlapping(this, wrapper)
-                || this.overlapping(wrapper, this);
+            return this.overlapping(this, wrapper) || this.overlapping(wrapper, this);
         } else {
             return false;
         }
@@ -147,23 +141,18 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
     }
 
     @Override
-    public DatatypeExpression<O>
-        addNonNumericFacet(Facet f, Comparable<?> value) {
+    public DatatypeExpression<O> addNonNumericFacet(Facet f, @Nullable Comparable<?> value) {
         if (!facets.contains(f)) {
-            throw new IllegalArgumentException("Facet " + f
-                + " not allowed tor datatype " + this.getHostType());
+            throw new IllegalArgumentException("Facet " + f + " not allowed tor datatype " + this.getHostType());
         }
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
-        if (value instanceof Literal
-            && !this.host.isCompatible((Literal<?>) value)) {
+        if (value instanceof Literal && !this.host.isCompatible((Literal<?>) value)) {
             throw new IllegalArgumentException(
-                "Not a valid value for this expression: " + f + '\t'
-                    + value + " for: " + this);
+                "Not a valid value for this expression: " + f + '\t' + value + " for: " + this);
         }
-        DatatypeOrderedExpressionImpl<O> toReturn = new DatatypeOrderedExpressionImpl<>(
-            this.host);
+        DatatypeOrderedExpressionImpl<O> toReturn = new DatatypeOrderedExpressionImpl<>(this.host);
         toReturn.knownNumericFacetValues.putAll(knownNumericFacetValues);
         toReturn.knownNonNumericFacetValues.putAll(knownNonNumericFacetValues);
         toReturn.knownNonNumericFacetValues.put(f, value);
@@ -171,16 +160,14 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
     }
 
     @Override
-    public DatatypeExpression<O> addNumericFacet(Facet f, Comparable<?> value) {
+    public DatatypeExpression<O> addNumericFacet(Facet f, @Nullable Comparable<?> value) {
         if (!facets.contains(f)) {
-            throw new IllegalArgumentException("Facet " + f
-                + " not allowed tor datatype " + this.getHostType());
+            throw new IllegalArgumentException("Facet " + f + " not allowed tor datatype " + this.getHostType());
         }
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
-        DatatypeOrderedExpressionImpl<O> toReturn = new DatatypeOrderedExpressionImpl<>(
-            this.host);
+        DatatypeOrderedExpressionImpl<O> toReturn = new DatatypeOrderedExpressionImpl<>(this.host);
         toReturn.knownNumericFacetValues.putAll(knownNumericFacetValues);
         toReturn.knownNonNumericFacetValues.putAll(knownNonNumericFacetValues);
         // cannot have noth min/maxInclusive and min/maxExclusive values, so
@@ -271,6 +258,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
         return this.hasMaxInclusive() || this.hasMaxExclusive();
     }
 
+    @Nullable
     @Override
     public O getMin() {
         if (this.hasMinInclusive()) {
@@ -282,6 +270,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
         return null;
     }
 
+    @Nullable
     @Override
     public O getMax() {
         if (this.hasMaxInclusive()) {
@@ -295,7 +284,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + '(' + this.host.toString()
-            + "(extra facets:" + knownNumericFacetValues + "))";
+        return this.getClass().getSimpleName() + '(' + this.host.toString() + "(extra facets:" + knownNumericFacetValues
+            + "))";
     }
 }

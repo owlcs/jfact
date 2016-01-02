@@ -7,12 +7,10 @@ package uk.ac.manchester.cs.jfact.kernel.modelcaches;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** model cache type */
 public enum ModelCacheType {
-    /** not implemented */
-    mctBadType,
-    /** TOP/BOTTOM */
-    mctConst,
-    /** contains just one named concept */
-    mctSingleton,
-    /** root-level concepts, ER and AR concepts are cached */
-    mctIan
+    //@formatter:off
+    /** not implemented */                                      BADTYPE,
+    /** TOP/BOTTOM */                                           CONST,
+    /** contains just one named concept */                      SINGLETON,
+    /** root-level concepts, ER and AR concepts are cached */   IAN
+    //@formatter:on
 }

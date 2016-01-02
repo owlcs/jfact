@@ -8,19 +8,17 @@ package uk.ac.manchester.cs.jfact.split;
 import java.io.Serializable;
 import java.util.List;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.ReasoningKernel;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
-import conformance.PortedFrom;
 
 /** modularizer */
 @PortedFrom(file = "OntologyBasedModularizer.h", name = "OntologyBasedModularizer")
 public class OntologyBasedModularizer implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
-    @PortedFrom(file = "OntologyBasedModularizer.h", name = "Ontology")
-    private final Ontology ontology;
-    private final TModularizer Modularizer;
+    @PortedFrom(file = "OntologyBasedModularizer.h", name = "Ontology") private final Ontology ontology;
+    private final TModularizer modularizer;
 
     /**
      * @param ontology
@@ -31,7 +29,7 @@ public class OntologyBasedModularizer implements Serializable {
     @PortedFrom(file = "OntologyBasedModularizer.h", name = "OntologyBasedModularizer")
     public OntologyBasedModularizer(Ontology ontology, TModularizer mod) {
         this.ontology = ontology;
-        Modularizer = mod;
+        modularizer = mod;
     }
 
     /**
@@ -41,19 +39,15 @@ public class OntologyBasedModularizer implements Serializable {
      *        kernel
      * @return modularizer
      */
-    public static TModularizer buildTModularizer(boolean useSemantic,
-            ReasoningKernel kernel) {
-        TModularizer Mod = null;
+    public static TModularizer buildTModularizer(boolean useSemantic, ReasoningKernel kernel) {
+        TModularizer mod;
         if (useSemantic) {
-            Mod = new TModularizer(kernel.getOptions(),
-                    new SemanticLocalityChecker(kernel));
-            Mod.preprocessOntology(kernel.getOntology().getAxioms());
+            mod = new TModularizer(kernel.getOptions(), new SemanticLocalityChecker(kernel));
         } else {
-            Mod = new TModularizer(kernel.getOptions(),
-                    new SyntacticLocalityChecker());
-            Mod.preprocessOntology(kernel.getOntology().getAxioms());
+            mod = new TModularizer(kernel.getOptions(), new SyntacticLocalityChecker());
         }
-        return Mod;
+        mod.preprocessOntology(kernel.getOntology().getAxioms());
+        return mod;
     }
 
     /**
@@ -78,15 +72,14 @@ public class OntologyBasedModularizer implements Serializable {
      * @return module
      */
     @PortedFrom(file = "OntologyBasedModularizer.h", name = "getModule")
-    public List<AxiomInterface> getModule(List<AxiomInterface> axioms,
-            TSignature sig, ModuleType type) {
-        Modularizer.extract(axioms, sig, type);
-        return Modularizer.getModule();
+    public List<AxiomInterface> getModule(List<AxiomInterface> axioms, TSignature sig, ModuleType type) {
+        modularizer.extract(axioms, sig, type);
+        return modularizer.getModule();
     }
 
     /** @return modularizer */
     @PortedFrom(file = "OntologyBasedModularizer.h", name = "getModularizer")
     public TModularizer getModularizer() {
-        return Modularizer;
+        return modularizer;
     }
 }

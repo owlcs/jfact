@@ -7,7 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** possible flags of re-checking ALL-like expressions in new nodes */
 enum Redo {
-    redoForall(1), redoFunc(2), redoAtMost(4), redoIrr(8);
+    REDOFORALL(1), REDOFUNC(2), REDOATMOST(4), REDOIRR(8);
 
     private final int value;
 
@@ -24,23 +24,23 @@ enum Redo {
     }
 
     public static int redoForallFuncAtmostIrr() {
-        return redoForall.value | redoFunc.value | redoAtMost.value
-                | redoIrr.value;
+        return REDOFORALL.value | REDOFUNC.value | REDOATMOST.value
+                | REDOIRR.value;
     }
 
     public static int redoForallAtmost() {
-        return redoForall.value | redoAtMost.value;
+        return REDOFORALL.value | REDOATMOST.value;
     }
 
     public static int redoForallFunc() {
-        return redoForall.value | redoFunc.value;
+        return REDOFORALL.value | REDOFUNC.value;
     }
 
     public static int redoForallFuncAtMost() {
-        return redoForall.value | redoFunc.value | redoAtMost.value;
+        return REDOFORALL.value | REDOFUNC.value | REDOATMOST.value;
     }
 
     public static int redoFuncAtMost() {
-        return redoFunc.value | redoAtMost.value;
+        return REDOFUNC.value | REDOATMOST.value;
     }
 }

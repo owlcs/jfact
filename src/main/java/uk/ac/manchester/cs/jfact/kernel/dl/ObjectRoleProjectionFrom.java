@@ -7,8 +7,12 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptArg;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleArg;
@@ -16,29 +20,23 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleComplexExpressio
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** object role projection from */
 @PortedFrom(file = "tDLExpression.h", name = "TDLObjectRoleProjectionFrom")
-public class ObjectRoleProjectionFrom implements ObjectRoleComplexExpression,
-        ObjectRoleArg, ConceptArg, Serializable {
+public class ObjectRoleProjectionFrom implements ObjectRoleComplexExpression, ObjectRoleArg, ConceptArg, Serializable {
 
-    private static final long serialVersionUID = 11000L;
-    @Original
-    private final ConceptExpression delegate;
-    @Original
-    private final ObjectRoleExpression roleDelegate;
+    @Original private final ConceptExpression delegate;
+    @Original private final ObjectRoleExpression roleDelegate;
 
     /**
-     * @param R
+     * @param r
      *        R
-     * @param C
+     * @param c
      *        C
      */
-    public ObjectRoleProjectionFrom(ObjectRoleExpression R, ConceptExpression C) {
-        roleDelegate = R;
-        delegate = C;
+    public ObjectRoleProjectionFrom(ObjectRoleExpression r, ConceptExpression c) {
+        roleDelegate = r;
+        delegate = c;
     }
 
     @Override
@@ -47,6 +45,7 @@ public class ObjectRoleProjectionFrom implements ObjectRoleComplexExpression,
         visitor.visit(this);
     }
 
+    @Nullable
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
@@ -66,13 +65,12 @@ public class ObjectRoleProjectionFrom implements ObjectRoleComplexExpression,
     }
 
     @Override
-    public IRI getName() {
-        return IRI.create("objectProjectFrom(" + roleDelegate + " " + delegate
-                + ")");
+    public IRI getIRI() {
+        return IRI.create("objectProjectFrom(" + roleDelegate + " " + delegate + ")");
     }
 
     @Override
     public String toString() {
-        return getName().toString();
+        return getIRI().toString();
     }
 }

@@ -53,7 +53,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 public abstract class DLExpressionVisitorAdapter implements
         DLExpressionVisitor, Serializable {
 
-    private static final long serialVersionUID = 11000L;
+
 
     protected void doDefault(@SuppressWarnings("unused") Expression a) {}
 

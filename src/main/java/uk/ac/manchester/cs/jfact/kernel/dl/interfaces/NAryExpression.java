@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.kernel.dl.interfaces;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.pairs;
+
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -7,7 +9,7 @@ package uk.ac.manchester.cs.jfact.kernel.dl.interfaces;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.Collection;
 import java.util.List;
-import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 
 import conformance.PortedFrom;
 
@@ -26,7 +28,7 @@ public interface NAryExpression<A extends Expression> {
      * @return transform general expression into the argument one
      */
     @PortedFrom(file = "tDLExpression.h", name = "transform")
-    A transform(Expression arg);
+        A transform(Expression arg);
 
     /**
      * add a single element to the array
@@ -35,7 +37,7 @@ public interface NAryExpression<A extends Expression> {
      *        p
      */
     @PortedFrom(file = "tDLExpression.h", name = "add")
-    void add(A p);
+        void add(A p);
 
     /**
      * add a vector
@@ -44,21 +46,21 @@ public interface NAryExpression<A extends Expression> {
      *        v
      */
     @PortedFrom(file = "tDLExpression.h", name = "add")
-    void add(Collection<A> v);
+        void add(Collection<A> v);
 
     /** @return members */
     @PortedFrom(file = "tDLExpression.h", name = "begin")
-    List<A> getArguments();
+        List<A> getArguments();
 
     /**
      * @param f
      *        function to apply to first element and all others pairs
      * @return true if any matches
      */
-    default boolean anyMatchWithFirst(BiFunction<A, A, Boolean> f) {
+    default boolean anyMatchWithFirst(BiPredicate<A, A> f) {
         List<A> arguments = getArguments();
         for (int i = 1; i < arguments.size(); i++) {
-            if (f.apply(arguments.get(0), arguments.get(i))) {
+            if (f.test(arguments.get(0), arguments.get(i))) {
                 return true;
             }
         }
@@ -70,10 +72,10 @@ public interface NAryExpression<A extends Expression> {
      *        function to apply to first element and all others pairs
      * @return true if all match
      */
-    default boolean allMatchWithFirst(BiFunction<A, A, Boolean> f) {
+    default boolean allMatchWithFirst(BiPredicate<A, A> f) {
         List<A> arguments = getArguments();
         for (int i = 1; i < arguments.size(); i++) {
-            if (!f.apply(arguments.get(0), arguments.get(i))) {
+            if (!f.test(arguments.get(0), arguments.get(i))) {
                 return false;
             }
         }
@@ -85,16 +87,8 @@ public interface NAryExpression<A extends Expression> {
      *        function to apply to all pairs
      * @return true if any matches
      */
-    default boolean anyMatch(BiFunction<A, A, Boolean> f) {
-        List<A> arguments = getArguments();
-        for (int i = 0; i < arguments.size() - 1; i++) {
-            for (int j = i + 1; j < arguments.size(); i++) {
-                if (f.apply(arguments.get(i), arguments.get(j))) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    default boolean anyMatch(BiPredicate<A, A> f) {
+        return pairs(getArguments()).anyMatch(v -> f.test(v.i, v.j));
     }
 
     /**
@@ -102,23 +96,15 @@ public interface NAryExpression<A extends Expression> {
      *        function to apply to all pairs
      * @return true if all match
      */
-    default boolean allMatch(BiFunction<A, A, Boolean> f) {
-        List<A> arguments = getArguments();
-        for (int i = 0; i < arguments.size() - 1; i++) {
-            for (int j = i + 1; j < arguments.size(); i++) {
-                if (!f.apply(arguments.get(i), arguments.get(j))) {
-                    return false;
-                }
-            }
-        }
-        return true;
+    default boolean allMatch(BiPredicate<A, A> f) {
+        return pairs(getArguments()).allMatch(v -> f.test(v.i, v.j));
     }
 
     /** @return true if empty */
     @PortedFrom(file = "tDLExpression.h", name = "empty")
-    boolean isEmpty();
+        boolean isEmpty();
 
     /** @return size of members */
     @PortedFrom(file = "tDLExpression.h", name = "size")
-    int size();
+        int size();
 }

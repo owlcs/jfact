@@ -9,6 +9,8 @@ import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.*;
 
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
 import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
 import uk.ac.manchester.cs.jfact.kernel.Concept;
 import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
@@ -16,8 +18,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 
 /** policy for concepts */
 public class ClassPolicy implements Policy, Serializable {
-
-    private static final long serialVersionUID = 11000L;
 
     @Override
     public boolean applicable(ClassifiableEntry p) {
@@ -29,15 +29,16 @@ public class ClassPolicy implements Policy, Serializable {
         return false;
     }
 
+    @Nullable
     @Override
-    public Expression buildTree(ExpressionCache EM, ClassifiableEntry p) {
+    public Expression buildTree(ExpressionCache em, ClassifiableEntry p) {
         if (p.getId() >= 0) {
-            return EM.concept(p.getName());
+            return em.concept(p.getIRI());
         }
         // top or bottom
-        if (p.getName().equals(Concept.thing)) {
+        if (p.getIRI().equals(Concept.thing)) {
             return top();
-        } else if (p.getName().equals(Concept.nothing)) {
+        } else if (p.getIRI().equals(Concept.nothing)) {
             return bottom();
         } else {
             // error

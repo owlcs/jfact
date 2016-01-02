@@ -1,17 +1,13 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
-/* This file is part of the JFact DL reasoner
- Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
- This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
- This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
- You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static java.util.stream.Collectors.toList;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
@@ -22,20 +18,25 @@ import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 @PortedFrom(file = "tAxiomSet.h", name = "TAxiomSet")
 public class AxiomSet implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
+    private static final String POSSIBILITIES = " possibilities";
     /** host TBox that holds all concepts/etc */
-    @PortedFrom(file = "tAxiomSet.h", name = "Host")
-    @Nonnull
-    protected final TBox tboxHost;
+    @PortedFrom(file = "tAxiomSet.h", name = "Host") @Nonnull protected final TBox tboxHost;
     /** set of axioms that accumilates incoming (and newly created) axioms */
-    @PortedFrom(file = "tAxiomSet.h", name = "Accum")
-    private List<Axiom> accumulator = new ArrayList<>();
+    @PortedFrom(file = "tAxiomSet.h", name = "Accum") private List<Axiom> accumulator = new ArrayList<>();
     private final LogAdapter absorptionLog;
     /** set of absorption action, in order */
-    @PortedFrom(file = "tAxiomSet.h", name = "ActionVector")
-    private final List<AbsorptionActions> actions = new ArrayList<>();
-    @PortedFrom(file = "tAxiomSet.h", name = "curAxiom")
-    private int curAxiom = 0;
+    @PortedFrom(file = "tAxiomSet.h", name = "ActionVector") private final List<AbsorptionActions> actions = new ArrayList<>();
+    @PortedFrom(file = "tAxiomSet.h", name = "curAxiom") private int curAxiom = 0;
+
+    /**
+     * @param host
+     *        host
+     */
+    public AxiomSet(TBox host) {
+        tboxHost = host;
+        absorptionLog = tboxHost.getOptions().getAbsorptionLog();
+        Axiom.setLogAdapter(absorptionLog);
+    }
 
     /**
      * add already built GCI p
@@ -72,7 +73,7 @@ public class AxiomSet implements Serializable {
      * @return bool if success
      */
     @PortedFrom(file = "tAxiomSet.h", name = "processNewAxiom")
-    protected boolean processNewAxiom(Axiom q) {
+    protected boolean processNewAxiom(@Nullable Axiom q) {
         if (q == null) {
             return false;
         }
@@ -92,29 +93,19 @@ public class AxiomSet implements Serializable {
     }
 
     /**
-     * @param host
-     *        host
-     */
-    public AxiomSet(@Nonnull TBox host) {
-        tboxHost = host;
-        absorptionLog = tboxHost.getOptions().getAbsorptionLog();
-        Axiom.setLogAdapter(absorptionLog);
-    }
-
-    /**
      * add axiom for the GCI C [= D
      * 
-     * @param C
+     * @param c
      *        C
-     * @param D
+     * @param d
      *        D
      */
     @PortedFrom(file = "tAxiomSet.h", name = "addAxiom")
-    public void addAxiom(DLTree C, DLTree D) {
-        tboxHost.getStatistics().SAbsInput();
+    public void addAxiom(DLTree c, DLTree d) {
+        tboxHost.getStatistics().sAbsInput();
         Axiom p = new Axiom(null);
-        p.add(C);
-        p.add(DLTreeFactory.createSNFNot(D));
+        p.add(c);
+        p.add(DLTreeFactory.createSNFNot(d));
         insertGCI(p);
     }
 
@@ -141,7 +132,7 @@ public class AxiomSet implements Serializable {
      */
     @PortedFrom(file = "tAxiomSet.h", name = "getGCI")
     public DLTree getGCI() {
-        List<DLTree> l = accumulator.stream().map(p -> p.createAnAxiom(null)).collect(toList());
+        List<DLTree> l = asList(accumulator.stream().map(p -> p.createAnAxiom(null)));
         return DLTreeFactory.createSNFAnd(l);
     }
 
@@ -174,7 +165,7 @@ public class AxiomSet implements Serializable {
         }
         // no failure: delete all the unneded axioms, add all kept ones
         // do the actual insertion if necessary
-        kept.forEach(q -> insertGCI(q));
+        kept.forEach(this::insertGCI);
         return true;
     }
 
@@ -184,21 +175,21 @@ public class AxiomSet implements Serializable {
     @PortedFrom(file = "tAxiomSet.h", name = "absorb")
     public int absorb() {
         // GCIs to process
-        List<Axiom> GCIs = new ArrayList<>();
+        List<Axiom> gcis = new ArrayList<>();
         // we will change Accum (via split rule), so indexing and compare with
         // size
         for (curAxiom = 0; curAxiom < accumulator.size(); curAxiom++) {
             Axiom ax = accumulator.get(curAxiom);
             tboxHost.getOptions().getAbsorptionLog().print("\nProcessing (").print(curAxiom).print("):");
             if (!absorbGCI(ax)) {
-                GCIs.add(ax);
+                gcis.add(ax);
             }
         }
         // clear absorbed and remove them from Accum
-        accumulator = GCIs;
+        accumulator = gcis;
         if (tboxHost.getOptions().isAbsorptionLoggingActive()) {
-            tboxHost.getOptions().getAbsorptionLog().print("\nAbsorption done with ").print(accumulator.size()).print(
-                " GCIs left\n");
+            tboxHost.getOptions().getAbsorptionLog().print("\nAbsorption done with ").print(accumulator.size())
+                .print(" GCIs left\n");
             printStatistics();
         }
         return size();
@@ -206,7 +197,7 @@ public class AxiomSet implements Serializable {
 
     @PortedFrom(file = "tAxiomSet.h", name = "absorbGCI")
     private boolean absorbGCI(Axiom p) {
-        tboxHost.getStatistics().SAbsAction();
+        tboxHost.getStatistics().sAbsAction();
         boolean absorbed = actions.stream().anyMatch(abs -> abs.execute(p, this));
         if (!absorbed) {
             tboxHost.getOptions().getAbsorptionLog().print(" keep as GCI");
@@ -235,9 +226,9 @@ public class AxiomSet implements Serializable {
             return;
         }
         LogAdapter log = tboxHost.getOptions().getAbsorptionLog();
-        log.print("\nAbsorption dealt with ").print(tboxHost.getStatistics().getSAbsInput()).print(
-            " input axioms\nThere were made ").print(tboxHost.getStatistics().getSAbsAction()).print(
-                " absorption actions, of which:");
+        log.print("\nAbsorption dealt with ").print(tboxHost.getStatistics().getSAbsInput())
+            .print(" input axioms\nThere were made ").print(tboxHost.getStatistics().getSAbsAction())
+            .print(" absorption actions, of which:");
         if (tboxHost.getStatistics().containsSAbsRepCN()) {
             log.print("\n\t").print(tboxHost.getStatistics().getSAbsRepCN()).print(" concept name replacements");
         }
@@ -254,16 +245,16 @@ public class AxiomSet implements Serializable {
             log.print("\n\t").print(tboxHost.getStatistics().getSAbsTApply()).print(" TOP absorptions");
         }
         if (tboxHost.getStatistics().containsSAbsCApply()) {
-            log.print("\n\t").print(tboxHost.getStatistics().getSAbsCApply()).print(" concept absorption with ").print(
-                tboxHost.getStatistics().getSAbsCAttempt()).print(" possibilities");
+            log.print("\n\t").print(tboxHost.getStatistics().getSAbsCApply()).print(" concept absorption with ")
+                .print(tboxHost.getStatistics().getSAbsCAttempt()).print(POSSIBILITIES);
         }
         if (tboxHost.getStatistics().containsSAbsNApply()) {
             log.print("\n\t").print(tboxHost.getStatistics().getSAbsNApply()).print(" negated concept absorption with ")
-                .print(tboxHost.getStatistics().getSAbsNAttempt()).print(" possibilities");
+                .print(tboxHost.getStatistics().getSAbsNAttempt()).print(POSSIBILITIES);
         }
         if (tboxHost.getStatistics().containsSAbsRApply()) {
             log.print("\n\t").print(tboxHost.getStatistics().getSAbsRApply()).print(" role domain absorption with ")
-                .print(tboxHost.getStatistics().getSAbsRAttempt()).print(" possibilities");
+                .print(tboxHost.getStatistics().getSAbsRAttempt()).print(POSSIBILITIES);
         }
         if (!accumulator.isEmpty()) {
             log.print("\nThere are ").print(accumulator.size()).print(" GCIs left");

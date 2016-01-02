@@ -11,37 +11,48 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.SaveStack;
 import uk.ac.manchester.cs.jfact.kernel.ConceptWDep;
 import uk.ac.manchester.cs.jfact.kernel.DagTag;
 import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
 import uk.ac.manchester.cs.jfact.kernel.SaveStackRare;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** todo list */
 @PortedFrom(file = "ToDoList.h", name = "ToDoList")
 public class ToDoList implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** waiting ops queue for IDs */
-    @PortedFrom(file = "ToDoList.h", name = "queueID")
-    private final ArrayQueue queueID = new ArrayQueue();
+    @PortedFrom(file = "ToDoList.h", name = "queueID") private final ArrayQueue queueID = new ArrayQueue();
     /** waiting ops queue for lesser than or equal ops in nominal nodes */
-    @PortedFrom(file = "ToDoList.h", name = "queueNN")
-    private final QueueQueue queueNN;
+    @PortedFrom(file = "ToDoList.h", name = "queueNN") private final QueueQueue queueNN;
     /** waiting ops queues */
-    @PortedFrom(file = "ToDoList.h", name = "Wait")
-    private final List<ArrayQueue> waitQueue = new ArrayList<>(nRegularOptions);
+    @PortedFrom(file = "ToDoList.h", name = "Wait") private final List<ArrayQueue> waitQueue = new ArrayList<>(
+        NREGULAROPTIONS);
     /** stack of saved states */
-    @PortedFrom(file = "ToDoList.h", name = "SaveStack")
-    private final SaveStack<TODOListSaveState> saveStack = new SaveStack<>();
+    @PortedFrom(file = "ToDoList.h", name = "SaveStack") private final SaveStack<TODOListSaveState> saveStack = new SaveStack<>();
     /** priority matrix */
-    @PortedFrom(file = "ToDoList.h", name = "Matrix")
-    private final ToDoPriorMatrix matrix = new ToDoPriorMatrix();
+    @PortedFrom(file = "ToDoList.h", name = "Matrix") private final ToDoPriorMatrix matrix = new ToDoPriorMatrix();
     /** number of un-processed entries */
-    @PortedFrom(file = "ToDoList.h", name = "noe")
-    private int noe;
+    @PortedFrom(file = "ToDoList.h", name = "noe") private int noe;
+
+    /**
+     * Default constructor.
+     * 
+     * @param r
+     *        rare stack
+     */
+    public ToDoList(SaveStackRare r) {
+        queueNN = new QueueQueue(r);
+        noe = 0;
+        // Helper.resize(Wait, nRegularOps);
+        for (int i = 0; i < NREGULAROPTIONS; i++) {
+            waitQueue.add(new ArrayQueue());
+        }
+    }
 
     /**
      * save current Todo table content to given saveState entry
@@ -51,8 +62,8 @@ public class ToDoList implements Serializable {
      */
     @PortedFrom(file = "ToDoList.h", name = "saveState")
     public void saveState(TODOListSaveState tss) {
-        tss.backupID_sp = queueID.getsPointer();
-        tss.backupID_ep = queueID.getWaitSize();
+        tss.backupIDsp = queueID.getsPointer();
+        tss.backupIDep = queueID.getWaitSize();
         queueNN.save(tss);
         tss.backup6key = waitQueue.get(6).getsPointer();
         tss.backup6value = waitQueue.get(6).getWaitSize();
@@ -79,7 +90,7 @@ public class ToDoList implements Serializable {
      */
     @PortedFrom(file = "ToDoList.h", name = "restoreState")
     public void restoreState(TODOListSaveState tss) {
-        queueID.restore(tss.backupID_sp, tss.backupID_ep);
+        queueID.restore(tss.backupIDsp, tss.backupIDep);
         queueNN.restore(tss);
         waitQueue.get(0).restore(tss.backup0key, tss.backup0value);
         waitQueue.get(1).restore(tss.backup1key, tss.backup1value);
@@ -92,29 +103,14 @@ public class ToDoList implements Serializable {
     }
 
     /**
-     * Default constructor.
-     * 
-     * @param r
-     *        rare stack
-     */
-    public ToDoList(SaveStackRare r) {
-        queueNN = new QueueQueue(r);
-        noe = 0;
-        // Helper.resize(Wait, nRegularOps);
-        for (int i = 0; i < nRegularOptions; i++) {
-            waitQueue.add(new ArrayQueue());
-        }
-    }
-
-    /**
      * init priorities via Options
      * 
-     * @param Options
+     * @param options
      *        Options
      */
     @Original
-    public void initPriorities(String Options) {
-        matrix.initPriorities(Options);
+    public void initPriorities(String options) {
+        matrix.initPriorities(options);
     }
 
     /** clear Todo table */
@@ -122,7 +118,7 @@ public class ToDoList implements Serializable {
     public void clear() {
         queueID.clear();
         queueNN.clear();
-        for (int i = nRegularOptions - 1; i >= 0; --i) {
+        for (int i = NREGULAROPTIONS - 1; i >= 0; --i) {
             waitQueue.get(i).clear();
         }
         saveStack.clear();
@@ -142,24 +138,23 @@ public class ToDoList implements Serializable {
      *        node
      * @param type
      *        type
-     * @param C
+     * @param c
      *        C
      */
     @PortedFrom(file = "ToDoList.h", name = "addEntry")
-    public void addEntry(DlCompletionTree node, DagTag type, ConceptWDep C) {
-        int index = matrix.getIndex(type, C.getConcept() > 0,
-                node.isNominalNode());
+    public void addEntry(DlCompletionTree node, DagTag type, ConceptWDep c) {
+        int index = matrix.getIndex(type, c.getConcept() > 0, node.isNominalNode());
         switch (index) {
-            case nRegularOptions: // unused entry
+            case NREGULAROPTIONS: // unused entry
                 return;
-            case priorityIndexID: // ID
-                queueID.add(node, C);
+            case PRIORITYINDEXID: // ID
+                queueID.add(node, c);
                 break;
-            case priorityIndexNominalNode: // NN
-                queueNN.add(node, C);
+            case PRIORITYINDEXNOMINALNODE: // NN
+                queueNN.add(node, c);
                 break;
             default: // regular queue
-                waitQueue.get(index).add(node, C);
+                waitQueue.get(index).add(node, c);
                 break;
         }
         ++noe;
@@ -185,6 +180,7 @@ public class ToDoList implements Serializable {
     }
 
     /** @return next entry */
+    @Nullable
     @PortedFrom(file = "ToDoList.h", name = "getNextEntry")
     public ToDoEntry getNextEntry() {
         assert !isEmpty();
@@ -199,7 +195,7 @@ public class ToDoList implements Serializable {
             return queueNN.get();
         }
         // check regular queues
-        for (int i = 0; i < nRegularOptions; ++i) {
+        for (int i = 0; i < NREGULAROPTIONS; ++i) {
             ArrayQueue arrayQueue = waitQueue.get(i);
             if (!arrayQueue.isEmpty()) {
                 return arrayQueue.get();
@@ -215,7 +211,7 @@ public class ToDoList implements Serializable {
         l.append('\n');
         l.append(queueID);
         l.append('\n');
-        for (int i = 0; i < nRegularOptions; ++i) {
+        for (int i = 0; i < NREGULAROPTIONS; ++i) {
             l.append(waitQueue.get(i));
             l.append('\n');
         }

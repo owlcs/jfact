@@ -10,21 +10,30 @@ import static uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry.resolveSynonym;
 import java.util.ArrayList;
 import java.util.List;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.Pair;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
-import conformance.PortedFrom;
 
 /** nominal reasoner */
 @PortedFrom(file = "ReasonerNom.h", name = "NominalReasoner")
 public class NominalReasoner extends DlSatTester {
 
-    private static final long serialVersionUID = 11000L;
     /** all nominals defined in TBox */
-    @PortedFrom(file = "ReasonerNom.h", name = "Nominals")
-    protected final List<Individual> nominals = new ArrayList<>();
+    @PortedFrom(file = "ReasonerNom.h", name = "Nominals") protected final List<Individual> nominals = new ArrayList<>();
+
+    /**
+     * @param tbox
+     *        tbox
+     * @param options
+     *        Options
+     */
+    public NominalReasoner(TBox tbox, JFactReasonerConfiguration options) {
+        super(tbox, options);
+        tBox.individuals().filter(pi -> !pi.isSynonym()).forEach(nominals::add);
+    }
 
     /** there are nominals */
     @Override
@@ -42,8 +51,7 @@ public class NominalReasoner extends DlSatTester {
      */
     @PortedFrom(file = "ReasonerNom.h", name = "registerNominalCache")
     protected void registerNominalCache(Individual p) {
-        dlHeap.setCache(p.getpName(), createModelCache(p.getNode()
-                .resolvePBlocker()));
+        dlHeap.setCache(p.getpName(), createModelCache(p.getNode().resolvePBlocker()));
     }
 
     /**
@@ -74,25 +82,11 @@ public class NominalReasoner extends DlSatTester {
         registerNominalCache(p);
         if (p.getNode().isPBlocked()) {
             // BP of the individual P is merged to
-            int bp = p.getNode().getBlocker().label().get_sc().iterator()
-                    .next().getConcept();
+            int bp = p.getNode().getBlocker().label().getSimpleConcepts().iterator().next().getConcept();
             Individual blocker = (Individual) dlHeap.get(bp).getConcept();
             assert blocker.getNode().equals(p.getNode().getBlocker());
-            tBox.addSameIndividuals(p, new Pair(blocker, p.getNode()
-                    .getPurgeDep().isEmpty()));
+            tBox.addSameIndividuals(p, new Pair(blocker, p.getNode().getPurgeDep().isEmpty()));
         }
-    }
-
-    /**
-     * @param tbox
-     *        tbox
-     * @param Options
-     *        Options
-     */
-    public NominalReasoner(TBox tbox, JFactReasonerConfiguration Options) {
-        super(tbox, Options);
-        tBox.i_begin().filter(pi -> !pi.isSynonym())
-                .forEach(pi -> nominals.add(pi));
     }
 
     /** prerpare Nominal Reasoner to a new job */
@@ -116,12 +110,10 @@ public class NominalReasoner extends DlSatTester {
     /** @return check whether ontology with nominals is consistent */
     @PortedFrom(file = "ReasonerNom.h", name = "consistentNominalCloud")
     public boolean consistentNominalCloud() {
-        options.getLog().print(
-                "\n\nChecking consistency of an ontology with individuals:\n");
-        boolean result = false;
+        options.getLog().print("\n\nChecking consistency of an ontology with individuals:\n");
+        boolean result;
         // reserve the root for the forthcoming reasoning
-        if (initNewNode(cGraph.getRoot(), DepSet.create(), Helper.bpTOP)
-                || initNominalCloud()) {
+        if (initNewNode(cGraph.getRoot(), DepSet.create(), Helper.BP_TOP) || initNominalCloud()) {
             // clash during initialisation
             options.getLog().print("\ninit done\n");
             result = false;
@@ -143,22 +135,21 @@ public class NominalReasoner extends DlSatTester {
             nonDetShift = 1;
             options.getLog().print("]");
         }
-        options.getLog().printTemplate(Templates.CONSISTENT_NOMINAL,
-                result ? "consistent" : "INCONSISTENT");
+        options.getLog().printTemplate(Templates.CONSISTENT_NOMINAL, result ? "consistent" : "INCONSISTENT");
         if (!result) {
             return false;
         }
         // ABox is consistent . create cache for every nominal in KB
-        nominals.forEach(p -> updateClassifiedSingleton(p));
+        nominals.forEach(this::updateClassifiedSingleton);
         return true;
     }
 
     @PortedFrom(file = "ReasonerNom.h", name = "initNominalCloud")
     private boolean initNominalCloud() {
-        if (nominals.stream().anyMatch(p -> initNominalNode(p))) {
+        if (nominals.stream().anyMatch(this::initNominalNode)) {
             return true;
         }
-        if (tBox.getRelatedI().stream().anyMatch(p -> initRelatedNominals(p))) {
+        if (tBox.getRelatedI().stream().anyMatch(this::initRelatedNominals)) {
             return true;
         }
         if (tBox.getDifferent().isEmpty()) {
@@ -167,8 +158,7 @@ public class NominalReasoner extends DlSatTester {
         DepSet dummy = DepSet.create();
         for (List<Individual> r : tBox.getDifferent()) {
             cGraph.initIR();
-            if (r.stream().anyMatch(
-                    p -> cGraph.setCurIR(resolveSynonym(p).getNode(), dummy))) {
+            if (r.stream().anyMatch(p -> cGraph.setCurIR(resolveSynonym(p).getNode(), dummy))) {
                 return true;
             }
             cGraph.finiIR();
@@ -180,12 +170,12 @@ public class NominalReasoner extends DlSatTester {
     private boolean initRelatedNominals(Related rel) {
         DlCompletionTree from = resolveSynonym(rel.getA()).getNode();
         DlCompletionTree to = resolveSynonym(rel.getB()).getNode();
-        Role R = resolveSynonym(rel.getRole());
+        Role r = resolveSynonym(rel.getRole());
         DepSet dep = DepSet.create();
-        if (R.isDisjoint() && checkDisjointRoleClash(from, to, R, dep)) {
+        if (r.isDisjoint() && checkDisjointRoleClash(from, to, r, dep)) {
             return true;
         }
-        DlCompletionTreeArc pA = cGraph.addRoleLabel(from, to, false, R, dep);
+        DlCompletionTreeArc pA = cGraph.addRoleLabel(from, to, false, r, dep);
         return setupEdge(pA, dep, 0);
     }
 
@@ -201,8 +191,7 @@ public class NominalReasoner extends DlSatTester {
         prepareReasoner();
         DepSet dummy = DepSet.create();
         for (int i = 0; i < tBox.getIV().size(); i++) {
-            if (addToDoEntry(tBox.getIV().get(i).getNode(), tBox
-                    .getConceptsForQueryAnswering().get(i), dummy, "QA")) {
+            if (addToDoEntry(tBox.getIV().get(i).getNode(), tBox.getConceptsForQueryAnswering().get(i), dummy, "QA")) {
                 return true;
             }
         }

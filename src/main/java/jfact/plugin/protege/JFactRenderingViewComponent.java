@@ -11,7 +11,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 public class JFactRenderingViewComponent extends
         AbstractOntologyRenderingViewComponent {
 
-    private static final long serialVersionUID = 40000L;
+
 
     @Override
     protected void renderOntology(OWLOntology ontology, Writer writer)

@@ -2,6 +2,8 @@ package uk.ac.manchester.cs.jfact.kernel;
 
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
 import conformance.PortedFrom;
 
 /* This file is part of the JFact DL reasoner
@@ -13,17 +15,13 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tLexeme.h", name = "TLexeme")
 public class Lexeme implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** Lexeme's Token */
-    @PortedFrom(file = "tLexeme.h", name = "token")
-    private final Token token;
+    @PortedFrom(file = "tLexeme.h", name = "token") private final Token token;
     /** pointer to information (for names) */
-    @PortedFrom(file = "tLexeme.h", name = "pNE")
-    private final NamedEntry pName;
-    @PortedFrom(file = "tLexeme.h", name = "data")
-    private final int data;
+    @PortedFrom(file = "tLexeme.h", name = "pNE") private final NamedEntry pName;
+    @PortedFrom(file = "tLexeme.h", name = "data") private final int data;
 
-    private Lexeme(Token tok, NamedEntry e, int i) {
+    private Lexeme(Token tok, @Nullable NamedEntry e, int i) {
         token = tok;
         pName = e;
         data = i;
@@ -90,7 +88,7 @@ public class Lexeme implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@Nullable Object obj) {
         if (obj == null) {
             return false;
         }

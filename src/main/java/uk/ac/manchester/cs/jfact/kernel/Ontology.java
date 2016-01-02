@@ -9,8 +9,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.split.TSignature;
 import conformance.Original;
@@ -20,7 +18,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tOntology.h", name = "TOntology")
 public class Ontology implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
+
     /** all the axioms */
     @PortedFrom(file = "tOntology.h", name = "Axioms")
     private final List<AxiomInterface> axioms = new ArrayList<>();
@@ -74,7 +72,6 @@ public class Ontology implements Serializable {
      * @return p
      */
     @PortedFrom(file = "tOntology.h", name = "add")
-    @Nonnull
     public AxiomInterface add(AxiomInterface p) {
         p.setId(++axiomId);
         axioms.add(p);

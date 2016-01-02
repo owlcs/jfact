@@ -1,6 +1,6 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
-import javax.annotation.Nonnull;
+import java.io.Serializable;
 
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
@@ -14,18 +14,14 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
  * @param <T>
  *        type
  */
-public interface Literal<T extends Comparable<T>> extends DataExpression,
-        Comparable<Literal<T>> {
+public interface Literal<T extends Comparable<T>> extends DataExpression, Comparable<Literal<T>>, Serializable {
 
     /** @return datatype */
-    @Nonnull
     Datatype<T> getDatatypeExpression();
 
     /** @return value as string */
-    @Nonnull
     String value();
 
     /** @return value */
-    @Nonnull
     T typedValue();
 }

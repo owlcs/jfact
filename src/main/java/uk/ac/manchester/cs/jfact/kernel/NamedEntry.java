@@ -2,11 +2,14 @@ package uk.ac.manchester.cs.jfact.kernel;
 
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
+import org.semanticweb.owlapi.model.HasIRI;
 import org.semanticweb.owlapi.model.IRI;
 
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import conformance.Original;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
@@ -15,17 +18,16 @@ import conformance.PortedFrom;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** named entry */
 @PortedFrom(file = "tNamedEntry.h", name = "TNamedEntry")
-public abstract class NamedEntry implements HasName, Serializable {
+public abstract class NamedEntry implements HasIRI, Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** name of the entry */
-    @PortedFrom(file = "tNamedEntry.h", name = "extName")
-    protected final IRI extName;
+    @PortedFrom(file = "tNamedEntry.h", name = "extName") protected final IRI extName;
     /** entry identifier */
-    @PortedFrom(file = "tNamedEntry.h", name = "extId")
-    protected int extId;
-    @PortedFrom(file = "tNamedEntry.h", name = "entity")
-    protected NamedEntity entity = null;
+    @PortedFrom(file = "tNamedEntry.h", name = "extId") protected int extId;
+    @PortedFrom(file = "tNamedEntry.h", name = "entity") protected NamedEntity entity = null;
+    @Original private boolean system;
+    @Original private boolean top = false;
+    @Original private boolean bottom;
 
     /**
      * @param name
@@ -45,12 +47,12 @@ public abstract class NamedEntry implements HasName, Serializable {
 
     @Override
     @PortedFrom(file = "tNamedEntry.h", name = "getName")
-    public IRI getName() {
+    public IRI getIRI() {
         return extName;
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@Nullable Object obj) {
         if (obj == null) {
             return false;
         }
@@ -88,12 +90,8 @@ public abstract class NamedEntry implements HasName, Serializable {
 
     @Override
     public String toString() {
-        return extName + " " + extId + ' ' + entity + ' ' + bottom + ' '
-                + system + ' ' + top;
+        return extName + " " + extId + ' ' + entity + ' ' + bottom + ' ' + system + ' ' + top;
     }
-
-    @Original
-    private boolean system;
 
     /** @return System flag */
     @Original
@@ -106,9 +104,6 @@ public abstract class NamedEntry implements HasName, Serializable {
     public void setSystem() {
         system = true;
     }
-
-    @Original
-    private boolean top = false;
 
     // hierarchy interface
     /** @return Top-of-the-hierarchy flag */
@@ -123,9 +118,6 @@ public abstract class NamedEntry implements HasName, Serializable {
         top = true;
     }
 
-    @Original
-    private boolean bottom;
-
     /** @return Bottom-of-the-hierarchy */
     @Original
     public boolean isBottom() {
@@ -139,6 +131,7 @@ public abstract class NamedEntry implements HasName, Serializable {
     }
 
     /** @return entity */
+    @Nullable
     @PortedFrom(file = "tNamedEntry.h", name = "getEntity")
     public NamedEntity getEntity() {
         return entity;

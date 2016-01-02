@@ -228,6 +228,12 @@
 			<artifactId>org.protege.editor.owl</artifactId>
 			<version>4.3.0</version>
 			<optional>true</optional>
+			<exclusions>
+				<exclusion>
+					<artifactId>protege-owlapi-extensions</artifactId>
+					<groupId>edu.stanford.protege</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.roaringbitmap</groupId>

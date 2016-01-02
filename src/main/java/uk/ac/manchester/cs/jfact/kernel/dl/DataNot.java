@@ -7,30 +7,29 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpressionArg;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
-import conformance.PortedFrom;
 
 /** data negation */
 @PortedFrom(file = "tDLExpression.h", name = "TDLDataNot")
-public class DataNot implements DataExpression,
-        DataExpressionArg<DataExpression>, Serializable {
+public class DataNot implements DataExpression, DataExpressionArg<DataExpression>, Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** data expression argument */
-    @PortedFrom(file = "tDLExpression.h", name = "Expr")
-    protected final DataExpression Expr;
+    @PortedFrom(file = "tDLExpression.h", name = "Expr") protected final DataExpression expr;
 
     /**
-     * @param E
+     * @param e
      *        E
      */
-    public DataNot(DataExpression E) {
-        Expr = E;
+    public DataNot(DataExpression e) {
+        expr = e;
     }
 
     @Override
@@ -39,6 +38,7 @@ public class DataNot implements DataExpression,
         visitor.visit(this);
     }
 
+    @Nullable
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
@@ -49,16 +49,16 @@ public class DataNot implements DataExpression,
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "getExpr")
     public DataExpression getExpr() {
-        return Expr;
+        return expr;
     }
 
     @Override
-    public IRI getName() {
-        return IRI.create("dataNot(" + Expr + ")");
+    public IRI getIRI() {
+        return IRI.create("dataNot(" + expr + ")");
     }
 
     @Override
     public String toString() {
-        return getName().toString();
+        return getIRI().toString();
     }
 }

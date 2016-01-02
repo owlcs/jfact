@@ -16,7 +16,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "modelCacheSingleton.h", name = "modelCacheSingleton")
 public class ModelCacheSingleton extends ModelCacheInterface {
 
-    private static final long serialVersionUID = 11000L;
+
     /** the singleton itself */
     @PortedFrom(file = "modelCacheSingleton.h", name = "Singleton")
     private final int singleton;
@@ -34,7 +34,7 @@ public class ModelCacheSingleton extends ModelCacheInterface {
     @Override
     @PortedFrom(file = "modelCacheSingleton.h", name = "getState")
     public ModelCacheState getState() {
-        return ModelCacheState.csValid;
+        return ModelCacheState.VALID;
     }
 
     /** @return internal value */
@@ -53,17 +53,17 @@ public class ModelCacheSingleton extends ModelCacheInterface {
     @PortedFrom(file = "modelCacheSingleton.h", name = "canMerge")
     public ModelCacheState canMerge(ModelCacheInterface p) {
         switch (p.getCacheType()) {
-            case mctConst: // TOP/BOTTOM: the current node can't add anything to
+            case CONST: // TOP/BOTTOM: the current node can't add anything to
                            // the result
                 return p.getState();
-            case mctSingleton: // it can be a clash
-                return ((ModelCacheSingleton) p).singleton == -singleton ? ModelCacheState.csInvalid
-                        : ModelCacheState.csValid;
-            case mctIan: // ask more intellegent object
+            case SINGLETON: // it can be a clash
+                return ((ModelCacheSingleton) p).singleton == -singleton ? ModelCacheState.INVALID
+                        : ModelCacheState.VALID;
+            case IAN: // ask more intellegent object
                 return p.canMerge(this);
-            case mctBadType: // error
+            case BADTYPE: // error
             default:
-                return ModelCacheState.csUnknown;
+                return ModelCacheState.UNKNOWN;
         }
     }
 
@@ -71,7 +71,7 @@ public class ModelCacheSingleton extends ModelCacheInterface {
     @Override
     @PortedFrom(file = "modelCacheSingleton.h", name = "getCacheType")
     public ModelCacheType getCacheType() {
-        return ModelCacheType.mctSingleton;
+        return ModelCacheType.SINGLETON;
     }
 
     /** log this cache entry (with given level) */

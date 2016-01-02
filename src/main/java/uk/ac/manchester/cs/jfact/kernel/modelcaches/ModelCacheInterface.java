@@ -15,7 +15,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "modelCacheInterface.h", name = "modelCacheInterface")
 public abstract class ModelCacheInterface implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
+
     /** flag to show that model contains nominals */
     @PortedFrom(file = "modelCacheInterface.h", name = "hasNominalNode")
     private boolean hasNominalNode;
@@ -70,7 +70,7 @@ public abstract class ModelCacheInterface implements Serializable {
     /** @return the tag identifying the cache type */
     @PortedFrom(file = "modelCacheInterface.h", name = "getCacheType")
     public ModelCacheType getCacheType() {
-        return ModelCacheType.mctBadType;
+        return ModelCacheType.BADTYPE;
     }
 
     /** @return type of cache (deep or shallow) */

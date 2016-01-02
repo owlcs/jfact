@@ -45,8 +45,8 @@ public class InAx implements Serializable {
     public static final String S_ABS_REP_FORALL = "SAbsRepForall";
     /** statistics */
     public static final String S_ABS_REP_CN = "SAbsRepCN";
-    private static final long serialVersionUID = 11000L;
     private static final AtomicInteger ZERO = new AtomicInteger(0);
+    private final Map<String, AtomicInteger> created = new HashMap<>();
 
     /**
      * @return an RW concept from a given [C|I]NAME-rooted DLTree
@@ -58,37 +58,37 @@ public class InAx implements Serializable {
     }
 
     /**
-     * @param C
+     * @param c
      *        concept
      * @param t
      *        tbox
      * @return true if a concept C is a concept is non-primitive
      */
     @PortedFrom(file = "tAxiom.cpp", name = "isNP")
-    public static boolean isNP(Concept C, TBox t) {
-        return C.isNonPrimitive() && !hasDefCycle(C);
+    public static boolean isNP(Concept c, TBox t) {
+        return c.isNonPrimitive() && !hasDefCycle(c);
     }
 
     @PortedFrom(file = "tAxiom.cpp", name = "hasDefCycle")
-    static boolean hasDefCycle(Concept C) {
-        if (C.isPrimitive()) {
+    static boolean hasDefCycle(Concept c) {
+        if (c.isPrimitive()) {
             return false;
         }
-        return hasDefCycle(C, new HashSet<Concept>());
+        return hasDefCycle(c, new HashSet<Concept>());
     }
 
     @PortedFrom(file = "tAxiom.cpp", name = "hasDefCycle")
-    static boolean hasDefCycle(Concept C, Set<Concept> visited) {
+    static boolean hasDefCycle(Concept c, Set<Concept> visited) {
         // interested in non-primitive
-        if (C.isPrimitive()) {
+        if (c.isPrimitive()) {
             return false;
         }
         // already seen -- cycle
-        if (visited.contains(C)) {
+        if (visited.contains(c)) {
             return true;
         }
         // check the structure: looking for the \exists R.C
-        DLTree p = C.getDescription();
+        DLTree p = c.getDescription();
         if (!p.isNOT()) {
             return false;
         }
@@ -106,7 +106,7 @@ public class InAx implements Serializable {
         }
         // here P is a concept
         // remember C
-        visited.add(C);
+        visited.add(c);
         // check p
         return hasDefCycle(getConcept(p), visited);
     }
@@ -232,21 +232,19 @@ public class InAx implements Serializable {
         if (!isOForall(p)) {
             return false;
         }
-        DLTree C = p.getChild().getRight();
-        if (isTop(C)) {
+        DLTree c = p.getChild().getRight();
+        if (isTop(c)) {
             return false;
         }
-        return !C.isName() || !getConcept(C).isSystem();
+        return !c.isName() || !getConcept(c).isSystem();
     }
-
-    private final Map<String, AtomicInteger> created = new HashMap<>();
 
     /**
      * @param s
      *        s
      */
     private void add(String s) {
-        created.computeIfAbsent(s, (x) -> new AtomicInteger()).incrementAndGet();
+        created.computeIfAbsent(s, x -> new AtomicInteger()).incrementAndGet();
     }
 
     /**
@@ -259,67 +257,67 @@ public class InAx implements Serializable {
     }
 
     /** init SAbsRepCN */
-    public void SAbsRepCN() {
+    public void sAbsRepCN() {
         add(S_ABS_REP_CN);
     }
 
     /** init SAbsRepForall */
-    public void SAbsRepForall() {
+    public void sAbsRepForall() {
         add(S_ABS_REP_FORALL);
     }
 
     /** init SAbsBApply */
-    public void SAbsBApply() {
+    public void sAbsBApply() {
         add(S_ABS_B_APPLY);
     }
 
     /** init SAbsSplit */
-    public void SAbsSplit() {
+    public void sAbsSplit() {
         add(S_ABS_SPLIT);
     }
 
     /** init SAbsTApply */
-    public void SAbsTApply() {
+    public void sAbsTApply() {
         add(S_ABS_T_APPLY);
     }
 
     /** init SAbsCApply */
-    public void SAbsCApply() {
+    public void sAbsCApply() {
         add(S_ABS_C_APPLY);
     }
 
     /** init SAbsCAttempt */
-    public void SAbsCAttempt() {
+    public void sAbsCAttempt() {
         add(S_ABS_C_ATTEMPT);
     }
 
     /** init SAbsRApply */
-    public void SAbsRApply() {
+    public void sAbsRApply() {
         add(S_ABS_R_APPLY);
     }
 
     /** init SAbsRAttempt */
-    public void SAbsRAttempt() {
+    public void sAbsRAttempt() {
         add(S_ABS_R_ATTEMPT);
     }
 
     /** init SAbsInput */
-    public void SAbsInput() {
+    public void sAbsInput() {
         add(S_ABS_INPUT);
     }
 
     /** init SAbsAction */
-    public void SAbsAction() {
+    public void sAbsAction() {
         add(S_ABS_ACTION);
     }
 
     /** init SAbsNApply */
-    public void SAbsNApply() {
+    public void sAbsNApply() {
         add(S_ABS_N_APPLY);
     }
 
     /** init SAbsNAttempt */
-    public void SAbsNAttempt() {
+    public void sAbsNAttempt() {
         add(S_ABS_N_ATTEMPT);
     }
 
@@ -516,8 +514,8 @@ public class InAx implements Serializable {
         if (!isAbsForall(p)) {
             return false;
         }
-        DLTree C = p.getChild().getRight();
+        DLTree c = p.getChild().getRight();
         // forall is simple if its filler is a name of a primitive concept
-        return C.isName() && getConcept(C).getDescription() == null;
+        return c.isName() && getConcept(c).getDescription() == null;
     }
 }

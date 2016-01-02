@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
+import javax.annotation.Nullable;
+
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -11,30 +13,31 @@ package uk.ac.manchester.cs.jfact.datatypes;
  * @param <R>
  *        type
  */
-public interface NumericDatatype<R extends Comparable<R>> extends Datatype<R>,
-        OrderedDatatype<R> {
+public interface NumericDatatype<R extends Comparable<R>> extends Datatype<R>, OrderedDatatype<R> {
 
     @Override
-    boolean hasMinExclusive();
+        boolean hasMinExclusive();
 
     @Override
-    boolean hasMinInclusive();
+        boolean hasMinInclusive();
 
     @Override
-    boolean hasMaxExclusive();
+        boolean hasMaxExclusive();
 
     @Override
-    boolean hasMaxInclusive();
+        boolean hasMaxInclusive();
 
     @Override
-    boolean hasMin();
+        boolean hasMin();
 
     @Override
-    boolean hasMax();
+        boolean hasMax();
 
+    @Nullable
     @Override
-    R getMin();
+        R getMin();
 
+    @Nullable
     @Override
-    R getMax();
+        R getMax();
 }

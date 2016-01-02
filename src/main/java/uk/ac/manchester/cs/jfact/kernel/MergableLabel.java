@@ -2,6 +2,8 @@ package uk.ac.manchester.cs.jfact.kernel;
 
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
 import conformance.PortedFrom;
 
 /* This file is part of the JFact DL reasoner
@@ -13,10 +15,8 @@ import conformance.PortedFrom;
 @PortedFrom(file = "mergableLabel.h", name = "mergableLabel")
 public class MergableLabel implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** sample for all equivalent labels */
-    @PortedFrom(file = "mergableLabel.h", name = "pSample")
-    private MergableLabel pSample;
+    @PortedFrom(file = "mergableLabel.h", name = "pSample") private MergableLabel pSample;
 
     /** Default constructor. */
     public MergableLabel() {
@@ -24,7 +24,7 @@ public class MergableLabel implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@Nullable Object obj) {
         if (obj == null) {
             return false;
         }
@@ -33,7 +33,7 @@ public class MergableLabel implements Serializable {
         }
         if (obj instanceof MergableLabel) {
             MergableLabel p = (MergableLabel) obj;
-            return pSample.equals(p.pSample);
+            return pSample == p.pSample;
         }
         return false;
     }
@@ -56,7 +56,7 @@ public class MergableLabel implements Serializable {
     public void merge(MergableLabel p) {
         MergableLabel sample = p.resolve();
         resolve();
-        if (!pSample.equals(sample)) {
+        if (pSample != sample) {
             pSample.pSample = sample;
         }
     }

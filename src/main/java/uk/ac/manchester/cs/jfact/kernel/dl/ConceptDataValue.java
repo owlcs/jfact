@@ -7,38 +7,36 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptDataRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpressionArg;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** concept data value */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptDataValue")
-public class ConceptDataValue implements ConceptDataRoleExpression,
-        DataExpressionArg<Literal<?>>, Serializable {
+public class ConceptDataValue implements ConceptDataRoleExpression, DataExpressionArg<Literal<?>>, Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** data expression argument */
-    @PortedFrom(file = "tDLAxiom.h", name = "Expr")
-    protected final Literal<?> dataValue;
-    @Original
-    private final DataRoleExpression delegate;
+    @PortedFrom(file = "tDLAxiom.h", name = "Expr") protected final Literal<?> dataValue;
+    @Original private final DataRoleExpression delegate;
 
     /**
-     * @param R
+     * @param r
      *        R
-     * @param V
+     * @param v
      *        V
      */
-    public ConceptDataValue(DataRoleExpression R, Literal<?> V) {
-        dataValue = V;
-        delegate = R;
+    public ConceptDataValue(DataRoleExpression r, Literal<?> v) {
+        dataValue = v;
+        delegate = r;
     }
 
     @Override
@@ -47,6 +45,7 @@ public class ConceptDataValue implements ConceptDataRoleExpression,
         visitor.visit(this);
     }
 
+    @Nullable
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
@@ -66,12 +65,12 @@ public class ConceptDataValue implements ConceptDataRoleExpression,
     }
 
     @Override
-    public IRI getName() {
+    public IRI getIRI() {
         return IRI.create("dataValue(" + delegate + " " + dataValue + ")");
     }
 
     @Override
     public String toString() {
-        return getName().toString();
+        return getIRI().toString();
     }
 }

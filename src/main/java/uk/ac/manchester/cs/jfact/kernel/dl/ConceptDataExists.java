@@ -8,40 +8,36 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
 import java.io.Serializable;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptDataRVExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleArg;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** exist data restriction */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptDataExists")
-public class ConceptDataExists implements ConceptDataRVExpression, DataRoleArg,
-        Serializable {
+public class ConceptDataExists implements ConceptDataRVExpression, DataRoleArg, Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** data role argument */
-    @PortedFrom(file = "tDLExpression.h", name = "DR")
-    @Original
-    private final DataRoleExpression dataRoleExpression;
-    @Original
-    private final DataExpression delegate;
+    @PortedFrom(file = "tDLExpression.h", name = "DR") private final DataRoleExpression dataRoleExpression;
+    @Original private final DataExpression delegate;
 
     /**
-     * @param R
+     * @param r
      *        R
-     * @param E
+     * @param e
      *        E
      */
-    public ConceptDataExists(DataRoleExpression R, DataExpression E) {
-        dataRoleExpression = R;
-        delegate = E;
+    public ConceptDataExists(DataRoleExpression r, DataExpression e) {
+        dataRoleExpression = r;
+        delegate = e;
     }
 
     @Override
@@ -50,6 +46,7 @@ public class ConceptDataExists implements ConceptDataRVExpression, DataRoleArg,
         visitor.visit(this);
     }
 
+    @Nullable
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
@@ -69,7 +66,7 @@ public class ConceptDataExists implements ConceptDataRVExpression, DataRoleArg,
     }
 
     @Override
-    public IRI getName() {
+    public IRI getIRI() {
         return IRI.create(toString());
     }
 

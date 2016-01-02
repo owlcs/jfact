@@ -7,21 +7,19 @@ package uk.ac.manchester.cs.jfact.kernel.actors;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
 import uk.ac.manchester.cs.jfact.kernel.Concept;
 import uk.ac.manchester.cs.jfact.kernel.Individual;
 import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
-import conformance.PortedFrom;
 
 /** RI actor */
 @PortedFrom(file = "Kernel.cpp", name = "RIActor")
 public class RIActor implements Actor, Serializable {
 
-    private static final long serialVersionUID = 11000L;
     private final List<Individual> acc = new ArrayList<>();
 
     /**
@@ -53,7 +51,7 @@ public class RIActor implements Actor, Serializable {
         if (test(v.getPrimer())) {
             return true;
         }
-        return v.synonyms().stream().anyMatch(p -> test(p));
+        return v.synonyms().anyMatch(RIActor::test);
     }
 
     private static boolean test(ClassifiableEntry p) {
@@ -69,7 +67,4 @@ public class RIActor implements Actor, Serializable {
     public List<Individual> getAcc() {
         return acc;
     }
-
-    @Override
-    public void removePastBoundaries(Collection<TaxonomyVertex> pastBoundary) {}
 }

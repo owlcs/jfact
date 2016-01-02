@@ -7,8 +7,6 @@ package uk.ac.manchester.cs.jfact.helpers;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** templates */
 public enum Templates {
-
-
     //@formatter:off
     /** TAX_TRYING               */ TAX_TRYING              ("\nTAX: trying '%s' [= '%s'... "), 
     /** INTERVAL                 */ INTERVAL                (" %s%s%s,%s%s"), 
@@ -20,19 +18,19 @@ public enum Templates {
     /** WRITE_STATE              */ WRITE_STATE             ("\nLoaded KB used DL with following features:\nKB contains %sinverse role(s)\nKB contains %srole hierarchy\nKB contains %stransitive role(s)\nKB contains %stop role expressions\nKB contains quantifier(s)\nKB contains %sfunctional restriction(s)\nKB contains %snumber restriction(s)\nKB contains %snominal(s)\n"),
     /** BUILD_CACHE_UNSAT        */ BUILD_CACHE_UNSAT       ("\nDAG entry %s is unsatisfiable\n"),
     /** CAN_BE_CACHED            */ CAN_BE_CACHED           (" cf(%s)"),
-    /** CHECK_MERGE_CLASH        */ CHECK_MERGE_CLASH       (" x(%s,%s%s)"),
+    /** CHECK_MERGE_CLASH        */ CHECK_MERGE_CLASH       (" x(%2$s,%3$s%1$s)"),
     /** COMMON_TACTIC_BODY_OR    */ COMMON_TACTIC_BODY_OR   (" E(%s)"),
     /** COMMON_TACTIC_BODY_SOME  */ COMMON_TACTIC_BODY_SOME (" nf(%s)"),
     /** COMMON_TACTIC_BODY_SOME2 */ COMMON_TACTIC_BODY_SOME2(" f(%s):"),
     /** CONSISTENT_NOMINAL       */ CONSISTENT_NOMINAL      ("\nThe ontology is %s"),
-    /** DN                       */ DN                      (" DN(%s%s)"),
-    /** CN                       */ CN                      (" cn(%s%s)"),
+    /** DN                       */ DN                      (" DN(%2$s%1$s)"),
+    /** CN                       */ CN                      (" cn(%2$s%1$s)"),
     /** NN                       */ NN                      (" NN(%s)"),
     /** E                        */ E                       (" E(%s,%s,%s)"),
     /** LOG_FINISH_ENTRY         */ LOG_FINISH_ENTRY        (" Clash%s"),
-    /** DLVERTEXPrint2           */ DLVERTEXPrint2          ("(%s) %s %s"),
-    /** DLVERTEXPrint3           */ DLVERTEXPrint3          (" %s{%s} %s"),
-    /** DLVERTEXPrint4           */ DLVERTEXPrint4          (" %s, %s => %s"),
+    /** DLVERTEXPrint2           */ DLVERTEXPRINT2          ("(%s) %s %s"),
+    /** DLVERTEXPrint3           */ DLVERTEXPRINT3          (" %s{%s} %s"),
+    /** DLVERTEXPrint4           */ DLVERTEXPRINT4          (" %s, %s => %s"),
     /** LOGCACHEENTRY            */ LOGCACHEENTRY           ("\nConst cache: element %s"),
     /** DLCOMPLETIONTREEARC      */ DLCOMPLETIONTREEARC     ("<%s%s>"),
     /** DLCONCEPTTAXONOMY        */ DLCONCEPTTAXONOMY       ("Totally %s subsumption tests was made\nAmong them %s (%s) successfull\n" + "Besides that %s successfull and %s unsuccessfull subsumption tests were cached\n" + "%sThere were made %s search calls\n" + "There were made %s Sub calls, of which %s non-trivial\nCurrent efficiency (wrt Brute-force) is %s\n"),
@@ -47,7 +45,7 @@ public enum Templates {
     /** MERGE                    */ MERGE                   (" m(%s->%s)"),
     /** RESTORE                  */ RESTORE                 (" sr(%s)"),
     /** CLASSIFY_CONCEPTS        */ CLASSIFY_CONCEPTS       ("\n\n---Start classifying %s concepts"),
-    /** CLASSIFY_CONCEPTS2       */ CLASSIFY_CONCEPTS2      ("\n---Done: %s %s concepts classified"),
+    /** CLASSIFY_CONCEPTS2       */ CLASSIFY_CONCEPTS2      ("\n---Done: %2$s %1$s concepts classified"),
     /** READ_CONFIG              */ READ_CONFIG             ("Init useCompletelyDefined = %s\nInit useRelevantOnly = %s\nInit dumpQuery = %s\nInit alwaysPreferEquals = %s\n"),
     /** TOLD_SUBSUMERS           */ TOLD_SUBSUMERS          (" '%s'"),
     /** TRANSFORM_TOLD_CYCLES    */ TRANSFORM_TOLD_CYCLES   ("\nTold cycle elimination done with %s synonyms created"),

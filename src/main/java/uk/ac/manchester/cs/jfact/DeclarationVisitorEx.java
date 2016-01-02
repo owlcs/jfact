@@ -2,8 +2,6 @@ package uk.ac.manchester.cs.jfact;
 
 import java.io.Serializable;
 
-import javax.annotation.Nonnull;
-
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -24,7 +22,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 public class DeclarationVisitorEx implements
         OWLEntityVisitorEx<AxiomInterface>, Serializable {
 
-    private static final long serialVersionUID = 11000L;
+
     private Ontology o;
     private OWLDataFactory df;
     private TranslationMachinery tr;
@@ -44,7 +42,7 @@ public class DeclarationVisitorEx implements
         this.tr = tr;
     }
 
-    private OWLDeclarationAxiom d(@Nonnull OWLEntity e) {
+    private OWLDeclarationAxiom d(OWLEntity e) {
         return df.getOWLDeclarationAxiom(e);
     }
 

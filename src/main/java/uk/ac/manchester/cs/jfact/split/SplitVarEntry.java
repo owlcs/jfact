@@ -15,7 +15,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 /** split var entry */
 public class SplitVarEntry implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** entry name */
     public ConceptName name;
     /** internal name */
@@ -23,5 +22,5 @@ public class SplitVarEntry implements Serializable {
     /** signature */
     public TSignature sig;
     /** module */
-    public Set<AxiomInterface> Module;
+    public Set<AxiomInterface> module;
 }

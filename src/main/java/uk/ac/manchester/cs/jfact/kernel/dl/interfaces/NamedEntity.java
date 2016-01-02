@@ -1,8 +1,13 @@
 package uk.ac.manchester.cs.jfact.kernel.dl.interfaces;
 
-import uk.ac.manchester.cs.jfact.kernel.HasName;
-import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
+import java.io.Serializable;
+
+import javax.annotation.Nullable;
+
+import org.semanticweb.owlapi.model.HasIRI;
+
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
@@ -11,16 +16,17 @@ import conformance.PortedFrom;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** named entity */
 @PortedFrom(file = "tDLExpression.h", name = "TNamedEntity")
-public interface NamedEntity extends HasName {
+public interface NamedEntity extends HasIRI, Serializable {
 
     /** @return named entry */
+    @Nullable
     @PortedFrom(file = "tDLExpression.h", name = "getEntry")
-    NamedEntry getEntry();
+        NamedEntry getEntry();
 
     /**
      * @param e
      *        e
      */
     @PortedFrom(file = "tDLExpression.h", name = "setEntry")
-    void setEntry(NamedEntry e);
+        void setEntry(@Nullable NamedEntry e);
 }

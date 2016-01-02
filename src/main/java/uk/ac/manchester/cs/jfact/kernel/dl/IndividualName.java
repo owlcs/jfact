@@ -7,19 +7,18 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
-import conformance.PortedFrom;
 
 /** individual name */
 @PortedFrom(file = "tDLExpression.h", name = "TDLIndividualName")
-public class IndividualName extends NamedEntityImpl implements
-        IndividualExpression, Serializable {
-
-    private static final long serialVersionUID = 11000L;
+public class IndividualName extends NamedEntityImpl implements IndividualExpression, Serializable {
 
     /**
      * @param name
@@ -35,6 +34,7 @@ public class IndividualName extends NamedEntityImpl implements
         visitor.visit(this);
     }
 
+    @Nullable
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {

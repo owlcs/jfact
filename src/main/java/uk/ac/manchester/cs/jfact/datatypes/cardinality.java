@@ -7,18 +7,17 @@ package uk.ac.manchester.cs.jfact.datatypes;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** cardinality */
 public enum cardinality {
-    /** FINITE */
-    FINITE,
-    /** COUNTABLYINFINITE */
-    COUNTABLYINFINITE;
-
+//@formatter:off
+    /** FINITE */               FINITE, 
+    /** COUNTABLYINFINITE */    COUNTABLYINFINITE;
+//@formatter:on
     /**
      * @param string
      *        string
      * @return cardinality
      */
     public static cardinality parse(String string) {
-        if (string.equals("countably infinite")) {
+        if ("countably infinite".equals(string)) {
             return COUNTABLYINFINITE;
         }
         // XXX not the best solution but should work

@@ -16,19 +16,10 @@ import conformance.PortedFrom;
 @PortedFrom(file = "LocalityChecker.h", name = "SigAccessor")
 public class SigAccessor extends DLExpressionVisitorAdapter {
 
-    private static final long serialVersionUID = 11000L;
+
     /** signature of a module */
     @PortedFrom(file = "LocalityChecker.h", name = "sig")
     protected TSignature sig;
-
-    /**
-     * @param s
-     *        s
-     */
-    @Original
-    public void setSignature(TSignature s) {
-        sig = s;
-    }
 
     /** empty sig */
     public SigAccessor() {}
@@ -39,6 +30,15 @@ public class SigAccessor extends DLExpressionVisitorAdapter {
      */
     public SigAccessor(TSignature s) {
         setSignature(s);
+    }
+
+    /**
+     * @param s
+     *        s
+     */
+    @Original
+    public void setSignature(TSignature s) {
+        sig = s;
     }
 
     /**

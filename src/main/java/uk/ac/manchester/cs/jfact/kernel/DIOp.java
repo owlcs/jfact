@@ -7,36 +7,34 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 enum DIOp {
     // concept expressions
-    diNot("not"),
-    diAnd("and"),
-    diOr("or"),
-    diExists("some"),
-    diForall("all"),
-    diGE("atleast"),
-    diLE("atmost"),
+    NOT("not"),
+    AND("and"),
+    OR("or"),
+    EXISTS("some"),
+    FORALL("all"),
+    GE("atleast"),
+    LE("atmost"),
     // role expressions
-    diInv,
+    INV,
     // individual expressions
-    diOneOf,
+    ONEOF,
     // end of the enum
-    diEndOp,
-    // wrong axiom
-    // diErrorAx(9),
+    ENDOP,
     // concept axioms
-    diDefineC("defprimconcept"),
-    diImpliesC("implies_c"),
-    diEqualsC("equal_c"),
-    diDisjointC,
+    DEFINEC("defprimconcept"),
+    IMPLIESC("implies_c"),
+    EQUALSC("equal_c"),
+    DISJOINTC,
     // role axioms
-    diDefineR("defprimrole"),
-    diTransitiveR("transitive"),
-    diFunctionalR("functional"),
-    diImpliesR("implies_r"),
-    diEqualsR("equal_r"),
-    diDomainR("domain"),
-    diRangeR("range"),
+    DEFINER("defprimrole"),
+    TRANSITIVER("transitive"),
+    FUNCTIONALR("functional"),
+    IMPLIESR("implies_r"),
+    EQUALSR("equal_r"),
+    DOMAINR("domain"),
+    RANGER("range"),
     // individual axioms
-    diInstanceOf;
+    INSTANCEOF;
 
     private final String s;
 

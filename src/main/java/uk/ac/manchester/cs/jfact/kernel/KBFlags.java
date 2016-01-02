@@ -14,18 +14,14 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tKBFlags.h", name = "TKBFlags")
 public class KBFlags implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
-    @Original
-    private boolean GCI;
-    @Original
-    private boolean RnD;
-    @Original
-    private boolean Reflexive;
+    @Original private boolean gci;
+    @Original private boolean rnD;
+    @Original private boolean reflexive;
 
     /** @return GCIs */
     @Original
     public boolean isGCI() {
-        return GCI;
+        return gci;
     }
 
     /**
@@ -34,13 +30,13 @@ public class KBFlags implements Serializable {
      */
     @Original
     public void setGCI(boolean action) {
-        GCI = action;
+        gci = action;
     }
 
     /** @return Range and Domain axioms */
     @Original
     public boolean isRnD() {
-        return RnD;
+        return rnD;
     }
 
     /**
@@ -49,13 +45,13 @@ public class KBFlags implements Serializable {
      */
     @Original
     public void setRnD(boolean b) {
-        RnD = b;
+        rnD = b;
     }
 
     /** @return Reflexive roles */
     @Original
     public boolean isReflexive() {
-        return Reflexive;
+        return reflexive;
     }
 
     /**
@@ -64,6 +60,6 @@ public class KBFlags implements Serializable {
      */
     @Original
     public void setReflexive(boolean action) {
-        Reflexive = action;
+        reflexive = action;
     }
 }

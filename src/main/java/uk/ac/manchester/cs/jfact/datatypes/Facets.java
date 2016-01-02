@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
@@ -25,11 +26,8 @@ import org.semanticweb.owlapi.vocab.OWLFacet;
  */
 public class Facets implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
+    private abstract static class AbstractFacet implements Facet, Serializable {
 
-    private static abstract class AbstractFacet implements Facet, Serializable {
-
-        private static final long serialVersionUID = 11000L;
         protected final String uri;
         protected final String fragment;
 
@@ -54,7 +52,7 @@ public class Facets implements Serializable {
         }
 
         @Override
-        public boolean equals(Object obj) {
+        public boolean equals(@Nullable Object obj) {
             if (super.equals(obj)) {
                 return true;
             }
@@ -65,10 +63,9 @@ public class Facets implements Serializable {
         }
 
         @Override
-        public Comparable parseNumber(Object value) {
+        public Comparable parseNumber(@Nullable Object value) {
             if (!isNumberFacet()) {
-                throw new UnsupportedOperationException(
-                        "Only number facets can parse numbers");
+                throw new UnsupportedOperationException("Only number facets can parse numbers");
             }
             if (value == null) {
                 throw new IllegalArgumentException("Cannot parse a null value");
@@ -96,9 +93,8 @@ public class Facets implements Serializable {
                 // BigDecimal - or exceptions will be spat out
                 return new BigDecimal(value.toString());
             } catch (NumberFormatException e) {
-                throw new NumberFormatException("Cannot parse '"
-                        + value.toString() + "' as a big decimal: "
-                        + e.getMessage());
+                throw new NumberFormatException(
+                    "Cannot parse '" + value.toString() + "' as a big decimal: " + e.getMessage());
             }
         }
 
@@ -109,8 +105,6 @@ public class Facets implements Serializable {
     }
 
     private static class LimitFacet extends AbstractFacet {
-
-        private static final long serialVersionUID = 11000L;
 
         public LimitFacet(String u) {
             super(u);
@@ -160,7 +154,7 @@ public class Facets implements Serializable {
          * character reference to that same UCS code point.
          */
         /** preserve */
-        preserve {
+        PRESERVE {
 
             @Override
             public String normalize(@Nonnull String input) {
@@ -168,20 +162,19 @@ public class Facets implements Serializable {
             }
         },
         /** replace */
-        replace {
+        REPLACE {
 
             @Override
             public String normalize(@Nonnull String input) {
-                return input.replace('\t', ' ').replace('\n', ' ')
-                        .replace('\r', ' ');
+                return input.replace('\t', ' ').replace('\n', ' ').replace('\r', ' ');
             }
         },
         /** collapse */
-        collapse {
+        COLLAPSE {
 
             @Override
             public String normalize(@Nonnull String input) {
-                StringBuilder b = new StringBuilder(replace.normalize(input));
+                StringBuilder b = new StringBuilder(REPLACE.normalize(input));
                 for (int i = 0; i < b.length(); i++) {
                     if (b.charAt(i) == ' ') {
                         while (i < b.length() - 1 && b.charAt(i + 1) == ' ') {
@@ -198,8 +191,7 @@ public class Facets implements Serializable {
          *        input
          * @return normalized input
          */
-        @Nonnull
-        public abstract String normalize(@Nonnull String input);
+        public abstract String normalize(String input);
     }
 
     /** length */
@@ -215,8 +207,6 @@ public class Facets implements Serializable {
     /** whiteSpace */
     public static final Facet whiteSpace = new AbstractFacet("whiteSpace") {
 
-        private static final long serialVersionUID = 11000L;
-
         @Override
         public boolean isNumberFacet() {
             return false;
@@ -230,14 +220,11 @@ public class Facets implements Serializable {
             if (value instanceof String) {
                 return whitespace.valueOf((String) value);
             }
-            throw new ReasonerInternalException("Cannot parse " + value
-                    + " as a whitespace enum value");
+            throw new ReasonerInternalException("Cannot parse " + value + " as a whitespace enum value");
         }
     };
     /** pattern */
     public static final Facet pattern = new AbstractFacet("pattern") {
-
-        private static final long serialVersionUID = 11000L;
 
         @Override
         public boolean isNumberFacet() {
@@ -252,8 +239,6 @@ public class Facets implements Serializable {
     /** enumeration */
     public static final Facet enumeration = new AbstractFacet("enumeration") {
 
-        private static final long serialVersionUID = 11000L;
-
         @Override
         public boolean isNumberFacet() {
             return false;
@@ -261,8 +246,6 @@ public class Facets implements Serializable {
     };
     /** maxInclusive */
     public static final Facet maxInclusive = new LimitFacet("maxInclusive") {
-
-        private static final long serialVersionUID = 11000L;
 
         @Override
         public String toString() {
@@ -272,8 +255,6 @@ public class Facets implements Serializable {
     /** maxExclusive */
     public static final Facet maxExclusive = new LimitFacet("maxExclusive") {
 
-        private static final long serialVersionUID = 11000L;
-
         @Override
         public String toString() {
             return ")";
@@ -281,8 +262,6 @@ public class Facets implements Serializable {
     };
     /** minInclusive */
     public static final Facet minInclusive = new LimitFacet("minInclusive") {
-
-        private static final long serialVersionUID = 11000L;
 
         @Override
         public String toString() {
@@ -292,23 +271,18 @@ public class Facets implements Serializable {
     /** minExclusive */
     public static final Facet minExclusive = new LimitFacet("minExclusive") {
 
-        private static final long serialVersionUID = 11000L;
-
         @Override
         public String toString() {
             return "(";
         }
     };
+    private static final List<Facet> values = Arrays.asList(enumeration, fractionDigits, length, maxExclusive,
+        maxInclusive, minExclusive, minInclusive, maxLength, minLength, pattern, totalDigits, whiteSpace);
 
     /** @return all facets */
     public static List<Facet> values() {
         return new ArrayList<>(values);
     }
-
-    private static final List<Facet> values = Arrays.asList(enumeration,
-            fractionDigits, length, maxExclusive, maxInclusive, minExclusive,
-            minInclusive, maxLength, minLength, pattern, totalDigits,
-            whiteSpace);
 
     /**
      * @param f
@@ -337,8 +311,8 @@ public class Facets implements Serializable {
                 return totalDigits;
             case FRACTION_DIGITS:
                 return fractionDigits;
-                // XXX lang range should actually perform validation on language
-                // tags
+            // XXX lang range should actually perform validation on language
+            // tags
             case LANG_RANGE:
                 return pattern;
             default:
@@ -347,12 +321,12 @@ public class Facets implements Serializable {
     }
 
     /**
-     * @param _f
+     * @param in
      *        string facet
      * @return facet
      */
-    public static Facet parse(String _f) {
-        String f = '#' + _f.substring(_f.indexOf(':') + 1);
+    public static Facet parse(String in) {
+        String f = '#' + in.substring(in.indexOf(':') + 1);
         for (Facet facet : values) {
             if (facet.getURI().endsWith(f)) {
                 return facet;

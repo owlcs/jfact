@@ -1,6 +1,6 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import conformance.Original;
 
@@ -17,11 +17,9 @@ import conformance.Original;
  *        type
  */
 @Original
-public interface DatatypeExpression<R extends Comparable<R>> extends
-        Datatype<R> {
+public interface DatatypeExpression<R extends Comparable<R>> extends Datatype<R> {
 
     /** @return the predefined datatype which is host for this expression */
-    @Nonnull
     Datatype<R> getHostType();
 
     /**
@@ -33,8 +31,7 @@ public interface DatatypeExpression<R extends Comparable<R>> extends
      *        the value for the facet
      * @return modified expression
      */
-    @Nonnull
-    DatatypeExpression<R> addNonNumericFacet(Facet f, Comparable<?> value);
+    DatatypeExpression<R> addNonNumericFacet(Facet f, @Nullable Comparable<?> value);
 
     /**
      * @param f
@@ -43,6 +40,5 @@ public interface DatatypeExpression<R extends Comparable<R>> extends
      *        value
      * @return modified expression
      */
-    @Nonnull
-    DatatypeExpression<R> addNumericFacet(Facet f, Comparable<?> value);
+    DatatypeExpression<R> addNumericFacet(Facet f, @Nullable Comparable<?> value);
 }

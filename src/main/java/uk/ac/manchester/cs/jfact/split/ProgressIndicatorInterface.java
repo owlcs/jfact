@@ -13,7 +13,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "ProgressIndicatorInterface.h", name = "ProgressIndicatorInterface")
 abstract class ProgressIndicatorInterface implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
+
     /** limit of the progress: indicate [0..uLimit] */
     @PortedFrom(file = "ProgressIndicatorInterface.h", name = "uLimit")
     private long uLimit;
@@ -21,9 +21,26 @@ abstract class ProgressIndicatorInterface implements Serializable {
     @PortedFrom(file = "ProgressIndicatorInterface.h", name = "uCurrent")
     private long uCurrent;
 
+    /** empty c'tor */
+    protected ProgressIndicatorInterface() {
+        uLimit = 0;
+        uCurrent = 0;
+    }
+
+    /**
+     * init c'tor
+     * 
+     * @param limit
+     *        limit
+     */
+    protected ProgressIndicatorInterface(long limit) {
+        uCurrent = 0;
+        setLimit(limit);
+    }
+
     /** initial exposure method: can be overriden in derived classes */
     @PortedFrom(file = "ProgressIndicatorInterface.h", name = "initExposure")
-    private void initExposure() {}
+    private static void initExposure() {}
 
     /** indicate current value somehow */
     @PortedFrom(file = "ProgressIndicatorInterface.h", name = "expose")
@@ -42,23 +59,6 @@ abstract class ProgressIndicatorInterface implements Serializable {
         } else {
             return false;
         }
-    }
-
-    /** empty c'tor */
-    protected ProgressIndicatorInterface() {
-        uLimit = 0;
-        uCurrent = 0;
-    }
-
-    /**
-     * init c'tor
-     * 
-     * @param limit
-     *        limit
-     */
-    protected ProgressIndicatorInterface(long limit) {
-        uCurrent = 0;
-        setLimit(limit);
     }
 
     /**

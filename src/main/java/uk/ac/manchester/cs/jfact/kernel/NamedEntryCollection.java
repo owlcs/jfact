@@ -8,6 +8,8 @@ package uk.ac.manchester.cs.jfact.kernel;
 import java.io.Serializable;
 import java.util.stream.Stream;
 
+import javax.annotation.Nullable;
+
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.reasoner.FreshEntityPolicy;
 
@@ -24,15 +26,13 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
  */
 public class NamedEntryCollection<T extends NamedEntry> implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** nameset to hold the elements */
     private final NameSet<T, IRI> nameset;
     /** name of the type */
     private final String typeName;
     /** flag to lock the nameset (ie, prohibit to add new names there) */
     private boolean locked;
-    @Original
-    private final JFactReasonerConfiguration options;
+    @Original private final JFactReasonerConfiguration options;
 
     /**
      * c'tor: clear 0-th element
@@ -44,8 +44,7 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
      * @param options
      *        options
      */
-    public NamedEntryCollection(String name, NameCreator<T, IRI> creator,
-        JFactReasonerConfiguration options) {
+    public NamedEntryCollection(String name, NameCreator<T, IRI> creator, JFactReasonerConfiguration options) {
         typeName = name;
         locked = false;
         nameset = new NameSet<>(creator);
@@ -94,8 +93,7 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
         // check if it is possible to insert name
         if (isLocked() && !options.isUseUndefinedNames()
             && options.getFreshEntityPolicy() == FreshEntityPolicy.DISALLOW) {
-            throw new ReasonerFreshEntityException("Unable to register '"
-                + name + "' as a " + typeName, name);
+            throw new ReasonerFreshEntityException("Unable to register '" + name + "' as a " + typeName, name);
         }
         // create name in name set, and register it
         p = nameset.add(name);
@@ -117,11 +115,11 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
      * @return true iff it was NOT the last entry.
      */
     public boolean remove(T p) {
-        if (!isRegistered(p.getName())) {
+        if (!isRegistered(p.getIRI())) {
             // not in a name-set: just delete it
             return false;
         }
-        nameset.remove(p.getName());
+        nameset.remove(p.getIRI());
         return false;
     }
 
@@ -135,6 +133,7 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
     /**
      * @return first element
      */
+    @Nullable
     public T first() {
         if (nameset.size() > 0) {
             return nameset.values().iterator().next();

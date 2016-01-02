@@ -24,9 +24,8 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>, Serializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AxiomTranslator.class);
-    private static final long serialVersionUID = 11000L;
-    @Nonnull
-    private final DeclarationVisitorEx v;
+
+    @Nonnull private final DeclarationVisitorEx v;
     private Ontology o;
     private TranslationMachinery tr;
 
@@ -46,14 +45,14 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>, Seria
 
     @Override
     public AxiomInterface visit(OWLSubClassOfAxiom axiom) {
-        return o.add(new AxiomConceptInclusion(axiom, tr.pointer(axiom.getSubClass()), tr.pointer(axiom
-            .getSuperClass())));
+        return o
+            .add(new AxiomConceptInclusion(axiom, tr.pointer(axiom.getSubClass()), tr.pointer(axiom.getSuperClass())));
     }
 
     @Override
     public AxiomInterface visit(OWLNegativeObjectPropertyAssertionAxiom axiom) {
-        return o.add(new AxiomRelatedToNot(axiom, tr.pointer(axiom.getSubject()), tr.pointer(axiom.getProperty()), tr
-            .pointer(axiom.getObject())));
+        return o.add(new AxiomRelatedToNot(axiom, tr.pointer(axiom.getSubject()), tr.pointer(axiom.getProperty()),
+            tr.pointer(axiom.getObject())));
     }
 
     @Override
@@ -72,7 +71,7 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>, Seria
     }
 
     private List<ConceptExpression> translateClassExpressionSet(Stream<? extends OWLClassExpression> classExpressions) {
-        return asList(classExpressions.map(e -> tr.pointer(e)));
+        return asList(classExpressions.map(tr::pointer));
     }
 
     @Override
@@ -91,13 +90,13 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>, Seria
     }
 
     private List<ObjectRoleExpression> translateObjectPropertySet(Stream<OWLObjectPropertyExpression> properties) {
-        return asList(properties.map(e -> tr.pointer(e)));
+        return asList(properties.map(tr::pointer));
     }
 
     @Override
     public AxiomInterface visit(OWLNegativeDataPropertyAssertionAxiom axiom) {
-        return o.add(new AxiomValueOfNot(axiom, tr.pointer(axiom.getSubject()), tr.pointer(axiom.getProperty()), tr
-            .pointer(axiom.getObject())));
+        return o.add(new AxiomValueOfNot(axiom, tr.pointer(axiom.getSubject()), tr.pointer(axiom.getProperty()),
+            tr.pointer(axiom.getObject())));
     }
 
     @Override
@@ -111,7 +110,7 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>, Seria
     }
 
     private List<DataRoleExpression> translateDataPropertySet(Stream<OWLDataPropertyExpression> properties) {
-        return asList(properties.map(e -> tr.pointer(e)));
+        return asList(properties.map(tr::pointer));
     }
 
     @Override
@@ -126,8 +125,8 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>, Seria
 
     @Override
     public AxiomInterface visit(OWLObjectPropertyAssertionAxiom axiom) {
-        return o.add(new AxiomRelatedTo(axiom, tr.pointer(axiom.getSubject()), tr.pointer(axiom.getProperty()), tr
-            .pointer(axiom.getObject())));
+        return o.add(new AxiomRelatedTo(axiom, tr.pointer(axiom.getSubject()), tr.pointer(axiom.getProperty()),
+            tr.pointer(axiom.getObject())));
     }
 
     @Override
@@ -137,14 +136,14 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>, Seria
 
     @Override
     public AxiomInterface visit(OWLSubObjectPropertyOfAxiom axiom) {
-        return o.add(new AxiomORoleSubsumption(axiom, tr.pointer(axiom.getSubProperty()), tr.pointer(axiom
-            .getSuperProperty())));
+        return o.add(
+            new AxiomORoleSubsumption(axiom, tr.pointer(axiom.getSubProperty()), tr.pointer(axiom.getSuperProperty())));
     }
 
     @Override
     public AxiomInterface visit(OWLDisjointUnionAxiom axiom) {
-        return o.add(new AxiomDisjointUnion(axiom, tr.pointer(axiom.getOWLClass()), translateClassExpressionSet(axiom
-            .classExpressions())));
+        return o.add(new AxiomDisjointUnion(axiom, tr.pointer(axiom.getOWLClass()),
+            translateClassExpressionSet(axiom.classExpressions())));
     }
 
     @Override
@@ -181,8 +180,8 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>, Seria
 
     @Override
     public AxiomInterface visit(OWLClassAssertionAxiom axiom) {
-        return o.add(new AxiomInstanceOf(axiom, tr.pointer(axiom.getIndividual()), tr.pointer(axiom
-            .getClassExpression())));
+        return o
+            .add(new AxiomInstanceOf(axiom, tr.pointer(axiom.getIndividual()), tr.pointer(axiom.getClassExpression())));
     }
 
     @Override
@@ -192,8 +191,8 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>, Seria
 
     @Override
     public AxiomInterface visit(OWLDataPropertyAssertionAxiom axiom) {
-        return o.add(new AxiomValueOf(axiom, tr.pointer(axiom.getSubject()), tr.pointer(axiom.getProperty()), tr
-            .pointer(axiom.getObject())));
+        return o.add(new AxiomValueOf(axiom, tr.pointer(axiom.getSubject()), tr.pointer(axiom.getProperty()),
+            tr.pointer(axiom.getObject())));
     }
 
     @Override
@@ -208,8 +207,8 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>, Seria
 
     @Override
     public AxiomInterface visit(OWLSubDataPropertyOfAxiom axiom) {
-        return o.add(new AxiomDRoleSubsumption(axiom, tr.pointer(axiom.getSubProperty()), tr.pointer(axiom
-            .getSuperProperty())));
+        return o.add(
+            new AxiomDRoleSubsumption(axiom, tr.pointer(axiom.getSubProperty()), tr.pointer(axiom.getSuperProperty())));
     }
 
     @Override
@@ -224,14 +223,15 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>, Seria
 
     @Override
     public AxiomInterface visit(OWLSubPropertyChainOfAxiom axiom) {
-        return o.add(new AxiomORoleSubsumption(axiom, compose(translateObjectPropertySet(axiom.getPropertyChain()
-            .stream())), tr.pointer(axiom.getSuperProperty())));
+        return o.add(
+            new AxiomORoleSubsumption(axiom, compose(translateObjectPropertySet(axiom.getPropertyChain().stream())),
+                tr.pointer(axiom.getSuperProperty())));
     }
 
     @Override
     public AxiomInterface visit(OWLInverseObjectPropertiesAxiom axiom) {
-        return o.add(new AxiomRoleInverse(axiom, tr.pointer(axiom.getFirstProperty()), tr.pointer(axiom
-            .getSecondProperty())));
+        return o.add(
+            new AxiomRoleInverse(axiom, tr.pointer(axiom.getFirstProperty()), tr.pointer(axiom.getSecondProperty())));
     }
 
     @Override

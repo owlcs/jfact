@@ -13,7 +13,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "CWDArray.cpp", name = "UnMerge")
 class UnMerge extends Restorer {
 
-    private static final long serialVersionUID = 11000L;
+
     @PortedFrom(file = "CWDArray.cpp", name = "label")
     private final CWDArray label;
     @PortedFrom(file = "CWDArray.cpp", name = "offset")

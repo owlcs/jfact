@@ -10,7 +10,7 @@ public enum DatatypeClashes {
     /** DT_TT */
     DT_TT(" DT-TT"),
     /** DT_Empty_interval */
-    DT_Empty_interval(" DT-Empty_interval"),
+    DT_EMPTY_INTERVAL(" DT-Empty_interval"),
     /** DT_C_MM */
     DT_C_MM(" DT-C-MM"),
     /** DT_TNT */

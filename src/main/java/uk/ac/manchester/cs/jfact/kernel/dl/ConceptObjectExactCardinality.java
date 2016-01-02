@@ -8,44 +8,39 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
 import java.io.Serializable;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptObjectCardinalityExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NumberArg;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** object exact cardinality */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectExactCardinality")
-public class ConceptObjectExactCardinality implements
-        ConceptObjectCardinalityExpression, NumberArg, Serializable {
+public class ConceptObjectExactCardinality implements ConceptObjectCardinalityExpression, NumberArg, Serializable {
 
-    private static final long serialVersionUID = 11000L;
-    @Original
-    private final ConceptExpression delegate;
-    @PortedFrom(file = "tDLExpression.h", name = "N")
-    private final int N;
-    @Original
-    private final ObjectRoleExpression roleDelegate;
+    @Original private final ConceptExpression delegate;
+    @PortedFrom(file = "tDLExpression.h", name = "N") private final int n;
+    @Original private final ObjectRoleExpression roleDelegate;
 
     /**
      * @param n
      *        n
-     * @param R
+     * @param r
      *        R
-     * @param C
+     * @param c
      *        C
      */
-    public ConceptObjectExactCardinality(int n, ObjectRoleExpression R,
-            ConceptExpression C) {
-        N = n;
-        delegate = C;
-        roleDelegate = R;
+    public ConceptObjectExactCardinality(int n, ObjectRoleExpression r, ConceptExpression c) {
+        this.n = n;
+        delegate = c;
+        roleDelegate = r;
     }
 
     @Override
@@ -54,6 +49,7 @@ public class ConceptObjectExactCardinality implements
         visitor.visit(this);
     }
 
+    @Nullable
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
@@ -63,7 +59,7 @@ public class ConceptObjectExactCardinality implements
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "getNumber")
     public int getCardinality() {
-        return N;
+        return n;
     }
 
     @Override
@@ -77,14 +73,15 @@ public class ConceptObjectExactCardinality implements
     public ObjectRoleExpression getOR() {
         return roleDelegate;
     }
+
     @Override
     @Nonnull
     public String toString() {
-        return "Cardinality(" + N + " " + roleDelegate + " " + delegate;
+        return "Cardinality(" + n + " " + roleDelegate + " " + delegate;
     }
 
     @Override
-    public IRI getName() {
+    public IRI getIRI() {
         return IRI.create(toString());
     }
 }

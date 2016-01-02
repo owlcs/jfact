@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
+import conformance.PortedFrom;
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -7,12 +8,9 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
-import conformance.PortedFrom;
 
 @PortedFrom(file = "dumpLisp.h", name = "dumpLisp")
 class DumpLisp extends DumpInterface {
-
-    private static final long serialVersionUID = 11000L;
 
     public DumpLisp(LogAdapter oo) {
         super(oo);
@@ -40,15 +38,15 @@ class DumpLisp extends DumpInterface {
     /** start operation >=/<= with number */
     @Override
     @PortedFrom(file = "dumpLisp.h", name = "startOp")
-    public void startOp(DIOp Op, int n) {
-        this.startOp(Op);
+    public void startOp(DIOp op, int n) {
+        this.startOp(op);
         dumpNumber(n);
     }
 
     @Override
     @PortedFrom(file = "dumpLisp.h", name = "contOp")
-    public void contOp(DIOp Op) {
-        if (Op == DIOp.diAnd || Op == DIOp.diOr) {
+    public void contOp(DIOp op) {
+        if (op == DIOp.AND || op == DIOp.OR) {
             skipIndent();
         } else {
             o.print(" ");
@@ -57,8 +55,8 @@ class DumpLisp extends DumpInterface {
 
     @Override
     @PortedFrom(file = "dumpLisp.h", name = "finishOp")
-    public void finishOp(DIOp Op) {
-        if (Op == DIOp.diAnd || Op == DIOp.diOr) {
+    public void finishOp(DIOp op) {
+        if (op == DIOp.AND || op == DIOp.OR) {
             decIndent();
         }
         o.print(")");
@@ -66,13 +64,13 @@ class DumpLisp extends DumpInterface {
 
     @Override
     @PortedFrom(file = "dumpLisp.h", name = "contAx")
-    public void contAx(DIOp Ax) {
+    public void contAx(DIOp ax) {
         o.print(" ");
     }
 
     @Override
     @PortedFrom(file = "dumpLisp.h", name = "finishAx")
-    public void finishAx(DIOp Ax) {
+    public void finishAx(DIOp ax) {
         o.print(")\n");
     }
 
@@ -80,7 +78,7 @@ class DumpLisp extends DumpInterface {
     @Override
     @PortedFrom(file = "dumpLisp.h", name = "dumpName")
     public void dumpName(NamedEntry p) {
-        o.print("|" + p.getName() + '|');
+        o.print("|" + p.getIRI() + '|');
     }
 
     /** dump concept atom (as used in expression) */
@@ -106,26 +104,26 @@ class DumpLisp extends DumpInterface {
 
     @Override
     @PortedFrom(file = "dumpLisp.h", name = "startOp")
-    public void startOp(DIOp Op) {
-        if (Op == DIOp.diAnd || Op == DIOp.diOr) {
+    public void startOp(DIOp op) {
+        if (op == DIOp.AND || op == DIOp.OR) {
             incIndent();
         }
         o.print("(");
-        o.print(Op.getString());
-        if (Op == DIOp.diEndOp) {
+        o.print(op.getString());
+        if (op == DIOp.ENDOP) {
             throw new UnreachableSituationException();
         }
-        contOp(Op);
+        contOp(op);
     }
 
     @Override
     @PortedFrom(file = "dumpLisp.h", name = "startAx")
-    public void startAx(DIOp Ax) {
+    public void startAx(DIOp ax) {
         o.print("(");
-        o.print(Ax.getString());
-        if (Ax == DIOp.diEndOp) {
+        o.print(ax.getString());
+        if (ax == DIOp.ENDOP) {
             throw new UnreachableSituationException();
         }
-        contAx(Ax);
+        contAx(ax);
     }
 }

@@ -8,42 +8,7 @@ package uk.ac.manchester.cs.jfact.split;
 import uk.ac.manchester.cs.jfact.datatypes.Datatype;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeExpression;
 import uk.ac.manchester.cs.jfact.datatypes.Literal;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptAnd;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptBottom;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataExactCardinality;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataExists;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataForall;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataMaxCardinality;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataMinCardinality;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptDataValue;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptNot;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectExactCardinality;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectExists;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectForall;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectMaxCardinality;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectMinCardinality;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectSelf;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptObjectValue;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptOneOf;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptOr;
-import uk.ac.manchester.cs.jfact.kernel.dl.ConceptTop;
-import uk.ac.manchester.cs.jfact.kernel.dl.DataAnd;
-import uk.ac.manchester.cs.jfact.kernel.dl.DataBottom;
-import uk.ac.manchester.cs.jfact.kernel.dl.DataNot;
-import uk.ac.manchester.cs.jfact.kernel.dl.DataOneOf;
-import uk.ac.manchester.cs.jfact.kernel.dl.DataOr;
-import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleBottom;
-import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleName;
-import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleTop;
-import uk.ac.manchester.cs.jfact.kernel.dl.DataTop;
-import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleBottom;
-import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleChain;
-import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleInverse;
-import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleName;
-import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleProjectionFrom;
-import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleProjectionInto;
-import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleTop;
+import uk.ac.manchester.cs.jfact.kernel.dl.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
@@ -51,13 +16,18 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
 
 abstract class CardinalityEvaluatorBase extends SigAccessor {
 
-    private static final long serialVersionUID = 11000L;
-    protected UpperBoundDirectEvaluator UBD;
-    protected LowerBoundDirectEvaluator LBD;
-    protected UpperBoundComplementEvaluator UBC;
-    protected LowerBoundComplementEvaluator LBC;
+    protected UpperBoundDirectEvaluator ubd;
+    protected LowerBoundDirectEvaluator lbd;
+    protected UpperBoundComplementEvaluator ubc;
+    protected LowerBoundComplementEvaluator lbc;
     // / keep the value here
     protected int value;
+
+    // / init c'tor
+    public CardinalityEvaluatorBase(TSignature s) {
+        super(s);
+        value = 0;
+    }
 
     // methods to
     // / main method to use
@@ -79,72 +49,45 @@ abstract class CardinalityEvaluatorBase extends SigAccessor {
     protected abstract int getEntityValue(NamedEntity entity);
 
     // / helper for All
-    protected abstract int getForallValue(RoleExpression R, Expression C);
+    protected abstract int getForallValue(RoleExpression r, Expression c);
 
     // / helper for things like >= m R.C
-    protected abstract int getMinValue(int m, RoleExpression R, Expression C);
+    protected abstract int getMinValue(int m, RoleExpression r, Expression c);
 
     // / helper for things like <= m R.C
-    protected abstract int getMaxValue(int m, RoleExpression R, Expression C);
+    protected abstract int getMaxValue(int m, RoleExpression r, Expression c);
 
     // / helper for things like = m R.C
-    protected abstract int getExactValue(int m, RoleExpression R, Expression C);
-
-    // / init c'tor
-    public CardinalityEvaluatorBase(TSignature s) {
-        super(s);
-        value = 0;
-    }
+    protected abstract int getExactValue(int m, RoleExpression r, Expression c);
 
     // / set all other evaluators
-    public void setEvaluators(UpperBoundDirectEvaluator pUD,
-            LowerBoundDirectEvaluator pLD, UpperBoundComplementEvaluator pUC,
-            LowerBoundComplementEvaluator pLC) {
-        UBD = pUD;
-        LBD = pLD;
-        UBC = pUC;
-        LBC = pLC;
-        assert UBD == this || LBD == this || UBC == this || LBC == this;
+    public void setEvaluators(UpperBoundDirectEvaluator pUD, LowerBoundDirectEvaluator pLD,
+        UpperBoundComplementEvaluator pUC, LowerBoundComplementEvaluator pLC) {
+        ubd = pUD;
+        lbd = pLD;
+        ubc = pUC;
+        lbc = pLC;
+        assert ubd == this || lbd == this || ubc == this || lbc == this;
     }
 
     // / implementation of evaluation
     public int getUpperBoundDirect(Expression expr) {
-        return _getUpperBoundDirect(expr);
+        return ubd.getValue(expr);
     }
 
     // / implementation of evaluation
     public int getUpperBoundComplement(Expression expr) {
-        return _getUpperBoundComplement(expr);
+        return ubc.getValue(expr);
     }
 
     // / implementation of evaluation
     public int getLowerBoundDirect(Expression expr) {
-        return _getLowerBoundDirect(expr);
+        return lbd.getValue(expr);
     }
 
     // / implementation of evaluation
     public int getLowerBoundComplement(Expression expr) {
-        return _getLowerBoundComplement(expr);
-    }
-
-    // / implementation of evaluation
-    private int _getUpperBoundDirect(Expression expr) {
-        return UBD.getValue(expr);
-    }
-
-    // / implementation of evaluation
-    private int _getUpperBoundComplement(Expression expr) {
-        return UBC.getValue(expr);
-    }
-
-    // / implementation of evaluation
-    private int _getLowerBoundDirect(Expression expr) {
-        return LBD.getValue(expr);
-    }
-
-    // / implementation of evaluation
-    private int _getLowerBoundComplement(Expression expr) {
-        return LBC.getValue(expr);
+        return lbc.getValue(expr);
     }
 
     // visitor implementation: common cases
@@ -166,20 +109,17 @@ abstract class CardinalityEvaluatorBase extends SigAccessor {
 
     @Override
     public void visit(ConceptObjectMinCardinality expr) {
-        value = getMinValue(expr.getCardinality(), expr.getOR(),
-                expr.getConcept());
+        value = getMinValue(expr.getCardinality(), expr.getOR(), expr.getConcept());
     }
 
     @Override
     public void visit(ConceptObjectMaxCardinality expr) {
-        value = getMaxValue(expr.getCardinality(), expr.getOR(),
-                expr.getConcept());
+        value = getMaxValue(expr.getCardinality(), expr.getOR(), expr.getConcept());
     }
 
     @Override
     public void visit(ConceptObjectExactCardinality expr) {
-        value = getExactValue(expr.getCardinality(), expr.getOR(),
-                expr.getConcept());
+        value = getExactValue(expr.getCardinality(), expr.getOR(), expr.getConcept());
     }
 
     @Override
@@ -194,20 +134,17 @@ abstract class CardinalityEvaluatorBase extends SigAccessor {
 
     @Override
     public void visit(ConceptDataMinCardinality expr) {
-        value = getMinValue(expr.getCardinality(),
-                expr.getDataRoleExpression(), expr.getExpr());
+        value = getMinValue(expr.getCardinality(), expr.getDataRoleExpression(), expr.getExpr());
     }
 
     @Override
     public void visit(ConceptDataMaxCardinality expr) {
-        value = getMaxValue(expr.getCardinality(),
-                expr.getDataRoleExpression(), expr.getExpr());
+        value = getMaxValue(expr.getCardinality(), expr.getDataRoleExpression(), expr.getExpr());
     }
 
     @Override
     public void visit(ConceptDataExactCardinality expr) {
-        value = getExactValue(expr.getCardinality(),
-                expr.getDataRoleExpression(), expr.getExpr());
+        value = getExactValue(expr.getCardinality(), expr.getDataRoleExpression(), expr.getExpr());
     }
 
     // object role expressions
@@ -240,7 +177,9 @@ abstract class CardinalityEvaluatorBase extends SigAccessor {
 // / determine how many instances can an expression have
 class UpperBoundDirectEvaluator extends CardinalityEvaluatorBase {
 
-    private static final long serialVersionUID = 11000L;
+    public UpperBoundDirectEvaluator(TSignature s) {
+        super(s);
+    }
 
     // / define a special value for concepts that are not in C^{<= n}
     protected int getNoneValue() {
@@ -255,14 +194,13 @@ class UpperBoundDirectEvaluator extends CardinalityEvaluatorBase {
     // / helper for entities TODO: checks only C top-locality, not R
     @Override
     protected int getEntityValue(NamedEntity entity) {
-        return sig.botCLocal() && sig.nc(entity) ? getAllValue()
-                : getNoneValue();
+        return sig.botCLocal() && sig.nc(entity) ? getAllValue() : getNoneValue();
     }
 
     // / helper for All
     @Override
-    protected int getForallValue(RoleExpression R, Expression C) {
-        if (isTopEquivalent(R) && getLowerBoundComplement(C) >= 1) {
+    protected int getForallValue(RoleExpression r, Expression c) {
+        if (isTopEquivalent(r) && getLowerBoundComplement(c) >= 1) {
             return getAllValue();
         } else {
             return getNoneValue();
@@ -271,17 +209,17 @@ class UpperBoundDirectEvaluator extends CardinalityEvaluatorBase {
 
     // / helper for things like >= m R.C
     @Override
-    protected int getMinValue(int m, RoleExpression R, Expression C) {
+    protected int getMinValue(int m, RoleExpression r, Expression c) {
         // m > 0 and...
         if (m <= 0) {
             return getNoneValue();
         }
-        // R = \bot or...
-        if (isBotEquivalent(R)) {
+        // r = \bot or...
+        if (isBotEquivalent(r)) {
             return getAllValue();
         }
-        // C \in C^{<= m-1}
-        int ubC = getUpperBoundDirect(C);
+        // c \in c^{<= m-1}
+        int ubC = getUpperBoundDirect(c);
         if (ubC != getNoneValue() && ubC < m) {
             return getAllValue();
         } else {
@@ -291,13 +229,13 @@ class UpperBoundDirectEvaluator extends CardinalityEvaluatorBase {
 
     // / helper for things like <= m R.C
     @Override
-    protected int getMaxValue(int m, RoleExpression R, Expression C) {
-        // R = \top and...
-        if (!isTopEquivalent(R)) {
+    protected int getMaxValue(int m, RoleExpression r, Expression c) {
+        // r = \top and...
+        if (!isTopEquivalent(r)) {
             return getNoneValue();
         }
-        // C\in C^{>= m+1}
-        int lbC = getLowerBoundDirect(C);
+        // c\in c^{>= m+1}
+        int lbC = getLowerBoundDirect(c);
         if (lbC != getNoneValue() && lbC > m) {
             return getAllValue();
         } else {
@@ -307,19 +245,17 @@ class UpperBoundDirectEvaluator extends CardinalityEvaluatorBase {
 
     // / helper for things like = m R.C
     @Override
-    protected int getExactValue(int m, RoleExpression R, Expression C) {
+    protected int getExactValue(int m, RoleExpression r, Expression c) {
         // here the maximal value between Mix and Max is an answer. The -1 case
         // will be dealt with automagically
-        return Math.max(getMinValue(m, R, C), getMaxValue(m, R, C));
+        return Math.max(getMinValue(m, r, c), getMaxValue(m, r, c));
     }
 
     // / helper for And
     protected <C extends Expression> int getAndValue(NAryExpression<C> expr) {
         // we are looking for the maximal value here; -1 will be dealt with
         // automagically
-        return expr.getArguments().stream()
-                .mapToInt(p -> getUpperBoundDirect(p))
-                .reduce(getNoneValue(), Math::max);
+        return expr.getArguments().stream().mapToInt(this::getUpperBoundDirect).reduce(getNoneValue(), Math::max);
     }
 
     // / helper for Or
@@ -333,10 +269,6 @@ class UpperBoundDirectEvaluator extends CardinalityEvaluatorBase {
             sum += n;
         }
         return sum;
-    }
-
-    public UpperBoundDirectEvaluator(TSignature s) {
-        super(s);
     }
 
     // concept expressions
@@ -382,8 +314,7 @@ class UpperBoundDirectEvaluator extends CardinalityEvaluatorBase {
 
     @Override
     public void visit(ConceptDataValue expr) {
-        value = isBotEquivalent(expr.getDataRoleExpression()) ? getAllValue()
-                : getNoneValue();
+        value = isBotEquivalent(expr.getDataRoleExpression()) ? getAllValue() : getNoneValue();
     }
 
     // object role expressions
@@ -404,7 +335,7 @@ class UpperBoundDirectEvaluator extends CardinalityEvaluatorBase {
 
     @Override
     public void visit(ObjectRoleChain expr) {
-        if (expr.getArguments().stream().anyMatch(p -> isBotEquivalent(p))) {
+        if (expr.getArguments().stream().anyMatch(this::isBotEquivalent)) {
             value = getAllValue();
         } else {
             value = getNoneValue();
@@ -465,7 +396,10 @@ class UpperBoundDirectEvaluator extends CardinalityEvaluatorBase {
 
 class UpperBoundComplementEvaluator extends CardinalityEvaluatorBase {
 
-    private static final long serialVersionUID = 11000L;
+    // / init c'tor
+    public UpperBoundComplementEvaluator(TSignature s) {
+        super(s);
+    }
 
     /**
      * define a special value for concepts that are not in C^{<= n}
@@ -493,8 +427,8 @@ class UpperBoundComplementEvaluator extends CardinalityEvaluatorBase {
 
     /** helper for All */
     @Override
-    protected int getForallValue(RoleExpression R, Expression C) {
-        if (isBotEquivalent(R) || getUpperBoundComplement(C) == 0) {
+    protected int getForallValue(RoleExpression r, Expression c) {
+        if (isBotEquivalent(r) || getUpperBoundComplement(c) == 0) {
             return getAllValue();
         } else {
             return getNoneValue();
@@ -503,28 +437,28 @@ class UpperBoundComplementEvaluator extends CardinalityEvaluatorBase {
 
     // / helper for things like >= m R.C
     @Override
-    protected int getMinValue(int m, RoleExpression R, Expression C) {
+    protected int getMinValue(int m, RoleExpression r, Expression c) {
         // m == 0 or...
         if (m == 0) {
             return getAllValue();
         }
-        // R = \top and...
-        if (!isTopEquivalent(R)) {
+        // r = \top and...
+        if (!isTopEquivalent(r)) {
             return getNoneValue();
         }
-        // C \in C^{>= m}
-        return getLowerBoundDirect(C) >= m ? getAllValue() : getNoneValue();
+        // c \in c^{>= m}
+        return getLowerBoundDirect(c) >= m ? getAllValue() : getNoneValue();
     }
 
     // / helper for things like <= m R.C
     @Override
-    protected int getMaxValue(int m, RoleExpression R, Expression C) {
-        // R = \bot or...
-        if (isBotEquivalent(R)) {
+    protected int getMaxValue(int m, RoleExpression r, Expression c) {
+        // r = \bot or...
+        if (isBotEquivalent(r)) {
             return getAllValue();
         }
-        // C\in C^{<= m}
-        int lbC = getUpperBoundDirect(C);
+        // c\in c^{<= m}
+        int lbC = getUpperBoundDirect(c);
         if (lbC != getNoneValue() && lbC <= m) {
             return getAllValue();
         } else {
@@ -534,10 +468,10 @@ class UpperBoundComplementEvaluator extends CardinalityEvaluatorBase {
 
     // / helper for things like = m R.C
     @Override
-    protected int getExactValue(int m, RoleExpression R, Expression C) {
+    protected int getExactValue(int m, RoleExpression r, Expression c) {
         // here the minimal value between Mix and Max is an answer. The -1 case
         // will be dealt with automagically
-        return Math.min(getMinValue(m, R, C), getMaxValue(m, R, C));
+        return Math.min(getMinValue(m, r, c), getMaxValue(m, r, c));
     }
 
     // / helper for And
@@ -557,14 +491,7 @@ class UpperBoundComplementEvaluator extends CardinalityEvaluatorBase {
     protected <C extends Expression> int getOrValue(NAryExpression<C> expr) {
         // we are looking for the maximal value here; -1 will be dealt with
         // automagically
-        return expr.getArguments().stream()
-                .mapToInt(p -> getUpperBoundComplement(p))
-                .reduce(getNoneValue(), Math::max);
-    }
-
-    // / init c'tor
-    public UpperBoundComplementEvaluator(TSignature s) {
-        super(s);
+        return expr.getArguments().stream().mapToInt(this::getUpperBoundComplement).reduce(getNoneValue(), Math::max);
     }
 
     // concept expressions
@@ -610,8 +537,7 @@ class UpperBoundComplementEvaluator extends CardinalityEvaluatorBase {
 
     @Override
     public void visit(ConceptDataValue expr) {
-        value = isTopEquivalent(expr.getDataRoleExpression()) ? getAllValue()
-                : getNoneValue();
+        value = isTopEquivalent(expr.getDataRoleExpression()) ? getAllValue() : getNoneValue();
     }
 
     // object role expressions
@@ -701,7 +627,13 @@ class UpperBoundComplementEvaluator extends CardinalityEvaluatorBase {
 
 class LowerBoundDirectEvaluator extends CardinalityEvaluatorBase {
 
-    private static final long serialVersionUID = 11000L;
+    /**
+     * @param s
+     *        signature
+     */
+    public LowerBoundDirectEvaluator(TSignature s) {
+        super(s);
+    }
 
     /**
      * @return a special value for concepts that are not in C^{greater or equal
@@ -727,8 +659,8 @@ class LowerBoundDirectEvaluator extends CardinalityEvaluatorBase {
 
     /** helper for All */
     @Override
-    protected int getForallValue(RoleExpression R, Expression C) {
-        if (isBotEquivalent(R) || getUpperBoundComplement(C) == 0) {
+    protected int getForallValue(RoleExpression r, Expression c) {
+        if (isBotEquivalent(r) || getUpperBoundComplement(c) == 0) {
             return 1;
         } else {
             return getNoneValue();
@@ -737,28 +669,28 @@ class LowerBoundDirectEvaluator extends CardinalityEvaluatorBase {
 
     /** helper for things like greater or equal m R.C */
     @Override
-    protected int getMinValue(int m, RoleExpression R, Expression C) {
+    protected int getMinValue(int m, RoleExpression r, Expression c) {
         // m == 0 or...
         if (m == 0) {
             return getAllValue();
         }
-        // R = \top and...
-        if (!isTopEquivalent(R)) {
+        // r = \top and...
+        if (!isTopEquivalent(r)) {
             return getNoneValue();
         }
-        // C \in C^{>= m}
-        return getLowerBoundDirect(C) >= m ? m : getNoneValue();
+        // c \in c^{>= m}
+        return getLowerBoundDirect(c) >= m ? m : getNoneValue();
     }
 
     /** helper for things like lesser or equal m R.C */
     @Override
-    protected int getMaxValue(int m, RoleExpression R, Expression C) {
-        // R = \bot or...
-        if (isBotEquivalent(R)) {
+    protected int getMaxValue(int m, RoleExpression r, Expression c) {
+        // r = \bot or...
+        if (isBotEquivalent(r)) {
             return 1;
         }
-        // C\in C^{<= m}
-        int lbC = getUpperBoundDirect(C);
+        // c\in c^{<= m}
+        int lbC = getUpperBoundDirect(c);
         if (lbC != getNoneValue() && lbC <= m) {
             return 1;
         } else {
@@ -768,8 +700,8 @@ class LowerBoundDirectEvaluator extends CardinalityEvaluatorBase {
 
     /** helper for things like = m R.C */
     @Override
-    protected int getExactValue(int m, RoleExpression R, Expression C) {
-        int min = getMinValue(m, R, C), max = getMaxValue(m, R, C);
+    protected int getExactValue(int m, RoleExpression r, Expression c) {
+        int min = getMinValue(m, r, c), max = getMaxValue(m, r, c);
         // we need to take the lowest value
         if (min == getNoneValue() || max == getNoneValue()) {
             return getNoneValue();
@@ -858,14 +790,6 @@ class LowerBoundDirectEvaluator extends CardinalityEvaluatorBase {
         return max;
     }
 
-    /**
-     * @param s
-     *        signature
-     */
-    public LowerBoundDirectEvaluator(TSignature s) {
-        super(s);
-    }
-
     @Override
     public void visit(ConceptTop c) {
         value = 1;
@@ -909,8 +833,7 @@ class LowerBoundDirectEvaluator extends CardinalityEvaluatorBase {
 
     @Override
     public void visit(ConceptDataValue expr) {
-        value = isTopEquivalent(expr.getDataRoleExpression()) ? 1
-                : getNoneValue();
+        value = isTopEquivalent(expr.getDataRoleExpression()) ? 1 : getNoneValue();
     }
 
     @Override
@@ -997,7 +920,10 @@ class LowerBoundDirectEvaluator extends CardinalityEvaluatorBase {
 
 class LowerBoundComplementEvaluator extends CardinalityEvaluatorBase {
 
-    private static final long serialVersionUID = 11000L;
+    // / init c'tor
+    public LowerBoundComplementEvaluator(TSignature s) {
+        super(s);
+    }
 
     /**
      * @return a special value for concepts that are not in C^{greater or equal
@@ -1023,8 +949,8 @@ class LowerBoundComplementEvaluator extends CardinalityEvaluatorBase {
 
     /** helper for All */
     @Override
-    protected int getForallValue(RoleExpression R, Expression C) {
-        if (isTopEquivalent(R) && getLowerBoundComplement(C) >= 1) {
+    protected int getForallValue(RoleExpression r, Expression c) {
+        if (isTopEquivalent(r) && getLowerBoundComplement(c) >= 1) {
             return 1;
         } else {
             return getNoneValue();
@@ -1033,17 +959,17 @@ class LowerBoundComplementEvaluator extends CardinalityEvaluatorBase {
 
     /** helper for things like greater or equal m R.C */
     @Override
-    protected int getMinValue(int m, RoleExpression R, Expression C) {
+    protected int getMinValue(int m, RoleExpression r, Expression c) {
         // m > 0 and...
         if (m <= 0) {
             return getNoneValue();
         }
-        // R = \bot or...
-        if (isBotEquivalent(R)) {
+        // r = \bot or...
+        if (isBotEquivalent(r)) {
             return 1;
         }
-        // C \in C^{<= m-1}
-        int ubC = getUpperBoundDirect(C);
+        // c \in c^{<= m-1}
+        int ubC = getUpperBoundDirect(c);
         if (ubC != getNoneValue() && ubC < m) {
             return 1;
         } else {
@@ -1053,13 +979,13 @@ class LowerBoundComplementEvaluator extends CardinalityEvaluatorBase {
 
     /** helper for things like lesser or equal m R.C */
     @Override
-    protected int getMaxValue(int m, RoleExpression R, Expression C) {
-        // R = \top and...
-        if (!isTopEquivalent(R)) {
+    protected int getMaxValue(int m, RoleExpression r, Expression c) {
+        // r = \top and...
+        if (!isTopEquivalent(r)) {
             return getNoneValue();
         }
-        // C\in C^{>= m+1}
-        int lbC = getLowerBoundDirect(C);
+        // c\in c^{>= m+1}
+        int lbC = getLowerBoundDirect(c);
         if (lbC != getNoneValue() && lbC > m) {
             return m + 1;
         } else {
@@ -1069,11 +995,11 @@ class LowerBoundComplementEvaluator extends CardinalityEvaluatorBase {
 
     /** helper for things like = m R.C */
     @Override
-    protected int getExactValue(int m, RoleExpression R, Expression C) {
+    protected int getExactValue(int m, RoleExpression r, Expression c) {
         // here the maximal value between Mix and Max is an answer. The -1 case
         // will be dealt with automagically
         // because both min and max are between 0 and m+1
-        return Math.max(getMinValue(m, R, C), getMaxValue(m, R, C));
+        return Math.max(getMinValue(m, r, c), getMaxValue(m, r, c));
     }
 
     /**
@@ -1150,11 +1076,6 @@ class LowerBoundComplementEvaluator extends CardinalityEvaluatorBase {
         }
     }
 
-    // / init c'tor
-    public LowerBoundComplementEvaluator(TSignature s) {
-        super(s);
-    }
-
     // concept expressions
     @Override
     public void visit(ConceptTop c) {
@@ -1198,8 +1119,7 @@ class LowerBoundComplementEvaluator extends CardinalityEvaluatorBase {
 
     @Override
     public void visit(ConceptDataValue expr) {
-        value = isBotEquivalent(expr.getDataRoleExpression()) ? 1
-                : getNoneValue();
+        value = isBotEquivalent(expr.getDataRoleExpression()) ? 1 : getNoneValue();
     }
 
     // object role expressions
@@ -1220,7 +1140,7 @@ class LowerBoundComplementEvaluator extends CardinalityEvaluatorBase {
 
     @Override
     public void visit(ObjectRoleChain expr) {
-        if (expr.getArguments().stream().anyMatch(p -> isBotEquivalent(p))) {
+        if (expr.getArguments().stream().anyMatch(this::isBotEquivalent)) {
             value = getAllValue();
         } else {
             value = getNoneValue();
@@ -1280,26 +1200,12 @@ class LowerBoundComplementEvaluator extends CardinalityEvaluatorBase {
 }
 
 /** syntactic locality checker for DL axioms */
-public class ExtendedSyntacticLocalityChecker extends
-        GeneralSyntacticLocalityChecker {
+public class ExtendedSyntacticLocalityChecker extends GeneralSyntacticLocalityChecker {
 
-    private static final long serialVersionUID = 11000L;
-    protected final UpperBoundDirectEvaluator UBD;
-    protected final LowerBoundDirectEvaluator LBD;
-    protected final UpperBoundComplementEvaluator UBC;
-    protected final LowerBoundComplementEvaluator LBC;
-
-    /** @return true iff EXPR is top equivalent */
-    @Override
-    protected boolean isTopEquivalent(Expression expr) {
-        return UBC.getUpperBoundComplement(expr) == 0;
-    }
-
-    /** @return true iff EXPR is bottom equivalent */
-    @Override
-    protected boolean isBotEquivalent(Expression expr) {
-        return UBD.getUpperBoundDirect(expr) == 0;
-    }
+    protected UpperBoundDirectEvaluator ubd;
+    protected LowerBoundDirectEvaluator lbd;
+    protected UpperBoundComplementEvaluator ubc;
+    protected LowerBoundComplementEvaluator lbc;
 
     /**
      * init c'tor
@@ -1309,13 +1215,25 @@ public class ExtendedSyntacticLocalityChecker extends
      */
     public ExtendedSyntacticLocalityChecker(TSignature s) {
         super(s);
-        UBD = new UpperBoundDirectEvaluator(s);
-        LBD = new LowerBoundDirectEvaluator(s);
-        UBC = new UpperBoundComplementEvaluator(s);
-        LBC = new LowerBoundComplementEvaluator(s);
-        UBD.setEvaluators(UBD, LBD, UBC, LBC);
-        LBD.setEvaluators(UBD, LBD, UBC, LBC);
-        UBC.setEvaluators(UBD, LBD, UBC, LBC);
-        LBC.setEvaluators(UBD, LBD, UBC, LBC);
+        ubd = new UpperBoundDirectEvaluator(s);
+        lbd = new LowerBoundDirectEvaluator(s);
+        ubc = new UpperBoundComplementEvaluator(s);
+        lbc = new LowerBoundComplementEvaluator(s);
+        ubd.setEvaluators(ubd, lbd, ubc, lbc);
+        lbd.setEvaluators(ubd, lbd, ubc, lbc);
+        ubc.setEvaluators(ubd, lbd, ubc, lbc);
+        lbc.setEvaluators(ubd, lbd, ubc, lbc);
+    }
+
+    /** @return true iff EXPR is top equivalent */
+    @Override
+    protected boolean isTopEquivalent(Expression expr) {
+        return ubc.getUpperBoundComplement(expr) == 0;
+    }
+
+    /** @return true iff EXPR is bottom equivalent */
+    @Override
+    protected boolean isBotEquivalent(Expression expr) {
+        return ubd.getUpperBoundDirect(expr) == 0;
     }
 }

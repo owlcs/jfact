@@ -13,10 +13,11 @@ import conformance.PortedFrom;
  * @param <T>
  *        type
  */
+@FunctionalInterface
 @PortedFrom(file = "tDLExpression.h", name = "TDataExpressionArg")
 public interface DataExpressionArg<T> {
 
     /** @return argument */
     @PortedFrom(file = "tDLExpression.h", name = "getExpr")
-    T getExpr();
+        T getExpr();
 }

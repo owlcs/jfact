@@ -7,20 +7,20 @@ package uk.ac.manchester.cs.jfact.kernel.dl.axioms;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.Collection;
 
+import javax.annotation.Nullable;
+
 import org.semanticweb.owlapi.model.OWLAxiom;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
-import conformance.PortedFrom;
 
 /** Disjoint Union axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDisjointUnion")
 public class AxiomDisjointUnion extends AbstractNaryAxiom<ConceptExpression> {
 
-    private static final long serialVersionUID = 11000L;
-    @PortedFrom(file = "tDLAxiom.h", name = "C")
-    private final ConceptExpression conceptExpression;
+    @PortedFrom(file = "tDLAxiom.h", name = "C") private final ConceptExpression conceptExpression;
 
     /**
      * @param ax
@@ -30,8 +30,7 @@ public class AxiomDisjointUnion extends AbstractNaryAxiom<ConceptExpression> {
      * @param v
      *        v
      */
-    public AxiomDisjointUnion(OWLAxiom ax, ConceptExpression c,
-            Collection<ConceptExpression> v) {
+    public AxiomDisjointUnion(OWLAxiom ax, ConceptExpression c, Collection<ConceptExpression> v) {
         super(ax, v);
         conceptExpression = c;
     }
@@ -42,6 +41,7 @@ public class AxiomDisjointUnion extends AbstractNaryAxiom<ConceptExpression> {
         visitor.visit(this);
     }
 
+    @Nullable
     @Override
     @PortedFrom(file = "tDLAxiom.h", name = "accept")
     public <O> O accept(DLAxiomVisitorEx<O> visitor) {

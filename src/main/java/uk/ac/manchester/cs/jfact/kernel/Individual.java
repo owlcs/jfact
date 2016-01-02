@@ -5,12 +5,9 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
+import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.IRI;
 
@@ -21,16 +18,12 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tIndividual.h", name = "TIndividual")
 public class Individual extends Concept {
 
-    private static final long serialVersionUID = 11000L;
     /** pointer to nominal node (works for singletons only) */
-    @PortedFrom(file = "tIndividual.h", name = "node")
-    private DlCompletionTree node;
+    @PortedFrom(file = "tIndividual.h", name = "node") private DlCompletionTree node;
     /** index for axioms (this,C):R */
-    @PortedFrom(file = "tIndividual.h", name = "RelatedIndex")
-    private final List<Related> relatedIndex = new ArrayList<>();
+    @PortedFrom(file = "tIndividual.h", name = "RelatedIndex") private final List<Related> relatedIndex = new ArrayList<>();
     /** map for the related individuals: Map[R]={i:R(this,i)} */
-    @PortedFrom(file = "tIndividual.h", name = "pRelatedMap")
-    private final Map<Role, List<Individual>> pRelatedMap;
+    @PortedFrom(file = "tIndividual.h", name = "pRelatedMap") private final Map<Role, List<Individual>> pRelatedMap;
 
     /**
      * @param name
@@ -58,11 +51,11 @@ public class Individual extends Concept {
         }
         // not a completely defined if there are extra rules or related
         // individuals
-        boolean CD = !hasExtraRules() && isPrimitive() && !isRelated();
+        boolean cd = !hasExtraRules() && isPrimitive() && !isRelated();
         if (description != null || hasToldSubsumers()) {
-            CD &= super.initToldSubsumers(description, new HashSet<Role>());
+            cd &= super.initToldSubsumers(description, new HashSet<Role>());
         }
-        setCompletelyDefined(CD);
+        setCompletelyDefined(cd);
     }
 
     // related things
@@ -73,13 +66,12 @@ public class Individual extends Concept {
      *        type
      * @param begin
      *        begin
-     * @param RolesProcessed
+     * @param rolesProcessed
      *        RolesProcessed
      */
     @PortedFrom(file = "tIndividual.h", name = "updateTold")
-    private <T extends Related> void updateTold(List<T> begin,
-            Set<Role> RolesProcessed) {
-        begin.forEach(t -> searchTSbyRoleAndSupers(t.getRole(), RolesProcessed));
+    private <T extends Related> void updateTold(List<T> begin, Set<Role> rolesProcessed) {
+        begin.forEach(t -> searchTSbyRoleAndSupers(t.getRole(), rolesProcessed));
     }
 
     /**
@@ -116,48 +108,49 @@ public class Individual extends Concept {
 
     // related map access
     /**
-     * @param R
+     * @param r
      *        R
      * @return true if has cache for related individuals via role R
      */
     @PortedFrom(file = "tIndividual.h", name = "hasRelatedCache")
-    public boolean hasRelatedCache(Role R) {
-        return pRelatedMap.containsKey(R);
+    public boolean hasRelatedCache(Role r) {
+        return pRelatedMap.containsKey(r);
     }
 
     /**
-     * @param R
+     * @param r
      *        R
      * @return set of individuals related to THIS via R
      */
     @PortedFrom(file = "tIndividual.h", name = "getRelatedCache")
-    public List<Individual> getRelatedCache(Role R) {
-        assert pRelatedMap.containsKey(R);
-        return pRelatedMap.get(R);
+    public List<Individual> getRelatedCache(Role r) {
+        assert pRelatedMap.containsKey(r);
+        return pRelatedMap.get(r);
     }
 
     /**
      * set the cache of individuals related to THIS via R
      * 
-     * @param R
+     * @param r
      *        R
      * @param v
      *        v
      */
     @PortedFrom(file = "tIndividual.h", name = "setRelatedCache")
-    public void setRelatedCache(Role R, List<Individual> v) {
-        assert !pRelatedMap.containsKey(R);
-        pRelatedMap.put(R, v);
+    public void setRelatedCache(Role r, List<Individual> v) {
+        assert !pRelatedMap.containsKey(r);
+        pRelatedMap.put(r, v);
     }
 
     // TIndividual RELATED-dependent method' implementation
     @PortedFrom(file = "tIndividual.h", name = "updateToldFromRelated")
     private void updateToldFromRelated() {
-        Set<Role> RolesProcessed = new HashSet<>();
-        updateTold(relatedIndex, RolesProcessed);
+        Set<Role> rolesProcessed = new HashSet<>();
+        updateTold(relatedIndex, rolesProcessed);
     }
 
     /** @return completion tree node */
+    @Nullable
     @Original
     public DlCompletionTree getNode() {
         return node;

@@ -5,24 +5,55 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static uk.ac.manchester.cs.jfact.helpers.Helper.bpTOP;
+import static uk.ac.manchester.cs.jfact.helpers.Helper.BP_TOP;
 
 import java.io.Serializable;
 import java.util.BitSet;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.DLVertex;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
-import conformance.PortedFrom;
 
 /** logic features */
 @PortedFrom(file = "LogicFeature.h", name = "LogicFeatures")
 public class LogicFeatures implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** all flags in one long */
-    @PortedFrom(file = "LogicFeature.h", name = "flags")
-    private final BitSet flags = new BitSet();
+    @PortedFrom(file = "LogicFeature.h", name = "flags") private final BitSet flags = new BitSet();
+    //@formatter:off
+    // role description
+    @PortedFrom(file = "LogicFeature.h", name = "lfTransitiveRoles")    private static final int TRANSITIVEROLES  = 1;
+    @PortedFrom(file = "LogicFeature.h", name = "lfRolesSubsumption")   private static final int ROLESSUBSUMPTION = 2;
+    @PortedFrom(file = "LogicFeature.h", name = "lfDirectRoles")        private static final int DIRECTROLES      = 3;
+    @PortedFrom(file = "LogicFeature.h", name = "lfInverseRoles")       private static final int INVERSEROLES     = 4;
+    @PortedFrom(file = "LogicFeature.h", name = "lfRangeAndDomain")     private static final int RANGEANDDOMAIN   = 5;
+    @PortedFrom(file = "LogicFeature.h", name = "lfFunctionalRoles")    private static final int FUNCTIONALROLES  = 6;
+    // concept description
+    @PortedFrom(file = "LogicFeature.h", name = "lfSomeConstructor")    private static final int SOMECONSTRUCTOR  = 7;
+    @PortedFrom(file = "LogicFeature.h", name = "lfFConstructor")       private static final int FCONSTRUCTOR     = 8;
+    @PortedFrom(file = "LogicFeature.h", name = "lfNConstructor")       private static final int NCONSTRUCTOR     = 9;
+    @PortedFrom(file = "LogicFeature.h", name = "lfQConstructor")       private static final int QCONSTRUCTOR     = 10;
+    @PortedFrom(file = "LogicFeature.h", name = "lfSingleton")          private static final int SINGLETON        = 11;
+    // global description
+    @PortedFrom(file = "LogicFeature.h", name = "lfGeneralAxioms")      private static final int GENERALAXIOMS    = 12;
+    @PortedFrom(file = "LogicFeature.h", name = "lfBothRoles")          private static final int BOTHROLES        = 13;
+    // new constructions
+    @PortedFrom(file = "LogicFeature.h", name = "lfSelfRef")            private static final int SELFREF          = 14;
+    @PortedFrom(file = "LogicFeature.h", name = "lfTopRole")            private static final int TOPROLE          = 15;
+    //@formatter:on
+    /** default c'tor */
+    public LogicFeatures() {}
+
+    /**
+     * copy c'tor
+     * 
+     * @param lf
+     *        lf
+     */
+    public LogicFeatures(LogicFeatures lf) {
+        flags.or(lf.flags);
+    }
 
     /**
      * set any flag
@@ -45,19 +76,6 @@ public class LogicFeatures implements Serializable {
         return flags.get(val);
     }
 
-    /** default c'tor */
-    public LogicFeatures() {}
-
-    /**
-     * copy c'tor
-     * 
-     * @param lf
-     *        lf
-     */
-    public LogicFeatures(LogicFeatures lf) {
-        flags.or(lf.flags);
-    }
-
     /**
      * operator add
      * 
@@ -72,59 +90,59 @@ public class LogicFeatures implements Serializable {
     /** @return true if there are inverse roles */
     @PortedFrom(file = "LogicFeature.h", name = "hasInverseRole")
     public boolean hasInverseRole() {
-        return getX(lfBothRoles);
+        return getX(BOTHROLES);
     }
 
     @PortedFrom(file = "LogicFeature.h", name = "hasRoleHierarchy")
     private boolean hasRoleHierarchy() {
-        return getX(lfRolesSubsumption);
+        return getX(ROLESSUBSUMPTION);
     }
 
     @PortedFrom(file = "LogicFeature.h", name = "hasTransitiveRole")
     private boolean hasTransitiveRole() {
-        return getX(lfTransitiveRoles);
+        return getX(TRANSITIVEROLES);
     }
 
     /** @return true if some or all restrictions are present */
     @PortedFrom(file = "LogicFeature.h", name = "hasSomeAll")
     public boolean hasSomeAll() {
-        return getX(lfSomeConstructor);
+        return getX(SOMECONSTRUCTOR);
     }
 
     /** @return true if there are functional restrictions */
     @PortedFrom(file = "LogicFeature.h", name = "hasFunctionalRestriction")
     public boolean hasFunctionalRestriction() {
-        return getX(lfFConstructor) || getX(lfFunctionalRoles);
+        return getX(FCONSTRUCTOR) || getX(FUNCTIONALROLES);
     }
 
     /** @return true if there are number restrictions */
     @PortedFrom(file = "LogicFeature.h", name = "hasNumberRestriction")
     public boolean hasNumberRestriction() {
-        return getX(lfNConstructor);
+        return getX(NCONSTRUCTOR);
     }
 
     /** @return true if there are qualified number restrictions */
     @PortedFrom(file = "LogicFeature.h", name = "hasQNumberRestriction")
     public boolean hasQNumberRestriction() {
-        return getX(lfQConstructor);
+        return getX(QCONSTRUCTOR);
     }
 
     /** @return true if there are singletons */
     @PortedFrom(file = "LogicFeature.h", name = "hasSingletons")
     public boolean hasSingletons() {
-        return getX(lfSingleton);
+        return getX(SINGLETON);
     }
 
     /** @return true if there are self references */
     @PortedFrom(file = "LogicFeature.h", name = "hasSelfRef")
     public boolean hasSelfRef() {
-        return getX(lfSelfRef);
+        return getX(SELFREF);
     }
 
     /** @return true if there is a top role */
     @PortedFrom(file = "LogicFeature.h", name = "hasTopRole")
     public boolean hasTopRole() {
-        return getX(lfTopRole);
+        return getX(TOPROLE);
     }
 
     // overall state
@@ -137,15 +155,15 @@ public class LogicFeatures implements Serializable {
     /** build bothRoles from single Roles flags */
     @PortedFrom(file = "LogicFeature.h", name = "mergeRoles")
     public void mergeRoles() {
-        if (getX(lfDirectRoles) && getX(lfInverseRoles)) {
-            setX(lfBothRoles);
+        if (getX(DIRECTROLES) && getX(INVERSEROLES)) {
+            setX(BOTHROLES);
         }
     }
 
     /** allow user to set presence of inverse roles */
     @PortedFrom(file = "LogicFeature.h", name = "setInverseRoles")
     public void setInverseRoles() {
-        setX(lfBothRoles);
+        setX(BOTHROLES);
     }
 
     /**
@@ -169,7 +187,7 @@ public class LogicFeatures implements Serializable {
     @PortedFrom(file = "LogicFeature.h", name = "fillConceptData")
     public void fillConceptData(Concept p) {
         if (p.isSingleton()) {
-            setX(lfSingleton);
+            setX(SINGLETON);
         }
     }
 
@@ -183,29 +201,29 @@ public class LogicFeatures implements Serializable {
     public void fillRoleData(Role p, boolean both) {
         if (p.isTop()) {
             if (!p.isDataRole()) {
-                setX(lfTopRole);
+                setX(TOPROLE);
             }
             return;
         }
         if (p.getId() > 0) {
-            setX(lfDirectRoles);
+            setX(DIRECTROLES);
         } else {
-            setX(lfInverseRoles);
+            setX(INVERSEROLES);
         }
         if (both) {
-            setX(lfBothRoles);
+            setX(BOTHROLES);
         }
         if (p.isTransitive()) {
-            setX(lfTransitiveRoles);
+            setX(TRANSITIVEROLES);
         }
         if (p.hasToldSubsumers()) {
-            setX(lfRolesSubsumption);
+            setX(ROLESSUBSUMPTION);
         }
         if (p.isFunctional()) {
-            setX(lfFunctionalRoles);
+            setX(FUNCTIONALROLES);
         }
-        if (p.getBPDomain() != bpTOP || p.getBPRange() != bpTOP) {
-            setX(lfRangeAndDomain);
+        if (p.getBPDomain() != BP_TOP || p.getBPRange() != BP_TOP) {
+            setX(RANGEANDDOMAIN);
         }
     }
 
@@ -219,21 +237,21 @@ public class LogicFeatures implements Serializable {
     @SuppressWarnings("incomplete-switch")
     public void fillDAGData(DLVertex v, boolean pos) {
         switch (v.getType()) {
-            case dtForall:
-                setX(lfSomeConstructor);
+            case FORALL:
+                setX(SOMECONSTRUCTOR);
                 break;
-            case dtLE:
-                setX(lfNConstructor);
-                if (v.getConceptIndex() != bpTOP) {
-                    setX(lfQConstructor);
+            case LE:
+                setX(NCONSTRUCTOR);
+                if (v.getConceptIndex() != BP_TOP) {
+                    setX(QCONSTRUCTOR);
                 }
                 break;
-            case dtPSingleton:
-            case dtNSingleton:
-                setX(lfSingleton);
+            case PSINGLETON:
+            case NSINGLETON:
+                setX(SINGLETON);
                 break;
-            case dtIrr:
-                setX(lfSelfRef);
+            case IRR:
+                setX(SELFREF);
                 break;
             default:
                 break;
@@ -246,48 +264,11 @@ public class LogicFeatures implements Serializable {
      */
     @PortedFrom(file = "LogicFeature.h", name = "writeState")
     public void writeState(LogAdapter l) {
-        String NO = "NO ";
-        String Q = "qualified ";
-        l.printTemplate(Templates.WRITE_STATE, hasInverseRole() ? "" : NO,
-                hasRoleHierarchy() ? "" : NO, hasTransitiveRole() ? "" : NO,
-                hasTopRole() ? "" : NO, hasSomeAll() ? "" : NO,
-                hasFunctionalRestriction() ? "" : NO,
-                hasNumberRestriction() ? hasQNumberRestriction() ? Q : "" : NO,
-                hasSingletons() ? "" : NO);
+        String no = "NO ";
+        String q = "qualified ";
+        l.printTemplate(Templates.WRITE_STATE, hasInverseRole() ? "" : no, hasRoleHierarchy() ? "" : no,
+            hasTransitiveRole() ? "" : no, hasTopRole() ? "" : no, hasSomeAll() ? "" : no,
+            hasFunctionalRestriction() ? "" : no, hasNumberRestriction() ? hasQNumberRestriction() ? q : "" : no,
+            hasSingletons() ? "" : no);
     }
-
-    // role description
-    @PortedFrom(file = "LogicFeature.h", name = "lfTransitiveRoles")
-    private static final int lfTransitiveRoles = 1;
-    @PortedFrom(file = "LogicFeature.h", name = "lfRolesSubsumption")
-    private static final int lfRolesSubsumption = 2;
-    @PortedFrom(file = "LogicFeature.h", name = "lfDirectRoles")
-    private static final int lfDirectRoles = 3;
-    @PortedFrom(file = "LogicFeature.h", name = "lfInverseRoles")
-    private static final int lfInverseRoles = 4;
-    @PortedFrom(file = "LogicFeature.h", name = "lfRangeAndDomain")
-    private static final int lfRangeAndDomain = 5;
-    @PortedFrom(file = "LogicFeature.h", name = "lfFunctionalRoles")
-    private static final int lfFunctionalRoles = 6;
-    // concept description
-    @PortedFrom(file = "LogicFeature.h", name = "lfSomeConstructor")
-    private static final int lfSomeConstructor = 7;
-    @PortedFrom(file = "LogicFeature.h", name = "lfFConstructor")
-    private static final int lfFConstructor = 8;
-    @PortedFrom(file = "LogicFeature.h", name = "lfNConstructor")
-    private static final int lfNConstructor = 9;
-    @PortedFrom(file = "LogicFeature.h", name = "lfQConstructor")
-    private static final int lfQConstructor = 10;
-    @PortedFrom(file = "LogicFeature.h", name = "lfSingleton")
-    private static final int lfSingleton = 11;
-    // global description
-    @PortedFrom(file = "LogicFeature.h", name = "lfGeneralAxioms")
-    private static final int lfGeneralAxioms = 12;
-    @PortedFrom(file = "LogicFeature.h", name = "lfBothRoles")
-    private static final int lfBothRoles = 13;
-    // new constructions
-    @PortedFrom(file = "LogicFeature.h", name = "lfSelfRef")
-    private static final int lfSelfRef = 14;
-    @PortedFrom(file = "LogicFeature.h", name = "lfTopRole")
-    private static final int lfTopRole = 15;
 }

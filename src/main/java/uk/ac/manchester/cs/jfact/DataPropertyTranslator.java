@@ -2,6 +2,8 @@ package uk.ac.manchester.cs.jfact;
 
 import java.util.stream.Stream;
 
+import javax.annotation.Nullable;
+
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.reasoner.Node;
@@ -15,10 +17,7 @@ import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 
 /** data property translator */
-public class DataPropertyTranslator extends
-        OWLEntityTranslator<OWLDataProperty, DataRoleExpression> {
-
-    private static final long serialVersionUID = 11000L;
+public class DataPropertyTranslator extends OWLEntityTranslator<OWLDataProperty, DataRoleExpression> {
 
     /**
      * @param em
@@ -28,16 +27,17 @@ public class DataPropertyTranslator extends
      * @param tr
      *        tr
      */
-    public DataPropertyTranslator(ExpressionCache em, OWLDataFactory df,
-            TranslationMachinery tr) {
+    public DataPropertyTranslator(ExpressionCache em, OWLDataFactory df, TranslationMachinery tr) {
         super(em, df, tr);
     }
 
+    @Nullable
     @Override
     protected DataRoleExpression getTopEntityPointer() {
         return em.dataRole(OWLRDFVocabulary.OWL_TOP_DATA_PROPERTY.getIRI());
     }
 
+    @Nullable
     @Override
     protected DataRoleExpression getBottomEntityPointer() {
         return em.dataRole(OWLRDFVocabulary.OWL_BOTTOM_DATA_PROPERTY.getIRI());
@@ -48,25 +48,25 @@ public class DataPropertyTranslator extends
         return em.dataRole(entity.getIRI());
     }
 
+    @Nullable
     @Override
     protected OWLDataProperty getTopEntity() {
         return df.getOWLTopDataProperty();
     }
 
+    @Nullable
     @Override
     protected OWLDataProperty getBottomEntity() {
         return df.getOWLBottomDataProperty();
     }
 
     @Override
-    protected DefaultNode<OWLDataProperty> createDefaultNode(
-            Stream<OWLDataProperty> stream) {
+    protected DefaultNode<OWLDataProperty> createDefaultNode(Stream<OWLDataProperty> stream) {
         return new OWLDataPropertyNode(stream);
     }
 
     @Override
-    protected DefaultNodeSet<OWLDataProperty> createDefaultNodeSet(
-            Stream<Node<OWLDataProperty>> stream) {
+    protected DefaultNodeSet<OWLDataProperty> createDefaultNodeSet(Stream<Node<OWLDataProperty>> stream) {
         return new OWLDataPropertyNodeSet(stream);
     }
 }

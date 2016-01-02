@@ -8,6 +8,7 @@ package uk.ac.manchester.cs.jfact.datatypes;
 import java.util.*;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
@@ -21,22 +22,18 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
  * @param <R>
  *        type
  */
-public class DatatypeEnumeration<R extends Comparable<R>> implements
-    DatatypeCombination<DatatypeEnumeration<R>, Literal<R>>,
-    DatatypeExpression<R> {
+public class DatatypeEnumeration<R extends Comparable<R>>
+    implements DatatypeCombination<DatatypeEnumeration<R>, Literal<R>>, DatatypeExpression<R> {
 
-    @Nonnull
-    private final IRI uri;
-    @Nonnull
-    protected final Datatype<R> host;
-    @Nonnull
-    protected final List<Literal<R>> literals = new ArrayList<>();
+    @Nonnull private final IRI uri;
+    @Nonnull protected final Datatype<R> host;
+    @Nonnull protected final List<Literal<R>> literals = new ArrayList<>();
 
     /**
      * @param d
      *        d
      */
-    public DatatypeEnumeration(@Nonnull Datatype<R> d) {
+    public DatatypeEnumeration(Datatype<R> d) {
         this.uri = IRI.create("urn:enum" + DatatypeFactory.getIndex());
         this.host = d;
     }
@@ -47,7 +44,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
      * @param l
      *        l
      */
-    public DatatypeEnumeration(@Nonnull Datatype<R> d, @Nonnull Literal<R> l) {
+    public DatatypeEnumeration(Datatype<R> d, Literal<R> l) {
         this(d);
         this.literals.add(l);
     }
@@ -58,7 +55,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
      * @param c
      *        c
      */
-    public DatatypeEnumeration(@Nonnull Datatype<R> d, Collection<Literal<R>> c) {
+    public DatatypeEnumeration(Datatype<R> d, Collection<Literal<R>> c) {
         this(d);
         this.literals.addAll(c);
         Collections.sort(this.literals);
@@ -71,8 +68,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
 
     @Override
     public DatatypeEnumeration<R> add(Literal<R> d) {
-        DatatypeEnumeration<R> toReturn = new DatatypeEnumeration<>(this.host,
-            this.literals);
+        DatatypeEnumeration<R> toReturn = new DatatypeEnumeration<>(this.host, this.literals);
         toReturn.literals.add(d);
         Collections.sort(toReturn.literals);
         return toReturn;
@@ -125,11 +121,13 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
         return this.host.getKnownNumericFacetValues();
     }
 
+    @Nullable
     @Override
     public Comparable getFacetValue(Facet f) {
         return this.host.getFacetValue(f);
     }
 
+    @Nullable
     @Override
     public Comparable getNumericFacetValue(Facet f) {
         return this.host.getNumericFacetValue(f);
@@ -147,14 +145,12 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
 
     @Override
     public boolean isCompatible(Literal<?> l) {
-        return this.literals.contains(l)
-            && this.host.isCompatible(l.getDatatypeExpression());
+        return this.literals.contains(l) && this.host.isCompatible(l.getDatatypeExpression());
     }
 
     @Override
     public boolean isInValueSpace(R l) {
-        return this.literals.stream().map(p -> p.typedValue())
-            .anyMatch(p -> p.equals(l));
+        return this.literals.stream().map(p -> p.typedValue()).anyMatch(p -> p.equals(l));
     }
 
     @Override
@@ -180,19 +176,17 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
 
     @Override
     public boolean isCompatible(Datatype<?> type) {
-        // return host.isCompatible(type);
         if (!this.host.isCompatible(type)) {
             return false;
         }
         // at least one value must be admissible in both
-        return this.literals.stream().anyMatch(l -> type.isCompatible(l));
+        return this.literals.stream().anyMatch(type::isCompatible);
     }
 
     @Override
     public boolean isContradictory(Datatype<?> type) {
         if (type instanceof DatatypeEnumeration) {
-            return Helper.intersectsWith(
-                ((DatatypeEnumeration<?>) type).literals, literals);
+            return Helper.intersectsWith(((DatatypeEnumeration<?>) type).literals, literals);
         }
         return !isCompatible(type);
     }
@@ -202,6 +196,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
         visitor.visit(this);
     }
 
+    @Nullable
     @Override
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
@@ -234,8 +229,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
 
     @Override
     public OrderedDatatype<R> asOrderedDatatype() {
-        throw new ReasonerInternalException(this
-            + " is not an ordered datatype");
+        throw new ReasonerInternalException(this + " is not an ordered datatype");
     }
 
     @Override
@@ -245,13 +239,12 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@Nullable Object obj) {
         if (super.equals(obj)) {
             return true;
         }
         if (obj instanceof DatatypeEnumeration) {
-            return this.literals
-                .equals(((DatatypeEnumeration<?>) obj).literals);
+            return this.literals.equals(((DatatypeEnumeration<?>) obj).literals);
         }
         return false;
     }
@@ -267,20 +260,21 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     }
 
     @Override
-    public DatatypeExpression<R> addNumericFacet(Facet f, Comparable<?> value) {
-        System.out.println("DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object");
+    public DatatypeExpression<R> addNumericFacet(Facet f, @Nullable Comparable<?> value) {
+        System.out.println(
+            "DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object");
         return this;
     }
 
     @Override
-    public DatatypeExpression<R>
-        addNonNumericFacet(Facet f, Comparable<?> value) {
-        System.out.println("DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object");
+    public DatatypeExpression<R> addNonNumericFacet(Facet f, @Nullable Comparable<?> value) {
+        System.out.println(
+            "DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object");
         return this;
     }
 
     @Override
-    public IRI getName() {
+    public IRI getIRI() {
         return IRI.create(toString());
     }
 }

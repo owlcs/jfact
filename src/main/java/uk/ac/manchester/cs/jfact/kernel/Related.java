@@ -5,7 +5,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry.*;
+import static uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry.resolveSynonym;
 
 import java.io.Serializable;
 
@@ -16,32 +16,28 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tRelated.h", name = "TRelated")
 public class Related implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
-    @PortedFrom(file = "tRelated.h", name = "a")
-    private Individual a;
-    @PortedFrom(file = "tRelated.h", name = "b")
-    private Individual b;
-    @PortedFrom(file = "tRelated.h", name = "R")
-    private Role R;
+    @PortedFrom(file = "tRelated.h", name = "a") private Individual a;
+    @PortedFrom(file = "tRelated.h", name = "b") private Individual b;
+    @PortedFrom(file = "tRelated.h", name = "R") private Role r;
 
     /**
-     * @param a_
+     * @param a
      *        a_
-     * @param b_
+     * @param b
      *        b_
-     * @param R_
+     * @param r
      *        R_
      */
-    public Related(Individual a_, Individual b_, Role R_) {
-        a = a_;
-        b = b_;
-        R = R_;
+    public Related(Individual a, Individual b, Role r) {
+        this.a = a;
+        this.b = b;
+        this.r = r;
     }
 
     /** simplify structure wrt synonyms */
     @PortedFrom(file = "tRelated.h", name = "simplify")
     public void simplify() {
-        R = resolveSynonym(R);
+        r = resolveSynonym(r);
         a = resolveSynonym(a);
         b = resolveSynonym(b);
         a.addRelated(this);
@@ -50,7 +46,7 @@ public class Related implements Serializable {
     /** @return role wrt the FROM direction */
     @PortedFrom(file = "tRelated.h", name = "getRole")
     public Role getRole() {
-        return R;
+        return r;
     }
 
     /** @return individual a */

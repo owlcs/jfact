@@ -1,21 +1,16 @@
 package uk.ac.manchester.cs.jfact.split;
 
 import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.*;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleDomain;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleRange;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleDomain;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleRange;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRelatedTo;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRelatedToNot;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOf;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOfNot;
+
+import javax.annotation.Nullable;
+
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
 /** @author ignazio */
-public class ExpressionFromAxiomBuilder implements
-        DLAxiomVisitorEx<ConceptExpression> {
+public class ExpressionFromAxiomBuilder implements DLAxiomVisitorEx<ConceptExpression> {
 
     private ConceptExpression a;
 
@@ -23,7 +18,7 @@ public class ExpressionFromAxiomBuilder implements
      * @param a
      *        a
      */
-    public ExpressionFromAxiomBuilder(ConceptExpression a) {
+    public ExpressionFromAxiomBuilder(@Nullable ConceptExpression a) {
         this.a = a;
     }
 

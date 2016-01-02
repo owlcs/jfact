@@ -8,61 +8,46 @@ package uk.ac.manchester.cs.jfact.split;
 import java.util.Collection;
 import java.util.List;
 
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomConceptInclusion;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleDomain;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleFunctional;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleRange;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleSubsumption;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDeclaration;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDifferentIndividuals;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDisjointConcepts;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDisjointDRoles;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDisjointORoles;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDisjointUnion;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomEquivalentConcepts;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomEquivalentDRoles;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomEquivalentORoles;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomFairnessConstraint;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomInstanceOf;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleDomain;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleFunctional;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleRange;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleSubsumption;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRelatedTo;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRelatedToNot;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleAsymmetric;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleInverse;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleInverseFunctional;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleIrreflexive;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleReflexive;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleSymmetric;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleTransitive;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomSameIndividuals;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOf;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOfNot;
+import javax.annotation.Nullable;
+
+import conformance.Original;
+import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** syntactic locality checker for DL axioms */
 @PortedFrom(file = "GeneralSyntacticLocalityChecker.h", name = "GeneralSyntacticLocalityChecker")
-public abstract class GeneralSyntacticLocalityChecker extends SigAccessor
-        implements DLAxiomVisitor, LocalityChecker {
+public abstract class GeneralSyntacticLocalityChecker extends SigAccessor implements DLAxiomVisitor, LocalityChecker {
 
-    private static final long serialVersionUID = 11000L;
     /** top evaluator */
-    @PortedFrom(file = "SyntacticLocalityChecker.h", name = "TopEval")
-    protected final TopEquivalenceEvaluator TopEval;
+    @PortedFrom(file = "SyntacticLocalityChecker.h", name = "TopEval") protected final TopEquivalenceEvaluator topEval;
     /** bottom evaluator */
-    @PortedFrom(file = "SyntacticLocalityChecker.h", name = "BotEval")
-    protected final BotEquivalenceEvaluator BotEval;
+    @PortedFrom(file = "SyntacticLocalityChecker.h", name = "BotEval") protected final BotEquivalenceEvaluator botEval;
     /** remember the axiom locality value here */
-    @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isLocal")
-    protected boolean isLocal;
+    @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isLocal") protected boolean isLocal;
+
+    /**
+     * init c'tor
+     * 
+     * @param sig
+     *        sig
+     */
+    public GeneralSyntacticLocalityChecker(@Nullable TSignature sig) {
+        this.sig = sig;
+        topEval = new TopEquivalenceEvaluator();
+        botEval = new BotEquivalenceEvaluator();
+        topEval.setBotEval(botEval);
+        botEval.setTopEval(topEval);
+    }
+
+    /** init c'tor */
+    public GeneralSyntacticLocalityChecker() {
+        this(null);
+    }
 
     /**
      * processing method for all Equivalent axioms
@@ -72,8 +57,7 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor
      * @return true if axiom is local
      */
     @PortedFrom(file = "GeneralSyntacticLocalityChecker.h", name = "processEquivalentAxiom")
-            boolean processEquivalentAxiom(
-                    NAryExpression<? extends Expression> axiom) {
+        boolean processEquivalentAxiom(NAryExpression<? extends Expression> axiom) {
         // 1 element => local
         if (axiom.size() <= 1) {
             return true;
@@ -82,10 +66,10 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor
         List<? extends Expression> list = axiom.getArguments();
         if (isBotEquivalent(list.get(0))) {
             // all should be \bot-eq
-            return list.stream().skip(1).allMatch(p -> isBotEquivalent(p));
+            return list.stream().skip(1).allMatch(this::isBotEquivalent);
         } else if (isTopEquivalent(list.get(0))) {
             // all should be \top-eq
-            return list.stream().skip(1).allMatch(p -> isTopEquivalent(p));
+            return list.stream().skip(1).allMatch(this::isTopEquivalent);
         }
         // neither \bot- no \top-eq: non-local
         return false;
@@ -99,8 +83,7 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor
      * @return true if axiom is local
      */
     @PortedFrom(file = "GeneralSyntacticLocalityChecker.h", name = "processDisjointAxiom")
-            boolean processDisjointAxiom(
-                    NAryExpression<? extends Expression> axiom) {
+        boolean processDisjointAxiom(NAryExpression<? extends Expression> axiom) {
         // local iff at most 1 element is not bot-equiv
         boolean hasNBE = false;
         List<? extends Expression> list = axiom.getArguments();
@@ -126,7 +109,7 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor
      */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isTopEquivalent")
     protected boolean isTopEquivalent(Expression expr) {
-        return TopEval.isTopEquivalent(expr);
+        return topEval.isTopEquivalent(expr);
     }
 
     /**
@@ -136,7 +119,7 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor
      */
     @PortedFrom(file = "SyntacticLocalityChecker.h", name = "isBotEquivalent")
     protected boolean isBotEquivalent(Expression expr) {
-        return BotEval.isBotEquivalent(expr);
+        return botEval.isBotEquivalent(expr);
     }
 
     /**
@@ -157,13 +140,15 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor
         return isLocal;
     }
 
-    /** set a new value of a signature (without changing a locality parameters) */
+    /**
+     * set a new value of a signature (without changing a locality parameters)
+     */
     @Override
     @Original
-    public void setSignatureValue(TSignature Sig) {
-        sig = Sig;
-        TopEval.sig = sig;
-        BotEval.sig = sig;
+    public void setSignatureValue(TSignature sig) {
+        this.sig = sig;
+        topEval.sig = sig;
+        botEval.sig = sig;
     }
 
     // set fields
@@ -172,25 +157,6 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor
     public void preprocessOntology(Collection<AxiomInterface> s) {
         sig = new TSignature();
         s.forEach(ax -> sig.add(ax.getSignature()));
-    }
-
-    /**
-     * init c'tor
-     * 
-     * @param sig
-     *        sig
-     */
-    public GeneralSyntacticLocalityChecker(TSignature sig) {
-        this.sig = sig;
-        TopEval = new TopEquivalenceEvaluator();
-        BotEval = new BotEquivalenceEvaluator();
-        TopEval.setBotEval(BotEval);
-        BotEval.setTopEval(TopEval);
-    }
-
-    /** init c'tor */
-    public GeneralSyntacticLocalityChecker() {
-        this(null);
     }
 
     @Override
@@ -295,52 +261,43 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor
 
     @Override
     public void visit(AxiomRoleInverse axiom) {
-        isLocal = isBotEquivalent(axiom.getRole())
-                && isBotEquivalent(axiom.getInvRole())
-                || isTopEquivalent(axiom.getRole())
-                && isTopEquivalent(axiom.getInvRole());
+        isLocal = isBotEquivalent(axiom.getRole()) && isBotEquivalent(axiom.getInvRole())
+            || isTopEquivalent(axiom.getRole()) && isTopEquivalent(axiom.getInvRole());
     }
 
     @Override
     public void visit(AxiomORoleSubsumption axiom) {
-        isLocal = isTopEquivalent(axiom.getRole())
-                || isBotEquivalent(axiom.getSubRole());
+        isLocal = isTopEquivalent(axiom.getRole()) || isBotEquivalent(axiom.getSubRole());
     }
 
     @Override
     public void visit(AxiomDRoleSubsumption axiom) {
-        isLocal = isTopEquivalent(axiom.getRole())
-                || isBotEquivalent(axiom.getSubRole());
+        isLocal = isTopEquivalent(axiom.getRole()) || isBotEquivalent(axiom.getSubRole());
     }
 
     @Override
     public void visit(AxiomORoleDomain axiom) {
-        isLocal = isTopEquivalent(axiom.getDomain())
-                || isBotEquivalent(axiom.getRole());
+        isLocal = isTopEquivalent(axiom.getDomain()) || isBotEquivalent(axiom.getRole());
     }
 
     @Override
     public void visit(AxiomDRoleDomain axiom) {
-        isLocal = isTopEquivalent(axiom.getDomain())
-                || isBotEquivalent(axiom.getRole());
+        isLocal = isTopEquivalent(axiom.getDomain()) || isBotEquivalent(axiom.getRole());
     }
 
     @Override
     public void visit(AxiomORoleRange axiom) {
-        isLocal = isTopEquivalent(axiom.getRange())
-                || isBotEquivalent(axiom.getRole());
+        isLocal = isTopEquivalent(axiom.getRange()) || isBotEquivalent(axiom.getRole());
     }
 
     @Override
     public void visit(AxiomDRoleRange axiom) {
-        isLocal = isTopEquivalent(axiom.getRange())
-                || isBotEquivalent(axiom.getRole());
+        isLocal = isTopEquivalent(axiom.getRange()) || isBotEquivalent(axiom.getRole());
     }
 
     @Override
     public void visit(AxiomRoleTransitive axiom) {
-        isLocal = isBotEquivalent(axiom.getRole())
-                || isTopEquivalent(axiom.getRole());
+        isLocal = isBotEquivalent(axiom.getRole()) || isTopEquivalent(axiom.getRole());
     }
 
     /** as BotRole is irreflexive, the only local axiom is topEquivalent(R) */
@@ -356,8 +313,7 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor
 
     @Override
     public void visit(AxiomRoleSymmetric axiom) {
-        isLocal = isBotEquivalent(axiom.getRole())
-                || isTopEquivalent(axiom.getRole());
+        isLocal = isBotEquivalent(axiom.getRole()) || isTopEquivalent(axiom.getRole());
     }
 
     @Override
@@ -383,8 +339,7 @@ public abstract class GeneralSyntacticLocalityChecker extends SigAccessor
 
     @Override
     public void visit(AxiomConceptInclusion axiom) {
-        isLocal = isBotEquivalent(axiom.getSubConcept())
-                || isTopEquivalent(axiom.getSupConcept());
+        isLocal = isBotEquivalent(axiom.getSubConcept()) || isTopEquivalent(axiom.getSupConcept());
     }
 
     @Override

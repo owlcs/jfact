@@ -5,22 +5,21 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static uk.ac.manchester.cs.jfact.helpers.Helper.bpINVALID;
+import static uk.ac.manchester.cs.jfact.helpers.Helper.BP_INVALID;
 
 import java.util.Collection;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 
 /** datatype entry */
 public class DatatypeEntry extends NamedEntry {
 
-    private static final long serialVersionUID = 11000L;
     /** corresponding type (Type has null in the field) */
-    @Nonnull
-    private final Datatype<?> type;
+    @Nonnull private final Datatype<?> type;
     /** DAG index of the entry */
     private int pName;
 
@@ -30,10 +29,10 @@ public class DatatypeEntry extends NamedEntry {
      * @param type
      *        type
      */
-    public DatatypeEntry(@Nonnull Datatype<?> type) {
+    public DatatypeEntry(Datatype<?> type) {
         super(type.getDatatypeIRI());
         this.type = type;
-        pName = bpINVALID;
+        pName = BP_INVALID;
     }
 
     /** @return check if data entry represents basic data type */
@@ -42,7 +41,6 @@ public class DatatypeEntry extends NamedEntry {
     }
 
     /** @return datatype */
-    @Nonnull
     public Datatype<?> getDatatype() {
         return type;
     }
@@ -70,8 +68,7 @@ public class DatatypeEntry extends NamedEntry {
     @Override
     @Nonnull
     public String toString() {
-        return '(' + this.getClass().getSimpleName() + ' ' + pName + ' ' + type
-                + ' ' + super.toString() + ')';
+        return '(' + this.getClass().getSimpleName() + ' ' + pName + ' ' + type + ' ' + super.toString() + ')';
     }
 
     @Override
@@ -80,7 +77,7 @@ public class DatatypeEntry extends NamedEntry {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@Nullable Object obj) {
         if (!(obj instanceof DatatypeEntry)) {
             return false;
         }
@@ -92,7 +89,6 @@ public class DatatypeEntry extends NamedEntry {
      *        index to set
      * @return modified object
      */
-    @Nonnull
     public DatatypeEntry withIndex(int p) {
         setIndex(p);
         return this;

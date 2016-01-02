@@ -7,18 +7,18 @@ package uk.ac.manchester.cs.jfact.kernel.dl.axioms;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.semanticweb.owlapi.model.OWLAxiom;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
-import conformance.PortedFrom;
 
 /** Concept disjointness axiom */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDisjointConcepts")
 public class AxiomDisjointConcepts extends AbstractNaryAxiom<ConceptExpression> {
-
-    private static final long serialVersionUID = 11000L;
 
     /**
      * @param ax
@@ -36,6 +36,7 @@ public class AxiomDisjointConcepts extends AbstractNaryAxiom<ConceptExpression> 
         visitor.visit(this);
     }
 
+    @Nullable
     @Override
     @PortedFrom(file = "tDLAxiom.h", name = "accept")
     public <O> O accept(DLAxiomVisitorEx<O> visitor) {

@@ -7,14 +7,11 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** KB status */
 public enum KBStatus {
-    /** no axioms loaded yet; not used in TBox */
-    kbEmpty,
-    /** axioms are added to the KB, no preprocessing done */
-    kbLoading,
-    /** KB is preprocessed and consistency checked */
-    kbCChecked,
-    /** KB is classified */
-    kbClassified,
-    /** KB is realised */
-    kbRealised
+    //@formatter:off
+    /** no axioms loaded yet; not used in TBox */               KBEMPTY,
+    /** axioms are added to the KB, no preprocessing done */    KBLOADING,
+    /** KB is preprocessed and consistency checked */           KBCHECKED,
+    /** KB is classified */                                     KBCLASSIFIED,
+    /** KB is realised */                                       KBREALISED
+    //@formatter:on
 }

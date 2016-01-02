@@ -10,10 +10,11 @@ import java.util.Arrays;
 
 class SortedIntList implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
     protected int[] values;
     protected int size = 0;
-    protected static final int defaultSize = 16;
+    protected static final int DEFAULTSIZE = 16;
+
+    public SortedIntList() {}
 
     protected int insertionIndex(int key) {
         if (size == 0) {
@@ -30,31 +31,25 @@ class SortedIntList implements Serializable {
         return size;
     }
 
-    public SortedIntList() {}
-
     public int get(int i) {
         if (values != null) {
             return values[i];
         }
-        throw new IllegalArgumentException("Illegal argument " + i
-                + ": no such element");
+        throw new IllegalArgumentException("Illegal argument " + i + ": no such element");
     }
 
     protected void init() {
-        values = new int[defaultSize];
+        values = new int[DEFAULTSIZE];
         Arrays.fill(values, Integer.MIN_VALUE);
         size = 0;
     }
 
     public void add(int e) {
-        int pos = -1;
         if (values == null) {
             init();
-            // pos stays at -1, in an empty set that's the place to start - it
-            // will become 0
         }
-        // else find the right place
-        pos = insertionIndex(e);
+        // find the right place
+        int pos = insertionIndex(e);
         if (pos < 0) {
             return;
         }
@@ -62,7 +57,7 @@ class SortedIntList implements Serializable {
         // i is now the insertion point
         if (i >= values.length || size >= values.length) {
             // no space left, increase
-            values = Arrays.copyOf(values, values.length + defaultSize);
+            values = Arrays.copyOf(values, values.length + DEFAULTSIZE);
         }
         // size ensured, shift and insert now
         for (int j = size - 1; j >= i; j--) {

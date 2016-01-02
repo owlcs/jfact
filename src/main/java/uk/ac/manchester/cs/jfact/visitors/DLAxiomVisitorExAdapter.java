@@ -19,7 +19,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 public class DLAxiomVisitorExAdapter<A> implements DLAxiomVisitorEx<A>,
         Serializable {
 
-    private static final long serialVersionUID = 11000L;
+
     private A defaultValue;
 
     /**

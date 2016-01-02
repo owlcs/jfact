@@ -8,20 +8,20 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
-import conformance.PortedFrom;
 
 /** data intersection */
 @PortedFrom(file = "tDLExpression.h", name = "TDLDataAnd")
-public class DataAnd extends NAryExpressionImpl<DataExpression> implements
-        NAryExpression<DataExpression>, DataExpression, Serializable {
-
-    private static final long serialVersionUID = 11000L;
+public class DataAnd extends NAryExpressionImpl<DataExpression>
+    implements NAryExpression<DataExpression>, DataExpression, Serializable {
 
     /**
      * create AND of expressions from the given array
@@ -39,6 +39,7 @@ public class DataAnd extends NAryExpressionImpl<DataExpression> implements
         visitor.visit(this);
     }
 
+    @Nullable
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
@@ -46,7 +47,7 @@ public class DataAnd extends NAryExpressionImpl<DataExpression> implements
     }
 
     @Override
-    public IRI getName() {
+    public IRI getIRI() {
         return IRI.create(toString());
     }
 }

@@ -11,11 +11,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
 import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
-import conformance.PortedFrom;
 
 /**
  * class for acting with concept taxonomy
@@ -26,25 +26,33 @@ import conformance.PortedFrom;
 @PortedFrom(file = "JNIActor.h", name = "TaxonomyActor")
 public class TaxonomyActor<T extends Expression> implements Actor, Serializable {
 
-    private static final long serialVersionUID = 11000L;
     private final Policy policy;
     private final ExpressionCache cache;
     /** 2D array to return */
-    @PortedFrom(file = "JNIActor.h", name = "acc")
-    private final List<List<T>> acc = new ArrayList<>();
+    @PortedFrom(file = "JNIActor.h", name = "acc") private final List<List<T>> acc = new ArrayList<>();
     /** 1D array to return */
-    @PortedFrom(file = "JNIActor.h", name = "plain")
-    private final List<T> plain = new ArrayList<>();
+    @PortedFrom(file = "JNIActor.h", name = "plain") private final List<T> plain = new ArrayList<>();
     /** temporary vector to keep synonyms */
-    @PortedFrom(file = "JNIActor.h", name = "syn")
-    private final List<T> syn = new ArrayList<>();
+    @PortedFrom(file = "JNIActor.h", name = "syn") private final List<T> syn = new ArrayList<>();
+
+    /**
+     * @param em
+     *        em
+     * @param p
+     *        p
+     */
+    @PortedFrom(file = "JNIActor.h", name = "TaxonomyActor")
+    public TaxonomyActor(ExpressionCache em, Policy p) {
+        cache = em;
+        policy = p;
+    }
 
     @Override
     public boolean applicable(TaxonomyVertex v) {
         if (policy.applicable(v.getPrimer())) {
             return true;
         }
-        return v.synonyms().stream().anyMatch(p -> policy.applicable(p));
+        return v.synonyms().anyMatch(policy::applicable);
     }
 
     /**
@@ -71,18 +79,6 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
     @SuppressWarnings("unchecked")
     protected T asT(ClassifiableEntry p) {
         return (T) policy.buildTree(cache, p);
-    }
-
-    /**
-     * @param em
-     *        em
-     * @param p
-     *        p
-     */
-    @PortedFrom(file = "JNIActor.h", name = "TaxonomyActor")
-    public TaxonomyActor(ExpressionCache em, Policy p) {
-        cache = em;
-        policy = p;
     }
 
     @Override
@@ -116,7 +112,7 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
     public boolean apply(TaxonomyVertex v) {
         syn.clear();
         tryEntry(v.getPrimer());
-        v.synonyms().forEach(p -> tryEntry(p));
+        v.synonyms().forEach(this::tryEntry);
         /** no applicable elements were found */
         if (syn.isEmpty()) {
             return false;

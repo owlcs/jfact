@@ -10,39 +10,35 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
+import javax.annotation.Nullable;
+
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 
 /** ontology atom */
 @PortedFrom(file = "tOntologyAtom.h", name = "TOntologyAtom")
 public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** set of axioms in the atom */
-    @PortedFrom(file = "tOntologyAtom.h", name = "AtomAxioms")
-    private final Set<AxiomInterface> AtomAxioms = new HashSet<>();
+    @PortedFrom(file = "tOntologyAtom.h", name = "AtomAxioms") private final Set<AxiomInterface> atomAxioms = new HashSet<>();
     /** set of axioms in the module (Atom's ideal) */
-    @PortedFrom(file = "tOntologyAtom.h", name = "ModuleAxioms")
-    private Set<AxiomInterface> ModuleAxioms = new HashSet<>();
+    @PortedFrom(file = "tOntologyAtom.h", name = "ModuleAxioms") private Set<AxiomInterface> moduleAxioms = new HashSet<>();
     /** set of atoms current one depends on */
-    @PortedFrom(file = "tOntologyAtom.h", name = "DepAtoms")
-    private final Set<TOntologyAtom> DepAtoms = new HashSet<>();
+    @PortedFrom(file = "tOntologyAtom.h", name = "DepAtoms") private final Set<TOntologyAtom> depAtoms = new HashSet<>();
     /** set of all atoms current one depends on */
-    @PortedFrom(file = "tOntologyAtom.h", name = "AllDepAtoms")
-    private final Set<TOntologyAtom> AllDepAtoms = new HashSet<>();
+    @PortedFrom(file = "tOntologyAtom.h", name = "AllDepAtoms") private final Set<TOntologyAtom> allDepAtoms = new HashSet<>();
     /** unique atom's identifier */
-    @PortedFrom(file = "tOntologyAtom.h", name = "Id")
-    private int Id = 0;
+    @PortedFrom(file = "tOntologyAtom.h", name = "Id") private int id = 0;
 
     @Override
-    public int compareTo(TOntologyAtom arg1) {
+    public int compareTo(@Nullable TOntologyAtom arg1) {
         return getId() - arg1.getId();
     }
 
     /** remove all atoms in AllDepAtoms from DepAtoms */
     @PortedFrom(file = "tOntologyAtom.h", name = "filterDep")
     public void filterDep() {
-        AllDepAtoms.forEach(p -> DepAtoms.remove(p));
+        allDepAtoms.forEach(depAtoms::remove);
     }
 
     /**
@@ -54,11 +50,11 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
     @PortedFrom(file = "tOntologyAtom.h", name = "buildAllDepAtoms")
     public void buildAllDepAtoms(Set<TOntologyAtom> checked) {
         // first gather all dep atoms from all known dep atoms
-        DepAtoms.forEach(p -> AllDepAtoms.addAll(p.getAllDepAtoms(checked)));
+        depAtoms.forEach(p -> allDepAtoms.addAll(p.getAllDepAtoms(checked)));
         // now filter them out from known dep atoms
         filterDep();
         // add direct deps to all deps
-        AllDepAtoms.addAll(DepAtoms);
+        allDepAtoms.addAll(depAtoms);
         // now the atom is checked
         checked.add(this);
     }
@@ -73,7 +69,7 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
     @PortedFrom(file = "tOntologyAtom.h", name = "setModule")
     public void setModule(Collection<AxiomInterface> module) {
         // XXX check if the defensive copy is needed
-        ModuleAxioms = new HashSet<>(module);
+        moduleAxioms = new HashSet<>(module);
     }
 
     /**
@@ -84,7 +80,7 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
      */
     @PortedFrom(file = "tOntologyAtom.h", name = "addAxiom")
     public void addAxiom(AxiomInterface ax) {
-        AtomAxioms.add(ax);
+        atomAxioms.add(ax);
         ax.setAtom(this);
     }
 
@@ -95,10 +91,10 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
      *        atom
      */
     @PortedFrom(file = "tOntologyAtom.h", name = "addDepAtom")
-    public void addDepAtom(TOntologyAtom atom) {
+    public void addDepAtom(@Nullable TOntologyAtom atom) {
         // XXX != should be !equals() ?
         if (atom != null && atom != this) {
-            DepAtoms.add(atom);
+            depAtoms.add(atom);
         }
     }
 
@@ -113,32 +109,32 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
         if (checked.contains(this)) {
             buildAllDepAtoms(checked);
         }
-        return AllDepAtoms;
+        return allDepAtoms;
     }
 
     // access to axioms
     /** @return all the atom's axioms */
     @PortedFrom(file = "tOntologyAtom.h", name = "getAtomAxioms")
     public Set<AxiomInterface> getAtomAxioms() {
-        return AtomAxioms;
+        return atomAxioms;
     }
 
     /** @return all the module axioms */
     @PortedFrom(file = "tOntologyAtom.h", name = "getModule")
     public Set<AxiomInterface> getModule() {
-        return ModuleAxioms;
+        return moduleAxioms;
     }
 
     /** @return atoms a given one depends on */
     @PortedFrom(file = "tOntologyAtom.h", name = "getDepAtoms")
     public Set<TOntologyAtom> getDepAtoms() {
-        return DepAtoms;
+        return depAtoms;
     }
 
     /** @return the value of the id */
     @PortedFrom(file = "tOntologyAtom.h", name = "getId")
     public int getId() {
-        return Id;
+        return id;
     }
 
     /**
@@ -149,6 +145,6 @@ public class TOntologyAtom implements Comparable<TOntologyAtom>, Serializable {
      */
     @PortedFrom(file = "tOntologyAtom.h", name = "setId")
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
 }

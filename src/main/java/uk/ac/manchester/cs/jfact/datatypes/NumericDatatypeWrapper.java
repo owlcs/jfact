@@ -11,13 +11,14 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
-class NumericDatatypeWrapper<O extends Comparable<O>> implements
-        NumericDatatype<O>, OrderedDatatype<O> {
+class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype<O>, OrderedDatatype<O> {
 
     private final Datatype<O> d;
 
@@ -67,11 +68,13 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements
         return this.d.getKnownNumericFacetValues();
     }
 
+    @Nullable
     @Override
     public Comparable getFacetValue(Facet f) {
         return this.d.getFacetValue(f);
     }
 
+    @Nullable
     @Override
     public Comparable getNumericFacetValue(Facet f) {
         return this.d.getNumericFacetValue(f);
@@ -137,6 +140,7 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements
         this.d.accept(visitor);
     }
 
+    @Nullable
     @Override
     public <T> T accept(DLExpressionVisitorEx<T> visitor) {
         return this.d.accept(visitor);
@@ -172,6 +176,7 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements
         return this.hasMaxInclusive() || this.hasMaxExclusive();
     }
 
+    @Nullable
     @Override
     public O getMin() {
         if (this.hasMinExclusive()) {
@@ -183,6 +188,7 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements
         return null;
     }
 
+    @Nullable
     @Override
     public O getMax() {
         if (this.hasMaxExclusive()) {
@@ -220,12 +226,12 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements
     }
 
     @Override
-    public IRI getName() {
+    public IRI getIRI() {
         return IRI.create("numeric(" + d + ")");
     }
 
     @Override
     public String toString() {
-        return getName().toString();
+        return getIRI().toString();
     }
 }

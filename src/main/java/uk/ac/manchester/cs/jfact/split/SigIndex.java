@@ -10,41 +10,42 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
-
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
 import conformance.Original;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 
 /** signature index */
 @PortedFrom(file = "SigIndex.h", name = "SigIndex")
 public class SigIndex implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** map between entities and axioms that contains them in their signature */
-    @PortedFrom(file = "SigIndex.h", name = "Base")
-    private final Multimap<NamedEntity, AxiomInterface> Base = LinkedHashMultimap
-            .create();
+    @PortedFrom(file = "SigIndex.h", name = "Base") private final Multimap<NamedEntity, AxiomInterface> base = LinkedHashMultimap
+        .create();
     /** locality checker */
-    @PortedFrom(file = "SigIndex.h", name = "Checker")
-    private final LocalityChecker Checker;
+    @PortedFrom(file = "SigIndex.h", name = "Checker") private final LocalityChecker checker;
     /** sets of axioms non-local wrt the empty signature */
-    @Original
-    private final Set<AxiomInterface> NonLocalTrue = new HashSet<>();
-    @Original
-    private final Set<AxiomInterface> NonLocalFalse = new HashSet<>();
+    @Original private final Set<AxiomInterface> nonLocalTrue = new HashSet<>();
+    @Original private final Set<AxiomInterface> nonLocalFalse = new HashSet<>();
     /** empty signature to test the non-locality */
-    @PortedFrom(file = "SigIndex.h", name = "emptySig")
-    private final TSignature emptySig = new TSignature();
+    @PortedFrom(file = "SigIndex.h", name = "emptySig") private final TSignature emptySig = new TSignature();
     /** number of registered axioms */
-    @PortedFrom(file = "SigIndex.h", name = "nRegistered")
-    private int nRegistered = 0;
+    @PortedFrom(file = "SigIndex.h", name = "nRegistered") private int nRegistered = 0;
     /** number of registered axioms */
-    @PortedFrom(file = "SigIndex.h", name = "nUnregistered")
-    private int nUnregistered = 0;
+    @PortedFrom(file = "SigIndex.h", name = "nUnregistered") private int nUnregistered = 0;
+
+    /**
+     * empty c'tor
+     * 
+     * @param c
+     *        c
+     */
+    public SigIndex(LocalityChecker c) {
+        checker = c;
+    }
 
     // access to statistics
     /** @return number of ever processed axioms */
@@ -64,24 +65,14 @@ public class SigIndex implements Serializable {
     @PortedFrom(file = "SigIndex.h", name = "checkNonLocal")
     private void checkNonLocal(AxiomInterface ax, boolean top) {
         emptySig.setLocality(top);
-        Checker.setSignatureValue(emptySig);
-        if (!Checker.local(ax)) {
+        checker.setSignatureValue(emptySig);
+        if (!checker.local(ax)) {
             if (top) {
-                NonLocalFalse.add(ax);
+                nonLocalFalse.add(ax);
             } else {
-                NonLocalTrue.add(ax);
+                nonLocalTrue.add(ax);
             }
         }
-    }
-
-    /**
-     * empty c'tor
-     * 
-     * @param c
-     *        c
-     */
-    public SigIndex(LocalityChecker c) {
-        Checker = c;
     }
 
     // work with axioms
@@ -93,7 +84,7 @@ public class SigIndex implements Serializable {
      */
     @PortedFrom(file = "SigIndex.h", name = "registerAx")
     private void registerAx(AxiomInterface ax) {
-        ax.getSignature().begin().forEach(p -> Base.put(p, ax));
+        ax.getSignature().begin().forEach(p -> base.put(p, ax));
         // check whether the axiom is non-local
         checkNonLocal(ax, false);
         checkNonLocal(ax, true);
@@ -108,10 +99,10 @@ public class SigIndex implements Serializable {
      */
     @PortedFrom(file = "SigIndex.h", name = "unregisterAx")
     private void unregisterAx(AxiomInterface ax) {
-        ax.getSignature().begin().forEach(p -> Base.get(p).remove(ax));
+        ax.getSignature().begin().forEach(p -> base.get(p).remove(ax));
         // remove from the non-locality
-        NonLocalFalse.remove(ax);
-        NonLocalTrue.remove(ax);
+        nonLocalFalse.remove(ax);
+        nonLocalTrue.remove(ax);
         ++nUnregistered;
     }
 
@@ -138,15 +129,15 @@ public class SigIndex implements Serializable {
      */
     @PortedFrom(file = "SigIndex.h", name = "preprocessOntology")
     public void preprocessOntology(Collection<AxiomInterface> axioms) {
-        axioms.forEach(ax -> processAx(ax));
+        axioms.forEach(this::processAx);
     }
 
     /** clear internal structures */
     @PortedFrom(file = "SigIndex.h", name = "clear")
     public void clear() {
-        Base.clear();
-        NonLocalFalse.clear();
-        NonLocalTrue.clear();
+        base.clear();
+        nonLocalFalse.clear();
+        nonLocalTrue.clear();
     }
 
     // get the set by the index
@@ -159,7 +150,7 @@ public class SigIndex implements Serializable {
      */
     @PortedFrom(file = "SigIndex.h", name = "getAxioms")
     public Collection<AxiomInterface> getAxioms(NamedEntity entity) {
-        return Base.get(entity);
+        return base.get(entity);
     }
 
     /**
@@ -169,6 +160,6 @@ public class SigIndex implements Serializable {
      */
     @PortedFrom(file = "SigIndex.h", name = "getNonLocal")
     public Set<AxiomInterface> getNonLocal(boolean top) {
-        return top ? NonLocalFalse : NonLocalTrue;
+        return top ? nonLocalFalse : nonLocalTrue;
     }
 }

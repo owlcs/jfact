@@ -27,7 +27,7 @@ import conformance.PortedFrom;
 public abstract class AbstractNaryAxiom<I extends Expression> extends AxiomImpl
         implements AxiomInterface, NAryExpression<I> {
 
-    private static final long serialVersionUID = 11000L;
+
     private final NAryExpressionImpl<I> delegate;
 
     /**

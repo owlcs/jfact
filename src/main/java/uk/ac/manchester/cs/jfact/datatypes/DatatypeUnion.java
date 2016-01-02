@@ -22,6 +22,17 @@ public class DatatypeUnion implements
     /**
      * @param host
      *        host
+     * @param list
+     *        list
+     */
+    public DatatypeUnion(Datatype<?> host, Collection<Datatype<?>> list) {
+        this(host);
+        basics.addAll(list);
+    }
+
+    /**
+     * @param host
+     *        host
      */
     public DatatypeUnion(Datatype<?> host) {
         uri = IRI.create("urn:union#a" + DatatypeFactory.getIndex());
@@ -31,17 +42,6 @@ public class DatatypeUnion implements
     @Override
     public Datatype<?> getHost() {
         return host;
-    }
-
-    /**
-     * @param host
-     *        host
-     * @param list
-     *        list
-     */
-    public DatatypeUnion(Datatype<?> host, Collection<Datatype<?>> list) {
-        this(host);
-        basics.addAll(list);
     }
 
     @Override

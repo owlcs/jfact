@@ -9,19 +9,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.kernel.ConceptWDep;
 import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
 import uk.ac.manchester.cs.jfact.kernel.Restorer;
 import uk.ac.manchester.cs.jfact.kernel.SaveStackRare;
-import conformance.PortedFrom;
 
 /** class to represent single priority queue */
 public class QueueQueue implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** waiting ops queue */
-    List<ToDoEntry> _Wait = new ArrayList<>();
+    List<ToDoEntry> wait = new ArrayList<>();
     // / stack to save states for the overwritten queue
     SaveStackRare stack;
     /** start pointer; points to the 1st element in the queue */
@@ -31,16 +30,15 @@ public class QueueQueue implements Serializable {
     // type for restore the whole queue
     class QueueRestorer extends Restorer {
 
-        private static final long serialVersionUID = 11000L;
         // copy of a queue
-        List<ToDoEntry> Wait = new ArrayList<>();
+        List<ToDoEntry> restorerWait = new ArrayList<>();
         // pointer to a queue to restore
         QueueQueue queue;
         // start pointer
         int sp;
 
         QueueRestorer(QueueQueue q) {
-            Wait = q._Wait;
+            restorerWait = q.wait;
             queue = q;
             sp = q.sPointer;
         }
@@ -48,7 +46,7 @@ public class QueueQueue implements Serializable {
         // restore: copy the queue back, adjust pointers
         @Override
         public void restore() {
-            queue._Wait = Wait;
+            queue.wait = restorerWait;
             queue.sPointer = sp;
         }
     }
@@ -64,31 +62,27 @@ public class QueueQueue implements Serializable {
     /**
      * add entry to a queue
      * 
-     * @param Node
+     * @param node
      *        Node
      * @param offset
      *        offset
      */
-    protected void add(DlCompletionTree Node, ConceptWDep offset) {
-        ToDoEntry e = new ToDoEntry(Node, offset);
+    protected void add(DlCompletionTree node, ConceptWDep offset) {
+        ToDoEntry e = new ToDoEntry(node, offset);
         // no problems with empty queue and if no priority
         // clashes
-        if (isEmpty()
-                || _Wait.get(size - 1).getNode().getNominalLevel() <= Node
-                        .getNominalLevel()) {
-            _Wait.add(e);
+        if (isEmpty() || wait.get(size - 1).getNode().getNominalLevel() <= node.getNominalLevel()) {
+            wait.add(e);
             size++;
             return;
         }
         // here we need to put e on the proper place
         stack.push(new QueueRestorer(this));
         int n = size;
-        while (n > sPointer
-                && _Wait.get(n - 1).getNode().getNominalLevel() > Node
-                        .getNominalLevel()) {
+        while (n > sPointer && wait.get(n - 1).getNode().getNominalLevel() > node.getNominalLevel()) {
             --n;
         }
-        _Wait.add(n, e);
+        wait.add(n, e);
         size++;
     }
 
@@ -96,7 +90,7 @@ public class QueueQueue implements Serializable {
     @PortedFrom(file = "ToDoList.h", name = "clear")
     protected void clear() {
         sPointer = 0;
-        _Wait.clear();
+        wait.clear();
         size = 0;
     }
 
@@ -107,7 +101,7 @@ public class QueueQueue implements Serializable {
 
     /** @return get next entry from the queue; works for non-empty queues */
     protected ToDoEntry get() {
-        return _Wait.get(sPointer++);
+        return wait.get(sPointer++);
     }
 
     /**
@@ -131,14 +125,13 @@ public class QueueQueue implements Serializable {
     @PortedFrom(file = "ToDoList.h", name = "restore")
     protected void restore(TODOListSaveState tss) {
         sPointer = tss.sp;
-        Helper.resize(_Wait, tss.ep);
+        Helper.resize(wait, tss.ep);
         size = tss.ep;
     }
 
     @Override
     public String toString() {
-        return "{" + (!isEmpty() ? _Wait.get(sPointer) : "empty")
-                + " sPointer: " + sPointer + " size: " + size + " Wait: "
-                + _Wait + '}';
+        return "{" + (!isEmpty() ? wait.get(sPointer) : "empty") + " sPointer: " + sPointer + " size: " + size
+            + " Wait: " + wait + '}';
     }
 }

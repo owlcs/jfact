@@ -13,7 +13,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "dlCompletionGraph.h", name = "SaveState")
 public class DLCompletionGraphSaveState implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
+
     /** number of valid nodes */
     private int nNodes = 0;
     /** end pointer of saved nodes */

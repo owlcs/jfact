@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.semanticweb.owlapi.model.IRI;
 
 /**
@@ -19,50 +21,12 @@ import org.semanticweb.owlapi.model.IRI;
  * @param <T>
  *        type
  */
-public class DatatypeIntersection<T extends Comparable<T>> implements
-        DatatypeCombination<DatatypeIntersection<T>, Datatype<T>> {
+public class DatatypeIntersection<T extends Comparable<T>>
+    implements DatatypeCombination<DatatypeIntersection<T>, Datatype<T>> {
 
     private final Set<Datatype<T>> basics = new HashSet<>();
     private final IRI uri;
     private final Datatype<T> host;
-
-    /**
-     * @param collection
-     *        collection
-     * @return datatype host for a set of datatypes
-     */
-    public static Datatype<?> getHostDatatype(List<Datatype<?>> collection) {
-        // all types need to be compatible, or the intersection cannot be
-        // anything but empty
-        if (anyMatchOnAllPairs(collection, (a, b) -> !a.isCompatible(b))) {
-            return null;
-        }
-        List<Datatype<?>> list = new ArrayList<>(collection);
-        // the most specific type needs to be returned
-        int old_size;
-        do {
-            old_size = list.size();
-            for (int i = 0; i < list.size() - 1;) {
-                Datatype<?> next = list.get(i + 1);
-                Datatype<?> current = list.get(i);
-                assert current != null;
-                assert next != null;
-                if (current.isSubType(next)) {
-                    list.remove(i + 1);
-                } else if (next.isSubType(current)) {
-                    list.remove(i);
-                } else {
-                    i++;
-                }
-            }
-        } while (list.size() > 1 && old_size != list.size());
-        // now if list.size >1, there is no single most specific type...
-        // troubles
-        if (list.size() == 1) {
-            return list.get(0);
-        }
-        return null;
-    }
 
     /**
      * @param host
@@ -81,7 +45,46 @@ public class DatatypeIntersection<T extends Comparable<T>> implements
      */
     public DatatypeIntersection(Datatype<T> host, Iterable<Datatype<T>> list) {
         this(host);
-        list.forEach(d -> basics.add(d));
+        list.forEach(basics::add);
+    }
+
+    /**
+     * @param collection
+     *        collection
+     * @return datatype host for a set of datatypes
+     */
+    @Nullable
+    public static Datatype<?> getHostDatatype(List<Datatype<?>> collection) {
+        // all types need to be compatible, or the intersection cannot be
+        // anything but empty
+        if (anyMatchOnAllPairs(collection, v -> !v.i.isCompatible(v.j))) {
+            return null;
+        }
+        List<Datatype<?>> list = new ArrayList<>(collection);
+        // the most specific type needs to be returned
+        int oldSize;
+        do {
+            oldSize = list.size();
+            for (int i = 0; i < list.size() - 1;) {
+                Datatype<?> next = list.get(i + 1);
+                Datatype<?> current = list.get(i);
+                assert current != null;
+                assert next != null;
+                if (current.isSubType(next)) {
+                    list.remove(i + 1);
+                } else if (next.isSubType(current)) {
+                    list.remove(i);
+                } else {
+                    i++;
+                }
+            }
+        } while (list.size() > 1 && oldSize != list.size());
+        // now if list.size >1, there is no single most specific type...
+        // troubles
+        if (list.size() == 1) {
+            return list.get(0);
+        }
+        return null;
     }
 
     @Override
@@ -96,8 +99,7 @@ public class DatatypeIntersection<T extends Comparable<T>> implements
 
     @Override
     public DatatypeIntersection<T> add(Datatype<T> d) {
-        DatatypeIntersection<T> toReturn = new DatatypeIntersection<>(host,
-                basics);
+        DatatypeIntersection<T> toReturn = new DatatypeIntersection<>(host, basics);
         toReturn.basics.add(d);
         return toReturn;
     }
@@ -149,13 +151,11 @@ public class DatatypeIntersection<T extends Comparable<T>> implements
         boolean maxExclusive = false;
         for (Datatype<T> dt : basics) {
             Comparable facetValue = dt.asNumericDatatype().getMin();
-            if (facetValue != null
-                    && (min == null || min.compareTo(facetValue) < 0)) {
+            if (facetValue != null && (min == null || min.compareTo(facetValue) < 0)) {
                 min = facetValue;
             }
             facetValue = dt.asNumericDatatype().getMax();
-            if (facetValue != null
-                    && (max == null || facetValue.compareTo(max) < 0)) {
+            if (facetValue != null && (max == null || facetValue.compareTo(max) < 0)) {
                 max = facetValue;
             }
             if (dt.asNumericDatatype().hasMinExclusive()) {

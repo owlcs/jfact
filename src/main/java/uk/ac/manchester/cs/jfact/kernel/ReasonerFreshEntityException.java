@@ -11,7 +11,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerRuntimeException;
 /** The Class ReasonerFreshEntityException. */
 public class ReasonerFreshEntityException extends OWLReasonerRuntimeException {
 
-    private static final long serialVersionUID = 11000L;
+
     /** The iri. */
     private final IRI iri;
 

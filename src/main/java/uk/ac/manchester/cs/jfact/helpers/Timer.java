@@ -10,7 +10,7 @@ import java.io.Serializable;
 /** Timer */
 public class Timer implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
+
     /** save the starting time of the timer */
     private long startTime;
     /** calculated time between Start() and Stop() calls */

@@ -13,26 +13,24 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleInverse;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** class to hold the signature of a module */
 @PortedFrom(file = "tSignature.h", name = "TSignature")
 public class TSignature implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** set to keep all the elements in signature */
-    @PortedFrom(file = "tSignature.h", name = "Set")
-    private final Set<NamedEntity> set = new HashSet<>();
+    @PortedFrom(file = "tSignature.h", name = "Set") private final Set<NamedEntity> set = new HashSet<>();
     /** true if concept TOP-locality; false if concept BOTTOM-locality */
-    @PortedFrom(file = "tSignature.h", name = "topCLocality")
-    private boolean topCLocality = false;
+    @PortedFrom(file = "tSignature.h", name = "topCLocality") private boolean topCLocality = false;
     /** true if role TOP-locality; false if role BOTTOM-locality */
-    @PortedFrom(file = "tSignature.h", name = "topRLocality")
-    private boolean topRLocality = false;
+    @PortedFrom(file = "tSignature.h", name = "topRLocality") private boolean topRLocality = false;
 
     /** Default constructor. */
     public TSignature() {}
@@ -72,12 +70,12 @@ public class TSignature implements Serializable {
     /**
      * add another signature to a given one
      * 
-     * @param Sig
+     * @param sig
      *        Sig
      */
     @PortedFrom(file = "tSignature.h", name = "add")
-    public void add(TSignature Sig) {
-        set.addAll(Sig.set);
+    public void add(TSignature sig) {
+        set.addAll(sig.set);
     }
 
     /**
@@ -107,7 +105,7 @@ public class TSignature implements Serializable {
 
     // comparison
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@Nullable Object obj) {
         if (obj == null) {
             return false;
         }
@@ -235,7 +233,6 @@ public class TSignature implements Serializable {
 
     @Override
     public String toString() {
-        return set.stream().map(x -> x.toString())
-                .collect(joining(" ", "[", "]"));
+        return set.stream().map(Object::toString).collect(joining(" ", "[", "]"));
     }
 }

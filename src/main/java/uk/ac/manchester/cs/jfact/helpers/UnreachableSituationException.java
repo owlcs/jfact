@@ -10,7 +10,7 @@ import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 /** The Class UnreachableSituationException. */
 public class UnreachableSituationException extends ReasonerInternalException {
 
-    private static final long serialVersionUID = 11000L;
+
 
     /** Instantiates a new unreachable situation exception. */
     public UnreachableSituationException() {

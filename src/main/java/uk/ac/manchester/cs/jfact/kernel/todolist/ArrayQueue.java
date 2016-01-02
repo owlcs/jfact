@@ -11,17 +11,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.kernel.ConceptWDep;
 import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
-import conformance.PortedFrom;
 
 /** class to represent single queue */
 public class ArrayQueue implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** waiting ops queue */
-    private final List<ToDoEntry> Wait = new ArrayList<>(50);
+    private final List<ToDoEntry> wait = new ArrayList<>(50);
     /** start pointer; points to the 1st element in the queue */
     private int sPointer = 0;
 
@@ -34,25 +33,25 @@ public class ArrayQueue implements Serializable {
      *        offset
      */
     public void add(DlCompletionTree node, ConceptWDep offset) {
-        Wait.add(new ToDoEntry(node, offset));
+        wait.add(new ToDoEntry(node, offset));
     }
 
     /** clear queue */
     @PortedFrom(file = "ToDoList.h", name = "clear")
     public void clear() {
         setsPointer(0);
-        Wait.clear();
+        wait.clear();
     }
 
     /** @return check if queue empty */
     @PortedFrom(file = "ToDoList.h", name = "empty")
     public boolean isEmpty() {
-        return sPointer == Wait.size();
+        return sPointer == wait.size();
     }
 
     /** @return next entry from the queue; works for non-empty queues */
     public ToDoEntry get() {
-        return Wait.get(sPointer++);
+        return wait.get(sPointer++);
     }
 
     /**
@@ -66,7 +65,7 @@ public class ArrayQueue implements Serializable {
     @PortedFrom(file = "ToDoList.h", name = "save")
     public void save(int[][] tss, int pos) {
         tss[pos][0] = sPointer;
-        tss[pos][1] = Wait.size();
+        tss[pos][1] = wait.size();
     }
 
     /**
@@ -80,7 +79,7 @@ public class ArrayQueue implements Serializable {
     @PortedFrom(file = "ToDoList.h", name = "restore")
     public void restore(int[][] tss, int pos) {
         setsPointer(tss[pos][0]);
-        Helper.resize(Wait, tss[pos][1]);
+        Helper.resize(wait, tss[pos][1]);
     }
 
     /**
@@ -92,14 +91,12 @@ public class ArrayQueue implements Serializable {
     @PortedFrom(file = "ToDoList.h", name = "restore")
     public void restore(int sp, int ep) {
         setsPointer(sp);
-        Helper.resize(Wait, ep);
+        Helper.resize(wait, ep);
     }
 
     @Override
     public String toString() {
-        return "ArrayQueue{" + sPointer + ","
-                + Wait.stream().map(t -> t.toString()).collect(joining(" "))
-                + "}";
+        return "ArrayQueue{" + sPointer + "," + wait.stream().map(Object::toString).collect(joining(" ")) + "}";
     }
 
     /** @return s pointer */
@@ -117,6 +114,6 @@ public class ArrayQueue implements Serializable {
 
     /** @return wait size */
     public int getWaitSize() {
-        return Wait.size();
+        return wait.size();
     }
 }

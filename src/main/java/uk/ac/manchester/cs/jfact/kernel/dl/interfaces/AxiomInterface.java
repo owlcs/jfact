@@ -1,5 +1,9 @@
 package uk.ac.manchester.cs.jfact.kernel.dl.interfaces;
 
+import java.io.Serializable;
+
+import javax.annotation.Nullable;
+
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -7,53 +11,63 @@ package uk.ac.manchester.cs.jfact.kernel.dl.interfaces;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import org.semanticweb.owlapi.model.OWLAxiom;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.split.TOntologyAtom;
 import uk.ac.manchester.cs.jfact.split.TSignature;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** Axiom interface */
+@SuppressWarnings("unused")
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiom")
-public interface AxiomInterface {
+public interface AxiomInterface extends Serializable {
 
     /** @return original owl axiom */
     @Original
-    OWLAxiom getOWLAxiom();
+    @Nullable
+    default OWLAxiom getOWLAxiom() {
+        return null;
+    }
 
     /**
-     * @param Id
+     * @param id
      *        Id
      */
     @PortedFrom(file = "tDLAxiom.h", name = "setId")
-    void setId(int Id);
+    default void setId(int id) {}
 
     /** @return the id */
     @PortedFrom(file = "tDLAxiom.h", name = "getId")
-    int getId();
+    default int getId() {
+        return 0;
+    }
 
     /**
-     * @param Used
+     * @param used
      *        Used
      */
     @PortedFrom(file = "tDLAxiom.h", name = "setUsed")
-    void setUsed(boolean Used);
+    default void setUsed(boolean used) {}
 
     /** @return the value of the used flag */
     @PortedFrom(file = "tDLAxiom.h", name = "isUsed")
-    boolean isUsed();
+    default boolean isUsed() {
+        return false;
+    }
 
     /** @return true if in module */
     @PortedFrom(file = "tDLAxiom.h", name = "isInModule")
-    boolean isInModule();
+    default boolean isInModule() {
+        return false;
+    }
 
     /**
      * @param inModule
      *        inModule
      */
     @PortedFrom(file = "tDLAxiom.h", name = "setInModule")
-    void setInModule(boolean inModule);
+    default void setInModule(boolean inModule) {}
 
     /**
      * accept method for the visitor pattern
@@ -62,7 +76,7 @@ public interface AxiomInterface {
      *        visitor
      */
     @PortedFrom(file = "tDLAxiom.h", name = "accept")
-    void accept(DLAxiomVisitor visitor);
+    default void accept(DLAxiomVisitor visitor) {}
 
     /**
      * @param visitor
@@ -71,32 +85,43 @@ public interface AxiomInterface {
      *        visitor return type
      * @return visitor result
      */
+    @Nullable
     @PortedFrom(file = "tDLAxiom.h", name = "accept")
-    <O> O accept(DLAxiomVisitorEx<O> visitor);
+    default <O> O accept(DLAxiomVisitorEx<O> visitor) {
+        return null;
+    }
 
     /**
      * @param flag
      *        flag
      */
     @PortedFrom(file = "tDLAxiom.h", name = "setInSS")
-    void setInSS(boolean flag);
+    default void setInSS(boolean flag) {}
 
     /** @return the value of the isSearchSpace flag */
     @PortedFrom(file = "tDLAxiom.h", name = "isInSS")
-    boolean isInSS();
+    default boolean isInSS() {
+        return false;
+    }
 
     /** @return signature */
+    @Nullable
     @PortedFrom(file = "tDLAxiom.h", name = "getSignature")
-    TSignature getSignature();
+    default TSignature getSignature() {
+        return null;
+    }
 
     /** @return atom for axiom */
+    @Nullable
     @PortedFrom(file = "tDLAxiom.h", name = "getAtom")
-    TOntologyAtom getAtom();
+    default TOntologyAtom getAtom() {
+        return null;
+    }
 
     /**
      * @param atom
      *        atom
      */
     @PortedFrom(file = "tDLAxiom.h", name = "setAtom")
-    void setAtom(TOntologyAtom atom);
+    default void setAtom(TOntologyAtom atom) {}
 }

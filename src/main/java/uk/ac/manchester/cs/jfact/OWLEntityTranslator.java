@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLObject;
@@ -18,27 +18,24 @@ import org.semanticweb.owlapi.reasoner.impl.DefaultNodeSet;
 import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Entity;
 
-abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity>
-        implements Serializable {
+abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity> implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
     private final Map<E, T> entity2dlentity = new HashMap<>();
     private final Map<T, E> dlentity2entity = new HashMap<>();
     protected final ExpressionCache em;
     protected final OWLDataFactory df;
     protected final TranslationMachinery tr;
 
-    protected void fillMaps(E entity, T dlentity) {
-        this.entity2dlentity.put(entity, dlentity);
-        this.dlentity2entity.put(dlentity, entity);
-    }
-
-    protected OWLEntityTranslator(ExpressionCache em, OWLDataFactory df,
-            TranslationMachinery tr) {
+    protected OWLEntityTranslator(ExpressionCache em, OWLDataFactory df, TranslationMachinery tr) {
         this.em = em;
         this.df = df;
         this.tr = tr;
         fillTopAndBottomEntities();
+    }
+
+    protected void fillMaps(E entity, T dlentity) {
+        this.entity2dlentity.put(entity, dlentity);
+        this.dlentity2entity.put(dlentity, entity);
     }
 
     protected void fillTopAndBottomEntities() {
@@ -52,18 +49,17 @@ abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity>
         }
     }
 
-    @Nonnull
     protected T registerNewEntity(E entity) {
         T pointer = this.createPointerForEntity(entity);
         this.fillMaps(entity, pointer);
         return pointer;
     }
 
+    @Nullable
     public E getEntityFromPointer(T pointer) {
         return this.dlentity2entity.get(pointer);
     }
 
-    @Nonnull
     public T getPointerFromEntity(E entity) {
         T pointer = this.entity2dlentity.get(entity);
         if (pointer == null) {
@@ -72,32 +68,29 @@ abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity>
         return pointer;
     }
 
-    @Nonnull
     public Node<E> node(Stream<T> pointers) {
-        return createDefaultNode(pointers.map(p -> getEntityFromPointer(p)));
+        return createDefaultNode(pointers.map(this::getEntityFromPointer));
     }
 
-    @Nonnull
     public NodeSet<E> nodeSet(Stream<Collection<T>> pointers) {
         return createDefaultNodeSet(pointers.map(p -> node(p.stream())));
     }
 
-    @Nonnull
-    protected abstract DefaultNode<E> createDefaultNode(
-            @Nonnull Stream<E> stream);
+    protected abstract DefaultNode<E> createDefaultNode(Stream<E> stream);
 
-    @Nonnull
-    protected abstract DefaultNodeSet<E> createDefaultNodeSet(
-            @Nonnull Stream<Node<E>> stream);
+    protected abstract DefaultNodeSet<E> createDefaultNodeSet(Stream<Node<E>> stream);
 
+    @Nullable
     protected abstract T getTopEntityPointer();
 
+    @Nullable
     protected abstract T getBottomEntityPointer();
 
-    @Nonnull
     protected abstract T createPointerForEntity(E entity);
 
+    @Nullable
     protected abstract E getTopEntity();
 
+    @Nullable
     protected abstract E getBottomEntity();
 }

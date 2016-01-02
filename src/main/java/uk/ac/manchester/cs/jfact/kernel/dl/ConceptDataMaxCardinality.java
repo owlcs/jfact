@@ -1,5 +1,8 @@
 package uk.ac.manchester.cs.jfact.kernel.dl;
 
+import javax.annotation.Nullable;
+
+import conformance.PortedFrom;
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -9,25 +12,21 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
-import conformance.PortedFrom;
 
 /** data max cardinality */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptDataMaxCardinality")
 public class ConceptDataMaxCardinality extends AbstractConceptDataCardinality {
 
-    private static final long serialVersionUID = 11000L;
-
     /**
      * @param n
      *        n
-     * @param R
+     * @param r
      *        R
-     * @param E
+     * @param e
      *        E
      */
-    public ConceptDataMaxCardinality(int n, DataRoleExpression R,
-            DataExpression E) {
-        super(n, R, E);
+    public ConceptDataMaxCardinality(int n, DataRoleExpression r, DataExpression e) {
+        super(n, r, e);
     }
 
     @Override
@@ -36,6 +35,7 @@ public class ConceptDataMaxCardinality extends AbstractConceptDataCardinality {
         visitor.visit(this);
     }
 
+    @Nullable
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {

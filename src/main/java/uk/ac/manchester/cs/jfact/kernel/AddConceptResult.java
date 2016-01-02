@@ -8,9 +8,9 @@ package uk.ac.manchester.cs.jfact.kernel;
 /** add concept result */
 public enum AddConceptResult {
     /** acrClash */
-    acrClash,
+    CLASH,
     /** acrExist */
-    acrExist,
+    EXIST,
     /** acrDone */
-    acrDone
+    DONE
 }

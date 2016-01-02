@@ -7,8 +7,6 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.LinkedHashMap;
 
-import javax.annotation.Nonnull;
-
 import conformance.PortedFrom;
 
 /**
@@ -22,7 +20,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tNameSet.h", name = "TNameSet")
 public class NameSet<T, K> extends LinkedHashMap<K, T> {
 
-    private static final long serialVersionUID = 11000L;
+
     /** creator of new name */
     @PortedFrom(file = "tNameSet.h", name = "Creator")
     private final NameCreator<T, K> creator;
@@ -43,7 +41,6 @@ public class NameSet<T, K> extends LinkedHashMap<K, T> {
      * @return new element
      */
     @PortedFrom(file = "tNameSet.h", name = "add")
-    @Nonnull
     public T add(K id) {
         T pne = creator.makeEntry(id);
         put(id, pne);
@@ -58,7 +55,6 @@ public class NameSet<T, K> extends LinkedHashMap<K, T> {
      * @return pointer to id structure created by external creator
      */
     @PortedFrom(file = "tNameSet.h", name = "insert")
-    @Nonnull
     public T insert(K id) {
         T pne = get(id);
         if (pne == null) {

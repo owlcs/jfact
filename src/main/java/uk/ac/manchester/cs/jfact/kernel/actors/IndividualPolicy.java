@@ -7,6 +7,8 @@ package uk.ac.manchester.cs.jfact.kernel.actors;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
 import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
 import uk.ac.manchester.cs.jfact.kernel.Concept;
 import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
@@ -15,7 +17,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 /** policy for individuals */
 public class IndividualPolicy implements Policy, Serializable {
 
-    private static final long serialVersionUID = 11000L;
     private final boolean plain;
 
     /**
@@ -36,8 +37,9 @@ public class IndividualPolicy implements Policy, Serializable {
         return plain;
     }
 
+    @Nullable
     @Override
-    public Expression buildTree(ExpressionCache EM, ClassifiableEntry p) {
-        return EM.individual(p.getName());
+    public Expression buildTree(ExpressionCache em, ClassifiableEntry p) {
+        return em.individual(p.getIRI());
     }
 }

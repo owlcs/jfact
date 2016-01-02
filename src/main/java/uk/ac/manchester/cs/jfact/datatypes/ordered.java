@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
+import javax.annotation.Nullable;
+
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -8,17 +10,22 @@ package uk.ac.manchester.cs.jfact.datatypes;
 /** ordered */
 public enum ordered {
     /** not ordered */
-    FALSE("false"),
-    /** partially ordered */
-    PARTIAL("partial"),
-    /** totally ordered */
+    FALSE("false"), /** partially ordered */
+    PARTIAL("partial"), /** totally ordered */
     TOTAL("total");
+
+    private final String name;
+
+    private ordered(String s) {
+        name = s;
+    }
 
     /**
      * @param string
      *        string
      * @return ordered
      */
+    @Nullable
     public static ordered parse(String string) {
         for (ordered o : values()) {
             if (o.name.equals(string)) {
@@ -26,11 +33,5 @@ public enum ordered {
             }
         }
         return null;
-    }
-
-    private final String name;
-
-    private ordered(String s) {
-        name = s;
     }
 }

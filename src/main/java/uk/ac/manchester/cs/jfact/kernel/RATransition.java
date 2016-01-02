@@ -21,15 +21,11 @@ import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 @PortedFrom(file = "RAutomaton.h", name = "RATransition")
 public class RATransition implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** set of roles that may affect the transition */
-    @PortedFrom(file = "RAutomaton.h", name = "label")
-    private final Set<Role> label;
-    @Original
-    private BitSet cache = null;
+    @PortedFrom(file = "RAutomaton.h", name = "label") private final Set<Role> label;
+    @Original private BitSet cache = null;
     /** state of the transition */
-    @PortedFrom(file = "RAutomaton.h", name = "state")
-    private final int state;
+    @PortedFrom(file = "RAutomaton.h", name = "state") private final int state;
 
     /**
      * create a transition to given state
@@ -47,12 +43,12 @@ public class RATransition implements Serializable {
      * 
      * @param st
      *        st
-     * @param R
+     * @param r
      *        R
      */
-    public RATransition(int st, Role R) {
+    public RATransition(int st, Role r) {
         this(st);
-        label.add(R);
+        label.add(r);
     }
 
     /**
@@ -75,8 +71,7 @@ public class RATransition implements Serializable {
      */
     @PortedFrom(file = "RAutomaton.h", name = "addIfNew")
     public void addIfNew(RATransition trans) {
-        trans.label.stream().filter(p -> !applicable(p))
-            .forEach(p -> label.add(p));
+        trans.label.stream().filter(p -> !applicable(p)).forEach(label::add);
     }
 
     // query the transition
@@ -88,22 +83,22 @@ public class RATransition implements Serializable {
 
     /** @return a point of the transition */
     @PortedFrom(file = "RAutomaton.h", name = "final")
-    public int final_state() {
+    public int finalState() {
         return state;
     }
 
     /**
-     * @param R
+     * @param r
      *        R
      * @return whether transition is applicable wrt role R
      */
     @PortedFrom(file = "RAutomaton.h", name = "applicable")
-    public boolean applicable(Role R) {
+    public boolean applicable(Role r) {
         if (cache == null) {
             cache = new BitSet();
             label.forEach(t -> cache.set(t.getAbsoluteIndex()));
         }
-        return cache.get(R.getAbsoluteIndex());
+        return cache.get(r.getAbsoluteIndex());
     }
 
     /** @return whether transition is empty */
@@ -129,11 +124,10 @@ public class RATransition implements Serializable {
         if (isEmpty()) {
             o.print("e");
         } else {
-            o.print(label.stream().map(p -> p.getName())
-                .collect(joining("\",\"", "\"", "\"")));
+            o.print(label.stream().map(Role::getIRI).collect(joining("\",\"", "\"", "\"")));
         }
         o.print(" -> ");
-        o.print(final_state());
+        o.print(finalState());
     }
 
     /** @return check whether transition is TopRole one */

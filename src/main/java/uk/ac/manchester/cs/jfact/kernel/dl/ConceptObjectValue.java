@@ -7,36 +7,34 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** object value restriction */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectValue")
-public class ConceptObjectValue implements ConceptObjectRoleExpression,
-        Serializable {
+public class ConceptObjectValue implements ConceptObjectRoleExpression, Serializable {
 
-    private static final long serialVersionUID = 11000L;
-    @Original
-    private final ObjectRoleExpression delegate;
-    @PortedFrom(file = "tDLExpression.h", name = "I")
-    private final IndividualExpression individualExpression;
+    @Original private final ObjectRoleExpression delegate;
+    @PortedFrom(file = "tDLExpression.h", name = "I") private final IndividualExpression individualExpression;
 
     /**
-     * @param R
+     * @param r
      *        R
-     * @param I
+     * @param i
      *        I
      */
-    public ConceptObjectValue(ObjectRoleExpression R, IndividualExpression I) {
-        individualExpression = I;
-        delegate = R;
+    public ConceptObjectValue(ObjectRoleExpression r, IndividualExpression i) {
+        individualExpression = i;
+        delegate = r;
     }
 
     @Override
@@ -45,6 +43,7 @@ public class ConceptObjectValue implements ConceptObjectRoleExpression,
         visitor.visit(this);
     }
 
+    @Nullable
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
@@ -64,13 +63,12 @@ public class ConceptObjectValue implements ConceptObjectRoleExpression,
     }
 
     @Override
-    public IRI getName() {
-        return IRI.create("objectValue(" + delegate + " "
-                + individualExpression + ")");
+    public IRI getIRI() {
+        return IRI.create("objectValue(" + delegate + " " + individualExpression + ")");
     }
 
     @Override
     public String toString() {
-        return getName().toString();
+        return getIRI().toString();
     }
 }

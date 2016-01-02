@@ -5,11 +5,12 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static uk.ac.manchester.cs.jfact.helpers.Helper.bpINVALID;
+import static uk.ac.manchester.cs.jfact.helpers.Helper.BP_INVALID;
 
 import java.util.Collection;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.IRI;
 
@@ -18,7 +19,6 @@ import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
 /** literal */
 public class LiteralEntry extends NamedEntry {
 
-    private static final long serialVersionUID = 11000L;
     private Literal<?> literal;
     /** DAG index of the entry */
     private int pName;
@@ -31,14 +31,14 @@ public class LiteralEntry extends NamedEntry {
      */
     public LiteralEntry(IRI name) {
         super(name);
-        pName = bpINVALID;
+        pName = BP_INVALID;
     }
 
     /**
      * @param name
      *        name
      */
-    public LiteralEntry(@Nonnull String name) {
+    public LiteralEntry(String name) {
         this(IRI.create(name));
     }
 
@@ -58,7 +58,6 @@ public class LiteralEntry extends NamedEntry {
     }
 
     /** @return host type */
-    @Nonnull
     public Datatype<?> getType() {
         return literal.getDatatypeExpression();
     }
@@ -83,8 +82,7 @@ public class LiteralEntry extends NamedEntry {
     @Override
     @Nonnull
     public String toString() {
-        return '(' + this.getClass().getSimpleName() + ' ' + literal.toString()
-                + super.toString() + ')';
+        return '(' + this.getClass().getSimpleName() + ' ' + literal.toString() + super.toString() + ')';
     }
 
     @Override
@@ -93,7 +91,7 @@ public class LiteralEntry extends NamedEntry {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@Nullable Object obj) {
         if (!(obj instanceof LiteralEntry)) {
             return false;
         }
@@ -105,7 +103,6 @@ public class LiteralEntry extends NamedEntry {
      *        literal
      * @return modified object
      */
-    @Nonnull
     public LiteralEntry withLiteral(Literal<?> l) {
         setLiteral(l);
         return this;
@@ -116,7 +113,6 @@ public class LiteralEntry extends NamedEntry {
      *        index
      * @return modified object
      */
-    @Nonnull
     public LiteralEntry withIndex(int i) {
         setIndex(i);
         return this;

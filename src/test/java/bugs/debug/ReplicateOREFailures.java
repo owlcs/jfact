@@ -135,10 +135,9 @@ public class ReplicateOREFailures {
         return new JFactFactory();
     }
 
-    @Rule
-    public Timeout timeout = new Timeout(180000);
+    @Rule public Timeout timeout = new Timeout(180000);
 
-    private boolean consistent(String filename) {
+    private static boolean consistent(String filename) {
         try {
             File file = new File(filename);
             OWLOntology o = OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(file);

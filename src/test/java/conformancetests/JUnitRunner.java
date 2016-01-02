@@ -14,6 +14,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.annotation.Nullable;
+
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormat;
 import org.semanticweb.owlapi.io.StringDocumentSource;
@@ -32,8 +34,8 @@ public class JUnitRunner {
     private static final int _10000 = 1000000;
 
     public static void print(String premise) throws OWLException {
-        OWLOntology o = OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(new StringDocumentSource(
-            premise));
+        OWLOntology o = OWLManager.createOWLOntologyManager()
+            .loadOntologyFromOntologyDocument(new StringDocumentSource(premise));
         o.getOWLOntologyManager().saveOntology(o, new FunctionalSyntaxDocumentFormat(), new SystemOutDocumentTarget());
     }
 
@@ -102,6 +104,7 @@ public class JUnitRunner {
         }
     }
 
+    @Nullable
     public OWLOntology getConsequence() throws OWLOntologyCreationException {
         if (consequence != null) {
             StringDocumentSource documentSource = new StringDocumentSource(consequence);
@@ -164,6 +167,7 @@ public class JUnitRunner {
         premiseOntology.getOWLOntologyManager().removeOntologyChangeListener((OWLOntologyChangeListener) reasoner);
     }
 
+    @Nullable
     private static OWLReasoner roundtrip(OWLReasoner r) {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -236,7 +240,7 @@ public class JUnitRunner {
         }
     }
 
-    public String logTroubles(boolean expected, AtomicBoolean actual, TestClasses testclass, OWLAxiom axiom) {
+    public String logTroubles(boolean expected, AtomicBoolean actual, TestClasses testclass, @Nullable OWLAxiom axiom) {
         StringBuilder b = new StringBuilder();
         b.append("JUnitRunner.logTroubles() \t");
         b.append(testclass);

@@ -13,7 +13,6 @@ import conformance.PortedFrom;
 /** class for saving/restoring array Todo table */
 public final class TODOListSaveState implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
     // save state of all regular queues
     /** key queue 0 */
     public int backup0key;
@@ -44,10 +43,9 @@ public final class TODOListSaveState implements Serializable {
     /** value queue 6 */
     public int backup6value;
     /** save number-of-entries to do */
-    @PortedFrom(file = "ToDoList.h", name = "noe")
-    protected int noe;
-    protected int backupID_sp;
-    protected int backupID_ep;
+    @PortedFrom(file = "ToDoList.h", name = "noe") protected int noe;
+    protected int backupIDsp;
+    protected int backupIDep;
     /** save whole array */
     protected List<ToDoEntry> waitingQueue;
     /** save start point of queue of entries */
@@ -59,12 +57,9 @@ public final class TODOListSaveState implements Serializable {
 
     @Override
     public String toString() {
-        return noe + " " + backupID_sp + ',' + backupID_ep + ' ' + waitingQueue
-                + ' ' + sp + ' ' + ep + ' ' + queueBroken + ' ' + backup0key
-                + ' ' + backup0value + ' ' + backup1key + ' ' + backup1value
-                + ' ' + backup2key + ' ' + backup2value + ' ' + backup3key
-                + ' ' + backup3value + ' ' + backup4key + ' ' + backup4value
-                + ' ' + backup5key + ' ' + backup5value + ' ' + backup6key
-                + ' ' + backup6value;
+        return noe + " " + backupIDsp + ',' + backupIDep + ' ' + waitingQueue + ' ' + sp + ' ' + ep + ' ' + queueBroken
+            + ' ' + backup0key + ' ' + backup0value + ' ' + backup1key + ' ' + backup1value + ' ' + backup2key + ' '
+            + backup2value + ' ' + backup3key + ' ' + backup3value + ' ' + backup4key + ' ' + backup4value + ' '
+            + backup5key + ' ' + backup5value + ' ' + backup6key + ' ' + backup6value;
     }
 }

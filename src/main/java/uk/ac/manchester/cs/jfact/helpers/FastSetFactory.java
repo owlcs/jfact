@@ -10,7 +10,7 @@ import java.io.Serializable;
 /** factory for int sets */
 public class FastSetFactory implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
+    private FastSetFactory() {}
 
     /** @return int set instance */
     public static FastSet create() {

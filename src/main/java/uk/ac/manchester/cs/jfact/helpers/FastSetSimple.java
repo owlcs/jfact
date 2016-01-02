@@ -7,48 +7,14 @@ package uk.ac.manchester.cs.jfact.helpers;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.Arrays;
 
+import javax.annotation.Nullable;
+
 /** int set implementation */
 public class FastSetSimple extends AbstractFastSet {
 
-    private static final long serialVersionUID = 11000L;
     protected int[] values;
     protected int size = 0;
-    protected static final int defaultSize = 16;
-
-    protected int insertionIndex(int key) {
-        if (key < values[0]) {
-            return -1;
-        }
-        if (key > values[size - 1]) {
-            return -size - 1;
-        }
-        int lowerbound = 0;
-        if (size < AbstractFastSet.limit) {
-            for (; lowerbound < size; lowerbound++) {
-                if (values[lowerbound] > key) {
-                    return -lowerbound - 1;
-                }
-                if (values[lowerbound] == key) {
-                    return lowerbound;
-                }
-            }
-            return -lowerbound - 1;
-        }
-        int upperbound = size - 1;
-        while (lowerbound <= upperbound) {
-            int delta = upperbound - lowerbound;
-            int intermediate = lowerbound + delta / 2;
-            if (values[intermediate] == key) {
-                return intermediate;
-            }
-            if (values[intermediate] < key) {
-                lowerbound = intermediate + 1;
-            } else {
-                upperbound = intermediate - 1;
-            }
-        }
-        return -lowerbound - 1;
-    }
+    protected static final int DEFAULTSIZE = 16;
 
     /** Default constructor. */
     public FastSetSimple() {}
@@ -60,8 +26,7 @@ public class FastSetSimple extends AbstractFastSet {
      *        c2
      */
     public FastSetSimple(FastSetSimple c1, FastSetSimple c2) {
-        values = new int[(c1.size + c2.size) / defaultSize * defaultSize
-                + defaultSize];
+        values = new int[(c1.size + c2.size) / DEFAULTSIZE * DEFAULTSIZE + DEFAULTSIZE];
         int i = 0;
         int j = 0;
         int index = 0;
@@ -96,17 +61,51 @@ public class FastSetSimple extends AbstractFastSet {
         }
     }
 
+    protected int insertionIndex(int key) {
+        if (key < values[0]) {
+            return -1;
+        }
+        if (key > values[size - 1]) {
+            return -size - 1;
+        }
+        int lowerbound = 0;
+        if (size < AbstractFastSet.LIMIT) {
+            for (; lowerbound < size; lowerbound++) {
+                if (values[lowerbound] > key) {
+                    return -lowerbound - 1;
+                }
+                if (values[lowerbound] == key) {
+                    return lowerbound;
+                }
+            }
+            return -lowerbound - 1;
+        }
+        int upperbound = size - 1;
+        while (lowerbound <= upperbound) {
+            int delta = upperbound - lowerbound;
+            int intermediate = lowerbound + delta / 2;
+            if (values[intermediate] == key) {
+                return intermediate;
+            }
+            if (values[intermediate] < key) {
+                lowerbound = intermediate + 1;
+            } else {
+                upperbound = intermediate - 1;
+            }
+        }
+        return -lowerbound - 1;
+    }
+
     @Override
     public int get(int i) {
         if (values != null) {
             return values[i];
         }
-        throw new IllegalArgumentException("Illegal argument " + i
-                + ": no such element");
+        throw new IllegalArgumentException("Illegal argument " + i + ": no such element");
     }
 
     protected void init() {
-        values = new int[defaultSize];
+        values = new int[DEFAULTSIZE];
         size = 0;
     }
 
@@ -153,7 +152,7 @@ public class FastSetSimple extends AbstractFastSet {
             return;
         }
         int newsize = size + c.size();
-        int[] merge = new int[newsize / defaultSize * defaultSize + defaultSize];
+        int[] merge = new int[newsize / DEFAULTSIZE * DEFAULTSIZE + DEFAULTSIZE];
         int i = 0;
         int j = 0;
         int index = 0;
@@ -320,7 +319,7 @@ public class FastSetSimple extends AbstractFastSet {
     }
 
     @Override
-    public boolean equals(Object arg0) {
+    public boolean equals(@Nullable Object arg0) {
         if (arg0 == null) {
             return false;
         }
@@ -369,8 +368,7 @@ public class FastSetSimple extends AbstractFastSet {
             return;
         }
         if (end < -1 || end < i || end > size || i < -1 || i > size) {
-            throw new IllegalArgumentException("illegal arguments: " + i + ' '
-                    + end + " size: " + size);
+            throw new IllegalArgumentException("illegal arguments: " + i + ' ' + end + " size: " + size);
         }
         if (size == 1 || i == 0 && end == size) {
             values = null;

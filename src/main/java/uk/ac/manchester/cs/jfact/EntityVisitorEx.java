@@ -15,7 +15,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 
 class EntityVisitorEx implements OWLEntityVisitorEx<Expression>, Serializable {
 
-    private static final long serialVersionUID = 11000L;
+
     private TranslationMachinery tr;
 
     public EntityVisitorEx(TranslationMachinery em) {

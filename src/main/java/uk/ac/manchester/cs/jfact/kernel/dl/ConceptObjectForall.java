@@ -7,37 +7,35 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptObjectRCExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** forall object restriction */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptObjectForall")
-public class ConceptObjectForall implements ConceptObjectRCExpression,
-        Serializable {
+public class ConceptObjectForall implements ConceptObjectRCExpression, Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** concept argument */
-    @PortedFrom(file = "tDLExpression.h", name = "C")
-    private final ConceptExpression conceptExpression;
-    @Original
-    private final ObjectRoleExpression delegate;
+    @PortedFrom(file = "tDLExpression.h", name = "C") private final ConceptExpression conceptExpression;
+    @Original private final ObjectRoleExpression delegate;
 
     /**
-     * @param R
+     * @param r
      *        R
-     * @param C
+     * @param c
      *        C
      */
-    public ConceptObjectForall(ObjectRoleExpression R, ConceptExpression C) {
-        conceptExpression = C;
-        delegate = R;
+    public ConceptObjectForall(ObjectRoleExpression r, ConceptExpression c) {
+        conceptExpression = c;
+        delegate = r;
     }
 
     @Override
@@ -46,6 +44,7 @@ public class ConceptObjectForall implements ConceptObjectRCExpression,
         visitor.visit(this);
     }
 
+    @Nullable
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
@@ -66,13 +65,12 @@ public class ConceptObjectForall implements ConceptObjectRCExpression,
     }
 
     @Override
-    public IRI getName() {
-        return IRI.create("objectForall(" + delegate + " " + conceptExpression
-                + ")");
+    public IRI getIRI() {
+        return IRI.create("objectForall(" + delegate + " " + conceptExpression + ")");
     }
 
     @Override
     public String toString() {
-        return getName().toString();
+        return getIRI().toString();
     }
 }

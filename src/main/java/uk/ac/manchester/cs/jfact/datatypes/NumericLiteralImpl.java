@@ -1,7 +1,5 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
-import javax.annotation.Nonnull;
-
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -16,7 +14,7 @@ import javax.annotation.Nonnull;
 public class NumericLiteralImpl<R extends Comparable<R>> extends LiteralImpl<R>
         implements NumericLiteral<R> {
 
-    private static final long serialVersionUID = 11000L;
+
 
     /**
      * @param type
@@ -24,8 +22,8 @@ public class NumericLiteralImpl<R extends Comparable<R>> extends LiteralImpl<R>
      * @param value
      *        value
      */
-    public NumericLiteralImpl(@Nonnull NumericDatatype<R> type,
-            @Nonnull String value) {
+    public NumericLiteralImpl(NumericDatatype<R> type,
+            String value) {
         super(type, value);
     }
 }

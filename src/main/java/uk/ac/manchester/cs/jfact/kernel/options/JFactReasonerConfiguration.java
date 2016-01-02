@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.reasoner.FreshEntityPolicy;
 import org.semanticweb.owlapi.reasoner.IndividualNodeSetPolicy;
@@ -27,8 +28,8 @@ import uk.ac.manchester.cs.jfact.helpers.Templates;
 /** configuration. */
 public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Serializable {
 
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = 11000L;
+    private static final String OR_SORT_SAT = "orSortSat";
+    private static final String OR_SORT_SUB = "orSortSub";
     /**
      * Option 'dumpQuery' dumps sub-TBox relevant to given
      * satisfiability/subsumption query.
@@ -57,29 +58,28 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * and 'd' for descending mode), and 'p' is a preference field (could be 'p'
      * for preferencing non-generating rules and 'n' for not doing so).
      */
-    private static StringOption orSortSub = getOption("orSortSub", "0");
+    private static StringOption orSortSub = getOption(OR_SORT_SUB, "0");
     /**
      * Option 'orSortSat' define the sorting order of OR vertices in the DAG
      * used in satisfiability tests (used mostly in caching). Option has form of
      * string 'Mop', see orSortSub for details.
      */
-    private static StringOption orSortSat = getOption("orSortSat", "0");
+    private static StringOption orSortSat = getOption(OR_SORT_SAT, "0");
     /**
-     * Option 'IAOEFLG' define the priorities of different operations in TODO
+     * Option 'IAOEFLG' define the priorities of different operations in to do
      * list. Possible values are 7-digit strings with ony possible digit are
      * 0-6. The digits on the places 1, 2, ..., 7 are for priority of Id, And,
      * Or, Exists, Forall, LE and GE operations respectively. The smaller number
      * means the higher priority. All other constructions (TOP, BOTTOM, etc) has
      * priority 0.
      */
-    private static StringOption IAOEFLG = getOption("IAOEFLG", "1263005");
+    private static final StringOption IAOEFLG = getOption("IAOEFLG", "1263005");
     /**
      * Option 'useSemanticBranching' switch semantic branching on and off. The
      * usage of semantic branching usually leads to faster reasoning, but
      * sometime could give small overhead.
      */
-    @PortedFrom(file = "dlTBox.h", name = "useSemanticBranching")
-    private boolean useSemanticBranching = true;
+    @PortedFrom(file = "dlTBox.h", name = "useSemanticBranching") private boolean useSemanticBranching = true;
     /**
      * Option 'useBackjumping' switch backjumping on and off. The usage of
      * backjumping usually leads to much faster reasoning.
@@ -91,14 +91,12 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * Option 'useLazyBlocking' makes checking of blocking status as small as
      * possible. This greatly increase speed of reasoning.
      */
-    @PortedFrom(file = "dlTBox.h", name = "useLazyBlocking")
-    private boolean useLazyBlocking = true;
+    @PortedFrom(file = "dlTBox.h", name = "useLazyBlocking") private boolean useLazyBlocking = true;
     /**
      * Option 'useAnywhereBlocking' allow user to choose between Anywhere and
      * Ancestor blocking.
      */
-    @PortedFrom(file = "dlTBox.h", name = "useAnywhereBlocking")
-    private boolean useAnywhereBlocking = true;
+    @PortedFrom(file = "dlTBox.h", name = "useAnywhereBlocking") private boolean useAnywhereBlocking = true;
     /**
      * Option 'useCompletelyDefined' leads to simpler Taxonomy creation if TBox
      * contains no non-primitive concepts. Unfortunately, it is quite rare case.
@@ -108,16 +106,14 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * Option 'useSpecialDomains' (development) controls the special processing
      * of R and D for non-simple roles. Should always be set to true.
      */
-    @PortedFrom(file = "dlTBox.h", name = "useSpecialDomains")
-    private boolean useSpecialDomains = true;
+    @PortedFrom(file = "dlTBox.h", name = "useSpecialDomains") private boolean useSpecialDomains = true;
     /**
      * Option 'useIncrementalReasoning' (development) allows one to reason
      * efficiently about small changes in the ontology.
      */
     private boolean useIncrementalReasoning = false;
     /** The use axiom splitting. */
-    @PortedFrom(file = "Kernel.h", name = "useAxiomSplitting")
-    private boolean useAxiomSplitting = false;
+    @PortedFrom(file = "Kernel.h", name = "useAxiomSplitting") private boolean useAxiomSplitting = false;
     /**
      * Internal use only. Option 'skipBeforeBlock' allow user to skip given
      * number of nodes before make a block.
@@ -125,15 +121,129 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
     // private static final Option skipBeforeBlock =
     // getOption("skipBeforeBlock", 0);
     /** flag to use caching during completion tree construction */
-    @PortedFrom(file = "dlTBox.h", name = "useNodeCache")
-    private boolean useNodeCache = true;
+    @PortedFrom(file = "dlTBox.h", name = "useNodeCache") private boolean useNodeCache = true;
     /** whether we use sorted reasoning; depends on some simplifications. */
-    @PortedFrom(file = "dlTBox.h", name = "useSortedReasoning")
-    private boolean useSortedReasoning = true;
+    @PortedFrom(file = "dlTBox.h", name = "useSortedReasoning") private boolean useSortedReasoning = true;
     /** Option 'allowUndefinedNames' describes the policy of undefined names. */
-    @PortedFrom(file = "Kernel.h", name = "allowUndefinedNames")
-    private boolean allowUndefinedNames = true;
+    @PortedFrom(file = "Kernel.h", name = "allowUndefinedNames") private boolean allowUndefinedNames = true;
     private boolean needLogging = false;
+    /**
+     * Option 'queryAnswering', if true, switches the reasoner to a query
+     * answering mode.
+     */
+    @PortedFrom(file = "Kernel.h", name = "queryAnswering") private boolean queryAnswering = false;
+    protected static final LogAdapter empty = new LogAdapterImpl();
+    /** The log adapter stream. */
+    private LogAdapterStream logAdapterStream;
+    /** set of all avaliable (given) options. */
+    private final Map<String, StringOption> base = new HashMap<>();
+    /** The progress monitor. */
+    private ReasonerProgressMonitor progressMonitor = new NullReasonerProgressMonitor();
+    /** The fresh entity policy. */
+    @Nonnull private FreshEntityPolicy freshEntityPolicy = FreshEntityPolicy.ALLOW;
+    /** The individual node set policy. */
+    @Nonnull private IndividualNodeSetPolicy individualNodeSetPolicy = IndividualNodeSetPolicy.BY_NAME;
+    /** The time out. */
+    private long timeOut = Long.MAX_VALUE;
+    /** The log absorption adapter stream. */
+    private LogAdapterStream logAbsorptionAdapterStream;
+    /** The use ad in module extraction. */
+    private boolean useADInModuleExtraction = true;
+    /** The use logging. */
+    private boolean useLogging = false;
+    /** The rkg debug absorption. */
+    private boolean debugAbsorption = false;
+    /** The rkg improve save restore depset. */
+    private boolean improveSaveRestoreDepset = false;
+    /** The rkg print dag usage. */
+    private boolean printDagUsage = false;
+    /** The rkg use simple rules. */
+    private boolean useSimpleRules = false;
+    /** The use reasoning statistics. */
+    private boolean useReasoningStatistics = false;
+    /** The rkg update rnd from superroles. */
+    private boolean updaterndFromSuperRoles = false;
+    /** The use blocking statistics. */
+    private boolean useBlockingStatistics = false;
+    /** The rkg use dynamic backjumping. */
+    private boolean useDynamicBackjumping = false;
+    /** The tmp print taxonomy info. */
+    private boolean printTaxonomyInfo = false;
+    /** The debug save restore. */
+    private boolean debugSaveRestore = false;
+    /** The rkg use fairness. */
+    private boolean useFairness = false;
+    /** The fpp debug split modules. */
+    private boolean debugSplitModules = false;
+    /** The splits. */
+    private boolean splits = false;
+    /** whether EL polynomial reasoner should be used. */
+    private boolean useELReasoner = false;
+    /** allow reasoner to use undefined names in queries. */
+    private boolean useUndefinedNames = true;
+
+    /** Instantiates a new j fact reasoner configuration. */
+    public JFactReasonerConfiguration() {
+        base.put(absorptionFlags.getOptionName(), absorptionFlags);
+        base.put(IAOEFLG.getOptionName(), IAOEFLG);
+        base.put(orSortSat.getOptionName(), orSortSat);
+        base.put(orSortSub.getOptionName(), orSortSub);
+    }
+
+    /**
+     * Instantiates a new j fact reasoner configuration.
+     * 
+     * @param source
+     *        the source
+     */
+    public JFactReasonerConfiguration(OWLReasonerConfiguration source) {
+        this();
+        progressMonitor = source.getProgressMonitor();
+        freshEntityPolicy = source.getFreshEntityPolicy();
+        individualNodeSetPolicy = source.getIndividualNodeSetPolicy();
+        timeOut = source.getTimeOut();
+    }
+
+    /**
+     * Instantiates a new j fact reasoner configuration.
+     * 
+     * @param source
+     *        the source
+     */
+    public JFactReasonerConfiguration(JFactReasonerConfiguration source) {
+        this((OWLReasonerConfiguration) source);
+        alwaysPreferEquals = source.alwaysPreferEquals;
+        debugSaveRestore = source.debugSaveRestore;
+        dumpQuery = source.dumpQuery;
+        debugSplitModules = source.debugSplitModules;
+        freshEntityPolicy = source.freshEntityPolicy;
+        individualNodeSetPolicy = source.individualNodeSetPolicy;
+        debugAbsorption = source.debugAbsorption;
+        improveSaveRestoreDepset = source.improveSaveRestoreDepset;
+        printDagUsage = source.printDagUsage;
+        updaterndFromSuperRoles = source.updaterndFromSuperRoles;
+        useDynamicBackjumping = source.useDynamicBackjumping;
+        useFairness = source.useFairness;
+        useSimpleRules = source.useSimpleRules;
+        splits = source.splits;
+        timeOut = source.timeOut;
+        printTaxonomyInfo = source.printTaxonomyInfo;
+        useBlockingStatistics = source.useBlockingStatistics;
+        useLogging = source.useLogging;
+        useReasoningStatistics = source.useReasoningStatistics;
+        useADInModuleExtraction = source.useADInModuleExtraction;
+        useAnywhereBlocking = source.useAnywhereBlocking;
+        useAxiomSplitting = source.useAxiomSplitting;
+        useBackjumping = source.useBackjumping;
+        useCompletelyDefined = source.useCompletelyDefined;
+        useELReasoner = source.useELReasoner;
+        useIncrementalReasoning = source.useIncrementalReasoning;
+        useLazyBlocking = source.useLazyBlocking;
+        useSemanticBranching = source.useSemanticBranching;
+        useSpecialDomains = source.useSpecialDomains;
+        useUndefinedNames = source.useUndefinedNames;
+        verboseOutput = source.verboseOutput;
+    }
 
     /**
      * @param b
@@ -153,13 +263,6 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
     public boolean isNeedLogging() {
         return needLogging;
     }
-
-    /**
-     * Option 'queryAnswering', if true, switches the reasoner to a query
-     * answering mode.
-     */
-    @PortedFrom(file = "Kernel.h", name = "queryAnswering")
-    private boolean queryAnswering = false;
 
     /**
      * Checks if is use sorted reasoning.
@@ -322,9 +425,6 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
         return useNodeCache;
     }
 
-    /** set of all avaliable (given) options. */
-    private final Map<String, StringOption> base = new HashMap<>();
-
     /**
      * Gets the option.
      * 
@@ -370,7 +470,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * @return the oR sort sat
      */
     public String getORSortSat() {
-        return this.get("orSortSat");
+        return this.get(OR_SORT_SAT);
     }
 
     /**
@@ -381,7 +481,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * @return modified instance
      */
     public JFactReasonerConfiguration setorSortSat(String defSat) {
-        registerOption(getOption("orSortSat", defSat));
+        registerOption(getOption(OR_SORT_SAT, defSat));
         return this;
     }
 
@@ -391,7 +491,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * @return the oR sort sub
      */
     public String getORSortSub() {
-        return this.get("orSortSub");
+        return this.get(OR_SORT_SUB);
     }
 
     /**
@@ -402,17 +502,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * @return modified instance
      */
     public JFactReasonerConfiguration setorSortSub(String defSat) {
-        registerOption(getOption("orSortSub", defSat));
+        registerOption(getOption(OR_SORT_SUB, defSat));
         return this;
-    }
-
-    /**
-     * Gets the use anywhere blocking.
-     * 
-     * @return the use anywhere blocking
-     */
-    public boolean getuseAnywhereBlocking() {
-        return useAnywhereBlocking;
     }
 
     /**
@@ -508,93 +599,6 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
         return this.get("IAOEFLG");
     }
 
-    /**
-     * Sets the use anywhere blocking.
-     * 
-     * @param b
-     *        the new use anywhere blocking
-     * @return modified instance
-     */
-    public JFactReasonerConfiguration setuseAnywhereBlocking(boolean b) {
-        useAnywhereBlocking = b;
-        return this;
-    }
-
-    /** The progress monitor. */
-    private ReasonerProgressMonitor progressMonitor = new NullReasonerProgressMonitor();
-    /** The fresh entity policy. */
-    @Nonnull
-    private FreshEntityPolicy freshEntityPolicy = FreshEntityPolicy.ALLOW;
-    /** The individual node set policy. */
-    @Nonnull
-    private IndividualNodeSetPolicy individualNodeSetPolicy = IndividualNodeSetPolicy.BY_NAME;
-    /** The time out. */
-    private long timeOut = Long.MAX_VALUE;
-
-    /** Instantiates a new j fact reasoner configuration. */
-    public JFactReasonerConfiguration() {
-        base.put(absorptionFlags.getOptionName(), absorptionFlags);
-        base.put(IAOEFLG.getOptionName(), IAOEFLG);
-        base.put(orSortSat.getOptionName(), orSortSat);
-        base.put(orSortSub.getOptionName(), orSortSub);
-    }
-
-    /**
-     * Instantiates a new j fact reasoner configuration.
-     * 
-     * @param source
-     *        the source
-     */
-    public JFactReasonerConfiguration(OWLReasonerConfiguration source) {
-        this();
-        progressMonitor = source.getProgressMonitor();
-        freshEntityPolicy = source.getFreshEntityPolicy();
-        individualNodeSetPolicy = source.getIndividualNodeSetPolicy();
-        timeOut = source.getTimeOut();
-    }
-
-    /**
-     * Instantiates a new j fact reasoner configuration.
-     * 
-     * @param source
-     *        the source
-     */
-    public JFactReasonerConfiguration(JFactReasonerConfiguration source) {
-        this((OWLReasonerConfiguration) source);
-        alwaysPreferEquals = source.alwaysPreferEquals;
-        DEBUG_SAVE_RESTORE = source.DEBUG_SAVE_RESTORE;
-        dumpQuery = source.dumpQuery;
-        FPP_DEBUG_SPLIT_MODULES = source.FPP_DEBUG_SPLIT_MODULES;
-        freshEntityPolicy = source.freshEntityPolicy;
-        individualNodeSetPolicy = source.individualNodeSetPolicy;
-        RKG_DEBUG_ABSORPTION = source.RKG_DEBUG_ABSORPTION;
-        RKG_IMPROVE_SAVE_RESTORE_DEPSET = source.RKG_IMPROVE_SAVE_RESTORE_DEPSET;
-        RKG_PRINT_DAG_USAGE = source.RKG_PRINT_DAG_USAGE;
-        RKG_UPDATE_RND_FROM_SUPERROLES = source.RKG_UPDATE_RND_FROM_SUPERROLES;
-        RKG_USE_DYNAMIC_BACKJUMPING = source.RKG_USE_DYNAMIC_BACKJUMPING;
-        RKG_USE_FAIRNESS = source.RKG_USE_FAIRNESS;
-        RKG_USE_SIMPLE_RULES = source.RKG_USE_SIMPLE_RULES;
-        RKG_USE_SORTED_REASONING = source.RKG_USE_SORTED_REASONING;
-        splits = source.splits;
-        timeOut = source.timeOut;
-        TMP_PRINT_TAXONOMY_INFO = source.TMP_PRINT_TAXONOMY_INFO;
-        USE_BLOCKING_STATISTICS = source.USE_BLOCKING_STATISTICS;
-        USE_LOGGING = source.USE_LOGGING;
-        USE_REASONING_STATISTICS = source.USE_REASONING_STATISTICS;
-        useADInModuleExtraction = source.useADInModuleExtraction;
-        useAnywhereBlocking = source.useAnywhereBlocking;
-        useAxiomSplitting = source.useAxiomSplitting;
-        useBackjumping = source.useBackjumping;
-        useCompletelyDefined = source.useCompletelyDefined;
-        useELReasoner = source.useELReasoner;
-        useIncrementalReasoning = source.useIncrementalReasoning;
-        useLazyBlocking = source.useLazyBlocking;
-        useSemanticBranching = source.useSemanticBranching;
-        useSpecialDomains = source.useSpecialDomains;
-        useUndefinedNames = source.useUndefinedNames;
-        verboseOutput = source.verboseOutput;
-    }
-
     @Override
     public FreshEntityPolicy getFreshEntityPolicy() {
         return freshEntityPolicy;
@@ -608,22 +612,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
     @Override
     public ReasonerProgressMonitor getProgressMonitor() {
         if (progressMonitor == null) {
-            progressMonitor = new ReasonerProgressMonitor() {
-
-                private static final long serialVersionUID = 1L;
-
-                @Override
-                public void reasonerTaskStopped() {}
-
-                @Override
-                public void reasonerTaskStarted(String taskName) {}
-
-                @Override
-                public void reasonerTaskProgressChanged(int value, int max) {}
-
-                @Override
-                public void reasonerTaskBusy() {}
-            };
+            progressMonitor = new ReasonerProgressMonitor() {};
         }
         return progressMonitor;
     }
@@ -648,8 +637,6 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
     /** The Class StringOption. */
     static class StringOption implements Serializable {
 
-        /** The Constant serialVersionUID. */
-        private static final long serialVersionUID = 11000L;
         /** option name. */
         private final String optionName;
         /** The value. */
@@ -690,48 +677,13 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
         }
     }
 
-    /** The use logging. */
-    private boolean USE_LOGGING = false;
-    /** The rkg debug absorption. */
-    private boolean RKG_DEBUG_ABSORPTION = false;
-    /** The rkg improve save restore depset. */
-    private boolean RKG_IMPROVE_SAVE_RESTORE_DEPSET = false;
-    /** The rkg print dag usage. */
-    private boolean RKG_PRINT_DAG_USAGE = false;
-    /** The rkg use simple rules. */
-    private boolean RKG_USE_SIMPLE_RULES = false;
-    /** The rkg use sorted reasoning. */
-    private boolean RKG_USE_SORTED_REASONING = false;
-    /** The use reasoning statistics. */
-    private boolean USE_REASONING_STATISTICS = false;
-    /** The rkg update rnd from superroles. */
-    private boolean RKG_UPDATE_RND_FROM_SUPERROLES = false;
-    /** The use blocking statistics. */
-    private boolean USE_BLOCKING_STATISTICS = false;
-    /** The rkg use dynamic backjumping. */
-    private boolean RKG_USE_DYNAMIC_BACKJUMPING = false;
-    /** The tmp print taxonomy info. */
-    private boolean TMP_PRINT_TAXONOMY_INFO = false;
-    /** The debug save restore. */
-    private boolean DEBUG_SAVE_RESTORE = false;
-    /** The rkg use fairness. */
-    private boolean RKG_USE_FAIRNESS = false;
-    /** The fpp debug split modules. */
-    private boolean FPP_DEBUG_SPLIT_MODULES = false;
-    /** The splits. */
-    private boolean splits = false;
-    /** whether EL polynomial reasoner should be used. */
-    private boolean useELReasoner = false;
-    /** allow reasoner to use undefined names in queries. */
-    private boolean useUndefinedNames = true;
-
     /**
      * Checks if is logging active.
      * 
      * @return true, if is logging active
      */
     public boolean isLoggingActive() {
-        return USE_LOGGING;
+        return useLogging;
     }
 
     /**
@@ -742,7 +694,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * @return modified instance
      */
     public JFactReasonerConfiguration setLoggingActive(boolean b) {
-        USE_LOGGING = b;
+        useLogging = b;
         return this;
     }
 
@@ -752,7 +704,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * @return true, if is absorption logging active
      */
     public boolean isAbsorptionLoggingActive() {
-        return RKG_DEBUG_ABSORPTION;
+        return debugAbsorption;
     }
 
     /**
@@ -763,7 +715,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * @return modified instance
      */
     public JFactReasonerConfiguration setAbsorptionLoggingActive(boolean b) {
-        RKG_DEBUG_ABSORPTION = b;
+        debugAbsorption = b;
         return this;
     }
 
@@ -772,8 +724,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * 
      * @return true, if is rkg improve save restore depset
      */
-    public boolean isRKG_IMPROVE_SAVE_RESTORE_DEPSET() {
-        return RKG_IMPROVE_SAVE_RESTORE_DEPSET;
+    public boolean isImproveSaveRestoreDepset() {
+        return improveSaveRestoreDepset;
     }
 
     /**
@@ -783,8 +735,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      *        the new rkg improve save restore depset
      * @return modified instance
      */
-    public JFactReasonerConfiguration setRKG_IMPROVE_SAVE_RESTORE_DEPSET(boolean b) {
-        RKG_IMPROVE_SAVE_RESTORE_DEPSET = b;
+    public JFactReasonerConfiguration setImproveSaveRestoreDepset(boolean b) {
+        improveSaveRestoreDepset = b;
         return this;
     }
 
@@ -793,8 +745,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * 
      * @return true, if is rkg print dag usage
      */
-    public boolean isRKG_PRINT_DAG_USAGE() {
-        return RKG_PRINT_DAG_USAGE;
+    public boolean isPrintDagUsage() {
+        return printDagUsage;
     }
 
     /**
@@ -804,8 +756,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      *        the new rkg print dag usage
      * @return modified instance
      */
-    public JFactReasonerConfiguration setRKG_PRINT_DAG_USAGE(boolean b) {
-        RKG_PRINT_DAG_USAGE = b;
+    public JFactReasonerConfiguration setPrintDagUsage(boolean b) {
+        printDagUsage = b;
         return this;
     }
 
@@ -814,8 +766,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * 
      * @return true, if is rkg use simple rules
      */
-    public boolean isRKG_USE_SIMPLE_RULES() {
-        return RKG_USE_SIMPLE_RULES;
+    public boolean isUseSimpleRules() {
+        return useSimpleRules;
     }
 
     /**
@@ -825,29 +777,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      *        the new rkg use simple rules
      * @return modified instance
      */
-    public JFactReasonerConfiguration setRKG_USE_SIMPLE_RULES(boolean b) {
-        RKG_USE_SIMPLE_RULES = b;
-        return this;
-    }
-
-    /**
-     * Checks if is rkg use sorted reasoning.
-     * 
-     * @return true, if is rkg use sorted reasoning
-     */
-    public boolean isRKG_USE_SORTED_REASONING() {
-        return RKG_USE_SORTED_REASONING;
-    }
-
-    /**
-     * Sets the rkg use sorted reasoning.
-     * 
-     * @param b
-     *        the new rkg use sorted reasoning
-     * @return modified instance
-     */
-    public JFactReasonerConfiguration setRKG_USE_SORTED_REASONING(boolean b) {
-        RKG_USE_SORTED_REASONING = b;
+    public JFactReasonerConfiguration setUseSimpleRules(boolean b) {
+        useSimpleRules = b;
         return this;
     }
 
@@ -856,8 +787,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * 
      * @return true, if is use reasoning statistics
      */
-    public boolean isUSE_REASONING_STATISTICS() {
-        return USE_REASONING_STATISTICS;
+    public boolean isUseReasoningStatistics() {
+        return useReasoningStatistics;
     }
 
     /**
@@ -867,8 +798,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      *        the new use reasoning statistics
      * @return modified instance
      */
-    public JFactReasonerConfiguration setUSE_REASONING_STATISTICS(boolean b) {
-        USE_REASONING_STATISTICS = b;
+    public JFactReasonerConfiguration setUseReasoningStatistics(boolean b) {
+        useReasoningStatistics = b;
         return this;
     }
 
@@ -877,8 +808,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * 
      * @return true, if is rkg update rnd from superroles
      */
-    public boolean isRKG_UPDATE_RND_FROM_SUPERROLES() {
-        return RKG_UPDATE_RND_FROM_SUPERROLES;
+    public boolean isUpdaterndFromSuperRoles() {
+        return updaterndFromSuperRoles;
     }
 
     /**
@@ -888,8 +819,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      *        the new rkg update rnd from superroles
      * @return modified instance
      */
-    public JFactReasonerConfiguration setRKG_UPDATE_RND_FROM_SUPERROLES(boolean b) {
-        RKG_UPDATE_RND_FROM_SUPERROLES = b;
+    public JFactReasonerConfiguration setUpdaterndFromSuperRoles(boolean b) {
+        updaterndFromSuperRoles = b;
         return this;
     }
 
@@ -898,8 +829,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * 
      * @return true, if is use blocking statistics
      */
-    public boolean isUSE_BLOCKING_STATISTICS() {
-        return USE_BLOCKING_STATISTICS;
+    public boolean isUseBlockingStatistics() {
+        return useBlockingStatistics;
     }
 
     /**
@@ -909,8 +840,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      *        the new use blocking statistics
      * @return modified instance
      */
-    public JFactReasonerConfiguration setUSE_BLOCKING_STATISTICS(boolean b) {
-        USE_BLOCKING_STATISTICS = b;
+    public JFactReasonerConfiguration setUseBlockingStatistics(boolean b) {
+        useBlockingStatistics = b;
         return this;
     }
 
@@ -919,8 +850,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * 
      * @return true, if is rkg use dynamic backjumping
      */
-    public boolean isRKG_USE_DYNAMIC_BACKJUMPING() {
-        return RKG_USE_DYNAMIC_BACKJUMPING;
+    public boolean isUseDynamicBackjumping() {
+        return useDynamicBackjumping;
     }
 
     /**
@@ -930,8 +861,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      *        the new rkg use dynamic backjumping
      * @return modified instance
      */
-    public JFactReasonerConfiguration setRKG_USE_DYNAMIC_BACKJUMPING(boolean b) {
-        RKG_USE_DYNAMIC_BACKJUMPING = b;
+    public JFactReasonerConfiguration setUseDynamicBackjumping(boolean b) {
+        useDynamicBackjumping = b;
         return this;
     }
 
@@ -940,8 +871,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * 
      * @return true, if is tmp print taxonomy info
      */
-    public boolean isTMP_PRINT_TAXONOMY_INFO() {
-        return TMP_PRINT_TAXONOMY_INFO;
+    public boolean isPrintTaxonomyInfo() {
+        return printTaxonomyInfo;
     }
 
     /**
@@ -951,8 +882,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      *        the new tmp print taxonomy info
      * @return modified instance
      */
-    public JFactReasonerConfiguration setTMP_PRINT_TAXONOMY_INFO(boolean b) {
-        TMP_PRINT_TAXONOMY_INFO = b;
+    public JFactReasonerConfiguration setPrintTaxonomyInfo(boolean b) {
+        printTaxonomyInfo = b;
         return this;
     }
 
@@ -961,8 +892,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * 
      * @return true, if is debug save restore
      */
-    public boolean isDEBUG_SAVE_RESTORE() {
-        return DEBUG_SAVE_RESTORE;
+    public boolean isDebugSaveRestore() {
+        return debugSaveRestore;
     }
 
     /**
@@ -972,8 +903,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      *        the new debug save restore
      * @return modified instance
      */
-    public JFactReasonerConfiguration setDEBUG_SAVE_RESTORE(boolean b) {
-        DEBUG_SAVE_RESTORE = b;
+    public JFactReasonerConfiguration setDebugSaveRestore(boolean b) {
+        debugSaveRestore = b;
         return this;
     }
 
@@ -982,8 +913,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * 
      * @return true, if is rkg use fairness
      */
-    public boolean isRKG_USE_FAIRNESS() {
-        return RKG_USE_FAIRNESS;
+    public boolean isUseFairness() {
+        return useFairness;
     }
 
     /**
@@ -993,8 +924,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      *        the new rkg use fairness
      * @return modified instance
      */
-    public JFactReasonerConfiguration setRKG_USE_FAIRNESS(boolean b) {
-        RKG_USE_FAIRNESS = b;
+    public JFactReasonerConfiguration setUseFairness(boolean b) {
+        useFairness = b;
         return this;
     }
 
@@ -1003,8 +934,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * 
      * @return true, if is fpp debug split modules
      */
-    public boolean isFPP_DEBUG_SPLIT_MODULES() {
-        return FPP_DEBUG_SPLIT_MODULES;
+    public boolean isDebugSplitModules() {
+        return debugSplitModules;
     }
 
     /**
@@ -1014,8 +945,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      *        the new fpp debug split modules
      * @return modified instance
      */
-    public JFactReasonerConfiguration setFPP_DEBUG_SPLIT_MODULES(boolean b) {
-        FPP_DEBUG_SPLIT_MODULES = b;
+    public JFactReasonerConfiguration setDebugSplitModules(boolean b) {
+        debugSplitModules = b;
         return this;
     }
 
@@ -1046,7 +977,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * @return the log
      */
     public LogAdapter getLog() {
-        if (USE_LOGGING) {
+        if (useLogging) {
             if (logAdapterStream == null) {
                 logAdapterStream = new LogAdapterStream(System.out);
             }
@@ -1062,7 +993,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      * @return the absorption log
      */
     public LogAdapter getAbsorptionLog() {
-        if (RKG_DEBUG_ABSORPTION) {
+        if (debugAbsorption) {
             if (logAbsorptionAdapterStream == null) {
                 logAbsorptionAdapterStream = new LogAdapterStream(System.out);
             }
@@ -1082,11 +1013,6 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
         return this;
     }
 
-    /** The empty. */
-    protected final LogAdapter empty = new LogAdapterImpl();
-    /** The log adapter stream. */
-    private LogAdapterStream logAdapterStream;
-
     /**
      * Sets the regular log output stream.
      * 
@@ -1098,9 +1024,6 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
         logAdapterStream = new LogAdapterStream(o);
         return this;
     }
-
-    /** The log absorption adapter stream. */
-    private LogAdapterStream logAbsorptionAdapterStream;
 
     /**
      * Sets the absorption log output stream.
@@ -1117,16 +1040,23 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
     /** The Class LogAdapterStream. */
     static class LogAdapterStream implements LogAdapter, Serializable {
 
-        /** The Constant serialVersionUID. */
-        private static final long serialVersionUID = 11000L;
+        /** The out. */
+        private transient OutputStream out;
+
+        /**
+         * Instantiates a new log adapter stream.
+         * 
+         * @param o
+         *        the o
+         */
+        public LogAdapterStream(OutputStream o) {
+            out = o;
+        }
 
         @Override
         public boolean isEnabled() {
             return true;
         }
-
-        /** The out. */
-        private transient OutputStream out;
 
         /**
          * Read object.
@@ -1143,19 +1073,21 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
             out = System.out;
         }
 
-        /**
-         * Instantiates a new log adapter stream.
-         * 
-         * @param o
-         *        the o
-         */
-        public LogAdapterStream(OutputStream o) {
-            out = o;
-        }
-
         @Override
         public LogAdapter printTemplate(Templates t, Object... strings) {
             this.print(String.format(t.getTemplate(), strings));
+            return this;
+        }
+
+        @Override
+        public LogAdapter printTemplateInt(Templates t, int... strings) {
+            this.print(String.format(t.getTemplate(), strings));
+            return this;
+        }
+
+        @Override
+        public LogAdapter printTemplateMixInt(Templates t, Object s, int... strings) {
+            this.print(String.format(t.getTemplate(), s, strings));
             return this;
         }
 
@@ -1231,7 +1163,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
         }
 
         @Override
-        public LogAdapter print(Object s) {
+        public LogAdapter print(@Nullable Object s) {
             this.print(s == null ? "null" : s.toString());
             return this;
         }
@@ -1280,96 +1212,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
     }
 
     /** The Class LogAdapterImpl. */
-    static class LogAdapterImpl implements LogAdapter, Serializable {
-
-        /** The Constant serialVersionUID. */
-        private static final long serialVersionUID = 11000L;
-
-        @Override
-        public boolean isEnabled() {
-            return false;
-        }
-
-        @Override
-        public LogAdapter printTemplate(Templates t, Object... strings) {
-            return this;
-        }
-
-        @Override
-        public LogAdapter print(int i) {
-            return this;
-        }
-
-        @Override
-        public LogAdapter print(double d) {
-            return this;
-        }
-
-        @Override
-        public LogAdapter print(float f) {
-            return this;
-        }
-
-        @Override
-        public LogAdapter print(boolean b) {
-            return this;
-        }
-
-        @Override
-        public LogAdapter print(byte b) {
-            return this;
-        }
-
-        @Override
-        public LogAdapter print(char c) {
-            return this;
-        }
-
-        @Override
-        public LogAdapter print(short s) {
-            return this;
-        }
-
-        @Override
-        public LogAdapter print(String s) {
-            return this;
-        }
-
-        @Override
-        public LogAdapter println() {
-            return this;
-        }
-
-        @Override
-        public LogAdapter print(Object s) {
-            return this;
-        }
-
-        @Override
-        public LogAdapter print(Object... s) {
-            return this;
-        }
-
-        @Override
-        public LogAdapter print(Object s1, Object s2) {
-            return this;
-        }
-
-        @Override
-        public LogAdapter print(Object s1, Object s2, Object s3) {
-            return this;
-        }
-
-        @Override
-        public LogAdapter print(Object s1, Object s2, Object s3, Object s4) {
-            return this;
-        }
-
-        @Override
-        public LogAdapter print(Object s1, Object s2, Object s3, Object s4, Object s5) {
-            return this;
-        }
-    }
+    static class LogAdapterImpl implements LogAdapter, Serializable {}
 
     /**
      * Checks if is use el reasoner.
@@ -1434,15 +1277,12 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
         return this;
     }
 
-    /** The use ad in module extraction. */
-    private boolean useADInModuleExtraction = true;
-
     /**
      * Checks if is rkg use ad in module extraction.
      * 
      * @return true, if is rkg use ad in module extraction
      */
-    public boolean isRKG_USE_AD_IN_MODULE_EXTRACTION() {
+    public boolean isUseADInModuleExtraction() {
         return useADInModuleExtraction;
     }
 
@@ -1453,7 +1293,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
      *        the new rkg use ad in module extraction
      * @return modified instance
      */
-    public JFactReasonerConfiguration setRKG_USE_AD_IN_MODULE_EXTRACTION(boolean value) {
+    public JFactReasonerConfiguration setUseADInModuleExtraction(boolean value) {
         useADInModuleExtraction = value;
         return this;
     }

@@ -11,9 +11,8 @@ import java.util.Collections;
 import java.util.List;
 
 /** class to represent the TS's */
-public class ToldSubsumers extends KnownSubsumers {
+public class ToldSubsumers implements KnownSubsumers {
 
-    private static final long serialVersionUID = 11000L;
     /** two iterators for the TS of a concept */
     private final List<ClassifiableEntry> beg;
 
@@ -27,14 +26,14 @@ public class ToldSubsumers extends KnownSubsumers {
 
     /** begin of the Sure subsumers interval */
     @Override
-    public List<ClassifiableEntry> s_begin() {
+    public List<ClassifiableEntry> sure() {
         return beg;
     }
 
     /** end of the Sure subsumers interval */
     /** begin of the Possible subsumers interval */
     @Override
-    public List<ClassifiableEntry> p_begin() {
+    public List<ClassifiableEntry> possible() {
         return Collections.emptyList();
     }
 }

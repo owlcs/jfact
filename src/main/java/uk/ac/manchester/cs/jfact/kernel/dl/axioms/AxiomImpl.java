@@ -7,18 +7,19 @@ package uk.ac.manchester.cs.jfact.kernel.dl.axioms;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
 import org.semanticweb.owlapi.model.OWLAxiom;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.split.TOntologyAtom;
 import uk.ac.manchester.cs.jfact.split.TSignature;
 import uk.ac.manchester.cs.jfact.split.TSignatureUpdater;
-import conformance.PortedFrom;
 
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiom")
 abstract class AxiomImpl implements AxiomInterface, Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** id of the axiom */
     private int id;
     /** signature (built lazily on demand) */
@@ -33,6 +34,13 @@ abstract class AxiomImpl implements AxiomInterface, Serializable {
     private TOntologyAtom atom = null;
     private final OWLAxiom axiom;
 
+    public AxiomImpl(@Nullable OWLAxiom ax) {
+        axiom = ax;
+        used = true;
+        inModule = false;
+    }
+
+    @Nullable
     @Override
     @PortedFrom(file = "tDLAxiom.h", name = "getAtom")
     public TOntologyAtom getAtom() {
@@ -59,6 +67,7 @@ abstract class AxiomImpl implements AxiomInterface, Serializable {
     }
 
     // signature access
+    @Nullable
     @Override
     @PortedFrom(file = "tDLAxiom.h", name = "getSignature")
     public TSignature getSignature() {
@@ -71,16 +80,10 @@ abstract class AxiomImpl implements AxiomInterface, Serializable {
     /** build signature of an axiom */
     private void buildSignature() {
         sig = new TSignature();
-        TSignatureUpdater Updater = new TSignatureUpdater(sig);
-        this.accept(Updater);
+        this.accept(new TSignatureUpdater(sig));
     }
 
-    public AxiomImpl(OWLAxiom ax) {
-        axiom = ax;
-        used = true;
-        inModule = false;
-    }
-
+    @Nullable
     @Override
     public OWLAxiom getOWLAxiom() {
         return axiom;
@@ -104,8 +107,8 @@ abstract class AxiomImpl implements AxiomInterface, Serializable {
 
     @Override
     @PortedFrom(file = "tDLAxiom.h", name = "setId")
-    public void setId(int Id) {
-        id = Id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
@@ -116,8 +119,8 @@ abstract class AxiomImpl implements AxiomInterface, Serializable {
 
     @Override
     @PortedFrom(file = "tDLAxiom.h", name = "setUsed")
-    public void setUsed(boolean Used) {
-        used = Used;
+    public void setUsed(boolean used) {
+        this.used = used;
     }
 
     @Override

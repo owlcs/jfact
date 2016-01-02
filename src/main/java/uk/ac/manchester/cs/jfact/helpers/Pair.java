@@ -12,7 +12,7 @@ import uk.ac.manchester.cs.jfact.kernel.Individual;
 /** The Class Pair. */
 public class Pair implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
+
     /** The first. */
     public final Individual first;
     /** The second. */

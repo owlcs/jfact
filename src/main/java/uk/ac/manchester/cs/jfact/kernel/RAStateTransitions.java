@@ -12,34 +12,33 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
+import javax.annotation.Nullable;
+
 import conformance.Original;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 
 /** class to represent transitions from a single state in an automaton */
 @PortedFrom(file = "RAutomaton.h", name = "RAStateTransitions")
 public class RAStateTransitions implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** all transitions */
-    @PortedFrom(file = "RAutomaton.h", name = "Base")
-    protected final List<RATransition> base = new ArrayList<>();
+    @PortedFrom(file = "RAutomaton.h", name = "Base") protected final List<RATransition> base = new ArrayList<>();
     /** check whether there is an empty transition going from this state */
-    @PortedFrom(file = "RAutomaton.h", name = "EmptyTransition")
-    protected boolean emptyTransition;
-    @PortedFrom(file = "RAutomaton.h", name = "ApplicableRoles")
-    private final BitSet applicableRoles = new BitSet();
+    @PortedFrom(file = "RAutomaton.h", name = "EmptyTransition") protected boolean emptyTransition;
+    @PortedFrom(file = "RAutomaton.h", name = "ApplicableRoles") private final BitSet applicableRoles = new BitSet();
     /** state from which all the transition starts */
-    @PortedFrom(file = "RAutomaton.h", name = "from")
-    private int from;
+    @PortedFrom(file = "RAutomaton.h", name = "from") private int from;
     /** flag whether the role is data or not (valid only for simple automata) */
-    @PortedFrom(file = "RAutomaton.h", name = "DataRole")
-    private boolean dataRole;
-    @Original
-    private int size = 0;
+    @PortedFrom(file = "RAutomaton.h", name = "DataRole") private boolean dataRole;
+    @Original private int size = 0;
     /** true iff there is a top transition going from this state */
-    @PortedFrom(file = "RAutomaton.h", name = "TopTransition")
-    private boolean TopTransition;
+    @PortedFrom(file = "RAutomaton.h", name = "TopTransition") private boolean topTransition;
+
+    /** Default constructor. */
+    public RAStateTransitions() {
+        emptyTransition = false;
+    }
 
     /** @return begin */
     @PortedFrom(file = "RAutomaton.h", name = "begin")
@@ -51,11 +50,6 @@ public class RAStateTransitions implements Serializable {
     @PortedFrom(file = "RAutomaton.h", name = "begin")
     public Stream<RATransition> stream() {
         return base.stream();
-    }
-
-    /** Default constructor. */
-    public RAStateTransitions() {
-        emptyTransition = false;
     }
 
     /**
@@ -72,14 +66,14 @@ public class RAStateTransitions implements Serializable {
             emptyTransition = true;
         }
         if (trans.isTop()) {
-            TopTransition = true;
+            topTransition = true;
         }
     }
 
     /** @return true iff there is a top-role transition from the state */
     @PortedFrom(file = "RAutomaton.h", name = "hasTopTransition")
     public boolean hasTopTransition() {
-        return TopTransition;
+        return topTransition;
     }
 
     /** @return true iff there are no transitions from this state */
@@ -120,8 +114,7 @@ public class RAStateTransitions implements Serializable {
         from = state;
         dataRole = data;
         // fills the set of recognisable roles
-        base.stream().flatMap(p -> p.begin().stream())
-                .forEach(p -> applicableRoles.set(p.getAbsoluteIndex()));
+        base.stream().flatMap(p -> p.begin().stream()).forEach(p -> applicableRoles.set(p.getAbsoluteIndex()));
     }
 
     /**
@@ -134,11 +127,10 @@ public class RAStateTransitions implements Serializable {
      */
     @PortedFrom(file = "RAutomaton.h", name = "addToExisting")
     public boolean addToExisting(RATransition trans) {
-        int to = trans.final_state();
+        int to = trans.finalState();
         boolean tEmpty = trans.isEmpty();
-        Optional<RATransition> findAny = base.stream()
-                .filter(p -> p.final_state() == to && p.isEmpty() == tEmpty)
-                .findAny();
+        Optional<RATransition> findAny = base.stream().filter(p -> p.finalState() == to && p.isEmpty() == tEmpty)
+            .findAny();
         if (findAny.isPresent()) {
             // found existing transition
             findAny.get().addIfNew(trans);
@@ -149,17 +141,16 @@ public class RAStateTransitions implements Serializable {
     }
 
     /**
-     * @param R
+     * @param r
      *        R
      * @return true if R is an applicable data role
      */
     @PortedFrom(file = "RAutomaton.h", name = "recognise")
-    public boolean recognise(Role R) {
-        if (R == null) {
+    public boolean recognise(@Nullable Role r) {
+        if (r == null) {
             return false;
         }
-        return R.isDataRole() == dataRole
-                && applicableRoles.get(R.getAbsoluteIndex());
+        return r.isDataRole() == dataRole && applicableRoles.get(r.getAbsoluteIndex());
     }
 
     /** @return true iff there is only one transition */
@@ -171,6 +162,6 @@ public class RAStateTransitions implements Serializable {
     /** @return state of the 1st transition; used for singletons */
     @PortedFrom(file = "RAutomaton.h", name = "getTransitionEnd")
     public int getTransitionEnd() {
-        return base.get(0).final_state();
+        return base.get(0).finalState();
     }
 }

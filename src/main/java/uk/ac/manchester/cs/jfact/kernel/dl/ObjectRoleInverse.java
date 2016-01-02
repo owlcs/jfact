@@ -7,31 +7,30 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.Original;
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleArg;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
-import conformance.Original;
-import conformance.PortedFrom;
 
 /** object role inverse */
 @PortedFrom(file = "tDLExpression.h", name = "TDLObjectRoleInverse")
-public class ObjectRoleInverse implements ObjectRoleExpression, ObjectRoleArg,
-        Serializable {
+public class ObjectRoleInverse implements ObjectRoleExpression, ObjectRoleArg, Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** object role argument */
-    @Original
-    private final ObjectRoleExpression objectRoleExpression;
+    @Original private final ObjectRoleExpression objectRoleExpression;
 
     /**
-     * @param R
+     * @param r
      *        R
      */
-    public ObjectRoleInverse(ObjectRoleExpression R) {
-        objectRoleExpression = R;
+    public ObjectRoleInverse(ObjectRoleExpression r) {
+        objectRoleExpression = r;
     }
 
     @Override
@@ -40,6 +39,7 @@ public class ObjectRoleInverse implements ObjectRoleExpression, ObjectRoleArg,
         visitor.visit(this);
     }
 
+    @Nullable
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
@@ -54,12 +54,12 @@ public class ObjectRoleInverse implements ObjectRoleExpression, ObjectRoleArg,
     }
 
     @Override
-    public IRI getName() {
+    public IRI getIRI() {
         return IRI.create("inverse(" + objectRoleExpression + ")");
     }
 
     @Override
     public String toString() {
-        return getName().toString();
+        return getIRI().toString();
     }
 }

@@ -15,7 +15,7 @@ import conformance.PortedFrom;
 @PortedFrom(file = "modelCacheConst.h", name = "modelCacheConst")
 public class ModelCacheConst extends ModelCacheInterface {
 
-    private static final long serialVersionUID = 11000L;
+
     /** the itself */
     @PortedFrom(file = "modelCacheConst.h", name = "isTop")
     private final boolean isTop;
@@ -35,7 +35,7 @@ public class ModelCacheConst extends ModelCacheInterface {
     @Override
     @PortedFrom(file = "modelCacheConst.h", name = "getState")
     public ModelCacheState getState() {
-        return isTop ? csValid : csInvalid;
+        return isTop ? VALID : INVALID;
     }
 
     /** @return the value of the constant */
@@ -53,8 +53,8 @@ public class ModelCacheConst extends ModelCacheInterface {
     @Override
     @PortedFrom(file = "modelCacheConst.h", name = "canMerge")
     public ModelCacheState canMerge(ModelCacheInterface p) {
-        if (p.getCacheType() == ModelCacheType.mctConst) {
-            return isTop && ((ModelCacheConst) p).isTop ? csValid : csInvalid;
+        if (p.getCacheType() == ModelCacheType.CONST) {
+            return isTop && ((ModelCacheConst) p).isTop ? VALID : INVALID;
         } else {
             return p.canMerge(this);
         }
@@ -64,7 +64,7 @@ public class ModelCacheConst extends ModelCacheInterface {
     @Override
     @PortedFrom(file = "modelCacheConst.h", name = "getCacheType")
     public ModelCacheType getCacheType() {
-        return ModelCacheType.mctConst;
+        return ModelCacheType.CONST;
     }
 
     /** log this cache entry (with given level) */
@@ -81,7 +81,7 @@ public class ModelCacheConst extends ModelCacheInterface {
      */
     @PortedFrom(file = "modelCacheConst.h", name = "createConstCache")
     public static ModelCacheConst createConstCache(int bp) {
-        assert bp == Helper.bpTOP || bp == Helper.bpBOTTOM;
-        return new ModelCacheConst(bp == Helper.bpTOP);
+        assert bp == Helper.BP_TOP || bp == Helper.BP_BOTTOM;
+        return new ModelCacheConst(bp == Helper.BP_TOP);
     }
 }

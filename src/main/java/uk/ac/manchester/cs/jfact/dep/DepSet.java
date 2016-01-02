@@ -2,6 +2,8 @@ package uk.ac.manchester.cs.jfact.dep;
 
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -21,7 +23,31 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tDepSet.h", name = "TDepSet")
 public class DepSet implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
+    @Original private RoaringBitmap delegate = null;
+
+    protected DepSet() {}
+
+    /**
+     * @param d
+     *        d
+     */
+    private DepSet(RoaringBitmap d) {
+        delegate = d;
+    }
+
+    protected DepSet(int i) {
+        delegate = RoaringBitmap.bitmapOf(i);
+    }
+
+    /**
+     * to be used to get the FastSet and store it in CWDArray save/restore
+     * 
+     * @return delegate
+     */
+    @Original
+    public RoaringBitmap getDelegate() {
+        return delegate;
+    }
 
     /**
      * @return empty depset
@@ -47,7 +73,7 @@ public class DepSet implements Serializable {
      * @return copy of dep
      */
     @PortedFrom(file = "tDepSet.h", name = "create")
-    public static DepSet create(DepSet dep) {
+    public static DepSet create(@Nullable DepSet dep) {
         if (dep == null) {
             return create();
         }
@@ -62,7 +88,7 @@ public class DepSet implements Serializable {
      * @return union of ds1 and ds2
      */
     @PortedFrom(file = "tDepSet.h", name = "+")
-    public static DepSet plus(DepSet ds1, DepSet ds2) {
+    public static DepSet plus(@Nullable DepSet ds1, @Nullable DepSet ds2) {
         if (ds1 == null && ds2 == null) {
             return new DepSet();
         }
@@ -91,33 +117,6 @@ public class DepSet implements Serializable {
         return new DepSet(delegate);
     }
 
-    @Original
-    private RoaringBitmap delegate = null;
-
-    protected DepSet() {}
-
-    /**
-     * @param d
-     *        d
-     */
-    private DepSet(RoaringBitmap d) {
-        delegate = d;
-    }
-
-    /**
-     * to be used to get the FastSet and store it in CWDArray save/restore
-     * 
-     * @return delegate
-     */
-    @Original
-    public RoaringBitmap getDelegate() {
-        return delegate;
-    }
-
-    protected DepSet(int i) {
-        delegate = RoaringBitmap.bitmapOf(i);
-    }
-
     /**
      * @return last delegate
      */
@@ -126,7 +125,7 @@ public class DepSet implements Serializable {
         return max(delegate);
     }
 
-    private static int max(RoaringBitmap set) {
+    private static int max(@Nullable RoaringBitmap set) {
         if (set == null || set.isEmpty()) {
             return 0;
         }
@@ -150,7 +149,7 @@ public class DepSet implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@Nullable Object obj) {
         if (obj == null) {
             return false;
         }
@@ -213,7 +212,7 @@ public class DepSet implements Serializable {
      *        add all elements in the depset to this depset
      */
     @PortedFrom(file = "tDepSet.h", name = "add")
-    public void add(DepSet toAdd) {
+    public void add(@Nullable DepSet toAdd) {
         if (toAdd == null || toAdd.isEmpty()) {
             return;
         }
@@ -224,8 +223,6 @@ public class DepSet implements Serializable {
         if (delegate.equals(toAdd.delegate)) {
             return;
         }
-        // System.out.println("DepSet.add() " + delegate + "\t" +
-        // toAdd.delegate);
         delegate = RoaringBitmap.or(delegate, toAdd.delegate);
     }
 }

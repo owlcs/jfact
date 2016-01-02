@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
@@ -25,20 +26,13 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
  * @param <R>
  *        type
  */
-public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
-    Datatype<R>, Serializable {
+public abstract class AbstractDatatype<R extends Comparable<R>> implements Datatype<R>, Serializable {
 
-    private static final long serialVersionUID = 11000L;
-    @Nonnull
-    protected final Set<Facet> facets;
-    @Nonnull
-    protected final Set<Datatype<?>> ancestors;
-    @SuppressWarnings("rawtypes")
-    protected final Map<Facet, Comparable> knownNumericFacetValues = new LinkedHashMap<>();
-    @SuppressWarnings("rawtypes")
-    protected final Map<Facet, Comparable> knownNonNumericFacetValues = new LinkedHashMap<>();
-    @Nonnull
-    protected final IRI uri;
+    @Nonnull protected final Set<Facet> facets;
+    @Nonnull protected final Set<Datatype<?>> ancestors;
+    @SuppressWarnings("rawtypes") protected final Map<Facet, Comparable> knownNumericFacetValues = new LinkedHashMap<>();
+    @SuppressWarnings("rawtypes") protected final Map<Facet, Comparable> knownNonNumericFacetValues = new LinkedHashMap<>();
+    @Nonnull protected final IRI uri;
 
     /**
      * @param u
@@ -48,8 +42,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
      * @param ancestors
      *        ancestors for datatype
      */
-    public ABSTRACT_DATATYPE(@Nonnull IRI u, @Nonnull Set<Facet> f,
-        @Nonnull Set<Datatype<?>> ancestors) {
+    public AbstractDatatype(IRI u, Set<Facet> f, Set<Datatype<?>> ancestors) {
         this.facets = f;
         this.uri = u;
         this.ancestors = ancestors;
@@ -61,7 +54,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
     }
 
     @Override
-    public IRI getName() {
+    public IRI getIRI() {
         return IRI.create(toString());
     }
 
@@ -71,7 +64,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@Nullable Object obj) {
         if (super.equals(obj)) {
             return true;
         }
@@ -103,6 +96,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
         return this.knownNonNumericFacetValues;
     }
 
+    @Nullable
     @Override
     public Comparable getFacetValue(Facet f) {
         if (f.isNumberFacet()) {
@@ -111,6 +105,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
         return this.knownNonNumericFacetValues.get(f);
     }
 
+    @Nullable
     @Override
     public Comparable getNumericFacetValue(Facet f) {
         return this.knownNumericFacetValues.get(f);
@@ -132,8 +127,8 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
         if (type.isExpression()) {
             type = type.asExpression().getHostType();
         }
-        return type.equals(this) || type.equals(DatatypeFactory.LITERAL)
-            || type.isSubType(this) || this.isSubType(type);
+        return type.equals(this) || type.equals(DatatypeFactory.LITERAL) || type.isSubType(this)
+            || this.isSubType(type);
     }
 
     @Override
@@ -168,6 +163,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
         visitor.visit(this);
     }
 
+    @Nullable
     @Override
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
@@ -182,8 +178,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
     @Override
     public DatatypeExpression<R> asExpression() {
         if (!this.isExpression()) {
-            throw new UnsupportedOperationException("Type: "
-                + this.getDatatypeIRI() + " is not an expression");
+            throw new UnsupportedOperationException("Type: " + this.getDatatypeIRI() + " is not an expression");
         }
         return (DatatypeExpression<R>) this;
     }
@@ -221,8 +216,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
         return cardinality.COUNTABLYINFINITE;
     }
 
-    protected <T extends Comparable<T>> boolean overlapping(
-        OrderedDatatype<T> first, OrderedDatatype<T> second) {
+    protected <T extends Comparable<T>> boolean overlapping(OrderedDatatype<T> first, OrderedDatatype<T> second) {
         T max = first.getMax();
         T min = second.getMin();
         if (first.hasMaxInclusive() && second.hasMinInclusive()) {
@@ -252,8 +246,7 @@ public abstract class ABSTRACT_DATATYPE<R extends Comparable<R>> implements
 
     @Override
     public OrderedDatatype<R> asOrderedDatatype() {
-        throw new ReasonerInternalException(this
-            + " is not an ordered datatype");
+        throw new ReasonerInternalException(this + " is not an ordered datatype");
     }
 
     @Override

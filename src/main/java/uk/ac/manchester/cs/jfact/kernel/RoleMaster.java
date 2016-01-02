@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -11,6 +12,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
+
+import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
@@ -29,12 +32,7 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 @PortedFrom(file = "RoleMaster.h", name = "RoleMaster")
 public class RoleMaster implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
-
-    protected static class RoleCreator implements NameCreator<Role, IRI>,
-        Serializable {
-
-        private static final long serialVersionUID = 11000L;
+    protected static class RoleCreator implements NameCreator<Role, IRI>, Serializable {
 
         @Override
         public Role makeEntry(IRI name) {
@@ -43,36 +41,63 @@ public class RoleMaster implements Serializable {
     }
 
     /** number of the last registered role */
-    @PortedFrom(file = "RoleMaster.h", name = "newRoleId")
-    private int newRoleId;
+    @PortedFrom(file = "RoleMaster.h", name = "newRoleId") private int newRoleId;
     /** all registered roles */
-    @PortedFrom(file = "RoleMaster.h", name = "Roles")
-    private final List<Role> roles = new ArrayList<>();
+    @PortedFrom(file = "RoleMaster.h", name = "Roles") private final List<Role> roles = new ArrayList<>();
     /** internal empty role (bottom in the taxonomy) */
-    @PortedFrom(file = "RoleMaster.h", name = "emptyRole")
-    private final Role emptyRole;
+    @PortedFrom(file = "RoleMaster.h", name = "emptyRole") private final Role emptyRole;
     /** internal universal role (top in the taxonomy) */
-    @PortedFrom(file = "RoleMaster.h", name = "universalRole")
-    private final Role universalRole;
+    @PortedFrom(file = "RoleMaster.h", name = "universalRole") private final Role universalRole;
     /** roles nameset */
-    @PortedFrom(file = "RoleMaster.h", name = "roleNS")
-    private final NameSet<Role, IRI> roleNS;
+    @PortedFrom(file = "RoleMaster.h", name = "roleNS") private final NameSet<Role, IRI> roleNS;
     /** Taxonomy of roles */
-    @PortedFrom(file = "RoleMaster.h", name = "pTax")
-    private final Taxonomy pTax;
+    @PortedFrom(file = "RoleMaster.h", name = "pTax") private final Taxonomy pTax;
     /** two halves of disjoint roles axioms */
-    @PortedFrom(file = "RoleMaster.h", name = "DJRolesA")
-    private final List<Role> disjointRolesA = new ArrayList<>();
-    @PortedFrom(file = "RoleMaster.h", name = "DJRolesB")
-    private final List<Role> disjointRolesB = new ArrayList<>();
+    @PortedFrom(file = "RoleMaster.h", name = "DJRolesA") private final List<Role> disjointRolesA = new ArrayList<>();
+    @PortedFrom(file = "RoleMaster.h", name = "DJRolesB") private final List<Role> disjointRolesB = new ArrayList<>();
     /** flag whether to create data roles or not */
-    @PortedFrom(file = "RoleMaster.h", name = "DataRoles")
-    private final boolean dataRoles;
+    @PortedFrom(file = "RoleMaster.h", name = "DataRoles") private final boolean dataRoles;
     /** flag if it is possible to introduce new names */
-    @PortedFrom(file = "RoleMaster.h", name = "useUndefinedNames")
-    private boolean useUndefinedNames;
-    @Original
-    private static final int firstRoleIndex = 2;
+    @PortedFrom(file = "RoleMaster.h", name = "useUndefinedNames") private boolean useUndefinedNames;
+    @Original private static final int FIRSTROLEINDEX = 2;
+
+    /**
+     * @param d
+     *        d
+     * @param topRoleName
+     *        TopRoleName
+     * @param botRoleName
+     *        BotRoleName
+     * @param c
+     *        c
+     */
+    public RoleMaster(boolean d, IRI topRoleName, IRI botRoleName, JFactReasonerConfiguration c) {
+        newRoleId = 1;
+        emptyRole = new Role(botRoleName);
+        universalRole = new Role(topRoleName);
+        roleNS = new NameSet<>(new RoleCreator());
+        dataRoles = d;
+        useUndefinedNames = true;
+        // no zero-named roles allowed
+        roles.add(null);
+        roles.add(null);
+        // setup empty role
+        emptyRole.setId(0);
+        emptyRole.setInverse(emptyRole);
+        emptyRole.setDataRole(dataRoles);
+        emptyRole.setBPDomain(Helper.BP_BOTTOM);
+        emptyRole.setBottom();
+        // setup universal role
+        universalRole.setId(0);
+        universalRole.setInverse(universalRole);
+        universalRole.setDataRole(dataRoles);
+        universalRole.setBPDomain(Helper.BP_TOP);
+        universalRole.setTop();
+        // FIXME!! now it is not transitive => simple
+        universalRole.getAutomaton().setCompleted(true);
+        // create roles taxonomy
+        pTax = new Taxonomy(universalRole, emptyRole, c);
+    }
 
     /**
      * TRole and its inverse in RoleBox
@@ -90,7 +115,7 @@ public class RoleMaster implements Serializable {
         roles.add(r);
         r.setId(newRoleId);
         // create new role which would be inverse of R
-        Role ri = new Role(IRI.create("-" + r.getName()));
+        Role ri = new Role(IRI.create("-" + r.getIRI()));
         // set up inverse
         r.setInverse(ri);
         ri.setInverse(r);
@@ -109,55 +134,15 @@ public class RoleMaster implements Serializable {
         if (!(p instanceof Role)) {
             return false;
         }
-        Role R = (Role) p;
-        int ind = R.getAbsoluteIndex();
-        return ind >= firstRoleIndex && ind < roles.size()
-            && roles.get(ind).equals(p);
+        Role r = (Role) p;
+        int ind = r.getAbsoluteIndex();
+        return ind >= FIRSTROLEINDEX && ind < roles.size() && roles.get(ind).equals(p);
     }
 
     /** @return number of roles */
     @PortedFrom(file = "RoleMaster.h", name = "size")
     public int size() {
         return roles.size() / 2 - 1;
-    }
-
-    /**
-     * @param d
-     *        d
-     * @param TopRoleName
-     *        TopRoleName
-     * @param BotRoleName
-     *        BotRoleName
-     * @param c
-     *        c
-     */
-    public RoleMaster(boolean d, IRI TopRoleName, IRI BotRoleName,
-        JFactReasonerConfiguration c) {
-        newRoleId = 1;
-        emptyRole = new Role(BotRoleName);
-        universalRole = new Role(TopRoleName);
-        roleNS = new NameSet<>(new RoleCreator());
-        dataRoles = d;
-        useUndefinedNames = true;
-        // no zero-named roles allowed
-        roles.add(null);
-        roles.add(null);
-        // setup empty role
-        emptyRole.setId(0);
-        emptyRole.setInverse(emptyRole);
-        emptyRole.setDataRole(dataRoles);
-        emptyRole.setBPDomain(Helper.bpBOTTOM);
-        emptyRole.setBottom();
-        // setup universal role
-        universalRole.setId(0);
-        universalRole.setInverse(universalRole);
-        universalRole.setDataRole(dataRoles);
-        universalRole.setBPDomain(Helper.bpTOP);
-        universalRole.setTop();
-        // FIXME!! now it is not transitive => simple
-        universalRole.getAutomaton().setCompleted(true);
-        // create roles taxonomy
-        pTax = new Taxonomy(universalRole, emptyRole, c);
     }
 
     /**
@@ -168,10 +153,10 @@ public class RoleMaster implements Serializable {
     @PortedFrom(file = "RoleMaster.h", name = "ensureRoleName")
     public NamedEntry ensureRoleName(IRI name) {
         // check for the Top/Bottom names
-        if (name.equals(emptyRole.getName())) {
+        if (name.equals(emptyRole.getIRI())) {
             return emptyRole;
         }
-        if (name.equals(universalRole.getName())) {
+        if (name.equals(universalRole.getIRI())) {
             return universalRole;
         }
         // new name from NS
@@ -181,8 +166,8 @@ public class RoleMaster implements Serializable {
         }
         // not registered but has non-null ID
         if (p.getId() != 0 || !useUndefinedNames) {
-            throw new OWLRuntimeException("Unable to register '" + name
-                + "' as a " + (dataRoles ? "data role" : "role"));
+            throw new OWLRuntimeException(
+                "Unable to register '" + name + "' as a " + (dataRoles ? "data role" : "role"));
         }
         registerRole(p);
         return p;
@@ -200,10 +185,8 @@ public class RoleMaster implements Serializable {
     public static void addRoleSynonym(Role role, Role syn) {
         // no synonyms
         // FIXME!! 1st call can make one of them a synonym of a const
-        addRoleParentProper(ClassifiableEntry.resolveSynonym(role),
-            ClassifiableEntry.resolveSynonym(syn));
-        addRoleParentProper(ClassifiableEntry.resolveSynonym(syn),
-            ClassifiableEntry.resolveSynonym(role));
+        addRoleParentProper(ClassifiableEntry.resolveSynonym(role), ClassifiableEntry.resolveSynonym(syn));
+        addRoleParentProper(ClassifiableEntry.resolveSynonym(syn), ClassifiableEntry.resolveSynonym(role));
     }
 
     /**
@@ -221,8 +204,7 @@ public class RoleMaster implements Serializable {
             return;
         }
         if (role.isDataRole() != parent.isDataRole()) {
-            throw new ReasonerInternalException(
-                "Mixed object and data roles in role subsumption axiom");
+            throw new ReasonerInternalException("Mixed object and data roles in role subsumption axiom");
         }
         // check the inconsistency case *UROLE* [= *EROLE*
         if (role.isTop() && parent.isBottom()) {
@@ -247,19 +229,19 @@ public class RoleMaster implements Serializable {
     /**
      * a pair of disjoint roles
      * 
-     * @param R
+     * @param r
      *        R
-     * @param S
+     * @param s
      *        S
      */
     @PortedFrom(file = "RoleMaster.h", name = "addDisjointRoles")
-    public void addDisjointRoles(Role R, Role S) {
+    public void addDisjointRoles(Role r, Role s) {
         // object- and data roles are always disjoint
-        if (R.isDataRole() != S.isDataRole()) {
+        if (r.isDataRole() != s.isDataRole()) {
             return;
         }
-        disjointRolesA.add(R);
-        disjointRolesB.add(S);
+        disjointRolesA.add(r);
+        disjointRolesB.add(s);
     }
 
     /**
@@ -276,7 +258,7 @@ public class RoleMaster implements Serializable {
     /** @return list of roles */
     @PortedFrom(file = "RoleMaster.h", name = "begin")
     public List<Role> getRoles() {
-        return roles.subList(firstRoleIndex, roles.size());
+        return roles.subList(FIRSTROLEINDEX, roles.size());
     }
 
     /** @return taxonomy */
@@ -289,7 +271,7 @@ public class RoleMaster implements Serializable {
      * @return role stream
      */
     public Stream<Role> roles() {
-        return roles.stream().skip(firstRoleIndex);
+        return roles.stream().skip(FIRSTROLEINDEX);
     }
 
     /**
@@ -315,14 +297,13 @@ public class RoleMaster implements Serializable {
     }
 
     /**
-     * @param RR
+     * @param rr
      *        RR
      */
     @PortedFrom(file = "RoleMaster.h", name = "fillReflexiveRoles")
-    public void fillReflexiveRoles(List<Role> RR) {
-        RR.clear();
-        roles().filter(p -> !p.isSynonym() && p.isReflexive()).forEach(
-            p -> RR.add(p));
+    public void fillReflexiveRoles(List<Role> rr) {
+        rr.clear();
+        add(rr, roles().filter(p -> !p.isSynonym() && p.isReflexive()));
     }
 
     /**
@@ -335,8 +316,7 @@ public class RoleMaster implements Serializable {
      */
     @PortedFrom(file = "RoleMaster.h", name = "addRoleParent")
     public static void addRoleParent(Role role, Role parent) {
-        addRoleParentProper(ClassifiableEntry.resolveSynonym(role),
-            ClassifiableEntry.resolveSynonym(parent));
+        addRoleParentProper(ClassifiableEntry.resolveSynonym(role), ClassifiableEntry.resolveSynonym(parent));
     }
 
     /**
@@ -346,7 +326,7 @@ public class RoleMaster implements Serializable {
      *        parent
      */
     @PortedFrom(file = "RoleMaster.h", name = "addRoleParent")
-    public static void addRoleParent(DLTree tree, Role parent) {
+    public static void addRoleParent(@Nullable DLTree tree, Role parent) {
         if (tree == null) {
             return;
         }
@@ -358,35 +338,31 @@ public class RoleMaster implements Serializable {
             // here -R.C became -PARENT.
             // encode this as PROJFROM(R-,PROJINTO(PARENT-,C)),
             // added to the range of R
-            Role R = Role.resolveRole(tree.getLeft());
+            Role r = Role.resolveRole(tree.getLeft());
             // can't do anything ATM for the data roles
-            if (R.isDataRole()) {
-                throw new ReasonerInternalException(
-                    "Projection into not implemented for the data role");
+            if (r.isDataRole()) {
+                throw new ReasonerInternalException("Projection into not implemented for the data role");
             }
-            DLTree C = tree.getRight().copy();
-            DLTree InvP = DLTreeFactory.buildTree(new Lexeme(RNAME, parent
-                .inverse()));
-            DLTree InvR = DLTreeFactory
-                .buildTree(new Lexeme(RNAME, R.inverse()));
+            DLTree c = tree.getRight().copy();
+            DLTree invP = DLTreeFactory.buildTree(new Lexeme(RNAME, parent.inverse()));
+            DLTree invR = DLTreeFactory.buildTree(new Lexeme(RNAME, r.inverse()));
             // C = PROJINTO(PARENT-,C)
-            C = DLTreeFactory.buildTree(new Lexeme(PROJINTO), InvP, C);
+            c = DLTreeFactory.buildTree(new Lexeme(PROJINTO), invP, c);
             // C = PROJFROM(R-,PROJINTO(PARENT-,C))
-            C = DLTreeFactory.buildTree(new Lexeme(PROJFROM), InvR, C);
-            R.setRange(C);
+            c = DLTreeFactory.buildTree(new Lexeme(PROJFROM), invR, c);
+            r.setRange(c);
         } else if (tree.token() == PROJFROM) {
             // here C-R. became -PARENT.
             // encode this as PROJFROM(R,PROJINTO(PARENT,C)),
             // added to the domain of R
-            Role R = Role.resolveRole(tree.getLeft());
-            DLTree C = tree.getRight().copy();
-            DLTree P = DLTreeFactory.buildTree(new Lexeme(RNAME, parent));
+            Role r = Role.resolveRole(tree.getLeft());
+            DLTree c = tree.getRight().copy();
+            DLTree p = DLTreeFactory.buildTree(new Lexeme(RNAME, parent));
             // C = PROJINTO(PARENT,C)
-            C = DLTreeFactory.buildTree(new Lexeme(PROJINTO), P, C);
+            c = DLTreeFactory.buildTree(new Lexeme(PROJINTO), p, c);
             // C = PROJFROM(R,PROJINTO(PARENT,C))
-            C = DLTreeFactory.buildTree(new Lexeme(PROJFROM), tree.getLeft()
-                .copy(), C);
-            R.setDomain(C);
+            c = DLTreeFactory.buildTree(new Lexeme(PROJFROM), tree.getLeft().copy(), c);
+            r.setDomain(c);
         } else {
             addRoleParent(Role.resolveRole(tree), parent);
         }
@@ -401,35 +377,27 @@ public class RoleMaster implements Serializable {
             p.canonicaliseSynonym();
             p.addFeaturesToSynonym();
         });
-        roles().filter(p -> !p.isSynonym()).forEach(
-            p -> p.removeSynonymsFromParents());
+        roles().filter(p -> !p.isSynonym()).forEach(p -> p.removeSynonymsFromParents());
         // here TOP-role has no children yet, so it's safe to complete the
         // automaton
         universalRole.completeAutomaton(nRoles);
-        roles().filter(p -> !p.isSynonym() && !p.hasToldSubsumers()).forEach(
-            p -> p.addParent(universalRole));
+        roles().filter(p -> !p.isSynonym() && !p.hasToldSubsumers()).forEach(p -> p.addParent(universalRole));
         TaxonomyCreator taxCreator = new TaxonomyCreator(pTax);
         taxCreator.setCompletelyDefined(true);
-        roles().filter(p -> !p.isClassified()).forEach(
-            p -> taxCreator.classifyEntry(p));
-        roles().filter(p -> !p.isSynonym()).forEach(
-            p -> p.initADbyTaxonomy(pTax, nRoles));
-        roles().filter(p -> !p.isSynonym()).forEach(
-            p -> p.completeAutomaton(nRoles));
+        roles().filter(p -> !p.isClassified()).forEach(taxCreator::classifyEntry);
+        roles().filter(p -> !p.isSynonym()).forEach(p -> p.initADbyTaxonomy(pTax, nRoles));
+        roles().filter(p -> !p.isSynonym()).forEach(p -> p.completeAutomaton(nRoles));
         pTax.finalise();
         if (!disjointRolesA.isEmpty()) {
             for (int i = 0; i < disjointRolesA.size(); i++) {
-                Role q = disjointRolesA.get(i);
-                Role r = disjointRolesB.get(i);
-                Role R = ClassifiableEntry.resolveSynonym(q);
-                Role S = ClassifiableEntry.resolveSynonym(r);
-                R.addDisjointRole(S);
-                S.addDisjointRole(R);
-                R.inverse().addDisjointRole(S.inverse());
-                S.inverse().addDisjointRole(R.inverse());
+                Role r = ClassifiableEntry.resolveSynonym(disjointRolesA.get(i));
+                Role s = ClassifiableEntry.resolveSynonym(disjointRolesB.get(i));
+                r.addDisjointRole(s);
+                s.addDisjointRole(r);
+                r.inverse().addDisjointRole(s.inverse());
+                s.inverse().addDisjointRole(r.inverse());
             }
-            roles().filter(p -> !p.isSynonym() && p.isDisjoint()).forEach(
-                p -> p.checkHierarchicalDisjoint());
+            roles().filter(p -> !p.isSynonym() && p.isDisjoint()).forEach(p -> p.checkHierarchicalDisjoint());
         }
         roles().filter(p -> !p.isSynonym()).forEach(p -> p.postProcess());
         roles().filter(p -> !p.isSynonym()).forEach(p -> p.consistent());

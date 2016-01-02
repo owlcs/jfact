@@ -8,22 +8,18 @@ package uk.ac.manchester.cs.jfact.kernel;
 import java.io.Serializable;
 import java.util.stream.IntStream;
 
-import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 
 @PortedFrom(file = "dumpInterface.h", name = "dumpInterface")
 class DumpInterface implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
     /** output stream */
-    @PortedFrom(file = "dumpInterface.h", name = "o")
-    protected final LogAdapter o;
+    @PortedFrom(file = "dumpInterface.h", name = "o") protected final LogAdapter o;
     /** indentation level */
-    @PortedFrom(file = "dumpInterface.h", name = "indent")
-    private int indent;
+    @PortedFrom(file = "dumpInterface.h", name = "indent") private int indent;
     /** print every axiom on a single line (need for sorting, for example) */
-    @PortedFrom(file = "dumpInterface.h", name = "oneliner")
-    private final boolean oneliner;
+    @PortedFrom(file = "dumpInterface.h", name = "oneliner") private final boolean oneliner;
 
     @PortedFrom(file = "dumpInterface.h", name = "o")
     public DumpInterface(LogAdapter oo) {
@@ -52,39 +48,39 @@ class DumpInterface implements Serializable {
 
     @SuppressWarnings("unused")
     @PortedFrom(file = "dumpInterface.h", name = "startOp")
-    public void startOp(DIOp Op) {}
+    public void startOp(DIOp op) {}
 
     /**
      * start operation >=/<= with number
      * 
-     * @param Op
+     * @param op
      *        Op
      * @param n
      *        n
      */
     @SuppressWarnings("unused")
     @PortedFrom(file = "dumpInterface.h", name = "startOp")
-    public void startOp(DIOp Op, int n) {}
+    public void startOp(DIOp op, int n) {}
 
     @SuppressWarnings("unused")
     @PortedFrom(file = "dumpInterface.h", name = "contOp")
-    public void contOp(DIOp Op) {}
+    public void contOp(DIOp op) {}
 
     @SuppressWarnings("unused")
     @PortedFrom(file = "dumpInterface.h", name = "finishOp")
-    public void finishOp(DIOp Op) {}
+    public void finishOp(DIOp op) {}
 
     @SuppressWarnings("unused")
     @PortedFrom(file = "dumpInterface.h", name = "startAx")
-    public void startAx(DIOp Ax) {}
+    public void startAx(DIOp ax) {}
 
     @SuppressWarnings("unused")
     @PortedFrom(file = "dumpInterface.h", name = "contAx")
-    public void contAx(DIOp Ax) {}
+    public void contAx(DIOp ax) {}
 
     @SuppressWarnings("unused")
     @PortedFrom(file = "dumpInterface.h", name = "finishAx")
-    public void finishAx(DIOp Ax) {}
+    public void finishAx(DIOp ax) {}
 
     /**
      * obtain name by the named entry
@@ -94,7 +90,7 @@ class DumpInterface implements Serializable {
      */
     @PortedFrom(file = "dumpInterface.h", name = "dumpName")
     public void dumpName(NamedEntry p) {
-        o.print(p.getName());
+        o.print(p.getIRI());
     }
 
     /**

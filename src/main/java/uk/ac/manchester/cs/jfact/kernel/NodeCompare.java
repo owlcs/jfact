@@ -8,16 +8,16 @@ package uk.ac.manchester.cs.jfact.kernel;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import javax.annotation.Nullable;
+
 import conformance.PortedFrom;
 
 @PortedFrom(file = "Tactic.cpp", name = "NodeCompare")
 class NodeCompare implements Comparator<DlCompletionTree>, Serializable {
 
-    private static final long serialVersionUID = 11000L;
-
     @Override
     @PortedFrom(file = "Tactic.cpp", name = "compare")
-    public int compare(DlCompletionTree o1, DlCompletionTree o2) {
+    public int compare(@Nullable DlCompletionTree o1, @Nullable DlCompletionTree o2) {
         return 0;
         // XXX doubtful
         // return o1.getId() - o2.getId();

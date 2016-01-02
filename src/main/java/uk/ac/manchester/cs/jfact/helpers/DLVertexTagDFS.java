@@ -7,40 +7,32 @@ package uk.ac.manchester.cs.jfact.helpers;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.DagTag;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
-import conformance.PortedFrom;
 
 @PortedFrom(file = "dlVertex.h", name = "DLVertexTagDFS")
 class DLVertexTagDFS implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
-    @PortedFrom(file = "dlVertex.h", name = "Op")
-    protected DagTag op;
+    @PortedFrom(file = "dlVertex.h", name = "Op") protected DagTag op;
     /** aux field for DFS in presence of cycles */
-    @PortedFrom(file = "dlVertex.h", name = "VisitedPos")
-    protected boolean visitedPos = false;
+    @PortedFrom(file = "dlVertex.h", name = "VisitedPos") protected boolean visitedPos = false;
     /** aux field for DFS in presence of cycles */
-    @PortedFrom(file = "dlVertex.h", name = "ProcessedPos")
-    protected boolean processedPos = false;
+    @PortedFrom(file = "dlVertex.h", name = "ProcessedPos") protected boolean processedPos = false;
     /** true iff node is involved in cycle */
-    @PortedFrom(file = "dlVertex.h", name = "inCyclePos")
-    protected boolean inCyclePos = false;
+    @PortedFrom(file = "dlVertex.h", name = "inCyclePos") protected boolean inCyclePos = false;
     /** aux field for DFS in presence of cycles */
-    @PortedFrom(file = "dlVertex.h", name = "VisitedNeg")
-    protected boolean visitedNeg = false;
+    @PortedFrom(file = "dlVertex.h", name = "VisitedNeg") protected boolean visitedNeg = false;
     /** aux field for DFS in presence of cycles */
-    @PortedFrom(file = "dlVertex.h", name = "ProcessedNeg")
-    protected boolean processedNeg = false;
+    @PortedFrom(file = "dlVertex.h", name = "ProcessedNeg") protected boolean processedNeg = false;
     /** true iff node is involved in cycle */
-    @PortedFrom(file = "dlVertex.h", name = "inCycleNeg")
-    protected boolean inCycleNeg = false;
+    @PortedFrom(file = "dlVertex.h", name = "inCycleNeg") protected boolean inCycleNeg = false;
     /** cache for the positive entry */
-    @PortedFrom(file = "dlVertex.h", name = "pCache")
-    protected ModelCacheInterface pCache = null;
+    @PortedFrom(file = "dlVertex.h", name = "pCache") protected ModelCacheInterface pCache = null;
     /** cache for the negative entry */
-    @PortedFrom(file = "dlVertex.h", name = "nCache")
-    protected ModelCacheInterface nCache = null;
+    @PortedFrom(file = "dlVertex.h", name = "nCache") protected ModelCacheInterface nCache = null;
 
     @PortedFrom(file = "dlVertex.h", name = "Op")
     protected DLVertexTagDFS(DagTag op) {
@@ -152,6 +144,7 @@ class DLVertexTagDFS implements Serializable {
      * @param pos
      *        pos
      */
+    @Nullable
     @PortedFrom(file = "dlVertex.h", name = "getCache")
     public ModelCacheInterface getCache(boolean pos) {
         return pos ? pCache : nCache;

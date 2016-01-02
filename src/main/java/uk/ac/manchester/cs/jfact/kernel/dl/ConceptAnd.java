@@ -8,20 +8,20 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
-import conformance.PortedFrom;
 
 /** concept intersection */
 @PortedFrom(file = "tDLExpression.h", name = "TDLConceptAnd")
-public class ConceptAnd extends NAryExpressionImpl<ConceptExpression> implements
-        NAryExpression<ConceptExpression>, ConceptExpression, Serializable {
-
-    private static final long serialVersionUID = 11000L;
+public class ConceptAnd extends NAryExpressionImpl<ConceptExpression>
+    implements NAryExpression<ConceptExpression>, ConceptExpression, Serializable {
 
     /**
      * create AND of expressions from the given array
@@ -39,6 +39,7 @@ public class ConceptAnd extends NAryExpressionImpl<ConceptExpression> implements
         visitor.visit(this);
     }
 
+    @Nullable
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
@@ -51,7 +52,7 @@ public class ConceptAnd extends NAryExpressionImpl<ConceptExpression> implements
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@Nullable Object obj) {
         if (obj == null) {
             return false;
         }
@@ -65,7 +66,7 @@ public class ConceptAnd extends NAryExpressionImpl<ConceptExpression> implements
     }
 
     @Override
-    public IRI getName() {
+    public IRI getIRI() {
         return IRI.create(toString());
     }
 }

@@ -1,6 +1,9 @@
 package uk.ac.manchester.cs.jfact.kernel.dl.interfaces;
 
-import uk.ac.manchester.cs.jfact.kernel.HasName;
+import java.io.Serializable;
+
+import org.semanticweb.owlapi.model.HasIRI;
+
 import conformance.PortedFrom;
 
 /* This file is part of the JFact DL reasoner
@@ -10,4 +13,4 @@ import conformance.PortedFrom;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** entity */
 @PortedFrom(file = "KnowledgeExplorer.h", name = "Entity")
-public interface Entity extends HasName {}
+public interface Entity extends HasIRI, Serializable {}

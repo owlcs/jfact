@@ -9,25 +9,23 @@ import java.io.Serializable;
 import java.util.List;
 
 /** abstract class to represent the known subsumers of a concept */
-public abstract class KnownSubsumers implements Serializable {
-
-    private static final long serialVersionUID = 11000L;
+public interface KnownSubsumers extends Serializable {
 
     /** @return begin of the Sure subsumers interval */
-    public abstract List<ClassifiableEntry> s_begin();
+    List<ClassifiableEntry> sure();
 
     /** @return begin of the Possible subsumers interval */
-    public abstract List<ClassifiableEntry> p_begin();
+    List<ClassifiableEntry> possible();
 
     // flags
     /** @return whether there are no sure subsumers */
-    public boolean s_empty() {
-        return s_begin().isEmpty();
+    default boolean sureEmpty() {
+        return sure().isEmpty();
     }
 
     /** @return whether there are no possible subsumers */
-    public boolean p_empty() {
-        return p_begin().isEmpty();
+    default boolean possibleEmpty() {
+        return possible().isEmpty();
     }
 
     /**
@@ -35,8 +33,7 @@ public abstract class KnownSubsumers implements Serializable {
      *        class expression
      * @return true iff CE is the possible subsumer
      */
-    public boolean isPossibleSub(
-            @SuppressWarnings("unused") ClassifiableEntry ce) {
+    default boolean isPossibleSub(@SuppressWarnings("unused") ClassifiableEntry ce) {
         return true;
     }
 }

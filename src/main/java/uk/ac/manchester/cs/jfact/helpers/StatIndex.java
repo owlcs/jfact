@@ -10,11 +10,11 @@ import java.util.Arrays;
 /** stat index enum */
 public enum StatIndex {
     //@formatter:off
-    /** Depth */    Depth, 
-    /** Size */     Size, 
-    /** Branch */   Branch, 
-    /** Gener */    Gener, 
-    /** Freq */     Freq;
+    /** Depth */    DEPTH, 
+    /** Size */     SIZE, 
+    /** Branch */   BRANCH, 
+    /** Gener */    GENER, 
+    /** Freq */     FREQ;
     //@formatter:on
 
     /**
@@ -34,15 +34,15 @@ public enum StatIndex {
     public static int choose(char c) {
         switch (c) {
             case 'S':
-                return Size.getIndex(false);
+                return SIZE.getIndex(false);
             case 'D':
-                return Depth.getIndex(false);
+                return DEPTH.getIndex(false);
             case 'B':
-                return Branch.getIndex(false);
+                return BRANCH.getIndex(false);
             case 'G':
-                return Gener.getIndex(false);
+                return GENER.getIndex(false);
             default:
-                return Freq.getIndex(false);
+                return FREQ.getIndex(false);
         }
     }
 
@@ -68,13 +68,13 @@ public enum StatIndex {
         if (debug) {// XXX debug statements
             System.out.println("StatIndex.updateStatValues() " + d + "\t" + s + "\t" + b + "\t" + g + "\t" + pos + "\t"
                 + Arrays.toString(stat));
-            System.out.println("StatIndex.updateStatValues() value pre increment " + stat[Size.getIndex(pos)]);
+            System.out.println("StatIndex.updateStatValues() value pre increment " + stat[SIZE.getIndex(pos)]);
         }
-        stat[Size.getIndex(pos)] += s;
-        stat[Branch.getIndex(pos)] += b;
-        stat[Gener.getIndex(pos)] += g;
-        if (d > stat[Depth.getIndex(pos)]) {
-            stat[Depth.getIndex(pos)] = d;
+        stat[SIZE.getIndex(pos)] += s;
+        stat[BRANCH.getIndex(pos)] += b;
+        stat[GENER.getIndex(pos)] += g;
+        if (d > stat[DEPTH.getIndex(pos)]) {
+            stat[DEPTH.getIndex(pos)] = d;
         }
     }
 
@@ -110,7 +110,7 @@ public enum StatIndex {
      *        stat
      */
     public static void incFreqValue(boolean pos, int[] stat) {
-        stat[Freq.getIndex(pos)] += 1;
+        stat[FREQ.getIndex(pos)] += 1;
     }
 
     /**
@@ -123,7 +123,7 @@ public enum StatIndex {
      * @return depth
      */
     public static int getDepth(boolean pos, int[] stat) {
-        return stat[Depth.getIndex(pos)];
+        return stat[DEPTH.getIndex(pos)];
     }
 
     /**
@@ -136,7 +136,7 @@ public enum StatIndex {
      * @return size
      */
     protected static int getSize(boolean pos, int[] stat) {
-        return stat[Size.getIndex(pos)];
+        return stat[SIZE.getIndex(pos)];
     }
 
     /**
@@ -149,7 +149,7 @@ public enum StatIndex {
      * @return branch
      */
     protected static int getBranch(boolean pos, int[] stat) {
-        return stat[Branch.getIndex(pos)];
+        return stat[BRANCH.getIndex(pos)];
     }
 
     /**
@@ -162,7 +162,7 @@ public enum StatIndex {
      * @return gener
      */
     protected static int getGener(boolean pos, int[] stat) {
-        return stat[Gener.getIndex(pos)];
+        return stat[GENER.getIndex(pos)];
     }
 
     /**
@@ -175,6 +175,6 @@ public enum StatIndex {
      * @return freq
      */
     protected static int getFreq(boolean pos, int[] stat) {
-        return stat[Freq.getIndex(pos)];
+        return stat[FREQ.getIndex(pos)];
     }
 }

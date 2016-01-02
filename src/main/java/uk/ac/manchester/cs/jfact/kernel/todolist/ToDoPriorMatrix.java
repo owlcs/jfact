@@ -9,40 +9,32 @@ import java.io.Serializable;
 
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import uk.ac.manchester.cs.jfact.kernel.DagTag;
-import conformance.PortedFrom;
 
 /** priority matrix */
 @PortedFrom(file = "PriorityMatrix.h", name = "ToDoPriorMatrix")
 public class ToDoPriorMatrix implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
-    // regular operation indexes
-    @PortedFrom(file = "PriorityMatrix.h", name = "iAnd")
-    private int indexAnd;
-    @PortedFrom(file = "PriorityMatrix.h", name = "iOr")
-    private int indexOr;
-    @PortedFrom(file = "PriorityMatrix.h", name = "iExists")
-    private int indexExists;
-    @PortedFrom(file = "PriorityMatrix.h", name = "iForAll")
-    private int indexForall;
-    @PortedFrom(file = "PriorityMatrix.h", name = "iLE")
-    private int indexLE;
-    @PortedFrom(file = "PriorityMatrix.h", name = "iGE")
-    private int indexGE;
     /** number of regular options (o- and NN-rules are not included) */
-    @PortedFrom(file = "PriorityMatrix.h", name = "nRegularOps")
-    public static final int nRegularOptions = 7;
+    @PortedFrom(file = "PriorityMatrix.h", name = "nRegularOps") public static final int NREGULAROPTIONS = 7;
     /**
      * priority index for o- and ID operations (note that these ops have the
      * highest priority)
      */
-    @PortedFrom(file = "PriorityMatrix.h", name = "iId")
-    protected static final int priorityIndexID = nRegularOptions + 1;
+    @PortedFrom(file = "PriorityMatrix.h", name = "iId") protected static final int PRIORITYINDEXID = NREGULAROPTIONS
+        + 1;
     /** priority index for lesser than or equal operation in nominal node */
-    @PortedFrom(file = "PriorityMatrix.h", name = "iNN")
-    protected static final int priorityIndexNominalNode = nRegularOptions + 2;
+    @PortedFrom(file = "PriorityMatrix.h", name = "iNN") protected static final int PRIORITYINDEXNOMINALNODE = NREGULAROPTIONS
+        + 2;
+    // regular operation indexes
+    @PortedFrom(file = "PriorityMatrix.h", name = "iAnd") private int indexAnd;
+    @PortedFrom(file = "PriorityMatrix.h", name = "iOr") private int indexOr;
+    @PortedFrom(file = "PriorityMatrix.h", name = "iExists") private int indexExists;
+    @PortedFrom(file = "PriorityMatrix.h", name = "iForAll") private int indexForall;
+    @PortedFrom(file = "PriorityMatrix.h", name = "iLE") private int indexLE;
+    @PortedFrom(file = "PriorityMatrix.h", name = "iGE") private int indexGE;
 
     /**
      * Auxiliary class to get priorities on operations
@@ -54,8 +46,7 @@ public class ToDoPriorMatrix implements Serializable {
     public void initPriorities(String options) {
         // check for correctness
         if (options.length() < 7) {
-            throw new ReasonerInternalException(
-                    "ToDo List option string should have length 7");
+            throw new ReasonerInternalException("ToDo List option string should have length 7");
         }
         // init values by symbols loaded
         indexAnd = options.charAt(1) - '0';
@@ -65,53 +56,50 @@ public class ToDoPriorMatrix implements Serializable {
         indexLE = options.charAt(5) - '0';
         indexGE = options.charAt(6) - '0';
         // correctness checking
-        if (indexAnd >= nRegularOptions || indexOr >= nRegularOptions
-                || indexExists >= nRegularOptions
-                || indexForall >= nRegularOptions || indexGE >= nRegularOptions
-                || indexLE >= nRegularOptions) {
+        if (indexAnd >= NREGULAROPTIONS || indexOr >= NREGULAROPTIONS || indexExists >= NREGULAROPTIONS
+            || indexForall >= NREGULAROPTIONS || indexGE >= NREGULAROPTIONS || indexLE >= NREGULAROPTIONS) {
             throw new ReasonerInternalException("ToDo List option out of range");
         }
     }
 
     /**
-     * @param Op
+     * @param op
      *        Op
-     * @param Sign
+     * @param sign
      *        Sign
-     * @param NominalNode
+     * @param nominalNode
      *        NominalNode
      * @return index
      */
     @PortedFrom(file = "PriorityMatrix.h", name = "getIndex")
     @SuppressWarnings("incomplete-switch")
-    public int getIndex(DagTag Op, boolean Sign, boolean NominalNode) {
-        switch (Op) {
-            case dtAnd:
-                return Sign ? indexAnd : indexOr;
-            case dtForall:
-            case dtIrr: // process local (ir-)reflexivity as a FORALL
-                return Sign ? indexForall : indexExists;
-            case dtProj:
+    public int getIndex(DagTag op, boolean sign, boolean nominalNode) {
+        switch (op) {
+            case AND:
+                return sign ? indexAnd : indexOr;
+            case FORALL:
+            case IRR: // process local (ir-)reflexivity as a FORALL
+                return sign ? indexForall : indexExists;
+            case PROJ:
                 // it should be the lowest priority but now just OR's one
-            case dtChoose:
+            case CHOOSE:
                 return indexOr;
-            case dtLE:
-                return Sign ? NominalNode ? priorityIndexNominalNode : indexLE
-                        : indexGE;
-            case dtDataType:
-            case dtDataValue:
-            case dtDataExpr:
-            case dtNN:
-            case dtTop: // no need to process these ops
-                return nRegularOptions;
-            case dtPSingleton:
-            case dtPConcept: // no need to process neg of PC
-                return Sign ? priorityIndexID : nRegularOptions;
-            case dtNSingleton:
-            case dtNConcept: // both NC and neg NC are processed
-                return priorityIndexID;
+            case LE:
+                return sign ? nominalNode ? PRIORITYINDEXNOMINALNODE : indexLE : indexGE;
+            case DATATYPE:
+            case DATAVALUE:
+            case DATAEXPR:
+            case NN:
+            case TOP: // no need to process these ops
+                return NREGULAROPTIONS;
+            case PSINGLETON:
+            case PCONCEPT: // no need to process neg of PC
+                return sign ? PRIORITYINDEXID : NREGULAROPTIONS;
+            case NSINGLETON:
+            case NCONCEPT: // both NC and neg NC are processed
+                return PRIORITYINDEXID;
             default: // safety check
-                throw new UnreachableSituationException("Error: " + Op);
+                throw new UnreachableSituationException("Error: " + op);
         }
     }
 }

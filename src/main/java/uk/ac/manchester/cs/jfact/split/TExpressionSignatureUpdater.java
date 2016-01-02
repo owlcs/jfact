@@ -48,10 +48,14 @@ import conformance.PortedFrom;
 class TExpressionSignatureUpdater extends DLExpressionVisitorAdapter implements
         DLExpressionVisitor, Serializable {
 
-    private static final long serialVersionUID = 11000L;
+
     /** Signature to be filled */
     @PortedFrom(file = "tSignatureUpdater.h", name = "sig")
     private final TSignature sig;
+
+    public TExpressionSignatureUpdater(TSignature s) {
+        sig = s;
+    }
 
     /**
      * helper for concept arguments
@@ -121,10 +125,6 @@ class TExpressionSignatureUpdater extends DLExpressionVisitorAdapter implements
     @PortedFrom(file = "tSignatureUpdater.h", name = "processArray")
     private void processArray(NAryExpression<? extends Expression> expr) {
         expr.getArguments().forEach(p -> p.accept(this));
-    }
-
-    public TExpressionSignatureUpdater(TSignature s) {
-        sig = s;
     }
 
     // concept expressions

@@ -8,22 +8,21 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.semanticweb.owlapi.model.IRI;
 
+import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleComplexExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
-import conformance.PortedFrom;
 
 /** object role chain */
 @PortedFrom(file = "tDLExpression.h", name = "TDLObjectRoleChain")
 public class ObjectRoleChain extends NAryExpressionImpl<ObjectRoleExpression>
-        implements NAryExpression<ObjectRoleExpression>,
-        ObjectRoleComplexExpression, Serializable {
-
-    private static final long serialVersionUID = 11000L;
+    implements NAryExpression<ObjectRoleExpression>, ObjectRoleComplexExpression, Serializable {
 
     /**
      * create role chain from given array
@@ -41,6 +40,7 @@ public class ObjectRoleChain extends NAryExpressionImpl<ObjectRoleExpression>
         visitor.visit(this);
     }
 
+    @Nullable
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
@@ -48,7 +48,7 @@ public class ObjectRoleChain extends NAryExpressionImpl<ObjectRoleExpression>
     }
 
     @Override
-    public IRI getName() {
+    public IRI getIRI() {
         return IRI.create(toString());
     }
 }

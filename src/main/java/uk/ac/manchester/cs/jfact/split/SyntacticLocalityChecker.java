@@ -11,5 +11,5 @@ import conformance.PortedFrom;
 @PortedFrom(file = "SyntacticLocalityChecker.h", name = "SyntacticLocalityChecker")
 public class SyntacticLocalityChecker extends GeneralSyntacticLocalityChecker {
 
-    private static final long serialVersionUID = 11000L;
+
 }

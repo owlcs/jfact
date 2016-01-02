@@ -8,6 +8,7 @@ package uk.ac.manchester.cs.jfact.datatypes;
 import java.io.Serializable;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.IRI;
 
@@ -16,13 +17,10 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 class LiteralImpl<T extends Comparable<T>> implements Literal<T>, Serializable {
 
-    private static final long serialVersionUID = 11000L;
-    @Nonnull
-    private final Datatype<T> type;
-    @Nonnull
-    private final String value;
+    @Nonnull private final Datatype<T> type;
+    @Nonnull private final String value;
 
-    public LiteralImpl(@Nonnull Datatype<T> type, @Nonnull String value) {
+    public LiteralImpl(Datatype<T> type, String value) {
         this.type = type;
         this.value = value;
     }
@@ -47,13 +45,14 @@ class LiteralImpl<T extends Comparable<T>> implements Literal<T>, Serializable {
         visitor.visit(this);
     }
 
+    @Nullable
     @Override
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);
     }
 
     @Override
-    public int compareTo(Literal<T> arg0) {
+    public int compareTo(@Nullable Literal<T> arg0) {
         return this.type.parseValue(this.value).compareTo(arg0.typedValue());
     }
 
@@ -64,38 +63,32 @@ class LiteralImpl<T extends Comparable<T>> implements Literal<T>, Serializable {
     }
 
     @Override
-    public IRI getName() {
+    public IRI getIRI() {
         return IRI.create(toString());
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@Nullable Object obj) {
         if (super.equals(obj)) {
             return true;
         }
         if (obj instanceof Literal) {
             Literal<?> other = (Literal<?>) obj;
-            if (type.equals(DatatypeFactory.PLAINLITERAL) || type.equals(
-            DatatypeFactory.STRING)) {
-                if (other.getDatatypeExpression().equals(
-                DatatypeFactory.PLAINLITERAL) || other.getDatatypeExpression()
-                .equals(DatatypeFactory.STRING)) {
-                    return this.value.replace("@", "").equals(other.value()
-                    .replace("@", ""));
+            if (type.equals(DatatypeFactory.PLAINLITERAL) || type.equals(DatatypeFactory.STRING)) {
+                if (other.getDatatypeExpression().equals(DatatypeFactory.PLAINLITERAL)
+                    || other.getDatatypeExpression().equals(DatatypeFactory.STRING)) {
+                    return this.value.replace("@", "").equals(other.value().replace("@", ""));
                 }
             }
-            return this.type.equals(other.getDatatypeExpression()) && this
-            .typedValue().equals(other.typedValue());
+            return this.type.equals(other.getDatatypeExpression()) && this.typedValue().equals(other.typedValue());
         }
         return false;
     }
 
     @Override
     public int hashCode() {
-        if (type.equals(DatatypeFactory.PLAINLITERAL) || type.equals(
-        DatatypeFactory.STRING)) {
-            return DatatypeFactory.PLAINLITERAL.hashCode() + this.value.replace(
-            "@", "").hashCode();
+        if (type.equals(DatatypeFactory.PLAINLITERAL) || type.equals(DatatypeFactory.STRING)) {
+            return DatatypeFactory.PLAINLITERAL.hashCode() + this.value.replace("@", "").hashCode();
         }
         return this.type.hashCode() + this.typedValue().hashCode();
     }

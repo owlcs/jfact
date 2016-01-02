@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.helpers;
 
+import java.io.Serializable;
+
 import conformance.Original;
 
 /* This file is part of the JFact DL reasoner
@@ -9,7 +11,7 @@ import conformance.Original;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 /** int set */
 @Original
-public interface FastSet {
+public interface FastSet extends Serializable {
 
     /**
      * @param e

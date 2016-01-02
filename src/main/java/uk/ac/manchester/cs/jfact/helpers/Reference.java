@@ -2,6 +2,8 @@ package uk.ac.manchester.cs.jfact.helpers;
 
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -16,7 +18,6 @@ import java.io.Serializable;
  */
 public class Reference<E> implements Serializable {
 
-    private static final long serialVersionUID = 11000L;
     private E e;
 
     /** Default constructor. */
@@ -26,7 +27,7 @@ public class Reference<E> implements Serializable {
      * @param e
      *        e
      */
-    public Reference(E e) {
+    public Reference(@Nullable E e) {
         setReference(e);
     }
 
@@ -34,7 +35,7 @@ public class Reference<E> implements Serializable {
      * @param e
      *        e
      */
-    public void setReference(E e) {
+    public void setReference(@Nullable E e) {
         this.e = e;
     }
 
@@ -57,7 +58,7 @@ public class Reference<E> implements Serializable {
     }
 
     @Override
-    public boolean equals(Object arg0) {
+    public boolean equals(@Nullable Object arg0) {
         if (arg0 == null) {
             return false;
         }
@@ -65,8 +66,7 @@ public class Reference<E> implements Serializable {
             return true;
         }
         if (arg0 instanceof Reference) {
-            return e != null ? e.equals(((Reference<?>) arg0).getReference())
-                    : false;
+            return e != null ? e.equals(((Reference<?>) arg0).getReference()) : false;
         }
         return false;
     }

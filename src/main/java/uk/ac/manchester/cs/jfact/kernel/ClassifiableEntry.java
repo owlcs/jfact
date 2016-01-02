@@ -1,17 +1,14 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
-/* This file is part of the JFact DL reasoner
- Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
- This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
- This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
- You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static java.util.stream.Collectors.toList;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.IRI;
 
@@ -22,25 +19,22 @@ import conformance.PortedFrom;
 @PortedFrom(file = "taxNamEntry.h", name = "ClassifiableEntry")
 public class ClassifiableEntry extends NamedEntry {
 
-    private static final long serialVersionUID = 11000L;
     /** link to taxonomy entry for current entry */
-    @PortedFrom(file = "taxNamEntry.h", name = "taxVertex")
-    protected TaxonomyVertex taxVertex = null;
+    @PortedFrom(file = "taxNamEntry.h", name = "taxVertex") protected TaxonomyVertex taxVertex = null;
     /**
      * links to 'told subsumers' (entries that are direct super-entries for
      * current)
      */
-    @PortedFrom(file = "taxNamEntry.h", name = "toldSubsumers")
-    protected final Set<ClassifiableEntry> toldSubsumers = new LinkedHashSet<>();
+    @PortedFrom(file = "taxNamEntry.h", name = "toldSubsumers") protected final Set<ClassifiableEntry> toldSubsumers = new LinkedHashSet<>();
     /**
      * pointer to synonym (entry which contains whole information the same as
      * current)
      */
-    @PortedFrom(file = "taxNamEntry.h", name = "pSynonym")
-    protected ClassifiableEntry pSynonym = null;
+    @PortedFrom(file = "taxNamEntry.h", name = "pSynonym") protected ClassifiableEntry pSynonym = null;
     /** index as a vertex in the SubsumptionMap */
-    @PortedFrom(file = "taxNamEntry.h", name = "Index")
-    protected int index = 0;
+    @PortedFrom(file = "taxNamEntry.h", name = "Index") protected int index = 0;
+    @Original private boolean completelyDefined;
+    @Original private boolean nonClassifiable;
 
     protected ClassifiableEntry(IRI name) {
         super(name);
@@ -68,13 +62,11 @@ public class ClassifiableEntry extends NamedEntry {
     /**
      * @return taxonomy vertex of the entry
      */
+    @Nullable
     @PortedFrom(file = "taxNamEntry.h", name = "getTaxVertex")
     public TaxonomyVertex getTaxVertex() {
         return taxVertex;
     }
-
-    @Original
-    private boolean completelyDefined;
 
     // completely defined interface
     /**
@@ -93,9 +85,6 @@ public class ClassifiableEntry extends NamedEntry {
     public void setCompletelyDefined(boolean action) {
         completelyDefined = action;
     }
-
-    @Original
-    private boolean nonClassifiable;
 
     /**
      * @return non classifiable?
@@ -149,7 +138,7 @@ public class ClassifiableEntry extends NamedEntry {
      */
     @PortedFrom(file = "taxNamEntry.h", name = "addParents")
     public void addParents(Collection<ClassifiableEntry> entries) {
-        entries.forEach(c -> addParentIfNew(c));
+        entries.forEach(this::addParentIfNew);
     }
 
     // index interface
@@ -200,7 +189,7 @@ public class ClassifiableEntry extends NamedEntry {
      *        syn
      */
     @PortedFrom(file = "taxNamEntry.h", name = "setSynonym")
-    public void setSynonym(ClassifiableEntry syn) {
+    public void setSynonym(@Nullable ClassifiableEntry syn) {
         // do it only once
         assert pSynonym == null;
         // XXX check this code
@@ -225,8 +214,8 @@ public class ClassifiableEntry extends NamedEntry {
     /** if two synonyms are in 'told' list, merge them */
     @PortedFrom(file = "taxNamEntry.h", name = "removeSynonymsFromParents")
     public void removeSynonymsFromParents() {
-        List<ClassifiableEntry> toKeep = toldSubsumers.stream().map(p -> resolveSynonym(p)).filter(p -> this != p)
-            .collect(toList());
+        List<ClassifiableEntry> toKeep = asList(
+            toldSubsumers.stream().map(ClassifiableEntry::resolveSynonym).filter(p -> this != p));
         toldSubsumers.clear();
         toldSubsumers.addAll(toKeep);
     }
@@ -238,9 +227,10 @@ public class ClassifiableEntry extends NamedEntry {
      *        expression type
      * @return resolved synonym
      */
+    @Nullable
     @SuppressWarnings("unchecked")
     @PortedFrom(file = "taxNamEntry.h", name = "resolveSynonym")
-    public static <T extends ClassifiableEntry> T resolveSynonym(T p) {
+    public static <T extends ClassifiableEntry> T resolveSynonym(@Nullable T p) {
         if (p == null) {
             return null;
         }
