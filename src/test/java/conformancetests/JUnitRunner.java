@@ -16,7 +16,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nullable;
 
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormat;
 import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
@@ -31,11 +30,8 @@ import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 @SuppressWarnings({ "javadoc" })
 public class JUnitRunner {
 
-    private static final int _10000 = 1000000;
-
-    public static void print(String premise) throws OWLException {
-        OWLOntology o = OWLManager.createOWLOntologyManager()
-            .loadOntologyFromOntologyDocument(new StringDocumentSource(premise));
+    public void print(String premise) throws OWLException {
+        OWLOntology o = manager.loadOntologyFromOntologyDocument(new StringDocumentSource(premise));
         o.getOWLOntologyManager().saveOntology(o, new FunctionalSyntaxDocumentFormat(), new SystemOutDocumentTarget());
     }
 
@@ -46,8 +42,11 @@ public class JUnitRunner {
     private final String consequence;
     private final String description;
     private OWLReasonerConfiguration config;
+    private final OWLOntologyManager manager;
 
-    public JUnitRunner(String premise, String consequence, String testId, TestClasses t, String description) {
+    public JUnitRunner(OWLOntologyManager m, String premise, String consequence, String testId, TestClasses t,
+        String description) {
+        manager = m;
         this.testId = testId;
         this.premise = premise(premise);
         this.consequence = consequence;
@@ -55,7 +54,9 @@ public class JUnitRunner {
         this.t = t;
     }
 
-    public JUnitRunner(OWLOntology premise, String consequence, String testId, TestClasses t, String description) {
+    public JUnitRunner(OWLOntologyManager m, OWLOntology premise, String consequence, String testId, TestClasses t,
+        String description) {
+        manager = m;
         this.testId = testId;
         this.premise = premise;
         this.consequence = consequence;
@@ -63,7 +64,9 @@ public class JUnitRunner {
         this.t = t;
     }
 
-    public JUnitRunner(InputStream premise, String consequence, String testId, TestClasses t, String description) {
+    public JUnitRunner(OWLOntologyManager m, InputStream premise, String consequence, String testId, TestClasses t,
+        String description) {
+        manager = m;
         this.testId = testId;
         this.premise = premise(premise);
         this.consequence = consequence;
@@ -89,7 +92,7 @@ public class JUnitRunner {
 
     public OWLOntology premise(InputStream in) {
         try {
-            return OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(in);
+            return manager.loadOntologyFromOntologyDocument(in);
         } catch (OWLOntologyCreationException e) {
             throw new RuntimeException(e);
         }
@@ -98,7 +101,7 @@ public class JUnitRunner {
     public OWLOntology premise(String p) {
         try {
             StringDocumentSource documentSource = new StringDocumentSource(p);
-            return OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(documentSource);
+            return manager.loadOntologyFromOntologyDocument(documentSource);
         } catch (OWLOntologyCreationException e) {
             throw new RuntimeException(e);
         }
@@ -107,8 +110,7 @@ public class JUnitRunner {
     @Nullable
     public OWLOntology getConsequence() throws OWLOntologyCreationException {
         if (consequence != null) {
-            StringDocumentSource documentSource = new StringDocumentSource(consequence);
-            return OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(documentSource);
+            return manager.loadOntologyFromOntologyDocument(new StringDocumentSource(consequence));
         }
         return null;
     }

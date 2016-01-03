@@ -6,11 +6,14 @@ import javax.annotation.Nonnull;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormat;
 import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 import testbase.TestBase;
@@ -19,9 +22,8 @@ import testbase.TestBase;
 public class DebugVerifyComplianceUniversityTestCase extends TestBase {
 
     private OWLReasoner reasoner;
-    private OWLDataFactory df = OWLManager.getOWLDataFactory();
 
-    private static OWLOntology load() throws OWLOntologyCreationException {
+    private OWLOntology load() throws OWLOntologyCreationException {
         String input = "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
             + "Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\n"
             + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
@@ -34,14 +36,14 @@ public class DebugVerifyComplianceUniversityTestCase extends TestBase {
             + "EquivalentClasses(<urn:uni#Professor> DataHasValue(<urn:uni#hasTenure> \"true\"^^xsd:boolean))\n"
             + "DataPropertyDomain(<urn:uni#hasTenure> <urn:uni#TeachingFaculty>)\n"
             + "DataPropertyRange(<urn:uni#hasTenure> xsd:boolean)\n" + ')';
-        return OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(new StringDocumentSource(input));
+        return m.loadOntologyFromOntologyDocument(new StringDocumentSource(input));
     }
 
     private static void equal(boolean o, boolean object) {
         assertTrue(o == object);
     }
 
-    private OWLClass C(String i) {
+    private static OWLClass C(String i) {
         return df.getOWLClass(IRI.create(i));
     }
 

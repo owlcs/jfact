@@ -8,7 +8,6 @@ package conformancetests;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
@@ -22,139 +21,103 @@ public class DateTimeTestCase extends TestBase {
 
     @Test
     public void testEqual() throws OWLOntologyCreationException {
-        OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLOntology o = m.createOntology();
-        OWLDataFactory f = m.getOWLDataFactory();
-        OWLNamedIndividual x = f
-            .getOWLNamedIndividual(IRI.create("urn:test:x"));
-        OWLNamedIndividual y = f
-            .getOWLNamedIndividual(IRI.create("urn:test:y"));
-        OWLDataProperty p = f.getOWLDataProperty(IRI.create("urn:test:p"));
-        OWLLiteral date = f.getOWLLiteral("2008-07-08T20:44:11.656+01:00",
-            OWL2Datatype.XSD_DATE_TIME);
-        m.addAxiom(o, f.getOWLDataPropertyAssertionAxiom(p, x, date));
-        m.addAxiom(o, f.getOWLDataPropertyAssertionAxiom(p, y, date));
-        m.addAxiom(o, f.getOWLFunctionalDataPropertyAxiom(p));
-        m.addAxiom(o, f.getOWLSameIndividualAxiom(x, y));
+        OWLNamedIndividual x = df.getOWLNamedIndividual(IRI.create("urn:test:x"));
+        OWLNamedIndividual y = df.getOWLNamedIndividual(IRI.create("urn:test:y"));
+        OWLDataProperty p = df.getOWLDataProperty(IRI.create("urn:test:p"));
+        OWLLiteral date = df.getOWLLiteral("2008-07-08T20:44:11.656+01:00", OWL2Datatype.XSD_DATE_TIME);
+        m.addAxiom(o, df.getOWLDataPropertyAssertionAxiom(p, x, date));
+        m.addAxiom(o, df.getOWLDataPropertyAssertionAxiom(p, y, date));
+        m.addAxiom(o, df.getOWLFunctionalDataPropertyAxiom(p));
+        m.addAxiom(o, df.getOWLSameIndividualAxiom(x, y));
         OWLReasoner r = factory().createReasoner(o);
         assertTrue(r.isConsistent());
     }
 
     @Test
     public void testDifferent() throws OWLOntologyCreationException {
-        OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLOntology o = m.createOntology();
-        OWLDataFactory f = m.getOWLDataFactory();
-        OWLNamedIndividual x = f
-            .getOWLNamedIndividual(IRI.create("urn:test:x"));
-        OWLNamedIndividual y = f
-            .getOWLNamedIndividual(IRI.create("urn:test:y"));
-        OWLDataProperty p = f.getOWLDataProperty(IRI.create("urn:test:p"));
-        OWLLiteral date1 = f.getOWLLiteral("2008-07-08T20:44:11.656+01:00",
-            OWL2Datatype.XSD_DATE_TIME);
-        OWLLiteral date2 = f.getOWLLiteral("2008-07-10T20:44:11.656+01:00",
-            OWL2Datatype.XSD_DATE_TIME);
-        m.addAxiom(o, f.getOWLDataPropertyAssertionAxiom(p, x, date1));
-        m.addAxiom(o, f.getOWLDataPropertyAssertionAxiom(p, y, date2));
-        m.addAxiom(o, f.getOWLFunctionalDataPropertyAxiom(p));
-        m.addAxiom(o, f.getOWLSameIndividualAxiom(x, y));
+        OWLNamedIndividual x = df.getOWLNamedIndividual(IRI.create("urn:test:x"));
+        OWLNamedIndividual y = df.getOWLNamedIndividual(IRI.create("urn:test:y"));
+        OWLDataProperty p = df.getOWLDataProperty(IRI.create("urn:test:p"));
+        OWLLiteral date1 = df.getOWLLiteral("2008-07-08T20:44:11.656+01:00", OWL2Datatype.XSD_DATE_TIME);
+        OWLLiteral date2 = df.getOWLLiteral("2008-07-10T20:44:11.656+01:00", OWL2Datatype.XSD_DATE_TIME);
+        m.addAxiom(o, df.getOWLDataPropertyAssertionAxiom(p, x, date1));
+        m.addAxiom(o, df.getOWLDataPropertyAssertionAxiom(p, y, date2));
+        m.addAxiom(o, df.getOWLFunctionalDataPropertyAxiom(p));
+        m.addAxiom(o, df.getOWLSameIndividualAxiom(x, y));
         OWLReasoner r = factory().createReasoner(o);
         assertFalse(r.isConsistent());
     }
 
     @Test
     public void testBetween() throws OWLOntologyCreationException {
-        OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLOntology o = m.createOntology();
-        OWLDataFactory f = m.getOWLDataFactory();
-        OWLNamedIndividual x = f
-            .getOWLNamedIndividual(IRI.create("urn:test:x"));
-        OWLClass c = f.getOWLClass(IRI.create("urn:test:c"));
-        OWLDataProperty p = f.getOWLDataProperty(IRI.create("urn:test:p"));
-        OWLLiteral date1 = f.getOWLLiteral("2008-07-08T20:44:11.656+01:00",
-            OWL2Datatype.XSD_DATE_TIME);
-        OWLLiteral date3 = f.getOWLLiteral("2008-07-09T20:44:11.656+01:00",
-            OWL2Datatype.XSD_DATE_TIME);
-        OWLLiteral date2 = f.getOWLLiteral("2008-07-10T20:44:11.656+01:00",
-            OWL2Datatype.XSD_DATE_TIME);
-        OWLDataRange range = f.getOWLDatatypeRestriction(
-            f.getOWLDatatype(OWL2Datatype.XSD_DATE_TIME.getIRI()),
-            f.getOWLFacetRestriction(OWLFacet.MIN_INCLUSIVE, date1),
-            f.getOWLFacetRestriction(OWLFacet.MAX_INCLUSIVE, date2));
-        OWLClassExpression psome = f.getOWLDataSomeValuesFrom(p, range);
-        m.addAxiom(o, f.getOWLEquivalentClassesAxiom(c, psome));
-        m.addAxiom(o, f.getOWLDataPropertyAssertionAxiom(p, x, date3));
-        m.addAxiom(o, f.getOWLFunctionalDataPropertyAxiom(p));
+        OWLNamedIndividual x = df.getOWLNamedIndividual(IRI.create("urn:test:x"));
+        OWLClass c = df.getOWLClass(IRI.create("urn:test:c"));
+        OWLDataProperty p = df.getOWLDataProperty(IRI.create("urn:test:p"));
+        OWLLiteral date1 = df.getOWLLiteral("2008-07-08T20:44:11.656+01:00", OWL2Datatype.XSD_DATE_TIME);
+        OWLLiteral date3 = df.getOWLLiteral("2008-07-09T20:44:11.656+01:00", OWL2Datatype.XSD_DATE_TIME);
+        OWLLiteral date2 = df.getOWLLiteral("2008-07-10T20:44:11.656+01:00", OWL2Datatype.XSD_DATE_TIME);
+        OWLDataRange range = df.getOWLDatatypeRestriction(df.getOWLDatatype(OWL2Datatype.XSD_DATE_TIME.getIRI()),
+            df.getOWLFacetRestriction(OWLFacet.MIN_INCLUSIVE, date1),
+            df.getOWLFacetRestriction(OWLFacet.MAX_INCLUSIVE, date2));
+        OWLClassExpression psome = df.getOWLDataSomeValuesFrom(p, range);
+        m.addAxiom(o, df.getOWLEquivalentClassesAxiom(c, psome));
+        m.addAxiom(o, df.getOWLDataPropertyAssertionAxiom(p, x, date3));
+        m.addAxiom(o, df.getOWLFunctionalDataPropertyAxiom(p));
         OWLReasoner r = factory().createReasoner(o);
-        assertTrue(r.isEntailed(f.getOWLClassAssertionAxiom(c, x)));
+        assertTrue(r.isEntailed(df.getOWLClassAssertionAxiom(c, x)));
     }
 
     @Test
     public void testEqualDate() throws OWLOntologyCreationException {
-        OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLOntology o = m.createOntology();
-        OWLDataFactory f = m.getOWLDataFactory();
-        OWLNamedIndividual x = f
-            .getOWLNamedIndividual(IRI.create("urn:test:x"));
-        OWLNamedIndividual y = f
-            .getOWLNamedIndividual(IRI.create("urn:test:y"));
-        OWLDataProperty p = f.getOWLDataProperty(IRI.create("urn:test:p"));
-        OWLLiteral date = f.getOWLLiteral("2008-07-08",
-            f.getOWLDatatype(XSDVocabulary.DATE.getIRI()));
-        m.addAxiom(o, f.getOWLDataPropertyAssertionAxiom(p, x, date));
-        m.addAxiom(o, f.getOWLDataPropertyAssertionAxiom(p, y, date));
-        m.addAxiom(o, f.getOWLFunctionalDataPropertyAxiom(p));
-        m.addAxiom(o, f.getOWLSameIndividualAxiom(x, y));
+        OWLNamedIndividual x = df.getOWLNamedIndividual(IRI.create("urn:test:x"));
+        OWLNamedIndividual y = df.getOWLNamedIndividual(IRI.create("urn:test:y"));
+        OWLDataProperty p = df.getOWLDataProperty(IRI.create("urn:test:p"));
+        OWLLiteral date = df.getOWLLiteral("2008-07-08", df.getOWLDatatype(XSDVocabulary.DATE.getIRI()));
+        m.addAxiom(o, df.getOWLDataPropertyAssertionAxiom(p, x, date));
+        m.addAxiom(o, df.getOWLDataPropertyAssertionAxiom(p, y, date));
+        m.addAxiom(o, df.getOWLFunctionalDataPropertyAxiom(p));
+        m.addAxiom(o, df.getOWLSameIndividualAxiom(x, y));
         OWLReasoner r = factory().createReasoner(o);
         assertTrue(r.isConsistent());
     }
 
     @Test
     public void testDifferentDate() throws OWLOntologyCreationException {
-        OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLOntology o = m.createOntology();
-        OWLDataFactory f = m.getOWLDataFactory();
-        OWLNamedIndividual x = f
-            .getOWLNamedIndividual(IRI.create("urn:test:x"));
-        OWLNamedIndividual y = f
-            .getOWLNamedIndividual(IRI.create("urn:test:y"));
-        OWLDataProperty p = f.getOWLDataProperty(IRI.create("urn:test:p"));
-        OWLLiteral date1 = f.getOWLLiteral("2008-07-08",
-            f.getOWLDatatype(XSDVocabulary.DATE.getIRI()));
-        OWLLiteral date2 = f.getOWLLiteral("2008-07-10",
-            f.getOWLDatatype(XSDVocabulary.DATE.getIRI()));
-        m.addAxiom(o, f.getOWLDataPropertyAssertionAxiom(p, x, date1));
-        m.addAxiom(o, f.getOWLDataPropertyAssertionAxiom(p, y, date2));
-        m.addAxiom(o, f.getOWLFunctionalDataPropertyAxiom(p));
-        m.addAxiom(o, f.getOWLSameIndividualAxiom(x, y));
+        OWLNamedIndividual x = df.getOWLNamedIndividual(IRI.create("urn:test:x"));
+        OWLNamedIndividual y = df.getOWLNamedIndividual(IRI.create("urn:test:y"));
+        OWLDataProperty p = df.getOWLDataProperty(IRI.create("urn:test:p"));
+        OWLLiteral date1 = df.getOWLLiteral("2008-07-08", df.getOWLDatatype(XSDVocabulary.DATE.getIRI()));
+        OWLLiteral date2 = df.getOWLLiteral("2008-07-10", df.getOWLDatatype(XSDVocabulary.DATE.getIRI()));
+        m.addAxiom(o, df.getOWLDataPropertyAssertionAxiom(p, x, date1));
+        m.addAxiom(o, df.getOWLDataPropertyAssertionAxiom(p, y, date2));
+        m.addAxiom(o, df.getOWLFunctionalDataPropertyAxiom(p));
+        m.addAxiom(o, df.getOWLSameIndividualAxiom(x, y));
         OWLReasoner r = factory().createReasoner(o);
         assertFalse(r.isConsistent());
     }
 
     @Test
     public void testBetweenDate() throws OWLOntologyCreationException {
-        OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLOntology o = m.createOntology();
-        OWLDataFactory f = m.getOWLDataFactory();
-        OWLNamedIndividual x = f
-            .getOWLNamedIndividual(IRI.create("urn:test:x"));
-        OWLClass c = f.getOWLClass(IRI.create("urn:test:c"));
-        OWLDataProperty p = f.getOWLDataProperty(IRI.create("urn:test:p"));
-        OWLLiteral date1 = f.getOWLLiteral("2008-07-08",
-            f.getOWLDatatype(XSDVocabulary.DATE.getIRI()));
-        OWLLiteral date3 = f.getOWLLiteral("2008-07-09",
-            f.getOWLDatatype(XSDVocabulary.DATE.getIRI()));
-        OWLLiteral date2 = f.getOWLLiteral("2008-07-10",
-            f.getOWLDatatype(XSDVocabulary.DATE.getIRI()));
-        OWLDataRange range = f.getOWLDatatypeRestriction(
-            f.getOWLDatatype(OWL2Datatype.XSD_DATE_TIME.getIRI()),
-            f.getOWLFacetRestriction(OWLFacet.MIN_INCLUSIVE, date1),
-            f.getOWLFacetRestriction(OWLFacet.MAX_INCLUSIVE, date2));
-        OWLClassExpression psome = f.getOWLDataSomeValuesFrom(p, range);
-        m.addAxiom(o, f.getOWLEquivalentClassesAxiom(c, psome));
-        m.addAxiom(o, f.getOWLDataPropertyAssertionAxiom(p, x, date3));
-        m.addAxiom(o, f.getOWLFunctionalDataPropertyAxiom(p));
+        OWLNamedIndividual x = df.getOWLNamedIndividual(IRI.create("urn:test:x"));
+        OWLClass c = df.getOWLClass(IRI.create("urn:test:c"));
+        OWLDataProperty p = df.getOWLDataProperty(IRI.create("urn:test:p"));
+        OWLLiteral date1 = df.getOWLLiteral("2008-07-08", df.getOWLDatatype(XSDVocabulary.DATE.getIRI()));
+        OWLLiteral date3 = df.getOWLLiteral("2008-07-09", df.getOWLDatatype(XSDVocabulary.DATE.getIRI()));
+        OWLLiteral date2 = df.getOWLLiteral("2008-07-10", df.getOWLDatatype(XSDVocabulary.DATE.getIRI()));
+        OWLDataRange range = df.getOWLDatatypeRestriction(df.getOWLDatatype(OWL2Datatype.XSD_DATE_TIME.getIRI()),
+            df.getOWLFacetRestriction(OWLFacet.MIN_INCLUSIVE, date1),
+            df.getOWLFacetRestriction(OWLFacet.MAX_INCLUSIVE, date2));
+        OWLClassExpression psome = df.getOWLDataSomeValuesFrom(p, range);
+        m.addAxiom(o, df.getOWLEquivalentClassesAxiom(c, psome));
+        m.addAxiom(o, df.getOWLDataPropertyAssertionAxiom(p, x, date3));
+        m.addAxiom(o, df.getOWLFunctionalDataPropertyAxiom(p));
         OWLReasoner r = factory().createReasoner(o);
-        assertTrue(r.isEntailed(f.getOWLClassAssertionAxiom(c, x)));
+        assertTrue(r.isEntailed(df.getOWLClassAssertionAxiom(c, x)));
     }
 }

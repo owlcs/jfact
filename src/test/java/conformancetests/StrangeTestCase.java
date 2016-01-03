@@ -3,8 +3,10 @@ package conformancetests;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
@@ -16,14 +18,12 @@ public class StrangeTestCase extends TestBase {
 
     @Test
     public void shouldFindThreeSubclasses() throws OWLOntologyCreationException {
-        OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLOntology o = m.createOntology();
-        OWLDataFactory d = m.getOWLDataFactory();
-        o.add(d.getOWLSubClassOfAxiom(d.getOWLClass(IRI.create("urn:b")), d.getOWLClass(IRI.create("urn:c"))));
-        o.add(d.getOWLSubClassOfAxiom(d.getOWLClass(IRI.create("urn:a")), d.getOWLClass(IRI.create("urn:b"))));
+        o.add(df.getOWLSubClassOfAxiom(df.getOWLClass(IRI.create("urn:b")), df.getOWLClass(IRI.create("urn:c"))));
+        o.add(df.getOWLSubClassOfAxiom(df.getOWLClass(IRI.create("urn:a")), df.getOWLClass(IRI.create("urn:b"))));
         OWLReasoner r = factory().createReasoner(o);
         r.precomputeInferences(InferenceType.CLASS_HIERARCHY);
-        NodeSet<OWLClass> subClasses = r.getSubClasses(d.getOWLClass(IRI.create("urn:c")), false);
+        NodeSet<OWLClass> subClasses = r.getSubClasses(df.getOWLClass(IRI.create("urn:c")), false);
         assertEquals(3, subClasses.entities().count());
     }
 }

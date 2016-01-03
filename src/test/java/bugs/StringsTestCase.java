@@ -3,8 +3,11 @@ package bugs;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
@@ -16,8 +19,7 @@ public class StringsTestCase extends TestBase {
 
     @Test
     public void shouldFindAllLiteralsEquivalent() throws OWLOntologyCreationException {
-        OWLOntology o = OWLManager.createOWLOntologyManager().createOntology();
-        OWLDataFactory df = OWLManager.getOWLDataFactory();
+        OWLOntology o = m.createOntology();
         OWLDataProperty p = df.getOWLDataProperty(IRI.create("urn:test:p"));
         o.add(df.getOWLFunctionalDataPropertyAxiom(p));
         OWLNamedIndividual i = df.getOWLNamedIndividual(IRI.create("urn:test:i"));

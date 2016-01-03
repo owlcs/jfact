@@ -20,7 +20,6 @@ import org.junit.Rule;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import org.junit.Test;
 import org.junit.rules.Timeout;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
@@ -34,13 +33,12 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 @Ignore
 public class WebOnt_miscellaneous_wineTestCase extends TestBase {
 
-    @Rule
-    public Timeout timeout = new Timeout(10_000);
+    @Rule public Timeout timeout = new Timeout(10_000);
     OWLOntology o = load();
 
     protected OWLOntology load() {
         try {
-            return OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(readWine());
+            return m.loadOntologyFromOntologyDocument(readWine());
         } catch (OWLOntologyCreationException e) {
             throw new OWLRuntimeException(e);
         }
@@ -56,7 +54,7 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
         String id = "WebOnt_miscellaneous_001";
         TestClasses tc = TestClasses.valueOf("CONSISTENCY");
         String d = "Wine example taken from the guide. Note that this is the same as the ontology http://www.w3.org/2002/03owlt/miscellaneous/consistent002 imported in other tests.";
-        JUnitRunner r = new JUnitRunner(o, conclusion, id, tc, d);
+        JUnitRunner r = new JUnitRunner(m, o, conclusion, id, tc, d);
         r.setConfig(config());
         r.setReasonerFactory(factory());
         r.run();
@@ -76,8 +74,8 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
         OWLReasoner r = new JFactReasoner(o, java7order(), config(), BufferingMode.BUFFERING);
         assertTrue(r.isConsistent());
         // assertTrue(r.isEntailed(df.getOWLSubClassOfAxiom(Chianti, Wine)));
-        System.out.println("WebOnt_miscellaneous_wineTestCase.shouldBeFastWithOldOrder() " + (System.currentTimeMillis()
-            - start));
+        System.out.println(
+            "WebOnt_miscellaneous_wineTestCase.shouldBeFastWithOldOrder() " + (System.currentTimeMillis() - start));
     }
 
     @Test
@@ -86,8 +84,8 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
         long start = System.currentTimeMillis();
         OWLReasoner r = new JFactReasoner(o, axioms(true), config(), BufferingMode.BUFFERING);
         assertTrue(r.isConsistent());
-        System.out.println("WebOnt_miscellaneous_wineTestCase.shouldBeFastWithanyOrder() " + (System.currentTimeMillis()
-            - start));
+        System.out.println(
+            "WebOnt_miscellaneous_wineTestCase.shouldBeFastWithanyOrder() " + (System.currentTimeMillis() - start));
     }
 
     @Test
@@ -96,8 +94,8 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
         long start = System.currentTimeMillis();
         OWLReasoner r = new JFactReasoner(o, axioms(false), config(), BufferingMode.BUFFERING);
         assertTrue(r.isConsistent());
-        System.out.println("WebOnt_miscellaneous_wineTestCase.shouldBeFastWithOriginalOrder() " + (System
-            .currentTimeMillis() - start));
+        System.out.println("WebOnt_miscellaneous_wineTestCase.shouldBeFastWithOriginalOrder() "
+            + (System.currentTimeMillis() - start));
     }
 
     private List<OWLAxiom> axioms(boolean java8) {
@@ -148,7 +146,7 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
     }
 
     public void shouldBeSame() throws Exception {
-        OWLOntology ont = OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(readWine());
+        OWLOntology ont = m.loadOntologyFromOntologyDocument(readWine());
         List<OWLAxiom> importsIncluded = JFactReasoner.importsIncluded(ont);
         PrintStream out1 = new PrintStream(new File("wineaxioms7.txt"));
         PrintStream out2 = new PrintStream(new File("wineaxioms8.txt"));
@@ -260,17 +258,16 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
         axioms.add(SubObjectPropertyOf(hasFlavor, hasWineDescriptor));
         axioms.add(SubObjectPropertyOf(hasSugar, hasWineDescriptor));
         axioms.add(SubObjectPropertyOf(madeFromGrape, madeFromFruit));
-        axioms.add(DataPropertyAssertion(yearValue, Year1998, Literal("1998", df.getOWLDatatype(
-            XSDVocabulary.POSITIVE_INTEGER))));
+        axioms.add(DataPropertyAssertion(yearValue, Year1998,
+            Literal("1998", df.getOWLDatatype(XSDVocabulary.POSITIVE_INTEGER))));
         axioms.add(AnnotationAssertion(df.getRDFSLabel(), Wine.getIRI(), Literal("vin", "fr")));
         axioms.add(AnnotationAssertion(df.getRDFSLabel(), Wine.getIRI(), Literal("wine", "en")));
-        axioms.add(AnnotationAssertion(df.getRDFSComment(), WineDescriptor.getIRI(), Literal(
-            "Made WineDescriptor unionType of tastes and color")));
+        axioms.add(AnnotationAssertion(df.getRDFSComment(), WineDescriptor.getIRI(),
+            Literal("Made WineDescriptor unionType of tastes and color")));
         classAssertions(axioms);
         objectPropertyAssertions(axioms);
     }
 
-    OWLDataFactory df = OWLManager.getOWLDataFactory();
     String ns = "urn:wine:";
     OWLDataProperty yearValue = DataProperty(IRI.create(ns + "yearValue"));
     OWLObjectProperty hasMaker = ObjectProperty(IRI.create(ns + "hasMaker"));
@@ -414,8 +411,8 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
     OWLClass Fish = Class(IRI.create(ns + "Fish"));
     OWLNamedIndividual Light = NamedIndividual(IRI.create(ns + "Light"));
     OWLNamedIndividual White = NamedIndividual(IRI.create(ns + "White"));
-    OWLNamedIndividual PageMillWineryCabernetSauvignon = NamedIndividual(IRI.create(ns
-        + "PageMillWineryCabernetSauvignon"));
+    OWLNamedIndividual PageMillWineryCabernetSauvignon = NamedIndividual(
+        IRI.create(ns + "PageMillWineryCabernetSauvignon"));
     OWLNamedIndividual PetiteVerdotGrape = NamedIndividual(IRI.create(ns + "PetiteVerdotGrape"));
     OWLNamedIndividual Selaks = NamedIndividual(IRI.create(ns + "Selaks"));
     OWLNamedIndividual SantaBarbaraRegion = NamedIndividual(IRI.create(ns + "SantaBarbaraRegion"));
@@ -429,8 +426,8 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
     OWLNamedIndividual ChiantiClassico = NamedIndividual(IRI.create(ns + "ChiantiClassico"));
     OWLNamedIndividual ArroyoGrandeRegion = NamedIndividual(IRI.create(ns + "ArroyoGrandeRegion"));
     OWLNamedIndividual NapaRegion = NamedIndividual(IRI.create(ns + "NapaRegion"));
-    OWLNamedIndividual SantaCruzMountainVineyardCabernetSauvignon = NamedIndividual(IRI.create(ns
-        + "SantaCruzMountainVineyardCabernetSauvignon"));
+    OWLNamedIndividual SantaCruzMountainVineyardCabernetSauvignon = NamedIndividual(
+        IRI.create(ns + "SantaCruzMountainVineyardCabernetSauvignon"));
     OWLNamedIndividual MountadamRiesling = NamedIndividual(IRI.create(ns + "MountadamRiesling"));
     OWLNamedIndividual ClosDeVougeotCotesDOr = NamedIndividual(IRI.create(ns + "ClosDeVougeotCotesDOr"));
     OWLNamedIndividual CentralTexasRegion = NamedIndividual(IRI.create(ns + "CentralTexasRegion"));
@@ -457,8 +454,8 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
     OWLNamedIndividual WhitehallLane = NamedIndividual(IRI.create(ns + "WhitehallLane"));
     OWLNamedIndividual MalbecGrape = NamedIndividual(IRI.create(ns + "MalbecGrape"));
     OWLNamedIndividual Turkey = NamedIndividual(IRI.create(ns + "Turkey"));
-    OWLNamedIndividual MountEdenVineyardEdnaValleyChardonnay = NamedIndividual(IRI.create(ns
-        + "MountEdenVineyardEdnaValleyChardonnay"));
+    OWLNamedIndividual MountEdenVineyardEdnaValleyChardonnay = NamedIndividual(
+        IRI.create(ns + "MountEdenVineyardEdnaValleyChardonnay"));
     OWLNamedIndividual CortonMontrachet = NamedIndividual(IRI.create(ns + "CortonMontrachet"));
     OWLNamedIndividual MariettaZinfandel = NamedIndividual(IRI.create(ns + "MariettaZinfandel"));
     OWLNamedIndividual MountadamChardonnay = NamedIndividual(IRI.create(ns + "MountadamChardonnay"));
@@ -469,8 +466,8 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
     OWLClass NonSpicyRedMeat = Class(IRI.create(ns + "NonSpicyRedMeat"));
     OWLClass OysterShellfish = Class(IRI.create(ns + "OysterShellfish"));
     OWLNamedIndividual CentralCoastRegion = NamedIndividual(IRI.create(ns + "CentralCoastRegion"));
-    OWLNamedIndividual ChateauLafiteRothschildPauillac = NamedIndividual(IRI.create(ns
-        + "ChateauLafiteRothschildPauillac"));
+    OWLNamedIndividual ChateauLafiteRothschildPauillac = NamedIndividual(
+        IRI.create(ns + "ChateauLafiteRothschildPauillac"));
     OWLClass PastaWithRedSauce = Class(IRI.create(ns + "PastaWithRedSauce"));
     OWLNamedIndividual Bananas = NamedIndividual(IRI.create(ns + "Bananas"));
     OWLClass DarkMeatFowl = Class(IRI.create(ns + "DarkMeatFowl"));
@@ -484,8 +481,8 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
     OWLNamedIndividual Dry = NamedIndividual(IRI.create(ns + "Dry"));
     OWLNamedIndividual CabernetFrancGrape = NamedIndividual(IRI.create(ns + "CabernetFrancGrape"));
     OWLNamedIndividual FettucineAlfRedo = NamedIndividual(IRI.create(ns + "FettucineAlfRedo"));
-    OWLNamedIndividual CortonMontrachetWhiteBurgundy = NamedIndividual(IRI.create(ns
-        + "CortonMontrachetWhiteBurgundy"));
+    OWLNamedIndividual CortonMontrachetWhiteBurgundy = NamedIndividual(
+        IRI.create(ns + "CortonMontrachetWhiteBurgundy"));
     OWLNamedIndividual LaneTanner = NamedIndividual(IRI.create(ns + "LaneTanner"));
     OWLNamedIndividual CongressSprings = NamedIndividual(IRI.create(ns + "CongressSprings"));
     OWLNamedIndividual WhitehallLaneCabernetFranc = NamedIndividual(IRI.create(ns + "WhitehallLaneCabernetFranc"));
@@ -498,8 +495,8 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
     OWLNamedIndividual ChateauMorgon = NamedIndividual(IRI.create(ns + "ChateauMorgon"));
     OWLNamedIndividual PastaWithWhiteClamSauce = NamedIndividual(IRI.create(ns + "PastaWithWhiteClamSauce"));
     OWLNamedIndividual MountEdenVineyard = NamedIndividual(IRI.create(ns + "MountEdenVineyard"));
-    OWLNamedIndividual SchlossRothermelTrochenbierenausleseRiesling = NamedIndividual(IRI.create(ns
-        + "SchlossRothermelTrochenbierenausleseRiesling"));
+    OWLNamedIndividual SchlossRothermelTrochenbierenausleseRiesling = NamedIndividual(
+        IRI.create(ns + "SchlossRothermelTrochenbierenausleseRiesling"));
     OWLClass Port = Class(IRI.create(ns + "Port"));
     OWLNamedIndividual ChateauLafiteRothschild = NamedIndividual(IRI.create(ns + "ChateauLafiteRothschild"));
     OWLClass Vintage = Class(IRI.create(ns + "Vintage"));
@@ -508,8 +505,8 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
     OWLNamedIndividual Year1998 = NamedIndividual(IRI.create(ns + "Year1998"));
     OWLNamedIndividual MeursaultRegion = NamedIndividual(IRI.create(ns + "MeursaultRegion"));
     OWLNamedIndividual ChateauMargaux = NamedIndividual(IRI.create(ns + "ChateauMargaux"));
-    OWLNamedIndividual SchlossVolradTrochenbierenausleseRiesling = NamedIndividual(IRI.create(ns
-        + "SchlossVolradTrochenbierenausleseRiesling"));
+    OWLNamedIndividual SchlossVolradTrochenbierenausleseRiesling = NamedIndividual(
+        IRI.create(ns + "SchlossVolradTrochenbierenausleseRiesling"));
     OWLNamedIndividual SpaghettiWithTomatoSauce = NamedIndividual(IRI.create(ns + "SpaghettiWithTomatoSauce"));
     OWLNamedIndividual PortugalRegion = NamedIndividual(IRI.create(ns + "PortugalRegion"));
     OWLObjectProperty producesWine = ObjectProperty(IRI.create(ns + "producesWine"));
@@ -518,8 +515,8 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
     OWLNamedIndividual ElyseZinfandel = NamedIndividual(IRI.create(ns + "ElyseZinfandel"));
     OWLNamedIndividual BourgogneRegion = NamedIndividual(IRI.create(ns + "BourgogneRegion"));
     OWLNamedIndividual MerlotGrape = NamedIndividual(IRI.create(ns + "MerlotGrape"));
-    OWLNamedIndividual MountEdenVineyardEstatePinotNoir = NamedIndividual(IRI.create(ns
-        + "MountEdenVineyardEstatePinotNoir"));
+    OWLNamedIndividual MountEdenVineyardEstatePinotNoir = NamedIndividual(
+        IRI.create(ns + "MountEdenVineyardEstatePinotNoir"));
     OWLNamedIndividual KalinCellarsSemillon = NamedIndividual(IRI.create(ns + "KalinCellarsSemillon"));
     OWLNamedIndividual KalinCellars = NamedIndividual(IRI.create(ns + "KalinCellars"));
     OWLNamedIndividual LoireRegion = NamedIndividual(IRI.create(ns + "LoireRegion"));
@@ -566,8 +563,8 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
     OWLNamedIndividual MariettaOldVinesRed = NamedIndividual(IRI.create(ns + "MariettaOldVinesRed"));
     OWLNamedIndividual Cake = NamedIndividual(IRI.create(ns + "Cake"));
     OWLNamedIndividual Forman = NamedIndividual(IRI.create(ns + "Forman"));
-    OWLNamedIndividual CorbansPrivateBinSauvignonBlanc = NamedIndividual(IRI.create(ns
-        + "CorbansPrivateBinSauvignonBlanc"));
+    OWLNamedIndividual CorbansPrivateBinSauvignonBlanc = NamedIndividual(
+        IRI.create(ns + "CorbansPrivateBinSauvignonBlanc"));
     OWLNamedIndividual SelaksSauvignonBlanc = NamedIndividual(IRI.create(ns + "SelaksSauvignonBlanc"));
     OWLClass EatingGrape = Class(IRI.create(ns + "EatingGrape"));
     OWLNamedIndividual ClosDeVougeot = NamedIndividual(IRI.create(ns + "ClosDeVougeot"));
@@ -593,8 +590,8 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
     OWLClass EarlyHarvest = Class(IRI.create(ns + "EarlyHarvest"));
     OWLNamedIndividual MedocRegion = NamedIndividual(IRI.create(ns + "MedocRegion"));
     OWLNamedIndividual Peaches = NamedIndividual(IRI.create(ns + "Peaches"));
-    OWLNamedIndividual SeanThackreySiriusPetiteSyrah = NamedIndividual(IRI.create(ns
-        + "SeanThackreySiriusPetiteSyrah"));
+    OWLNamedIndividual SeanThackreySiriusPetiteSyrah = NamedIndividual(
+        IRI.create(ns + "SeanThackreySiriusPetiteSyrah"));
     OWLNamedIndividual GaryFarrellMerlot = NamedIndividual(IRI.create(ns + "GaryFarrellMerlot"));
     OWLNamedIndividual SelaksIceWine = NamedIndividual(IRI.create(ns + "SelaksIceWine"));
     OWLNamedIndividual ItalianRegion = NamedIndividual(IRI.create(ns + "ItalianRegion"));
@@ -617,8 +614,8 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
     OWLNamedIndividual Pork = NamedIndividual(IRI.create(ns + "Pork"));
     OWLNamedIndividual SevreEtMaineMuscadet = NamedIndividual(IRI.create(ns + "SevreEtMaineMuscadet"));
     OWLNamedIndividual RoseDAnjou = NamedIndividual(IRI.create(ns + "RoseDAnjou"));
-    OWLNamedIndividual PulignyMontrachetWhiteBurgundy = NamedIndividual(IRI.create(ns
-        + "PulignyMontrachetWhiteBurgundy"));
+    OWLNamedIndividual PulignyMontrachetWhiteBurgundy = NamedIndividual(
+        IRI.create(ns + "PulignyMontrachetWhiteBurgundy"));
     OWLNamedIndividual AlsaceRegion = NamedIndividual(IRI.create(ns + "AlsaceRegion"));
     OWLNamedIndividual SauterneRegion = NamedIndividual(IRI.create(ns + "SauterneRegion"));
     OWLNamedIndividual SantaCruzMountainVineyard = NamedIndividual(IRI.create(ns + "SantaCruzMountainVineyard"));
@@ -1152,8 +1149,8 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
         axioms.add(SubClassOf(WineFlavor, WineTaste));
         axioms.add(SubClassOf(LightMeatFowlCourse, all(hasDrink, v(hasFlavor, Moderate))));
         axioms.add(SubClassOf(PastaWithHeavyCreamCourse, all(hasDrink, v(hasBody, Medium))));
-        axioms.add(SubClassOf(WhiteLoire, all(madeFromGrape, ObjectOneOf(CheninBlancGrape, PinotBlancGrape,
-            SauvignonBlancGrape))));
+        axioms.add(SubClassOf(WhiteLoire,
+            all(madeFromGrape, ObjectOneOf(CheninBlancGrape, PinotBlancGrape, SauvignonBlancGrape))));
         axioms.add(SubClassOf(Beaujolais, omax(1, madeFromGrape, df.getOWLThing())));
         axioms.add(SubClassOf(Port, v(hasBody, Full)));
         axioms.add(SubClassOf(SweetRiesling, DessertWine));
@@ -1281,11 +1278,11 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
         axioms.add(EquivalentClasses(DessertCourse, o(MealCourse, all(hasFood, Dessert))));
         axioms.add(EquivalentClasses(Margaux, o(Medoc, v(locatedIn, MargauxRegion))));
         axioms.add(EquivalentClasses(ShellfishCourse, o(MealCourse, all(hasFood, Shellfish))));
-        axioms.add(EquivalentClasses(PinotBlanc, o(Wine, v(madeFromGrape, PinotBlancGrape), omax(1, madeFromGrape, df
-            .getOWLThing()))));
+        axioms.add(EquivalentClasses(PinotBlanc,
+            o(Wine, v(madeFromGrape, PinotBlancGrape), omax(1, madeFromGrape, df.getOWLThing()))));
         axioms.add(EquivalentClasses(CotesDOr, o(RedBurgundy, v(locatedIn, CotesDOrRegion))));
-        axioms.add(EquivalentClasses(CheninBlanc, o(Wine, v(madeFromGrape, CheninBlancGrape), omax(1, madeFromGrape, df
-            .getOWLThing()))));
+        axioms.add(EquivalentClasses(CheninBlanc,
+            o(Wine, v(madeFromGrape, CheninBlancGrape), omax(1, madeFromGrape, df.getOWLThing()))));
         axioms.add(EquivalentClasses(OtherTomatoBasedFoodCourse, o(MealCourse, all(hasFood, OtherTomatoBasedFood))));
         axioms.add(EquivalentClasses(SweetWine, o(Wine, v(hasSugar, Sweet))));
         axioms.add(EquivalentClasses(Anjou, o(Loire, v(locatedIn, AnjouRegion))));
@@ -1295,25 +1292,25 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
         axioms.add(EquivalentClasses(RoseWine, o(Wine, v(hasColor, Rose))));
         axioms.add(EquivalentClasses(FullBodiedWine, o(Wine, v(hasBody, Full))));
         axioms.add(EquivalentClasses(Loire, o(Wine, v(locatedIn, LoireRegion))));
-        axioms.add(EquivalentClasses(Semillon, o(SemillonOrSauvignonBlanc, v(madeFromGrape, SemillonGrape), omax(1,
-            madeFromGrape, df.getOWLThing()))));
+        axioms.add(EquivalentClasses(Semillon,
+            o(SemillonOrSauvignonBlanc, v(madeFromGrape, SemillonGrape), omax(1, madeFromGrape, df.getOWLThing()))));
         axioms.add(EquivalentClasses(DarkMeatFowlCourse, o(MealCourse, all(hasFood, DarkMeatFowl))));
-        axioms.add(EquivalentClasses(PetiteSyrah, o(Wine, v(madeFromGrape, PetiteSyrahGrape), omax(1, madeFromGrape, df
-            .getOWLThing()))));
+        axioms.add(EquivalentClasses(PetiteSyrah,
+            o(Wine, v(madeFromGrape, PetiteSyrahGrape), omax(1, madeFromGrape, df.getOWLThing()))));
         axioms.add(EquivalentClasses(BlandFishCourse, o(MealCourse, all(hasFood, BlandFish))));
         axioms.add(EquivalentClasses(RedBordeaux, o(Bordeaux, RedWine)));
         axioms.add(EquivalentClasses(RedWine, o(Wine, v(hasColor, Red))));
         axioms.add(EquivalentClasses(FruitCourse, o(MealCourse, all(hasFood, Fruit))));
-        axioms.add(EquivalentClasses(CabernetFranc, o(Wine, v(madeFromGrape, CabernetFrancGrape), omax(1, madeFromGrape,
-            df.getOWLThing()))));
+        axioms.add(EquivalentClasses(CabernetFranc,
+            o(Wine, v(madeFromGrape, CabernetFrancGrape), omax(1, madeFromGrape, df.getOWLThing()))));
         axioms.add(EquivalentClasses(TexasWine, o(Wine, v(locatedIn, TexasRegion))));
         axioms.add(EquivalentClasses(WhiteBordeaux, o(Bordeaux, WhiteWine)));
         axioms.add(EquivalentClasses(CheeseNutsDessertCourse, o(MealCourse, all(hasFood, CheeseNutsDessert))));
         axioms.add(EquivalentClasses(FishCourse, o(MealCourse, all(hasFood, Fish))));
-        axioms.add(EquivalentClasses(Gamay, o(Wine, v(madeFromGrape, GamayGrape), omax(1, madeFromGrape, df
-            .getOWLThing()))));
-        axioms.add(EquivalentClasses(Merlot, o(Wine, v(madeFromGrape, MerlotGrape), omax(1, madeFromGrape, df
-            .getOWLThing()))));
+        axioms.add(
+            EquivalentClasses(Gamay, o(Wine, v(madeFromGrape, GamayGrape), omax(1, madeFromGrape, df.getOWLThing()))));
+        axioms.add(EquivalentClasses(Merlot,
+            o(Wine, v(madeFromGrape, MerlotGrape), omax(1, madeFromGrape, df.getOWLThing()))));
         axioms.add(EquivalentClasses(DryWine, o(Wine, v(hasSugar, Dry))));
         axioms.add(EquivalentClasses(Fruit, ObjectUnionOf(NonSweetFruit, SweetFruit)));
         axioms.add(EquivalentClasses(Sancerre, o(Loire, v(locatedIn, SancerreRegion))));
@@ -1322,8 +1319,8 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
         axioms.add(EquivalentClasses(AlsatianWine, o(Wine, v(locatedIn, AlsaceRegion))));
         axioms.add(EquivalentClasses(TableWine, o(Wine, v(hasSugar, Dry))));
         axioms.add(EquivalentClasses(GermanWine, o(Wine, v(locatedIn, GermanyRegion))));
-        axioms.add(EquivalentClasses(CabernetSauvignon, o(Wine, v(madeFromGrape, CabernetSauvignonGrape), omax(1,
-            madeFromGrape, df.getOWLThing()))));
+        axioms.add(EquivalentClasses(CabernetSauvignon,
+            o(Wine, v(madeFromGrape, CabernetSauvignonGrape), omax(1, madeFromGrape, df.getOWLThing()))));
         axioms.add(EquivalentClasses(NonOysterShellfishCourse, o(MealCourse, all(hasFood, NonOysterShellfish))));
         axioms.add(EquivalentClasses(WhiteWine, o(Wine, v(hasColor, White))));
         axioms.add(EquivalentClasses(RedMeatCourse, o(MealCourse, all(hasFood, RedMeat))));
@@ -1336,35 +1333,39 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
         axioms.add(EquivalentClasses(WineSugar, ObjectOneOf(Dry, OffDry, Sweet)));
         axioms.add(EquivalentClasses(Tours, o(Loire, v(locatedIn, ToursRegion))));
         axioms.add(EquivalentClasses(IceWine, o(DessertWine, LateHarvest, v(hasColor, White))));
-        axioms.add(EquivalentClasses(Meritage, o(Wine, all(madeFromGrape, ObjectOneOf(CabernetFrancGrape,
-            CabernetSauvignonGrape, MalbecGrape, MerlotGrape, PetiteVerdotGrape)), ObjectMinCardinality(2,
-                madeFromGrape, df.getOWLThing()))));
+        axioms
+            .add(
+                EquivalentClasses(Meritage,
+                    o(Wine,
+                        all(madeFromGrape, ObjectOneOf(CabernetFrancGrape, CabernetSauvignonGrape, MalbecGrape,
+                            MerlotGrape, PetiteVerdotGrape)),
+                    ObjectMinCardinality(2, madeFromGrape, df.getOWLThing()))));
         axioms.add(EquivalentClasses(Medoc, o(Bordeaux, v(locatedIn, MedocRegion))));
         axioms.add(EquivalentClasses(PastaWithHeavyCreamCourse, o(MealCourse, all(hasFood, PastaWithHeavyCreamSauce))));
         axioms.add(EquivalentClasses(SweetRiesling, o(Riesling, v(hasSugar, Sweet))));
         axioms.add(EquivalentClasses(RedBurgundy, o(Burgundy, RedWine)));
         axioms.add(EquivalentClasses(WineFlavor, ObjectOneOf(Delicate, Moderate, Strong)));
-        axioms.add(EquivalentClasses(PastaWithNonSpicyRedSauceCourse, o(MealCourse, all(hasFood,
-            PastaWithNonSpicyRedSauce))));
-        axioms.add(EquivalentClasses(SemillonOrSauvignonBlanc, o(Wine, all(madeFromGrape, ObjectOneOf(
-            SauvignonBlancGrape, SemillonGrape)))));
-        axioms.add(EquivalentClasses(Riesling, o(Wine, v(madeFromGrape, RieslingGrape), omax(1, madeFromGrape, df
-            .getOWLThing()))));
+        axioms.add(
+            EquivalentClasses(PastaWithNonSpicyRedSauceCourse, o(MealCourse, all(hasFood, PastaWithNonSpicyRedSauce))));
+        axioms.add(EquivalentClasses(SemillonOrSauvignonBlanc,
+            o(Wine, all(madeFromGrape, ObjectOneOf(SauvignonBlancGrape, SemillonGrape)))));
+        axioms.add(EquivalentClasses(Riesling,
+            o(Wine, v(madeFromGrape, RieslingGrape), omax(1, madeFromGrape, df.getOWLThing()))));
         axioms.add(EquivalentClasses(SweetFruitCourse, o(MealCourse, all(hasFood, SweetFruit))));
         axioms.add(EquivalentClasses(WineDescriptor, ObjectUnionOf(WineColor, WineTaste)));
         axioms.add(EquivalentClasses(ItalianWine, o(Wine, v(locatedIn, ItalianRegion))));
         axioms.add(EquivalentClasses(WhiteBurgundy, o(Burgundy, WhiteWine)));
-        axioms.add(EquivalentClasses(PinotNoir, o(Wine, v(madeFromGrape, PinotNoirGrape), omax(1, madeFromGrape, df
-            .getOWLThing()))));
+        axioms.add(EquivalentClasses(PinotNoir,
+            o(Wine, v(madeFromGrape, PinotNoirGrape), omax(1, madeFromGrape, df.getOWLThing()))));
         axioms.add(EquivalentClasses(LightMeatFowlCourse, o(MealCourse, all(hasFood, LightMeatFowl))));
         axioms.add(EquivalentClasses(NonSweetFruitCourse, o(MealCourse, all(hasFood, NonSweetFruit))));
-        axioms.add(EquivalentClasses(Zinfandel, o(Wine, v(madeFromGrape, ZinfandelGrape), omax(1, madeFromGrape, df
-            .getOWLThing()))));
+        axioms.add(EquivalentClasses(Zinfandel,
+            o(Wine, v(madeFromGrape, ZinfandelGrape), omax(1, madeFromGrape, df.getOWLThing()))));
         axioms.add(EquivalentClasses(WhiteNonSweetWine, o(WhiteWine, all(hasSugar, ObjectOneOf(Dry, OffDry)))));
         axioms.add(EquivalentClasses(SpicyRedMeatCourse, o(MealCourse, all(hasFood, SpicyRedMeat))));
         axioms.add(EquivalentClasses(DryRiesling, o(Riesling, v(hasSugar, Dry))));
-        axioms.add(EquivalentClasses(PastaWithSpicyRedSauceCourse, o(MealCourse, all(hasFood,
-            PastaWithSpicyRedSauce))));
+        axioms
+            .add(EquivalentClasses(PastaWithSpicyRedSauceCourse, o(MealCourse, all(hasFood, PastaWithSpicyRedSauce))));
         axioms.add(EquivalentClasses(WineBody, ObjectOneOf(Full, Light, Medium)));
         axioms.add(EquivalentClasses(NonRedMeatCourse, o(MealCourse, all(hasFood, NonRedMeat))));
         axioms.add(EquivalentClasses(NonSpicyRedMeatCourse, o(MealCourse, all(hasFood, NonSpicyRedMeat))));
@@ -1375,8 +1376,8 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
         axioms.add(EquivalentClasses(PastaWithLightCreamCourse, o(MealCourse, all(hasFood, PastaWithLightCreamSauce))));
         axioms.add(EquivalentClasses(AmericanWine, o(Wine, v(locatedIn, USRegion))));
         axioms.add(EquivalentClasses(OysterShellfishCourse, o(MealCourse, all(hasFood, OysterShellfish))));
-        axioms.add(EquivalentClasses(Chardonnay, o(Wine, v(madeFromGrape, ChardonnayGrape), omax(1, madeFromGrape, df
-            .getOWLThing()))));
+        axioms.add(EquivalentClasses(Chardonnay,
+            o(Wine, v(madeFromGrape, ChardonnayGrape), omax(1, madeFromGrape, df.getOWLThing()))));
         axioms.add(EquivalentClasses(FrenchWine, o(Wine, v(locatedIn, FrenchRegion))));
         axioms.add(EquivalentClasses(NonConsumableThing, ObjectComplementOf(ConsumableThing)));
         axioms.add(EquivalentClasses(WhiteTableWine, o(TableWine, v(hasColor, White))));
@@ -1718,8 +1719,8 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
         axioms.add(ObjectPropertyAssertion(locatedIn, SaucelitoCanyonZinfandel1998, ArroyoGrandeRegion));
         axioms.add(ObjectPropertyAssertion(hasMaker, SeanThackreySiriusPetiteSyrah, SeanThackrey));
         axioms.add(ObjectPropertyAssertion(locatedIn, EdnaValleyRegion, CaliforniaRegion));
-        axioms.add(ObjectPropertyAssertion(locatedIn, SantaCruzMountainVineyardCabernetSauvignon,
-            SantaCruzMountainsRegion));
+        axioms.add(
+            ObjectPropertyAssertion(locatedIn, SantaCruzMountainVineyardCabernetSauvignon, SantaCruzMountainsRegion));
         axioms.add(ObjectPropertyAssertion(hasBody, GaryFarrellMerlot, Medium));
         axioms.add(ObjectPropertyAssertion(hasBody, CongressSpringsSemillon, Medium));
         axioms.add(ObjectPropertyAssertion(hasBody, MountadamRiesling, Medium));
@@ -1847,7 +1848,7 @@ public class WebOnt_miscellaneous_wineTestCase extends TestBase {
         axioms.add(ObjectPropertyAssertion(hasBody, MountadamPinotNoir, Medium));
         axioms.add(ObjectPropertyAssertion(hasBody, SelaksSauvignonBlanc, Medium));
         axioms.add(ObjectPropertyAssertion(locatedIn, GaryFarrellMerlot, SonomaRegion));
-        axioms.add(ObjectPropertyAssertion(hasMaker, SantaCruzMountainVineyardCabernetSauvignon,
-            SantaCruzMountainVineyard));
+        axioms.add(
+            ObjectPropertyAssertion(hasMaker, SantaCruzMountainVineyardCabernetSauvignon, SantaCruzMountainVineyard));
     }
 }

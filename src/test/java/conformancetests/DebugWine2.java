@@ -20,7 +20,6 @@ import org.junit.Rule;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import org.junit.Test;
 import org.junit.rules.Timeout;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
@@ -33,8 +32,7 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 @Ignore
 public class DebugWine2 extends TestBase {
 
-    @Rule
-    public Timeout timeout = new Timeout(15000);
+    @Rule public Timeout timeout = new Timeout(15000);
 
     protected JFactReasonerConfiguration config(OutputStream o) {
         return new JFactReasonerConfiguration().setAbsorptionLoggingActive(true).setAbsorptionLog(o);
@@ -48,7 +46,7 @@ public class DebugWine2 extends TestBase {
     @Test
     public void shouldBeFastWithOldOrder() throws OWLOntologyCreationException, IOException {
         System.out.println("WebOnt_miscellaneous_wineTestCase.shouldBeFastWithOldOrder() ");
-        OWLOntology o = OWLManager.createOWLOntologyManager().createOntology();
+        OWLOntology o = m.createOntology();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.out.println("DebugWine.shouldBeFastWithanyOrder() " + new HashSet<>(java7order()).size());
         OWLReasoner r = new JFactReasoner(o, new LinkedHashSet<>(java7order()), config(out), BufferingMode.BUFFERING);
@@ -63,7 +61,7 @@ public class DebugWine2 extends TestBase {
     @Test
     public void shouldBeFastWithanyOrder() throws OWLOntologyCreationException, IOException {
         System.out.println("WebOnt_miscellaneous_wineTestCase.shouldBeFastWithanyOrder() ");
-        OWLOntology o = OWLManager.createOWLOntologyManager().createOntology();
+        OWLOntology o = m.createOntology();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.out.println("DebugWine.shouldBeFastWithanyOrder() " + new HashSet<>(java7order()).size());
         OWLReasoner r = new JFactReasoner(o, new HashSet<>(java7order()), config(out), BufferingMode.BUFFERING);
@@ -92,7 +90,6 @@ public class DebugWine2 extends TestBase {
         return axioms;
     }
 
-    private OWLDataFactory df = OWLManager.getOWLDataFactory();
     private String ns = "urn:test:wine#";
     private OWLObjectProperty hasMaker = ObjectProperty(IRI.create(ns + "hasMaker"));
     private OWLObjectProperty hasFlavor = ObjectProperty(IRI.create(ns + "hasFlavor"));
@@ -767,8 +764,9 @@ public class DebugWine2 extends TestBase {
         // axioms.add(EquivalentClasses(FruitCourse,
         // ObjectIntersectionOf(MealCourse, ObjectAllValuesFrom(hasFood,
         // Fruit))));
-        axioms.add(EquivalentClasses(CabernetFranc, ObjectIntersectionOf(Wine, ObjectHasValue(madeFromGrape,
-            CabernetFrancGrape), ObjectMaxCardinality(1, madeFromGrape, df.getOWLThing()))));
+        axioms.add(EquivalentClasses(CabernetFranc,
+            ObjectIntersectionOf(Wine, ObjectHasValue(madeFromGrape, CabernetFrancGrape),
+                ObjectMaxCardinality(1, madeFromGrape, df.getOWLThing()))));
         // axioms.add(EquivalentClasses(TexasWine, ObjectIntersectionOf(Wine,
         // ObjectHasValue(locatedIn, TexasRegion))));
         // axioms.add(EquivalentClasses(WhiteBordeaux,
@@ -800,8 +798,9 @@ public class DebugWine2 extends TestBase {
         // ObjectHasValue(hasSugar, Dry))));
         // axioms.add(EquivalentClasses(GermanWine, ObjectIntersectionOf(Wine,
         // ObjectHasValue(locatedIn, GermanyRegion))));
-        axioms.add(EquivalentClasses(CabernetSauvignon, ObjectIntersectionOf(Wine, ObjectHasValue(madeFromGrape,
-            CabernetSauvignonGrape), ObjectMaxCardinality(1, madeFromGrape, df.getOWLThing()))));
+        axioms.add(EquivalentClasses(CabernetSauvignon,
+            ObjectIntersectionOf(Wine, ObjectHasValue(madeFromGrape, CabernetSauvignonGrape),
+                ObjectMaxCardinality(1, madeFromGrape, df.getOWLThing()))));
         // axioms.add(EquivalentClasses(NonOysterShellfishCourse,
         // ObjectIntersectionOf(MealCourse, ObjectAllValuesFrom(
         // hasFood, NonOysterShellfish))));
@@ -872,8 +871,8 @@ public class DebugWine2 extends TestBase {
         // ObjectHasValue(madeFromGrape,
         // ZinfandelGrape), ObjectMaxCardinality(1, madeFromGrape,
         // df.getOWLThing()))));
-        axioms.add(EquivalentClasses(WhiteNonSweetWine, ObjectIntersectionOf(WhiteWine, ObjectAllValuesFrom(hasSugar,
-            ObjectOneOf(Dry, OffDry)))));
+        axioms.add(EquivalentClasses(WhiteNonSweetWine,
+            ObjectIntersectionOf(WhiteWine, ObjectAllValuesFrom(hasSugar, ObjectOneOf(Dry, OffDry)))));
         // axioms.add(EquivalentClasses(SpicyRedMeatCourse,
         // ObjectIntersectionOf(MealCourse, ObjectAllValuesFrom(hasFood,
         // SpicyRedMeat))));
@@ -900,8 +899,8 @@ public class DebugWine2 extends TestBase {
         // axioms.add(EquivalentClasses(OysterShellfishCourse,
         // ObjectIntersectionOf(MealCourse, ObjectAllValuesFrom(
         // hasFood, OysterShellfish))));
-        axioms.add(EquivalentClasses(Chardonnay, ObjectIntersectionOf(Wine, ObjectHasValue(madeFromGrape,
-            ChardonnayGrape), ObjectMaxCardinality(1, madeFromGrape, df.getOWLThing()))));
+        axioms.add(EquivalentClasses(Chardonnay, ObjectIntersectionOf(Wine,
+            ObjectHasValue(madeFromGrape, ChardonnayGrape), ObjectMaxCardinality(1, madeFromGrape, df.getOWLThing()))));
         axioms.add(EquivalentClasses(FrenchWine, ObjectIntersectionOf(Wine, ObjectHasValue(locatedIn, FrenchRegion))));
         axioms.add(EquivalentClasses(NonConsumableThing, ObjectComplementOf(ConsumableThing)));
         // axioms.add(EquivalentClasses(WhiteTableWine,

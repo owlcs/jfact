@@ -14,7 +14,6 @@ import org.junit.Ignore;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import org.junit.Test;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
@@ -38,7 +37,7 @@ public class DebugWine extends TestBase {
     @Test
     public void shouldBeFastWithOldOrder() throws OWLOntologyCreationException {
         System.out.println("WebOnt_miscellaneous_wineTestCase.shouldBeFastWithOldOrder() ");
-        OWLOntology o = OWLManager.createOWLOntologyManager().createOntology();
+        OWLOntology o = m.createOntology();
         // java7order().forEach(ax -> System.out.println(ax));
         OWLReasoner r = new JFactReasoner(o, java7order(), config(System.out), BufferingMode.BUFFERING);
         assertTrue(r.isConsistent());
@@ -47,7 +46,7 @@ public class DebugWine extends TestBase {
     @Test
     public void shouldBeFastWithanyOrder() throws OWLOntologyCreationException {
         System.out.println("WebOnt_miscellaneous_wineTestCase.shouldBeFastWithanyOrder() ");
-        OWLOntology o = OWLManager.createOWLOntologyManager().createOntology();
+        OWLOntology o = m.createOntology();
         // java8order().forEach(ax -> System.out.println(ax));
         OWLReasoner r = new JFactReasoner(o, java8order(), config(System.out), BufferingMode.BUFFERING);
         assertTrue(r.isConsistent());
@@ -61,7 +60,7 @@ public class DebugWine extends TestBase {
     }
 
     protected void actualrun(List<OWLAxiom> java7order) throws OWLOntologyCreationException {
-        OWLOntology o = OWLManager.createOWLOntologyManager().createOntology();
+        OWLOntology o = m.createOntology();
         List<OWLAxiom> l = new ArrayList<>();
         for (OWLAxiom ax : java7order) {
             o.getOWLOntologyManager().addAxiom(o, ax);
@@ -82,8 +81,9 @@ public class DebugWine extends TestBase {
 
     public List<OWLAxiom> java7order() {
         List<OWLAxiom> axioms = new ArrayList<>();
-        axioms.add(EquivalentClasses(CabernetFranc, ObjectIntersectionOf(Wine, ObjectHasValue(madeFromGrape,
-            CabernetFrancGrape), ObjectMaxCardinality(1, madeFromGrape, df.getOWLThing()))));
+        axioms.add(EquivalentClasses(CabernetFranc,
+            ObjectIntersectionOf(Wine, ObjectHasValue(madeFromGrape, CabernetFrancGrape),
+                ObjectMaxCardinality(1, madeFromGrape, df.getOWLThing()))));
         axioms.add(SubClassOf(CabernetFranc, ObjectHasValue(hasColor, Red)));
         axioms.add(SubClassOf(CabernetFranc, ObjectHasValue(hasSugar, Dry)));
         axioms.add(SubClassOf(CabernetFranc, ObjectHasValue(hasBody, Medium)));
@@ -94,13 +94,13 @@ public class DebugWine extends TestBase {
         List<OWLAxiom> axioms = new ArrayList<>();
         axioms.add(SubClassOf(CabernetFranc, ObjectHasValue(hasColor, Red)));
         axioms.add(SubClassOf(CabernetFranc, ObjectHasValue(hasSugar, Dry)));
-        axioms.add(EquivalentClasses(CabernetFranc, ObjectIntersectionOf(Wine, ObjectHasValue(madeFromGrape,
-            CabernetFrancGrape), ObjectMaxCardinality(1, madeFromGrape, df.getOWLThing()))));
+        axioms.add(EquivalentClasses(CabernetFranc,
+            ObjectIntersectionOf(Wine, ObjectHasValue(madeFromGrape, CabernetFrancGrape),
+                ObjectMaxCardinality(1, madeFromGrape, df.getOWLThing()))));
         axioms.add(SubClassOf(CabernetFranc, ObjectHasValue(hasBody, Medium)));
         return axioms;
     }
 
-    private OWLDataFactory df = OWLManager.getOWLDataFactory();
     private String ns = "urn:";
     private OWLObjectProperty hasSugar = ObjectProperty(IRI.create(ns + "hasSugar"));
     private OWLObjectProperty hasBody = ObjectProperty(IRI.create(ns + "hasBody"));

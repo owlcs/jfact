@@ -8,16 +8,16 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Timeout;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 
+import testbase.TestBase;
 import uk.ac.manchester.cs.jfact.JFactFactory;
 
 @SuppressWarnings("javadoc")
 @Ignore
-public class VerifyCorrectnessOfClassification {
+public class VerifyCorrectnessOfClassification extends TestBase {
 
     private static final String POOL_SAMPLE = "/Users/ignazio/workspace/pool_sample/files/";
 
@@ -222,10 +222,10 @@ public class VerifyCorrectnessOfClassification {
 
     @Rule public Timeout timeout = new Timeout(20000);
 
-    private static boolean consistent(String filename) {
+    private boolean consistent(String filename) {
         try {
             File file = new File(filename);
-            OWLOntology o = OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(file);
+            OWLOntology o = m.loadOntologyFromOntologyDocument(file);
             OWLReasoner r = factory().createReasoner(o);
             return r.isConsistent();
         } catch (Exception e) {

@@ -5,7 +5,6 @@ import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.NodeSet;
@@ -15,16 +14,15 @@ import org.semanticweb.owlapi.vocab.OWLFacet;
 
 import com.google.common.collect.Sets;
 
+import testbase.TestBase;
 import uk.ac.manchester.cs.jfact.JFactFactory;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
 @SuppressWarnings("javadoc")
-public class EquivalentTestCase {
+public class EquivalentTestCase extends TestBase {
 
     @Test
     public void shouldFildEquivalentToThingNotEmpty() throws OWLOntologyCreationException {
-        OWLOntologyManager m = OWLManager.createOWLOntologyManager();
-        OWLDataFactory df = m.getOWLDataFactory();
         OWLOntology o = m.createOntology();
         OWLClass t = df.getOWLClass("urn:test:t");
         o.add(df.getOWLSubClassOfAxiom(t, df.getOWLThing()));
@@ -38,8 +36,6 @@ public class EquivalentTestCase {
 
     @Test
     public void shouldGetRightSubsumption() throws OWLOntologyCreationException {
-        OWLOntologyManager m = OWLManager.createOWLOntologyManager();
-        OWLDataFactory df = m.getOWLDataFactory();
         OWLOntology ont = m.createOntology();
         OWLDataProperty p = df.getOWLDataProperty(IRI.create("http://example.com/p"));
         OWLDatatype integer = df.getIntegerOWLDatatype();
@@ -56,8 +52,6 @@ public class EquivalentTestCase {
     @Test
     @Ignore("bug: this needs fixing")
     public void shouldCorrectlyPlaceEnum() throws OWLOntologyCreationException {
-        OWLOntologyManager m = OWLManager.createOWLOntologyManager();
-        OWLDataFactory df = m.getOWLDataFactory();
         OWLOntology ont = m.createOntology();
         OWLClass ca = df.getOWLClass("urn:test:ca");
         OWLClass ca1 = df.getOWLClass("urn:test:ca1");

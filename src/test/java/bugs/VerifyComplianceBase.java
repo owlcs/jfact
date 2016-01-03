@@ -8,7 +8,6 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 
 import org.junit.Before;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormat;
 import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
@@ -29,11 +28,9 @@ public abstract class VerifyComplianceBase extends TestBase {
     protected abstract String input();
 
     protected JFactReasoner reasoner;
-    protected OWLDataFactory df = OWLManager.getOWLDataFactory();
 
     protected OWLOntology load(String in) throws OWLOntologyCreationException {
-        OWLOntology onto = OWLManager.createOWLOntologyManager()
-            .loadOntologyFromOntologyDocument(VerifyComplianceBase.class.getResourceAsStream(in));
+        OWLOntology onto = m.loadOntologyFromOntologyDocument(VerifyComplianceBase.class.getResourceAsStream(in));
         OWLProfileReport checkOntology = Profiles.OWL2_DL.checkOntology(onto);
         if (!checkOntology.isInProfile()) {
             checkOntology.getViolations().forEach(v -> System.out.println("VerifyComplianceBase.load() " + v));
@@ -42,7 +39,7 @@ public abstract class VerifyComplianceBase extends TestBase {
     }
 
     protected OWLOntology loadFromString(String in) throws OWLOntologyCreationException {
-        return OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(new StringDocumentSource(in));
+        return m.loadOntologyFromOntologyDocument(new StringDocumentSource(in));
     }
 
     protected static String set(Stream<? extends OWLObject> i) {
