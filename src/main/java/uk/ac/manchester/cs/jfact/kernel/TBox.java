@@ -164,7 +164,7 @@ public class TBox implements Serializable {
     @PortedFrom(file = "dlTBox.h", name = "nRelevantCCalls") private long nRelevantCCalls;
     @PortedFrom(file = "dlTBox.h", name = "nRelevantBCalls") private long nRelevantBCalls;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "IV") private final IterableVec<Individual> iv = new IterableVec<>();
-    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "concepts") private final TIntList conceptsForQueryAnswering = new TIntArrayList();
+    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "concepts") private final TIntArrayList conceptsForQueryAnswering = new TIntArrayList();
 
     /**
      * @param datatypeFactory
@@ -182,8 +182,8 @@ public class TBox implements Serializable {
         dlHeap = new DLDag(configuration);
         kbStatus = KBLOADING;
         pQuery = null;
-        concepts = new NamedEntryCollection<>("concept", new ConceptCreator(), config);
-        individuals = new NamedEntryCollection<>("individual", new IndividualCreator(), config);
+        concepts = new NamedEntryCollection<>("concept", name -> new Concept(name), config);
+        individuals = new NamedEntryCollection<>("individual", name -> new Individual(name), config);
         objectRoleMaster = new RoleMaster(false, OWLRDFVocabulary.OWL_TOP_OBJECT_PROPERTY.getIRI(),
             OWLRDFVocabulary.OWL_BOTTOM_OBJECT_PROPERTY.getIRI(), config);
         dataRoleMaster = new RoleMaster(true, OWLRDFVocabulary.OWL_TOP_DATA_PROPERTY.getIRI(),
@@ -262,7 +262,6 @@ public class TBox implements Serializable {
      *        desc
      * @return it's old description
      */
-    @Nullable
     @PortedFrom(file = "dlTBox.h", name = "makeNonPrimitive")
     public DLTree makeNonPrimitive(Concept p, DLTree desc) {
         DLTree ret = p.makeNonPrimitive(desc);
@@ -1728,7 +1727,7 @@ public class TBox implements Serializable {
         if (!this.isIndividual(inda.getIRI()) || !this.isIndividual(indb.getIRI())) {
             throw new ReasonerInternalException("Individuals are expected in the isSameIndividuals() query");
         }
-        if (inda.getNode() == null || indb.getNode() == null) {
+        if (inda.isFresh() || indb.isFresh()) {
             if (inda.isSynonym()) {
                 return isSameIndividuals((Individual) inda.getSynonym(), indb);
             }
@@ -2193,8 +2192,9 @@ public class TBox implements Serializable {
     @Nullable
     @PortedFrom(file = "dlTBox.h", name = "applyAxiomCToCN")
     public DLTree applyAxiomCToCN(DLTree d, DLTree cn) {
-        Concept c = resolveSynonym(getCI(cn));
-        assert c != null;
+        Concept ci = getCI(cn);
+        assert ci != null;
+        Concept c = resolveSynonym(ci);
         // lie: this will never be reached
         if (c.isBottom()) {
             return DLTreeFactory.createBottom();
@@ -2220,8 +2220,9 @@ public class TBox implements Serializable {
     @Nullable
     @PortedFrom(file = "dlTBox.h", name = "applyAxiomCNToC")
     public DLTree applyAxiomCNToC(DLTree cn, DLTree d) {
-        Concept c = resolveSynonym(getCI(cn));
-        assert c != null;
+        Concept ci = getCI(cn);
+        assert ci != null;
+        Concept c = resolveSynonym(ci);
         if (c.isTop()) {
             return DLTreeFactory.createTop();
         }
@@ -2309,10 +2310,18 @@ public class TBox implements Serializable {
     @PortedFrom(file = "dlTBox.h", name = "addEqualityAxiom")
     private void addEqualityAxiom(DLTree left, DLTree right) {
         // check whether LHS is a named concept
-        Concept c = resolveSynonym(getCI(left));
+        Concept leftCI = getCI(left);
+        Concept rightCI = getCI(right);
+        Concept c = null;
+        if (leftCI != null) {
+            c = resolveSynonym(leftCI);
+        }
         boolean isNamedLHS = c != null && !c.isTop() && !c.isBottom();
         // check whether LHS is a named concept
-        Concept d = resolveSynonym(getCI(right));
+        Concept d = null;
+        if (rightCI != null) {
+            d = resolveSynonym(rightCI);
+        }
         boolean isNamedRHS = d != null && !d.isTop() && !d.isBottom();
         // try to make a definition C = RHS for C with no definition
         if (isNamedLHS && addNonprimitiveDefinition(c, d, right)) {
@@ -2348,12 +2357,14 @@ public class TBox implements Serializable {
     public boolean addNonprimitiveDefinition(Concept left, @Nullable Concept right, DLTree rightOrigin) {
         // nothing to do for the case C := D for named concepts C,D with D = C
         // already
-        if (right != null && resolveSynonym(right).equals(left)) {
-            return true;
-        }
-        // can't have C=D where C is a nominal and D is a concept
-        if (left.isSingleton() && right != null && !right.isSingleton()) {
-            return false;
+        if (right != null) {
+            if (resolveSynonym(right).equals(left)) {
+                return true;
+            }
+            // can't have C=D where C is a nominal and D is a concept
+            if (left.isSingleton() && !right.isSingleton()) {
+                return false;
+            }
         }
         // check the case whether C=RHS or C [= \top
         if (left.canInitNonPrim(rightOrigin)) {
@@ -2373,13 +2384,19 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "switchToNonprimitive")
     public boolean switchToNonprimitive(DLTree left, DLTree right) {
-        Concept c = resolveSynonym(getCI(left));
-        if (c == null || c.isTop() || c.isBottom()) {
+        Concept ci = getCI(left);
+        if (ci == null) {
             return false;
         }
-        Concept d = resolveSynonym(getCI(right));
-        if (c.isSingleton() && d != null && !d.isSingleton()) {
+        Concept c = resolveSynonym(ci);
+        if (c.isTop() || c.isBottom()) {
             return false;
+        }
+        Concept ci2 = getCI(right);
+        if (c.isSingleton() && ci2 != null) {
+            if (!resolveSynonym(ci2).isSingleton()) {
+                return false;
+            }
         }
         if (config.getalwaysPreferEquals() && c.isPrimitive()) {
             addSubsumeForDefined(c, makeNonPrimitive(c, right));

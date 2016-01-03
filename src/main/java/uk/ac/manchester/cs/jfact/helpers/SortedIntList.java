@@ -14,8 +14,6 @@ class SortedIntList implements Serializable {
     protected int size = 0;
     protected static final int DEFAULTSIZE = 16;
 
-    public SortedIntList() {}
-
     protected int insertionIndex(int key) {
         if (size == 0) {
             return 0;

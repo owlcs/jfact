@@ -20,9 +20,6 @@ public class Reference<E> implements Serializable {
 
     private E e;
 
-    /** Default constructor. */
-    public Reference() {}
-
     /**
      * @param e
      *        e

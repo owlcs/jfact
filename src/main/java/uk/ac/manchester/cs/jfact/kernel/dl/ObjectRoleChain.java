@@ -8,8 +8,6 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import org.semanticweb.owlapi.model.IRI;
 
 import conformance.PortedFrom;
@@ -40,7 +38,6 @@ public class ObjectRoleChain extends NAryExpressionImpl<ObjectRoleExpression>
         visitor.visit(this);
     }
 
-    @Nullable
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {

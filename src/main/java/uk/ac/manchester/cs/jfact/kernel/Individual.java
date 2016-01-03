@@ -1,13 +1,13 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
+import static org.semanticweb.owlapi.util.OWLAPIPreconditions.verifyNotNull;
+
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.*;
-
-import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.IRI;
 
@@ -23,7 +23,7 @@ public class Individual extends Concept {
     /** index for axioms (this,C):R */
     @PortedFrom(file = "tIndividual.h", name = "RelatedIndex") private final List<Related> relatedIndex = new ArrayList<>();
     /** map for the related individuals: Map[R]={i:R(this,i)} */
-    @PortedFrom(file = "tIndividual.h", name = "pRelatedMap") private final Map<Role, List<Individual>> pRelatedMap;
+    @PortedFrom(file = "tIndividual.h", name = "pRelatedMap") private final Map<Role, List<Individual>> pRelatedMap = new HashMap<>();
 
     /**
      * @param name
@@ -33,7 +33,6 @@ public class Individual extends Concept {
         super(name);
         node = null;
         setSingleton(true);
-        pRelatedMap = new HashMap<>();
     }
 
     /** init told subsumers of the individual by it's description */
@@ -150,10 +149,15 @@ public class Individual extends Concept {
     }
 
     /** @return completion tree node */
-    @Nullable
     @Original
     public DlCompletionTree getNode() {
-        return node;
+        return verifyNotNull(node, "individual not initialized");
+    }
+
+    /** @return true if this individual is fresh and not initialized */
+    @Original
+    public boolean isFresh() {
+        return node == null;
     }
 
     /**

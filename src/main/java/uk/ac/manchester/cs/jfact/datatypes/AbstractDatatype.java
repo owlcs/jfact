@@ -15,6 +15,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.semanticweb.owlapi.model.HasIRI;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
@@ -42,9 +43,9 @@ public abstract class AbstractDatatype<R extends Comparable<R>> implements Datat
      * @param ancestors
      *        ancestors for datatype
      */
-    public AbstractDatatype(IRI u, Set<Facet> f, Set<Datatype<?>> ancestors) {
+    public AbstractDatatype(HasIRI u, Set<Facet> f, Set<Datatype<?>> ancestors) {
         this.facets = f;
-        this.uri = u;
+        this.uri = u.getIRI();
         this.ancestors = ancestors;
     }
 
@@ -163,7 +164,6 @@ public abstract class AbstractDatatype<R extends Comparable<R>> implements Datat
         visitor.visit(this);
     }
 
-    @Nullable
     @Override
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);

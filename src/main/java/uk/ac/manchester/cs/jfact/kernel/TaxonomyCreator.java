@@ -134,7 +134,9 @@ public class TaxonomyCreator implements Serializable {
 
     /** explicitely run TD phase */
     @PortedFrom(file = "TaxonomyCreator.h", name = "runTopDown")
-    protected void runTopDown() {}
+    protected void runTopDown() {
+        // nothing as default
+    }
 
     /**
      * check if it is possible to skip BU phase
@@ -148,11 +150,15 @@ public class TaxonomyCreator implements Serializable {
 
     /** explicitely run BU phase */
     @PortedFrom(file = "TaxonomyCreator.h", name = "runBottomUp")
-    protected void runBottomUp() {}
+    protected void runBottomUp() {
+        // nothing as default
+    }
 
     /** actions that to be done BEFORE entry will be classified */
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "preClassificationActions")
-    protected void preClassificationActions() {}
+    protected void preClassificationActions() {
+        // nothing as default
+    }
 
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "performClassification")
     private void performClassification() {

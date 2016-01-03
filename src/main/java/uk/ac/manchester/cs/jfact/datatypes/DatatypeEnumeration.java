@@ -34,7 +34,7 @@ public class DatatypeEnumeration<R extends Comparable<R>>
      *        d
      */
     public DatatypeEnumeration(Datatype<R> d) {
-        this.uri = IRI.create("urn:enum" + DatatypeFactory.getIndex());
+        this.uri = DatatypeFactory.getIndex("urn:enum").getIRI();
         this.host = d;
     }
 
@@ -196,7 +196,6 @@ public class DatatypeEnumeration<R extends Comparable<R>>
         visitor.visit(this);
     }
 
-    @Nullable
     @Override
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);

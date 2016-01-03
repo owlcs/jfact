@@ -43,7 +43,9 @@ public class LogicFeatures implements Serializable {
     @PortedFrom(file = "LogicFeature.h", name = "lfTopRole")            private static final int TOPROLE          = 15;
     //@formatter:on
     /** default c'tor */
-    public LogicFeatures() {}
+    public LogicFeatures() {
+        super();
+    }
 
     /**
      * copy c'tor

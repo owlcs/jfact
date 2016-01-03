@@ -31,7 +31,7 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
      *        d
      */
     public DatatypeNegation(Datatype<R> d) {
-        this.uri = IRI.create("urn:neg" + DatatypeFactory.getIndex());
+        this.uri = DatatypeFactory.getIndex("urn:neg").getIRI();
         host = d;
     }
 
@@ -160,7 +160,6 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
         visitor.visit(this);
     }
 
-    @Nullable
     @Override
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);

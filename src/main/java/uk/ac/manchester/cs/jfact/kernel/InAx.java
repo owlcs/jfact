@@ -60,12 +60,10 @@ public class InAx implements Serializable {
     /**
      * @param c
      *        concept
-     * @param t
-     *        tbox
      * @return true if a concept C is a concept is non-primitive
      */
     @PortedFrom(file = "tAxiom.cpp", name = "isNP")
-    public static boolean isNP(Concept c, TBox t) {
+    public static boolean isNP(Concept c) {
         return c.isNonPrimitive() && !hasDefCycle(c);
     }
 
@@ -141,12 +139,10 @@ public class InAx implements Serializable {
     /**
      * @param p
      *        the tree
-     * @param t
-     *        tbox
      * @return true iff P is a positive non-primitive CN
      */
-    public static boolean isPosNP(DLTree p, TBox t) {
-        return isPosCN(p) && isNP(getConcept(p.getChild()), t);
+    public static boolean isPosNP(DLTree p) {
+        return isPosCN(p) && isNP(getConcept(p.getChild()));
     }
 
     /**
@@ -170,12 +166,10 @@ public class InAx implements Serializable {
     /**
      * @param p
      *        the tree
-     * @param t
-     *        tbox
      * @return true iff P is a negative non-primitive CN
      */
-    public static boolean isNegNP(DLTree p, TBox t) {
-        return isNegCN(p) && isNP(getConcept(p), t);
+    public static boolean isNegNP(DLTree p) {
+        return isNegCN(p) && isNP(getConcept(p));
     }
 
     /**

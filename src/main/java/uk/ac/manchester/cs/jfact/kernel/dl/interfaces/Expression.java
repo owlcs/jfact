@@ -1,14 +1,20 @@
 package uk.ac.manchester.cs.jfact.kernel.dl.interfaces;
 
-import javax.annotation.Nullable;
+import org.semanticweb.owlapi.model.IRI;
 
 import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 /** expression */
+@SuppressWarnings("unused")
 @PortedFrom(file = "tNAryQueue.h", name = "Expression")
 public interface Expression extends Entity {
+
+    @Override
+    default IRI getIRI() {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * accept method for the visitor pattern
@@ -17,7 +23,7 @@ public interface Expression extends Entity {
      *        visitor
      */
     @PortedFrom(file = "tDLExpression.h", name = "accept")
-        void accept(DLExpressionVisitor visitor);
+    default void accept(DLExpressionVisitor visitor) {}
 
     /**
      * @param visitor
@@ -26,7 +32,8 @@ public interface Expression extends Entity {
      *        visitor type
      * @return visitor value
      */
-    @Nullable
     @PortedFrom(file = "tDLExpression.h", name = "accept")
-    <O> O accept(DLExpressionVisitorEx<O> visitor);
+    default <O> O accept(DLExpressionVisitorEx<O> visitor) {
+        return null;
+    }
 }

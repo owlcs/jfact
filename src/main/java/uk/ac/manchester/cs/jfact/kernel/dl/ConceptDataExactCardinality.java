@@ -1,7 +1,5 @@
 package uk.ac.manchester.cs.jfact.kernel.dl;
 
-import javax.annotation.Nullable;
-
 import conformance.PortedFrom;
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
@@ -35,7 +33,6 @@ public class ConceptDataExactCardinality extends AbstractConceptDataCardinality 
         visitor.visit(this);
     }
 
-    @Nullable
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {

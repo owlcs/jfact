@@ -10,15 +10,12 @@ import java.util.Collection;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.semanticweb.owlapi.model.IRI;
-
 class DatatypeExpressionImpl<O extends Comparable<O>> extends AbstractDatatype<O> implements DatatypeExpression<O> {
 
     @Nonnull private final Datatype<O> host;
 
     public DatatypeExpressionImpl(Datatype<O> b) {
-        super(IRI.create(b.getDatatypeIRI() + "_" + DatatypeFactory.getIndex()), b.getFacets(),
-            Utils.generateAncestors(b.host()));
+        super(DatatypeFactory.getIndex(b.getDatatypeIRI() + "_"), b.getFacets(), Utils.generateAncestors(b.host()));
         this.host = b.host();
         knownNumericFacetValues.putAll(b.getKnownNumericFacetValues());
         knownNonNumericFacetValues.putAll(b.getKnownNonNumericFacetValues());

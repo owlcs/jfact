@@ -12,8 +12,7 @@ import java.util.Set;
 import org.semanticweb.owlapi.model.IRI;
 
 /** datatype union */
-public class DatatypeUnion implements
-        DatatypeCombination<DatatypeUnion, Datatype<?>> {
+public class DatatypeUnion implements DatatypeCombination<DatatypeUnion, Datatype<?>> {
 
     private final Set<Datatype<?>> basics = new HashSet<>();
     private final IRI uri;
@@ -35,7 +34,7 @@ public class DatatypeUnion implements
      *        host
      */
     public DatatypeUnion(Datatype<?> host) {
-        uri = IRI.create("urn:union#a" + DatatypeFactory.getIndex());
+        uri = DatatypeFactory.getIndex("urn:union#a").getIRI();
         this.host = host;
     }
 
@@ -90,8 +89,7 @@ public class DatatypeUnion implements
     public boolean emptyValueSpace() {
         // value space is empty if all the basics are expressions with empty
         // value space
-        return basics.stream().allMatch(
-                d -> d.isExpression() && d.asExpression().emptyValueSpace());
+        return basics.stream().allMatch(d -> d.isExpression() && d.asExpression().emptyValueSpace());
     }
 
     @Override

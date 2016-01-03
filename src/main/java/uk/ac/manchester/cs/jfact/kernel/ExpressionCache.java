@@ -23,16 +23,16 @@ public class ExpressionCache implements Serializable {
 
     /** nameset for concepts */
     @PortedFrom(file = "tExpressionManager.h", name = "NS_C") private final NameSet<ConceptName, IRI> conceptNameset = new NameSet<>(
-        new ConceptNameCreator());
+        name -> new ConceptName(name));
     /** nameset for individuals */
     @PortedFrom(file = "tExpressionManager.h", name = "NS_I") private final NameSet<IndividualName, IRI> individualNameset = new NameSet<>(
-        new IndividualNameCreator());
+        name -> new IndividualName(name));
     /** nameset for object roles */
     @PortedFrom(file = "tExpressionManager.h", name = "NS_OR") private final NameSet<ObjectRoleName, IRI> objectRoleNameset = new NameSet<>(
-        new ObjectroleNameCreator());
+        name -> new ObjectRoleName(name));
     /** nameset for data roles */
     @PortedFrom(file = "tExpressionManager.h", name = "NS_DR") private final NameSet<DataRoleName, IRI> dataRoleNameset = new NameSet<>(
-        new DataroleNameCreator());
+        name -> new DataRoleName(name));
     /** cache for the role inverses */
     @PortedFrom(file = "tExpressionManager.h", name = "InverseRoleCache") @Nonnull private final InverseRoleCache inverseRoleCache = new InverseRoleCache();
     /** cache for the one-of singletons */
@@ -162,30 +162,6 @@ public class ExpressionCache implements Serializable {
         return dataRoleNameset.insert(name);
     }
 
-    protected static class ObjectroleNameCreator implements NameCreator<ObjectRoleName, IRI>, Serializable {
-
-        @Override
-        public ObjectRoleName makeEntry(IRI name) {
-            return new ObjectRoleName(name);
-        }
-    }
-
-    protected static class IndividualNameCreator implements NameCreator<IndividualName, IRI>, Serializable {
-
-        @Override
-        public IndividualName makeEntry(IRI name) {
-            return new IndividualName(name);
-        }
-    }
-
-    protected static class ConceptNameCreator implements NameCreator<ConceptName, IRI>, Serializable {
-
-        @Override
-        public ConceptName makeEntry(IRI name) {
-            return new ConceptName(name);
-        }
-    }
-
     /** Cache for the inverse roles */
     protected static class InverseRoleCache implements Serializable {
 
@@ -224,14 +200,6 @@ public class ExpressionCache implements Serializable {
 
         public ObjectRoleExpression build(ObjectRoleExpression tail) {
             return new ObjectRoleInverse(tail);
-        }
-    }
-
-    protected static class DataroleNameCreator implements NameCreator<DataRoleName, IRI>, Serializable {
-
-        @Override
-        public DataRoleName makeEntry(IRI name) {
-            return new DataRoleName(name);
         }
     }
 }

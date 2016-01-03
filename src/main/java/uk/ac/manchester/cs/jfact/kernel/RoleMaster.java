@@ -32,14 +32,6 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 @PortedFrom(file = "RoleMaster.h", name = "RoleMaster")
 public class RoleMaster implements Serializable {
 
-    protected static class RoleCreator implements NameCreator<Role, IRI>, Serializable {
-
-        @Override
-        public Role makeEntry(IRI name) {
-            return new Role(name);
-        }
-    }
-
     /** number of the last registered role */
     @PortedFrom(file = "RoleMaster.h", name = "newRoleId") private int newRoleId;
     /** all registered roles */
@@ -75,7 +67,7 @@ public class RoleMaster implements Serializable {
         newRoleId = 1;
         emptyRole = new Role(botRoleName);
         universalRole = new Role(topRoleName);
-        roleNS = new NameSet<>(new RoleCreator());
+        roleNS = new NameSet<>(name -> new Role(name));
         dataRoles = d;
         useUndefinedNames = true;
         // no zero-named roles allowed

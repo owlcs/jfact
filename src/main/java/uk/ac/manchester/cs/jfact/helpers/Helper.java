@@ -19,8 +19,6 @@ import gnu.trove.list.TIntList;
 /** static methods */
 public class Helper implements Serializable {
 
-    private Helper() {}
-
     /** brancing level value */
     public static final int INITBRANCHINGLEVELVALUE = 1;
     /** invalid bipolar pointer */
@@ -29,6 +27,8 @@ public class Helper implements Serializable {
     public static final int BP_TOP = 1;
     /** bottom bipolar pointer */
     public static final int BP_BOTTOM = -1;
+
+    private Helper() {}
 
     /**
      * @param l

@@ -251,9 +251,9 @@ public class Axiom implements Serializable {
     @PortedFrom(file = "tAxiom.h", name = "simplifyCN")
     public Axiom simplifyCN(TBox t) {
         for (DLTree p : disjuncts) {
-            if (InAx.isPosNP(p, t)) {
+            if (InAx.isPosNP(p)) {
                 return simplifyPosNP(p, t);
-            } else if (InAx.isNegNP(p, t)) {
+            } else if (InAx.isNegNP(p)) {
                 return simplifyNegNP(p, t);
             }
         }

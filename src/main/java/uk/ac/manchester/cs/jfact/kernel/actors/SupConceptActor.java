@@ -46,7 +46,4 @@ public class SupConceptActor implements Actor, Serializable {
         }
         return v.synonyms().anyMatch(this::entry);
     }
-
-    @Override
-    public void clear() {}
 }

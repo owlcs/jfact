@@ -8,7 +8,6 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
 import java.io.Serializable;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.IRI;
 
@@ -46,7 +45,6 @@ public class ConceptDataForall implements ConceptDataRVExpression, DataRoleArg, 
         visitor.visit(this);
     }
 
-    @Nullable
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {

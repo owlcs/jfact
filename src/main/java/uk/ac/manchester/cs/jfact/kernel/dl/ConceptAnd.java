@@ -39,7 +39,6 @@ public class ConceptAnd extends NAryExpressionImpl<ConceptExpression>
         visitor.visit(this);
     }
 
-    @Nullable
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {

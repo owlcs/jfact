@@ -140,7 +140,6 @@ class NumericDatatypeWrapper<O extends Comparable<O>> implements NumericDatatype
         this.d.accept(visitor);
     }
 
-    @Nullable
     @Override
     public <T> T accept(DLExpressionVisitorEx<T> visitor) {
         return this.d.accept(visitor);

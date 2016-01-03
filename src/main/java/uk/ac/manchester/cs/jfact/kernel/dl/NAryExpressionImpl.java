@@ -28,9 +28,6 @@ public class NAryExpressionImpl<A extends Expression> implements NAryExpression<
     /** set of equivalent concept descriptions */
     private final List<A> base = new ArrayList<>();
 
-    /** Default constructor. */
-    public NAryExpressionImpl() {}
-
     @Override
     public void add(Collection<A> v) {
         v.forEach(this::add);

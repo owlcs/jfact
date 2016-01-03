@@ -26,7 +26,9 @@ public interface Actor {
         boolean apply(TaxonomyVertex v);
 
     /** clear collections */
-    void clear();
+    default void clear() {
+        // nothing to do as default
+    }
 
     /**
      * @param v

@@ -17,7 +17,9 @@ public class FastSetSimple extends AbstractFastSet {
     protected static final int DEFAULTSIZE = 16;
 
     /** Default constructor. */
-    public FastSetSimple() {}
+    public FastSetSimple() {
+        super();
+    }
 
     /**
      * @param c1

@@ -6,6 +6,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
@@ -44,7 +45,7 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
      * @param options
      *        options
      */
-    public NamedEntryCollection(String name, NameCreator<T, IRI> creator, JFactReasonerConfiguration options) {
+    public NamedEntryCollection(String name, Function<IRI, T> creator, JFactReasonerConfiguration options) {
         typeName = name;
         locked = false;
         nameset = new NameSet<>(creator);

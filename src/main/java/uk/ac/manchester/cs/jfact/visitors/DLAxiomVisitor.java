@@ -1,237 +1,277 @@
 package uk.ac.manchester.cs.jfact.visitors;
 
+import conformance.PortedFrom;
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomConceptInclusion;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleDomain;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleFunctional;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleRange;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDRoleSubsumption;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDeclaration;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDifferentIndividuals;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDisjointConcepts;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDisjointDRoles;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDisjointORoles;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomDisjointUnion;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomEquivalentConcepts;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomEquivalentDRoles;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomEquivalentORoles;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomFairnessConstraint;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomInstanceOf;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleDomain;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleFunctional;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleRange;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomORoleSubsumption;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRelatedTo;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRelatedToNot;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleAsymmetric;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleInverse;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleInverseFunctional;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleIrreflexive;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleReflexive;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleSymmetric;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomRoleTransitive;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomSameIndividuals;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOf;
-import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomValueOfNot;
-import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 
 /** axiom visitor */
 @PortedFrom(file = "tDLAxiom.h", name = "DLAxiomVisitor")
 public interface DLAxiomVisitor {
 
     /**
+     * @param a
+     *        parameter
+     */
+    default public void doDefault(@SuppressWarnings("unused") AxiomInterface a) {}
+
+    /**
      * @param axiom
      *        AxiomDeclaration axiom to visit
      */
-    void visit(AxiomDeclaration axiom);
+    default void visit(AxiomDeclaration axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomEquivalentConcepts axiom to visit
      */
-    void visit(AxiomEquivalentConcepts axiom);
+    default void visit(AxiomEquivalentConcepts axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomDisjointConcepts axiom to visit
      */
-    void visit(AxiomDisjointConcepts axiom);
+    default void visit(AxiomDisjointConcepts axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomEquivalentORoles axiom to visit
      */
-    void visit(AxiomEquivalentORoles axiom);
+    default void visit(AxiomEquivalentORoles axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomEquivalentDRoles axiom to visit
      */
-    void visit(AxiomEquivalentDRoles axiom);
+    default void visit(AxiomEquivalentDRoles axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomDisjointORoles axiom to visit
      */
-    void visit(AxiomDisjointORoles axiom);
+    default void visit(AxiomDisjointORoles axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomDisjointDRoles axiom to visit
      */
-    void visit(AxiomDisjointDRoles axiom);
+    default void visit(AxiomDisjointDRoles axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomSameIndividuals axiom to visit
      */
-    void visit(AxiomSameIndividuals axiom);
+    default void visit(AxiomSameIndividuals axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomDifferentIndividuals axiom to visit
      */
-    void visit(AxiomDifferentIndividuals axiom);
+    default void visit(AxiomDifferentIndividuals axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomFairnessConstraint axiom to visit
      */
-    void visit(AxiomFairnessConstraint axiom);
+    default void visit(AxiomFairnessConstraint axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomRoleInverse axiom to visit
      */
-    void visit(AxiomRoleInverse axiom);
+    default void visit(AxiomRoleInverse axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomORoleSubsumption axiom to visit
      */
-    void visit(AxiomORoleSubsumption axiom);
+    default void visit(AxiomORoleSubsumption axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomDRoleSubsumption axiom to visit
      */
-    void visit(AxiomDRoleSubsumption axiom);
+    default void visit(AxiomDRoleSubsumption axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomORoleDomain axiom to visit
      */
-    void visit(AxiomORoleDomain axiom);
+    default void visit(AxiomORoleDomain axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomDRoleDomain axiom to visit
      */
-    void visit(AxiomDRoleDomain axiom);
+    default void visit(AxiomDRoleDomain axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomORoleRange axiom to visit
      */
-    void visit(AxiomORoleRange axiom);
+    default void visit(AxiomORoleRange axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomDRoleRange axiom to visit
      */
-    void visit(AxiomDRoleRange axiom);
+    default void visit(AxiomDRoleRange axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomRoleTransitive axiom to visit
      */
-    void visit(AxiomRoleTransitive axiom);
+    default void visit(AxiomRoleTransitive axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomRoleReflexive axiom to visit
      */
-    void visit(AxiomRoleReflexive axiom);
+    default void visit(AxiomRoleReflexive axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomRoleIrreflexive axiom to visit
      */
-    void visit(AxiomRoleIrreflexive axiom);
+    default void visit(AxiomRoleIrreflexive axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomRoleSymmetric axiom to visit
      */
-    void visit(AxiomRoleSymmetric axiom);
+    default void visit(AxiomRoleSymmetric axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomRoleAsymmetric axiom to visit
      */
-    void visit(AxiomRoleAsymmetric axiom);
+    default void visit(AxiomRoleAsymmetric axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomORoleFunctional axiom to visit
      */
-    void visit(AxiomORoleFunctional axiom);
+    default void visit(AxiomORoleFunctional axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomDRoleFunctional axiom to visit
      */
-    void visit(AxiomDRoleFunctional axiom);
+    default void visit(AxiomDRoleFunctional axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomRoleInverseFunctional axiom to visit
      */
-    void visit(AxiomRoleInverseFunctional axiom);
+    default void visit(AxiomRoleInverseFunctional axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomConceptInclusion axiom to visit
      */
-    void visit(AxiomConceptInclusion axiom);
+    default void visit(AxiomConceptInclusion axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomInstanceOf axiom to visit
      */
-    void visit(AxiomInstanceOf axiom);
+    default void visit(AxiomInstanceOf axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomRelatedTo axiom to visit
      */
-    void visit(AxiomRelatedTo axiom);
+    default void visit(AxiomRelatedTo axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomRelatedToNot axiom to visit
      */
-    void visit(AxiomRelatedToNot axiom);
+    default void visit(AxiomRelatedToNot axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomValueOf axiom to visit
      */
-    void visit(AxiomValueOf axiom);
+    default void visit(AxiomValueOf axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomValueOfNot axiom to visit
      */
-    void visit(AxiomValueOfNot axiom);
+    default void visit(AxiomValueOfNot axiom) {
+        doDefault(axiom);
+    }
 
     /**
      * @param axiom
      *        AxiomDisjointUnion axiom to visit
      */
-    void visit(AxiomDisjointUnion axiom);
+    default void visit(AxiomDisjointUnion axiom) {
+        doDefault(axiom);
+    }
 }

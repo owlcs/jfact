@@ -42,104 +42,8 @@ import uk.ac.manchester.cs.jfact.kernel.todolist.ToDoList;
 @PortedFrom(file = "Reasoner.h", name = "DlSatTester")
 public class DlSatTester implements Serializable {
 
-    private class LocalFastSet implements FastSet, Serializable {
-
-        private BitSet pos = new BitSet();
-
-        public LocalFastSet() {}
-
-        @Override
-        public int[] toIntArray() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public int size() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void removeAt(int o) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void removeAllValues(int... values) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void removeAll(int i, int end) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void remove(int o) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public boolean isEmpty() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public boolean intersect(FastSet f) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public int get(int i) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public boolean containsAny(FastSet c) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public boolean containsAll(FastSet c) {
-            throw new UnsupportedOperationException();
-        }
-
-        private int asPositive(int p) {
-            return p >= 0 ? 2 * p : 1 - 2 * p;
-        }
-
-        @Override
-        public boolean contains(int o) {
-            return pos.get(asPositive(o));
-        }
-
-        @Override
-        public void clear() {
-            pos.clear();
-        }
-
-        @Override
-        public void addAll(FastSet c) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public boolean add(int e) {
-            int asPositive = asPositive(e);
-            if (!pos.get(asPositive)) {
-                pos.set(asPositive);
-                return true;
-            }
-            return false;
-        }
-
-        @Override
-        public void completeSet(int value) {
-            IntStream.range(0, value + 1).forEach(pos::set);
-        }
-    }
-
     /** Enum for usage the Tactics to a ToDoEntry */
-    abstract class BranchingContext implements Serializable {
+    class BranchingContext implements Serializable {
 
         /** currently processed node */
         protected DlCompletionTree node;
@@ -156,10 +60,14 @@ public class DlSatTester implements Serializable {
         }
 
         /** init indeces (if necessary) */
-        public abstract void init();
+        public void init() {
+            // default implementation empty
+        }
 
         /** give the next branching alternative */
-        public abstract void nextOption();
+        public void nextOption() {
+            // default implementation empty
+        }
 
         @Override
         public String toString() {
@@ -168,7 +76,7 @@ public class DlSatTester implements Serializable {
         }
     }
 
-    abstract class BCChoose extends BranchingContext {}
+    class BCChoose extends BranchingContext {}
 
     /** stack to keep BContext */
     class BCStack extends SaveStack<BranchingContext> {
@@ -239,14 +147,7 @@ public class DlSatTester implements Serializable {
          * @return choose
          */
         protected BCChoose pushCh() {
-            BCChoose c = new BCChoose() {
-
-                @Override
-                public void nextOption() {}
-
-                @Override
-                public void init() {}
-            };
+            BCChoose c = new BCChoose();
             push(c);
             return c;
         }
@@ -262,14 +163,7 @@ public class DlSatTester implements Serializable {
         }
     }
 
-    class BCBarrier extends BranchingContext {
-
-        @Override
-        public void init() {}
-
-        @Override
-        public void nextOption() {}
-    }
+    class BCBarrier extends BranchingContext {}
 
     class BCLE<I> extends BranchingContext {
 

@@ -33,7 +33,7 @@ public class DatatypeIntersection<T extends Comparable<T>>
      *        host
      */
     public DatatypeIntersection(Datatype<T> host) {
-        uri = IRI.create("urn:intersection#a" + DatatypeFactory.getIndex());
+        uri = DatatypeFactory.getIndex("urn:intersection#a").getIRI();
         this.host = host;
     }
 

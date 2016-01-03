@@ -449,17 +449,19 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
             if (tBox.isBlockedInd(curI)) {
                 // check whether current entry is the same as another individual
                 Individual syn = tBox.getBlockingInd(curI);
-                assert syn.getTaxVertex() != null;
+                assert syn.isClassified();
+                TaxonomyVertex taxVertex = syn.getTaxVertex();
+                assert taxVertex != null;
                 if (tBox.isBlockingDet(curI)) {
                     // deterministic merge => curI = syn
-                    pTax.addCurrentToSynonym(syn.getTaxVertex());
+                    pTax.addCurrentToSynonym(taxVertex);
                     return true;
                 } else {
                     // non-det merge: check whether it is the same
                     tBox.getOptions().getLog().print("\nTAX: trying '", curI.getIRI(), "' = '", syn.getIRI(), "'... ");
                     if (testSubTBox(curI, syn)) {
                         // they are actually the same
-                        pTax.addCurrentToSynonym(syn.getTaxVertex());
+                        pTax.addCurrentToSynonym(taxVertex);
                         return true;
                     }
                 }

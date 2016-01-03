@@ -45,7 +45,6 @@ class LiteralImpl<T extends Comparable<T>> implements Literal<T>, Serializable {
         visitor.visit(this);
     }
 
-    @Nullable
     @Override
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {
         return visitor.visit(this);

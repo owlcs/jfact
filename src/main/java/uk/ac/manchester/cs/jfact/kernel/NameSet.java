@@ -6,6 +6,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.util.LinkedHashMap;
+import java.util.function.Function;
 
 import conformance.PortedFrom;
 
@@ -20,16 +21,14 @@ import conformance.PortedFrom;
 @PortedFrom(file = "tNameSet.h", name = "TNameSet")
 public class NameSet<T, K> extends LinkedHashMap<K, T> {
 
-
     /** creator of new name */
-    @PortedFrom(file = "tNameSet.h", name = "Creator")
-    private final NameCreator<T, K> creator;
+    @PortedFrom(file = "tNameSet.h", name = "Creator") private final Function<K, T> creator;
 
     /**
      * @param p
      *        p
      */
-    public NameSet(NameCreator<T, K> p) {
+    public NameSet(Function<K, T> p) {
         creator = p;
     }
 
@@ -42,7 +41,7 @@ public class NameSet<T, K> extends LinkedHashMap<K, T> {
      */
     @PortedFrom(file = "tNameSet.h", name = "add")
     public T add(K id) {
-        T pne = creator.makeEntry(id);
+        T pne = creator.apply(id);
         put(id, pne);
         return pne;
     }

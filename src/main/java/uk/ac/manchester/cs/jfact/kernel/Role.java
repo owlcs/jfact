@@ -6,6 +6,7 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static java.util.stream.Collectors.joining;
+import static org.semanticweb.owlapi.util.OWLAPIPreconditions.verifyNotNull;
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
 import static uk.ac.manchester.cs.jfact.helpers.DLTree.equalTrees;
 import static uk.ac.manchester.cs.jfact.helpers.Helper.BP_INVALID;
@@ -187,8 +188,7 @@ public class Role extends ClassifiableEntry {
      */
     @PortedFrom(file = "tRole.h", name = "inverse")
     public Role inverse() {
-        assert inverse != null;
-        return resolveSynonym(inverse);
+        return resolveSynonym(verifyNotNull(inverse, "inverse not initialized"));
     }
 
     /**
@@ -1104,16 +1104,18 @@ public class Role extends ClassifiableEntry {
         // here automaton is complete
         automaton.setCompleted(true);
         if (!isBottom()) {
-            toldSubsumers.forEach(p -> {
-                Role r = (Role) resolveSynonym(p);
-                r.addSubRoleAutomaton(this);
-                if (hasSpecialDomain()) {
-                    r.specialDomain = true;
-                }
-            });
+            toldSubsumers.forEach(this::initRole);
         }
         // finish processing role
         rolesInProcess.remove(this);
+    }
+
+    protected void initRole(ClassifiableEntry p) {
+        Role r = (Role) resolveSynonym(p);
+        r.addSubRoleAutomaton(this);
+        if (hasSpecialDomain()) {
+            r.specialDomain = true;
+        }
     }
 
     /**

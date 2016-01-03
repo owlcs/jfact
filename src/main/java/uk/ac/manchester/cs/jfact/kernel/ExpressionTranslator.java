@@ -6,8 +6,6 @@ import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 
 import conformance.Original;
@@ -314,15 +312,13 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Seri
     }
 
     @Override
-    public DLTree visit(@Nonnull Datatype<?> expr) {
-        DatatypeEntry entry = new DatatypeEntry(expr);
-        return DLTreeFactory.wrap(entry);
+    public DLTree visit(Datatype<?> expr) {
+        return DLTreeFactory.wrap(new DatatypeEntry(expr));
     }
 
     @Override
-    public DLTree visit(@Nonnull DatatypeExpression<?> expr) {
-        DatatypeEntry entry = new DatatypeEntry(expr);
-        return DLTreeFactory.wrap(entry);
+    public DLTree visit(DatatypeExpression<?> expr) {
+        return DLTreeFactory.wrap(new DatatypeEntry(expr));
     }
 
     @Override

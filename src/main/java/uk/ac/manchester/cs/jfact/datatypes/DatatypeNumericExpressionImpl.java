@@ -5,23 +5,13 @@ import java.math.BigDecimal;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.semanticweb.owlapi.model.IRI;
-
-/* This file is part of the JFact DL reasoner
- Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
- This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
- This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
- You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.AbstractNumericDatatype;
-
 class DatatypeNumericExpressionImpl<O extends Comparable<O>> extends AbstractNumericDatatype<O>
     implements DatatypeExpression<O> {
 
     @Nonnull private final Datatype<O> host;
 
     public DatatypeNumericExpressionImpl(Datatype<O> b) {
-        super(IRI.create(b.getDatatypeIRI() + "_" + DatatypeFactory.getIndex()), b.getFacets(),
-            Utils.generateAncestors(b.host()));
+        super(DatatypeFactory.getIndex(b.getDatatypeIRI() + "_"), b.getFacets(), Utils.generateAncestors(b.host()));
         this.host = b.host();
         knownNumericFacetValues.putAll(b.getKnownNumericFacetValues());
         knownNonNumericFacetValues.putAll(b.getKnownNonNumericFacetValues());

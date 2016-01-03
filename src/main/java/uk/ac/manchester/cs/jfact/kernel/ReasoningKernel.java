@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
+import static org.semanticweb.owlapi.util.OWLAPIPreconditions.verifyNotNull;
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
@@ -206,7 +207,6 @@ public class ReasoningKernel implements Serializable {
      *        expr
      * @return get DLTree corresponding to an expression EXPR
      */
-    @Nullable
     @PortedFrom(file = "Kernel.h", name = "e")
     public DLTree e(Expression expr) {
         return expr.accept(pET);
@@ -541,11 +541,7 @@ public class ReasoningKernel implements Serializable {
      */
     @PortedFrom(file = "Kernel.h", name = "getIndividual")
     private Individual getIndividual(IndividualExpression i, String reason) {
-        DLTree ind = e(i);
-        if (ind == null) {
-            throw new ReasonerInternalException(reason);
-        }
-        return (Individual) getTBox().getCI(ind);
+        return (Individual) verifyNotNull(getTBox().getCI(verifyNotNull(e(i), reason)));
     }
 
     /**

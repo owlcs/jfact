@@ -7,8 +7,6 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
-import javax.annotation.Nullable;
-
 import org.semanticweb.owlapi.model.IRI;
 
 import conformance.Original;
@@ -45,7 +43,6 @@ public class ConceptDataValue implements ConceptDataRoleExpression, DataExpressi
         visitor.visit(this);
     }
 
-    @Nullable
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {

@@ -11,10 +11,11 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.*;
 
+import javax.annotation.Nullable;
+
 import conformance.Original;
 import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
-import uk.ac.manchester.cs.jfact.helpers.Reference;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import uk.ac.manchester.cs.jfact.kernel.DagTag;
@@ -28,7 +29,7 @@ public final class DataTypeReasoner implements Serializable {
     /** map Type.pName.Type appearance */
     @PortedFrom(file = "DataReasoning.h", name = "Map") private final Map<Datatype<?>, DataTypeSituation<?>> map = new HashMap<>();
     /** dep-set for the clash for *all* the types */
-    @PortedFrom(file = "DataReasoning.h", name = "clashDep") private final Reference<DepSet> clashDep = new Reference<>();
+    @PortedFrom(file = "DataReasoning.h", name = "clashDep") private Optional<DepSet> clashDep = Optional.empty();
     @Original private final JFactReasonerConfiguration options;
 
     /**
@@ -51,7 +52,7 @@ public final class DataTypeReasoner implements Serializable {
     public void reportClash(DepSet dep, DatatypeClashes reason) {
         // inform about clash...
         options.getLog().print(reason);
-        clashDep.setReference(dep);
+        clashDep = Optional.ofNullable(dep);
     }
 
     /**
@@ -94,9 +95,10 @@ public final class DataTypeReasoner implements Serializable {
      * 
      * @return clash set
      */
+    @Nullable
     @PortedFrom(file = "DataReasoning.h", name = "getClashSet")
     public DepSet getClashSet() {
-        return clashDep.getReference();
+        return clashDep.orElse(null);
     }
 
     /**
@@ -128,8 +130,7 @@ public final class DataTypeReasoner implements Serializable {
     }
 
     @Original
-    private <R extends Comparable<R>> boolean dataExpression(boolean positive, DatatypeExpression<R> c,
-        DepSet dep) {
+    private <R extends Comparable<R>> boolean dataExpression(boolean positive, DatatypeExpression<R> c, DepSet dep) {
         Datatype<R> typeToIndex = c.getHostType();
         if (c instanceof DatatypeEnumeration) {
             typeToIndex = c;

@@ -8,8 +8,6 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import org.semanticweb.owlapi.model.IRI;
 
 import conformance.PortedFrom;
@@ -45,7 +43,6 @@ public class ConceptOneOf<I extends IndividualExpression> extends NAryExpression
         visitor.visit(this);
     }
 
-    @Nullable
     @Override
     @PortedFrom(file = "tDLExpression.h", name = "accept")
     public <O> O accept(DLExpressionVisitorEx<O> visitor) {

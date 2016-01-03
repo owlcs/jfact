@@ -127,7 +127,10 @@ public class ClassifiableEntry extends NamedEntry {
      */
     @PortedFrom(file = "taxNamEntry.h", name = "addParent")
     public void addParent(ClassifiableEntry parent) {
-        toldSubsumers.add(parent);
+        // a node cannot be its own parent
+        if (parent != this) {
+            toldSubsumers.add(parent);
+        }
     }
 
     /**
@@ -177,9 +180,7 @@ public class ClassifiableEntry extends NamedEntry {
     @PortedFrom(file = "taxNamEntry.h", name = "canonicaliseSynonym")
     public void canonicaliseSynonym() {
         assert isSynonym();
-        if (isSynonym()) {
-            pSynonym = resolveSynonym(pSynonym);
-        }
+        pSynonym = resolveSynonym(pSynonym);
     }
 
     /**
@@ -227,13 +228,9 @@ public class ClassifiableEntry extends NamedEntry {
      *        expression type
      * @return resolved synonym
      */
-    @Nullable
     @SuppressWarnings("unchecked")
     @PortedFrom(file = "taxNamEntry.h", name = "resolveSynonym")
-    public static <T extends ClassifiableEntry> T resolveSynonym(@Nullable T p) {
-        if (p == null) {
-            return null;
-        }
+    public static <T extends ClassifiableEntry> T resolveSynonym(T p) {
         if (p.isSynonym()) {
             return resolveSynonym((T) p.pSynonym);
         }
@@ -246,12 +243,6 @@ public class ClassifiableEntry extends NamedEntry {
      */
     @PortedFrom(file = "taxNamEntry.h", name = "addParentIfNew")
     public void addParentIfNew(ClassifiableEntry parent) {
-        // resolve synonyms
-        parent = resolveSynonym(parent);
-        // node can not be its own parent
-        if (parent == this) {
-            return;
-        }
-        addParent(parent);
+        addParent(resolveSynonym(parent));
     }
 }
