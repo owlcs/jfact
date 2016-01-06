@@ -12,9 +12,9 @@ import java.util.BitSet;
 import java.util.stream.Stream;
 
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.chainsaw.FastSet;
+import uk.ac.manchester.cs.chainsaw.FastSetFactory;
 import uk.ac.manchester.cs.jfact.helpers.DLVertex;
-import uk.ac.manchester.cs.jfact.helpers.FastSet;
-import uk.ac.manchester.cs.jfact.helpers.FastSetFactory;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import uk.ac.manchester.cs.jfact.kernel.*;

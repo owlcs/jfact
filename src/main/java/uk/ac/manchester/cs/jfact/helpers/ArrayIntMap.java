@@ -32,7 +32,7 @@ public class ArrayIntMap implements Serializable {
             return -size - 1;
         }
         int lowerbound = 0;
-        if (size < AbstractFastSet.LIMIT) {
+        if (size < 5) {
             for (; lowerbound < size; lowerbound++) {
                 if (values[0][lowerbound] == key) {
                     return lowerbound;

@@ -34,6 +34,8 @@ import conformance.PortedFrom;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.list.linked.TIntLinkedList;
+import uk.ac.manchester.cs.chainsaw.FastSet;
+import uk.ac.manchester.cs.chainsaw.FastSetFactory;
 import uk.ac.manchester.cs.jfact.datatypes.Datatype;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeEntry;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeExpression;

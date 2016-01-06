@@ -16,6 +16,8 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.chainsaw.FastSet;
+import uk.ac.manchester.cs.chainsaw.FastSetFactory;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
 import uk.ac.manchester.cs.jfact.helpers.*;
 import uk.ac.manchester.cs.jfact.kernel.state.DLCompletionGraphSaveState;

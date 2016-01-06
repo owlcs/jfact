@@ -11,14 +11,13 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import uk.ac.manchester.cs.jfact.helpers.DLVertex;
-import uk.ac.manchester.cs.jfact.helpers.FastSet;
-import uk.ac.manchester.cs.jfact.helpers.FastSetFactory;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.chainsaw.FastSet;
+import uk.ac.manchester.cs.chainsaw.FastSetFactory;
+import uk.ac.manchester.cs.jfact.helpers.DLVertex;
 
 @PortedFrom(file = "dlVHash.h", name = "dlVHashTable")
 class DLVTable implements Serializable {
-
 
     /** host DAG that contains actual nodes; */
     private final DLDag host;

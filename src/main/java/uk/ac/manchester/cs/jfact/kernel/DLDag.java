@@ -21,6 +21,8 @@ import org.semanticweb.owlapi.model.OWLRuntimeException;
 
 import conformance.Original;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.chainsaw.FastSet;
+import uk.ac.manchester.cs.chainsaw.FastSetFactory;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeEntry;
 import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
 import uk.ac.manchester.cs.jfact.helpers.*;
