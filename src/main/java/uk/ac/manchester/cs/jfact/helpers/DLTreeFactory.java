@@ -132,8 +132,8 @@ public class DLTreeFactory implements Serializable {
      * @return a construction in the form AND (\neg q_i)
      */
     public static DLTree buildDisjAux(List<DLTree> arguments) {
-        return DLTreeFactory
-            .createSNFAnd(asList(arguments.stream().map(DLTree::copy).map(DLTreeFactory::createSNFNot)));
+        return DLTreeFactory.createSNFAnd(asList(arguments.stream().map(DLTree::copy).map(
+            DLTreeFactory::createSNFNot)));
     }
 
     /**
@@ -229,7 +229,6 @@ public class DLTreeFactory implements Serializable {
         if (hasTop && l.isEmpty()) {
             return createTop();
         }
-        // XXX port to 4
         if (l.size() == 1) {
             return l.get(0);
         }
@@ -590,8 +589,8 @@ public class DLTreeFactory implements Serializable {
      * @return true if functional
      */
     public static boolean isFunctionalExpr(@Nullable DLTree t, NamedEntry r) {
-        return t != null && t.token() == LE && r.equals(t.getLeft().elem().getNE()) && t.elem().getData() == 1
-            && t.getRight().isTOP();
+        return t != null && t.token() == LE && r.equals(t.getLeft().elem().getNE()) && t.elem().getData() == 1 && t
+            .getRight().isTOP();
     }
 
     /**
@@ -669,7 +668,6 @@ public class DLTreeFactory implements Serializable {
                 return false;
             }
         } else {
-            // XXX port to 4
             AtomicBoolean b = new AtomicBoolean(false);
             desc.children().forEach(d -> b.set(replaceSynonymsFromTree(d) || b.get()));
             return b.get();

@@ -56,15 +56,8 @@ public class ExpressionCache implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "OneOf")
     public ConceptExpression oneOf(List<IndividualExpression> l) {
-        // XXX optimize these creations
         if (l.size() == 1) {
-            IndividualExpression i = l.get(0);
-            ConceptExpression c = oneOfCache.get(i);
-            if (c == null) {
-                c = new ConceptOneOf<>(l);
-                oneOfCache.put(i, c);
-            }
-            return c;
+            return oneOfCache.computeIfAbsent(l.get(0), x -> new ConceptOneOf<>(l));
         }
         return new ConceptOneOf<>(l);
     }

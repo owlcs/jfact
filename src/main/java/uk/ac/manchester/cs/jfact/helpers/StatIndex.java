@@ -65,7 +65,8 @@ public enum StatIndex {
      *        true if debug values
      */
     public static void updateStatValues(int d, int s, int b, int g, boolean pos, int[] stat, boolean debug) {
-        if (debug) {// XXX debug statements
+        if (debug) {
+            // XXX debug statements
             System.out.println("StatIndex.updateStatValues() " + d + "\t" + s + "\t" + b + "\t" + g + "\t" + pos + "\t"
                 + Arrays.toString(stat));
             System.out.println("StatIndex.updateStatValues() value pre increment " + stat[SIZE.getIndex(pos)]);

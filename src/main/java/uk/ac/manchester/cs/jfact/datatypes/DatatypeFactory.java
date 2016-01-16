@@ -85,7 +85,6 @@ public class DatatypeFactory implements Serializable {
 
     private DatatypeFactory() {
         values.forEach(d -> knownDatatypes.put(d.getDatatypeIRI(), d));
-        // XXX handle dates as datetimes
         knownDatatypes.put(XSDVocabulary.DATE.getIRI(), DATETIME);
     }
 

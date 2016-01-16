@@ -87,8 +87,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
             resize(inequalityRelation, n);
             inequalityRelationHelper.clear();
             // TODO check performances of this
-            inequalityRelation.stream().filter(p -> p != null)
-                .forEach(p -> inequalityRelationHelper.put(p.getConcept(), p));
+            inequalityRelation.stream().filter(p -> p != null).forEach(p -> inequalityRelationHelper.put(p.getConcept(),
+                p));
         }
     }
 
@@ -818,12 +818,11 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     private boolean b2Complex(RAStateTransitions rst, int c) {
         DlCompletionTree parent = getParentNode();
         CGLabel parLab = parent.label();
-        return !neighbour.stream().filter(p -> recognise(rst, parent, p)).anyMatch(
-            p -> rst.stream().anyMatch(q -> q.applicable(p.getRole()) && !parLab.containsCC(c + q.finalState())));
+        return !neighbour.stream().filter(p -> recognise(rst, parent, p)).anyMatch(p -> rst.stream().anyMatch(q -> q
+            .applicable(p.getRole()) && !parLab.containsCC(c + q.finalState())));
     }
 
     protected boolean recognise(RAStateTransitions rst, DlCompletionTree parent, DlCompletionTreeArc p) {
-        // XXX this equals() might be ==
         return !p.isIBlocked() && p.getArcEnd().equals(parent) && rst.recognise(p.getRole());
     }
 
@@ -857,8 +856,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
             ret = false;
         } else {
             // ...and <=n-1 S-succ. z with C\in L(z)
-            long m = p.neighbour.stream()
-                .filter(q -> q.isSuccEdge() && q.isNeighbour(t) && q.getArcEnd().isLabelledBy(c)).count();
+            long m = p.neighbour.stream().filter(q -> q.isSuccEdge() && q.isNeighbour(t) && q.getArcEnd().isLabelledBy(
+                c)).count();
             ret = m < n;
         }
         return ret;
@@ -1013,8 +1012,8 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
 
     @Nullable
     private DlCompletionTree isNSomeApplicable(Role r, int c) {
-        Optional<DlCompletionTreeArc> findAny = neighbour.stream()
-            .filter(p -> p.isNeighbour(r) && p.getArcEnd().isLabelledBy(c)).findAny();
+        Optional<DlCompletionTreeArc> findAny = neighbour.stream().filter(p -> p.isNeighbour(r) && p.getArcEnd()
+            .isLabelledBy(c)).findAny();
         if (findAny.isPresent()) {
             return findAny.get().getArcEnd();
         }
