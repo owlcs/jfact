@@ -139,6 +139,9 @@ public class Ontology implements Serializable {
         return axioms.stream().filter(p -> p.isUsed()).flatMap(p -> ((AxiomImpl) p).namedEntitySignature()).distinct();
     }
 
+    /**
+     * @return named entities
+     */
     public Collection<NamedEntity> getSignature() {
         return asList(signature().filter(p -> p instanceof NamedEntity).map(p -> (NamedEntity) p));
     }

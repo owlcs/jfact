@@ -118,6 +118,8 @@ public class Concept extends ClassifiableEntry {
     }
 
     /**
+     * @param df
+     *        data factory
      * @return bottom concept
      */
     @Original
@@ -132,6 +134,8 @@ public class Concept extends ClassifiableEntry {
     }
 
     /**
+     * @param df
+     *        data factory
      * @return top concept
      */
     @Original

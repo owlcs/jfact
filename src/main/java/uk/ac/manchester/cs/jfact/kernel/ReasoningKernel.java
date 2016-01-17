@@ -110,6 +110,8 @@ public class ReasoningKernel implements Serializable {
      *        conf
      * @param factory
      *        factory
+     * @param df
+     *        data factory
      */
     public ReasoningKernel(JFactReasonerConfiguration conf, DatatypeFactory factory, OWLDataFactory df) {
         // should be commented
@@ -400,6 +402,8 @@ public class ReasoningKernel implements Serializable {
      *        useSemantic
      * @param type
      *        type
+     * @param r
+     *        reasoner
      * @return a set of axioms that corresponds to the atom with the id INDEX
      */
     @PortedFrom(file = "Kernel.h", name = "getModule")
@@ -420,6 +424,8 @@ public class ReasoningKernel implements Serializable {
      *        useSemantic
      * @param type
      *        type
+     * @param r
+     *        reasoner
      * @return a set of axioms that corresponds to the atom with the id INDEX
      */
     @PortedFrom(file = "Kernel.h", name = "getNonLocal")
@@ -1792,8 +1798,6 @@ public class ReasoningKernel implements Serializable {
      * 
      * @param entity
      *        entity
-     * @param module
-     *        Module
      */
     @PortedFrom(file = "Incremental.cpp", name = "setupSig")
     public void setupSig(@Nullable OWLEntity entity) {
@@ -2122,6 +2126,8 @@ public class ReasoningKernel implements Serializable {
     /**
      * create new atomic decomposition of the loaded ontology using TYPE.
      * 
+     * @param o
+     *        ontology
      * @param useSemantics
      *        useSemantics
      * @param type

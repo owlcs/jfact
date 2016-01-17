@@ -14,7 +14,6 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import conformance.Original;
 import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.NAryExpressionImpl;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 
@@ -25,8 +24,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
  *        expression type
  */
 @Original
-public abstract class AbstractNaryAxiom<I extends Expression> extends AxiomImpl implements AxiomInterface,
-    NAryExpression<I> {
+public abstract class AbstractNaryAxiom<I extends Expression> extends AxiomImpl implements NAryExpression<I> {
 
     private final NAryExpressionImpl<I> delegate;
 

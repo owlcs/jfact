@@ -14,14 +14,20 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapitools.decomposition.AxiomWrapper;
 
 import conformance.PortedFrom;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
+/**
+ * Axiom implementation
+ */
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiom")
-public abstract class AxiomImpl extends AxiomWrapper implements AxiomInterface, Serializable {
+public abstract class AxiomImpl extends AxiomWrapper implements Serializable {
 
+    /**
+     * @param ax
+     *        axiom
+     */
     public AxiomImpl(@Nullable OWLAxiom ax) {
         super(ax);
     }

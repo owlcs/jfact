@@ -178,6 +178,8 @@ public class TBox implements Serializable {
      *        configuration
      * @param interrupted
      *        interrupted
+     * @param df
+     *        data factory
      */
     public TBox(DatatypeFactory datatypeFactory, JFactReasonerConfiguration configuration, AtomicBoolean interrupted,
         OWLDataFactory df) {

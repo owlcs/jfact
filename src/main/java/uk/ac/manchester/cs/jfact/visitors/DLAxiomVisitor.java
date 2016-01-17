@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.visitors;
 
+import org.semanticweb.owlapitools.decomposition.AxiomWrapper;
+
 import conformance.PortedFrom;
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
@@ -7,7 +9,6 @@ import conformance.PortedFrom;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 
 /** axiom visitor */
 @PortedFrom(file = "tDLAxiom.h", name = "DLAxiomVisitor")
@@ -17,7 +18,7 @@ public interface DLAxiomVisitor {
      * @param a
      *        parameter
      */
-    default void doDefault(@SuppressWarnings("unused") AxiomInterface a) {}
+    default void doDefault(@SuppressWarnings("unused") AxiomWrapper a) {}
 
     /**
      * @param axiom
