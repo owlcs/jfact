@@ -345,7 +345,7 @@ public class DLTreeFactory implements Serializable {
      */
     public static DLTree createSNFLE(int n, DLTree r, DLTree c) {
         if (c.isBOTTOM()) {
-            // <= n R.F -> T;
+            // <= n R.F -> T
             return createTop();
         }
         if (n == 0) {

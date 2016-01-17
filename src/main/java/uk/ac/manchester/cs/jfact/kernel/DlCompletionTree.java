@@ -775,7 +775,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
                 }
             }
         }
-        // all other is OK -- done;
+        // all other is OK -- done
         return true;
     }
 
@@ -844,7 +844,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
         assert hasParent();
         // XXX here FaCT++ has blocking stats (tries), are they useful?
         boolean ret;
-        // if(<= n S C)\in L(w')then
+        // when (<= n S C) \in L(w') then
         // a)w is an inv(S)-succ of v or
         if (!isParentArcLabelled(t)) {
             ret = true;
@@ -877,7 +877,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     @PortedFrom(file = "Blocking.cpp", name = "B4")
     private boolean b4(int m, Role t, int e) {
         assert hasParent();
-        // if(>= m T E)\in L(w')then
+        // when (>= m T E) \in L(w') then
         // b)w is an inv(T)succ of v and E\in L(v)and m == 1 or
         if (isParentArcLabelled(t) && m == 1 && getParentNode().isLabelledBy(e)) {
             return true;
@@ -902,7 +902,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     @PortedFrom(file = "Blocking.cpp", name = "B5")
     private boolean b5(Role t, int e) {
         assert hasParent();
-        // if(<= n T E)\in L(w'), then
+        // when (<= n T E) \in L(w'), then
         // either w is not an inv(T)-successor of v...
         if (!isParentArcLabelled(t)) {
             return true;

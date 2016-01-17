@@ -13,8 +13,8 @@ import java.util.Collection;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends AbstractDatatype<O>
-    implements DatatypeExpression<O>, OrderedDatatype<O> {
+class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends AbstractDatatype<O> implements
+    DatatypeExpression<O>, OrderedDatatype<O> {
 
     @Nonnull private final Datatype<O> host;
 
@@ -54,23 +54,14 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends AbstractDat
     @SuppressWarnings("unchecked")
     @Override
     public boolean isCompatible(Datatype<?> type) {
-        // if (!super.isCompatible(type)) {
-        // return false;
-        // }
         if (type.equals(LITERAL)) {
             return true;
         }
-        // if(isSubType(type)||type.isSubType(this)) {
-        // return true;
-        // }
         if (type.isOrderedDatatype()) {
             OrderedDatatype<O> wrapper = (OrderedDatatype<O>) type.asOrderedDatatype();
-            // if both have no max or both have no min -> there is an
-            // overlap
-            // if one has no max, then min must be smaller than max of the
-            // other
-            // if one has no min, the max must be larger than min of the
-            // other
+            // if both have no max or both have no min -> there is an overlap
+            // if one has no max, then min must be smaller than max of the other
+            // if one has no min, the max must be larger than min of the other
             // if one has neither max nor min, they are compatible
             if (!this.hasMax() && !this.hasMin()) {
                 return true;
@@ -146,8 +137,8 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends AbstractDat
             throw new IllegalArgumentException("Value cannot be null");
         }
         if (value instanceof Literal && !this.host.isCompatible((Literal<?>) value)) {
-            throw new IllegalArgumentException(
-                "Not a valid value for this expression: " + f + '\t' + value + " for: " + this);
+            throw new IllegalArgumentException("Not a valid value for this expression: " + f + '\t' + value + " for: "
+                + this);
         }
         DatatypeOrderedExpressionImpl<O> toReturn = new DatatypeOrderedExpressionImpl<>(this.host);
         toReturn.knownNumericFacetValues.putAll(knownNumericFacetValues);

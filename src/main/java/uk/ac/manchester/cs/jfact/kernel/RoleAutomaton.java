@@ -102,7 +102,6 @@ public class RoleAutomaton implements Serializable {
      */
     @PortedFrom(file = "RAutomaton.h", name = "addRA")
     public void addRA(RoleAutomaton ra) {
-        // assert !isCompleted();
         if (ra.isSimple()) {
             boolean ok = base.get(INITIAL).addToExisting(ra.get(INITIAL).begin().get(0));
             assert ok;
@@ -307,7 +306,6 @@ public class RoleAutomaton implements Serializable {
      */
     @PortedFrom(file = "RAutomaton.h", name = "addToChain")
     public boolean addToChain(RoleAutomaton ra, boolean oSafe, int fRA) {
-        // XXX assert !isCompleted();
         boolean needFinalTrans = fRA < size() && !ra.isOSafe();
         // we can skip transition if chaining automata are i- and o-safe
         if (!oSafe && !ra.isISafe()) {
@@ -358,7 +356,6 @@ public class RoleAutomaton implements Serializable {
     /** @return true iff the automaton is simple */
     @PortedFrom(file = "RAutomaton.h", name = "isSimple")
     public boolean isSimple() {
-        // XXX assert isCompleted();
         return size() == 2 && inputSafe && outputSafe;
     }
 }

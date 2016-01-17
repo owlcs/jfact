@@ -542,15 +542,12 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
             }
             pTax.setVisited(cur);
             ClassifiableEntry entry = cur.getPrimer();
-            if (mPlus.contains(entry.getEntity()) || mMinus.contains(entry.getEntity())) {
+            if (mPlus.contains(entry.getEntity().getEntity()) || mMinus.contains(entry.getEntity().getEntity())) {
                 toProcess.add(entry);
             }
             cur.neigh(false).forEach(queue::add);
         }
         pTax.clearVisited();
-        // System.out.println("Determine concepts that need reclassification ("
-        // + toProcess.size() + "): done in " + t);
-        // System.out.println("Add/Del names Taxonomy:" + tax);
         toProcess.forEach(p -> reclassify(p.getTaxVertex(), tBox.getSignature(p)));
         pTax.finalise();
     }
@@ -568,8 +565,8 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         TaxonomyVertex oldCur = pTax.getCurrent();
         pTax.setCurrent(node);
         // FIXME!! check the unsatisfiability later
-        boolean added = mPlus.contains(curEntry.getEntity());
-        boolean removed = mMinus.contains(curEntry.getEntity());
+        boolean added = mPlus.contains(curEntry.getEntity().getEntity());
+        boolean removed = mMinus.contains(curEntry.getEntity().getEntity());
         assert added || removed;
         clearLabels();
         setValue(pTax.getTopVertex(), true);

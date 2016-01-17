@@ -130,8 +130,8 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
      * @return true if compatible
      */
     public boolean checkCompatibleValue(DataTypeSituation<?> other) {
-        if (this.type.equals(DatatypeFactory.LITERAL) && emptyConstraints()
-            || other.type.equals(DatatypeFactory.LITERAL) && other.emptyConstraints()) {
+        if (this.type.equals(DatatypeFactory.LITERAL) && emptyConstraints() || other.type.equals(
+            DatatypeFactory.LITERAL) && other.emptyConstraints()) {
             return true;
         }
         if (incompatible(other)) {
@@ -160,8 +160,8 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
             return toReturn;
         }
         // otherwise signs differ and there are no constraints; return the
-        // opposite
-        // example: -short and {0}
+        // opposite.
+        // example: -short and {0}.
         return !toReturn;
     }
 

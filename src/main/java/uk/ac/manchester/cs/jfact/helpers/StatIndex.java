@@ -1,7 +1,5 @@
 package uk.ac.manchester.cs.jfact.helpers;
 
-import java.util.Arrays;
-
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -65,12 +63,6 @@ public enum StatIndex {
      *        true if debug values
      */
     public static void updateStatValues(int d, int s, int b, int g, boolean pos, int[] stat, boolean debug) {
-        if (debug) {
-            // XXX debug statements
-            System.out.println("StatIndex.updateStatValues() " + d + "\t" + s + "\t" + b + "\t" + g + "\t" + pos + "\t"
-                + Arrays.toString(stat));
-            System.out.println("StatIndex.updateStatValues() value pre increment " + stat[SIZE.getIndex(pos)]);
-        }
         stat[SIZE.getIndex(pos)] += s;
         stat[BRANCH.getIndex(pos)] += b;
         stat[GENER.getIndex(pos)] += g;
@@ -94,10 +86,6 @@ public enum StatIndex {
      *        true if debug values
      */
     public static void updateStatValues(DLVertex v, boolean posV, boolean pos, int[] stat, boolean debug) {
-        if (debug) {
-            System.out.println("StatIndex.updateStatValues() " + posV + "\t" + pos + "\t" + Arrays.toString(stat) + "\t"
-                + v.toString(true));
-        }
         updateStatValues(getDepth(posV, v.stat), getSize(posV, v.stat), getBranch(posV, v.stat), getGener(posV, v.stat),
             pos, stat, debug);
     }

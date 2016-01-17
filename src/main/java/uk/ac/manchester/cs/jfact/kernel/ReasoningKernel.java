@@ -521,10 +521,6 @@ public class ReasoningKernel implements Serializable {
     /** @return concept hierarchy */
     @PortedFrom(file = "Kernel.h", name = "getCTaxonomy")
     private Taxonomy getCTaxonomy() {
-        // if (!isKBClassified()) {
-        // throw new ReasonerInternalException(
-        // "No access to concept taxonomy: ontology not classified");
-        // }
         return getTBox().getTaxonomy();
     }
 
@@ -1769,9 +1765,7 @@ public class ReasoningKernel implements Serializable {
     private static TBox load(@Nullable byte[] tbox) {
         try {
             return (TBox) new ObjectInputStream(new ByteArrayInputStream(tbox)).readObject();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
         return null;
@@ -1918,7 +1912,6 @@ public class ReasoningKernel implements Serializable {
     private void classify(KBStatus status) {
         // don't do classification twice
         if (status != KBREALISED) {
-            // goto Realise;
             if (!pTBox.isConsistent()) {
                 return;
             }

@@ -19,7 +19,11 @@ import conformance.PortedFrom;
 import uk.ac.manchester.cs.chainsaw.FastSet;
 import uk.ac.manchester.cs.chainsaw.FastSetFactory;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
-import uk.ac.manchester.cs.jfact.helpers.*;
+import uk.ac.manchester.cs.jfact.helpers.Helper;
+import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
+import uk.ac.manchester.cs.jfact.helpers.Reference;
+import uk.ac.manchester.cs.jfact.helpers.SaveStack;
+import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.state.DLCompletionGraphSaveState;
 
 /** completion graph */
@@ -219,8 +223,8 @@ public class DlCompletionGraph implements Serializable {
      */
     @PortedFrom(file = "dlCompletionGraph.h", name = "propagateIBlockedStatus")
     private void propagateIBlockedStatus(DlCompletionTree node, DlCompletionTree blocker) {
-        node.getNeighbour().stream().filter(q -> q.isSuccEdge() && !q.isIBlocked())
-            .forEach(q -> setNodeIBlocked(q.getArcEnd(), blocker));
+        node.getNeighbour().stream().filter(q -> q.isSuccEdge() && !q.isIBlocked()).forEach(q -> setNodeIBlocked(q
+            .getArcEnd(), blocker));
     }
 
     /**
@@ -236,7 +240,7 @@ public class DlCompletionGraph implements Serializable {
         if (sessionHasInverseRoles) {
             return true;
         }
-        // if node is affected -- it can be unblocked;
+        // if node is affected -- it can be unblocked.
         // if blocker became blocked itself -- the same
         return node.isAffected() || node.isIllegallyDBlocked();
     }
@@ -583,8 +587,8 @@ public class DlCompletionGraph implements Serializable {
             ret = node.isBlockedBySH(blocker);
         }
         if (pReasoner.getOptions().isUseBlockingStatistics() && !ret) {
-            pReasoner.getOptions().getLog().printTemplateInt(Templates.IS_BLOCKED_FAILURE_BY, node.getId(),
-                blocker.getId());
+            pReasoner.getOptions().getLog().printTemplateInt(Templates.IS_BLOCKED_FAILURE_BY, node.getId(), blocker
+                .getId());
         }
         return ret;
     }
@@ -703,7 +707,9 @@ public class DlCompletionGraph implements Serializable {
 
     /** fini IR */
     @PortedFrom(file = "dlCompletionGraph.h", name = "finiIR")
-    public void finiIR() {}
+    public void finiIR() {
+        // nothing to do
+    }
 
     @PortedFrom(file = "dlCompletionGraph.h", name = "createEdge")
     private DlCompletionTreeArc createEdge(DlCompletionTree from, DlCompletionTree to, boolean isPredEdge,
@@ -720,9 +726,9 @@ public class DlCompletionGraph implements Serializable {
         from.addNeighbour(forward);
         to.addNeighbour(backward);
         if (pReasoner.getOptions().isLoggingActive()) {
-            pReasoner.getOptions().getLog().printTemplate(Templates.CREATE_EDGE,
-                Integer.toString(isPredEdge ? to.getId() : from.getId()), isPredEdge ? "<-" : "->",
-                Integer.toString(isPredEdge ? from.getId() : to.getId()), roleName.getIRI());
+            pReasoner.getOptions().getLog().printTemplate(Templates.CREATE_EDGE, Integer.toString(isPredEdge ? to
+                .getId() : from.getId()), isPredEdge ? "<-" : "->", Integer.toString(isPredEdge ? from.getId()
+                    : to.getId()), roleName.getIRI());
         }
         return forward;
     }
@@ -751,8 +757,8 @@ public class DlCompletionGraph implements Serializable {
         }
         // try to find for NODE.TO (TO.NODE) whether we
         // have TO.NODE (NODE.TO) edge already
-        Optional<DlCompletionTreeArc> findAny = node.getNeighbour().stream()
-            .filter(p -> p.getArcEnd() == to && p.isPredEdge() != isPredEdge).findAny();
+        Optional<DlCompletionTreeArc> findAny = node.getNeighbour().stream().filter(p -> p.getArcEnd() == to && p
+            .isPredEdge() != isPredEdge).findAny();
         if (findAny.isPresent()) {
             return addRoleLabel(node, to, !isPredEdge, r, dep);
         }
@@ -921,8 +927,8 @@ public class DlCompletionGraph implements Serializable {
         cgpFlag.add(node.getId());
         boolean wantPred = node.isNominalNode();
         ++cgpIndent;
-        node.getNeighbour().stream().filter(p -> p.isSuccEdge() || wantPred && p.getArcEnd().isNominalNode())
-            .forEach(p -> printEdge(node.getNeighbour(), node.getNeighbour().indexOf(p), p, node, o));
+        node.getNeighbour().stream().filter(p -> p.isSuccEdge() || wantPred && p.getArcEnd().isNominalNode()).forEach(
+            p -> printEdge(node.getNeighbour(), node.getNeighbour().indexOf(p), p, node, o));
         --cgpIndent;
     }
 }

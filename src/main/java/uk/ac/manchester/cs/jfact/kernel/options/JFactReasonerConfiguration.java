@@ -8,6 +8,7 @@ package uk.ac.manchester.cs.jfact.kernel.options;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -116,12 +117,6 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
     private boolean useIncrementalReasoning = false;
     /** The use axiom splitting. */
     @PortedFrom(file = "Kernel.h", name = "useAxiomSplitting") private boolean useAxiomSplitting = false;
-    /**
-     * Internal use only. Option 'skipBeforeBlock' allow user to skip given
-     * number of nodes before make a block.
-     */
-    // private static final Option skipBeforeBlock =
-    // getOption("skipBeforeBlock", 0);
     /** flag to use caching during completion tree construction */
     @PortedFrom(file = "dlTBox.h", name = "useNodeCache") private boolean useNodeCache = true;
     /** whether we use sorted reasoning; depends on some simplifications. */
@@ -1043,7 +1038,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
     static class LogAdapterStream implements LogAdapter, Serializable {
 
         /** The out. */
-        private transient OutputStream out;
+        private transient PrintStream out;
 
         /**
          * Instantiates a new log adapter stream.
@@ -1052,7 +1047,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
          *        the o
          */
         public LogAdapterStream(OutputStream o) {
-            out = o;
+            out = new PrintStream(o);
         }
 
         @Override
@@ -1104,66 +1099,50 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
 
         @Override
         public LogAdapter print(int i) {
-            this.print(Integer.toString(i));
+            out.print(i);
             return this;
         }
 
         @Override
         public LogAdapter print(double i) {
-            try {
-                out.write(Double.toString(i).getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            out.print(i);
             return this;
         }
 
         @Override
         public LogAdapter print(float i) {
-            try {
-                out.write(Float.toString(i).getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            out.print(i);
             return this;
         }
 
         @Override
         public LogAdapter print(boolean i) {
-            try {
-                out.write(Boolean.toString(i).getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            out.print(i);
             return this;
         }
 
         @Override
         public LogAdapter print(byte i) {
-            this.print(Byte.toString(i));
+            this.print(i);
             return this;
         }
 
         @Override
         public LogAdapter print(char i) {
-            this.print(Character.toString(i));
+            this.print(i);
             return this;
         }
 
         @Override
         public LogAdapter print(short i) {
-            this.print(Short.toString(i));
+            this.print(i);
             return this;
         }
 
         @Override
         public LogAdapter print(String i) {
-            try {
-                out.write(i.getBytes());
-                out.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            out.print(i);
+            out.flush();
             return this;
         }
 

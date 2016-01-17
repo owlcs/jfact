@@ -157,26 +157,25 @@ public final class DataTypeReasoner implements Serializable {
         } else {
             this.getType(c).setNType(dep);
         }
-        return false;// this.getType(c).addInterval(positive, c, dep);
+        return false;
     }
 
     @PortedFrom(file = "DataReasoning.h", name = "dataValue")
     private <R extends Comparable<R>> boolean dataValue(boolean positive, Literal<R> c1, DepSet dep) {
         Datatype<R> d = c1.getDatatypeExpression();
-        DatatypeExpression<R> interval = d.isNumericDatatype()
-            ? new DatatypeNumericEnumeration<>(d.asNumericDatatype(), c1) : new DatatypeEnumeration<>(d, c1);
+        DatatypeExpression<R> interval = d.isNumericDatatype() ? new DatatypeNumericEnumeration<>(d.asNumericDatatype(),
+            c1) : new DatatypeEnumeration<>(d, c1);
         options.getLog().printTemplate(Templates.INTERVAL, positive ? "+" : "-", interval, "", "", "");
         return dataExpression(positive, interval, dep);
     }
 
     // try to find contradiction:
     // -- if we have 2 same elements or direct contradiction (like "p" and
-    // "(not p)")
-    // then addConcept() will eliminate this;
+    // "(not p)") then addConcept() will eliminate this.
     // => negations are not interesting also (p & ~p are eliminated; ~p means
     // "all except p").
     // -- all cases with 2 different values of the same class are found in
-    // previous search;
+    // previous search.
     // -- The remaining problems are
     // - check if there are 2 different positive classes
     // - check if some value is present together with negation of its class
@@ -202,7 +201,7 @@ public final class DataTypeReasoner implements Serializable {
         // for every two datatypes, they must either be disjoint and
         // opposite, or one subdatatype of the other
         // if a subtype b, then (b and a), (b and not a), (not b and not a) are
-        // acceptable;
+        // acceptable.
         // otherwise clash: only combination forbidden is (not b and a)
         // a subtype b => b compatible a (all a are b) but not a compatible
         // b (some b might not be a)
@@ -255,8 +254,8 @@ public final class DataTypeReasoner implements Serializable {
                 // determining a new interval that should be added
                 // to the reasoner.
                 // XXX need to design a proper general solution
-                if (t1.equals(DatatypeFactory.NONNEGATIVEINTEGER) && t2.equals(DatatypeFactory.NONPOSITIVEINTEGER)
-                    || t2.equals(DatatypeFactory.NONNEGATIVEINTEGER) && t1.equals(DatatypeFactory.NONPOSITIVEINTEGER)) {
+                if (t1.equals(DatatypeFactory.NONNEGATIVEINTEGER) && t2.equals(DatatypeFactory.NONPOSITIVEINTEGER) || t2
+                    .equals(DatatypeFactory.NONNEGATIVEINTEGER) && t1.equals(DatatypeFactory.NONPOSITIVEINTEGER)) {
                     map.remove(t1);
                     map.remove(t2);
                     DatatypeEnumeration<BigInteger> enumeration = new DatatypeEnumeration<>(DatatypeFactory.INTEGER,

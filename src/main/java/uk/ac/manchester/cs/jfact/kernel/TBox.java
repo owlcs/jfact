@@ -1459,7 +1459,6 @@ public class TBox implements Serializable {
         // here we sure that ontology is consistent
         // FIXME!! distinguish later between the 1st run and the following runs
         dlHeap.setSubOrder();
-        // initTaxonomy();
         pTaxCreator.setBottomUp(gcis);
         needConcept |= needIndividual;
         if (config.getverboseOutput()) {
@@ -3359,8 +3358,6 @@ public class TBox implements Serializable {
             pBeg = 0;
             pEnd = elems.size();
             pCur = 0;
-            // System.out.println("TBox.IterableElem.IterableElem() " +
-            // Elems.size());
             if (elems.isEmpty()) {
                 throw new IllegalArgumentException("no empties allowed");
             }

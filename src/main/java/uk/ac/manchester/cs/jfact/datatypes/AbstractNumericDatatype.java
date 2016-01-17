@@ -9,8 +9,8 @@ import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.HasIRI;
 
-abstract class AbstractNumericDatatype<R extends Comparable<R>> extends AbstractDatatype<R>
-    implements NumericDatatype<R> {
+abstract class AbstractNumericDatatype<R extends Comparable<R>> extends AbstractDatatype<R> implements
+    NumericDatatype<R> {
 
     public AbstractNumericDatatype(HasIRI uri, Set<Facet> f, Set<Datatype<?>> ancestors) {
         super(uri, f, ancestors);
@@ -148,7 +148,6 @@ abstract class AbstractNumericDatatype<R extends Comparable<R>> extends Abstract
         }
         if (hasMaxExclusive() && hasMinExclusive()) {
             return getMax().compareTo((R) increase((Number) getMin())) < 0;
-            // return getMin().equals(getMax());
         }
         return getMax().compareTo(getMin()) < 0;
     }

@@ -48,7 +48,6 @@ public class ToDoList implements Serializable {
     public ToDoList(SaveStackRare r) {
         queueNN = new QueueQueue(r);
         noe = 0;
-        // Helper.resize(Wait, nRegularOps);
         for (int i = 0; i < NREGULAROPTIONS; i++) {
             waitQueue.add(new ArrayQueue());
         }

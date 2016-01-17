@@ -348,28 +348,19 @@ public class ModelCacheIan extends ModelCacheInterface {
      */
     @PortedFrom(file = "modelCacheIan.h", name = "isMergableIan")
     public ModelCacheState isMergableIan(ModelCacheIan q) {
-        if (posDConcepts.intersects(q.negDConcepts) || q.posDConcepts.intersects(negDConcepts)
-        // || IfDefs.RKG_USE_SIMPLE_RULES
-        // && getExtra(true).intersect(q.getExtra(true))
-        ) {
+        if (posDConcepts.intersects(q.negDConcepts) || q.posDConcepts.intersects(negDConcepts)) {
             return INVALID;
-        } else if (existsRoles.intersect(q.forallRoles) || q.existsRoles.intersect(forallRoles)
-            || funcRoles.intersect(q.funcRoles) || posDConcepts.intersects(q.negNConcepts)
-            || posNConcepts.intersects(q.negDConcepts) || posNConcepts.intersects(q.negNConcepts)
-            || q.posDConcepts.intersects(negNConcepts) || q.posNConcepts.intersects(negDConcepts)
-            || q.posNConcepts.intersects(negNConcepts)
-        // || IfDefs.RKG_USE_SIMPLE_RULES
-        // && (getExtra(true).intersect(q.getExtra(false))
-        // || getExtra(false).intersect(q.getExtra(true)) || getExtra(
-        // false).intersect(q.getExtra(false)))
-        ) {
+        } else if (existsRoles.intersect(q.forallRoles) || q.existsRoles.intersect(forallRoles) || funcRoles.intersect(
+            q.funcRoles) || posDConcepts.intersects(q.negNConcepts) || posNConcepts.intersects(q.negDConcepts)
+            || posNConcepts.intersects(q.negNConcepts) || q.posDConcepts.intersects(negNConcepts) || q.posNConcepts
+                .intersects(negDConcepts) || q.posNConcepts.intersects(negNConcepts)) {
             return FAILED;
         } else {
             if (simpleRules.isUseSimpleRules() && getExtra(true).intersect(q.getExtra(true))) {
                 return INVALID;
             }
-            if (simpleRules.isUseSimpleRules() && (getExtra(true).intersect(q.getExtra(false))
-                || getExtra(false).intersect(q.getExtra(true)) || getExtra(false).intersect(q.getExtra(false)))) {
+            if (simpleRules.isUseSimpleRules() && (getExtra(true).intersect(q.getExtra(false)) || getExtra(false)
+                .intersect(q.getExtra(true)) || getExtra(false).intersect(q.getExtra(false)))) {
                 return FAILED;
             }
             return VALID;

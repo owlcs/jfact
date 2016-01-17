@@ -255,8 +255,8 @@ public class Taxonomy implements Serializable {
     public String toString() {
         StringBuilder o = new StringBuilder();
         o.append("All entries are in format:\n\"entry\" {n: parent_1 ... parent_n} {m: child_1 child_m}\n\n");
-        graph.stream().skip(1).sorted((o1, o2) -> o1.getPrimer().getIRI().compareTo(o2.getPrimer().getIRI()))
-            .forEach(o::append);
+        graph.stream().skip(1).sorted((o1, o2) -> o1.getPrimer().getIRI().compareTo(o2.getPrimer().getIRI())).forEach(
+            o::append);
         o.append(getBottomVertex());
         return o.toString();
     }
@@ -353,7 +353,6 @@ public class Taxonomy implements Serializable {
         if (syn.equals(currentEntry)) {
             return false;
         }
-        // assert willInsertIntoTaxonomy;
         if (syn.isClassified()) {
             addCurrentToSynonym(syn.getTaxVertex());
             return true;

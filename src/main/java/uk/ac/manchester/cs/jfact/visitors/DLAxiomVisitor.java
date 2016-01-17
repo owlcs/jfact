@@ -17,7 +17,7 @@ public interface DLAxiomVisitor {
      * @param a
      *        parameter
      */
-    default public void doDefault(@SuppressWarnings("unused") AxiomInterface a) {}
+    default void doDefault(@SuppressWarnings("unused") AxiomInterface a) {}
 
     /**
      * @param axiom

@@ -1659,14 +1659,10 @@ public class DlSatTester implements Serializable {
         }
     }
 
-    // private static int counter = 0;
     @PortedFrom(file = "Reasoner.h", name = "hasDataClash")
     private boolean hasDataClash(DlCompletionTree node) {
         assert node != null && node.isDataNode();
         DataTypeReasoner datatypeReasoner = new DataTypeReasoner(options);
-        // counter++;
-        // System.out.print("@Test public void test" + counter +
-        // "() throws Exception {");
         Set<DataCall> calls = new LinkedHashSet<>();
         node.simpleConcepts().forEach(r -> {
             DagTag d = dlHeap.get(r.getConcept()).getType();
@@ -1682,16 +1678,12 @@ public class DlSatTester implements Serializable {
             }
         });
         for (DataCall dc : calls) {
-            // System.out.print(" makeCall( " + dc + ");");
             if (datatypeReasoner.addDataEntry(dc.positive, dc.d, dc.dataEntry, dc.r.getDep())) {
                 this.setClashSet(datatypeReasoner.getClashSet());
-                // System.out.println("assertTrue(makeCall( " + dc + "));}");
                 return true;
             }
         }
         boolean checkClash = datatypeReasoner.checkClash();
-        // System.out.println("assert" + (checkClash ? "True" : "False") +
-        // "(datatypeReasoner.checkClash());}");
         if (checkClash) {
             this.setClashSet(datatypeReasoner.getClashSet());
         }
@@ -2760,13 +2752,6 @@ public class DlSatTester implements Serializable {
             }
         }
         return false;
-        // return EdgesToMerge
-        // .stream()
-        // .skip(1)
-        // .anyMatch(
-        // t -> !t.getArcEnd().isPBlocked()
-        // && merge(t.getArcEnd(), sample,
-        // DepSet.plus(depF, t.getDep())));
     }
 
     @SuppressWarnings("unchecked")
@@ -3091,13 +3076,7 @@ public class DlSatTester implements Serializable {
     }
 
     private boolean usedInverseAndClash(DagTag dt, ConceptWDep p, CGLabel to) {
-        try {
-            return used.contains(-p.getConcept()) && findConceptClash(to.getLabel(PCONCEPT), -p.getConcept(), p
-                .getDep());
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-            throw e;
-        }
+        return used.contains(-p.getConcept()) && findConceptClash(to.getLabel(PCONCEPT), -p.getConcept(), p.getDep());
     }
 
     @PortedFrom(file = "Reasoner.h", name = "checkMergeClash")
