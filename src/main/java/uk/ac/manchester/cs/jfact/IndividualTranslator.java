@@ -44,7 +44,7 @@ public class IndividualTranslator extends OWLEntityTranslator<OWLNamedIndividual
 
     @Override
     protected IndividualName createPointerForEntity(OWLNamedIndividual entity) {
-        return em.individual(entity.getIRI());
+        return em.individual(entity);
     }
 
     @Nullable

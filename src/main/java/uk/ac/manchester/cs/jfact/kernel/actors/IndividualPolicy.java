@@ -40,6 +40,6 @@ public class IndividualPolicy implements Policy, Serializable {
     @Nullable
     @Override
     public Expression buildTree(ExpressionCache em, ClassifiableEntry p) {
-        return em.individual(p.getIRI());
+        return em.individual(p.getEntity().getEntity());
     }
 }

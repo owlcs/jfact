@@ -10,21 +10,20 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapitools.decomposition.AxiomWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import uk.ac.manchester.cs.jfact.kernel.Ontology;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.*;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 
 /** axiom translator */
-public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>, Serializable {
+public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomWrapper>, Serializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AxiomTranslator.class);
-
     @Nonnull private final DeclarationVisitorEx v;
     private Ontology o;
     private TranslationMachinery tr;
@@ -44,29 +43,29 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>, Seria
     }
 
     @Override
-    public AxiomInterface visit(OWLSubClassOfAxiom axiom) {
-        return o
-            .add(new AxiomConceptInclusion(axiom, tr.pointer(axiom.getSubClass()), tr.pointer(axiom.getSuperClass())));
+    public AxiomWrapper visit(OWLSubClassOfAxiom axiom) {
+        return o.add(new AxiomConceptInclusion(axiom, tr.pointer(axiom.getSubClass()), tr.pointer(axiom
+            .getSuperClass())));
     }
 
     @Override
-    public AxiomInterface visit(OWLNegativeObjectPropertyAssertionAxiom axiom) {
-        return o.add(new AxiomRelatedToNot(axiom, tr.pointer(axiom.getSubject()), tr.pointer(axiom.getProperty()),
-            tr.pointer(axiom.getObject())));
+    public AxiomWrapper visit(OWLNegativeObjectPropertyAssertionAxiom axiom) {
+        return o.add(new AxiomRelatedToNot(axiom, tr.pointer(axiom.getSubject()), tr.pointer(axiom.getProperty()), tr
+            .pointer(axiom.getObject())));
     }
 
     @Override
-    public AxiomInterface visit(OWLAsymmetricObjectPropertyAxiom axiom) {
+    public AxiomWrapper visit(OWLAsymmetricObjectPropertyAxiom axiom) {
         return o.add(new AxiomRoleAsymmetric(axiom, tr.pointer(axiom.getProperty())));
     }
 
     @Override
-    public AxiomInterface visit(OWLReflexiveObjectPropertyAxiom axiom) {
+    public AxiomWrapper visit(OWLReflexiveObjectPropertyAxiom axiom) {
         return o.add(new AxiomRoleReflexive(axiom, tr.pointer(axiom.getProperty())));
     }
 
     @Override
-    public AxiomInterface visit(OWLDisjointClassesAxiom axiom) {
+    public AxiomWrapper visit(OWLDisjointClassesAxiom axiom) {
         return o.add(new AxiomDisjointConcepts(axiom, translateClassExpressionSet(axiom.classExpressions())));
     }
 
@@ -75,17 +74,17 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>, Seria
     }
 
     @Override
-    public AxiomInterface visit(OWLDataPropertyDomainAxiom axiom) {
+    public AxiomWrapper visit(OWLDataPropertyDomainAxiom axiom) {
         return o.add(new AxiomDRoleDomain(axiom, tr.pointer(axiom.getProperty()), tr.pointer(axiom.getDomain())));
     }
 
     @Override
-    public AxiomInterface visit(OWLObjectPropertyDomainAxiom axiom) {
+    public AxiomWrapper visit(OWLObjectPropertyDomainAxiom axiom) {
         return o.add(new AxiomORoleDomain(axiom, tr.pointer(axiom.getProperty()), tr.pointer(axiom.getDomain())));
     }
 
     @Override
-    public AxiomInterface visit(OWLEquivalentObjectPropertiesAxiom axiom) {
+    public AxiomWrapper visit(OWLEquivalentObjectPropertiesAxiom axiom) {
         return o.add(new AxiomEquivalentORoles(axiom, translateObjectPropertySet(axiom.properties())));
     }
 
@@ -94,18 +93,18 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>, Seria
     }
 
     @Override
-    public AxiomInterface visit(OWLNegativeDataPropertyAssertionAxiom axiom) {
-        return o.add(new AxiomValueOfNot(axiom, tr.pointer(axiom.getSubject()), tr.pointer(axiom.getProperty()),
-            tr.pointer(axiom.getObject())));
+    public AxiomWrapper visit(OWLNegativeDataPropertyAssertionAxiom axiom) {
+        return o.add(new AxiomValueOfNot(axiom, tr.pointer(axiom.getSubject()), tr.pointer(axiom.getProperty()), tr
+            .pointer(axiom.getObject())));
     }
 
     @Override
-    public AxiomInterface visit(OWLDifferentIndividualsAxiom axiom) {
+    public AxiomWrapper visit(OWLDifferentIndividualsAxiom axiom) {
         return o.add(new AxiomDifferentIndividuals(axiom, tr.translate(axiom.individuals())));
     }
 
     @Override
-    public AxiomInterface visit(OWLDisjointDataPropertiesAxiom axiom) {
+    public AxiomWrapper visit(OWLDisjointDataPropertiesAxiom axiom) {
         return o.add(new AxiomDisjointDRoles(axiom, translateDataPropertySet(axiom.properties())));
     }
 
@@ -114,128 +113,127 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>, Seria
     }
 
     @Override
-    public AxiomInterface visit(OWLDisjointObjectPropertiesAxiom axiom) {
+    public AxiomWrapper visit(OWLDisjointObjectPropertiesAxiom axiom) {
         return o.add(new AxiomDisjointORoles(axiom, translateObjectPropertySet(axiom.properties())));
     }
 
     @Override
-    public AxiomInterface visit(OWLObjectPropertyRangeAxiom axiom) {
+    public AxiomWrapper visit(OWLObjectPropertyRangeAxiom axiom) {
         return o.add(new AxiomORoleRange(axiom, tr.pointer(axiom.getProperty()), tr.pointer(axiom.getRange())));
     }
 
     @Override
-    public AxiomInterface visit(OWLObjectPropertyAssertionAxiom axiom) {
-        return o.add(new AxiomRelatedTo(axiom, tr.pointer(axiom.getSubject()), tr.pointer(axiom.getProperty()),
-            tr.pointer(axiom.getObject())));
+    public AxiomWrapper visit(OWLObjectPropertyAssertionAxiom axiom) {
+        return o.add(new AxiomRelatedTo(axiom, tr.pointer(axiom.getSubject()), tr.pointer(axiom.getProperty()), tr
+            .pointer(axiom.getObject())));
     }
 
     @Override
-    public AxiomInterface visit(OWLFunctionalObjectPropertyAxiom axiom) {
+    public AxiomWrapper visit(OWLFunctionalObjectPropertyAxiom axiom) {
         return o.add(new AxiomORoleFunctional(axiom, tr.pointer(axiom.getProperty())));
     }
 
     @Override
-    public AxiomInterface visit(OWLSubObjectPropertyOfAxiom axiom) {
-        return o.add(
-            new AxiomORoleSubsumption(axiom, tr.pointer(axiom.getSubProperty()), tr.pointer(axiom.getSuperProperty())));
+    public AxiomWrapper visit(OWLSubObjectPropertyOfAxiom axiom) {
+        return o.add(new AxiomORoleSubsumption(axiom, tr.pointer(axiom.getSubProperty()), tr.pointer(axiom
+            .getSuperProperty())));
     }
 
     @Override
-    public AxiomInterface visit(OWLDisjointUnionAxiom axiom) {
-        return o.add(new AxiomDisjointUnion(axiom, tr.pointer(axiom.getOWLClass()),
-            translateClassExpressionSet(axiom.classExpressions())));
+    public AxiomWrapper visit(OWLDisjointUnionAxiom axiom) {
+        return o.add(new AxiomDisjointUnion(axiom, tr.pointer(axiom.getOWLClass()), translateClassExpressionSet(axiom
+            .classExpressions())));
     }
 
     @Override
-    public AxiomInterface visit(OWLDeclarationAxiom axiom) {
+    public AxiomWrapper visit(OWLDeclarationAxiom axiom) {
         OWLEntity entity = axiom.getEntity();
         return entity.accept(v);
     }
 
     @Override
-    public AxiomInterface visit(OWLAnnotationAssertionAxiom axiom) {
+    public AxiomWrapper visit(OWLAnnotationAssertionAxiom axiom) {
         // Ignore
         return Axioms.dummy();
     }
 
     @Override
-    public AxiomInterface visit(OWLSymmetricObjectPropertyAxiom axiom) {
+    public AxiomWrapper visit(OWLSymmetricObjectPropertyAxiom axiom) {
         return o.add(new AxiomRoleSymmetric(axiom, tr.pointer(axiom.getProperty())));
     }
 
     @Override
-    public AxiomInterface visit(OWLDataPropertyRangeAxiom axiom) {
+    public AxiomWrapper visit(OWLDataPropertyRangeAxiom axiom) {
         return o.add(new AxiomDRoleRange(axiom, tr.pointer(axiom.getProperty()), tr.pointer(axiom.getRange())));
     }
 
     @Override
-    public AxiomInterface visit(OWLFunctionalDataPropertyAxiom axiom) {
+    public AxiomWrapper visit(OWLFunctionalDataPropertyAxiom axiom) {
         return o.add(new AxiomDRoleFunctional(axiom, tr.pointer(axiom.getProperty())));
     }
 
     @Override
-    public AxiomInterface visit(OWLEquivalentDataPropertiesAxiom axiom) {
+    public AxiomWrapper visit(OWLEquivalentDataPropertiesAxiom axiom) {
         return o.add(new AxiomEquivalentDRoles(axiom, translateDataPropertySet(axiom.properties())));
     }
 
     @Override
-    public AxiomInterface visit(OWLClassAssertionAxiom axiom) {
-        return o
-            .add(new AxiomInstanceOf(axiom, tr.pointer(axiom.getIndividual()), tr.pointer(axiom.getClassExpression())));
+    public AxiomWrapper visit(OWLClassAssertionAxiom axiom) {
+        return o.add(new AxiomInstanceOf(axiom, tr.pointer(axiom.getIndividual()), tr.pointer(axiom
+            .getClassExpression())));
     }
 
     @Override
-    public AxiomInterface visit(OWLEquivalentClassesAxiom axiom) {
+    public AxiomWrapper visit(OWLEquivalentClassesAxiom axiom) {
         return o.add(new AxiomEquivalentConcepts(axiom, translateClassExpressionSet(axiom.classExpressions())));
     }
 
     @Override
-    public AxiomInterface visit(OWLDataPropertyAssertionAxiom axiom) {
-        return o.add(new AxiomValueOf(axiom, tr.pointer(axiom.getSubject()), tr.pointer(axiom.getProperty()),
-            tr.pointer(axiom.getObject())));
+    public AxiomWrapper visit(OWLDataPropertyAssertionAxiom axiom) {
+        return o.add(new AxiomValueOf(axiom, tr.pointer(axiom.getSubject()), tr.pointer(axiom.getProperty()), tr
+            .pointer(axiom.getObject())));
     }
 
     @Override
-    public AxiomInterface visit(OWLTransitiveObjectPropertyAxiom axiom) {
+    public AxiomWrapper visit(OWLTransitiveObjectPropertyAxiom axiom) {
         return o.add(new AxiomRoleTransitive(axiom, tr.pointer(axiom.getProperty())));
     }
 
     @Override
-    public AxiomInterface visit(OWLIrreflexiveObjectPropertyAxiom axiom) {
+    public AxiomWrapper visit(OWLIrreflexiveObjectPropertyAxiom axiom) {
         return o.add(new AxiomRoleIrreflexive(axiom, tr.pointer(axiom.getProperty())));
     }
 
     @Override
-    public AxiomInterface visit(OWLSubDataPropertyOfAxiom axiom) {
-        return o.add(
-            new AxiomDRoleSubsumption(axiom, tr.pointer(axiom.getSubProperty()), tr.pointer(axiom.getSuperProperty())));
+    public AxiomWrapper visit(OWLSubDataPropertyOfAxiom axiom) {
+        return o.add(new AxiomDRoleSubsumption(axiom, tr.pointer(axiom.getSubProperty()), tr.pointer(axiom
+            .getSuperProperty())));
     }
 
     @Override
-    public AxiomInterface visit(OWLInverseFunctionalObjectPropertyAxiom axiom) {
+    public AxiomWrapper visit(OWLInverseFunctionalObjectPropertyAxiom axiom) {
         return o.add(new AxiomRoleInverseFunctional(axiom, tr.pointer(axiom.getProperty())));
     }
 
     @Override
-    public AxiomInterface visit(OWLSameIndividualAxiom axiom) {
+    public AxiomWrapper visit(OWLSameIndividualAxiom axiom) {
         return o.add(new AxiomSameIndividuals(axiom, tr.translate(axiom.individuals())));
     }
 
     @Override
-    public AxiomInterface visit(OWLSubPropertyChainOfAxiom axiom) {
-        return o.add(
-            new AxiomORoleSubsumption(axiom, compose(translateObjectPropertySet(axiom.getPropertyChain().stream())),
-                tr.pointer(axiom.getSuperProperty())));
+    public AxiomWrapper visit(OWLSubPropertyChainOfAxiom axiom) {
+        return o.add(new AxiomORoleSubsumption(axiom, compose(translateObjectPropertySet(axiom.getPropertyChain()
+            .stream())), tr.pointer(axiom.getSuperProperty())));
     }
 
     @Override
-    public AxiomInterface visit(OWLInverseObjectPropertiesAxiom axiom) {
-        return o.add(
-            new AxiomRoleInverse(axiom, tr.pointer(axiom.getFirstProperty()), tr.pointer(axiom.getSecondProperty())));
+    public AxiomWrapper visit(OWLInverseObjectPropertiesAxiom axiom) {
+        return o.add(new AxiomRoleInverse(axiom, tr.pointer(axiom.getFirstProperty()), tr.pointer(axiom
+            .getSecondProperty())));
     }
 
     @Override
-    public AxiomInterface visit(OWLHasKeyAxiom axiom) {
+    public AxiomWrapper visit(OWLHasKeyAxiom axiom) {
         // translateObjectPropertySet(axiom.getObjectPropertyExpressions());
         // TDLObjectRoleExpression objectPropertyPointer = kernel
         // .getObjectPropertyKey();
@@ -250,7 +248,7 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>, Seria
     }
 
     @Override
-    public AxiomInterface visit(OWLDatatypeDefinitionAxiom axiom) {
+    public AxiomWrapper visit(OWLDatatypeDefinitionAxiom axiom) {
         LOGGER.error("JFact Kernel: unsupported operation 'OWLDatatypeDefinitionAxiom' {}", axiom);
         return Axioms.dummy();
         // kernel.getDataSubType(axiom.getDatatype().getIRI().toString(),
@@ -258,25 +256,25 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>, Seria
     }
 
     @Override
-    public AxiomInterface visit(SWRLRule rule) {
+    public AxiomWrapper visit(SWRLRule rule) {
         // Ignore
         return Axioms.dummy();
     }
 
     @Override
-    public AxiomInterface visit(OWLSubAnnotationPropertyOfAxiom axiom) {
+    public AxiomWrapper visit(OWLSubAnnotationPropertyOfAxiom axiom) {
         // Ignore
         return Axioms.dummy();
     }
 
     @Override
-    public AxiomInterface visit(OWLAnnotationPropertyDomainAxiom axiom) {
+    public AxiomWrapper visit(OWLAnnotationPropertyDomainAxiom axiom) {
         // Ignore
         return Axioms.dummy();
     }
 
     @Override
-    public AxiomInterface visit(OWLAnnotationPropertyRangeAxiom axiom) {
+    public AxiomWrapper visit(OWLAnnotationPropertyRangeAxiom axiom) {
         // Ignore
         return Axioms.dummy();
     }

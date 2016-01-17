@@ -29,6 +29,6 @@ public class DataPropertyPolicy implements Policy, Serializable {
     @Nullable
     @Override
     public Expression buildTree(ExpressionCache em, ClassifiableEntry p) {
-        return em.dataRole(p.getIRI());
+        return em.dataRole(p.getEntity().getEntity());
     }
 }

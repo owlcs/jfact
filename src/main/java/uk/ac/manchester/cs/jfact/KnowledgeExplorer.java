@@ -1,4 +1,4 @@
-package uk.ac.manchester.cs.jfact.split;
+package uk.ac.manchester.cs.jfact;
 
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.*;
 

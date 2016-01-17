@@ -248,8 +248,8 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
     public void visit(AxiomDRoleRange axiom) {
         ensureNames(axiom.getRole());
         ensureNames(axiom.getRange());
-        getRole(axiom.getRole(), "Role expression expected in Data Role Range axiom")
-            .setRange(axiom.getRange().accept(expressionTranslator));
+        getRole(axiom.getRole(), "Role expression expected in Data Role Range axiom").setRange(axiom.getRange().accept(
+            expressionTranslator));
     }
 
     @Override
@@ -398,9 +398,9 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
             getIndividual(axiom.getIndividual(), "Individual expected in Related To Not axiom");
             getIndividual(axiom.getRelatedIndividual(), "Individual expected in Related To Not axiom");
             // make an axiom i:AR.\neg{j}
-            tbox.addSubsumeAxiom(axiom.getIndividual().accept(expressionTranslator),
-                createSNFForall(axiom.getRelation().accept(expressionTranslator),
-                    createSNFNot(axiom.getRelatedIndividual().accept(expressionTranslator))));
+            tbox.addSubsumeAxiom(axiom.getIndividual().accept(expressionTranslator), createSNFForall(axiom.getRelation()
+                .accept(expressionTranslator), createSNFNot(axiom.getRelatedIndividual().accept(
+                    expressionTranslator))));
         }
     }
 
@@ -416,8 +416,8 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         if (!r.isTop()) {
             // nothing to do for universal role
             // make an axiom i:EA.V
-            tbox.addSubsumeAxiom(axiom.getIndividual().accept(expressionTranslator), createSNFExists(
-                axiom.getAttribute().accept(expressionTranslator), axiom.getValue().accept(expressionTranslator)));
+            tbox.addSubsumeAxiom(axiom.getIndividual().accept(expressionTranslator), createSNFExists(axiom
+                .getAttribute().accept(expressionTranslator), axiom.getValue().accept(expressionTranslator)));
         }
     }
 
@@ -432,9 +432,9 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         }
         if (!r.isBottom()) {
             // make an axiom i:AA.\neg V
-            tbox.addSubsumeAxiom(axiom.getIndividual().accept(expressionTranslator),
-                createSNFForall(axiom.getAttribute().accept(expressionTranslator),
-                    createSNFNot(axiom.getValue().accept(expressionTranslator))));
+            tbox.addSubsumeAxiom(axiom.getIndividual().accept(expressionTranslator), createSNFForall(axiom
+                .getAttribute().accept(expressionTranslator), createSNFNot(axiom.getValue().accept(
+                    expressionTranslator))));
         }
     }
 
@@ -446,7 +446,7 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
      */
     @PortedFrom(file = "tOntologyLoader.h", name = "visitOntology")
     public void visitOntology(Ontology ontology) {
-        ontology.getAxioms().stream().filter(p -> p.isUsed()).forEach(p -> p.accept(this));
+        ontology.getAxioms().stream().filter(p -> p.isUsed()).forEach(p -> ((AxiomImpl) p).accept(this));
         tbox.finishLoading();
     }
 }

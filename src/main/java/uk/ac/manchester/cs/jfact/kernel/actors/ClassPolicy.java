@@ -33,7 +33,7 @@ public class ClassPolicy implements Policy, Serializable {
     @Override
     public Expression buildTree(ExpressionCache em, ClassifiableEntry p) {
         if (p.getId() >= 0) {
-            return em.concept(p.getIRI());
+            return em.concept(p.getEntity().getEntity());
         }
         // top or bottom
         if (p.getIRI().equals(Concept.thing)) {

@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import conformance.Original;
@@ -19,6 +20,7 @@ import uk.ac.manchester.cs.chainsaw.FastSetFactory;
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
 
 /** concept */
 @PortedFrom(file = "ConceptWithDep.h", name = "Concept")
@@ -119,12 +121,13 @@ public class Concept extends ClassifiableEntry {
      * @return bottom concept
      */
     @Original
-    public static Concept getBOTTOM() {
+    public static Concept getBOTTOM(OWLDataFactory df) {
         Concept toReturn = new Concept(nothing);
         toReturn.setBottom();
         toReturn.setId(-1);
         toReturn.setpName(BP_BOTTOM);
         toReturn.setpBody(BP_BOTTOM);
+        toReturn.setEntity(new ConceptName(df.getOWLNothing()));
         return toReturn;
     }
 
@@ -132,7 +135,7 @@ public class Concept extends ClassifiableEntry {
      * @return top concept
      */
     @Original
-    public static Concept getTOP() {
+    public static Concept getTOP(OWLDataFactory df) {
         Concept toReturn = new Concept(thing);
         toReturn.setTop();
         toReturn.setId(-1);
@@ -140,6 +143,7 @@ public class Concept extends ClassifiableEntry {
         toReturn.setpBody(BP_TOP);
         toReturn.setTsDepth(1);
         toReturn.setClassTag(CTTag.COMPLETELYDEFINED);
+        toReturn.setEntity(new ConceptName(df.getOWLThing()));
         return toReturn;
     }
 
@@ -500,8 +504,8 @@ public class Concept extends ClassifiableEntry {
             // n-th level ANDs and pushing their children in turn; ends up with
             // the leaves of the AND subtree
             AtomicBoolean b = new AtomicBoolean(true);
-            tree.getChildren().stream().map(t -> Boolean.valueOf(initToldSubsumers(t, rolesProcessed)))
-                .forEach(x -> b.compareAndSet(true, x.booleanValue()));
+            tree.getChildren().stream().map(t -> Boolean.valueOf(initToldSubsumers(t, rolesProcessed))).forEach(x -> b
+                .compareAndSet(true, x.booleanValue()));
             return b.get();
         }
         return false;

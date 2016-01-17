@@ -30,7 +30,7 @@ public class ObjectPropertyPolicy implements Policy, Serializable {
     @Nullable
     @Override
     public Expression buildTree(ExpressionCache em, ClassifiableEntry p) {
-        return p.getId() >= 0 ? em.objectRole(p.getIRI())
-            : em.inverse(em.objectRole(((Role) p).realInverse().getIRI()));
+        return p.getId() >= 0 ? em.objectRole(p.getEntity().getEntity())
+            : em.inverse(em.objectRole(((Role) p).realInverse().getEntity().getEntity()));
     }
 }

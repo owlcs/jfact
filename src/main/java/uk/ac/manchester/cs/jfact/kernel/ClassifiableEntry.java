@@ -215,8 +215,8 @@ public class ClassifiableEntry extends NamedEntry {
     /** if two synonyms are in 'told' list, merge them */
     @PortedFrom(file = "taxNamEntry.h", name = "removeSynonymsFromParents")
     public void removeSynonymsFromParents() {
-        List<ClassifiableEntry> toKeep = asList(
-            toldSubsumers.stream().map(ClassifiableEntry::resolveSynonym).filter(p -> this != p));
+        List<ClassifiableEntry> toKeep = asList(toldSubsumers.stream().map(ClassifiableEntry::resolveSynonym).filter(
+            p -> this != p));
         toldSubsumers.clear();
         toldSubsumers.addAll(toKeep);
     }

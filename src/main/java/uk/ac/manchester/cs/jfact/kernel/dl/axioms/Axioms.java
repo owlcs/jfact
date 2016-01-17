@@ -2,7 +2,8 @@ package uk.ac.manchester.cs.jfact.kernel.dl.axioms;
 
 import javax.annotation.Nonnull;
 
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
+import org.semanticweb.owlapitools.decomposition.AxiomWrapper;
+
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 
 /**
@@ -11,7 +12,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 public class Axioms {
 
     @Nonnull private static final Expression DUMMY_EXPRESSION = new Expression() {};
-    @Nonnull private static final AxiomInterface DUMMY = new AxiomInterface() {};
+    @Nonnull private static final AxiomWrapper DUMMY = new AxiomWrapper(null);
 
     private Axioms() {}
 
@@ -21,7 +22,7 @@ public class Axioms {
     }
 
     /** @return a dummy implementation of AxiomInterface */
-    public static AxiomInterface dummy() {
+    public static AxiomWrapper dummy() {
         return DUMMY;
     }
 }

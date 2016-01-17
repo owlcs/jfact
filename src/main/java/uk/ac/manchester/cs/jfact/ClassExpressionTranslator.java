@@ -19,8 +19,8 @@ import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 
 /** class expression translator */
-public class ClassExpressionTranslator extends OWLEntityTranslator<OWLClass, ConceptExpression>
-    implements OWLClassExpressionVisitorEx<ConceptExpression> {
+public class ClassExpressionTranslator extends OWLEntityTranslator<OWLClass, ConceptExpression> implements
+    OWLClassExpressionVisitorEx<ConceptExpression> {
 
     /**
      * @param em
@@ -61,7 +61,7 @@ public class ClassExpressionTranslator extends OWLEntityTranslator<OWLClass, Con
     @Override
     protected ConceptExpression createPointerForEntity(OWLClass entity) {
         // XXX many entities would cause a lot of wasted memory
-        return em.concept(entity.getIRI());
+        return em.concept(entity);
     }
 
     @Override

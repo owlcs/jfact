@@ -25,9 +25,11 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
-import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+import org.semanticweb.owlapitools.decomposition.Signature;
 
 import conformance.Original;
 import conformance.PortedFrom;
@@ -43,13 +45,13 @@ import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
 import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
 import uk.ac.manchester.cs.jfact.helpers.*;
 import uk.ac.manchester.cs.jfact.helpers.Timer;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleName;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleName;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheConst;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheSingleton;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
-import uk.ac.manchester.cs.jfact.split.TSignature;
 
 /** tbox */
 @PortedFrom(file = "dlTBox.h", name = "TBox")
@@ -69,7 +71,7 @@ public class TBox implements Serializable {
     /** classifier */
     @PortedFrom(file = "dlTBox.h", name = "pTaxCreator") private DLConceptTaxonomy pTaxCreator;
     /** name-signature map */
-    @PortedFrom(file = "dlTBox.h", name = "pName2Sig") private Map<NamedEntity, TSignature> pName2Sig;
+    @PortedFrom(file = "dlTBox.h", name = "pName2Sig") private Map<OWLEntity, Signature> pName2Sig;
     /** set of reasoning options */
     @Original private final JFactReasonerConfiguration config;
     /** status of the KB */
@@ -167,6 +169,7 @@ public class TBox implements Serializable {
     @PortedFrom(file = "dlTBox.h", name = "nRelevantBCalls") private long nRelevantBCalls;
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "IV") private final IterableVec<Individual> iv = new IterableVec<>();
     @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "concepts") private final TIntArrayList conceptsForQueryAnswering = new TIntArrayList();
+    private OWLDataFactory df;
 
     /**
      * @param datatypeFactory
@@ -176,7 +179,9 @@ public class TBox implements Serializable {
      * @param interrupted
      *        interrupted
      */
-    public TBox(DatatypeFactory datatypeFactory, JFactReasonerConfiguration configuration, AtomicBoolean interrupted) {
+    public TBox(DatatypeFactory datatypeFactory, JFactReasonerConfiguration configuration, AtomicBoolean interrupted,
+        OWLDataFactory df) {
+        this.df = df;
         this.datatypeFactory = datatypeFactory;
         this.interrupted = interrupted;
         config = configuration;
@@ -186,10 +191,10 @@ public class TBox implements Serializable {
         pQuery = null;
         concepts = new NamedEntryCollection<>("concept", name -> new Concept(name), config);
         individuals = new NamedEntryCollection<>("individual", name -> new Individual(name), config);
-        objectRoleMaster = new RoleMaster(false, OWLRDFVocabulary.OWL_TOP_OBJECT_PROPERTY.getIRI(),
-            OWLRDFVocabulary.OWL_BOTTOM_OBJECT_PROPERTY.getIRI(), config);
-        dataRoleMaster = new RoleMaster(true, OWLRDFVocabulary.OWL_TOP_DATA_PROPERTY.getIRI(),
-            OWLRDFVocabulary.OWL_BOTTOM_DATA_PROPERTY.getIRI(), config);
+        objectRoleMaster = new RoleMaster(false, new ObjectRoleName(df.getOWLTopObjectProperty()), new ObjectRoleName(df
+            .getOWLBottomObjectProperty()), config);
+        dataRoleMaster = new RoleMaster(true, new DataRoleName(df.getOWLTopDataProperty()), new DataRoleName(df
+            .getOWLBottomDataProperty()), config);
         axioms = new AxiomSet(this);
         internalisedGeneralAxiom = BP_TOP;
         duringClassification = false;
@@ -199,8 +204,8 @@ public class TBox implements Serializable {
         preprocTime = 0;
         consistTime = 0;
         config.getLog().printTemplate(Templates.READ_CONFIG, Boolean.valueOf(config.getuseCompletelyDefined()),
-            "useRelevantOnly(obsolete)", Boolean.valueOf(config.getdumpQuery()),
-            Boolean.valueOf(config.getalwaysPreferEquals()));
+            "useRelevantOnly(obsolete)", Boolean.valueOf(config.getdumpQuery()), Boolean.valueOf(config
+                .getalwaysPreferEquals()));
         axioms.initAbsorptionFlags(config.getabsorptionFlags());
         initTopBottom();
         setForbidUndefinedNames(false);
@@ -1091,8 +1096,8 @@ public class TBox implements Serializable {
         // add special domains to the GCIs
         List<DLTree> list = new ArrayList<>();
         if (config.isUseSpecialDomains()) {
-            objectRoleMaster.getRoles().stream().filter(p -> !p.isSynonym() && p.hasSpecialDomain())
-                .forEach(p -> list.add(p.getTSpecialDomain().copy()));
+            objectRoleMaster.getRoles().stream().filter(p -> !p.isSynonym() && p.hasSpecialDomain()).forEach(p -> list
+                .add(p.getTSpecialDomain().copy()));
         }
         // take chains that lead to Bot role into account
         if (!objectRoleMaster.getBotRole().isSimple()) {
@@ -1108,8 +1113,8 @@ public class TBox implements Serializable {
         gcis.setGCI(internalisedGeneralAxiom != BP_TOP);
         gcis.setReflexive(objectRoleMaster.hasReflexiveRoles());
         // builds functional labels for roles
-        Stream.concat(objectRoleMaster.getRoles().stream(), dataRoleMaster.getRoles().stream())
-            .filter(p -> !p.isSynonym() && p.isTopFunc()).forEach(p -> p.setFunctional(atmost2dag(1, p, BP_TOP)));
+        Stream.concat(objectRoleMaster.getRoles().stream(), dataRoleMaster.getRoles().stream()).filter(p -> !p
+            .isSynonym() && p.isTopFunc()).forEach(p -> p.setFunctional(atmost2dag(1, p, BP_TOP)));
         // check the type of the ontology
         if (nNominalReferences > 0) {
             int nInd = individuals.size();
@@ -1296,8 +1301,8 @@ public class TBox implements Serializable {
                 break;
             case PROJFROM:
                 // XXX verify if new object necessary?
-                ret = dlHeap.directAdd(new DLVertex(DagTag.PROJ, 0, Role.resolveRole(t.getLeft()),
-                    tree2dag(t.getRight().getRight()), resolveRole(t.getRight().getLeft()), dlHeap), false);
+                ret = dlHeap.directAdd(new DLVertex(DagTag.PROJ, 0, Role.resolveRole(t.getLeft()), tree2dag(t.getRight()
+                    .getRight()), resolveRole(t.getRight().getLeft()), dlHeap), false);
                 break;
             default:
                 assert DLTreeFactory.isSNF(t);
@@ -1551,8 +1556,8 @@ public class TBox implements Serializable {
 
     @PortedFrom(file = "dlTBox.h", name = "initTopBottom")
     private void initTopBottom() {
-        top = Concept.getTOP();
-        bottom = Concept.getBOTTOM();
+        top = Concept.getTOP(df);
+        bottom = Concept.getBOTTOM(df);
         pTemp = Concept.getTEMP();
         // query concept
         pQuery = Concept.getQuery();
@@ -1703,8 +1708,8 @@ public class TBox implements Serializable {
         prepareFeatures(pConcept, qConcept);
         boolean result = !getReasoner().runSat(pConcept.resolveId(), -qConcept.resolveId());
         clearFeatures();
-        config.getLog().printTemplate(Templates.ISSUBHOLDS2, pConcept.getIRI(), qConcept.getIRI(),
-            !result ? " NOT" : "");
+        config.getLog().printTemplate(Templates.ISSUBHOLDS2, pConcept.getIRI(), qConcept.getIRI(), !result ? " NOT"
+            : "");
         return result;
     }
 
@@ -1863,8 +1868,8 @@ public class TBox implements Serializable {
             o.print("KB is inconsistent. Query is NOT processed\nConsistency");
         }
         long sum = preprocTime + consistTime;
-        o.print(" check done in ").print(time).print(" seconds\nof which:\nPreproc. takes ").print(preprocTime)
-            .print(" seconds\nConsist. takes ").print(consistTime).print(" seconds");
+        o.print(" check done in ").print(time).print(" seconds\nof which:\nPreproc. takes ").print(preprocTime).print(
+            " seconds\nConsist. takes ").print(consistTime).print(" seconds");
         if (nomReasoner != null) {
             o.print("\nReasoning NOM:");
             sum += nomReasoner.printReasoningTime(o);
@@ -1959,8 +1964,8 @@ public class TBox implements Serializable {
                 o.print("WRONG: printing a badtag dtBad!\n");
                 break;
             default:
-                throw new ReasonerInternalException(
-                    "Error printing vertex of type " + type.getName() + '(' + type + ')');
+                throw new ReasonerInternalException("Error printing vertex of type " + type.getName() + '(' + type
+                    + ')');
         }
     }
 
@@ -2136,8 +2141,8 @@ public class TBox implements Serializable {
                 dump.finishOp(DIOp.LE);
                 return;
             default:
-                throw new ReasonerInternalException(
-                    "Error dumping vertex of type " + type.getName() + '(' + type + ')');
+                throw new ReasonerInternalException("Error dumping vertex of type " + type.getName() + '(' + type
+                    + ')');
         }
     }
 
@@ -2147,8 +2152,8 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "dumpAllRoles")
     public void dumpAllRoles(DumpInterface dump) {
-        Stream.concat(objectRoleMaster.getRoles().stream(), dataRoleMaster.getRoles().stream())
-            .filter(p -> p.isRelevant(relevance)).forEach(p -> dumpRole(dump, p));
+        Stream.concat(objectRoleMaster.getRoles().stream(), dataRoleMaster.getRoles().stream()).filter(p -> p
+            .isRelevant(relevance)).forEach(p -> dumpRole(dump, p));
     }
 
     /**
@@ -2565,8 +2570,8 @@ public class TBox implements Serializable {
         // here it is safe to print KB features (all are known; the last one was
         // in Relevance)
         printFeatures();
-        dlHeap.setOrderDefaults(isLikeGALEN ? "Fdn" : isLikeWINE ? "Sdp" : "Sap",
-            isLikeGALEN ? "Ban" : isLikeWINE ? "Fdn" : "Dap");
+        dlHeap.setOrderDefaults(isLikeGALEN ? "Fdn" : isLikeWINE ? "Sdp" : "Sap", isLikeGALEN ? "Ban"
+            : isLikeWINE ? "Fdn" : "Dap");
         dlHeap.gatherStatistic();
         calculateStatistic();
         removeExtraDescriptions();
@@ -2691,20 +2696,20 @@ public class TBox implements Serializable {
         ++nC;
         // start with 1 to make index 0 an indicator of "not processed"
         nR.set(1);
-        Stream.concat(objectRoleMaster.getRoles().stream(), dataRoleMaster.getRoles().stream())
-            .filter(r -> !r.isSynonym()).forEach(r -> r.setIndex(nR.getAndIncrement()));
+        Stream.concat(objectRoleMaster.getRoles().stream(), dataRoleMaster.getRoles().stream()).filter(r -> !r
+            .isSynonym()).forEach(r -> r.setIndex(nR.getAndIncrement()));
     }
 
     @PortedFrom(file = "dlTBox.h", name = "replaceAllSynonyms")
     private void replaceAllSynonyms() {
-        objectRoleMaster.getRoles().stream().filter(r -> !r.isSynonym())
-            .forEach(r -> replaceSynonymsFromTree(r.getTDomain()));
-        dataRoleMaster.getRoles().stream().filter(r -> !r.isSynonym())
-            .forEach(r -> replaceSynonymsFromTree(r.getTDomain()));
-        concepts.getConcepts().filter(p -> replaceSynonymsFromTree(p.getDescription()))
-            .forEach(p -> p.initToldSubsumers());
-        individuals.getConcepts().filter(p -> replaceSynonymsFromTree(p.getDescription()))
-            .forEach(p -> p.initToldSubsumers());
+        objectRoleMaster.getRoles().stream().filter(r -> !r.isSynonym()).forEach(r -> replaceSynonymsFromTree(r
+            .getTDomain()));
+        dataRoleMaster.getRoles().stream().filter(r -> !r.isSynonym()).forEach(r -> replaceSynonymsFromTree(r
+            .getTDomain()));
+        concepts.getConcepts().filter(p -> replaceSynonymsFromTree(p.getDescription())).forEach(p -> p
+            .initToldSubsumers());
+        individuals.getConcepts().filter(p -> replaceSynonymsFromTree(p.getDescription())).forEach(p -> p
+            .initToldSubsumers());
     }
 
     /** preprocess related individuals */
@@ -2895,8 +2900,8 @@ public class TBox implements Serializable {
             // so their sorts shall be determined explicitely
             relatedIndividuals.forEach(p -> dlHeap.updateSorts(p.getA().getpName(), p.getRole(), p.getB().getpName()));
             // simple rules needs the same treatement
-            simpleRules.forEach(
-                q -> q.simpleRuleBody.forEach(r -> dlHeap.merge(dlHeap.get(q.bpHead).getSort(), r.getpName())));
+            simpleRules.forEach(q -> q.simpleRuleBody.forEach(r -> dlHeap.merge(dlHeap.get(q.bpHead).getSort(), r
+                .getpName())));
             // create sorts for concept and/or roles
             dlHeap.determineSorts(objectRoleMaster, dataRoleMaster);
         }
@@ -2944,8 +2949,8 @@ public class TBox implements Serializable {
             }
         });
         config.getLog().print("There are ").print(nPC).print(" primitive concepts used\n of which ").print(npFull)
-            .print(" completely defined\n      and ").print(nNoTold).print(" has no told subsumers\nThere are ")
-            .print(nNC).print(" non-primitive concepts used\n of which ").print(nsFull).print(" synonyms\nThere are ")
+            .print(" completely defined\n      and ").print(nNoTold).print(" has no told subsumers\nThere are ").print(
+                nNC).print(" non-primitive concepts used\n of which ").print(nsFull).print(" synonyms\nThere are ")
             .print(nSing).print(" individuals or nominals used\n");
     }
 
@@ -3016,8 +3021,8 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "initSingletonCache")
     private void initSingletonCache(Concept p, boolean pos) {
-        dlHeap.setCache(createBiPointer(p.getpName(), pos),
-            new ModelCacheSingleton(createBiPointer(p.getIndex(), pos)));
+        dlHeap.setCache(createBiPointer(p.getpName(), pos), new ModelCacheSingleton(createBiPointer(p.getIndex(),
+            pos)));
     }
 
     /**
@@ -3084,7 +3089,7 @@ public class TBox implements Serializable {
      *        p
      */
     @PortedFrom(file = "dlTBox.h", name = "setNameSigMap")
-    public void setNameSigMap(Map<NamedEntity, TSignature> p) {
+    public void setNameSigMap(Map<OWLEntity, Signature> p) {
         pName2Sig = p;
     }
 
@@ -3095,7 +3100,7 @@ public class TBox implements Serializable {
      */
     @Nullable
     @Original
-    public TSignature getSignature(ClassifiableEntry c) {
+    public Signature getSignature(ClassifiableEntry c) {
         if (pName2Sig == null) {
             return null;
         }
@@ -3160,8 +3165,8 @@ public class TBox implements Serializable {
                     rolesToExplore.add(vRole);
                     while (!rolesToExplore.isEmpty()) {
                         Role roleToExplore = rolesToExplore.remove(0);
-                        if ((roleToExplore.getId() != 0 || roleToExplore.isTop())
-                            && !roleToExplore.isRelevant(relevance)) {
+                        if ((roleToExplore.getId() != 0 || roleToExplore.isTop()) && !roleToExplore.isRelevant(
+                            relevance)) {
                             roleToExplore.setRelevant(relevance);
                             this.collectLogicFeature(roleToExplore);
                             queue.add(roleToExplore.getBPDomain());
@@ -3254,9 +3259,8 @@ public class TBox implements Serializable {
     @PortedFrom(file = "dlTBox.h", name = "printFeatures")
     public void printFeatures() {
         kbFeatures.writeState(config.getLog());
-        config.getLog().print("KB contains ", gcis.isGCI() ? "" : "NO ", "GCIs\nKB contains ",
-            gcis.isReflexive() ? "" : "NO ", "reflexive roles\nKB contains ", gcis.isRnD() ? "" : "NO ",
-            "range and domain restrictions\n");
+        config.getLog().print("KB contains ", gcis.isGCI() ? "" : "NO ", "GCIs\nKB contains ", gcis.isReflexive() ? ""
+            : "NO ", "reflexive roles\nKB contains ", gcis.isRnD() ? "" : "NO ", "range and domain restrictions\n");
     }
 
     /**
@@ -3429,7 +3433,7 @@ public class TBox implements Serializable {
      * @param mMinus
      *        MMinus
      */
-    public void reclassify(Set<NamedEntity> mPlus, Set<NamedEntity> mMinus) {
+    public void reclassify(Set<OWLEntity> mPlus, Set<OWLEntity> mMinus) {
         pTaxCreator.reclassify(mPlus, mMinus);
         status = KBREALISED;
         // FIXME!! check whether it is classified/realised

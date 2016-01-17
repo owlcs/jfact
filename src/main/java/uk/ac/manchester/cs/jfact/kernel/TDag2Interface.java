@@ -61,10 +61,10 @@ public class TDag2Interface implements Serializable {
                 return top();
             case NCONCEPT:
             case PCONCEPT:
-                return cache.concept(v.getConcept().getIRI());
+                return cache.concept(v.getConcept().getEntity().getEntity());
             case PSINGLETON:
             case NSINGLETON:
-                return cache.oneOf(cache.individual(v.getConcept().getIRI()));
+                return cache.oneOf(cache.individual(v.getConcept().getEntity().getEntity()));
             case AND:
             case COLLECTION:
                 List<ConceptExpression> list = new ArrayList<>();
@@ -74,20 +74,20 @@ public class TDag2Interface implements Serializable {
                 return and(list);
             case FORALL:
                 if (v.getRole().isDataRole()) {
-                    return forall(cache.dataRole(v.getRole().getIRI()), getDExpr(v.getConceptIndex()));
+                    return forall(cache.dataRole(v.getRole().getEntity().getEntity()), getDExpr(v.getConceptIndex()));
                 } else {
-                    return forall(cache.objectRole(v.getRole().getIRI()), getCExpr(v.getConceptIndex()));
+                    return forall(cache.objectRole(v.getRole().getEntity().getEntity()), getCExpr(v.getConceptIndex()));
                 }
             case LE:
                 if (v.getRole().isDataRole()) {
-                    return maxCardinality(v.getNumberLE(), cache.dataRole(v.getRole().getIRI()),
+                    return maxCardinality(v.getNumberLE(), cache.dataRole(v.getRole().getEntity().getEntity()),
                         getDExpr(v.getConceptIndex()));
                 } else {
-                    return maxCardinality(v.getNumberLE(), cache.objectRole(v.getRole().getIRI()),
+                    return maxCardinality(v.getNumberLE(), cache.objectRole(v.getRole().getEntity().getEntity()),
                         getCExpr(v.getConceptIndex()));
                 }
             case IRR:
-                return not(selfReference(cache.objectRole(v.getRole().getIRI())));
+                return not(selfReference(cache.objectRole(v.getRole().getEntity().getEntity())));
             case PROJ:
             case NN:
             case CHOOSE:
@@ -132,7 +132,7 @@ public class TDag2Interface implements Serializable {
      */
     @Original
     public RoleExpression getDataRoleExpression(Role r) {
-        return cache.dataRole(r.getIRI());
+        return cache.dataRole(r.getEntity().getEntity());
     }
 
     /**
@@ -142,7 +142,7 @@ public class TDag2Interface implements Serializable {
      */
     @Original
     public RoleExpression getObjectRoleExpression(Role r) {
-        return cache.objectRole(r.getIRI());
+        return cache.objectRole(r.getEntity().getEntity());
     }
 
     /**

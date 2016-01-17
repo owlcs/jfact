@@ -26,6 +26,7 @@ import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
 /** role master */
@@ -63,10 +64,12 @@ public class RoleMaster implements Serializable {
      * @param c
      *        c
      */
-    public RoleMaster(boolean d, IRI topRoleName, IRI botRoleName, JFactReasonerConfiguration c) {
+    public RoleMaster(boolean d, NamedEntity topRoleName, NamedEntity botRoleName, JFactReasonerConfiguration c) {
         newRoleId = 1;
-        emptyRole = new Role(botRoleName);
-        universalRole = new Role(topRoleName);
+        emptyRole = new Role(botRoleName.getIRI());
+        emptyRole.setEntity(botRoleName);
+        universalRole = new Role(topRoleName.getIRI());
+        universalRole.setEntity(topRoleName);
         roleNS = new NameSet<>(name -> new Role(name));
         dataRoles = d;
         useUndefinedNames = true;
@@ -158,8 +161,8 @@ public class RoleMaster implements Serializable {
         }
         // not registered but has non-null ID
         if (p.getId() != 0 || !useUndefinedNames) {
-            throw new OWLRuntimeException(
-                "Unable to register '" + name + "' as a " + (dataRoles ? "data role" : "role"));
+            throw new OWLRuntimeException("Unable to register '" + name + "' as a " + (dataRoles ? "data role"
+                : "role"));
         }
         registerRole(p);
         return p;

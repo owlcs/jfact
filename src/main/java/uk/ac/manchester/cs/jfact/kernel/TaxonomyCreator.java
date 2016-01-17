@@ -13,10 +13,11 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import org.semanticweb.owlapitools.decomposition.Signature;
+
 import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
-import uk.ac.manchester.cs.jfact.split.TSignature;
 
 /** taxonomy creator for DL */
 @PortedFrom(file = "TaxonomyCreator.h", name = "TaxonomyCreator")
@@ -44,7 +45,7 @@ public class TaxonomyCreator implements Serializable {
     /** told subsumers corresponding to a given entry */
     @PortedFrom(file = "TaxonomyCreator.h", name = "ksStack") protected final LinkedList<KnownSubsumers> ksStack = new LinkedList<>();
     /** signature of a \bot-module corresponding to a given entry */
-    @PortedFrom(file = "TaxonomyCreator.h", name = "sigStack") protected final LinkedList<TSignature> sigStack = new LinkedList<>();
+    @PortedFrom(file = "TaxonomyCreator.h", name = "sigStack") protected final LinkedList<Signature> sigStack = new LinkedList<>();
 
     /**
      * @param pTax2
@@ -469,7 +470,7 @@ public class TaxonomyCreator implements Serializable {
      */
     @Nullable
     @PortedFrom(file = "TaxonomyCreator.h", name = "buildSignature")
-    protected TSignature buildSignature(@SuppressWarnings("unused") ClassifiableEntry p) {
+    protected Signature buildSignature(@SuppressWarnings("unused") ClassifiableEntry p) {
         return null;
     }
 }

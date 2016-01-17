@@ -11,7 +11,6 @@ import org.semanticweb.owlapi.reasoner.impl.DefaultNode;
 import org.semanticweb.owlapi.reasoner.impl.DefaultNodeSet;
 import org.semanticweb.owlapi.reasoner.impl.OWLDataPropertyNode;
 import org.semanticweb.owlapi.reasoner.impl.OWLDataPropertyNodeSet;
-import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
@@ -34,18 +33,18 @@ public class DataPropertyTranslator extends OWLEntityTranslator<OWLDataProperty,
     @Nullable
     @Override
     protected DataRoleExpression getTopEntityPointer() {
-        return em.dataRole(OWLRDFVocabulary.OWL_TOP_DATA_PROPERTY.getIRI());
+        return em.dataRole(df.getOWLTopDataProperty());
     }
 
     @Nullable
     @Override
     protected DataRoleExpression getBottomEntityPointer() {
-        return em.dataRole(OWLRDFVocabulary.OWL_BOTTOM_DATA_PROPERTY.getIRI());
+        return em.dataRole(df.getOWLBottomDataProperty());
     }
 
     @Override
     protected DataRoleExpression createPointerForEntity(OWLDataProperty entity) {
-        return em.dataRole(entity.getIRI());
+        return em.dataRole(entity);
     }
 
     @Nullable

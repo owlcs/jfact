@@ -12,7 +12,6 @@ import org.semanticweb.owlapi.reasoner.impl.DefaultNode;
 import org.semanticweb.owlapi.reasoner.impl.DefaultNodeSet;
 import org.semanticweb.owlapi.reasoner.impl.OWLObjectPropertyNode;
 import org.semanticweb.owlapi.reasoner.impl.OWLObjectPropertyNodeSet;
-import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
@@ -35,13 +34,13 @@ public class ObjectPropertyTranslator extends OWLEntityTranslator<OWLObjectPrope
     @Nullable
     @Override
     protected ObjectRoleExpression getTopEntityPointer() {
-        return em.objectRole(OWLRDFVocabulary.OWL_TOP_OBJECT_PROPERTY.getIRI());
+        return em.objectRole(df.getOWLTopObjectProperty());
     }
 
     @Nullable
     @Override
     protected ObjectRoleExpression getBottomEntityPointer() {
-        return em.objectRole(OWLRDFVocabulary.OWL_BOTTOM_OBJECT_PROPERTY.getIRI());
+        return em.objectRole(df.getOWLBottomObjectProperty());
     }
 
     @Override
@@ -56,7 +55,7 @@ public class ObjectPropertyTranslator extends OWLEntityTranslator<OWLObjectPrope
     @Override
     protected ObjectRoleExpression createPointerForEntity(OWLObjectPropertyExpression entity) {
         // FIXME!! think later!!
-        ObjectRoleExpression p = em.objectRole(entity.getNamedProperty().getIRI());
+        ObjectRoleExpression p = em.objectRole(entity.getNamedProperty());
         if (entity.isAnonymous()) {
             p = em.inverse(p);
         }
@@ -81,8 +80,8 @@ public class ObjectPropertyTranslator extends OWLEntityTranslator<OWLObjectPrope
     }
 
     @Override
-    protected DefaultNodeSet<OWLObjectPropertyExpression>
-        createDefaultNodeSet(Stream<Node<OWLObjectPropertyExpression>> stream) {
+    protected DefaultNodeSet<OWLObjectPropertyExpression> createDefaultNodeSet(
+        Stream<Node<OWLObjectPropertyExpression>> stream) {
         return new OWLObjectPropertyNodeSet(stream);
     }
 }

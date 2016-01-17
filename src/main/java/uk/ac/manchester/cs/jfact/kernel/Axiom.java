@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapitools.decomposition.OntologyAtom;
 
 import conformance.Original;
 import conformance.PortedFrom;
@@ -24,7 +25,6 @@ import uk.ac.manchester.cs.jfact.helpers.DLTree;
 import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
-import uk.ac.manchester.cs.jfact.split.TOntologyAtom;
 
 /** inner axiom class */
 @PortedFrom(file = "tAxiom.h", name = "TAxiom")
@@ -36,7 +36,7 @@ public class Axiom implements Serializable {
     private Axiom origin;
     /** GCI is presented in the form (or Disjuncts); */
     @PortedFrom(file = "tAxiom.h", name = "Disjuncts") private final Set<DLTree> disjuncts = new LinkedHashSet<>();
-    @Original private TOntologyAtom atom;
+    @Original private OntologyAtom atom;
 
     /**
      * @param parent
@@ -66,8 +66,8 @@ public class Axiom implements Serializable {
     public boolean absorbIntoNegConcept(TBox tbox) {
         // finds all primitive negated concept names without description
         // XXX check this peek that updates stats
-        List<DLTree> cons = asList(disjuncts.stream().filter(this::primitiveNegatedConceptNamesWithoutDescription)
-            .peek(p -> tbox.getStatistics().sAbsNAttempt()));
+        List<DLTree> cons = asList(disjuncts.stream().filter(this::primitiveNegatedConceptNamesWithoutDescription).peek(
+            p -> tbox.getStatistics().sAbsNAttempt()));
         // if no concept names, return
         if (cons.isEmpty()) {
             return false;
@@ -557,7 +557,7 @@ public class Axiom implements Serializable {
      * @return atom for this axiom
      */
     @Original
-    public TOntologyAtom getAtom() {
+    public OntologyAtom getAtom() {
         return atom;
     }
 
@@ -566,7 +566,7 @@ public class Axiom implements Serializable {
      *        atom
      */
     @Original
-    public void setAtom(TOntologyAtom atom) {
+    public void setAtom(OntologyAtom atom) {
         this.atom = atom;
     }
 }

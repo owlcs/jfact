@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
+
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -7,33 +9,32 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.AxiomInterface;
-import uk.ac.manchester.cs.jfact.split.TSignature;
+import org.semanticweb.owlapitools.decomposition.AxiomWrapper;
+
 import conformance.Original;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.kernel.dl.axioms.AxiomImpl;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 
 /** ontology */
 @PortedFrom(file = "tOntology.h", name = "TOntology")
 public class Ontology implements Serializable {
 
-
     /** all the axioms */
-    @PortedFrom(file = "tOntology.h", name = "Axioms")
-    private final List<AxiomInterface> axioms = new ArrayList<>();
+    @PortedFrom(file = "tOntology.h", name = "Axioms") private final List<AxiomWrapper> axioms = new ArrayList<>();
     /** all the axioms */
-    @PortedFrom(file = "tOntology.h", name = "Retracted")
-    private final List<AxiomInterface> retracted = new ArrayList<>();
+    @PortedFrom(file = "tOntology.h", name = "Retracted") private final List<AxiomWrapper> retracted = new ArrayList<>();
     /** expression manager that builds all the expressions for the axioms */
-    @PortedFrom(file = "tOntology.h", name = "EManager")
-    private final ExpressionCache expressionCache = new ExpressionCache();
+    @PortedFrom(file = "tOntology.h", name = "EManager") private final ExpressionCache expressionCache = new ExpressionCache();
     /** id to be given to the next axiom */
-    @PortedFrom(file = "tOntology.h", name = "axiomId")
-    private int axiomId;
+    @PortedFrom(file = "tOntology.h", name = "axiomId") private int axiomId;
     /** true iff ontology was changed */
-    @PortedFrom(file = "tOntology.h", name = "changed")
-    private boolean changed;
+    @PortedFrom(file = "tOntology.h", name = "changed") private boolean changed;
 
     /** Default constructor. */
     public Ontology() {
@@ -47,7 +48,7 @@ public class Ontology implements Serializable {
      * @return axiom in position i
      */
     @PortedFrom(file = "tOntology.h", name = "get")
-    public AxiomInterface get(int i) {
+    public AxiomWrapper get(int i) {
         return axioms.get(i);
     }
 
@@ -72,7 +73,7 @@ public class Ontology implements Serializable {
      * @return p
      */
     @PortedFrom(file = "tOntology.h", name = "add")
-    public AxiomInterface add(AxiomInterface p) {
+    public AxiomWrapper add(AxiomWrapper p) {
         p.setId(++axiomId);
         axioms.add(p);
         changed = true;
@@ -86,7 +87,7 @@ public class Ontology implements Serializable {
      *        p
      */
     @PortedFrom(file = "tOntology.h", name = "retract")
-    public void retract(AxiomInterface p) {
+    public void retract(AxiomWrapper p) {
         changed = true;
         retracted.add(p);
         p.setUsed(false);
@@ -116,7 +117,7 @@ public class Ontology implements Serializable {
 
     /** @return axioms for the whole ontology */
     @PortedFrom(file = "tOntology.h", name = "getAxioms")
-    public List<AxiomInterface> getAxioms() {
+    public List<AxiomWrapper> getAxioms() {
         return axioms;
     }
 
@@ -128,16 +129,17 @@ public class Ontology implements Serializable {
 
     /** @return list of retracted axioms */
     @Original
-    public List<AxiomInterface> getRetracted() {
+    public List<AxiomWrapper> getRetracted() {
         return retracted;
     }
 
     /** @return signature of all ontology axioms */
     @PortedFrom(file = "tOntology.h", name = "getSignature")
-    public TSignature getSignature() {
-        TSignature sig = new TSignature();
-        axioms.stream().filter(p -> p.isUsed())
-                .forEach(p -> sig.add(p.getSignature()));
-        return sig;
+    public Stream<Expression> signature() {
+        return axioms.stream().filter(p -> p.isUsed()).flatMap(p -> ((AxiomImpl) p).namedEntitySignature()).distinct();
+    }
+
+    public Collection<NamedEntity> getSignature() {
+        return asList(signature().filter(p -> p instanceof NamedEntity).map(p -> (NamedEntity) p));
     }
 }

@@ -15,6 +15,7 @@ import javax.annotation.Nonnull;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.semanticweb.owlapi.reasoner.impl.OWLNamedIndividualNodeSet;
+import org.semanticweb.owlapitools.decomposition.AxiomWrapper;
 
 import uk.ac.manchester.cs.jfact.datatypes.Datatype;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
@@ -35,8 +36,8 @@ public class TranslationMachinery implements Serializable {
     @Nonnull private final DataPropertyTranslator dataPropertyTranslator;
     @Nonnull private final IndividualTranslator individualTranslator;
     @Nonnull private final EntailmentChecker entailmentChecker;
-    @Nonnull private final Map<OWLAxiom, AxiomInterface> axiom2PtrMap = new HashMap<>();
-    @Nonnull private final Map<AxiomInterface, OWLAxiom> ptr2AxiomMap = new HashMap<>();
+    @Nonnull private final Map<OWLAxiom, AxiomWrapper> axiom2PtrMap = new HashMap<>();
+    @Nonnull private final Map<AxiomWrapper, OWLAxiom> ptr2AxiomMap = new HashMap<>();
     protected final ReasoningKernel kernel;
     protected final ExpressionCache em;
     protected final OWLDataFactory df;
@@ -84,7 +85,7 @@ public class TranslationMachinery implements Serializable {
         axioms.filter(ax -> !axiom2PtrMap.containsKey(ax)).forEach(ax -> checkAndAdd(ax, ax.accept(axiomTranslator)));
     }
 
-    protected void checkAndAdd(OWLAxiom ax, AxiomInterface axiomPointer) {
+    protected void checkAndAdd(OWLAxiom ax, AxiomWrapper axiomPointer) {
         if (axiomPointer != Axioms.dummy()) {
             axiom2PtrMap.put(ax, axiomPointer);
             ptr2AxiomMap.put(axiomPointer, ax);
@@ -96,7 +97,7 @@ public class TranslationMachinery implements Serializable {
      *        axiom
      */
     public void retractAxiom(OWLAxiom axiom) {
-        AxiomInterface ptr = axiom2PtrMap.get(axiom);
+        AxiomWrapper ptr = axiom2PtrMap.get(axiom);
         if (ptr != null) {
             kernel.getOntology().retract(ptr);
             axiom2PtrMap.remove(axiom);
@@ -130,7 +131,8 @@ public class TranslationMachinery implements Serializable {
         if (!individual.isAnonymous()) {
             return individualTranslator.getPointerFromEntity(individual.asOWLNamedIndividual());
         } else {
-            return em.individual(IRI.create(individual.toStringID()));
+            // XXX work around this issue
+            return em.individual(df.getOWLNamedIndividual(IRI.create(individual.toStringID())));
         }
     }
 
@@ -206,7 +208,7 @@ public class TranslationMachinery implements Serializable {
      *        trace
      * @return trnslated set
      */
-    public Set<OWLAxiom> translateTAxiomSet(Stream<AxiomInterface> trace) {
+    public Set<OWLAxiom> translateTAxiomSet(Stream<AxiomWrapper> trace) {
         return asSet(trace.map(ptr2AxiomMap::get));
     }
 }

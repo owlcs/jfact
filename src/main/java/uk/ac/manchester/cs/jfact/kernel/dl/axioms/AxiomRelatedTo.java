@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.kernel.dl.axioms;
 
+import java.util.stream.Stream;
+
 import javax.annotation.Nullable;
 
 /* This file is part of the JFact DL reasoner
@@ -10,6 +12,7 @@ import javax.annotation.Nullable;
 import org.semanticweb.owlapi.model.OWLAxiom;
 
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
@@ -19,7 +22,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomRelatedTo")
 public class AxiomRelatedTo extends AxiomIndividual {
 
-    @PortedFrom(file = "tDLAxiom.h", name = "J") private final IndividualExpression individualExpression;
+    @PortedFrom(file = "tDLAxiom.h", name = "J") private final IndividualExpression relatedIndividualExpression;
     @PortedFrom(file = "tDLAxiom.h", name = "R") private final ObjectRoleExpression objectRoleExpression;
 
     /**
@@ -35,7 +38,7 @@ public class AxiomRelatedTo extends AxiomIndividual {
     public AxiomRelatedTo(OWLAxiom ax, IndividualExpression i, ObjectRoleExpression r, IndividualExpression j) {
         super(ax, i);
         objectRoleExpression = r;
-        individualExpression = j;
+        relatedIndividualExpression = j;
     }
 
     @Override
@@ -54,12 +57,17 @@ public class AxiomRelatedTo extends AxiomIndividual {
     /** @return individual */
     @PortedFrom(file = "tDLAxiom.h", name = "getRelatedIndividual")
     public IndividualExpression getRelatedIndividual() {
-        return individualExpression;
+        return relatedIndividualExpression;
     }
 
     /** @return object property */
     @PortedFrom(file = "tDLAxiom.h", name = "getRelation")
     public ObjectRoleExpression getRelation() {
         return objectRoleExpression;
+    }
+
+    @Override
+    public Stream<Expression> namedEntitySignature() {
+        return Stream.of(individualExpression, objectRoleExpression, relatedIndividualExpression);
     }
 }

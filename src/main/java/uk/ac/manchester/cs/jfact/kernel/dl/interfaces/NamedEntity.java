@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.HasIRI;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
@@ -29,4 +30,7 @@ public interface NamedEntity extends HasIRI, Serializable {
      */
     @PortedFrom(file = "tDLExpression.h", name = "setEntry")
         void setEntry(@Nullable NamedEntry e);
+
+    /** @return entity */
+    OWLEntity getEntity();
 }

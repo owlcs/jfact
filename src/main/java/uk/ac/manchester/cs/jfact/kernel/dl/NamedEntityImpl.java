@@ -10,6 +10,7 @@ import java.io.Serializable;
 import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
@@ -20,15 +21,20 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 public abstract class NamedEntityImpl implements NamedEntity, Serializable {
 
     /** name of the entity */
-    protected final IRI name;
+    protected final OWLEntity entity;
     private NamedEntry entry;
 
     /**
-     * @param name
-     *        name
+     * @param e
+     *        entity
      */
-    public NamedEntityImpl(IRI name) {
-        this.name = name;
+    public NamedEntityImpl(OWLEntity e) {
+        entity = e;
+    }
+
+    @Override
+    public OWLEntity getEntity() {
+        return entity;
     }
 
     @Nullable
@@ -44,17 +50,17 @@ public abstract class NamedEntityImpl implements NamedEntity, Serializable {
 
     @Override
     public IRI getIRI() {
-        return name;
+        return entity.getIRI();
     }
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + '(' + name + ')';
+        return this.getClass().getSimpleName() + '(' + entity.getIRI() + ')';
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return entity.getIRI().hashCode();
     }
 
     @Override
@@ -66,7 +72,7 @@ public abstract class NamedEntityImpl implements NamedEntity, Serializable {
             return true;
         }
         if (obj instanceof NamedEntity) {
-            return name.equals(((NamedEntity) obj).getIRI()) && obj.getClass().equals(this.getClass());
+            return entity.getIRI().equals(((NamedEntity) obj).getIRI()) && obj.getClass().equals(this.getClass());
         }
         return false;
     }

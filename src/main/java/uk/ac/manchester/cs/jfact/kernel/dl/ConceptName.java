@@ -7,7 +7,7 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
-import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
@@ -22,7 +22,7 @@ public class ConceptName extends NamedEntityImpl implements ConceptExpression, S
      * @param name
      *        name
      */
-    public ConceptName(IRI name) {
+    public ConceptName(OWLEntity name) {
         super(name);
     }
 

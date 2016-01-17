@@ -10,13 +10,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nullable;
 
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapitools.decomposition.Signature;
+
 import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.Concept.CTTag;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState;
-import uk.ac.manchester.cs.jfact.split.TSignature;
 
 /** Concept taxonomy */
 @PortedFrom(file = "DLConceptTaxonomy.h", name = "DLConceptTaxonomy")
@@ -51,8 +53,8 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     protected final Set<TaxonomyVertex> candidates = new HashSet<>();
     /** whether look into it */
     protected boolean useCandidates = false;
-    protected Set<NamedEntity> mPlus;
-    protected Set<NamedEntity> mMinus;
+    protected Set<OWLEntity> mPlus;
+    protected Set<OWLEntity> mMinus;
 
     /**
      * the only c'tor
@@ -150,7 +152,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     @Nullable
     @Override
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "buildSignature")
-    public TSignature buildSignature(ClassifiableEntry p) {
+    public Signature buildSignature(ClassifiableEntry p) {
         return tBox.getSignature(p);
     }
 
@@ -236,8 +238,8 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
         if (upDirection) {
             return false;
         }
-        TSignature sig = sigStack.peek();
-        if (sig != null && entity != null && !sig.containsNamedEntity(entity)) {
+        Signature sig = sigStack.peek();
+        if (sig != null && entity != null && !sig.contains(entity.getEntity())) {
             return true;
         }
         return false;
@@ -268,16 +270,13 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     @Override
     public String toString() {
         StringBuilder o = new StringBuilder();
-        o.append(
-            String
-                .format(Templates.DLCONCEPTTAXONOMY.getTemplate(), Long.toString(nTries), Long.toString(nPositives),
-                    Long.toString(nPositives * 100 / Math.max(1, nTries)), Long.toString(nCachedPositive),
-                    Long.toString(nCachedNegative),
-                    nSortedNegative > 0 ? String.format("Sorted reasoning deals with %s non-subsumptions%n",
-                        Long.toString(nSortedNegative)) : "",
-            nModuleNegative > 0 ? "Modular reasoning deals with " + nModuleNegative + " non-subsumptions\n" : "",
-            Long.toString(nSearchCalls), Long.toString(nSubCalls), Long.toString(nNonTrivialSubCalls),
-            Long.toString(nEntries * (nEntries - 1) / Math.max(1, nTries))));
+        o.append(String.format(Templates.DLCONCEPTTAXONOMY.getTemplate(), Long.toString(nTries), Long.toString(
+            nPositives), Long.toString(nPositives * 100 / Math.max(1, nTries)), Long.toString(nCachedPositive), Long
+                .toString(nCachedNegative), nSortedNegative > 0 ? String.format(
+                    "Sorted reasoning deals with %s non-subsumptions%n", Long.toString(nSortedNegative)) : "",
+            nModuleNegative > 0 ? "Modular reasoning deals with " + nModuleNegative + " non-subsumptions\n" : "", Long
+                .toString(nSearchCalls), Long.toString(nSubCalls), Long.toString(nNonTrivialSubCalls), Long.toString(
+                    nEntries * (nEntries - 1) / Math.max(1, nTries))));
         o.append(super.toString());
         return o.toString();
     }
@@ -528,7 +527,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
      * @param minus
      *        minus
      */
-    public void reclassify(Set<NamedEntity> plus, Set<NamedEntity> minus) {
+    public void reclassify(Set<OWLEntity> plus, Set<OWLEntity> minus) {
         mPlus = plus;
         mMinus = minus;
         pTax.deFinalise();
@@ -562,7 +561,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
      * @param s
      *        s
      */
-    public void reclassify(TaxonomyVertex node, @Nullable TSignature s) {
+    public void reclassify(TaxonomyVertex node, @Nullable Signature s) {
         upDirection = false;
         sigStack.add(s);
         curEntry = node.getPrimer();

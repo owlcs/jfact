@@ -18,8 +18,8 @@ import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleComplexExpression;
 
 /** property expression translator */
-public class ComplexObjectPropertyTranslator
-    extends OWLEntityTranslator<OWLObjectPropertyExpression, ObjectRoleComplexExpression> {
+public class ComplexObjectPropertyTranslator extends
+    OWLEntityTranslator<OWLObjectPropertyExpression, ObjectRoleComplexExpression> {
 
     /**
      * @param em
@@ -36,13 +36,13 @@ public class ComplexObjectPropertyTranslator
     @Nullable
     @Override
     protected ObjectRoleComplexExpression getTopEntityPointer() {
-        return em.objectRole(OWLRDFVocabulary.OWL_TOP_OBJECT_PROPERTY.getIRI());
+        return em.objectRole(df.getOWLObjectProperty(OWLRDFVocabulary.OWL_TOP_OBJECT_PROPERTY));
     }
 
     @Nullable
     @Override
     protected ObjectRoleComplexExpression getBottomEntityPointer() {
-        return em.objectRole(OWLRDFVocabulary.OWL_BOTTOM_OBJECT_PROPERTY.getIRI());
+        return em.objectRole(df.getOWLObjectProperty(OWLRDFVocabulary.OWL_BOTTOM_OBJECT_PROPERTY));
     }
 
     @Override
@@ -56,7 +56,7 @@ public class ComplexObjectPropertyTranslator
 
     @Override
     protected ObjectRoleComplexExpression createPointerForEntity(OWLObjectPropertyExpression entity) {
-        return em.objectRole(entity.getNamedProperty().getIRI());
+        return em.objectRole(entity.getNamedProperty());
     }
 
     @Nullable
@@ -77,8 +77,8 @@ public class ComplexObjectPropertyTranslator
     }
 
     @Override
-    protected DefaultNodeSet<OWLObjectPropertyExpression>
-        createDefaultNodeSet(Stream<Node<OWLObjectPropertyExpression>> stream) {
+    protected DefaultNodeSet<OWLObjectPropertyExpression> createDefaultNodeSet(
+        Stream<Node<OWLObjectPropertyExpression>> stream) {
         return new OWLObjectPropertyNodeSet(stream);
     }
 }

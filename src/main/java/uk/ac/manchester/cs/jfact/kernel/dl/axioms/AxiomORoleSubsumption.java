@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.kernel.dl.axioms;
 
+import java.util.stream.Stream;
+
 import javax.annotation.Nullable;
 
 /* This file is part of the JFact DL reasoner
@@ -10,6 +12,7 @@ import javax.annotation.Nullable;
 import org.semanticweb.owlapi.model.OWLAxiom;
 
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleComplexExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
@@ -51,5 +54,10 @@ public class AxiomORoleSubsumption extends AxiomSingleORole {
     @PortedFrom(file = "tDLAxiom.h", name = "getSubRole")
     public ObjectRoleComplexExpression getSubRole() {
         return subRole;
+    }
+
+    @Override
+    public Stream<Expression> namedEntitySignature() {
+        return Stream.of(role, subRole);
     }
 }

@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
+import org.semanticweb.owlapitools.decomposition.Signature;
 
 import conformance.Original;
 import conformance.PortedFrom;
@@ -22,7 +23,6 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NAryExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
-import uk.ac.manchester.cs.jfact.split.TSignature;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 /** expression translator */
@@ -35,7 +35,7 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Seri
      * signature of non-trivial entities; used in semantic locality checkers
      * only
      */
-    @PortedFrom(file = "tExpressionTranslator.h", name = "sig") private TSignature sig;
+    @PortedFrom(file = "tExpressionTranslator.h", name = "sig") private Signature sig;
 
     /**
      * @param kb
@@ -52,7 +52,7 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Seri
      */
     @PortedFrom(file = "tExpressionTranslator.h", name = "nc")
     private boolean nc(NamedEntity entity) {
-        return sig != null && !sig.containsNamedEntity(entity);
+        return sig != null && !sig.contains(entity.getEntity());
     }
 
     /**
@@ -62,7 +62,7 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Seri
      *        signature
      */
     @PortedFrom(file = "tExpressionTranslator.h", name = "setSignature")
-    public void setSignature(TSignature s) {
+    public void setSignature(Signature s) {
         sig = s;
     }
 
@@ -155,22 +155,22 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Seri
 
     @Override
     public DLTree visit(ConceptObjectMinCardinality expr) {
-        return DLTreeFactory.createSNFGE(expr.getCardinality(), expr.getOR().accept(this),
-            expr.getConcept().accept(this));
+        return DLTreeFactory.createSNFGE(expr.getCardinality(), expr.getOR().accept(this), expr.getConcept().accept(
+            this));
     }
 
     @Override
     public DLTree visit(ConceptObjectMaxCardinality expr) {
-        return DLTreeFactory.createSNFLE(expr.getCardinality(), expr.getOR().accept(this),
-            expr.getConcept().accept(this));
+        return DLTreeFactory.createSNFLE(expr.getCardinality(), expr.getOR().accept(this), expr.getConcept().accept(
+            this));
     }
 
     @Override
     public DLTree visit(ConceptObjectExactCardinality expr) {
-        DLTree le = DLTreeFactory.createSNFLE(expr.getCardinality(), expr.getOR().accept(this).copy(),
-            expr.getConcept().accept(this).copy());
-        DLTree ge = DLTreeFactory.createSNFGE(expr.getCardinality(), expr.getOR().accept(this).copy(),
-            expr.getConcept().accept(this).copy());
+        DLTree le = DLTreeFactory.createSNFLE(expr.getCardinality(), expr.getOR().accept(this).copy(), expr.getConcept()
+            .accept(this).copy());
+        DLTree ge = DLTreeFactory.createSNFGE(expr.getCardinality(), expr.getOR().accept(this).copy(), expr.getConcept()
+            .accept(this).copy());
         return DLTreeFactory.createSNFAnd(ge, le);
     }
 
@@ -200,8 +200,8 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Seri
 
     @Override
     public DLTree visit(ConceptDataMaxCardinality expr) {
-        return DLTreeFactory.createSNFLE(expr.getCardinality(), expr.getDataRoleExpression().accept(this),
-            expr.getExpr().accept(this));
+        return DLTreeFactory.createSNFLE(expr.getCardinality(), expr.getDataRoleExpression().accept(this), expr
+            .getExpr().accept(this));
     }
 
     @Override

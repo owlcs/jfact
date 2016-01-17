@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.kernel.dl.axioms;
 
+import java.util.stream.Stream;
+
 import javax.annotation.Nullable;
 
 /* This file is part of the JFact DL reasoner
@@ -29,6 +31,11 @@ public class AxiomDeclaration extends AxiomImpl {
     public AxiomDeclaration(@Nullable OWLAxiom ax, Expression d) {
         super(ax);
         expression = d;
+    }
+
+    @Override
+    public Stream<Expression> namedEntitySignature() {
+        return Stream.of(getDeclaration());
     }
 
     @Override

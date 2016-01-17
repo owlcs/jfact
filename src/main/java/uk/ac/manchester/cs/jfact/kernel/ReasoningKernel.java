@@ -19,12 +19,21 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nullable;
 
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
+import org.semanticweb.owlapitools.decomposition.*;
 
 import conformance.Original;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposition;
+import uk.ac.manchester.cs.atomicdecomposition.AtomicDecompositionImpl;
+import uk.ac.manchester.cs.jfact.KnowledgeExplorer;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
 import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
 import uk.ac.manchester.cs.jfact.helpers.DLTree;
@@ -40,7 +49,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.ConceptTop;
 import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
-import uk.ac.manchester.cs.jfact.split.*;
+import uk.ac.manchester.cs.owlapi.modularity.ModuleType;
 
 /** Reasoning kernel */
 @PortedFrom(file = "Kernel.h", name = "ReasoningKernel")
@@ -56,9 +65,9 @@ public class ReasoningKernel implements Serializable {
     @PortedFrom(file = "Kernel.h", name = "Ontology") private final Ontology ontology = new Ontology();
     /** expression translator to work with queries */
     @PortedFrom(file = "Kernel.h", name = "pET") private ExpressionTranslator pET;
-    @PortedFrom(file = "Kernel.h", name = "Name2Sig") private final Map<NamedEntity, TSignature> name2Sig = new HashMap<>();
+    @PortedFrom(file = "Kernel.h", name = "Name2Sig") private final Map<OWLEntity, Signature> name2Sig = new HashMap<>();
     /** ontology signature (used in incremental) */
-    @PortedFrom(file = "Kernel.h", name = "OntoSig") private TSignature ontoSig;
+    @PortedFrom(file = "Kernel.h", name = "OntoSig") private Collection<NamedEntity> ontoSig;
     // values to propagate to the new KB in case of clearance
     @Original private AtomicBoolean interrupted;
     // reasoning cache
@@ -74,7 +83,7 @@ public class ReasoningKernel implements Serializable {
     /** set if TBox throws an exception during preprocessing/classification */
     @PortedFrom(file = "Kernel.h", name = "reasoningFailed") private boolean reasoningFailed = false;
     /** trace vector for the last operation (set from the TBox trace-sets) */
-    @PortedFrom(file = "Kernel.h", name = "TraceVec") private final List<AxiomInterface> traceVec = new ArrayList<>();
+    @PortedFrom(file = "Kernel.h", name = "TraceVec") private final List<AxiomWrapper> traceVec = new ArrayList<>();
     /** flag to gather trace information for the next reasoner's call */
     @PortedFrom(file = "Kernel.h", name = "NeedTracing") private boolean needTracing = false;
     @Original private final DatatypeFactory datatypeFactory;
@@ -82,18 +91,19 @@ public class ReasoningKernel implements Serializable {
     /** knowledge exploration support */
     @PortedFrom(file = "Kernel.h", name = "KE") private KnowledgeExplorer ke;
     /** atomic decomposer */
-    @PortedFrom(file = "Kernel.h", name = "AD") private AtomicDecomposer ad;
+    @PortedFrom(file = "Kernel.h", name = "AD") private AtomicDecomposition ad;
     /** syntactic locality based module extractor */
-    @PortedFrom(file = "Kernel.h", name = "ModSyn") private OntologyBasedModularizer modSyn = null;
+    @PortedFrom(file = "Kernel.h", name = "ModSyn") private Decomposer modSyn = null;
     /** semantic locality based module extractor */
-    @PortedFrom(file = "Kernel.h", name = "ModSem") private OntologyBasedModularizer modSem = null;
+    @PortedFrom(file = "Kernel.h", name = "ModSem") private Decomposer modSem = null;
     /** set to return by the locality checking procedure */
-    @PortedFrom(file = "Kernel.h", name = "Result") private final Set<AxiomInterface> result = new HashSet<>();
+    @PortedFrom(file = "Kernel.h", name = "Result") private final Set<AxiomWrapper> result = new HashSet<>();
     /** cached query input description */
     @PortedFrom(file = "Kernel.h", name = "cachedQuery") private ConceptExpression cachedQuery;
     /** ignore cache for the TExpr* (useful for semantic AD) */
     @PortedFrom(file = "Kernel.h", name = "ignoreExprCache") private boolean ignoreExprCache = false;
     private final Timer moduleTimer = new Timer();
+    private OWLDataFactory df;
 
     /**
      * @param conf
@@ -101,7 +111,7 @@ public class ReasoningKernel implements Serializable {
      * @param factory
      *        factory
      */
-    public ReasoningKernel(JFactReasonerConfiguration conf, DatatypeFactory factory) {
+    public ReasoningKernel(JFactReasonerConfiguration conf, DatatypeFactory factory, OWLDataFactory df) {
         // should be commented
         cachedQuery = null;
         cachedQueryTree = null;
@@ -110,6 +120,7 @@ public class ReasoningKernel implements Serializable {
         pTBox = null;
         pET = null;
         cachedQuery = null;
+        this.df = df;
         initCacheAndFlags();
     }
 
@@ -236,9 +247,9 @@ public class ReasoningKernel implements Serializable {
     @PortedFrom(file = "Kernel.h", name = "Role")
     private RoleExpression role(Role r) {
         if (r.isDataRole()) {
-            return getExpressionManager().dataRole(r.getIRI());
+            return getExpressionManager().dataRole(r.getEntity().getEntity());
         } else {
-            return getExpressionManager().objectRole(r.getIRI());
+            return getExpressionManager().objectRole(r.getEntity().getEntity());
         }
     }
 
@@ -260,8 +271,8 @@ public class ReasoningKernel implements Serializable {
 
     /** @return the trace-set of the last reasoning operation */
     @PortedFrom(file = "Kernel.h", name = "getTrace")
-    public List<AxiomInterface> getTrace() {
-        List<AxiomInterface> toReturn = new ArrayList<>(traceVec);
+    public List<AxiomWrapper> getTrace() {
+        List<AxiomWrapper> toReturn = new ArrayList<>(traceVec);
         traceVec.clear();
         return toReturn;
     }
@@ -273,7 +284,7 @@ public class ReasoningKernel implements Serializable {
      *        sig
      */
     @PortedFrom(file = "Kernel.h", name = "setSignature")
-    public void setSignature(TSignature sig) {
+    public void setSignature(Signature sig) {
         if (pET != null) {
             pET.setSignature(sig);
         }
@@ -364,20 +375,20 @@ public class ReasoningKernel implements Serializable {
     /**
      * @param useSemantic
      *        useSemantic
+     * @param r
+     *        reasoner
      * @return module extractor
      */
     @PortedFrom(file = "Kernel.h", name = "getModExtractor")
-    public OntologyBasedModularizer getModExtractor(boolean useSemantic) {
+    public Decomposer getModExtractor(boolean useSemantic, OWLReasoner r) {
         if (useSemantic) {
             if (modSem == null) {
-                modSem = new OntologyBasedModularizer(ontology,
-                    OntologyBasedModularizer.buildTModularizer(useSemantic, this));
+                modSem = new Decomposer(ontology.getAxioms(), new SemanticLocalityChecker(r));
             }
             return modSem;
         }
         if (modSyn == null) {
-            modSyn = new OntologyBasedModularizer(ontology,
-                OntologyBasedModularizer.buildTModularizer(useSemantic, this));
+            modSyn = new Decomposer(ontology.getAxioms(), new SyntacticLocalityChecker());
         }
         return modSyn;
     }
@@ -392,12 +403,14 @@ public class ReasoningKernel implements Serializable {
      * @return a set of axioms that corresponds to the atom with the id INDEX
      */
     @PortedFrom(file = "Kernel.h", name = "getModule")
-    public List<AxiomInterface> getModule(List<Expression> signature, boolean useSemantic, ModuleType type) {
+    public Collection<AxiomWrapper> getModule(List<Expression> signature, boolean useSemantic, ModuleType type,
+        OWLReasoner r) {
         // init signature
-        TSignature sig = new TSignature();
+        Signature sig = new Signature();
         sig.setLocality(false);
-        signature.stream().filter(p -> p instanceof NamedEntity).forEach(p -> sig.add((NamedEntity) p));
-        return getModExtractor(useSemantic).getModule(sig, type);
+        signature.stream().filter(p -> p instanceof NamedEntity).map(p -> ((NamedEntity) p).getEntity()).forEach(
+            sig::add);
+        return getModExtractor(useSemantic, r).getModule(sig.getSignature().stream(), useSemantic, type);
     }
 
     /**
@@ -410,16 +423,18 @@ public class ReasoningKernel implements Serializable {
      * @return a set of axioms that corresponds to the atom with the id INDEX
      */
     @PortedFrom(file = "Kernel.h", name = "getNonLocal")
-    public Set<AxiomInterface> getNonLocal(List<Expression> signature, boolean useSemantic, ModuleType type) {
+    public Set<AxiomWrapper> getNonLocal(List<Expression> signature, boolean useSemantic, ModuleType type,
+        OWLReasoner r) {
         // init signature
-        TSignature sig = new TSignature();
-        sig.setLocality(type == ModuleType.M_TOP);
-        signature.stream().filter(p -> p instanceof NamedEntity).forEach(p -> sig.add((NamedEntity) p));
+        Signature sig = new Signature();
+        sig.setLocality(type == ModuleType.TOP);
+        signature.stream().filter(p -> p instanceof NamedEntity).map(p -> ((NamedEntity) p).getEntity()).forEach(
+            sig::add);
         // do check
-        LocalityChecker lc = getModExtractor(useSemantic).getModularizer().getLocalityChecker();
+        LocalityChecker lc = getModExtractor(useSemantic, r).getModularizer().getLocalityChecker();
         lc.setSignatureValue(sig);
         result.clear();
-        add(result, getOntology().getAxioms().stream().filter(p -> !lc.local(p)));
+        add(result, getOntology().getAxioms().stream().filter(p -> !lc.local(p.getAxiom())));
         return result;
     }
 
@@ -623,10 +638,10 @@ public class ReasoningKernel implements Serializable {
     @PortedFrom(file = "Kernel.h", name = "checkFunctionality")
     private boolean checkFunctionality(Role r) {
         // r is transitive iff \ER.C and \ER.\not C is unsatisfiable
-        DLTree tmp = DLTreeFactory.createSNFExists(DLTreeFactory.createRole(r).copy(),
-            DLTreeFactory.createSNFNot(getFreshFiller(r)));
-        tmp = DLTreeFactory.createSNFAnd(tmp,
-            DLTreeFactory.createSNFExists(DLTreeFactory.createRole(r), getFreshFiller(r)));
+        DLTree tmp = DLTreeFactory.createSNFExists(DLTreeFactory.createRole(r).copy(), DLTreeFactory.createSNFNot(
+            getFreshFiller(r)));
+        tmp = DLTreeFactory.createSNFAnd(tmp, DLTreeFactory.createSNFExists(DLTreeFactory.createRole(r), getFreshFiller(
+            r)));
         return !checkSatTree(tmp);
     }
 
@@ -689,8 +704,8 @@ public class ReasoningKernel implements Serializable {
             return false;
         }
         // R [= S iff \ER.C and \AS.(not C) is unsatisfiable
-        DLTree tmp = DLTreeFactory.createSNFForall(DLTreeFactory.createRole(s),
-            DLTreeFactory.createSNFNot(getFreshFiller(s)));
+        DLTree tmp = DLTreeFactory.createSNFForall(DLTreeFactory.createRole(s), DLTreeFactory.createSNFNot(
+            getFreshFiller(s)));
         tmp = DLTreeFactory.createSNFAnd(DLTreeFactory.createSNFExists(DLTreeFactory.createRole(r), getFreshFiller(r)),
             tmp);
         return !checkSatTree(tmp);
@@ -712,7 +727,7 @@ public class ReasoningKernel implements Serializable {
         if (pTBox != null) {
             return true;
         }
-        pTBox = new TBox(datatypeFactory, getOptions(), interrupted);
+        pTBox = new TBox(datatypeFactory, getOptions(), interrupted, df);
         pET = new ExpressionTranslator(pTBox);
         initCacheAndFlags();
         return false;
@@ -1649,14 +1664,14 @@ public class ReasoningKernel implements Serializable {
     public void doIncremental() {
         // re-set the modularizer to use updated ontology
         modSyn = null;
-        Set<NamedEntity> mPlus = new HashSet<>();
-        Set<NamedEntity> mMinus = new HashSet<>();
+        Set<OWLEntity> mPlus = new HashSet<>();
+        Set<OWLEntity> mMinus = new HashSet<>();
         // detect new- and old- signature elements
-        TSignature newSig = ontology.getSignature();
-        Set<NamedEntity> removedEntities = new HashSet<>(ontoSig.begin());
-        removedEntities.removeAll(newSig.begin());
-        Set<NamedEntity> addedEntities = new HashSet<>(newSig.begin());
-        addedEntities.removeAll(ontoSig.begin());
+        Collection<NamedEntity> newSig = ontology.getSignature();
+        Collection<NamedEntity> removedEntities = new HashSet<>(ontoSig);
+        removedEntities.removeAll(newSig);
+        Collection<NamedEntity> addedEntities = new HashSet<>(newSig);
+        addedEntities.removeAll(ontoSig);
         Taxonomy tax = getCTaxonomy();
         // deal with removed concepts
         for (NamedEntity e : removedEntities) {
@@ -1677,7 +1692,7 @@ public class ReasoningKernel implements Serializable {
                 e(cName);
                 // create sig for it
                 Concept c = (Concept) cName.getEntry();
-                setupSig(c.getEntity(), ontology.getAxioms());
+                setupSig(c.getEntity().getEntity());
                 // init the taxonomy element
                 TaxonomyVertex cur = tax.getCurrent();
                 cur.clear();
@@ -1690,20 +1705,20 @@ public class ReasoningKernel implements Serializable {
         // fill in M^+ and M^- sets
         Timer t = new Timer();
         t.start();
-        LocalityChecker lc = getModExtractor(false).getModularizer().getLocalityChecker();
-        for (Map.Entry<NamedEntity, TSignature> p : name2Sig.entrySet()) {
+        LocalityChecker lc = getModExtractor(false, null).getModularizer().getLocalityChecker();
+        for (Map.Entry<OWLEntity, Signature> p : name2Sig.entrySet()) {
             lc.setSignatureValue(p.getValue());
-            for (AxiomInterface notProcessed : ontology.getAxioms()) {
-                if (!lc.local(notProcessed)) {
+            for (AxiomWrapper notProcessed : ontology.getAxioms()) {
+                if (!lc.local(notProcessed.getAxiom())) {
                     mPlus.add(p.getKey());
                     break;
                 }
             }
-            for (AxiomInterface retracted : ontology.getRetracted()) {
-                if (!lc.local(retracted)) {
+            for (AxiomWrapper retracted : ontology.getRetracted()) {
+                if (!lc.local(retracted.getAxiom())) {
                     mMinus.add(p.getKey());
                     // FIXME!! only concepts for now
-                    TaxonomyVertex v = ((ClassifiableEntry) p.getKey().getEntry()).getTaxVertex();
+                    TaxonomyVertex v = ((ClassifiableEntry) p.getKey()).getTaxVertex();
                     if (v.noNeighbours(true)) {
                         v.addNeighbour(true, tax.getTopVertex());
                         tax.getTopVertex().addNeighbour(false, v);
@@ -1714,7 +1729,7 @@ public class ReasoningKernel implements Serializable {
         }
         t.stop();
         // build changed modules
-        Set<NamedEntity> toProcess = new HashSet<>(mPlus);
+        Set<OWLEntity> toProcess = new HashSet<>(mPlus);
         toProcess.addAll(mMinus);
         // process all entries recursively
         while (!toProcess.isEmpty()) {
@@ -1767,7 +1782,7 @@ public class ReasoningKernel implements Serializable {
     private void forceReload() {
         clearTBox();
         newKB();
-        ontology.getSignature().begin().forEach(p -> p.setEntry(null));
+        ontology.getSignature().forEach(p -> p.setEntry(null));
         // (re)load ontology
         OntologyLoader ontologyLoader = new OntologyLoader(getTBox());
         ontologyLoader.visitOntology(ontology);
@@ -1787,7 +1802,7 @@ public class ReasoningKernel implements Serializable {
      *        Module
      */
     @PortedFrom(file = "Incremental.cpp", name = "setupSig")
-    public void setupSig(@Nullable NamedEntity entity, List<AxiomInterface> module) {
+    public void setupSig(@Nullable OWLEntity entity) {
         moduleTimer.start();
         // do nothing if entity doesn't exist
         if (entity == null) {
@@ -1795,12 +1810,13 @@ public class ReasoningKernel implements Serializable {
         }
         moduleTimer.start();
         // prepare a place to update
-        TSignature sig = new TSignature();
+        Signature sig = new Signature();
         // calculate a module
         sig.add(entity);
-        getModExtractor(false).getModule(module, sig, ModuleType.M_BOT);
+        getModExtractor(false, null).getModule(sig.getSignature().stream(), false, ModuleType.BOT);
         // perform update
-        name2Sig.put(entity, new TSignature(getModExtractor(false).getModularizer().getSignature()));
+        name2Sig.put(entity, new Signature(getModExtractor(false, null).getModularizer().getSignature().getSignature()
+            .stream()));
         moduleTimer.stop();
     }
 
@@ -1816,16 +1832,17 @@ public class ReasoningKernel implements Serializable {
      *        toProcess
      */
     @PortedFrom(file = "Incremental.cpp", name = "buildSignature")
-    public void buildSignature(NamedEntity entity, List<AxiomInterface> module, Set<NamedEntity> toProcess) {
+    public void buildSignature(OWLEntity entity, Collection<AxiomWrapper> module, Set<OWLEntity> toProcess) {
         toProcess.remove(entity);
-        setupSig(entity, module);
-        List<AxiomInterface> newModule = getModExtractor(false).getModularizer().getModule();
+        setupSig(entity);
+        Collection<AxiomWrapper> newModule = getModExtractor(false, null).getModularizer().getModule();
         if (module.size() == newModule.size()) {
             return;
         }
         // smaller module: recurse
-        TSignature modSig = getModExtractor(false).getModularizer().getSignature();
-        modSig.begin().stream().filter(toProcess::contains).forEach(p -> buildSignature(p, newModule, toProcess));
+        Signature modSig = getModExtractor(false, null).getModularizer().getSignature();
+        modSig.getSignature().stream().filter(toProcess::contains).forEach(p -> buildSignature(p, newModule,
+            toProcess));
     }
 
     /** initialise the incremental bits on full reload */
@@ -1833,10 +1850,10 @@ public class ReasoningKernel implements Serializable {
     public void initIncremental() {
         name2Sig.clear();
         // found all entities
-        Set<NamedEntity> toProcess = new HashSet<>();
-        getModExtractor(false);
+        Set<OWLEntity> toProcess = new HashSet<>();
+        getModExtractor(false, null);
         // fill the module signatures of the concepts
-        getTBox().getConcepts().forEach(p -> toProcess.add(p.getEntity()));
+        getTBox().getConcepts().forEach(p -> toProcess.add(p.getEntity().getEntity()));
         // process all entries recursively
         while (!toProcess.isEmpty()) {
             buildSignature(toProcess.iterator().next(), ontology.getAxioms(), toProcess);
@@ -2119,12 +2136,12 @@ public class ReasoningKernel implements Serializable {
      * @return size of the AD
      */
     @PortedFrom(file = "Kernel.h", name = "getAtomicDecompositionSize")
-    public int getAtomicDecompositionSize(boolean useSemantics, ModuleType type) {
+    public int getAtomicDecompositionSize(OWLOntology o, boolean useSemantics, ModuleType type) {
         // init AD field
         if (ad == null) {
-            ad = new AtomicDecomposer(getModExtractor(useSemantics).getModularizer());
+            ad = new AtomicDecompositionImpl(o);
         }
-        return ad.getAOS(ontology, type).size();
+        return ad.getAtoms().size();
     }
 
     /**
@@ -2135,13 +2152,13 @@ public class ReasoningKernel implements Serializable {
      * @return list of axioms for atom
      */
     @PortedFrom(file = "Kernel.h", name = "getAtomAxioms")
-    public Set<AxiomInterface> getAtomAxioms(int index) {
-        return ad.getAOS().get(index).getAtomAxioms();
+    public List<AxiomWrapper> getAtomAxioms(int index) {
+        return ad.getAtomList().get(index).getAtomAxioms();
     }
 
     /** @return list of tautologies */
     @Original
-    public List<AxiomInterface> getTautologies() {
+    public Set<OWLAxiom> getTautologies() {
         return ad.getTautologies();
     }
 
@@ -2154,8 +2171,8 @@ public class ReasoningKernel implements Serializable {
      * @return module for atom
      */
     @PortedFrom(file = "Kernel.h", name = "getAtomModule")
-    public Set<AxiomInterface> getAtomModule(int index) {
-        return ad.getAOS().get(index).getModule();
+    public List<AxiomWrapper> getAtomModule(int index) {
+        return ad.getAtomList().get(index).getModule();
     }
 
     /**
@@ -2166,14 +2183,8 @@ public class ReasoningKernel implements Serializable {
      * @return dependent atoms for atom
      */
     @PortedFrom(file = "Kernel.h", name = "getAtomDependents")
-    public Set<TOntologyAtom> getAtomDependents(int index) {
-        return ad.getAOS().get(index).getDepAtoms();
-    }
-
-    /** @return a number of locality checks performed for creating an AD */
-    @PortedFrom(file = "Kernel.cpp", name = "getLocCheckNumber")
-    public long getLocCheckNumber() {
-        return ad.getLocChekNumber();
+    public Set<OntologyAtom> getAtomDependents(int index) {
+        return ad.getAtomList().get(index).getDependencies();
     }
 
     // knowledge exploration queries
@@ -2200,8 +2211,8 @@ public class ReasoningKernel implements Serializable {
             }
             tmp = DLTreeFactory.createSNFExists(DLTreeFactory.createRole(s), tmp);
         }
-        tmp = DLTreeFactory.createSNFAnd(tmp, DLTreeFactory
-            .createSNFForall(DLTreeFactory.buildTree(new Lexeme(Token.RNAME, r)), getTBox().getFreshConcept()));
+        tmp = DLTreeFactory.createSNFAnd(tmp, DLTreeFactory.createSNFForall(DLTreeFactory.buildTree(new Lexeme(
+            Token.RNAME, r)), getTBox().getFreshConcept()));
         return !checkSatTree(tmp);
     }
 
@@ -2237,15 +2248,14 @@ public class ReasoningKernel implements Serializable {
         // now fills the query
         RIActor actor = new RIActor();
         // ask for instances of \exists R^-.{i}
-        ObjectRoleExpression invR = r.getId() > 0
-            ? getExpressionManager().inverse(getExpressionManager().objectRole(r.getIRI()))
-            : getExpressionManager().objectRole(r.inverse().getIRI());
+        ObjectRoleExpression invR = r.getId() > 0 ? getExpressionManager().inverse(getExpressionManager().objectRole(r
+            .getEntity().getEntity())) : getExpressionManager().objectRole(r.inverse().getEntity().getEntity());
         ConceptExpression query;
         if (r.isTop()) {
             // universal role has all the named individuals as a filler
             query = top();
         } else {
-            query = value(invR, getExpressionManager().individual(i.getIRI()));
+            query = value(invR, getExpressionManager().individual(i.getEntity().getEntity()));
         }
         this.getInstances(query, actor);
         return actor.getAcc();
@@ -2261,8 +2271,8 @@ public class ReasoningKernel implements Serializable {
     @PortedFrom(file = "Kernel.h", name = "getRoleFillers")
     public List<Individual> getRoleFillers(IndividualExpression i, ObjectRoleExpression r) {
         realiseKB();
-        return getRelated(getIndividual(i, "Individual name expected in the getRoleFillers()"),
-            getRole(r, "Role expression expected in the getRoleFillers()"));
+        return getRelated(getIndividual(i, "Individual name expected in the getRoleFillers()"), getRole(r,
+            "Role expression expected in the getRoleFillers()"));
     }
 
     /**

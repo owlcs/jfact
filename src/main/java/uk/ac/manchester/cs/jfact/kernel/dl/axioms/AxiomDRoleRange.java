@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.kernel.dl.axioms;
 
+import java.util.stream.Stream;
+
 import javax.annotation.Nullable;
 
 /* This file is part of the JFact DL reasoner
@@ -12,6 +14,7 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 
@@ -33,6 +36,11 @@ public class AxiomDRoleRange extends AxiomSingleDRole {
     public AxiomDRoleRange(OWLAxiom ax, DataRoleExpression role, DataExpression range) {
         super(ax, role);
         this.range = range;
+    }
+
+    @Override
+    public Stream<Expression> namedEntitySignature() {
+        return Stream.of(role, range);
     }
 
     @Override
