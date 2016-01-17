@@ -9,7 +9,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -1081,13 +1083,22 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
 
         @Override
         public LogAdapter printTemplateInt(Templates t, int... strings) {
-            this.print(String.format(t.getTemplate(), strings));
+            List<Object> l = new ArrayList<>(strings.length + 1);
+            for (int i : strings) {
+                l.add(Integer.valueOf(i));
+            }
+            this.print(String.format(t.getTemplate(), l.toArray()));
             return this;
         }
 
         @Override
         public LogAdapter printTemplateMixInt(Templates t, Object s, int... strings) {
-            this.print(String.format(t.getTemplate(), s, strings));
+            List<Object> l = new ArrayList<>(strings.length + 1);
+            l.add(s);
+            for (int i : strings) {
+                l.add(Integer.valueOf(i));
+            }
+            this.print(String.format(t.getTemplate(), l.toArray()));
             return this;
         }
 
