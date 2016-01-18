@@ -2,7 +2,6 @@ package uk.ac.manchester.cs.jfact.kernel.actors;
 
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.*;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,32 +13,14 @@ import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
 
 /** @author ignazio */
 @Original
-public class ActorImpl implements Actor, Serializable {
+public class ActorImpl extends TaxGatheringWalker {
 
-    /** vertices that satisfy the condition */
-    @PortedFrom(file = "Actor.h", name = "found") protected final List<TaxonomyVertex> found = new ArrayList<>();
     /** flag to look at concept-like or role-like entities */
     @PortedFrom(file = "Actor.h", name = "isRole") protected boolean isRole;
     /** flag to look at concepts or object roles */
     @PortedFrom(file = "Actor.h", name = "isStandard") protected boolean isStandard;
     /** flag to throw exception at the 1st found */
     @PortedFrom(file = "Actor.h", name = "interrupt") protected boolean interrupt;
-
-    @Override
-    @PortedFrom(file = "Actor.h", name = "clear")
-    public void clear() {
-        found.clear();
-    }
-
-    @Override
-    @PortedFrom(file = "Actor.h", name = "apply")
-    public boolean apply(TaxonomyVertex v) {
-        if (tryVertex(v)) {
-            found.add(v);
-            return true;
-        }
-        return false;
-    }
 
     /**
      * check whether actor is applicable to the ENTRY
@@ -48,6 +29,7 @@ public class ActorImpl implements Actor, Serializable {
      *        entry
      * @return true if applicable
      */
+    @Override
     @PortedFrom(file = "Actor.h", name = "applicable")
     protected boolean applicable(ClassifiableEntry entry) {
         if (isRole) {
@@ -83,27 +65,6 @@ public class ActorImpl implements Actor, Serializable {
 
     @Override
     public boolean applicable(TaxonomyVertex v) {
-        if (tryEntry(v.getPrimer())) {
-            return true;
-        }
-        return v.synonyms().anyMatch(this::tryEntry);
-    }
-
-    /**
-     * @param p
-     *        p
-     * @return true iff current entry is visible
-     */
-    protected boolean tryEntry(ClassifiableEntry p) {
-        return !p.isSystem() && applicable(p);
-    }
-
-    /**
-     * @param v
-     *        v
-     * @return true if at least one entry of a vertex V is visible
-     */
-    protected boolean tryVertex(TaxonomyVertex v) {
         if (tryEntry(v.getPrimer())) {
             return true;
         }

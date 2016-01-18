@@ -1,11 +1,5 @@
 package uk.ac.manchester.cs.jfact.kernel.actors;
 
-/* This file is part of the JFact DL reasoner
- Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
- This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
- This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
- You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -24,7 +18,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
  *        type
  */
 @PortedFrom(file = "JNIActor.h", name = "TaxonomyActor")
-public class TaxonomyActor<T extends Expression> implements Actor, Serializable {
+public class TaxonomyActor<T extends Expression> extends TaxGatheringWalker {
 
     private final Policy policy;
     private final ExpressionCache cache;
@@ -49,10 +43,15 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
 
     @Override
     public boolean applicable(TaxonomyVertex v) {
-        if (policy.applicable(v.getPrimer())) {
+        if (applicable(v.getPrimer())) {
             return true;
         }
-        return v.synonyms().anyMatch(policy::applicable);
+        return v.synonyms().anyMatch(this::applicable);
+    }
+
+    @Override
+    protected boolean applicable(ClassifiableEntry entry) {
+        return policy.applicable(entry);
     }
 
     /**
@@ -61,14 +60,14 @@ public class TaxonomyActor<T extends Expression> implements Actor, Serializable 
      * @param p
      *        p
      */
+    @Override
     @PortedFrom(file = "JNIActor.h", name = "tryEntry")
-    protected void tryEntry(ClassifiableEntry p) {
-        if (p.isSystem()) {
-            return;
-        }
-        if (policy.applicable(p)) {
+    protected boolean tryEntry(ClassifiableEntry p) {
+        if (!p.isSystem() && applicable(p)) {
             syn.add(asT(p));
+            return true;
         }
+        return false;
     }
 
     /**
