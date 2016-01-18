@@ -12,18 +12,7 @@ import uk.ac.manchester.cs.jfact.kernel.TaxonomyVertex;
 
 /** Actor interface */
 @PortedFrom(file = "Actor.h", name = "Actor")
-public interface Actor {
-
-    /**
-     * taxonomy walking method.
-     * 
-     * @param v
-     *        v
-     * @return true if node was processed, false if node can not be processed in
-     *         current settings
-     */
-    @PortedFrom(file = "Actor.h", name = "apply")
-        boolean apply(TaxonomyVertex v);
+public interface Actor extends WalkerInterface {
 
     /** clear collections */
     default void clear() {
