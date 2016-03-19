@@ -324,7 +324,6 @@ public class Concept extends ClassifiableEntry {
         if (desc == null) {
             return;
         }
-        // assert this.isPrimitive();
         if (description == null) {
             description = desc.copy();
             return;

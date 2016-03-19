@@ -32,8 +32,6 @@ public class JFactFactory implements OWLReasonerFactory, Serializable {
     private static OWLReasoner verify(JFactReasoner toReturn) {
         OWLOntologyManager m = toReturn.getRootOntology().getOWLOntologyManager();
         m.addOntologyChangeListener(toReturn);
-        // toReturn.kernel.writeReasoningResult(new
-        // LeveLogger.LogAdapterStream(), 0);
         return toReturn;
     }
 

@@ -130,7 +130,6 @@ public class ExpressionCache implements Serializable {
      * @return named individual
      */
     @PortedFrom(file = "tExpressionManager.h", name = "individual")
-    @Nonnull
     public IndividualName individual(OWLEntity name) {
         return individualNameset.insert(name);
     }

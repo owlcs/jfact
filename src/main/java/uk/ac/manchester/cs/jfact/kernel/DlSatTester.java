@@ -2220,10 +2220,6 @@ public class DlSatTester implements Serializable {
             for (int i : bcOr.getApplicableOrEntriesConcepts()) {
                 if (addToDoEntry(curNode, -i, dep, "sb")) {
                     return true;
-                    // XXX should throw an exception only when debugging, but
-                    // this is hard to figure out
-                    // throw new
-                    // UnreachableSituationException(curNode.toString());
                     // Both Exists and Clash are errors
                 }
             }

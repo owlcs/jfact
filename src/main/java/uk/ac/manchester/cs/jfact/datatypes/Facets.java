@@ -26,14 +26,21 @@ import org.semanticweb.owlapi.vocab.OWLFacet;
  */
 public class Facets implements Serializable {
 
-    private abstract static class AbstractFacet implements Facet, Serializable {
+    private static class AbstractFacet implements Facet, Serializable {
 
         protected final String uri;
         protected final String fragment;
+        protected final boolean isNumber;
 
-        public AbstractFacet(String u) {
+        public AbstractFacet(String u, boolean isNumber) {
             uri = DatatypeFactory.getNamespace() + u;
             fragment = u;
+            this.isNumber = isNumber;
+        }
+
+        @Override
+        public final boolean isNumberFacet() {
+            return isNumber;
         }
 
         @Override
@@ -93,8 +100,8 @@ public class Facets implements Serializable {
                 // BigDecimal - or exceptions will be spat out
                 return new BigDecimal(value.toString());
             } catch (NumberFormatException e) {
-                throw new NumberFormatException(
-                    "Cannot parse '" + value.toString() + "' as a big decimal: " + e.getMessage());
+                throw new NumberFormatException("Cannot parse '" + value.toString() + "' as a big decimal: " + e
+                    .getMessage());
             }
         }
 
@@ -106,13 +113,21 @@ public class Facets implements Serializable {
 
     private static class LimitFacet extends AbstractFacet {
 
+        private String toString;
+
+        public LimitFacet(String u, String toString) {
+            super(u, true);
+            this.toString = toString;
+        }
+
         public LimitFacet(String u) {
-            super(u);
+            super(u, true);
+            toString = super.toString();
         }
 
         @Override
-        public boolean isNumberFacet() {
-            return true;
+        public String toString() {
+            return toString;
         }
     }
 
@@ -205,12 +220,7 @@ public class Facets implements Serializable {
     /** fractionDigits */
     public static final Facet fractionDigits = new LimitFacet("fractionDigits");
     /** whiteSpace */
-    public static final Facet whiteSpace = new AbstractFacet("whiteSpace") {
-
-        @Override
-        public boolean isNumberFacet() {
-            return false;
-        }
+    public static final Facet whiteSpace = new AbstractFacet("whiteSpace", false) {
 
         @Override
         public whitespace parse(Object value) {
@@ -224,12 +234,7 @@ public class Facets implements Serializable {
         }
     };
     /** pattern */
-    public static final Facet pattern = new AbstractFacet("pattern") {
-
-        @Override
-        public boolean isNumberFacet() {
-            return false;
-        }
+    public static final Facet pattern = new AbstractFacet("pattern", false) {
 
         @Override
         public String parse(Object value) {
@@ -237,45 +242,15 @@ public class Facets implements Serializable {
         }
     };
     /** enumeration */
-    public static final Facet enumeration = new AbstractFacet("enumeration") {
-
-        @Override
-        public boolean isNumberFacet() {
-            return false;
-        }
-    };
+    public static final Facet enumeration = new AbstractFacet("enumeration", false);
     /** maxInclusive */
-    public static final Facet maxInclusive = new LimitFacet("maxInclusive") {
-
-        @Override
-        public String toString() {
-            return "]";
-        }
-    };
+    public static final Facet maxInclusive = new LimitFacet("maxInclusive", "]");
     /** maxExclusive */
-    public static final Facet maxExclusive = new LimitFacet("maxExclusive") {
-
-        @Override
-        public String toString() {
-            return ")";
-        }
-    };
+    public static final Facet maxExclusive = new LimitFacet("maxExclusive", ")");
     /** minInclusive */
-    public static final Facet minInclusive = new LimitFacet("minInclusive") {
-
-        @Override
-        public String toString() {
-            return "[";
-        }
-    };
+    public static final Facet minInclusive = new LimitFacet("minInclusive", "[");
     /** minExclusive */
-    public static final Facet minExclusive = new LimitFacet("minExclusive") {
-
-        @Override
-        public String toString() {
-            return "(";
-        }
-    };
+    public static final Facet minExclusive = new LimitFacet("minExclusive", "(");
     private static final List<Facet> values = Arrays.asList(enumeration, fractionDigits, length, maxExclusive,
         maxInclusive, minExclusive, minInclusive, maxLength, minLength, pattern, totalDigits, whiteSpace);
 

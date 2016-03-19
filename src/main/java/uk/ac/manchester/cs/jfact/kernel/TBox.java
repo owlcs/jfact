@@ -2260,8 +2260,7 @@ public class TBox implements Serializable {
         if (DLTreeFactory.isSubTree(e, c.getDescription())) {
             return;
         }
-        // // try to see whether C contains a reference to itself at the top
-        // level
+        // try to see whether C contains a reference to itself at the top level
         if (c.hasSelfInDesc()) {
             // remember the old description value
             DLTree d = c.getDescription().copy();
@@ -2269,7 +2268,7 @@ public class TBox implements Serializable {
             c.removeSelfFromDescription();
             // the trees should differ here
             assert !DLTree.equalTrees(d, c.getDescription());
-            // note that we don't know exact semantics of C for now;
+            // note that we don't know exact semantics of C for now.
             // we need to split its definition and work via GCIs
             makeDefinitionPrimitive(c, e, d);
         } else {
@@ -2639,10 +2638,11 @@ public class TBox implements Serializable {
         // mark D as processed
         processed.add(d);
         // check the description of D
-        if (d.getDescription() == null) {
+        DLTree description = d.getDescription();
+        if (description == null) {
             return false;
         }
-        if (isReferenced(c, d.getDescription(), processed)) {
+        if (isReferenced(c, description, processed)) {
             return true;
         }
         // we are done for primitive concepts

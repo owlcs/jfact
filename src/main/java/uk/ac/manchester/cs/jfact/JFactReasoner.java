@@ -24,6 +24,8 @@ import org.semanticweb.owlapi.reasoner.knowledgeexploration.OWLKnowledgeExplorer
 import org.semanticweb.owlapi.util.Version;
 import org.semanticweb.owlapitools.decomposition.AxiomWrapper;
 import org.semanticweb.owlapitools.decomposition.OntologyAtom;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import conformance.Original;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
@@ -48,6 +50,7 @@ import uk.ac.manchester.cs.owlapi.modularity.ModuleType;
 public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener, OWLKnowledgeExplorerReasoner,
     Serializable {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(JFactReasoner.class);
     protected final AtomicBoolean interrupted = new AtomicBoolean(false);
     private ReasoningKernel kernel;
     private final ExpressionCache em;
@@ -391,8 +394,8 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener, OW
                 }
                 throw new FreshEntitiesException(asList(axiom.signature()), e);
             }
-            System.out.println("JFactReasoner.isEntailed() WARNING: fresh entity exception in the reasoner for entity: "
-                + iri + "; defaulting to axiom not entailed");
+            LOGGER.warn("Fresh entity exception in the reasoner for entity: '{}'; defaulting to axiom not entailed",
+                iri);
             return false;
         }
     }

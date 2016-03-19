@@ -318,7 +318,7 @@ public class Axiom implements Serializable {
         if (disjuncts.isEmpty()) {
             return DLTreeFactory.createBottom();
         }
-        // assert !disjuncts.isEmpty();
+        assert !disjuncts.isEmpty();
         List<DLTree> leaves = asList(disjuncts.stream().filter(d -> !d.equals(replaced)).map(d -> d.copy()));
         DLTree result = DLTreeFactory.createSNFAnd(leaves);
         return DLTreeFactory.createSNFNot(result);
@@ -397,7 +397,7 @@ public class Axiom implements Serializable {
                 }
             }
         }
-        // if no concept names -- return;
+        // if no concept names -- return
         if (cons.isEmpty()) {
             return false;
         }
@@ -466,7 +466,7 @@ public class Axiom implements Serializable {
                 }
             }
         }
-        // if there are no EXISTS concepts -- return;
+        // if there are no EXISTS concepts -- return
         if (cons.isEmpty()) {
             return false;
         }

@@ -1035,6 +1035,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
     }
 
     /** The Class LogAdapterStream. */
+    @SuppressWarnings("null")
     static class LogAdapterStream implements LogAdapter, Serializable {
 
         /** The out. */

@@ -12,6 +12,8 @@ import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
@@ -22,9 +24,10 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
  * @param <R>
  *        type
  */
-public class DatatypeEnumeration<R extends Comparable<R>>
-    implements DatatypeCombination<DatatypeEnumeration<R>, Literal<R>>, DatatypeExpression<R> {
+public class DatatypeEnumeration<R extends Comparable<R>> implements
+    DatatypeCombination<DatatypeEnumeration<R>, Literal<R>>, DatatypeExpression<R> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(DatatypeEnumeration.class);
     @Nonnull private final IRI uri;
     @Nonnull protected final Datatype<R> host;
     @Nonnull protected final List<Literal<R>> literals = new ArrayList<>();
@@ -260,15 +263,17 @@ public class DatatypeEnumeration<R extends Comparable<R>>
 
     @Override
     public DatatypeExpression<R> addNumericFacet(Facet f, @Nullable Comparable<?> value) {
-        System.out.println(
-            "DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object");
+        LOGGER.warn(
+            "DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object: {}",
+            this);
         return this;
     }
 
     @Override
     public DatatypeExpression<R> addNonNumericFacet(Facet f, @Nullable Comparable<?> value) {
-        System.out.println(
-            "DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object");
+        LOGGER.warn(
+            "DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object: {}",
+            this);
         return this;
     }
 

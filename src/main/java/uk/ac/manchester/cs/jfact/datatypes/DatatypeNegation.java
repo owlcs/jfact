@@ -11,6 +11,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.IRI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
@@ -23,6 +25,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
  */
 public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpression<R>, Serializable {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(DatatypeNegation.class);
     @Nonnull private final Datatype<R> host;
     @Nonnull private final IRI uri;
 
@@ -204,15 +207,17 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
 
     @Override
     public DatatypeExpression<R> addNumericFacet(Facet f, @Nullable Comparable<?> value) {
-        System.out.println(
-            "DatatypeNegation.addFacet() Cannot add a facet to a negation; modify the base type and rebuild a new negation. Returning the same object");
+        LOGGER.warn(
+            "DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to a negation; returning the same object: {}",
+            this);
         return this;
     }
 
     @Override
     public DatatypeExpression<R> addNonNumericFacet(Facet f, @Nullable Comparable<?> value) {
-        System.out.println(
-            "DatatypeNegation.addFacet() Cannot add a facet to a negation; modify the base type and rebuild a new negation. Returning the same object");
+        LOGGER.warn(
+            "DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to a negation; returning the same object: {}",
+            this);
         return this;
     }
 

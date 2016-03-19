@@ -842,7 +842,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     @PortedFrom(file = "Blocking.cpp", name = "B3")
     private boolean b3(DlCompletionTree p, int n, Role t, int c) {
         assert hasParent();
-        // XXX here FaCT++ has blocking stats (tries), are they useful?
+        // XXX here FaCT++ has blocking stats, are they useful?
         boolean ret;
         // when (<= n S C) \in L(w') then
         // a)w is an inv(S)-succ of v or
@@ -926,8 +926,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
     @PortedFrom(file = "Blocking.cpp", name = "B6")
     private boolean b6(Role u, int f) {
         assert hasParent();
-        // if (>= m U F) \in L(v), and
-        // w is U-successor of v...
+        // if >= m U F in L(v), and w is U-successor of v...
         if (!isParentArcLabelled(u.inverse())) {
             return true;
         }
