@@ -203,7 +203,7 @@ public class RoleMaster implements Serializable {
         }
         // check the inconsistency case *UROLE* [= *EROLE*
         if (role.isTop() && parent.isBottom()) {
-            throw new InconsistentOntologyException();
+            throw new InconsistentOntologyException("Role is top role and role parent is bottom role");
         }
         // *UROLE* [= R means R (and R-) are synonym of *UROLE*
         if (role.isTop()) {

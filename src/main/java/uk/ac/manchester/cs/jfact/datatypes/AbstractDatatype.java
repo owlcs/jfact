@@ -18,6 +18,8 @@ import javax.annotation.Nullable;
 import org.semanticweb.owlapi.model.HasIRI;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitor;
 import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
@@ -29,6 +31,7 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
  */
 public abstract class AbstractDatatype<R extends Comparable<R>> implements Datatype<R>, Serializable {
 
+    protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractDatatype.class);
     @Nonnull protected final Set<Facet> facets;
     @Nonnull protected final Set<Datatype<?>> ancestors;
     @SuppressWarnings("rawtypes") protected final Map<Facet, Comparable> knownNumericFacetValues = new LinkedHashMap<>();
@@ -128,8 +131,8 @@ public abstract class AbstractDatatype<R extends Comparable<R>> implements Datat
         if (type.isExpression()) {
             type = type.asExpression().getHostType();
         }
-        return type.equals(this) || type.equals(DatatypeFactory.LITERAL) || type.isSubType(this)
-            || this.isSubType(type);
+        return type.equals(this) || type.equals(DatatypeFactory.LITERAL) || type.isSubType(this) || this.isSubType(
+            type);
     }
 
     @Override
@@ -141,7 +144,7 @@ public abstract class AbstractDatatype<R extends Comparable<R>> implements Datat
             R value = parseValue(l.value());
             return this.isInValueSpace(value);
         } catch (RuntimeException e) {
-            System.err.println(e.getMessage());
+            LOGGER.warn("Parsing issue: invalid literal value: {}", String.valueOf(l.value()), e.getMessage());
             // parsing exceptions will be caught here
             return false;
         }

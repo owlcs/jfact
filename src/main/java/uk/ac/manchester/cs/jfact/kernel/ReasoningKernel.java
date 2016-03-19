@@ -28,6 +28,8 @@ import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 import org.semanticweb.owlapitools.decomposition.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import conformance.Original;
 import conformance.PortedFrom;
@@ -55,6 +57,7 @@ import uk.ac.manchester.cs.owlapi.modularity.ModuleType;
 @PortedFrom(file = "Kernel.h", name = "ReasoningKernel")
 public class ReasoningKernel implements Serializable {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReasoningKernel.class);
     private static final String ROLE_EXPRESSION_EXPECTED = "Role expression expected in isDisjointRoles()";
     private static final String ROLE_EXPECTED = "Role expression expected in getNeighbours() method";
     /** options for the kernel and all related substructures */
@@ -801,7 +804,7 @@ public class ReasoningKernel implements Serializable {
             processKB(KBREALISED);
         }
         if (!isKBConsistent()) {
-            throw new InconsistentOntologyException();
+            throw new InconsistentOntologyException("Ontology is inconsistent");
         }
     }
 
@@ -1761,7 +1764,7 @@ public class ReasoningKernel implements Serializable {
             // save taxonomy
             oout.writeObject(tbox);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Serialization problem", e);
             return null;
         }
         return out.toByteArray();
@@ -1772,7 +1775,7 @@ public class ReasoningKernel implements Serializable {
         try {
             return (TBox) new ObjectInputStream(new ByteArrayInputStream(tbox)).readObject();
         } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Deserialization problem", e);
         }
         return null;
     }
@@ -1873,7 +1876,7 @@ public class ReasoningKernel implements Serializable {
         if (curStatus.ordinal() >= status.ordinal()) {
             // nothing to do; but make sure that we are consistent
             if (!isKBConsistent()) {
-                throw new InconsistentOntologyException();
+                throw new InconsistentOntologyException("Ontology being processed is inconsistent");
             }
             return;
         }

@@ -266,7 +266,7 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         ensureNames(axiom.getRole());
         Role role = getRole(axiom.getRole(), "Role expression expected in Role Reflexivity axiom");
         if (role.isBottom()) {
-            throw new InconsistentOntologyException();
+            throw new InconsistentOntologyException("Top role used in reflexivity axiom " + axiom);
         }
         if (!role.isTop()) {
             role.setReflexive(true);
@@ -278,7 +278,7 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         ensureNames(axiom.getRole());
         Role r = getRole(axiom.getRole(), "Role expression expected in Role Irreflexivity axiom");
         if (r.isTop()) {
-            throw new InconsistentOntologyException();
+            throw new InconsistentOntologyException("Top role used in irreflexivity axiom " + axiom);
         }
         if (!r.isBottom()) {
             r.setDomain(createSNFNot(DLTreeFactory.createSNFSelf(axiom.getRole().accept(expressionTranslator))));
@@ -303,7 +303,7 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         ensureNames(axiom.getRole());
         Role r = getRole(axiom.getRole(), "Role expression expected in Role Asymmetry axiom");
         if (r.isTop()) {
-            throw new InconsistentOntologyException();
+            throw new InconsistentOntologyException("Top role used in asymmetry axiom " + axiom);
         }
         if (!r.isBottom()) {
             r.setAsymmetric(true);
@@ -316,7 +316,7 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         ensureNames(axiom.getRole());
         Role role = getRole(axiom.getRole(), "Role expression expected in Object Role Functionality axiom");
         if (role.isTop()) {
-            throw new InconsistentOntologyException();
+            throw new InconsistentOntologyException("Top role used in role functionality axiom " + axiom);
         }
         if (!role.isBottom()) {
             role.setFunctional();
@@ -328,7 +328,7 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         ensureNames(axiom.getRole());
         Role role = getRole(axiom.getRole(), "Role expression expected in Data Role Functionality axiom");
         if (role.isTop()) {
-            throw new InconsistentOntologyException();
+            throw new InconsistentOntologyException("Top role used in role functionality axiom " + axiom);
         }
         if (!role.isBottom()) {
             role.setFunctional();
@@ -340,7 +340,7 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         ensureNames(axiom.getRole());
         Role role = getRole(axiom.getRole(), "Role expression expected in Role Inverse Functionality axiom");
         if (role.isTop()) {
-            throw new InconsistentOntologyException();
+            throw new InconsistentOntologyException("Top role used in inverse functional axiom " + axiom);
         }
         if (!role.isBottom()) {
             role.inverse().setFunctional();
@@ -374,7 +374,7 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         ensureNames(axiom.getRelatedIndividual());
         Role r = getRole(axiom.getRelation(), "Role expression expected in Related To axiom");
         if (r.isBottom()) {
-            throw new InconsistentOntologyException();
+            throw new InconsistentOntologyException("Top role used in assertion axiom " + axiom);
         }
         if (!r.isTop()) {
             Individual i = getIndividual(axiom.getIndividual(), "Individual expected in Related To axiom");
@@ -391,7 +391,7 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         Role r = getRole(axiom.getRelation(), "Role expression expected in Related To Not axiom");
         if (r.isTop()) {
             // inconsistent ontology
-            throw new InconsistentOntologyException();
+            throw new InconsistentOntologyException("Top role used in negatove assertion axiom " + axiom);
         }
         if (!r.isBottom()) {
             // make sure everything is consistent
@@ -411,7 +411,7 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         getIndividual(axiom.getIndividual(), "Individual expected in Value Of axiom");
         Role r = getRole(axiom.getAttribute(), "Role expression expected in Value Of axiom");
         if (r.isBottom()) {
-            throw new InconsistentOntologyException();
+            throw new InconsistentOntologyException("Top role used in property assertion axiom " + axiom);
         }
         if (!r.isTop()) {
             // nothing to do for universal role
@@ -428,7 +428,7 @@ public class OntologyLoader implements DLAxiomVisitor, Serializable {
         getIndividual(axiom.getIndividual(), "Individual expected in Value Of Not axiom");
         Role r = getRole(axiom.getAttribute(), "Role expression expected in Value Of Not axiom");
         if (r.isTop()) {
-            throw new InconsistentOntologyException();
+            throw new InconsistentOntologyException("Top role used in negative property assertion axiom " + axiom);
         }
         if (!r.isBottom()) {
             // make an axiom i:AA.\neg V
