@@ -22,6 +22,7 @@ import org.semanticweb.owlapi.reasoner.TimeOutException;
 
 import conformance.Original;
 import conformance.PortedFrom;
+import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import uk.ac.manchester.cs.chainsaw.FastSet;
 import uk.ac.manchester.cs.chainsaw.FastSetFactory;
@@ -1201,14 +1202,12 @@ public class DlSatTester implements Serializable {
         if (gcis.isReflexive() && applyReflexiveRoles(node, dep)) {
             return true;
         }
-        AtomicBoolean matched = new AtomicBoolean(false);
-        sessionGCIs.forEach(i -> {
-            if (!matched.get()) {
-                matched.set(addToDoEntry(node, i, dep, "sg"));
+        for (int i : sessionGCIs.toArray()) {
+            if (addToDoEntry(node, i, dep, "sg")) {
+                return true;
             }
-            return !matched.get();
-        });
-        return matched.get();
+        }
+        return false;
     }
 
     /**
@@ -1816,6 +1815,18 @@ public class DlSatTester implements Serializable {
         // update branch dep-set
         updateBranchDep();
         bContext.nextOption();
+    }
+
+    private static void resize(TIntList l, int n) {
+        if (l.size() > n) {
+            while (l.size() > n) {
+                l.remove(l.size() - 1);
+            }
+        } else {
+            while (l.size() < n) {
+                l.add(null);
+            }
+        }
     }
 
     @PortedFrom(file = "Reasoner.h", name = "save")

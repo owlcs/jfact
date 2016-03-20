@@ -12,9 +12,9 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
-import org.semanticweb.owlapi.util.OWLAPIStreamUtils;
+import javax.annotation.Nullable;
 
-import gnu.trove.list.TIntList;
+import org.semanticweb.owlapi.util.OWLAPIStreamUtils;
 
 /** static methods */
 public class Helper implements Serializable {
@@ -149,48 +149,12 @@ public class Helper implements Serializable {
      *        l
      * @param n
      *        n
-     */
-    public static void resize(List<?> l, int n) {
-        if (l.size() > n) {
-            while (l.size() > n) {
-                l.remove(l.size() - 1);
-            }
-        } else {
-            while (l.size() < n) {
-                l.add(null);
-            }
-        }
-    }
-
-    /**
-     * @param l
-     *        l
-     * @param n
-     *        n
-     */
-    public static void resize(TIntList l, int n) {
-        if (l.size() > n) {
-            while (l.size() > n) {
-                l.remove(l.size() - 1);
-            }
-        } else {
-            while (l.size() < n) {
-                l.add(null);
-            }
-        }
-    }
-
-    /**
-     * @param l
-     *        l
-     * @param n
-     *        n
      * @param <T>
      *        argument type
      * @param filler
      *        filler
      */
-    public static <T> void resize(List<T> l, int n, T filler) {
+    public static <T> void resize(List<T> l, int n, @Nullable T filler) {
         if (l.size() > n) {
             while (l.size() > n) {
                 l.remove(l.size() - 1);

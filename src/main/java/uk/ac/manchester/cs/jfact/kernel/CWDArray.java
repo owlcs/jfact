@@ -249,7 +249,7 @@ public class CWDArray implements Serializable {
                 count++;
             }
         }
-        Helper.resize(base, ss + count);
+        Helper.resize(base, ss + count, null);
         size = ss + count;
     }
 

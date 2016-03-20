@@ -25,7 +25,11 @@ import uk.ac.manchester.cs.chainsaw.FastSet;
 import uk.ac.manchester.cs.chainsaw.FastSetFactory;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeEntry;
 import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
-import uk.ac.manchester.cs.jfact.helpers.*;
+import uk.ac.manchester.cs.jfact.helpers.DLVertex;
+import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
+import uk.ac.manchester.cs.jfact.helpers.StatIndex;
+import uk.ac.manchester.cs.jfact.helpers.Templates;
+import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
@@ -417,7 +421,7 @@ public class DLDag implements Serializable {
                     break;
             }
         }
-        resize(heap, finalDagSize);
+        resize(heap, finalDagSize, null);
         cache.clear();
     }
 

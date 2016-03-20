@@ -6,6 +6,7 @@ package conformancetests;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import org.junit.Test;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import testbase.TestBase;
 
@@ -171,63 +172,7 @@ public class WebOnt_allValuesFrom_001TestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I5_21_002() {
-        String premise = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/I5.21/premises002#\"\n"
-            + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.21/premises002\" >\n" + '\n' + "   <owl:Ontology/>\n"
-            + "   <owl:Class rdf:ID=\"Reptile\">\n" + "     <rdfs:subClassOf>\n" + "        <owl:Restriction>\n"
-            + "           <owl:onProperty>\n"
-            + "              <owl:DatatypeProperty rdf:ID=\"family-name\"/></owl:onProperty>\n"
-            + "           <owl:cardinality rdf:datatype=\n"
-            + " \"http://www.w3.org/2001/XMLSchema#int\">1</owl:cardinality></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-            + '\n' + "    <owl:Class rdf:about=\"#Amphisbaenidae\">\n"
-            + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n" + "      <rdfs:subClassOf>\n"
-            + "        <owl:Restriction>\n" + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
-            + "          <owl:hasValue>Amphisbaenidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-            + '\n' + "    <owl:Class rdf:about=\"#Agamidae\">\n"
-            + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n" + "      <rdfs:subClassOf>\n"
-            + "        <owl:Restriction>\n" + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
-            + "          <owl:hasValue>Agamidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n" + '\n'
-            + "    <owl:Class rdf:about=\"#Anomalepidae\">\n" + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n"
-            + "      <rdfs:subClassOf>\n" + "        <owl:Restriction>\n"
-            + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
-            + "          <owl:hasValue>Anomalepidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-            + "          \n" + "    <owl:Class rdf:about=\"#Emydidae\">\n"
-            + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n" + "      <rdfs:subClassOf>\n"
-            + "        <owl:Restriction>\n" + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
-            + "          <owl:hasValue>Emydidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n" + '\n'
-            + "    <owl:Class rdf:about=\"#Crocodylidae\">\n" + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n"
-            + "      <rdfs:subClassOf>\n" + "        <owl:Restriction>\n"
-            + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
-            + "          <owl:hasValue>Crocodylidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-            + '\n' + "    <owl:Class rdf:about=\"#Gekkonidae\">\n"
-            + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n" + "      <rdfs:subClassOf>\n"
-            + "        <owl:Restriction>\n" + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
-            + "          <owl:hasValue>Gekkonidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-            + '\n' + "    <owl:Class rdf:about=\"#Sphenodontidae\">\n"
-            + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n" + "      <rdfs:subClassOf>\n"
-            + "        <owl:Restriction>\n" + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
-            + "          <owl:hasValue>Sphenodontidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-            + '\n' + "    <owl:Class rdf:about=\"#Cordylidae\">\n"
-            + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n" + "      <rdfs:subClassOf>\n"
-            + "        <owl:Restriction>\n" + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
-            + "          <owl:hasValue>Cordylidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-            + '\n' + "    <owl:Class rdf:about=\"#Bipedidae\">\n"
-            + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n" + "      <rdfs:subClassOf>\n"
-            + "        <owl:Restriction>\n" + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
-            + "          <owl:hasValue>Bipedidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-            + '\n' + "    <owl:Class rdf:about=\"#Leptotyphlopidae\">\n"
-            + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n" + "      <rdfs:subClassOf>\n"
-            + "        <owl:Restriction>\n" + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
-            + "          <owl:hasValue>Leptotyphlopidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-            + '\n' + "    <owl:Class rdf:about=\"#Xantusiidae\">\n"
-            + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n" + "      <rdfs:subClassOf>\n"
-            + "        <owl:Restriction>\n" + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
-            + "          <owl:hasValue>Xantusiidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-            + '\n' + "    <owl:Class rdf:about=\"#Loxocemidae\">\n"
-            + "      <rdfs:subClassOf rdf:resource=\"#Reptile\" />\n" + "      <rdfs:subClassOf>\n"
-            + "        <owl:Restriction>\n" + "          <owl:onProperty rdf:resource=\"#family-name\"/>\n"
-            + "          <owl:hasValue>Loxocemidae</owl:hasValue></owl:Restriction></rdfs:subClassOf></owl:Class>\n"
-            + '\n' + '\n' + "</rdf:RDF>";
+    public void testWebOnt_I5_21_002() throws OWLOntologyCreationException {
         String conclusion = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
             + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.21/conclusions002\" >\n" + '\n' + "    <owl:Ontology/>\n"
             + "    <owl:Class rdf:about=\"premises002#Amphisbaenidae\">\n"
@@ -311,7 +256,7 @@ public class WebOnt_allValuesFrom_001TestCase extends TestBase {
         String id = "WebOnt_I5_21_002";
         TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
         String d = "The construct used here shows how to express mutual disjointness between classes with  O(N) triples.";
-        JUnitRunner r = new JUnitRunner(m, premise, conclusion, id, tc, d);
+        JUnitRunner r = new JUnitRunner(m, asString(m, "/" + id + ".owl"), conclusion, id, tc, d);
         r.setReasonerFactory(factory());
         r.run();
     }

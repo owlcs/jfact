@@ -79,7 +79,7 @@ public class ArrayQueue implements Serializable {
     @PortedFrom(file = "ToDoList.h", name = "restore")
     public void restore(int[][] tss, int pos) {
         setsPointer(tss[pos][0]);
-        Helper.resize(wait, tss[pos][1]);
+        Helper.resize(wait, tss[pos][1], null);
     }
 
     /**
@@ -91,7 +91,7 @@ public class ArrayQueue implements Serializable {
     @PortedFrom(file = "ToDoList.h", name = "restore")
     public void restore(int sp, int ep) {
         setsPointer(sp);
-        Helper.resize(wait, ep);
+        Helper.resize(wait, ep, null);
     }
 
     @Override

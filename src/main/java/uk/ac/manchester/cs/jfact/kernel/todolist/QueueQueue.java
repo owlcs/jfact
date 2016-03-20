@@ -125,7 +125,7 @@ public class QueueQueue implements Serializable {
     @PortedFrom(file = "ToDoList.h", name = "restore")
     protected void restore(TODOListSaveState tss) {
         sPointer = tss.sp;
-        Helper.resize(wait, tss.ep);
+        Helper.resize(wait, tss.ep, null);
         size = tss.ep;
     }
 

@@ -84,7 +84,7 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
 
         @Override
         public void restore() {
-            resize(inequalityRelation, n);
+            resize(inequalityRelation, n, null);
             inequalityRelationHelper.clear();
             // TODO check performances of this
             inequalityRelation.stream().filter(p -> p != null).forEach(p -> inequalityRelationHelper.put(p.getConcept(),
@@ -1061,11 +1061,11 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
         label.restore(nss.getLab(), curLevel);
         // remove new neighbours
         if (!options.isUseDynamicBackjumping()) {
-            resize(neighbour, nss.getnNeighbours());
+            resize(neighbour, nss.getnNeighbours(), null);
         } else {
             for (int j = neighbour.size() - 1; j >= 0; --j) {
                 if (neighbour.get(j).getArcEnd().curLevel <= curLevel) {
-                    Helper.resize(neighbour, j + 1);
+                    Helper.resize(neighbour, j + 1, null);
                     break;
                 }
             }

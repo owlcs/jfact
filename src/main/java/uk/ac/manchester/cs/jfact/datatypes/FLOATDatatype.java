@@ -43,11 +43,7 @@ class FLOATDatatype extends AbstractNumericDatatype<Float> {
 
     @Override
     public boolean isCompatible(Datatype<?> type) {
-        // implementation from ABSTRACTDatatype
-        if (type.isExpression()) {
-            type = type.asExpression().getHostType();
-        }
-        return type.equals(this) || type.equals(DatatypeFactory.LITERAL) || type.isSubType(this) || isSubType(type);
+        return isDatatypeCompatible(type);
     }
 
     @Override

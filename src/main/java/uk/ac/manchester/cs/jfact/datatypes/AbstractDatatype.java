@@ -128,6 +128,10 @@ public abstract class AbstractDatatype<R extends Comparable<R>> implements Datat
 
     @Override
     public boolean isCompatible(Datatype<?> type) {
+        return isDatatypeCompatible(type);
+    }
+
+    protected boolean isDatatypeCompatible(Datatype<?> type) {
         if (type.isExpression()) {
             type = type.asExpression().getHostType();
         }

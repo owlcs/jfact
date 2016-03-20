@@ -44,8 +44,8 @@ public class TDag2Interface implements Serializable {
     public TDag2Interface(DLDag dag, ExpressionCache manager) {
         this.dag = dag;
         cache = manager;
-        Helper.resize(transConcept, dag.size());
-        Helper.resize(transData, dag.size());
+        Helper.resize(transConcept, dag.size(), null);
+        Helper.resize(transData, dag.size(), null);
     }
 
     /**
@@ -154,8 +154,8 @@ public class TDag2Interface implements Serializable {
         if (ds == ts) {
             return;
         }
-        Helper.resize(transConcept, ds);
-        Helper.resize(transData, ds);
+        Helper.resize(transConcept, ds, null);
+        Helper.resize(transData, ds, null);
     }
 
     /**

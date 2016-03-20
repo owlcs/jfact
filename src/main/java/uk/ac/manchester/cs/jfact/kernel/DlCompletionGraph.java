@@ -860,8 +860,8 @@ public class DlCompletionGraph implements Serializable {
                 }
             }
         }
-        Helper.resize(savedNodes, nSaved);
-        Helper.resize(ctEdgeHeap, s.getnEdges());
+        Helper.resize(savedNodes, nSaved, null);
+        Helper.resize(ctEdgeHeap, s.getnEdges(), null);
     }
 
     /**

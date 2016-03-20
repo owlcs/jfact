@@ -20,8 +20,6 @@ import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormat;
 import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.profiles.OWL2DLProfile;
-import org.semanticweb.owlapi.profiles.OWLProfileReport;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
@@ -39,7 +37,7 @@ public class JUnitRunner {
     private OWLReasonerFactory f;
     private final String testId;
     private final OWLOntology premise;
-    private final String consequence;
+    private final OWLOntology consequences;
     private final String description;
     private OWLReasonerConfiguration config;
     private final OWLOntologyManager manager;
@@ -49,7 +47,7 @@ public class JUnitRunner {
         manager = m;
         this.testId = testId;
         this.premise = premise(premise);
-        this.consequence = consequence;
+        consequences = premise(consequence);
         this.description = description;
         this.t = t;
     }
@@ -59,7 +57,17 @@ public class JUnitRunner {
         manager = m;
         this.testId = testId;
         this.premise = premise;
-        this.consequence = consequence;
+        consequences = premise(consequence);
+        this.description = description;
+        this.t = t;
+    }
+
+    public JUnitRunner(OWLOntologyManager m, OWLOntology premise, OWLOntology consequence, String testId, TestClasses t,
+        String description) {
+        manager = m;
+        this.testId = testId;
+        this.premise = premise;
+        consequences = consequence;
         this.description = description;
         this.t = t;
     }
@@ -69,7 +77,7 @@ public class JUnitRunner {
         manager = m;
         this.testId = testId;
         this.premise = premise(premise);
-        this.consequence = consequence;
+        consequences = premise(consequence);
         this.description = description;
         this.t = t;
     }
@@ -100,19 +108,28 @@ public class JUnitRunner {
 
     public OWLOntology premise(String p) {
         try {
+            if (p.isEmpty()) {
+                return null;
+            }
             StringDocumentSource documentSource = new StringDocumentSource(p);
-            return manager.loadOntologyFromOntologyDocument(documentSource);
+            OWLOntology o = manager.loadOntologyFromOntologyDocument(documentSource);
+            // if (p.length() > 1000) {
+            // System.out.println("JUnitRunner.premise() " + new
+            // Exception().fillInStackTrace().getStackTrace()[2]
+            // + " " + p.length() + " " + o.getOntologyID());
+            // try {
+            // System.out.println("asString(m, \"/" + testId + ".owl\")");
+            // Files.write(p, new File(testId + ".owl"),
+            // StandardCharsets.UTF_8);
+            // } catch (IOException e) {
+            // // TODO Auto-generated catch block
+            // e.printStackTrace();
+            // }
+            // }
+            return o;
         } catch (OWLOntologyCreationException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Nullable
-    public OWLOntology getConsequence() throws OWLOntologyCreationException {
-        if (consequence != null) {
-            return manager.loadOntologyFromOntologyDocument(new StringDocumentSource(consequence));
-        }
-        return null;
     }
 
     public void run() {
@@ -122,13 +139,15 @@ public class JUnitRunner {
         try {
             if (premise != null) {
                 premiseOntology = premise;
-                OWL2DLProfile profile = new OWL2DLProfile();
-                OWLProfileReport report = profile.checkOntology(premiseOntology);
-                if (report.getViolations().size() > 0) {
-                    System.out.println("JUnitRunner.run() " + testId);
-                    System.out.println("JUnitRunner.run() premise violations:\n" + report.toString());
-                    throw new RuntimeException("errors!\n" + report.toString());
-                }
+                // OWL2DLProfile profile = new OWL2DLProfile();
+                // OWLProfileReport report =
+                // profile.checkOntology(premiseOntology);
+                // if (report.getViolations().size() > 0) {
+                // System.out.println("JUnitRunner.run() " + testId);
+                // System.out.println("JUnitRunner.run() premise violations:\n"
+                // + report.toString());
+                // throw new RuntimeException("errors!\n" + report.toString());
+                // }
             }
         } catch (Exception e) {
             e.printStackTrace(System.out);
@@ -137,15 +156,18 @@ public class JUnitRunner {
         }
         OWLOntology conclusionOntology = null;
         try {
-            if (consequence != null) {
-                conclusionOntology = getConsequence();
-                OWL2DLProfile profile = new OWL2DLProfile();
-                OWLProfileReport report = profile.checkOntology(conclusionOntology);
-                if (report.getViolations().size() > 0) {
-                    System.out.println("JUnitRunner.run() " + testId + report.getViolations().size());
-                    System.out.println("JUnitRunner.run() conclusion violations:\n" + report.toString());
-                    throw new RuntimeException("errors!");
-                }
+            if (consequences != null) {
+                conclusionOntology = consequences;
+                // OWL2DLProfile profile = new OWL2DLProfile();
+                // OWLProfileReport report =
+                // profile.checkOntology(conclusionOntology);
+                // if (report.getViolations().size() > 0) {
+                // System.out.println("JUnitRunner.run() " + testId +
+                // report.getViolations().size());
+                // System.out.println("JUnitRunner.run() conclusion
+                // violations:\n" + report.toString());
+                // throw new RuntimeException("errors!");
+                // }
             }
         } catch (Exception e) {
             e.printStackTrace(System.out);
@@ -267,9 +289,9 @@ public class JUnitRunner {
         premise.saveOntology(new FunctionalSyntaxDocumentFormat(), new SystemOutDocumentTarget());
     }
 
-    public void printConsequence() throws OWLOntologyStorageException, OWLOntologyCreationException {
-        OWLOntology consequence2 = getConsequence();
-        consequence2.getOWLOntologyManager().saveOntology(consequence2, new FunctionalSyntaxDocumentFormat(),
-            new SystemOutDocumentTarget());
+    public void printConsequence() throws OWLOntologyStorageException {
+        if (consequences != null) {
+            consequences.saveOntology(new FunctionalSyntaxDocumentFormat(), new SystemOutDocumentTarget());
+        }
     }
 }
