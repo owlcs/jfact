@@ -68,9 +68,20 @@ public class MergableLabel implements Serializable {
      */
     @PortedFrom(file = "mergableLabel.h", name = "resolve")
     public MergableLabel resolve() {
-        // check if current node is itself sample
-        if (!isSample()) {
-            pSample = pSample.resolve();
+        if (isSample()) {
+            return this;
+        }
+        MergableLabel test = this;
+        MergableLabel rootSample = pSample;
+        while (!test.isSample()) {
+            test = test.pSample;
+        }
+        pSample = test;
+        // all elements from rootSample to the sample resolve topSample
+        while (rootSample != pSample) {
+            test = rootSample;
+            rootSample = rootSample.pSample;
+            test.pSample = pSample;
         }
         return pSample;
     }
@@ -78,6 +89,6 @@ public class MergableLabel implements Serializable {
     /** @return is given lable a sample label */
     @PortedFrom(file = "mergableLabel.h", name = "isSample")
     public boolean isSample() {
-        return pSample.equals(this);
+        return pSample == this;
     }
 }
