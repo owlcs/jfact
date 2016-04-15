@@ -1,13 +1,12 @@
 package uk.ac.manchester.cs.jfact;
 
 import static org.semanticweb.owlapi.util.OWLAPIPreconditions.checkNotNull;
-import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.*;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -37,7 +36,6 @@ public class TranslationMachinery implements Serializable {
     @Nonnull private final IndividualTranslator individualTranslator;
     @Nonnull private final EntailmentChecker entailmentChecker;
     @Nonnull private final Map<OWLAxiom, AxiomWrapper> axiom2PtrMap = new HashMap<>();
-    @Nonnull private final Map<AxiomWrapper, OWLAxiom> ptr2AxiomMap = new HashMap<>();
     protected final ReasoningKernel kernel;
     protected final ExpressionCache em;
     protected final OWLDataFactory df;
@@ -82,14 +80,8 @@ public class TranslationMachinery implements Serializable {
      */
     public void loadAxioms(Stream<OWLAxiom> axioms) {
         // TODO check valid axioms, such as those involving topDataProperty
-        axioms.filter(ax -> !axiom2PtrMap.containsKey(ax)).forEach(ax -> checkAndAdd(ax, ax.accept(axiomTranslator)));
-    }
-
-    protected void checkAndAdd(OWLAxiom ax, AxiomWrapper axiomPointer) {
-        if (axiomPointer != Axioms.dummy()) {
-            axiom2PtrMap.put(ax, axiomPointer);
-            ptr2AxiomMap.put(axiomPointer, ax);
-        }
+        axioms.map(ax -> ax.accept(axiomTranslator)).filter(ax -> Axioms.dummy() != ax).forEach(ax -> axiom2PtrMap.put(
+            ax.getAxiom(), ax));
     }
 
     /**
@@ -101,7 +93,6 @@ public class TranslationMachinery implements Serializable {
         if (ptr != null) {
             kernel.getOntology().retract(ptr);
             axiom2PtrMap.remove(axiom);
-            ptr2AxiomMap.remove(ptr);
         }
     }
 
@@ -201,14 +192,5 @@ public class TranslationMachinery implements Serializable {
     /** @return entailemnt checker */
     public EntailmentChecker getEntailmentChecker() {
         return entailmentChecker;
-    }
-
-    /**
-     * @param trace
-     *        trace
-     * @return trnslated set
-     */
-    public Set<OWLAxiom> translateTAxiomSet(Stream<AxiomWrapper> trace) {
-        return asSet(trace.map(ptr2AxiomMap::get));
     }
 }

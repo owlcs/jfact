@@ -16,6 +16,7 @@ import static uk.ac.manchester.cs.jfact.kernel.KBStatus.*;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
@@ -276,10 +277,10 @@ public class ReasoningKernel implements Serializable {
 
     /** @return the trace-set of the last reasoning operation */
     @PortedFrom(file = "Kernel.h", name = "getTrace")
-    public List<AxiomWrapper> getTrace() {
+    public Stream<AxiomWrapper> getTrace() {
         List<AxiomWrapper> toReturn = new ArrayList<>(traceVec);
         traceVec.clear();
-        return toReturn;
+        return toReturn.stream();
     }
 
     /**
