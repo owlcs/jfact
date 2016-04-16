@@ -72,7 +72,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener, OW
     @Nonnull private final OWLOntology root;
     @Nonnull private final BufferingMode bufferingMode;
     @Nonnull private final List<OWLOntologyChange> rawChanges = new ArrayList<>();
-    @Nonnull private final Set<OWLAxiom> reasonerAxioms = new LinkedHashSet<>();
+    @Nonnull private final List<OWLAxiom> axioms = new ArrayList<>();
     @Original private final JFactReasonerConfiguration configuration;
     private final OWLDataFactory df;
     protected TranslationMachinery tr;
@@ -122,8 +122,8 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener, OW
         configuration.getProgressMonitor().reasonerTaskStarted(ReasonerProgressMonitor.LOADING);
         configuration.getProgressMonitor().reasonerTaskBusy();
         tr = new TranslationMachinery(kernel, df, datatypeFactory);
-        reasonerAxioms.addAll(axioms);
-        tr.loadAxioms(reasonerAxioms.stream());
+        this.axioms.addAll(axioms);
+        tr.loadAxioms(axioms.stream());
         configuration.getProgressMonitor().reasonerTaskStopped();
     }
 
@@ -216,9 +216,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener, OW
     @Override
     public synchronized Set<OWLAxiom> getPendingAxiomAdditions() {
         if (!rawChanges.isEmpty()) {
-            Set<OWLAxiom> added = new HashSet<>();
-            computeDiff(added, new HashSet<OWLAxiom>());
-            return added;
+            return asSet(rawChanges.stream().filter(OWLOntologyChange::isAddAxiom).map(c -> c.getAxiom()));
         }
         return Collections.emptySet();
     }
@@ -226,9 +224,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener, OW
     @Override
     public synchronized Set<OWLAxiom> getPendingAxiomRemovals() {
         if (!rawChanges.isEmpty()) {
-            Set<OWLAxiom> removed = new HashSet<>();
-            computeDiff(new HashSet<OWLAxiom>(), removed);
-            return removed;
+            return asSet(rawChanges.stream().filter(OWLOntologyChange::isRemoveAxiom).map(c -> c.getAxiom()));
         }
         return Collections.emptySet();
     }
@@ -239,47 +235,33 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener, OW
         if (!rawChanges.isEmpty()) {
             Set<OWLAxiom> added = new HashSet<>();
             Set<OWLAxiom> removed = new HashSet<>();
-            computeDiff(added, removed);
+            Set<OWLAxiom> reasonerAxioms = new HashSet<>(axioms);
+            for (OWLOntologyChange change : rawChanges) {
+                OWLAxiom ax = change.getAxiom();
+                if (change.isAddAxiom()) {
+                    if (!reasonerAxioms.contains(ax) && !reasonerAxioms.contains(ax.getAxiomWithoutAnnotations())) {
+                        added.add(ax);
+                    }
+                } else if (change.isRemoveAxiom()) {
+                    if (reasonerAxioms.contains(ax) || reasonerAxioms.contains(ax.getAxiomWithoutAnnotations())) {
+                        removed.add(change.getAxiom());
+                    }
+                }
+            }
+            added.removeAll(removed);
             rawChanges.clear();
             if (!added.isEmpty() || !removed.isEmpty()) {
                 reasonerAxioms.removeAll(removed);
                 reasonerAxioms.addAll(added);
+                axioms.clear();
+                axioms.addAll(reasonerAxioms);
                 knownEntities.clear();
-                reasonerAxioms.forEach(ax -> add(knownEntities, ax.signature()));
+                axioms.forEach(ax -> add(knownEntities, ax.signature()));
                 // set the consistency status to not verified
                 consistencyVerified = null;
                 handleChanges(added.stream(), removed.stream());
             }
         }
-    }
-
-    /**
-     * Computes a diff of what axioms have been added and what axioms have been
-     * removed from the list of pending changes. Note that even if the list of
-     * pending changes is non-empty then there may be no changes for the
-     * reasoner to deal with.
-     * 
-     * @param added
-     *        The logical axioms that have been added to the imports closure of
-     *        the reasoner root ontology
-     * @param removed
-     *        The logical axioms that have been removed from the imports closure
-     *        of the reasoner root ontology
-     */
-    private synchronized void computeDiff(Set<OWLAxiom> added, Set<OWLAxiom> removed) {
-        for (OWLOntologyChange change : rawChanges) {
-            OWLAxiom ax = change.getAxiom();
-            if (change.isAddAxiom()) {
-                if (!reasonerAxioms.contains(ax) && !reasonerAxioms.contains(ax.getAxiomWithoutAnnotations())) {
-                    added.add(ax);
-                }
-            } else if (change.isRemoveAxiom()) {
-                if (reasonerAxioms.contains(ax) || reasonerAxioms.contains(ax.getAxiomWithoutAnnotations())) {
-                    removed.add(change.getAxiom());
-                }
-            }
-        }
-        added.removeAll(removed);
     }
 
     @Override
