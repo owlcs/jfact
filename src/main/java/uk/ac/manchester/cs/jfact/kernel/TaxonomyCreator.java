@@ -208,7 +208,7 @@ public class TaxonomyCreator implements Serializable {
      */
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "isDirectParent")
     public boolean isDirectParent(TaxonomyVertex v) {
-        return !v.neigh(false).anyMatch(q -> isValued(q) && getValue(q));
+        return v.neigh(false).parallel().noneMatch(q -> isValued(q) && getValue(q));
     }
 
     // -- DFS-based classification

@@ -1526,8 +1526,10 @@ public class DlSatTester implements Serializable {
         // check applicability of the caching
         AtomicBoolean shallow = new AtomicBoolean(true);
         AtomicInteger size = new AtomicInteger(0);
-        if (Stream.concat(node.simpleConcepts().stream(), node.complexConcepts().stream()).anyMatch(
-            p -> canBeCachedCheck(shallow, size, p))) {
+        if (node.simpleConcepts().stream().anyMatch(p -> canBeCachedCheck(shallow, size, p))) {
+            return false;
+        }
+        if (node.complexConcepts().stream().anyMatch(p -> canBeCachedCheck(shallow, size, p))) {
             return false;
         }
         // it's useless to cache shallow nodes
