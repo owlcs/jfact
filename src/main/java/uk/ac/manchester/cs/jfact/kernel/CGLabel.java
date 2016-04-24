@@ -8,15 +8,15 @@ package uk.ac.manchester.cs.jfact.kernel;
 import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.IdentityHashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Nullable;
 
 import conformance.Original;
 import conformance.PortedFrom;
+import gnu.trove.set.TIntSet;
+import gnu.trove.set.hash.TIntHashSet;
 import uk.ac.manchester.cs.jfact.helpers.ArrayIntMap;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.kernel.state.SaveState;
@@ -31,8 +31,8 @@ public class CGLabel implements Serializable {
     /** all complex concepts (ie, FORALL, GE), labelled a node */
     @PortedFrom(file = "CGLabel.h", name = "ccLabel") private final CWDArray ccLabel;
     @Original private final int id;
-    @Original private final Set<CGLabel> lesserEquals = Collections
-        .newSetFromMap(new IdentityHashMap<CGLabel, Boolean>());
+    @Original private TIntSet lesserIndex = new TIntHashSet();
+    @Original private final List<CGLabel> lesserEqualsList = new ArrayList<>();
 
     /**
      * Default constructor.
@@ -103,12 +103,14 @@ public class CGLabel implements Serializable {
 
     @Original
     protected void clearMyCache() {
-        lesserEquals.clear();
+        lesserEqualsList.clear();
+        lesserIndex.clear();
     }
 
     @Original
     protected void clearOthersCache() {
-        lesserEquals.forEach(c -> c.lesserEquals.remove(this));
+        lesserEqualsList.forEach(c -> c.lesserEqualsList.remove(this));
+        lesserEqualsList.forEach(c -> c.lesserIndex.remove(id));
     }
 
     /**
@@ -136,12 +138,13 @@ public class CGLabel implements Serializable {
         if (this == label) {
             return true;
         }
-        if (lesserEquals.contains(label)) {
+        if (lesserIndex.contains(label.id)) {
             return true;
         }
         boolean toReturn = scLabel.lesserequal(label.scLabel) && ccLabel.lesserequal(label.ccLabel);
         if (toReturn) {
-            lesserEquals.add(label);
+            lesserEqualsList.add(label);
+            lesserIndex.add(label.id);
         }
         return toReturn;
     }

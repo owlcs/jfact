@@ -273,7 +273,7 @@ public class Concept extends ClassifiableEntry {
     /** init told subsumers of the concept by its description */
     @PortedFrom(file = "tConcept.h", name = "initToldSubsumers")
     public void initToldSubsumers() {
-        toldSubsumers.clear();
+        toldSubsumers = null;
         setHasSP(false);
         // normalise description if the only parent is TOP
         if (isPrimitive() && description != null && description.isTOP()) {
@@ -546,7 +546,11 @@ public class Concept extends ClassifiableEntry {
         if (tsDepth > 0) {
             return tsDepth;
         }
-        tsDepth = toldSubsumers.stream().mapToInt(p -> ((Concept) p).calculateTSDepth()).max().orElse(1);
+        if (hasToldSubsumers()) {
+            tsDepth = toldSubsumers.stream().mapToInt(p -> ((Concept) p).calculateTSDepth()).max().orElse(1);
+        } else {
+            tsDepth = 1;
+        }
         return tsDepth;
     }
 
@@ -557,7 +561,7 @@ public class Concept extends ClassifiableEntry {
         setId(0);
         // ClassifiableEntry clean
         taxVertex = null;
-        toldSubsumers.clear();
+        toldSubsumers = null;
         setCompletelyDefined(false);
         pSynonym = null;
         // TConcept clean

@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 /** class to represent the TS's */
 public class ToldSubsumers implements KnownSubsumers {
 
@@ -20,8 +22,12 @@ public class ToldSubsumers implements KnownSubsumers {
      * @param b
      *        b
      */
-    public ToldSubsumers(Collection<ClassifiableEntry> b) {
+    public ToldSubsumers(@Nullable Collection<ClassifiableEntry> b) {
+        if (b != null) {
         beg = new ArrayList<>(b);
+        } else {
+            beg = Collections.emptyList();
+        }
     }
 
     /** begin of the Sure subsumers interval */

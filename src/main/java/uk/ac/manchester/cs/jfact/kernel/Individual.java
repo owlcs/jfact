@@ -39,7 +39,7 @@ public class Individual extends Concept {
     @Override
     @PortedFrom(file = "tIndividual.h", name = "initToldSubsumers")
     public void initToldSubsumers() {
-        toldSubsumers.clear();
+        toldSubsumers = null;
         setHasSP(false);
         if (isRelated()) {
             updateToldFromRelated();

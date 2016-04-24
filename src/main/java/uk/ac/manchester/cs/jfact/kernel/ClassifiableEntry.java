@@ -2,9 +2,9 @@ package uk.ac.manchester.cs.jfact.kernel;
 
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -25,7 +25,7 @@ public class ClassifiableEntry extends NamedEntry {
      * links to 'told subsumers' (entries that are direct super-entries for
      * current)
      */
-    @PortedFrom(file = "taxNamEntry.h", name = "toldSubsumers") protected final Set<ClassifiableEntry> toldSubsumers = new LinkedHashSet<>();
+    @PortedFrom(file = "taxNamEntry.h", name = "toldSubsumers") protected List<ClassifiableEntry> toldSubsumers = null;
     /**
      * pointer to synonym (entry which contains whole information the same as
      * current)
@@ -106,6 +106,7 @@ public class ClassifiableEntry extends NamedEntry {
     /**
      * @return told subsumers
      */
+    @Nullable
     @PortedFrom(file = "taxNamEntry.h", name = "told_begin")
     public Collection<ClassifiableEntry> getToldSubsumers() {
         return toldSubsumers;
@@ -116,7 +117,7 @@ public class ClassifiableEntry extends NamedEntry {
      */
     @PortedFrom(file = "taxNamEntry.h", name = "hasToldSubsumers")
     public boolean hasToldSubsumers() {
-        return !toldSubsumers.isEmpty();
+        return toldSubsumers != null && !toldSubsumers.isEmpty();
     }
 
     /**
@@ -129,8 +130,18 @@ public class ClassifiableEntry extends NamedEntry {
     public void addParent(ClassifiableEntry parent) {
         // a node cannot be its own parent
         if (parent != this) {
-            toldSubsumers.add(parent);
+            addP(parent);
         }
+    }
+
+    protected void addP(ClassifiableEntry e) {
+        if (toldSubsumers == null) {
+            toldSubsumers = new ArrayList<>();
+        } else if (toldSubsumers.contains(e)) {
+            // do not create duplicates
+            return;
+        }
+        toldSubsumers.add(e);
     }
 
     /**
@@ -140,8 +151,10 @@ public class ClassifiableEntry extends NamedEntry {
      *        entries
      */
     @PortedFrom(file = "taxNamEntry.h", name = "addParents")
-    public void addParents(Collection<ClassifiableEntry> entries) {
-        entries.forEach(this::addParentIfNew);
+    public void addParents(@Nullable Collection<ClassifiableEntry> entries) {
+        if (entries != null) {
+            entries.forEach(this::addParentIfNew);
+        }
     }
 
     // index interface
@@ -215,10 +228,15 @@ public class ClassifiableEntry extends NamedEntry {
     /** if two synonyms are in 'told' list, merge them */
     @PortedFrom(file = "taxNamEntry.h", name = "removeSynonymsFromParents")
     public void removeSynonymsFromParents() {
-        List<ClassifiableEntry> toKeep = asList(toldSubsumers.stream().map(ClassifiableEntry::resolveSynonym).filter(
-            p -> this != p));
-        toldSubsumers.clear();
-        toldSubsumers.addAll(toKeep);
+        if (hasToldSubsumers()) {
+            List<ClassifiableEntry> toKeep = asList(toldSubsumers.stream().map(ClassifiableEntry::resolveSynonym)
+                .filter(p -> this != p).distinct());
+            toldSubsumers.clear();
+            toldSubsumers.addAll(toKeep);
+            if (toldSubsumers.isEmpty()) {
+                toldSubsumers = null;
+            }
+        }
     }
 
     /**

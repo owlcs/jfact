@@ -1910,8 +1910,8 @@ public class TBox implements Serializable {
             return;
         }
         DLVertex v = dlHeap.get(Math.abs(p));
-        DagTag type = v.getType();
-        switch (type) {
+        DagTag dagtag = v.getType();
+        switch (dagtag) {
             case TOP:
                 o.print(" *TOP*");
                 return;
@@ -1929,12 +1929,12 @@ public class TBox implements Serializable {
                 o.print(getDataEntryByBP(p));
                 return;
             case IRR:
-                o.print(" (", type.getName(), " ", v.getRole().getIRI(), ")");
+                o.print(" (", dagtag.getName(), " ", v.getRole().getIRI(), ")");
                 return;
             case COLLECTION:
             case AND:
                 o.print(" (");
-                o.print(type.getName());
+                o.print(dagtag.getName());
                 for (int q : v.begin()) {
                     printDagEntry(o, q);
                 }
@@ -1943,8 +1943,8 @@ public class TBox implements Serializable {
             case FORALL:
             case LE:
                 o.print(" (");
-                o.print(type.getName());
-                if (type == DagTag.LE) {
+                o.print(dagtag.getName());
+                if (dagtag == DagTag.LE) {
                     o.print(" ");
                     o.print(v.getNumberLE());
                 }
@@ -1954,7 +1954,7 @@ public class TBox implements Serializable {
                 o.print(")");
                 return;
             case PROJ:
-                o.print(" (", type.getName(), " ", v.getRole().getIRI(), ")");
+                o.print(" (", dagtag.getName(), " ", v.getRole().getIRI(), ")");
                 printDagEntry(o, v.getConceptIndex());
                 o.print(" => ", v.getProjRole().getIRI(), ")");
                 return;
@@ -1965,7 +1965,7 @@ public class TBox implements Serializable {
                 o.print("WRONG: printing a badtag dtBad!\n");
                 break;
             default:
-                throw new ReasonerInternalException("Error printing vertex of type " + type.getName() + '(' + type
+                throw new ReasonerInternalException("Error printing vertex of type " + dagtag.getName() + '(' + dagtag
                     + ')');
         }
     }
@@ -2046,13 +2046,15 @@ public class TBox implements Serializable {
             dump.startAx(DIOp.DEFINER);
             dump.dumpRole(q);
             dump.finishAx(DIOp.DEFINER);
-            q.getToldSubsumers().forEach(i -> {
-                dump.startAx(DIOp.IMPLIESR);
-                dump.dumpRole(q);
-                dump.contAx(DIOp.IMPLIESR);
-                dump.dumpRole((Role) i);
-                dump.finishAx(DIOp.IMPLIESR);
-            });
+            if (q.hasToldSubsumers()) {
+                q.getToldSubsumers().forEach(i -> {
+                    dump.startAx(DIOp.IMPLIESR);
+                    dump.dumpRole(q);
+                    dump.contAx(DIOp.IMPLIESR);
+                    dump.dumpRole((Role) i);
+                    dump.finishAx(DIOp.IMPLIESR);
+                });
+            }
         }
         if (p.isTransitive()) {
             dump.startAx(DIOp.TRANSITIVER);
@@ -2105,8 +2107,8 @@ public class TBox implements Serializable {
             return;
         }
         DLVertex v = dlHeap.get(Math.abs(p));
-        DagTag type = v.getType();
-        switch (type) {
+        DagTag dagtag = v.getType();
+        switch (dagtag) {
             case TOP:
                 dump.dumpTop();
                 return;
@@ -2142,7 +2144,7 @@ public class TBox implements Serializable {
                 dump.finishOp(DIOp.LE);
                 return;
             default:
-                throw new ReasonerInternalException("Error dumping vertex of type " + type.getName() + '(' + type
+                throw new ReasonerInternalException("Error dumping vertex of type " + dagtag.getName() + '(' + dagtag
                     + ')');
         }
     }
@@ -2425,7 +2427,7 @@ public class TBox implements Serializable {
      *        replacement
      */
     @PortedFrom(file = "dlTBox.h", name = "makeDefinitionPrimitive")
-        void makeDefinitionPrimitive(Concept c, DLTree e, DLTree d) {
+    void makeDefinitionPrimitive(Concept c, DLTree e, DLTree d) {
         // now we have C [= D'
         c.setPrimitive(true);
         // here C [= (D' and E)
@@ -2593,7 +2595,7 @@ public class TBox implements Serializable {
      *         names
      */
     @PortedFrom(file = "Preprocess.cpp", name = "isReferenced")
-        boolean isReferenced(Concept c, DLTree tree, Set<Concept> processed) {
+    boolean isReferenced(Concept c, DLTree tree, Set<Concept> processed) {
         assert tree != null;
         // names
         if (tree.isName()) {
@@ -2659,7 +2661,7 @@ public class TBox implements Serializable {
 
     /** transform C [= E with C = D into GCIs */
     @PortedFrom(file = "Preprocess.cpp", name = "TransformExtraSubsumptions")
-        void transformExtraSubsumptions() {
+    void transformExtraSubsumptions() {
         Iterator<Map.Entry<Concept, DLTree>> it = extraConceptDefs.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<Concept, DLTree> p = it.next();
@@ -2765,70 +2767,73 @@ public class TBox implements Serializable {
         boolean redo = false;
         while (!redo) {
             redo = true;
-            for (ClassifiableEntry r : cp.getToldSubsumers()) {
-                // if cycle was detected
-                if ((ret = checkToldCycle((Concept) r)) != null) {
-                    if (ret.equals(cp)) {
-                        toldSynonyms.add(cp);
-                        // find a representative for the cycle; nominal is
-                        // preferable
-                        for (Concept q : toldSynonyms) {
-                            if (q.isSingleton()) {
-                                cp = q;
-                            }
-                        }
-                        // now p is a representative for all the synonyms
-                        // fill the description
-                        Set<DLTree> leaves = new HashSet<>();
-                        for (Concept q : toldSynonyms) {
-                            if (!q.equals(cp)) {
-                                // make it a synonym of RET, save old desc
-                                DLTree d = makeNonPrimitive(q, getTree(cp));
-                                if (d.isBOTTOM()) {
-                                    leaves.clear();
-                                    leaves.add(d);
-                                    break;
-                                } else {
-                                    leaves.add(d);
+            if (cp.hasToldSubsumers()) {
+                for (ClassifiableEntry r : cp.getToldSubsumers()) {
+                    // if cycle was detected
+                    if ((ret = checkToldCycle((Concept) r)) != null) {
+                        if (ret.equals(cp)) {
+                            toldSynonyms.add(cp);
+                            // find a representative for the cycle; nominal is
+                            // preferable
+                            for (Concept q : toldSynonyms) {
+                                if (q.isSingleton()) {
+                                    cp = q;
                                 }
-                                // check whether we had an extra definition for
-                                // Q
-                                DLTree extra = extraConceptDefs.get(q);
-                                if (extra != null) {
-                                    if (extra.isBOTTOM()) {
+                            }
+                            // now p is a representative for all the synonyms
+                            // fill the description
+                            Set<DLTree> leaves = new HashSet<>();
+                            for (Concept q : toldSynonyms) {
+                                if (!q.equals(cp)) {
+                                    // make it a synonym of RET, save old desc
+                                    DLTree d = makeNonPrimitive(q, getTree(cp));
+                                    if (d.isBOTTOM()) {
                                         leaves.clear();
-                                        leaves.add(extra);
+                                        leaves.add(d);
                                         break;
                                     } else {
                                         leaves.add(d);
                                     }
-                                    extraConceptDefs.remove(q);
+                                    // check whether we had an extra definition
+                                    // for Q
+                                    DLTree extra = extraConceptDefs.get(q);
+                                    if (extra != null) {
+                                        if (extra.isBOTTOM()) {
+                                            leaves.clear();
+                                            leaves.add(extra);
+                                            break;
+                                        } else {
+                                            leaves.add(d);
+                                        }
+                                        extraConceptDefs.remove(q);
+                                    }
                                 }
                             }
+                            toldSynonyms.clear();
+                            // mark the returned concept primitive (to allow
+                            // addDesc
+                            // to work)
+                            cp.setPrimitive(true);
+                            cp.addLeaves(leaves);
+                            // replace all synonyms with TOP
+                            cp.removeSelfFromDescription();
+                            // re-run the search starting from new sample
+                            if (!ret.equals(cp)) {
+                                // need to fix the stack
+                                conceptInProcess.remove(ret);
+                                conceptInProcess.add(cp);
+                                ret.setRelevant(relevance);
+                                cp.dropRelevant();
+                            }
+                            ret = null;
+                            redo = false;
+                            break;
+                        } else {
+                            toldSynonyms.add(cp);
+                            redo = true;
+                            // no need to continue; finish with this cycle first
+                            break;
                         }
-                        toldSynonyms.clear();
-                        // mark the returned concept primitive (to allow addDesc
-                        // to work)
-                        cp.setPrimitive(true);
-                        cp.addLeaves(leaves);
-                        // replace all synonyms with TOP
-                        cp.removeSelfFromDescription();
-                        // re-run the search starting from new sample
-                        if (!ret.equals(cp)) {
-                            // need to fix the stack
-                            conceptInProcess.remove(ret);
-                            conceptInProcess.add(cp);
-                            ret.setRelevant(relevance);
-                            cp.dropRelevant();
-                        }
-                        ret = null;
-                        redo = false;
-                        break;
-                    } else {
-                        toldSynonyms.add(cp);
-                        redo = true;
-                        // no need to continue; finish with this cycle first
-                        break;
                     }
                 }
             }
@@ -2867,15 +2872,17 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "getSPForConcept")
     public Individual getSPForConcept(Concept p) {
-        for (ClassifiableEntry r : p.getToldSubsumers()) {
-            Concept i = (Concept) r;
-            if (i.isSingleton()) {
-                // found the end of the chain
-                return (Individual) i;
-            }
-            if (i.isHasSP()) {
-                // found the continuation of the chain
-                return transformSingletonWithSP(i);
+        if (p.hasToldSubsumers()) {
+            for (ClassifiableEntry r : p.getToldSubsumers()) {
+                Concept i = (Concept) r;
+                if (i.isSingleton()) {
+                    // found the end of the chain
+                    return (Individual) i;
+                }
+                if (i.isHasSP()) {
+                    // found the continuation of the chain
+                    return transformSingletonWithSP(i);
+                }
             }
         }
         // will always have found the entry
@@ -3135,9 +3142,9 @@ public class TBox implements Serializable {
                 continue;
             }
             DLVertex v = realSetRelevant(nextP);
-            DagTag type = v.getType();
+            DagTag dagtag = v.getType();
             Role vRole;
-            switch (type) {
+            switch (dagtag) {
                 case DATATYPE:
                     // types and values are not relevant
                 case DATAVALUE:
@@ -3205,7 +3212,7 @@ public class TBox implements Serializable {
                     }
                     break;
                 default:
-                    throw new ReasonerInternalException("Error setting relevant vertex of type " + type);
+                    throw new ReasonerInternalException("Error setting relevant vertex of type " + dagtag);
             }
         }
     }

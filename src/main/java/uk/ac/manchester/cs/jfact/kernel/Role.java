@@ -717,12 +717,7 @@ public class Role extends ClassifiableEntry {
 
     @Override
     public void addParent(ClassifiableEntry parent) {
-        toldSubsumers.add(parent);
-    }
-
-    @Override
-    public void addParents(Collection<ClassifiableEntry> entries) {
-        entries.forEach(this::addParentIfNew);
+        addP(parent);
     }
 
     /**
@@ -881,7 +876,7 @@ public class Role extends ClassifiableEntry {
         // copy subCompositions
         syn.subCompositions.addAll(subCompositions);
         // syn should be the only parent for synonym
-        toldSubsumers.clear();
+        toldSubsumers = null;
         addParent(syn);
     }
 
@@ -903,28 +898,30 @@ public class Role extends ClassifiableEntry {
         // ensure that parents does not contain synonyms
         removeSynonymsFromParents();
         // not involved in cycle -- check all told subsumers
-        for (ClassifiableEntry r : toldSubsumers) {
-            // if cycle was detected
-            if ((ret = ((Role) r).eliminateToldCycles(rolesInProcess, toldSynonyms)) != null) {
-                if (ret.equals(this)) {
-                    Collections.sort(toldSynonyms, new RoleCompare());
-                    // now first element is representative; save it as RET
-                    ret = toldSynonyms.get(0);
-                    // make all others synonyms of RET
-                    // XXX check if role error is here
-                    for (int i = 1; i < toldSynonyms.size(); i++) {
-                        Role p = toldSynonyms.get(i);
-                        p.setSynonym(ret);
-                        ret.addParents(p.getToldSubsumers());
+        if (hasToldSubsumers()) {
+            for (ClassifiableEntry r : toldSubsumers) {
+                // if cycle was detected
+                if ((ret = ((Role) r).eliminateToldCycles(rolesInProcess, toldSynonyms)) != null) {
+                    if (ret.equals(this)) {
+                        Collections.sort(toldSynonyms, new RoleCompare());
+                        // now first element is representative; save it as RET
+                        ret = toldSynonyms.get(0);
+                        // make all others synonyms of RET
+                        // XXX check if role error is here
+                        for (int i = 1; i < toldSynonyms.size(); i++) {
+                            Role p = toldSynonyms.get(i);
+                            p.setSynonym(ret);
+                            ret.addParents(p.getToldSubsumers());
+                        }
+                        toldSynonyms.clear();
+                        rolesInProcess.remove(this);
+                        // restart search for the representative
+                        return ret.eliminateToldCycles(rolesInProcess, toldSynonyms);
+                    } else {
+                        // some role inside a cycle: save it and return
+                        toldSynonyms.add(this);
+                        break;
                     }
-                    toldSynonyms.clear();
-                    rolesInProcess.remove(this);
-                    // restart search for the representative
-                    return ret.eliminateToldCycles(rolesInProcess, toldSynonyms);
-                } else {
-                    // some role inside a cycle: save it and return
-                    toldSynonyms.add(this);
-                    break;
                 }
             }
         }
@@ -943,15 +940,15 @@ public class Role extends ClassifiableEntry {
      */
     @PortedFrom(file = "tRole.h", name = "print")
     public void print(LogAdapter o) {
-        o.print("Role \"", getIRI(), "\"(").print(getId()).print(")", isTransitive() ? "T" : "",
-            isReflexive() ? "R" : "", isTopFunc() ? "t" : "", isFunctional() ? "F" : "", isDataRole() ? "D" : "");
+        o.print("Role \"", getIRI(), "\"(").print(getId()).print(")", isTransitive() ? "T" : "", isReflexive() ? "R"
+            : "", isTopFunc() ? "t" : "", isFunctional() ? "F" : "", isDataRole() ? "D" : "");
         if (isSynonym()) {
             o.print(" = \"", getSynonym().getIRI(), "\"\n");
             return;
         }
-        if (!toldSubsumers.isEmpty()) {
-            o.print(toldSubsumers.stream().map(ClassifiableEntry::getIRI)
-                .collect(joining("\", \"", " parents={\"", "\"}")));
+        if (hasToldSubsumers()) {
+            o.print(toldSubsumers.stream().map(ClassifiableEntry::getIRI).collect(joining("\", \"", " parents={\"",
+                "\"}")));
         }
         if (!disjointRoles.isEmpty()) {
             o.print(disjointRoles.stream().map(Role::getIRI).collect(joining("\", \"", " disjoint with {\"", "\"}")));
@@ -962,8 +959,8 @@ public class Role extends ClassifiableEntry {
         if (getTRange() != null) {
             o.print(" Range=(").print(getBPRange()).print(")=", getTRange());
         }
-        o.print("\nAutomaton (size ").print(automaton.size()).print("): ", automaton.isISafe() ? "I" : "i",
-            automaton.isOSafe() ? "O" : "o");
+        o.print("\nAutomaton (size ").print(automaton.size()).print("): ", automaton.isISafe() ? "I" : "i", automaton
+            .isOSafe() ? "O" : "o");
         automaton.print(o);
         o.print("\n");
     }
@@ -1103,7 +1100,7 @@ public class Role extends ClassifiableEntry {
         }
         // here automaton is complete
         automaton.setCompleted(true);
-        if (!isBottom()) {
+        if (!isBottom() && hasToldSubsumers()) {
             toldSubsumers.forEach(this::initRole);
         }
         // finish processing role
