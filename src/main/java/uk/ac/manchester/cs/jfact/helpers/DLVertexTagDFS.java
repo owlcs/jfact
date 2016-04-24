@@ -16,7 +16,7 @@ import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 @PortedFrom(file = "dlVertex.h", name = "DLVertexTagDFS")
 class DLVertexTagDFS implements Serializable {
 
-    @PortedFrom(file = "dlVertex.h", name = "Op") protected DagTag op;
+    @PortedFrom(file = "dlVertex.h", name = "Op") protected DagTag dagtag;
     /** aux field for DFS in presence of cycles */
     @PortedFrom(file = "dlVertex.h", name = "VisitedPos") protected boolean visitedPos = false;
     /** aux field for DFS in presence of cycles */
@@ -36,14 +36,14 @@ class DLVertexTagDFS implements Serializable {
 
     @PortedFrom(file = "dlVertex.h", name = "Op")
     protected DLVertexTagDFS(DagTag op) {
-        this.op = op;
+        this.dagtag = op;
     }
 
     // tag access
     /** @return tag of the CE */
     @PortedFrom(file = "dlVertex.h", name = "Type")
     public DagTag getType() {
-        return op;
+        return dagtag;
     }
 
     // DFS-related method

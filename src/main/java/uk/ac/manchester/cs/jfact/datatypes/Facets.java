@@ -5,12 +5,15 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
+import static org.semanticweb.owlapi.vocab.OWLFacet.*;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -31,11 +34,18 @@ public class Facets implements Serializable {
         protected final String uri;
         protected final String fragment;
         protected final boolean isNumber;
+        protected final OWLFacet facet;
 
-        public AbstractFacet(String u, boolean isNumber) {
+        public AbstractFacet(String u, boolean number, OWLFacet f) {
             uri = DatatypeFactory.getNamespace() + u;
             fragment = u;
-            this.isNumber = isNumber;
+            isNumber = number;
+            facet = f;
+        }
+
+        @Override
+        public OWLFacet facet() {
+            return facet;
         }
 
         @Override
@@ -115,13 +125,13 @@ public class Facets implements Serializable {
 
         private String toString;
 
-        public LimitFacet(String u, String toString) {
-            super(u, true);
+        public LimitFacet(String u, String toString, OWLFacet f) {
+            super(u, true, f);
             this.toString = toString;
         }
 
-        public LimitFacet(String u) {
-            super(u, true);
+        public LimitFacet(String u, OWLFacet f) {
+            super(u, true, f);
             toString = super.toString();
         }
 
@@ -210,17 +220,17 @@ public class Facets implements Serializable {
     }
 
     /** length */
-    public static final Facet length = new LimitFacet("length");
+    public static final Facet length = new LimitFacet("length", LENGTH);
     /** minLength */
-    public static final Facet minLength = new LimitFacet("minLength");
+    public static final Facet minLength = new LimitFacet("minLength", MIN_LENGTH);
     /** maxLength */
-    public static final Facet maxLength = new LimitFacet("maxLength");
+    public static final Facet maxLength = new LimitFacet("maxLength", MAX_LENGTH);
     /** totalDigits */
-    public static final Facet totalDigits = new LimitFacet("totalDigits");
+    public static final Facet totalDigits = new LimitFacet("totalDigits", TOTAL_DIGITS);
     /** fractionDigits */
-    public static final Facet fractionDigits = new LimitFacet("fractionDigits");
+    public static final Facet fractionDigits = new LimitFacet("fractionDigits", FRACTION_DIGITS);
     /** whiteSpace */
-    public static final Facet whiteSpace = new AbstractFacet("whiteSpace", false) {
+    public static final Facet whiteSpace = new AbstractFacet("whiteSpace", false, null) {
 
         @Override
         public whitespace parse(Object value) {
@@ -234,7 +244,7 @@ public class Facets implements Serializable {
         }
     };
     /** pattern */
-    public static final Facet pattern = new AbstractFacet("pattern", false) {
+    public static final Facet pattern = new AbstractFacet("pattern", false, PATTERN) {
 
         @Override
         public String parse(Object value) {
@@ -242,21 +252,29 @@ public class Facets implements Serializable {
         }
     };
     /** enumeration */
-    public static final Facet enumeration = new AbstractFacet("enumeration", false);
+    public static final Facet enumeration = new AbstractFacet("enumeration", false, null);
     /** maxInclusive */
-    public static final Facet maxInclusive = new LimitFacet("maxInclusive", "]");
+    public static final Facet maxInclusive = new LimitFacet("maxInclusive", "]", MAX_INCLUSIVE);
     /** maxExclusive */
-    public static final Facet maxExclusive = new LimitFacet("maxExclusive", ")");
+    public static final Facet maxExclusive = new LimitFacet("maxExclusive", ")", MAX_EXCLUSIVE);
     /** minInclusive */
-    public static final Facet minInclusive = new LimitFacet("minInclusive", "[");
+    public static final Facet minInclusive = new LimitFacet("minInclusive", "[", MIN_INCLUSIVE);
     /** minExclusive */
-    public static final Facet minExclusive = new LimitFacet("minExclusive", "(");
+    public static final Facet minExclusive = new LimitFacet("minExclusive", "(", MIN_EXCLUSIVE);
     private static final List<Facet> values = Arrays.asList(enumeration, fractionDigits, length, maxExclusive,
         maxInclusive, minExclusive, minInclusive, maxLength, minLength, pattern, totalDigits, whiteSpace);
 
     /** @return all facets */
-    public static List<Facet> values() {
-        return new ArrayList<>(values);
+    public static Stream<Facet> values() {
+        return values.stream();
+    }
+
+    private static EnumMap<OWLFacet, Facet> facets = facets();
+
+    private static EnumMap<OWLFacet, Facet> facets() {
+        EnumMap<OWLFacet, Facet> map = new EnumMap<>(OWLFacet.class);
+        values.stream().filter(f -> f.facet() != null).forEach(f -> map.put(f.facet(), f));
+        return map;
     }
 
     /**
@@ -265,34 +283,11 @@ public class Facets implements Serializable {
      * @return facet
      */
     public static Facet parse(OWLFacet f) {
-        switch (f) {
-            case LENGTH:
-                return length;
-            case MIN_LENGTH:
-                return minLength;
-            case MAX_LENGTH:
-                return maxLength;
-            case PATTERN:
-                return pattern;
-            case MIN_INCLUSIVE:
-                return minInclusive;
-            case MIN_EXCLUSIVE:
-                return minExclusive;
-            case MAX_INCLUSIVE:
-                return maxInclusive;
-            case MAX_EXCLUSIVE:
-                return maxExclusive;
-            case TOTAL_DIGITS:
-                return totalDigits;
-            case FRACTION_DIGITS:
-                return fractionDigits;
-            // XXX lang range should actually perform validation on language
-            // tags
-            case LANG_RANGE:
-                return pattern;
-            default:
+        Facet facet = facets.get(f);
+        if (facet == null) {
                 throw new OWLRuntimeException("Unsupported facet: " + f);
         }
+        return facet;
     }
 
     /**

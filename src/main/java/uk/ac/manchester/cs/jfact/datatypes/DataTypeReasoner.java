@@ -104,7 +104,7 @@ public final class DataTypeReasoner implements Serializable {
     /**
      * @param positive
      *        positive
-     * @param type
+     * @param dagtag
      *        type
      * @param entry
      *        entry
@@ -113,19 +113,31 @@ public final class DataTypeReasoner implements Serializable {
      * @return false if datatype, true otherwise
      */
     @PortedFrom(file = "DataReasoning.h", name = "addDataEntry")
-    @SuppressWarnings("incomplete-switch")
-    public boolean addDataEntry(boolean positive, DagTag type, NamedEntry entry, DepSet dep) {
-        switch (type) {
+    public boolean addDataEntry(boolean positive, DagTag dagtag, NamedEntry entry, DepSet dep) {
+        switch (dagtag) {
             case DATATYPE:
                 return dataType(positive, ((DatatypeEntry) entry).getDatatype(), dep);
             case DATAVALUE:
-                return this.dataValue(positive, ((LiteralEntry) entry).getLiteral(), dep);
+                return dataValue(positive, ((LiteralEntry) entry).getLiteral(), dep);
             case DATAEXPR:
-                return this.dataExpression(positive, ((DatatypeEntry) entry).getDatatype().asExpression(), dep);
+                return dataExpression(positive, ((DatatypeEntry) entry).getDatatype().asExpression(), dep);
             case AND:
                 return false;
+            case BAD:
+            case CHOOSE:
+            case COLLECTION:
+            case FORALL:
+            case IRR:
+            case LE:
+            case NCONCEPT:
+            case NN:
+            case NSINGLETON:
+            case PCONCEPT:
+            case PROJ:
+            case PSINGLETON:
+            case TOP:
             default:
-                throw new UnreachableSituationException(type.toString());
+                throw new UnreachableSituationException(dagtag.toString());
         }
     }
 

@@ -214,7 +214,7 @@ public class DLVertex extends DLVertexTagDFS {
     }
 
     protected boolean compareIndexes(DLVertex v) {
-        return op == v.op && conceptIndex == v.conceptIndex && n == v.n;
+        return dagtag == v.dagtag && conceptIndex == v.conceptIndex && n == v.n;
     }
 
     protected boolean compareRoles(DLVertex v) {
@@ -231,7 +231,7 @@ public class DLVertex extends DLVertexTagDFS {
 
     @Override
     public int hashCode() {
-        int hash = op == null ? 0 : op.hashCode();
+        int hash = dagtag == null ? 0 : dagtag.hashCode();
         hash = 31 * hash + (role == null ? 0 : role.hashCode());
         hash = 31 * hash + (projRole == null ? 0 : projRole.hashCode());
         hash = 31 * hash + conceptIndex;
@@ -335,7 +335,7 @@ public class DLVertex extends DLVertexTagDFS {
     @PortedFrom(file = "dlVertex.h", name = "addChild")
     public boolean addChild(int p) {
         // if adds to broken vertex -- do nothing
-        if (op == BAD) {
+        if (dagtag == BAD) {
             return true;
         }
         // if adds TOP -- nothing to do
@@ -346,7 +346,7 @@ public class DLVertex extends DLVertexTagDFS {
         // this can happen in case of nested simplifications; see bNested1
         if (p == BP_BOTTOM || child.contains(-p)) {
             child.clear();
-            op = BAD;
+            dagtag = BAD;
             return true;
         }
         // XXX check this sorting:
@@ -383,7 +383,7 @@ public class DLVertex extends DLVertexTagDFS {
      */
     @PortedFrom(file = "dlVertex.h", name = "sortEntry")
     public void sortEntry(DLDag dag) {
-        if (op != AND) {
+        if (dagtag != AND) {
             return;
         }
         child.setSorter(dag);
@@ -407,47 +407,46 @@ public class DLVertex extends DLVertexTagDFS {
     }
 
     @Override
-    @SuppressWarnings("incomplete-switch")
     @Nonnull
     public String toString() {
-        switch (op) {
+        switch (dagtag) {
             case AND:
             case COLLECTION:
                 break;
             case TOP:
             case NN:
-                return op.getName();
+                return dagtag.getName();
             case DATAEXPR:
-                return op.getName() + ' ' + concept;
+                return dagtag.getName() + ' ' + concept;
             case DATAVALUE:
             case DATATYPE:
             case PCONCEPT:
             case NCONCEPT:
             case PSINGLETON:
             case NSINGLETON:
-                return op.getName() + String.format(Templates.DLVERTEXPRINT2.getTemplate(), concept.getIRI(),
-                    op.isNNameTag() ? "=" : "[=", concept);
+                return dagtag.getName() + String.format(Templates.DLVERTEXPRINT2.getTemplate(), concept.getIRI(),
+                    dagtag.isNNameTag() ? "=" : "[=", concept);
             case LE:
-                return op.getName() + ' ' + n + ' ' + role.getIRI() + ' ' + concept;
+                return dagtag.getName() + ' ' + n + ' ' + role.getIRI() + ' ' + concept;
             case FORALL:
-                return op.getName() + String.format(Templates.DLVERTEXPRINT3.getTemplate(), role.getIRI(),
+                return dagtag.getName() + String.format(Templates.DLVERTEXPRINT3.getTemplate(), role.getIRI(),
                     Integer.toString(n), concept);
             case IRR:
-                return op.getName() + ' ' + role.getIRI();
+                return dagtag.getName() + ' ' + role.getIRI();
             case PROJ:
-                return op.getName()
+                return dagtag.getName()
                     + String.format(Templates.DLVERTEXPRINT4.getTemplate(), role.getIRI(), concept, projRole.getIRI());
             case CHOOSE:
-                return op.getName() + ' ' + concept;
+                return dagtag.getName() + ' ' + concept;
             default:
                 throw new ReasonerInternalException(
-                    String.format("Error printing vertex of type %s(%s)", op.getName(), op));
+                    String.format("Error printing vertex of type %s(%s)", dagtag.getName(), dagtag));
         }
         return childrenToString();
     }
 
     protected String childrenToString() {
-        StringBuilder o = new StringBuilder(op.getName());
+        StringBuilder o = new StringBuilder(dagtag.getName());
         for (int q : child.sorted()) {
             o.append(' ').append(heap.get(q));
         }
