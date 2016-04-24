@@ -8,8 +8,9 @@ package uk.ac.manchester.cs.jfact.kernel.modelcaches;
 import static uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState.*;
 import static uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheType.IAN;
 
-import java.util.BitSet;
 import java.util.stream.Stream;
+
+import org.roaringbitmap.RoaringBitmap;
 
 import conformance.PortedFrom;
 import uk.ac.manchester.cs.chainsaw.FastSet;
@@ -28,19 +29,19 @@ public class ModelCacheIan extends ModelCacheInterface {
     /**
      * named concepts that appears positively det-lly in a root node of a cache
      */
-    @PortedFrom(file = "modelCacheIan.h", name = "posDConcepts") private final BitSet posDConcepts = new BitSet();
+    @PortedFrom(file = "modelCacheIan.h", name = "posDConcepts") private final RoaringBitmap posDConcepts = new RoaringBitmap();
     /**
      * named concepts that appears positively non-det in a root node of a cache
      */
-    @PortedFrom(file = "modelCacheIan.h", name = "posNConcepts") private final BitSet posNConcepts = new BitSet();
+    @PortedFrom(file = "modelCacheIan.h", name = "posNConcepts") private final RoaringBitmap posNConcepts = new RoaringBitmap();
     /**
      * named concepts that appears negatively det-lly in a root node of a cache
      */
-    @PortedFrom(file = "modelCacheIan.h", name = "negDConcepts") private final BitSet negDConcepts = new BitSet();
+    @PortedFrom(file = "modelCacheIan.h", name = "negDConcepts") private final RoaringBitmap negDConcepts = new RoaringBitmap();
     /**
      * named concepts that appears negatively non-det in a root node of a cache
      */
-    @PortedFrom(file = "modelCacheIan.h", name = "negNConcepts") private final BitSet negNConcepts = new BitSet();
+    @PortedFrom(file = "modelCacheIan.h", name = "negNConcepts") private final RoaringBitmap negNConcepts = new RoaringBitmap();
     /** extra det-lly concepts that are (partial) Simple Rule applications */
     @PortedFrom(file = "modelCacheIan.h", name = "extraDConcepts") private final FastSet extraDConcepts = FastSetFactory
         .create();
@@ -137,7 +138,7 @@ public class ModelCacheIan extends ModelCacheInterface {
     }
 
     @PortedFrom(file = "modelCacheIan.h", name = "getDConcepts")
-    private BitSet getDConcepts(boolean pos) {
+    private RoaringBitmap getDConcepts(boolean pos) {
         return pos ? posDConcepts : negDConcepts;
     }
 
@@ -147,7 +148,7 @@ public class ModelCacheIan extends ModelCacheInterface {
      * @return N-concepts wrt polarity
      */
     @PortedFrom(file = "modelCacheIan.h", name = "getNConcepts")
-    private BitSet getNConcepts(boolean pos) {
+    private RoaringBitmap getNConcepts(boolean pos) {
         return pos ? posNConcepts : negNConcepts;
     }
 
@@ -230,7 +231,7 @@ public class ModelCacheIan extends ModelCacheInterface {
             case PSINGLETON:
                 // add concepts to Concepts
                 int toAdd = ((ClassifiableEntry) cur.getConcept()).getIndex();
-                (det ? getDConcepts(pos) : getNConcepts(pos)).set(toAdd);
+                (det ? getDConcepts(pos) : getNConcepts(pos)).add(toAdd);
                 break;
             case IRR: // for \neg \ER.Self: add R to AR-set
             case FORALL: // add AR.C roles to forallRoles
@@ -333,9 +334,9 @@ public class ModelCacheIan extends ModelCacheInterface {
     public ModelCacheState isMergableSingleton(int singleton, boolean pos) {
         assert singleton != 0;
         // deterministic clash
-        if (getDConcepts(!pos).get(singleton)) {
+        if (getDConcepts(!pos).contains(singleton)) {
             return INVALID;
-        } else if (getNConcepts(!pos).get(singleton)) {
+        } else if (getNConcepts(!pos).contains(singleton)) {
             return FAILED;
         }
         return VALID;
@@ -348,12 +349,12 @@ public class ModelCacheIan extends ModelCacheInterface {
      */
     @PortedFrom(file = "modelCacheIan.h", name = "isMergableIan")
     public ModelCacheState isMergableIan(ModelCacheIan q) {
-        if (posDConcepts.intersects(q.negDConcepts) || q.posDConcepts.intersects(negDConcepts)) {
+        if (intersection(posDConcepts, q.negDConcepts) || intersection(q.posDConcepts, negDConcepts)) {
             return INVALID;
         } else if (existsRoles.intersect(q.forallRoles) || q.existsRoles.intersect(forallRoles) || funcRoles.intersect(
-            q.funcRoles) || posDConcepts.intersects(q.negNConcepts) || posNConcepts.intersects(q.negDConcepts)
-            || posNConcepts.intersects(q.negNConcepts) || q.posDConcepts.intersects(negNConcepts) || q.posNConcepts
-                .intersects(negDConcepts) || q.posNConcepts.intersects(negNConcepts)) {
+            q.funcRoles) || intersection(posDConcepts, q.negNConcepts) || intersection(posNConcepts, q.negDConcepts)
+            || intersection(posNConcepts, q.negNConcepts) || intersection(q.posDConcepts, negNConcepts) || intersection(
+                q.posNConcepts, negDConcepts) || intersection(q.posNConcepts, negNConcepts)) {
             return FAILED;
         } else {
             if (simpleRules.isUseSimpleRules() && getExtra(true).intersect(q.getExtra(true))) {
@@ -365,6 +366,10 @@ public class ModelCacheIan extends ModelCacheInterface {
             }
             return VALID;
         }
+    }
+
+    boolean intersection(RoaringBitmap a, RoaringBitmap b) {
+        return !RoaringBitmap.and(a, b).isEmpty();
     }
 
     /**
@@ -415,7 +420,7 @@ public class ModelCacheIan extends ModelCacheInterface {
             curState = mergeStatus(curState, newState);
         } else {
             // add singleton; no need to change state here
-            getDConcepts(pos).set(singleton);
+            getDConcepts(pos).add(singleton);
         }
     }
 
