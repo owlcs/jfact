@@ -17,7 +17,15 @@ import static uk.ac.manchester.cs.jfact.kernel.RoleMaster.addRoleSynonym;
 import static uk.ac.manchester.cs.jfact.kernel.Token.*;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
@@ -43,8 +51,14 @@ import uk.ac.manchester.cs.jfact.datatypes.DatatypeEntry;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeExpression;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
 import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
-import uk.ac.manchester.cs.jfact.helpers.*;
+import uk.ac.manchester.cs.jfact.helpers.DLTree;
+import uk.ac.manchester.cs.jfact.helpers.DLTreeFactory;
+import uk.ac.manchester.cs.jfact.helpers.DLVertex;
+import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
+import uk.ac.manchester.cs.jfact.helpers.Pair;
+import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.helpers.Timer;
+import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleName;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleName;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheConst;
@@ -94,9 +108,9 @@ public class TBox implements Serializable {
     /** temporary concept that represents query */
     @PortedFrom(file = "dlTBox.h", name = "pQuery") private Concept pQuery;
     /** all named concepts */
-    @PortedFrom(file = "dlTBox.h", name = "concepts") private final NamedEntryCollection<Concept> concepts;
+    @PortedFrom(file = "dlTBox.h", name = "concepts") private NamedEntryCollection<Concept> concepts;
     /** all named individuals/nominals */
-    @PortedFrom(file = "dlTBox.h", name = "individuals") private final NamedEntryCollection<Individual> individuals;
+    @PortedFrom(file = "dlTBox.h", name = "individuals") private NamedEntryCollection<Individual> individuals;
     /** "normal" (object) roles */
     @PortedFrom(file = "dlTBox.h", name = "ORM") private final RoleMaster objectRoleMaster;
     /** data roles */
@@ -191,8 +205,8 @@ public class TBox implements Serializable {
         dlHeap = new DLDag(configuration);
         kbStatus = KBLOADING;
         pQuery = null;
-        concepts = new NamedEntryCollection<>("concept", name -> new Concept(name), config);
-        individuals = new NamedEntryCollection<>("individual", name -> new Individual(name), config);
+        concepts = new NamedEntryCollection<>("concept", config);
+        individuals = new NamedEntryCollection<>("individual", config);
         objectRoleMaster = new RoleMaster(false, new ObjectRoleName(df.getOWLTopObjectProperty()), new ObjectRoleName(df
             .getOWLBottomObjectProperty()), config);
         dataRoleMaster = new RoleMaster(true, new DataRoleName(df.getOWLTopDataProperty()), new DataRoleName(df
@@ -733,7 +747,7 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "getConcept")
     public Concept getConcept(IRI name) {
-        return concepts.get(name);
+        return concepts.get(name, Concept::new);
     }
 
     /**
@@ -745,7 +759,7 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "getIndividual")
     public Individual getIndividual(IRI name) {
-        return individuals.get(name);
+        return individuals.get(name, Individual::new);
     }
 
     /**

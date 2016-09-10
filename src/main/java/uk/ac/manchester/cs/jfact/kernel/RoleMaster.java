@@ -42,7 +42,7 @@ public class RoleMaster implements Serializable {
     /** internal universal role (top in the taxonomy) */
     @PortedFrom(file = "RoleMaster.h", name = "universalRole") private final Role universalRole;
     /** roles nameset */
-    @PortedFrom(file = "RoleMaster.h", name = "roleNS") private final NameSet<Role, IRI> roleNS;
+    @PortedFrom(file = "RoleMaster.h", name = "roleNS") private NameSet<Role, IRI> roleNS;
     /** Taxonomy of roles */
     @PortedFrom(file = "RoleMaster.h", name = "pTax") private final Taxonomy pTax;
     /** two halves of disjoint roles axioms */
@@ -53,7 +53,6 @@ public class RoleMaster implements Serializable {
     /** flag if it is possible to introduce new names */
     @PortedFrom(file = "RoleMaster.h", name = "useUndefinedNames") private boolean useUndefinedNames;
     @Original private static final int FIRSTROLEINDEX = 2;
-
     /**
      * @param d
      *        d
@@ -70,7 +69,7 @@ public class RoleMaster implements Serializable {
         emptyRole.setEntity(botRoleName);
         universalRole = new Role(topRoleName.getIRI());
         universalRole.setEntity(topRoleName);
-        roleNS = new NameSet<>(name -> new Role(name));
+        roleNS = new NameSet<>();
         dataRoles = d;
         useUndefinedNames = true;
         // no zero-named roles allowed
@@ -88,7 +87,7 @@ public class RoleMaster implements Serializable {
         universalRole.setDataRole(dataRoles);
         universalRole.setBPDomain(Helper.BP_TOP);
         universalRole.setTop();
-        // FIXME!! now it is not transitive => simple
+        // FIXME!! now it is not transitive (implies simple)
         universalRole.getAutomaton().setCompleted(true);
         // create roles taxonomy
         pTax = new Taxonomy(universalRole, emptyRole, c);
@@ -155,7 +154,7 @@ public class RoleMaster implements Serializable {
             return universalRole;
         }
         // new name from NS
-        Role p = roleNS.insert(name);
+        Role p = roleNS.insert(name,Role::new);
         if (isRegisteredRole(p)) {
             return p;
         }

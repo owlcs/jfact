@@ -19,7 +19,13 @@ import javax.annotation.Nullable;
 import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormat;
 import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
@@ -186,8 +192,8 @@ public class JUnitRunner {
         }
         OWLReasoner reasoner = f.createReasoner(premiseOntology, config);
         actual(conclusionOntology, b, reasoner);
-        // reasoner = roundtrip(reasoner);
-        // actual(conclusionOntology, b, reasoner);
+        reasoner = roundtrip(reasoner);
+        actual(conclusionOntology, b, reasoner);
         premiseOntology.getOWLOntologyManager().removeOntologyChangeListener((OWLOntologyChangeListener) reasoner);
     }
 

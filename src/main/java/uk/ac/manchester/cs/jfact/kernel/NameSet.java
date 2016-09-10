@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
+import java.io.Serializable;
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -19,28 +20,19 @@ import conformance.PortedFrom;
  *        key
  */
 @PortedFrom(file = "tNameSet.h", name = "TNameSet")
-public class NameSet<T, K> extends LinkedHashMap<K, T> {
+public class NameSet<T, K> extends LinkedHashMap<K, T> implements Serializable{
 
-    /** creator of new name */
-    @PortedFrom(file = "tNameSet.h", name = "Creator") private final Function<K, T> creator;
-
-    /**
-     * @param p
-     *        p
-     */
-    public NameSet(Function<K, T> p) {
-        creator = p;
-    }
 
     /**
      * unconditionally add new element with name ID to the set;
      * 
      * @param id
      *        id
+     * @param creator creator function
      * @return new element
      */
     @PortedFrom(file = "tNameSet.h", name = "add")
-    public T add(K id) {
+    public T add(K id,Function<K, T> creator) {
         T pne = creator.apply(id);
         put(id, pne);
         return pne;
@@ -51,13 +43,14 @@ public class NameSet<T, K> extends LinkedHashMap<K, T> {
      * 
      * @param id
      *        id
+     * @param creator creator function
      * @return pointer to id structure created by external creator
      */
     @PortedFrom(file = "tNameSet.h", name = "insert")
-    public T insert(K id) {
+    public T insert(K id,Function<K, T> creator) {
         T pne = get(id);
         if (pne == null) {
-            pne = add(id);
+            pne = add(id, creator);
         }
         return pne;
     }

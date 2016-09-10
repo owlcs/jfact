@@ -40,15 +40,13 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
      * 
      * @param name
      *        name
-     * @param creator
-     *        creator
      * @param options
      *        options
      */
-    public NamedEntryCollection(String name, Function<IRI, T> creator, JFactReasonerConfiguration options) {
+    public NamedEntryCollection(String name, JFactReasonerConfiguration options) {
         typeName = name;
         locked = false;
-        nameset = new NameSet<>(creator);
+        nameset = new NameSet<>();
         this.options = options;
     }
 
@@ -83,9 +81,11 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
     /**
      * @param name
      *        name
+     * @param creator
+     *        creator
      * @return get entry by NAME from the collection; register it if necessary
      */
-    public T get(IRI name) {
+    public T get(IRI name,  Function<IRI, T> creator) {
         T p = nameset.get(name);
         // check if name is already defined
         if (p != null) {
@@ -97,7 +97,7 @@ public class NamedEntryCollection<T extends NamedEntry> implements Serializable 
             throw new ReasonerFreshEntityException("Unable to register '" + name + "' as a " + typeName, name);
         }
         // create name in name set, and register it
-        p = nameset.add(name);
+        p = nameset.add(name, creator);
         // if fresh entity -- mark it System
         if (isLocked()) {
             p.setSystem();

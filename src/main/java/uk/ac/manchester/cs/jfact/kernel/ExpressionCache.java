@@ -11,7 +11,12 @@ import javax.annotation.Nonnull;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 import conformance.PortedFrom;
-import uk.ac.manchester.cs.jfact.kernel.dl.*;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptOneOf;
+import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleName;
+import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleInverse;
+import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
@@ -22,17 +27,13 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 public class ExpressionCache implements Serializable {
 
     /** nameset for concepts */
-    @PortedFrom(file = "tExpressionManager.h", name = "NS_C") private final NameSet<ConceptName, OWLEntity> conceptNameset = new NameSet<>(
-        name -> new ConceptName(name));
+    @PortedFrom(file = "tExpressionManager.h", name = "NS_C") private NameSet<ConceptName, OWLEntity> conceptNameset = new NameSet<>();
     /** nameset for individuals */
-    @PortedFrom(file = "tExpressionManager.h", name = "NS_I") private final NameSet<IndividualName, OWLEntity> individualNameset = new NameSet<>(
-        name -> new IndividualName(name));
+    @PortedFrom(file = "tExpressionManager.h", name = "NS_I") private NameSet<IndividualName, OWLEntity> individualNameset = new NameSet<>();
     /** nameset for object roles */
-    @PortedFrom(file = "tExpressionManager.h", name = "NS_OR") private final NameSet<ObjectRoleName, OWLEntity> objectRoleNameset = new NameSet<>(
-        name -> new ObjectRoleName(name));
+    @PortedFrom(file = "tExpressionManager.h", name = "NS_OR") private NameSet<ObjectRoleName, OWLEntity> objectRoleNameset = new NameSet<>();
     /** nameset for data roles */
-    @PortedFrom(file = "tExpressionManager.h", name = "NS_DR") private final NameSet<DataRoleName, OWLEntity> dataRoleNameset = new NameSet<>(
-        name -> new DataRoleName(name));
+    @PortedFrom(file = "tExpressionManager.h", name = "NS_DR") private NameSet<DataRoleName, OWLEntity> dataRoleNameset = new NameSet<>();
     /** cache for the role inverses */
     @PortedFrom(file = "tExpressionManager.h", name = "InverseRoleCache") @Nonnull private final InverseRoleCache inverseRoleCache = new InverseRoleCache();
     /** cache for the one-of singletons */
@@ -45,7 +46,7 @@ public class ExpressionCache implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "concept")
     public ConceptName concept(OWLEntity name) {
-        return conceptNameset.insert(name);
+        return conceptNameset.insert(name, ConceptName::new);
     }
 
     /**
@@ -131,7 +132,7 @@ public class ExpressionCache implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "individual")
     public IndividualName individual(OWLEntity name) {
-        return individualNameset.insert(name);
+        return individualNameset.insert(name, IndividualName::new);
     }
 
     /**
@@ -141,7 +142,7 @@ public class ExpressionCache implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "ObjectRole")
     public ObjectRoleName objectRole(OWLEntity name) {
-        return objectRoleNameset.insert(name);
+        return objectRoleNameset.insert(name,ObjectRoleName::new);
     }
 
     /**
@@ -151,7 +152,7 @@ public class ExpressionCache implements Serializable {
      */
     @PortedFrom(file = "tExpressionManager.h", name = "DataRole")
     public DataRoleName dataRole(OWLEntity name) {
-        return dataRoleNameset.insert(name);
+        return dataRoleNameset.insert(name, DataRoleName::new);
     }
 
     /** Cache for the inverse roles */

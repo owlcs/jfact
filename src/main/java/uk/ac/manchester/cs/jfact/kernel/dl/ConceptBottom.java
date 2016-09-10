@@ -40,4 +40,18 @@ public class ConceptBottom implements ConceptExpression, Serializable {
     public IRI getIRI() {
         return OWLRDFVocabulary.OWL_NOTHING.getIRI();
     }
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+    @Override
+    public boolean equals(Object obj) {
+     if(obj==null) {
+         return false;
+     }
+     if(this==obj) {
+         return true;
+     }
+     return obj instanceof ConceptBottom;
+    }
 }

@@ -4,8 +4,18 @@ import static org.semanticweb.owlapi.model.AxiomType.*;
 import static org.semanticweb.owlapi.util.OWLAPIPreconditions.checkNotNull;
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.*;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -15,7 +25,18 @@ import javax.annotation.Nonnull;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.AxiomAnnotations;
 import org.semanticweb.owlapi.model.parameters.Imports;
-import org.semanticweb.owlapi.reasoner.*;
+import org.semanticweb.owlapi.reasoner.BufferingMode;
+import org.semanticweb.owlapi.reasoner.FreshEntitiesException;
+import org.semanticweb.owlapi.reasoner.FreshEntityPolicy;
+import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
+import org.semanticweb.owlapi.reasoner.IndividualNodeSetPolicy;
+import org.semanticweb.owlapi.reasoner.InferenceType;
+import org.semanticweb.owlapi.reasoner.Node;
+import org.semanticweb.owlapi.reasoner.NodeSet;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration;
+import org.semanticweb.owlapi.reasoner.ReasonerInterruptedException;
+import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
 import org.semanticweb.owlapi.reasoner.impl.OWLClassNodeSet;
 import org.semanticweb.owlapi.reasoner.impl.OWLDataPropertyNode;
 import org.semanticweb.owlapi.reasoner.impl.OWLDataPropertyNodeSet;
@@ -30,14 +51,24 @@ import org.slf4j.LoggerFactory;
 import conformance.Original;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
-import uk.ac.manchester.cs.jfact.kernel.*;
+import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
+import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
+import uk.ac.manchester.cs.jfact.kernel.Individual;
+import uk.ac.manchester.cs.jfact.kernel.Ontology;
+import uk.ac.manchester.cs.jfact.kernel.ReasonerFreshEntityException;
+import uk.ac.manchester.cs.jfact.kernel.ReasoningKernel;
 import uk.ac.manchester.cs.jfact.kernel.actors.ClassPolicy;
 import uk.ac.manchester.cs.jfact.kernel.actors.DataPropertyPolicy;
 import uk.ac.manchester.cs.jfact.kernel.actors.IndividualPolicy;
 import uk.ac.manchester.cs.jfact.kernel.actors.ObjectPropertyPolicy;
 import uk.ac.manchester.cs.jfact.kernel.actors.TaxonomyActor;
 import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.owlapi.modularity.ModuleType;
 
@@ -890,5 +921,10 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener, OW
         Stream<IndividualName> stream = kernel.getDataRelatedIndividuals(tr.pointer(r), tr.pointer(s), op, tr.translate(
             individuals)).stream();
         return tr.getIndividualTranslator().node(stream);
+    }
+
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+        stream.defaultReadObject();
+        root.getOWLOntologyManager().addOntologyChangeListener(this);
     }
 }
