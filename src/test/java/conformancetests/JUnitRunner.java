@@ -192,8 +192,7 @@ public class JUnitRunner {
             ObjectInputStream inStream = new ObjectInputStream(in);
             return (OWLReasoner) inStream.readObject();
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException(e);
         }
     }
 

@@ -8,6 +8,8 @@ import static org.semanticweb.owlapi.model.AxiomType.*;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static org.semanticweb.owlapi.util.OWLAPIPreconditions.checkNotNull;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -948,4 +950,8 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener, OW
         return tr.getIndividualTranslator().node(kernel.getDataRelatedIndividuals(tr.pointer(r), tr.pointer(s), op, tr
             .translate(individuals)));
     }
+    private void readObject(ObjectInputStream stream)        throws IOException, ClassNotFoundException {
+        stream.defaultReadObject(); 
+        root.getOWLOntologyManager().addOntologyChangeListener(this);
+   }
 }

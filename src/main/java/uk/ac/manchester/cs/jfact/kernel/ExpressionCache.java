@@ -24,7 +24,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 /**
  * Cache for expressions. This is the only stateful part of ExpressionManager
  */
-public class ExpressionCache {
+public class ExpressionCache implements Serializable {
 
     /** nameset for concepts */
     @PortedFrom(file = "tExpressionManager.h", name = "NS_C")
