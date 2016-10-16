@@ -54,7 +54,7 @@ public class ConceptTop implements ConceptExpression, Serializable {
      if(this==obj) {
          return true;
      }
-     return obj instanceof ConceptBottom;
+     return obj instanceof ConceptTop;
     }
 
 }
