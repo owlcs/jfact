@@ -210,13 +210,10 @@ public class TranslationMachinery implements Serializable {
         OWLNamedIndividualNodeSet ns = new OWLNamedIndividualNodeSet();
         for (IndividualExpression pointer : pointers) {
             if (pointer instanceof IndividualName) {
-                OWLNamedIndividual ind = individualTranslator
-                        .getEntityFromPointer((IndividualName) pointer);
                 // XXX skipping anonymous individuals - counterintuitive but
                 // that's the specs for you
-                if (ind != null) {
-                    ns.addEntity(ind);
-                }
+                    ns.addEntity(individualTranslator
+                        .getEntityFromPointer((IndividualName) pointer));
             }
         }
         return ns;
