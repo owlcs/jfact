@@ -11,7 +11,19 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
+import org.semanticweb.owlapi.model.OWLDataRange;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectInverseOf;
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.semanticweb.owlapi.reasoner.impl.OWLNamedIndividualNodeSet;
 import org.semanticweb.owlapitools.decomposition.AxiomWrapper;
@@ -23,7 +35,12 @@ import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.ReasoningKernel;
 import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
 import uk.ac.manchester.cs.jfact.kernel.dl.axioms.Axioms;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 
 /** translation stuff */
 public class TranslationMachinery implements Serializable {
@@ -146,12 +163,7 @@ public class TranslationMachinery implements Serializable {
         OWLNamedIndividualNodeSet ns = new OWLNamedIndividualNodeSet();
         // XXX skipping anonymous individuals - counterintuitive but
         // that's the specs for you
-        pointers.filter(p -> p instanceof IndividualName).forEach(p -> {
-            OWLNamedIndividual i = individualTranslator.getEntityFromPointer((IndividualName) p);
-            if (i != null) {
-                ns.addEntity(i);
-            }
-        });
+        pointers.filter(p -> p instanceof IndividualName).forEach(p -> ns.addEntity( individualTranslator.getEntityFromPointer((IndividualName) p)));
         return ns;
     }
 

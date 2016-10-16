@@ -7,6 +7,8 @@ package uk.ac.manchester.cs.jfact.kernel.dl;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
@@ -40,19 +42,20 @@ public class ConceptTop implements ConceptExpression, Serializable {
     public IRI getIRI() {
         return OWLRDFVocabulary.OWL_THING.getIRI();
     }
+
     @Override
     public int hashCode() {
         return 1;
     }
-    @Override
-    public boolean equals(Object obj) {
-     if(obj==null) {
-         return false;
-     }
-     if(this==obj) {
-         return true;
-     }
-     return obj instanceof ConceptBottom;
-    }
 
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        return obj instanceof ConceptTop;
+    }
 }
