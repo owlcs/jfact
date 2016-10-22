@@ -335,18 +335,19 @@ public class DLVertex extends DLVertexTagDFS {
     @PortedFrom(file = "dlVertex.h", name = "addChild")
     public boolean addChild(int p) {
         // if adds to broken vertex -- do nothing
-        if (dagtag == BAD) {
+        // if adding BOTTOM -- return clash (empty vertex) immediately
+        // this can happen in case of nested simplifications; see bNested1
+        if (dagtag == BAD || p == BP_BOTTOM) {
             return true;
         }
         // if adds TOP -- nothing to do
         if (p == BP_TOP) {
             return false;
         }
-        // if adding BOTTOM -- return clash (empty vertex) immediately
-        // this can happen in case of nested simplifications; see bNested1
-        if (p == BP_BOTTOM || child.contains(-p)) {
-            child.clear();
-            dagtag = BAD;
+        if (child.contains(p)) {
+            return false;
+        }
+        if (child.contains(-p)) {
             return true;
         }
         // XXX check this sorting:
