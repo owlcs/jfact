@@ -1,11 +1,5 @@
 package uk.ac.manchester.cs.jfact.kernel.todolist;
 
-/* This file is part of the JFact DL reasoner
- Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
- This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
- This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
- You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,14 +11,11 @@ import uk.ac.manchester.cs.jfact.kernel.Restorer;
 import uk.ac.manchester.cs.jfact.kernel.SaveStackRare;
 
 /** class to represent single priority queue */
-public class QueueQueue implements Serializable {
+public class QueueQueue extends ArrayQueue {
 
-    /** waiting ops queue */
-    List<ToDoEntry> wait = new ArrayList<>();
-    // / stack to save states for the overwritten queue
+    // stack to save states for the overwritten queue
     SaveStackRare stack;
     /** start pointer; points to the 1st element in the queue */
-    int sPointer = 0;
     private int size = 0;
 
     // type for restore the whole queue
@@ -59,15 +50,8 @@ public class QueueQueue implements Serializable {
         stack = rare;
     }
 
-    /**
-     * add entry to a queue
-     * 
-     * @param node
-     *        Node
-     * @param offset
-     *        offset
-     */
-    protected void add(DlCompletionTree node, ConceptWDep offset) {
+    @Override
+    public void add(DlCompletionTree node, ConceptWDep offset) {
         ToDoEntry e = new ToDoEntry(node, offset);
         // no problems with empty queue and if no priority
         // clashes
@@ -86,22 +70,16 @@ public class QueueQueue implements Serializable {
         size++;
     }
 
-    /** clear queue */
+    @Override
     @PortedFrom(file = "ToDoList.h", name = "clear")
-    protected void clear() {
-        sPointer = 0;
-        wait.clear();
+    public void clear() {
+        super.clear();
         size = 0;
     }
 
-    /** @return true if queue empty */
-    protected boolean isEmpty() {
+    @Override
+    public boolean isEmpty() {
         return sPointer == size;
-    }
-
-    /** @return get next entry from the queue; works for non-empty queues */
-    protected ToDoEntry get() {
-        return wait.get(sPointer++);
     }
 
     /**

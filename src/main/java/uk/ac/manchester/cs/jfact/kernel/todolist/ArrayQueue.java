@@ -20,9 +20,9 @@ import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
 public class ArrayQueue implements Serializable {
 
     /** waiting ops queue */
-    private final List<ToDoEntry> wait = new ArrayList<>(50);
+    protected List<ToDoEntry> wait = new ArrayList<>(50);
     /** start pointer; points to the 1st element in the queue */
-    private int sPointer = 0;
+    protected int sPointer = 0;
 
     /**
      * add entry to a queue
