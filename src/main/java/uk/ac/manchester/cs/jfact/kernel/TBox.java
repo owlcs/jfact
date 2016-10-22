@@ -2930,12 +2930,16 @@ public class TBox implements Serializable {
     }
 
     /** calculate statistics */
+ // Told stuff is used here, so run this AFTER fillTold*()
     @PortedFrom(file = "dlTBox.h", name = "CalculateStatistic")
     public void calculateStatistic() {
         AtomicInteger npFull = new AtomicInteger(), nsFull = new AtomicInteger();
         AtomicInteger nPC = new AtomicInteger(), nNC = new AtomicInteger(), nSing = new AtomicInteger();
         AtomicInteger nNoTold = new AtomicInteger();
         concepts.getConcepts().filter(p -> isValid(p.getpName())).forEach(n -> {
+            if(n.isSingleton()) {
+                nSing.incrementAndGet();
+            }
             if (n.isPrimitive()) {
                 nPC.incrementAndGet();
             } else {
