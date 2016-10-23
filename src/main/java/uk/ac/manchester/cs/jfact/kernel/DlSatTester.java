@@ -991,12 +991,6 @@ public class DlSatTester implements Serializable {
         return bContext.branchDep;
     }
 
-    /** update cumulative branch-dep with current clash-set */
-    @PortedFrom(file = "Reasoner.h", name = "updateBranchDep")
-    private void updateBranchDep() {
-        getBranchDep().add(clashSet);
-    }
-
     /** prepare cumulative dep-set to usage */
     @PortedFrom(file = "Reasoner.h", name = "prepareBranchDep")
     private void prepareBranchDep() {
@@ -1317,6 +1311,13 @@ public class DlSatTester implements Serializable {
         // some non-deterministic choices were done
         this.restore(clashSet.level());
         return false;
+    }
+
+    /** update cumulative branch-dep with current clash-set and move options forward*/
+    @PortedFrom(file = "Reasoner.h", name = "nextBranchingOption")
+    private void nextBranchingOption () {
+        getBranchDep().add(clashSet);
+        bContext.nextOption();
     }
 
     @PortedFrom(file = "Reasoner.h", name = "straightforwardRestore")
@@ -1830,9 +1831,8 @@ public class DlSatTester implements Serializable {
         if (!sessionGCIs.isEmpty()) {
             resize(sessionGCIs, bContext.sgSize);
         }
-        // update branch dep-set
-        updateBranchDep();
-        bContext.nextOption();
+        // we here after the clash so choose the next branching option
+        nextBranchingOption();
     }
 
     private static void resize(TIntList l, int n) {
@@ -2863,8 +2863,7 @@ public class DlSatTester implements Serializable {
                     assert test;
                     // both clash-sets are now in common clash-set
                 }
-                updateBranchDep();
-                bContext.nextOption();
+                nextBranchingOption();
                 assert !isFirstBranchCall();
                 continue;
             }
@@ -3016,8 +3015,7 @@ public class DlSatTester implements Serializable {
                     assert test;
                     // both clash-sets are now in common clash-set
                 }
-                updateBranchDep();
-                bContext.nextOption();
+                nextBranchingOption();
                 assert !isFirstBranchCall();
                 continue;
             }
