@@ -327,7 +327,7 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener, OW
 
     @Override
     public Version getReasonerVersion() {
-        return new Version(5, 0, 1, 0);
+        return new Version(5, 0, 2, 0);
     }
 
     @Override
