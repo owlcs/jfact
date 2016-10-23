@@ -10,7 +10,17 @@ import static uk.ac.manchester.cs.jfact.kernel.DagTag.*;
 import static uk.ac.manchester.cs.jfact.kernel.Redo.*;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
@@ -31,8 +41,14 @@ import uk.ac.manchester.cs.jfact.datatypes.DataTypeReasoner;
 import uk.ac.manchester.cs.jfact.datatypes.DatatypeEntry;
 import uk.ac.manchester.cs.jfact.datatypes.LiteralEntry;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
-import uk.ac.manchester.cs.jfact.helpers.*;
+import uk.ac.manchester.cs.jfact.helpers.DLVertex;
+import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
+import uk.ac.manchester.cs.jfact.helpers.Reference;
+import uk.ac.manchester.cs.jfact.helpers.SaveStack;
+import uk.ac.manchester.cs.jfact.helpers.Stats;
+import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.helpers.Timer;
+import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheConst;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheIan;
@@ -2060,6 +2076,7 @@ public class DlSatTester implements Serializable {
         DepSet loc = null;
         for (Concept p : rule.getBody()) {
             if (p.getpName() != curConceptConcept) {
+                // FIXME!! double check that's correct (no need to negate pName)
                 if (findConceptClash(lab, p.getpName(), loc == null ? curConceptDepSet : loc)) {
                     // such a concept exists -- rememeber clash set
                     if (loc == null) {
@@ -2084,7 +2101,7 @@ public class DlSatTester implements Serializable {
         for (int i = 0; i < erBegin.size(); i++) {
             SimpleRule rule = tBox.getSimpleRule(erBegin.get(i));
             stats.getnSRuleAdd().inc();
-            if (rule.applicable(this)) {
+            if (applicable(rule)) {
                 // apply the rule's head
                 stats.getnSRuleFire().inc();
                 if (addToDoEntry(curNode, rule.getBpHead(), clashSet, null)) {
@@ -3117,6 +3134,7 @@ public class DlSatTester implements Serializable {
     private boolean mergeLabels(CGLabel from, DlCompletionTree to, DepSet dep) {
         // due to merging, all the concepts in the TO label
         // should be updated to the new dep-set DEP
+        // TODO!! check whether this is really necessary
         if (!dep.isEmpty()) {
             cGraph.saveRareCond(to.label().getLabel(PCONCEPT).updateDepSet(dep));
             cGraph.saveRareCond(to.label().getLabel(FORALL).updateDepSet(dep));

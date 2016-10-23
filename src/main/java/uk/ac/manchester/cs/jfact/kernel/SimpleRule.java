@@ -35,11 +35,6 @@ class SimpleRule implements Serializable {
         setBpHead(BP_INVALID);
     }
 
-    @PortedFrom(file = "dlTBox.h", name = "applicable")
-    public boolean applicable(DlSatTester reasoner) {
-        return reasoner.applicable(this);
-    }
-
     @Original
     public List<Concept> getBody() {
         return simpleRuleBody;

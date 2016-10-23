@@ -237,6 +237,11 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Seri
     @Override
     public DLTree visit(ObjectRoleName expr) {
         RoleMaster rm = tbox.getORM();
+        NamedEntry role = getRoleEntry(expr, rm);
+        return DLTreeFactory.buildTree(new Lexeme(RNAME, role));
+    }
+
+    protected NamedEntry getRoleEntry(ObjectRoleName expr, RoleMaster rm) {
         NamedEntry role;
         if (nc(expr)) {
             role = sig.topRLocal() ? rm.getTopRole() : rm.getBotRole();
@@ -246,7 +251,7 @@ public class ExpressionTranslator implements DLExpressionVisitorEx<DLTree>, Seri
                 role = matchEntry(rm.ensureRoleName(expr.getIRI()), expr);
             }
         }
-        return DLTreeFactory.buildTree(new Lexeme(RNAME, role));
+        return role;
     }
 
     @Override
