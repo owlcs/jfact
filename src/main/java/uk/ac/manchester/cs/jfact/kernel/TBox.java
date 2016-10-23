@@ -144,8 +144,6 @@ public class TBox implements Serializable {
     // shared
     /** let reasoner know that we are in the classificaton (for splits) */
     @PortedFrom(file = "dlTBox.h", name = "duringClassification") private boolean duringClassification;
-    /** how many nodes skip before block; work only with FAIRNESS */
-    @PortedFrom(file = "dlTBox.h", name = "nSkipBeforeBlock") private int nSkipBeforeBlock;
     // Internally defined flags
     /** flag whether TBox is GALEN-like */
     @PortedFrom(file = "dlTBox.h", name = "isLikeGALEN") private boolean isLikeGALEN;
@@ -3488,6 +3486,6 @@ public class TBox implements Serializable {
      * @return skip before block
      */
     public int getnSkipBeforeBlock() {
-        return nSkipBeforeBlock;
+        return config.getnSkipBeforeBlock();
     }
 }

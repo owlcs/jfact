@@ -178,6 +178,8 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
     private boolean useELReasoner = false;
     /** allow reasoner to use undefined names in queries. */
     private boolean useUndefinedNames = true;
+    /** how many nodes skip before block; work only with FAIRNESS */
+    private int nSkipBeforeBlock=0;
 
     /** Instantiates a new j fact reasoner configuration. */
     public JFactReasonerConfiguration() {
@@ -221,6 +223,7 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
         updaterndFromSuperRoles = source.updaterndFromSuperRoles;
         useDynamicBackjumping = source.useDynamicBackjumping;
         useFairness = source.useFairness;
+        nSkipBeforeBlock=source.nSkipBeforeBlock;
         useSimpleRules = source.useSimpleRules;
         splits = source.splits;
         timeOut = source.timeOut;
@@ -924,6 +927,19 @@ public class JFactReasonerConfiguration implements OWLReasonerConfiguration, Ser
     public JFactReasonerConfiguration setUseFairness(boolean b) {
         useFairness = b;
         return this;
+    }
+
+    /** @return number of nodes to skip */
+    public int getnSkipBeforeBlock() {
+        return nSkipBeforeBlock;
+    }
+
+    /**
+     * @param nSkipBeforeBlock
+     *        number of nodes to skip
+     */
+    public void setnSkipBeforeBlock(int nSkipBeforeBlock) {
+        this.nSkipBeforeBlock = nSkipBeforeBlock;
     }
 
     /**
