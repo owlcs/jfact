@@ -1,13 +1,9 @@
 package uk.ac.manchester.cs.jfact.kernel.todolist;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import conformance.PortedFrom;
 import uk.ac.manchester.cs.jfact.helpers.Helper;
 import uk.ac.manchester.cs.jfact.kernel.ConceptWDep;
 import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
-import uk.ac.manchester.cs.jfact.kernel.Restorer;
 import uk.ac.manchester.cs.jfact.kernel.SaveStackRare;
 
 /** class to represent single priority queue */
@@ -17,30 +13,6 @@ public class QueueQueue extends ArrayQueue {
     SaveStackRare stack;
     /** start pointer; points to the 1st element in the queue */
     private int size = 0;
-
-    // type for restore the whole queue
-    class QueueRestorer extends Restorer {
-
-        // copy of a queue
-        List<ToDoEntry> restorerWait = new ArrayList<>();
-        // pointer to a queue to restore
-        QueueQueue queue;
-        // start pointer
-        int sp;
-
-        QueueRestorer(QueueQueue q) {
-            restorerWait = q.wait;
-            queue = q;
-            sp = q.sPointer;
-        }
-
-        // restore: copy the queue back, adjust pointers
-        @Override
-        public void restore() {
-            queue.wait = restorerWait;
-            queue.sPointer = sp;
-        }
-    }
 
     /**
      * @param rare

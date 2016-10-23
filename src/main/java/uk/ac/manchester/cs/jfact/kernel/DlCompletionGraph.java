@@ -298,12 +298,12 @@ public class DlCompletionGraph implements Serializable {
      *        node
      * @param c
      *        c
-     * @param tag
-     *        tag
+     * @param complex
+     *        true if complex concepts sought
      */
     @PortedFrom(file = "dlCompletionGraph.h", name = "addConceptToNode")
-    public void addConceptToNode(DlCompletionTree node, ConceptWDep c, DagTag tag) {
-        node.addConcept(c, tag);
+    public void addConceptToNode(DlCompletionTree node, ConceptWDep c, boolean complex) {
+        node.addConcept(c, complex);
         if (useLazyBlocking) {
             node.setAffected();
         } else {

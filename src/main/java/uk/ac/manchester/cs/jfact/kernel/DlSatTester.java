@@ -1491,7 +1491,7 @@ public class DlSatTester implements Serializable {
         DLVertex v = dlHeap.get(bp);
         DagTag tag = v.getType();
         // try to add a concept to a node label
-        switch (tryAddConcept(n.label().getLabel(tag), bp, dep)) {
+        switch (tryAddConcept(n.label().getLabel(tag.isComplexConcept()), bp, dep)) {
             case CLASH:
                 // clash -- return
                 logNCEntry(n, bp, dep, "x", dlHeap.get(bp).getType().getName());
@@ -1513,7 +1513,7 @@ public class DlSatTester implements Serializable {
         ConceptWDep p = new ConceptWDep(bp, dep);
         // we will change current Node => save it if necessary
         updateLevel(n, dep);
-        cGraph.addConceptToNode(n, p, tag);
+        cGraph.addConceptToNode(n, p, tag.isComplexConcept());
         used.add(bp);
         if (n.isCached()) {
             return correctCachedEntry(n);
@@ -2071,7 +2071,7 @@ public class DlSatTester implements Serializable {
 
     @PortedFrom(file = "Reasoner.h", name = "applicable")
     protected boolean applicable(SimpleRule rule) {
-        CWDArray lab = curNode.label().getLabel(DagTag.PCONCEPT);
+        CWDArray lab = curNode.label().getLabel(false);
         // dep-set to keep track for all the concepts in a rule-head
         DepSet loc = null;
         for (Concept p : rule.getBody()) {
@@ -2204,7 +2204,7 @@ public class DlSatTester implements Serializable {
         CGLabel lab = curNode.label();
         for (int q : cur.begin()) {
             int inverse = -q;
-            switch (tryAddConcept(lab.getLabel(dlHeap.get(inverse).getType()), inverse, null)) {
+            switch (tryAddConcept(lab.getLabel(dlHeap.get(inverse).getType().isComplexConcept()), inverse, null)) {
                 case CLASH:
                     // clash found -- OK
                     dep.getReference().add(clashSet);
@@ -2449,7 +2449,7 @@ public class DlSatTester implements Serializable {
             List<Role> list = r.beginTopfunc();
             for (int i = 0; i < list.size(); i++) {
                 int functional = list.get(i).getFunctional();
-                AddConceptResult tryAddConcept = tryAddConcept(curNode.label().getLabel(DagTag.LE), functional,
+                AddConceptResult tryAddConcept = tryAddConcept(curNode.label().getLabel(true), functional,
                     curConceptDepSet);
                 if (tryAddConcept == AddConceptResult.CLASH) {
                     // addition leads to clash
@@ -2462,7 +2462,7 @@ public class DlSatTester implements Serializable {
                     ConceptWDep rFuncRestriction1 = new ConceptWDep(functional, curConceptDepSet);
                     // NOTE! not added into todo (because will be checked
                     // right now)
-                    cGraph.addConceptToNode(curNode, rFuncRestriction1, DagTag.LE);
+                    cGraph.addConceptToNode(curNode, rFuncRestriction1, true);
                     used.add(rFuncRestriction1.getConcept());
                     options.getLog().printTemplate(Templates.COMMON_TACTIC_BODY_SOME, rFuncRestriction1);
                 }
@@ -2855,11 +2855,11 @@ public class DlSatTester implements Serializable {
                     DagTag tag = dlHeap.get(c).getType();
                     boolean test;
                     // here dep contains the clash-set
-                    test = findConceptClash(from.label().getLabel(tag), c, dep.getReference());
+                    test = findConceptClash(from.label().getLabel(tag.isComplexConcept()), c, dep.getReference());
                     assert test;
                     // save new dep-set
                     dep.getReference().add(clashSet);
-                    test = findConceptClash(to.label().getLabel(tag), c, dep.getReference());
+                    test = findConceptClash(to.label().getLabel(tag.isComplexConcept()), c, dep.getReference());
                     assert test;
                     // both clash-sets are now in common clash-set
                 }
@@ -3008,11 +3008,11 @@ public class DlSatTester implements Serializable {
                     DagTag tag = dlHeap.get(c).getType();
                     boolean test;
                     // here dep contains the clash-set
-                    test = findConceptClash(from.label().getLabel(tag), c, dep.getReference());
+                    test = findConceptClash(from.label().getLabel(tag.isComplexConcept()), c, dep.getReference());
                     assert test;
                     // save new dep-set
                     dep.getReference().add(clashSet);
-                    test = findConceptClash(to.label().getLabel(tag), c, dep.getReference());
+                    test = findConceptClash(to.label().getLabel(tag.isComplexConcept()), c, dep.getReference());
                     assert test;
                     // both clash-sets are now in common clash-set
                 }
@@ -3102,7 +3102,7 @@ public class DlSatTester implements Serializable {
     }
 
     private boolean usedInverseAndClash(DagTag dt, ConceptWDep p, CGLabel to) {
-        return used.contains(-p.getConcept()) && findConceptClash(to.getLabel(PCONCEPT), -p.getConcept(), p.getDep());
+        return used.contains(-p.getConcept()) && findConceptClash(to.getLabel(false), -p.getConcept(), p.getDep());
     }
 
     @PortedFrom(file = "Reasoner.h", name = "checkMergeClash")
@@ -3136,17 +3136,17 @@ public class DlSatTester implements Serializable {
         // should be updated to the new dep-set DEP
         // TODO!! check whether this is really necessary
         if (!dep.isEmpty()) {
-            cGraph.saveRareCond(to.label().getLabel(PCONCEPT).updateDepSet(dep));
-            cGraph.saveRareCond(to.label().getLabel(FORALL).updateDepSet(dep));
+            cGraph.saveRareCond(to.label().getLabel(false).updateDepSet(dep));
+            cGraph.saveRareCond(to.label().getLabel(true).updateDepSet(dep));
         }
         // if the concept is already exists in the node label --
         // we still need to update it with a new dep-set (due to merging)
         // note that DEP is already there
-        return from.getSimpleConcepts().stream().anyMatch(p -> checkIndexAndSaveOrAddEntry(p, PCONCEPT, to, dep))
-            || from.getComplexConcepts().stream().anyMatch(p -> checkIndexAndSaveOrAddEntry(p, FORALL, to, dep));
+        return from.getSimpleConcepts().stream().anyMatch(p -> checkIndexAndSaveOrAddEntry(p, false, to, dep))
+            || from.getComplexConcepts().stream().anyMatch(p -> checkIndexAndSaveOrAddEntry(p, true, to, dep));
     }
 
-    private boolean checkIndexAndSaveOrAddEntry(ConceptWDep p, DagTag dt, DlCompletionTree to, DepSet dep) {
+    private boolean checkIndexAndSaveOrAddEntry(ConceptWDep p, boolean dt, DlCompletionTree to, DepSet dep) {
         int bp = p.getConcept();
         stats.getnLookups().inc();
         int index = to.label().getLabel(dt).index(bp);
@@ -3232,7 +3232,7 @@ public class DlSatTester implements Serializable {
         edgesToMerge.clear();
         DagTag tag = dlHeap.get(c).getType();
         curNode.getNeighbour().stream().filter(p -> p.isNeighbour(role) && isNewEdge(p.getArcEnd(), edgesToMerge)
-            && findChooseRuleConcept(p.getArcEnd().label().getLabel(tag), c, dep)).forEach(edgesToMerge::add);
+            && findChooseRuleConcept(p.getArcEnd().label().getLabel(tag.isComplexConcept()), c, dep)).forEach(edgesToMerge::add);
         // sort EdgesToMerge: From named nominals to generated nominals to
         // blockable nodes
         Collections.sort(edgesToMerge, new EdgeCompare());
@@ -3415,7 +3415,7 @@ public class DlSatTester implements Serializable {
         int i = 0;
         DlCompletionTree arc = cGraph.getNode(i++);
         while (arc != null) {
-            if (isNodeGloballyUsed(arc) && findChooseRuleConcept(arc.label().getLabel(tag), c, dep)) {
+            if (isNodeGloballyUsed(arc) && findChooseRuleConcept(arc.label().getLabel(tag.isComplexConcept()), c, dep)) {
                 nodesToMerge.add(arc);
             }
             arc = cGraph.getNode(i++);

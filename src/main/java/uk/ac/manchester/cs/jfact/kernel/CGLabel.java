@@ -78,26 +78,26 @@ public class CGLabel implements Serializable {
     }
 
     /**
-     * @param tag
-     *        tag
+     * @param complex
+     *        true if complex concepts sought
      * @return label associated with the concepts defined by TAG
      */
     @PortedFrom(file = "CGLabel.h", name = "getLabel")
-    public CWDArray getLabel(DagTag tag) {
-        return tag.isComplexConcept() ? ccLabel : scLabel;
+    public CWDArray getLabel(boolean complex) {
+        return complex ? ccLabel : scLabel;
     }
 
     /**
      * index p by tag, clear caches
      * 
-     * @param tag
-     *        tag
+     * @param complex
+     *        true if complex concepts sought
      * @param p
      *        p
      */
     @Original
-    public void add(DagTag tag, ConceptWDep p) {
-        getLabel(tag).privateAdd(p);
+    public void add(boolean complex, ConceptWDep p) {
+        getLabel(complex).privateAdd(p);
         clearMyCache();
     }
 

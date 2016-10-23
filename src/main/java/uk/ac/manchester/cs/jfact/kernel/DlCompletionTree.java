@@ -21,7 +21,12 @@ import conformance.Original;
 import conformance.PortedFrom;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import uk.ac.manchester.cs.jfact.dep.DepSet;
-import uk.ac.manchester.cs.jfact.helpers.*;
+import uk.ac.manchester.cs.jfact.helpers.ArrayIntMap;
+import uk.ac.manchester.cs.jfact.helpers.DLVertex;
+import uk.ac.manchester.cs.jfact.helpers.Helper;
+import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
+import uk.ac.manchester.cs.jfact.helpers.Reference;
+import uk.ac.manchester.cs.jfact.helpers.Templates;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 import uk.ac.manchester.cs.jfact.kernel.state.DLCompletionTreeSaveState;
 import uk.ac.manchester.cs.jfact.kernel.state.SaveList;
@@ -299,11 +304,11 @@ public class DlCompletionTree implements Comparable<DlCompletionTree>, Serializa
      * 
      * @param p
      *        p
-     * @param tag
-     *        tag
+     * @param complex
+     *        true if complex concepts sought
      */
-    public void addConcept(ConceptWDep p, DagTag tag) {
-        label.add(tag, p);
+    public void addConcept(ConceptWDep p, boolean complex) {
+        label.add(complex, p);
     }
 
     /**
