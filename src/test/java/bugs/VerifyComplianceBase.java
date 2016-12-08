@@ -11,7 +11,17 @@ import org.junit.Before;
 import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormat;
 import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.HasIRI;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.profiles.OWLProfileReport;
 import org.semanticweb.owlapi.profiles.Profiles;
 import org.semanticweb.owlapi.reasoner.InferenceType;
@@ -33,7 +43,7 @@ public abstract class VerifyComplianceBase extends TestBase {
         OWLOntology onto = m.loadOntologyFromOntologyDocument(VerifyComplianceBase.class.getResourceAsStream(in));
         OWLProfileReport checkOntology = Profiles.OWL2_DL.checkOntology(onto);
         if (!checkOntology.isInProfile()) {
-            checkOntology.getViolations().forEach(v -> System.out.println("VerifyComplianceBase.load() " + v));
+            checkOntology.getViolations().forEach(System.out::println);
         }
         return onto;
     }
