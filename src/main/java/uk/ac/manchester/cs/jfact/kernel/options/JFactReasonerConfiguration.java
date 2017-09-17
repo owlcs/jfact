@@ -1117,7 +1117,7 @@ public class JFactReasonerConfiguration
     }
 
     /** The Class LogAdapterStream. */
-    static class LogAdapterStream implements LogAdapter, Serializable {
+    public static class LogAdapterStream implements LogAdapter, Serializable {
 
         /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 11000L;

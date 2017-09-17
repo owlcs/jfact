@@ -744,8 +744,10 @@ public class JFactReasoner implements OWLReasoner, OWLOntologyChangeListener, OW
             }
             pw.print(node);
             pw.println();
-            for (Node<OWLClass> sub : getSubClasses(node.getRepresentativeElement(), true)) {
-                dumpSubClasses(sub, pw, depth + 1, includeBottomNode);
+            if (includeBottomNode && !node.isBottomNode()) {
+                for (Node<OWLClass> sub : getSubClasses(node.getRepresentativeElement(), true)) {
+                    dumpSubClasses(sub, pw, depth + 1, includeBottomNode);
+                }
             }
         }
     }
