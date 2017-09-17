@@ -83,7 +83,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor,
     @PortedFrom(file = "SemanticLocalityChecker.h", name = "getExpr")
     protected ConceptExpression getExpr(AxiomInterface axiom) {
         // everything else doesn't require expression to be build
-        return axiom.accept(new ExpressionFromAxiomBuilder(null));
+        return axiom.accept(new ExpressionFromAxiomBuilder(null, pEM));
     }
 
     /** signature to keep */
@@ -197,7 +197,7 @@ public class SemanticLocalityChecker implements DLAxiomVisitor,
         isLocal = false;
         // check A = (or C1... Cn)
         List<ConceptExpression> arguments = axiom.getArguments();
-        if (!Kernel.isEquivalent(axiom.getConcept(), or(arguments))) {
+        if (!Kernel.isEquivalent(axiom.getConcept(), or(pEM, arguments))) {
             return;
         }
         // check disjoint(C1...Cn)

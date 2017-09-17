@@ -18,6 +18,7 @@ import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleInverse;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.IndividualExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 
@@ -49,6 +50,16 @@ public class ExpressionCache implements Serializable {
     /** cache for the one-of singletons */
     @PortedFrom(file = "tExpressionManager.h", name = "OneOfCache")
     private final Map<IndividualExpression, ConceptExpression> OneOfCache = new HashMap<>();
+    private final Map<Expression, Expression> expressions = new HashMap<>();
+
+    public <T extends Expression> T expression(T t) {
+        Expression cached = expressions.get(t);
+        if (cached != null) {
+            return (T) cached;
+        }
+        expressions.put(t, t);
+        return t;
+    }
 
     /**
      * @param name

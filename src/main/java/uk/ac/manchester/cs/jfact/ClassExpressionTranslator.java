@@ -98,7 +98,7 @@ public class ClassExpressionTranslator extends
 
     @Override
     public ConceptExpression visit(OWLObjectIntersectionOf desc) {
-        return and(translateClassExpressionSet(desc.getOperands()));
+        return and(em, translateClassExpressionSet(desc.getOperands()));
     }
 
     private List<ConceptExpression> translateClassExpressionSet(
@@ -112,53 +112,53 @@ public class ClassExpressionTranslator extends
 
     @Override
     public ConceptExpression visit(OWLObjectUnionOf desc) {
-        return or(translateClassExpressionSet(desc.getOperands()));
+        return or(em, translateClassExpressionSet(desc.getOperands()));
     }
 
     @Override
     public ConceptExpression visit(OWLObjectComplementOf desc) {
-        return not(desc.getOperand().accept(this));
+        return not(em, desc.getOperand().accept(this));
     }
 
     @Override
     public ConceptExpression visit(OWLObjectSomeValuesFrom desc) {
-        return exists(tr.pointer(desc.getProperty()),
+        return exists(em, tr.pointer(desc.getProperty()),
                 desc.getFiller().accept(this));
     }
 
     @Override
     public ConceptExpression visit(OWLObjectAllValuesFrom desc) {
-        return forall(tr.pointer(desc.getProperty()),
+        return forall(em, tr.pointer(desc.getProperty()),
                 desc.getFiller().accept(this));
     }
 
     @Override
     public ConceptExpression visit(OWLObjectHasValue desc) {
-        return value(tr.pointer(desc.getProperty()),
+        return value(em, tr.pointer(desc.getProperty()),
                 tr.pointer(desc.getFiller()));
     }
 
     @Override
     public ConceptExpression visit(OWLObjectMinCardinality desc) {
-        return minCardinality(desc.getCardinality(),
+        return minCardinality(em, desc.getCardinality(),
                 tr.pointer(desc.getProperty()), desc.getFiller().accept(this));
     }
 
     @Override
     public ConceptExpression visit(OWLObjectExactCardinality desc) {
-        return cardinality(desc.getCardinality(),
+        return cardinality(em, desc.getCardinality(),
                 tr.pointer(desc.getProperty()), desc.getFiller().accept(this));
     }
 
     @Override
     public ConceptExpression visit(OWLObjectMaxCardinality desc) {
-        return maxCardinality(desc.getCardinality(),
+        return maxCardinality(em, desc.getCardinality(),
                 tr.pointer(desc.getProperty()), desc.getFiller().accept(this));
     }
 
     @Override
     public ConceptExpression visit(OWLObjectHasSelf desc) {
-        return selfReference(tr.pointer(desc.getProperty()));
+        return selfReference(em, tr.pointer(desc.getProperty()));
     }
 
     @Override
@@ -168,37 +168,37 @@ public class ClassExpressionTranslator extends
 
     @Override
     public ConceptExpression visit(OWLDataSomeValuesFrom desc) {
-        return exists(tr.pointer(desc.getProperty()),
+        return exists(em, tr.pointer(desc.getProperty()),
                 tr.pointer(desc.getFiller()));
     }
 
     @Override
     public ConceptExpression visit(OWLDataAllValuesFrom desc) {
-        return forall(tr.pointer(desc.getProperty()),
+        return forall(em, tr.pointer(desc.getProperty()),
                 tr.pointer(desc.getFiller()));
     }
 
     @Override
     public ConceptExpression visit(OWLDataHasValue desc) {
-        return value(tr.pointer(desc.getProperty()),
+        return value(em, tr.pointer(desc.getProperty()),
                 tr.pointer(desc.getFiller()));
     }
 
     @Override
     public ConceptExpression visit(OWLDataMinCardinality desc) {
-        return minCardinality(desc.getCardinality(),
+        return minCardinality(em, desc.getCardinality(),
                 tr.pointer(desc.getProperty()), tr.pointer(desc.getFiller()));
     }
 
     @Override
     public ConceptExpression visit(OWLDataExactCardinality desc) {
-        return cardinality(desc.getCardinality(),
+        return cardinality(em, desc.getCardinality(),
                 tr.pointer(desc.getProperty()), tr.pointer(desc.getFiller()));
     }
 
     @Override
     public ConceptExpression visit(OWLDataMaxCardinality desc) {
-        return maxCardinality(desc.getCardinality(),
+        return maxCardinality(em, desc.getCardinality(),
                 tr.pointer(desc.getProperty()), tr.pointer(desc.getFiller()));
     }
 }

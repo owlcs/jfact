@@ -389,7 +389,8 @@ public class ReasoningKernel implements Serializable {
                 && ReasoningKernel.isNameOrConst(C)) {
             return this.checkSub(getTBox().getCI(e(C)), getTBox().getCI(e(D)));
         }
-        return !checkSat(and(C, not(D)));
+        return !checkSat(
+            and(ontology.getExpressionManager(), C, not(ontology.getExpressionManager(), D)));
     }
 
     /**
@@ -1204,7 +1205,7 @@ public class ReasoningKernel implements Serializable {
      */
     @PortedFrom(file = "Kernel.h", name = "isDisjoint")
     public boolean isDisjoint(ConceptExpression C, ConceptExpression D) {
-        return !isSatisfiable(and(C, D));
+        return !isSatisfiable(and(ontology.getExpressionManager(), C, D));
     }
 
     /**
@@ -1328,7 +1329,7 @@ public class ReasoningKernel implements Serializable {
     public <T extends Expression> TaxonomyActor<T> getDisjointConcepts(
             ConceptExpression C, TaxonomyActor<T> actor) {
         classifyKB();
-        setUpCache(not(C), csClassified);
+        setUpCache(not(ontology.getExpressionManager(), C), csClassified);
         actor.clear();
         // we are looking for all sub-concepts of (not C) (including synonyms)
         getCTaxonomy()
@@ -1404,7 +1405,7 @@ public class ReasoningKernel implements Serializable {
     public <T extends ConceptExpression> TaxonomyActor<T> getORoleDomain(
             ObjectRoleExpression r, boolean direct, TaxonomyActor<T> actor) {
         classifyKB();
-        setUpCache(exists(r, top()), csClassified);
+        setUpCache(exists(ontology.getExpressionManager(), r, top()), csClassified);
         actor.clear();
         // if direct, gets an exact domain is named concept; otherwise, set of
         // the most specific concepts
@@ -1432,7 +1433,7 @@ public class ReasoningKernel implements Serializable {
     public <T extends ConceptExpression> TaxonomyActor<T> getDRoleDomain(
             DataRoleExpression r, boolean direct, TaxonomyActor<T> actor) {
         classifyKB();
-        setUpCache(exists(r, dataTop()), csClassified);
+        setUpCache(exists(ontology.getExpressionManager(), r, dataTop()), csClassified);
         actor.clear();
         // if direct, gets an exact domain is named concept; otherwise, set of
         // the most specific concepts
@@ -2398,7 +2399,8 @@ public class ReasoningKernel implements Serializable {
             // universal role has all the named individuals as a filler
             query = top();
         } else {
-            query = value(InvR, getExpressionManager().individual(I.getName()));
+            query = value(ontology.getExpressionManager(), InvR,
+                getExpressionManager().individual(I.getName()));
         }
         this.getInstances(query, actor);
         return actor.getAcc();

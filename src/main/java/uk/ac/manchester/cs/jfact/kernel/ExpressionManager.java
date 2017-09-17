@@ -95,8 +95,7 @@ public class ExpressionManager implements Serializable {
 
     // top/bottom roles
     /**
-     * @param R
-     *        R
+     * @param R R
      * @return true iff R is a top data/object role
      */
     @PortedFrom(file = "tExpressionManager.h", name = "isUniversalRole")
@@ -105,8 +104,7 @@ public class ExpressionManager implements Serializable {
     }
 
     /**
-     * @param R
-     *        R
+     * @param R R
      * @return true iff R is a bottom data/object role
      */
     @PortedFrom(file = "tExpressionManager.h", name = "isEmptyRole")
@@ -129,38 +127,37 @@ public class ExpressionManager implements Serializable {
     }
 
     /**
-     * @param C
-     *        C
+     * @param cache expression cache
+     * @param C C
      * @return negation of a concept C
      */
     @PortedFrom(file = "tExpressionManager.h", name = "Not")
     @Nonnull
-    public static ConceptExpression not(ConceptExpression C) {
-        return new ConceptNot(C);
+    public static ConceptExpression not(ExpressionCache cache, ConceptExpression C) {
+        return cache.expression(new ConceptNot(C));
     }
 
     /**
-     * @param l
-     *        l
-     * @return an n-ary conjunction expression; take the arguments from the last
-     *         argument list
+     * @param cache expression cache
+     * @param l argument list
+     * @return an n-ary conjunction expression
+     * 
      */
     @PortedFrom(file = "tExpressionManager.h", name = "and")
     @Nonnull
-    public static ConceptExpression and(List<ConceptExpression> l) {
-        return new ConceptAnd(l);
+    public static ConceptExpression and(ExpressionCache cache, List<ConceptExpression> l) {
+        return cache.expression(new ConceptAnd(l));
     }
 
     /**
-     * @param C
-     *        C
-     * @param D
-     *        D
+     * @param cache expression cache
+     * @param C C
+     * @param D D
      * @return C and D
      */
     @PortedFrom(file = "tExpressionManager.h", name = "and")
     @Nonnull
-    public static ConceptExpression and(@Nonnull ConceptExpression C,
+    public static ConceptExpression and(ExpressionCache cache, @Nonnull ConceptExpression C,
             @Nonnull ConceptExpression D) {
         if (C.equals(D)) {
             return C;
@@ -171,229 +168,204 @@ public class ExpressionManager implements Serializable {
         if (D instanceof ConceptTop) {
             return C;
         }
-        return and(Arrays.<ConceptExpression> asList(C, D));
+        return cache.expression(and(cache, Arrays.<ConceptExpression>asList(C, D)));
     }
 
     /**
-     * @param C
-     *        C
-     * @param D
-     *        D
+     * @param cache expression cache
+     * @param C C
+     * @param D D
      * @return C or D
      */
     @PortedFrom(file = "tExpressionManager.h", name = "or")
     @Nonnull
-    public static ConceptExpression
-            or(ConceptExpression C, ConceptExpression D) {
-        return or(Arrays.<ConceptExpression> asList(C, D));
+    public static ConceptExpression or(ExpressionCache cache, ConceptExpression C,
+        ConceptExpression D) {
+        return cache.expression(or(cache, Arrays.<ConceptExpression>asList(C, D)));
     }
 
     /**
-     * @param l
-     *        l
-     * @return an n-ary disjunction expression; take the arguments from the last
-     *         argument list
+     * @param cache expression cache
+     * @param l argument list
+     * @return an n-ary disjunction expression
      */
     @PortedFrom(file = "tExpressionManager.h", name = "or")
     @Nonnull
-    public static ConceptExpression or(List<ConceptExpression> l) {
-        return new ConceptOr(l);
+    public static ConceptExpression or(ExpressionCache cache, List<ConceptExpression> l) {
+        return cache.expression(new ConceptOr(l));
     }
 
     /**
-     * @param R
-     *        R
+     * @param cache expression cache
+     * @param R R
      * @return self-reference restriction of an object role R
      */
     @PortedFrom(file = "tExpressionManager.h", name = "SelfReference")
     @Nonnull
-    public static ConceptExpression selfReference(ObjectRoleExpression R) {
-        return new ConceptObjectSelf(R);
+    public static ConceptExpression selfReference(ExpressionCache cache, ObjectRoleExpression R) {
+        return cache.expression(new ConceptObjectSelf(R));
     }
 
     /**
-     * @param R
-     *        R
-     * @param I
-     *        I
+     * @param cache expression cache
+     * @param R R
+     * @param I I
      * @return value restriction wrt an object role R and an individual I
      */
     @PortedFrom(file = "tExpressionManager.h", name = "value")
     @Nonnull
-    public static ConceptExpression value(ObjectRoleExpression R,
+    public static ConceptExpression value(ExpressionCache cache, ObjectRoleExpression R,
             IndividualExpression I) {
-        return new ConceptObjectValue(R, I);
+        return cache.expression(new ConceptObjectValue(R, I));
     }
 
     /**
-     * @param R
-     *        R
-     * @param C
-     *        C
+     * @param cache expression cache
+     * @param R R
+     * @param C C
      * @return existential restriction wrt an object role R and a concept C
      */
     @PortedFrom(file = "tExpressionManager.h", name = "Exists")
     @Nonnull
-    public static ConceptExpression exists(ObjectRoleExpression R,
+    public static ConceptExpression exists(ExpressionCache cache, ObjectRoleExpression R,
             ConceptExpression C) {
-        return new ConceptObjectExists(R, C);
+        return cache.expression(new ConceptObjectExists(R, C));
     }
 
     /**
-     * @param R
-     *        R
-     * @param C
-     *        C
+     * @param cache expression cache
+     * @param R R
+     * @param C C
      * @return universal restriction wrt an object role R and a concept C
      */
     @PortedFrom(file = "tExpressionManager.h", name = "Forall")
     @Nonnull
-    public static ConceptExpression forall(ObjectRoleExpression R,
+    public static ConceptExpression forall(ExpressionCache cache, ObjectRoleExpression R,
             ConceptExpression C) {
-        return new ConceptObjectForall(R, C);
+        return cache.expression(new ConceptObjectForall(R, C));
     }
 
     /**
-     * @param n
-     *        n
-     * @param R
-     *        R
-     * @param C
-     *        C
-     * @return min cardinality restriction wrt number N, an object role R and a
-     *         concept C
+     * @param cache expression cache
+     * @param n n
+     * @param R R
+     * @param C C
+     * @return min cardinality restriction wrt number N, an object role R and a concept C
      */
     @PortedFrom(file = "tExpressionManager.h", name = "MinCardinality")
     @Nonnull
-    public static ConceptExpression minCardinality(int n,
+    public static ConceptExpression minCardinality(ExpressionCache cache, int n,
             ObjectRoleExpression R, ConceptExpression C) {
-        return new ConceptObjectMinCardinality(n, R, C);
+        return cache.expression(new ConceptObjectMinCardinality(n, R, C));
     }
 
     /**
-     * @param n
-     *        n
-     * @param R
-     *        R
-     * @param C
-     *        C
-     * @return max cardinality restriction wrt number N, an object role R and a
-     *         concept C
+     * @param cache expression cache
+     * @param n n
+     * @param R R
+     * @param C C
+     * @return max cardinality restriction wrt number N, an object role R and a concept C
      */
     @PortedFrom(file = "tExpressionManager.h", name = "MaxCardinality")
     @Nonnull
-    public static ConceptExpression maxCardinality(int n,
+    public static ConceptExpression maxCardinality(ExpressionCache cache, int n,
             ObjectRoleExpression R, ConceptExpression C) {
-        return new ConceptObjectMaxCardinality(n, R, C);
+        return cache.expression(new ConceptObjectMaxCardinality(n, R, C));
     }
 
     /**
-     * @param n
-     *        n
-     * @param R
-     *        R
-     * @param C
-     *        C
-     * @return exact cardinality restriction wrt number N, an object role R and
-     *         a concept C
+     * @param cache expression cache
+     * @param n n
+     * @param R R
+     * @param C C
+     * @return exact cardinality restriction wrt number N, an object role R and a concept C
      */
     @PortedFrom(file = "tExpressionManager.h", name = "cardinality")
     @Nonnull
-    public static ConceptExpression cardinality(int n, ObjectRoleExpression R,
-            ConceptExpression C) {
-        return new ConceptObjectExactCardinality(n, R, C);
+    public static ConceptExpression cardinality(ExpressionCache cache, int n,
+        ObjectRoleExpression R, ConceptExpression C) {
+        return cache.expression(new ConceptObjectExactCardinality(n, R, C));
     }
 
     /**
-     * @param R
-     *        R
-     * @param V
-     *        V
+     * @param cache expression cache
+     * @param R R
+     * @param V V
      * @return value restriction wrt a data role R and a data value V
      */
     @PortedFrom(file = "tExpressionManager.h", name = "value")
     @Nonnull
-    public static ConceptExpression value(DataRoleExpression R, Literal<?> V) {
-        return new ConceptDataValue(R, V);
+    public static ConceptExpression value(ExpressionCache cache, DataRoleExpression R,
+        Literal<?> V) {
+        return cache.expression(new ConceptDataValue(R, V));
     }
 
     /**
-     * @param R
-     *        R
-     * @param E
-     *        E
+     * @param cache expression cache
+     * @param R R
+     * @param E E
      * @return existential restriction wrt a data role R and a data expression E
      */
     @PortedFrom(file = "tExpressionManager.h", name = "Exists")
     @Nonnull
-    public static ConceptExpression exists(DataRoleExpression R,
+    public static ConceptExpression exists(ExpressionCache cache, DataRoleExpression R,
             DataExpression E) {
-        return new ConceptDataExists(R, E);
+        return cache.expression(new ConceptDataExists(R, E));
     }
 
     /**
-     * @param R
-     *        R
-     * @param E
-     *        E
+     * @param cache expression cache
+     * @param R R
+     * @param E E
      * @return universal restriction wrt a data role R and a data expression E
      */
     @PortedFrom(file = "tExpressionManager.h", name = "Forall")
     @Nonnull
-    public static ConceptExpression forall(DataRoleExpression R,
+    public static ConceptExpression forall(ExpressionCache cache, DataRoleExpression R,
             DataExpression E) {
-        return new ConceptDataForall(R, E);
+        return cache.expression(new ConceptDataForall(R, E));
     }
 
     /**
-     * @param n
-     *        n
-     * @param R
-     *        R
-     * @param E
-     *        E
-     * @return min cardinality restriction wrt number N, a data role R and a
-     *         data expression E
+     * @param cache expression cache
+     * @param n n
+     * @param R R
+     * @param E E
+     * @return min cardinality restriction wrt number N, a data role R and a data expression E
      */
     @PortedFrom(file = "tExpressionManager.h", name = "MinCardinality")
     @Nonnull
-    public static ConceptExpression minCardinality(int n, DataRoleExpression R,
-            DataExpression E) {
-        return new ConceptDataMinCardinality(n, R, E);
+    public static ConceptExpression minCardinality(ExpressionCache cache, int n,
+        DataRoleExpression R, DataExpression E) {
+        return cache.expression(new ConceptDataMinCardinality(n, R, E));
     }
 
     /**
-     * @param n
-     *        n
-     * @param R
-     *        R
-     * @param E
-     *        E
-     * @return max cardinality restriction wrt number N, a data role R and a
-     *         data expression E
+     * @param cache expression cache
+     * @param n n
+     * @param R R
+     * @param E E
+     * @return max cardinality restriction wrt number N, a data role R and a data expression E
      */
     @PortedFrom(file = "tExpressionManager.h", name = "MaxCardinality")
     @Nonnull
-    public static ConceptExpression maxCardinality(int n, DataRoleExpression R,
-            DataExpression E) {
-        return new ConceptDataMaxCardinality(n, R, E);
+    public static ConceptExpression maxCardinality(ExpressionCache cache, int n,
+        DataRoleExpression R, DataExpression E) {
+        return cache.expression(new ConceptDataMaxCardinality(n, R, E));
     }
 
     /**
-     * @param n
-     *        n
-     * @param R
-     *        R
-     * @param E
-     *        E
-     * @return exact cardinality restriction wrt number N, a data role R and a
-     *         data expression E
+     * @param cache expression cache
+     * @param n n
+     * @param R R
+     * @param E E
+     * @return exact cardinality restriction wrt number N, a data role R and a data expression E
      */
     @PortedFrom(file = "tExpressionManager.h", name = "cardinality")
     @Nonnull
-    public static ConceptExpression cardinality(int n, DataRoleExpression R,
+    public static ConceptExpression cardinality(ExpressionCache cache, int n, DataRoleExpression R,
             DataExpression E) {
-        return new ConceptDataExactCardinality(n, R, E);
+        return cache.expression(new ConceptDataExactCardinality(n, R, E));
     }
 
     // object roles
@@ -412,58 +384,55 @@ public class ExpressionManager implements Serializable {
     }
 
     /**
-     * @param l
-     *        l
-     * @return a role chain corresponding to R1 o ... o Rn; take the arguments
-     *         from the last argument list
+     * @param cache expression cache
+     * @param l argument list
+     * @return a role chain corresponding to R1 o ... o Rn
      */
     @PortedFrom(file = "tExpressionManager.h", name = "Compose")
     @Nonnull
-    public static ObjectRoleComplexExpression compose(
+    public static ObjectRoleComplexExpression compose(ExpressionCache cache,
             List<ObjectRoleExpression> l) {
-        return new ObjectRoleChain(l);
+        return cache.expression(new ObjectRoleChain(l));
     }
 
     /**
-     * @param e1
-     *        e1
-     * @param e2
-     *        e2
+     * @param cache expression cache
+     * @param cache expression cache
+     * @param e1 e1
+     * @param e2 e2
      * @return ObjectRoleChain
      */
     @PortedFrom(file = "tExpressionManager.h", name = "Compose")
     @Nonnull
-    public static ObjectRoleComplexExpression compose(ObjectRoleExpression e1,
-            ObjectRoleExpression e2) {
-        return new ObjectRoleChain(Arrays.asList(e1, e2));
+    public static ObjectRoleComplexExpression compose(ExpressionCache cache,
+        ObjectRoleExpression e1, ObjectRoleExpression e2) {
+        return cache.expression(new ObjectRoleChain(Arrays.asList(e1, e2)));
     }
 
     /**
-     * @param R
-     *        R
-     * @param C
-     *        C
+     * @param cache expression cache
+     * @param R R
+     * @param C C
      * @return a expression corresponding to R projected from C
      */
     @PortedFrom(file = "tExpressionManager.h", name = "ProjectFrom")
     @Nonnull
-    public static ObjectRoleComplexExpression projectFrom(
+    public static ObjectRoleComplexExpression projectFrom(ExpressionCache cache,
             ObjectRoleExpression R, ConceptExpression C) {
-        return new ObjectRoleProjectionFrom(R, C);
+        return cache.expression(new ObjectRoleProjectionFrom(R, C));
     }
 
     /**
-     * @param R
-     *        R
-     * @param C
-     *        C
+     * @param cache expression cache
+     * @param R R
+     * @param C C
      * @return a expression corresponding to R projected into C
      */
     @PortedFrom(file = "tExpressionManager.h", name = "ProjectInto")
     @Nonnull
-    public static ObjectRoleComplexExpression projectInto(
+    public static ObjectRoleComplexExpression projectInto(ExpressionCache cache,
             ObjectRoleExpression R, ConceptExpression C) {
-        return new ObjectRoleProjectionInto(R, C);
+        return cache.expression(new ObjectRoleProjectionInto(R, C));
     }
 
     // data roles
@@ -505,46 +474,46 @@ public class ExpressionManager implements Serializable {
     }
 
     /**
-     * @param E
-     *        E
+     * @param cache expression cache
+     * @param E E
      * @return negation of a data expression E
      */
     @PortedFrom(file = "tExpressionManager.h", name = "DataNot")
     @Nonnull
-    public static DataExpression dataNot(DataExpression E) {
-        return new DataNot(E);
+    public static DataExpression dataNot(ExpressionCache cache, DataExpression E) {
+        return cache.expression(new DataNot(E));
     }
 
     /**
-     * @param l
-     *        l
+     * @param cache expression cache
+     * @param l l
      * @return an n-ary data conjunction expression
      */
     @PortedFrom(file = "tExpressionManager.h", name = "DataAnd")
     @Nonnull
-    public static DataExpression dataAnd(List<DataExpression> l) {
-        return new DataAnd(l);
+    public static DataExpression dataAnd(ExpressionCache cache, List<DataExpression> l) {
+        return cache.expression(new DataAnd(l));
     }
 
     /**
-     * @param l
-     *        l
+     * @param cache expression cache
+     * @param l l
      * @return an n-ary data disjunction expression
      */
     @PortedFrom(file = "tExpressionManager.h", name = "DataOr")
     @Nonnull
-    public static DataExpression dataOr(List<DataExpression> l) {
-        return new DataOr(l);
+    public static DataExpression dataOr(ExpressionCache cache, List<DataExpression> l) {
+        return cache.expression(new DataOr(l));
     }
 
     /**
-     * @param l
-     *        l
+     * @param cache expression cache
+     * @param l l
      * @return an n-ary data one-of expression
      */
     @PortedFrom(file = "tExpressionManager.h", name = "DataOneOf")
     @Nonnull
-    public static DataExpression dataOneOf(List<Literal<?>> l) {
-        return new DataOneOf(l);
+    public static DataExpression dataOneOf(ExpressionCache cache, List<Literal<?>> l) {
+        return cache.expression(new DataOneOf(l));
     }
 }

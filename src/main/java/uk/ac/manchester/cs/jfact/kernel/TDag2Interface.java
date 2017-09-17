@@ -61,27 +61,27 @@ public class TDag2Interface implements Serializable {
                 for (int p : v.begin()) {
                     list.add(getCExpr(p));
                 }
-                return and(list);
+                return and(cache, list);
             case dtForall:
                 if (v.getRole().isDataRole()) {
-                    return forall(cache.dataRole(v.getRole().getName()),
+                    return forall(cache, cache.dataRole(v.getRole().getName()),
                             getDExpr(v.getConceptIndex()));
                 } else {
-                    return forall(cache.objectRole(v.getRole().getName()),
+                    return forall(cache, cache.objectRole(v.getRole().getName()),
                             getCExpr(v.getConceptIndex()));
                 }
             case dtLE:
                 if (v.getRole().isDataRole()) {
-                    return maxCardinality(v.getNumberLE(),
+                    return maxCardinality(cache, v.getNumberLE(),
                             cache.dataRole(v.getRole().getName()),
                             getDExpr(v.getConceptIndex()));
                 } else {
-                    return maxCardinality(v.getNumberLE(),
+                    return maxCardinality(cache, v.getNumberLE(),
                             cache.objectRole(v.getRole().getName()),
                             getCExpr(v.getConceptIndex()));
                 }
             case dtIrr:
-                return not(selfReference(cache
+                return not(cache, selfReference(cache, cache
                         .objectRole(v.getRole().getName())));
             case dtProj:
             case dtNN:
@@ -114,7 +114,7 @@ public class TDag2Interface implements Serializable {
                 for (int p : v.begin()) {
                     list.add(getDExpr(p));
                 }
-                return dataAnd(list);
+                return dataAnd(cache, list);
             default:
                 throw new UnreachableSituationException();
         }
@@ -174,7 +174,7 @@ public class TDag2Interface implements Serializable {
     @PortedFrom(file = "tDag2Interface.h", name = "getCExpr")
     public ConceptExpression getCExpr(int p) {
         if (p < 0) {
-            return not(getCExpr(-p));
+            return not(cache, getCExpr(-p));
         }
         if (TransConcept.get(p) == null) {
             TransConcept.set(p, buildCExpr(Dag.get(p)));
@@ -190,7 +190,7 @@ public class TDag2Interface implements Serializable {
     @PortedFrom(file = "tDag2Interface.h", name = "getDExpr")
     public DataExpression getDExpr(int p) {
         if (p < 0) {
-            return dataNot(getDExpr(-p));
+            return dataNot(cache, getDExpr(-p));
         }
         DataExpression expression = TransData.get(p);
         if (expression == null) {

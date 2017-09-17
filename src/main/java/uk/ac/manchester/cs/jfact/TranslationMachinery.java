@@ -100,6 +100,10 @@ public class TranslationMachinery implements Serializable {
         entailmentChecker = new EntailmentChecker(kernel, df, this);
     }
 
+    public ExpressionCache getEm() {
+        return this.em;
+    }
+
     /**
      * @param signature
      *        signature

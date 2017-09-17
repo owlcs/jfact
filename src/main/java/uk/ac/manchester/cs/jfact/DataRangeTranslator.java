@@ -101,17 +101,17 @@ public class DataRangeTranslator extends
         for (OWLLiteral literal : node.getValues()) {
             l.add(tr.pointer(literal));
         }
-        return dataOneOf(l);
+        return dataOneOf(em, l);
     }
 
     @Override
     public DataExpression visit(OWLDataComplementOf node) {
-        return dataNot(node.getDataRange().accept(this));
+        return dataNot(em, node.getDataRange().accept(this));
     }
 
     @Override
     public DataExpression visit(OWLDataIntersectionOf node) {
-        return dataAnd(translateDataRangeSet(node.getOperands()));
+        return dataAnd(em, translateDataRangeSet(node.getOperands()));
     }
 
     private List<DataExpression> translateDataRangeSet(
@@ -125,7 +125,7 @@ public class DataRangeTranslator extends
 
     @Override
     public DataExpression visit(OWLDataUnionOf node) {
-        return dataOr(translateDataRangeSet(node.getOperands()));
+        return dataOr(em, translateDataRangeSet(node.getOperands()));
     }
 
     @Override
