@@ -515,7 +515,7 @@ class NDLTree extends DLTree {
         children = new ArrayList<>();
         if (trees.size() < 2) {
             throw new ReasonerInternalException(
-                    "not enough elements in the n-ary element");
+                    "not enough elements in the n-ary element: " + trees);
         }
         for (DLTree d : trees) {
             addChild(d);
@@ -527,7 +527,7 @@ class NDLTree extends DLTree {
         children = new ArrayList<>();
         if (C == null || D == null) {
             throw new ReasonerInternalException(
-                    "not enough elements in the n-ary element");
+                    "not enough elements in the n-ary element: " + C + " " + D);
         }
         addChild(C);
         addChild(D);

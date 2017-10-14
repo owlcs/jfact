@@ -237,6 +237,10 @@ public class AxiomTranslator implements OWLAxiomVisitorEx<AxiomInterface>, Seria
 
     @Override
     public AxiomInterface visit(OWLSubPropertyChainOfAxiom axiom) {
+        if (axiom.getPropertyChain().size() < 2) {
+            LOGGER.error("Invalid axiom ignored: " + axiom);
+            return Axioms.dummy();
+        }
         return o.add(new AxiomORoleSubsumption(axiom,
             compose(tr.getEm(), translateObjectPropertySet(axiom.getPropertyChain())),
             tr.pointer(axiom.getSuperProperty())));
