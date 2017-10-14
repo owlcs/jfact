@@ -248,6 +248,7 @@ public abstract class DLTree implements Serializable {
     }
 }
 
+
 @Original
 interface DLTreeVisitor {
 
@@ -260,6 +261,7 @@ interface DLTreeVisitor {
     void visit(NDLTree t);
 }
 
+
 @Original
 interface DLTreeVisitorEx<O> {
 
@@ -271,6 +273,7 @@ interface DLTreeVisitorEx<O> {
 
     O visit(NDLTree t);
 }
+
 
 @Original
 class CloningVisitor implements DLTreeVisitorEx<DLTree>, Serializable {
@@ -295,6 +298,7 @@ class CloningVisitor implements DLTreeVisitorEx<DLTree>, Serializable {
         return new NDLTree(new Lexeme(t.elem), asList(t.children().map(tree -> tree.accept(this))));
     }
 }
+
 
 @Original
 class ReverseCloningVisitor implements DLTreeVisitorEx<DLTree>, Serializable {
@@ -321,6 +325,7 @@ class ReverseCloningVisitor implements DLTreeVisitorEx<DLTree>, Serializable {
         return new NDLTree(new Lexeme(t.elem), actual);
     }
 }
+
 
 /** things that have no children */
 @Original
@@ -365,6 +370,7 @@ class LEAFDLTree extends DLTree {
         throw new UnsupportedOperationException();
     }
 }
+
 
 /** covers trees with only one child, i.e., inverse, not */
 @Original
@@ -421,6 +427,7 @@ class ONEDLTree extends DLTree {
     }
 }
 
+
 /** covers trees with two and only two children */
 @Original
 class TWODLTree extends DLTree {
@@ -469,13 +476,15 @@ class TWODLTree extends DLTree {
     }
 }
 
+
 @Original
 class NDLTree extends DLTree {
 
     public NDLTree(Lexeme l, Collection<DLTree> trees) {
         super(l);
         if (trees.size() < 2) {
-            throw new ReasonerInternalException("not enough elements in the n-ary element");
+            throw new ReasonerInternalException(
+                "not enough elements in the n-ary element: " + trees);
         }
         children = new ArrayList<>();
         trees.forEach(this::addChild);
@@ -484,7 +493,8 @@ class NDLTree extends DLTree {
     public NDLTree(Lexeme l, @Nullable DLTree c, @Nullable DLTree d) {
         super(l);
         if (c == null || d == null) {
-            throw new ReasonerInternalException("not enough elements in the n-ary element");
+            throw new ReasonerInternalException(
+                "not enough elements in the n-ary element: " + c + " " + d);
         }
         children = new ArrayList<>();
         addChild(c);
