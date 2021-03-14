@@ -63,10 +63,9 @@ public class WebOnt208TestCase extends TestBase {
         conclusions.add(df.getOWLClassAssertionAxiom(df.getOWLClass(ns, "C108"), v16439));
         conclusions.add(df.getOWLClassAssertionAxiom(df.getOWLClass(ns, "C106"), v16439));
         conclusions.add(df.getOWLClassAssertionAxiom(df.getOWLClass(ns, "C104"), v16439));
-        String id = "WebOnt_description_logic_208";
-        TestClasses tc = TestClasses.valueOf("POSITIVE_IMPL");
-        String d = "DL Test: k_poly\n" + "ABox test from DL98 systems comparison.";
-        JUnitRunner r = new JUnitRunner(m, asString(m, "/" + id + ".owl"), conclusions, id, tc, d);
+        JUnitRunner r = new JUnitRunner(m, asString(m, "/WebOnt_description_logic_208.owl"),
+            conclusions, "WebOnt_description_logic_208", TestClasses.POSITIVE_IMPL,
+            "DL Test: k_poly\n" + "ABox test from DL98 systems comparison.");
         r.setReasonerFactory(factory());
         r.run();
     }

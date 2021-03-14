@@ -5,7 +5,15 @@ package uk.ac.manchester.cs.jfact.kernel;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.*;
+import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.and;
+import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.dataAnd;
+import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.dataNot;
+import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.dataTop;
+import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.forall;
+import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.maxCardinality;
+import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.not;
+import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.selfReference;
+import static uk.ac.manchester.cs.jfact.kernel.ExpressionManager.top;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,20 +34,22 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.RoleExpression;
 public class TDag2Interface implements Serializable {
 
     /** DAG to be translated */
-    @PortedFrom(file = "tDag2Interface.h", name = "Dag") private final DLDag dag;
+    @PortedFrom(file = "tDag2Interface.h", name = "Dag")
+    private final DLDag dag;
     /** expression manager */
-    @PortedFrom(file = "tDag2Interface.h", name = "Manager") private final ExpressionCache cache;
+    @PortedFrom(file = "tDag2Interface.h", name = "Manager")
+    private final ExpressionCache cache;
     /** vector of cached expressions */
-    @PortedFrom(file = "tDag2Interface.h", name = "TransC") private final List<ConceptExpression> transConcept = new ArrayList<>();
-    @PortedFrom(file = "tDag2Interface.h", name = "TransD") private final List<DataExpression> transData = new ArrayList<>();
+    @PortedFrom(file = "tDag2Interface.h", name = "TransC")
+    private final List<ConceptExpression> transConcept = new ArrayList<>();
+    @PortedFrom(file = "tDag2Interface.h", name = "TransD")
+    private final List<DataExpression> transData = new ArrayList<>();
 
     /**
      * init c'tor
      * 
-     * @param dag
-     *        dag
-     * @param manager
-     *        manager
+     * @param dag dag
+     * @param manager manager
      */
     public TDag2Interface(DLDag dag, ExpressionCache manager) {
         this.dag = dag;
@@ -49,8 +59,7 @@ public class TDag2Interface implements Serializable {
     }
 
     /**
-     * @param v
-     *        v
+     * @param v v
      * @return build concept expression by a vertex V
      */
     @PortedFrom(file = "tDag2Interface.h", name = "buildCExpr")
@@ -74,16 +83,20 @@ public class TDag2Interface implements Serializable {
                 return and(list);
             case FORALL:
                 if (v.getRole().isDataRole()) {
-                    return forall(cache.dataRole(v.getRole().getEntity().getEntity()), getDExpr(v.getConceptIndex()));
+                    return forall(cache.dataRole(v.getRole().getEntity().getEntity()),
+                        getDExpr(v.getConceptIndex()));
                 } else {
-                    return forall(cache.objectRole(v.getRole().getEntity().getEntity()), getCExpr(v.getConceptIndex()));
+                    return forall(cache.objectRole(v.getRole().getEntity().getEntity()),
+                        getCExpr(v.getConceptIndex()));
                 }
             case LE:
                 if (v.getRole().isDataRole()) {
-                    return maxCardinality(v.getNumberLE(), cache.dataRole(v.getRole().getEntity().getEntity()),
+                    return maxCardinality(v.getNumberLE(),
+                        cache.dataRole(v.getRole().getEntity().getEntity()),
                         getDExpr(v.getConceptIndex()));
                 } else {
-                    return maxCardinality(v.getNumberLE(), cache.objectRole(v.getRole().getEntity().getEntity()),
+                    return maxCardinality(v.getNumberLE(),
+                        cache.objectRole(v.getRole().getEntity().getEntity()),
                         getCExpr(v.getConceptIndex()));
                 }
             case IRR:
@@ -99,8 +112,7 @@ public class TDag2Interface implements Serializable {
     }
 
     /**
-     * @param v
-     *        v
+     * @param v v
      * @return build data expression by a vertex V
      */
     @PortedFrom(file = "tDag2Interface.h", name = "buildDExpr")
@@ -126,8 +138,7 @@ public class TDag2Interface implements Serializable {
     }
 
     /**
-     * @param r
-     *        r
+     * @param r r
      * @return data role expression
      */
     @Original
@@ -136,8 +147,7 @@ public class TDag2Interface implements Serializable {
     }
 
     /**
-     * @param r
-     *        r
+     * @param r r
      * @return object role expression
      */
     @Original
@@ -150,7 +160,8 @@ public class TDag2Interface implements Serializable {
      */
     @PortedFrom(file = "tDag2Interface.h", name = "ensureDagSize")
     public void ensureDagSize() {
-        int ds = dag.size(), ts = transConcept.size();
+        int ds = dag.size();
+        int ts = transConcept.size();
         if (ds == ts) {
             return;
         }
@@ -159,8 +170,7 @@ public class TDag2Interface implements Serializable {
     }
 
     /**
-     * @param p
-     *        p
+     * @param p p
      * @return concept expression corresponding index of vertex
      */
     @PortedFrom(file = "tDag2Interface.h", name = "getCExpr")
@@ -175,8 +185,7 @@ public class TDag2Interface implements Serializable {
     }
 
     /**
-     * @param p
-     *        p
+     * @param p p
      * @return data expression corresponding index of vertex
      */
     @PortedFrom(file = "tDag2Interface.h", name = "getDExpr")
@@ -193,10 +202,8 @@ public class TDag2Interface implements Serializable {
     }
 
     /**
-     * @param p
-     *        p
-     * @param data
-     *        data
+     * @param p p
+     * @param data data
      * @return expression
      */
     @PortedFrom(file = "tDag2Interface.h", name = "getExpr")

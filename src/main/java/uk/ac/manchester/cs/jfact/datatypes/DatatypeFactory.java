@@ -1,12 +1,30 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
-import static uk.ac.manchester.cs.jfact.datatypes.Facets.*;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.enumeration;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.fractionDigits;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.length;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.maxExclusive;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.maxInclusive;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.maxLength;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.minExclusive;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.minInclusive;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.minLength;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.pattern;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.totalDigits;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.whiteSpace;
 import static uk.ac.manchester.cs.jfact.datatypes.Facets.whitespace.COLLAPSE;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -129,17 +147,16 @@ public class DatatypeFactory implements Serializable {
     }
 
     /**
-     * @return the predefined datatypes, in an enumeration fashion - the list is
-     *         unmodifiable.
+     * @return the predefined datatypes, in an enumeration fashion - the list is unmodifiable.
      */
     public static List<Datatype<?>> getValues() {
         return values;
     }
 
     /**
-     * @return the datatypes defined for this instance of DatatypeFactory; the
-     *         returned list is modifiable but not backed by the
-     *         DatatypeFactory, so changes will not be reflected back.
+     * @return the datatypes defined for this instance of DatatypeFactory; the returned list is
+     *         modifiable but not backed by the DatatypeFactory, so changes will not be reflected
+     *         back.
      */
     public Collection<Datatype<?>> getKnownDatatypes() {
         return new ArrayList<>(knownDatatypes.values());
@@ -150,10 +167,8 @@ public class DatatypeFactory implements Serializable {
     }
 
     /**
-     * @param key
-     *        key
-     * @param <R>
-     *        type
+     * @param key key
+     * @param <R> type
      * @return datatype for key
      */
     public <R extends Comparable<R>> Datatype<R> getKnownDatatype(IRI key) {
@@ -181,14 +196,15 @@ public class DatatypeFactory implements Serializable {
                 }
             }
         }
-        LOGGER.error("A known datatype for {} cannot be found; literal will be replaced with rdfs:Literal", iriString);
+        LOGGER.error(
+            "A known datatype for {} cannot be found; literal will be replaced with rdfs:Literal",
+            iriString);
         knownDatatypes.put(key, LITERAL);
         return (Datatype<R>) LITERAL;
     }
 
     /**
-     * @param key
-     *        key
+     * @param key key
      * @return true if known datatype
      */
     public boolean isKnownDatatype(IRI key) {
@@ -203,16 +219,14 @@ public class DatatypeFactory implements Serializable {
     }
 
     /**
-     * @param min
-     *        min
-     * @param max
-     *        max
-     * @param excluded
-     *        excluded
+     * @param min min
+     * @param max max
+     * @param excluded excluded
      * @return true if interval not empty
      */
     @SuppressWarnings("rawtypes")
-    public static boolean intervalWithValues(@Nullable Comparable min, @Nullable Comparable max, int excluded) {
+    public static boolean intervalWithValues(@Nullable Comparable min, @Nullable Comparable max,
+        int excluded) {
         if (min == null) {
             // unbound lower limit - value space cannot be empty
             // even if the actual type used to represent the literal is bounded,
@@ -226,7 +240,8 @@ public class DatatypeFactory implements Serializable {
             return true;
         }
         // min and max are both not null
-        @SuppressWarnings("unchecked") int comparison = min.compareTo(max);
+        @SuppressWarnings("unchecked")
+        int comparison = min.compareTo(max);
         // comparison < 0: min is strictly smaller than max. Value space can
         // still be empty:
         // (1,2)^^integer has no values
@@ -244,15 +259,18 @@ public class DatatypeFactory implements Serializable {
         // representation
         if (excluded == 2) {
             Comparable increased = increase((Number) min);
-            @SuppressWarnings("unchecked") int compareTo = increased.compareTo(max);
+            if (increased == null) {
+                return false;
+            }
+            @SuppressWarnings("unchecked")
+            int compareTo = increased.compareTo(max);
             return compareTo < 0;
         }
         return false;
     }
 
     /**
-     * @param v
-     *        v
+     * @param v v
      * @return increased number
      */
     @Nullable

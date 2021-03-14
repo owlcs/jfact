@@ -25,27 +25,23 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 public abstract class AxiomImpl extends AxiomWrapper implements Serializable {
 
     /**
-     * @param ax
-     *        axiom
+     * @param ax axiom
      */
-    public AxiomImpl(@Nullable OWLAxiom ax) {
+    protected AxiomImpl(OWLAxiom ax) {
         super(ax);
     }
 
     /**
      * accept method for the visitor pattern
      * 
-     * @param visitor
-     *        visitor
+     * @param visitor visitor
      */
     @PortedFrom(file = "tDLAxiom.h", name = "accept")
     public abstract void accept(DLAxiomVisitor visitor);
 
     /**
-     * @param visitor
-     *        visitor
-     * @param <O>
-     *        visitor return type
+     * @param visitor visitor
+     * @param <O> visitor return type
      * @return visitor result
      */
     @Nullable

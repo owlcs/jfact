@@ -1,6 +1,8 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
-import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.*;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.LITERAL;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.STRINGFACETS;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.WHITESPACE;
 import static uk.ac.manchester.cs.jfact.datatypes.Facets.whiteSpace;
 import static uk.ac.manchester.cs.jfact.datatypes.Facets.whitespace.COLLAPSE;
 
@@ -27,7 +29,7 @@ class ANYURIDatatype extends AbstractDatatype<String> {
         try {
             URI.create(l);
             return true;
-        } catch (IllegalArgumentException e) {
+        } catch (@SuppressWarnings("unused") IllegalArgumentException e) {
             return false;
         }
     }

@@ -1,11 +1,15 @@
 package uk.ac.manchester.cs.jfact.kernel.modelcaches;
 
+import static uk.ac.manchester.cs.jfact.helpers.Assertions.verifyNotNull;
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState.*;
+import static uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState.FAILED;
+import static uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState.INVALID;
+import static uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState.UNKNOWN;
+import static uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState.VALID;
 import static uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheType.IAN;
 
 import java.util.stream.Stream;
@@ -18,7 +22,12 @@ import uk.ac.manchester.cs.chainsaw.FastSetFactory;
 import uk.ac.manchester.cs.jfact.helpers.DLVertex;
 import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
-import uk.ac.manchester.cs.jfact.kernel.*;
+import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
+import uk.ac.manchester.cs.jfact.kernel.ConceptWDep;
+import uk.ac.manchester.cs.jfact.kernel.DLDag;
+import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
+import uk.ac.manchester.cs.jfact.kernel.RAStateTransitions;
+import uk.ac.manchester.cs.jfact.kernel.Role;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
 /** model cache Ian (Horrocks) */
@@ -29,35 +38,41 @@ public class ModelCacheIan extends ModelCacheInterface {
     /**
      * named concepts that appears positively det-lly in a root node of a cache
      */
-    @PortedFrom(file = "modelCacheIan.h", name = "posDConcepts") private final RoaringBitmap posDConcepts = new RoaringBitmap();
+    @PortedFrom(file = "modelCacheIan.h", name = "posDConcepts")
+    private final RoaringBitmap posDConcepts = new RoaringBitmap();
     /**
      * named concepts that appears positively non-det in a root node of a cache
      */
-    @PortedFrom(file = "modelCacheIan.h", name = "posNConcepts") private final RoaringBitmap posNConcepts = new RoaringBitmap();
+    @PortedFrom(file = "modelCacheIan.h", name = "posNConcepts")
+    private final RoaringBitmap posNConcepts = new RoaringBitmap();
     /**
      * named concepts that appears negatively det-lly in a root node of a cache
      */
-    @PortedFrom(file = "modelCacheIan.h", name = "negDConcepts") private final RoaringBitmap negDConcepts = new RoaringBitmap();
+    @PortedFrom(file = "modelCacheIan.h", name = "negDConcepts")
+    private final RoaringBitmap negDConcepts = new RoaringBitmap();
     /**
      * named concepts that appears negatively non-det in a root node of a cache
      */
-    @PortedFrom(file = "modelCacheIan.h", name = "negNConcepts") private final RoaringBitmap negNConcepts = new RoaringBitmap();
+    @PortedFrom(file = "modelCacheIan.h", name = "negNConcepts")
+    private final RoaringBitmap negNConcepts = new RoaringBitmap();
     /** extra det-lly concepts that are (partial) Simple Rule applications */
-    @PortedFrom(file = "modelCacheIan.h", name = "extraDConcepts") private final FastSet extraDConcepts = FastSetFactory
-        .create();
+    @PortedFrom(file = "modelCacheIan.h", name = "extraDConcepts")
+    private final FastSet extraDConcepts = FastSetFactory.create();
     /** extra non-det concepts that are (partial) Simple Rule applications */
-    @PortedFrom(file = "modelCacheIan.h", name = "extraNConcepts") private final FastSet extraNConcepts = FastSetFactory
-        .create();
+    @PortedFrom(file = "modelCacheIan.h", name = "extraNConcepts")
+    private final FastSet extraNConcepts = FastSetFactory.create();
     /** role names that are labels of the outgoing edges from the root node */
-    @PortedFrom(file = "modelCacheIan.h", name = "existsRoles") private final FastSet existsRoles = FastSetFactory
-        .create();
+    @PortedFrom(file = "modelCacheIan.h", name = "existsRoles")
+    private final FastSet existsRoles = FastSetFactory.create();
     /** role names that appears in the \A restrictions in the root node */
-    @PortedFrom(file = "modelCacheIan.h", name = "forallRoles") private final FastSet forallRoles = FastSetFactory
-        .create();
+    @PortedFrom(file = "modelCacheIan.h", name = "forallRoles")
+    private final FastSet forallRoles = FastSetFactory.create();
     /** role names that appears in the atmost restrictions in the root node */
-    @PortedFrom(file = "modelCacheIan.h", name = "funcRoles") private final FastSet funcRoles = FastSetFactory.create();
+    @PortedFrom(file = "modelCacheIan.h", name = "funcRoles")
+    private final FastSet funcRoles = FastSetFactory.create();
     /** current state of cache model; recalculates on every change */
-    @PortedFrom(file = "modelCacheIan.h", name = "curState") private ModelCacheState curState;
+    @PortedFrom(file = "modelCacheIan.h", name = "curState")
+    private ModelCacheState curState;
     // XXX these two fields should be used somehow
     private final int nC;
     private final int nR;
@@ -66,18 +81,12 @@ public class ModelCacheIan extends ModelCacheInterface {
     /**
      * Create cache model of given CompletionTree using given HEAP
      * 
-     * @param heap
-     *        heap
-     * @param p
-     *        p
-     * @param flagNominals
-     *        flagNominals
-     * @param nC
-     *        nC
-     * @param nR
-     *        nR
-     * @param simpleRules
-     *        simpleRules
+     * @param heap heap
+     * @param p p
+     * @param flagNominals flagNominals
+     * @param nC nC
+     * @param nR nR
+     * @param simpleRules simpleRules
      */
     public ModelCacheIan(DLDag heap, DlCompletionTree p, boolean flagNominals, int nC, int nR,
         JFactReasonerConfiguration simpleRules) {
@@ -87,16 +96,13 @@ public class ModelCacheIan extends ModelCacheInterface {
     }
 
     /**
-     * @param flagNominals
-     *        flagNominals
-     * @param nC
-     *        nC
-     * @param nR
-     *        nR
-     * @param simpleRules
-     *        simpleRules
+     * @param flagNominals flagNominals
+     * @param nC nC
+     * @param nR nR
+     * @param simpleRules simpleRules
      */
-    public ModelCacheIan(boolean flagNominals, int nC, int nR, JFactReasonerConfiguration simpleRules) {
+    public ModelCacheIan(boolean flagNominals, int nC, int nR,
+        JFactReasonerConfiguration simpleRules) {
         super(flagNominals);
         curState = VALID;
         this.simpleRules = simpleRules;
@@ -107,23 +113,20 @@ public class ModelCacheIan extends ModelCacheInterface {
     /**
      * process CT label in given interval; set Deterministic accordingly
      * 
-     * @param dlHeap
-     *        DLHeap
-     * @param start
-     *        start
+     * @param dlHeap DLHeap
+     * @param start start
      */
     @PortedFrom(file = "modelCacheIan.h", name = "processLabelInterval")
     private void processLabelInterval(DLDag dlHeap, Stream<ConceptWDep> start) {
-        start.forEach(p -> processConcept(dlHeap.get(p.getConcept()), p.getConcept() > 0, p.getDep().isEmpty()));
+        start.forEach(p -> processConcept(dlHeap.get(p.getConcept()), p.getConcept() > 0,
+            p.getDep().isEmpty()));
     }
 
     /**
      * fills cache sets by tree.Label; set Deterministic accordingly
      * 
-     * @param dlHeap
-     *        DLHeap
-     * @param pCT
-     *        pCT
+     * @param dlHeap DLHeap
+     * @param pCT pCT
      */
     @PortedFrom(file = "modelCacheIan.h", name = "initCacheByLabel")
     private void initCacheByLabel(DLDag dlHeap, DlCompletionTree pCT) {
@@ -143,8 +146,7 @@ public class ModelCacheIan extends ModelCacheInterface {
     }
 
     /**
-     * @param pos
-     *        pos
+     * @param pos pos
      * @return N-concepts wrt polarity
      */
     @PortedFrom(file = "modelCacheIan.h", name = "getNConcepts")
@@ -153,8 +155,7 @@ public class ModelCacheIan extends ModelCacheInterface {
     }
 
     /**
-     * @param det
-     *        det
+     * @param det det
      * @return extra concepts wrt deterministic flag
      */
     @PortedFrom(file = "modelCacheIan.h", name = "getExtra")
@@ -163,15 +164,14 @@ public class ModelCacheIan extends ModelCacheInterface {
     }
 
     /**
-     * init existRoles from arcs; can be used to create pseudo-cache with deps
-     * of CT edges
+     * init existRoles from arcs; can be used to create pseudo-cache with deps of CT edges
      * 
-     * @param pCT
-     *        pCT
+     * @param pCT pCT
      */
     @PortedFrom(file = "modelCacheIan.h", name = "initRolesFromArcs")
     public void initRolesFromArcs(DlCompletionTree pCT) {
-        pCT.getNeighbour().stream().filter(p -> !p.isIBlocked()).forEach(p -> addExistsRole(p.getRole()));
+        pCT.getNeighbour().stream().filter(p -> !p.isIBlocked())
+            .forEach(p -> addExistsRole(verifyNotNull(p.getRole())));
         curState = VALID;
     }
 
@@ -207,12 +207,9 @@ public class ModelCacheIan extends ModelCacheInterface {
     }
 
     /**
-     * @param cur
-     *        cur
-     * @param pos
-     *        pos
-     * @param det
-     *        det
+     * @param cur cur
+     * @param pos pos
+     * @param det det
      */
     @PortedFrom(file = "modelCacheIan.h", name = "processConcept")
     @SuppressWarnings("incomplete-switch")
@@ -255,22 +252,21 @@ public class ModelCacheIan extends ModelCacheInterface {
     }
 
     /**
-     * @param cur
-     *        cur
+     * @param cur cur
      */
     @PortedFrom(file = "modelCacheIan.h", name = "processAutomaton")
     public void processAutomaton(DLVertex cur) {
         RAStateTransitions rst = cur.getRole().getAutomaton().get(cur.getState());
         // for every transition starting from a given state,
         // add the role that is accepted by a transition
-        rst.begin().stream().flatMap(p -> p.begin().stream()).forEach(r -> forallRoles.add(r.getIndex()));
+        rst.begin().stream().flatMap(p -> p.begin().stream())
+            .forEach(r -> forallRoles.add(r.getIndex()));
     }
 
     /**
      * adds role to exists- and func-role if necessary
      * 
-     * @param r
-     *        R
+     * @param r R
      */
     @PortedFrom(file = "modelCacheIan.h", name = "addRoleToCache")
     private void addRoleToCache(Role r) {
@@ -284,8 +280,7 @@ public class ModelCacheIan extends ModelCacheInterface {
     /**
      * adds role (and all its super-roles) to exists- and funcRoles
      * 
-     * @param r
-     *        R
+     * @param r R
      */
     @PortedFrom(file = "modelCacheIan.h", name = "addExistsRole")
     private void addExistsRole(Role r) {
@@ -323,12 +318,9 @@ public class ModelCacheIan extends ModelCacheInterface {
     }
 
     /**
-     * @param singleton
-     *        Singleton
-     * @param pos
-     *        pos
-     * @return invalid, failed or valid depending on whether singleton is
-     *         included
+     * @param singleton Singleton
+     * @param pos pos
+     * @return invalid, failed or valid depending on whether singleton is included
      */
     @PortedFrom(file = "modelCacheIan.h", name = "isMergableSingleton")
     public ModelCacheState isMergableSingleton(int singleton, boolean pos) {
@@ -343,25 +335,29 @@ public class ModelCacheIan extends ModelCacheInterface {
     }
 
     /**
-     * @param q
-     *        q
+     * @param q q
      * @return invalid, failed or valid
      */
     @PortedFrom(file = "modelCacheIan.h", name = "isMergableIan")
     public ModelCacheState isMergableIan(ModelCacheIan q) {
-        if (intersection(posDConcepts, q.negDConcepts) || intersection(q.posDConcepts, negDConcepts)) {
+        if (intersection(posDConcepts, q.negDConcepts)
+            || intersection(q.posDConcepts, negDConcepts)) {
             return INVALID;
-        } else if (existsRoles.intersect(q.forallRoles) || q.existsRoles.intersect(forallRoles) || funcRoles.intersect(
-            q.funcRoles) || intersection(posDConcepts, q.negNConcepts) || intersection(posNConcepts, q.negDConcepts)
-            || intersection(posNConcepts, q.negNConcepts) || intersection(q.posDConcepts, negNConcepts) || intersection(
-                q.posNConcepts, negDConcepts) || intersection(q.posNConcepts, negNConcepts)) {
+        } else if (existsRoles.intersect(q.forallRoles) || q.existsRoles.intersect(forallRoles)
+            || funcRoles.intersect(q.funcRoles) || intersection(posDConcepts, q.negNConcepts)
+            || intersection(posNConcepts, q.negDConcepts)
+            || intersection(posNConcepts, q.negNConcepts)
+            || intersection(q.posDConcepts, negNConcepts)
+            || intersection(q.posNConcepts, negDConcepts)
+            || intersection(q.posNConcepts, negNConcepts)) {
             return FAILED;
         } else {
             if (simpleRules.isUseSimpleRules() && getExtra(true).intersect(q.getExtra(true))) {
                 return INVALID;
             }
-            if (simpleRules.isUseSimpleRules() && (getExtra(true).intersect(q.getExtra(false)) || getExtra(false)
-                .intersect(q.getExtra(true)) || getExtra(false).intersect(q.getExtra(false)))) {
+            if (simpleRules.isUseSimpleRules() && (getExtra(true).intersect(q.getExtra(false))
+                || getExtra(false).intersect(q.getExtra(true))
+                || getExtra(false).intersect(q.getExtra(false)))) {
                 return FAILED;
             }
             return VALID;
@@ -373,8 +369,7 @@ public class ModelCacheIan extends ModelCacheInterface {
     }
 
     /**
-     * @param p
-     *        p
+     * @param p p
      * @return invalid, failed or valid
      */
     @PortedFrom(file = "modelCacheIan.h", name = "merge")
@@ -407,10 +402,8 @@ public class ModelCacheIan extends ModelCacheInterface {
     /**
      * actual merge with a singleton cache
      * 
-     * @param singleton
-     *        Singleton
-     * @param pos
-     *        pos
+     * @param singleton Singleton
+     * @param pos pos
      */
     @PortedFrom(file = "modelCacheIan.h", name = "mergeSingleton")
     private void mergeSingleton(int singleton, boolean pos) {
@@ -427,8 +420,7 @@ public class ModelCacheIan extends ModelCacheInterface {
     /**
      * actual merge with an Ian's cache
      * 
-     * @param p
-     *        p
+     * @param p p
      */
     @PortedFrom(file = "modelCacheIan.h", name = "mergeIan")
     private void mergeIan(ModelCacheIan p) {
@@ -452,8 +444,9 @@ public class ModelCacheIan extends ModelCacheInterface {
     @PortedFrom(file = "modelCacheIan.h", name = "logCacheEntry")
     public void logCacheEntry(int level, LogAdapter l) {
         l.print("\nIan cache: posDConcepts = {", posDConcepts, "}, posNConcepts = {", posNConcepts,
-            "}, negDConcepts = {", negDConcepts, "}, negNConcepts = {", negNConcepts, "}, existsRoles = {", existsRoles,
-            "}, forallRoles = {", forallRoles, "}, funcRoles = {", funcRoles, "}");
+            "}, negDConcepts = {", negDConcepts, "}, negNConcepts = {", negNConcepts,
+            "}, existsRoles = {", existsRoles, "}, forallRoles = {", forallRoles,
+            "}, funcRoles = {", funcRoles, "}");
     }
 
     @PortedFrom(file = "modelCacheInterface.h", name = "mergeStatus")

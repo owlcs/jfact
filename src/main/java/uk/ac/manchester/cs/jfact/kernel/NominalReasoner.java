@@ -22,17 +22,16 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 public class NominalReasoner extends DlSatTester {
 
     /** all nominals defined in TBox */
-    @PortedFrom(file = "ReasonerNom.h", name = "Nominals") protected final List<Individual> nominals = new ArrayList<>();
+    @PortedFrom(file = "ReasonerNom.h", name = "Nominals")
+    protected final List<Individual> nominals = new ArrayList<>();
 
     /**
-     * @param tbox
-     *        tbox
-     * @param options
-     *        Options
+     * @param tbox tbox
+     * @param options Options
      */
     public NominalReasoner(TBox tbox, JFactReasonerConfiguration options) {
         super(tbox, options);
-        tBox.individuals().filter(pi -> !pi.isSynonym()).forEach(nominals::add);
+        tBox.individuals().filter(ClassifiableEntry::isNotSynonym).forEach(nominals::add);
     }
 
     /** there are nominals */
@@ -46,8 +45,7 @@ public class NominalReasoner extends DlSatTester {
     /**
      * create cache entry for given singleton
      * 
-     * @param p
-     *        p
+     * @param p p
      */
     @PortedFrom(file = "ReasonerNom.h", name = "registerNominalCache")
     protected void registerNominalCache(Individual p) {
@@ -57,8 +55,7 @@ public class NominalReasoner extends DlSatTester {
     /**
      * init single nominal node
      * 
-     * @param nom
-     *        nom
+     * @param nom nom
      * @return true if inconsistent
      */
     @PortedFrom(file = "ReasonerNom.h", name = "initNominalNode")
@@ -74,15 +71,15 @@ public class NominalReasoner extends DlSatTester {
     /**
      * use classification information for the nominal P
      * 
-     * @param p
-     *        p
+     * @param p p
      */
     @PortedFrom(file = "ReasonerNom.h", name = "updateClassifiedSingleton")
     protected void updateClassifiedSingleton(Individual p) {
         registerNominalCache(p);
         if (p.getNode().isPBlocked()) {
             // BP of the individual P is merged to
-            int bp = p.getNode().getBlocker().label().getSimpleConcepts().iterator().next().getConcept();
+            int bp =
+                p.getNode().getBlocker().label().getSimpleConcepts().iterator().next().getConcept();
             Individual blocker = (Individual) dlHeap.get(bp).getConcept();
             assert blocker.getNode().equals(p.getNode().getBlocker());
             tBox.addSameIndividuals(p, new Pair(blocker, p.getNode().getPurgeDep().isEmpty()));
@@ -135,7 +132,8 @@ public class NominalReasoner extends DlSatTester {
             nonDetShift = 1;
             options.getLog().print("]");
         }
-        options.getLog().printTemplate(Templates.CONSISTENT_NOMINAL, result ? "consistent" : "INCONSISTENT");
+        options.getLog().printTemplate(Templates.CONSISTENT_NOMINAL,
+            result ? "consistent" : "INCONSISTENT");
         if (!result) {
             return false;
         }
@@ -191,7 +189,8 @@ public class NominalReasoner extends DlSatTester {
         prepareReasoner();
         DepSet dummy = DepSet.create();
         for (int i = 0; i < tBox.getIV().size(); i++) {
-            if (addToDoEntry(tBox.getIV().get(i).getNode(), tBox.getConceptsForQueryAnswering().get(i), dummy, "QA")) {
+            if (addToDoEntry(tBox.getIV().get(i).getNode(),
+                tBox.getConceptsForQueryAnswering().get(i), dummy, "QA")) {
                 return true;
             }
         }

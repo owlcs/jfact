@@ -1,6 +1,9 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
-import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.*;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.FACETS4;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.LITERAL;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.WHITESPACE;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.increase;
 import static uk.ac.manchester.cs.jfact.datatypes.Facets.whiteSpace;
 
 import org.semanticweb.owlapi.vocab.XSDVocabulary;
@@ -51,14 +54,17 @@ class FLOATDatatype extends AbstractNumericDatatype<Float> {
         if (!hasMin() || !hasMax()) {
             return false;
         }
+        Float min = getMin();
+        Float max = getMax();
+        assert max != null;
         if (hasMaxExclusive() && hasMinExclusive()) {
-            if (getMin().compareTo(getMax()) == 0) {
-                // interval empty, no values admitted
-                return true;
-            }
+            assert min != null;
+            return
+            // interval empty, no values admitted
+            max.compareTo(min) == 0 ||
             // if diff is larger than 0, check
-            return getMax().compareTo((Float) increase(getMin())) < 0;
+                max.compareTo((Float) increase(min)) < 0;
         }
-        return getMax().compareTo(getMin()) < 0;
+        return max.compareTo(min) < 0;
     }
 }

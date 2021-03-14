@@ -54,6 +54,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -206,7 +207,7 @@ public class JFactReasoner
         this.bufferingMode = bufferingMode;
         knownEntities.add(df.getOWLThing());
         knownEntities.add(df.getOWLNothing());
-        add(knownEntities, root.importsClosure().flatMap(o -> o.signature()));
+        add(knownEntities, root.importsClosure().flatMap(OWLOntology::signature));
         kernel.setInterruptedSwitch(interrupted);
         kernel.clearKB();
         configuration.getProgressMonitor().reasonerTaskStarted(ReasonerProgressMonitor.LOADING);
@@ -303,8 +304,8 @@ public class JFactReasoner
     @Override
     public synchronized Set<OWLAxiom> getPendingAxiomAdditions() {
         if (!rawChanges.isEmpty()) {
-            return asSet(
-                rawChanges.stream().filter(OWLOntologyChange::isAddAxiom).map(c -> c.getAxiom()));
+            return asSet(rawChanges.stream().filter(OWLOntologyChange::isAddAxiom)
+                .map(OWLOntologyChange::getAxiom));
         }
         return Collections.emptySet();
     }
@@ -313,7 +314,7 @@ public class JFactReasoner
     public synchronized Set<OWLAxiom> getPendingAxiomRemovals() {
         if (!rawChanges.isEmpty()) {
             return asSet(rawChanges.stream().filter(OWLOntologyChange::isRemoveAxiom)
-                .map(c -> c.getAxiom()));
+                .map(OWLOntologyChange::getAxiom));
         }
         return Collections.emptySet();
     }
@@ -332,11 +333,10 @@ public class JFactReasoner
                         && !reasonerAxioms.contains(ax.getAxiomWithoutAnnotations())) {
                         added.add(ax);
                     }
-                } else if (change.isRemoveAxiom()) {
-                    if (reasonerAxioms.contains(ax)
-                        || reasonerAxioms.contains(ax.getAxiomWithoutAnnotations())) {
-                        removed.add(change.getAxiom());
-                    }
+                } else if (change.isRemoveAxiom() && reasonerAxioms.contains(ax)
+                    || reasonerAxioms.contains(ax.getAxiomWithoutAnnotations())) {
+                    removed.add(change.getAxiom());
+
                 }
             }
             added.removeAll(removed);
@@ -386,7 +386,7 @@ public class JFactReasoner
 
     @Override
     public Version getReasonerVersion() {
-        return new Version(5, 0, 3, 0);
+        return new Version(5, 0, 4, 0);
     }
 
     @Override
@@ -422,7 +422,7 @@ public class JFactReasoner
         if (consistencyVerified == null) {
             try {
                 consistencyVerified = Boolean.valueOf(kernel.isKBConsistent());
-            } catch (InconsistentOntologyException e) {
+            } catch (@SuppressWarnings("unused") InconsistentOntologyException e) {
                 consistencyVerified = Boolean.FALSE;
             }
         }
@@ -477,16 +477,13 @@ public class JFactReasoner
     }
 
     @Override
-    public synchronized boolean isEntailed(Set<? extends OWLAxiom> axioms) {
-        return axioms.stream().allMatch(ax -> isEntailed(checkNotNull(ax)));
+    public synchronized boolean isEntailed(Set<? extends OWLAxiom> axiomSet) {
+        return axiomSet.stream().allMatch(ax -> isEntailed(checkNotNull(ax)));
     }
 
     @Override
     public boolean isEntailmentCheckingSupported(AxiomType<?> axiomType) {
-        if (axiomType.equals(AxiomType.SWRL_RULE)) {
-            return false;
-        }
-        return true;
+        return !axiomType.equals(AxiomType.SWRL_RULE);
     }
 
     // tracing
@@ -498,7 +495,7 @@ public class JFactReasoner
     public synchronized Set<OWLAxiom> getTrace(OWLAxiom axiom) {
         kernel.needTracing();
         if (this.isEntailed(axiom)) {
-            return asSet(kernel.getTrace().map(AxiomWrapper::getAxiom).filter(ax -> ax != null));
+            return asSet(kernel.getTrace().map(AxiomWrapper::getAxiom).filter(Objects::nonNull));
         }
         return Collections.emptySet();
     }
@@ -529,7 +526,7 @@ public class JFactReasoner
         // to bottom.
         // should happen in the reasoner proper, but something stops that
         Optional<Collection<ConceptExpression>> empty =
-            pointers.stream().filter(c -> c.isEmpty()).findAny();
+            pointers.stream().filter(Collection::isEmpty).findAny();
         if (empty.isPresent()) {
             empty.get().addAll(bottomNode());
         } else {
@@ -926,7 +923,7 @@ public class JFactReasoner
     }
 
     private static Set<OWLAxiom> axiomsToSet(Stream<AxiomWrapper> index) {
-        return asSet(index.map(ax -> ax.getAxiom()));
+        return asSet(index.map(AxiomWrapper::getAxiom));
     }
 
     /**
@@ -954,8 +951,7 @@ public class JFactReasoner
     public Set<OWLAxiom> getModule(Set<OWLEntity> signature, boolean useSemantic,
         ModuleType moduletype) {
         List<Expression> list = tr.translateExpressions(signature.stream());
-        Collection<AxiomWrapper> axioms = kernel.getModule(list, useSemantic, moduletype, this);
-        return axiomsToSet(axioms.stream());
+        return axiomsToSet(kernel.getModule(list, useSemantic, moduletype, this).stream());
     }
 
     /**
@@ -967,8 +963,7 @@ public class JFactReasoner
     public Set<OWLAxiom> getNonLocal(Set<OWLEntity> signature, boolean useSemantic,
         ModuleType moduletype) {
         List<Expression> list = tr.translateExpressions(signature.stream());
-        Set<AxiomWrapper> axioms = kernel.getNonLocal(list, useSemantic, moduletype, this);
-        return axiomsToSet(axioms.stream());
+        return axiomsToSet(kernel.getNonLocal(list, useSemantic, moduletype, this).stream());
     }
 
     /**

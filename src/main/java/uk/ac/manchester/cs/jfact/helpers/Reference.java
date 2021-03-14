@@ -1,6 +1,7 @@
 package uk.ac.manchester.cs.jfact.helpers;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 
@@ -13,24 +14,21 @@ import javax.annotation.Nullable;
  * Typed strong reference
  * 
  * @author ignazio
- * @param <E>
- *        type
+ * @param <E> type
  */
 public class Reference<E> implements Serializable {
 
     private E e;
 
     /**
-     * @param e
-     *        e
+     * @param e e
      */
     public Reference(@Nullable E e) {
         setReference(e);
     }
 
     /**
-     * @param e
-     *        e
+     * @param e e
      */
     public void setReference(@Nullable E e) {
         this.e = e;
@@ -62,9 +60,6 @@ public class Reference<E> implements Serializable {
         if (this == arg0) {
             return true;
         }
-        if (arg0 instanceof Reference) {
-            return e != null ? e.equals(((Reference<?>) arg0).getReference()) : false;
-        }
-        return false;
+        return arg0 instanceof Reference && Objects.equals(e, ((Reference<?>) arg0).getReference());
     }
 }

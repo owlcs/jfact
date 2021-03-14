@@ -8,10 +8,17 @@ package uk.ac.manchester.cs.jfact.kernel;
 import static java.util.stream.Collectors.joining;
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 import static uk.ac.manchester.cs.jfact.kernel.InAx.getConcept;
-import static uk.ac.manchester.cs.jfact.kernel.Token.*;
+import static uk.ac.manchester.cs.jfact.kernel.Token.FORALL;
+import static uk.ac.manchester.cs.jfact.kernel.Token.LE;
+import static uk.ac.manchester.cs.jfact.kernel.Token.NOT;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
@@ -35,20 +42,20 @@ public class Axiom implements Serializable {
     private static LogAdapter absorptionLog;
     private Axiom origin;
     /** GCI is presented in the form (or Disjuncts); */
-    @PortedFrom(file = "tAxiom.h", name = "Disjuncts") private final Set<DLTree> disjuncts = new LinkedHashSet<>();
-    @Original private OntologyAtom atom;
+    @PortedFrom(file = "tAxiom.h", name = "Disjuncts")
+    private final Set<DLTree> disjuncts = new LinkedHashSet<>();
+    @Original
+    private OntologyAtom atom;
 
     /**
-     * @param parent
-     *        parent axiom
+     * @param parent parent axiom
      */
     public Axiom(@Nullable Axiom parent) {
         origin = parent;
     }
 
     /**
-     * @param l
-     *        absorption log
+     * @param l absorption log
      */
     public static void setLogAdapter(LogAdapter l) {
         absorptionLog = l;
@@ -58,16 +65,16 @@ public class Axiom implements Serializable {
     /**
      * absorb single concept into negation of a concept;
      * 
-     * @param tbox
-     *        KB
+     * @param tbox KB
      * @return true if absorption is performed
      */
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoNegConcept")
     public boolean absorbIntoNegConcept(TBox tbox) {
         // finds all primitive negated concept names without description
         // XXX check this peek that updates stats
-        List<DLTree> cons = asList(disjuncts.stream().filter(this::primitiveNegatedConceptNamesWithoutDescription).peek(
-            p -> tbox.getStatistics().sAbsNAttempt()));
+        List<DLTree> cons =
+            asList(disjuncts.stream().filter(this::primitiveNegatedConceptNamesWithoutDescription)
+                .peek(p -> tbox.getStatistics().sAbsNAttempt()));
         // if no concept names, return
         if (cons.isEmpty()) {
             return false;
@@ -99,8 +106,7 @@ public class Axiom implements Serializable {
     /**
      * create a copy of a given GCI; ignore SKIP entry
      * 
-     * @param skip
-     *        skip
+     * @param skip skip
      * @return copy
      */
     @PortedFrom(file = "tAxiom.h", name = "copy")
@@ -114,7 +120,7 @@ public class Axiom implements Serializable {
      * @return true iff an axiom is the same as one of its ancestors
      */
     @PortedFrom(file = "tAxiom.h", name = "isCyclic")
-        boolean isCyclic() {
+    boolean isCyclic() {
         Axiom p = origin;
         while (p != null) {
             if (p.equals(this)) {
@@ -129,17 +135,17 @@ public class Axiom implements Serializable {
     /**
      * simplify (OR C ...) for a non-primitive C in a given position
      * 
-     * @param pos
-     *        pos
-     * @param tbox
-     *        tbox
+     * @param pos pos
+     * @param tbox tbox
      * @return simplified axiom
      */
     @PortedFrom(file = "tAxiom.h", name = "simplifyPosNP")
     private Axiom simplifyPosNP(DLTree pos, TBox tbox) {
         tbox.getStatistics().sAbsRepCN();
         Axiom ret = copy(pos);
-        ret.add(DLTreeFactory.createSNFNot(InAx.getConcept(pos.getChild()).getDescription().copy()));
+        DLTree description = InAx.getConcept(pos.getChild()).getDescription();
+        assert description != null;
+        ret.add(DLTreeFactory.createSNFNot(description.copy()));
         absorptionLog.print(" simplify CN expression for ", pos.getChild());
         return ret;
     }
@@ -147,17 +153,17 @@ public class Axiom implements Serializable {
     /**
      * simplify (OR ~C ...) for a non-primitive C in a given position
      * 
-     * @param pos
-     *        pos
-     * @param tbox
-     *        tbox
+     * @param pos pos
+     * @param tbox tbox
      * @return simplified axiom
      */
     @PortedFrom(file = "tAxiom.h", name = "simplifyNegNP")
     private Axiom simplifyNegNP(DLTree pos, TBox tbox) {
         tbox.getStatistics().sAbsRepCN();
         Axiom ret = copy(pos);
-        ret.add(InAx.getConcept(pos).getDescription().copy());
+        DLTree description = InAx.getConcept(pos).getDescription();
+        assert description != null;
+        ret.add(description.copy());
         absorptionLog.print(" simplify ~CN expression for ", pos);
         return ret;
     }
@@ -165,12 +171,9 @@ public class Axiom implements Serializable {
     /**
      * split (OR (AND...) ...) in a given position
      * 
-     * @param acc
-     *        acc
-     * @param pos
-     *        pos
-     * @param pAnd
-     *        pAnd
+     * @param acc acc
+     * @param pos pos
+     * @param pAnd pAnd
      */
     @PortedFrom(file = "tAxiom.h", name = "split")
     private void split(List<Axiom> acc, DLTree pos, DLTree pAnd) {
@@ -191,15 +194,15 @@ public class Axiom implements Serializable {
     /**
      * split an axiom;
      * 
-     * @param tbox
-     *        tbox
+     * @param tbox tbox
      * @return new axiom and/or NULL
      */
     @PortedFrom(file = "tAxiom.h", name = "split")
     public List<Axiom> split(TBox tbox) {
         // XXX check this peek updating stats
-        Optional<DLTree> findAny = disjuncts.stream().filter(InAx::isAnd).peek(p -> tbox.getStatistics().sAbsSplit())
-            .peek(p -> absorptionLog.print(" split AND expression ", p.getChild())).findAny();
+        Optional<DLTree> findAny =
+            disjuncts.stream().filter(InAx::isAnd).peek(p -> tbox.getStatistics().sAbsSplit())
+                .peek(p -> absorptionLog.print(" split AND expression ", p.getChild())).findAny();
         // no need to split more than once:
         // every extra splits would be together with unsplitted parts
         // like: (A or B) and (C or D) would be transform into
@@ -216,8 +219,7 @@ public class Axiom implements Serializable {
     /**
      * add DLTree to an axiom
      * 
-     * @param p
-     *        tree to add
+     * @param p tree to add
      */
     @PortedFrom(file = "tAxiom.h", name = "add")
     public void add(DLTree p) {
@@ -243,8 +245,7 @@ public class Axiom implements Serializable {
     /**
      * replace a defined concept with its description
      * 
-     * @param t
-     *        tbox
+     * @param t tbox
      * @return rewritten axiom
      */
     @Nullable
@@ -263,8 +264,7 @@ public class Axiom implements Serializable {
     /**
      * replace a universal restriction with a fresh concept
      * 
-     * @param kb
-     *        tbox
+     * @param kb tbox
      * @return rewritten axiom
      */
     @Nullable
@@ -280,8 +280,7 @@ public class Axiom implements Serializable {
     /**
      * replace a simple universal restriction with a fresh concept
      * 
-     * @param kb
-     *        tbox
+     * @param kb tbox
      * @return simplified axiom
      */
     @Nullable
@@ -305,11 +304,9 @@ public class Axiom implements Serializable {
     }
 
     /**
-     * create a concept expression corresponding to a given GCI; ignore SKIP
-     * entry
+     * create a concept expression corresponding to a given GCI; ignore SKIP entry
      * 
-     * @param replaced
-     *        ignored entity
+     * @param replaced ignored entity
      * @return rewritten DLTree
      */
     @PortedFrom(file = "tAxiom.h", name = "createAnAxiom")
@@ -319,7 +316,8 @@ public class Axiom implements Serializable {
             return DLTreeFactory.createBottom();
         }
         assert !disjuncts.isEmpty();
-        List<DLTree> leaves = asList(disjuncts.stream().filter(d -> !d.equals(replaced)).map(d -> d.copy()));
+        List<DLTree> leaves =
+            asList(disjuncts.stream().filter(d -> !d.equals(replaced)).map(DLTree::copy));
         DLTree result = DLTreeFactory.createSNFAnd(leaves);
         return DLTreeFactory.createSNFNot(result);
     }
@@ -327,8 +325,7 @@ public class Axiom implements Serializable {
     /**
      * absorb into BOTTOM;
      * 
-     * @param tbox
-     *        tbox
+     * @param tbox tbox
      * @return true if absorption is performed
      */
     @SuppressWarnings("incomplete-switch")
@@ -377,8 +374,7 @@ public class Axiom implements Serializable {
     /**
      * absorb into concept; @return true if absorption is performed
      * 
-     * @param tbox
-     *        tbox
+     * @param tbox tbox
      * @return false if there are no absorptions
      */
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoConcept")
@@ -422,7 +418,8 @@ public class Axiom implements Serializable {
         return true;
     }
 
-    protected void logOptions(String prefix, List<DLTree> cons, IRI conceptName, JFactReasonerConfiguration options) {
+    protected void logOptions(String prefix, List<DLTree> cons, IRI conceptName,
+        JFactReasonerConfiguration options) {
         if (options.isAbsorptionLoggingActive()) {
             absorptionLog.print(prefix, conceptName);
             if (cons.size() > 1) {
@@ -435,7 +432,8 @@ public class Axiom implements Serializable {
                         l.addAll(t.getChildren());
                     }
                 });
-                String collect = l.stream().map(p -> InAx.getConcept(p).getIRI()).collect(joining(" "));
+                String collect =
+                    l.stream().map(p -> InAx.getConcept(p).getIRI()).collect(joining(" "));
                 absorptionLog.print(" (other options are ").print(collect).print(")");
             }
         }
@@ -444,8 +442,7 @@ public class Axiom implements Serializable {
     /**
      * absorb single axiom AX into role domain; @return true if succeed
      * 
-     * @param tbox
-     *        tbox
+     * @param tbox tbox
      * @return false if there are no absorptions
      */
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoDomain")
@@ -455,7 +452,8 @@ public class Axiom implements Serializable {
         // find all forall concepts
         for (DLTree p : disjuncts) {
             // \neg ER.C and \neg >= n R.C
-            if (p.token() == NOT && (p.getChild().token() == FORALL || p.getChild().token() == LE)) {
+            if (p.token() == NOT
+                && (p.getChild().token() == FORALL || p.getChild().token() == LE)) {
                 tbox.getStatistics().sAbsRAttempt();
                 cons.add(p);
                 // check for the direct domain case
@@ -487,8 +485,7 @@ public class Axiom implements Serializable {
     /**
      * absorb into TOP;
      * 
-     * @param tbox
-     *        tbox
+     * @param tbox tbox
      * @return true if any absorption is performed
      */
     @PortedFrom(file = "tAxiom.h", name = "absorbIntoTop")
@@ -562,8 +559,7 @@ public class Axiom implements Serializable {
     }
 
     /**
-     * @param atom
-     *        atom
+     * @param atom atom
      */
     @Original
     public void setAtom(OntologyAtom atom) {

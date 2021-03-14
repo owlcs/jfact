@@ -6,7 +6,6 @@
 package conformancetests;
 
 import org.junit.Test;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import testbase.TestBase;
 
@@ -14,23 +13,18 @@ import testbase.TestBase;
 public class WebOnt_description_logic_209TestCase extends TestBase {
 
     @Test
-    public void testWebOnt_description_logic_209() throws OWLOntologyCreationException {
-        String conclusion = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+    public void testWebOnt_description_logic_209() {
+        conclusion = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
             + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
             + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
             + "Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\n"
             + "Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)\n" + "Ontology(\n"
             + "Declaration(Class(<http://oiled.man.example.net/test#C122>))\n"
-            + "ClassAssertion(<http://oiled.man.example.net/test#C122> <http://oiled.man.example.net/test#V16448>)\n" +
-            // ClassAssertion(owl:Thing
-            // <http://oiled.man.example.net/test#V16448>)
-        ')';
-        String id = "WebOnt_description_logic_209";
-        TestClasses tc = TestClasses.valueOf("NEGATIVE_IMPL");
-        String d = "DL Test: k_poly\n" + "ABox test from DL98 systems comparison.\n"
-            + "(Modified in light of implementation feedback, see test description-logic-208).";
-        JUnitRunner r = new JUnitRunner(m, asString(m, "/webont209.owl"), conclusion, id, tc, d);
-        r.setReasonerFactory(factory());
-        r.run();
+            + "ClassAssertion(<http://oiled.man.example.net/test#C122> <http://oiled.man.example.net/test#V16448>)\n"
+            + // ClassAssertion(owl:Thing <http://oiled.man.example.net/test#V16448>)
+            ')';
+        premise = asString("/webont209.owl");
+        test("WebOnt_description_logic_209", TestClasses.NEGATIVE_IMPL,
+            "DL Test: k_poly ABox test from DL98 systems comparison. (Modified in light of implementation feedback, see test description-logic-208).");
     }
 }

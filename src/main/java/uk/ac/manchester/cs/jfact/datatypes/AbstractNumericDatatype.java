@@ -1,7 +1,13 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
-import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.*;
-import static uk.ac.manchester.cs.jfact.datatypes.Facets.*;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.DOUBLE;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.FLOAT;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.LITERAL;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.increase;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.maxExclusive;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.maxInclusive;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.minExclusive;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.minInclusive;
 
 import java.util.Set;
 
@@ -9,10 +15,10 @@ import javax.annotation.Nullable;
 
 import org.semanticweb.owlapi.model.HasIRI;
 
-abstract class AbstractNumericDatatype<R extends Comparable<R>> extends AbstractDatatype<R> implements
-    NumericDatatype<R> {
+abstract class AbstractNumericDatatype<R extends Comparable<R>> extends AbstractDatatype<R>
+    implements NumericDatatype<R> {
 
-    public AbstractNumericDatatype(HasIRI uri, Set<Facet> f, Set<Datatype<?>> ancestors) {
+    protected AbstractNumericDatatype(HasIRI uri, Set<Facet> f, Set<Datatype<?>> ancestors) {
         super(uri, f, ancestors);
     }
 
@@ -80,7 +86,6 @@ abstract class AbstractNumericDatatype<R extends Comparable<R>> extends Abstract
         return true;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public boolean isCompatible(Datatype<?> type) {
         if (type.equals(LITERAL)) {
@@ -92,20 +97,12 @@ abstract class AbstractNumericDatatype<R extends Comparable<R>> extends Abstract
             if (type.equals(FLOAT) || type.equals(DOUBLE)) {
                 return super.isCompatible(type);
             }
-            NumericDatatype<R> wrapper;
-            if (type instanceof NumericDatatype) {
-                wrapper = (NumericDatatype<R>) type;
-            } else {
-                wrapper = AbstractNumericDatatype.wrap((Datatype<R>) type);
-            }
-            // then both types are numeric
-            // if both have no max or both have no min -> there is an
-            // overlap
-            // if one has no max, then min must be smaller than max of the
-            // other
-            // if one has no min, the max must be larger than min of the
-            // other
-            // if one has neither max nor min, they are compatible
+            NumericDatatype<R> wrapper = selectWrapper(type);
+            // Then both types are numeric.
+            // If both have no max or both have no min then there is an overlap.
+            // If one has no max, then min must be smaller than max of the other.
+            // If one has no min, the max must be larger than min of the other.
+            // If one has neither max nor min, they are compatible.
             if (!this.hasMax() && !this.hasMin()) {
                 return true;
             }
@@ -118,17 +115,11 @@ abstract class AbstractNumericDatatype<R extends Comparable<R>> extends Abstract
             if (!this.hasMin() && !wrapper.hasMin()) {
                 return true;
             }
-            if (!this.hasMin()) {
+            if (!this.hasMin() || !wrapper.hasMax()) {
                 return overlapping(this, wrapper);
             }
-            if (!this.hasMax()) {
+            if (!this.hasMax() || !wrapper.hasMin()) {
                 return overlapping(wrapper, this);
-            }
-            if (!wrapper.hasMin()) {
-                return overlapping(wrapper, this);
-            }
-            if (!wrapper.hasMax()) {
-                return overlapping(this, wrapper);
             }
             // compare their range facets:
             // disjoint if:
@@ -141,15 +132,29 @@ abstract class AbstractNumericDatatype<R extends Comparable<R>> extends Abstract
         }
     }
 
+    protected NumericDatatype<R> selectWrapper(Datatype<?> type) {
+        NumericDatatype<R> wrapper;
+        if (type instanceof NumericDatatype) {
+            wrapper = (NumericDatatype<R>) type;
+        } else {
+            wrapper = AbstractNumericDatatype.wrap((Datatype<R>) type);
+        }
+        return wrapper;
+    }
+
     @Override
     public boolean emptyValueSpace() {
         if (!hasMin() || !hasMax()) {
             return false;
         }
+        R max = getMax();
+        assert max != null;
+        R min = getMin();
         if (hasMaxExclusive() && hasMinExclusive()) {
-            return getMax().compareTo((R) increase((Number) getMin())) < 0;
+            assert min != null;
+            return max.compareTo((R) increase((Number) min)) < 0;
         }
-        return getMax().compareTo(getMin()) < 0;
+        return max.compareTo(min) < 0;
     }
 
     private static <O extends Comparable<O>> NumericDatatype<O> wrap(Datatype<O> d) {
@@ -189,24 +194,14 @@ abstract class AbstractNumericDatatype<R extends Comparable<R>> extends Abstract
     @Nullable
     @Override
     public R getMin() {
-        if (this.hasMinExclusive()) {
-            return (R) knownNumericFacetValues.get(minExclusive);
-        }
-        if (this.hasMinInclusive()) {
-            return (R) knownNumericFacetValues.get(minInclusive);
-        }
-        return null;
+        return (R) knownNumericFacetValues.getOrDefault(minExclusive,
+            knownNumericFacetValues.getOrDefault(minInclusive, null));
     }
 
     @Nullable
     @Override
     public R getMax() {
-        if (this.hasMaxExclusive()) {
-            return (R) knownNumericFacetValues.get(maxExclusive);
-        }
-        if (this.hasMaxInclusive()) {
-            return (R) knownNumericFacetValues.get(maxInclusive);
-        }
-        return null;
+        return (R) knownNumericFacetValues.getOrDefault(maxExclusive,
+            knownNumericFacetValues.getOrDefault(maxInclusive, null));
     }
 }

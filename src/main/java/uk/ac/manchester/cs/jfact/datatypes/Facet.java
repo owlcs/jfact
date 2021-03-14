@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
+import java.io.Serializable;
+
 import org.semanticweb.owlapi.vocab.OWLFacet;
 
 /* This file is part of the JFact DL reasoner
@@ -10,24 +12,21 @@ import org.semanticweb.owlapi.vocab.OWLFacet;
 /**
  * @author ignazio
  */
-public interface Facet {
+public interface Facet extends Serializable {
 
     /**
-     * This is a convenience method that enables each facet to parse its values
-     * without client code having to worry whether the values are literals or
-     * strings - the typing is known to the facet implementation
+     * This is a convenience method that enables each facet to parse its values without client code
+     * having to worry whether the values are literals or strings - the typing is known to the facet
+     * implementation
      * 
-     * @param value
-     *        value
-     * @param <T>
-     *        type
+     * @param value value
+     * @param <T> type
      * @return value that is assigned to this facet
      */
     <T extends Comparable<T>> T parseNumber(Object value);
 
     /**
-     * @param value
-     *        value
+     * @param value value
      * @return the typed value for value
      */
     @SuppressWarnings("rawtypes")

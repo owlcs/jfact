@@ -2,6 +2,8 @@ package uk.ac.manchester.cs.jfact.helpers;
 
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -23,10 +25,8 @@ public interface LogAdapter extends Serializable {
     }
 
     /**
-     * @param t
-     *        t
-     * @param strings
-     *        strings
+     * @param t t
+     * @param strings strings
      * @return the log adapter for chaining
      */
     default LogAdapter printTemplate(Templates t, Object... strings) {
@@ -34,10 +34,8 @@ public interface LogAdapter extends Serializable {
     }
 
     /**
-     * @param t
-     *        t
-     * @param strings
-     *        strings
+     * @param t t
+     * @param strings strings
      * @return the log adapter for chaining
      */
     default LogAdapter printTemplateInt(Templates t, int... strings) {
@@ -45,12 +43,9 @@ public interface LogAdapter extends Serializable {
     }
 
     /**
-     * @param t
-     *        t
-     * @param s
-     *        s
-     * @param strings
-     *        strings
+     * @param t t
+     * @param s s
+     * @param strings strings
      * @return the log adapter for chaining
      */
     default LogAdapter printTemplateMixInt(Templates t, Object s, int... strings) {
@@ -58,8 +53,7 @@ public interface LogAdapter extends Serializable {
     }
 
     /**
-     * @param i
-     *        i
+     * @param i i
      * @return the log adapter for chaining
      */
     default LogAdapter print(int i) {
@@ -72,8 +66,7 @@ public interface LogAdapter extends Serializable {
     }
 
     /**
-     * @param d
-     *        d
+     * @param d d
      * @return the log adapter for chaining
      */
     default LogAdapter print(double d) {
@@ -81,8 +74,7 @@ public interface LogAdapter extends Serializable {
     }
 
     /**
-     * @param f
-     *        f
+     * @param f f
      * @return the log adapter for chaining
      */
     default LogAdapter print(float f) {
@@ -90,8 +82,7 @@ public interface LogAdapter extends Serializable {
     }
 
     /**
-     * @param b
-     *        b
+     * @param b b
      * @return the log adapter for chaining
      */
     default LogAdapter print(boolean b) {
@@ -99,8 +90,7 @@ public interface LogAdapter extends Serializable {
     }
 
     /**
-     * @param b
-     *        b
+     * @param b b
      * @return the log adapter for chaining
      */
     default LogAdapter print(byte b) {
@@ -108,8 +98,7 @@ public interface LogAdapter extends Serializable {
     }
 
     /**
-     * @param c
-     *        c
+     * @param c c
      * @return the log adapter for chaining
      */
     default LogAdapter print(char c) {
@@ -117,8 +106,7 @@ public interface LogAdapter extends Serializable {
     }
 
     /**
-     * @param s
-     *        s
+     * @param s s
      * @return the log adapter for chaining
      */
     default LogAdapter print(short s) {
@@ -126,8 +114,7 @@ public interface LogAdapter extends Serializable {
     }
 
     /**
-     * @param s
-     *        s
+     * @param s s
      * @return the log adapter for chaining
      */
     default LogAdapter print(String s) {
@@ -135,8 +122,7 @@ public interface LogAdapter extends Serializable {
     }
 
     /**
-     * @param s
-     *        s
+     * @param s s
      * @return the log adapter for chaining
      */
     default LogAdapter print(Object s) {
@@ -144,8 +130,7 @@ public interface LogAdapter extends Serializable {
     }
 
     /**
-     * @param s
-     *        s
+     * @param s s
      * @return the log adapter for chaining
      */
     default LogAdapter print(Object... s) {
@@ -153,23 +138,18 @@ public interface LogAdapter extends Serializable {
     }
 
     /**
-     * @param s1
-     *        s1
-     * @param s2
-     *        s2
+     * @param s1 s1
+     * @param s2 s2
      * @return the log adapter for chaining
      */
-    default LogAdapter print(Object s1, Object s2) {
+    default LogAdapter print(Object s1, @Nullable Object s2) {
         return this;
     }
 
     /**
-     * @param s1
-     *        s1
-     * @param s2
-     *        s2
-     * @param s3
-     *        s3
+     * @param s1 s1
+     * @param s2 s2
+     * @param s3 s3
      * @return the log adapter for chaining
      */
     default LogAdapter print(Object s1, Object s2, Object s3) {
@@ -177,14 +157,10 @@ public interface LogAdapter extends Serializable {
     }
 
     /**
-     * @param s1
-     *        s1
-     * @param s2
-     *        s2
-     * @param s3
-     *        s3
-     * @param s4
-     *        s4
+     * @param s1 s1
+     * @param s2 s2
+     * @param s3 s3
+     * @param s4 s4
      * @return the log adapter for chaining
      */
     default LogAdapter print(Object s1, Object s2, Object s3, Object s4) {
@@ -192,16 +168,11 @@ public interface LogAdapter extends Serializable {
     }
 
     /**
-     * @param s1
-     *        s1
-     * @param s2
-     *        s2
-     * @param s3
-     *        s3
-     * @param s4
-     *        s4
-     * @param s5
-     *        s5
+     * @param s1 s1
+     * @param s2 s2
+     * @param s3 s3
+     * @param s4 s4
+     * @param s5 s5
      * @return the log adapter for chaining
      */
     default LogAdapter print(Object s1, Object s2, Object s3, Object s4, Object s5) {

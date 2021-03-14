@@ -53,21 +53,19 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
 /**
  * adapter for expression visitor
  * 
- * @param <A>
- *        return type
+ * @param <A> return type
  */
-public abstract class DLExpressionVisitorExAdapter<A> implements
-        DLExpressionVisitorEx<A>, Serializable {
+public abstract class DLExpressionVisitorExAdapter<A>
+    implements DLExpressionVisitorEx<A>, Serializable {
 
 
     @Nonnull
     private A defaultValue;
 
     /**
-     * @param a
-     *        return value
+     * @param a return value
      */
-    public DLExpressionVisitorExAdapter(A a) {
+    protected DLExpressionVisitorExAdapter(A a) {
         defaultValue = a;
     }
 

@@ -7,14 +7,37 @@ package uk.ac.manchester.cs.jfact.kernel;
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static java.util.stream.Collectors.joining;
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
-import static uk.ac.manchester.cs.jfact.helpers.DLTreeFactory.*;
-import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
+import static uk.ac.manchester.cs.jfact.helpers.DLTreeFactory.buildDisjAux;
+import static uk.ac.manchester.cs.jfact.helpers.DLTreeFactory.createInverse;
+import static uk.ac.manchester.cs.jfact.helpers.DLTreeFactory.createSNFForall;
+import static uk.ac.manchester.cs.jfact.helpers.DLTreeFactory.createSNFNot;
+import static uk.ac.manchester.cs.jfact.helpers.DLTreeFactory.replaceSynonymsFromTree;
+import static uk.ac.manchester.cs.jfact.helpers.Helper.BP_BOTTOM;
+import static uk.ac.manchester.cs.jfact.helpers.Helper.BP_INVALID;
+import static uk.ac.manchester.cs.jfact.helpers.Helper.BP_TOP;
+import static uk.ac.manchester.cs.jfact.helpers.Helper.allPairs;
+import static uk.ac.manchester.cs.jfact.helpers.Helper.createBiPointer;
+import static uk.ac.manchester.cs.jfact.helpers.Helper.isValid;
+import static uk.ac.manchester.cs.jfact.helpers.Helper.pairs;
 import static uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry.resolveSynonym;
-import static uk.ac.manchester.cs.jfact.kernel.DagTag.*;
-import static uk.ac.manchester.cs.jfact.kernel.KBStatus.*;
+import static uk.ac.manchester.cs.jfact.kernel.DagTag.DATATYPE;
+import static uk.ac.manchester.cs.jfact.kernel.DagTag.DATAVALUE;
+import static uk.ac.manchester.cs.jfact.kernel.DagTag.IRR;
+import static uk.ac.manchester.cs.jfact.kernel.DagTag.NCONCEPT;
+import static uk.ac.manchester.cs.jfact.kernel.DagTag.NSINGLETON;
+import static uk.ac.manchester.cs.jfact.kernel.DagTag.PCONCEPT;
+import static uk.ac.manchester.cs.jfact.kernel.DagTag.PSINGLETON;
+import static uk.ac.manchester.cs.jfact.kernel.KBStatus.KBCHECKED;
+import static uk.ac.manchester.cs.jfact.kernel.KBStatus.KBCLASSIFIED;
+import static uk.ac.manchester.cs.jfact.kernel.KBStatus.KBLOADING;
+import static uk.ac.manchester.cs.jfact.kernel.KBStatus.KBREALISED;
 import static uk.ac.manchester.cs.jfact.kernel.Role.resolveRole;
 import static uk.ac.manchester.cs.jfact.kernel.RoleMaster.addRoleSynonym;
-import static uk.ac.manchester.cs.jfact.kernel.Token.*;
+import static uk.ac.manchester.cs.jfact.kernel.Token.CNAME;
+import static uk.ac.manchester.cs.jfact.kernel.Token.INAME;
+import static uk.ac.manchester.cs.jfact.kernel.Token.NOT;
+import static uk.ac.manchester.cs.jfact.kernel.Token.OR;
+import static uk.ac.manchester.cs.jfact.kernel.Token.SELF;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,6 +48,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -61,6 +85,7 @@ import uk.ac.manchester.cs.jfact.helpers.Timer;
 import uk.ac.manchester.cs.jfact.helpers.UnreachableSituationException;
 import uk.ac.manchester.cs.jfact.kernel.dl.DataRoleName;
 import uk.ac.manchester.cs.jfact.kernel.dl.ObjectRoleName;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheConst;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheInterface;
 import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheSingleton;
@@ -73,142 +98,188 @@ public class TBox implements Serializable {
 
     private static final String DONE_IN = " done in ";
     private static final String SECONDS = " seconds\n\n";
-    @PortedFrom(file = "dlTBox.h", name = "relevance") private long relevance = 1;
-    @PortedFrom(file = "dlTBox.h", name = "DLHeap") private final DLDag dlHeap;
+    @PortedFrom(file = "dlTBox.h", name = "relevance")
+    private long relevance = 1;
+    @PortedFrom(file = "dlTBox.h", name = "DLHeap")
+    private final DLDag dlHeap;
     /** reasoner for TBox-related queries w/o nominals */
-    @PortedFrom(file = "dlTBox.h", name = "stdReasoner") private DlSatTester stdReasoner = null;
+    @PortedFrom(file = "dlTBox.h", name = "stdReasoner")
+    private DlSatTester stdReasoner = null;
     /** use this macro to do the same action with all available reasoners */
     /** reasoner for TBox-related queries with nominals */
-    @PortedFrom(file = "dlTBox.h", name = "nomReasoner") private NominalReasoner nomReasoner;
+    @PortedFrom(file = "dlTBox.h", name = "nomReasoner")
+    private NominalReasoner nomReasoner;
     /** taxonomy structure of a TBox */
-    @PortedFrom(file = "dlTBox.h", name = "pTax") private Taxonomy pTax;
+    @PortedFrom(file = "dlTBox.h", name = "pTax")
+    private Taxonomy pTax;
     /** classifier */
-    @PortedFrom(file = "dlTBox.h", name = "pTaxCreator") private DLConceptTaxonomy pTaxCreator;
+    @PortedFrom(file = "dlTBox.h", name = "pTaxCreator")
+    private DLConceptTaxonomy pTaxCreator;
     /** name-signature map */
-    @PortedFrom(file = "dlTBox.h", name = "pName2Sig") private Map<OWLEntity, Signature> pName2Sig;
+    @PortedFrom(file = "dlTBox.h", name = "pName2Sig")
+    private Map<OWLEntity, Signature> pName2Sig;
     /** set of reasoning options */
-    @Original private final JFactReasonerConfiguration config;
+    @Original
+    private final JFactReasonerConfiguration config;
     /** status of the KB */
-    @PortedFrom(file = "dlTBox.h", name = "Status") private KBStatus kbStatus;
+    @PortedFrom(file = "dlTBox.h", name = "Status")
+    private KBStatus status;
     /** global KB features */
-    @PortedFrom(file = "dlTBox.h", name = "KBFeatures") private final LogicFeatures kbFeatures = new LogicFeatures();
+    @PortedFrom(file = "dlTBox.h", name = "KBFeatures")
+    private final LogicFeatures kbFeatures = new LogicFeatures();
     /** GCI features */
-    @PortedFrom(file = "dlTBox.h", name = "GCIFeatures") private final LogicFeatures gciFeatures = new LogicFeatures();
+    @PortedFrom(file = "dlTBox.h", name = "GCIFeatures")
+    private final LogicFeatures gciFeatures = new LogicFeatures();
     /** nominal cloud features */
-    @PortedFrom(file = "dlTBox.h", name = "NCFeatures") private LogicFeatures nominalCloudFeatures = new LogicFeatures();
+    @PortedFrom(file = "dlTBox.h", name = "NCFeatures")
+    private LogicFeatures nominalCloudFeatures = new LogicFeatures();
     /** aux features */
-    @PortedFrom(file = "dlTBox.h", name = "auxFeatures") private LogicFeatures auxFeatures = new LogicFeatures();
+    @PortedFrom(file = "dlTBox.h", name = "auxFeatures")
+    private LogicFeatures auxFeatures = new LogicFeatures();
     /** pointer to current feature (in case of local ones) */
-    @PortedFrom(file = "dlTBox.h", name = "curFeature") private LogicFeatures curFeature = null;
+    @PortedFrom(file = "dlTBox.h", name = "curFeature")
+    private LogicFeatures curFeature = null;
     /**
-     * concept representing temporary one that can not be used anywhere in the
-     * ontology
+     * concept representing temporary one that can not be used anywhere in the ontology
      */
-    @PortedFrom(file = "dlTBox.h", name = "pTemp") private Concept pTemp;
+    @PortedFrom(file = "dlTBox.h", name = "pTemp")
+    private Concept pTemp;
     /** temporary concept that represents query */
-    @PortedFrom(file = "dlTBox.h", name = "pQuery") private Concept pQuery;
+    @PortedFrom(file = "dlTBox.h", name = "pQuery")
+    private Concept pQuery;
     /** all named concepts */
-    @PortedFrom(file = "dlTBox.h", name = "concepts") private NamedEntryCollection<Concept> concepts;
+    @PortedFrom(file = "dlTBox.h", name = "concepts")
+    private NamedEntryCollection<Concept> concepts;
     /** all named individuals/nominals */
-    @PortedFrom(file = "dlTBox.h", name = "individuals") private NamedEntryCollection<Individual> individuals;
+    @PortedFrom(file = "dlTBox.h", name = "individuals")
+    private NamedEntryCollection<Individual> individuals;
     /** "normal" (object) roles */
-    @PortedFrom(file = "dlTBox.h", name = "ORM") private final RoleMaster objectRoleMaster;
+    @PortedFrom(file = "dlTBox.h", name = "ORM")
+    private final RoleMaster objectRoleMaster;
     /** data roles */
-    @PortedFrom(file = "dlTBox.h", name = "DRM") private final RoleMaster dataRoleMaster;
+    @PortedFrom(file = "dlTBox.h", name = "DRM")
+    private final RoleMaster dataRoleMaster;
     /** set of GCIs */
-    @PortedFrom(file = "dlTBox.h", name = "Axioms") private AxiomSet axioms;
+    @PortedFrom(file = "dlTBox.h", name = "Axioms")
+    private AxiomSet axioms;
     /** given individual-individual relations */
-    @PortedFrom(file = "dlTBox.h", name = "RelatedI") private final List<Related> relatedIndividuals = new ArrayList<>();
+    @PortedFrom(file = "dlTBox.h", name = "RelatedI")
+    private final List<Related> relatedIndividuals = new ArrayList<>();
     /** known disjoint sets of individuals */
-    @PortedFrom(file = "dlTBox.h", name = "DifferentIndividuals") private final List<List<Individual>> differentIndividuals = new ArrayList<>();
+    @PortedFrom(file = "dlTBox.h", name = "DifferentIndividuals")
+    private final List<List<Individual>> differentIndividuals = new ArrayList<>();
     /** all simple rules in KB */
-    @PortedFrom(file = "dlTBox.h", name = "SimpleRules") private final List<SimpleRule> simpleRules = new ArrayList<>();
+    @PortedFrom(file = "dlTBox.h", name = "SimpleRules")
+    private final List<SimpleRule> simpleRules = new ArrayList<>();
     /** internalisation of a general axioms */
-    @PortedFrom(file = "dlTBox.h", name = "T_G") private int internalisedGeneralAxiom;
+    @PortedFrom(file = "dlTBox.h", name = "T_G")
+    private int internalisedGeneralAxiom;
     /** KB flags about GCIs */
-    @PortedFrom(file = "dlTBox.h", name = "GCIs") private final KBFlags gcis = new KBFlags();
+    @PortedFrom(file = "dlTBox.h", name = "GCIs")
+    private final KBFlags gcis = new KBFlags();
     /** cache for the \forall R.C replacements during absorption */
-    @PortedFrom(file = "dlTBox.h", name = "RCCache") private final Map<DLTree, Concept> forallRCCache = new HashMap<>();
+    @PortedFrom(file = "dlTBox.h", name = "RCCache")
+    private final Map<DLTree, Concept> forallRCCache = new HashMap<>();
     /** current aux concept's ID */
-    @PortedFrom(file = "dlTBox.h", name = "auxConceptID") private int auxConceptID = 0;
+    @PortedFrom(file = "dlTBox.h", name = "auxConceptID")
+    private int auxConceptID = 0;
     /**
-     * how many times nominals were found during translation to DAG; local to
-     * BuildDAG
+     * how many times nominals were found during translation to DAG; local to BuildDAG
      */
-    @PortedFrom(file = "dlTBox.h", name = "nNominalReferences") private int nNominalReferences;
+    @PortedFrom(file = "dlTBox.h", name = "nNominalReferences")
+    private int nNominalReferences;
     /** searchable stack for the told subsumers */
-    @PortedFrom(file = "dlTBox.h", name = "CInProcess") private final Set<Concept> conceptInProcess = new HashSet<>();
+    @PortedFrom(file = "dlTBox.h", name = "CInProcess")
+    private final Set<Concept> conceptInProcess = new HashSet<>();
     /** fairness constraints */
-    @PortedFrom(file = "dlTBox.h", name = "Fairness") private final List<Concept> fairness = new ArrayList<>();
+    @PortedFrom(file = "dlTBox.h", name = "Fairness")
+    private final List<Concept> fairness = new ArrayList<>();
     // Reasoner's members: there are many reasoner classes, some members are
     // shared
     /** let reasoner know that we are in the classificaton (for splits) */
-    @PortedFrom(file = "dlTBox.h", name = "duringClassification") private boolean duringClassification;
+    @PortedFrom(file = "dlTBox.h", name = "duringClassification")
+    private boolean duringClassification;
     // Internally defined flags
     /** flag whether TBox is GALEN-like */
-    @PortedFrom(file = "dlTBox.h", name = "isLikeGALEN") private boolean isLikeGALEN;
+    @PortedFrom(file = "dlTBox.h", name = "isLikeGALEN")
+    private boolean isLikeGALEN;
     /** flag whether TBox is WINE-like */
-    @PortedFrom(file = "dlTBox.h", name = "isLikeWINE") private boolean isLikeWINE;
+    @PortedFrom(file = "dlTBox.h", name = "isLikeWINE")
+    private boolean isLikeWINE;
     /** whether KB is consistent */
-    @PortedFrom(file = "dlTBox.h", name = "consistent") private boolean consistent;
+    @PortedFrom(file = "dlTBox.h", name = "consistent")
+    private boolean consistent;
     /** time spend for preprocessing */
-    @PortedFrom(file = "dlTBox.h", name = "preprocTime") private long preprocTime;
+    @PortedFrom(file = "dlTBox.h", name = "preprocTime")
+    private long preprocTime;
     /** time spend for consistency checking */
-    @PortedFrom(file = "dlTBox.h", name = "consistTime") private long consistTime;
+    @PortedFrom(file = "dlTBox.h", name = "consistTime")
+    private long consistTime;
     /** number of concepts and individuals; used to set index for modelCache */
-    @PortedFrom(file = "dlTBox.h", name = "nC") protected int nC = 0;
+    @PortedFrom(file = "dlTBox.h", name = "nC")
+    protected int nC = 0;
     /** number of all distinct roles; used to set index for modelCache */
-    @PortedFrom(file = "dlTBox.h", name = "nR") protected AtomicInteger nR = new AtomicInteger(0);
+    @PortedFrom(file = "dlTBox.h", name = "nR")
+    protected AtomicInteger nR = new AtomicInteger(0);
     /** maps from concept index to concept itself */
-    @PortedFrom(file = "dlTBox.h", name = "ConceptMap") private final List<Concept> conceptMap = new ArrayList<>();
+    @PortedFrom(file = "dlTBox.h", name = "ConceptMap")
+    private final List<Concept> conceptMap = new ArrayList<>();
     /** map to show the possible equivalence between individuals */
-    @PortedFrom(file = "dlTBox.h", name = "SameI") private final Map<Concept, Pair> sameIndividuals = new HashMap<>();
+    @PortedFrom(file = "dlTBox.h", name = "SameI")
+    private final Map<Concept, Pair> sameIndividuals = new HashMap<>();
     /** all the synonyms in the told subsumers' cycle */
-    @PortedFrom(file = "dlTBox.h", name = "ToldSynonyms") private final Set<Concept> toldSynonyms = new HashSet<>();
-    /** status of the KB */
-    @PortedFrom(file = "dlTBox.h", name = "Status") private KBStatus status;
+    @PortedFrom(file = "dlTBox.h", name = "ToldSynonyms")
+    private final Set<Concept> toldSynonyms = new HashSet<>();
     private Map<Concept, DLTree> extraConceptDefs = new HashMap<>();
     private InAx statistics = new InAx();
-    @PortedFrom(file = "dlTBox.h", name = "arrayCD") private final List<Concept> arrayCD = new ArrayList<>();
-    @PortedFrom(file = "dlTBox.h", name = "arrayNoCD") private final List<Concept> arrayNoCD = new ArrayList<>();
-    @PortedFrom(file = "dlTBox.h", name = "arrayNP") private final List<Concept> arrayNP = new ArrayList<>();
-    @Original private int nItems = 0;
-    @Original private final AtomicBoolean interrupted;
-    @Original private final DatatypeFactory datatypeFactory;
-    @PortedFrom(file = "dlTBox.h", name = "top") private Concept top;
-    @PortedFrom(file = "dlTBox.h", name = "bottom") private Concept bottom;
-    @PortedFrom(file = "dlTBox.h", name = "nRelevantCCalls") private long nRelevantCCalls;
-    @PortedFrom(file = "dlTBox.h", name = "nRelevantBCalls") private long nRelevantBCalls;
-    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "IV") private final IterableVec<Individual> iv = new IterableVec<>();
-    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "concepts") private final TIntArrayList conceptsForQueryAnswering = new TIntArrayList();
+    @PortedFrom(file = "dlTBox.h", name = "arrayCD")
+    private final List<Concept> arrayCD = new ArrayList<>();
+    @PortedFrom(file = "dlTBox.h", name = "arrayNoCD")
+    private final List<Concept> arrayNoCD = new ArrayList<>();
+    @PortedFrom(file = "dlTBox.h", name = "arrayNP")
+    private final List<Concept> arrayNP = new ArrayList<>();
+    @Original
+    private int nItems = 0;
+    @Original
+    private final AtomicBoolean interrupted;
+    @Original
+    private final DatatypeFactory datatypeFactory;
+    @PortedFrom(file = "dlTBox.h", name = "top")
+    private Concept top;
+    @PortedFrom(file = "dlTBox.h", name = "bottom")
+    private Concept bottom;
+    @PortedFrom(file = "dlTBox.h", name = "nRelevantCCalls")
+    private long nRelevantCCalls;
+    @PortedFrom(file = "dlTBox.h", name = "nRelevantBCalls")
+    private long nRelevantBCalls;
+    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "IV")
+    private final IterableVec<Individual> iv = new IterableVec<>();
+    @PortedFrom(file = "ConjunctiveQueryFolding.cpp", name = "concepts")
+    private final TIntArrayList conceptsForQueryAnswering = new TIntArrayList();
     private OWLDataFactory df;
 
     /**
-     * @param datatypeFactory
-     *        datatypeFactory
-     * @param configuration
-     *        configuration
-     * @param interrupted
-     *        interrupted
-     * @param df
-     *        data factory
+     * @param datatypeFactory datatypeFactory
+     * @param configuration configuration
+     * @param interrupted interrupted
+     * @param df data factory
      */
-    public TBox(DatatypeFactory datatypeFactory, JFactReasonerConfiguration configuration, AtomicBoolean interrupted,
-        OWLDataFactory df) {
+    public TBox(DatatypeFactory datatypeFactory, JFactReasonerConfiguration configuration,
+        AtomicBoolean interrupted, OWLDataFactory df) {
         this.df = df;
         this.datatypeFactory = datatypeFactory;
         this.interrupted = interrupted;
         config = configuration;
         axioms = new AxiomSet(this);
         dlHeap = new DLDag(configuration);
-        kbStatus = KBLOADING;
+        status = KBLOADING;
         pQuery = null;
         concepts = new NamedEntryCollection<>("concept", config);
         individuals = new NamedEntryCollection<>("individual", config);
-        objectRoleMaster = new RoleMaster(false, new ObjectRoleName(df.getOWLTopObjectProperty()), new ObjectRoleName(df
-            .getOWLBottomObjectProperty()), config);
-        dataRoleMaster = new RoleMaster(true, new DataRoleName(df.getOWLTopDataProperty()), new DataRoleName(df
-            .getOWLBottomDataProperty()), config);
+        objectRoleMaster = new RoleMaster(false, new ObjectRoleName(df.getOWLTopObjectProperty()),
+            new ObjectRoleName(df.getOWLBottomObjectProperty()), config);
+        dataRoleMaster = new RoleMaster(true, new DataRoleName(df.getOWLTopDataProperty()),
+            new DataRoleName(df.getOWLBottomDataProperty()), config);
         axioms = new AxiomSet(this);
         internalisedGeneralAxiom = BP_TOP;
         duringClassification = false;
@@ -217,9 +288,10 @@ public class TBox implements Serializable {
         consistent = true;
         preprocTime = 0;
         consistTime = 0;
-        config.getLog().printTemplate(Templates.READ_CONFIG, Boolean.valueOf(config.getuseCompletelyDefined()),
-            "useRelevantOnly(obsolete)", Boolean.valueOf(config.getdumpQuery()), Boolean.valueOf(config
-                .getalwaysPreferEquals()));
+        config.getLog().printTemplate(Templates.READ_CONFIG,
+            Boolean.valueOf(config.getuseCompletelyDefined()), "useRelevantOnly(obsolete)",
+            Boolean.valueOf(config.getdumpQuery()),
+            Boolean.valueOf(config.getalwaysPreferEquals()));
         axioms.initAbsorptionFlags(config.getabsorptionFlags());
         initTopBottom();
         setForbidUndefinedNames(false);
@@ -258,8 +330,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param bp
-     *        bp
+     * @param bp bp
      * @return concept by it's BP (non- version)
      */
     @PortedFrom(file = "dlTBox.h", name = "getDataEntryByBP")
@@ -277,10 +348,8 @@ public class TBox implements Serializable {
     /**
      * make concept non-primitive;
      * 
-     * @param p
-     *        p
-     * @param desc
-     *        desc
+     * @param p p
+     * @param desc desc
      * @return it's old description
      */
     @PortedFrom(file = "dlTBox.h", name = "makeNonPrimitive")
@@ -293,8 +362,7 @@ public class TBox implements Serializable {
     /**
      * checks if C is defined as C=D and set Synonyms accordingly
      * 
-     * @param p
-     *        p
+     * @param p p
      */
     @PortedFrom(file = "dlTBox.h", name = "checkEarlySynonym")
     public void checkEarlySynonym(Concept p) {
@@ -306,19 +374,20 @@ public class TBox implements Serializable {
             // couldn't be a synonym
             return;
         }
-        if (!p.getDescription().isCN()) {
+        DLTree description = p.getDescription();
+        assert description != null;
+        if (!description.isCN()) {
             // complex expression -- not a synonym(imm.)
             return;
         }
-        p.setSynonym(getCI(p.getDescription()));
+        p.setSynonym(getCI(description));
         p.initToldSubsumers();
     }
 
     /**
      * process a disjoint set [beg,end) in a usual manner
      * 
-     * @param beg
-     *        beg
+     * @param beg beg
      */
     @PortedFrom(file = "dlTBox.h", name = "processDisjoint")
     public void processDisjoint(List<DLTree> beg) {
@@ -329,8 +398,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param r
-     *        R
+     * @param r R
      * @return create REFLEXIVE node
      */
     @PortedFrom(file = "dlTBox.h", name = "reflexive2dag")
@@ -344,10 +412,8 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param r
-     *        R
-     * @param c
-     *        C
+     * @param r R
+     * @param c C
      * @return create forall node for data role
      */
     @PortedFrom(file = "dlTBox.h", name = "dataForall2dag")
@@ -356,12 +422,9 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param n
-     *        n
-     * @param r
-     *        R
-     * @param c
-     *        C
+     * @param n n
+     * @param r R
+     * @param c C
      * @return create atmost node for data role
      */
     @PortedFrom(file = "dlTBox.h", name = "dataAtMost2dag")
@@ -370,8 +433,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param p
-     *        p
+     * @param p p
      * @return a pointer to concept representation
      */
     @PortedFrom(file = "dlTBox.h", name = "concept2dag")
@@ -388,10 +450,8 @@ public class TBox implements Serializable {
     /**
      * try to absorb GCI C[=D; if not possible, just record this GCI
      * 
-     * @param c
-     *        C
-     * @param d
-     *        D
+     * @param c C
+     * @param d D
      */
     @PortedFrom(file = "dlTBox.h", name = "processGCI")
     public void processGCI(DLTree c, DLTree d) {
@@ -414,8 +474,12 @@ public class TBox implements Serializable {
     /** set told TOP concept whether necessary */
     @PortedFrom(file = "dlTBox.h", name = "initToldSubsumers")
     public void initToldSubsumers() {
-        concepts.getConcepts().filter(pc -> !pc.isSynonym()).forEach(pc -> pc.initToldSubsumers());
-        individuals.getConcepts().filter(pi -> !pi.isSynonym()).forEach(pi -> pi.initToldSubsumers());
+        initToldSubsumers(concepts);
+        initToldSubsumers(individuals);
+    }
+
+    protected void initToldSubsumers(NamedEntryCollection<? extends Concept> c) {
+        c.getConcepts().filter(ClassifiableEntry::isNotSynonym).forEach(Concept::initToldSubsumers);
     }
 
     /** set told TOP concept whether necessary */
@@ -428,8 +492,8 @@ public class TBox implements Serializable {
     /** calculate TS depth for all concepts */
     @PortedFrom(file = "dlTBox.h", name = "calculateTSDepth")
     public void calculateTSDepth() {
-        concepts.getConcepts().forEach(pc -> pc.calculateTSDepth());
-        individuals.getConcepts().forEach(pi -> pi.calculateTSDepth());
+        concepts.getConcepts().forEach(Concept::calculateTSDepth);
+        individuals.getConcepts().forEach(Concept::calculateTSDepth);
     }
 
     /**
@@ -437,18 +501,16 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "countSynonyms")
     public int countSynonyms() {
-        long nSynonyms = concepts.getConcepts().filter(p -> p.isSynonym()).count();
-        nSynonyms += individuals.getConcepts().filter(p -> p.isSynonym()).count();
+        long nSynonyms = concepts.getConcepts().filter(ClassifiableEntry::isSynonym).count();
+        nSynonyms += individuals.getConcepts().filter(ClassifiableEntry::isSynonym).count();
         return (int) nSynonyms;
     }
 
     /**
      * init Extra Rule field in concepts given by a vector V with a given INDEX
      * 
-     * @param v
-     *        v
-     * @param index
-     *        index
+     * @param v v
+     * @param index index
      */
     @PortedFrom(file = "dlTBox.h", name = "initRuleFields")
     public void initRuleFields(List<Concept> v, int index) {
@@ -458,15 +520,14 @@ public class TBox implements Serializable {
     /** mark all concepts wrt their classification tag */
     @PortedFrom(file = "dlTBox.h", name = "fillsClassificationTag")
     public void fillsClassificationTag() {
-        concepts.getConcepts().forEach(p -> p.getClassTag());
-        individuals.getConcepts().forEach(p -> p.getClassTag());
+        concepts.getConcepts().forEach(Concept::getClassTag);
+        individuals.getConcepts().forEach(Concept::getClassTag);
     }
 
     /**
      * set new concept index for given C wrt existing nC
      * 
-     * @param c
-     *        C
+     * @param c C
      */
     @PortedFrom(file = "dlTBox.h", name = "setConceptIndex")
     public void setConceptIndex(Concept c) {
@@ -499,8 +560,7 @@ public class TBox implements Serializable {
     /**
      * print all registered concepts
      * 
-     * @param o
-     *        o
+     * @param o o
      */
     @PortedFrom(file = "dlTBox.h", name = "PrintConcepts")
     public void printConcepts(LogAdapter o) {
@@ -514,8 +574,7 @@ public class TBox implements Serializable {
     /**
      * print all registered individuals
      * 
-     * @param o
-     *        o
+     * @param o o
      */
     @PortedFrom(file = "dlTBox.h", name = "PrintIndividuals")
     public void printIndividuals(LogAdapter o) {
@@ -527,8 +586,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param o
-     *        o
+     * @param o o
      */
     @PortedFrom(file = "dlTBox.h", name = "PrintSimpleRules")
     public void printSimpleRules(LogAdapter o) {
@@ -543,8 +601,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param o
-     *        o
+     * @param o o
      */
     @PortedFrom(file = "dlTBox.h", name = "PrintAxioms")
     public void printAxioms(LogAdapter o) {
@@ -556,8 +613,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param r
-     *        R
+     * @param r R
      * @return check if the role R is irreflexive
      */
     @PortedFrom(file = "dlTBox.h", name = "isIrreflexive")
@@ -579,8 +635,7 @@ public class TBox implements Serializable {
     /**
      * gather information about logical features of relevant concept
      * 
-     * @param p
-     *        p
+     * @param p p
      */
     @PortedFrom(file = "dlTBox.h", name = "collectLogicFeature")
     private void collectLogicFeature(Concept p) {
@@ -592,8 +647,7 @@ public class TBox implements Serializable {
     /**
      * gather information about logical features of relevant role
      * 
-     * @param p
-     *        p
+     * @param p p
      */
     @PortedFrom(file = "dlTBox.h", name = "collectLogicFeature")
     private void collectLogicFeature(Role p) {
@@ -605,15 +659,12 @@ public class TBox implements Serializable {
     /**
      * gather information about logical features of relevant DAG entry
      * 
-     * @param v
-     *        v
-     * @param pos
-     *        pos
+     * @param v v
      */
     @PortedFrom(file = "dlTBox.h", name = "collectLogicFeature")
-    private void collectLogicFeature(DLVertex v, boolean pos) {
+    private void collectLogicFeature(DLVertex v) {
         if (curFeature != null) {
-            curFeature.fillDAGData(v, pos);
+            curFeature.fillDAGData(v);
         }
     }
 
@@ -662,8 +713,7 @@ public class TBox implements Serializable {
     /**
      * put relevance information to a concept's data
      * 
-     * @param p
-     *        p
+     * @param p p
      */
     @PortedFrom(file = "dlTBox.h", name = "setConceptRelevant")
     private void setConceptRelevant(Concept p) {
@@ -685,8 +735,7 @@ public class TBox implements Serializable {
     /**
      * update AUX features with the given one; update roles if necessary
      * 
-     * @param lf
-     *        lf
+     * @param lf lf
      */
     @PortedFrom(file = "dlTBox.h", name = "updateAuxFeatures")
     private void updateAuxFeatures(LogicFeatures lf) {
@@ -719,8 +768,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param r
-     *        R
+     * @param r R
      * @return RoleMaster depending of the R
      */
     @PortedFrom(file = "dlTBox.h", name = "getRM")
@@ -739,8 +787,7 @@ public class TBox implements Serializable {
     /**
      * return registered concept by given NAME;
      * 
-     * @param name
-     *        name
+     * @param name name
      * @return null if can't register
      */
     @PortedFrom(file = "dlTBox.h", name = "getConcept")
@@ -751,8 +798,7 @@ public class TBox implements Serializable {
     /**
      * return registered individual by given NAME;
      * 
-     * @param name
-     *        name
+     * @param name name
      * @return null if can't register
      */
     @PortedFrom(file = "dlTBox.h", name = "getIndividual")
@@ -761,8 +807,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param name
-     *        name
+     * @param name name
      * @return true iff given NAME is a name of a registered individual
      */
     @PortedFrom(file = "dlTBox.h", name = "isIndividual")
@@ -771,8 +816,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param tree
-     *        tree
+     * @param tree tree
      * @return true iff given TREE represents a registered individual
      */
     @PortedFrom(file = "dlTBox.h", name = "isIndividual")
@@ -781,8 +825,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param name
-     *        name
+     * @param name name
      * @return TOP/BOTTOM/CN/IN by the DLTree entry
      */
     @Nullable
@@ -801,30 +844,26 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param c
-     *        C
+     * @param c C
      * @return a DL tree by a given concept-like C
      */
-    @Nullable
     @PortedFrom(file = "dlTBox.h", name = "getTree")
-    public DLTree getTree(@Nullable Concept c) {
-        if (c == null) {
-            return null;
-        }
+    public DLTree getTree(Concept c) {
+        assert c != null;
         if (c.isTop()) {
             return DLTreeFactory.createTop();
         }
         if (c.isBottom()) {
             return DLTreeFactory.createBottom();
         }
-        return DLTreeFactory.buildTree(new Lexeme(this.isIndividual(c.getIRI()) ? INAME : CNAME, c));
+        return DLTreeFactory
+            .buildTree(new Lexeme(this.isIndividual(c.getIRI()) ? INAME : CNAME, c));
     }
 
     /**
      * set the flag that forbid usage of undefined names for concepts/roles;
      * 
-     * @param val
-     *        val
+     * @param val val
      * @return old value
      */
     @PortedFrom(file = "dlTBox.h", name = "setForbidUndefinedNames")
@@ -838,12 +877,9 @@ public class TBox implements Serializable {
     /**
      * individual relation (a,b):R
      * 
-     * @param a
-     *        a
-     * @param r
-     *        R
-     * @param b
-     *        b
+     * @param a a
+     * @param r R
+     * @param b b
      */
     @PortedFrom(file = "dlTBox.h", name = "RegisterIndividualRelation")
     public void registerIndividualRelation(NamedEntry a, NamedEntry r, NamedEntry b) {
@@ -857,10 +893,8 @@ public class TBox implements Serializable {
     /**
      * add axiom CN [= D for concept CN
      * 
-     * @param c
-     *        C
-     * @param d
-     *        D
+     * @param c C
+     * @param d D
      */
     @PortedFrom(file = "dlTBox.h", name = "addSubsumeAxiom")
     public void addSubsumeAxiom(Concept c, DLTree d) {
@@ -870,8 +904,7 @@ public class TBox implements Serializable {
     /**
      * add simple rule RULE to the TBox' rules
      * 
-     * @param rule
-     *        Rule
+     * @param rule Rule
      */
     @PortedFrom(file = "dlTBox.h", name = "addSimpleRule")
     private void addSimpleRule(SimpleRule rule) {
@@ -914,8 +947,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param l
-     *        l
+     * @param l l
      */
     @PortedFrom(file = "dlTBox.h", name = "setFairnessConstraint")
     public void setFairnessConstraintDLTrees(List<DLTree> l) {
@@ -939,8 +971,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param index
-     *        index
+     * @param index index
      * @return simple rule by its INDEX
      */
     @PortedFrom(file = "dlTBox.h", name = "getSimpleRule")
@@ -966,7 +997,8 @@ public class TBox implements Serializable {
     @PortedFrom(file = "dlTBox.h", name = "isNRinQuery")
     public boolean isNRinQuery() {
         LogicFeatures p = curFeature != null ? curFeature : kbFeatures;
-        return p.hasFunctionalRestriction() || p.hasNumberRestriction() || p.hasQNumberRestriction();
+        return p.hasFunctionalRestriction() || p.hasNumberRestriction()
+            || p.hasQNumberRestriction();
     }
 
     /**
@@ -1026,18 +1058,17 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "getStatus")
     public KBStatus getStatus() {
-        return kbStatus;
+        return status;
     }
 
     /**
      * set consistency flag
      * 
-     * @param val
-     *        val
+     * @param val val
      */
     @PortedFrom(file = "dlTBox.h", name = "setConsistency")
     public void setConsistency(boolean val) {
-        kbStatus = KBCHECKED;
+        status = KBCHECKED;
         consistent = val;
     }
 
@@ -1046,9 +1077,9 @@ public class TBox implements Serializable {
      */
     @PortedFrom(file = "dlTBox.h", name = "isConsistent")
     public boolean isConsistent() {
-        if (kbStatus.ordinal() < KBCHECKED.ordinal()) {
+        if (status.ordinal() < KBCHECKED.ordinal()) {
             prepareReasoning();
-            if (kbStatus.ordinal() < KBCHECKED.ordinal() && consistent) {
+            if (status.ordinal() < KBCHECKED.ordinal() && consistent) {
                 // we can detect inconsistency during preprocessing
                 setConsistency(performConsistencyCheck());
             }
@@ -1057,12 +1088,9 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param p
-     *        p
-     * @param q
-     *        q
-     * @return test if 2 concept non-subsumption can be determined by sorts
-     *         checking
+     * @param p p
+     * @param q q
+     * @return test if 2 concept non-subsumption can be determined by sorts checking
      */
     @PortedFrom(file = "dlTBox.h", name = "testSortedNonSubsumption")
     public boolean testSortedNonSubsumption(Concept p, @Nullable Concept q) {
@@ -1110,12 +1138,14 @@ public class TBox implements Serializable {
         // add special domains to the GCIs
         List<DLTree> list = new ArrayList<>();
         if (config.isUseSpecialDomains()) {
-            objectRoleMaster.getRoles().stream().filter(p -> !p.isSynonym() && p.hasSpecialDomain()).forEach(p -> list
-                .add(p.getTSpecialDomain().copy()));
+            objectRoleMaster.getRoles().stream().filter(ClassifiableEntry::isNotSynonym)
+                .filter(Role::hasSpecialDomain).map(p -> p.getTSpecialDomain().copy())
+                .forEach(list::add);
         }
         // take chains that lead to Bot role into account
         if (!objectRoleMaster.getBotRole().isSimple()) {
-            list.add(DLTreeFactory.createSNFForall(DLTreeFactory.createRole(objectRoleMaster.getBotRole()),
+            list.add(DLTreeFactory.createSNFForall(
+                DLTreeFactory.createRole(objectRoleMaster.getBotRole()),
                 DLTreeFactory.createBottom()));
         }
         if (!list.isEmpty()) {
@@ -1127,8 +1157,9 @@ public class TBox implements Serializable {
         gcis.setGCI(internalisedGeneralAxiom != BP_TOP);
         gcis.setReflexive(objectRoleMaster.hasReflexiveRoles());
         // builds functional labels for roles
-        Stream.concat(objectRoleMaster.getRoles().stream(), dataRoleMaster.getRoles().stream()).filter(p -> !p
-            .isSynonym() && p.isTopFunc()).forEach(p -> p.setFunctional(atmost2dag(1, p, BP_TOP)));
+        Stream.concat(objectRoleMaster.getRoles().stream(), dataRoleMaster.getRoles().stream())
+            .filter(ClassifiableEntry::isNotSynonym).filter(Role::isTopFunc)
+            .forEach(p -> p.setFunctional(atmost2dag(1, p, BP_TOP)));
         // check the type of the ontology
         if (nNominalReferences > 0) {
             int nInd = individuals.size();
@@ -1141,12 +1172,12 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param rm
-     *        RM
+     * @param rm RM
      */
     @PortedFrom(file = "dlTBox.h", name = "initRangeDomain")
     public void initRangeDomain(RoleMaster rm) {
-        rm.getRoles().stream().filter(r -> !r.isSynonym()).forEach(this::initRangeDomain);
+        rm.getRoles().stream().filter(ClassifiableEntry::isNotSynonym)
+            .forEach(this::initRangeDomain);
     }
 
     protected void initRangeDomain(Role r) {
@@ -1170,8 +1201,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param p
-     *        p
+     * @param p p
      * @return index of new element
      */
     @PortedFrom(file = "dlTBox.h", name = "addDataExprToHeap")
@@ -1188,8 +1218,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param p
-     *        p
+     * @param p p
      * @return index of new element
      */
     @PortedFrom(file = "dlTBox.h", name = "addDataExprToHeap")
@@ -1210,8 +1239,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param p
-     *        p
+     * @param p p
      * @return index of new element
      */
     @Original
@@ -1228,14 +1256,12 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param pConcept
-     *        pConcept
+     * @param pConcept pConcept
      */
     @PortedFrom(file = "dlTBox.h", name = "addConceptToHeap")
     public void addConceptToHeap(Concept pConcept) {
         // choose proper tag by concept
-        DagTag tag = pConcept.isPrimitive() ? pConcept.isSingleton() ? PSINGLETON : PCONCEPT
-            : pConcept.isSingleton() ? NSINGLETON : NCONCEPT;
+        DagTag tag = selectTag(pConcept);
         // NSingleton is a nominal
         if (tag == NSINGLETON && !pConcept.isSynonym()) {
             pConcept.setNominal(true);
@@ -1261,9 +1287,21 @@ public class TBox implements Serializable {
         }
     }
 
+    protected DagTag selectTag(Concept pConcept) {
+        if (pConcept.isPrimitive()) {
+            if (pConcept.isSingleton()) {
+                return PSINGLETON;
+            }
+            return PCONCEPT;
+        }
+        if (pConcept.isSingleton()) {
+            return NSINGLETON;
+        }
+        return NCONCEPT;
+    }
+
     /**
-     * @param t
-     *        t
+     * @param t t
      * @return index of new element
      */
     @PortedFrom(file = "dlTBox.h", name = "tree2dag")
@@ -1315,8 +1353,9 @@ public class TBox implements Serializable {
                 break;
             case PROJFROM:
                 // XXX verify if new object necessary?
-                ret = dlHeap.directAdd(new DLVertex(DagTag.PROJ, 0, Role.resolveRole(t.getLeft()), tree2dag(t.getRight()
-                    .getRight()), resolveRole(t.getRight().getLeft()), dlHeap), false);
+                ret = dlHeap.directAdd(new DLVertex(DagTag.PROJ, 0, Role.resolveRole(t.getLeft()),
+                    tree2dag(t.getRight().getRight()), resolveRole(t.getRight().getLeft()), dlHeap),
+                    false);
                 break;
             default:
                 assert DLTreeFactory.isSNF(t);
@@ -1328,10 +1367,8 @@ public class TBox implements Serializable {
     /**
      * fills AND-like vertex V with an AND-like expression T; process result
      * 
-     * @param v
-     *        v
-     * @param t
-     *        t
+     * @param v v
+     * @param t t
      * @return heap size
      */
     @PortedFrom(file = "dlTBox.h", name = "and2dag")
@@ -1349,10 +1386,8 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param r
-     *        R
-     * @param c
-     *        C
+     * @param r R
+     * @param c C
      * @return index of new element
      */
     @PortedFrom(file = "dlTBox.h", name = "forall2dag")
@@ -1379,12 +1414,9 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param n
-     *        n
-     * @param r
-     *        R
-     * @param c
-     *        C
+     * @param n n
+     * @param r R
+     * @param c C
      * @return index of new element
      */
     @PortedFrom(file = "dlTBox.h", name = "atmost2dag")
@@ -1424,10 +1456,8 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param begin
-     *        begin
-     * @param <T>
-     *        concept type
+     * @param begin begin
+     * @param <T> concept type
      * @return number of elements
      */
     @PortedFrom(file = "dlTBox.h", name = "fillArrays")
@@ -1461,8 +1491,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param needIndividual
-     *        needIndividual
+     * @param needIndividual needIndividual
      */
     @PortedFrom(file = "dlTBox.h", name = "createTaxonomy")
     public void createTaxonomy(boolean needIndividual) {
@@ -1474,6 +1503,8 @@ public class TBox implements Serializable {
         // FIXME!! distinguish later between the 1st run and the following runs
         dlHeap.setSubOrder();
         pTaxCreator.setBottomUp(gcis);
+        // XXX needConcept will always be true after this or. It is also unused until after this.
+        // What is it for?
         needConcept |= needIndividual;
         if (config.getverboseOutput()) {
             config.getLog().print("Processing query...\n");
@@ -1498,11 +1529,11 @@ public class TBox implements Serializable {
         if (config.getverboseOutput()) {
             config.getLog().print(DONE_IN).print(locTimer.calcDelta()).print(SECONDS);
         }
-        if (needConcept && kbStatus.ordinal() < KBCLASSIFIED.ordinal()) {
-            kbStatus = KBCLASSIFIED;
+        if (needConcept && status.ordinal() < KBCLASSIFIED.ordinal()) {
+            status = KBCLASSIFIED;
         }
         if (needIndividual || nNominalReferences > 0) {
-            kbStatus = KBREALISED;
+            status = KBREALISED;
         }
         if (config.getverboseOutput()) {
             config.getLog().print(pTax);
@@ -1510,30 +1541,27 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param collection
-     *        collection
-     * @param curCompletelyDefined
-     *        curCompletelyDefined
-     * @param type
-     *        type
+     * @param collection collection
+     * @param curCompletelyDefined curCompletelyDefined
+     * @param type type
      */
     @PortedFrom(file = "dlTBox.h", name = "classifyConcepts")
-    public void classifyConcepts(List<Concept> collection, boolean curCompletelyDefined, String type) {
+    public void classifyConcepts(List<Concept> collection, boolean curCompletelyDefined,
+        String type) {
         // set CD for taxonomy
         pTaxCreator.setCompletelyDefined(curCompletelyDefined);
         config.getLog().printTemplate(Templates.CLASSIFY_CONCEPTS, type);
         // check if concept is already classified
         // classify and count otherwise
-        int n = (int) collection.stream().filter(q -> !interrupted.get() && !q.isClassified()).map(this::classifyEntry)
-            .filter(Concept::isClassified).count();
+        int n = (int) collection.stream().filter(q -> !interrupted.get() && !q.isClassified())
+            .map(this::classifyEntry).filter(Concept::isClassified).count();
         config.getLog().printTemplateMixInt(Templates.CLASSIFY_CONCEPTS2, type, n);
     }
 
     /**
      * classify single concept
      * 
-     * @param entry
-     *        entry
+     * @param entry entry
      * @return modified input
      */
     @PortedFrom(file = "dlTBox.h", name = "classifyEntry")
@@ -1549,8 +1577,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param desc
-     *        desc
+     * @param desc desc
      * @return concept for desc
      */
     @PortedFrom(file = "dlTBox.h", name = "getAuxConcept")
@@ -1597,10 +1624,8 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param pConcept
-     *        pConcept
-     * @param qConcept
-     *        qConcept
+     * @param pConcept pConcept
+     * @param qConcept qConcept
      */
     @PortedFrom(file = "dlTBox.h", name = "prepareFeatures")
     public void prepareFeatures(@Nullable Concept pConcept, @Nullable Concept qConcept) {
@@ -1633,8 +1658,10 @@ public class TBox implements Serializable {
         }
         // it is now safe to make a TOP cache
         initConstCache(BP_TOP);
-        concepts.getConcepts().filter(pc -> pc.isPrimitive()).forEach(pc -> initSingletonCache(pc, false));
-        individuals.getConcepts().filter(pc -> pc.isPrimitive()).forEach(pc -> initSingletonCache(pc, false));
+        concepts.getConcepts().filter(Concept::isPrimitive)
+            .forEach(pc -> initSingletonCache(pc, false));
+        individuals.getConcepts().filter(Concept::isPrimitive)
+            .forEach(pc -> initSingletonCache(pc, false));
     }
 
     /**
@@ -1675,8 +1702,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param pConcept
-     *        pConcept
+     * @param pConcept pConcept
      * @return true if satisfiable
      */
     @PortedFrom(file = "dlTBox.h", name = "isSatisfiable")
@@ -1702,35 +1728,31 @@ public class TBox implements Serializable {
         // save cache
         dlHeap.setCache(pConcept.getpName(), cache);
         clearFeatures();
-        config.getLog().printTemplate(Templates.IS_SATISFIABLE1, pConcept.getIRI(), !result ? "un" : "");
+        config.getLog().printTemplate(Templates.IS_SATISFIABLE1, pConcept.getIRI(),
+            !result ? "un" : "");
         return result;
     }
 
     /**
-     * @param pConcept
-     *        pConcept
-     * @param qConcept
-     *        qConcept
+     * @param pConcept pConcept
+     * @param qConcept qConcept
      * @return true if subsumption holds
      */
     @PortedFrom(file = "dlTBox.h", name = "isSubHolds")
     public boolean isSubHolds(Concept pConcept, Concept qConcept) {
-        assert pConcept != null && qConcept != null;
         config.getLog().printTemplate(Templates.ISSUBHOLDS1, pConcept.getIRI(), qConcept.getIRI());
         // perform reasoning with a proper logical features
         prepareFeatures(pConcept, qConcept);
         boolean result = !getReasoner().runSat(pConcept.resolveId(), -qConcept.resolveId());
         clearFeatures();
-        config.getLog().printTemplate(Templates.ISSUBHOLDS2, pConcept.getIRI(), qConcept.getIRI(), !result ? " NOT"
-            : "");
+        config.getLog().printTemplate(Templates.ISSUBHOLDS2, pConcept.getIRI(), qConcept.getIRI(),
+            !result ? " NOT" : "");
         return result;
     }
 
     /**
-     * @param a
-     *        _a
-     * @param b
-     *        _b
+     * @param a _a
+     * @param b _b
      * @return true if same individual
      */
     @PortedFrom(file = "dlTBox.h", name = "isSameIndividuals")
@@ -1745,7 +1767,8 @@ public class TBox implements Serializable {
             return true;
         }
         if (!this.isIndividual(inda.getIRI()) || !this.isIndividual(indb.getIRI())) {
-            throw new ReasonerInternalException("Individuals are expected in the isSameIndividuals() query");
+            throw new ReasonerInternalException(
+                "Individuals are expected in the isSameIndividuals() query");
         }
         if (inda.isFresh() || indb.isFresh()) {
             if (inda.isSynonym()) {
@@ -1758,19 +1781,16 @@ public class TBox implements Serializable {
             return false;
         }
         // TODO equals for TaxonomyVertex
-        return inda.getTaxVertex().equals(indb.getTaxVertex());
+        return Objects.equals(inda.getTaxVertex(), indb.getTaxVertex());
     }
 
     /**
-     * @param r
-     *        R
-     * @param s
-     *        S
+     * @param r R
+     * @param s S
      * @return true if disjoint roles
      */
     @PortedFrom(file = "dlTBox.h", name = "isDisjointRoles")
     public boolean isDisjointRoles(Role r, Role s) {
-        assert r != null && s != null;
         if (r.isDataRole() != s.isDataRole()) {
             return true;
         }
@@ -1784,8 +1804,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param desc
-     *        desc
+     * @param desc desc
      * @return query concept
      */
     @PortedFrom(file = "dlTBox.h", name = "createQueryConcept")
@@ -1802,8 +1821,7 @@ public class TBox implements Serializable {
     /**
      * preprocess query concept: put description into DAG
      * 
-     * @param query
-     *        query
+     * @param query query
      */
     @PortedFrom(file = "dlTBox.h", name = "preprocessQueryConcept")
     public void preprocessQueryConcept(Concept query) {
@@ -1837,11 +1855,9 @@ public class TBox implements Serializable {
 
     /** knowledge exploration: build a model and return a link to the root */
     /**
-     * build a completion tree for a concept C (no caching as it breaks the idea
-     * of KE).
+     * build a completion tree for a concept C (no caching as it breaks the idea of KE).
      * 
-     * @param pConcept
-     *        pConcept
+     * @param pConcept pConcept
      * @return the root node
      */
     @PortedFrom(file = "dlTBox.h", name = "buildCompletionTree")
@@ -1862,8 +1878,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param time
-     *        time
+     * @param time time
      */
     @PortedFrom(file = "dlTBox.h", name = "writeReasoningResult")
     public void writeReasoningResult(long time) {
@@ -1874,15 +1889,16 @@ public class TBox implements Serializable {
         }
         o.print("Query processing reasoning statistic: Standard");
         stdReasoner.writeTotalStatistic(o);
-        assert kbStatus.ordinal() >= KBCHECKED.ordinal();
+        assert status.ordinal() >= KBCHECKED.ordinal();
         if (consistent) {
             o.print("Required");
         } else {
             o.print("KB is inconsistent. Query is NOT processed\nConsistency");
         }
         long sum = preprocTime + consistTime;
-        o.print(" check done in ").print(time).print(" seconds\nof which:\nPreproc. takes ").print(preprocTime).print(
-            " seconds\nConsist. takes ").print(consistTime).print(" seconds");
+        o.print(" check done in ").print(time).print(" seconds\nof which:\nPreproc. takes ")
+            .print(preprocTime).print(" seconds\nConsist. takes ").print(consistTime)
+            .print(" seconds");
         if (nomReasoner != null) {
             o.print("\nReasoning NOM:");
             sum += nomReasoner.printReasoningTime(o);
@@ -1900,10 +1916,8 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param o
-     *        o
-     * @param p
-     *        p
+     * @param o o
+     * @param p p
      */
     @PortedFrom(file = "dlTBox.h", name = "PrintDagEntry")
     public void printDagEntry(LogAdapter o, int p) {
@@ -1977,16 +1991,14 @@ public class TBox implements Serializable {
                 o.print("WRONG: printing a badtag dtBad!\n");
                 break;
             default:
-                throw new ReasonerInternalException("Error printing vertex of type " + dagtag.getName() + '(' + dagtag
-                    + ')');
+                throw new ReasonerInternalException(
+                    "Error printing vertex of type " + dagtag.getName() + '(' + dagtag + ')');
         }
     }
 
     /**
-     * @param o
-     *        o
-     * @param p
-     *        p
+     * @param o o
+     * @param p p
      */
     @PortedFrom(file = "dlTBox.h", name = "PrintConcept")
     public void printConcept(LogAdapter o, Concept p) {
@@ -1995,12 +2007,14 @@ public class TBox implements Serializable {
             if (p.isSingleton()) {
                 o.print(p.isNominal() ? 'o' : '!');
             }
-            o.print(".", p.getIRI(), " [").print(p.getTsDepth()).print("] ", p.isPrimitive() ? "[=" : "=");
+            o.print(".", p.getIRI(), " [").print(p.getTsDepth()).print("] ",
+                p.isPrimitive() ? "[=" : "=");
             if (isValid(p.getpBody())) {
                 printDagEntry(o, p.getpBody());
             }
-            if (p.getDescription() != null) {
-                o.print(p.isPrimitive() ? "\n-[=" : "\n-=", p.getDescription());
+            DLTree description = p.getDescription();
+            if (description != null) {
+                o.print(p.isPrimitive() ? "\n-[=" : "\n-=", description);
             }
             o.print("\n");
         }
@@ -2010,8 +2024,10 @@ public class TBox implements Serializable {
     private void dump(DumpInterface dump) {
         dump.prologue();
         dumpAllRoles(dump);
-        concepts.getConcepts().filter(p -> p.isRelevant(relevance)).forEach(p -> dumpConcept(dump, p));
-        individuals.getConcepts().filter(p -> p.isRelevant(relevance)).forEach(p -> dumpConcept(dump, p));
+        concepts.getConcepts().filter(p -> p.isRelevant(relevance))
+            .forEach(p -> dumpConcept(dump, p));
+        individuals.getConcepts().filter(p -> p.isRelevant(relevance))
+            .forEach(p -> dumpConcept(dump, p));
         if (internalisedGeneralAxiom != BP_TOP) {
             dump.startAx(DIOp.IMPLIESC);
             dump.dumpTop();
@@ -2023,10 +2039,8 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param dump
-     *        dump
-     * @param p
-     *        p
+     * @param dump dump
+     * @param p p
      */
     @PortedFrom(file = "dlTBox.h", name = "dumpConcept")
     public void dumpConcept(DumpInterface dump, Concept p) {
@@ -2046,10 +2060,8 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param dump
-     *        dump
-     * @param p
-     *        p
+     * @param dump dump
+     * @param p p
      */
     @PortedFrom(file = "dlTBox.h", name = "dumpRole")
     public void dumpRole(DumpInterface dump, Role p) {
@@ -2059,7 +2071,9 @@ public class TBox implements Serializable {
             dump.dumpRole(q);
             dump.finishAx(DIOp.DEFINER);
             if (q.hasToldSubsumers()) {
-                q.getToldSubsumers().forEach(i -> {
+                Collection<ClassifiableEntry> toldSubsumers = q.getToldSubsumers();
+                assert toldSubsumers != null;
+                toldSubsumers.forEach(i -> {
                     dump.startAx(DIOp.IMPLIESR);
                     dump.dumpRole(q);
                     dump.contAx(DIOp.IMPLIESR);
@@ -2095,10 +2109,8 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param dump
-     *        dump
-     * @param p
-     *        p
+     * @param dump dump
+     * @param p p
      */
     @PortedFrom(file = "dlTBox.h", name = "dumpExpression")
     @SuppressWarnings("incomplete-switch")
@@ -2156,33 +2168,35 @@ public class TBox implements Serializable {
                 dump.finishOp(DIOp.LE);
                 return;
             default:
-                throw new ReasonerInternalException("Error dumping vertex of type " + dagtag.getName() + '(' + dagtag
-                    + ')');
+                throw new ReasonerInternalException(
+                    "Error dumping vertex of type " + dagtag.getName() + '(' + dagtag + ')');
         }
     }
 
     /**
-     * @param dump
-     *        dump
+     * @param dump dump
      */
     @PortedFrom(file = "dlTBox.h", name = "dumpAllRoles")
     public void dumpAllRoles(DumpInterface dump) {
-        Stream.concat(objectRoleMaster.getRoles().stream(), dataRoleMaster.getRoles().stream()).filter(p -> p
-            .isRelevant(relevance)).forEach(p -> dumpRole(dump, p));
+        Stream.concat(objectRoleMaster.getRoles().stream(), dataRoleMaster.getRoles().stream())
+            .filter(p -> p.isRelevant(relevance)).forEach(p -> dumpRole(dump, p));
     }
 
     /**
-     * @param sub
-     *        sub
-     * @param sup
-     *        sup
+     * @param subConcept sub
+     * @param superConcept sup
      */
     @PortedFrom(file = "dlTBox.h", name = "addSubsumeAxiom")
-    public void addSubsumeAxiom(@Nullable DLTree sub, @Nullable DLTree sup) {
-        // for C [= C: nothing to do
-        if (DLTree.equalTrees(sub, sup)) {
+    public void addSubsumeAxiom(@Nullable DLTree subConcept, @Nullable DLTree superConcept) {
+        if (superConcept == null || subConcept == null) {
             return;
         }
+        // for C [= C: nothing to do
+        if (DLTree.equalTrees(subConcept, superConcept)) {
+            return;
+        }
+        DLTree sub = subConcept;
+        DLTree sup = superConcept;
         // try to apply C [= CN
         if (sup.isCN()) {
             sup = applyAxiomCToCN(sub, sup);
@@ -2205,10 +2219,8 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param d
-     *        D
-     * @param cn
-     *        CN
+     * @param d D
+     * @param cn CN
      * @return merged dltree
      */
     @Nullable
@@ -2233,10 +2245,8 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param cn
-     *        CN
-     * @param d
-     *        D
+     * @param cn CN
+     * @param d D
      * @return merged dltree
      */
     @Nullable
@@ -2263,10 +2273,8 @@ public class TBox implements Serializable {
     /**
      * add an axiom CN [= E for defined CN (CN=D already in base)
      * 
-     * @param c
-     *        C
-     * @param e
-     *        superclass
+     * @param c C
+     * @param e superclass
      */
     @PortedFrom(file = "dlTBox.h", name = "addSubsumeForDefined")
     public void addSubsumeForDefined(Concept c, DLTree e) {
@@ -2277,7 +2285,9 @@ public class TBox implements Serializable {
         // try to see whether C contains a reference to itself at the top level
         if (c.hasSelfInDesc()) {
             // remember the old description value
-            DLTree d = c.getDescription().copy();
+            DLTree description = c.getDescription();
+            assert description != null;
+            DLTree d = description.copy();
             // remove C from the description
             c.removeSelfFromDescription();
             // the trees should differ here
@@ -2288,31 +2298,29 @@ public class TBox implements Serializable {
         } else {
             // here we have the definition of C = D, and subsumption C [= E
             // XXX this disables the new strategy
-            if (true) {
-                // for now: it's not clear of what's going wrong
-                processGCI(getTree(c), e);
-            } else {
-                // here we leave the definition of C = D, and delay the
-                // processing of C [= E
-                DLTree p = extraConceptDefs.get(c);
-                if (p == null) {
-                    // no such entry
-                    // save C [= E
-                    extraConceptDefs.put(c, e);
-                } else {
-                    // we have C [= X; change to C [= (X and E)
-                    extraConceptDefs.put(c, DLTreeFactory.createSNFAnd(p, e));
-                }
-            }
-            return;
+            // if (true) {
+            // for now: it's not clear of what's going wrong
+            processGCI(getTree(c), e);
+            // } else {
+            // // here we leave the definition of C = D, and delay the
+            // // processing of C [= E
+            // DLTree p = extraConceptDefs.get(c);
+            // if (p == null) {
+            // // no such entry
+            // // save C [= E
+            // extraConceptDefs.put(c, e);
+            // } else {
+            // // we have C [= X; change to C [= (X and E)
+            // extraConceptDefs.put(c, DLTreeFactory.createSNFAnd(p, e));
+            // }
+            // }
+            // return;
         }
     }
 
     /**
-     * @param sub
-     *        sub
-     * @param sup
-     *        sup
+     * @param sub sub
+     * @param sup sup
      * @return true if range can be set
      */
     @PortedFrom(file = "dlTBox.h", name = "axiomToRangeDomain")
@@ -2321,7 +2329,8 @@ public class TBox implements Serializable {
             resolveRole(sup.getLeft()).setRange(sup.getRight().copy());
             return true;
         }
-        if (sub.token() == NOT && sub.getChild().token() == Token.FORALL && sub.getChild().getRight().isBOTTOM()) {
+        if (sub.token() == NOT && sub.getChild().token() == Token.FORALL
+            && sub.getChild().getRight().isBOTTOM()) {
             resolveRole(sub.getChild().getLeft()).setDomain(sup);
             return true;
         }
@@ -2366,16 +2375,18 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param left
-     *        left
-     * @param right
-     *        right
-     * @param rightOrigin
-     *        original right tree
+     * @param left left
+     * @param right right
+     * @param rightOrigin original right tree
      * @return true if definition is added
      */
     @PortedFrom(file = "dlTBox.h", name = "addNonprimitiveDefinition")
-    public boolean addNonprimitiveDefinition(Concept left, @Nullable Concept right, DLTree rightOrigin) {
+    public boolean addNonprimitiveDefinition(@Nullable Concept left, @Nullable Concept right,
+        DLTree rightOrigin) {
+        // if left is null, nothing to do; no definition possible
+        if (left == null) {
+            return false;
+        }
         // nothing to do for the case C := D for named concepts C,D with D = C
         // already
         if (right != null) {
@@ -2397,15 +2408,13 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param left
-     *        left
-     * @param right
-     *        right
+     * @param c1 left
+     * @param c2 right
      * @return true if concept is made non primitive
      */
     @PortedFrom(file = "dlTBox.h", name = "switchToNonprimitive")
-    public boolean switchToNonprimitive(DLTree left, DLTree right) {
-        Concept ci = getCI(left);
+    public boolean switchToNonprimitive(DLTree c1, DLTree c2) {
+        Concept ci = getCI(c1);
         if (ci == null) {
             return false;
         }
@@ -2413,30 +2422,24 @@ public class TBox implements Serializable {
         if (c.isTop() || c.isBottom()) {
             return false;
         }
-        Concept ci2 = getCI(right);
-        if (c.isSingleton() && ci2 != null) {
-            if (!resolveSynonym(ci2).isSingleton()) {
-                return false;
-            }
+        Concept ci2 = getCI(c2);
+        if (c.isSingleton() && ci2 != null && !resolveSynonym(ci2).isSingleton()) {
+            return false;
         }
         if (config.getalwaysPreferEquals() && c.isPrimitive()) {
-            addSubsumeForDefined(c, makeNonPrimitive(c, right));
+            addSubsumeForDefined(c, makeNonPrimitive(c, c2));
             return true;
         }
         return false;
     }
 
     /**
-     * transform definition C=D' with C [= E into C [= (D' and E) with D [= C.
-     * <br>
+     * transform definition C=D' with C [= E into C [= (D' and E) with D [= C. <br>
      * D is usually D', but see addSubsumeForDefined()
      * 
-     * @param c
-     *        primitive
-     * @param e
-     *        superclass
-     * @param d
-     *        replacement
+     * @param c primitive
+     * @param e superclass
+     * @param d replacement
      */
     @PortedFrom(file = "dlTBox.h", name = "makeDefinitionPrimitive")
     void makeDefinitionPrimitive(Concept c, DLTree e, DLTree d) {
@@ -2450,8 +2453,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param beg
-     *        beg
+     * @param beg beg
      */
     @PortedFrom(file = "dlTBox.h", name = "processDisjointC")
     public void processDisjointC(Collection<DLTree> beg) {
@@ -2481,17 +2483,15 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param l
-     *        argument list
+     * @param l argument list
      */
     @PortedFrom(file = "dlTBox.h", name = "processEquivalentC")
     public void processEquivalentC(List<DLTree> l) {
-        pairs(l, (a, b) -> addEqualityAxiom(a, b));
+        pairs(l, this::addEqualityAxiom);
     }
 
     /**
-     * @param l
-     *        l
+     * @param l l
      */
     @PortedFrom(file = "dlTBox.h", name = "processDifferent")
     public void processDifferent(List<DLTree> l) {
@@ -2508,8 +2508,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param l
-     *        l
+     * @param l l
      */
     @PortedFrom(file = "dlTBox.h", name = "processSame")
     public void processSame(List<DLTree> l) {
@@ -2517,12 +2516,11 @@ public class TBox implements Serializable {
             // only nominals in SAME command
             throw new ReasonerInternalException("Only individuals allowed in processSame()");
         }
-        pairs(l, (a, b) -> addEqualityAxiom(a, b));
+        pairs(l, this::addEqualityAxiom);
     }
 
     /**
-     * @param l
-     *        l
+     * @param l l
      */
     @PortedFrom(file = "dlTBox.h", name = "processDisjointR")
     public void processDisjointR(List<DLTree> l) {
@@ -2536,12 +2534,11 @@ public class TBox implements Serializable {
         // make a disjoint roles
         List<Role> roles = asList(l.stream().map(Role::resolveRole));
         RoleMaster rm = getRM(roles.get(0));
-        allPairs(roles, (a, b) -> rm.addDisjointRoles(a, b));
+        allPairs(roles, rm::addDisjointRoles);
     }
 
     /**
-     * @param l
-     *        l
+     * @param l l
      */
     @PortedFrom(file = "dlTBox.h", name = "processEquivalentR")
     public void processEquivalentR(List<DLTree> l) {
@@ -2584,8 +2581,7 @@ public class TBox implements Serializable {
         // here it is safe to print KB features (all are known; the last one was
         // in Relevance)
         printFeatures();
-        dlHeap.setOrderDefaults(isLikeGALEN ? "Fdn" : isLikeWINE ? "Sdp" : "Sap", isLikeGALEN ? "Ban"
-            : isLikeWINE ? "Fdn" : "Dap");
+        dlHeap.setOrderDefaults(selectSat(), selectSub());
         dlHeap.gatherStatistic();
         calculateStatistic();
         removeExtraDescriptions();
@@ -2596,15 +2592,25 @@ public class TBox implements Serializable {
         }
     }
 
+    protected String selectSub() {
+        if (isLikeGALEN) {
+            return "Ban";
+        }
+        return isLikeWINE ? "Fdn" : "Dap";
+    }
+
+    protected String selectSat() {
+        if (isLikeGALEN) {
+            return "Fdn";
+        }
+        return isLikeWINE ? "Sdp" : "Sap";
+    }
+
     /**
-     * @param c
-     *        concept
-     * @param tree
-     *        superclass
-     * @param processed
-     *        processed set
-     * @return true if C is referenced in TREE; use PROCESSED to record explored
-     *         names
+     * @param c concept
+     * @param tree superclass
+     * @param processed processed set
+     * @return true if C is referenced in TREE; use PROCESSED to record explored names
      */
     @PortedFrom(file = "Preprocess.cpp", name = "isReferenced")
     boolean isReferenced(Concept c, DLTree tree, Set<Concept> processed) {
@@ -2639,14 +2645,11 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param c
-     *        concept
-     * @param d
-     *        superclass
-     * @param processed
-     *        processed
-     * @return true if C is referenced in the definition of concept D; use
-     *         PROCESSED to record explored names
+     * @param c concept
+     * @param d superclass
+     * @param processed processed
+     * @return true if C is referenced in the definition of concept D; use PROCESSED to record
+     *         explored names
      */
     boolean isReferenced(Concept c, Concept d, Set<Concept> processed) {
         // mark D as processed
@@ -2682,7 +2685,9 @@ public class TBox implements Serializable {
             // for every C here we have C = D in KB and C [= E in ExtraDefs
             // if there is a cycle for C
             if (isCyclic(c)) {
-                DLTree d = c.getDescription().copy();
+                DLTree description = c.getDescription();
+                assert description != null;
+                DLTree d = description.copy();
                 // then we should make C [= (D and E) and go with GCI D [= C
                 makeDefinitionPrimitive(c, e, d);
             } else {
@@ -2695,14 +2700,12 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param c
-     *        concept
-     * @return true iff C has a cyclic definition, ie is referenced in its own
-     *         description
+     * @param c concept
+     * @return true iff C has a cyclic definition, ie is referenced in its own description
      */
     @PortedFrom(file = "Preprocess.cpp", name = "isCyclic")
     public boolean isCyclic(Concept c) {
-        return isReferenced(c, c, new HashSet<Concept>());
+        return isReferenced(c, c, new HashSet<>());
     }
 
     @PortedFrom(file = "dlTBox.h", name = "setAllIndexes")
@@ -2711,26 +2714,26 @@ public class TBox implements Serializable {
         ++nC;
         // start with 1 to make index 0 an indicator of "not processed"
         nR.set(1);
-        Stream.concat(objectRoleMaster.getRoles().stream(), dataRoleMaster.getRoles().stream()).filter(r -> !r
-            .isSynonym()).forEach(r -> r.setIndex(nR.getAndIncrement()));
+        Stream.concat(objectRoleMaster.getRoles().stream(), dataRoleMaster.getRoles().stream())
+            .filter(ClassifiableEntry::isNotSynonym).forEach(r -> r.setIndex(nR.getAndIncrement()));
     }
 
     @PortedFrom(file = "dlTBox.h", name = "replaceAllSynonyms")
     private void replaceAllSynonyms() {
-        objectRoleMaster.getRoles().stream().filter(r -> !r.isSynonym()).forEach(r -> replaceSynonymsFromTree(r
-            .getTDomain()));
-        dataRoleMaster.getRoles().stream().filter(r -> !r.isSynonym()).forEach(r -> replaceSynonymsFromTree(r
-            .getTDomain()));
-        concepts.getConcepts().filter(p -> replaceSynonymsFromTree(p.getDescription())).forEach(p -> p
-            .initToldSubsumers());
-        individuals.getConcepts().filter(p -> replaceSynonymsFromTree(p.getDescription())).forEach(p -> p
-            .initToldSubsumers());
+        objectRoleMaster.getRoles().stream().filter(ClassifiableEntry::isNotSynonym)
+            .forEach(r -> replaceSynonymsFromTree(r.getTDomain()));
+        dataRoleMaster.getRoles().stream().filter(ClassifiableEntry::isNotSynonym)
+            .forEach(r -> replaceSynonymsFromTree(r.getTDomain()));
+        concepts.getConcepts().filter(p -> replaceSynonymsFromTree(p.getDescription()))
+            .forEach(Concept::initToldSubsumers);
+        individuals.getConcepts().filter(p -> replaceSynonymsFromTree(p.getDescription()))
+            .forEach(Concept::initToldSubsumers);
     }
 
     /** preprocess related individuals */
     @PortedFrom(file = "dlTBox.h", name = "preprocessRelated")
     public void preprocessRelated() {
-        relatedIndividuals.forEach(q -> q.simplify());
+        relatedIndividuals.forEach(Related::simplify);
     }
 
     /** transform cycles */
@@ -2739,10 +2742,12 @@ public class TBox implements Serializable {
         // remember number of synonyms appeared in KB
         int nSynonyms = countSynonyms();
         clearRelevanceInfo();
-        concepts.getConcepts().filter(p -> !p.isSynonym()).forEach(this::checkToldCycle);
-        individuals.getConcepts().filter(p -> !p.isSynonym()).forEach(this::checkToldCycle);
+        concepts.getConcepts().filter(ClassifiableEntry::isNotSynonym)
+            .forEach(this::checkToldCycle);
+        individuals.getConcepts().filter(ClassifiableEntry::isNotSynonym)
+            .forEach(this::checkToldCycle);
         clearRelevanceInfo();
-        // update nymber of synonyms
+        // update number of synonyms
         nSynonyms = countSynonyms() - nSynonyms;
         if (nSynonyms > 0) {
             config.getLog().printTemplateInt(Templates.TRANSFORM_TOLD_CYCLES, nSynonyms);
@@ -2751,9 +2756,8 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param p
-     *        _p
-     * @return concpet with told cycle rewritten
+     * @param p _p
+     * @return concept with told cycle rewritten
      */
     @Nullable
     @PortedFrom(file = "dlTBox.h", name = "checkToldCycle")
@@ -2780,7 +2784,9 @@ public class TBox implements Serializable {
         while (!redo) {
             redo = true;
             if (cp.hasToldSubsumers()) {
-                for (ClassifiableEntry r : cp.getToldSubsumers()) {
+                Collection<ClassifiableEntry> toldSubsumers = cp.getToldSubsumers();
+                assert toldSubsumers != null;
+                for (ClassifiableEntry r : toldSubsumers) {
                     // if cycle was detected
                     if ((ret = checkToldCycle((Concept) r)) != null) {
                         if (ret.equals(cp)) {
@@ -2865,10 +2871,11 @@ public class TBox implements Serializable {
         AtomicBoolean changed = new AtomicBoolean(false);
         do {
             changed.set(false);
-            individuals.getConcepts().filter(pi -> !pi.isSynonym() && pi.isHasSP()).forEach(pi -> {
-                transformSingletonWithSP(pi).removeSelfFromDescription();
-                changed.set(true);
-            });
+            individuals.getConcepts().filter(ClassifiableEntry::isNotSynonym)
+                .filter(Individual::isHasSP).forEach(pi -> {
+                    transformSingletonWithSP(pi).removeSelfFromDescription();
+                    changed.set(true);
+                });
         } while (changed.get());
         // update nymber of synonyms
         nSynonyms = countSynonyms() - nSynonyms;
@@ -2878,14 +2885,15 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param p
-     *        p
+     * @param p p
      * @return individual for concept
      */
     @PortedFrom(file = "dlTBox.h", name = "getSPForConcept")
     public Individual getSPForConcept(Concept p) {
         if (p.hasToldSubsumers()) {
-            for (ClassifiableEntry r : p.getToldSubsumers()) {
+            Collection<ClassifiableEntry> toldSubsumers = p.getToldSubsumers();
+            assert toldSubsumers != null;
+            for (ClassifiableEntry r : toldSubsumers) {
                 Concept i = (Concept) r;
                 if (i.isSingleton()) {
                     // found the end of the chain
@@ -2918,24 +2926,28 @@ public class TBox implements Serializable {
         if (config.isUseSortedReasoning()) {
             // Related individuals does not appears in DLHeap,
             // so their sorts shall be determined explicitely
-            relatedIndividuals.forEach(p -> dlHeap.updateSorts(p.getA().getpName(), p.getRole(), p.getB().getpName()));
+            relatedIndividuals.forEach(
+                p -> dlHeap.updateSorts(p.getA().getpName(), p.getRole(), p.getB().getpName()));
             // simple rules needs the same treatement
-            simpleRules.forEach(q -> q.simpleRuleBody.forEach(r -> dlHeap.merge(dlHeap.get(q.bpHead).getSort(), r
-                .getpName())));
+            simpleRules.forEach(q -> q.simpleRuleBody
+                .forEach(r -> dlHeap.merge(dlHeap.get(q.bpHead).getSort(), r.getpName())));
             // create sorts for concept and/or roles
             dlHeap.determineSorts(objectRoleMaster, dataRoleMaster);
         }
     }
 
     /** calculate statistics */
- // Told stuff is used here, so run this AFTER fillTold*()
+    // Told stuff is used here, so run this AFTER fillTold*()
     @PortedFrom(file = "dlTBox.h", name = "CalculateStatistic")
     public void calculateStatistic() {
-        AtomicInteger npFull = new AtomicInteger(), nsFull = new AtomicInteger();
-        AtomicInteger nPC = new AtomicInteger(), nNC = new AtomicInteger(), nSing = new AtomicInteger();
+        AtomicInteger npFull = new AtomicInteger();
+        AtomicInteger nsFull = new AtomicInteger();
+        AtomicInteger nPC = new AtomicInteger();
+        AtomicInteger nNC = new AtomicInteger();
+        AtomicInteger nSing = new AtomicInteger();
         AtomicInteger nNoTold = new AtomicInteger();
         concepts.getConcepts().filter(p -> isValid(p.getpName())).forEach(n -> {
-            if(n.isSingleton()) {
+            if (n.isSingleton()) {
                 nSing.incrementAndGet();
             }
             if (n.isPrimitive()) {
@@ -2972,17 +2984,18 @@ public class TBox implements Serializable {
                 nNoTold.incrementAndGet();
             }
         });
-        config.getLog().print("There are ").print(nPC).print(" primitive concepts used\n of which ").print(npFull)
-            .print(" completely defined\n      and ").print(nNoTold).print(" has no told subsumers\nThere are ").print(
-                nNC).print(" non-primitive concepts used\n of which ").print(nsFull).print(" synonyms\nThere are ")
-            .print(nSing).print(" individuals or nominals used\n");
+        config.getLog().print("There are ").print(nPC).print(" primitive concepts used\n of which ")
+            .print(npFull).print(" completely defined\n      and ").print(nNoTold)
+            .print(" has no told subsumers\nThere are ").print(nNC)
+            .print(" non-primitive concepts used\n of which ").print(nsFull)
+            .print(" synonyms\nThere are ").print(nSing).print(" individuals or nominals used\n");
     }
 
     /** remove extra descritpions */
     @PortedFrom(file = "dlTBox.h", name = "RemoveExtraDescriptions")
     public void removeExtraDescriptions() {
-        concepts.getConcepts().forEach(pc -> pc.removeDescription());
-        individuals.getConcepts().forEach(pi -> pi.removeDescription());
+        concepts.getConcepts().forEach(Concept::removeDescription);
+        individuals.getConcepts().forEach(Concept::removeDescription);
     }
 
     /** set To Do priorities using local OPTIONS */
@@ -2995,8 +3008,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param c
-     *        C
+     * @param c C
      * @return true iff individual C is known to be p-blocked by another one
      */
     @PortedFrom(file = "dlTBox.h", name = "isBlockedInd")
@@ -3005,8 +3017,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param c
-     *        C
+     * @param c C
      * @return individual that blocks C; works only for blocked individuals C
      */
     @PortedFrom(file = "dlTBox.h", name = "getBlockingInd")
@@ -3015,8 +3026,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param c
-     *        C
+     * @param c C
      * @return true iff an individual blocks C deterministically
      */
     @PortedFrom(file = "dlTBox.h", name = "isBlockingDet")
@@ -3027,8 +3037,7 @@ public class TBox implements Serializable {
     /**
      * init const cache for either bpTOP or bpBOTTOM
      * 
-     * @param p
-     *        p
+     * @param p p
      */
     @PortedFrom(file = "dlTBox.h", name = "initConstCache")
     private void initConstCache(int p) {
@@ -3038,22 +3047,18 @@ public class TBox implements Serializable {
     /**
      * init [singleton] cache for given concept and polarity
      * 
-     * @param p
-     *        p
-     * @param pos
-     *        pos
+     * @param p p
+     * @param pos pos
      */
     @PortedFrom(file = "dlTBox.h", name = "initSingletonCache")
     private void initSingletonCache(Concept p, boolean pos) {
-        dlHeap.setCache(createBiPointer(p.getpName(), pos), new ModelCacheSingleton(createBiPointer(p.getIndex(),
-            pos)));
+        dlHeap.setCache(createBiPointer(p.getpName(), pos),
+            new ModelCacheSingleton(createBiPointer(p.getIndex(), pos)));
     }
 
     /**
-     * @param pConcept
-     *        pConcept
-     * @param sub
-     *        sub
+     * @param pConcept pConcept
+     * @param sub sub
      * @return initialized cache
      */
     @PortedFrom(file = "dlTBox.h", name = "initCache")
@@ -3075,10 +3080,8 @@ public class TBox implements Serializable {
     /**
      * test if 2 concept non-subsumption can be determined by cache merging
      * 
-     * @param p
-     *        p
-     * @param q
-     *        q
+     * @param p p
+     * @param q q
      * @return cache state
      */
     @PortedFrom(file = "dlTBox.h", name = "testCachedNonSubsumption")
@@ -3109,8 +3112,7 @@ public class TBox implements Serializable {
     /**
      * set NameSigMap
      * 
-     * @param p
-     *        p
+     * @param p p
      */
     @PortedFrom(file = "dlTBox.h", name = "setNameSigMap")
     public void setNameSigMap(Map<OWLEntity, Signature> p) {
@@ -3118,8 +3120,7 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param c
-     *        c
+     * @param c c
      * @return signature
      */
     @Nullable
@@ -3128,17 +3129,17 @@ public class TBox implements Serializable {
         if (pName2Sig == null) {
             return null;
         }
-        if (c.getEntity() == null) {
+        NamedEntity e = c.getEntity();
+        if (e == null || e.getEntity() == null) {
             return null;
         }
-        return pName2Sig.get(c.getEntity());
+        return pName2Sig.get(e.getEntity());
     }
 
     /**
      * set relevance for a DLVertex
      * 
-     * @param p
-     *        _p
+     * @param p _p
      */
     @PortedFrom(file = "dlTBox.h", name = "setRelevant")
     @SuppressWarnings("incomplete-switch")
@@ -3189,8 +3190,8 @@ public class TBox implements Serializable {
                     rolesToExplore.add(vRole);
                     while (!rolesToExplore.isEmpty()) {
                         Role roleToExplore = rolesToExplore.remove(0);
-                        if ((roleToExplore.getId() != 0 || roleToExplore.isTop()) && !roleToExplore.isRelevant(
-                            relevance)) {
+                        if ((roleToExplore.getId() != 0 || roleToExplore.isTop())
+                            && !roleToExplore.isRelevant(relevance)) {
                             roleToExplore.setRelevant(relevance);
                             this.collectLogicFeature(roleToExplore);
                             queue.add(roleToExplore.getBPDomain());
@@ -3228,7 +3229,8 @@ public class TBox implements Serializable {
                     }
                     break;
                 default:
-                    throw new ReasonerInternalException("Error setting relevant vertex of type " + dagtag);
+                    throw new ReasonerInternalException(
+                        "Error setting relevant vertex of type " + dagtag);
             }
         }
     }
@@ -3236,9 +3238,8 @@ public class TBox implements Serializable {
     @Original
     private DLVertex realSetRelevant(int p) {
         DLVertex v = dlHeap.get(p);
-        boolean pos = p > 0;
         ++nRelevantBCalls;
-        this.collectLogicFeature(v, pos);
+        this.collectLogicFeature(v);
         return v;
     }
 
@@ -3283,8 +3284,9 @@ public class TBox implements Serializable {
     @PortedFrom(file = "dlTBox.h", name = "printFeatures")
     public void printFeatures() {
         kbFeatures.writeState(config.getLog());
-        config.getLog().print("KB contains ", gcis.isGCI() ? "" : "NO ", "GCIs\nKB contains ", gcis.isReflexive() ? ""
-            : "NO ", "reflexive roles\nKB contains ", gcis.isRnD() ? "" : "NO ", "range and domain restrictions\n");
+        config.getLog().print("KB contains ", gcis.isGCI() ? "" : "NO ", "GCIs\nKB contains ",
+            gcis.isReflexive() ? "" : "NO ", "reflexive roles\nKB contains ",
+            gcis.isRnD() ? "" : "NO ", "range and domain restrictions\n");
     }
 
     /**
@@ -3308,7 +3310,7 @@ public class TBox implements Serializable {
      */
     @Original
     public DLDag getDLHeap() {
-        return dlHeap;
+        return getDag();
     }
 
     /**
@@ -3322,8 +3324,7 @@ public class TBox implements Serializable {
     /**
      * replace (AR:C) with X such that C [= AR^-:X for fresh X.
      * 
-     * @param rc
-     *        RC
+     * @param rc RC
      * @return X
      */
     @PortedFrom(file = "dlTBox.h", name = "replaceForall")
@@ -3361,10 +3362,8 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param p
-     *        p
-     * @param pair
-     *        pair
+     * @param p p
+     * @param pair pair
      */
     public void addSameIndividuals(Individual p, Pair pair) {
         sameIndividuals.put(p, pair);
@@ -3414,13 +3413,12 @@ public class TBox implements Serializable {
         /**
          * move I'th iterable forward; deal with end-case
          * 
-         * @param i
-         *        index
+         * @param i index
          * @return true if there is a next
          */
         public boolean next(int i) {
             if (base.get(i).next()) {
-                return i == 0 ? true : next(i - 1);
+                return i == 0 || next(i - 1);
             }
             return false;
         }
@@ -3428,8 +3426,7 @@ public class TBox implements Serializable {
         /**
          * add a new iterable to a vec
          * 
-         * @param it
-         *        iterable to add
+         * @param it iterable to add
          */
         void add(IterableElem<E> it) {
             base.add(it);
@@ -3450,10 +3447,8 @@ public class TBox implements Serializable {
     }
 
     /**
-     * @param mPlus
-     *        MPlus
-     * @param mMinus
-     *        MMinus
+     * @param mPlus MPlus
+     * @param mMinus MMinus
      */
     public void reclassify(Set<OWLEntity> mPlus, Set<OWLEntity> mMinus) {
         pTaxCreator.reclassify(mPlus, mMinus);

@@ -5,7 +5,12 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -21,20 +26,23 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 /**
  * @author ignazio
- * @param <R>
- *        type
+ * @param <R> type
  */
-public class DatatypeEnumeration<R extends Comparable<R>> implements
-    DatatypeCombination<DatatypeEnumeration<R>, Literal<R>>, DatatypeExpression<R> {
+public class DatatypeEnumeration<R extends Comparable<R>>
+    implements DatatypeCombination<DatatypeEnumeration<R>, Literal<R>>, DatatypeExpression<R> {
 
+    private static final String WARNING_NO_FACETS_ON_ENUMERATION =
+        "DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object: {}";
     private static final Logger LOGGER = LoggerFactory.getLogger(DatatypeEnumeration.class);
-    @Nonnull private final IRI uri;
-    @Nonnull protected final Datatype<R> host;
-    @Nonnull protected final List<Literal<R>> literals = new ArrayList<>();
+    @Nonnull
+    private final IRI uri;
+    @Nonnull
+    protected final Datatype<R> host;
+    @Nonnull
+    protected final List<Literal<R>> literals = new ArrayList<>();
 
     /**
-     * @param d
-     *        d
+     * @param d d
      */
     public DatatypeEnumeration(Datatype<R> d) {
         this.uri = DatatypeFactory.getIndex("urn:enum").getIRI();
@@ -42,10 +50,8 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     }
 
     /**
-     * @param d
-     *        d
-     * @param l
-     *        l
+     * @param d d
+     * @param l l
      */
     public DatatypeEnumeration(Datatype<R> d, Literal<R> l) {
         this(d);
@@ -53,10 +59,8 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
     }
 
     /**
-     * @param d
-     *        d
-     * @param c
-     *        c
+     * @param d d
+     * @param c c
      */
     public DatatypeEnumeration(Datatype<R> d, Collection<Literal<R>> c) {
         this(d);
@@ -153,7 +157,7 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
 
     @Override
     public boolean isInValueSpace(R l) {
-        return this.literals.stream().map(p -> p.typedValue()).anyMatch(p -> p.equals(l));
+        return this.literals.stream().map(Literal::typedValue).anyMatch(p -> p.equals(l));
     }
 
     @Override
@@ -263,17 +267,16 @@ public class DatatypeEnumeration<R extends Comparable<R>> implements
 
     @Override
     public DatatypeExpression<R> addNumericFacet(Facet f, @Nullable Comparable<?> value) {
-        LOGGER.warn(
-            "DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object: {}",
-            this);
-        return this;
+        return forbiddenFacets();
     }
 
     @Override
     public DatatypeExpression<R> addNonNumericFacet(Facet f, @Nullable Comparable<?> value) {
-        LOGGER.warn(
-            "DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to an enumeration; returning the same object: {}",
-            this);
+        return forbiddenFacets();
+    }
+
+    protected DatatypeExpression<R> forbiddenFacets() {
+        LOGGER.warn(WARNING_NO_FACETS_ON_ENUMERATION, this);
         return this;
     }
 

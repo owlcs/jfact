@@ -16,8 +16,7 @@ public enum StatIndex {
     //@formatter:on
 
     /**
-     * @param pos
-     *        positive or negative
+     * @param pos positive or negative
      * @return index for stat
      */
     public int getIndex(boolean pos) {
@@ -25,8 +24,7 @@ public enum StatIndex {
     }
 
     /**
-     * @param c
-     *        stat
+     * @param c stat
      * @return index for chosen stat
      */
     public static int choose(char c) {
@@ -47,22 +45,14 @@ public enum StatIndex {
     /**
      * add-up all stat values at once by explicit values
      * 
-     * @param d
-     *        d
-     * @param s
-     *        s
-     * @param b
-     *        b
-     * @param g
-     *        g
-     * @param pos
-     *        pos
-     * @param stat
-     *        stat
-     * @param debug
-     *        true if debug values
+     * @param d d
+     * @param s s
+     * @param b b
+     * @param g g
+     * @param pos pos
+     * @param stat stat
      */
-    public static void updateStatValues(int d, int s, int b, int g, boolean pos, int[] stat, boolean debug) {
+    public static void updateStatValues(int d, int s, int b, int g, boolean pos, int[] stat) {
         stat[SIZE.getIndex(pos)] += s;
         stat[BRANCH.getIndex(pos)] += b;
         stat[GENER.getIndex(pos)] += g;
@@ -74,29 +64,21 @@ public enum StatIndex {
     /**
      * add-up all values at once by a given vertex
      * 
-     * @param v
-     *        v
-     * @param posV
-     *        posV
-     * @param pos
-     *        pos
-     * @param stat
-     *        stat
-     * @param debug
-     *        true if debug values
+     * @param v v
+     * @param posV posV
+     * @param pos pos
+     * @param stat stat
      */
-    public static void updateStatValues(DLVertex v, boolean posV, boolean pos, int[] stat, boolean debug) {
-        updateStatValues(getDepth(posV, v.stat), getSize(posV, v.stat), getBranch(posV, v.stat), getGener(posV, v.stat),
-            pos, stat, debug);
+    public static void updateStatValues(DLVertex v, boolean posV, boolean pos, int[] stat) {
+        updateStatValues(getDepth(posV, v.stat), getSize(posV, v.stat), getBranch(posV, v.stat),
+            getGener(posV, v.stat), pos, stat);
     }
 
     /**
      * increment frequency value
      * 
-     * @param pos
-     *        pos
-     * @param stat
-     *        stat
+     * @param pos pos
+     * @param stat stat
      */
     public static void incFreqValue(boolean pos, int[] stat) {
         stat[FREQ.getIndex(pos)] += 1;
@@ -105,10 +87,8 @@ public enum StatIndex {
     /**
      * general access to a stat value by index
      * 
-     * @param pos
-     *        pos
-     * @param stat
-     *        stat
+     * @param pos pos
+     * @param stat stat
      * @return depth
      */
     public static int getDepth(boolean pos, int[] stat) {
@@ -118,10 +98,8 @@ public enum StatIndex {
     /**
      * general access to a stat value by index
      * 
-     * @param pos
-     *        pos
-     * @param stat
-     *        stat
+     * @param pos pos
+     * @param stat stat
      * @return size
      */
     protected static int getSize(boolean pos, int[] stat) {
@@ -131,10 +109,8 @@ public enum StatIndex {
     /**
      * general access to a stat value by index
      * 
-     * @param pos
-     *        pos
-     * @param stat
-     *        stat
+     * @param pos pos
+     * @param stat stat
      * @return branch
      */
     protected static int getBranch(boolean pos, int[] stat) {
@@ -144,10 +120,8 @@ public enum StatIndex {
     /**
      * general access to a stat value by index
      * 
-     * @param pos
-     *        pos
-     * @param stat
-     *        stat
+     * @param pos pos
+     * @param stat stat
      * @return gener
      */
     protected static int getGener(boolean pos, int[] stat) {
@@ -157,10 +131,8 @@ public enum StatIndex {
     /**
      * general access to a stat value by index
      * 
-     * @param pos
-     *        pos
-     * @param stat
-     *        stat
+     * @param pos pos
+     * @param stat stat
      * @return freq
      */
     protected static int getFreq(boolean pos, int[] stat) {

@@ -9,7 +9,12 @@ import static uk.ac.manchester.cs.jfact.datatypes.DatatypeClashes.DT_TT;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 
@@ -27,14 +32,16 @@ import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 public final class DataTypeReasoner implements Serializable {
 
     /** map Type.pName.Type appearance */
-    @PortedFrom(file = "DataReasoning.h", name = "Map") private final Map<Datatype<?>, DataTypeSituation<?>> map = new HashMap<>();
+    @PortedFrom(file = "DataReasoning.h", name = "Map")
+    private final Map<Datatype<?>, DataTypeSituation<?>> map = new HashMap<>();
     /** dep-set for the clash for *all* the types */
-    @PortedFrom(file = "DataReasoning.h", name = "clashDep") private Optional<DepSet> clashDep = Optional.empty();
-    @Original private final JFactReasonerConfiguration options;
+    @PortedFrom(file = "DataReasoning.h", name = "clashDep")
+    private Optional<DepSet> clashDep = Optional.empty();
+    @Original
+    private final JFactReasonerConfiguration options;
 
     /**
-     * @param config
-     *        config
+     * @param config config
      */
     public DataTypeReasoner(JFactReasonerConfiguration config) {
         options = config;
@@ -43,10 +50,8 @@ public final class DataTypeReasoner implements Serializable {
     /**
      * set clash dep-set to DEP, report with given REASON
      * 
-     * @param dep
-     *        dep
-     * @param reason
-     *        reason
+     * @param dep dep
+     * @param reason reason
      */
     @PortedFrom(file = "DataReasoning.h", name = "reportClash")
     public void reportClash(DepSet dep, DatatypeClashes reason) {
@@ -58,12 +63,9 @@ public final class DataTypeReasoner implements Serializable {
     /**
      * set clash dep-set to DEP, report with given REASON
      * 
-     * @param dep1
-     *        dep1
-     * @param dep2
-     *        dep2
-     * @param reason
-     *        reason
+     * @param dep1 dep1
+     * @param dep2 dep2
+     * @param reason reason
      */
     @PortedFrom(file = "DataReasoning.h", name = "reportClash")
     public void reportClash(DepSet dep1, DepSet dep2, DatatypeClashes reason) {
@@ -71,11 +73,11 @@ public final class DataTypeReasoner implements Serializable {
     }
 
     // managing DTR
-    /**
+    /*
      * add data type to the reasoner
      * 
-     * @param datatype
-     *        datatype
+     * @param datatype datatype
+     * 
      * @return datatype situation
      */
     @SuppressWarnings("unchecked")
@@ -102,14 +104,10 @@ public final class DataTypeReasoner implements Serializable {
     }
 
     /**
-     * @param positive
-     *        positive
-     * @param dagtag
-     *        type
-     * @param entry
-     *        entry
-     * @param dep
-     *        dep
+     * @param positive positive
+     * @param dagtag type
+     * @param entry entry
+     * @param dep dep
      * @return false if datatype, true otherwise
      */
     @PortedFrom(file = "DataReasoning.h", name = "addDataEntry")
@@ -120,7 +118,8 @@ public final class DataTypeReasoner implements Serializable {
             case DATAVALUE:
                 return dataValue(positive, ((LiteralEntry) entry).getLiteral(), dep);
             case DATAEXPR:
-                return dataExpression(positive, ((DatatypeEntry) entry).getDatatype().asExpression(), dep);
+                return dataExpression(positive,
+                    ((DatatypeEntry) entry).getDatatype().asExpression(), dep);
             case AND:
                 return false;
             case BAD:
@@ -142,7 +141,8 @@ public final class DataTypeReasoner implements Serializable {
     }
 
     @Original
-    private <R extends Comparable<R>> boolean dataExpression(boolean positive, DatatypeExpression<R> c, DepSet dep) {
+    private <R extends Comparable<R>> boolean dataExpression(boolean positive,
+        DatatypeExpression<R> c, DepSet dep) {
         Datatype<R> typeToIndex = c.getHostType();
         if (c instanceof DatatypeEnumeration) {
             typeToIndex = c;
@@ -160,7 +160,8 @@ public final class DataTypeReasoner implements Serializable {
     }
 
     @Original
-    private <R extends Comparable<R>> boolean dataType(boolean positive, Datatype<R> c, DepSet dep) {
+    private <R extends Comparable<R>> boolean dataType(boolean positive, Datatype<R> c,
+        DepSet dep) {
         if (options.isLoggingActive()) {
             options.getLog().printTemplate(Templates.INTERVAL, positive ? "+" : "-", c, "", "", "");
         }
@@ -173,11 +174,14 @@ public final class DataTypeReasoner implements Serializable {
     }
 
     @PortedFrom(file = "DataReasoning.h", name = "dataValue")
-    private <R extends Comparable<R>> boolean dataValue(boolean positive, Literal<R> c1, DepSet dep) {
+    private <R extends Comparable<R>> boolean dataValue(boolean positive, Literal<R> c1,
+        DepSet dep) {
         Datatype<R> d = c1.getDatatypeExpression();
-        DatatypeExpression<R> interval = d.isNumericDatatype() ? new DatatypeNumericEnumeration<>(d.asNumericDatatype(),
-            c1) : new DatatypeEnumeration<>(d, c1);
-        options.getLog().printTemplate(Templates.INTERVAL, positive ? "+" : "-", interval, "", "", "");
+        DatatypeExpression<R> interval =
+            d.isNumericDatatype() ? new DatatypeNumericEnumeration<>(d.asNumericDatatype(), c1)
+                : new DatatypeEnumeration<>(d, c1);
+        options.getLog().printTemplate(Templates.INTERVAL, positive ? "+" : "-", interval, "", "",
+            "");
         return dataExpression(positive, interval, dep);
     }
 
@@ -219,15 +223,17 @@ public final class DataTypeReasoner implements Serializable {
         // b (some b might not be a)
         for (int i = 0; i < size; i++) {
             DataTypeSituation<?> a = types.get(i);
+            DepSet aPType = a.getPType();
+            boolean p1 = a.hasPType();
+            boolean n1 = a.hasNType();
             for (int j = i + 1; j < size; j++) {
                 DataTypeSituation<?> b = types.get(j);
-                boolean p1 = a.hasPType();
-                boolean n1 = a.hasNType();
+                DepSet bNType = b.getNType();
                 boolean p2 = b.hasPType();
                 boolean n2 = b.hasNType();
                 boolean aSubtypeB = a.isSubType(b);
                 boolean bSubtypeA = b.isSubType(a);
-                if (findClash(p1, n2, p2, n1, aSubtypeB, bSubtypeA, a.getPType(), b.getNType())) {
+                if (findClash(p1, n2, p2, n1, aSubtypeB, bSubtypeA, aPType, bNType)) {
                     return true;
                 }
                 // what if the supertype is an enum?
@@ -235,13 +241,12 @@ public final class DataTypeReasoner implements Serializable {
                 // the subtype
                 boolean notBCompatibleA = !b.checkCompatibleValue(a);
                 boolean notACompatibleB = !a.checkCompatibleValue(b);
-                if (aSubtypeB && findClash(aSubtypeB, a.getPType(), b.getNType(), notBCompatibleA)) {
-                    return true;
-                } else if (bSubtypeA && findClash(bSubtypeA, a.getPType(), b.getNType(), notACompatibleB)) {
+                if (aSubtypeB && findClash(aSubtypeB, aPType, bNType, notBCompatibleA)
+                    || bSubtypeA && findClash(bSubtypeA, aPType, bNType, notACompatibleB)) {
                     return true;
                 }
-                if (findClash(p1, p2, a.getType(), b.getType(), a.getPType(), b.getPType(), notBCompatibleA,
-                    notACompatibleB)) {
+                if (findClash(p1, p2, a.getType(), b.getType(), aPType, b.getPType(),
+                    notBCompatibleA, notACompatibleB)) {
                     return true;
                 }
             }
@@ -249,8 +254,8 @@ public final class DataTypeReasoner implements Serializable {
         return false;
     }
 
-    private boolean findClash(boolean p1, boolean p2, Datatype<?> t1, Datatype<?> t2, DepSet pType1, DepSet pType2,
-        boolean not12, boolean not21) {
+    private boolean findClash(boolean p1, boolean p2, Datatype<?> t1, Datatype<?> t2, DepSet pType1,
+        DepSet pType2, boolean not12, boolean not21) {
         // they're disjoint: they can't be both positive (but can be
         // both negative)
         if (p1 && p2) {
@@ -266,12 +271,15 @@ public final class DataTypeReasoner implements Serializable {
                 // determining a new interval that should be added
                 // to the reasoner.
                 // XXX need to design a proper general solution
-                if (t1.equals(DatatypeFactory.NONNEGATIVEINTEGER) && t2.equals(DatatypeFactory.NONPOSITIVEINTEGER) || t2
-                    .equals(DatatypeFactory.NONNEGATIVEINTEGER) && t1.equals(DatatypeFactory.NONPOSITIVEINTEGER)) {
+                if (t1.equals(DatatypeFactory.NONNEGATIVEINTEGER)
+                    && t2.equals(DatatypeFactory.NONPOSITIVEINTEGER)
+                    || t2.equals(DatatypeFactory.NONNEGATIVEINTEGER)
+                        && t1.equals(DatatypeFactory.NONPOSITIVEINTEGER)) {
                     map.remove(t1);
                     map.remove(t2);
-                    DatatypeEnumeration<BigInteger> enumeration = new DatatypeEnumeration<>(DatatypeFactory.INTEGER,
-                        Collections.singletonList(DatatypeFactory.INTEGER.buildLiteral("0")));
+                    DatatypeEnumeration<BigInteger> enumeration =
+                        new DatatypeEnumeration<>(DatatypeFactory.INTEGER,
+                            Collections.singletonList(DatatypeFactory.INTEGER.buildLiteral("0")));
                     this.dataExpression(true, enumeration, DepSet.plus(pType1, pType2));
                     return checkClash();
                 }
@@ -281,26 +289,18 @@ public final class DataTypeReasoner implements Serializable {
     }
 
     /**
-     * @param p1
-     *        p1
-     * @param n2
-     *        n2
-     * @param p2
-     *        p2
-     * @param n1
-     *        n1
-     * @param t1subTypet2
-     *        t1subTypet2
-     * @param t2subTypet1
-     *        t2subTypet1
-     * @param pType1
-     *        pType1
-     * @param nType2
-     *        nType2
+     * @param p1 p1
+     * @param n2 n2
+     * @param p2 p2
+     * @param n1 n1
+     * @param t1subTypet2 t1subTypet2
+     * @param t2subTypet1 t2subTypet1
+     * @param pType1 pType1
+     * @param nType2 nType2
      * @return true if clash
      */
-    private boolean findClash(boolean p1, boolean n2, boolean p2, boolean n1, boolean t1subTypet2, boolean t2subTypet1,
-        DepSet pType1, DepSet nType2) {
+    private boolean findClash(boolean p1, boolean n2, boolean p2, boolean n1, boolean t1subTypet2,
+        boolean t2subTypet1, DepSet pType1, DepSet nType2) {
         if (t1subTypet2 && p1 && n2 || t2subTypet1 && p2 && n1) {
             // cannot be NOT supertype AND subtype
             reportClash(pType1, nType2, DT_TT);
@@ -310,14 +310,10 @@ public final class DataTypeReasoner implements Serializable {
     }
 
     /**
-     * @param t2subTypet1
-     *        t2subTypet1
-     * @param pType1
-     *        pType1
-     * @param nType2
-     *        nType2
-     * @param not12
-     *        not12
+     * @param t2subTypet1 t2subTypet1
+     * @param pType1 pType1
+     * @param nType2 nType2
+     * @param not12 not12
      * @return true if clash happens
      */
     private boolean findClash(boolean t2subTypet1, DepSet pType1, DepSet nType2, boolean not12) {
@@ -331,14 +327,14 @@ public final class DataTypeReasoner implements Serializable {
     }
 
     /**
-     * @param types
-     *        types
+     * @param types types
      * @return true if a clash is found
      */
     private boolean findClash(List<DataTypeSituation<?>> types) {
-        Optional<DataTypeSituation<?>> findAny = types.stream().filter(p -> p.checkPNTypeClash()).findAny();
-        if (findAny.isPresent()) {
-            reportClash(findAny.get().getPType(), findAny.get().getNType(), DT_TT);
+        Optional<DataTypeSituation<?>> clash =
+            types.stream().filter(DataTypeSituation::checkPNTypeClash).findAny();
+        if (clash.isPresent()) {
+            reportClash(clash.get().getPType(), clash.get().getNType(), DT_TT);
             return true;
         }
         return false;

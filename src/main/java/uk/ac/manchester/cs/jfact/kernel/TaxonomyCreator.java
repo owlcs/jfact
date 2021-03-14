@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
+import static uk.ac.manchester.cs.jfact.helpers.Assertions.verifyNotNull;
+
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -23,33 +25,43 @@ import uk.ac.manchester.cs.jfact.helpers.Templates;
 @PortedFrom(file = "TaxonomyCreator.h", name = "TaxonomyCreator")
 public class TaxonomyCreator implements Serializable {
 
-    @PortedFrom(file = "TaxonomyCreator.h", name = "pTax") protected final Taxonomy pTax;
-    @PortedFrom(file = "TaxonomyCreator.h", name = "Syns") protected final List<ClassifiableEntry> syns = new ArrayList<>();
+    @PortedFrom(file = "TaxonomyCreator.h", name = "pTax")
+    protected final Taxonomy pTax;
+    @PortedFrom(file = "TaxonomyCreator.h", name = "Syns")
+    protected final List<ClassifiableEntry> syns = new ArrayList<>();
     /** labeller for marking nodes with a label wrt classification */
-    @PortedFrom(file = "TaxonomyCreator.h", name = "valueLabel") protected long valueLabel = 1;
+    @PortedFrom(file = "TaxonomyCreator.h", name = "valueLabel")
+    protected long valueLabel = 1;
     /** pointer to currently classified entry */
-    @PortedFrom(file = "TaxonomyCreator.h", name = "curEntry") protected ClassifiableEntry curEntry = null;
+    @PortedFrom(file = "TaxonomyCreator.h", name = "curEntry")
+    protected ClassifiableEntry curEntry = null;
     /** number of tested entryes */
-    @PortedFrom(file = "TaxonomyCreator.h", name = "nEntries") protected int nEntries = 0;
+    @PortedFrom(file = "TaxonomyCreator.h", name = "nEntries")
+    protected int nEntries = 0;
     /** number of completely-defined entries */
-    @PortedFrom(file = "TaxonomyCreator.h", name = "nCDEntries") protected long nCDEntries = 0;
+    @PortedFrom(file = "TaxonomyCreator.h", name = "nCDEntries")
+    protected long nCDEntries = 0;
     /**
-     * optimisation flag: if entry is completely defined by it's told subsumers,
-     * no other classification required
+     * optimisation flag: if entry is completely defined by it's told subsumers, no other
+     * classification required
      */
-    @PortedFrom(file = "TaxonomyCreator.h", name = "useCompletelyDefined") protected boolean useCompletelyDefined = false;
+    @PortedFrom(file = "TaxonomyCreator.h", name = "useCompletelyDefined")
+    protected boolean useCompletelyDefined = false;
     /** session flag: shows the direction of the search */
-    @PortedFrom(file = "TaxonomyCreator.h", name = "upDirection") protected boolean upDirection;
+    @PortedFrom(file = "TaxonomyCreator.h", name = "upDirection")
+    protected boolean upDirection;
     /** stack for Taxonomy creation */
-    @PortedFrom(file = "TaxonomyCreator.h", name = "waitStack") private final LinkedList<ClassifiableEntry> waitStack = new LinkedList<>();
+    @PortedFrom(file = "TaxonomyCreator.h", name = "waitStack")
+    private final LinkedList<ClassifiableEntry> waitStack = new LinkedList<>();
     /** told subsumers corresponding to a given entry */
-    @PortedFrom(file = "TaxonomyCreator.h", name = "ksStack") protected final LinkedList<KnownSubsumers> ksStack = new LinkedList<>();
+    @PortedFrom(file = "TaxonomyCreator.h", name = "ksStack")
+    protected final LinkedList<KnownSubsumers> ksStack = new LinkedList<>();
     /** signature of a \bot-module corresponding to a given entry */
-    @PortedFrom(file = "TaxonomyCreator.h", name = "sigStack") protected final LinkedList<Signature> sigStack = new LinkedList<>();
+    @PortedFrom(file = "TaxonomyCreator.h", name = "sigStack")
+    protected final LinkedList<Signature> sigStack = new LinkedList<>();
 
     /**
-     * @param pTax2
-     *        pTax2
+     * @param pTax2 pTax2
      */
     public TaxonomyCreator(Taxonomy pTax2) {
         pTax = pTax2;
@@ -58,8 +70,7 @@ public class TaxonomyCreator implements Serializable {
     /**
      * initialise aux entry with given concept p
      * 
-     * @param p
-     *        p
+     * @param p p
      */
     @PortedFrom(file = "TaxonomyCreator.h", name = "setCurrentEntry")
     protected void setCurrentEntry(ClassifiableEntry p) {
@@ -77,18 +88,16 @@ public class TaxonomyCreator implements Serializable {
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "setToldSubsumers")
     private void setToldSubsumers() {
         Collection<ClassifiableEntry> top = ksStack.peek().sure();
-        boolean needLogging = pTax.getOptions().isNeedLogging();
         LogAdapter log = pTax.getOptions().getLog();
-        if (needLogging && !top.isEmpty()) {
+        if (!top.isEmpty()) {
             log.print("\nTAX: told subsumers");
         }
-        top.stream().filter(p -> p.isClassified()).peek(p -> {
-            if (needLogging) {
-                log.printTemplate(Templates.TOLD_SUBSUMERS, p.getIRI());
-            }
-        }).forEach(p -> propagateTrueUp(p.getTaxVertex()));
+        top.stream().filter(ClassifiableEntry::isClassified)
+            .peek(p -> log.printTemplate(Templates.TOLD_SUBSUMERS, p.getIRI())
+
+            ).forEach(p -> propagateTrueUp(verifyNotNull(p.getTaxVertex())));
         top = ksStack.peek().possible();
-        if (!top.isEmpty() && needLogging) {
+        if (!top.isEmpty()) {
             log.print(" and possibly ");
             top.forEach(q -> log.print(Templates.TOLD_SUBSUMERS, q.getIRI()));
         }
@@ -96,8 +105,9 @@ public class TaxonomyCreator implements Serializable {
 
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "setNonRedundantCandidates")
     private void setNonRedundantCandidates() {
-        if (!curEntry.hasToldSubsumers() && pTax.getOptions().isNeedLogging()) {
-            pTax.getOptions().getLog().print("\nTAX: TOP completely defines concept ").print(curEntry.getIRI());
+        if (!curEntry.hasToldSubsumers()) {
+            pTax.getOptions().getLog().print("\nTAX: TOP completely defines concept ")
+                .print(curEntry.getIRI());
         }
         // test if some "told subsumer" is not an immediate TS (ie, not a
         // border element)
@@ -166,11 +176,9 @@ public class TaxonomyCreator implements Serializable {
         // do something before classification (tunable)
         preClassificationActions();
         ++nEntries;
-        if (pTax.getOptions().isNeedLogging()) {
-            // this output is currently disabled in FaCT++
-            pTax.getOptions().getLog().print("\nTAX: start classifying entry ");
-            pTax.getOptions().getLog().print(curEntry.getIRI());
-        }
+        // this output is currently disabled in FaCT++
+        pTax.getOptions().getLog().print("\nTAX: start classifying entry ");
+        pTax.getOptions().getLog().print(curEntry.getIRI());
         // if no classification needed -- nothing to do
         if (immediatelyClassified()) {
             return;
@@ -202,8 +210,7 @@ public class TaxonomyCreator implements Serializable {
     }
 
     /**
-     * @param v
-     *        v
+     * @param v v
      * @return true if V is a direct parent of current wrt labels
      */
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "isDirectParent")
@@ -215,8 +222,7 @@ public class TaxonomyCreator implements Serializable {
     /**
      * add top entry together with its known subsumers
      * 
-     * @param p
-     *        p
+     * @param p p
      */
     @PortedFrom(file = "TaxonomyCreator.h", name = "addTop")
     private void addTop(ClassifiableEntry p) {
@@ -239,8 +245,8 @@ public class TaxonomyCreator implements Serializable {
         // load last concept
         setCurrentEntry(waitStack.peek());
         if (pTax.getOptions().isPrintTaxonomyInfo()) {
-            pTax.getOptions().getLog().print("\nTrying classify", curEntry.isCompletelyDefined() ? " CD " : " ",
-                curEntry.getIRI(), "... ");
+            pTax.getOptions().getLog().print("\nTrying classify",
+                curEntry.isCompletelyDefined() ? " CD " : " ", curEntry.getIRI(), "... ");
         }
         performClassification();
         if (pTax.getOptions().isPrintTaxonomyInfo()) {
@@ -252,8 +258,7 @@ public class TaxonomyCreator implements Serializable {
     /**
      * propagate the TRUE value of the KS subsumption up the hierarchy
      * 
-     * @param node
-     *        node
+     * @param node node
      */
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "propagateTrueUp")
     protected void propagateTrueUp(TaxonomyVertex node) {
@@ -271,8 +276,7 @@ public class TaxonomyCreator implements Serializable {
     /**
      * propagate the FALSE value of the KS subsumption down the hierarchy
      * 
-     * @param node
-     *        node
+     * @param node node
      */
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "propagateFalseDown")
     protected void propagateFalseDown(TaxonomyVertex node) {
@@ -290,10 +294,8 @@ public class TaxonomyCreator implements Serializable {
     /**
      * propagate constant VALUE into an appropriate direction
      * 
-     * @param node
-     *        node
-     * @param value
-     *        value
+     * @param node node
+     * @param value value
      * @return value
      */
     @PortedFrom(file = "TaxonomyCreator.cpp", name = "setAndPropagate")
@@ -309,8 +311,7 @@ public class TaxonomyCreator implements Serializable {
     /**
      * add PARENT as a parent if it exists and is direct parent
      * 
-     * @param parent
-     *        parent
+     * @param parent parent
      */
     @PortedFrom(file = "TaxonomyCreator.h", name = "addPossibleParent")
     public void addPossibleParent(@Nullable TaxonomyVertex parent) {
@@ -328,8 +329,7 @@ public class TaxonomyCreator implements Serializable {
     /**
      * set Completely Defined flag
      * 
-     * @param use
-     *        use
+     * @param use use
      */
     @PortedFrom(file = "TaxonomyCreator.h", name = "setCompletelyDefined")
     public void setCompletelyDefined(boolean use) {
@@ -337,8 +337,7 @@ public class TaxonomyCreator implements Serializable {
     }
 
     /**
-     * @param p
-     *        p
+     * @param p p
      */
     @PortedFrom(file = "TaxonomyCreator.h", name = "classifyEntry")
     public void classifyEntry(ClassifiableEntry p) {
@@ -364,8 +363,7 @@ public class TaxonomyCreator implements Serializable {
     /**
      * ensure that all TS of the top entry are classified.
      * 
-     * @param cur
-     *        cur
+     * @param cur cur
      * @return the reason of cycle or NULL.
      */
     @Nullable
@@ -399,7 +397,6 @@ public class TaxonomyCreator implements Serializable {
                     // as synonyms
                     cycleFound = true;
                     // continue to prepare its classification
-                    continue;
                 } else {
                     // arbitrary vertex in a cycle: save in synonyms of a
                     // root
@@ -417,6 +414,7 @@ public class TaxonomyCreator implements Serializable {
         // now if CUR is the reason of cycle mark all SYNs as synonyms
         if (cycleFound) {
             TaxonomyVertex syn = cur.getTaxVertex();
+            assert syn != null;
             syns.forEach(syn::addSynonym);
             syns.clear();
         }
@@ -428,8 +426,7 @@ public class TaxonomyCreator implements Serializable {
     // -- DFS-based classification
     // -----------------------------------------------------------------
     /**
-     * @param node
-     *        node
+     * @param node node
      * @return true if a NODE has been valued during current classification pass
      */
     @PortedFrom(file = "TaxonomyCreator.h", name = "isValued")
@@ -438,8 +435,7 @@ public class TaxonomyCreator implements Serializable {
     }
 
     /**
-     * @param node
-     *        node
+     * @param node node
      * @return the subsumption value of a NODE wrt currently classified one
      */
     @PortedFrom(file = "TaxonomyCreator.h", name = "getValue")
@@ -450,10 +446,8 @@ public class TaxonomyCreator implements Serializable {
     /**
      * set the classification value of a NODE to VALUE
      * 
-     * @param node
-     *        node
-     * @param value
-     *        value
+     * @param node node
+     * @param value value
      * @return val
      */
     @PortedFrom(file = "TaxonomyCreator.h", name = "setValue")
@@ -464,8 +458,7 @@ public class TaxonomyCreator implements Serializable {
     /**
      * prepare signature for given entry
      * 
-     * @param p
-     *        p
+     * @param p p
      * @return signature
      */
     @Nullable

@@ -5,7 +5,8 @@ package conformancetests;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -31,12 +32,13 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 
-@SuppressWarnings({ "javadoc" })
+@SuppressWarnings({"javadoc"})
 public class JUnitRunner {
 
-    public void print(String premise) throws OWLException {
-        OWLOntology o = manager.loadOntologyFromOntologyDocument(new StringDocumentSource(premise));
-        o.getOWLOntologyManager().saveOntology(o, new FunctionalSyntaxDocumentFormat(), new SystemOutDocumentTarget());
+    public void print(String p) throws OWLException {
+        OWLOntology o = manager.loadOntologyFromOntologyDocument(new StringDocumentSource(p));
+        o.getOWLOntologyManager().saveOntology(o, new FunctionalSyntaxDocumentFormat(),
+            new SystemOutDocumentTarget());
     }
 
     private final TestClasses t;
@@ -48,8 +50,8 @@ public class JUnitRunner {
     private OWLReasonerConfiguration config;
     private final OWLOntologyManager manager;
 
-    public JUnitRunner(OWLOntologyManager m, String premise, String consequence, String testId, TestClasses t,
-        String description) {
+    public JUnitRunner(OWLOntologyManager m, String premise, String consequence, String testId,
+        TestClasses t, String description) {
         manager = m;
         this.testId = testId;
         this.premise = premise(premise);
@@ -58,8 +60,8 @@ public class JUnitRunner {
         this.t = t;
     }
 
-    public JUnitRunner(OWLOntologyManager m, OWLOntology premise, String consequence, String testId, TestClasses t,
-        String description) {
+    public JUnitRunner(OWLOntologyManager m, OWLOntology premise, String consequence, String testId,
+        TestClasses t, String description) {
         manager = m;
         this.testId = testId;
         this.premise = premise;
@@ -68,8 +70,8 @@ public class JUnitRunner {
         this.t = t;
     }
 
-    public JUnitRunner(OWLOntologyManager m, OWLOntology premise, OWLOntology consequence, String testId, TestClasses t,
-        String description) {
+    public JUnitRunner(OWLOntologyManager m, OWLOntology premise, OWLOntology consequence,
+        String testId, TestClasses t, String description) {
         manager = m;
         this.testId = testId;
         this.premise = premise;
@@ -78,8 +80,8 @@ public class JUnitRunner {
         this.t = t;
     }
 
-    public JUnitRunner(OWLOntologyManager m, InputStream premise, String consequence, String testId, TestClasses t,
-        String description) {
+    public JUnitRunner(OWLOntologyManager m, InputStream premise, String consequence, String testId,
+        TestClasses t, String description) {
         manager = m;
         this.testId = testId;
         this.premise = premise(premise);
@@ -128,7 +130,6 @@ public class JUnitRunner {
             // Files.write(p, new File(testId + ".owl"),
             // StandardCharsets.UTF_8);
             // } catch (IOException e) {
-            // // TODO Auto-generated catch block
             // e.printStackTrace();
             // }
             // }
@@ -194,7 +195,8 @@ public class JUnitRunner {
         actual(conclusionOntology, b, reasoner);
         reasoner = roundtrip(reasoner);
         actual(conclusionOntology, b, reasoner);
-        premiseOntology.getOWLOntologyManager().removeOntologyChangeListener((OWLOntologyChangeListener) reasoner);
+        premiseOntology.getOWLOntologyManager()
+            .removeOntologyChangeListener((OWLOntologyChangeListener) reasoner);
     }
 
     @Nullable
@@ -270,7 +272,8 @@ public class JUnitRunner {
         }
     }
 
-    public String logTroubles(boolean expected, AtomicBoolean actual, TestClasses testclass, @Nullable OWLAxiom axiom) {
+    public String logTroubles(boolean expected, AtomicBoolean actual, TestClasses testclass,
+        @Nullable OWLAxiom axiom) {
         StringBuilder b = new StringBuilder();
         b.append("JUnitRunner.logTroubles() \t");
         b.append(testclass);
@@ -297,7 +300,8 @@ public class JUnitRunner {
 
     public void printConsequence() throws OWLOntologyStorageException {
         if (consequences != null) {
-            consequences.saveOntology(new FunctionalSyntaxDocumentFormat(), new SystemOutDocumentTarget());
+            consequences.saveOntology(new FunctionalSyntaxDocumentFormat(),
+                new SystemOutDocumentTarget());
         }
     }
 }

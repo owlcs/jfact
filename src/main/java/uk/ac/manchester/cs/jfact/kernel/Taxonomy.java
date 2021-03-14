@@ -1,9 +1,15 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
+import static uk.ac.manchester.cs.jfact.helpers.Assertions.verifyNotNull;
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import conformance.Original;
@@ -303,7 +309,7 @@ public class Taxonomy implements Serializable {
         TaxonomyVertex bot = getBottomVertex();
         bot.neigh(true).forEach(p -> p.removeLink(false, bot));
         bot.clearLinks(true);
-        willInsertIntoTaxonomy = true;  // it's possible again to add entries
+        willInsertIntoTaxonomy = true; // it's possible again to add entries
     }
 
     /**
@@ -318,7 +324,8 @@ public class Taxonomy implements Serializable {
             syn.setVertexAsHost(currentEntry);
         } else {
             syn.addSynonym(currentEntry);
-            options.getLog().print("\nTAX:set ", currentEntry.getIRI(), " equal ", syn.getPrimer().getIRI());
+            options.getLog().print("\nTAX:set ", currentEntry.getIRI(), " equal ",
+                syn.getPrimer().getIRI());
         }
     }
 
@@ -354,7 +361,7 @@ public class Taxonomy implements Serializable {
             return false;
         }
         if (syn.isClassified()) {
-            addCurrentToSynonym(syn.getTaxVertex());
+            addCurrentToSynonym(verifyNotNull(syn.getTaxVertex()));
             return true;
         }
         return false;

@@ -2,7 +2,22 @@ package uk.ac.manchester.cs.jfact.helpers;
 
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 import static uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry.resolveSynonym;
-import static uk.ac.manchester.cs.jfact.kernel.Token.*;
+import static uk.ac.manchester.cs.jfact.kernel.Token.AND;
+import static uk.ac.manchester.cs.jfact.kernel.Token.BOTTOM;
+import static uk.ac.manchester.cs.jfact.kernel.Token.CNAME;
+import static uk.ac.manchester.cs.jfact.kernel.Token.DATAEXPR;
+import static uk.ac.manchester.cs.jfact.kernel.Token.DNAME;
+import static uk.ac.manchester.cs.jfact.kernel.Token.FORALL;
+import static uk.ac.manchester.cs.jfact.kernel.Token.INAME;
+import static uk.ac.manchester.cs.jfact.kernel.Token.INV;
+import static uk.ac.manchester.cs.jfact.kernel.Token.LE;
+import static uk.ac.manchester.cs.jfact.kernel.Token.NOT;
+import static uk.ac.manchester.cs.jfact.kernel.Token.PROJFROM;
+import static uk.ac.manchester.cs.jfact.kernel.Token.PROJINTO;
+import static uk.ac.manchester.cs.jfact.kernel.Token.RCOMPOSITION;
+import static uk.ac.manchester.cs.jfact.kernel.Token.RNAME;
+import static uk.ac.manchester.cs.jfact.kernel.Token.SELF;
+import static uk.ac.manchester.cs.jfact.kernel.Token.TOP;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,13 +28,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nullable;
 
-import uk.ac.manchester.cs.jfact.kernel.*;
+import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
+import uk.ac.manchester.cs.jfact.kernel.Concept;
+import uk.ac.manchester.cs.jfact.kernel.Lexeme;
+import uk.ac.manchester.cs.jfact.kernel.NamedEntry;
+import uk.ac.manchester.cs.jfact.kernel.Role;
+import uk.ac.manchester.cs.jfact.kernel.Token;
 
 /** dl tree factory */
 public class DLTreeFactory implements Serializable {
 
-    private static final EnumSet<Token> snfCalls = EnumSet.of(TOP, BOTTOM, CNAME, INAME, RNAME, DNAME, DATAEXPR, NOT,
-        INV, AND, FORALL, LE, SELF, RCOMPOSITION, PROJFROM, PROJINTO);
+    private static final EnumSet<Token> snfCalls = EnumSet.of(TOP, BOTTOM, CNAME, INAME, RNAME,
+        DNAME, DATAEXPR, NOT, INV, AND, FORALL, LE, SELF, RCOMPOSITION, PROJFROM, PROJINTO);
 
     private DLTreeFactory() {}
 
@@ -31,8 +51,7 @@ public class DLTreeFactory implements Serializable {
     }
 
     /**
-     * @param r
-     *        R
+     * @param r R
      * @return inverse
      */
     public static DLTree createInverse(DLTree r) {
@@ -52,32 +71,28 @@ public class DLTreeFactory implements Serializable {
 
     // Semantic Locality checking support. DO NOT used in usual reasoning
     /**
-     * @param dr
-     *        dr
-     * @return true iff a data range DR is semantically equivalent to TOP.
-     *         FIXME!! good approximation for now
+     * @param dr dr
+     * @return true iff a data range DR is semantically equivalent to TOP. FIXME!! good
+     *         approximation for now
      */
     public static boolean isSemanticallyDataTop(DLTree dr) {
         return dr.elem().getToken() == TOP;
     }
 
     /**
-     * @param dr
-     *        dr
-     * @return true iff a data range DR is semantically equivalent to BOTTOM.
-     *         FIXME!! good approximation for now
+     * @param dr dr
+     * @return true iff a data range DR is semantically equivalent to BOTTOM. FIXME!! good
+     *         approximation for now
      */
     public static boolean isSemanticallyDataBottom(DLTree dr) {
         return dr.elem().getToken() == BOTTOM;
     }
 
     /**
-     * @param dr
-     *        dr
-     * @param n
-     *        n
-     * @return true iff the cardinality of a given data range DR is greater than
-     *         N. FIXME!! good approximation for now
+     * @param dr dr
+     * @param n n
+     * @return true iff the cardinality of a given data range DR is greater than N. FIXME!! good
+     *         approximation for now
      */
     @SuppressWarnings("unused")
     public static boolean isDataRangeBigEnough(DLTree dr, int n) {
@@ -88,8 +103,7 @@ public class DLTreeFactory implements Serializable {
     /**
      * simplify universal restriction with top data role
      * 
-     * @param dr
-     *        dr
+     * @param dr dr
      * @return simplified tree
      */
     public static DLTree simplifyDataTopForall(DLTree dr) {
@@ -105,10 +119,8 @@ public class DLTreeFactory implements Serializable {
     /**
      * simplify minimal cardinality restriction with top data role
      * 
-     * @param n
-     *        n
-     * @param dr
-     *        dr
+     * @param n n
+     * @param dr dr
      * @return simplified tree
      */
     public static DLTree simplifyDataTopLE(int n, DLTree dr) {
@@ -127,20 +139,17 @@ public class DLTreeFactory implements Serializable {
     }
 
     /**
-     * @param arguments
-     *        arguments to AND
+     * @param arguments arguments to AND
      * @return a construction in the form AND (\neg q_i)
      */
     public static DLTree buildDisjAux(List<DLTree> arguments) {
-        return DLTreeFactory.createSNFAnd(asList(arguments.stream().map(DLTree::copy).map(
-            DLTreeFactory::createSNFNot)));
+        return DLTreeFactory.createSNFAnd(
+            asList(arguments.stream().map(DLTree::copy).map(DLTreeFactory::createSNFNot)));
     }
 
     /**
-     * @param c
-     *        C
-     * @param d
-     *        D
+     * @param c C
+     * @param d D
      * @return and
      */
     public static DLTree createSNFAnd(@Nullable DLTree c, @Nullable DLTree d) {
@@ -162,8 +171,7 @@ public class DLTreeFactory implements Serializable {
     }
 
     /**
-     * @param collection
-     *        collection
+     * @param collection collection
      * @return and
      */
     public static DLTree createSNFAnd(Collection<DLTree> collection) {
@@ -201,10 +209,8 @@ public class DLTreeFactory implements Serializable {
     }
 
     /**
-     * @param collection
-     *        collection
-     * @param ancestor
-     *        ancestor
+     * @param collection collection
+     * @param ancestor ancestor
      * @return and
      */
     public static DLTree createSNFAnd(Collection<DLTree> collection, DLTree ancestor) {
@@ -240,10 +246,8 @@ public class DLTreeFactory implements Serializable {
     }
 
     /**
-     * @param c
-     *        tree to check
-     * @param d
-     *        contained tree
+     * @param c tree to check
+     * @param d contained tree
      * @return true if C contains D
      */
     public static boolean containsC(DLTree c, DLTree d) {
@@ -257,10 +261,8 @@ public class DLTreeFactory implements Serializable {
     }
 
     /**
-     * @param c
-     *        c
-     * @param d
-     *        d
+     * @param c c
+     * @param d d
      * @return C and D
      */
     public static DLTree createSNFReducedAnd(@Nullable DLTree c, @Nullable DLTree d) {
@@ -270,10 +272,11 @@ public class DLTreeFactory implements Serializable {
         if (d.isCName() && containsC(c, d)) {
             return c;
         } else if (d.isAND()) {
+            DLTree toReturn = c;
             for (DLTree t : d.getChildren()) {
-                c = createSNFReducedAnd(c, t.copy());
+                toReturn = createSNFReducedAnd(toReturn, t.copy());
             }
-            return c;
+            return toReturn;
         } else {
             return createSNFAnd(c, d);
         }
@@ -282,10 +285,8 @@ public class DLTreeFactory implements Serializable {
     /**
      * create existential restriction of given formulas (\ER.C)
      * 
-     * @param r
-     *        R
-     * @param c
-     *        C
+     * @param r R
+     * @param c C
      * @return exist R C
      */
     public static DLTree createSNFExists(DLTree r, DLTree c) {
@@ -294,10 +295,8 @@ public class DLTreeFactory implements Serializable {
     }
 
     /**
-     * @param r
-     *        R
-     * @param c
-     *        C
+     * @param r R
+     * @param c C
      * @return for all
      */
     public static DLTree createSNFForall(DLTree r, DLTree c) {
@@ -313,8 +312,7 @@ public class DLTreeFactory implements Serializable {
     }
 
     /**
-     * @param r
-     *        R
+     * @param r R
      * @return role
      */
     public static DLTree createRole(Role r) {
@@ -322,10 +320,8 @@ public class DLTreeFactory implements Serializable {
     }
 
     /**
-     * @param tag
-     *        tag
-     * @param entry
-     *        entry
+     * @param tag tag
+     * @param entry entry
      * @return entry
      */
     public static DLTree createEntry(Token tag, NamedEntry entry) {
@@ -335,12 +331,9 @@ public class DLTreeFactory implements Serializable {
     /**
      * create at-most (LE) restriction of given formulas (max n R.C)
      * 
-     * @param n
-     *        n
-     * @param r
-     *        R
-     * @param c
-     *        C
+     * @param n n
+     * @param r R
+     * @param c C
      * @return at most
      */
     public static DLTree createSNFLE(int n, DLTree r, DLTree c) {
@@ -363,8 +356,7 @@ public class DLTreeFactory implements Serializable {
     /**
      * check whether T is a bottom (empty) role
      * 
-     * @param t
-     *        tree
+     * @param t tree
      * @return true if bottom
      */
     public static boolean isBotRole(DLTree t) {
@@ -374,8 +366,7 @@ public class DLTreeFactory implements Serializable {
     /**
      * check whether T is a top (universal) role
      * 
-     * @param t
-     *        tree
+     * @param t tree
      * @return true if top role
      */
     public static boolean isTopRole(DLTree t) {
@@ -385,8 +376,7 @@ public class DLTreeFactory implements Serializable {
     /**
      * create SELF restriction for role R
      * 
-     * @param r
-     *        R
+     * @param r R
      * @return self
      */
     public static DLTree createSNFSelf(DLTree r) {
@@ -402,12 +392,9 @@ public class DLTreeFactory implements Serializable {
     }
 
     /**
-     * @param n
-     *        n
-     * @param r
-     *        R
-     * @param c
-     *        C
+     * @param n n
+     * @param r R
+     * @param c C
      * @return at least
      */
     public static DLTree createSNFGE(int n, DLTree r, DLTree c) {
@@ -421,8 +408,7 @@ public class DLTreeFactory implements Serializable {
     }
 
     /**
-     * @param c
-     *        C
+     * @param c C
      * @return not
      */
     public static DLTree createSNFNot(DLTree c) {
@@ -444,10 +430,8 @@ public class DLTreeFactory implements Serializable {
     }
 
     /**
-     * @param c
-     *        C
-     * @param ancestor
-     *        ancestor
+     * @param c C
+     * @param ancestor ancestor
      * @return not
      */
     public static DLTree createSNFNot(DLTree c, DLTree ancestor) {
@@ -471,8 +455,7 @@ public class DLTreeFactory implements Serializable {
     /**
      * create disjunction of given formulas
      * 
-     * @param c
-     *        C
+     * @param c C
      * @return OR C
      */
     public static DLTree createSNFOr(Collection<DLTree> c) {
@@ -488,8 +471,7 @@ public class DLTreeFactory implements Serializable {
     }
 
     /**
-     * @param tree
-     *        tree
+     * @param tree tree
      * @return inverse
      */
     public static DLTree inverseComposition(DLTree tree) {
@@ -505,8 +487,7 @@ public class DLTreeFactory implements Serializable {
     /**
      * get DLTree by a given TDE
      * 
-     * @param t
-     *        t
+     * @param t t
      * @return wrapped entry
      */
     public static DLTree wrap(NamedEntry t) {
@@ -516,8 +497,7 @@ public class DLTreeFactory implements Serializable {
     /**
      * get TDE by a given DLTree
      * 
-     * @param t
-     *        t
+     * @param t t
      * @return unwrapped entry
      */
     public static NamedEntry unwrap(DLTree t) {
@@ -525,12 +505,9 @@ public class DLTreeFactory implements Serializable {
     }
 
     /**
-     * @param t
-     *        t
-     * @param t1
-     *        t1
-     * @param t2
-     *        t2
+     * @param t t
+     * @param t1 t1
+     * @param t2 t2
      * @return tree with two children
      */
     public static DLTree buildTree(Lexeme t, DLTree t1, DLTree t2) {
@@ -538,10 +515,8 @@ public class DLTreeFactory implements Serializable {
     }
 
     /**
-     * @param t
-     *        t
-     * @param l
-     *        list
+     * @param t t
+     * @param l list
      * @return tree with multiple children
      */
     public static DLTree buildTree(Lexeme t, Collection<DLTree> l) {
@@ -549,10 +524,8 @@ public class DLTreeFactory implements Serializable {
     }
 
     /**
-     * @param t
-     *        t
-     * @param t1
-     *        t1
+     * @param t t
+     * @param t1 t1
      * @return single child tree
      */
     public static DLTree buildTree(Lexeme t, DLTree t1) {
@@ -560,8 +533,7 @@ public class DLTreeFactory implements Serializable {
     }
 
     /**
-     * @param t
-     *        t
+     * @param t t
      * @return leaf tree
      */
     public static DLTree buildTree(Lexeme t) {
@@ -570,32 +542,23 @@ public class DLTreeFactory implements Serializable {
 
     // check if DL tree is a (data)role name
     private static boolean isRName(@Nullable DLTree t) {
-        if (t == null) {
-            return false;
-        }
-        if (t.token() == RNAME || t.token() == DNAME) {
-            return true;
-        }
-        return false;
+        return t != null && (t.token() == RNAME || t.token() == DNAME);
     }
 
     /**
      * check whether T is an expression in the form (atmost 1 RNAME)
      * 
-     * @param t
-     *        t
-     * @param r
-     *        R
+     * @param t t
+     * @param r R
      * @return true if functional
      */
     public static boolean isFunctionalExpr(@Nullable DLTree t, NamedEntry r) {
-        return t != null && t.token() == LE && r.equals(t.getLeft().elem().getNE()) && t.elem().getData() == 1 && t
-            .getRight().isTOP();
+        return t != null && t.token() == LE && r.equals(t.getLeft().elem().getNE())
+            && t.elem().getData() == 1 && t.getRight().isTOP();
     }
 
     /**
-     * @param t
-     *        t
+     * @param t t
      * @return true is SNF
      */
     public static boolean isSNF(@Nullable DLTree t) {
@@ -609,10 +572,8 @@ public class DLTreeFactory implements Serializable {
     }
 
     /**
-     * @param t1
-     *        t1
-     * @param t2
-     *        t2
+     * @param t1 t1
+     * @param t2 t2
      * @return true if t2 is a subtree
      */
     public static boolean isSubTree(@Nullable DLTree t1, @Nullable DLTree t2) {
@@ -634,8 +595,7 @@ public class DLTreeFactory implements Serializable {
     /**
      * check whether T is U-Role
      * 
-     * @param t
-     *        t
+     * @param t t
      * @return true if universal
      */
     public static boolean isUniversalRole(DLTree t) {
@@ -643,8 +603,7 @@ public class DLTreeFactory implements Serializable {
     }
 
     /**
-     * @param desc
-     *        desc
+     * @param desc desc
      * @return true if changes happen
      */
     public static boolean replaceSynonymsFromTree(@Nullable DLTree desc) {

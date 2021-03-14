@@ -25,10 +25,9 @@ public abstract class NamedEntityImpl implements NamedEntity, Serializable {
     private NamedEntry entry;
 
     /**
-     * @param e
-     *        entity
+     * @param e entity
      */
-    public NamedEntityImpl(OWLEntity e) {
+    protected NamedEntityImpl(OWLEntity e) {
         entity = e;
     }
 
@@ -72,7 +71,8 @@ public abstract class NamedEntityImpl implements NamedEntity, Serializable {
             return true;
         }
         if (obj instanceof NamedEntity) {
-            return entity.getIRI().equals(((NamedEntity) obj).getIRI()) && obj.getClass().equals(this.getClass());
+            return entity.getIRI().equals(((NamedEntity) obj).getIRI())
+                && obj.getClass().equals(this.getClass());
         }
         return false;
     }

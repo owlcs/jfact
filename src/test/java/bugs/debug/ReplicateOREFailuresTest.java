@@ -17,7 +17,7 @@ import uk.ac.manchester.cs.jfact.JFactFactory;
 
 @Ignore
 @SuppressWarnings("javadoc")
-public class ReplicateOREFailures extends TestBase {
+public class ReplicateOREFailuresTest extends TestBase {
 
     private static final String POOL_SAMPLE = "/Users/ignazio/workspace/pool_sample/files/";
 

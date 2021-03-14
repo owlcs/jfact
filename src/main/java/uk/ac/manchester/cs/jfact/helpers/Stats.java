@@ -44,14 +44,10 @@ public class Stats implements Serializable {
         }
 
         /**
-         * @param l
-         *        l
-         * @param b
-         *        b
-         * @param s1
-         *        s1
-         * @param s2
-         *        s2
+         * @param l l
+         * @param b b
+         * @param s1 s1
+         * @param s2 s2
          */
         public void print(LogAdapter l, boolean b, String s1, String s2) {
             l.print(s1);
@@ -130,8 +126,7 @@ public class Stats implements Serializable {
     private final AccumulatedStatistic nCachedUnsat = build(root);
 
     /**
-     * @param list
-     *        the list
+     * @param list the list
      * @return the accumulated statistic
      */
     public static AccumulatedStatistic build(List<AccumulatedStatistic> list) {
@@ -142,20 +137,16 @@ public class Stats implements Serializable {
 
     /** Accumulate. */
     public void accumulate() {
-        root.forEach(cur -> cur.accumulate());
+        root.forEach(AccumulatedStatistic::accumulate);
     }
 
     /**
      * Log statistic data.
      * 
-     * @param o
-     *        the o
-     * @param needLocal
-     *        the need local
-     * @param cGraph
-     *        the c graph
-     * @param options
-     *        the options
+     * @param o the o
+     * @param needLocal the need local
+     * @param cGraph the c graph
+     * @param options the options
      */
     public void logStatisticData(LogAdapter o, boolean needLocal, DlCompletionGraph cGraph,
         JFactReasonerConfiguration options) {
@@ -175,7 +166,8 @@ public class Stats implements Serializable {
             nNNCalls.print(o, needLocal, THERE_WERE_MADE, " NN rule application");
             nMergeCalls.print(o, needLocal, THERE_WERE_MADE, " merging operations");
             nAutoEmptyLookups.print(o, needLocal, THERE_WERE_MADE, " RA empty transition lookups");
-            nAutoTransLookups.print(o, needLocal, THERE_WERE_MADE, " RA applicable transition lookups");
+            nAutoTransLookups.print(o, needLocal, THERE_WERE_MADE,
+                " RA applicable transition lookups");
             nSRuleAdd.print(o, needLocal, THERE_WERE_MADE, " simple rule additions");
             nSRuleFire.print(o, needLocal, "\n       of which ", " simple rules fired");
             nStateSaves.print(o, needLocal, THERE_WERE_MADE, " save(s) of global state");
@@ -184,9 +176,11 @@ public class Stats implements Serializable {
             nNodeRestores.print(o, needLocal, THERE_WERE_MADE, " restore(s) of tree state");
             nLookups.print(o, needLocal, THERE_WERE_MADE, " concept lookups");
             if (options.isUseFairness()) {
-                nFairnessViolations.print(o, needLocal, "\nThere were ", " fairness constraints violation");
+                nFairnessViolations.print(o, needLocal, "\nThere were ",
+                    " fairness constraints violation");
             }
-            nCacheTry.print(o, needLocal, THERE_WERE_MADE, " tries to cache completion tree node, of which:");
+            nCacheTry.print(o, needLocal, THERE_WERE_MADE,
+                " tries to cache completion tree node, of which:");
             nCacheFailedNoCache.print(o, needLocal, TAB, " fails due to cache absence");
             nCacheFailedShallow.print(o, needLocal, TAB, " fails due to shallow node");
             nCacheFailed.print(o, needLocal, TAB, " fails due to cache merge failure");

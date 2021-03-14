@@ -1,10 +1,13 @@
 package uk.ac.manchester.cs.jfact;
 
-import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.*;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
+import static uk.ac.manchester.cs.jfact.helpers.Assertions.verifyNotNull;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -12,39 +15,53 @@ import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
 import conformance.PortedFrom;
-import uk.ac.manchester.cs.jfact.kernel.*;
+import uk.ac.manchester.cs.jfact.kernel.ClassifiableEntry;
+import uk.ac.manchester.cs.jfact.kernel.Concept;
+import uk.ac.manchester.cs.jfact.kernel.DlCompletionTree;
+import uk.ac.manchester.cs.jfact.kernel.DlCompletionTreeArc;
+import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
+import uk.ac.manchester.cs.jfact.kernel.Individual;
+import uk.ac.manchester.cs.jfact.kernel.Role;
+import uk.ac.manchester.cs.jfact.kernel.TBox;
+import uk.ac.manchester.cs.jfact.kernel.TDag2Interface;
 import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
 import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
-import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.*;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataRoleExpression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.Expression;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
+import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 
 /** knowledge explorer */
 @PortedFrom(file = "KnowledgeExplorer.h", name = "KnowledgeExplorer")
 public class KnowledgeExplorer implements Serializable {
 
     /** map concept into set of its synonyms */
-    @PortedFrom(file = "KnowledgeExplorer.h", name = "Cs") private final Multimap<NamedEntity, Concept> cs = LinkedHashMultimap
-        .create();
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "Cs")
+    private final Multimap<NamedEntity, Concept> cs = LinkedHashMultimap.create();
     /** map individual into set of its synonyms */
-    @PortedFrom(file = "KnowledgeExplorer.h", name = "Is") private final Multimap<NamedEntity, Individual> is = LinkedHashMultimap
-        .create();
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "Is")
+    private final Multimap<NamedEntity, Individual> is = LinkedHashMultimap.create();
     /** map object role to the set of its super-roles (self included) */
-    @PortedFrom(file = "KnowledgeExplorer.h", name = "ORs") private final Multimap<NamedEntity, Role> ors = LinkedHashMultimap
-        .create();
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "ORs")
+    private final Multimap<NamedEntity, Role> ors = LinkedHashMultimap.create();
     /** map data role to the set of its super-roles (self included) */
-    @PortedFrom(file = "KnowledgeExplorer.h", name = "DRs") private final Multimap<NamedEntity, Role> drs = LinkedHashMultimap
-        .create();
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "DRs")
+    private final Multimap<NamedEntity, Role> drs = LinkedHashMultimap.create();
     /** dag-2-interface translator used in knowledge exploration */
-    @PortedFrom(file = "KnowledgeExplorer.h", name = "D2I") private final TDag2Interface d2i;
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "D2I")
+    private final TDag2Interface d2i;
     /** node vector to return */
-    @PortedFrom(file = "KnowledgeExplorer.h", name = "Nodes") private final List<DlCompletionTree> nodes = new ArrayList<>();
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "Nodes")
+    private final List<DlCompletionTree> nodes = new ArrayList<>();
     /** concept vector to return */
-    @PortedFrom(file = "KnowledgeExplorer.h", name = "Concepts") private final List<Expression> concepts = new ArrayList<>();
+    @PortedFrom(file = "KnowledgeExplorer.h", name = "Concepts")
+    private final List<Expression> concepts = new ArrayList<>();
 
     /**
-     * @param box
-     *        box
-     * @param pEM
-     *        pEM
+     * @param box box
+     * @param pEM pEM
      */
     public KnowledgeExplorer(TBox box, ExpressionCache pEM) {
         d2i = new TDag2Interface(box.getDag(), pEM);
@@ -58,13 +75,12 @@ public class KnowledgeExplorer implements Serializable {
         box.getDRM().getRoles().forEach(r -> addRoles(drs, r));
     }
 
-    /**
+    /*
      * adds an entity as a synonym to a map MAP
      * 
-     * @param map
-     *        map
-     * @param entry
-     *        entry
+     * @param map map
+     * 
+     * @param entry entry
      */
     @SuppressWarnings("unchecked")
     @PortedFrom(file = "KnowledgeExplorer.h", name = "addE")
@@ -93,8 +109,7 @@ public class KnowledgeExplorer implements Serializable {
     /**
      * add concept-like entity E (possibly with synonyms) to CONCEPTS
      * 
-     * @param e
-     *        e
+     * @param e e
      */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "addC")
     private void addC(Expression e) {
@@ -112,16 +127,15 @@ public class KnowledgeExplorer implements Serializable {
     }
 
     /**
-     * @param node
-     *        node
-     * @param onlyDet
-     *        onlyDet
+     * @param node node
+     * @param onlyDet onlyDet
      * @return set of data roles
      */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getDataRoles")
     public Set<DataRoleExpression> getDataRoles(DlCompletionTree node, boolean onlyDet) {
         return asSet(node.getNeighbour().stream().filter(p -> notBlockedData(onlyDet, p))
-            .flatMap(p -> drs.get(p.getRole().getEntity()).stream())
+            .map(DlCompletionTreeArc::getRole).filter(Objects::nonNull)
+            .flatMap(role -> drs.get(verifyNotNull(role).getEntity()).stream())
             .map(r -> (DataRoleExpression) d2i.getDataRoleExpression(r)));
     }
 
@@ -130,34 +144,32 @@ public class KnowledgeExplorer implements Serializable {
     }
 
     /**
-     * @param node
-     *        node
-     * @param onlyDet
-     *        onlyDet
-     * @param needIncoming
-     *        needIncoming
-     * @return set of object neighbours of a NODE; incoming edges are counted
-     *         iff NEEDINCOMING is true
+     * @param node node
+     * @param onlyDet onlyDet
+     * @param needIncoming needIncoming
+     * @return set of object neighbours of a NODE; incoming edges are counted iff NEEDINCOMING is
+     *         true
      */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getObjectRoles")
-    public Set<ObjectRoleExpression> getObjectRoles(DlCompletionTree node, boolean onlyDet, boolean needIncoming) {
-        return asSet(node.getNeighbour().stream().filter(p -> notBlockedNotData(onlyDet, needIncoming, p))
-            .flatMap(p -> ors.get(p.getRole().getEntity()).stream())
-            .map(r -> (ObjectRoleExpression) d2i.getObjectRoleExpression(r)));
+    public Set<ObjectRoleExpression> getObjectRoles(DlCompletionTree node, boolean onlyDet,
+        boolean needIncoming) {
+        return asSet(
+            node.getNeighbour().stream().filter(p -> notBlockedNotData(onlyDet, needIncoming, p))
+                .map(DlCompletionTreeArc::getRole).filter(Objects::nonNull)
+                .flatMap(role -> ors.get(verifyNotNull(role).getEntity()).stream())
+                .map(r -> (ObjectRoleExpression) d2i.getObjectRoleExpression(r)));
     }
 
-    protected boolean notBlockedNotData(boolean onlyDet, boolean needIncoming, DlCompletionTreeArc p) {
+    protected boolean notBlockedNotData(boolean onlyDet, boolean needIncoming,
+        DlCompletionTreeArc p) {
         return !p.isIBlocked() && !p.getArcEnd().isDataNode() && (!onlyDet || p.getDep().isEmpty())
             && (needIncoming || p.isSuccEdge());
     }
 
     /**
-     * @param node
-     *        node
-     * @param no
-     *        R
-     * @return set of neighbours of a NODE via role ROLE; put the resulting list
-     *         into RESULT
+     * @param node node
+     * @param no R
+     * @return set of neighbours of a NODE via role ROLE; put the resulting list into RESULT
      */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getNeighbours")
     public List<DlCompletionTree> getNeighbours(DlCompletionTree node, Role no) {
@@ -168,10 +180,8 @@ public class KnowledgeExplorer implements Serializable {
     }
 
     /**
-     * @param node
-     *        node
-     * @param onlyDet
-     *        onlyDet
+     * @param node node
+     * @param onlyDet onlyDet
      * @return all the data expressions from the NODE label
      */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getLabel")
@@ -181,15 +191,15 @@ public class KnowledgeExplorer implements Serializable {
         assert !node.isDataNode();
         concepts.clear();
         Stream.concat(node.simpleConcepts().stream(), node.complexConcepts().stream())
-            .filter(p -> !onlyDet || p.getDep().isEmpty()).forEach(p -> addC(d2i.getExpr(p.getConcept(), false)));
-        return asList(concepts.stream().filter(e -> e instanceof ConceptExpression).map(e -> (ConceptExpression) e));
+            .filter(p -> !onlyDet || p.getDep().isEmpty())
+            .forEach(p -> addC(d2i.getExpr(p.getConcept(), false)));
+        return asList(concepts.stream().filter(ConceptExpression.class::isInstance)
+            .map(ConceptExpression.class::cast));
     }
 
     /**
-     * @param node
-     *        node
-     * @param onlyDet
-     *        onlyDet
+     * @param node node
+     * @param onlyDet onlyDet
      * @return list of data labels
      */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getLabel")
@@ -199,13 +209,14 @@ public class KnowledgeExplorer implements Serializable {
         assert node.isDataNode();
         concepts.clear();
         Stream.concat(node.simpleConcepts().stream(), node.complexConcepts().stream())
-            .filter(p -> !onlyDet || p.getDep().isEmpty()).forEach(p -> addC(d2i.getExpr(p.getConcept(), true)));
-        return asList(concepts.stream().filter(e -> e instanceof DataExpression).map(e -> (DataExpression) e));
+            .filter(p -> !onlyDet || p.getDep().isEmpty())
+            .forEach(p -> addC(d2i.getExpr(p.getConcept(), true)));
+        return asList(concepts.stream().filter(DataExpression.class::isInstance)
+            .map(DataExpression.class::cast));
     }
 
     /**
-     * @param node
-     *        node
+     * @param node node
      * @return blocker of a blocked node NODE or NULL if node is not blocked
      */
     @PortedFrom(file = "KnowledgeExplorer.h", name = "getBlocker")

@@ -1,6 +1,6 @@
 package uk.ac.manchester.cs.jfact;
 
-import static org.semanticweb.owlapi.util.OWLAPIPreconditions.verifyNotNull;
+import static uk.ac.manchester.cs.jfact.helpers.Assertions.verifyNotNull;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -35,7 +35,10 @@ abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity> implem
         fillTopAndBottomEntities();
     }
 
-    protected void fillMaps(E entity, T dlentity) {
+    protected void fillMaps(E entity, @Nullable T dlentity) {
+        if (dlentity == null) {
+            return;
+        }
         this.entity2dlentity.put(entity, dlentity);
         this.dlentity2entity.put(dlentity, entity);
     }
@@ -58,7 +61,8 @@ abstract class OWLEntityTranslator<E extends OWLObject, T extends Entity> implem
     }
 
     public E getEntityFromPointer(T pointer) {
-        return verifyNotNull(this.dlentity2entity.get(pointer), pointer+" does not have a correct reverse mapping");
+        return verifyNotNull(this.dlentity2entity.get(pointer),
+            pointer + " does not have a correct reverse mapping");
     }
 
     public T getPointerFromEntity(E entity) {

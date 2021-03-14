@@ -18,18 +18,16 @@ import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleComplexExpression;
 
 /** property expression translator */
-public class ComplexObjectPropertyTranslator extends
-    OWLEntityTranslator<OWLObjectPropertyExpression, ObjectRoleComplexExpression> {
+public class ComplexObjectPropertyTranslator
+    extends OWLEntityTranslator<OWLObjectPropertyExpression, ObjectRoleComplexExpression> {
 
     /**
-     * @param em
-     *        em
-     * @param df
-     *        df
-     * @param tr
-     *        tr
+     * @param em em
+     * @param df df
+     * @param tr tr
      */
-    public ComplexObjectPropertyTranslator(ExpressionCache em, OWLDataFactory df, TranslationMachinery tr) {
+    public ComplexObjectPropertyTranslator(ExpressionCache em, OWLDataFactory df,
+        TranslationMachinery tr) {
         super(em, df, tr);
     }
 
@@ -49,13 +47,14 @@ public class ComplexObjectPropertyTranslator extends
     protected ObjectRoleComplexExpression registerNewEntity(OWLObjectPropertyExpression entity) {
         ObjectRoleComplexExpression pointer = createPointerForEntity(entity);
         fillMaps(entity, pointer);
-        OWLObjectPropertyExpression inverseentity = entity.getInverseProperty().getSimplified();
+        OWLObjectPropertyExpression inverseentity = entity.getInverseProperty();
         fillMaps(inverseentity, createPointerForEntity(inverseentity));
         return pointer;
     }
 
     @Override
-    protected ObjectRoleComplexExpression createPointerForEntity(OWLObjectPropertyExpression entity) {
+    protected ObjectRoleComplexExpression createPointerForEntity(
+        OWLObjectPropertyExpression entity) {
         return em.objectRole(entity.getNamedProperty());
     }
 
@@ -72,7 +71,8 @@ public class ComplexObjectPropertyTranslator extends
     }
 
     @Override
-    protected DefaultNode<OWLObjectPropertyExpression> createDefaultNode(Stream<OWLObjectPropertyExpression> stream) {
+    protected DefaultNode<OWLObjectPropertyExpression> createDefaultNode(
+        Stream<OWLObjectPropertyExpression> stream) {
         return new OWLObjectPropertyNode(stream);
     }
 

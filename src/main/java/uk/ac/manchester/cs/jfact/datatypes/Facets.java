@@ -5,7 +5,16 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static org.semanticweb.owlapi.vocab.OWLFacet.*;
+import static org.semanticweb.owlapi.vocab.OWLFacet.FRACTION_DIGITS;
+import static org.semanticweb.owlapi.vocab.OWLFacet.LENGTH;
+import static org.semanticweb.owlapi.vocab.OWLFacet.MAX_EXCLUSIVE;
+import static org.semanticweb.owlapi.vocab.OWLFacet.MAX_INCLUSIVE;
+import static org.semanticweb.owlapi.vocab.OWLFacet.MAX_LENGTH;
+import static org.semanticweb.owlapi.vocab.OWLFacet.MIN_EXCLUSIVE;
+import static org.semanticweb.owlapi.vocab.OWLFacet.MIN_INCLUSIVE;
+import static org.semanticweb.owlapi.vocab.OWLFacet.MIN_LENGTH;
+import static org.semanticweb.owlapi.vocab.OWLFacet.PATTERN;
+import static org.semanticweb.owlapi.vocab.OWLFacet.TOTAL_DIGITS;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -29,14 +38,14 @@ import org.semanticweb.owlapi.vocab.OWLFacet;
  */
 public class Facets implements Serializable {
 
-    private static class AbstractFacet implements Facet, Serializable {
+    private static class AbstractFacet implements Facet {
 
         protected final String uri;
         protected final String fragment;
         protected final boolean isNumber;
         protected final OWLFacet facet;
 
-        public AbstractFacet(String u, boolean number, OWLFacet f) {
+        public AbstractFacet(String u, boolean number, @Nullable OWLFacet f) {
             uri = DatatypeFactory.getNamespace() + u;
             fragment = u;
             isNumber = number;
@@ -110,8 +119,8 @@ public class Facets implements Serializable {
                 // BigDecimal - or exceptions will be spat out
                 return new BigDecimal(value.toString());
             } catch (NumberFormatException e) {
-                throw new NumberFormatException("Cannot parse '" + value.toString() + "' as a big decimal: " + e
-                    .getMessage());
+                throw new NumberFormatException(
+                    "Cannot parse '" + value.toString() + "' as a big decimal: " + e.getMessage());
             }
         }
 
@@ -149,34 +158,31 @@ public class Facets implements Serializable {
     public enum whitespace {
         // 4.3.6 whiteSpace
         /*
-         * [Definition:] whiteSpace constrains the ·value space· of types
-         * ·derived· from string such that the various behaviors specified in
-         * Attribute Value Normalization in [XML 1.0 (Second Edition)] are
-         * realized. The value of whiteSpace must be one of {preserve, replace,
+         * [Definition:] whiteSpace constrains the ·value space· of types ·derived· from string such
+         * that the various behaviors specified in Attribute Value Normalization in [XML 1.0 (Second
+         * Edition)] are realized. The value of whiteSpace must be one of {preserve, replace,
          * collapse}.
          */
         // preserve
         /*
-         * No normalization is done, the value is not changed (this is the
-         * behavior required by [XML 1.0 (Second Edition)] for element content)
+         * No normalization is done, the value is not changed (this is the behavior required by [XML
+         * 1.0 (Second Edition)] for element content)
          */
         // replace
         /*
-         * All occurrences of #x9 (tab), #xA (line feed) and #xD (carriage
-         * return) are replaced with #x20 (space)
+         * All occurrences of #x9 (tab), #xA (line feed) and #xD (carriage return) are replaced with
+         * #x20 (space)
          */
         // collapse
         /*
-         * After the processing implied by replace, contiguous sequences of
-         * #x20's are collapsed to a single #x20, and leading and trailing
-         * #x20's are removed.
+         * After the processing implied by replace, contiguous sequences of #x20's are collapsed to
+         * a single #x20, and leading and trailing #x20's are removed.
          */
         /*
-         * NOTE: The notation #xA used here (and elsewhere in this
-         * specification) represents the Universal Character Set (UCS) code
-         * point hexadecimal A (line feed), which is denoted by U+000A. This
-         * notation is to be distinguished from &#xA;, which is the XML
-         * character reference to that same UCS code point.
+         * NOTE: The notation #xA used here (and elsewhere in this specification) represents the
+         * Universal Character Set (UCS) code point hexadecimal A (line feed), which is denoted by
+         * U+000A. This notation is to be distinguished from &#xA;, which is the XML character
+         * reference to that same UCS code point.
          */
         /** preserve */
         PRESERVE {
@@ -212,8 +218,7 @@ public class Facets implements Serializable {
         };
 
         /**
-         * @param input
-         *        input
+         * @param input input
          * @return normalized input
          */
         public abstract String normalize(String input);
@@ -240,7 +245,8 @@ public class Facets implements Serializable {
             if (value instanceof String) {
                 return whitespace.valueOf((String) value);
             }
-            throw new ReasonerInternalException("Cannot parse " + value + " as a whitespace enum value");
+            throw new ReasonerInternalException(
+                "Cannot parse " + value + " as a whitespace enum value");
         }
     };
     /** pattern */
@@ -261,8 +267,9 @@ public class Facets implements Serializable {
     public static final Facet minInclusive = new LimitFacet("minInclusive", "[", MIN_INCLUSIVE);
     /** minExclusive */
     public static final Facet minExclusive = new LimitFacet("minExclusive", "(", MIN_EXCLUSIVE);
-    private static final List<Facet> values = Arrays.asList(enumeration, fractionDigits, length, maxExclusive,
-        maxInclusive, minExclusive, minInclusive, maxLength, minLength, pattern, totalDigits, whiteSpace);
+    private static final List<Facet> values =
+        Arrays.asList(enumeration, fractionDigits, length, maxExclusive, maxInclusive, minExclusive,
+            minInclusive, maxLength, minLength, pattern, totalDigits, whiteSpace);
 
     /** @return all facets */
     public static Stream<Facet> values() {
@@ -278,21 +285,19 @@ public class Facets implements Serializable {
     }
 
     /**
-     * @param f
-     *        owl facet
+     * @param f owl facet
      * @return facet
      */
     public static Facet parse(OWLFacet f) {
         Facet facet = facets.get(f);
         if (facet == null) {
-                throw new OWLRuntimeException("Unsupported facet: " + f);
+            throw new OWLRuntimeException("Unsupported facet: " + f);
         }
         return facet;
     }
 
     /**
-     * @param in
-     *        string facet
+     * @param in string facet
      * @return facet
      */
     public static Facet parse(String in) {

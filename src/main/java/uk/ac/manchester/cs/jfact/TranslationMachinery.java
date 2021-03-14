@@ -45,14 +45,22 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 /** translation stuff */
 public class TranslationMachinery implements Serializable {
 
-    @Nonnull private final AxiomTranslator axiomTranslator;
-    @Nonnull private final ClassExpressionTranslator classExpressionTranslator;
-    @Nonnull private final DataRangeTranslator dataRangeTranslator;
-    @Nonnull private final ObjectPropertyTranslator objectPropertyTranslator;
-    @Nonnull private final DataPropertyTranslator dataPropertyTranslator;
-    @Nonnull private final IndividualTranslator individualTranslator;
-    @Nonnull private final EntailmentChecker entailmentChecker;
-    @Nonnull private final Map<OWLAxiom, AxiomWrapper> axiom2PtrMap = new HashMap<>();
+    @Nonnull
+    private final AxiomTranslator axiomTranslator;
+    @Nonnull
+    private final ClassExpressionTranslator classExpressionTranslator;
+    @Nonnull
+    private final DataRangeTranslator dataRangeTranslator;
+    @Nonnull
+    private final ObjectPropertyTranslator objectPropertyTranslator;
+    @Nonnull
+    private final DataPropertyTranslator dataPropertyTranslator;
+    @Nonnull
+    private final IndividualTranslator individualTranslator;
+    @Nonnull
+    private final EntailmentChecker entailmentChecker;
+    @Nonnull
+    private final Map<OWLAxiom, AxiomWrapper> axiom2PtrMap = new HashMap<>();
     protected final ReasoningKernel kernel;
     protected final ExpressionCache em;
     protected final OWLDataFactory df;
@@ -60,14 +68,12 @@ public class TranslationMachinery implements Serializable {
     protected final EntityVisitorEx entityVisitor;
 
     /**
-     * @param kernel
-     *        kernel
-     * @param df
-     *        df
-     * @param factory
-     *        factory
+     * @param kernel kernel
+     * @param df df
+     * @param factory factory
      */
-    public TranslationMachinery(ReasoningKernel kernel, OWLDataFactory df, DatatypeFactory factory) {
+    public TranslationMachinery(ReasoningKernel kernel, OWLDataFactory df,
+        DatatypeFactory factory) {
         this.kernel = kernel;
         datatypefactory = factory;
         em = kernel.getExpressionManager();
@@ -83,27 +89,25 @@ public class TranslationMachinery implements Serializable {
     }
 
     /**
-     * @param signature
-     *        signature
+     * @param signature signature
      * @return expressions
      */
     public List<Expression> translateExpressions(Stream<OWLEntity> signature) {
-        return asList(signature.map(e -> e.accept(entityVisitor)).filter(e -> e != Axioms.dummyExpression()));
+        return asList(
+            signature.map(e -> e.accept(entityVisitor)).filter(e -> e != Axioms.dummyExpression()));
     }
 
     /**
-     * @param axioms
-     *        axioms
+     * @param axioms axioms
      */
     public void loadAxioms(Stream<OWLAxiom> axioms) {
         // TODO check valid axioms, such as those involving topDataProperty
-        axioms.map(ax -> ax.accept(axiomTranslator)).filter(ax -> Axioms.dummy() != ax).forEach(ax -> axiom2PtrMap.put(
-            ax.getAxiom(), ax));
+        axioms.map(ax -> ax.accept(axiomTranslator)).filter(ax -> Axioms.dummy() != ax)
+            .forEach(ax -> axiom2PtrMap.put(ax.getAxiom(), ax));
     }
 
     /**
-     * @param axiom
-     *        axiom
+     * @param axiom axiom
      */
     public void retractAxiom(OWLAxiom axiom) {
         AxiomWrapper ptr = axiom2PtrMap.get(axiom);
@@ -122,10 +126,11 @@ public class TranslationMachinery implements Serializable {
     }
 
     protected ObjectRoleExpression pointer(OWLObjectPropertyExpression propertyExpression) {
-        OWLObjectPropertyExpression simp = propertyExpression.getSimplified();
+        OWLObjectPropertyExpression simp = propertyExpression;
         if (simp.isAnonymous()) {
             OWLObjectInverseOf inv = (OWLObjectInverseOf) simp;
-            return em.inverse(objectPropertyTranslator.getPointerFromEntity(inv.getInverse().asOWLObjectProperty()));
+            return em.inverse(objectPropertyTranslator
+                .getPointerFromEntity(inv.getInverse().asOWLObjectProperty()));
         } else {
             return objectPropertyTranslator.getPointerFromEntity(simp.asOWLObjectProperty());
         }
@@ -163,13 +168,13 @@ public class TranslationMachinery implements Serializable {
         OWLNamedIndividualNodeSet ns = new OWLNamedIndividualNodeSet();
         // XXX skipping anonymous individuals - counterintuitive but
         // that's the specs for you
-        pointers.filter(p -> p instanceof IndividualName).forEach(p -> ns.addEntity( individualTranslator.getEntityFromPointer((IndividualName) p)));
+        pointers.filter(IndividualName.class::isInstance).map(IndividualName.class::cast)
+            .map(individualTranslator::getEntityFromPointer).forEach(ns::addEntity);
         return ns;
     }
 
     /**
-     * @param inds
-     *        inds
+     * @param inds inds
      * @return individual set
      */
     public List<IndividualExpression> translate(Stream<? extends OWLIndividual> inds) {

@@ -5,7 +5,48 @@ import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 import java.io.Serializable;
 import java.util.List;
 
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationPropertyDomainAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationPropertyRangeAxiom;
+import org.semanticweb.owlapi.model.OWLAsymmetricObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLAxiomVisitorEx;
+import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLDataPropertyDomainAxiom;
+import org.semanticweb.owlapi.model.OWLDataPropertyRangeAxiom;
+import org.semanticweb.owlapi.model.OWLDatatypeDefinitionAxiom;
+import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
+import org.semanticweb.owlapi.model.OWLDifferentIndividualsAxiom;
+import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
+import org.semanticweb.owlapi.model.OWLDisjointDataPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLDisjointObjectPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLDisjointUnionAxiom;
+import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
+import org.semanticweb.owlapi.model.OWLEquivalentDataPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLFunctionalDataPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLFunctionalObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLHasKeyAxiom;
+import org.semanticweb.owlapi.model.OWLInverseFunctionalObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLInverseObjectPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLIrreflexiveObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLNegativeDataPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLObjectPropertyDomainAxiom;
+import org.semanticweb.owlapi.model.OWLObjectPropertyRangeAxiom;
+import org.semanticweb.owlapi.model.OWLReflexiveObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLSameIndividualAxiom;
+import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
+import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
+import org.semanticweb.owlapi.model.OWLSubDataPropertyOfAxiom;
+import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
+import org.semanticweb.owlapi.model.OWLSubPropertyChainOfAxiom;
+import org.semanticweb.owlapi.model.OWLSymmetricObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.reasoner.UnsupportedEntailmentTypeException;
 
 import uk.ac.manchester.cs.jfact.kernel.ReasoningKernel;
@@ -20,12 +61,9 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>, Serializab
     private final OWLDataFactory df;
 
     /**
-     * @param k
-     *        k
-     * @param df
-     *        df
-     * @param tr
-     *        tr
+     * @param k k
+     * @param df df
+     * @param tr tr
      */
     public EntailmentChecker(ReasoningKernel k, OWLDataFactory df, TranslationMachinery tr) {
         kernel = k;
@@ -35,7 +73,8 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>, Serializab
 
     @Override
     public Boolean visit(OWLSubClassOfAxiom axiom) {
-        if (axiom.getSuperClass().equals(df.getOWLThing()) || axiom.getSubClass().equals(df.getOWLNothing())) {
+        if (axiom.getSuperClass().equals(df.getOWLThing())
+            || axiom.getSubClass().equals(df.getOWLNothing())) {
             return Boolean.TRUE;
         }
         ConceptExpression sub = tr.pointer(axiom.getSubClass());
@@ -63,7 +102,8 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>, Serializab
 
     @Override
     public Boolean visit(OWLDisjointClassesAxiom axiom) {
-        return Boolean.valueOf(axiom.allMatch((a, b) -> kernel.isDisjoint(tr.pointer(a), tr.pointer(b))));
+        return Boolean
+            .valueOf(axiom.allMatch((a, b) -> kernel.isDisjoint(tr.pointer(a), tr.pointer(b))));
     }
 
     @Override
@@ -79,7 +119,7 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>, Serializab
     @Override
     public Boolean visit(OWLEquivalentObjectPropertiesAxiom axiom) {
         return Boolean
-            .valueOf(axiom.asSubObjectPropertyOfAxioms().stream().allMatch(ax -> ax.accept(this).booleanValue()));
+            .valueOf(axiom.asSubObjectPropertyOfAxioms().stream().allMatch(this::acceptThis));
     }
 
     @Override
@@ -89,18 +129,20 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>, Serializab
 
     @Override
     public Boolean visit(OWLDifferentIndividualsAxiom axiom) {
-        return Boolean.valueOf(axiom.asOWLSubClassOfAxioms().stream().allMatch(ax -> ax.accept(this).booleanValue()));
+        return Boolean.valueOf(axiom.asOWLSubClassOfAxioms().stream().allMatch(this::acceptThis));
     }
 
     // TODO: this check is incomplete
     @Override
     public Boolean visit(OWLDisjointDataPropertiesAxiom axiom) {
-        return Boolean.valueOf(axiom.allMatch((i, j) -> kernel.isDisjointRoles(tr.pointer(i), tr.pointer(j))));
+        return Boolean.valueOf(
+            axiom.allMatch((i, j) -> kernel.isDisjointRoles(tr.pointer(i), tr.pointer(j))));
     }
 
     @Override
     public Boolean visit(OWLDisjointObjectPropertiesAxiom axiom) {
-        return Boolean.valueOf(axiom.allMatch((i, j) -> kernel.isDisjointRoles(tr.pointer(i), tr.pointer(j))));
+        return Boolean.valueOf(
+            axiom.allMatch((i, j) -> kernel.isDisjointRoles(tr.pointer(i), tr.pointer(j))));
     }
 
     @Override
@@ -120,8 +162,8 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>, Serializab
 
     @Override
     public Boolean visit(OWLSubObjectPropertyOfAxiom axiom) {
-        return Boolean
-            .valueOf(kernel.isSubRoles(tr.pointer(axiom.getSubProperty()), tr.pointer(axiom.getSuperProperty())));
+        return Boolean.valueOf(kernel.isSubRoles(tr.pointer(axiom.getSubProperty()),
+            tr.pointer(axiom.getSuperProperty())));
     }
 
     @Override
@@ -158,18 +200,19 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>, Serializab
     @Override
     public Boolean visit(OWLEquivalentDataPropertiesAxiom axiom) {
         return Boolean
-            .valueOf(axiom.asSubDataPropertyOfAxioms().stream().allMatch(ax -> ax.accept(this).booleanValue()));
+            .valueOf(axiom.asSubDataPropertyOfAxioms().stream().allMatch(this::acceptThis));
     }
 
     @Override
     public Boolean visit(OWLClassAssertionAxiom axiom) {
-        return Boolean
-            .valueOf(kernel.isInstance(tr.pointer(axiom.getIndividual()), tr.pointer(axiom.getClassExpression())));
+        return Boolean.valueOf(kernel.isInstance(tr.pointer(axiom.getIndividual()),
+            tr.pointer(axiom.getClassExpression())));
     }
 
     @Override
     public Boolean visit(OWLEquivalentClassesAxiom axiom) {
-        return Boolean.valueOf(axiom.allMatch((a, b) -> kernel.isEquivalent(tr.pointer(a), tr.pointer(b))));
+        return Boolean
+            .valueOf(axiom.allMatch((a, b) -> kernel.isEquivalent(tr.pointer(a), tr.pointer(b))));
     }
 
     @Override
@@ -190,8 +233,8 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>, Serializab
     // TODO: this is incomplete
     @Override
     public Boolean visit(OWLSubDataPropertyOfAxiom axiom) {
-        return Boolean
-            .valueOf(kernel.isSubRoles(tr.pointer(axiom.getSubProperty()), tr.pointer(axiom.getSuperProperty())));
+        return Boolean.valueOf(kernel.isSubRoles(tr.pointer(axiom.getSubProperty()),
+            tr.pointer(axiom.getSuperProperty())));
     }
 
     @Override
@@ -201,8 +244,8 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>, Serializab
 
     @Override
     public Boolean visit(OWLSameIndividualAxiom axiom) {
-        return Boolean
-            .valueOf(axiom.allMatch((indA, indB) -> kernel.isSameIndividuals(tr.pointer(indA), tr.pointer(indB))));
+        return Boolean.valueOf(axiom.allMatch(
+            (indA, indB) -> kernel.isSameIndividuals(tr.pointer(indA), tr.pointer(indB))));
     }
 
     @Override
@@ -214,27 +257,24 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>, Serializab
     @Override
     public Boolean visit(OWLInverseObjectPropertiesAxiom axiom) {
         return Boolean
-            .valueOf(axiom.asSubObjectPropertyOfAxioms().stream().allMatch(ax -> ax.accept(this).booleanValue()));
+            .valueOf(axiom.asSubObjectPropertyOfAxioms().stream().allMatch(this::acceptThis));
     }
 
     @Override
     public Boolean visit(OWLHasKeyAxiom axiom) {
         // FIXME!! unsupported by FaCT++ ATM
-        // return null;
         throw new UnsupportedEntailmentTypeException(axiom);
     }
 
     @Override
     public Boolean visit(OWLDatatypeDefinitionAxiom axiom) {
         // FIXME!! unsupported by FaCT++ ATM
-        // return null;
         throw new UnsupportedEntailmentTypeException(axiom);
     }
 
     @Override
     public Boolean visit(SWRLRule rule) {
         // FIXME!! unsupported by FaCT++ ATM
-        // return null;
         throw new UnsupportedEntailmentTypeException(rule);
     }
 
@@ -251,5 +291,9 @@ public class EntailmentChecker implements OWLAxiomVisitorEx<Boolean>, Serializab
     @Override
     public Boolean visit(OWLAnnotationPropertyRangeAxiom axiom) {
         return Boolean.FALSE;
+    }
+
+    protected boolean acceptThis(OWLAxiom ax) {
+        return ax.accept(this).booleanValue();
     }
 }

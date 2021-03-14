@@ -17,8 +17,10 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 class LiteralImpl<T extends Comparable<T>> implements Literal<T>, Serializable {
 
-    @Nonnull private final Datatype<T> type;
-    @Nonnull private final String value;
+    @Nonnull
+    private final Datatype<T> type;
+    @Nonnull
+    private final String value;
 
     public LiteralImpl(Datatype<T> type, String value) {
         this.type = type;
@@ -52,6 +54,10 @@ class LiteralImpl<T extends Comparable<T>> implements Literal<T>, Serializable {
 
     @Override
     public int compareTo(@Nullable Literal<T> arg0) {
+        if (arg0 == null) {
+            // nulls at end
+            return -1;
+        }
         return this.type.parseValue(this.value).compareTo(arg0.typedValue());
     }
 
@@ -73,15 +79,20 @@ class LiteralImpl<T extends Comparable<T>> implements Literal<T>, Serializable {
         }
         if (obj instanceof Literal) {
             Literal<?> other = (Literal<?>) obj;
-            if (type.equals(DatatypeFactory.PLAINLITERAL) || type.equals(DatatypeFactory.STRING)) {
-                if (other.getDatatypeExpression().equals(DatatypeFactory.PLAINLITERAL)
-                    || other.getDatatypeExpression().equals(DatatypeFactory.STRING)) {
-                    return this.value.replace("@", "").equals(other.value().replace("@", ""));
-                }
+            if (plainLiterals(other)) {
+                return this.value.replace("@", "").equals(other.value().replace("@", ""));
             }
-            return this.type.equals(other.getDatatypeExpression()) && this.typedValue().equals(other.typedValue());
+            return this.type.equals(other.getDatatypeExpression())
+                && this.typedValue().equals(other.typedValue());
         }
         return false;
+    }
+
+    protected boolean plainLiterals(Literal<?> other) {
+        return type.equals(DatatypeFactory.PLAINLITERAL)
+            || type.equals(DatatypeFactory.STRING)
+                && other.getDatatypeExpression().equals(DatatypeFactory.PLAINLITERAL)
+            || other.getDatatypeExpression().equals(DatatypeFactory.STRING);
     }
 
     @Override

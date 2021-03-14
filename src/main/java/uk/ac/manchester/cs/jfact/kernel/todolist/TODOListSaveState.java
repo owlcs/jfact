@@ -15,35 +15,36 @@ public final class TODOListSaveState implements Serializable {
 
     // save state of all regular queues
     /** key queue 0 */
-    public int backup0key;
+    int backup0key;
     /** key queue 0 */
-    public int backup0value;
+    int backup0value;
     /** key queue 1 */
-    public int backup1key;
+    int backup1key;
     /** key queue 1 */
-    public int backup1value;
+    int backup1value;
     /** key queue 2 */
-    public int backup2key;
+    int backup2key;
     /** key queue 2 */
-    public int backup2value;
+    int backup2value;
     /** key queue 3 */
-    public int backup3key;
+    int backup3key;
     /** key queue 3 */
-    public int backup3value;
+    int backup3value;
     /** key queue 4 */
-    public int backup4key;
+    int backup4key;
     /** key queue 4 */
-    public int backup4value;
+    int backup4value;
     /** key queue 5 */
-    public int backup5key;
+    int backup5key;
     /** key queue 5 */
-    public int backup5value;
+    int backup5value;
     /** key queue 6 */
-    public int backup6key;
+    int backup6key;
     /** value queue 6 */
-    public int backup6value;
+    int backup6value;
     /** save number-of-entries to do */
-    @PortedFrom(file = "ToDoList.h", name = "noe") protected int noe;
+    @PortedFrom(file = "ToDoList.h", name = "noe")
+    protected int noe;
     protected int backupIDsp;
     protected int backupIDep;
     /** save whole array */
@@ -57,9 +58,10 @@ public final class TODOListSaveState implements Serializable {
 
     @Override
     public String toString() {
-        return noe + " " + backupIDsp + ',' + backupIDep + ' ' + waitingQueue + ' ' + sp + ' ' + ep + ' ' + queueBroken
-            + ' ' + backup0key + ' ' + backup0value + ' ' + backup1key + ' ' + backup1value + ' ' + backup2key + ' '
-            + backup2value + ' ' + backup3key + ' ' + backup3value + ' ' + backup4key + ' ' + backup4value + ' '
-            + backup5key + ' ' + backup5value + ' ' + backup6key + ' ' + backup6value;
+        return noe + " " + backupIDsp + ',' + backupIDep + ' ' + waitingQueue + ' ' + sp + ' ' + ep
+            + ' ' + queueBroken + ' ' + backup0key + ' ' + backup0value + ' ' + backup1key + ' '
+            + backup1value + ' ' + backup2key + ' ' + backup2value + ' ' + backup3key + ' '
+            + backup3value + ' ' + backup4key + ' ' + backup4value + ' ' + backup5key + ' '
+            + backup5value + ' ' + backup6key + ' ' + backup6value;
     }
 }

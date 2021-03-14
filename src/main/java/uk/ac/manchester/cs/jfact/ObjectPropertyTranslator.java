@@ -17,17 +17,16 @@ import uk.ac.manchester.cs.jfact.kernel.ExpressionCache;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ObjectRoleExpression;
 
 /** object property translator */
-public class ObjectPropertyTranslator extends OWLEntityTranslator<OWLObjectPropertyExpression, ObjectRoleExpression> {
+public class ObjectPropertyTranslator
+    extends OWLEntityTranslator<OWLObjectPropertyExpression, ObjectRoleExpression> {
 
     /**
-     * @param em
-     *        em
-     * @param df
-     *        df
-     * @param tr
-     *        tr
+     * @param em em
+     * @param df df
+     * @param tr tr
      */
-    public ObjectPropertyTranslator(ExpressionCache em, OWLDataFactory df, TranslationMachinery tr) {
+    public ObjectPropertyTranslator(ExpressionCache em, OWLDataFactory df,
+        TranslationMachinery tr) {
         super(em, df, tr);
     }
 
@@ -47,7 +46,7 @@ public class ObjectPropertyTranslator extends OWLEntityTranslator<OWLObjectPrope
     protected ObjectRoleExpression registerNewEntity(OWLObjectPropertyExpression entity) {
         ObjectRoleExpression pointer = createPointerForEntity(entity);
         fillMaps(entity, pointer);
-        OWLObjectPropertyExpression inverseentity = entity.getInverseProperty().getSimplified();
+        OWLObjectPropertyExpression inverseentity = entity.getInverseProperty();
         fillMaps(inverseentity, createPointerForEntity(inverseentity));
         return pointer;
     }
@@ -75,7 +74,8 @@ public class ObjectPropertyTranslator extends OWLEntityTranslator<OWLObjectPrope
     }
 
     @Override
-    protected DefaultNode<OWLObjectPropertyExpression> createDefaultNode(Stream<OWLObjectPropertyExpression> stream) {
+    protected DefaultNode<OWLObjectPropertyExpression> createDefaultNode(
+        Stream<OWLObjectPropertyExpression> stream) {
         return new OWLObjectPropertyNode(stream);
     }
 

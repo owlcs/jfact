@@ -1,10 +1,27 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
-import static uk.ac.manchester.cs.jfact.helpers.Helper.*;
-import static uk.ac.manchester.cs.jfact.kernel.Token.*;
+import static uk.ac.manchester.cs.jfact.helpers.Helper.BP_BOTTOM;
+import static uk.ac.manchester.cs.jfact.helpers.Helper.BP_INVALID;
+import static uk.ac.manchester.cs.jfact.helpers.Helper.BP_TOP;
+import static uk.ac.manchester.cs.jfact.kernel.Token.AND;
+import static uk.ac.manchester.cs.jfact.kernel.Token.CNAME;
+import static uk.ac.manchester.cs.jfact.kernel.Token.DNAME;
+import static uk.ac.manchester.cs.jfact.kernel.Token.FORALL;
+import static uk.ac.manchester.cs.jfact.kernel.Token.INAME;
+import static uk.ac.manchester.cs.jfact.kernel.Token.LE;
+import static uk.ac.manchester.cs.jfact.kernel.Token.NOT;
+import static uk.ac.manchester.cs.jfact.kernel.Token.RNAME;
+import static uk.ac.manchester.cs.jfact.kernel.Token.SELF;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Deque;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nullable;
@@ -58,34 +75,46 @@ public class Concept extends ClassifiableEntry {
     }
 
     /** label to use in relevant-only checks */
-    @PortedFrom(file = "tConcept.h", name = "rel") private long rel;
+    @PortedFrom(file = "tConcept.h", name = "rel")
+    private long rel;
     /**
-     * classification type of concept: completely defined (true- or like-), no
-     * TS, other
+     * classification type of concept: completely defined (true- or like-), no TS, other
      */
-    @PortedFrom(file = "tConcept.h", name = "classTag") private CTTag classTag;
+    @PortedFrom(file = "tConcept.h", name = "classTag")
+    private CTTag classTag;
     /** depth of the concept wrt told subsumers */
-    @PortedFrom(file = "tConcept.h", name = "tsDepth") private int tsDepth;
+    @PortedFrom(file = "tConcept.h", name = "tsDepth")
+    private int tsDepth;
     /** pointer to the entry in DAG with concept name */
-    @PortedFrom(file = "tConcept.h", name = "pName") private int pName;
+    @PortedFrom(file = "tConcept.h", name = "pName")
+    private int pName;
     /** pointer to the entry in DAG with concept definition */
-    @PortedFrom(file = "tConcept.h", name = "pBody") private int pBody;
+    @PortedFrom(file = "tConcept.h", name = "pBody")
+    private int pBody;
     /** features for C */
-    @PortedFrom(file = "tConcept.h", name = "posFeatures") private final LogicFeatures posFeatures = new LogicFeatures();
+    @PortedFrom(file = "tConcept.h", name = "posFeatures")
+    private final LogicFeatures posFeatures = new LogicFeatures();
     /** features for ~C */
-    @PortedFrom(file = "tConcept.h", name = "negFeatures") private final LogicFeatures negFeatures = new LogicFeatures();
+    @PortedFrom(file = "tConcept.h", name = "negFeatures")
+    private final LogicFeatures negFeatures = new LogicFeatures();
     /** all extra rules for a given concept */
-    @PortedFrom(file = "tConcept.h", name = "erSet") private final FastSet extraRules = FastSetFactory.create();
-    @PortedFrom(file = "tConcept.h", name = "Description") protected DLTree description;
-    @Original private static final EnumSet<Token> replacements = EnumSet.of(CNAME, INAME, RNAME, DNAME);
-    @Original private boolean primitive;
-    @Original private boolean hasSP;
-    @Original private boolean nominal;
-    @Original private boolean singleton;
+    @PortedFrom(file = "tConcept.h", name = "erSet")
+    private final FastSet extraRules = FastSetFactory.create();
+    @PortedFrom(file = "tConcept.h", name = "Description")
+    protected DLTree description;
+    @Original
+    private static final EnumSet<Token> replacements = EnumSet.of(CNAME, INAME, RNAME, DNAME);
+    @Original
+    private boolean primitive;
+    @Original
+    private boolean hasSP;
+    @Original
+    private boolean nominal;
+    @Original
+    private boolean singleton;
 
     /**
-     * @param name
-     *        name
+     * @param name name
      */
     public Concept(IRI name) {
         super(name);
@@ -100,8 +129,7 @@ public class Concept extends ClassifiableEntry {
     /**
      * adds concept as a told subsumer of current one;
      * 
-     * @param concept
-     *        concept
+     * @param concept concept
      * @return value for CDC analisys
      */
     @PortedFrom(file = "tConcept.h", name = "addToldSubsumer")
@@ -118,8 +146,7 @@ public class Concept extends ClassifiableEntry {
     }
 
     /**
-     * @param df
-     *        data factory
+     * @param df data factory
      * @return bottom concept
      */
     @Original
@@ -134,8 +161,7 @@ public class Concept extends ClassifiableEntry {
     }
 
     /**
-     * @param df
-     *        data factory
+     * @param df data factory
      * @return top concept
      */
     @Original
@@ -175,8 +201,7 @@ public class Concept extends ClassifiableEntry {
     /**
      * add index of a simple rule in TBox to the ER set
      * 
-     * @param ruleIndex
-     *        ruleIndex
+     * @param ruleIndex ruleIndex
      */
     @PortedFrom(file = "tConcept.h", name = "addExtraRule")
     public void addExtraRule(int ruleIndex) {
@@ -236,10 +261,8 @@ public class Concept extends ClassifiableEntry {
     }
 
     /**
-     * @param desc
-     *        desc
-     * @return whether it is possible to init this as a non-primitive concept
-     *         with DESC
+     * @param desc desc
+     * @return whether it is possible to init this as a non-primitive concept with DESC
      */
     @PortedFrom(file = "tConcept.h", name = "canInitNonPrim")
     public boolean canInitNonPrim(DLTree desc) {
@@ -252,8 +275,7 @@ public class Concept extends ClassifiableEntry {
     /**
      * switch primitive concept to non-primitive with new definition;
      * 
-     * @param desc
-     *        desc
+     * @param desc desc
      * @return old definition
      */
     @PortedFrom(file = "tConcept.h", name = "makeNonPrimitive")
@@ -282,7 +304,7 @@ public class Concept extends ClassifiableEntry {
         boolean cd = !hasExtraRules() && isPrimitive();
         // not a completely defined if there are extra rules
         if (description != null) {
-            cd &= this.initToldSubsumers(description, new HashSet<Role>());
+            cd &= this.initToldSubsumers(description, new HashSet<>());
         }
         setCompletelyDefined(cd);
     }
@@ -290,8 +312,7 @@ public class Concept extends ClassifiableEntry {
     /**
      * init TOP told subsumer if necessary
      * 
-     * @param top
-     *        top
+     * @param top top
      */
     @PortedFrom(file = "tConcept.h", name = "setToldTop")
     public void setToldTop(Concept top) {
@@ -316,8 +337,7 @@ public class Concept extends ClassifiableEntry {
     }
 
     /**
-     * @param desc
-     *        Desc
+     * @param desc Desc
      */
     @PortedFrom(file = "tConcept.h", name = "addDesc")
     public void addDesc(@Nullable DLTree desc) {
@@ -347,8 +367,7 @@ public class Concept extends ClassifiableEntry {
     }
 
     /**
-     * @param desc
-     *        Desc
+     * @param desc Desc
      */
     @Original
     public void addLeaves(Collection<DLTree> desc) {
@@ -419,31 +438,28 @@ public class Concept extends ClassifiableEntry {
     }
 
     /**
-     * @param stack
-     *        stack
-     * @param current
-     *        current
+     * @param stack stack
+     * @param current current
      */
     @Original
     public void push(Deque<DLTree> stack, DLTree current) {
         // push subtrees: stack size increases by one or two, or current is a
         // leaf
-        current.getChildren().stream().filter(p -> p != null).forEach(stack::push);
+        current.getChildren().stream().filter(Objects::nonNull).forEach(stack::push);
     }
 
-    @Nullable
     @PortedFrom(file = "tConcept.h", name = "replaceSelfWithConst")
-    private DLTree replaceWithConstOld(@Nullable DLTree t) {
-        if (t == null) {
-            return null;
-        }
+    private DLTree replaceWithConstOld(DLTree t) {
+        assert t != null;
         Token token = t.token();
         // the three ifs are actually exclusive
-        if (replacements.contains(token) && resolveSynonym((ClassifiableEntry) t.elem().getNE()).equals(this)) {
+        if (replacements.contains(token)
+            && resolveSynonym((ClassifiableEntry) t.elem().getNE()).equals(this)) {
             return DLTreeFactory.createTop();
         }
         if (token == AND) {
-            return DLTreeFactory.createSNFAnd(asList(t.getChildren().stream().map(this::replaceWithConstOld)), t);
+            return DLTreeFactory
+                .createSNFAnd(asList(t.getChildren().stream().map(this::replaceWithConstOld)), t);
         }
         if (token == NOT && (t.getChild().isAND() || replacements.contains(t.getChild().token()))) {
             return DLTreeFactory.createSNFNot(replaceWithConstOld(t.getChild()));
@@ -473,10 +489,8 @@ public class Concept extends ClassifiableEntry {
     /**
      * init told subsumers of the concept by given DESCription;
      * 
-     * @param desc
-     *        _desc
-     * @param rolesProcessed
-     *        RolesProcessed
+     * @param desc _desc
+     * @param rolesProcessed RolesProcessed
      * @return TRUE iff concept is CD
      */
     @PortedFrom(file = "tConcept.h", name = "initToldSubsumers")
@@ -491,7 +505,8 @@ public class Concept extends ClassifiableEntry {
         }
         if (token == NOT) {
             if (tree.getChild().token() == FORALL || tree.getChild().token() == LE) {
-                searchTSbyRoleAndSupers(Role.resolveRole(tree.getChild().getLeft()), rolesProcessed);
+                searchTSbyRoleAndSupers(Role.resolveRole(tree.getChild().getLeft()),
+                    rolesProcessed);
             }
             return false;
         }
@@ -506,8 +521,9 @@ public class Concept extends ClassifiableEntry {
             // n-th level ANDs and pushing their children in turn; ends up with
             // the leaves of the AND subtree
             AtomicBoolean b = new AtomicBoolean(true);
-            tree.getChildren().stream().map(t -> Boolean.valueOf(initToldSubsumers(t, rolesProcessed))).forEach(x -> b
-                .compareAndSet(true, x.booleanValue()));
+            tree.getChildren().stream()
+                .map(t -> Boolean.valueOf(initToldSubsumers(t, rolesProcessed)))
+                .forEach(x -> b.compareAndSet(true, x.booleanValue()));
             return b.get();
         }
         return false;
@@ -527,10 +543,8 @@ public class Concept extends ClassifiableEntry {
     }
 
     /**
-     * @param r
-     *        r
-     * @param rolesProcessed
-     *        RolesProcessed
+     * @param r r
+     * @param rolesProcessed RolesProcessed
      */
     @PortedFrom(file = "tConcept.h", name = "SearchTSbyRoleAndSupers")
     public void searchTSbyRoleAndSupers(Role r, Set<Role> rolesProcessed) {
@@ -547,7 +561,8 @@ public class Concept extends ClassifiableEntry {
             return tsDepth;
         }
         if (hasToldSubsumers()) {
-            tsDepth = toldSubsumers.stream().mapToInt(p -> ((Concept) p).calculateTSDepth()).max().orElse(1);
+            tsDepth = toldSubsumers.stream().mapToInt(p -> ((Concept) p).calculateTSDepth()).max()
+                .orElse(1);
         } else {
             tsDepth = 1;
         }
@@ -572,11 +587,10 @@ public class Concept extends ClassifiableEntry {
     }
 
     /**
-     * @return true iff description contains top-level references to THIS
-     *         concept
+     * @return true iff description contains top-level references to THIS concept
      */
     @PortedFrom(file = "tConcept.h", name = "hasSelfInDesc")
-        boolean hasSelfInDesc() {
+    boolean hasSelfInDesc() {
         return hasSelfInDesc(description);
     }
 
@@ -589,8 +603,7 @@ public class Concept extends ClassifiableEntry {
     }
 
     /**
-     * @param pName
-     *        pName
+     * @param pName pName
      */
     @Original
     public void setpName(int pName) {
@@ -606,8 +619,7 @@ public class Concept extends ClassifiableEntry {
     }
 
     /**
-     * @param pBody
-     *        pBody
+     * @param pBody pBody
      */
     @Original
     public void setpBody(int pBody) {
@@ -675,8 +687,7 @@ public class Concept extends ClassifiableEntry {
     }
 
     /**
-     * @param action
-     *        action
+     * @param action action
      */
     @Original
     public void setPrimitive(boolean action) {
@@ -692,8 +703,7 @@ public class Concept extends ClassifiableEntry {
     }
 
     /**
-     * @param action
-     *        action
+     * @param action action
      */
     @Original
     public void setHasSP(boolean action) {
@@ -709,8 +719,7 @@ public class Concept extends ClassifiableEntry {
     }
 
     /**
-     * @param action
-     *        action
+     * @param action action
      */
     @Original
     public void setNominal(boolean action) {
@@ -726,8 +735,7 @@ public class Concept extends ClassifiableEntry {
     }
 
     /**
-     * @param action
-     *        action
+     * @param action action
      */
     @Original
     public void setSingleton(boolean action) {
@@ -736,8 +744,7 @@ public class Concept extends ClassifiableEntry {
 
     // relevance part
     /**
-     * @param lab
-     *        lab
+     * @param lab lab
      * @return is given concept relevant to given Labeller's state
      */
     @PortedFrom(file = "tConcept.h", name = "isRelevant")
@@ -748,8 +755,7 @@ public class Concept extends ClassifiableEntry {
     /**
      * make given concept relevant to given Labeller's state
      * 
-     * @param lab
-     *        lab
+     * @param lab lab
      */
     @PortedFrom(file = "tConcept.h", name = "setRelevant")
     public void setRelevant(long lab) {

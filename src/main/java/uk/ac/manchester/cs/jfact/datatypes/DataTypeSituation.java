@@ -6,12 +6,16 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static org.semanticweb.owlapi.util.OWLAPIPreconditions.checkNotNull;
-import static uk.ac.manchester.cs.jfact.datatypes.DatatypeClashes.*;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeClashes.DT_C_IT;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeClashes.DT_C_MM;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeClashes.DT_EMPTY_INTERVAL;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeClashes.DT_TNT;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -21,8 +25,7 @@ import uk.ac.manchester.cs.jfact.dep.DepSet;
 
 /**
  * @author ignazio
- * @param <R>
- *        type
+ * @param <R> type
  */
 public class DataTypeSituation<R extends Comparable<R>> implements Serializable {
 
@@ -36,24 +39,22 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
     private final DepSet accDep = DepSet.create();
     /** dep-set for the clash */
     private final DataTypeReasoner reasoner;
-    @Nonnull private final Datatype<R> type;
+    @Nonnull
+    private final Datatype<R> type;
     private final List<Literal<?>> literals = new ArrayList<>();
 
     protected DataTypeSituation(Datatype<R> p, DataTypeReasoner dep) {
         this.type = checkNotNull(p);
         this.reasoner = dep;
-        this.constraints.add(new DepInterval<R>());
+        this.constraints.add(new DepInterval<>());
     }
 
     /**
      * update and add a single interval I to the constraints.
      * 
-     * @param i
-     *        dependency interval
-     * @param interval
-     *        datatype interval
-     * @param localDep
-     *        localDep
+     * @param i dependency interval
+     * @param interval datatype interval
+     * @param localDep localDep
      * @return true iff clash occurs
      */
     private boolean addUpdatedInterval(DepInterval<R> i, Datatype<R> interval, DepSet localDep) {
@@ -78,10 +79,8 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
     /**
      * add restrictions [POS]INT to intervals
      * 
-     * @param interval
-     *        interval
-     * @param dep
-     *        dep
+     * @param interval interval
+     * @param dep dep
      * @return true if clash occurs
      */
     public boolean addInterval(Datatype<R> interval, DepSet dep) {
@@ -125,13 +124,12 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
     }
 
     /**
-     * @param other
-     *        other
+     * @param other other
      * @return true if compatible
      */
     public boolean checkCompatibleValue(DataTypeSituation<?> other) {
-        if (this.type.equals(DatatypeFactory.LITERAL) && emptyConstraints() || other.type.equals(
-            DatatypeFactory.LITERAL) && other.emptyConstraints()) {
+        if (this.type.equals(DatatypeFactory.LITERAL) && emptyConstraints()
+            || other.type.equals(DatatypeFactory.LITERAL) && other.emptyConstraints()) {
             return true;
         }
         if (incompatible(other)) {
@@ -187,8 +185,7 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
     /**
      * data interval with dep-sets
      * 
-     * @param <R>
-     *        type
+     * @param <R> type
      */
     static class DepInterval<R extends Comparable<R>> implements Serializable {
 
@@ -204,10 +201,8 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         /**
          * update MIN border of an TYPE's interval with VALUE wrt EXCL
          * 
-         * @param value
-         *        value
-         * @param dep
-         *        dep
+         * @param value value
+         * @param dep dep
          * @return true if updated
          */
         public boolean update(Datatype<R> value, @Nullable DepSet dep) {
@@ -229,7 +224,8 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
                     return false;
                 }
                 value.getKnownNumericFacetValues().forEach((k, v) -> e = e.addNumericFacet(k, v));
-                value.getKnownNonNumericFacetValues().forEach((k, v) -> e = e.addNonNumericFacet(k, v));
+                value.getKnownNonNumericFacetValues()
+                    .forEach((k, v) -> e = e.addNonNumericFacet(k, v));
             }
             // TODO needs to return false if the new expression has the same
             // value space as the old one
@@ -242,8 +238,7 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         }
 
         /**
-         * @param interval
-         *        the interval to check
+         * @param interval the interval to check
          * @return true if this interval can be updated to include interval
          */
         public boolean updateable(Datatype<R> interval) {
@@ -265,8 +260,7 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
         /**
          * check if the interval is consistent wrt given type
          * 
-         * @param type
-         *        type
+         * @param type type
          * @return true if consistent
          */
         boolean consistent(@Nullable Datatype<?> type) {
@@ -286,16 +280,16 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
                 return true;
             }
             if (obj instanceof DepInterval) {
-                return (this.e == null ? ((DepInterval<?>) obj).e == null : this.e.equals(((DepInterval<?>) obj).e))
-                    && this.locDep == null ? ((DepInterval<?>) obj).locDep == null
-                        : this.locDep.equals(((DepInterval<?>) obj).locDep);
+                DepInterval<?> o = (DepInterval<?>) obj;
+                return Objects.equals(this.e, o.e) && Objects.equals(this.locDep, o.locDep);
             }
             return false;
         }
 
         @Override
         public int hashCode() {
-            return (this.e == null ? 0 : this.e.hashCode()) + (this.locDep == null ? 0 : this.locDep.hashCode());
+            return (this.e == null ? 0 : this.e.hashCode())
+                + (this.locDep == null ? 0 : this.locDep.hashCode());
         }
     }
 
@@ -321,16 +315,14 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
     /**
      * set the precense of the PType
      * 
-     * @param type
-     *        type
+     * @param type type
      */
     public void setPType(DepSet type) {
         this.pType = type;
     }
 
     /**
-     * @param t
-     *        depset for negative type
+     * @param t depset for negative type
      */
     public void setNType(DepSet t) {
         this.nType = t;
@@ -360,11 +352,9 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
     }
 
     /**
-     * @param other
-     *        situation to test
-     * @return true if this situation represents a subtype of the other
-     *         situation, i.e., type is a subtype of other type and all
-     *         constraints in this situation are compatible with other
+     * @param other situation to test
+     * @return true if this situation represents a subtype of the other situation, i.e., type is a
+     *         subtype of other type and all constraints in this situation are compatible with other
      *         constraints
      */
     public boolean isSubType(DataTypeSituation<?> other) {
@@ -386,6 +376,7 @@ public class DataTypeSituation<R extends Comparable<R>> implements Serializable 
             return false;
         }
         // each constraint must be compatible with the supertype
-        return constraints.stream().allMatch(c -> other.constraints.stream().allMatch(c1 -> c.consistent(c1.e)));
+        return constraints.stream()
+            .allMatch(c -> other.constraints.stream().allMatch(c1 -> c.consistent(c1.e)));
     }
 }

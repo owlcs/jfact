@@ -6,7 +6,6 @@
 package conformancetests;
 
 import org.junit.Test;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import testbase.TestBase;
 
@@ -15,13 +14,9 @@ public class WebOnt_miscellaneous_002TestCase extends TestBase {
 
     @Test
     @ChangedTestCase
-    public void testWebOnt_miscellaneous_002() throws OWLOntologyCreationException {
-        String conclusion = "";
-        String id = "WebOnt_miscellaneous_002";
-        TestClasses tc = TestClasses.valueOf("CONSISTENCY");
-        String d = "Food example taken from the guide. Note that this is the same as the ontology http://www.w3.org/2002/03owlt/miscellaneous/consistent002 imported in other tests.";
-        JUnitRunner r = new JUnitRunner(m, asString(m, "/webont002.owl"), conclusion, id, tc, d);
-        r.setReasonerFactory(factory());
-        r.run();
+    public void testWebOnt_miscellaneous_002() {
+        premise = asString("/webont002.owl");
+        test("WebOnt_miscellaneous_002", TestClasses.CONSISTENCY,
+            "Food example taken from the guide. Note that this is the same as the ontology http://www.w3.org/2002/03owlt/miscellaneous/consistent002 imported in other tests.");
     }
 }

@@ -20,7 +20,8 @@ import uk.ac.manchester.cs.jfact.helpers.Templates;
 public class LogicFeatures implements Serializable {
 
     /** all flags in one long */
-    @PortedFrom(file = "LogicFeature.h", name = "flags") private final BitSet flags = new BitSet();
+    @PortedFrom(file = "LogicFeature.h", name = "flags")
+    private final BitSet flags = new BitSet();
     //@formatter:off
     // role description
     @PortedFrom(file = "LogicFeature.h", name = "lfTransitiveRoles")    private static final int TRANSITIVEROLES  = 1;
@@ -50,8 +51,7 @@ public class LogicFeatures implements Serializable {
     /**
      * copy c'tor
      * 
-     * @param lf
-     *        lf
+     * @param lf lf
      */
     public LogicFeatures(LogicFeatures lf) {
         flags.or(lf.flags);
@@ -60,8 +60,7 @@ public class LogicFeatures implements Serializable {
     /**
      * set any flag
      * 
-     * @param val
-     *        val
+     * @param val val
      */
     @PortedFrom(file = "LogicFeature.h", name = "setX")
     private void setX(int val) {
@@ -69,8 +68,7 @@ public class LogicFeatures implements Serializable {
     }
 
     /**
-     * @param val
-     *        val
+     * @param val val
      * @return value of any flag
      */
     @PortedFrom(file = "LogicFeature.h", name = "getX")
@@ -81,8 +79,7 @@ public class LogicFeatures implements Serializable {
     /**
      * operator add
      * 
-     * @param lf
-     *        lf
+     * @param lf lf
      */
     @PortedFrom(file = "LogicFeature.h", name = "or")
     public void or(LogicFeatures lf) {
@@ -169,10 +166,8 @@ public class LogicFeatures implements Serializable {
     }
 
     /**
-     * @param f1
-     *        f1
-     * @param f2
-     *        f2
+     * @param f1 f1
+     * @param f2 f2
      * @return combination of the two objects
      */
     @PortedFrom(file = "LogicFeature.h", name = "+")
@@ -183,8 +178,7 @@ public class LogicFeatures implements Serializable {
     }
 
     /**
-     * @param p
-     *        p
+     * @param p p
      */
     @PortedFrom(file = "LogicFeature.h", name = "fillConceptData")
     public void fillConceptData(Concept p) {
@@ -194,10 +188,8 @@ public class LogicFeatures implements Serializable {
     }
 
     /**
-     * @param p
-     *        p
-     * @param both
-     *        both
+     * @param p p
+     * @param both both
      */
     @PortedFrom(file = "LogicFeature.h", name = "fillRoleData")
     public void fillRoleData(Role p, boolean both) {
@@ -230,14 +222,11 @@ public class LogicFeatures implements Serializable {
     }
 
     /**
-     * @param v
-     *        v
-     * @param pos
-     *        pos
+     * @param v v
      */
     @PortedFrom(file = "LogicFeature.h", name = "fillDAGData")
     @SuppressWarnings("incomplete-switch")
-    public void fillDAGData(DLVertex v, boolean pos) {
+    public void fillDAGData(DLVertex v) {
         switch (v.getType()) {
             case FORALL:
                 setX(SOMECONSTRUCTOR);
@@ -261,16 +250,27 @@ public class LogicFeatures implements Serializable {
     }
 
     /**
-     * @param l
-     *        l
+     * @param l l
      */
     @PortedFrom(file = "LogicFeature.h", name = "writeState")
     public void writeState(LogAdapter l) {
-        String no = "NO ";
+        l.printTemplate(Templates.WRITE_STATE, b(hasInverseRole()), b(hasRoleHierarchy()),
+            b(hasTransitiveRole()), b(hasTopRole()), b(hasSomeAll()), b(hasFunctionalRestriction()),
+            qualified(), b(hasSingletons()));
+    }
+
+    protected String qualified() {
         String q = "qualified ";
-        l.printTemplate(Templates.WRITE_STATE, hasInverseRole() ? "" : no, hasRoleHierarchy() ? "" : no,
-            hasTransitiveRole() ? "" : no, hasTopRole() ? "" : no, hasSomeAll() ? "" : no,
-            hasFunctionalRestriction() ? "" : no, hasNumberRestriction() ? hasQNumberRestriction() ? q : "" : no,
-            hasSingletons() ? "" : no);
+        if (!hasQNumberRestriction()) {
+            q = "";
+        }
+        if (!hasNumberRestriction()) {
+            q = "NO ";
+        }
+        return q;
+    }
+
+    private static String b(boolean b) {
+        return b ? "" : "NO ";
     }
 }

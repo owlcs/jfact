@@ -29,7 +29,8 @@ public class DebugVerifyComplianceUniversityTestCase extends TestBase {
             + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
             + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
             + "Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)\n" + "Ontology(<urn:uni>\n"
-            + "Declaration(Class(<urn:uni#Professor>))\n" + "Declaration(Class(<urn:uni#TeachingFaculty>))\n"
+            + "Declaration(Class(<urn:uni#Professor>))\n"
+            + "Declaration(Class(<urn:uni#TeachingFaculty>))\n"
             + "Declaration(DataProperty(<urn:uni#hasTenure>))\n"
             + "EquivalentClasses(<urn:uni#Lecturer> DataHasValue(<urn:uni#hasTenure> \"false\"^^xsd:boolean))\n"
             + "DisjointClasses(<urn:uni#Lecturer> <urn:uni#Professor>)\n"
@@ -39,15 +40,12 @@ public class DebugVerifyComplianceUniversityTestCase extends TestBase {
         return m.loadOntologyFromOntologyDocument(new StringDocumentSource(input));
     }
 
-    private static void equal(boolean o, boolean object) {
-        assertTrue(o == object);
-    }
-
     private static OWLClass C(String i) {
         return df.getOWLClass(IRI.create(i));
     }
 
-    @Nonnull private OWLClass Professor = C("urn:uni#Professor");
+    @Nonnull
+    private OWLClass Professor = C("urn:uni#Professor");
 
     @Before
     public void setUp() throws OWLOntologyCreationException {
@@ -55,11 +53,12 @@ public class DebugVerifyComplianceUniversityTestCase extends TestBase {
     }
 
     protected void print(OWLOntology o) throws OWLOntologyStorageException {
-        o.getOWLOntologyManager().saveOntology(o, new FunctionalSyntaxDocumentFormat(), new SystemOutDocumentTarget());
+        o.getOWLOntologyManager().saveOntology(o, new FunctionalSyntaxDocumentFormat(),
+            new SystemOutDocumentTarget());
     }
 
     @Test
     public void shouldPassisSatisfiableProfessor() {
-        equal(reasoner.isSatisfiable(Professor), true);
+        assertTrue(reasoner.isSatisfiable(Professor));
     }
 }

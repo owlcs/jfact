@@ -20,15 +20,14 @@ import uk.ac.manchester.cs.jfact.visitors.DLAxiomVisitorEx;
 @PortedFrom(file = "tDLAxiom.h", name = "TDLAxiomDeclaration")
 public class AxiomDeclaration extends AxiomImpl {
 
-    @PortedFrom(file = "tDLAxiom.h", name = "D") private final Expression expression;
+    @PortedFrom(file = "tDLAxiom.h", name = "D")
+    private final Expression expression;
 
     /**
-     * @param ax
-     *        ax
-     * @param d
-     *        d
+     * @param ax ax
+     * @param d d
      */
-    public AxiomDeclaration(@Nullable OWLAxiom ax, Expression d) {
+    public AxiomDeclaration(OWLAxiom ax, Expression d) {
         super(ax);
         expression = d;
     }

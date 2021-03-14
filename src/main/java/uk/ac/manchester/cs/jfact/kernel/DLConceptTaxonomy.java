@@ -1,11 +1,18 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
+import static uk.ac.manchester.cs.jfact.helpers.Assertions.verifyNotNull;
+
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nullable;
@@ -25,30 +32,45 @@ import uk.ac.manchester.cs.jfact.kernel.modelcaches.ModelCacheState;
 public class DLConceptTaxonomy extends TaxonomyCreator {
 
     /** host tBox */
-    @PortedFrom(file = "DLConceptTaxonomy.h", name = "tBox") private final TBox tBox;
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "tBox")
+    private final TBox tBox;
     /** common descendants of all parents of currently classified concept */
-    @PortedFrom(file = "DLConceptTaxonomy.h", name = "Common") private final List<TaxonomyVertex> common = new ArrayList<>();
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "Common")
+    private final List<TaxonomyVertex> common = new ArrayList<>();
     // statistic counters
-    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nConcepts") private long nConcepts = 0;
-    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nTries") private long nTries = 0;
-    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nPositives") private long nPositives = 0;
-    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nNegatives") private long nNegatives = 0;
-    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nSearchCalls") private long nSearchCalls = 0;
-    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nSubCalls") private long nSubCalls = 0;
-    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nNonTrivialSubCalls") private long nNonTrivialSubCalls = 0;
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nConcepts")
+    private long nConcepts = 0;
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nTries")
+    private long nTries = 0;
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nPositives")
+    private long nPositives = 0;
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nNegatives")
+    private long nNegatives = 0;
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nSearchCalls")
+    private long nSearchCalls = 0;
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nSubCalls")
+    private long nSubCalls = 0;
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nNonTrivialSubCalls")
+    private long nNonTrivialSubCalls = 0;
     /** number of positive cached subsumptions */
-    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nCachedPositive") private long nCachedPositive = 0;
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nCachedPositive")
+    private long nCachedPositive = 0;
     /** number of negative cached subsumptions */
-    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nCachedNegative") private long nCachedNegative = 0;
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nCachedNegative")
+    private long nCachedNegative = 0;
     /** number of non-subsumptions detected by a sorted reasoning */
-    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nSortedNegative") private long nSortedNegative = 0;
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nSortedNegative")
+    private long nSortedNegative = 0;
     /** number of non-subsumptions because of module reasons */
-    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nModuleNegative") private long nModuleNegative = 0;
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nModuleNegative")
+    private long nModuleNegative = 0;
     // flags
     /** flag to use Bottom-Up search */
-    @PortedFrom(file = "DLConceptTaxonomy.h", name = "flagNeedBottomUp") private boolean flagNeedBottomUp;
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "flagNeedBottomUp")
+    private boolean flagNeedBottomUp;
     /** number of processed common parents */
-    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nCommon") protected int nCommon = 1;
+    @PortedFrom(file = "DLConceptTaxonomy.h", name = "nCommon")
+    protected int nCommon = 1;
     /** set of possible parents */
     protected final Set<TaxonomyVertex> candidates = new HashSet<>();
     /** whether look into it */
@@ -59,10 +81,8 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     /**
      * the only c'tor
      * 
-     * @param pTax
-     *        pTax
-     * @param tbox
-     *        tbox
+     * @param pTax pTax
+     * @param tbox tbox
      */
     public DLConceptTaxonomy(Taxonomy pTax, TBox tbox) {
         super(pTax);
@@ -125,14 +145,14 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "preClassificationActions")
     public void preClassificationActions() {
         ++nConcepts;
-        tBox.getOptions().getProgressMonitor().reasonerTaskProgressChanged((int) nConcepts, tBox.getNItems());
+        tBox.getOptions().getProgressMonitor().reasonerTaskProgressChanged((int) nConcepts,
+            tBox.getNItems());
     }
 
     /**
      * set bottom-up flag
      * 
-     * @param gcis
-     *        GCIs
+     * @param gcis GCIs
      */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "setBottomUp")
     public void setBottomUp(KBFlags gcis) {
@@ -203,7 +223,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
             ++nSortedNegative;
             return false;
         }
-        if (isNotInModule(q.getEntity())) {
+        if (q.hasEntity() && isNotInModule(q.getEntity())) {
             tBox.getOptions().getLog().print("NOT holds (module result)");
             ++nModuleNegative;
             return false;
@@ -228,10 +248,8 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     }
 
     /**
-     * @param entity
-     *        entity
-     * @return true if non-subsumption is due to ENTITY is not in the
-     *         \bot-module
+     * @param entity entity
+     * @return true if non-subsumption is due to ENTITY is not in the \bot-module
      */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "isNotInModule")
     private boolean isNotInModule(@Nullable NamedEntity entity) {
@@ -239,19 +257,14 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
             return false;
         }
         Signature sig = sigStack.peek();
-        if (sig != null && entity != null && !sig.contains(entity.getEntity())) {
-            return true;
-        }
-        return false;
+        return sig != null && entity != null && !sig.contains(entity.getEntity());
     }
 
     /**
      * test subsumption via TBox explicitely
      * 
-     * @param p
-     *        p
-     * @param q
-     *        q
+     * @param p p
+     * @param q q
      * @return true if subsumption holds
      */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "testSubTBox")
@@ -270,13 +283,17 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     @Override
     public String toString() {
         StringBuilder o = new StringBuilder();
-        o.append(String.format(Templates.DLCONCEPTTAXONOMY.getTemplate(), Long.toString(nTries), Long.toString(
-            nPositives), Long.toString(nPositives * 100 / Math.max(1, nTries)), Long.toString(nCachedPositive), Long
-                .toString(nCachedNegative), nSortedNegative > 0 ? String.format(
-                    "Sorted reasoning deals with %s non-subsumptions%n", Long.toString(nSortedNegative)) : "",
-            nModuleNegative > 0 ? "Modular reasoning deals with " + nModuleNegative + " non-subsumptions\n" : "", Long
-                .toString(nSearchCalls), Long.toString(nSubCalls), Long.toString(nNonTrivialSubCalls), Long.toString(
-                    nEntries * (nEntries - 1) / Math.max(1, nTries))));
+        o.append(String.format(Templates.DLCONCEPTTAXONOMY.getTemplate(), Long.toString(nTries),
+            Long.toString(nPositives), Long.toString(nPositives * 100 / Math.max(1, nTries)),
+            Long.toString(nCachedPositive), Long.toString(nCachedNegative),
+            nSortedNegative > 0 ? String.format("Sorted reasoning deals with %s non-subsumptions%n",
+                Long.toString(nSortedNegative)) : "",
+            nModuleNegative > 0
+                ? "Modular reasoning deals with " + nModuleNegative + " non-subsumptions\n"
+                : "",
+            Long.toString(nSearchCalls), Long.toString(nSubCalls),
+            Long.toString(nNonTrivialSubCalls),
+            Long.toString(nEntries * (nEntries - 1) / Math.max(1, nTries))));
         o.append(super.toString());
         return o.toString();
     }
@@ -321,8 +338,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     /**
      * short-cut from ENHANCED_SUBS
      * 
-     * @param cur
-     *        cur
+     * @param cur cur
      * @return true if subsumption holds
      */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "enhancedSubs2")
@@ -341,8 +357,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     /**
      * test whether a node could be a super-node of CUR
      * 
-     * @param v
-     *        v
+     * @param v v
      * @return true if candidate
      */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "possibleSub")
@@ -415,7 +430,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
 
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "clearCommon")
     private void clearCommon() {
-        common.forEach(p -> p.clearCommon());
+        common.forEach(TaxonomyVertex::clearCommon);
         common.clear();
     }
 
@@ -448,8 +463,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
             if (tBox.isBlockedInd(curI)) {
                 // check whether current entry is the same as another individual
                 Individual syn = tBox.getBlockingInd(curI);
-                assert syn.isClassified();
-                TaxonomyVertex taxVertex = syn.getTaxVertex();
+                TaxonomyVertex taxVertex = verifyNotNull(syn.getTaxVertex());
                 assert taxVertex != null;
                 if (tBox.isBlockingDet(curI)) {
                     // deterministic merge => curI = syn
@@ -457,7 +471,8 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
                     return true;
                 } else {
                     // non-det merge: check whether it is the same
-                    tBox.getOptions().getLog().print("\nTAX: trying '", curI.getIRI(), "' = '", syn.getIRI(), "'... ");
+                    tBox.getOptions().getLog().print("\nTAX: trying '", curI.getIRI(), "' = '",
+                        syn.getIRI(), "'... ");
                     if (testSubTBox(curI, syn)) {
                         // they are actually the same
                         pTax.addCurrentToSynonym(taxVertex);
@@ -470,8 +485,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     }
 
     /**
-     * after merging, check whether there are extra neighbours that should be
-     * taken into account
+     * after merging, check whether there are extra neighbours that should be taken into account
      */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "checkExtraParents")
     private void checkExtraParents() {
@@ -488,12 +502,9 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     /**
      * merge a single vertex V to a node represented by CUR
      * 
-     * @param cur
-     *        cur
-     * @param v
-     *        v
-     * @param excludes
-     *        excludes
+     * @param cur cur
+     * @param v v
+     * @param excludes excludes
      */
     @PortedFrom(file = "DLConceptTaxonomy.h", name = "mergeVertex")
     private void mergeVertex(TaxonomyVertex cur, TaxonomyVertex v, Set<TaxonomyVertex> excludes) {
@@ -506,8 +517,7 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     /**
      * fill candidates
      * 
-     * @param cur
-     *        vertex to add to candidates (and its updirection neighbors
+     * @param cur vertex to add to candidates (and its updirection neighbors
      */
     public void fillCandidates(TaxonomyVertex cur) {
         if (isValued(cur)) {
@@ -522,10 +532,8 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
     }
 
     /**
-     * @param plus
-     *        plus
-     * @param minus
-     *        minus
+     * @param plus plus
+     * @param minus minus
      */
     public void reclassify(Set<OWLEntity> plus, Set<OWLEntity> minus) {
         mPlus = plus;
@@ -542,21 +550,20 @@ public class DLConceptTaxonomy extends TaxonomyCreator {
             }
             pTax.setVisited(cur);
             ClassifiableEntry entry = cur.getPrimer();
-            if (mPlus.contains(entry.getEntity().getEntity()) || mMinus.contains(entry.getEntity().getEntity())) {
+            if (mPlus.contains(entry.getEntity().getEntity())
+                || mMinus.contains(entry.getEntity().getEntity())) {
                 toProcess.add(entry);
             }
             cur.neigh(false).forEach(queue::add);
         }
         pTax.clearVisited();
-        toProcess.forEach(p -> reclassify(p.getTaxVertex(), tBox.getSignature(p)));
+        toProcess.forEach(p -> reclassify(verifyNotNull(p.getTaxVertex()), tBox.getSignature(p)));
         pTax.finalise();
     }
 
     /**
-     * @param node
-     *        node
-     * @param s
-     *        s
+     * @param node node
+     * @param s s
      */
     public void reclassify(TaxonomyVertex node, @Nullable Signature s) {
         upDirection = false;

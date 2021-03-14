@@ -6,20 +6,25 @@ package uk.ac.manchester.cs.jfact.datatypes;
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.LITERAL;
-import static uk.ac.manchester.cs.jfact.datatypes.Facets.*;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.maxExclusive;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.maxInclusive;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.minExclusive;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.minInclusive;
 
 import java.util.Collection;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends AbstractDatatype<O> implements
-    DatatypeExpression<O>, OrderedDatatype<O> {
+class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends AbstractDatatype<O>
+    implements DatatypeExpression<O>, OrderedDatatype<O> {
 
-    @Nonnull private final Datatype<O> host;
+    @Nonnull
+    private final Datatype<O> host;
 
     public DatatypeOrderedExpressionImpl(Datatype<O> b) {
-        super(DatatypeFactory.getIndex(b.getDatatypeIRI() + "_"), b.getFacets(), Utils.generateAncestors(b.host()));
+        super(DatatypeFactory.getIndex(b.getDatatypeIRI() + "_"), b.getFacets(),
+            Utils.generateAncestors(b.host()));
         this.host = b.host();
         knownNumericFacetValues.putAll(b.getKnownNumericFacetValues());
         knownNonNumericFacetValues.putAll(b.getKnownNonNumericFacetValues());
@@ -45,10 +50,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends AbstractDat
             return false;
         }
         // to be in value space, ex min must be smaller than l
-        if (this.hasMaxInclusive() && l.compareTo(this.getMax()) > 0) {
-            return false;
-        }
-        return true;
+        return !(this.hasMaxInclusive() && l.compareTo(this.getMax()) > 0);
     }
 
     @SuppressWarnings("unchecked")
@@ -131,14 +133,15 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends AbstractDat
     @Override
     public DatatypeExpression<O> addNonNumericFacet(Facet f, @Nullable Comparable<?> value) {
         if (!facets.contains(f)) {
-            throw new IllegalArgumentException("Facet " + f + " not allowed tor datatype " + this.getHostType());
+            throw new IllegalArgumentException(
+                "Facet " + f + " not allowed tor datatype " + this.getHostType());
         }
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
         if (value instanceof Literal && !this.host.isCompatible((Literal<?>) value)) {
-            throw new IllegalArgumentException("Not a valid value for this expression: " + f + '\t' + value + " for: "
-                + this);
+            throw new IllegalArgumentException(
+                "Not a valid value for this expression: " + f + '\t' + value + " for: " + this);
         }
         DatatypeOrderedExpressionImpl<O> toReturn = new DatatypeOrderedExpressionImpl<>(this.host);
         toReturn.knownNumericFacetValues.putAll(knownNumericFacetValues);
@@ -150,7 +153,8 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends AbstractDat
     @Override
     public DatatypeExpression<O> addNumericFacet(Facet f, @Nullable Comparable<?> value) {
         if (!facets.contains(f)) {
-            throw new IllegalArgumentException("Facet " + f + " not allowed tor datatype " + this.getHostType());
+            throw new IllegalArgumentException(
+                "Facet " + f + " not allowed tor datatype " + this.getHostType());
         }
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
@@ -272,7 +276,7 @@ class DatatypeOrderedExpressionImpl<O extends Comparable<O>> extends AbstractDat
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + '(' + this.host.toString() + "(extra facets:" + knownNumericFacetValues
-            + "))";
+        return this.getClass().getSimpleName() + '(' + this.host.toString() + "(extra facets:"
+            + knownNumericFacetValues + "))";
     }
 }

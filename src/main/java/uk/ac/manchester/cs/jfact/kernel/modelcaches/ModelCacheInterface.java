@@ -2,9 +2,9 @@ package uk.ac.manchester.cs.jfact.kernel.modelcaches;
 
 import java.io.Serializable;
 
-import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 import conformance.Original;
 import conformance.PortedFrom;
+import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
@@ -21,20 +21,17 @@ public abstract class ModelCacheInterface implements Serializable {
     private boolean hasNominalNode;
 
     /**
-     * Create cache model with given precense of nominals
+     * Create cache model with given presence of nominals
      * 
-     * @param flagNominals
-     *        flagNominals
+     * @param flagNominals flagNominals
      */
-    public ModelCacheInterface(boolean flagNominals) {
+    protected ModelCacheInterface(boolean flagNominals) {
         setHasNominalNode(flagNominals);
     }
 
     /**
-     * @param p
-     *        p
-     * @return check whether both models have nominals; in this case, merge is
-     *         impossible
+     * @param p p
+     * @return check whether both models have nominals; in this case, merge is impossible
      */
     @PortedFrom(file = "modelCacheInterface.h", name = "hasNominalClash")
     public boolean hasNominalClash(ModelCacheInterface p) {
@@ -44,8 +41,7 @@ public abstract class ModelCacheInterface implements Serializable {
     /**
      * update knoweledge about nominals in the model after merging
      * 
-     * @param p
-     *        p
+     * @param p p
      */
     @PortedFrom(file = "modelCacheInterface.h", name = "updateNominalStatus")
     public void updateNominalStatus(ModelCacheInterface p) {
@@ -60,8 +56,7 @@ public abstract class ModelCacheInterface implements Serializable {
     /**
      * check whether two caches can be merged;
      * 
-     * @param p
-     *        p
+     * @param p p
      * @return state of "merged" model
      */
     @PortedFrom(file = "modelCacheInterface.h", name = "canMerge")
@@ -82,17 +77,14 @@ public abstract class ModelCacheInterface implements Serializable {
     /**
      * log this cache entry (with given level)
      * 
-     * @param level
-     *        level
-     * @param l
-     *        l
+     * @param level level
+     * @param l l
      */
     @PortedFrom(file = "modelCacheInterface.h", name = "logCacheEntry")
     public abstract void logCacheEntry(int level, LogAdapter l);
 
     /**
-     * @param hasNominalNode
-     *        hasNominalNode
+     * @param hasNominalNode hasNominalNode
      */
     @Original
     public void setHasNominalNode(boolean hasNominalNode) {

@@ -26,27 +26,29 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 
 /**
  * @author ignazio
- * @param <R>
- *        type
+ * @param <R> type
  */
-public abstract class AbstractDatatype<R extends Comparable<R>> implements Datatype<R>, Serializable {
+public abstract class AbstractDatatype<R extends Comparable<R>>
+    implements Datatype<R>, Serializable {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractDatatype.class);
-    @Nonnull protected final Set<Facet> facets;
-    @Nonnull protected final Set<Datatype<?>> ancestors;
-    @SuppressWarnings("rawtypes") protected final Map<Facet, Comparable> knownNumericFacetValues = new LinkedHashMap<>();
-    @SuppressWarnings("rawtypes") protected final Map<Facet, Comparable> knownNonNumericFacetValues = new LinkedHashMap<>();
-    @Nonnull protected final IRI uri;
+    @Nonnull
+    protected final Set<Facet> facets;
+    @Nonnull
+    protected final Set<Datatype<?>> ancestors;
+    @SuppressWarnings("rawtypes")
+    protected final Map<Facet, Comparable> knownNumericFacetValues = new LinkedHashMap<>();
+    @SuppressWarnings("rawtypes")
+    protected final Map<Facet, Comparable> knownNonNumericFacetValues = new LinkedHashMap<>();
+    @Nonnull
+    protected final IRI uri;
 
     /**
-     * @param u
-     *        iri for datatype
-     * @param f
-     *        facets for datatype
-     * @param ancestors
-     *        ancestors for datatype
+     * @param u iri for datatype
+     * @param f facets for datatype
+     * @param ancestors ancestors for datatype
      */
-    public AbstractDatatype(HasIRI u, Set<Facet> f, Set<Datatype<?>> ancestors) {
+    protected AbstractDatatype(HasIRI u, Set<Facet> f, Set<Datatype<?>> ancestors) {
         this.facets = f;
         this.uri = u.getIRI();
         this.ancestors = ancestors;
@@ -132,11 +134,12 @@ public abstract class AbstractDatatype<R extends Comparable<R>> implements Datat
     }
 
     protected boolean isDatatypeCompatible(Datatype<?> type) {
-        if (type.isExpression()) {
-            type = type.asExpression().getHostType();
-        }
-        return type.equals(this) || type.equals(DatatypeFactory.LITERAL) || type.isSubType(this) || this.isSubType(
-            type);
+        return datatypeCompatible(type.isExpression() ? type.asExpression().getHostType() : type);
+    }
+
+    protected boolean datatypeCompatible(Datatype<?> type) {
+        return type.equals(this) || type.equals(DatatypeFactory.LITERAL) || type.isSubType(this)
+            || this.isSubType(type);
     }
 
     @Override
@@ -148,7 +151,8 @@ public abstract class AbstractDatatype<R extends Comparable<R>> implements Datat
             R value = parseValue(l.value());
             return this.isInValueSpace(value);
         } catch (RuntimeException e) {
-            LOGGER.warn("Parsing issue: invalid literal value: {}", String.valueOf(l.value()), e.getMessage());
+            LOGGER.warn("Parsing issue: invalid literal value: {}", String.valueOf(l.value()),
+                e.getMessage());
             // parsing exceptions will be caught here
             return false;
         }
@@ -185,7 +189,8 @@ public abstract class AbstractDatatype<R extends Comparable<R>> implements Datat
     @Override
     public DatatypeExpression<R> asExpression() {
         if (!this.isExpression()) {
-            throw new UnsupportedOperationException("Type: " + this.getDatatypeIRI() + " is not an expression");
+            throw new UnsupportedOperationException(
+                "Type: " + this.getDatatypeIRI() + " is not an expression");
         }
         return (DatatypeExpression<R>) this;
     }
@@ -223,13 +228,16 @@ public abstract class AbstractDatatype<R extends Comparable<R>> implements Datat
         return cardinality.COUNTABLYINFINITE;
     }
 
-    protected <T extends Comparable<T>> boolean overlapping(OrderedDatatype<T> first, OrderedDatatype<T> second) {
+    protected <T extends Comparable<T>> boolean overlapping(OrderedDatatype<T> first,
+        OrderedDatatype<T> second) {
         T max = first.getMax();
         T min = second.getMin();
         if (first.hasMaxInclusive() && second.hasMinInclusive()) {
+            assert max != null;
             return max.compareTo(min) >= 0;
         }
         if (first.hasMaxExclusive() && second.hasMinInclusive()) {
+            assert max != null;
             return max.compareTo(min) > 0;
         }
         // if we get here, first has no max, hence it's unbounded upwards

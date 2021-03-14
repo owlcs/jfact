@@ -1,7 +1,14 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
-import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.*;
-import static uk.ac.manchester.cs.jfact.datatypes.Facets.*;
+import static uk.ac.manchester.cs.jfact.helpers.Assertions.verifyNotNull;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.FACETS4;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.LITERAL;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.WHITESPACE;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.maxExclusive;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.maxInclusive;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.minExclusive;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.minInclusive;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.whiteSpace;
 
 import java.util.Date;
 import java.util.Set;
@@ -49,7 +56,8 @@ class DATETIMEDatatype extends AbstractDatatype<Date> implements OrderedDatatype
     @Override
     public Date parseValue(String s) {
         try {
-            XMLGregorianCalendar cal = javax.xml.datatype.DatatypeFactory.newInstance().newXMLGregorianCalendar(s);
+            XMLGregorianCalendar cal =
+                javax.xml.datatype.DatatypeFactory.newInstance().newXMLGregorianCalendar(s);
             return cal.normalize().toGregorianCalendar().getTime();
         } catch (DatatypeConfigurationException e) {
             throw new ReasonerInternalException(e);
@@ -58,19 +66,16 @@ class DATETIMEDatatype extends AbstractDatatype<Date> implements OrderedDatatype
 
     @Override
     public boolean isInValueSpace(Date l) {
-        if (hasMinExclusive() && getMin().compareTo(l) <= 0) {
+        if (hasMinExclusive() && verifyNotNull(getMin()).compareTo(l) <= 0) {
             return false;
         }
-        if (hasMinInclusive() && getMin().compareTo(l) < 0) {
+        if (hasMinInclusive() && verifyNotNull(getMin()).compareTo(l) < 0) {
             return false;
         }
-        if (hasMaxExclusive() && getMax().compareTo(l) >= 0) {
+        if (hasMaxExclusive() && verifyNotNull(getMax()).compareTo(l) >= 0) {
             return false;
         }
-        if (hasMaxInclusive() && getMax().compareTo(l) > 0) {
-            return false;
-        }
-        return true;
+        return !(hasMaxInclusive() && verifyNotNull(getMax()).compareTo(l) > 0);
     }
 
     @SuppressWarnings("unchecked")

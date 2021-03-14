@@ -28,7 +28,7 @@ import uk.ac.manchester.cs.jfact.JFactReasoner;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
 @SuppressWarnings("javadoc")
-public class DebugWine2 extends TestBase {
+public class DebugWineTest extends TestBase {
 
     @Rule public Timeout timeout = new Timeout(5_000);
 

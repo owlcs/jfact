@@ -17,7 +17,7 @@ import uk.ac.manchester.cs.jfact.JFactFactory;
 
 @SuppressWarnings("javadoc")
 @Ignore
-public class VerifyCorrectnessOfClassification extends TestBase {
+public class VerifyCorrectnessOfClassificationTest extends TestBase {
 
     private static final String POOL_SAMPLE = "/Users/ignazio/workspace/pool_sample/files/";
 

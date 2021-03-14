@@ -1,7 +1,11 @@
 package uk.ac.manchester.cs.jfact.datatypes;
 
-import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.*;
-import static uk.ac.manchester.cs.jfact.datatypes.Facets.*;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.NONPOSITIVEINTEGER;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.NUMBER_EXPRESSION;
+import static uk.ac.manchester.cs.jfact.datatypes.DatatypeFactory.WHITESPACE;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.maxInclusive;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.pattern;
+import static uk.ac.manchester.cs.jfact.datatypes.Facets.whiteSpace;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -23,7 +27,7 @@ class NEGATIVEINTEGERDatatype<R extends Comparable<R>> extends NONPOSITIVEINTEGE
     @SuppressWarnings("unchecked")
     public R parseValue(String s) {
         BigInteger parse = new BigInteger(s);
-        if (parse.compareTo(new BigInteger("-1")) > 0) {
+        if (parse.signum() > -1) {
             throw new ArithmeticException("Negative integer required, but found: " + s);
         }
         return (R) parse;

@@ -20,18 +20,21 @@ import uk.ac.manchester.cs.jfact.visitors.DLExpressionVisitorEx;
 /**
  * datatype negation
  * 
- * @param <R>
- *        type
+ * @param <R> type
  */
-public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpression<R>, Serializable {
+public class DatatypeNegation<R extends Comparable<R>>
+    implements DatatypeExpression<R>, Serializable {
 
+    private static final String WARNING_NO_FACETS_ON_NEGATION =
+        "DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to a negation; returning the same object: {}";
     private static final Logger LOGGER = LoggerFactory.getLogger(DatatypeNegation.class);
-    @Nonnull private final Datatype<R> host;
-    @Nonnull private final IRI uri;
+    @Nonnull
+    private final Datatype<R> host;
+    @Nonnull
+    private final IRI uri;
 
     /**
-     * @param d
-     *        d
+     * @param d d
      */
     public DatatypeNegation(Datatype<R> d) {
         this.uri = DatatypeFactory.getIndex("urn:neg").getIRI();
@@ -74,10 +77,7 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
         if (host.emptyValueSpace()) {
             return false;
         }
-        if (host.getCardinality() == cardinality.COUNTABLYINFINITE) {
-            return false;
-        }
-        return false;
+        return host.getCardinality() != cardinality.COUNTABLYINFINITE;
     }
 
     @SuppressWarnings("rawtypes")
@@ -207,17 +207,17 @@ public class DatatypeNegation<R extends Comparable<R>> implements DatatypeExpres
 
     @Override
     public DatatypeExpression<R> addNumericFacet(Facet f, @Nullable Comparable<?> value) {
-        LOGGER.warn(
-            "DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to a negation; returning the same object: {}",
-            this);
+        LOGGER.warn(WARNING_NO_FACETS_ON_NEGATION, this);
         return this;
+    }
+
+    protected void noFacetsOnNegation() {
+        LOGGER.warn(WARNING_NO_FACETS_ON_NEGATION, this);
     }
 
     @Override
     public DatatypeExpression<R> addNonNumericFacet(Facet f, @Nullable Comparable<?> value) {
-        LOGGER.warn(
-            "DatatypeNumericEnumeration.addFacet() WARNING: cannot add facets to a negation; returning the same object: {}",
-            this);
+        noFacetsOnNegation();
         return this;
     }
 

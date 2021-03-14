@@ -26,15 +26,20 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 public class Ontology implements Serializable {
 
     /** all the axioms */
-    @PortedFrom(file = "tOntology.h", name = "Axioms") private final List<AxiomWrapper> axioms = new ArrayList<>();
+    @PortedFrom(file = "tOntology.h", name = "Axioms")
+    private final List<AxiomWrapper> axioms = new ArrayList<>();
     /** all the axioms */
-    @PortedFrom(file = "tOntology.h", name = "Retracted") private final List<AxiomWrapper> retracted = new ArrayList<>();
+    @PortedFrom(file = "tOntology.h", name = "Retracted")
+    private final List<AxiomWrapper> retracted = new ArrayList<>();
     /** expression manager that builds all the expressions for the axioms */
-    @PortedFrom(file = "tOntology.h", name = "EManager") private final ExpressionCache expressionCache = new ExpressionCache();
+    @PortedFrom(file = "tOntology.h", name = "EManager")
+    private final ExpressionCache expressionCache = new ExpressionCache();
     /** id to be given to the next axiom */
-    @PortedFrom(file = "tOntology.h", name = "axiomId") private int axiomId;
+    @PortedFrom(file = "tOntology.h", name = "axiomId")
+    private int axiomId;
     /** true iff ontology was changed */
-    @PortedFrom(file = "tOntology.h", name = "changed") private boolean changed;
+    @PortedFrom(file = "tOntology.h", name = "changed")
+    private boolean changed;
 
     /** Default constructor. */
     public Ontology() {
@@ -43,8 +48,7 @@ public class Ontology implements Serializable {
     }
 
     /**
-     * @param i
-     *        i
+     * @param i i
      * @return axiom in position i
      */
     @PortedFrom(file = "tOntology.h", name = "get")
@@ -68,8 +72,7 @@ public class Ontology implements Serializable {
     /**
      * add given axiom to the ontology
      * 
-     * @param p
-     *        p
+     * @param p p
      * @return p
      */
     @PortedFrom(file = "tOntology.h", name = "add")
@@ -83,8 +86,7 @@ public class Ontology implements Serializable {
     /**
      * retract given axiom to the ontology
      * 
-     * @param p
-     *        p
+     * @param p p
      */
     @PortedFrom(file = "tOntology.h", name = "retract")
     public void retract(AxiomWrapper p) {
@@ -136,13 +138,15 @@ public class Ontology implements Serializable {
     /** @return signature of all ontology axioms */
     @PortedFrom(file = "tOntology.h", name = "getSignature")
     public Stream<Expression> signature() {
-        return axioms.stream().filter(p -> p.isUsed()).flatMap(p -> ((AxiomImpl) p).namedEntitySignature()).distinct();
+        return axioms.stream().filter(AxiomWrapper::isUsed)
+            .flatMap(p -> ((AxiomImpl) p).namedEntitySignature()).distinct();
     }
 
     /**
      * @return named entities
      */
     public Collection<NamedEntity> getSignature() {
-        return asList(signature().filter(p -> p instanceof NamedEntity).map(p -> (NamedEntity) p));
+        return asList(
+            signature().filter(NamedEntity.class::isInstance).map(NamedEntity.class::cast));
     }
 }

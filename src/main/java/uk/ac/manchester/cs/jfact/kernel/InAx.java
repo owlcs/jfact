@@ -50,16 +50,14 @@ public class InAx implements Serializable {
 
     /**
      * @return an RW concept from a given [C|I]NAME-rooted DLTree
-     * @param p
-     *        the tree
+     * @param p the tree
      */
     public static Concept getConcept(DLTree p) {
         return (Concept) p.elem().getNE();
     }
 
     /**
-     * @param c
-     *        concept
+     * @param c concept
      * @return true if a concept C is a concept is non-primitive
      */
     @PortedFrom(file = "tAxiom.cpp", name = "isNP")
@@ -72,7 +70,7 @@ public class InAx implements Serializable {
         if (c.isPrimitive()) {
             return false;
         }
-        return hasDefCycle(c, new HashSet<Concept>());
+        return hasDefCycle(c, new HashSet<>());
     }
 
     @PortedFrom(file = "tAxiom.cpp", name = "hasDefCycle")
@@ -87,6 +85,9 @@ public class InAx implements Serializable {
         }
         // check the structure: looking for the \exists R.C
         DLTree p = c.getDescription();
+        if (p == null) {
+            return false;
+        }
         if (!p.isNOT()) {
             return false;
         }
@@ -111,8 +112,7 @@ public class InAx implements Serializable {
 
     /**
      * @return true iff P is a TOP
-     * @param p
-     *        the tree
+     * @param p the tree
      */
     public static boolean isTop(DLTree p) {
         return p.isBOTTOM();
@@ -120,8 +120,7 @@ public class InAx implements Serializable {
 
     /**
      * @return true iff P is a BOTTOM
-     * @param p
-     *        the tree
+     * @param p the tree
      */
     public static boolean isBot(DLTree p) {
         return p.isTOP();
@@ -129,16 +128,14 @@ public class InAx implements Serializable {
 
     /**
      * @return true iff P is a positive concept name
-     * @param p
-     *        the tree
+     * @param p the tree
      */
     public static boolean isPosCN(DLTree p) {
         return p.isNOT() && p.getChild().isName();
     }
 
     /**
-     * @param p
-     *        the tree
+     * @param p the tree
      * @return true iff P is a positive non-primitive CN
      */
     public static boolean isPosNP(DLTree p) {
@@ -147,8 +144,7 @@ public class InAx implements Serializable {
 
     /**
      * @return true iff P is a positive primitive CN
-     * @param p
-     *        the tree
+     * @param p the tree
      */
     public static boolean isPosPC(DLTree p) {
         return isPosCN(p) && getConcept(p.getChild()).isPrimitive();
@@ -156,16 +152,14 @@ public class InAx implements Serializable {
 
     /**
      * @return true iff P is a negative concept name
-     * @param p
-     *        the tree
+     * @param p the tree
      */
     public static boolean isNegCN(DLTree p) {
         return p.isName();
     }
 
     /**
-     * @param p
-     *        the tree
+     * @param p the tree
      * @return true iff P is a negative non-primitive CN
      */
     public static boolean isNegNP(DLTree p) {
@@ -174,8 +168,7 @@ public class InAx implements Serializable {
 
     /**
      * @return true iff P is a negative primitive CN
-     * @param p
-     *        the tree
+     * @param p the tree
      */
     public static boolean isNegPC(DLTree p) {
         return isNegCN(p) && getConcept(p).isPrimitive();
@@ -183,8 +176,7 @@ public class InAx implements Serializable {
 
     /**
      * @return check whether P is in the form (and C D)
-     * @param p
-     *        the tree
+     * @param p the tree
      */
     public static boolean isAnd(DLTree p) {
         return p.isNOT() && p.getChild().isAND();
@@ -192,8 +184,7 @@ public class InAx implements Serializable {
 
     /**
      * @return true iff P is an OR expression
-     * @param p
-     *        the tree
+     * @param p the tree
      */
     public static boolean isOr(DLTree p) {
         return p.isAND();
@@ -201,8 +192,7 @@ public class InAx implements Serializable {
 
     /**
      * @return true iff P is a general FORALL expression
-     * @param p
-     *        the tree
+     * @param p the tree
      */
     public static boolean isForall(DLTree p) {
         return p.isNOT() && p.getChild().token() == Token.FORALL;
@@ -210,8 +200,7 @@ public class InAx implements Serializable {
 
     /**
      * @return true iff P is an object FORALL expression
-     * @param p
-     *        the tree
+     * @param p the tree
      */
     public static boolean isOForall(DLTree p) {
         return isForall(p) && !Role.resolveRole(p.getChild().getLeft()).isDataRole();
@@ -219,8 +208,7 @@ public class InAx implements Serializable {
 
     /**
      * @return true iff P is a FORALL expression suitable for absorption
-     * @param p
-     *        the tree
+     * @param p the tree
      */
     public static boolean isAbsForall(DLTree p) {
         if (!isOForall(p)) {
@@ -234,16 +222,14 @@ public class InAx implements Serializable {
     }
 
     /**
-     * @param s
-     *        s
+     * @param s s
      */
     private void add(String s) {
         created.computeIfAbsent(s, x -> new AtomicInteger()).incrementAndGet();
     }
 
     /**
-     * @param s
-     *        s
+     * @param s s
      * @return index for s
      */
     private int get(String s) {
@@ -498,10 +484,8 @@ public class InAx implements Serializable {
     }
 
     /**
-     * @param p
-     *        dltree representing a forall
-     * @return true iff P is a FORALL expression suitable for absorption with
-     *         name at the end
+     * @param p dltree representing a forall
+     * @return true iff P is a FORALL expression suitable for absorption with name at the end
      */
     @PortedFrom(file = "tAxiom.h", name = "isSimpleForall")
     public static boolean isSimpleForall(DLTree p) {

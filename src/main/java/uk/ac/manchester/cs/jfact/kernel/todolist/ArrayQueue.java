@@ -51,10 +51,8 @@ public class ArrayQueue implements Serializable {
     /**
      * add entry to a queue
      * 
-     * @param node
-     *        node
-     * @param offset
-     *        offset
+     * @param node node
+     * @param offset offset
      */
     public void add(DlCompletionTree node, ConceptWDep offset) {
         wait.add(new ToDoEntry(node, offset));
@@ -81,10 +79,8 @@ public class ArrayQueue implements Serializable {
     /**
      * save queue content to the given entry
      * 
-     * @param tss
-     *        tss
-     * @param pos
-     *        pos
+     * @param tss tss
+     * @param pos pos
      */
     @PortedFrom(file = "ToDoList.h", name = "save")
     public void save(int[][] tss, int pos) {
@@ -95,10 +91,8 @@ public class ArrayQueue implements Serializable {
     /**
      * restore queue content from the given entry
      * 
-     * @param tss
-     *        tss
-     * @param pos
-     *        pos
+     * @param tss tss
+     * @param pos pos
      */
     @PortedFrom(file = "ToDoList.h", name = "restore")
     public void restore(int[][] tss, int pos) {
@@ -107,10 +101,8 @@ public class ArrayQueue implements Serializable {
     }
 
     /**
-     * @param sp
-     *        sp
-     * @param ep
-     *        ep
+     * @param sp sp
+     * @param ep ep
      */
     @PortedFrom(file = "ToDoList.h", name = "restore")
     public void restore(int sp, int ep) {
@@ -120,7 +112,8 @@ public class ArrayQueue implements Serializable {
 
     @Override
     public String toString() {
-        return "ArrayQueue{" + sPointer + "," + wait.stream().map(Object::toString).collect(joining(" ")) + "}";
+        return "ArrayQueue{" + sPointer + ","
+            + wait.stream().map(Object::toString).collect(joining(" ")) + "}";
     }
 
     /** @return s pointer */
@@ -129,8 +122,7 @@ public class ArrayQueue implements Serializable {
     }
 
     /**
-     * @param sPointer
-     *        sPointer
+     * @param sPointer sPointer
      */
     public void setsPointer(int sPointer) {
         this.sPointer = sPointer;

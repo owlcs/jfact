@@ -18,29 +18,34 @@ import uk.ac.manchester.cs.jfact.kernel.DagTag;
 public class ToDoPriorMatrix implements Serializable {
 
     /** number of regular options (o- and NN-rules are not included) */
-    @PortedFrom(file = "PriorityMatrix.h", name = "nRegularOps") public static final int NREGULAROPTIONS = 7;
+    @PortedFrom(file = "PriorityMatrix.h", name = "nRegularOps")
+    public static final int NREGULAROPTIONS = 7;
     /**
-     * priority index for o- and ID operations (note that these ops have the
-     * highest priority)
+     * priority index for o- and ID operations (note that these ops have the highest priority)
      */
-    @PortedFrom(file = "PriorityMatrix.h", name = "iId") protected static final int PRIORITYINDEXID = NREGULAROPTIONS
-        + 1;
+    @PortedFrom(file = "PriorityMatrix.h", name = "iId")
+    protected static final int PRIORITYINDEXID = NREGULAROPTIONS + 1;
     /** priority index for lesser than or equal operation in nominal node */
-    @PortedFrom(file = "PriorityMatrix.h", name = "iNN") protected static final int PRIORITYINDEXNOMINALNODE = NREGULAROPTIONS
-        + 2;
+    @PortedFrom(file = "PriorityMatrix.h", name = "iNN")
+    protected static final int PRIORITYINDEXNOMINALNODE = NREGULAROPTIONS + 2;
     // regular operation indexes
-    @PortedFrom(file = "PriorityMatrix.h", name = "iAnd") private int indexAnd;
-    @PortedFrom(file = "PriorityMatrix.h", name = "iOr") private int indexOr;
-    @PortedFrom(file = "PriorityMatrix.h", name = "iExists") private int indexExists;
-    @PortedFrom(file = "PriorityMatrix.h", name = "iForAll") private int indexForall;
-    @PortedFrom(file = "PriorityMatrix.h", name = "iLE") private int indexLE;
-    @PortedFrom(file = "PriorityMatrix.h", name = "iGE") private int indexGE;
+    @PortedFrom(file = "PriorityMatrix.h", name = "iAnd")
+    private int indexAnd;
+    @PortedFrom(file = "PriorityMatrix.h", name = "iOr")
+    private int indexOr;
+    @PortedFrom(file = "PriorityMatrix.h", name = "iExists")
+    private int indexExists;
+    @PortedFrom(file = "PriorityMatrix.h", name = "iForAll")
+    private int indexForall;
+    @PortedFrom(file = "PriorityMatrix.h", name = "iLE")
+    private int indexLE;
+    @PortedFrom(file = "PriorityMatrix.h", name = "iGE")
+    private int indexGE;
 
     /**
      * Auxiliary class to get priorities on operations
      * 
-     * @param options
-     *        options
+     * @param options options
      */
     @PortedFrom(file = "PriorityMatrix.h", name = "initPriorities")
     public void initPriorities(String options) {
@@ -56,19 +61,17 @@ public class ToDoPriorMatrix implements Serializable {
         indexLE = options.charAt(5) - '0';
         indexGE = options.charAt(6) - '0';
         // correctness checking
-        if (indexAnd >= NREGULAROPTIONS || indexOr >= NREGULAROPTIONS || indexExists >= NREGULAROPTIONS
-            || indexForall >= NREGULAROPTIONS || indexGE >= NREGULAROPTIONS || indexLE >= NREGULAROPTIONS) {
+        if (indexAnd >= NREGULAROPTIONS || indexOr >= NREGULAROPTIONS
+            || indexExists >= NREGULAROPTIONS || indexForall >= NREGULAROPTIONS
+            || indexGE >= NREGULAROPTIONS || indexLE >= NREGULAROPTIONS) {
             throw new ReasonerInternalException("ToDo List option out of range");
         }
     }
 
     /**
-     * @param op
-     *        Op
-     * @param sign
-     *        Sign
-     * @param nominalNode
-     *        NominalNode
+     * @param op Op
+     * @param sign Sign
+     * @param nominalNode NominalNode
      * @return index
      */
     @PortedFrom(file = "PriorityMatrix.h", name = "getIndex")
@@ -85,7 +88,10 @@ public class ToDoPriorMatrix implements Serializable {
             case CHOOSE:
                 return indexOr;
             case LE:
-                return sign ? nominalNode ? PRIORITYINDEXNOMINALNODE : indexLE : indexGE;
+                if (sign) {
+                    return nominalNode ? PRIORITYINDEXNOMINALNODE : indexLE;
+                }
+                return indexGE;
             case DATATYPE:
             case DATAVALUE:
             case DATAEXPR:

@@ -18,8 +18,7 @@ import org.semanticweb.owlapi.model.IRI;
 
 /**
  * @author ignazio
- * @param <T>
- *        type
+ * @param <T> type
  */
 public class DatatypeIntersection<T extends Comparable<T>>
     implements DatatypeCombination<DatatypeIntersection<T>, Datatype<T>> {
@@ -29,8 +28,7 @@ public class DatatypeIntersection<T extends Comparable<T>>
     private final Datatype<T> host;
 
     /**
-     * @param host
-     *        host
+     * @param host host
      */
     public DatatypeIntersection(Datatype<T> host) {
         uri = DatatypeFactory.getIndex("urn:intersection#a").getIRI();
@@ -38,10 +36,8 @@ public class DatatypeIntersection<T extends Comparable<T>>
     }
 
     /**
-     * @param host
-     *        host
-     * @param list
-     *        list
+     * @param host host
+     * @param list list
      */
     public DatatypeIntersection(Datatype<T> host, Iterable<Datatype<T>> list) {
         this(host);
@@ -49,8 +45,7 @@ public class DatatypeIntersection<T extends Comparable<T>>
     }
 
     /**
-     * @param collection
-     *        collection
+     * @param collection collection
      * @return datatype host for a set of datatypes
      */
     @Nullable
@@ -65,7 +60,7 @@ public class DatatypeIntersection<T extends Comparable<T>>
         int oldSize;
         do {
             oldSize = list.size();
-            for (int i = 0; i < list.size() - 1;) {
+            for (int i = list.size() - 2; i > -1; i--) {
                 Datatype<?> next = list.get(i + 1);
                 Datatype<?> current = list.get(i);
                 assert current != null;
@@ -74,8 +69,6 @@ public class DatatypeIntersection<T extends Comparable<T>>
                     list.remove(i + 1);
                 } else if (next.isSubType(current)) {
                     list.remove(i);
-                } else {
-                    i++;
                 }
             }
         } while (list.size() > 1 && oldSize != list.size());
@@ -134,7 +127,7 @@ public class DatatypeIntersection<T extends Comparable<T>>
         return !isCompatible(type);
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public boolean emptyValueSpace() {
         // all base types must be numeric

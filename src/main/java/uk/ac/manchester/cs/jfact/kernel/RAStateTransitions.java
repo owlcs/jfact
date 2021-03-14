@@ -23,17 +23,24 @@ import uk.ac.manchester.cs.jfact.helpers.LogAdapter;
 public class RAStateTransitions implements Serializable {
 
     /** all transitions */
-    @PortedFrom(file = "RAutomaton.h", name = "Base") protected final List<RATransition> base = new ArrayList<>();
+    @PortedFrom(file = "RAutomaton.h", name = "Base")
+    protected final List<RATransition> base = new ArrayList<>();
     /** check whether there is an empty transition going from this state */
-    @PortedFrom(file = "RAutomaton.h", name = "EmptyTransition") protected boolean emptyTransition;
-    @PortedFrom(file = "RAutomaton.h", name = "ApplicableRoles") private final BitSet applicableRoles = new BitSet();
+    @PortedFrom(file = "RAutomaton.h", name = "EmptyTransition")
+    protected boolean emptyTransition;
+    @PortedFrom(file = "RAutomaton.h", name = "ApplicableRoles")
+    private final BitSet applicableRoles = new BitSet();
     /** state from which all the transition starts */
-    @PortedFrom(file = "RAutomaton.h", name = "from") private int from;
+    @PortedFrom(file = "RAutomaton.h", name = "from")
+    private int from;
     /** flag whether the role is data or not (valid only for simple automata) */
-    @PortedFrom(file = "RAutomaton.h", name = "DataRole") private boolean dataRole;
-    @Original private int size = 0;
+    @PortedFrom(file = "RAutomaton.h", name = "DataRole")
+    private boolean dataRole;
+    @Original
+    private int size = 0;
     /** true iff there is a top transition going from this state */
-    @PortedFrom(file = "RAutomaton.h", name = "TopTransition") private boolean topTransition;
+    @PortedFrom(file = "RAutomaton.h", name = "TopTransition")
+    private boolean topTransition;
 
     /** Default constructor. */
     public RAStateTransitions() {
@@ -55,8 +62,7 @@ public class RAStateTransitions implements Serializable {
     /**
      * add a transition from a given state
      * 
-     * @param trans
-     *        trans
+     * @param trans trans
      */
     @PortedFrom(file = "RAutomaton.h", name = "add")
     public void add(RATransition trans) {
@@ -91,8 +97,7 @@ public class RAStateTransitions implements Serializable {
     /**
      * print all the transitions starting from the state FROM
      * 
-     * @param o
-     *        o
+     * @param o o
      */
     @PortedFrom(file = "RAutomaton.h", name = "print")
     public void print(LogAdapter o) {
@@ -102,35 +107,30 @@ public class RAStateTransitions implements Serializable {
     /**
      * set up state transitions: no more additions to the structure
      * 
-     * @param state
-     *        state
-     * @param nRoles
-     *        nRoles
-     * @param data
-     *        data
+     * @param state state
+     * @param data data
      */
     @PortedFrom(file = "RAutomaton.h", name = "setup")
-    public void setup(int state, int nRoles, boolean data) {
+    public void setup(int state, boolean data) {
         from = state;
         dataRole = data;
         // fills the set of recognisable roles
-        base.stream().flatMap(p -> p.begin().stream()).forEach(p -> applicableRoles.set(p.getAbsoluteIndex()));
+        base.stream().flatMap(p -> p.begin().stream())
+            .forEach(p -> applicableRoles.set(p.getAbsoluteIndex()));
     }
 
     /**
-     * add information from TRANS to existing transition between the same
-     * states.
+     * add information from TRANS to existing transition between the same states.
      * 
-     * @param trans
-     *        trans
+     * @param trans trans
      * @return false if no such transition found
      */
     @PortedFrom(file = "RAutomaton.h", name = "addToExisting")
     public boolean addToExisting(RATransition trans) {
         int to = trans.finalState();
         boolean tEmpty = trans.isEmpty();
-        Optional<RATransition> findAny = base.stream().filter(p -> p.finalState() == to && p.isEmpty() == tEmpty)
-            .findAny();
+        Optional<RATransition> findAny =
+            base.stream().filter(p -> p.finalState() == to && p.isEmpty() == tEmpty).findAny();
         if (findAny.isPresent()) {
             // found existing transition
             findAny.get().addIfNew(trans);
@@ -141,8 +141,7 @@ public class RAStateTransitions implements Serializable {
     }
 
     /**
-     * @param r
-     *        R
+     * @param r R
      * @return true if R is an applicable data role
      */
     @PortedFrom(file = "RAutomaton.h", name = "recognise")

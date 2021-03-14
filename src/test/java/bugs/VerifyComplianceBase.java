@@ -1,8 +1,10 @@
 package bugs;
 
 import static java.util.stream.Collectors.joining;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -22,6 +24,7 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.profiles.OWLProfileReport;
 import org.semanticweb.owlapi.profiles.Profiles;
 import org.semanticweb.owlapi.reasoner.InferenceType;
@@ -40,12 +43,16 @@ public abstract class VerifyComplianceBase extends TestBase {
     protected JFactReasoner reasoner;
 
     protected OWLOntology load(String in) throws OWLOntologyCreationException {
-        OWLOntology onto = m.loadOntologyFromOntologyDocument(VerifyComplianceBase.class.getResourceAsStream(in));
-        OWLProfileReport checkOntology = Profiles.OWL2_DL.checkOntology(onto);
-        if (!checkOntology.isInProfile()) {
-            checkOntology.getViolations().forEach(System.out::println);
+        try (InputStream input = VerifyComplianceBase.class.getResourceAsStream(in)) {
+            OWLOntology onto = m.loadOntologyFromOntologyDocument(input);
+            OWLProfileReport checkOntology = Profiles.OWL2_DL.checkOntology(onto);
+            if (!checkOntology.isInProfile()) {
+                checkOntology.getViolations().forEach(System.out::println);
+            }
+            return onto;
+        } catch (IOException e) {
+            throw new OWLRuntimeException(e);
         }
-        return onto;
     }
 
     protected OWLOntology loadFromString(String in) throws OWLOntologyCreationException {
@@ -64,10 +71,6 @@ public abstract class VerifyComplianceBase extends TestBase {
         assertEquals(set(Stream.of(objects)), set(node.entities()));
     }
 
-    protected static void equal(boolean o, boolean object) {
-        assertTrue(object == o);
-    }
-
     protected OWLClass C(String i) {
         return df.getOWLClass(IRI.create(i));
     }
@@ -84,12 +87,18 @@ public abstract class VerifyComplianceBase extends TestBase {
         return df.getOWLDataProperty(IRI.create(i));
     }
 
-    @Nonnull protected OWLDataProperty bottomDataProperty = df.getOWLBottomDataProperty();
-    @Nonnull protected OWLDataProperty topDataProperty = df.getOWLTopDataProperty();
-    @Nonnull protected OWLObjectProperty topObjectProperty = df.getOWLTopObjectProperty();
-    @Nonnull protected OWLObjectProperty bottomObjectProperty = df.getOWLBottomObjectProperty();
-    @Nonnull protected OWLClass owlThing = df.getOWLThing();
-    @Nonnull protected OWLClass owlNothing = df.getOWLNothing();
+    @Nonnull
+    protected OWLDataProperty bottomDataProperty = df.getOWLBottomDataProperty();
+    @Nonnull
+    protected OWLDataProperty topDataProperty = df.getOWLTopDataProperty();
+    @Nonnull
+    protected OWLObjectProperty topObjectProperty = df.getOWLTopObjectProperty();
+    @Nonnull
+    protected OWLObjectProperty bottomObjectProperty = df.getOWLBottomObjectProperty();
+    @Nonnull
+    protected OWLClass owlThing = df.getOWLThing();
+    @Nonnull
+    protected OWLClass owlNothing = df.getOWLNothing();
     protected JFactReasonerConfiguration config = new JFactReasonerConfiguration();
 
     protected void enableLogging() {

@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.jfact.kernel;
 
+import static uk.ac.manchester.cs.jfact.helpers.Assertions.verifyNotNull;
+
 import java.io.Serializable;
 
 import javax.annotation.Nullable;
@@ -21,19 +23,24 @@ import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.NamedEntity;
 public abstract class NamedEntry implements HasIRI, Serializable {
 
     /** name of the entry */
-    @PortedFrom(file = "tNamedEntry.h", name = "extName") protected final IRI extName;
+    @PortedFrom(file = "tNamedEntry.h", name = "extName")
+    protected final IRI extName;
     /** entry identifier */
-    @PortedFrom(file = "tNamedEntry.h", name = "extId") protected int extId;
-    @PortedFrom(file = "tNamedEntry.h", name = "entity") protected NamedEntity entity = null;
-    @Original private boolean system;
-    @Original private boolean top = false;
-    @Original private boolean bottom;
+    @PortedFrom(file = "tNamedEntry.h", name = "extId")
+    protected int extId;
+    @PortedFrom(file = "tNamedEntry.h", name = "entity")
+    protected NamedEntity entity = null;
+    @Original
+    private boolean system;
+    @Original
+    private boolean top = false;
+    @Original
+    private boolean bottom;
 
     /**
-     * @param name
-     *        entry IRI
+     * @param name entry IRI
      */
-    public NamedEntry(IRI name) {
+    protected NamedEntry(IRI name) {
         assert name != null;
         extName = name;
         extId = 0;
@@ -74,8 +81,7 @@ public abstract class NamedEntry implements HasIRI, Serializable {
     /**
      * set internal ID
      * 
-     * @param id
-     *        id
+     * @param id id
      */
     @PortedFrom(file = "tNamedEntry.h", name = "setId")
     public void setId(int id) {
@@ -131,15 +137,18 @@ public abstract class NamedEntry implements HasIRI, Serializable {
     }
 
     /** @return entity */
-    @Nullable
     @PortedFrom(file = "tNamedEntry.h", name = "getEntity")
     public NamedEntity getEntity() {
-        return entity;
+        return verifyNotNull(entity);
+    }
+
+    /** @return true if entity exists */
+    public boolean hasEntity() {
+        return entity != null;
     }
 
     /**
-     * @param entity
-     *        entity
+     * @param entity entity
      */
     @PortedFrom(file = "tNamedEntry.h", name = "setEntity")
     public void setEntity(NamedEntity entity) {
@@ -147,8 +156,7 @@ public abstract class NamedEntry implements HasIRI, Serializable {
     }
 
     /**
-     * @param i
-     *        i
+     * @param i i
      */
     @PortedFrom(file = "taxNamEntry.h", name = "setIndex")
     public abstract void setIndex(int i);

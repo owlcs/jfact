@@ -20,21 +20,25 @@ import conformance.PortedFrom;
 public class ClassifiableEntry extends NamedEntry {
 
     /** link to taxonomy entry for current entry */
-    @PortedFrom(file = "taxNamEntry.h", name = "taxVertex") protected TaxonomyVertex taxVertex = null;
+    @PortedFrom(file = "taxNamEntry.h", name = "taxVertex")
+    protected TaxonomyVertex taxVertex = null;
     /**
-     * links to 'told subsumers' (entries that are direct super-entries for
-     * current)
+     * links to 'told subsumers' (entries that are direct super-entries for current)
      */
-    @PortedFrom(file = "taxNamEntry.h", name = "toldSubsumers") protected List<ClassifiableEntry> toldSubsumers = null;
+    @PortedFrom(file = "taxNamEntry.h", name = "toldSubsumers")
+    protected List<ClassifiableEntry> toldSubsumers = null;
     /**
-     * pointer to synonym (entry which contains whole information the same as
-     * current)
+     * pointer to synonym (entry which contains whole information the same as current)
      */
-    @PortedFrom(file = "taxNamEntry.h", name = "pSynonym") protected ClassifiableEntry pSynonym = null;
+    @PortedFrom(file = "taxNamEntry.h", name = "pSynonym")
+    protected ClassifiableEntry pSynonym = null;
     /** index as a vertex in the SubsumptionMap */
-    @PortedFrom(file = "taxNamEntry.h", name = "Index") protected int index = 0;
-    @Original private boolean completelyDefined;
-    @Original private boolean nonClassifiable;
+    @PortedFrom(file = "taxNamEntry.h", name = "Index")
+    protected int index = 0;
+    @Original
+    private boolean completelyDefined;
+    @Original
+    private boolean nonClassifiable;
 
     protected ClassifiableEntry(IRI name) {
         super(name);
@@ -51,8 +55,7 @@ public class ClassifiableEntry extends NamedEntry {
     /**
      * set up given entry
      * 
-     * @param vertex
-     *        vertex
+     * @param vertex vertex
      */
     @PortedFrom(file = "taxNamEntry.h", name = "setTaxVertex")
     public void setTaxVertex(TaxonomyVertex vertex) {
@@ -78,8 +81,7 @@ public class ClassifiableEntry extends NamedEntry {
     }
 
     /**
-     * @param action
-     *        action
+     * @param action action
      */
     @Original
     public void setCompletelyDefined(boolean action) {
@@ -95,8 +97,7 @@ public class ClassifiableEntry extends NamedEntry {
     }
 
     /**
-     * @param action
-     *        action
+     * @param action action
      */
     @Original
     public void setNonClassifiable(boolean action) {
@@ -113,7 +114,7 @@ public class ClassifiableEntry extends NamedEntry {
     }
 
     /**
-     * @return whether entry ihas any TS
+     * @return whether entry has any TS
      */
     @PortedFrom(file = "taxNamEntry.h", name = "hasToldSubsumers")
     public boolean hasToldSubsumers() {
@@ -121,10 +122,16 @@ public class ClassifiableEntry extends NamedEntry {
     }
 
     /**
+     * @return whether entry has no TS
+     */
+    public boolean hasNoToldSubsumers() {
+        return !hasToldSubsumers();
+    }
+
+    /**
      * add told subsumer of entry (duplications possible)
      * 
-     * @param parent
-     *        parent
+     * @param parent parent
      */
     @PortedFrom(file = "taxNamEntry.h", name = "addParent")
     public void addParent(ClassifiableEntry parent) {
@@ -147,8 +154,7 @@ public class ClassifiableEntry extends NamedEntry {
     /**
      * add all parents (with duplicates) from the range to current node
      * 
-     * @param entries
-     *        entries
+     * @param entries entries
      */
     @PortedFrom(file = "taxNamEntry.h", name = "addParents")
     public void addParents(@Nullable Collection<ClassifiableEntry> entries) {
@@ -182,6 +188,13 @@ public class ClassifiableEntry extends NamedEntry {
     }
 
     /**
+     * @return if current entry is a not a synonym
+     */
+    public boolean isNotSynonym() {
+        return !isSynonym();
+    }
+
+    /**
      * @return synonym of current entry
      */
     @PortedFrom(file = "taxNamEntry.h", name = "getSynonym")
@@ -199,11 +212,14 @@ public class ClassifiableEntry extends NamedEntry {
     /**
      * add entry's synonym
      * 
-     * @param syn
-     *        syn
+     * @param syn syn
      */
     @PortedFrom(file = "taxNamEntry.h", name = "setSynonym")
     public void setSynonym(@Nullable ClassifiableEntry syn) {
+        if (syn == null) {
+            pSynonym = syn;
+            return;
+        }
         // do it only once
         assert pSynonym == null;
         // XXX check this code
@@ -214,8 +230,7 @@ public class ClassifiableEntry extends NamedEntry {
         Set<ClassifiableEntry> set = new HashSet<>();
         set.add(this);
         ClassifiableEntry runner = syn;
-        while (runner.isSynonym() && !set.contains(runner.pSynonym)) {
-            set.add(runner.pSynonym);
+        while (runner.isSynonym() && set.add(runner.pSynonym)) {
             runner = runner.pSynonym;
         }
         if (!set.contains(runner.pSynonym)) {
@@ -229,8 +244,8 @@ public class ClassifiableEntry extends NamedEntry {
     @PortedFrom(file = "taxNamEntry.h", name = "removeSynonymsFromParents")
     public void removeSynonymsFromParents() {
         if (hasToldSubsumers()) {
-            List<ClassifiableEntry> toKeep = asList(toldSubsumers.stream().map(ClassifiableEntry::resolveSynonym)
-                .filter(p -> this != p).distinct());
+            List<ClassifiableEntry> toKeep = asList(toldSubsumers.stream()
+                .map(ClassifiableEntry::resolveSynonym).filter(p -> this != p).distinct());
             toldSubsumers.clear();
             toldSubsumers.addAll(toKeep);
             if (toldSubsumers.isEmpty()) {
@@ -240,10 +255,8 @@ public class ClassifiableEntry extends NamedEntry {
     }
 
     /**
-     * @param p
-     *        p
-     * @param <T>
-     *        expression type
+     * @param p p
+     * @param <T> expression type
      * @return resolved synonym
      */
     @SuppressWarnings("unchecked")
@@ -256,8 +269,7 @@ public class ClassifiableEntry extends NamedEntry {
     }
 
     /**
-     * @param parent
-     *        parent
+     * @param parent parent
      */
     @PortedFrom(file = "taxNamEntry.h", name = "addParentIfNew")
     public void addParentIfNew(ClassifiableEntry parent) {
