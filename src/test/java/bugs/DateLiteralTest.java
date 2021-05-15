@@ -1,10 +1,10 @@
 package bugs;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -17,9 +17,9 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 import uk.ac.manchester.cs.jfact.JFactFactory;
 
-public class DateLiteralTest {
+class DateLiteralTest {
     @Test
-    public void shouldTruncateToMillisecondsButAccebtArbitraryPrecision()
+    void shouldTruncateToMillisecondsButAccebtArbitraryPrecision()
         throws OWLOntologyCreationException {
         String s = "Prefix(:=<http://www.ubbc.co.uk/ontologies/hermitBug#>)\n"
             + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"

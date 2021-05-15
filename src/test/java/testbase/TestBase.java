@@ -5,8 +5,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -53,13 +53,13 @@ public class TestBase {
         }
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void setupManagers() {
         masterManager = OWLManager.createOWLOntologyManager();
         df = masterManager.getOWLDataFactory();
     }
 
-    @Before
+    @BeforeEach
     public void setupManagersClean() {
         m = setupManager();
     }

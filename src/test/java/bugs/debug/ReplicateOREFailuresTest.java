@@ -1,13 +1,13 @@
 package bugs.debug;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.Timeout;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
@@ -15,119 +15,119 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import testbase.TestBase;
 import uk.ac.manchester.cs.jfact.JFactFactory;
 
-@Ignore
-@SuppressWarnings("javadoc")
-public class ReplicateOREFailuresTest extends TestBase {
+@Disabled
+@Timeout(value = 180, unit = TimeUnit.SECONDS)
+class ReplicateOREFailuresTest extends TestBase {
 
     private static final String POOL_SAMPLE = "/Users/ignazio/workspace/pool_sample/files/";
 
     @Test
-    public void shouldore_ont_1270() {
+    void shouldore_ont_1270() {
         assertTrue(consistent(POOL_SAMPLE + "ore_ont_1270.owl"));
     }
 
     @Test
-    public void shouldore_ont_9151() {
+    void shouldore_ont_9151() {
         assertTrue(consistent(POOL_SAMPLE + "ore_ont_9151.owl"));
     }
 
     @Test
-    public void shouldore_ont_9654() {
+    void shouldore_ont_9654() {
         assertTrue(consistent(POOL_SAMPLE + "ore_ont_9654.owl"));
     }
 
     @Test
-    public void shouldore_ont_7729() {
+    void shouldore_ont_7729() {
         assertTrue(consistent(POOL_SAMPLE + "ore_ont_7729.owl"));
     }
 
     @Test
-    public void shouldore_ont_7192() {
+    void shouldore_ont_7192() {
         assertTrue(consistent(POOL_SAMPLE + "ore_ont_7192.owl"));
     }
 
     @Test
-    public void shouldore_ont_9899() {
+    void shouldore_ont_9899() {
         assertTrue(consistent(POOL_SAMPLE + "ore_ont_9899.owl"));
     }
 
     @Test
-    public void shouldore_ont_3282() {
+    void shouldore_ont_3282() {
         assertTrue(consistent(POOL_SAMPLE + "ore_ont_3282.owl"));
     }
 
     @Test
-    public void shouldore_ont_7646() {
+    void shouldore_ont_7646() {
         assertTrue(consistent(POOL_SAMPLE + "ore_ont_7646.owl"));
     }
 
     @Test
-    public void shouldore_ont_1199() {
+    void shouldore_ont_1199() {
         assertTrue(consistent(POOL_SAMPLE + "ore_ont_1199.owl"));
     }
 
     @Test
-    public void shouldore_ont_7557() {
+    void shouldore_ont_7557() {
         assertTrue(consistent(POOL_SAMPLE + "ore_ont_7557.owl"));
     }
 
     @Test
-    public void shouldore_ont_1938() {
+    void shouldore_ont_1938() {
         assertTrue(consistent(POOL_SAMPLE + "ore_ont_1938.owl"));
     }
 
     @Test
-    public void shouldore_ont_6132() {
+    void shouldore_ont_6132() {
         assertTrue(consistent(POOL_SAMPLE + "ore_ont_6132.owl"));
     }
 
     @Test
-    public void shouldore_ont_3087() {
+    void shouldore_ont_3087() {
         assertTrue(consistent(POOL_SAMPLE + "ore_ont_3087.owl"));
     }
 
     @Test
-    public void shouldore_ont_1673() {
+    void shouldore_ont_1673() {
         assertTrue(consistent(POOL_SAMPLE + "ore_ont_1673.owl"));
     }
 
     @Test
-    public void shouldore_ont_4911() {
+    void shouldore_ont_4911() {
         assertTrue(consistent(POOL_SAMPLE + "ore_ont_4911.owl"));
     }
 
     @Test
-    public void shouldore_ont_15226() {
+    void shouldore_ont_15226() {
         assertTrue(consistent(POOL_SAMPLE + "ore_ont_15226.owl"));
     }
 
     @Test
-    public void shouldore_ont_10006() {
+    void shouldore_ont_10006() {
         assertTrue(consistent(POOL_SAMPLE + "ore_ont_10006.owl"));
     }
 
     @Test
-    public void shouldore_ont_13928() {
+    void shouldore_ont_13928() {
         assertTrue(consistent(POOL_SAMPLE + "ore_ont_13928.owl"));
     }
 
     @Test
-    public void shouldore_ont_13647() {
+    void shouldore_ont_13647() {
         assertTrue(consistent(POOL_SAMPLE + "ore_ont_13647.owl"));
     }
 
     @Test
-    public void shouldore_ont_10838() {
+    void shouldore_ont_10838() {
         assertTrue(consistent(POOL_SAMPLE + "ore_ont_10838.owl"));
     }
 
     @Test
-    public void shouldore_ont_11378() {
+    void shouldore_ont_11378() {
         assertTrue(consistent(POOL_SAMPLE + "ore_ont_11378.owl"));
     }
 
     @Test
-    public void shouldore_ont_16315() {
+    void shouldore_ont_16315() {
         assertTrue(consistent(POOL_SAMPLE + "ore_ont_16315.owl"));
     }
 
@@ -135,7 +135,6 @@ public class ReplicateOREFailuresTest extends TestBase {
         return new JFactFactory();
     }
 
-    @Rule public Timeout timeout = new Timeout(180000);
 
     private boolean consistent(String filename) {
         try {

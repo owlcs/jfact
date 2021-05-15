@@ -1,7 +1,7 @@
 package bugs;
 
 import static java.util.stream.Collectors.joining;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormat;
 import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
@@ -105,8 +105,8 @@ public abstract class VerifyComplianceBase extends TestBase {
         config = config.setAbsorptionLoggingActive(true).setLoggingActive(true);
     }
 
-    @Before
-    public void setUp() throws OWLOntologyCreationException {
+    @BeforeEach
+    void setUp() throws OWLOntologyCreationException {
         reasoner = (JFactReasoner) factory().createReasoner(load(input()), config);
         reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
     }

@@ -1,10 +1,21 @@
 package bugs;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.io.StringDocumentSource;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataSomeValuesFrom;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLDatatypeRestriction;
+import org.semanticweb.owlapi.model.OWLFacetRestriction;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
@@ -13,11 +24,10 @@ import org.semanticweb.owlapi.vocab.OWLFacet;
 
 import testbase.TestBase;
 
-@SuppressWarnings("javadoc")
-public class AddIndividualsAfterLoadingTestCase extends TestBase {
+class AddIndividualsAfterLoadingTestCase extends TestBase {
 
     @Test
-    public void shouldLoadAndNotFailQuery() throws Exception {
+    void shouldLoadAndNotFailQuery() throws Exception {
         // given
         OWLOntology o = m.createOntology();
         OWLClass c1 = df.getOWLClass(IRI.create("urn:test#c1"));
@@ -40,7 +50,8 @@ public class AddIndividualsAfterLoadingTestCase extends TestBase {
         m.addAxiom(o, df.getOWLObjectPropertyAssertionAxiom(p, k, l));
         OWLDataProperty dt = df.getOWLDataProperty(IRI.create("urn:test#dt"));
         m.addAxiom(o, df.getOWLDeclarationAxiom(dt));
-        m.addAxiom(o, df.getOWLDataPropertyRangeAxiom(dt, df.getOWLDatatype(OWL2Datatype.XSD_STRING.getIRI())));
+        m.addAxiom(o, df.getOWLDataPropertyRangeAxiom(dt,
+            df.getOWLDatatype(OWL2Datatype.XSD_STRING.getIRI())));
         m.addAxiom(o, df.getOWLDataPropertyAssertionAxiom(dt, l, df.getOWLLiteral("test")));
         r.flush();
         r.precomputeInferences(InferenceType.CLASS_HIERARCHY);
@@ -48,7 +59,7 @@ public class AddIndividualsAfterLoadingTestCase extends TestBase {
     }
 
     @Test
-    public void shouldLoadAndNotFailQueryDataHasValue() throws Exception {
+    void shouldLoadAndNotFailQueryDataHasValue() throws Exception {
         OWLOntology o = m.createOntology();
         OWLDataProperty p = df.getOWLDataProperty("urn:test#p");
         OWLDatatype floatType = df.getFloatOWLDatatype();
@@ -59,21 +70,26 @@ public class AddIndividualsAfterLoadingTestCase extends TestBase {
         OWLReasoner r = factory().createReasoner(o);
         r.precomputeInferences(InferenceType.CLASS_HIERARCHY);
         OWLDatatypeRestriction lessThan20 = df.getOWLDatatypeRestriction(floatType, fLess20);
-        NodeSet<OWLNamedIndividual> instances = r.getInstances(df.getOWLDataAllValuesFrom(p, lessThan20), false);
+        NodeSet<OWLNamedIndividual> instances =
+            r.getInstances(df.getOWLDataAllValuesFrom(p, lessThan20), false);
         assertTrue(instances.containsEntity(i));
     }
 
     @Test
-    public void debug() throws OWLOntologyCreationException {
+    void debug() throws OWLOntologyCreationException {
         String input = "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
             + "Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\n"
             + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
             + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
-            + "Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)\n" + "\n" + "\n" + "Ontology(<urn:test>\n" + "\n"
-            + "Declaration(Class(<urn:test#Producto>))\n" + "Declaration(Class(<urn:test#lessThan20>))\n"
-            + "Declaration(DataProperty(<urn:test#hasEnergia>))\n" + "Declaration(NamedIndividual(<urn:test#prod1>))\n"
-            + "Declaration(NamedIndividual(<urn:test#prod2>))\n" + "Declaration(NamedIndividual(<urn:test#prod3>))\n"
-            + "Declaration(NamedIndividual(<urn:test#prod4>))\n" + "Declaration(NamedIndividual(<urn:test#prod5>))\n"
+            + "Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)\n" + "\n" + "\n"
+            + "Ontology(<urn:test>\n" + "\n" + "Declaration(Class(<urn:test#Producto>))\n"
+            + "Declaration(Class(<urn:test#lessThan20>))\n"
+            + "Declaration(DataProperty(<urn:test#hasEnergia>))\n"
+            + "Declaration(NamedIndividual(<urn:test#prod1>))\n"
+            + "Declaration(NamedIndividual(<urn:test#prod2>))\n"
+            + "Declaration(NamedIndividual(<urn:test#prod3>))\n"
+            + "Declaration(NamedIndividual(<urn:test#prod4>))\n"
+            + "Declaration(NamedIndividual(<urn:test#prod5>))\n"
             + "EquivalentClasses(<urn:test#lessThan20> ObjectIntersectionOf(DataSomeValuesFrom(<urn:test#hasEnergia> DatatypeRestriction(xsd:float xsd:maxExclusive \"20.0\"^^xsd:float)) <urn:test#Producto>))\n"
             + "SubClassOf(<urn:test#lessThan20> <urn:test#Producto>)\n"
             + "FunctionalDataProperty(<urn:test#hasEnergia>)\n"
@@ -91,7 +107,8 @@ public class AddIndividualsAfterLoadingTestCase extends TestBase {
         OWLNamedIndividual i = df.getOWLNamedIndividual(IRI.create("urn:test#prod4"));
         OWLDatatype fdt = df.getFloatOWLDatatype();
         OWLFacetRestriction fLess20 = df.getOWLFacetRestriction(OWLFacet.MAX_INCLUSIVE, 20f);
-        OWLDataSomeValuesFrom dsv = df.getOWLDataSomeValuesFrom(p, df.getOWLDatatypeRestriction(fdt, fLess20));
+        OWLDataSomeValuesFrom dsv =
+            df.getOWLDataSomeValuesFrom(p, df.getOWLDatatypeRestriction(fdt, fLess20));
         NodeSet<OWLNamedIndividual> instances = r.getInstances(dsv, false);
         assertTrue(instances.containsEntity(i));
     }

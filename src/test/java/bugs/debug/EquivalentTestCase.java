@@ -1,11 +1,20 @@
 package bugs.debug;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.semanticweb.owlapi.model.*;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataSomeValuesFrom;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
@@ -18,11 +27,10 @@ import testbase.TestBase;
 import uk.ac.manchester.cs.jfact.JFactFactory;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
-@SuppressWarnings("javadoc")
-public class EquivalentTestCase extends TestBase {
+class EquivalentTestCase extends TestBase {
 
     @Test
-    public void shouldFildEquivalentToThingNotEmpty() throws OWLOntologyCreationException {
+    void shouldFildEquivalentToThingNotEmpty() throws OWLOntologyCreationException {
         OWLOntology o = m.createOntology();
         OWLClass t = df.getOWLClass("urn:test:t");
         o.add(df.getOWLSubClassOfAxiom(t, df.getOWLThing()));
@@ -35,23 +43,25 @@ public class EquivalentTestCase extends TestBase {
     }
 
     @Test
-    public void shouldGetRightSubsumption() throws OWLOntologyCreationException {
+    void shouldGetRightSubsumption() throws OWLOntologyCreationException {
         OWLOntology ont = m.createOntology();
         OWLDataProperty p = df.getOWLDataProperty(IRI.create("http://example.com/p"));
         OWLDatatype integer = df.getIntegerOWLDatatype();
         ont.add(df.getOWLDeclarationAxiom(p));
         OWLReasoner r = new JFactFactory().createNonBufferingReasoner(ont);
-        OWLDataSomeValuesFrom restr2 = df.getOWLDataSomeValuesFrom(p,
-            df.getOWLDatatypeRestriction(integer, df.getOWLFacetRestriction(OWLFacet.MIN_INCLUSIVE, 2)));
-        OWLDataSomeValuesFrom restr4 = df.getOWLDataSomeValuesFrom(p,
-            df.getOWLDatatypeRestriction(integer, df.getOWLFacetRestriction(OWLFacet.MIN_INCLUSIVE, 4)));
+        OWLDataSomeValuesFrom restr2 =
+            df.getOWLDataSomeValuesFrom(p, df.getOWLDatatypeRestriction(integer,
+                df.getOWLFacetRestriction(OWLFacet.MIN_INCLUSIVE, 2)));
+        OWLDataSomeValuesFrom restr4 =
+            df.getOWLDataSomeValuesFrom(p, df.getOWLDatatypeRestriction(integer,
+                df.getOWLFacetRestriction(OWLFacet.MIN_INCLUSIVE, 4)));
         assertTrue(r.isEntailed(df.getOWLSubClassOfAxiom(restr4, restr2)));
         assertTrue(r.isSatisfiable(restr2));
     }
 
     @Test
-    @Ignore("bug: this needs fixing")
-    public void shouldCorrectlyPlaceEnum() throws OWLOntologyCreationException {
+    @Disabled("bug: this needs fixing")
+    void shouldCorrectlyPlaceEnum() throws OWLOntologyCreationException {
         OWLOntology ont = m.createOntology();
         OWLClass ca = df.getOWLClass("urn:test:ca");
         OWLClass ca1 = df.getOWLClass("urn:test:ca1");
@@ -69,7 +79,8 @@ public class EquivalentTestCase extends TestBase {
         ont.add(df.getOWLSubClassOfAxiom(ca1, ca));
         ont.add(df.getOWLSubObjectPropertyOfAxiom(ob1, ob));
         ont.add(df.getOWLSubClassOfAxiom(ca, df.getOWLObjectSomeValuesFrom(oa, cb)));
-        ont.add(df.getOWLSubClassOfAxiom(ca, df.getOWLDataSomeValuesFrom(da, df.getIntegerOWLDatatype())));
+        ont.add(df.getOWLSubClassOfAxiom(ca,
+            df.getOWLDataSomeValuesFrom(da, df.getIntegerOWLDatatype())));
         ont.add(df.getOWLEquivalentClassesAxiom(cd, df.getOWLObjectSomeValuesFrom(oa, cb)));
         ont.add(df.getOWLSubClassOfAxiom(cd, df.getOWLObjectSomeValuesFrom(oa, ce)));
         ont.add(df.getOWLSubClassOfAxiom(ca, df.getOWLObjectSomeValuesFrom(oa, cb1)));
@@ -77,9 +88,11 @@ public class EquivalentTestCase extends TestBase {
         ont.add(df.getOWLSubClassOfAxiom(cc1, cc));
         OWLReasoner r = new JFactFactory().createNonBufferingReasoner(ont,
             new JFactReasonerConfiguration().setLoggingActive(true));
-        OWLDataSomeValuesFrom someInt = df.getOWLDataSomeValuesFrom(da, OWL2Datatype.XSD_INTEGER.getDatatype(df));
-        OWLDataSomeValuesFrom intTo2 = df.getOWLDataSomeValuesFrom(da, df.getOWLDatatypeRestriction(
-            OWL2Datatype.XSD_INTEGER.getDatatype(df), df.getOWLFacetRestriction(OWLFacet.MIN_INCLUSIVE, 2)));
+        OWLDataSomeValuesFrom someInt =
+            df.getOWLDataSomeValuesFrom(da, OWL2Datatype.XSD_INTEGER.getDatatype(df));
+        OWLDataSomeValuesFrom intTo2 = df.getOWLDataSomeValuesFrom(da,
+            df.getOWLDatatypeRestriction(OWL2Datatype.XSD_INTEGER.getDatatype(df),
+                df.getOWLFacetRestriction(OWLFacet.MIN_INCLUSIVE, 2)));
         // assertTrue(r.isEntailed(df.getOWLSubClassOfAxiom(intTo2, someInt)));
         assertFalse(r.isEntailed(df.getOWLSubClassOfAxiom(someInt, intTo2)));
     }

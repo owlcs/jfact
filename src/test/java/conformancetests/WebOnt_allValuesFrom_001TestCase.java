@@ -5,15 +5,14 @@ package conformancetests;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import testbase.TestBase;
 
-@SuppressWarnings("javadoc")
-public class WebOnt_allValuesFrom_001TestCase extends TestBase {
+class WebOnt_allValuesFrom_001TestCase extends TestBase {
 
     @Test
-    public void testWebOnt_miscellaneous_203() {
+    void testWebOnt_miscellaneous_203() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:first=\"http://www.w3.org/2002/03owlt/miscellaneous/inconsistent203#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/miscellaneous/inconsistent203\" >\n"
@@ -31,7 +30,7 @@ public class WebOnt_allValuesFrom_001TestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_miscellaneous_202() {
+    void testWebOnt_miscellaneous_202() {
         premise =
             // "<rdf:RDF\n"
             // + " xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
@@ -80,7 +79,7 @@ public class WebOnt_allValuesFrom_001TestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_miscellaneous_204() {
+    void testWebOnt_miscellaneous_204() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:first=\"http://www.w3.org/2002/03owlt/miscellaneous/inconsistent204#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/miscellaneous/inconsistent204\" ><owl:Ontology/>"
@@ -93,7 +92,7 @@ public class WebOnt_allValuesFrom_001TestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_allValuesFrom_001() {
+    void testWebOnt_allValuesFrom_001() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/allValuesFrom/premises001#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/allValuesFrom/premises001\" >\n"
@@ -110,7 +109,7 @@ public class WebOnt_allValuesFrom_001TestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_allValuesFrom_002() {
+    void testWebOnt_allValuesFrom_002() {
         premise = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
             + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
             + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
@@ -140,7 +139,7 @@ public class WebOnt_allValuesFrom_001TestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I4_6_004() {
+    void testWebOnt_I4_6_004() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I4.6/premises004\" >\n"
@@ -159,7 +158,7 @@ public class WebOnt_allValuesFrom_001TestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I5_21_002() {
+    void testWebOnt_I5_21_002() {
         conclusion =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.21/conclusions002\" >\n" + '\n'
@@ -249,7 +248,7 @@ public class WebOnt_allValuesFrom_001TestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I5_8_006() {
+    void testWebOnt_I5_8_006() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/I5.8/premises006#\" xmlns:second=\"http://www.w3.org/2002/03owlt/I5.8/conclusions006#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.8/premises006\" >\n"

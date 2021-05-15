@@ -1,25 +1,32 @@
 package bugs;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
 import java.util.HashSet;
 
 import javax.annotation.Nonnull;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.io.StringDocumentSource;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
-@SuppressWarnings("javadoc")
-public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBase {
+class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBase {
 
-    @Nonnull String in = "Prefix(:=<http://www.w3.org/2002/07/owl#>)\n"
+    @Nonnull
+    String in = "Prefix(:=<http://www.w3.org/2002/07/owl#>)\n"
         + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
         + "Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\n"
-        + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n" + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
+        + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
+        + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
         + "Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)\n" + "\n" + "\n" + "Ontology(\n"
         + "Declaration(Class(<urn:process#Any-Order>))\nDeclaration(Class(<urn:process#AtomicProcess>))\nDeclaration(Class(<urn:process#Binding>))\nDeclaration(Class(<urn:process#Choice>))\nDeclaration(Class(<urn:process#CompositeProcess>))\nDeclaration(Class(<urn:process#ConditionalEffect>))\nDeclaration(Class(<urn:process#ConditionalOutput>))\nDeclaration(Class(<urn:process#ControlConstruct>))\nDeclaration(Class(<urn:process#ControlConstructBag>))\nDeclaration(Class(<urn:process#ControlConstructList>))\nDeclaration(Class(<urn:process#If-Then-Else>))\nDeclaration(Class(<urn:process#Input>))\nDeclaration(Class(<urn:process#InputBinding>))\nDeclaration(Class(<urn:process#Iterate>))\nDeclaration(Class(<urn:process#Local>))\nDeclaration(Class(<urn:process#Output>))\nDeclaration(Class(<urn:process#OutputBinding>))\nDeclaration(Class(<urn:process#Parameter>))\nDeclaration(Class(<urn:process#Participant>))\nDeclaration(Class(<urn:process#Perform>))\nDeclaration(Class(<urn:process#Process>))\nDeclaration(Class(<urn:process#ProcessComponent>))\nDeclaration(Class(<urn:process#Produce>))\nDeclaration(Class(<urn:process#Repeat-Until>))\nDeclaration(Class(<urn:process#Repeat-While>))\nDeclaration(Class(<urn:process#Result>))\nDeclaration(Class(<urn:process#ResultVar>))\nDeclaration(Class(<urn:process#Sequence>))\nDeclaration(Class(<urn:process#SimpleProcess>))\nDeclaration(Class(<urn:process#Split>))\nDeclaration(Class(<urn:process#Split-Join>))\nDeclaration(Class(<urn:process#Unordered>))\nDeclaration(Class(<urn:process#ValueOf>))\nDeclaration(Class(<urn:profile#Profile>))\nDeclaration(Class(<urn:profile#ServiceCategory>))\nDeclaration(Class(<urn:profile#ServiceParameter>))\nDeclaration(Class(<urn:Service.owl#Service>))\nDeclaration(Class(<urn:Service.owl#ServiceGrounding>))\nDeclaration(Class(<urn:Service.owl#ServiceModel>))\nDeclaration(Class(<urn:Service.owl#ServiceProfile>))\nDeclaration(Class(<urn:expr#Condition>))\nDeclaration(Class(<urn:expr#DRS-Condition>))\nDeclaration(Class(<urn:expr#DRS-Expression>))\nDeclaration(Class(<urn:expr#Expression>))\nDeclaration(Class(<urn:expr#KIF-Condition>))\nDeclaration(Class(<urn:expr#KIF-Expression>))\nDeclaration(Class(<urn:expr#LogicLanguage>))\nDeclaration(Class(<urn:expr#SWRL-Condition>))\nDeclaration(Class(<urn:expr#SWRL-Expression>))\nDeclaration(Class(<urn:generic/ObjectList.owl#List>))\nDeclaration(Class(<urn:timeentry#IntervalThing>))\nDeclaration(Class(<http://www.w3.org/2003/11/swrl#AtomList>))\nDeclaration(Class(<http://www.w3.org/2003/11/swrl#Variable>))\nDeclaration(ObjectProperty(<urn:process#collapse>))\nDeclaration(ObjectProperty(<urn:process#collapsesTo>))\nDeclaration(ObjectProperty(<urn:process#components>))\nDeclaration(ObjectProperty(<urn:process#composedOf>))\nDeclaration(ObjectProperty(<urn:process#computedEffect>))\nDeclaration(ObjectProperty(<urn:process#computedInput>))\nDeclaration(ObjectProperty(<urn:process#computedOutput>))\nDeclaration(ObjectProperty(<urn:process#computedPrecondition>))\nDeclaration(ObjectProperty(<urn:process#else>))\nDeclaration(ObjectProperty(<urn:process#expand>))\nDeclaration(ObjectProperty(<urn:process#expandsTo>))\nDeclaration(ObjectProperty(<urn:process#fromProcess>))\nDeclaration(ObjectProperty(<urn:process#hasClient>))\nDeclaration(ObjectProperty(<urn:process#hasDataFrom>))\nDeclaration(ObjectProperty(<urn:process#hasEffect>))\nDeclaration(ObjectProperty(<urn:process#hasInput>))\nDeclaration(ObjectProperty(<urn:process#hasLocal>))\nDeclaration(ObjectProperty(<urn:process#hasOutput>))\nDeclaration(ObjectProperty(<urn:process#hasParameter>))\nDeclaration(ObjectProperty(<urn:process#hasParticipant>))\nDeclaration(ObjectProperty(<urn:process#hasPrecondition>))\nDeclaration(ObjectProperty(<urn:process#hasResult>))\nDeclaration(ObjectProperty(<urn:process#hasResultVar>))\nDeclaration(ObjectProperty(<urn:process#ifCondition>))\nDeclaration(ObjectProperty(<urn:process#inCondition>))\nDeclaration(ObjectProperty(<urn:process#performedBy>))\nDeclaration(ObjectProperty(<urn:process#process>))\nDeclaration(ObjectProperty(<urn:process#producedBinding>))\nDeclaration(ObjectProperty(<urn:process#realizedBy>))\nDeclaration(ObjectProperty(<urn:process#realizes>))\nDeclaration(ObjectProperty(<urn:process#theVar>))\nDeclaration(ObjectProperty(<urn:process#then>))\nDeclaration(ObjectProperty(<urn:process#timeout>))\nDeclaration(ObjectProperty(<urn:process#toParam>))\nDeclaration(ObjectProperty(<urn:process#untilCondition>))\nDeclaration(ObjectProperty(<urn:process#untilProcess>))\nDeclaration(ObjectProperty(<urn:process#valueSource>))\nDeclaration(ObjectProperty(<urn:process#whileCondition>))\nDeclaration(ObjectProperty(<urn:process#whileProcess>))\nDeclaration(ObjectProperty(<urn:process#withOutput>))\nDeclaration(ObjectProperty(<urn:profile#contactInformation>))\nDeclaration(ObjectProperty(<urn:profile#hasInput>))\nDeclaration(ObjectProperty(<urn:profile#hasOutput>))\nDeclaration(ObjectProperty(<urn:profile#hasParameter>))\nDeclaration(ObjectProperty(<urn:profile#hasPrecondition>))\nDeclaration(ObjectProperty(<urn:profile#hasResult>))\nDeclaration(ObjectProperty(<urn:profile#has_process>))\nDeclaration(ObjectProperty(<urn:profile#sParameter>))\nDeclaration(ObjectProperty(<urn:profile#serviceCategory>))\nDeclaration(ObjectProperty(<urn:profile#serviceParameter>))\nDeclaration(ObjectProperty(<urn:Service.owl#describedBy>))\nDeclaration(ObjectProperty(<urn:Service.owl#describes>))\nDeclaration(ObjectProperty(<urn:Service.owl#isDescribedBy>))\nDeclaration(ObjectProperty(<urn:Service.owl#isPresentedBy>))\nDeclaration(ObjectProperty(<urn:Service.owl#isSupportedBy>))\nDeclaration(ObjectProperty(<urn:Service.owl#presentedBy>))\nDeclaration(ObjectProperty(<urn:Service.owl#presents>))\nDeclaration(ObjectProperty(<urn:Service.owl#providedBy>))\nDeclaration(ObjectProperty(<urn:Service.owl#provides>))\nDeclaration(ObjectProperty(<urn:Service.owl#supportedBy>))\nDeclaration(ObjectProperty(<urn:Service.owl#supports>))\nDeclaration(ObjectProperty(<urn:expr#expressionLanguage>))\nDeclaration(ObjectProperty(<urn:generic/ObjectList.owl#first>))\nDeclaration(ObjectProperty(<urn:generic/ObjectList.owl#rest>))\nDeclaration(DataProperty(<urn:process#invocable>))\nDeclaration(DataProperty(<urn:process#name>))\nDeclaration(DataProperty(<urn:process#parameterType>))\nDeclaration(DataProperty(<urn:process#parameterValue>))\nDeclaration(DataProperty(<urn:process#valueData>))\nDeclaration(DataProperty(<urn:process#valueForm>))\nDeclaration(DataProperty(<urn:process#valueFunction>))\nDeclaration(DataProperty(<urn:process#valueSpecifier>))\nDeclaration(DataProperty(<urn:process#valueType>))\nDeclaration(DataProperty(<urn:profile#categoryName>))\nDeclaration(DataProperty(<urn:profile#code>))\nDeclaration(DataProperty(<urn:profile#serviceClassification>))\nDeclaration(DataProperty(<urn:profile#serviceName>))\nDeclaration(DataProperty(<urn:profile#serviceParameterName>))\nDeclaration(DataProperty(<urn:profile#serviceProduct>))\nDeclaration(DataProperty(<urn:profile#taxonomy>))\nDeclaration(DataProperty(<urn:profile#textDescription>))\nDeclaration(DataProperty(<urn:profile#value>))\nDeclaration(DataProperty(<urn:expr#expressionBody>))\nDeclaration(DataProperty(<urn:expr#refURI>))\nDeclaration(NamedIndividual(<urn:process#TheClient>))\nDeclaration(NamedIndividual(<urn:process#TheParentPerform>))\nDeclaration(NamedIndividual(<urn:process#TheServer>))\nDeclaration(NamedIndividual(<urn:process#ThisPerform>))\nDeclaration(NamedIndividual(<urn:expr#AlwaysTrue>))\nDeclaration(NamedIndividual(<urn:expr#DRS>))\nDeclaration(NamedIndividual(<urn:expr#KIF>))\nDeclaration(NamedIndividual(<urn:expr#SWRL>))\nDeclaration(NamedIndividual(<urn:generic/ObjectList.owl#nil>))\n"
         + "EquivalentClasses(<urn:process#Any-Order> <urn:process#Unordered>)\n"
@@ -297,7 +304,8 @@ public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBas
         + "DataPropertyAssertion(<urn:expr#refURI> <urn:expr#KIF> \"http://logic.stanford.edu/kif/kif.html\"^^xsd:anyURI)\n"
         + "ClassAssertion(<urn:expr#LogicLanguage> <urn:expr#SWRL>)\n"
         + "DataPropertyAssertion(<urn:expr#refURI> <urn:expr#SWRL> \"http://www.w3.org/2003/11/swrl\"^^xsd:anyURI)\n"
-        + "ClassAssertion(<urn:generic/ObjectList.owl#List> <urn:generic/ObjectList.owl#nil>)\n" + ")";
+        + "ClassAssertion(<urn:generic/ObjectList.owl#List> <urn:generic/ObjectList.owl#nil>)\n"
+        + ")";
 
     @Override
     protected OWLOntology load(String input) throws OWLOntologyCreationException {
@@ -311,7 +319,7 @@ public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBas
     }
 
     @Test
-    public void shouldPassgetObjectPropertyRangesisPresentedByfalse() {
+    void shouldPassgetObjectPropertyRangesisPresentedByfalse() {
         OWLClass Thing = C("http://www.w3.org/2002/07/owl#Thing");
         OWLClass Service = C("urn:Service.owl#Service");
         OWLObjectProperty isPresentedBy = OP("urn:Service.owl#isPresentedBy");
@@ -321,7 +329,8 @@ public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBas
     }
 
     @Test
-    public void shouldPassgetObjectPropertyRangesisPresentedByfalseBasicOntology() throws OWLOntologyCreationException {
+    void shouldPassgetObjectPropertyRangesisPresentedByfalseBasicOntology()
+        throws OWLOntologyCreationException {
         String inputString = "Prefix(:=<http://www.w3.org/2002/07/owl#>)\n"
             + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
             + "Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)\n"
@@ -332,8 +341,10 @@ public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBas
             + "Declaration(ObjectProperty(<urn:Service.owl#isPresentedBy>))\n"
             + "Declaration(ObjectProperty(<urn:Service.owl#presentedBy>))\n\n"
             + "EquivalentObjectProperties(<urn:Service.owl#isPresentedBy> <urn:Service.owl#presentedBy>)\n"
-            + "ObjectPropertyRange(<urn:Service.owl#presentedBy> <urn:Service.owl#Service>)\n" + ")";
-        OWLOntology onto = m.loadOntologyFromOntologyDocument(new StringDocumentSource(inputString));
+            + "ObjectPropertyRange(<urn:Service.owl#presentedBy> <urn:Service.owl#Service>)\n"
+            + ")";
+        OWLOntology onto =
+            m.loadOntologyFromOntologyDocument(new StringDocumentSource(inputString));
         OWLReasoner r = factory().createReasoner(onto);
         OWLClass Thing = C("http://www.w3.org/2002/07/owl#Thing");
         OWLClass Service = C("urn:Service.owl#Service");
@@ -344,8 +355,8 @@ public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBas
     }
 
     @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointObjectPropertieshasOutput1() {
+    @Disabled("disjoint properties not supported")
+    void shouldPassgetDisjointObjectPropertieshasOutput1() {
         OWLObjectProperty hasLocal = OP("urn:process#hasLocal");
         OWLObjectProperty hasInput = OP("urn:process#hasInput");
         OWLObjectProperty hasInput1 = OP("urn:profile#hasInput");
@@ -354,13 +365,13 @@ public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBas
         // expected hasLocal, hasInput, hasInput, hasResultVar,
         // bottomObjectProperty
         // actual__ hasOutput
-        equal(reasoner.getDisjointObjectProperties(hasOutput), hasLocal, hasInput, hasInput1, hasResultVar,
-            bottomObjectProperty);
+        equal(reasoner.getDisjointObjectProperties(hasOutput), hasLocal, hasInput, hasInput1,
+            hasResultVar, bottomObjectProperty);
     }
 
     @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointObjectPropertieshasInput2() {
+    @Disabled("disjoint properties not supported")
+    void shouldPassgetDisjointObjectPropertieshasInput2() {
         OWLObjectProperty hasOutput = OP("urn:profile#hasOutput");
         OWLObjectProperty hasLocal = OP("urn:process#hasLocal");
         OWLObjectProperty hasOutput1 = OP("urn:process#hasOutput");
@@ -369,13 +380,13 @@ public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBas
         // expected hasOutput, hasLocal, hasOutput, hasResultVar,
         // bottomObjectProperty
         // actual__ hasInput
-        equal(reasoner.getDisjointObjectProperties(hasInput), hasOutput, hasLocal, hasOutput1, hasResultVar,
-            bottomObjectProperty);
+        equal(reasoner.getDisjointObjectProperties(hasInput), hasOutput, hasLocal, hasOutput1,
+            hasResultVar, bottomObjectProperty);
     }
 
     @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointObjectPropertieshasResultVar() {
+    @Disabled("disjoint properties not supported")
+    void shouldPassgetDisjointObjectPropertieshasResultVar() {
         OWLObjectProperty hasOutput = OP("urn:profile#hasOutput");
         OWLObjectProperty hasLocal = OP("urn:process#hasLocal");
         OWLObjectProperty hasInput = OP("urn:process#hasInput");
@@ -385,13 +396,13 @@ public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBas
         // expected hasOutput, hasLocal, hasInput, hasOutput, hasInput,
         // bottomObjectProperty
         // actual__ hasResultVar
-        equal(reasoner.getDisjointObjectProperties(hasResultVar), hasOutput, hasLocal, hasInput, hasOutput1, hasInput1,
-            bottomObjectProperty);
+        equal(reasoner.getDisjointObjectProperties(hasResultVar), hasOutput, hasLocal, hasInput,
+            hasOutput1, hasInput1, bottomObjectProperty);
     }
 
     @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointObjectPropertieshasLocal() {
+    @Disabled("disjoint properties not supported")
+    void shouldPassgetDisjointObjectPropertieshasLocal() {
         OWLObjectProperty hasOutput = OP("urn:profile#hasOutput");
         OWLObjectProperty hasInput = OP("urn:process#hasInput");
         OWLObjectProperty hasOutput1 = OP("urn:process#hasOutput");
@@ -401,13 +412,13 @@ public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBas
         // expected hasOutput, hasInput, hasOutput, hasInput, hasResultVar,
         // bottomObjectProperty
         // actual__ hasLocal
-        equal(reasoner.getDisjointObjectProperties(hasLocal), hasOutput, hasInput, hasOutput1, hasInput1, hasResultVar,
-            bottomObjectProperty);
+        equal(reasoner.getDisjointObjectProperties(hasLocal), hasOutput, hasInput, hasOutput1,
+            hasInput1, hasResultVar, bottomObjectProperty);
     }
 
     @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointObjectPropertieshasInput() {
+    @Disabled("disjoint properties not supported")
+    void shouldPassgetDisjointObjectPropertieshasInput() {
         OWLObjectProperty hasOutput = OP("urn:profile#hasOutput");
         OWLObjectProperty hasLocal = OP("urn:process#hasLocal");
         OWLObjectProperty hasOutput1 = OP("urn:process#hasOutput");
@@ -416,13 +427,13 @@ public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBas
         // expected hasOutput, hasLocal, hasOutput, hasResultVar,
         // bottomObjectProperty
         // actual__ hasInput
-        equal(reasoner.getDisjointObjectProperties(hasInput), hasOutput, hasLocal, hasOutput1, hasResultVar,
-            bottomObjectProperty);
+        equal(reasoner.getDisjointObjectProperties(hasInput), hasOutput, hasLocal, hasOutput1,
+            hasResultVar, bottomObjectProperty);
     }
 
     @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointObjectPropertieshasOutput() {
+    @Disabled("disjoint properties not supported")
+    void shouldPassgetDisjointObjectPropertieshasOutput() {
         OWLObjectProperty hasLocal = OP("urn:process#hasLocal");
         OWLObjectProperty hasInput = OP("urn:process#hasInput");
         OWLObjectProperty hasInput1 = OP("urn:profile#hasInput");
@@ -431,13 +442,13 @@ public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBas
         // expected hasLocal, hasInput, hasInput, hasResultVar,
         // bottomObjectProperty
         // actual__ hasOutput
-        equal(reasoner.getDisjointObjectProperties(hasOutput), hasLocal, hasInput, hasInput1, hasResultVar,
-            bottomObjectProperty);
+        equal(reasoner.getDisjointObjectProperties(hasOutput), hasLocal, hasInput, hasInput1,
+            hasResultVar, bottomObjectProperty);
     }
 
     @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointDataPropertiesserviceProduct() {
+    @Disabled("disjoint properties not supported")
+    void shouldPassgetDisjointDataPropertiesserviceProduct() {
         OWLDataProperty valueForm = DP("urn:process#valueForm");
         OWLDataProperty parameterValue = DP("urn:process#parameterValue");
         OWLDataProperty valueFunction = DP("urn:process#valueFunction");
@@ -446,13 +457,13 @@ public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBas
         // expected valueForm, parameterValue, bottomDataProperty,
         // valueFunction, invocable
         // actual__ serviceProduct
-        equal(reasoner.getDisjointDataProperties(serviceProduct), valueForm, parameterValue, bottomDataProperty,
-            valueFunction, invocable);
+        equal(reasoner.getDisjointDataProperties(serviceProduct), valueForm, parameterValue,
+            bottomDataProperty, valueFunction, invocable);
     }
 
     @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointDataPropertiesserviceClassification() {
+    @Disabled("disjoint properties not supported")
+    void shouldPassgetDisjointDataPropertiesserviceClassification() {
         OWLDataProperty valueForm = DP("urn:process#valueForm");
         OWLDataProperty parameterValue = DP("urn:process#parameterValue");
         OWLDataProperty valueFunction = DP("urn:process#valueFunction");
@@ -461,13 +472,13 @@ public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBas
         // expected valueForm, parameterValue, bottomDataProperty,
         // valueFunction, invocable
         // actual__ serviceClassification
-        equal(reasoner.getDisjointDataProperties(serviceClassification), valueForm, parameterValue, bottomDataProperty,
-            valueFunction, invocable);
+        equal(reasoner.getDisjointDataProperties(serviceClassification), valueForm, parameterValue,
+            bottomDataProperty, valueFunction, invocable);
     }
 
     @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointDataPropertiesrefURI() {
+    @Disabled("disjoint properties not supported")
+    void shouldPassgetDisjointDataPropertiesrefURI() {
         OWLDataProperty valueForm = DP("urn:process#valueForm");
         OWLDataProperty parameterValue = DP("urn:process#parameterValue");
         OWLDataProperty valueFunction = DP("urn:process#valueFunction");
@@ -476,13 +487,13 @@ public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBas
         // expected valueForm, parameterValue, bottomDataProperty,
         // valueFunction, invocable
         // actual__ refURI
-        equal(reasoner.getDisjointDataProperties(refURI), valueForm, parameterValue, bottomDataProperty, valueFunction,
-            invocable);
+        equal(reasoner.getDisjointDataProperties(refURI), valueForm, parameterValue,
+            bottomDataProperty, valueFunction, invocable);
     }
 
     @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointDataPropertiesvalueFunction() {
+    @Disabled("disjoint properties not supported")
+    void shouldPassgetDisjointDataPropertiesvalueFunction() {
         OWLDataProperty serviceProduct = DP("urn:profile#serviceProduct");
         OWLDataProperty serviceClassification = DP("urn:profile#serviceClassification");
         OWLDataProperty refURI = DP("urn:expr#refURI");
@@ -493,13 +504,13 @@ public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBas
         // expected serviceProduct, serviceClassification, refURI,
         // bottomDataProperty, valueType, parameterType, invocable
         // actual__ valueFunction
-        equal(reasoner.getDisjointDataProperties(valueFunction), serviceProduct, serviceClassification, refURI,
-            bottomDataProperty, valueType, parameterType, invocable);
+        equal(reasoner.getDisjointDataProperties(valueFunction), serviceProduct,
+            serviceClassification, refURI, bottomDataProperty, valueType, parameterType, invocable);
     }
 
     @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointDataPropertiesvalueType() {
+    @Disabled("disjoint properties not supported")
+    void shouldPassgetDisjointDataPropertiesvalueType() {
         OWLDataProperty valueForm = DP("urn:process#valueForm");
         OWLDataProperty parameterValue = DP("urn:process#parameterValue");
         OWLDataProperty valueFunction = DP("urn:process#valueFunction");
@@ -508,13 +519,13 @@ public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBas
         // expected valueForm, parameterValue, bottomDataProperty,
         // valueFunction, invocable
         // actual__ valueType
-        equal(reasoner.getDisjointDataProperties(valueType), valueForm, parameterValue, bottomDataProperty,
-            valueFunction, invocable);
+        equal(reasoner.getDisjointDataProperties(valueType), valueForm, parameterValue,
+            bottomDataProperty, valueFunction, invocable);
     }
 
     @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointDataPropertiesinvocable() {
+    @Disabled("disjoint properties not supported")
+    void shouldPassgetDisjointDataPropertiesinvocable() {
         OWLDataProperty serviceProduct = DP("urn:profile#serviceProduct");
         OWLDataProperty valueForm = DP("urn:process#valueForm");
         OWLDataProperty serviceClassification = DP("urn:profile#serviceClassification");
@@ -528,13 +539,14 @@ public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBas
         // parameterValue, refURI, bottomDataProperty, valueFunction, valueType,
         // parameterType
         // actual__ invocable
-        equal(reasoner.getDisjointDataProperties(invocable), serviceProduct, valueForm, serviceClassification,
-            parameterValue, refURI, bottomDataProperty, valueFunction, valueType, parameterType);
+        equal(reasoner.getDisjointDataProperties(invocable), serviceProduct, valueForm,
+            serviceClassification, parameterValue, refURI, bottomDataProperty, valueFunction,
+            valueType, parameterType);
     }
 
     @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointDataPropertiesvalueForm() {
+    @Disabled("disjoint properties not supported")
+    void shouldPassgetDisjointDataPropertiesvalueForm() {
         OWLDataProperty serviceProduct = DP("urn:profile#serviceProduct");
         OWLDataProperty serviceClassification = DP("urn:profile#serviceClassification");
         OWLDataProperty refURI = DP("urn:expr#refURI");
@@ -545,13 +557,13 @@ public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBas
         // expected serviceProduct, serviceClassification, refURI,
         // bottomDataProperty, valueType, parameterType, invocable
         // actual__ valueForm
-        equal(reasoner.getDisjointDataProperties(valueForm), serviceProduct, serviceClassification, refURI,
-            bottomDataProperty, valueType, parameterType, invocable);
+        equal(reasoner.getDisjointDataProperties(valueForm), serviceProduct, serviceClassification,
+            refURI, bottomDataProperty, valueType, parameterType, invocable);
     }
 
     @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointDataPropertiesparameterValue() {
+    @Disabled("disjoint properties not supported")
+    void shouldPassgetDisjointDataPropertiesparameterValue() {
         OWLDataProperty serviceProduct = DP("urn:profile#serviceProduct");
         OWLDataProperty serviceClassification = DP("urn:profile#serviceClassification");
         OWLDataProperty refURI = DP("urn:expr#refURI");
@@ -562,13 +574,13 @@ public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBas
         // expected serviceProduct, serviceClassification, refURI,
         // bottomDataProperty, valueType, parameterType, invocable
         // actual__ parameterValue
-        equal(reasoner.getDisjointDataProperties(parameterValue), serviceProduct, serviceClassification, refURI,
-            bottomDataProperty, valueType, parameterType, invocable);
+        equal(reasoner.getDisjointDataProperties(parameterValue), serviceProduct,
+            serviceClassification, refURI, bottomDataProperty, valueType, parameterType, invocable);
     }
 
     @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDisjointDataPropertiesparameterType() {
+    @Disabled("disjoint properties not supported")
+    void shouldPassgetDisjointDataPropertiesparameterType() {
         OWLDataProperty valueForm = DP("urn:process#valueForm");
         OWLDataProperty parameterValue = DP("urn:process#parameterValue");
         OWLDataProperty valueFunction = DP("urn:process#valueFunction");
@@ -577,36 +589,36 @@ public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBas
         // expected valueForm, parameterValue, bottomDataProperty,
         // valueFunction, invocable
         // actual__ parameterType
-        equal(reasoner.getDisjointDataProperties(parameterType), valueForm, parameterValue, bottomDataProperty,
-            valueFunction, invocable);
+        equal(reasoner.getDisjointDataProperties(parameterType), valueForm, parameterValue,
+            bottomDataProperty, valueFunction, invocable);
     }
 
     @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDataPropertyValuesKIFrefURI() {
+    @Disabled("disjoint properties not supported")
+    void shouldPassgetDataPropertyValuesKIFrefURI() {
         OWLNamedIndividual KIF = df.getOWLNamedIndividual(IRI.create("urn:expr#KIF"));
         OWLDataProperty refURI = DP("urn:expr#refURI");
         // expected ["http://logic.stanford.edu/kif/kif.html"^^xsd:anyURI]
         // actual__ KIF, refURI
-        assertEquals(reasoner.getDataPropertyValues(KIF, refURI),
-            new HashSet<>(Arrays.asList(df.getOWLLiteral("http://logic.stanford.edu/kif/kif.html"))));
+        assertEquals(reasoner.getDataPropertyValues(KIF, refURI), new HashSet<>(
+            Arrays.asList(df.getOWLLiteral("http://logic.stanford.edu/kif/kif.html"))));
     }
 
     @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDataPropertyValuesDRSrefURI() {
+    @Disabled("disjoint properties not supported")
+    void shouldPassgetDataPropertyValuesDRSrefURI() {
         OWLNamedIndividual DRS = df.getOWLNamedIndividual(IRI.create("urn:expr#DRS"));
         OWLDataProperty refURI = DP("urn:expr#refURI");
         // expected
         // ["http://www.daml.org/services/owl-s/1.1/generic/drs.owl"^^xsd:anyURI]
         // actual__ DRS, refURI
-        assertEquals(reasoner.getDataPropertyValues(DRS, refURI),
-            new HashSet<>(Arrays.asList(df.getOWLLiteral("http://www.daml.org/services/owl-s/1.1/generic/drs.owl"))));
+        assertEquals(reasoner.getDataPropertyValues(DRS, refURI), new HashSet<>(Arrays
+            .asList(df.getOWLLiteral("http://www.daml.org/services/owl-s/1.1/generic/drs.owl"))));
     }
 
     @Test
-    @Ignore("disjoint properties not supported")
-    public void shouldPassgetDataPropertyValuesSWRLrefURI() {
+    @Disabled("disjoint properties not supported")
+    void shouldPassgetDataPropertyValuesSWRLrefURI() {
         OWLNamedIndividual SWRL = df.getOWLNamedIndividual(IRI.create("urn:expr#SWRL"));
         OWLDataProperty refURI = DP("urn:expr#refURI");
         // expected ["http://www.w3.org/2003/11/swrl"^^xsd:anyURI]
@@ -616,7 +628,7 @@ public class VerifyComplianceOWLSNewFeaturesTestCase extends VerifyComplianceBas
     }
 
     @Test
-    public void shouldPassgetObjectPropertyRangesisPresentedBytrue() {
+    void shouldPassgetObjectPropertyRangesisPresentedBytrue() {
         OWLClass Service = C("http://www.daml.org/services/owl-s/1.1/Service.owl#Service");
         OWLObjectProperty isPresentedBy = OP("urn:Service.owl#isPresentedBy");
         // expected Service

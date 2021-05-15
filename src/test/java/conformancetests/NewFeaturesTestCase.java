@@ -1,21 +1,15 @@
 package conformancetests;
 
-/* This file is part of the JFact DL reasoner
- Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
- This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
- This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
- You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import testbase.TestBase;
 
-@SuppressWarnings("javadoc")
-@Ignore
-public class NewFeaturesTestCase extends TestBase {
+@Disabled
+class NewFeaturesTestCase extends TestBase {
 
     @Test
-    public void testInconsistent_Disjoint_Dataproperties() {
+    void testInconsistent_Disjoint_Dataproperties() {
         premise = "Prefix(:=<http://example.org/>)\n"
             + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n" + "Ontology(\n"
             + "  Declaration(NamedIndividual(:a))\nDeclaration(DataProperty(:dp1))\nDeclaration(DataProperty(:dp2))\nDeclaration(Class(:A))\n"
@@ -28,7 +22,7 @@ public class NewFeaturesTestCase extends TestBase {
     }
 
     @Test
-    public void testMinus_Infinity_is_not_in_owl_real() {
+    void testMinus_Infinity_is_not_in_owl_real() {
         premise = "Prefix(:=<http://example.org/>)\n"
             + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
             + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n" + "Ontology(\n"
@@ -43,7 +37,7 @@ public class NewFeaturesTestCase extends TestBase {
     }
 
     @Test
-    public void testNew_Feature_DataQCR_001() {
+    void testNew_Feature_DataQCR_001() {
         premise = "<?xml version=\"1.0\"?>\n" + "<rdf:RDF\n"
             + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
             + '\n' + "<owl:Ontology/>\n" + '\n' + "<owl:DatatypeProperty rdf:about=\"hasName\" />\n"
@@ -62,7 +56,7 @@ public class NewFeaturesTestCase extends TestBase {
     }
 
     @Test
-    public void testNew_Feature_DisjointDataProperties_001() {
+    void testNew_Feature_DisjointDataProperties_001() {
         premise = "<?xml version=\"1.0\"?>\n" + "<rdf:RDF\n"
             + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
             + '\n' + "<owl:Ontology/>\n" + '\n' + "<owl:DatatypeProperty rdf:about=\"hasName\" />\n"
@@ -77,7 +71,7 @@ public class NewFeaturesTestCase extends TestBase {
     }
 
     @Test
-    public void testNew_Feature_DisjointDataProperties_002() {
+    void testNew_Feature_DisjointDataProperties_002() {
         premise = "<?xml version=\"1.0\"?>\n" + "<rdf:RDF\n"
             + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
             + '\n' + "<owl:Ontology/>\n" + '\n' + "<owl:DatatypeProperty rdf:about=\"hasName\" />\n"
@@ -106,7 +100,7 @@ public class NewFeaturesTestCase extends TestBase {
     }
 
     @Test
-    public void testNew_Feature_Keys_001() {
+    void testNew_Feature_Keys_001() {
         premise = "<?xml version=\"1.0\"?>\n" + "<rdf:RDF\n"
             + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
             + '\n' + "<owl:Ontology/>\n" + '\n' + "<owl:DatatypeProperty rdf:about=\"hasSSN\" />\n"
@@ -127,7 +121,7 @@ public class NewFeaturesTestCase extends TestBase {
     }
 
     @Test
-    public void testNew_Feature_Keys_002() {
+    void testNew_Feature_Keys_002() {
         premise = "<?xml version=\"1.0\"?>\n" + "<rdf:RDF\n"
             + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
             + '\n' + "<owl:Ontology/>\n" + '\n' + "<owl:DatatypeProperty rdf:about=\"hasSSN\" />\n"
@@ -146,7 +140,7 @@ public class NewFeaturesTestCase extends TestBase {
     }
 
     @Test
-    public void testNew_Feature_Keys_003() {
+    void testNew_Feature_Keys_003() {
         premise = "<?xml version=\"1.0\"?>\n" + "<rdf:RDF\n"
             + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
             + '\n' + "<owl:Ontology/>\n" + '\n'
@@ -172,7 +166,7 @@ public class NewFeaturesTestCase extends TestBase {
     }
 
     @Test
-    public void testNew_Feature_Keys_004() {
+    void testNew_Feature_Keys_004() {
         premise = "<?xml version=\"1.0\"?>\n" + "<rdf:RDF\n"
             + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
             + '\n' + "<owl:Ontology/>\n" + '\n'
@@ -198,7 +192,7 @@ public class NewFeaturesTestCase extends TestBase {
     }
 
     @Test
-    public void testNew_Feature_Keys_005() {
+    void testNew_Feature_Keys_005() {
         premise = "<?xml version=\"1.0\"?>\n" + "<rdf:RDF\n"
             + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
             + '\n' + "<owl:Ontology/>\n" + '\n'
@@ -217,7 +211,7 @@ public class NewFeaturesTestCase extends TestBase {
     }
 
     @Test
-    public void testNew_Feature_Keys_006() {
+    void testNew_Feature_Keys_006() {
         premise = "<?xml version=\"1.0\"?>\n" + "<rdf:RDF\n"
             + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
             + '\n' + "<owl:Ontology/>\n" + '\n'
@@ -237,7 +231,7 @@ public class NewFeaturesTestCase extends TestBase {
     }
 
     @Test
-    public void testNew_Feature_Keys_007() {
+    void testNew_Feature_Keys_007() {
         premise = "<?xml version=\"1.0\"?>\n" + "<rdf:RDF\n"
             + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
             + '\n' + "<owl:Ontology/>\n" + '\n' + "<owl:Class rdf:about=\"Person\" />\n" + '\n'
@@ -268,7 +262,7 @@ public class NewFeaturesTestCase extends TestBase {
 
     @Test
     @ChangedTestCase
-    public void testNew_Feature_ObjectPropertyChain_BJP_003() {
+    void testNew_Feature_ObjectPropertyChain_BJP_003() {
         premise = "<?xml version=\"1.0\"?>\n" + "<rdf:RDF\n"
             + "    xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdfs= \"http://www.w3.org/2000/01/rdf-schema#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
             + '\n' + "<owl:Ontology/>\n" + '\n'
@@ -303,7 +297,7 @@ public class NewFeaturesTestCase extends TestBase {
     }
 
     @Test
-    public void testNew_Feature_Rational_001() {
+    void testNew_Feature_Rational_001() {
         premise = "<?xml version=\"1.0\"?>\n" + "<rdf:RDF\n"
             + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
             + '\n' + "<owl:Ontology/>\n" + '\n' + "<owl:DatatypeProperty rdf:about=\"dp\" />\n"
@@ -319,7 +313,7 @@ public class NewFeaturesTestCase extends TestBase {
     }
 
     @Test
-    public void testNew_Feature_Rational_002() {
+    void testNew_Feature_Rational_002() {
         premise = "Prefix( : = <http://example.org/> )\n"
             + "Prefix( owl: = <http://www.w3.org/2002/07/owl#> )\n"
             + "Prefix( xsd: = <http://www.w3.org/2001/XMLSchema#> )\n" + '\n' + "Ontology(\n"
@@ -331,7 +325,7 @@ public class NewFeaturesTestCase extends TestBase {
     }
 
     @Test
-    public void testNew_Feature_Rational_003() {
+    void testNew_Feature_Rational_003() {
         premise = "<?xml version=\"1.0\"?>\n" + "<rdf:RDF\n"
             + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs= \"http://www.w3.org/2000/01/rdf-schema#\">\n"
             + '\n' + "<owl:Ontology/>\n" + '\n' + "<owl:DatatypeProperty rdf:about=\"dp\" />\n"
@@ -352,7 +346,7 @@ public class NewFeaturesTestCase extends TestBase {
     }
 
     @Test
-    public void testNew_Feature_ReflexiveProperty_001() {
+    void testNew_Feature_ReflexiveProperty_001() {
         premise = "<?xml version=\"1.0\"?>\n" + "<rdf:RDF\n"
             + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
             + '\n' + "<owl:Ontology/>\n" + '\n' + "<owl:ObjectProperty rdf:about=\"knows\" />\n"
@@ -368,7 +362,7 @@ public class NewFeaturesTestCase extends TestBase {
     }
 
     @Test
-    public void testNew_Feature_SelfRestriction_001() {
+    void testNew_Feature_SelfRestriction_001() {
         premise = "<?xml version=\"1.0\"?>\n" + "<rdf:RDF\n"
             + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
             + '\n' + "<owl:Ontology/>\n" + '\n' + "<owl:ObjectProperty rdf:about=\"likes\" />\n"
@@ -386,7 +380,7 @@ public class NewFeaturesTestCase extends TestBase {
     }
 
     @Test
-    public void testNew_Feature_SelfRestriction_002() {
+    void testNew_Feature_SelfRestriction_002() {
         premise = "<?xml version=\"1.0\"?>\n" + "<rdf:RDF\n"
             + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
             + '\n' + "<owl:Ontology/>\n" + '\n' + "<owl:ObjectProperty rdf:about=\"likes\" />\n"
@@ -404,7 +398,7 @@ public class NewFeaturesTestCase extends TestBase {
     }
 
     @Test
-    public void testNew_Feature_TopObjectProperty_001() {
+    void testNew_Feature_TopObjectProperty_001() {
         premise = "<?xml version=\"1.0\"?>\n" + "<rdf:RDF\n"
             + "  xml:base  = \"http://example.org/\" xmlns     = \"http://example.org/\" xmlns:owl = \"http://www.w3.org/2002/07/owl#\" xmlns:rdf = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
             + '\n' + "<owl:Ontology/>\n" + '\n' + "<rdf:Description rdf:about=\"i\">\n"
@@ -418,7 +412,7 @@ public class NewFeaturesTestCase extends TestBase {
     }
 
     @Test
-    public void testconsistent_dataproperty_disjointness() {
+    void testconsistent_dataproperty_disjointness() {
         premise = "Prefix(:=<http://example.org/>)\n"
             + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n" + "Ontology(\n"
             + "  Declaration(NamedIndividual(:a))\n" + "  Declaration(DataProperty(:dp1))\n"
@@ -437,7 +431,7 @@ public class NewFeaturesTestCase extends TestBase {
     @Test
     @ChangedTestCase(
         reason = "not OWL 2 DL - data properties cannt be inverse functional properties")
-    public void testrdfbased_sem_char_inversefunc_data() {
+    void testrdfbased_sem_char_inversefunc_data() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:InverseFunctionalProperty rdf:about=\"http://www.example.org#p\">\n"
@@ -456,7 +450,7 @@ public class NewFeaturesTestCase extends TestBase {
 
     @Test
     @ChangedTestCase
-    public void testrdfbased_sem_key_def() {
+    void testrdfbased_sem_key_def() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:Class rdf:about=\"http://www.example.org#c\"/>\n"
@@ -483,7 +477,7 @@ public class NewFeaturesTestCase extends TestBase {
 
     @Test
     @ChangedTestCase
-    public void testrdfbased_sem_npa_ind_fw() {
+    void testrdfbased_sem_npa_ind_fw() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" xmlns:ex=\"http://www.example.org#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n"
                 + "  <owl:ObjectProperty rdf:about=\"http://www.example.org#p\"/>\n"

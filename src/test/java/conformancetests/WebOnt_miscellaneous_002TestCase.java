@@ -5,16 +5,15 @@
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 package conformancetests;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import testbase.TestBase;
 
-@SuppressWarnings("javadoc")
-public class WebOnt_miscellaneous_002TestCase extends TestBase {
+class WebOnt_miscellaneous_002TestCase extends TestBase {
 
     @Test
     @ChangedTestCase
-    public void testWebOnt_miscellaneous_002() {
+    void testWebOnt_miscellaneous_002() {
         premise = asString("/webont002.owl");
         test("WebOnt_miscellaneous_002", TestClasses.CONSISTENCY,
             "Food example taken from the guide. Note that this is the same as the ontology http://www.w3.org/2002/03owlt/miscellaneous/consistent002 imported in other tests.");

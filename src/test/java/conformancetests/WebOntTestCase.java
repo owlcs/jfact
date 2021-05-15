@@ -5,11 +5,11 @@ package conformancetests;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataProperty;
@@ -25,11 +25,10 @@ import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 import testbase.TestBase;
 
-@SuppressWarnings("javadoc")
-public class WebOntTestCase extends TestBase {
+class WebOntTestCase extends TestBase {
 
     @Test
-    public void testWebOnt_AnnotationProperty_003() {
+    void testWebOnt_AnnotationProperty_003() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/AnnotationProperty/consistent003#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/AnnotationProperty/consistent003\" >\n"
@@ -41,7 +40,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_AnnotationProperty_004() {
+    void testWebOnt_AnnotationProperty_004() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\n"
@@ -53,7 +52,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I4_5_001() {
+    void testWebOnt_I4_5_001() {
         conclusion =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:first=\"http://www.w3.org/2002/03owlt/I4.5/premises001#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I4.5/conclusions001\" >\n"
@@ -65,14 +64,14 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I4_5_002() {
+    void testWebOnt_I4_5_002() {
         premise = asString("/WebOnt_I4_5_002.owl");
         test("WebOnt_I4_5_002", TestClasses.INCONSISTENCY,
             "An example combining owl:oneOf and owl:inverseOf.");
     }
 
     @Test
-    public void testWebOnt_I4_6_005_Direct() {
+    void testWebOnt_I4_6_005_Direct() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I4.6/premises005\" >\n"
@@ -88,7 +87,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I5_24_003() {
+    void testWebOnt_I5_24_003() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.24/premises003\" >\n"
@@ -106,7 +105,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I5_24_004() {
+    void testWebOnt_I5_24_004() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.24/premises004\" >\n"
@@ -124,7 +123,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I5_26_001() {
+    void testWebOnt_I5_26_001() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.26/consistent001\" >\n"
@@ -137,7 +136,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I5_26_002() {
+    void testWebOnt_I5_26_002() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.26/consistent002\" >\n"
@@ -150,7 +149,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I5_26_003() {
+    void testWebOnt_I5_26_003() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.26/consistent003\" >\n"
@@ -163,7 +162,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I5_26_004() {
+    void testWebOnt_I5_26_004() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.26/consistent004\" >\n"
@@ -176,7 +175,7 @@ public class WebOntTestCase extends TestBase {
 
     @Test
     @ChangedTestCase
-    public void testWebOnt_I5_26_005() {
+    void testWebOnt_I5_26_005() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xml:base=\"http://www.w3.org/2002/03owlt/I5.26/consistent005\" ><owl:Ontology/>\n"
                 + "   <owl:Class rdf:nodeID=\"B\"><owl:intersectionOf rdf:parseType=\"Collection\"><owl:Class rdf:ID=\"A\"/><owl:Class rdf:ID=\"B\"/>"
@@ -188,7 +187,7 @@ public class WebOntTestCase extends TestBase {
     @Test
     @ChangedTestCase(
         reason = "test doesn't make sense; This code does the test in a meaningful way")
-    public void testWebOnt_I5_26_009() throws OWLOntologyCreationException {
+    void testWebOnt_I5_26_009() throws OWLOntologyCreationException {
         OWLOntology o = m.createOntology();
         OWLObjectProperty p = df.getOWLObjectProperty(IRI.create("urn:test:test#p"));
         m.addAxiom(o, df.getOWLDeclarationAxiom(p));
@@ -199,8 +198,8 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    @Ignore("Conclusion does not contain axioms")
-    public void testWebOnt_I5_26_010() {
+    @Disabled("Conclusion does not contain axioms")
+    void testWebOnt_I5_26_010() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/I5.26/premises010#\" xml:base=\"http://www.w3.org/2002/03owlt/I5.26/premises010\" ><owl:Ontology/><owl:ObjectProperty rdf:ID=\"p\" /></rdf:RDF>";
         conclusion =
@@ -213,7 +212,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I5_2_001() {
+    void testWebOnt_I5_2_001() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/I5.2/consistent001#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.2/consistent001\" >\n"
@@ -226,7 +225,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I5_2_002() {
+    void testWebOnt_I5_2_002() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.2/premises002\" >\n"
@@ -244,14 +243,14 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I5_2_003() {
+    void testWebOnt_I5_2_003() {
         premise = asString("/WebOnt_I5_2_003.owl");
         test("WebOnt_I5_2_003", TestClasses.CONSISTENCY,
             "The complement of a class can be defined using OWL Lite restrictions.");
     }
 
     @Test
-    public void testWebOnt_I5_2_004() {
+    void testWebOnt_I5_2_004() {
         conclusion =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.2/conclusions004\" >\n"
@@ -264,14 +263,14 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I5_2_005() {
+    void testWebOnt_I5_2_005() {
         premise = asString("/WebOnt_I5_2_005.owl");
         test("WebOnt_I5_2_005", TestClasses.CONSISTENCY,
             "The union of two classes can be defined using OWL Lite restrictions, and owl:intersectionOf.");
     }
 
     @Test
-    public void testWebOnt_I5_2_006() {
+    void testWebOnt_I5_2_006() {
         conclusion =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.2/conclusions006\" >\n"
@@ -284,7 +283,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I5_3_006() {
+    void testWebOnt_I5_3_006() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/I5.3/consistent006#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.3/consistent006\" >\n"
@@ -295,7 +294,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I5_3_008() {
+    void testWebOnt_I5_3_008() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/I5.3/consistent008#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.3/consistent008\" >\n"
@@ -307,7 +306,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I5_3_010() {
+    void testWebOnt_I5_3_010() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/I5.3/consistent010#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.3/consistent010\" >\n"
@@ -318,7 +317,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I5_3_011() {
+    void testWebOnt_I5_3_011() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/I5.3/consistent011#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.3/consistent011\" >\n"
@@ -329,7 +328,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I5_5_005() {
+    void testWebOnt_I5_5_005() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.5/premises005\" >\n"
@@ -345,7 +344,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I5_8_007() throws OWLOntologyCreationException {
+    void testWebOnt_I5_8_007() throws OWLOntologyCreationException {
         // premise = "<rdf:RDF\n"
         // + " xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
         // + " xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n"
@@ -382,13 +381,14 @@ public class WebOntTestCase extends TestBase {
         m.addAxiom(o,
             df.getOWLDataPropertyRangeAxiom(p, df.getOWLDatatype(OWL2Datatype.XSD_SHORT.getIRI())));
         OWLReasoner r = factory().createReasoner(o);
-        assertFalse("unsigned byte should not be inferred",
+        assertFalse(
             r.isEntailed(df.getOWLDataPropertyRangeAxiom(p,
-                df.getOWLDatatype(OWL2Datatype.XSD_UNSIGNED_BYTE.getIRI()))));
+                df.getOWLDatatype(OWL2Datatype.XSD_UNSIGNED_BYTE.getIRI()))),
+            "unsigned byte should not be inferred");
     }
 
     @Test
-    public void testWebOnt_I5_8_011() {
+    void testWebOnt_I5_8_011() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\">\n"
                 + "  <owl:Ontology/>\n" + "</rdf:RDF>";
@@ -403,7 +403,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_InverseFunctionalProperty_001() {
+    void testWebOnt_InverseFunctionalProperty_001() {
         conclusion =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl =\"http://www.w3.org/2002/07/owl#\"\n"
                 + "  xml:base=\"http://www.w3.org/2002/03owlt/InverseFunctionalProperty/conclusions001\" >\n"
@@ -415,7 +415,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_Nothing_001() {
+    void testWebOnt_Nothing_001() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/Nothing/inconsistent001\" >\n"
@@ -425,7 +425,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_Ontology_001() {
+    void testWebOnt_Ontology_001() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/Ontology/premises001#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/Ontology/premises001\" >\n"
@@ -449,7 +449,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_Restriction_001() {
+    void testWebOnt_Restriction_001() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/Restriction/inconsistent001#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/Restriction/inconsistent001\" >\n"
@@ -466,7 +466,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_Restriction_002() {
+    void testWebOnt_Restriction_002() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/Restriction/inconsistent002\" >\n"
@@ -481,7 +481,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_Restriction_003() {
+    void testWebOnt_Restriction_003() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/Restriction/consistent003#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/Restriction/consistent003\" >\n"
@@ -497,7 +497,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_Restriction_004() {
+    void testWebOnt_Restriction_004() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/Restriction/consistent004\" >\n"
@@ -514,7 +514,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_SymmetricProperty_002() {
+    void testWebOnt_SymmetricProperty_002() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/SymmetricProperty/premises002#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/SymmetricProperty/premises002\" >\n"
@@ -536,7 +536,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_SymmetricProperty_003() {
+    void testWebOnt_SymmetricProperty_003() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/SymmetricProperty/premises003#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/SymmetricProperty/premises003\" >\n"
@@ -554,7 +554,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_Thing_003() {
+    void testWebOnt_Thing_003() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/Thing/inconsistent003\" >\n"
@@ -567,7 +567,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_Thing_004() {
+    void testWebOnt_Thing_004() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/Thing/consistent004\" >\n"
@@ -578,7 +578,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_TransitiveProperty_002() {
+    void testWebOnt_TransitiveProperty_002() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/TransitiveProperty/premises002#\" xmlns:second=\"http://www.w3.org/2002/03owlt/TransitiveProperty/conclusions002#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/TransitiveProperty/premises002\" >\n"
@@ -601,7 +601,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_backwardCompatibleWith_002() {
+    void testWebOnt_backwardCompatibleWith_002() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/backwardCompatibleWith/consistent002#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/backwardCompatibleWith/consistent002\" >\n"
@@ -611,7 +611,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_cardinality_001() {
+    void testWebOnt_cardinality_001() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/cardinality/premises001\" >\n"
@@ -632,7 +632,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_cardinality_002() {
+    void testWebOnt_cardinality_002() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/cardinality/premises002\" >    \n"
@@ -653,7 +653,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_cardinality_003() {
+    void testWebOnt_cardinality_003() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/cardinality/premises003\" >\n"
@@ -674,7 +674,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_cardinality_004() {
+    void testWebOnt_cardinality_004() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/cardinality/premises004\" >    \n"
@@ -695,313 +695,313 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_description_logic_001() {
+    void testWebOnt_description_logic_001() {
         premise = asString("/WebOnt_description_logic_001.owl");
         test("WebOnt_description_logic_001", TestClasses.INCONSISTENCY,
             "DL Test: fact1.1 If a, b and c are disjoint, then: (a and b) or (b and c) or (c and a) is unsatisfiable.");
     }
 
     @Test
-    public void testWebOnt_description_logic_002() {
+    void testWebOnt_description_logic_002() {
         premise = asString("/WebOnt_description_logic_002.owl");
         test("WebOnt_description_logic_002", TestClasses.INCONSISTENCY, "DL Test: fact2.1");
     }
 
     @Test
-    public void testWebOnt_description_logic_003() {
+    void testWebOnt_description_logic_003() {
         premise = asString("/WebOnt_description_logic_003.owl");
         test("WebOnt_description_logic_003", TestClasses.INCONSISTENCY, "DL Test: fact3.1");
     }
 
     @Test
-    public void testWebOnt_description_logic_004() {
+    void testWebOnt_description_logic_004() {
         premise = asString("/WebOnt_description_logic_004.owl");
         test("WebOnt_description_logic_004", TestClasses.INCONSISTENCY, "DL Test: fact4.1");
     }
 
     @Test
-    public void testWebOnt_description_logic_005() {
+    void testWebOnt_description_logic_005() {
         premise = asString("/WebOnt_description_logic_005.owl");
         test("WebOnt_description_logic_005", TestClasses.CONSISTENCY, "DL Test: fact4.2");
     }
 
     @Test
-    public void testWebOnt_description_logic_006() {
+    void testWebOnt_description_logic_006() {
         premise = asString("/WebOnt_description_logic_006.owl");
         test("WebOnt_description_logic_006", TestClasses.CONSISTENCY, "DL Test: t1.1");
     }
 
     @Test
-    public void testWebOnt_description_logic_007() {
+    void testWebOnt_description_logic_007() {
         premise = asString("/WebOnt_description_logic_007.owl");
         test("WebOnt_description_logic_007", TestClasses.INCONSISTENCY, "DL Test: t1.2");
     }
 
     @Test
-    public void testWebOnt_description_logic_008() {
+    void testWebOnt_description_logic_008() {
         premise = asString("/WebOnt_description_logic_008.owl");
         test("WebOnt_description_logic_008", TestClasses.INCONSISTENCY, "DL Test: t1.3");
     }
 
     @Test
-    public void testWebOnt_description_logic_009() {
+    void testWebOnt_description_logic_009() {
         premise = asString("/WebOnt_description_logic_009.owl");
         test("WebOnt_description_logic_009", TestClasses.CONSISTENCY, "DL Test: t10.1");
     }
 
     @Test
-    public void testWebOnt_description_logic_010() {
+    void testWebOnt_description_logic_010() {
         premise = asString("/WebOnt_description_logic_010.owl");
         test("WebOnt_description_logic_010", TestClasses.INCONSISTENCY, "DL Test: t10.2");
     }
 
     @Test
-    public void testWebOnt_description_logic_011() {
+    void testWebOnt_description_logic_011() {
         premise = asString("/WebOnt_description_logic_011.owl");
         test("WebOnt_description_logic_011", TestClasses.INCONSISTENCY, "DL Test: t10.3");
     }
 
     @Test
-    public void testWebOnt_description_logic_012() {
+    void testWebOnt_description_logic_012() {
         premise = asString("/WebOnt_description_logic_012.owl");
         test("WebOnt_description_logic_012", TestClasses.INCONSISTENCY, "DL Test: t10.4");
     }
 
     @Test
-    public void testWebOnt_description_logic_013() {
+    void testWebOnt_description_logic_013() {
         premise = asString("/WebOnt_description_logic_013.owl");
         test("WebOnt_description_logic_013", TestClasses.INCONSISTENCY, "DL Test: t10.5");
     }
 
     @Test
-    public void testWebOnt_description_logic_014() {
+    void testWebOnt_description_logic_014() {
         premise = asString("/WebOnt_description_logic_014.owl");
         test("WebOnt_description_logic_014", TestClasses.INCONSISTENCY, "DL Test: t11.1");
     }
 
     @Test
-    public void testWebOnt_description_logic_015() {
+    void testWebOnt_description_logic_015() {
         premise = asString("/WebOnt_description_logic_015.owl");
         test("WebOnt_description_logic_015", TestClasses.INCONSISTENCY, "DL Test: t12.1");
     }
 
     @Test
-    public void testWebOnt_description_logic_016() {
+    void testWebOnt_description_logic_016() {
         premise = asString("/WebOnt_description_logic_016.owl");
         test("WebOnt_description_logic_016", TestClasses.CONSISTENCY, "DL Test: t2.1");
     }
 
     @Test
-    public void testWebOnt_description_logic_017() {
+    void testWebOnt_description_logic_017() {
         premise = asString("/WebOnt_description_logic_017.owl");
         test("WebOnt_description_logic_017", TestClasses.INCONSISTENCY, "DL Test: t2.2");
     }
 
     @Test
-    public void testWebOnt_description_logic_018() {
+    void testWebOnt_description_logic_018() {
         premise = asString("/WebOnt_description_logic_018.owl");
         test("WebOnt_description_logic_018", TestClasses.CONSISTENCY,
             "DL Test: t3.1 There are 90 possible partitions in the satisfiable case");
     }
 
     @Test
-    public void testWebOnt_description_logic_019() {
+    void testWebOnt_description_logic_019() {
         premise = asString("/WebOnt_description_logic_019.owl");
         test("WebOnt_description_logic_019", TestClasses.INCONSISTENCY,
             "DL Test: t3.2 There are 301 possible partitions in the unsatisfiable case");
     }
 
     @Test
-    public void testWebOnt_description_logic_020() {
+    void testWebOnt_description_logic_020() {
         premise = asString("/WebOnt_description_logic_020.owl");
         test("WebOnt_description_logic_020", TestClasses.CONSISTENCY,
             "DL Test: t3a.1 there are 1,701 possible partitions in the satisfiable case");
     }
 
     @Test
-    public void testWebOnt_description_logic_021() {
+    void testWebOnt_description_logic_021() {
         premise = asString("/WebOnt_description_logic_021.owl");
         test("WebOnt_description_logic_021", TestClasses.CONSISTENCY,
             "DL Test: t3a.2 There are 7,770 possible partitions in the unsatisfiable case");
     }
 
     @Test
-    public void testWebOnt_description_logic_022() {
+    void testWebOnt_description_logic_022() {
         premise = asString("/WebOnt_description_logic_022.owl");
         test("WebOnt_description_logic_022", TestClasses.INCONSISTENCY,
             "DL Test: t3a.3 There are 42,525 possible partitions in the satisfiable case");
     }
 
     @Test
-    public void testWebOnt_description_logic_023() {
+    void testWebOnt_description_logic_023() {
         premise = asString("/WebOnt_description_logic_023.owl");
         test("WebOnt_description_logic_023", TestClasses.INCONSISTENCY,
             "DL Test: t4.1 Dynamic blocking example");
     }
 
     @Test
-    public void testWebOnt_description_logic_024() {
+    void testWebOnt_description_logic_024() {
         premise = asString("/WebOnt_description_logic_024.owl");
         test("WebOnt_description_logic_024", TestClasses.CONSISTENCY,
             "DL Test: t5.1 Non-finite model example from paper The concept should be coherent but has no finite model");
     }
 
     @Test
-    public void testWebOnt_description_logic_025() {
+    void testWebOnt_description_logic_025() {
         premise = asString("/WebOnt_description_logic_025.owl");
         test("WebOnt_description_logic_025", TestClasses.CONSISTENCY,
             "DL Test: t5f.1 Non-finite model example from paper The concept should be coherent but has no finite model");
     }
 
     @Test
-    public void testWebOnt_description_logic_026() {
+    void testWebOnt_description_logic_026() {
         premise = asString("/WebOnt_description_logic_026.owl");
         test("WebOnt_description_logic_026", TestClasses.INCONSISTENCY,
             "DL Test: t6.1 Double blocking example. The concept should be incoherent but needs double blocking");
     }
 
     @Test
-    public void testWebOnt_description_logic_027() {
+    void testWebOnt_description_logic_027() {
         premise = asString("/WebOnt_description_logic_027.owl");
         test("WebOnt_description_logic_027", TestClasses.INCONSISTENCY,
             "DL Test: t6f.1 Double blocking example. The concept should be incoherent but needs double blocking");
     }
 
     @Test
-    public void testWebOnt_description_logic_028() {
+    void testWebOnt_description_logic_028() {
         premise = asString("/WebOnt_description_logic_028.owl");
         test("WebOnt_description_logic_028", TestClasses.CONSISTENCY, "DL Test: t7.1");
     }
 
     @Test
-    public void testWebOnt_description_logic_029() {
+    void testWebOnt_description_logic_029() {
         premise = asString("/WebOnt_description_logic_029.owl");
         test("WebOnt_description_logic_029", TestClasses.INCONSISTENCY, "DL Test: t7.2");
     }
 
     @Test
-    public void testWebOnt_description_logic_030() {
+    void testWebOnt_description_logic_030() {
         premise = asString("/WebOnt_description_logic_030.owl");
         test("WebOnt_description_logic_030", TestClasses.INCONSISTENCY, "DL Test: t7.3");
     }
 
     @Test
-    public void testWebOnt_description_logic_031() {
+    void testWebOnt_description_logic_031() {
         premise = asString("/WebOnt_description_logic_031.owl");
         test("WebOnt_description_logic_031", TestClasses.CONSISTENCY, "DL Test: t7f.1");
     }
 
     @Test
-    public void testWebOnt_description_logic_032() {
+    void testWebOnt_description_logic_032() {
         premise = asString("/WebOnt_description_logic_032.owl");
         test("WebOnt_description_logic_032", TestClasses.INCONSISTENCY, "DL Test: t7f.2");
     }
 
     @Test
-    public void testWebOnt_description_logic_033() {
+    void testWebOnt_description_logic_033() {
         premise = asString("/WebOnt_description_logic_033.owl");
         test("WebOnt_description_logic_033", TestClasses.INCONSISTENCY, "DL Test: t7f.3");
     }
 
     @Test
-    public void testWebOnt_description_logic_034() {
+    void testWebOnt_description_logic_034() {
         premise = asString("/WebOnt_description_logic_034.owl");
         test("WebOnt_description_logic_034", TestClasses.CONSISTENCY, "DL Test: t8.1");
     }
 
     @Test
-    public void testWebOnt_description_logic_035() {
+    void testWebOnt_description_logic_035() {
         premise = asString("/WebOnt_description_logic_035.owl");
         test("WebOnt_description_logic_035", TestClasses.INCONSISTENCY,
             "A test for the interaction of one-of and inverse using the idea of a spy point. Everything is related to the spy via the property p and we know that the spy has at most two invP successors, thus limiting the cardinality of the domain to being at most 2.");
     }
 
     @Test
-    public void testWebOnt_description_logic_040() {
+    void testWebOnt_description_logic_040() {
         premise = asString("/WebOnt_description_logic_040.owl");
         test("WebOnt_description_logic_040", TestClasses.INCONSISTENCY,
             "This kind of pattern comes up a lot in more complex ontologies. Failure to cope with this kind of pattern is one of the reasons that many reasoners have been unable to cope with such ontologies.");
     }
 
     @Test
-    public void testWebOnt_description_logic_101() {
+    void testWebOnt_description_logic_101() {
         premise = asString("/WebOnt_description_logic_101.owl");
         test("WebOnt_description_logic_101", TestClasses.INCONSISTENCY,
             "DL Test: heinsohn1.1 Tbox tests from Heinsohn et al. Tests incoherency caused by disjoint concept");
     }
 
     @Test
-    public void testWebOnt_description_logic_102() {
+    void testWebOnt_description_logic_102() {
         premise = asString("/WebOnt_description_logic_102.owl");
         test("WebOnt_description_logic_102", TestClasses.INCONSISTENCY,
             "DL Test: heinsohn1.2 Tbox tests from Heinsohn et al. Tests incoherency caused by disjoint concept");
     }
 
     @Test
-    public void testWebOnt_description_logic_103() {
+    void testWebOnt_description_logic_103() {
         premise = asString("/WebOnt_description_logic_103.owl");
         test("WebOnt_description_logic_103", TestClasses.INCONSISTENCY,
             "DL Test: heinsohn1.3 Tbox tests from Heinsohn et al. Tests incoherency caused by disjoint concept");
     }
 
     @Test
-    public void testWebOnt_description_logic_104() {
+    void testWebOnt_description_logic_104() {
         premise = asString("/WebOnt_description_logic_104.owl");
         test("WebOnt_description_logic_104", TestClasses.INCONSISTENCY,
             "DL Test: heinsohn1.4 Tbox tests from Heinsohn et al. Tests incoherency caused by disjoint concept");
     }
 
     @Test
-    public void testWebOnt_description_logic_105() {
+    void testWebOnt_description_logic_105() {
         premise = asString("/WebOnt_description_logic_105.owl");
         test("WebOnt_description_logic_105", TestClasses.INCONSISTENCY,
             "DL Test: heinsohn2.1 Tbox tests from Heinsohn et al. Tests incoherency caused by number restrictions");
     }
 
     @Test
-    public void testWebOnt_description_logic_106() {
+    void testWebOnt_description_logic_106() {
         premise = asString("/WebOnt_description_logic_106.owl");
         test("WebOnt_description_logic_106", TestClasses.INCONSISTENCY,
             "DL Test: heinsohn2.2 Tbox tests from Heinsohn et al. Tests incoherency caused by number restrictions");
     }
 
     @Test
-    public void testWebOnt_description_logic_107() {
+    void testWebOnt_description_logic_107() {
         premise = asString("/WebOnt_description_logic_107.owl");
         test("WebOnt_description_logic_107", TestClasses.INCONSISTENCY,
             "DL Test: heinsohn3.1 Tbox tests from Heinsohn et al. Tests incoherency caused by number restrictions and role hierarchy");
     }
 
     @Test
-    public void testWebOnt_description_logic_108() {
+    void testWebOnt_description_logic_108() {
         premise = asString("/WebOnt_description_logic_108.owl");
         test("WebOnt_description_logic_108", TestClasses.INCONSISTENCY,
             "DL Test: heinsohn3.2 Tbox tests from Heinsohn et al. Tests incoherency caused by number restrictions and role hierarchy");
     }
 
     @Test
-    public void testWebOnt_description_logic_109() {
+    void testWebOnt_description_logic_109() {
         premise = asString("/WebOnt_description_logic_109.owl");
         test("WebOnt_description_logic_109", TestClasses.INCONSISTENCY,
             "DL Test: heinsohn3c.1 Tbox tests from Heinsohn et al. Tests incoherency caused by number restrictions and role hierarchy");
     }
 
     @Test
-    public void testWebOnt_description_logic_110() {
+    void testWebOnt_description_logic_110() {
         premise = asString("/WebOnt_description_logic_110.owl");
         test("WebOnt_description_logic_110", TestClasses.INCONSISTENCY,
             "DL Test: heinsohn4.1 Tbox tests from Heinsohn et al. Tests role restrictions");
     }
 
     @Test
-    public void testWebOnt_description_logic_111() {
+    void testWebOnt_description_logic_111() {
         premise = asString("/WebOnt_description_logic_111.owl");
         test("WebOnt_description_logic_111", TestClasses.INCONSISTENCY,
             "DL Test: heinsohn4.2 Tbox tests from Heinsohn et al. Tests role restrictions");
     }
 
     @Test
-    public void testWebOnt_description_logic_201() {
+    void testWebOnt_description_logic_201() {
         conclusion =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "      xml:base=\"http://www.w3.org/2002/03owlt/description-logic/conclusions201\"> <owl:Ontology/>\n"
@@ -1028,7 +1028,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_description_logic_205() {
+    void testWebOnt_description_logic_205() {
         conclusion =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "      xml:base=\"http://www.w3.org/2002/03owlt/description-logic/conclusions205\"\n"
@@ -1058,7 +1058,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_description_logic_207() {
+    void testWebOnt_description_logic_207() {
         conclusion =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "      xml:base=\"http://www.w3.org/2002/03owlt/description-logic/conclusions207\"\n"
@@ -1076,28 +1076,28 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_description_logic_503() {
+    void testWebOnt_description_logic_503() {
         premise = asString("/WebOnt_description_logic_503.owl");
         test("WebOnt_description_logic_503", TestClasses.CONSISTENCY,
             "This is a different encoding of test 501.");
     }
 
     @Test
-    public void testWebOnt_description_logic_504() {
+    void testWebOnt_description_logic_504() {
         premise = asString("/WebOnt_description_logic_504.owl");
         test("WebOnt_description_logic_504", TestClasses.INCONSISTENCY,
             "This is a different encoding of test 502.");
     }
 
     @Test
-    public void testWebOnt_description_logic_601() {
+    void testWebOnt_description_logic_601() {
         premise = asString("/WebOnt_description_logic_601.owl");
         test("WebOnt_description_logic_601", TestClasses.INCONSISTENCY,
             "DL Test: fact1.1 If a, b and c are disjoint, then: (a and b) or (b and c) or (c and a) is unsatisfiable.");
     }
 
     @Test
-    public void testWebOnt_description_logic_602_old() {
+    void testWebOnt_description_logic_602_old() {
         premise = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
             + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
             + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
@@ -1120,7 +1120,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_description_logic_602() throws OWLOntologyCreationException {
+    void testWebOnt_description_logic_602() throws OWLOntologyCreationException {
         OWLOntology o = m.createOntology();
         OWLClass A = df.getOWLClass(IRI.create("urn:A"));
         OWLClass C = df.getOWLClass(IRI.create("urn:C"));
@@ -1141,225 +1141,225 @@ public class WebOntTestCase extends TestBase {
         m.addAxiom(o, df.getOWLEquivalentClassesAxiom(B, oneP));
         OWLReasoner reasoner = factory().createReasoner(o);
         reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
-        assertFalse("cannot find unsatisfiable class", reasoner.isSatisfiable(U));
-        assertTrue("cannot infer disjoint",
-            reasoner.isEntailed(df.getOWLDisjointClassesAxiom(D, B)));
-        assertTrue("cannot infer U [= B", reasoner.isEntailed(df.getOWLSubClassOfAxiom(U, B)));
-        assertTrue("cannot infer U [= C", reasoner.isEntailed(df.getOWLSubClassOfAxiom(U, C)));
-        assertTrue("cannot infer C [= r some C",
-            reasoner.isEntailed(df.getOWLSubClassOfAxiom(C, rAllC)));
-        assertTrue("cannot infer r some C = A",
-            reasoner.isEntailed(df.getOWLEquivalentClassesAxiom(rAllC, A)));
-        assertTrue("cannot infer A [= D", reasoner.isEntailed(df.getOWLSubClassOfAxiom(A, D)));
-        assertTrue("cannot infer U [= D", reasoner.isEntailed(df.getOWLSubClassOfAxiom(U, D)));
-        assertFalse("cannot find unsatisfiable class", reasoner.isSatisfiable(U));
+        assertFalse(reasoner.isSatisfiable(U), "cannot find unsatisfiable class");
+        assertTrue(reasoner.isEntailed(df.getOWLDisjointClassesAxiom(D, B)),
+            "cannot infer disjoint");
+        assertTrue(reasoner.isEntailed(df.getOWLSubClassOfAxiom(U, B)), "cannot infer U [= B");
+        assertTrue(reasoner.isEntailed(df.getOWLSubClassOfAxiom(U, C)), "cannot infer U [= C");
+        assertTrue(reasoner.isEntailed(df.getOWLSubClassOfAxiom(C, rAllC)),
+            "cannot infer C [= r some C");
+        assertTrue(reasoner.isEntailed(df.getOWLEquivalentClassesAxiom(rAllC, A)),
+            "cannot infer r some C = A");
+        assertTrue(reasoner.isEntailed(df.getOWLSubClassOfAxiom(A, D)), "cannot infer A [= D");
+        assertTrue(reasoner.isEntailed(df.getOWLSubClassOfAxiom(U, D)), "cannot infer U [= D");
+        assertFalse(reasoner.isSatisfiable(U), "cannot find unsatisfiable class");
     }
 
     @Test
-    public void testWebOnt_description_logic_603() {
+    void testWebOnt_description_logic_603() {
         premise = asString("/WebOnt_description_logic_603.owl");
         test("WebOnt_description_logic_603", TestClasses.INCONSISTENCY, "DL Test: fact3.1");
     }
 
     @Test
-    public void testWebOnt_description_logic_604() {
+    void testWebOnt_description_logic_604() {
         premise = asString("/WebOnt_description_logic_604.owl");
         test("WebOnt_description_logic_604", TestClasses.INCONSISTENCY, "DL Test: fact4.1");
     }
 
     @Test
-    public void testWebOnt_description_logic_605() {
+    void testWebOnt_description_logic_605() {
         premise = asString("/WebOnt_description_logic_605.owl");
         test("WebOnt_description_logic_605", TestClasses.CONSISTENCY, "DL Test: fact4.2");
     }
 
     @Test
-    public void testWebOnt_description_logic_606() {
+    void testWebOnt_description_logic_606() {
         premise = asString("/WebOnt_description_logic_606.owl");
         test("WebOnt_description_logic_606", TestClasses.CONSISTENCY, "DL Test: t1.1");
     }
 
     @Test
-    public void testWebOnt_description_logic_608() {
+    void testWebOnt_description_logic_608() {
         premise = asString("/WebOnt_description_logic_608.owl");
         test("WebOnt_description_logic_608", TestClasses.INCONSISTENCY, "DL Test: t1.3");
     }
 
     @Test
-    public void testWebOnt_description_logic_609() {
+    void testWebOnt_description_logic_609() {
         premise = asString("/WebOnt_description_logic_609.owl");
         test("WebOnt_description_logic_609", TestClasses.CONSISTENCY, "DL Test: t10.1");
     }
 
     @Test
-    public void testWebOnt_description_logic_610() {
+    void testWebOnt_description_logic_610() {
         premise = asString("/WebOnt_description_logic_610.owl");
         test("WebOnt_description_logic_610", TestClasses.INCONSISTENCY, "DL Test: t10.2");
     }
 
     @Test
-    public void testWebOnt_description_logic_611() {
+    void testWebOnt_description_logic_611() {
         premise = asString("/WebOnt_description_logic_611.owl");
         test("WebOnt_description_logic_611", TestClasses.INCONSISTENCY, "DL Test: t10.3");
     }
 
     @Test
-    public void testWebOnt_description_logic_612() {
+    void testWebOnt_description_logic_612() {
         premise = asString("/WebOnt_description_logic_612.owl");
         test("WebOnt_description_logic_612", TestClasses.INCONSISTENCY, "DL Test: t10.4");
     }
 
     @Test
-    public void testWebOnt_description_logic_613() {
+    void testWebOnt_description_logic_613() {
         premise = asString("/WebOnt_description_logic_613.owl");
         test("WebOnt_description_logic_613", TestClasses.INCONSISTENCY, "DL Test: t10.5");
     }
 
     @Test
-    public void testWebOnt_description_logic_614() {
+    void testWebOnt_description_logic_614() {
         premise = asString("/WebOnt_description_logic_614.owl");
         test("WebOnt_description_logic_614", TestClasses.INCONSISTENCY, "DL Test: t11.1");
     }
 
     @Test
-    public void testWebOnt_description_logic_615() {
+    void testWebOnt_description_logic_615() {
         premise = asString("/WebOnt_description_logic_615.owl");
         test("WebOnt_description_logic_615", TestClasses.INCONSISTENCY, "DL Test: t12.1");
     }
 
     @Test
-    public void testWebOnt_description_logic_616() {
+    void testWebOnt_description_logic_616() {
         premise = asString("/WebOnt_description_logic_616.owl");
         test("WebOnt_description_logic_616", TestClasses.CONSISTENCY, "DL Test: t2.1");
     }
 
     @Test
-    public void testWebOnt_description_logic_617() {
+    void testWebOnt_description_logic_617() {
         premise = asString("/WebOnt_description_logic_617.owl");
         test("WebOnt_description_logic_617", TestClasses.INCONSISTENCY, "DL Test: t2.2");
     }
 
     @Test
-    public void testWebOnt_description_logic_623() {
+    void testWebOnt_description_logic_623() {
         premise = asString("/WebOnt_description_logic_623.owl");
         test("WebOnt_description_logic_623", TestClasses.INCONSISTENCY,
             "DL Test: t4.1 Dynamic blocking example");
     }
 
     @Test
-    public void testWebOnt_description_logic_624() {
+    void testWebOnt_description_logic_624() {
         premise = asString("/WebOnt_description_logic_624.owl");
         test("WebOnt_description_logic_624", TestClasses.CONSISTENCY,
             "DL Test: t5.1 Non-finite model example from paper The concept should be coherent but has no finite model");
     }
 
     @Test
-    public void testWebOnt_description_logic_625() {
+    void testWebOnt_description_logic_625() {
         premise = asString("/WebOnt_description_logic_625.owl");
         test("WebOnt_description_logic_625", TestClasses.CONSISTENCY,
             "DL Test: t5f.1 Non-finite model example from paper The concept should be coherent but has no finite model");
     }
 
     @Test
-    public void testWebOnt_description_logic_626() {
+    void testWebOnt_description_logic_626() {
         premise = asString("/WebOnt_description_logic_626.owl");
         test("WebOnt_description_logic_626", TestClasses.INCONSISTENCY,
             "DL Test: t6.1 Double blocking example. The concept should be incoherent but needs double blocking");
     }
 
     @Test
-    public void testWebOnt_description_logic_627() {
+    void testWebOnt_description_logic_627() {
         premise = asString("/WebOnt_description_logic_627.owl");
         test("WebOnt_description_logic_627", TestClasses.INCONSISTENCY,
             "DL Test: t6f.1 Double blocking example. The concept should be incoherent but needs double blocking");
     }
 
     @Test
-    public void testWebOnt_description_logic_628() {
+    void testWebOnt_description_logic_628() {
         premise = asString("/WebOnt_description_logic_628.owl");
         test("WebOnt_description_logic_628", TestClasses.CONSISTENCY, "DL Test: t7.1");
     }
 
     @Test
-    public void testWebOnt_description_logic_629() {
+    void testWebOnt_description_logic_629() {
         premise = asString("/WebOnt_description_logic_629.owl");
         test("WebOnt_description_logic_629", TestClasses.INCONSISTENCY, "DL Test: t7.2");
     }
 
     @Test
-    public void testWebOnt_description_logic_630() {
+    void testWebOnt_description_logic_630() {
         premise = asString("/WebOnt_description_logic_630.owl");
         test("WebOnt_description_logic_630", TestClasses.INCONSISTENCY, "DL Test: t7.3");
     }
 
     @Test
-    public void testWebOnt_description_logic_631() {
+    void testWebOnt_description_logic_631() {
         premise = asString("/WebOnt_description_logic_631.owl");
         test("WebOnt_description_logic_631", TestClasses.CONSISTENCY, "DL Test: t7f.1");
     }
 
     @Test
-    public void testWebOnt_description_logic_632() {
+    void testWebOnt_description_logic_632() {
         premise = asString("/WebOnt_description_logic_632.owl");
         test("WebOnt_description_logic_632", TestClasses.INCONSISTENCY, "DL Test: t7f.2");
     }
 
     @Test
-    public void testWebOnt_description_logic_633() {
+    void testWebOnt_description_logic_633() {
         premise = asString("/WebOnt_description_logic_633.owl");
         test("WebOnt_description_logic_633", TestClasses.INCONSISTENCY, "DL Test: t7f.3");
     }
 
     @Test
-    public void testWebOnt_description_logic_634() {
+    void testWebOnt_description_logic_634() {
         premise = asString("/WebOnt_description_logic_634.owl");
         test("WebOnt_description_logic_634", TestClasses.CONSISTENCY, "DL Test: t8.1");
     }
 
     @Test
-    public void testWebOnt_description_logic_641() {
+    void testWebOnt_description_logic_641() {
         premise = asString("/WebOnt_description_logic_641.owl");
         test("WebOnt_description_logic_641", TestClasses.INCONSISTENCY,
             "DL Test: heinsohn1.1 Tbox tests from Heinsohn et al. Tests incoherency caused by disjoint concept");
     }
 
     @Test
-    public void testWebOnt_description_logic_642() {
+    void testWebOnt_description_logic_642() {
         premise = asString("/WebOnt_description_logic_642.owl");
         test("WebOnt_description_logic_642", TestClasses.INCONSISTENCY,
             "DL Test: heinsohn1.2 Tbox tests from Heinsohn et al. Tests incoherency caused by disjoint concept");
     }
 
     @Test
-    public void testWebOnt_description_logic_643() {
+    void testWebOnt_description_logic_643() {
         premise = asString("/WebOnt_description_logic_643.owl");
         test("WebOnt_description_logic_643", TestClasses.INCONSISTENCY,
             "DL Test: heinsohn1.3 Tbox tests from Heinsohn et al. Tests incoherency caused by disjoint concept");
     }
 
     @Test
-    public void testWebOnt_description_logic_644() {
+    void testWebOnt_description_logic_644() {
         premise = asString("/WebOnt_description_logic_644.owl");
         test("WebOnt_description_logic_644", TestClasses.INCONSISTENCY,
             "DL Test: heinsohn1.4 Tbox tests from Heinsohn et al. Tests incoherency caused by disjoint concept");
     }
 
     @Test
-    public void testWebOnt_description_logic_646() {
+    void testWebOnt_description_logic_646() {
         premise = asString("/WebOnt_description_logic_646.owl");
         test("WebOnt_description_logic_646", TestClasses.INCONSISTENCY,
             "DL Test: heinsohn2.2 Tbox tests from Heinsohn et al. Tests incoherency caused by number restrictions");
     }
 
     @Test
-    public void testWebOnt_description_logic_650() {
+    void testWebOnt_description_logic_650() {
         premise = asString("/WebOnt_description_logic_650.owl");
         test("WebOnt_description_logic_650", TestClasses.INCONSISTENCY,
             "DL Test: heinsohn4.1 Tbox tests from Heinsohn et al. Tests role restrictions");
     }
 
     @Test
-    public void testWebOnt_description_logic_665() {
+    void testWebOnt_description_logic_665() {
         conclusion =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "      xml:base=\"http://www.w3.org/2002/03owlt/description-logic/conclusions665\"\n"
@@ -1389,7 +1389,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_description_logic_667() {
+    void testWebOnt_description_logic_667() {
         conclusion =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "      xml:base=\"http://www.w3.org/2002/03owlt/description-logic/conclusions667\"\n"
@@ -1407,7 +1407,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_description_logic_901() {
+    void testWebOnt_description_logic_901() {
         conclusion =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/description-logic/premises901#\" xmlns:second=\"http://www.w3.org/2002/03owlt/description-logic/conclusions901#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/description-logic/conclusions901\" >\n"
@@ -1424,7 +1424,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_description_logic_902() {
+    void testWebOnt_description_logic_902() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/description-logic/premises902\" >\n"
@@ -1452,21 +1452,21 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_description_logic_905() {
+    void testWebOnt_description_logic_905() {
         premise = asString("/WebOnt_description_logic_905.owl");
         test("WebOnt_description_logic_905", TestClasses.CONSISTENCY,
             "This test shows integer multiplication in OWL DL. N is 2. M is 3. N times M is 6.");
     }
 
     @Test
-    public void testWebOnt_description_logic_908() {
+    void testWebOnt_description_logic_908() {
         premise = asString("/WebOnt_description_logic_908.owl");
         test("WebOnt_description_logic_908", TestClasses.CONSISTENCY,
             "This test shows integer multiplication in OWL DL, interacting with infinity.N times infinity is 2  times infinity. M times infinity is 3 times infinity. N times M times infinity is 5 times infinity.");
     }
 
     @Test
-    public void testWebOnt_differentFrom_001() {
+    void testWebOnt_differentFrom_001() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/differentFrom/premises001#\" xmlns:second=\"http://www.w3.org/2002/03owlt/differentFrom/conclusions001#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/differentFrom/premises001\" >\n"
@@ -1482,7 +1482,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_disjointWith_001() {
+    void testWebOnt_disjointWith_001() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:first=\"http://www.w3.org/2002/03owlt/disjointWith/premises001#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/disjointWith/premises001\" >\n"
@@ -1500,42 +1500,42 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_disjointWith_003() {
+    void testWebOnt_disjointWith_003() {
         premise = asString("/WebOnt_disjointWith_003.owl");
         test("WebOnt_disjointWith_003", TestClasses.CONSISTENCY,
             "If the owl:disjointWith edges in the graph form an undirected complete subgraph  then this may be within OWL DL.");
     }
 
     @Test
-    public void testWebOnt_disjointWith_004() {
+    void testWebOnt_disjointWith_004() {
         premise = asString("/WebOnt_disjointWith_004.owl");
         test("WebOnt_disjointWith_004", TestClasses.CONSISTENCY,
             "This example has owl:disjointWith edges in the graph which cannot be generated by the mapping rules for DisjointClasses. Consider the lack of owl:disjointWith edge between nodes C and D.");
     }
 
     @Test
-    public void testWebOnt_disjointWith_005() {
+    void testWebOnt_disjointWith_005() {
         premise = asString("/WebOnt_disjointWith_005.owl");
         test("WebOnt_disjointWith_005", TestClasses.CONSISTENCY,
             "If the owl:disjointWith edges in the graph form unconnected undirected complete subgraphs then this may be within OWL DL.");
     }
 
     @Test
-    public void testWebOnt_disjointWith_006() {
+    void testWebOnt_disjointWith_006() {
         premise = asString("/WebOnt_disjointWith_006.owl");
         test("WebOnt_disjointWith_006", TestClasses.CONSISTENCY,
             "If the owl:disjointWith edges in the graph form undirected complete subgraphs which share blank nodes then this was not within OWL DL, but is permissible in OWL 2 DL.");
     }
 
     @Test
-    public void testWebOnt_disjointWith_007() {
+    void testWebOnt_disjointWith_007() {
         premise = asString("/WebOnt_disjointWith_007.owl");
         test("WebOnt_disjointWith_007", TestClasses.CONSISTENCY,
             "If the owl:disjointWith edges in the graph form undirected complete subgraphs which share URIref nodes but do not share blank node\nthen this may be within OWL DL.");
     }
 
     @Test
-    public void testWebOnt_disjointWith_008() {
+    void testWebOnt_disjointWith_008() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/disjointWith/consistent008\" >\n"
@@ -1548,7 +1548,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_disjointWith_009() {
+    void testWebOnt_disjointWith_009() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/disjointWith/consistent009\" >\n"
@@ -1561,7 +1561,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_equivalentClass_001() {
+    void testWebOnt_equivalentClass_001() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/equivalentClass/premises001#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/equivalentClass/premises001\" >\n"
@@ -1585,7 +1585,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_equivalentClass_002() {
+    void testWebOnt_equivalentClass_002() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/equivalentClass/premises002\" >\n"
@@ -1603,7 +1603,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_equivalentClass_003() {
+    void testWebOnt_equivalentClass_003() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/equivalentClass/premises003\" >\n"
@@ -1621,7 +1621,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_equivalentClass_004() {
+    void testWebOnt_equivalentClass_004() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/equivalentClass/premises004\" >\n"
@@ -1644,7 +1644,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_equivalentClass_005() {
+    void testWebOnt_equivalentClass_005() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/equivalentClass/premises005\" >\n"
@@ -1665,7 +1665,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_equivalentClass_006() {
+    void testWebOnt_equivalentClass_006() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/equivalentClass/premises006\" >\n"
@@ -1682,7 +1682,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_equivalentClass_008_Direct() {
+    void testWebOnt_equivalentClass_008_Direct() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/equivalentClass/premises008#\" \n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/equivalentClass/premises008\" >\n"
@@ -1701,7 +1701,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_equivalentClass_009() {
+    void testWebOnt_equivalentClass_009() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + " xml:base=\"http://www.w3.org/2002/03owlt/equivalentClass/consistent009\" >\n"
@@ -1719,7 +1719,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_equivalentProperty_001() {
+    void testWebOnt_equivalentProperty_001() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/equivalentProperty/premises001#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/equivalentProperty/premises001\" >\n"
@@ -1739,7 +1739,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_equivalentProperty_002() {
+    void testWebOnt_equivalentProperty_002() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/equivalentProperty/premises002#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/equivalentProperty/premises002\" >\n"
@@ -1756,7 +1756,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_equivalentProperty_003() {
+    void testWebOnt_equivalentProperty_003() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/equivalentProperty/premises003\" >\n"
@@ -1773,7 +1773,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_equivalentProperty_004() {
+    void testWebOnt_equivalentProperty_004() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/equivalentProperty/premises004\" >\n"
@@ -1796,7 +1796,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_imports_011() {
+    void testWebOnt_imports_011() {
         premise = "<rdf:RDF " + "xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' "
             + "xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#' "
             + "xmlns:owl='http://www.w3.org/2002/07/owl#' "
@@ -1815,14 +1815,14 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_maxCardinality_001() {
+    void testWebOnt_maxCardinality_001() {
         premise = asString("/WebOnt_maxCardinality_001.owl");
         test("WebOnt_maxCardinality_001", TestClasses.INCONSISTENCY,
             "A property with maximum cardinality of two cannot take three distinct values on some subject node.");
     }
 
     @Test
-    public void testWebOnt_miscellaneous_102() {
+    void testWebOnt_miscellaneous_102() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent102#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent102\" >\n"
@@ -1834,7 +1834,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_miscellaneous_103() {
+    void testWebOnt_miscellaneous_103() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent103#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent103\" >\n"
@@ -1846,7 +1846,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_miscellaneous_302_Direct() {
+    void testWebOnt_miscellaneous_302_Direct() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/miscellaneous/premises302#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/miscellaneous/premises302\" >\n"
@@ -1865,7 +1865,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_miscellaneous_303() {
+    void testWebOnt_miscellaneous_303() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/miscellaneous/consistent303\" >\n"
@@ -1876,7 +1876,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_oneOf_001() {
+    void testWebOnt_oneOf_001() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/oneOf/consistent001#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/oneOf/consistent001\" >\n"
@@ -1888,7 +1888,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_sameAs_001() {
+    void testWebOnt_sameAs_001() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/sameAs/premises001#\"\n"
                 + "  xml:base=\"http://www.w3.org/2002/03owlt/sameAs/premises001\" >\n"
@@ -1907,7 +1907,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_unionOf_003() {
+    void testWebOnt_unionOf_003() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/unionOf/premises003\" >\n"
@@ -1929,7 +1929,7 @@ public class WebOntTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_unionOf_004() {
+    void testWebOnt_unionOf_004() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:first=\"http://www.w3.org/2002/03owlt/unionOf/premises004#\" xmlns:second=\"http://www.w3.org/2002/03owlt/unionOf/conclusions004#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/unionOf/premises004\" >\n"

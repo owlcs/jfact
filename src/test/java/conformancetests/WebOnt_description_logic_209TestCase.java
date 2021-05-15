@@ -5,15 +5,14 @@
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
 package conformancetests;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import testbase.TestBase;
 
-@SuppressWarnings("javadoc")
-public class WebOnt_description_logic_209TestCase extends TestBase {
+class WebOnt_description_logic_209TestCase extends TestBase {
 
     @Test
-    public void testWebOnt_description_logic_209() {
+    void testWebOnt_description_logic_209() {
         conclusion = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
             + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
             + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"

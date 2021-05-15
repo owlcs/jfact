@@ -1,11 +1,11 @@
 package bugs;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.annotation.Nonnull;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormat;
 import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
@@ -18,8 +18,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 import testbase.TestBase;
 
-@SuppressWarnings("javadoc")
-public class DebugVerifyComplianceUniversityTestCase extends TestBase {
+class DebugVerifyComplianceUniversityTestCase extends TestBase {
 
     private OWLReasoner reasoner;
 
@@ -47,8 +46,8 @@ public class DebugVerifyComplianceUniversityTestCase extends TestBase {
     @Nonnull
     private OWLClass Professor = C("urn:uni#Professor");
 
-    @Before
-    public void setUp() throws OWLOntologyCreationException {
+    @BeforeEach
+    void setUp() throws OWLOntologyCreationException {
         reasoner = factory().createReasoner(load());
     }
 
@@ -58,7 +57,7 @@ public class DebugVerifyComplianceUniversityTestCase extends TestBase {
     }
 
     @Test
-    public void shouldPassisSatisfiableProfessor() {
+    void shouldPassisSatisfiableProfessor() {
         assertTrue(reasoner.isSatisfiable(Professor));
     }
 }

@@ -5,9 +5,9 @@ package bugs.debug;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.Class;
 import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.Declaration;
 import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.DifferentIndividuals;
@@ -24,8 +24,8 @@ import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.Objec
 import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.ObjectUnionOf;
 import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.SubClassOf;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataProperty;
@@ -42,12 +42,11 @@ import conformancetests.ChangedTestCase;
 import conformancetests.TestClasses;
 import testbase.TestBase;
 
-@Ignore("disabling for release")
-@SuppressWarnings("javadoc")
-public class BrokenTestCase extends TestBase {
+@Disabled("disabling for release")
+class BrokenTestCase extends TestBase {
 
     @Test
-    public void testQualified_cardinality_boolean() {
+    void testQualified_cardinality_boolean() {
         premise = "Prefix( : = <http://example.org/test#> )\n"
             + "Prefix( xsd: = <http://www.w3.org/2001/XMLSchema#> )\n" + '\n'
             + "Ontology(<http://owl.semanticweb.org/page/Special:GetOntology/Qualified-cardinality-boolean?m=p>\n"
@@ -68,7 +67,7 @@ public class BrokenTestCase extends TestBase {
     // XXX this needs to be fixed
     @Test
     @ChangedTestCase(reason = "changed to fix unreliable iris")
-    public void testone_two() throws OWLException {
+    void testone_two() throws OWLException {
         IRI ontoIRI = IRI("urn:onetwo");
         OWLOntology o = m.createOntology(ontoIRI);
         String ns = "http://example.com/";
@@ -151,18 +150,17 @@ public class BrokenTestCase extends TestBase {
         m.addAxiom(o, InverseFunctionalObjectProperty(twoatobandc));
         m.addAxiom(o, DifferentIndividuals(i, j, k));
         OWLReasoner reasoner = factory().createReasoner(o);
-        assertFalse(
+        assertFalse(reasoner.isConsistent(),
             "Start with 3 classes, a,b,c and relate them so instances have to be in a 1:1 relationship with each other.\n"
                 + "The class b-and-c is the union of b and c. Therefore there have to be 2 instances of b-and-c for every instance of a.\n"
                 + "Relate the class 2a to b-and-c so that *their* instances are in 1:1 relationship.\n"
                 + "Now relate 2a to a so that *their* instances are in a 1:1 relationship. This should lead to a situation in which every instance\n"
                 + "of 2a is 1:1 with an instance of a, and at the same time 2:1 with an instance of a.\n"
-                + "Unless all the classes have an infinite number of members or are empty this doesn't work. This example has a is the enumerated class {i,j,k} (i,j,k all different individuals). So it should be inconsistent.",
-            reasoner.isConsistent());
+                + "Unless all the classes have an infinite number of members or are empty this doesn't work. This example has a is the enumerated class {i,j,k} (i,j,k all different individuals). So it should be inconsistent.");
     }
 
     @Test
-    public void testConsistent_Datatype_restrictions_with_Different_Types() {
+    void testConsistent_Datatype_restrictions_with_Different_Types() {
         premise = "Prefix(:=<http://example.org/>)\n"
             + "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n" + "Ontology(\n"
             + "  Declaration(NamedIndividual(:a))\n" + "  Declaration(DataProperty(:dp))\n"
@@ -178,18 +176,18 @@ public class BrokenTestCase extends TestBase {
     }
 
     @Test
-    public void testUnsatisfiableClasses() throws OWLOntologyCreationException {
+    void testUnsatisfiableClasses() throws OWLOntologyCreationException {
         OWLOntology ont = m.createOntology();
         OWLDataProperty dp = df.getOWLDataProperty(IRI.create("urn:test:datap1"));
         m.addAxiom(ont, df.getOWLDataPropertyDomainAxiom(dp, df.getOWLNothing()));
         OWLReasonerFactory fac = factory();
         OWLReasoner r = fac.createNonBufferingReasoner(ont);
-        assertEquals(r.getBottomDataPropertyNode().toString(), 2L,
-            r.getBottomDataPropertyNode().entities().count());
+        assertEquals(2L, r.getBottomDataPropertyNode().entities().count(),
+            r.getBottomDataPropertyNode().toString());
     }
 
     @Test
-    public void testWebOnt_I5_8_009() {
+    void testWebOnt_I5_8_009() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.8/premises009\" >\n"
@@ -214,7 +212,7 @@ public class BrokenTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I5_8_010() {
+    void testWebOnt_I5_8_010() {
         premise = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n" + "Ontology(\n"
             + "Declaration(DataProperty(<urn:t#p>))\n"
             + "DataPropertyRange(<urn:t#p> xsd:nonNegativeInteger)\n"
@@ -229,7 +227,7 @@ public class BrokenTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_I5_8_008() {
+    void testWebOnt_I5_8_008() {
         premise =
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
                 + "    xml:base=\"http://www.w3.org/2002/03owlt/I5.8/premises008\" >\n"
@@ -249,7 +247,7 @@ public class BrokenTestCase extends TestBase {
     }
 
     @Test
-    public void testWebOnt_someValuesFrom_003() {
+    void testWebOnt_someValuesFrom_003() {
         premise = "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)\n"
             + "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)\n"
             + "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)\n"
@@ -277,7 +275,7 @@ public class BrokenTestCase extends TestBase {
     }
 
     @Test
-    public void testsomevaluesfrom2bnode() throws OWLOntologyCreationException {
+    void testsomevaluesfrom2bnode() throws OWLOntologyCreationException {
         // XXX I do not understand these blank nodes used as existential
         // variables
         OWLOntology o = m.createOntology();

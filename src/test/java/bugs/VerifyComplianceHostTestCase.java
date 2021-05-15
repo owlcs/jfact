@@ -1,10 +1,9 @@
 package bugs;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.OWLClass;
 
-@SuppressWarnings("javadoc")
-public class VerifyComplianceHostTestCase extends VerifyComplianceBase {
+class VerifyComplianceHostTestCase extends VerifyComplianceBase {
 
     @Override
     protected String input() {
@@ -12,7 +11,7 @@ public class VerifyComplianceHostTestCase extends VerifyComplianceBase {
     }
 
     @Test
-    public void shouldPassgetSubClassesDbXreftrue() {
+    void shouldPassgetSubClassesDbXreftrue() {
         OWLClass Nothing = C("http://www.w3.org/2002/07/owl#Nothing");
         OWLClass DbXref = C("http://www.geneontology.org/formats/oboInOwl#DbXref");
         // expected Nothing
@@ -21,7 +20,7 @@ public class VerifyComplianceHostTestCase extends VerifyComplianceBase {
     }
 
     @Test
-    public void shouldPassgetSubClassesSynonymtrue() {
+    void shouldPassgetSubClassesSynonymtrue() {
         OWLClass Nothing = C("http://www.w3.org/2002/07/owl#Nothing");
         OWLClass Synonym = C("http://www.geneontology.org/formats/oboInOwl#Synonym");
         // expected Nothing
@@ -30,7 +29,7 @@ public class VerifyComplianceHostTestCase extends VerifyComplianceBase {
     }
 
     @Test
-    public void shouldPassgetSubClassesDefinitiontrue() {
+    void shouldPassgetSubClassesDefinitiontrue() {
         OWLClass Nothing = C("http://www.w3.org/2002/07/owl#Nothing");
         OWLClass Definition = C("http://www.geneontology.org/formats/oboInOwl#Definition");
         // expected Nothing

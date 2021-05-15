@@ -1,7 +1,25 @@
 package conformancetests;
 
-import static org.junit.Assert.assertTrue;
-import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.Class;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.DifferentIndividuals;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.EquivalentClasses;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.InverseObjectProperties;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.NamedIndividual;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.ObjectAllValuesFrom;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.ObjectComplementOf;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.ObjectExactCardinality;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.ObjectHasValue;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.ObjectIntersectionOf;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.ObjectMaxCardinality;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.ObjectMinCardinality;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.ObjectOneOf;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.ObjectProperty;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.ObjectPropertyDomain;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.ObjectPropertyRange;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.ObjectSomeValuesFrom;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.ObjectUnionOf;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.SubClassOf;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,16 +28,22 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-import org.junit.Rule;
 /* This file is part of the JFact DL reasoner
  Copyright 2011-2013 by Ignazio Palmisano, Dmitry Tsarkov, University of Manchester
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import org.junit.Test;
-import org.junit.rules.Timeout;
-import org.semanticweb.owlapi.model.*;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
@@ -27,13 +51,13 @@ import testbase.TestBase;
 import uk.ac.manchester.cs.jfact.JFactReasoner;
 import uk.ac.manchester.cs.jfact.kernel.options.JFactReasonerConfiguration;
 
-@SuppressWarnings("javadoc")
-public class DebugWineTest extends TestBase {
+@Timeout(value = 5, unit = TimeUnit.SECONDS)
+class DebugWineTest extends TestBase {
 
-    @Rule public Timeout timeout = new Timeout(5_000);
 
     protected JFactReasonerConfiguration config(OutputStream o) {
-        return new JFactReasonerConfiguration().setAbsorptionLoggingActive(true).setAbsorptionLog(o);
+        return new JFactReasonerConfiguration().setAbsorptionLoggingActive(true)
+            .setAbsorptionLog(o);
     }
 
     protected JFactReasonerConfiguration noconfig() {
@@ -41,31 +65,37 @@ public class DebugWineTest extends TestBase {
     }
 
     @Test
-    public void shouldBeFastWithOldOrder() throws OWLOntologyCreationException, IOException {
+    void shouldBeFastWithOldOrder() throws OWLOntologyCreationException, IOException {
         System.out.println("WebOnt_miscellaneous_wineTestCase.shouldBeFastWithOldOrder() ");
         OWLOntology o = m.createOntology();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.out.println("DebugWine.shouldBeFastWithanyOrder() " + new HashSet<>(java7order()).size());
-        OWLReasoner r = new JFactReasoner(o, new LinkedHashSet<>(java7order()), config(out), BufferingMode.BUFFERING);
+        System.out
+            .println("DebugWine.shouldBeFastWithanyOrder() " + new HashSet<>(java7order()).size());
+        OWLReasoner r = new JFactReasoner(o, new LinkedHashSet<>(java7order()), config(out),
+            BufferingMode.BUFFERING);
         assertTrue(r.isConsistent());
         out.flush();
         String marker = "Absorption dealt with ";
         String string = out.toString();
-        System.out.println("DebugWine.shouldBeFastWithOldOrder() " + string.substring(string.indexOf(marker)));
+        System.out.println(
+            "DebugWine.shouldBeFastWithOldOrder() " + string.substring(string.indexOf(marker)));
     }
 
     @Test
-    public void shouldBeFastWithanyOrder() throws OWLOntologyCreationException, IOException {
+    void shouldBeFastWithanyOrder() throws OWLOntologyCreationException, IOException {
         System.out.println("WebOnt_miscellaneous_wineTestCase.shouldBeFastWithanyOrder() ");
         OWLOntology o = m.createOntology();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.out.println("DebugWine.shouldBeFastWithanyOrder() " + new HashSet<>(java7order()).size());
-        OWLReasoner r = new JFactReasoner(o, new HashSet<>(java7order()), config(out), BufferingMode.BUFFERING);
+        System.out
+            .println("DebugWine.shouldBeFastWithanyOrder() " + new HashSet<>(java7order()).size());
+        OWLReasoner r =
+            new JFactReasoner(o, new HashSet<>(java7order()), config(out), BufferingMode.BUFFERING);
         assertTrue(r.isConsistent());
         out.flush();
         String marker = "Absorption dealt with ";
         String string = out.toString();
-        System.out.println("DebugWine.shouldBeFastWithanyOrder() " + string.substring(string.indexOf(marker)));
+        System.out.println(
+            "DebugWine.shouldBeFastWithanyOrder() " + string.substring(string.indexOf(marker)));
     }
 
     public List<OWLAxiom> java7order() {
@@ -135,11 +165,14 @@ public class DebugWineTest extends TestBase {
     private OWLNamedIndividual ChiantiRegion = NamedIndividual(IRI.create(ns + "ChiantiRegion"));
     private OWLNamedIndividual Red = NamedIndividual(IRI.create(ns + "Red"));
     private OWLNamedIndividual Dry = NamedIndividual(IRI.create(ns + "Dry"));
-    private OWLNamedIndividual CabernetFrancGrape = NamedIndividual(IRI.create(ns + "CabernetFrancGrape"));
+    private OWLNamedIndividual CabernetFrancGrape =
+        NamedIndividual(IRI.create(ns + "CabernetFrancGrape"));
     private OWLNamedIndividual FrenchRegion = NamedIndividual(IRI.create(ns + "FrenchRegion"));
-    private OWLNamedIndividual ChardonnayGrape = NamedIndividual(IRI.create(ns + "ChardonnayGrape"));
+    private OWLNamedIndividual ChardonnayGrape =
+        NamedIndividual(IRI.create(ns + "ChardonnayGrape"));
     private OWLNamedIndividual OffDry = NamedIndividual(IRI.create(ns + "OffDry"));
-    private OWLNamedIndividual CabernetSauvignonGrape = NamedIndividual(IRI.create(ns + "CabernetSauvignonGrape"));
+    private OWLNamedIndividual CabernetSauvignonGrape =
+        NamedIndividual(IRI.create(ns + "CabernetSauvignonGrape"));
     private OWLNamedIndividual Full = NamedIndividual(IRI.create(ns + "Full"));
 
     private void subclasses(List<OWLAxiom> axioms) {
@@ -151,21 +184,24 @@ public class DebugWineTest extends TestBase {
         axioms.add(SubClassOf(Sauterne, LateHarvest));
         axioms.add(SubClassOf(DessertWine, Wine));
         axioms.add(SubClassOf(PetiteSyrah, ObjectHasValue(hasSugar, Dry)));
-        axioms.add(SubClassOf(DessertWine, ObjectAllValuesFrom(hasSugar, ObjectOneOf(OffDry, Sweet))));
+        axioms.add(
+            SubClassOf(DessertWine, ObjectAllValuesFrom(hasSugar, ObjectOneOf(OffDry, Sweet))));
         axioms.add(SubClassOf(EatingGrape, Grape));
         axioms.add(SubClassOf(Sauterne, ObjectHasValue(hasColor, White)));
         axioms.add(SubClassOf(Wine, ObjectExactCardinality(1, hasFlavor, df.getOWLThing())));
         axioms.add(SubClassOf(Chianti, ObjectHasValue(locatedIn, ChiantiRegion)));
         axioms.add(SubClassOf(Meal, ConsumableThing));
         axioms.add(SubClassOf(Chianti, ObjectAllValuesFrom(hasBody, ObjectOneOf(Light, Medium))));
-        axioms.add(SubClassOf(PetiteSyrah, ObjectAllValuesFrom(hasBody, ObjectOneOf(Full, Medium))));
+        axioms
+            .add(SubClassOf(PetiteSyrah, ObjectAllValuesFrom(hasBody, ObjectOneOf(Full, Medium))));
         axioms.add(SubClassOf(PotableLiquid, ConsumableThing));
         axioms.add(SubClassOf(CabernetSauvignon, ObjectHasValue(hasSugar, Dry)));
         axioms.add(SubClassOf(Port, ObjectHasValue(hasFlavor, Strong)));
         axioms.add(SubClassOf(EdibleThing, ConsumableThing));
         axioms.add(SubClassOf(Port, ObjectHasValue(hasSugar, Sweet)));
         axioms.add(SubClassOf(LateHarvest, ObjectHasValue(hasSugar, Sweet)));
-        axioms.add(SubClassOf(EarlyHarvest, ObjectAllValuesFrom(hasSugar, ObjectOneOf(Dry, OffDry))));
+        axioms
+            .add(SubClassOf(EarlyHarvest, ObjectAllValuesFrom(hasSugar, ObjectOneOf(Dry, OffDry))));
         axioms.add(SubClassOf(EarlyHarvest, Wine));
         axioms.add(SubClassOf(WineFlavor, WineTaste));
         axioms.add(SubClassOf(Port, ObjectHasValue(hasBody, Full)));
@@ -188,28 +224,36 @@ public class DebugWineTest extends TestBase {
         axioms.add(SubClassOf(WhiteBurgundy, ObjectHasValue(madeFromGrape, ChardonnayGrape)));
         axioms.add(SubClassOf(CabernetFranc, ObjectHasValue(hasBody, Medium)));
         axioms.add(SubClassOf(CabernetSauvignon, ObjectHasValue(hasColor, Red)));
-        axioms.add(SubClassOf(WhiteBurgundy, ObjectMaxCardinality(1, madeFromGrape, df.getOWLThing())));
+        axioms.add(
+            SubClassOf(WhiteBurgundy, ObjectMaxCardinality(1, madeFromGrape, df.getOWLThing())));
         axioms.add(SubClassOf(WineBody, WineTaste));
-        axioms.add(SubClassOf(CabernetSauvignon, ObjectAllValuesFrom(hasBody, ObjectOneOf(Full, Medium))));
+        axioms.add(
+            SubClassOf(CabernetSauvignon, ObjectAllValuesFrom(hasBody, ObjectOneOf(Full, Medium))));
     }
 
     private void equivalentClasses(List<OWLAxiom> axioms) {
-        axioms.add(EquivalentClasses(CabernetFranc, ObjectIntersectionOf(Wine, ObjectHasValue(madeFromGrape,
-            CabernetFrancGrape), ObjectMaxCardinality(1, madeFromGrape, df.getOWLThing()))));
-        axioms.add(EquivalentClasses(DryWine, ObjectIntersectionOf(Wine, ObjectHasValue(hasSugar, Dry))));
+        axioms.add(EquivalentClasses(CabernetFranc,
+            ObjectIntersectionOf(Wine, ObjectHasValue(madeFromGrape, CabernetFrancGrape),
+                ObjectMaxCardinality(1, madeFromGrape, df.getOWLThing()))));
+        axioms.add(
+            EquivalentClasses(DryWine, ObjectIntersectionOf(Wine, ObjectHasValue(hasSugar, Dry))));
         axioms.add(EquivalentClasses(DryWhiteWine, ObjectIntersectionOf(DryWine, WhiteWine)));
-        axioms.add(EquivalentClasses(CabernetSauvignon, ObjectIntersectionOf(Wine, ObjectHasValue(madeFromGrape,
-            CabernetSauvignonGrape), ObjectMaxCardinality(1, madeFromGrape, df.getOWLThing()))));
-        axioms.add(EquivalentClasses(WhiteWine, ObjectIntersectionOf(Wine, ObjectHasValue(hasColor, White))));
+        axioms.add(EquivalentClasses(CabernetSauvignon,
+            ObjectIntersectionOf(Wine, ObjectHasValue(madeFromGrape, CabernetSauvignonGrape),
+                ObjectMaxCardinality(1, madeFromGrape, df.getOWLThing()))));
+        axioms.add(EquivalentClasses(WhiteWine,
+            ObjectIntersectionOf(Wine, ObjectHasValue(hasColor, White))));
         axioms.add(EquivalentClasses(WineColor, ObjectOneOf(Red, Rose, White)));
         axioms.add(EquivalentClasses(WineSugar, ObjectOneOf(Dry, OffDry, Sweet)));
         axioms.add(EquivalentClasses(WineDescriptor, ObjectUnionOf(WineColor, WineTaste)));
-        axioms.add(EquivalentClasses(WhiteNonSweetWine, ObjectIntersectionOf(WhiteWine, ObjectAllValuesFrom(hasSugar,
-            ObjectOneOf(Dry, OffDry)))));
+        axioms.add(EquivalentClasses(WhiteNonSweetWine, ObjectIntersectionOf(WhiteWine,
+            ObjectAllValuesFrom(hasSugar, ObjectOneOf(Dry, OffDry)))));
         axioms.add(EquivalentClasses(WineBody, ObjectOneOf(Full, Light, Medium)));
-        axioms.add(EquivalentClasses(Chardonnay, ObjectIntersectionOf(Wine, ObjectHasValue(madeFromGrape,
-            ChardonnayGrape), ObjectMaxCardinality(1, madeFromGrape, df.getOWLThing()))));
-        axioms.add(EquivalentClasses(FrenchWine, ObjectIntersectionOf(Wine, ObjectHasValue(locatedIn, FrenchRegion))));
+        axioms.add(EquivalentClasses(Chardonnay,
+            ObjectIntersectionOf(Wine, ObjectHasValue(madeFromGrape, ChardonnayGrape),
+                ObjectMaxCardinality(1, madeFromGrape, df.getOWLThing()))));
+        axioms.add(EquivalentClasses(FrenchWine,
+            ObjectIntersectionOf(Wine, ObjectHasValue(locatedIn, FrenchRegion))));
         axioms.add(EquivalentClasses(NonConsumableThing, ObjectComplementOf(ConsumableThing)));
     }
 }

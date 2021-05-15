@@ -5,8 +5,8 @@ package conformancetests;
  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
  This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA*/
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -221,7 +221,7 @@ public class JUnitRunner {
                 AtomicBoolean consistent = new AtomicBoolean(isConsistent(reasoner));
                 if (!consistent.get()) {
                     String message = b.toString() + logTroubles(true, consistent, t, null);
-                    assertTrue(message, consistent.get());
+                    assertTrue(consistent.get(), message);
                 }
             }
                 break;
@@ -229,7 +229,7 @@ public class JUnitRunner {
                 AtomicBoolean consistent = new AtomicBoolean(isConsistent(reasoner));
                 if (consistent.get()) {
                     String message = b.toString() + logTroubles(false, consistent, t, null);
-                    assertFalse(message, consistent.get());
+                    assertFalse(consistent.get(), message);
                 }
             }
                 break;
@@ -237,7 +237,7 @@ public class JUnitRunner {
                 AtomicBoolean consistent = new AtomicBoolean(isConsistent(reasoner));
                 if (!consistent.get()) {
                     String message = b.toString() + logTroubles(true, consistent, t, null);
-                    assertTrue(message, consistent.get());
+                    assertTrue(consistent.get(), message);
                 }
                 AtomicBoolean entailed = new AtomicBoolean(false);
                 conclusionOntology.logicalAxioms().forEach(ax -> {
@@ -247,14 +247,14 @@ public class JUnitRunner {
                         b.append(logTroubles(false, entailed, t, ax));
                     }
                 });
-                assertFalse(b.toString(), entailed.get());
+                assertFalse(entailed.get(), b.toString());
             }
                 break;
             case POSITIVE_IMPL: {
                 AtomicBoolean consistent = new AtomicBoolean(isConsistent(reasoner));
                 if (!consistent.get()) {
                     String message = b.toString() + logTroubles(true, consistent, t, null);
-                    assertTrue(message, consistent.get());
+                    assertTrue(consistent.get(), message);
                 }
                 AtomicBoolean entailed = new AtomicBoolean(true);
                 conclusionOntology.logicalAxioms().forEach(ax -> {
@@ -264,7 +264,7 @@ public class JUnitRunner {
                         b.append(logTroubles(true, entailed, t, ax));
                     }
                 });
-                assertTrue(b.toString(), entailed.get());
+                assertTrue(entailed.get(), b.toString());
             }
                 break;
             default:
