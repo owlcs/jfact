@@ -91,19 +91,28 @@ public class KnowledgeExplorer implements Serializable {
         }
     }
 
-    <T extends ClassifiableEntry> void addConceptsAndIndividuals(Multimap<NamedEntity, T> m, T t) {
-        m.put(t.getEntity(), t);
+    protected <T extends ClassifiableEntry> void addNamedEntityWithEntity(
+        Multimap<NamedEntity, T> m, T t) {
+        if (t.hasEntity()) {
+            m.put(t.getEntity(), t);
+        }
         if (t.isSynonym()) {
-            m.put(t.getSynonym().getEntity(), t);
+            ClassifiableEntry synonym = t.getSynonym();
+            if (synonym.hasEntity()) {
+                m.put(synonym.getEntity(), t);
+            }
         }
     }
 
+    <T extends ClassifiableEntry> void addConceptsAndIndividuals(Multimap<NamedEntity, T> m, T t) {
+        addNamedEntityWithEntity(m, t);
+    }
+
     void addRoles(Multimap<NamedEntity, Role> m, Role t) {
-        m.put(t.getEntity(), t);
-        if (t.isSynonym()) {
-            m.put(t.getSynonym().getEntity(), t);
+        addNamedEntityWithEntity(m, t);
+        if (t.hasEntity()) {
+            m.putAll(t.getEntity(), t.getAncestor());
         }
-        m.putAll(t.getEntity(), t.getAncestor());
     }
 
     /**
@@ -115,7 +124,8 @@ public class KnowledgeExplorer implements Serializable {
     private void addC(Expression e) {
         // check named concepts
         if (e instanceof ConceptName) {
-            cs.get((ConceptName) e).forEach(p -> concepts.add(d2i.getCExpr(p.getId())));
+            cs.get((ConceptName) e).stream().filter(p -> p.getId() != 0)
+                .forEach(p -> concepts.add(d2i.getCExpr(p.getId())));
             return;
         }
         // check named individuals

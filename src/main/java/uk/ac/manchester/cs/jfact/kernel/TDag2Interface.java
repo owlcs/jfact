@@ -70,9 +70,15 @@ public class TDag2Interface implements Serializable {
                 return top();
             case NCONCEPT:
             case PCONCEPT:
+                if (!v.getConcept().hasEntity()) {
+                    return null;
+                }
                 return cache.concept(v.getConcept().getEntity().getEntity());
             case PSINGLETON:
             case NSINGLETON:
+                if (!v.getConcept().hasEntity()) {
+                    return null;
+                }
                 return cache.oneOf(cache.individual(v.getConcept().getEntity().getEntity()));
             case AND:
             case COLLECTION:
@@ -82,6 +88,9 @@ public class TDag2Interface implements Serializable {
                 }
                 return and(list);
             case FORALL:
+                if (!v.getRole().hasEntity()) {
+                    return null;
+                }
                 if (v.getRole().isDataRole()) {
                     return forall(cache.dataRole(v.getRole().getEntity().getEntity()),
                         getDExpr(v.getConceptIndex()));
@@ -90,6 +99,9 @@ public class TDag2Interface implements Serializable {
                         getCExpr(v.getConceptIndex()));
                 }
             case LE:
+                if (!v.getRole().hasEntity()) {
+                    return null;
+                }
                 if (v.getRole().isDataRole()) {
                     return maxCardinality(v.getNumberLE(),
                         cache.dataRole(v.getRole().getEntity().getEntity()),
@@ -100,6 +112,9 @@ public class TDag2Interface implements Serializable {
                         getCExpr(v.getConceptIndex()));
                 }
             case IRR:
+                if (!v.getRole().hasEntity()) {
+                    return null;
+                }
                 return not(selfReference(cache.objectRole(v.getRole().getEntity().getEntity())));
             case PROJ:
             case NN:
@@ -107,7 +122,7 @@ public class TDag2Interface implements Serializable {
                 // these are artificial constructions and shouldn't be visible
                 return top();
             default:
-                throw new UnreachableSituationException();
+                throw new UnreachableSituationException("Unexpected dag type: " + v.getType());
         }
     }
 

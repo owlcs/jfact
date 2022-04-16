@@ -120,6 +120,9 @@ import uk.ac.manchester.cs.jfact.kernel.actors.DataPropertyPolicy;
 import uk.ac.manchester.cs.jfact.kernel.actors.IndividualPolicy;
 import uk.ac.manchester.cs.jfact.kernel.actors.ObjectPropertyPolicy;
 import uk.ac.manchester.cs.jfact.kernel.actors.TaxonomyActor;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptBottom;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptName;
+import uk.ac.manchester.cs.jfact.kernel.dl.ConceptTop;
 import uk.ac.manchester.cs.jfact.kernel.dl.IndividualName;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.ConceptExpression;
 import uk.ac.manchester.cs.jfact.kernel.dl.interfaces.DataExpression;
@@ -883,7 +886,8 @@ public class JFactReasoner
         boolean deterministicOnly) {
         Stream<ConceptExpression> stream =
             kernel.getObjectLabel(tree(object), deterministicOnly).stream();
-        return tr.getClassExpressionTranslator().node(stream);
+        return tr.getClassExpressionTranslator().node(stream.filter(c -> c instanceof ConceptBottom
+            || c instanceof ConceptTop || c instanceof ConceptName));
     }
 
     @Override
